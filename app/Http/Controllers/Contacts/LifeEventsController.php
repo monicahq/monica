@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\LifeEventCategory;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
+use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
 use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
 
@@ -96,5 +97,30 @@ class LifeEventsController extends Controller
         }
 
         return $lifeEvent;
+    }
+
+    /**
+     * Destroy the life event.
+     * @param  Request   $request
+     * @param  Contact   $contat
+     * @param  LifeEvent $lifeEvent
+     * @return boolean
+     */
+    public function destroy(Request $request, Contact $contat, $lifeEventId)
+    {
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'life_event_id' => $lifeEventId,
+        ];
+
+        try {
+            $lifeEvent = (new DestroyLifeEvent)->execute($data);
+        } catch (\Exception $e) {
+            return back()
+                ->withInput()
+                ->withErrors(trans('app.error_save'));
+        }
+
+        return 'done';
     }
 }

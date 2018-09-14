@@ -494,6 +494,7 @@
                         </div>
                         <p class="pt2"><span class="b">{{ $t('people.life_event_sentence_' + lifeEvent.default_life_event_type_key) }}</span> {{ lifeEvent.name }}</p>
                         <p>{{ lifeEvent.note }}</p>
+                        <p class="f7"><a @click="destroy(lifeEvent)">Delete</a></p>
                     </div>
                 </div>
             </div>
@@ -540,8 +541,8 @@
             getLifeEvents() {
                 axios.get('/people/' + this.hash + '/lifeevents')
                         .then(response => {
-                            this.lifeEvents = response.data
                             this.showAdd = false
+                            this.lifeEvents = response.data
                         });
             },
 
@@ -552,6 +553,13 @@
             updateLifeEventsList(updatedLifeEvent) {
                 this.getLifeEvents()
                 window.location.href='/people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id
+            },
+
+            destroy(lifeEvent) {
+                axios.delete('/lifeevents/' + lifeEvent.id)
+                        .then(response => {
+                            this.getLifeEvents()
+                        });
             }
         }
     }
