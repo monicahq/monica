@@ -104,7 +104,7 @@ class LifeEventsController extends Controller
      * @param  Request   $request
      * @param  Contact   $contat
      * @param  LifeEvent $lifeEvent
-     * @return boolean
+     * @return bool
      */
     public function destroy(Request $request, Contact $contat, $lifeEventId)
     {
