@@ -16,7 +16,7 @@ class AuthEmailConfirm
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && ! auth()->user()->confirmed) {
+        if (Auth::check() && ! auth()->user()->confirmed && config('monica.signup_double_optin')) {
             // Logout the user
             Auth::guard()->logout();
             $request->session()->invalidate();

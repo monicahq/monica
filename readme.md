@@ -45,7 +45,7 @@ Monica is an open-source web application to organize the interactions with your 
 <img src="docs/images/main-app.png" alt="screenshot of the application">
 </p>
 
-We also have official [open source mobile apps](https://github.com/monicahq/chandler).
+We also have official [open source mobile apps](https://github.com/monicahq/chandler) but they are extremely basic at this point and not well maintained.
 
 ### Purpose
 
@@ -74,7 +74,7 @@ Monica allows people to keep track of everything that's important about their fr
 * Ability to set custom genders
 * Ability to define custom activity types
 * Ability to favorite contacts
-* Track conversations
+* Track conversations made on social media or SMS
 * Multi users
 * Labels to organize contacts
 * Ability to define what section should appear on the contact sheet
@@ -150,13 +150,17 @@ We want to use technology in a way that does not harm human relationships, like 
 
 ### Principles
 
-* It should be open-source.
-* It should be transparent.
+Monica has a few principles.
+
+* It should help have better relationships.
 * It should be simple to use, simple to contribute to, simple to understand, extremely simple to maintain.
 * It is not a social network and shall never be.
-* It should do one thing (organizing interactions) extremely well, and nothing more.
+* It is not and will never be ad-supported.
+* Users are not and will never be tracked.
+* It should be transparent.
+* It should be open-source.
+* It should do one thing (documenting social interactions) extremely well, and nothing more.
 * It should be well documented.
-* It should help have better relationships.
 
 ### Vision
 
