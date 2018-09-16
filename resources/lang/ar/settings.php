@@ -12,15 +12,15 @@ return [
     'sidebar_settings_security' => 'الأمن',
 
     'export_title' => 'قم بتصدير بيانات حسابك',
-    'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
+    'export_be_patient' => 'انقر فوق الزر لبدء التصدير. قد يستغرق الأمر عدة دقائق لعملية التصدير – يرجى التحلي بالصبر، و لا تضغط كثيراً على الزر.',
     'export_title_sql' => 'التصدير إلى SQL',
     'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only valuable if you do have your own server.',
     'export_sql_cta' => 'التصدير إلى SQL',
-    'export_sql_link_instructions' => 'Note: <a href=":url">read the instructions</a> to learn more about importing this file to your instance.',
+    'export_sql_link_instructions' => 'ملاحظة: <a href=":url">اقرأ التعليمات</a> لمعرفة المزيد عن إستيراد هذا الملف لنموذجك.',
 
     'firstname' => 'الاسم الأول',
     'lastname' => 'الاسم الأخير',
-    'name_order' => 'Name order',
+    'name_order' => 'ترتيب الاسم',
     'name_order_firstname_lastname' => '<First name> <Last name> - John Doe',
     'name_order_lastname_firstname' => '<Last name> <First name> - Doe John',
     'name_order_firstname_lastname_nickname' => '<First name> <Last name> (<Nickname>) - John Doe (Rambo)',
