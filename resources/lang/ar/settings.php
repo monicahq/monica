@@ -299,10 +299,10 @@ return [
     'personalization_genders_modal_add' => 'إضافة نوع جنس',
     'personalization_genders_modal_question' => 'How should this new gender be called?',
     'personalization_genders_modal_edit' => 'تحديث نوع الجنس',
-    'personalization_genders_modal_edit_question' => 'How should this new gender be renamed?',
+    'personalization_genders_modal_edit_question' => 'كيف يمكن إعادة تسمية هذا النوع الجديد من الجنس؟',
     'personalization_genders_modal_delete' => 'حذف نوع الجنس',
     'personalization_genders_modal_delete_desc' => 'هل أنت متأكد من حذف {name}؟',
-    'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
+    'personalization_genders_modal_delete_question' => 'حاليا لديك {count} جهة اتصال لديها هذا النوع من الجنس. إذا قمت بحذف هذا الجنس، فأي نوع يجب أن تكون جهة الاتصال هذه؟| لديك حاليا {count} جهات اتصال لديها هذا النوع من الجنس. إذا قمت بحذف هذا الجنس، ما بين فأي نوع يجب أن تكون جهات الإتصال هؤلاء؟',
     'personalization_genders_modal_error' => 'الرجاء اختيار نوع جنس صالح من القائمة.',
 
     'personalization_reminder_rule_save' => 'لقد تم حفظ التغيير',
