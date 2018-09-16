@@ -36,12 +36,12 @@ return [
     'different'            => ':attribute a :other se nesmí shodovat.',
     'digits'               => ':attribute musí být :digits číslic.',
     'digits_between'       => ':attribute musí být v rozmezí :min a :max číslic.',
-    'dimensions'           => 'The :attribute has invalid image dimensions.',
+    'dimensions'           => ':attribute má neplatné rozměry.',
     'distinct'             => 'Pole :attribute obsahuje duplicitní hodnotu.',
     'email'                => ':attribute musí být platná emailová adresa.',
     'exists'               => 'Vybraný :attribute není platný.',
-    'file'                 => 'The :attribute must be a file.',
-    'filled'               => 'The :attribute field must have a value.',
+    'file'                 => ':attribute musí být soubor.',
+    'filled'               => ':attribute musí být vyplněno.',
     'image'                => ':attribute musí být obrázek.',
     'in'                   => 'Vybraný :attribute není platný.',
     'in_array'             => 'Pole :attribute neexistuje v :other.',
@@ -57,7 +57,7 @@ return [
         'array'   => ':attribute nesmí obsahovat více než :max položek.',
     ],
     'mimes'                => ':attribute musí být soubor typu: :values.',
-    'mimetypes'            => 'The :attribute must be a file of type: :values.',
+    'mimetypes'            => ':attribute musí být jeden z následujících datových typů :values.',
     'min'                  => [
         'numeric' => ':attribute musí být alespoň :min.',
         'file'    => ':attribute musí být alespoň :min kilobajtů.',
@@ -86,7 +86,7 @@ return [
     'string'               => ':attribute musí být řetězec.',
     'timezone'             => ':attribute musí být platná zóna.',
     'unique'               => ':attribute je již použitý.',
-    'uploaded'             => 'The :attribute failed to upload.',
+    'uploaded'             => 'Nahrávání :attribute se nezdařilo.',
     'url'                  => ':attribute formát není platný.',
 
     /*
