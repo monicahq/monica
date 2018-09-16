@@ -312,7 +312,7 @@ return [
 
     'personalization_module_save' => 'لقد تم حفظ التغيير',
     'personalization_module_title' => 'الميزات',
-    'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
+    'personalization_module_desc' => 'بعض الأشخاص لا يحتاجون كل الميزات. يمكنك أدناه تبديل ميزات معينة و التي تُستخدم على صفحة جهة الإتصال. هذا التغيير سيؤثر على جميع جهات اتصالك. علماً بأنك إذا قمت بتعطيل إحدى الميزات، فلن تُحذف البيانات - سنقوم ببساطة بإخفاء هذه الميزة.',
 
     'personalisation_paid_upgrade' => 'هذه ميزة خاصة و التي تتطلب اشتراكاً مدفوعاً لتفعيلها. قم بترقية حسابك عبر زيارة الإعدادت > الإشتراك.',
 
