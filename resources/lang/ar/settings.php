@@ -287,7 +287,7 @@ return [
     'personalization_contact_field_type_modal_name' => 'الاسم',
     'personalization_contact_field_type_modal_protocol' => 'النظام (إختياري)',
     'personalization_contact_field_type_modal_protocol_help' => 'Each new contact field type can be clickable. If a protocol is set, we will use it to trigger the action that is set.',
-    'personalization_contact_field_type_modal_icon' => 'Icon (optional)',
+    'personalization_contact_field_type_modal_icon' => 'الأيقونة (اختياري)',
     'personalization_contact_field_type_modal_icon_help' => 'You can associate an icon with this contact field type. You need to add a reference to a Font Awesome icon.',
     'personalization_contact_field_type_delete_success' => 'The contact field type has been deleted with success.',
     'personalization_contact_field_type_add_success' => 'The contact field type has been successfully added.',
