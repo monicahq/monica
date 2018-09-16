@@ -308,21 +308,21 @@ return [
     'personalization_reminder_rule_save' => 'لقد تم حفظ التغيير',
     'personalization_reminder_rule_title' => 'شروط التذكير',
     'personalization_reminder_rule_line' => 'قبل {count} يوم | قبل {count} أيام',
-    'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
+    'personalization_reminder_rule_desc' => 'لكل تذكير تقوم بتعيينه، نستطيع إرسال بريد قبل حصول الحدث بعدة أيام. تستطيع تبديل هذه الإشعارات هنا. علماً بأن هذه الإشعارات تنطبق فقط على التذكيرات الشهرية والسنوية.',
 
     'personalization_module_save' => 'لقد تم حفظ التغيير',
     'personalization_module_title' => 'الميزات',
     'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
 
-    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
+    'personalisation_paid_upgrade' => 'هذه ميزة خاصة و التي تتطلب اشتراكاً مدفوعاً لتفعيلها. قم بترقية حسابك عبر زيارة الإعدادت > الإشتراك.',
 
-    'reminder_time_to_send' => 'Time of the day reminders should be sent',
-    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
+    'reminder_time_to_send' => 'وقت تذكيرات اليوم يجب أن قد تم إرسالها',
+    'reminder_time_to_send_help' => 'لمعلوماتك، تذكيرك القادم سيرسل في <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => 'تصنيفات نوع النشاط',
     'personalization_activity_type_category_add' => 'إضافة فئة نوع نشاط جديد',
     'personalization_activity_type_category_table_name' => 'الاسم',
-    'personalization_activity_type_category_description' => 'An activity done with one of your contact can have a type and a category type. Your account comes by default with a set of predefined category types, but you can customize everything here.',
+    'personalization_activity_type_category_description' => 'أي نشاط تم مع أي جهة اتصال لك، يمكن أن يكون لها نوع و فئة. حسابك يأتي افتراضياً مع عدة أنواع للفئات، لكنك تستطيع تخصيص كل شيء هنا.',
     'personalization_activity_type_category_table_actions' => 'إجراءات',
     'personalization_activity_type_category_modal_add' => 'إضافة فئة نوع نشاط جديد',
     'personalization_activity_type_category_modal_edit' => 'تحرير فئة نوع نشاط',
