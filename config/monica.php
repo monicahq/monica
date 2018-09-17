@@ -180,5 +180,5 @@ return [
     | to contact support.
     |
      */
-    'support_email_address' => env('SUPPORT_EMAIL_ADDRESS', ''),
+    'support_email_address' => env('SUPPORT_EMAIL_ADDRESS', 'support@monicahq.com'),
 ];
