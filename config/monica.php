@@ -170,4 +170,15 @@ return [
     |
      */
     'number_of_allowed_contacts_free_account' => env('NUMBER_OF_ALLOWED_CONTACTS_FREE_ACCOUNT', 10),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email address to contact for support
+    |--------------------------------------------------------------------------
+    |
+    | This value will be the email address used in the footer of the application
+    | to contact support.
+    |
+     */
+    'support_email_address' => env('SUPPORT_EMAIL_ADDRESS', 'support@monicahq.com'),
 ];
