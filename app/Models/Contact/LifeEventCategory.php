@@ -19,6 +19,7 @@ class LifeEventCategory extends Model
     protected $fillable = [
         'name',
         'account_id',
+        'default_life_event_category_key',
     ];
 
     /**

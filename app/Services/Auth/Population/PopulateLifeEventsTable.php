@@ -53,6 +53,9 @@ class PopulateLifeEventsTable extends BaseService
         }
 
         $locale = $this->getLocaleOfAccount($this->data['account_id']);
+        if (is_null($locale)) {
+            return;
+        }
 
         $this->createEntries($locale);
 
@@ -70,7 +73,13 @@ class PopulateLifeEventsTable extends BaseService
         $account = Account::findOrFail($accountId);
 
         // get the locale
-        return $account->getFirstLocale();
+        try {
+            $locale = $account->getFirstLocale();
+        } catch (\Exception $e) {
+            return;
+        }
+
+        return $locale;
     }
 
     /**

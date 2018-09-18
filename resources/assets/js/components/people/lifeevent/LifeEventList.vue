@@ -452,7 +452,7 @@
                         </defs>
                     </svg>
                 </div>
-                <p class="tc mb4 measure center">{{ $t('people.life_event_blank') }}</p>
+                <p class="tc mb4 measure center">{{ $t('people.life_event_blank', { name: contactName }) }}</p>
                 <div class="tc">
                     <a @click="showAdd = true" class="mb4 btn">{{ $t('people.life_event_list_cta') }}</a>
                 </div>
@@ -531,7 +531,7 @@
             };
         },
 
-        props: ['hash', 'years', 'months', 'days'],
+        props: ['hash', 'years', 'months', 'days', 'contactName'],
 
         mounted() {
             this.prepareComponent()

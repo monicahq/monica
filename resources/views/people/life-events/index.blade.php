@@ -4,7 +4,8 @@
             hash="{{ $contact->hashID() }}"
             v-bind:months="{{ $months }}"
             v-bind:days="{{ $days }}"
-            v-bind:years="{{ $years }}">
+            v-bind:years="{{ $years }}"
+            contact-name="{{ $contact->first_name }}">
         </life-event-list>
     </div>
 </div>

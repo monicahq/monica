@@ -20,6 +20,7 @@ class LifeEventType extends Model
         'name',
         'account_id',
         'life_event_category_id',
+        'default_life_event_type_key',
     ];
 
     /**

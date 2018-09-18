@@ -1,8 +1,10 @@
 <?php
 
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Services\Auth\Population\PopulateLifeEventsTable;
 
 class CreateLifeEventsTable extends Migration
 {
@@ -388,5 +390,16 @@ class CreateLifeEventsTable extends Migration
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        Account::chunk(200, function ($accounts) {
+            foreach ($accounts as $account) {
+                if ($account->id == 1) {
+                (new PopulateLifeEventsTable)->execute([
+                    'account_id' => $account->id,
+                    'migrate_existing_data' => true,
+                ]);
+                }
+            }
+        });
     }
 }
