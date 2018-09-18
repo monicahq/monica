@@ -88,6 +88,11 @@ return [
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
     'error_save' => 'Er is een fout opgetreden bij het opslaan van de gegevens.',
     'error_try_again' => 'Something went wrong. Please try again.',
+    'error_id' => 'Error ID: :id',
+    'error_unavailable' => 'Service Unavailable',
+    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_help' => 'We’ll be right back.',
+    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 
