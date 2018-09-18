@@ -6,6 +6,7 @@ use App\Models\User\User;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Jobs\SendNewUserAlert;
+use App\Helpers\RequestHelper;
 use App\Models\Account\Account;
 use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
@@ -93,7 +94,7 @@ class RegisterController extends Controller
             $data['last_name'],
             $data['email'],
             $data['password'],
-            \Request::ip(),
+            RequestHelper::ip(),
             $data['lang']
         );
         $user = $account->users()->first();
