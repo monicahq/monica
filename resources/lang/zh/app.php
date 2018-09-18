@@ -88,6 +88,11 @@ return [
     'error_unauthorized' => '你没有权限编辑此页',
     'error_save' => '当储存数据时出现了一个错误',
     'error_try_again' => '出了点问题，请再试一次。',
+    'error_id' => 'Error ID: :id',
+    'error_unavailable' => 'Service Unavailable',
+    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_help' => 'We’ll be right back.',
+    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
 
     'default_save_success' => '数据已被保存',
 
