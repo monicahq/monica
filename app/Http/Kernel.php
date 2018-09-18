@@ -31,6 +31,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            'sentry.context',
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             'bindings',
@@ -41,6 +42,7 @@ class Kernel extends HttpKernel
 
         'api' => [
             'throttle:60,1',
+            'sentry.context',
             //'bindings',
             'locale',
         ],
@@ -65,5 +67,6 @@ class Kernel extends HttpKernel
         'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
         'auth.confirm' => \App\Http\Middleware\AuthEmailConfirm::class,
+        'sentry.context' => \App\Http\Middleware\SentryContext::class,
     ];
 }

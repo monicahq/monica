@@ -15,8 +15,8 @@ use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
+use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
@@ -113,12 +113,11 @@ class SettingsController extends Controller
         );
 
         if ($user->email != $request->get('email')) {
-            $user->email = $request->get('email');
-            $user->confirmation_code = str_random(30);
-            $user->confirmed = false;
-            $user->save();
-
-            $user->notify(new ConfirmEmail);
+            (new EmailChange)->execute([
+                'account_id' => $user->account_id,
+                'email' => $request->get('email'),
+                'user_id' => $user->id,
+            ]);
         }
 
         $user->account->default_time_reminder_is_sent = $request->get('reminder_time');

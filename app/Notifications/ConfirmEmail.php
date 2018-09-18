@@ -16,15 +16,27 @@ class ConfirmEmail extends LaravelNotification implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable;
 
     /**
+     * @var bool
+     */
+    public $force;
+
+    public function __construct($force = false)
+    {
+        $this->force = $force;
+    }
+
+    /**
      * Get the notification's delivery channels.
      *
      * @return array
      */
     public function via()
     {
-        $first = Account::count() == 1;
-        if (! config('monica.signup_double_optin') || $first) {
-            return [];
+        if (! $this->force) {
+            $first = Account::count() == 1;
+            if (! config('monica.signup_double_optin') || $first) {
+                return [];
+            }
         }
 
         return ['mail'];
