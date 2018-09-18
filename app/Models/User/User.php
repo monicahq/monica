@@ -7,12 +7,10 @@ use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
-use App\Models\Contact\Reminder;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
-use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -412,17 +410,5 @@ class User extends Authenticatable
         }
 
         return $nameOrder;
-    }
-
-    /**
-     * Send the given reminder using all the ways the user wants to be reminded.
-     * Currently only email is supported.
-     *
-     * @param  Reminder $reminder
-     * @return
-     */
-    public function sendReminder(Reminder $reminder)
-    {
-        dispatch(new SendReminderEmail($reminder, $this));
     }
 }
