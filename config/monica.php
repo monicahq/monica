@@ -181,4 +181,15 @@ return [
     |
      */
     'support_email_address' => env('SUPPORT_EMAIL_ADDRESS', 'support@monicahq.com'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Twitter account for support
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the twitter account shown in case of maintenance in
+    | progress.
+    |
+     */
+    'twitter_account' => env('SUPPORT_TWITTER', 'monicaHQ_app'),
 ];
