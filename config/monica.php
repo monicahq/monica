@@ -181,7 +181,7 @@ return [
     |
      */
     'support_email_address' => env('SUPPORT_EMAIL_ADDRESS', 'support@monicahq.com'),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Twitter account for support
