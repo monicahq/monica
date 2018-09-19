@@ -92,7 +92,7 @@ return [
     'error_unavailable' => 'השירות אינו זמין',
     'error_maintenance' => 'מתבצעות עבודות תחזוקה. תכף נשוב.',
     'error_help' => 'מיד נשוב.',
-    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_twitter' => 'ניתן לעקוב אחר <a href="https://twitter.com/:twitter">חשבון הטוויטר שלנו</a> כדי להתעדכן אם השירות שב לפעילות.',
 
     'default_save_success' => 'הנתונים נשמרו.',
 
