@@ -312,7 +312,6 @@ pipeline {
       when {
         anyOf {
           branch 'master'
-          branch 'v\d+\.\d+(\.\d+)?(-\S*)?$'
           buildingTag()
         }
       }
