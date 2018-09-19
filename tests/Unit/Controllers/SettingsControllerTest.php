@@ -39,9 +39,6 @@ class SettingsControllerTest extends FeatureTestCase
             'name' => 'nawak',
         ]);
 
-        $response->assertStatus(500);
-        $response->assertJsonFragment([
-            'error_code' => 33,
-        ]);
+        $response->assertStatus(200);
     }
 }

@@ -23,9 +23,8 @@ use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
 use PragmaRX\Google2FALaravel\Google2FA;
-use App\Http\Controllers\Api\ApiController;
 
-class SettingsController extends ApiController
+class SettingsController
 {
     protected $ignoredTables = [
         'accounts',
@@ -41,6 +40,8 @@ class SettingsController extends ApiController
         'default_activity_type_categories',
         'default_contact_field_types',
         'default_contact_modules',
+        'default_life_event_categories',
+        'default_life_event_types',
         'default_relationship_type_groups',
         'default_relationship_types',
         'failed_jobs',
@@ -214,7 +215,7 @@ class SettingsController extends ApiController
      */
     public function exportToSql()
     {
-        $path = $this->dispatchNow(new ExportAccountAsSQL());
+        $path = dispatch_now(new ExportAccountAsSQL());
 
         return response()
             ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
@@ -487,7 +488,7 @@ class SettingsController extends ApiController
         $view = $request->get('name');
 
         if (! in_array($view, $allowedValues)) {
-            return $this->respondNotTheRightParameters();
+            return 'not allowed';
         }
 
         auth()->user()->profile_active_tab = $view;

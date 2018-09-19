@@ -79,13 +79,6 @@ class CreateLifeEventsTable extends Migration
             $table->foreign('life_event_type_id')->references('id')->on('life_event_types')->onDelete('cascade');
         });
 
-        Schema::create('contact_life_event', function (Blueprint $table) {
-            $table->unsignedInteger('contact_id');
-            $table->unsignedInteger('life_event_id');
-            $table->foreign('life_event_id')->references('id')->on('life_events')->onDelete('cascade');
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
-        });
-
         // POPULATE DEFAULT TABLES
         // WORK AND EDUCATION
         $defaultCategoryId = DB::table('default_life_event_categories')->insertGetId([

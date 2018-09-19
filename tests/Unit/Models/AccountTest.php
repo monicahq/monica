@@ -836,12 +836,12 @@ class AccountTest extends FeatureTestCase
 
         $this->assertEquals(
             5,
-            DB::table('life_event_categories')->get()->count()
+            DB::table('life_event_categories')->where('account_id', $account->id)->get()->count()
         );
 
         $this->assertEquals(
             43,
-            DB::table('life_event_types')->get()->count()
+            DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
         );
     }
 }

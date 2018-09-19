@@ -55,12 +55,12 @@ class PopulateLifeEventsTableTest extends TestCase
 
         $this->assertEquals(
             5,
-            DB::table('life_event_categories')->get()->count()
+            DB::table('life_event_categories')->where('account_id', $account->id)->get()->count()
         );
 
         $this->assertEquals(
             43,
-            DB::table('life_event_types')->get()->count()
+            DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
         );
 
         // make sure tables have been set to migrated = 1
@@ -81,6 +81,9 @@ class PopulateLifeEventsTableTest extends TestCase
         ]);
 
         DB::table('default_life_event_categories')
+            ->update(['migrated' => 0]);
+
+        DB::table('default_life_event_categories')
             ->where('translation_key', 'work_education')
             ->update(['migrated' => 1]);
 
@@ -95,12 +98,12 @@ class PopulateLifeEventsTableTest extends TestCase
 
         $this->assertEquals(
             4,
-            DB::table('life_event_categories')->get()->count()
+            DB::table('life_event_categories')->where('account_id', $account->id)->get()->count()
         );
 
         $this->assertEquals(
             36,
-            DB::table('life_event_types')->get()->count()
+            DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
         );
     }
 }
