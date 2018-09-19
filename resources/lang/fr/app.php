@@ -88,11 +88,11 @@ return [
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
     'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
-    'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service Unavailable',
-    'error_maintenance' => 'Maintenance in progress. Be right back.',
-    'error_help' => 'We’ll be right back.',
-    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_id' => 'ID d’erreur : :id',
+    'error_unavailable' => 'Service non disponible',
+    'error_maintenance' => 'Maintenance en cours. On revient vite !',
+    'error_help' => 'On revient tout de suite.',
+    'error_twitter' => 'Suivez <a href="https://twitter.com/:twitter">notre compte Twitter</a> pour être alerté de l’évolution de la situation.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
