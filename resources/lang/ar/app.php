@@ -27,7 +27,7 @@ return [
     'date' => 'التاريخ',
     'type' => 'النوع',
 
-    'application_title' => 'Monica – مدير العلاقات الشخصية',
+    'application_title' => 'Monica (مونيكا) – مدير العلاقات الشخصية',
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
     'application_og_title' => 'امتلك علاقات أفضل مع أحبائك. مدير علاقات مجاني على الويب للعائلة و الأصدقاء.',
 
