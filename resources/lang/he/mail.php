@@ -4,9 +4,9 @@ return [
 
     'subject_line' => 'תזכורת עבור :contact',
     'greetings' => 'היי :username',
-    'want_reminded_of' => 'You wanted to be reminded of :reason',
-    'for' => 'For: :name',
-    'comment' => 'Comment: :comment',
+    'want_reminded_of' => 'רצית שאזכיר לך את :reason',
+    'for' => 'עבור: :name',
+    'comment' => 'תגובה: :comment',
     'footer_contact_info' => 'הוספה, צפייה, השלמה ושינוי מידע על איש הקשר הזה:',
     'footer_contact_info2' => 'See :name’s profile',
 
