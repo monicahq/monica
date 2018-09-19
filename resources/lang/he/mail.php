@@ -8,7 +8,7 @@ return [
     'for' => 'עבור: :name',
     'comment' => 'תגובה: :comment',
     'footer_contact_info' => 'הוספה, צפייה, השלמה ושינוי מידע על איש הקשר הזה:',
-    'footer_contact_info2' => 'See :name’s profile',
+    'footer_contact_info2' => 'הצגת הפרופיל של :profile',
 
     'notification_subject_line' => 'יש לך אירוע קרב',
     'notification_description' => 'בעוד :count ימים (ב־:date), יתרחש האירוע הבא:',
@@ -20,7 +20,7 @@ return [
     'notifications_hello' => 'שלום!',
     'notifications_regards' => 'בברכה',
     'notifications_footer' => 'אם נתקלת בבעיה בלחיצה על הכפתור „:actionText”, יש להעתיק ולהדביק את הכתובת שלהלן לתוך הדפדפן שלך: [:actionURL](:actionURL)',
-    'notifications_rights' => 'All rights reserved',
+    'notifications_rights' => 'כל הזכויות שמורות',
 
     'confirmation_email_title' => 'מוניקה – אימות דוא״ל',
     'confirmation_email_intro'=> 'כדי לאמת את כתובת הדוא״ל שלך נא ללחוץ על הכפתור שלהלן',
