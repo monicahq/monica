@@ -312,7 +312,7 @@ pipeline {
       when {
         anyOf {
           branch 'master'
-          branch 'ci/jenkins2'
+          branch 'PR-1760'
           buildingTag()
         }
       }
@@ -323,7 +323,7 @@ pipeline {
             beforeAgent true
             anyOf {
               branch 'master'
-              branch 'ci/jenkins2'
+              branch 'PR-1760'
               buildingTag()
             }
           }
@@ -358,7 +358,7 @@ pipeline {
           when {
             beforeAgent true
             branch 'master'
-            branch 'ci/jenkins2'
+            branch 'PR-1760'
           }
           steps {
             script {
