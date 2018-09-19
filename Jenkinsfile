@@ -18,6 +18,10 @@ pipeline {
   stages {
     stage('Build') {
       agent { label 'monica' }
+      when {
+        beforeAgent true
+        not { branch 'l10n_master*' }
+      }
       steps {
         script {
           sh '''
@@ -61,6 +65,10 @@ pipeline {
       }
     }
     stage('Run Tests') {
+      when {
+        not { branch 'l10n_master*' }
+      }
+      failFast true
       parallel {
         stage ('Test php unit') {
           agent { label 'monica' }
@@ -259,6 +267,10 @@ pipeline {
     }
     stage('Reporting') {
       agent { label 'monica' }
+      when {
+        beforeAgent true
+        not { branch 'l10n_master*' }
+      }
       steps {
         script {
           docker.image('circleci/php:7.2-node')
@@ -292,6 +304,99 @@ pipeline {
               # Run sonar scanner >
               SONAR_RESULT=./results/results.xml SONAR_COVERAGE=$(find results -maxdepth 1 -name "coverage*.xml" | awk -vORS=, '{ print $1 }' | sed 's/,$/\n/') scripts/tests/runsonar.sh
             '''
+          }
+        }
+      }
+    }
+    stage('Deploy') {
+      when {
+        anyOf {
+          branch 'master'
+          branch 'v\d+\.\d+(\.\d+)?(-\S*)?$'
+          buildingTag()
+        }
+      }
+      parallel {
+        stage ('Deploy assets') {
+          agent { label 'monica' }
+          when {
+            beforeAgent true
+            anyOf {
+              branch 'master'
+              buildingTag()
+            }
+          }
+          steps {
+            script {
+              sh 'make assets'
+              sh 'make push_bintray_assets'
+            }
+          }
+        }
+        stage ('Deploy dists') {
+          agent { label 'monica' }
+          when {
+            beforeAgent true
+            buildingTag()
+          }
+          steps {
+            script {
+              docker.image('monicahq/circleci-docker-centralperk')
+              .inside("-v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
+                // Composer
+                sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev'
+
+                sh 'make dist'
+                sh 'make push_bintray_dist'
+              }
+            }
+          }
+        }
+        stage ('Deploy docker for master') {
+          agent { label 'monica' }
+          when {
+            beforeAgent true
+            branch 'master'
+          }
+          steps {
+            script {
+              sh 'docker-compose --version'
+              sh 'make docker_build'
+              sh '''
+                # Publish docker image >
+                echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+                make docker_push_bintray
+              '''
+            }
+          }
+        }
+        stage ('Deploy docker') {
+          agent { label 'monica' }
+          when {
+            beforeAgent true
+            buildingTag()
+          }
+          steps {
+            script {
+              sh 'docker-compose --version'
+              sh 'make docker_build'
+              sh '''
+                # Publish docker image >
+                echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+                make docker_push_bintray
+              '''
+              sh '''
+                # Publish docker image >
+                echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+                make docker_tag
+                make docker_push
+              '''
+              sh '''
+                # Notify microbadger >
+                # https://microbadger.com/images/monicahq/monicahq
+                curl -X POST $MICROBADGER_WEBHOOK
+              '''
+            }
           }
         }
       }
