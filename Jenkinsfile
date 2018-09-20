@@ -370,7 +370,6 @@ pipeline {
           }
           steps {
             script {
-              sh 'docker-compose --version'
               sh 'make docker_build'
               sh '''
                 # Publish docker image >
@@ -389,7 +388,6 @@ pipeline {
           }
           steps {
             script {
-              sh 'docker-compose --version'
               sh 'make docker_build'
               sh '''
                 # Publish docker image >

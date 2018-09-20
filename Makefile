@@ -27,17 +27,17 @@ else
   PR_NUMBER := $(CHANGE_ID)
   BRANCH := $(BRANCH_NAME)
   SHA1 := $(GIT_COMMIT)
-  TAG := $(shell git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null)
-  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1)
+  TAG := $(shell git describe --abbrev=0 --tags --exact-match $$SHA1 2>/dev/null >/dev/null)
+  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1 $$SHA1)
 endif
 
-GIT_TAG := $(shell git describe --abbrev=0 --tags)
-GIT_COMMIT := $(shell git log --format="%h" -n 1)
+GIT_TAG := $(shell git describe --abbrev=0 --tags $$SHA1)
+GIT_COMMIT := $(shell git log --format="%h" -n 1 $$SHA1)
 BUILD := $(GIT_TAG)
 ifeq ($(TAG),)
   ifeq ($(BRANCH),)
     # If we are not on travis or it's not a TAG build, we add "-dev" to the name
-    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
+    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match $$SHA1 2>/dev/null >/dev/null); then echo "-dev"; fi)
   else
     BUILD := $(BRANCH)
   endif

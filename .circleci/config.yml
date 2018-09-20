@@ -112,7 +112,6 @@ aliases:
     run:
       name: Make docker image
       command: |
-        docker-compose --version
         make docker_build
         make docker_squash
   - &docker-push-bintray
