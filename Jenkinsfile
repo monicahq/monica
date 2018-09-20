@@ -300,7 +300,7 @@ pipeline {
               $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
             '''
 
-            sh 'sed -i "s%!WORKSPACE!%$WORKSPACE!%g" results/results.xml results/coverage*.xml'
+            sh 'sed -i "s%!WORKSPACE!%$WORKSPACE%g" results/results.xml results/coverage*.xml'
 
             // Run sonar scanner
             sh '''
