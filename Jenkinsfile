@@ -16,7 +16,7 @@ pipeline {
     SONAR_VERSION = credentials('SONAR_VERSION')
   }
   stages {
-    stage('Build') {
+    stage('Prebuild') {
       agent { label 'monica' }
       when {
         beforeAgent true
@@ -25,14 +25,17 @@ pipeline {
       steps {
         script {
           sh '''
-            # Prebuild   
+            # Prebuild >
             mkdir -p $HOME/.yarn $HOME/.composer $HOME/.cache $HOME/.config
             touch $HOME/.yarnrc
           '''
+
+          // Pull docker images
           def centralperk = docker.image('monicahq/circleci-docker-centralperk')
           centralperk.pull()
           def mysql = docker.image('circleci/mysql:5.7-ram')
           mysql.pull()
+
           centralperk.inside("-v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
             // Prepare environment
             sh '''
@@ -42,10 +45,10 @@ pipeline {
               yarn global add greenkeeper-lockfile@1
             '''
 
-            // Composer
+            // Install composer packages for cache
             sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs'
 
-            // Node.js
+            // Install node packages for cache 
             sh '''
               # greenkeeper-lockfile-update >
               CIRCLE_PREVIOUS_BUILD_NUM=$(test "`git rev-parse --abbrev-ref HEAD`" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
@@ -57,20 +60,48 @@ pipeline {
               cat gk-lockfile-git-push.err || true
               rm -f gk-lockfile-git-push.err || true
             '''
-
-            // Update js and css assets eventually
-            sh 'scripts/ci/update-assets.sh'
           }
         }
       }
       post { always { cleanWs() } }
     }
-    stage('Run Tests') {
+    stage('Build and test') {
       when {
+        beforeAgent true
         not { branch 'l10n_master*' }
       }
       failFast true
       parallel {
+        stage('Rebuild assets') {
+          agent { label 'monica' }
+          when {
+            beforeAgent true
+            not { branch 'l10n_master*' }
+          }
+          steps {
+            script {
+              docker.image('monicahq/circleci-docker-centralperk')
+              .inside("-v $HOME/.yarn:$HOME/.yarn -v $HOME/.yarnrc:$HOME/.yarnrc -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
+                // Prepare environment
+                sh '''
+                  # Prepare environment >
+                  mkdir -p results/coverage
+                  cp scripts/ci/.env.jenkins.mysql .env
+                '''
+
+                // Composer
+                sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev'
+
+                // Node.js
+                sh 'yarn install --frozen-lockfile'
+
+                // Update js and css assets eventually
+                sh 'scripts/ci/update-assets.sh'
+              }
+            }
+          }
+          post { always { cleanWs() } }
+        }
         stage ('Test php unit') {
           agent { label 'monica' }
           steps {
@@ -105,6 +136,7 @@ pipeline {
                     // Run unit tests
                     sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
 
+                    // Fix unit file
                     sh 'sed -i "s%$WORKSPACE%!WORKSPACE!%g" results/junit/unit/*.xml'
                     junit 'results/junit/unit/*.xml'
                   }
@@ -124,7 +156,8 @@ pipeline {
           steps {
             script {
               docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
-                docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
+                docker.image('monicahq/circleci-docker-centralperk')
+                .inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                   try {
                     // Prepare environment
                     sh '''
@@ -402,8 +435,8 @@ pipeline {
               '''
               sh '''
                 # Notify microbadger >
-                # https://microbadger.com/images/monicahq/monicahq
-                curl -X POST $MICROBADGER_WEBHOOK
+                # @see https://microbadger.com/images/monicahq/monicahq
+                test -s $MICROBADGER_WEBHOOK || curl -X POST $MICROBADGER_WEBHOOK
               '''
             }
           }

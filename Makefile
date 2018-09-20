@@ -1,21 +1,20 @@
 ifeq ($(CIRCLECI),true)
   ifneq ($(CIRCLE_PULL_REQUEST),)
-    CIRCLE_PR_NUMBER ?= $(shell echo $${CIRCLE_PULL_REQUEST##*/})
+    CIRCLE_PR_NUMBER ?= $(shell echo ${CIRCLE_PULL_REQUEST##*/})
   endif
   REPO := $(CIRCLE_PROJECT_USERNAME)/$(CIRCLE_PROJECT_REPONAME)
   BRANCH := $(CIRCLE_BRANCH)
   PR_NUMBER=$(if $(CIRCLE_PR_NUMBER),$(CIRCLE_PR_NUMBER),false)
   BUILD_NUMBER := $(CIRCLE_BUILD_NUM)
-  SHA1 := $(CIRCLE_SHA1)
-  TAG := $(CIRCLE_TAG)
-  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1)
+  GIT_COMMIT := $(CIRCLE_SHA1)
+  GIT_TAG := $(CIRCLE_TAG)
 else ifeq ($(TRAVIS),true)
   REPO := $(TRAVIS_REPO_SLUG)
   BRANCH := $(if $(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_BRANCH))
   PR_NUMBER := $(TRAVIS_PULL_REQUEST)
   BUILD_NUMBER := $(TRAVIS_BUILD_NUMBER)
-  SHA1 := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
-  TAG := $(TRAVIS_TAG)
+  GIT_COMMIT := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
+  GIT_TAG := $(TRAVIS_TAG)
   COMMIT_MESSAGE := $(TRAVIS_COMMIT_MESSAGE)
 else
   ifneq ($(CHANGE_ID),)
@@ -26,18 +25,23 @@ else
   endif
   PR_NUMBER := $(CHANGE_ID)
   BRANCH := $(BRANCH_NAME)
-  SHA1 := $(GIT_COMMIT)
-  TAG := $(shell git describe --abbrev=0 --tags --exact-match $$SHA1 2>/dev/null >/dev/null)
-  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1 $$SHA1)
 endif
 
-GIT_TAG := $(shell git describe --abbrev=0 --tags $$SHA1)
-GIT_COMMIT := $(shell git log --format="%h" -n 1 $$SHA1)
+ifeq ($(GIT_COMMIT),)
+  GIT_COMMIT := $(shell git log --format="%h" -n 1)
+endif
+ifeq ($(GIT_TAG),)
+  GIT_TAG := $(shell git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null)
+endif
+ifeq ($(COMMIT_MESSAGE),)
+  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1 ${GIT_COMMIT})
+endif
+
 BUILD := $(GIT_TAG)
-ifeq ($(TAG),)
+ifeq ($(BUILD),)
   ifeq ($(BRANCH),)
-    # If we are not on travis or it's not a TAG build, we add "-dev" to the name
-    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match $$SHA1 2>/dev/null >/dev/null); then echo "-dev"; fi)
+    # If we are not on ci or it's not a TAG build, we add "-dev" to the name
+    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null); then echo "-dev"; fi)
   else
     BUILD := $(BRANCH)
   endif
@@ -46,9 +50,6 @@ endif
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
 DOCKER_IMAGE := monicahq/monicahq
-
-test:
-	echo $(BUILD)
 
 default: build
 
@@ -65,7 +66,7 @@ docker:
 docker_build:
 	docker build \
 		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
-		--build-arg VCS_REF=$(CIRCLE_SHA1) \
+		--build-arg VCS_REF=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
 		-t $(DOCKER_IMAGE) .
 	docker images
@@ -166,7 +167,7 @@ endif
 	sed -si "s/\$$(version)/$(BUILD)/" $@
 	sed -si "s/\$$(description)/$(DESCRIPTION)/" $@
 	sed -si "s/\$$(released)/$(shell date -u '+%FT%T.000Z')/" $@
-	sed -si "s/\$$(vcs_tag)/$(TAG)/" $@
+	sed -si "s/\$$(vcs_tag)/$(GIT_TAG)/" $@
 	sed -si "s/\$$(vcs_commit)/$(GIT_COMMIT)/" $@
 	sed -si "s/\$$(build_number)/$(BUILD_NUMBER)/" $@
 
