@@ -26,21 +26,28 @@ else
   PR_NUMBER := $(CHANGE_ID)
   BRANCH := $(BRANCH_NAME)
 endif
+$(info REPO=$(REPO))
+$(info PR_NUMBER=$(PR_NUMBER))
+$(info BRANCH=$(BRANCH))
+$(info BUILD_NUMBER=$(BUILD_NUMBER))
 
 ifeq ($(GIT_COMMIT),)
   GIT_COMMIT := $(shell git log --format="%h" -n 1)
 endif
+$(info GIT_COMMIT=$(GIT_COMMIT))
 ifeq ($(GIT_TAG),)
-  GIT_TAG := $(shell git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null)
+  GIT_TAG := $(shell git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null)
 endif
+$(info GIT_TAG=$(GIT_TAG))
 ifeq ($(COMMIT_MESSAGE),)
   COMMIT_MESSAGE := $(shell git log --format="%s" -n 1 ${GIT_COMMIT})
 endif
+$(info COMMIT_MESSAGE=$(COMMIT_MESSAGE))
 
 BUILD := $(GIT_TAG)
 ifeq ($(BUILD),)
   ifeq ($(BRANCH),)
-    # If we are not on ci or it's not a TAG build, we add "-dev" to the name
+    # If we are not on CI or it's not a TAG build, we add "-dev" to the name
     BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null); then echo "-dev"; fi)
   else
     BUILD := $(BRANCH)
