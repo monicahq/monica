@@ -26,6 +26,8 @@ if [ "$status" = "" ]; then
   echo "Nothing to push, already up to date."
   exit 0;
 fi
+echo "Waiting modifications:"
+echo $status
 
 # Add files
 git add public/mix-manifest.json
@@ -42,6 +44,7 @@ if [ -z "${ASSETS_USERNAME:-}" ]; then
   echo " ~ yarn run production"
   exit 2
 fi
+echo "Configure $ASSETS_USERNAME:$ASSETS_EMAIL"
 git config user.email $ASSETS_EMAIL
 git config user.name $ASSETS_USERNAME
 git commit -m "chore(assets): Update assets"
