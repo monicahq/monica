@@ -44,8 +44,6 @@ class TasksController extends Controller
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
         ]);
 
-        $contact->logEvent('task', $task->id, 'create');
-
         return $task;
     }
 
@@ -60,8 +58,6 @@ class TasksController extends Controller
             'completed' => $request->get('completed'),
         ]);
 
-        $contact->logEvent('task', $task->id, 'update');
-
         return $task;
     }
 
@@ -75,8 +71,6 @@ class TasksController extends Controller
             $task->completed = true;
             $task->completed_at = now();
         }
-
-        $contact->logEvent('task', $task->id, 'update');
 
         $task->save();
     }

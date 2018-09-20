@@ -47,8 +47,6 @@ class NotesController extends Controller
             'body' => $request->get('body'),
         ]);
 
-        $contact->logEvent('note', $note->id, 'create');
-
         return $note;
     }
 
@@ -62,8 +60,6 @@ class NotesController extends Controller
             $note->is_favorited = true;
             $note->favorited_at = now();
         }
-
-        $contact->logEvent('note', $note->id, 'update');
 
         $note->save();
     }
@@ -85,8 +81,6 @@ class NotesController extends Controller
             + ['account_id' => $contact->account_id]
         );
 
-        $contact->logEvent('note', $note->id, 'update');
-
         return $note;
     }
 
@@ -100,7 +94,5 @@ class NotesController extends Controller
     public function destroy(Contact $contact, Note $note)
     {
         $note->delete();
-
-        $contact->events()->forObject($note)->get()->each->delete();
     }
 }

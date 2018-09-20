@@ -154,7 +154,5 @@ class ImportCSV extends Command
         }
 
         $contact->updateGravatar();
-
-        $contact->logEvent('contact', $contact->id, 'create');
     }
 }

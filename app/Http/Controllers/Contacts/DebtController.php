@@ -55,8 +55,6 @@ class DebtController extends Controller
             ]
         );
 
-        $contact->logEvent('debt', $debt->id, 'create');
-
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_add_success'));
     }
@@ -109,8 +107,6 @@ class DebtController extends Controller
             ]
         );
 
-        $contact->logEvent('debt', $debt->id, 'update');
-
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_edit_success'));
     }
@@ -125,8 +121,6 @@ class DebtController extends Controller
     public function destroy(Contact $contact, Debt $debt)
     {
         $debt->delete();
-
-        $contact->events()->forObject($debt)->get()->each->delete();
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.debt_delete_success'));
