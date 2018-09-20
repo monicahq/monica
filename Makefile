@@ -5,7 +5,7 @@ ifeq ($(CIRCLECI),true)
   REPO := $(CIRCLE_PROJECT_USERNAME)/$(CIRCLE_PROJECT_REPONAME)
   BRANCH := $(CIRCLE_BRANCH)
   PR_NUMBER=$(if $(CIRCLE_PR_NUMBER),$(CIRCLE_PR_NUMBER),false)
-  BUILD_NUM := $(CIRCLE_BUILD_NUM)
+  BUILD_NUMBER := $(CIRCLE_BUILD_NUM)
   SHA1 := $(CIRCLE_SHA1)
   TAG := $(CIRCLE_TAG)
   COMMIT_MESSAGE := $(shell git log --format="%s" -n 1)
@@ -13,7 +13,7 @@ else ifeq ($(TRAVIS),true)
   REPO := $(TRAVIS_REPO_SLUG)
   BRANCH := $(if $(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_BRANCH))
   PR_NUMBER := $(TRAVIS_PULL_REQUEST)
-  BUILD_NUM := $(TRAVIS_BUILD_NUMBER)
+  BUILD_NUMBER := $(TRAVIS_BUILD_NUMBER)
   SHA1 := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
   TAG := $(TRAVIS_TAG)
   COMMIT_MESSAGE := $(TRAVIS_COMMIT_MESSAGE)
@@ -28,6 +28,7 @@ else
   BRANCH := $(BRANCH_NAME)
   SHA1 := $(GIT_COMMIT)
   TAG := $(shell git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null)
+  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1)
 endif
 
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
@@ -167,7 +168,7 @@ endif
 	sed -si "s/\$$(released)/$(shell date -u '+%FT%T.000Z')/" $@
 	sed -si "s/\$$(vcs_tag)/$(TAG)/" $@
 	sed -si "s/\$$(vcs_commit)/$(GIT_COMMIT)/" $@
-	sed -si "s/\$$(build_number)/$(BUILD_NUM)/" $@
+	sed -si "s/\$$(build_number)/$(BUILD_NUMBER)/" $@
 
 results/%.tar.xz: % prepare
 	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $<

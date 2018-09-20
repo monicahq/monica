@@ -363,8 +363,10 @@ pipeline {
           agent { label 'monica' }
           when {
             beforeAgent true
-            branch 'master'
-            branch 'PR-1760'
+            anyOf {
+              branch 'master'
+              branch 'PR-1760'
+            }
           }
           steps {
             script {
@@ -412,5 +414,4 @@ pipeline {
       }
     }
   }
-  post { always { cleanWs() } }
 }
