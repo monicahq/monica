@@ -75,8 +75,6 @@ pipeline {
           steps {
             script {
               docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
-                sh "docker logs ${c.id}"
-
                 docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                   try {
                     // Prepare environment
@@ -105,6 +103,8 @@ pipeline {
 
                     // Run unit tests
                     sh 'phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml'
+
+                    sh 'sed -i "s%$WORKSPACE%!WORKSPACE!%g" results/junit/unit/*.xml'
                     junit 'results/junit/unit/*.xml'
                   }
                   finally {
@@ -122,8 +122,6 @@ pipeline {
           steps {
             script {
               docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
-                sh "docker logs ${c.id}"
-
                 docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                   try {
                     // Prepare environment
@@ -161,6 +159,7 @@ pipeline {
                     sh 'vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/'
                     sh 'rm -rf results/coverage'
 
+                    sh 'sed -i "s%$WORKSPACE%!WORKSPACE!%g" results/junit/dusk/*.xml results/coverage2.xml'
                     junit 'results/junit/dusk/*.xml'
                   }
                   finally {
@@ -180,8 +179,6 @@ pipeline {
           steps {
             script {
               docker.image('circleci/mysql:5.7-ram').withRun('--shm-size 2G -e "MYSQL_ALLOW_EMPTY_PASSWORD=yes" -e "MYSQL_ROOT_PASSWORD=" -e "DB_HOST=127.0.0.1" -e "DB_PORT=3306"') { c ->
-                sh "docker logs ${c.id}"
-
                 docker.image('monicahq/circleci-docker-centralperk').inside("--link ${c.id}:mysql -v /etc/passwd:/etc/passwd -v $HOME/.composer:$HOME/.composer -v $HOME/.cache:$HOME/.cache -v $HOME/.config:$HOME/.config") {
                   try {
                     // Prepare environment
@@ -298,6 +295,8 @@ pipeline {
               yarn global add junit-merge
               $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
             '''
+
+            sh 'sed -i "s%!WORKSPACE!%$WORKSPACE!%g" results/results.xml results/coverage*.xml'
 
             // Run sonar scanner
             sh '''

@@ -9,7 +9,7 @@ ifeq ($(CIRCLECI),true)
   SHA1 := $(CIRCLE_SHA1)
   TAG := $(CIRCLE_TAG)
   COMMIT_MESSAGE := $(shell git log --format="%s" -n 1)
-else
+else ifeq ($(TRAVIS),true)
   REPO := $(TRAVIS_REPO_SLUG)
   BRANCH := $(if $(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_BRANCH))
   PR_NUMBER := $(TRAVIS_PULL_REQUEST)
@@ -17,6 +17,17 @@ else
   SHA1 := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
   TAG := $(TRAVIS_TAG)
   COMMIT_MESSAGE := $(TRAVIS_COMMIT_MESSAGE)
+else
+  ifneq ($(CHANGE_ID),)
+    REPO := $(substr $(CHANGE_URL),https://github.com/,)
+    REPO := $(substr $(REPO),/pull/$(CHANGE_ID),)
+  else
+    REPO := $(substr $(CHANGE_URL),https://github.com/,)
+  endif
+  PR_NUMBER := $(CHANGE_ID)
+  BRANCH := $(BRANCH_NAME)
+  SHA1 := $(GIT_COMMIT)
+  TAG := $(shell git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null)
 endif
 
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
