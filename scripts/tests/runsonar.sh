@@ -24,13 +24,9 @@ elif [ "$TRAVIS" == "true" ]; then
 elif [[ -n $BUILD_NUMBER ]]; then
   echo "CHANGE_ID=$CHANGE_ID"
   echo "CHANGE_URL=$CHANGE_URL"
+  REPO=${CHANGE_URL##https://github.com/}
   if [[ ! -z $CHANGE_ID ]] ; then
-    REPO=$CHANGE_URL
-    REPO=${REPO##https://github.com/}
     REPO=${REPO%%/pull/$CHANGE_ID}
-  else
-    REPO=$CHANGE_URL
-    REPO=${REPO##https://github.com/}
   fi
   PR_NUMBER=${CHANGE_ID:-false}
   BRANCH=$BRANCH_NAME

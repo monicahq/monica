@@ -17,11 +17,9 @@ else ifeq ($(TRAVIS),true)
   GIT_TAG := $(TRAVIS_TAG)
   COMMIT_MESSAGE := $(TRAVIS_COMMIT_MESSAGE)
 else
+  REPO := $(subst https://github.com/,,$(CHANGE_URL))
   ifneq ($(CHANGE_ID),)
-    REPO := $(substr $(CHANGE_URL),https://github.com/,)
-    REPO := $(substr $(REPO),/pull/$(CHANGE_ID),)
-  else
-    REPO := $(substr $(CHANGE_URL),https://github.com/,)
+    REPO := $(subst /pull/$(CHANGE_ID),,$(REPO))
   endif
   PR_NUMBER := $(CHANGE_ID)
   BRANCH := $(BRANCH_NAME)
@@ -31,6 +29,8 @@ $(info PR_NUMBER=$(PR_NUMBER))
 $(info BRANCH=$(BRANCH))
 $(info BUILD_NUMBER=$(BUILD_NUMBER))
 
+$(info GIT_COMMIT=$(GIT_COMMIT))
+$(info GIT_REVISION=$(GIT_REVISION))
 ifeq ($(GIT_COMMIT),)
   GIT_COMMIT := $(shell git log --format="%h" -n 1)
 endif
