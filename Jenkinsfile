@@ -63,6 +63,7 @@ pipeline {
           }
         }
       }
+      post { always { cleanWs() } }
     }
     stage('Run Tests') {
       when {
@@ -116,6 +117,7 @@ pipeline {
               }
             }
           }
+          post { always { cleanWs() } }
         }
         stage ('Test browser') {
           agent { label 'monica' }
@@ -172,6 +174,7 @@ pipeline {
               }
             }
           }
+          post { always { cleanWs() } }
         }
         /*
         stage ('Test e2e') {
@@ -258,6 +261,7 @@ pipeline {
               }
             }
           }
+          post { always { cleanWs() } }
         }
       // end parallel
       }
@@ -301,11 +305,12 @@ pipeline {
             // Run sonar scanner
             sh '''
               # Run sonar scanner >
-              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=$(find results -maxdepth 1 -name "coverage*.xml" | awk -vORS=, '{ print $1 }' | sed 's/,$$//') scripts/tests/runsonar.sh
+              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=$(find results -maxdepth 1 -name "coverage*.xml" | awk -vORS=, '{ print $1 }' | sed 's/,$//') scripts/tests/runsonar.sh
             '''
           }
         }
       }
+      post { always { cleanWs() } }
     }
     stage('Deploy') {
       when {
@@ -332,6 +337,7 @@ pipeline {
               sh 'make push_bintray_assets'
             }
           }
+          post { always { cleanWs() } }
         }
         stage ('Deploy dists') {
           agent { label 'monica' }
@@ -351,6 +357,7 @@ pipeline {
               }
             }
           }
+          post { always { cleanWs() } }
         }
         stage ('Deploy docker for master') {
           agent { label 'monica' }
@@ -370,6 +377,7 @@ pipeline {
               '''
             }
           }
+          post { always { cleanWs() } }
         }
         stage ('Deploy docker') {
           agent { label 'monica' }
@@ -399,13 +407,10 @@ pipeline {
               '''
             }
           }
+          post { always { cleanWs() } }
         }
       }
     }
   }
-  post {
-    always {
-      cleanWs()
-    }
-  }
+  post { always { cleanWs() } }
 }
