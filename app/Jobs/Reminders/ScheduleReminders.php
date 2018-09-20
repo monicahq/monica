@@ -1,30 +1,31 @@
 <?php
 
-namespace App\Jobs\StayInTouch;
+namespace App\Jobs\Reminders;
 
 use Illuminate\Bus\Queueable;
-use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
+use App\Jobs\SetNextReminderDate;
 use Illuminate\Queue\SerializesModels;
-use App\Notifications\StayInTouchEmail;
+use App\Notifications\UserRemindedMail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
 
-class ScheduleStayInTouch implements ShouldQueue
+class ScheduleReminders implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $contact;
+    protected $reminder;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Contact $contact)
+    public function __construct(Reminder $reminder)
     {
-        $this->contact = $contact;
+        $this->reminder = $reminder;
     }
 
     /**
@@ -34,19 +35,19 @@ class ScheduleStayInTouch implements ShouldQueue
      */
     public function handle()
     {
-        $account = $this->contact->account;
+        $account = $this->reminder->contact->account;
 
         $users = [];
         foreach ($account->users as $user) {
-            if ($user->isTheRightTimeToBeReminded($this->contact->stay_in_touch_trigger_date)
+            if ($user->isTheRightTimeToBeReminded($this->reminder->next_expected_date)
                 && ! $account->hasLimitations()) {
                 array_push($users, $user);
             }
         }
 
         if (count($users) > 0) {
-            NotificationFacade::send($users, new StayInTouchEmail($this->contact));
-            $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency);
+            NotificationFacade::send($users, new UserRemindedMail($this->reminder));
         }
+        dispatch(new SetNextReminderDate($this->reminder));
     }
 }
