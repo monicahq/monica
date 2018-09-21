@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Add ability to track life events
 * Fix select boxes not working anymore
+* Fix reminders displaying wrong date
 * Add ability to define the default email address used for support
 * Fix confirm email sent when signup_double_optin is false
 * Fix now() without timezone functions
