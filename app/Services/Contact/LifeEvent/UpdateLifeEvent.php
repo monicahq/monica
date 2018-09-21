@@ -11,7 +11,7 @@ use App\Services\BaseService;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
 use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class UpdateLifeEvent extends BaseService
 {
@@ -38,33 +38,21 @@ class UpdateLifeEvent extends BaseService
     public function execute(array $data) : LifeEvent
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
-                ->findOrFail($data['life_event_id']);
-        } catch (ModelNotFoundException $e) {
-            throw new ModelNotFoundException('Can not find the life event in this account.');
-        }
+        $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
+            ->findOrFail($data['life_event_id']);
 
-        try {
-            LifeEventType::where('account_id', $data['account_id'])
-                ->findOrFail($data['life_event_type_id']);
-        } catch (ModelNotFoundException $e) {
-            throw new ModelNotFoundException('Can not find the life event type.');
-        }
+        LifeEventType::where('account_id', $data['account_id'])
+            ->findOrFail($data['life_event_type_id']);
 
-        try {
-            $lifeEvent->update([
-                'happened_at' => $data['happened_at'],
-                'life_event_type_id' => $data['life_event_type_id'],
-                'name' => $data['name'],
-                'note' => $data['note'],
-            ]);
-        } catch (QueryException $e) {
-            throw new QueryException('Can not update the life event.');
-        }
+        $lifeEvent->update([
+            'happened_at' => $data['happened_at'],
+            'life_event_type_id' => $data['life_event_type_id'],
+            'name' => $data['name'],
+            'note' => $data['note'],
+        ]);
 
         return $lifeEvent;
     }

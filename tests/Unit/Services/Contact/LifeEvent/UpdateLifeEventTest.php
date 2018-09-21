@@ -10,6 +10,7 @@ use App\Models\Contact\LifeEventType;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class UpdateLifeEventTest extends TestCase
 {
@@ -61,7 +62,7 @@ class UpdateLifeEventTest extends TestCase
             'happened_at' => Carbon::now(),
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(MissingParameterException::class);
 
         $updateConversation = new UpdateLifeEvent;
         $lifeEvent = $updateConversation->execute($request);
