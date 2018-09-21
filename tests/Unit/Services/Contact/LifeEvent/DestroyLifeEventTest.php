@@ -7,6 +7,7 @@ use App\Models\Contact\LifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class DestroyLifeEventTest extends TestCase
 {
@@ -39,7 +40,7 @@ class DestroyLifeEventTest extends TestCase
             'account_id' => 1,
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(MissingParameterException::class);
 
         $destroyMessage = new DestroyLifeEvent;
         $result = $destroyMessage->execute($request);

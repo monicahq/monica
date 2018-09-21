@@ -1,16 +1,12 @@
 <?php
 
-/**
- * This is a single action class, totally inspired by
- * https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d.
- */
-
 namespace App\Services\Contact\LifeEvent;
 
 use App\Services\BaseService;
 use App\Models\Contact\LifeEvent;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class DestroyLifeEvent extends BaseService
 {
@@ -33,21 +29,13 @@ class DestroyLifeEvent extends BaseService
     public function execute(array $data) : bool
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
-                ->findOrFail($data['life_event_id']);
-        } catch (ModelNotFoundException $e) {
-            throw new ModelNotFoundException('Can not find the life event in this account.');
-        }
+        $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
+            ->findOrFail($data['life_event_id']);
 
-        try {
-            $lifeEvent->delete();
-        } catch (QueryException $e) {
-            throw new QueryException('Can not delete the life event.');
-        }
+        $lifeEvent->delete();
 
         return true;
     }
