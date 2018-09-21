@@ -1,5 +1,5 @@
 pipeline {
-  agent { label 'monica' }
+  agent none
   environment {
     ASSETS_EMAIL = credentials('ASSETS_EMAIL')
     ASSETS_GITHUB_TOKEN = credentials('ASSETS_GITHUB_TOKEN')
@@ -29,6 +29,8 @@ pipeline {
             mkdir -p $HOME/.yarn $HOME/.composer $HOME/.cache $HOME/.config
             touch $HOME/.yarnrc
           '''
+          sh 'echo GIT_COMMIT=$GIT_COMMIT'
+          sh 'echo ASSETS_EMAIL=$ASSETS_EMAIL'
 
           // Pull docker images
           def centralperk = docker.image('monicahq/circleci-docker-centralperk')
@@ -336,10 +338,10 @@ pipeline {
             sh 'sed -i "s%!WORKSPACE!%$WORKSPACE%g" results/results.xml results/coverage*.xml'
 
             // Run sonar scanner
-            sh '''
-              # Run sonar scanner >
-              SONAR_RESULT=./results/results.xml SONAR_COVERAGE=$(find results -maxdepth 1 -name "coverage*.xml" | awk -vORS=, '{ print $1 }' | sed 's/,$//') scripts/tests/runsonar.sh
-            '''
+            //sh '''
+            //  # Run sonar scanner >
+            //  SONAR_RESULT=./results/results.xml SONAR_COVERAGE=$(find results -maxdepth 1 -name "coverage*.xml" | awk -vORS=, '{ print $1 }' | sed 's/,$//') scripts/tests/runsonar.sh
+            //'''
           }
         }
       }
@@ -365,7 +367,7 @@ pipeline {
           steps {
             script {
               sh 'make assets'
-              sh 'make push_bintray_assets'
+              //sh 'make push_bintray_assets'
             }
           }
           post { always { cleanWs() } }
@@ -384,7 +386,7 @@ pipeline {
                 sh 'composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev'
 
                 sh 'make dist'
-                sh 'make push_bintray_dist'
+                //sh 'make push_bintray_dist'
               }
             }
           }
@@ -401,11 +403,11 @@ pipeline {
           steps {
             script {
               sh 'make docker_build'
-              sh '''
-                # Publish docker image >
-                echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
-                make docker_push_bintray
-              '''
+              //sh '''
+              //  # Publish docker image >
+              //  echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+              //  make docker_push_bintray
+              //'''
             }
           }
           post { always { cleanWs() } }
@@ -419,22 +421,22 @@ pipeline {
           steps {
             script {
               sh 'make docker_build'
-              sh '''
-                # Publish docker image >
-                echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
-                make docker_push_bintray
-              '''
-              sh '''
-                # Publish docker image >
-                echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
-                make docker_tag
-                make docker_push
-              '''
-              sh '''
-                # Notify microbadger >
-                # @see https://microbadger.com/images/monicahq/monicahq
-                test -s $MICROBADGER_WEBHOOK || curl -X POST $MICROBADGER_WEBHOOK
-              '''
+              //sh '''
+              //  # Publish docker image >
+              //  echo $BINTRAY_APIKEY | docker login -u $BINTRAY_USER --password-stdin monicahq-docker-docker.bintray.io
+              //  make docker_push_bintray
+              //'''
+              //sh '''
+              //  # Publish docker image >
+              //  echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+              //  make docker_tag
+              //  make docker_push
+              //'''
+              //sh '''
+              //  # Notify microbadger >
+              //  # @see https://microbadger.com/images/monicahq/monicahq
+              //  test -s $MICROBADGER_WEBHOOK || curl -X POST $MICROBADGER_WEBHOOK
+              //'''
             }
           }
           post { always { cleanWs() } }

@@ -112,6 +112,7 @@ aliases:
     run:
       name: Make docker image
       command: |
+        docker-compose --version
         make docker_build
         make docker_squash
   - &docker-push-bintray
@@ -307,7 +308,12 @@ jobs:
           command: |
             yarn global add junit-merge
             $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
-
+      - run:
+          name: Run sonar scanner
+          command: |
+            export SONAR_RESULT=./results/results.xml
+            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml
+            scripts/tests/runsonar.sh
 
       - save_cache:
           key: *sonar_key
@@ -327,7 +333,7 @@ jobs:
           at: *root
 
       - run: make assets
-
+      - run: make push_bintray_assets
 
   deploy-dist:
     <<: *defaults
@@ -341,7 +347,7 @@ jobs:
           at: *root
       - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
       - run: make dist
-
+      - run: make push_bintray_dist
 
   deploy-docker-master:
     <<: *defaults
@@ -355,7 +361,7 @@ jobs:
       - *prepare-environment
       - *docker-install
       - *docker-build
-
+      - *docker-push-bintray
 
   deploy-docker:
     <<: *defaults
@@ -369,7 +375,16 @@ jobs:
       - *prepare-environment
       - *docker-install
       - *docker-build
-
+      - *docker-push-bintray
+      - run:
+          name: Publish docker image
+          command: |
+            echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+            make docker_tag
+            make docker_push
+            # notify microbadger to update
+            # https://microbadger.com/images/monicahq/monicahq
+            curl -X POST $MICROBADGER_WEBHOOK
 
 workflows:
   version: 2

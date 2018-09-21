@@ -12,15 +12,15 @@ if [ "$CIRCLECI" == "true" ]; then
   fi
   BRANCH=${CIRCLE_BRANCH:-$CIRCLE_TAG}
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
-  BUILD=$CIRCLE_BUILD_NUM
-  SHA1=$CIRCLE_SHA1
+  BUILD_NUMBER=$CIRCLE_BUILD_NUM
+  GIT_COMMIT=$CIRCLE_SHA1
   RUNREVPARSE=true
 elif [ "$TRAVIS" == "true" ]; then
   REPO=$TRAVIS_REPO_SLUG
   BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
   PR_NUMBER=$TRAVIS_PULL_REQUEST
-  BUILD=$TRAVIS_BUILD_NUMBER
-  SHA1=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
+  BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
+  GIT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
 elif [[ -n $BUILD_NUMBER ]]; then
   echo "CHANGE_ID=$CHANGE_ID"
   echo "CHANGE_URL=$CHANGE_URL"
@@ -30,15 +30,13 @@ elif [[ -n $BUILD_NUMBER ]]; then
   fi
   PR_NUMBER=${CHANGE_ID:-false}
   BRANCH=$BRANCH_NAME
-  BUILD=$BUILD_NUMBER
-  SHA1=$GIT_COMMIT
 fi
 
 echo "REPO=$REPO"
 echo "BRANCH=$BRANCH"
 echo "PR_NUMBER=$PR_NUMBER"
-echo "BUILD=$BUILD"
-echo "SHA1=$SHA1"
+echo "BUILD_NUMBER=$BUILD_NUMBER"
+echo "GIT_COMMIT=$GIT_COMMIT"
 
 set -euo pipefail
 
@@ -88,9 +86,9 @@ function CommonParams {
        -Dsonar.organization=$SONAR_ORGANIZATION \
        -Dsonar.php.tests.reportPath=$SONAR_RESULT \
        -Dsonar.php.coverage.reportPaths=$SONAR_COVERAGE \
-       -Dsonar.analysis.buildNumber=$BUILD \
-       -Dsonar.analysis.pipeline=$BUILD \
-       -Dsonar.analysis.sha1=$SHA1 \
+       -Dsonar.analysis.buildNumber=$BUILD_NUMBER \
+       -Dsonar.analysis.pipeline=$BUILD_NUMBER \
+       -Dsonar.analysis.sha1=$GIT_COMMIT \
        -Dsonar.analysis.repository=$REPO \
        $extra
 }
