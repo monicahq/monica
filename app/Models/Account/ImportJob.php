@@ -487,7 +487,7 @@ class ImportJob extends Model
 
     private function importFromFN(Contact $contact)
     {
-        $fullnameParts =  preg_split('/ +/', $this->currentEntry->FN);
+        $fullnameParts = preg_split('/ +/', $this->currentEntry->FN);
         $contact->first_name = $this->formatValue($fullnameParts[0]);
         $contact->last_name = $this->formatValue($fullnameParts[1]);
     }
