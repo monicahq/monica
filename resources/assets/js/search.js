@@ -92,7 +92,7 @@ function Search(form, input, resultsContainer, showResults) {
             }
         }).done(function (data) {
             if (!data.data) {
-                showNoResults(data);
+                showNoResults();
                 return;
             }
             const results = parseResults(data.data);
