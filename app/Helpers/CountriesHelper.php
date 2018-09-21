@@ -59,6 +59,12 @@ class CountriesHelper
         return $country->cca2;
     }
 
+    /**
+     * Get the common name of country, in locale version.
+     * 
+     * @param string $country
+     * @return string
+     */
     private static function getCommonNameLocale($country)
     {
         $locale = App::getLocale();
@@ -69,7 +75,12 @@ class CountriesHelper
         );
     }
 
-
+    /**
+     * Get country for a specific iso code.
+     * 
+     * @param string $iso
+     * @return object  the Country element
+     */
     private static function getCountry($iso)
     {
         $country = Countries::where('cca2', mb_strtoupper($iso))->first();
