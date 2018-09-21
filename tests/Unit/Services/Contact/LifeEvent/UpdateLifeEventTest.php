@@ -7,10 +7,10 @@ use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
+use App\Exceptions\MissingParameterException;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Exceptions\MissingParameterException;
 
 class UpdateLifeEventTest extends TestCase
 {

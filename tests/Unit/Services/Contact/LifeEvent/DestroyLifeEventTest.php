@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
 use App\Models\Contact\LifeEvent;
+use App\Exceptions\MissingParameterException;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Exceptions\MissingParameterException;
 
 class DestroyLifeEventTest extends TestCase
 {
