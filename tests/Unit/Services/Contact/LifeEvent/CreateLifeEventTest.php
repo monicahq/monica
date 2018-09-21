@@ -7,9 +7,9 @@ use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
+use App\Exceptions\MissingParameterException;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Exceptions\MissingParameterException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateLifeEventTest extends TestCase

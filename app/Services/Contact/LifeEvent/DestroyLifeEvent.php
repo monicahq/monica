@@ -4,8 +4,6 @@ namespace App\Services\Contact\LifeEvent;
 
 use App\Services\BaseService;
 use App\Models\Contact\LifeEvent;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\MissingParameterException;
 
 class DestroyLifeEvent extends BaseService

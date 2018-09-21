@@ -6,9 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
-use Illuminate\Database\QueryException;
 use App\Exceptions\MissingParameterException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateLifeEvent extends BaseService
 {
