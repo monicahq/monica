@@ -26,7 +26,7 @@ class CountriesHelper
 
     /**
      * Get country name.
-     * 
+     *
      * @param string $iso code of the country
      * @return string common name (localized) of the country
      */
@@ -120,7 +120,7 @@ class CountriesHelper
 
     /**
      * Get default country for a language.
-     * 
+     *
      * @param string $locale   language code (iso)
      * @return string  cca3 code
      */
@@ -170,7 +170,7 @@ class CountriesHelper
 
     /**
      * Get default timezone for the country.
-     * 
+     *
      * @param mixed $country  Country element
      * @return string  timezone fo this sountry
      */
