@@ -10,9 +10,8 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class CreateConversation extends BaseService
 {
@@ -37,29 +36,15 @@ class CreateConversation extends BaseService
     public function execute(array $data): Conversation
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            Contact::where('account_id', $data['account_id'])
-                    ->where($data['contact_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        Contact::where('account_id', $data['account_id'])
+                ->findOrFail($data['contact_id']);
 
-        try {
-            ContactFieldType::where('account_id', $data['account_id'])
-                            ->findOrFail($data['contact_field_type_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        ContactFieldType::where('account_id', $data['account_id'])
+                        ->findOrFail($data['contact_field_type_id']);
 
-        try {
-            $conversation = Conversation::create($data);
-        } catch (QueryException $e) {
-            throw $e;
-        }
-
-        return $conversation;
+        return Conversation::create($data);
     }
 }
