@@ -76,8 +76,6 @@ class LifeEventsController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        $date = $request->get('conversationDate');
-
         $data = [
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
@@ -114,7 +112,7 @@ class LifeEventsController extends Controller
         ];
 
         try {
-            $lifeEvent = (new DestroyLifeEvent)->execute($data);
+            (new DestroyLifeEvent)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()

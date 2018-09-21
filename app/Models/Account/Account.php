@@ -984,11 +984,7 @@ class Account extends Model
      */
     public function getFirstLocale()
     {
-        try {
-            $user = $this->users()->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            throw new ModelNotFoundException('Can not find the first user of the account.');
-        }
+        $user = $this->users()->firstOrFail();
 
         return $user->locale;
     }

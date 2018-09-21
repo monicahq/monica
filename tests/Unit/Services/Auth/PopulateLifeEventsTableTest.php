@@ -28,7 +28,7 @@ class PopulateLifeEventsTableTest extends TestCase
             'migrate_existing_data' => false,
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(MissingParameterException::class);
 
         $populateLifeEventService = new PopulateLifeEvents;
         $populateLifeEventService->execute($request);
