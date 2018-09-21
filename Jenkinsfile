@@ -24,6 +24,8 @@ pipeline {
       }
       steps {
         script {
+          sh 'echo GIT_COMMIT=$GIT_COMMIT'
+          sh 'git log --format="%h" -n 3'
           sh '''
             # Prebuild >
             mkdir -p $HOME/.yarn $HOME/.composer $HOME/.cache $HOME/.config
