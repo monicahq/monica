@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ \App::getLocale() }}" dir="{{ \App\Helpers\LocaleHelper::getDirection() }}">
+<html lang="{{ \App::getLocale() }}" dir="{{ htmldir() }}">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,12 +8,18 @@
     <title>@yield('title', trans('app.application_title'))</title>
     <link rel="manifest" href="/manifest.webmanifest">
 
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/app-'.htmldir().'.css') }}">
+    {{-- Required only for the Upgrade account page --}}
+    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
+      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
+    @endif
+
     <link rel="shortcut icon" href="/img/favicon.png">
     <script>
       window.Laravel = {!! json_encode([
           'csrfToken' => csrf_token(),
-          'locale' => \App::getLocale()
+          'locale' => \App::getLocale(),
+          'htmldir' => htmldir(),
       ]); !!}
     </script>
   </head>
@@ -43,7 +49,6 @@
       </script>
       <script src="{{ mix('js/manifest.js') }}"></script>
       <script src="{{ mix('js/stripe.js') }}"></script>
-      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
     @endif
 
     @stack('scripts')

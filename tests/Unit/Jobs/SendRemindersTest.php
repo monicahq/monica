@@ -8,9 +8,9 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Jobs\SetNextReminderDate;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Artisan;
+use App\Jobs\Reminders\ScheduleReminders;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendRemindersTest extends TestCase
@@ -24,7 +24,7 @@ class SendRemindersTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
         $account = factory(Account::class)->create([
-            'default_time_reminder_is_sent' => '7:00',
+            'default_time_reminder_is_sent' => '07:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -37,7 +37,7 @@ class SendRemindersTest extends TestCase
 
         $exitCode = Artisan::call('send:reminders', []);
 
-        Bus::assertDispatched(SetNextReminderDate::class);
+        Bus::assertDispatched(ScheduleReminders::class);
     }
 
     public function test_it_schedules_multiple_emails_jobs_but_only_one_set_next_reminder_job()
@@ -47,7 +47,7 @@ class SendRemindersTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
         $account = factory(Account::class)->create([
-            'default_time_reminder_is_sent' => '7:00',
+            'default_time_reminder_is_sent' => '07:00',
             'has_access_to_paid_version_for_free' => 1,
         ]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -61,7 +61,7 @@ class SendRemindersTest extends TestCase
 
         $exitCode = Artisan::call('send:reminders', []);
 
-        Bus::assertDispatched(SetNextReminderDate::class, 1);
+        Bus::assertDispatched(ScheduleReminders::class, 1);
     }
 
     public function test_it_doesnt_schedule_email_if_on_unpaid_plan()
@@ -73,7 +73,7 @@ class SendRemindersTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
         $account = factory(Account::class)->create([
-            'default_time_reminder_is_sent' => '7:00',
+            'default_time_reminder_is_sent' => '07:00',
             'has_access_to_paid_version_for_free' => 0,
         ]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -86,6 +86,6 @@ class SendRemindersTest extends TestCase
 
         $exitCode = Artisan::call('send:reminders', []);
 
-        Bus::assertDispatched(SetNextReminderDate::class, 1);
+        Bus::assertDispatched(ScheduleReminders::class, 1);
     }
 }

@@ -22,6 +22,7 @@ return [
     'short_month_year' => 'M Y',
     'short_day' => 'D',
     'full_month' => 'F',
+    'full_month_year' => 'F Y',
     'full_hour' => 'h.i A',
 
 ];

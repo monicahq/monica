@@ -21,6 +21,11 @@ return [
     'loading' => 'Laden...',
     'with' => 'met',
     'days' => 'dag|dagen',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalisatie',
     'breadcrumb_settings_security' => 'Beveiliging',
     'breadcrumb_settings_security_2fa' => 'Tweestapsverificatie',
+    'breadcrumb_profile' => 'Profiel van :name',
 
     'gender_male' => 'Man',
     'gender_female' => 'Vrouw',
@@ -81,6 +87,7 @@ return [
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
     'error_save' => 'Er is een fout opgetreden bij het opslaan van de gegevens.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 
@@ -179,13 +186,13 @@ return [
 
     'relationship_type_godfather' => 'peetoom',
     'relationship_type_godfather_female' => 'peet moeder',
-    'relationship_type_godfather_with_name' => ':naam\'s peetvader',
-    'relationship_type_godfather_female_with_name' => ':naam\'s peetmoeder',
+    'relationship_type_godfather_with_name' => ':name\'s peetvader',
+    'relationship_type_godfather_female_with_name' => ':name\'s peetmoeder',
 
     'relationship_type_godson' => 'peetzoon',
     'relationship_type_godson_female' => 'peetdochter',
-    'relationship_type_godson_with_name' => ':naam\'s schoonzoon',
-    'relationship_type_godson_female_with_name' => ':naam\'s schoondochter',
+    'relationship_type_godson_with_name' => ':name\'s schoonzoon',
+    'relationship_type_godson_female_with_name' => ':name\'s schoondochter',
 
     'relationship_type_friend' => 'vriend',
     'relationship_type_friend_female' => 'vriend',

@@ -38,6 +38,8 @@ return [
     'signup_no_account' => 'Non hai ancora un account?',
     'signup' => 'Iscriviti',
     'create_account' => 'Creare il primo account di <a href=":url">firma</a>',
+    'change_language_title' => 'Change language:',
+    'change_language' => 'Change language to :lang',
 
     'password_reset_title' => 'Reimposta Password',
     'password_reset_email' => 'Indirizzo E-Mail',

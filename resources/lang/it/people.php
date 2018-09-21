@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Modifica informazioni del contatto',
     'call_button' => 'Aggiungi chiamata',
+    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
     'stay_in_touch' => 'Rimani in contatto',
@@ -85,6 +86,25 @@ return [
     'call_empty_comment' => 'Nessuna informazione',
     'call_blank_title' => 'Tieni traccia delle tue chiamate con :name',
     'call_blank_desc' => 'Hai chiamato :name',
+
+    // Conversation
+    'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
+    'conversation_delete_link' => 'Delete the conversation',
+    'conversation_edit_title' => 'Edit conversation',
+    'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
+    'conversation_delete_success' => 'The conversation has been successfully deleted.',
+    'conversation_add_title' => 'Record a new conversation',
+    'conversation_add_when' => 'When did you have this conversation?',
+    'conversation_add_who_wrote' => 'Who said this message?',
+    'conversation_add_how' => 'How did you communicate?',
+    'conversation_add_you' => 'You',
+    'conversation_add_content' => 'Write down what was said',
+    'conversation_add_what_was_said' => 'What did you say?',
+    'conversation_add_another' => 'Add another message',
+    'conversation_list_table_messages' => 'Messages',
+    'conversation_list_table_content' => 'Partial content (last message)',
+    'conversation_list_title' => 'Conversations',
+    'conversation_list_cta' => 'Log conversation',
 
     // age - birthday
     'birthdate_not_set' => 'Data di nascita assente',
@@ -170,7 +190,8 @@ return [
     'relationship_form_add_choice' => 'Con chi è la relazione?',
     'relationship_form_create_contact' => 'Aggiungi persona',
     'relationship_form_associate_contact' => 'Un contatto esistente',
-    'relationship_form_associate_dropdown' => 'Seleziona un contatto esistente dal menu a tendina',
+    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
+    'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Aggiungi questa persona anche come Contatto.',
     'relationship_form_add_description' => 'Ció ti permetterá di trattare questo partner come un qualsiasi altro contatto.',
     'relationship_form_add_no_existing_contact' => 'Al momento non hai contatti che possono essere una relazione :name.',
@@ -220,10 +241,18 @@ return [
     'activities_blank_title' => 'Tieni traccia di quello che tu e :name avete fatto, e ciò di cui avete parlato',
     'activities_blank_add_activity' => 'Agginugi attività',
     'activities_add_success' => 'Attività aggiunta',
+    'activities_add_error' => 'Error when adding the activity',
     'activities_update_success' => 'Attività aggiornata',
     'activities_delete_success' => 'Attività rimossa',
     'activities_who_was_involved' => 'Chi era coinvolto?',
     'activities_activity' => 'Categoria dell\'attività',
+    'activities_view_activities_report' => 'View activities report',
+    'activities_profile_title' => 'Activities report between :name and you',
+    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
+    'activities_profile_year_summary' => 'Here is what you two have done in :year',
+    'activities_profile_number_occurences' => ':value activity|:value activities',
+
     // notes
     'notes_create_success' => 'Nota creata',
     'notes_update_success' => 'Nota aggiornata',

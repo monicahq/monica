@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => '¡Gracias por registrarte! Por favor, revisa tus correos para confirmar tu dirección de correo electrónico.',
+    'success' => '¡Has verificado tu cuenta con éxito! Ya puedes iniciar sesión.',
+    'again' => 'Debes verificar tu correo electrónico antes de acceder al sitio.
+                <br/>Si no has recibido correo de confirmación, revisa tu carpeta de spam.
+                <br/>Para obtener un nuevo correo de confirmación, haz <a href=":url" class="alert-link">clic aquí</a>.',
+    'resend' => 'Se ha enviado un mensaje de confirmación. Por favor, revisa tu bandeja de entrada.'
 ];

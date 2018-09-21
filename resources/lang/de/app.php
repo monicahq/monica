@@ -21,12 +21,17 @@ return [
     'loading' => 'Lade mehr...',
     'with' => 'mit',
     'days' => 'Tag|Tage',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
     'application_og_title' => 'Haben Sie bessere Beziehungen zu Ihren Lieben. Kostenloses Online CRM für Freunde und Familie.',
 
-    'markdown_description' => 'Du möchtest deinen Test schöner formatieren? Monica unterstützt Markdown.',
+    'markdown_description' => 'Du möchtest deinen Text schöner formatieren? Monica unterstützt Markdown.',
     'markdown_link' => 'Öffne die Dokumentation',
 
     'header_settings_link' => 'Einstellungen',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalisierung',
     'breadcrumb_settings_security' => 'Sicherheit',
     'breadcrumb_settings_security_2fa' => 'Zwei-Faktor-Authentifizierung',
+    'breadcrumb_profile' => 'Profile of :name',
 
     'gender_male' => 'Männlich',
     'gender_female' => 'Weiblich',
@@ -81,6 +87,7 @@ return [
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
 

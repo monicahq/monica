@@ -45,7 +45,7 @@
             <p><a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a></p>
             <p>
               {{ trans('people.people_delete_message') }}
-              <a href="#" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
+              <a href="#" id="link-delete-contact" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
               <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
                 {{ method_field('DELETE') }}
                 {{ csrf_field() }}
@@ -57,9 +57,15 @@
 
             @if ($modules->contains('key', 'notes'))
             <div class="row section notes">
-              <div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
-                <contact-note hash={!! $contact->hashID() !!}></contact-note>
+              <div class="col-xs-12 section-title">
+                <contact-note hash={{ $contact->hashID() }}></contact-note>
               </div>
+            </div>
+            @endif
+
+            @if ($modules->contains('key', 'conversations'))
+            <div class="row section calls">
+              @include('people.conversations.index')
             </div>
             @endif
 

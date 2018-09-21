@@ -21,6 +21,11 @@ return [
     'loading' => 'בטעינה…',
     'with' => 'עם',
     'days' => 'day|days',
+    'today' => 'היום',
+    'yesterday' => 'אתמול',
+    'another_day' => 'יום אחר',
+    'date' => 'תאריך',
+    'type' => 'סוג',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'התאמה אישית',
     'breadcrumb_settings_security' => 'אבטחה',
     'breadcrumb_settings_security_2fa' => 'אימות דו־שלבי',
+    'breadcrumb_profile' => 'הפרופיל של :name',
 
     'gender_male' => 'גבר',
     'gender_female' => 'אישה',
@@ -81,6 +87,7 @@ return [
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
     'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
+    'error_try_again' => 'משהו השתבש. נא לנסות שוב.',
 
     'default_save_success' => 'הנתונים נשמרו.',
 
@@ -112,7 +119,7 @@ return [
     'relationship_type_spouse_with_name' => 'בעלה של :name',
     'relationship_type_spouse_female_with_name' => 'אשתו של :name',
 
-    'relationship_type_date' => 'יוצא קבוע',
+    'relationship_type_date' => 'ליציאה',
     'relationship_type_date_female' => 'יוצאת קבוע',
     'relationship_type_date_with_name' => 'יוצא קבוע עם :name',
     'relationship_type_date_female_with_name' => 'יוצאת קבוע עם :name',

@@ -40,7 +40,7 @@ class TaskTest extends FeatureTestCase
             'completed' => 0,
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/tasks', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/tasks', $params);
 
         // Assert the note has been added for the correct user.
         $params['account_id'] = $user->account_id;

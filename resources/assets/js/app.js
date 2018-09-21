@@ -36,6 +36,15 @@ Vue.use(ToggleButton);
 import PrettyCheckbox from 'pretty-checkbox-vue';
 Vue.use(PrettyCheckbox);
 
+// Select used on list items to display edit and delete buttons
+import vSelectMenu from 'v-selectmenu';
+Vue.use(vSelectMenu);
+
+// Tables
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css'
+Vue.use(VueGoodTablePlugin);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -50,6 +59,12 @@ Vue.component(
 Vue.component(
     'passport-personal-access-tokens',
     require('./components/passport/PersonalAccessTokens.vue')
+);
+
+// Vue select
+Vue.component(
+    'contact-select',
+    require('./components/people/ContactSelect.vue')
 );
 
 // Partials
@@ -79,6 +94,10 @@ Vue.component(
     'form-radio',
     require('./components/partials/form/Radio.vue')
 );
+Vue.component(
+    'form-textarea',
+    require('./components/partials/form/Textarea.vue')
+);
 
 // Dashboard
 Vue.component(
@@ -87,6 +106,11 @@ Vue.component(
 );
 
 // Contacts
+Vue.component(
+    'contact-favorite',
+    require('./components/people/SetFavorite.vue')
+);
+
 Vue.component(
     'contact-address',
     require('./components/people/Addresses.vue')
@@ -120,6 +144,21 @@ Vue.component(
 Vue.component(
     'stay-in-touch',
     require('./components/people/StayInTouch.vue')
+);
+
+Vue.component(
+    'conversation-list',
+    require('./components/people/conversation/ConversationList.vue')
+);
+
+Vue.component(
+    'conversation',
+    require('./components/people/conversation/Conversation.vue')
+);
+
+Vue.component(
+    'message',
+    require('./components/people/conversation/Message.vue')
 );
 
 // Journal
@@ -160,6 +199,10 @@ Vue.component(
 Vue.component(
     'reminder-rules',
     require('./components/settings/ReminderRules.vue')
+);
+Vue.component(
+    'reminder-time',
+    require('./components/settings/ReminderTime.vue')
 );
 Vue.component(
     'mfa-activate',
@@ -239,6 +282,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
         accept_invite_user: false,
         date_met_the_contact: 'known',
         global_relationship_form_new_contact: true,
+        htmldir: window.Laravel.htmldir,
       },
       methods: {
       },

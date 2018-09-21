@@ -1,31 +1,54 @@
 ifeq ($(CIRCLECI),true)
   ifneq ($(CIRCLE_PULL_REQUEST),)
-    CIRCLE_PR_NUMBER ?= $(shell echo $${CIRCLE_PULL_REQUEST##*/})
+    CIRCLE_PR_NUMBER ?= $(shell echo ${CIRCLE_PULL_REQUEST##*/})
   endif
   REPO := $(CIRCLE_PROJECT_USERNAME)/$(CIRCLE_PROJECT_REPONAME)
   BRANCH := $(CIRCLE_BRANCH)
   PR_NUMBER=$(if $(CIRCLE_PR_NUMBER),$(CIRCLE_PR_NUMBER),false)
-  BUILD_NUM := $(CIRCLE_BUILD_NUM)
-  SHA1 := $(CIRCLE_SHA1)
-  TAG := $(CIRCLE_TAG)
-  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1)
-else
+  BUILD_NUMBER := $(CIRCLE_BUILD_NUM)
+  GIT_COMMIT := $(CIRCLE_SHA1)
+  GIT_TAG := $(CIRCLE_TAG)
+else ifeq ($(TRAVIS),true)
   REPO := $(TRAVIS_REPO_SLUG)
   BRANCH := $(if $(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_PULL_REQUEST_BRANCH),$(TRAVIS_BRANCH))
   PR_NUMBER := $(TRAVIS_PULL_REQUEST)
-  BUILD_NUM := $(TRAVIS_BUILD_NUMBER)
-  SHA1 := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
-  TAG := $(TRAVIS_TAG)
+  BUILD_NUMBER := $(TRAVIS_BUILD_NUMBER)
+  GIT_COMMIT := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
+  GIT_TAG := $(TRAVIS_TAG)
   COMMIT_MESSAGE := $(TRAVIS_COMMIT_MESSAGE)
+else
+  REPO := $(subst https://github.com/,,$(CHANGE_URL))
+  ifneq ($(CHANGE_ID),)
+    REPO := $(subst /pull/$(CHANGE_ID),,$(REPO))
+  endif
+  PR_NUMBER := $(CHANGE_ID)
+  BRANCH := $(BRANCH_NAME)
 endif
+$(info REPO=$(REPO))
+$(info PR_NUMBER=$(PR_NUMBER))
+$(info BRANCH=$(BRANCH))
+$(info BUILD_NUMBER=$(BUILD_NUMBER))
 
-GIT_TAG := $(shell git describe --abbrev=0 --tags)
-GIT_COMMIT := $(shell git log --format="%h" -n 1)
+ifeq ($(GIT_COMMIT),)
+  GIT_COMMIT := $(shell git log --format="%h" -n 1)
+else
+  GIT_COMMIT := $(shell git rev-parse --short=8 ${GIT_COMMIT})
+endif
+$(info GIT_COMMIT=$(GIT_COMMIT))
+ifeq ($(GIT_TAG),)
+  GIT_TAG := $(shell git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null)
+endif
+$(info GIT_TAG=$(GIT_TAG))
+ifeq ($(COMMIT_MESSAGE),)
+  COMMIT_MESSAGE := $(shell git log --format="%s" -n 1 ${GIT_COMMIT})
+endif
+$(info COMMIT_MESSAGE=$(COMMIT_MESSAGE))
+
 BUILD := $(GIT_TAG)
-ifeq ($(TAG),)
+ifeq ($(BUILD),)
   ifeq ($(BRANCH),)
-    # If we are not on travis or it's not a TAG build, we add "-dev" to the name
-    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match 2>/dev/null >/dev/null); then echo "-dev"; fi)
+    # If we are not on CI or it's not a TAG build, we add "-dev" to the name
+    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null); then echo "-dev"; fi)
   else
     BUILD := $(BRANCH)
   endif
@@ -33,9 +56,7 @@ endif
 
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
-
-test:
-	echo $(BUILD)
+DOCKER_IMAGE := monicahq/monicahq
 
 default: build
 
@@ -50,28 +71,32 @@ docker:
 	$(MAKE) docker_push
 
 docker_build:
-	docker-compose build
+	docker build \
+		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg VCS_REF=$(GIT_COMMIT) \
+		--build-arg VERSION=$(BUILD) \
+		-t $(DOCKER_IMAGE) .
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)
-ifeq ($(TAG),)
+ifeq ($(DOCKER_SQUASH),)
   DOCKER_SQUASH := ~/.local/bin/docker-squash
 endif
 
 docker_squash:
-	docker-squash -t monicahq/monicahq:latest monicahq/monicahq:latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
 	docker images
 
 docker_tag:
-	docker tag monicahq/monicahq monicahq/monicahq:$(BUILD)
+	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(BUILD)
 
 docker_push: docker_tag
-	docker push monicahq/monicahq:$(BUILD)
-	docker push monicahq/monicahq:latest
+	docker push $(DOCKER_IMAGE):$(BUILD)
+	docker push $(DOCKER_IMAGE):latest
 
 docker_push_bintray: .deploy.json
-	docker tag monicahq/monicahq monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
-	docker push monicahq-docker-docker.bintray.io/monicahq/monicahq:$(BUILD)
+	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
+	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
 .PHONY: docker docker_build docker_tag docker_push docker_push_bintray
@@ -149,9 +174,9 @@ endif
 	sed -si "s/\$$(version)/$(BUILD)/" $@
 	sed -si "s/\$$(description)/$(DESCRIPTION)/" $@
 	sed -si "s/\$$(released)/$(shell date -u '+%FT%T.000Z')/" $@
-	sed -si "s/\$$(vcs_tag)/$(TAG)/" $@
+	sed -si "s/\$$(vcs_tag)/$(GIT_TAG)/" $@
 	sed -si "s/\$$(vcs_commit)/$(GIT_COMMIT)/" $@
-	sed -si "s/\$$(build_number)/$(BUILD_NUM)/" $@
+	sed -si "s/\$$(build_number)/$(BUILD_NUMBER)/" $@
 
 results/%.tar.xz: % prepare
 	tar chfJ $@ --exclude .gitignore --exclude .gitkeep $<

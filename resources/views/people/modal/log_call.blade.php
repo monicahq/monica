@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">{{ trans('people.modal_call_title') }}</h5>
-        <button type="button" class="close {{ \App\Helpers\LocaleHelper::getDirection() }}" data-dismiss="modal">
+        <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -35,7 +35,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-        <button type="button" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
+        <button type="button" cy-name="save-call-button" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
       </div>
     </div>
   </div>

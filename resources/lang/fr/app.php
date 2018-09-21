@@ -21,6 +21,11 @@ return [
     'loading' => 'Chargement...',
     'with' => 'avec',
     'days' => 'jour|jour|jours',
+    'today' => 'aujourd\'hui',
+    'yesterday' => 'hier',
+    'another_day' => 'un autre jour',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personnalisation',
     'breadcrumb_settings_security' => 'Sécurité',
     'breadcrumb_settings_security_2fa' => 'Authentification à deux facteurs',
+    'breadcrumb_profile' => 'Profil de :name',
 
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',
@@ -81,6 +87,7 @@ return [
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
+    'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
 
@@ -124,7 +131,7 @@ return [
 
     'relationship_type_inlovewith' => 'amoureux',
     'relationship_type_inlovewith_female' => 'amoureuse',
-    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux·se',
+    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux',
     'relationship_type_inlovewith_female_with_name' => 'une personne dont :name est amoureuse',
 
     'relationship_type_lovedby' => 'aimé par',

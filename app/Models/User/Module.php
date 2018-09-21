@@ -3,7 +3,7 @@
 namespace App\Models\User;
 
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -29,7 +29,7 @@ class Module extends Model
     ];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the module.
      *
      * @return BelongsTo
      */

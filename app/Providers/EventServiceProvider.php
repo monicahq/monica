@@ -17,6 +17,15 @@ class EventServiceProvider extends ServiceProvider
         'PragmaRX\Google2FALaravel\Events\LoginSucceeded' => [
             'App\Listeners\LoginSucceed2fa',
         ],
+        'Illuminate\Auth\Events\Login' => [
+            'App\Listeners\LoginListener',
+        ],
+        'Illuminate\Foundation\Events\LocaleUpdated' => [
+            'App\Listeners\LocaleUpdated',
+        ],
+        'Illuminate\Notifications\Events\NotificationSent' => [
+            'App\Listeners\NotificationSent',
+        ],
     ];
 
     /**
@@ -30,10 +39,9 @@ class EventServiceProvider extends ServiceProvider
         parent::boot();
 
         Event::listen('u2f.authentication', function ($u2fKey, $user) {
-            Validate2faController::loginCallback();
-        });
-        Event::listen('LoginSucceeded', function ($u2fKey, $user) {
-            session([config('u2f.sessionU2fName') => true]);
+            if (config('google2fa.enabled') && ! empty($user->google2fa_secret)) {
+                Validate2faController::loginCallback();
+            }
         });
     }
 }

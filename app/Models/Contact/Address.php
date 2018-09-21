@@ -4,7 +4,7 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Helpers\CountriesHelper;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
@@ -19,7 +19,7 @@ class Address extends Model
     protected $table = 'addresses';
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the address.
      *
      * @return BelongsTo
      */
@@ -29,7 +29,7 @@ class Address extends Model
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the contact record associated with the address.
      *
      * @return BelongsTo
      */

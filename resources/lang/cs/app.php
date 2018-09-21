@@ -21,6 +21,11 @@ return [
     'loading' => 'Načítá se...',
     'with' => 's',
     'days' => 'day|days',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalization',
     'breadcrumb_settings_security' => 'Security',
     'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
+    'breadcrumb_profile' => 'Profile of :name',
 
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',
@@ -81,6 +87,7 @@ return [
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
     'error_save' => 'We had an error trying to save the data.',
+    'error_try_again' => 'Something went wrong. Please try again.',
 
     'default_save_success' => 'The data has been saved.',
 

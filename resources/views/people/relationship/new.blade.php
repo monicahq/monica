@@ -130,12 +130,15 @@
               <p>{{ trans('people.relationship_form_add_no_existing_contact', ['name' => $contact->first_name]) }}</p>
             </div>
           @else
-            <form-select
-              :options="{{ $existingContacts }}"
+            <contact-select
               v-bind:required="true"
               v-bind:title="'{{ trans('people.relationship_form_associate_dropdown') }}'"
-              v-bind:id="'existing_contact_id'">
-            </form-select>
+              v-bind:name="'existing_contact_id'"
+              v-bind:placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
+              v-bind:default-options="{{ $existingContacts }}"
+              v-bind:user-contact-id="'{{ $contact->hashID() }}'"
+              v-bind:inputId="'{{ $contact->hashID() }}'">
+            </contact-select>
           @endif
         </div>
       </div>
@@ -154,10 +157,10 @@
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
-          <div class="">
+          <div>
             <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
-          <div class="">
+          <div>
             @if ($existingContacts->count() == 0)
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" disabled v-if="!global_relationship_form_new_contact" name="save" type="submit">{{ trans('app.add') }}</button>
             <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" v-if="global_relationship_form_new_contact" name="save" type="submit">{{ trans('app.add') }}</button>

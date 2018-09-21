@@ -42,7 +42,7 @@ class ContactFieldTest extends FeatureTestCase
             'contact_field_type_id' => $feild->id,
         ]);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfield');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfield');
 
         $response->assertStatus(200);
 
@@ -57,7 +57,7 @@ class ContactFieldTest extends FeatureTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfieldtypes');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfieldtypes');
 
         $response->assertStatus(200);
 
@@ -79,7 +79,7 @@ class ContactFieldTest extends FeatureTestCase
             'data' => 'test_data',
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/contactfield', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/contactfield', $params);
 
         $response->assertStatus(201);
 
@@ -89,7 +89,7 @@ class ContactFieldTest extends FeatureTestCase
 
         $this->assertDatabaseHas('contact_fields', $params);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfield');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfield');
 
         $response->assertStatus(200);
 
@@ -117,7 +117,7 @@ class ContactFieldTest extends FeatureTestCase
         $params['id'] = $contactField->id;
         $params['contact_field_type_id'] = $feild->id;
 
-        $response = $this->put('/people/'.$contact->id.'/contactfield/'.$contactField->id, $params);
+        $response = $this->put('/people/'.$contact->hashID().'/contactfield/'.$contactField->id, $params);
 
         $response->assertStatus(200);
 
@@ -127,7 +127,7 @@ class ContactFieldTest extends FeatureTestCase
 
         $this->assertDatabaseHas('contact_fields', $params);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfield');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfield');
 
         $response->assertStatus(200);
 
@@ -148,7 +148,7 @@ class ContactFieldTest extends FeatureTestCase
             'contact_field_type_id' => $feild->id,
         ]);
 
-        $response = $this->delete('/people/'.$contact->id.'/contactfield/'.$contactField->id);
+        $response = $this->delete('/people/'.$contact->hashID().'/contactfield/'.$contactField->id);
         $response->assertStatus(200);
 
         $params = ['id' => $contactField->id];

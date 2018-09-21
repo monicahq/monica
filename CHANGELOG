@@ -1,12 +1,64 @@
 UNRELEASED CHANGES:
 
+* Fix reminders displaying wrong date
+* Add ability to define the default email address used for support
+* Fix confirm email sent when signup_double_optin is false
+* Fix now() without timezone functions
+
+RELEASED VERSIONS:
+
+v2.7.1 - 2018-09-05
+-------------------
+
+* Fix duplication of modules in the Settings page
+
+v2.7.0 - 2018-09-04
+-------------------
+
+* Add ability to log conversations made on social networks or SMS
+* Add language selector on register page
+* Support Arabic language
+* Improve automatic route binding
+* Split app css in two files for better support of ltr/rtl text direction
+* Add helper function htmldir()
+* Fix gifts not showing when value was not set
+* Fix phpunit not parsing all test files
+* Fix login remember with 2fa and u2f enabled
+* Fix gender update
+* Fix how comparing version is done
+* Fix search with wrong search field
+* Fix gift recipient relation
+* Fix subscription cancel on account deletion
+* Fix email maximum size on settings
+* Fix reminder link in email sent
+
+v2.6.0 - 2018-08-17
+-------------------
+
+* Add ability to set a contact as favorite
+* Add ability to search for a contact in the dropdown when creating a relationship
+* Add activity reports page, which shows useful statistics about activities with a specific contact
+* Fix reminders not being sent for single-digit hours
+* Fix accounts with an empty reminder time
+* Fix account id get for acceptPolicy
+* Use our own docker image (central perk) to run tests
+* Add end-2-end testing with Cypress
+* Render timezone listbox dynamically
+* Use a new formatter to display money (debts), with right locale handle
+* Get first existing gravatar if contact has multiple emails
+* Display the date and time of the next reminder sent in settings page
+
+v2.5.0 - 2018-08-08
+-------------------
+
+* Add ability to define custom activity types and activity type categories
 * Add ability to search a contact by job title
 * Fix invoice page not showing properly
 * Fix translation not being displayed correctly on Subscription page
-* Add ability to define custom activity types and activity type categories through the API and the UI
 * Add the TrimStrings middleware to trim all inputs
-
-RELEASED VERSIONS:
+* Call to monica:ping when updating instance
+* Fix idHasher decode function
+* Fix storage folder not being linked to public if migrations fail
 
 v2.4.2 - 2018-07-26
 -------------------

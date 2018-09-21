@@ -3,7 +3,7 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pet extends Model
@@ -16,7 +16,7 @@ class Pet extends Model
     protected $guarded = ['id'];
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the pet.
      *
      * @return BelongsTo
      */
@@ -26,7 +26,7 @@ class Pet extends Model
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the contact record associated with the pet.
      *
      * @return BelongsTo
      */
@@ -36,7 +36,7 @@ class Pet extends Model
     }
 
     /**
-     * Get the contact record associated with the gift.
+     * Get the contact record associated with the pet.
      *
      * @return BelongsTo
      */

@@ -27,6 +27,7 @@ return [
      */
     'languages' => parse_langs_to_array(
         env('LANG_DETECTOR_LANGUAGES', [
+            'ar',
             'cs',
             'de',
             'en',
@@ -37,6 +38,7 @@ return [
             'nl',
             'pt',
             'ru',
+            'tr',
             'zh',
         ])
     ),

@@ -37,17 +37,14 @@ class CommandExecutor implements CommandExecutorInterface
 
     public function artisan($message, $commandline, array $arguments = [])
     {
-        $this->command->info($message);
         $info = '';
         foreach ($arguments as $key => $value) {
-            $info = $info.' '.$key.'='.$value;
+            if (is_string($key)) {
+                $info .= ' '.$key.'="'.$value.'"';
+            } else {
+                $info .= ' '.$value;
+            }
         }
-        $this->command->line('php artisan '.$commandline.$info);
-        if ($this->command->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->command->call($commandline, $arguments);
-        } else {
-            $this->command->callSilent($commandline, $arguments);
-        }
-        $this->command->line('');
+        $this->exec($message, 'php artisan '.$commandline.$info);
     }
 }

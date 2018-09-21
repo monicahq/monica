@@ -2,10 +2,9 @@
 
 namespace App\Models\Contact;
 
-use App\Traits\Hasher;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
  * @property Account $account
@@ -16,7 +15,6 @@ use Illuminate\Database\Eloquent\Builder;
  */
 class Debt extends Model
 {
-    use Hasher;
     /**
      * The attributes that aren't mass assignable.
      *

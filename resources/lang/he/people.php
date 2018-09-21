@@ -62,6 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'call_button' => 'תיעוד שיחה',
+    'set_favorite' => 'אנשי קשר מועדפים עולים לראש רשימת אני הקשר',
 
     // Stay in touch
     'stay_in_touch' => 'לשמור על קשר',
@@ -85,6 +86,25 @@ return [
     'call_empty_comment' => 'אין פרטים',
     'call_blank_title' => 'מעקב אחר שיחות הטלפון שקיימת עם :name',
     'call_blank_desc' => 'התקשרת אל :name',
+
+    // Conversation
+    'conversation_blank' => 'תיעוד דיונים שערכת עם :name ברשתות חברתיות, מסרונים וכו׳…',
+    'conversation_delete_link' => 'מחיקת הדיון',
+    'conversation_edit_title' => 'עריכת הדיון',
+    'conversation_edit_delete' => 'למחוק את הדיון? מחיקה היא לצמיתות.',
+    'conversation_delete_success' => 'הדיון נמחק בהצלחה.',
+    'conversation_add_title' => 'תיעוד דיון חדש',
+    'conversation_add_when' => 'מתי הדיון הזה התרחש?',
+    'conversation_add_who_wrote' => 'למי שייכת ההודעה הזו?',
+    'conversation_add_how' => 'איך תקשרתם?',
+    'conversation_add_you' => 'אני',
+    'conversation_add_content' => 'נא לכתוב את מה שאמרת',
+    'conversation_add_what_was_said' => 'מה אמרת?',
+    'conversation_add_another' => 'הוספת הודעה נוספת',
+    'conversation_list_table_messages' => 'הודעות',
+    'conversation_list_table_content' => 'תוכן חלקי (הודעה אחרונה)',
+    'conversation_list_title' => 'דיונים',
+    'conversation_list_cta' => 'תיעוד דיון ביומן',
 
     // age - birthday
     'birthdate_not_set' => 'תאריך הלידה לא הוגדר',
@@ -170,7 +190,8 @@ return [
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',
-    'relationship_form_associate_dropdown' => 'נא לבחור איש קשר קיים מהרשימה הנגללת שלהלן',
+    'relationship_form_associate_dropdown' => 'ניתן לחפש ולבחור איש קשר קיים מהרשימה הנגללת שלהלן',
+    'relationship_form_associate_dropdown_placeholder' => 'חיפוש ובחירה באיש קשר קיים',
     'relationship_form_also_create_contact' => 'יצירת רשומת איש קשר לאדם זה.',
     'relationship_form_add_description' => 'בחירה זו תאפשר לך להתייחס לצד בקשר הזוגי כמו כל איש קשר אחר.',
     'relationship_form_add_no_existing_contact' => 'אין לך אנשי קשר שיכולים לקיים איזשהו קשר מול :name כרגע.',
@@ -220,10 +241,18 @@ return [
     'activities_blank_title' => 'מעקב אחר מה שעשית עם :name בעבר ועל מה דיברתם',
     'activities_blank_add_activity' => 'הוספת פעילות',
     'activities_add_success' => 'הפעילות נוספה בהצלחה',
+    'activities_add_error' => 'אירעה שגיאה בעת הוספת הפעילות',
     'activities_update_success' => 'הפעילות עודכנה בהצלחה',
     'activities_delete_success' => 'הפעילות נמחקה בהצלחה',
     'activities_who_was_involved' => 'מי היה מעורב?',
     'activities_activity' => 'קטגוריית הפעילות',
+    'activities_view_activities_report' => 'הצגת דוח פעילות',
+    'activities_profile_title' => 'דוח פעילות עבורך ועבור :name',
+    'activities_profile_subtitle' => 'תיעדת פעילות אחת עם :name בסך הכול ו־:activities_last_twelve_months ב־12 החודשים האחרונים עד כה.|תיעדת :total_activities עם :name בסך הכול ו־:activities_last_twelve_months ב־12 החודשים האחרונים עד כה.',
+    'activities_profile_year_summary_activity_types' => 'להלן פילוח של סוגי הפעילויות אותן ביצעתם יחדיו ב־:year',
+    'activities_profile_year_summary' => 'הנה מה שעשיתם יחד ב־:year',
+    'activities_profile_number_occurences' => 'פעילות אחת|:value פעילויות',
+
     // notes
     'notes_create_success' => 'ההערה נוצרה בהצלחה',
     'notes_update_success' => 'ההערה נשמרה בהצלחה',

@@ -14,8 +14,6 @@ use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
-use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,9 +66,10 @@ class User extends Authenticatable
      * @param string $email
      * @param string $password
      * @param string $ipAddress
+     * @param string $countryCode
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $countryCode = null, $lang = null)
     {
         // create the user
         $user = new self;
@@ -80,15 +79,13 @@ class User extends Authenticatable
         $user->email = $email;
         $user->password = bcrypt($password);
         $user->created_at = now();
-
-        $locale = App::getLocale();
-        $user->locale = $locale;
+        $user->locale = $lang ?: App::getLocale();
 
         $infos = RequestHelper::infos($ipAddress);
 
         // Associate timezone and currency
         if (is_null($infos)) {
-            $country = CountriesHelper::getCountryFromLang($locale);
+            $country = CountriesHelper::getCountryFromLang($user->locale);
             if (is_null($country)) {
                 $user->timezone = config('app.timezone');
             } else {
@@ -200,7 +197,7 @@ class User extends Authenticatable
     {
         $completeName = '';
 
-        if ($this->name_order == 'firstname_lastname') {
+        if ($this->name_order == 'firstname_lastname' || $this->name_order == 'firstname_lastname_nickname') {
             $completeName = $this->first_name;
 
             if (! is_null($this->last_name)) {
@@ -294,16 +291,14 @@ class User extends Authenticatable
         $isTheRightTime = true;
 
         $dateToCompareTo = $date->hour(0)->minute(0)->second(0)->toDateString();
-        $currentHourOnUserTimezone = now($this->timezone)->format('G:00');
+        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
         $currentDateOnUserTimezone = now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
         $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
 
-        Log::info('Reminder date: '.$dateToCompareTo.' | Today date for user: '.$currentDateOnUserTimezone);
         if ($dateToCompareTo != $currentDateOnUserTimezone) {
             $isTheRightTime = false;
         }
 
-        Log::info('Hour reminder should be sent: '.$defaultHourReminderShouldBeSent.' | Current hour for user: '.$currentHourOnUserTimezone);
         if ($defaultHourReminderShouldBeSent != $currentHourOnUserTimezone) {
             $isTheRightTime = false;
         }
@@ -363,7 +358,7 @@ class User extends Authenticatable
         }
 
         $this->terms()->syncWithoutDetaching([$latestTerm->id => [
-            'account_id' => $this->account->id,
+            'account_id' => $this->account_id,
             'ip_address' => $ipAddress,
         ]]);
 
@@ -445,17 +440,5 @@ class User extends Authenticatable
         }
 
         return $nameOrder;
-    }
-
-    /**
-     * Send the given reminder using all the ways the user wants to be reminded.
-     * Currently only email is supported.
-     *
-     * @param  Reminder $reminder
-     * @return
-     */
-    public function sendReminder(Reminder $reminder)
-    {
-        dispatch(new SendReminderEmail($reminder, $this));
     }
 }

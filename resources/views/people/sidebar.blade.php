@@ -1,16 +1,16 @@
 {{-- Pets --}}
 @if ($modules->contains('key', 'pets'))
-<pet hash="{!! $contact->hashID() !!}"></pet>
+<pet hash="{{ $contact->hashID() }}"></pet>
 @endif
 
 {{-- Contact information --}}
 @if ($modules->contains('key', 'contact_information'))
-<contact-information hash="{!! $contact->hashID() !!}"></contact-information>
+<contact-information hash="{{ $contact->hashID() }}"></contact-information>
 @endif
 
 {{-- Address --}}
 @if ($modules->contains('key', 'addresses'))
-<contact-address hash="{!! $contact->hashID() !!}"></contact-address>
+<contact-address hash="{{ $contact->hashID() }}"></contact-address>
 @endif
 
 {{-- Introductions --}}
