@@ -10,8 +10,7 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class UpdateMessage extends BaseService
 {
@@ -39,27 +38,19 @@ class UpdateMessage extends BaseService
     public function execute(array $data): Message
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            $message = Message::where('contact_id', $data['contact_id'])
-                                ->where('conversation_id', $data['conversation_id'])
-                                ->where('account_id', $data['account_id'])
-                                ->findOrFail($data['message_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        $message = Message::where('contact_id', $data['contact_id'])
+                            ->where('conversation_id', $data['conversation_id'])
+                            ->where('account_id', $data['account_id'])
+                            ->findOrFail($data['message_id']);
 
-        try {
-            $message->update([
-                'written_at' => $data['written_at'],
-                'written_by_me' => $data['written_by_me'],
-                'content' => $data['content'],
-            ]);
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        $message->update([
+            'written_at' => $data['written_at'],
+            'written_by_me' => $data['written_by_me'],
+            'content' => $data['content'],
+        ]);
 
         return $message;
     }

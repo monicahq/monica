@@ -1,7 +1,10 @@
 UNRELEASED CHANGES:
 
 * Add ability to archive a contact
-* fix now() without timezone functions
+* Fix reminders displaying wrong date
+* Add ability to define the default email address used for support
+* Fix confirm email sent when signup_double_optin is false
+* Fix now() without timezone functions
 
 RELEASED VERSIONS:
 

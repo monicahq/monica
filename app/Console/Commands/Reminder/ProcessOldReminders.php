@@ -34,9 +34,14 @@ class ProcessOldReminders extends Command
      */
     public function handle()
     {
-        $reminders = Reminder::where('next_expected_date', '<', now()->subDays(1))
-                                ->get();
+        Reminder::where('next_expected_date', '<', now()->subDays(1))
+                    ->chunk(500, function ($reminders) {
+                        $this->schedule($reminders);
+                    });
+    }
 
+    private function schedule($reminders)
+    {
         foreach ($reminders as $reminder) {
             // Skip the reminder if the contact has been deleted (and for some
             // reasons, the reminder hasn't)

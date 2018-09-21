@@ -9,8 +9,7 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class DestroyConversation extends BaseService
 {
@@ -33,21 +32,13 @@ class DestroyConversation extends BaseService
     public function execute(array $data) : bool
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            $conversation = Conversation::where('account_id', $data['account_id'])
-                ->findOrFail($data['conversation_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        $conversation = Conversation::where('account_id', $data['account_id'])
+                                    ->findOrFail($data['conversation_id']);
 
-        try {
-            $conversation->delete();
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        $conversation->delete();
 
         return true;
     }
