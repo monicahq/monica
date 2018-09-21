@@ -426,7 +426,7 @@ class SettingsController
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function deleteAdditionalUser(Request $request, $userID)
+    public function deleteAdditionalUser($userID)
     {
         $user = User::where('account_id', auth()->user()->account_id)
             ->findOrFail($userID);
@@ -450,7 +450,7 @@ class SettingsController
         return view('settings.tags');
     }
 
-    public function deleteTag(Request $request, $tagId)
+    public function deleteTag($tagId)
     {
         $tag = Tag::where('account_id', auth()->user()->account_id)
             ->findOrFail($tagId);
@@ -468,7 +468,7 @@ class SettingsController
         return view('settings.api.index');
     }
 
-    public function security(Request $request)
+    public function security()
     {
         return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
     }
