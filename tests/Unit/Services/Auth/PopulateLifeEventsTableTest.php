@@ -6,9 +6,9 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
-use App\Exceptions\MissingParameterException;
 
 class PopulateLifeEventsTableTest extends TestCase
 {
