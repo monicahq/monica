@@ -73,10 +73,7 @@ class PopulateLifeEventsTable extends BaseService
         // get the account
         $account = Account::findOrFail($accountId);
 
-        // get the locale
-        $locale = $account->getFirstLocale();
-
-        return $locale;
+        return $account->getFirstLocale();
     }
 
     /**
