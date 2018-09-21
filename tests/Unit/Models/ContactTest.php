@@ -8,20 +8,24 @@ use Tests\FeatureTestCase;
 use App\Models\Contact\Tag;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
-use App\Mail\StayInTouchEmail;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ContactField;
+use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\StayInTouchEmail;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class ContactTest extends FeatureTestCase
 {
@@ -65,6 +69,30 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($contact->relationships()->exists());
+    }
+
+    public function test_it_has_many_conversations()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $conversation = factory(Conversation::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->conversations()->exists());
+    }
+
+    public function test_it_has_many_messages()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $messages = factory(Message::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->messages()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()
@@ -1518,23 +1546,29 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sends_the_stay_in_touch_email()
     {
-        Mail::fake();
+        NotificationFacade::fake();
+
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0, 'America/New_York'));
 
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_frequency' => 3,
+            'stay_in_touch_trigger_date' => '2017-01-01 00:00:00',
         ]);
         $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
-            'locale' => 'US\Eastern',
+            'timezone' => 'America/New_York',
         ]);
 
-        $contact->sendStayInTouchEmail($user);
+        dispatch(new ScheduleStayInTouch($contact));
 
-        Mail::assertSent(StayInTouchEmail::class, function ($mail) {
-            return $mail->hasTo('john@doe.com');
-        });
+        NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
+            function ($notification, $channels) use ($contact) {
+                return $channels[0] == 'mail'
+                && $notification->assertSentFor($contact);
+            }
+        );
     }
 }

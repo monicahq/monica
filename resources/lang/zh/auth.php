@@ -38,6 +38,8 @@ return [
     'signup_no_account' => '没有账号？',
     'signup' => '注册',
     'create_account' => '单击此处 <a href=":url">注册</a>',
+    'change_language_title' => '更改语言：',
+    'change_language' => '更改语言至：:lang',
 
     'password_reset_title' => '重置密码',
     'password_reset_email' => '电子邮箱',

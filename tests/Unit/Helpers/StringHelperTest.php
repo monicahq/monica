@@ -4,9 +4,12 @@ namespace Tests\Unit\Helpers;
 
 use Tests\TestCase;
 use App\Helpers\StringHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class StringHelperTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function test_it_builds_a_sql_query()
     {
         $array = [

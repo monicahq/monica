@@ -88,7 +88,7 @@ class ImportJob extends Model
     public $contactFieldPhoneId;
 
     /**
-     * Get the account record associated with the gift.
+     * Get the account record associated with the import job.
      *
      * @return BelongsTo
      */
@@ -98,7 +98,7 @@ class ImportJob extends Model
     }
 
     /**
-     * Get the user record associated with the gift.
+     * Get the user record associated with the import job.
      *
      * @return BelongsTo
      */

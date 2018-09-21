@@ -7,13 +7,11 @@ use App\Models\User\User;
 use App\Traits\Searchable;
 use App\Models\Account\Event;
 use App\Models\Journal\Entry;
-use App\Mail\StayInTouchEmail;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
@@ -21,10 +19,12 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
 use App\Models\Relationship\RelationshipType;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
@@ -337,13 +337,33 @@ class Contact extends Model
     }
 
     /**
-     * Get the Notifications records associated with the account.
+     * Get the Notifications records associated with the contact.
      *
      * @return HasMany
      */
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get the Conversation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class)->orderBy('conversations.happened_at', 'desc');
+    }
+
+    /**
+     * Get the Message records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
     }
 
     /**
@@ -937,12 +957,53 @@ class Contact extends Model
             return $this->avatar_external_url;
         }
 
-        $original_avatar_url = Storage::disk($this->avatar_location)->url($this->avatar_file_name);
-        $avatar_filename = pathinfo($original_avatar_url, PATHINFO_FILENAME);
-        $avatar_extension = pathinfo($original_avatar_url, PATHINFO_EXTENSION);
-        $resized_avatar = 'avatars/'.$avatar_filename.'_'.$size.'.'.$avatar_extension;
+        $originalAvatarUrl = $this->avatar_file_name;
+        $avatarFilename = pathinfo($originalAvatarUrl, PATHINFO_FILENAME);
+        $avatarExtension = pathinfo($originalAvatarUrl, PATHINFO_EXTENSION);
+        $resizedAvatar = 'avatars/'.$avatarFilename.'_'.$size.'.'.$avatarExtension;
 
-        return asset(Storage::disk($this->avatar_location)->url($resized_avatar));
+        return asset(Storage::disk($this->avatar_location)->url($resizedAvatar));
+    }
+
+    /**
+     * Delete avatars files.
+     * This does not touch avatar_location or avatar_file_name properties of the contact.
+     */
+    public function deleteAvatars()
+    {
+        if (! $this->has_avatar || $this->avatar_location == 'external') {
+            return;
+        }
+
+        $storage = Storage::disk($this->avatar_location);
+        $this->deleteAvatarSize($storage);
+        $this->deleteAvatarSize($storage, 110);
+        $this->deleteAvatarSize($storage, 174);
+    }
+
+    /**
+     * Delete avatar file for one size.
+     *
+     * @param Filesystem $storage
+     * @param int $size
+     */
+    private function deleteAvatarSize(Filesystem $storage, int $size = null)
+    {
+        $avatarFileName = $this->avatar_file_name;
+
+        if (! is_null($size)) {
+            $filename = pathinfo($avatarFileName, PATHINFO_FILENAME);
+            $extension = pathinfo($avatarFileName, PATHINFO_EXTENSION);
+            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
+        }
+
+        try {
+            if ($storage->exists($avatarFileName)) {
+                $storage->delete($avatarFileName);
+            }
+        } catch (FileNotFoundException $e) {
+            return;
+        }
     }
 
     /**
@@ -1516,16 +1577,5 @@ class Contact extends Model
         }
 
         $this->save();
-    }
-
-    /**
-     * Send the email about staying in touch with the contact.
-     *
-     * @param  User $user
-     * @return void
-     */
-    public function sendStayInTouchEmail(User $user)
-    {
-        Mail::to($user->email)->send(new StayInTouchEmail($this, $user));
     }
 }

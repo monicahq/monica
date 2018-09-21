@@ -18,11 +18,13 @@ use App\Models\Contact\Gender;
 use App\Models\User\Changelog;
 use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
+use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
@@ -361,6 +363,26 @@ class Account extends Model
     }
 
     /**
+     * Get the Conversation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+
+    /**
+     * Get the Message records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
@@ -694,7 +716,9 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        return $plan->stripe_plan;
+        if (! is_null($plan)) {
+            return $plan->stripe_plan;
+        }
     }
 
     /**
@@ -706,7 +730,21 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        return $plan->name;
+        if (! is_null($plan)) {
+            return $plan->name;
+        }
+    }
+
+    /**
+     * Cancel the plan the account is subscribed to.
+     */
+    public function subscriptionCancel()
+    {
+        $plan = $this->subscriptions()->first();
+
+        if (! is_null($plan)) {
+            return $plan->cancelNow();
+        }
     }
 
     /**
@@ -746,7 +784,7 @@ class Account extends Model
      * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create new account
         $account = new self;
@@ -757,7 +795,7 @@ class Account extends Model
         $account->populateDefaultFields();
 
         // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
 
         return $account;
     }

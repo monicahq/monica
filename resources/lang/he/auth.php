@@ -38,6 +38,8 @@ return [
     'signup_no_account' => 'אין לך חשבון?',
     'signup' => 'הרשמה',
     'create_account' => 'ניתן ליצור את החשבון הראשון על ידי <a href=":url">הרשמה</a>',
+    'change_language_title' => 'החלפת שפה:',
+    'change_language' => 'החלפת השפה ל:lang',
 
     'password_reset_title' => 'איפוס ססמה',
     'password_reset_email' => 'כתובת דוא״ל',
