@@ -24,8 +24,6 @@ pipeline {
       }
       steps {
         script {
-          sh 'echo GIT_COMMIT=$GIT_COMMIT'
-          sh 'git log --format="%h" -n 3'
           sh '''
             # Prebuild >
             mkdir -p $HOME/.yarn $HOME/.composer $HOME/.cache $HOME/.config
@@ -351,7 +349,6 @@ pipeline {
       when {
         anyOf {
           branch 'master'
-          branch 'PR-1760'
           buildingTag()
         }
       }
@@ -362,7 +359,6 @@ pipeline {
             beforeAgent true
             anyOf {
               branch 'master'
-              branch 'PR-1760'
               buildingTag()
             }
           }
@@ -400,7 +396,6 @@ pipeline {
             beforeAgent true
             anyOf {
               branch 'master'
-              branch 'PR-1760'
             }
           }
           steps {

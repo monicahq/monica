@@ -29,10 +29,10 @@ $(info PR_NUMBER=$(PR_NUMBER))
 $(info BRANCH=$(BRANCH))
 $(info BUILD_NUMBER=$(BUILD_NUMBER))
 
-$(info GIT_COMMIT=$(GIT_COMMIT))
-$(info GIT_REVISION=$(GIT_REVISION))
 ifeq ($(GIT_COMMIT),)
   GIT_COMMIT := $(shell git log --format="%h" -n 1)
+else
+  GIT_COMMIT := $(shell git rev-parse --short=8 ${GIT_COMMIT})
 endif
 $(info GIT_COMMIT=$(GIT_COMMIT))
 ifeq ($(GIT_TAG),)
