@@ -80,6 +80,16 @@ class User extends Authenticatable
         $user->created_at = now();
         $user->locale = $lang ?: App::getLocale();
 
+        $user->setDefaultCurrencyAndTimezone($ipAddress);
+
+        $user->save();
+
+        $user->acceptPolicy($ipAddress);
+
+        return $user;
+    }
+
+    private function setDefaultCurrencyAndTimezone($ipAddress = null) {
         $infos = RequestHelper::infos($ipAddress);
 
         // Associate timezone and currency
@@ -90,40 +100,39 @@ class User extends Authenticatable
             if ($infos['country']) {
                 $country = CountriesHelper::getCountry($infos['country']);
             } else {
-                $country = CountriesHelper::getCountryFromLang($user->locale);
+                $country = CountriesHelper::getCountryFromLang($this->locale);
             }
         }
 
         // Timezone
         if (! is_null($timezone)) {
-            $user->timezone = $timezone;
+            $this->timezone = $timezone;
         } elseif (! is_null($country)) {
-            $user->timezone = CountriesHelper::getDefaultTimezone($country);
+            $this->timezone = CountriesHelper::getDefaultTimezone($country);
         } else {
-            $user->timezone = config('app.timezone');
+            $this->timezone = config('app.timezone');
         }
 
         // Currency
         if (! is_null($currencyCode)) {
-            $currency = Currency::where('iso', $currencyCode)->first();
-            if (! is_null($currency)) {
-                $user->currency()->associate($currency);
-            }
+            $this->associateCurrency($currencyCode);
         } elseif (! is_null($country)) {
             foreach ($country->currencies as $currency) {
-                $currency2 = Currency::where('iso', $currency)->first();
-                if (! is_null($currency2)) {
-                    $user->currency()->associate($currency2);
+                if ($this->associateCurrency($currency)) {
                     break;
                 }
             }
         }
+    }
 
-        $user->save();
-
-        $user->acceptPolicy($ipAddress);
-
-        return $user;
+    private function associateCurrency($currency) : bool
+    {
+        $currencyObj = Currency::where('iso', $currency)->first();
+        if (! is_null($currencyObj)) {
+            $this->currency()->associate($currencyObj);
+            return true;
+        }
+        return false;
     }
 
     /**
