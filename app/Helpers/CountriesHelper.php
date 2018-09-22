@@ -102,20 +102,19 @@ class CountriesHelper
      */
     public static function getCountryFromLang($locale)
     {
-        $country = self::getDefaultCountryFromLang($locale);
+        $countryCode = self::getDefaultCountryFromLang($locale);
 
-        if (is_null($country)) {
+        if (is_null($countryCode)) {
             $lang = LocaleHelper::getLocaleAlpha($locale);
-            $country = Countries::whereISO639_3($lang);
+            $country = Countries::whereLanguage($lang);
             if ($country->count() === 0) {
                 return;
             }
-            $country = $country->first();
         } else {
-            $country = Countries::where('cca3', $country)->first();
+            $country = Countries::where('cca3', $countryCode);
         }
 
-        return $country;
+        return $country->first();
     }
 
     /**
@@ -161,7 +160,7 @@ class CountriesHelper
                 $country = 'CHN';
                 break;
             default:
-                $country = '';
+                $country = null;
                 break;
         }
 
