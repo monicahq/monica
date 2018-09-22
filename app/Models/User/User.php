@@ -65,10 +65,10 @@ class User extends Authenticatable
      * @param string $email
      * @param string $password
      * @param string $ipAddress
-     * @param string $countryCode
+     * @param string $lang
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $countryCode = null, $lang = null)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create the user
         $user = new self;
@@ -83,27 +83,40 @@ class User extends Authenticatable
         $infos = RequestHelper::infos($ipAddress);
 
         // Associate timezone and currency
-        if ($infos === null) {
-            $country = CountriesHelper::getCountryFromLang($user->locale);
-            if (is_null($country)) {
-                $user->timezone = config('app.timezone');
+        $currencyCode = $infos['currency'];
+        $timezone = $infos['timezone'];
+        $country = null;
+        if (is_null($currencyCode) || is_null($timezone)) {
+            if ($infos['country']) {
+                $country = CountriesHelper::getCountry($infos['country']);
             } else {
-                foreach ($country->currencies as $currency) {
-                    $currency2 = Currency::where('iso', $currency)->first();
-                    if (! is_null($currency2)) {
-                        $user->currency()->associate($currency2);
-                        break;
-                    }
-                }
-                $user->timezone = CountriesHelper::getDefaultTimezone($country);
+                $country = CountriesHelper::getCountryFromLang($user->locale);
             }
+        }
+
+        // Timezone
+        if (! is_null($timezone)) {
+            $user->timezone = $timezone;
+        } else if (! is_null($country)) {
+            $user->timezone = CountriesHelper::getDefaultTimezone($country);
         } else {
-            $currencyCode = $infos['currencyCode'];
+            $user->timezone = config('app.timezone');
+        }
+
+        // Currency
+        if (! is_null($currencyCode)) {
             $currency = Currency::where('iso', $currencyCode)->first();
             if (! is_null($currency)) {
                 $user->currency()->associate($currency);
             }
-            $user->timezone = $infos['timezone'];
+        } else if (! is_null($country)) {
+            foreach ($country->currencies as $currency) {
+                $currency2 = Currency::where('iso', $currency)->first();
+                if (! is_null($currency2)) {
+                    $user->currency()->associate($currency2);
+                    break;
+                }
+            }
         }
 
         $user->save();

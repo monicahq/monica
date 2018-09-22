@@ -81,7 +81,7 @@ class CountriesHelper
      * @param string $iso
      * @return object  the Country element
      */
-    private static function getCountry($iso)
+    public static function getCountry($iso)
     {
         $country = Countries::where('cca2', mb_strtoupper($iso))->first();
         if ($country->count() === 0) {
