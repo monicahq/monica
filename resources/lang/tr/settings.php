@@ -56,6 +56,7 @@ return [
     'locale_es' => 'İspanyolca',
     'locale_fr' => 'Fransızca',
     'locale_he' => 'İbranice',
+    'locale_hr' => 'Croatian',
     'locale_it' => 'İtalyanca',
     'locale_nl' => 'Flemenkçe',
     'locale_pt' => 'Portekizce',
