@@ -4,7 +4,6 @@ namespace App\Helpers;
 
 use Vectorface\Whip\Whip;
 use OK\Ipstack\Client as Ipstack;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
 
 class RequestHelper
@@ -37,14 +36,14 @@ class RequestHelper
     public static function infos($ip)
     {
         if (config('location.ipstack_apikey') == null) {
-            return null;
+            return;
         }
 
         $ipstack = new Ipstack(config('location.ipstack_apikey'));
         $position = $ipstack->get($ip ?? static::ip());
 
         if (is_null($position)) {
-            return null;
+            return;
         }
 
         return [

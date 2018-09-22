@@ -551,7 +551,7 @@ class ImportJob extends Model
         if (! $this->contactFieldEmailId) {
             $contactFieldType = ContactFieldType::where([
                 ['account_id', $this->account_id],
-                ['type', 'email']
+                ['type', 'email'],
             ])->first();
             if ($contactFieldType) {
                 $this->contactFieldEmailId = $contactFieldType->id;
@@ -566,7 +566,7 @@ class ImportJob extends Model
         if (! $this->contactFieldPhoneId) {
             $contactFieldType = ContactFieldType::where([
                 ['account_id', $this->account_id],
-                ['type', 'phone']
+                ['type', 'phone'],
             ])->first();
             if ($contactFieldType) {
                 $this->contactFieldPhoneId = $contactFieldType->id;
