@@ -7,6 +7,7 @@
 
 namespace App\Services\Auth\Population;
 
+use Illuminate\Support\Collection;
 use App\Services\BaseService;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;

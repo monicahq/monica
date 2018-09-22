@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
