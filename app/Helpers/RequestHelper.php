@@ -36,12 +36,12 @@ class RequestHelper
      */
     public static function infos($ip): Collection
     {
-        if (is_null($ip)) {
-            $ip = static::ip();
+        if (config('location.ipstack_apikey') === null) {
+            return null;
         }
 
         $ipstack = new Ipstack(config('location.ipstack_apikey'));
-        $position = $ipstack->get($ip);
+        $position = $ipstack->get($ip ?? static::ip());
 
         if (is_null($position)) {
             return null;

@@ -83,7 +83,7 @@ class User extends Authenticatable
         $infos = RequestHelper::infos($ipAddress);
 
         // Associate timezone and currency
-        if (is_null($infos)) {
+        if ($infos === null) {
             $country = CountriesHelper::getCountryFromLang($user->locale);
             if (is_null($country)) {
                 $user->timezone = config('app.timezone');
