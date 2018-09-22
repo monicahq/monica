@@ -1,10 +1,5 @@
 <?php
 
-/**
- * This is a single action class, totally inspired by
- * https://medium.com/@remi_collin/keeping-your-laravel-applications-dry-with-single-action-classes-6a950ec54d1d.
- */
-
 namespace App\Services\Auth\Population;
 
 use App\Services\BaseService;
@@ -125,7 +120,7 @@ class PopulateLifeEventsTable extends BaseService
      * Create an entry in the life event category table.
      *
      * @param object $defaultLifeEventCategory
-     * @return void
+     * @return LifeEventCategory
      */
     private function feedLifeEventCategory($defaultLifeEventCategory): LifeEventCategory
     {

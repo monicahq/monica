@@ -276,7 +276,7 @@ class DateHelper
     /**
      * Gets a list of all the months in a year.
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfMonths()
     {
@@ -298,7 +298,7 @@ class DateHelper
     /**
      * Gets a list of all the days in a month.
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfDays()
     {

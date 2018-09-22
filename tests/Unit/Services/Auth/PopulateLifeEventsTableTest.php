@@ -31,7 +31,7 @@ class PopulateLifeEventsTableTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $populateLifeEventService = new PopulateLifeEvents;
+        $populateLifeEventService = new PopulateLifeEventsTable;
         $populateLifeEventService->execute($request);
     }
 
