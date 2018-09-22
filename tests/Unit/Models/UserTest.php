@@ -9,6 +9,7 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\User\Changelog;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Bus;

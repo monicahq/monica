@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Vectorface\Whip\Whip;
 use OK\Ipstack\Client as Ipstack;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Request;
 
 class RequestHelper
@@ -31,9 +32,9 @@ class RequestHelper
      * Get client country and currency.
      *
      * @param string $ip
-     * @return string
+     * @return Collection
      */
-    public static function infos($ip): array
+    public static function infos($ip): Collection
     {
         if (is_null($ip)) {
             $ip = static::ip();
@@ -43,13 +44,13 @@ class RequestHelper
         $position = $ipstack->get($ip);
 
         if (is_null($position)) {
-            return;
+            return null;
         }
 
-        return [
+        return collect([
             'country' => array_get($position, 'country_code'),
             'currency' => array_get($position, 'currency.code'),
             'timezone' => array_get($position, 'time_zone.id'),
-        ];
+        ]);
     }
 }
