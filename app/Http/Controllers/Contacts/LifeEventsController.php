@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
-use Illuminate\Support\Collection;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\LifeEventCategory;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
