@@ -32,11 +32,11 @@ class RequestHelper
      * Get client country and currency.
      *
      * @param string $ip
-     * @return Collection|null
+     * @return array|null
      */
-    public static function infos($ip): Collection
+    public static function infos($ip)
     {
-        if (config('location.ipstack_apikey') === null) {
+        if (config('location.ipstack_apikey') == null) {
             return null;
         }
 
@@ -47,10 +47,10 @@ class RequestHelper
             return null;
         }
 
-        return collect([
+        return [
             'country' => array_get($position, 'country_code'),
             'currency' => array_get($position, 'currency.code'),
             'timezone' => array_get($position, 'time_zone.id'),
-        ]);
+        ];
     }
 }

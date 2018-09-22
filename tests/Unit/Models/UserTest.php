@@ -9,11 +9,8 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\User\Changelog;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Bus;
-use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
@@ -341,21 +338,6 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_it_sends_reminder()
-    {
-        Bus::fake();
-        $user = factory(User::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $reminder = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
-            'contact_id' => $contact->id,
-            'next_expected_date' => '2018-01-01',
-        ]);
-        $user->sendReminder($reminder);
-
-        Bus::assertDispatched(SendReminderEmail::class);
-    }
-
     public function test_it_create_default_user_en()
     {
         App::setLocale('en');
@@ -370,7 +352,7 @@ class UserTest extends TestCase
             'last_name' => 'Doe',
             'email' => 'john@doe.com',
             'locale' => 'en',
-            'timezone' => 'US/Central',
+            'timezone' => 'America/Chicago',
             'currency_id' => 2,
         ]);
     }
@@ -560,7 +542,7 @@ class UserTest extends TestCase
             'last_name' => 'Doe',
             'email' => 'john@doe.com',
             'locale' => 'zh',
-            'timezone' => 'Asia/Hong_Kong',
+            'timezone' => 'Asia/Shanghai',
             'currency_id' => 37,
         ]);
     }

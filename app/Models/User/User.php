@@ -98,12 +98,12 @@ class User extends Authenticatable
                 $user->timezone = CountriesHelper::getDefaultTimezone($country);
             }
         } else {
-            $currencyCode = $infos->get('currencyCode');
+            $currencyCode = $infos['currencyCode'];
             $currency = Currency::where('iso', $currencyCode)->first();
             if (! is_null($currency)) {
                 $user->currency()->associate($currency);
             }
-            $user->timezone = $infos->get('timezone');
+            $user->timezone = $infos['timezone'];
         }
 
         $user->save();
