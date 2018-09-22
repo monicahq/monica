@@ -89,7 +89,8 @@ class User extends Authenticatable
         return $user;
     }
 
-    private function setDefaultCurrencyAndTimezone($ipAddress = null) {
+    private function setDefaultCurrencyAndTimezone($ipAddress = null)
+    {
         $infos = RequestHelper::infos($ipAddress);
 
         // Associate timezone and currency
@@ -130,8 +131,10 @@ class User extends Authenticatable
         $currencyObj = Currency::where('iso', $currency)->first();
         if (! is_null($currencyObj)) {
             $this->currency()->associate($currencyObj);
+
             return true;
         }
+
         return false;
     }
 
