@@ -60,6 +60,12 @@ class ExportAccountAsSQL
     protected $path = '';
 
     /**
+     * Storage disk used to store the exported file.
+     * @var string
+     */
+    public const STORAGE = 'public';
+
+    /**
      * Create a new job instance.
      *
      * @param string|null $file
@@ -158,7 +164,7 @@ class ExportAccountAsSQL
             $sql .= $newSQLLine;
         }
 
-        Storage::disk(config('filesystems.default'))->put($downloadPath, $sql);
+        Storage::disk(self::STORAGE)->put($downloadPath, $sql);
 
         return $downloadPath;
     }
