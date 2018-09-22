@@ -216,7 +216,7 @@ class SettingsController extends Controller
         $path = $this->dispatchNow(new ExportAccountAsSQL());
 
         return response()
-            ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
+            ->download(Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
             ->deleteFileAfterSend(true);
     }
 
