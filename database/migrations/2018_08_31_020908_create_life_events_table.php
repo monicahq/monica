@@ -105,14 +105,14 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'new_school',
             'default_life_event_category_id' => $defaultCategoryId,
-            'specific_information_structure' => '{"degree": {"type": "string", "value": ""}, "end_date": {"type": "date", "value": ""}, "school_name": {"type": "string", "value": ""}, "studying": {"type": "string", "value": ""}}',
+            'specific_information_structure' => '{"degree": {"type": "string", "value": ""}, "end_date": {"type": "date", "value": ""}, "end_date_reminder_id": {"type": "integer", "value": ""}, "school_name": {"type": "string", "value": ""}, "studying": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'study_abroad',
             'default_life_event_category_id' => $defaultCategoryId,
-            'specific_information_structure' => '{"degree": {"type": "string", "value": ""}, "end_date": {"type": "date", "value": ""}, "school_name": {"type": "string", "value": ""}, "studying": {"type": "string", "value": ""}}',
+            'specific_information_structure' => '{"degree": {"type": "string", "value": ""}, "end_date": {"type": "date", "value": ""}, "end_date_reminder_id": {"type": "integer", "value": ""}, "school_name": {"type": "string", "value": ""}, "studying": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -133,7 +133,7 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'military_service',
             'default_life_event_category_id' => $defaultCategoryId,
-            'specific_information_structure' => '{"end_date": {"type": "date", "value": ""}, "branch": {"type": "string", "value": ""}, "division": {"type": "string", "value": ""}, "country": {"type": "string", "value": ""}}',
+            'specific_information_structure' => '{"end_date": {"type": "date", "value": ""}, "end_date_reminder_id": {"type": "integer", "value": ""}, "branch": {"type": "string", "value": ""}, "division": {"type": "string", "value": ""}, "country": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -153,12 +153,14 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'engagement',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"with_contact_id": {"type": "integer", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'marriage',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"with_contact_id": {"type": "integer", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -171,6 +173,7 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'expecting_a_baby',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"contact_id": {"type": "integer", "value": ""}, "expected_date": {"type": "date", "value": ""}, "expected_date_reminder_id": {"type": "integer", "value": ""}, "expected_gender": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -195,6 +198,7 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'end_of_relationship',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"breakup_reason": {"type": "string", "value": ""}, "who_broke_up_contact_id": {"type": "integer", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -215,12 +219,14 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'moved',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"where_to": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'bought_a_home',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"address": {"type": "string", "value": ""}, "estimated_value": {"type": "number", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -233,18 +239,21 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'holidays',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"where": {"type": "string", "value": ""}, "duration_in_days": {"type": "integer", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'new_vehicule',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"type": {"type": "string", "value": ""}, "model": {"type": "string", "value": ""}, "model_year": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'new_roommate',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"contact_id": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -277,6 +286,7 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'weight_loss',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"amount": {"type": "string", "value": ""}, "unit": {"type": "string", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -301,6 +311,7 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'surgery',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"nature": {"type": "string", "value": ""}, "number_days_in_hospital": {"type": "integer", "value": ""}, "number_days_in_hospital": {"type": "integer", "value": ""}, "expected_date_out_of_hospital_reminder_id": {"type": "integer", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
@@ -357,6 +368,7 @@ class CreateLifeEventsTable extends Migration
         DB::table('default_life_event_types')->insert([
             'translation_key' => 'travel',
             'default_life_event_category_id' => $defaultCategoryId,
+            'specific_information_structure' => '{"visited_place": {"type": "string", "value": ""}, "duration_in_days": {"type": "integer", "value": ""}}',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
