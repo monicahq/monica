@@ -56,6 +56,7 @@ return [
     'locale_es' => 'الإسبانية',
     'locale_fr' => 'الفرنسية',
     'locale_he' => 'العبرية',
+    'locale_hr' => 'Croatian',
     'locale_it' => 'الإيطالية',
     'locale_nl' => 'الهولندية',
     'locale_pt' => 'البرتغالية',
