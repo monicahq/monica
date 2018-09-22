@@ -76,7 +76,7 @@ return [
     |
     | The testing IP address is a Google host in the United-States.
     |
-    */	
+    */
     'testing' => [
         'enabled' => true,
         'ip' => '66.102.0.0',

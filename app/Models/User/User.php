@@ -97,7 +97,7 @@ class User extends Authenticatable
         // Timezone
         if (! is_null($timezone)) {
             $user->timezone = $timezone;
-        } else if (! is_null($country)) {
+        } elseif (! is_null($country)) {
             $user->timezone = CountriesHelper::getDefaultTimezone($country);
         } else {
             $user->timezone = config('app.timezone');
@@ -109,7 +109,7 @@ class User extends Authenticatable
             if (! is_null($currency)) {
                 $user->currency()->associate($currency);
             }
-        } else if (! is_null($country)) {
+        } elseif (! is_null($country)) {
             foreach ($country->currencies as $currency) {
                 $currency2 = Currency::where('iso', $currency)->first();
                 if (! is_null($currency2)) {
