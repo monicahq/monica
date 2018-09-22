@@ -56,6 +56,7 @@ return [
     'locale_es' => '西班牙文',
     'locale_fr' => '法文',
     'locale_he' => '希伯来文',
+    'locale_hr' => 'Croatian',
     'locale_it' => '意大利文',
     'locale_nl' => '荷兰文',
     'locale_pt' => '葡萄牙文',
