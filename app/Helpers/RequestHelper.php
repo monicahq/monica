@@ -32,7 +32,7 @@ class RequestHelper
      * Get client country and currency.
      *
      * @param string $ip
-     * @return Collection
+     * @return Collection|null
      */
     public static function infos($ip): Collection
     {
