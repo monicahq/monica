@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Fix now() without timezone functions
 * Remove notion of events
 * Support papertrail logging
+* Add sentry:release command
 
 RELEASED VERSIONS:
 
