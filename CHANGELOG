@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Fix confirm email sent when signup_double_optin is false
 * Fix now() without timezone functions
+* Add Envoy file template
 
 RELEASED VERSIONS:
 
