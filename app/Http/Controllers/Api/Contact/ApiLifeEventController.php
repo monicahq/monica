@@ -22,13 +22,9 @@ class ApiLifeEventController extends ApiController
      */
     public function index(Request $request)
     {
-        try {
-            $lifeEvents = auth()->user()->account->lifeEvents()
-                ->orderBy($this->sort, $this->sortDirection)
-                ->paginate($this->getLimitPerPage());
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
-        }
+        $lifeEvents = auth()->user()->account->lifeEvents()
+            ->orderBy($this->sort, $this->sortDirection)
+            ->paginate($this->getLimitPerPage());
 
         return LifeEventResource::collection($lifeEvents);
     }
@@ -73,8 +69,6 @@ class ApiLifeEventController extends ApiController
             return $this->setHTTPStatusCode(500)
                 ->setErrorCode(41)
                 ->respondWithError(config('api.error_codes.41'));
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
         }
 
         return new LifeEventResource($lifeEvent);
@@ -100,12 +94,10 @@ class ApiLifeEventController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (\Exception $e) {
+        } catch (MissingParameterException $e) {
             return $this->setHTTPStatusCode(500)
                 ->setErrorCode(41)
                 ->respondWithError(config('api.error_codes.41'));
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
         }
 
         return new LifeEventResource($lifeEvent);
@@ -127,12 +119,6 @@ class ApiLifeEventController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (\Exception $e) {
-            return $this->setHTTPStatusCode(500)
-                ->setErrorCode(41)
-                ->respondWithError(config('api.error_codes.41'));
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
         }
 
         return $this->respondObjectDeleted((int) $lifeEventId);

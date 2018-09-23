@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Exceptions\MissingParameterException;
 
 class ApiLifeEventControllerTest extends ApiTestCase
 {
@@ -125,6 +126,15 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_getting_a_life_event_doesnt_work_if_life_event_doesnt_exist()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/lifeevents/329029093809');
+
+        $this->expectNotFound($response);
+    }
+
     public function test_it_creates_a_life_event()
     {
         $user = $this->signin();
@@ -151,6 +161,64 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_creating_a_life_event_doesnt_work_if_ids_are_not_found()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('POST', '/api/lifeevents', [
+            'contact_id' => $contact->id,
+            'life_event_type_id' => 392029834029,
+            'happened_at' => '1989-02-02',
+            'name' => 'This is a text',
+            'note' => 'This is a text',
+        ]);
+
+        $this->expectNotFound($response);
+
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/lifeevents', [
+            'contact_id' => 9320984209,
+            'life_event_type_id' => $lifeEventType->id,
+            'happened_at' => '1989-02-02',
+            'name' => 'This is a text',
+            'note' => 'This is a text',
+        ]);
+
+        $this->expectNotFound($response);
+    }
+
+    public function test_creating_a_life_event_doesnt_work_if_parameters_are_not_right()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/lifeevents', [
+            'contact_id' => $contact->id,
+            'life_event_type_id' => $lifeEventType->id,
+            'name' => 'This is a text',
+            'note' => 'This is a text',
+        ]);
+
+        $response->assertStatus(500);
+
+        $response->assertJsonFragment([
+            'error_code' => 41,
+        ]);
+    }
+
     public function test_it_updates_a_life_event()
     {
         $user = $this->signin();
@@ -174,6 +242,56 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_updating_a_life_event_doesnt_work_if_ids_are_not_found()
+    {
+        $user = $this->signin();
+
+        $lifeEvent = $this->createLifeEvent($user);
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/lifeevents/23929390', [
+            'happened_at' =>  '1989-02-02',
+            'life_event_type_id' => $lifeEventType->id,
+            'name' => 'This is a text',
+            'note' => 'This is a text',
+        ]);
+
+        $this->expectNotFound($response);
+
+        $response = $this->json('PUT', '/api/lifeevents/'.$lifeEvent->id, [
+            'happened_at' => '1989-02-02',
+            'life_event_type_id' => 3283028,
+            'name' => 'This is a text',
+            'note' => 'This is a text',
+        ]);
+
+        $this->expectNotFound($response);
+    }
+
+    public function test_updating_a_life_event_doesnt_work_if_parameters_are_not_right()
+    {
+        $user = $this->signin();
+
+        $lifeEvent = $this->createLifeEvent($user);
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/lifeevents/'.$lifeEvent->id, [
+            'life_event_type_id' => $lifeEventType->id,
+            'name' => 'This is a text',
+            'note' => 'This is a text',
+        ]);
+
+        $response->assertStatus(500);
+
+        $response->assertJsonFragment([
+            'error_code' => 41,
+        ]);
+    }
+
     public function test_it_destroys_a_life_event()
     {
         $user = $this->signin();
@@ -188,5 +306,16 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'deleted' => true,
             'id' => $lifeEvent->id,
         ]);
+    }
+
+    public function test_deleting_a_life_event_doesnt_work_if_ids_are_not_found()
+    {
+        $user = $this->signin();
+
+        $lifeEvent = $this->createLifeEvent($user);
+
+        $response = $this->delete('/api/lifeevents/39230990');
+
+        $this->expectNotFound($response);
     }
 }
