@@ -49,14 +49,5 @@ class TaskTest extends FeatureTestCase
         $params['description'] = $taskDescription;
 
         $this->assertDatabaseHas('tasks', $params);
-
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'task';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
     }
 }

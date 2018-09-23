@@ -148,8 +148,6 @@ class ContactsController extends Controller
         $contact->setAvatarColor();
         $contact->save();
 
-        $contact->logEvent('contact', $contact->id, 'create');
-
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
             return redirect()->route('people.show', $contact);
@@ -346,8 +344,6 @@ class ContactsController extends Controller
 
                 break;
         }
-
-        $contact->logEvent('contact', $contact->id, 'update');
 
         dispatch(new ResizeAvatars($contact));
 

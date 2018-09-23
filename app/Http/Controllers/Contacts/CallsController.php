@@ -28,8 +28,6 @@ class CallsController extends Controller
             ]
         );
 
-        $contact->logEvent('call', $call->id, 'create');
-
         $contact->updateLastCalledInfo($call);
 
         return redirect()->route('people.show', $contact)
@@ -50,8 +48,6 @@ class CallsController extends Controller
         }
 
         $call->delete();
-
-        $contact->events()->forObject($call)->get()->each->delete();
 
         if ($contact->calls()->count() == 0) {
             $contact->last_talked_to = null;

@@ -18,3 +18,4 @@ yarn-error.log
 /tests/Cypress/videos
 php-extensions-*.tar.bz2
 monicadump.sql
+.scannerwork/
