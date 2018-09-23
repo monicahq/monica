@@ -11,6 +11,7 @@ use App\Models\Contact\Gender;
 use App\Models\User\Changelog;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Document;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
@@ -142,6 +143,16 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->messages()->exists());
+    }
+
+    public function test_it_has_many_documents()
+    {
+        $account = factory(Account::class)->create([]);
+        $document = factory(Document::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->documents()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()

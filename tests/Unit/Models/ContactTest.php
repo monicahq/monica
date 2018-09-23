@@ -12,6 +12,7 @@ use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
+use App\Models\Contact\Document;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
@@ -93,6 +94,18 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($contact->messages()->exists());
+    }
+
+    public function test_it_has_many_documents()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $documents = factory(Document::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->documents()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()

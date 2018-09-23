@@ -367,6 +367,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Document records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria

@@ -12,6 +12,7 @@ use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
+use App\Models\Contact\Document;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
@@ -380,6 +381,16 @@ class Account extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get the Document records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
     }
 
     /**
