@@ -88,7 +88,7 @@ return [
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
     'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
-    'error_id' => 'ID d’erreur : :id',
+    'error_id' => 'Erreur numéro : :id',
     'error_unavailable' => 'Service non disponible',
     'error_maintenance' => 'Maintenance en cours. On revient vite !',
     'error_help' => 'On revient tout de suite.',
