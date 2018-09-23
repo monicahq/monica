@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Document\UploadDocument;
 
 class ContactsController extends Controller
 {
@@ -286,9 +287,14 @@ class ContactsController extends Controller
                 }
             }
 
-            $contact->has_avatar = true;
-            $contact->avatar_location = config('filesystems.default');
-            $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
+            // $contact->has_avatar = true;
+            // $contact->avatar_location = config('filesystems.default');
+            // $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
+            (new UploadDocument)->execute([
+                    'account_id' => auth()->user()->account->id,
+                    'contact_id' => $contact->id,
+                    'document' => $request->avatar
+            ]);
         }
 
         // Is the person deceased?

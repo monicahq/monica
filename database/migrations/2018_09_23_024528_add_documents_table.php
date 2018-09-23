@@ -20,7 +20,7 @@ class AddDocumentsTable extends Migration
             $table->string('filename');
             $table->integer('filesize');
             $table->string('type');
-            $table->integer('number_of_downloads');
+            $table->integer('number_of_downloads')->default(0);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
