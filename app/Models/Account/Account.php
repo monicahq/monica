@@ -41,6 +41,7 @@ use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Account extends Model
 {
@@ -980,11 +981,15 @@ class Account extends Model
      *
      * @return string
      *
-     * @throws ModelNotFoundException if there are no users.
+     * @throws ModelNotFoundException
      */
     public function getFirstLocale()
     {
-        $user = $this->users()->firstOrFail();
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return;
+        }
 
         return $user->locale;
     }

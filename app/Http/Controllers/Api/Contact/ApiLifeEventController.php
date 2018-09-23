@@ -10,6 +10,7 @@ use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 use App\Http\Resources\LifeEvent\LifeEvent as LifeEventResource;
 
 class ApiLifeEventController extends ApiController
@@ -68,7 +69,7 @@ class ApiLifeEventController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (\Exception $e) {
+        } catch (MissingParameterException $e) {
             return $this->setHTTPStatusCode(500)
                 ->setErrorCode(41)
                 ->respondWithError(config('api.error_codes.41'));

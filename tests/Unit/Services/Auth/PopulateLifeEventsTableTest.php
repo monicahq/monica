@@ -74,6 +74,19 @@ class PopulateLifeEventsTableTest extends TestCase
         ]);
     }
 
+    public function test_it_refuses_to_populate_table_if_account_doesnt_have_locale()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $request = [
+            'account_id' => $account->id,
+            'migrate_existing_data' => 0,
+        ];
+
+        $populateLifeEventService = new PopulateLifeEventsTable;
+        $this->assertNull($populateLifeEventService->execute($request));
+    }
+
     public function test_it_only_populates_life_event_tables_partially()
     {
         $account = factory(Account::class)->create([]);

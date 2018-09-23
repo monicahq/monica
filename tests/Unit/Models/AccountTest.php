@@ -815,8 +815,7 @@ class AccountTest extends FeatureTestCase
     {
         $account = factory(Account::class)->create();
 
-        $this->expectException(ModelNotFoundException::class);
-        $account->getFirstLocale();
+        $this->assertNull($account->getFirstLocale());
     }
 
     /**
