@@ -14,7 +14,7 @@ return [
     'notification_description' => 'בעוד :count ימים (ב־:date), יתרחש האירוע הבא:',
 
     'stay_in_touch_subject_line' => 'לשמור על קשר עם :name',
-    'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency day.|You asked to be reminded to stay in touch with :name every :frequency days.',
+    'stay_in_touch_subject_description' => '{1}ביקשת לקבל תזכורת ליצור קשר עם :name כל יום.|{2}ביקשת לקבל תזכורת ליצור קשר עם :name כל יומיים.|{3,n}ביקשת לקבל תזכורת ליצור קשר עם :name כל :frequency ימים.',
 
     'notifications_whoops' => 'אופס!',
     'notifications_hello' => 'שלום!',
