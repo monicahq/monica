@@ -43,7 +43,7 @@ class DebtController extends Controller
      */
     public function store(DebtRequest $request, Contact $contact)
     {
-        $debt = $contact->debts()->create(
+        $contact->debts()->create(
             $request->only([
                 'in_debt',
                 'amount',

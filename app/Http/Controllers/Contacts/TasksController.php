@@ -38,13 +38,11 @@ class TasksController extends Controller
      */
     public function store(TasksRequest $request, Contact $contact)
     {
-        $task = $contact->tasks()->create([
+        return $contact->tasks()->create([
             'account_id' => auth()->user()->account_id,
             'title' => $request->get('title'),
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
         ]);
-
-        return $task;
     }
 
     /**
