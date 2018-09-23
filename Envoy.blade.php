@@ -33,4 +33,5 @@
 
 @task('sentry', ['on' => 'web'])
     php artisan sentry:release --force -vvv --release={{ $release }} --environment=production --commit={{ $commit }}
+    php artisan config:cache
 @endtask
