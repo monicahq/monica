@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Tests\Traits\ApiSignIn;
+use Illuminate\Http\Response;
 
 class ApiTestCase extends TestCase
 {
@@ -14,7 +15,7 @@ class ApiTestCase extends TestCase
      * @param  Response $response
      * @return mixed
      */
-    public function expectNotFound($response)
+    public function expectNotFound(Response $response)
     {
         $response->assertStatus(404);
 
