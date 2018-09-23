@@ -76,38 +76,7 @@ class SentryRelease extends Command
      */
     public function handle()
     {
-        if (! $this->confirmToProceed()) {
-            return;
-        }
-
-        if (empty(config('sentry.auth_token'))) {
-            $this->error('You must provide an auth_token (SENTRY_AUTH_TOKEN)');
-
-            return;
-        }
-        if (empty(config('sentry.organisation'))) {
-            $this->error('You must provide an organisation slug (SENTRY_ORG)');
-
-            return;
-        }
-        if (empty(config('sentry.project'))) {
-            $this->error('You must set the project (SENTRY_PROJECT)');
-
-            return;
-        }
-        if (empty(config('sentry.repo'))) {
-            $this->error('You must set the repository (SENTRY_REPO)');
-
-            return;
-        }
-        if (empty($this->option('release'))) {
-            $this->error('No release given');
-
-            return;
-        }
-        if (empty($this->option('environment'))) {
-            $this->error('No environment given');
-
+        if (! $this->confirmToProceed() || ! $this->check()) {
             return;
         }
 
@@ -129,6 +98,36 @@ class SentryRelease extends Command
         // Set sentry release
         $this->line('Store release in .sentry-release file', OutputInterface::VERBOSITY_VERBOSE);
         file_put_contents(__DIR__.'/../../../.sentry-release', $this->option('release'));
+    }
+
+    private function check() : bool
+    {
+        $check = true;
+        if (empty(config('sentry.auth_token'))) {
+            $this->error('You must provide an auth_token (SENTRY_AUTH_TOKEN)');
+            $check = false;
+        }
+        if (empty(config('sentry.organisation'))) {
+            $this->error('You must provide an organisation slug (SENTRY_ORG)');
+            $check = false;
+        }
+        if (empty(config('sentry.project'))) {
+            $this->error('You must set the project (SENTRY_PROJECT)');
+            $check = false;
+        }
+        if (empty(config('sentry.repo'))) {
+            $this->error('You must set the repository (SENTRY_REPO)');
+            $check = false;
+        }
+        if (empty($this->option('release'))) {
+            $this->error('No release given');
+            $check = false;
+        }
+        if (empty($this->option('environment'))) {
+            $this->error('No environment given');
+            $check = false;
+        }
+        return $check;
     }
 
     private function getSentryCli()
