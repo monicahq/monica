@@ -7,6 +7,7 @@ UNRELEASED CHANGES:
 * Remove notion of events
 * Support papertrail logging
 * Add sentry:release command
+* Add Envoy file template
 
 RELEASED VERSIONS:
 
