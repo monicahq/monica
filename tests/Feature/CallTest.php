@@ -108,7 +108,8 @@ class CallTest extends FeatureTestCase
         // Check that the Contact view contains the newly created call
         $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
-        $response->assertSee('This is a test call');    }
+        $response->assertSee('This is a test call');
+    }
 
     public function test_user_can_delete_a_call()
     {
