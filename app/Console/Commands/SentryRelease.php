@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use Symfony\Component\Console\Output\OutputInterface;
 use App\Console\Commands\Helpers\CommandExecutor;
+use Symfony\Component\Console\Output\OutputInterface;
 use App\Console\Commands\Helpers\CommandExecutorInterface;
 
 class SentryRelease extends Command
@@ -30,26 +30,25 @@ class SentryRelease extends Command
     protected $description = 'Create a release for sentry';
 
     /**
-     * Installation path of sentry cli
-     * 
+     * Installation path of sentry cli.
+     *
      * @var string
      */
     private $install_dir;
 
     /**
-     * sentry cli name
-     * 
+     * sentry cli name.
+     *
      * @var string
      */
-    private const SENTRY_CLI = "sentry-cli";
+    private const SENTRY_CLI = 'sentry-cli';
 
     /**
-     * Sentry cli download url
-     * 
+     * Sentry cli download url.
+     *
      * @var string
      */
-    private const SENTRY_URL = "https://sentry.io/get-cli/";
-
+    private const SENTRY_URL = 'https://sentry.io/get-cli/';
 
     /**
      * The Command Executor.
@@ -66,7 +65,7 @@ class SentryRelease extends Command
     public function __construct()
     {
         $this->commandExecutor = new CommandExecutor($this);
-        $this->install_dir = getenv("HOME")."/.local/bin";
+        $this->install_dir = getenv('HOME').'/.local/bin';
         parent::__construct();
     }
 
@@ -83,32 +82,37 @@ class SentryRelease extends Command
 
         if (empty(config('sentry.auth_token'))) {
             $this->error('You must provide an auth_token (SENTRY_AUTH_TOKEN)');
+
             return;
         }
         if (empty(config('sentry.organisation'))) {
-            $this->error('You must provide an organisation slug (SENTRY_ORG)');            
+            $this->error('You must provide an organisation slug (SENTRY_ORG)');
+
             return;
         }
         if (empty(config('sentry.project'))) {
-            $this->error('You must set the project (SENTRY_PROJECT)');            
+            $this->error('You must set the project (SENTRY_PROJECT)');
+
             return;
         }
         if (empty(config('sentry.repo'))) {
-            $this->error('You must set the repository (SENTRY_REPO)');            
+            $this->error('You must set the repository (SENTRY_REPO)');
+
             return;
         }
         if (empty($this->option('release'))) {
-            $this->error('No release given');            
+            $this->error('No release given');
+
             return;
         }
         if (empty($this->option('environment'))) {
-            $this->error('No environment given');            
+            $this->error('No environment given');
+
             return;
         }
 
         $release = $this->option('release');
         $commit = $this->option('commit') ?? (is_dir(__DIR__.'/../../../.git') ? trim(exec('git log --pretty="%H" -n1 HEAD')) : $this->option('release'));
-
 
         // Sentry update
         $this->commandExecutor->exec('Update sentry', $this->getSentryCli().' update');
@@ -127,11 +131,13 @@ class SentryRelease extends Command
         file_put_contents(__DIR__.'/../../../.sentry-release', $this->option('release'));
     }
 
-    private function getSentryCli() {
+    private function getSentryCli()
+    {
         if (! file_exists($this->install_dir.'/'.self::SENTRY_CLI)) {
             mkdir($this->install_dir);
             $this->commandExecutor->exec('Downloading sentry-cli', 'curl -sL '.self::SENTRY_URL.' | INSTALL_DIR='.$this->install_dir.' bash');
         }
+
         return $this->install_dir.'/'.self::SENTRY_CLI;
     }
 

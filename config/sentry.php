@@ -68,5 +68,5 @@ return [
     | See https://sentry.io/settings/{slug}/repos/
     |
     */
-    'repo' => env('SENTRY_REPO', 'monicahq/monica')
+    'repo' => env('SENTRY_REPO', 'monicahq/monica'),
 ];
