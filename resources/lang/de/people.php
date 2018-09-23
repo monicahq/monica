@@ -62,7 +62,7 @@ return [
     // Header
     'edit_contact_information' => 'Kontaktinformationen bearbeiten',
     'call_button' => 'Telefonat vermerken',
-    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
+    'set_favorite' => 'Favoriten werden in der Kontaktliste ganz oben angezeigt',
 
     // Stay in touch
     'stay_in_touch' => 'In Kontakt bleiben',
@@ -88,19 +88,19 @@ return [
     'call_blank_desc' => 'Du hast :name angerufen',
 
     // Conversation
-    'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
-    'conversation_delete_link' => 'Delete the conversation',
+    'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :Henning auf Social Media, via SMS etc. hast',
+    'conversation_delete_link' => 'Konversation löschen',
     'conversation_edit_title' => 'Edit conversation',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
     'conversation_delete_success' => 'The conversation has been successfully deleted.',
-    'conversation_add_title' => 'Record a new conversation',
-    'conversation_add_when' => 'When did you have this conversation?',
-    'conversation_add_who_wrote' => 'Who said this message?',
-    'conversation_add_how' => 'How did you communicate?',
-    'conversation_add_you' => 'You',
-    'conversation_add_content' => 'Write down what was said',
-    'conversation_add_what_was_said' => 'What did you say?',
-    'conversation_add_another' => 'Add another message',
+    'conversation_add_title' => 'Eine neue Konversation ins Logbuch hinzufügen',
+    'conversation_add_when' => 'Wann hattet ihr diese Konversation?',
+    'conversation_add_who_wrote' => 'Wer machte die Aussage?',
+    'conversation_add_how' => 'Über welches Medium habt ihr kommuniziert?',
+    'conversation_add_you' => 'Ich selber',
+    'conversation_add_content' => 'Schreibe hier, was gesagt wurde',
+    'conversation_add_what_was_said' => 'Was war der Gesprächsinhalt?',
+    'conversation_add_another' => 'Eine weitere Nachricht hinzufügen',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Conversations',
