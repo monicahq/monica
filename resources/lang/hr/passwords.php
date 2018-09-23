@@ -13,11 +13,11 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
+    'password' => 'Lozinke moraju biti duge barem 6 znakova i moraju odgovarati potvrdi.',
+    'reset' => 'Lozinka je postavljena!',
+    'sent' => 'Poveznica za ponovono postavljanje lozinke je poslana!',
+    'token' => 'Oznaka za ponovno postavljanje lozinke više nije važeća.',
+    'user' => 'Korisnik nije pronađen.',
     'changed' => 'Password changed successfuly.',
     'invalid' => 'Current password you entered is not correct.',
 
