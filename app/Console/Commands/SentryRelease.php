@@ -127,6 +127,7 @@ class SentryRelease extends Command
             $this->error('No environment given');
             $check = false;
         }
+
         return $check;
     }
 
