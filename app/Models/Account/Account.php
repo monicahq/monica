@@ -113,16 +113,6 @@ class Account extends Model
     }
 
     /**
-     * Get the event records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function events()
-    {
-        return $this->hasMany(Event::class)->orderBy('created_at', 'desc');
-    }
-
-    /**
      * Get the note records associated with the account.
      *
      * @return HasMany
