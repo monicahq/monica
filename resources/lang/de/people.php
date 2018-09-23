@@ -89,12 +89,12 @@ return [
 
     // Conversation
     'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :Henning auf Social Media, via SMS etc. hast',
-    'conversation_delete_link' => 'Konversation löschen',
-    'conversation_edit_title' => 'Konversation bearbeiten',
-    'conversation_edit_delete' => 'Bist du sicher, dass du diese Konversation löschen willst? Dies kann nicht rückgängig gemacht werden.',
+    'conversation_delete_link' => 'Unterhaltung löschen',
+    'conversation_edit_title' => 'Unterhaltung bearbeiten',
+    'conversation_edit_delete' => 'Bist du sicher, dass du diese Unterhaltung löschen willst? Dies kann nicht rückgängig gemacht werden.',
     'conversation_delete_success' => 'Die Unterhaltung wurde gelöscht.',
-    'conversation_add_title' => 'Eine neue Unterhaltung ins Logbuch eintragen',
-    'conversation_add_when' => 'Wann hattet ihr diese Konversation?',
+    'conversation_add_title' => 'Eine neue Unterhaltung ins Logbuch protokollieren',
+    'conversation_add_when' => 'Wann hattet ihr diese Unterhaltung?',
     'conversation_add_who_wrote' => 'Wer machte die Aussage?',
     'conversation_add_how' => 'Über welches Medium habt ihr kommuniziert?',
     'conversation_add_you' => 'Ich selber',
