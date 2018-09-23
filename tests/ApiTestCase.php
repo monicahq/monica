@@ -12,7 +12,7 @@ class ApiTestCase extends TestCase
     /**
      * Test that the response contains a not found notification.
      *
-     * @param  Response $response
+     * @param TestResponse $response
      * @return mixed
      */
     public function expectNotFound(TestResponse $response)
