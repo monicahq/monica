@@ -115,6 +115,7 @@ class Contact extends Model
         'is_dead' => 'boolean',
         'has_avatar' => 'boolean',
         'is_starred' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**

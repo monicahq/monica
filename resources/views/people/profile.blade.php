@@ -44,7 +44,7 @@
 
             <p><a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a></p>
             <p>
-              <contact-archive hash="{{ $contact->hashID() }}" active="{{ json_encode($contact->is_active) }}"></contact-archive>
+              <contact-archive hash="{{ $contact->hashID() }}" :active="{{ json_encode($contact->is_active) }}"></contact-archive>
             </p>
             <p>
               {{ trans('people.people_delete_message') }}
