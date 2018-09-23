@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Ovi podaci ne odgovaraju našima.',
+    'throttle' => 'Previše pokušaja prijave. Molim Vas pokušajte ponovno za :seconds sekundi.',
     'not_authorized' => 'You are not authorized to execute this action',
     'signup_disabled' => 'Registration is currently disabled',
     'back_homepage' => 'Back to homepage',
