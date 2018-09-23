@@ -8,7 +8,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Exceptions\MissingParameterException;
 
 class ApiLifeEventControllerTest extends ApiTestCase
 {

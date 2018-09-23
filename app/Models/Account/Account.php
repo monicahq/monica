@@ -40,8 +40,8 @@ use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Services\Auth\Population\PopulateLifeEventsTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Auth\Population\PopulateLifeEventsTable;
 
 class Account extends Model
 {
