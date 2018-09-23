@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\Contact\Conversation;
 use Tests\TestCase;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
+use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Conversation\DestroyMessage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -47,12 +48,11 @@ class DestroyMessageTest extends TestCase
     public function test_it_fails_if_wrong_parameters_are_given()
     {
         $request = [
-            'account_id' => 1,
             'conversation_id' => 2,
             'message_id' => 3,
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(MissingParameterException::class);
 
         $destroyMessage = new DestroyMessage;
         $result = $destroyMessage->execute($request);
@@ -63,9 +63,9 @@ class DestroyMessageTest extends TestCase
         $conversation = factory(Conversation::class)->create([]);
 
         $request = [
-            'account_id' => 231,
+            'account_id' => $conversation->account->id,
             'conversation_id' => $conversation->id,
-            'message_id' => 1293,
+            'message_id' => -1,
         ];
 
         $this->expectException(ModelNotFoundException::class);

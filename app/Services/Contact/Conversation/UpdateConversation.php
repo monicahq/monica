@@ -9,9 +9,8 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class UpdateConversation extends BaseService
 {
@@ -36,31 +35,19 @@ class UpdateConversation extends BaseService
     public function execute(array $data): Conversation
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            $conversation = Conversation::where('account_id', $data['account_id'])
-                        ->findOrFail($data['conversation_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        $conversation = Conversation::where('account_id', $data['account_id'])
+                                    ->findOrFail($data['conversation_id']);
 
-        try {
-            ContactFieldType::where('account_id', $data['account_id'])
-                                ->findOrFail($data['contact_field_type_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        ContactFieldType::where('account_id', $data['account_id'])
+                            ->findOrFail($data['contact_field_type_id']);
 
-        try {
-            $conversation->update([
-                'happened_at' => $data['happened_at'],
-                'contact_field_type_id' => $data['contact_field_type_id'],
-            ]);
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        $conversation->update([
+            'happened_at' => $data['happened_at'],
+            'contact_field_type_id' => $data['contact_field_type_id'],
+        ]);
 
         return $conversation;
     }
