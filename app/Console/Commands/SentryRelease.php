@@ -76,7 +76,7 @@ class SentryRelease extends Command
      */
     public function handle()
     {
-        if (! $this->confirmToProceed() || ! $this->check()) {
+        if (! $this->confirmToProceed() || ! config('monica.sentry_support') || ! $this->check()) {
             return;
         }
 
