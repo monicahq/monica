@@ -5,6 +5,8 @@ UNRELEASED CHANGES:
 * Fix confirm email sent when signup_double_optin is false
 * Fix now() without timezone functions
 * Remove notion of events
+* Support papertrail logging
+* Add sentry:release command
 * Add Envoy file template
 
 RELEASED VERSIONS:
