@@ -90,10 +90,10 @@ return [
     // Conversation
     'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :Henning auf Social Media, via SMS etc. hast',
     'conversation_delete_link' => 'Konversation löschen',
-    'conversation_edit_title' => 'Edit conversation',
-    'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
-    'conversation_delete_success' => 'The conversation has been successfully deleted.',
-    'conversation_add_title' => 'Eine neue Konversation ins Logbuch hinzufügen',
+    'conversation_edit_title' => 'Konversation bearbeiten',
+    'conversation_edit_delete' => 'Bist du sicher, dass du diese Konversation löschen willst? Dies kann nicht rückgängig gemacht werden.',
+    'conversation_delete_success' => 'Die Unterhaltung wurde gelöscht.',
+    'conversation_add_title' => 'Eine neue Unterhaltung ins Logbuch eintragen',
     'conversation_add_when' => 'Wann hattet ihr diese Konversation?',
     'conversation_add_who_wrote' => 'Wer machte die Aussage?',
     'conversation_add_how' => 'Über welches Medium habt ihr kommuniziert?',
@@ -103,8 +103,8 @@ return [
     'conversation_add_another' => 'Eine weitere Nachricht hinzufügen',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
-    'conversation_list_title' => 'Conversations',
-    'conversation_list_cta' => 'Log conversation',
+    'conversation_list_title' => 'Unterhaltungen',
+    'conversation_list_cta' => 'Unterhaltung protokollieren',
 
     // age - birthday
     'birthdate_not_set' => 'Geburtstag noch nicht gesetzt',
