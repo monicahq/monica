@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\LifeEvent;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
+use App\Exceptions\MissingParameterException;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Exceptions\MissingParameterException;
 use App\Http\Resources\LifeEvent\LifeEvent as LifeEventResource;
 
 class ApiLifeEventController extends ApiController
