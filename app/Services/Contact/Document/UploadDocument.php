@@ -10,10 +10,10 @@ use App\Exceptions\MissingParameterException;
 class UploadDocument extends BaseService
 {
     /**
-    * The structure that the method expects to receive as parameter.
-    *
-    * @var array
-    */
+     * The structure that the method expects to receive as parameter.
+     *
+     * @var array
+     */
     private $structure = [
         'account_id',
         'contact_id',
@@ -21,11 +21,11 @@ class UploadDocument extends BaseService
     ];
 
     /**
-    * Upload a document.
-    *
-    * @param array $data
-    * @return Document
-    */
+     * Upload a document.
+     *
+     * @param array $data
+     * @return Document
+     */
     public function execute(array $data) : Document
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
@@ -36,13 +36,14 @@ class UploadDocument extends BaseService
                 ->findOrFail($data['contact_id']);
 
         $array = $this->populateData($data);
+
         return Document::create($array);
     }
 
     /**
      * Create an array with the necessary fields to create the document object.
      *
-     * @return Array
+     * @return array
      */
     private function populateData($data)
     {
@@ -53,13 +54,13 @@ class UploadDocument extends BaseService
             'contact_id' => $data['contact_id'],
             'original_filename' => $document->getClientOriginalName(),
             'filesize' => $document->getClientSize(),
-            'type' => $document->guessClientExtension()
+            'type' => $document->guessClientExtension(),
         ];
 
         $filename = $document->storePublicly('documents', config('filesystems.default'));
 
         return array_merge($data, [
-            'new_filename' => $filename
+            'new_filename' => $filename,
         ]);
     }
 }

@@ -291,7 +291,7 @@ class ContactsController extends Controller
             (new UploadDocument)->execute([
                     'account_id' => auth()->user()->account->id,
                     'contact_id' => $contact->id,
-                    'document' => $request->avatar
+                    'document' => $request->avatar,
             ]);
         }
 
