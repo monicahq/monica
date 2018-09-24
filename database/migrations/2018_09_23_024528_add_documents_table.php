@@ -17,9 +17,10 @@ class AddDocumentsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('contact_id');
-            $table->string('filename');
-            $table->integer('filesize');
-            $table->string('type');
+            $table->string('original_filename');
+            $table->string('new_filename');
+            $table->integer('filesize')->nullable();
+            $table->string('type')->nullable();
             $table->integer('number_of_downloads')->default(0);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');

@@ -35,18 +35,31 @@ class UploadDocument extends BaseService
         Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
 
+        $array = $this->populateData($data);
+        return Document::create($array);
+    }
+
+    /**
+     * Create an array with the necessary fields to create the document object.
+     *
+     * @return Array
+     */
+    private function populateData($data)
+    {
         $document = $data['document'];
 
         $data = [
             'account_id' => $data['account_id'],
             'contact_id' => $data['contact_id'],
-            'filename' => $document->getClientOriginalName(),
+            'original_filename' => $document->getClientOriginalName(),
             'filesize' => $document->getClientSize(),
             'type' => $document->guessClientExtension()
         ];
 
-        $filename = $document->storePublicly('avatars', config('filesystems.default'));
+        $filename = $document->storePublicly('documents', config('filesystems.default'));
 
-        return Document::create($data);
+        return array_merge($data, [
+            'new_filename' => $filename
+        ]);
     }
 }
