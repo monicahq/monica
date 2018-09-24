@@ -140,7 +140,6 @@ class GiftsController extends Controller
     public function destroy(Contact $contact, Gift $gift)
     {
         $gift->delete();
-        $contact->events()->forObject($gift)->get()->each->delete();
     }
 
     /**
@@ -178,8 +177,6 @@ class GiftsController extends Controller
             $gift->recipient = $request->get('recipient');
             $gift->save();
         }
-
-        $contact->logEvent('gift', $gift->id, 'create');
 
         return $gift;
     }

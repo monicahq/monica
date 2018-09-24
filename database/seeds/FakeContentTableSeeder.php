@@ -239,8 +239,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_favorited' => rand(1, 3) == 1,
                     'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
-
-                $this->contact->logEvent('note', $note->id, 'create');
             }
         }
     }
@@ -265,8 +263,6 @@ class FakeContentTableSeeder extends Seeder
                     'journalable_id' => $activity->id,
                     'journalable_type' => 'App\Models\Contact\Activity',
                 ]);
-
-                $this->contact->logEvent('activity', $activity->id, 'create');
             }
         }
     }
@@ -282,8 +278,6 @@ class FakeContentTableSeeder extends Seeder
                     'completed_at' => (rand(1, 2) == 1 ? $this->faker->dateTimeThisCentury() : null),
                     'account_id' => $this->contact->account_id,
                 ]);
-
-                $this->contact->logEvent('task', $task->id, 'create');
             }
         }
     }
@@ -299,8 +293,6 @@ class FakeContentTableSeeder extends Seeder
                     'status' => 'inprogress',
                     'account_id' => $this->contact->account_id,
                 ]);
-
-                $this->contact->logEvent('debt', $debt->id, 'create');
             }
         }
     }
@@ -319,8 +311,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_an_idea' => true,
                     'has_been_offered' => false,
                 ]);
-
-                $this->contact->logEvent('gift', $gift->id, 'create');
             }
         }
     }

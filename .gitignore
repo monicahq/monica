@@ -19,3 +19,4 @@ yarn-error.log
 php-extensions-*.tar.bz2
 monicadump.sql
 .scannerwork/
+.sentry-release
