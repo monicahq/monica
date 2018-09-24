@@ -25,6 +25,6 @@ class AddDocumentsTable extends Migration
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
-         });
+        });
     }
 }
