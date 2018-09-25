@@ -7,8 +7,7 @@ composer:
     no-dev: true
 
 # called after Composer runs
-post: artisan.php monica:update --force -vvv
-
+post: artisan monica:update --force -vvv
 
 # list of sustained folders in ~/htdocs. If not given, then it defaults to the "vendor" folder
 sustained:
