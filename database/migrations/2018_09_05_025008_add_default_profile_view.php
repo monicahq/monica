@@ -14,7 +14,8 @@ class AddDefaultProfileView extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('profile_active_tab')->default('life-events')->after('gifts_active_tab');
+            $table->string('profile_active_tab')->default('notes')->after('gifts_active_tab');
+            $table->boolean('profile_new_life_event_badge_seen')->default(false)->after('profile_active_tab');
         });
     }
 }

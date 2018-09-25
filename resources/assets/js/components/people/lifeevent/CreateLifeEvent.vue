@@ -22,7 +22,7 @@
                 <!-- CATEGORIES -->
                 <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" v-if="view == 'categories'" v-bind:key="category.id">
                     <div class="dib mr2">
-                        <img :src="'/img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'">
+                        <img :src="'/img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" style="min-width: 12px;">
                     </div>
                     {{ category.name }}
 
@@ -34,7 +34,7 @@
                 <!-- TYPES -->
                 <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="type in types" @click="displayAddScreen(type)" v-if="view == 'types'" v-bind:key="type.id">
                     <div class="dib mr2">
-                        <img :src="'/img/people/life-events/types/' + type.default_life_event_type_key + '.svg'">
+                        <img :src="'/img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" style="min-width: 12px;">
                     </div>
                     {{ type.name }}
 
@@ -47,7 +47,7 @@
             <!-- ADD SCREEN -->
             <div class="ba b--gray-monica br2 pt4" v-if="view == 'add'">
                 <div class="life-event-add-icon tc center">
-                    <img :src="'/img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'">
+                    <img :src="'/img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'" style="min-width: 17px;">
                 </div>
 
                 <h3 class="pt3 ph4 f3 fw5 tc">
@@ -205,8 +205,6 @@
             store() {
                 axios.post('/people/' + this.hash + '/lifeevents', this.newLifeEvent)
                         .then(response => {
-                            this.activeCategory = ''
-                            this.activeType = ''
                             this.$emit('updateLifeEventTimeline', response.data)
 
                             this.$notify({
@@ -214,7 +212,7 @@
                                 title: this.$t('people.life_event_create_success'),
                                 text: '',
                                 type: 'success'
-                          });
+                            });
                       });
             },
         }

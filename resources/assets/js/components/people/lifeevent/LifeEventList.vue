@@ -496,7 +496,7 @@
                         </div>
                         <p class="pt2"><span class="b">{{ $t('people.life_event_sentence_' + lifeEvent.default_life_event_type_key) }}</span> {{ lifeEvent.name }}</p>
                         <p>{{ lifeEvent.note }}</p>
-                        <p class="f7"><a @click="showDeleteModal(lifeEvent)">{{ $t('app.delete') }}</a></p>
+                        <p class="f7"><a @click="showDeleteModal(lifeEvent)" class="pointer">{{ $t('app.delete') }}</a></p>
                     </div>
                 </div>
             </div>

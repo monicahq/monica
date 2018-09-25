@@ -492,6 +492,11 @@ class SettingsController
         }
 
         auth()->user()->profile_active_tab = $view;
+
+        if ($view == 'life-events') {
+            auth()->user()->profile_new_life_event_badge_seen = true;
+        }
+
         auth()->user()->save();
 
         return $view;
