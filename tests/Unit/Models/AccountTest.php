@@ -14,11 +14,14 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
+use App\Models\Contact\LifeEventType;
+use App\Models\Contact\LifeEventCategory;
 use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
@@ -142,6 +145,36 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->messages()->exists());
+    }
+
+    public function test_it_has_many_life_event_categories()
+    {
+        $account = factory(Account::class)->create([]);
+        $lifeEventCategory = factory(LifeEventCategory::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->lifeEventCategories()->exists());
+    }
+
+    public function test_it_has_many_life_event_types()
+    {
+        $account = factory(Account::class)->create([]);
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->lifeEventTypes()->exists());
+    }
+
+    public function test_it_has_many_life_events()
+    {
+        $account = factory(Account::class)->create([]);
+        $lifeEvent = factory(LifeEvent::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->lifeEvents()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
@@ -756,6 +789,57 @@ class AccountTest extends FeatureTestCase
 
         $this->assertFalse(
             $account->hasReachedContactLimit()
+        );
+    }
+
+    public function test_it_gets_first_user_locale()
+    {
+        $account = factory(Account::class)->create();
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+            'locale' => 'fr',
+        ]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+            'locale' => 'en',
+        ]);
+
+        $this->assertEquals(
+            'fr',
+            $account->getFirstLocale()
+        );
+    }
+
+    public function test_getting_first_locale_returns_null_if_user_doesnt_exist()
+    {
+        $account = factory(Account::class)->create();
+
+        $this->assertNull($account->getFirstLocale());
+    }
+
+    /**
+     * Test that default_life_event_categories and types are correctly
+     * populated.
+     *
+     * @return void
+     */
+    public function test_it_populates_default_life_event_tables_upon_creation()
+    {
+        $account = factory(Account::class)->create();
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $account->populateDefaultFields();
+
+        $this->assertEquals(
+            5,
+            DB::table('life_event_categories')->where('account_id', $account->id)->get()->count()
+        );
+
+        $this->assertEquals(
+            43,
+            DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
         );
     }
 }

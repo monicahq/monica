@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Add ability to track life events
+* Fix select boxes not working properly anymore
 * Improve search
 * Fix reminders displaying wrong date
 * Add ability to define the default email address used for support

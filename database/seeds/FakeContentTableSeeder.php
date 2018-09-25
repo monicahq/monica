@@ -7,9 +7,11 @@ use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
@@ -82,6 +84,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateDebts();
             $this->populateCalls();
             $this->populateConversations();
+            $this->populateLifeEvents();
             $this->populateGifts();
             $this->populateAddresses();
             $this->populateContactFields();
@@ -484,6 +487,24 @@ class FakeContentTableSeeder extends Seeder
                         'content' => $this->faker->realText(),
                     ]);
                 }
+            }
+        }
+    }
+
+    public function populateLifeEvents()
+    {
+        if (rand(1, 1) == 1) {
+            for ($j = 0; $j < rand(1, 20); $j++) {
+                $lifeEventType = LifeEventType::orderBy(DB::raw('RAND()'))->firstOrFail();
+
+                (new CreateLifeEvent)->execute([
+                    'account_id' => $this->contact->account->id,
+                    'contact_id' => $this->contact->id,
+                    'life_event_type_id' => $lifeEventType->id,
+                    'happened_at' => $this->faker->dateTimeThisCentury(),
+                    'name' => $this->faker->realText(),
+                    'note' => $this->faker->realText(),
+                ]);
             }
         }
     }
