@@ -9,7 +9,7 @@
     <p>{{ $exception->getMessage() }}</p>
   @endif
 
-  @if(app()->bound('sentry') && config('monica.sentry_support') && ! empty(app('sentry')->getLastEventID()))
+  @if(Auth::check() && app()->bound('sentry') && config('monica.sentry_support') && ! empty(app('sentry')->getLastEventID()))
     <div class="subtitle">@lang('app.error_id', ['id' => app('sentry')->getLastEventID()])</div>
 
     <!-- Sentry JS SDK 2.1.+ required -->
