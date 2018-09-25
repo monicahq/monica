@@ -181,7 +181,6 @@ class ApiContactController extends ApiController
         }
 
         $contact->setAvatarColor();
-        $contact->logEvent('contact', $contact->id, 'create');
 
         return new ContactResource($contact);
     }
@@ -271,8 +270,6 @@ class ApiContactController extends ApiController
         } elseif ($request->get('deceased_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
         }
-
-        $contact->logEvent('contact', $contact->id, 'update');
 
         return new ContactResource($contact);
     }

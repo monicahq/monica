@@ -23,6 +23,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SendNotifications',
         'App\Console\Commands\SendReminders',
         'App\Console\Commands\SendStayInTouch',
+        'App\Console\Commands\SentryRelease',
         'App\Console\Commands\SetupProduction',
         'App\Console\Commands\SetupTest',
         'App\Console\Commands\SetupFrontEndTest',

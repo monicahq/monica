@@ -5,7 +5,6 @@ namespace App\Models\Contact;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
-use App\Models\Account\Event;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
@@ -184,16 +183,6 @@ class Contact extends Model
     public function gifts()
     {
         return $this->hasMany(Gift::class);
-    }
-
-    /**
-     * Get the event records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function events()
-    {
-        return $this->hasMany(Event::class)->orderBy('created_at', 'desc');
     }
 
     /**
@@ -801,26 +790,6 @@ class Contact extends Model
         ];
 
         $this->default_avatar_color = $color ?? $colors[mt_rand(0, count($colors) - 1)];
-    }
-
-    /**
-     * Log an event in the Event table about this contact.
-     *
-     * @param  string $objectType Contact, Activity, Kid,...
-     * @param  int $objectId ID of the object
-     * @param  string $natureOfOperation 'add', 'update', 'delete'
-     * @return int                          Id of the created event
-     */
-    public function logEvent($objectType, $objectId, $natureOfOperation)
-    {
-        $event = $this->events()->make();
-        $event->account_id = $this->account_id;
-        $event->object_type = $objectType;
-        $event->object_id = $objectId;
-        $event->nature_of_operation = $natureOfOperation;
-        $event->save();
-
-        return $event->id;
     }
 
     /**
