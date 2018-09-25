@@ -381,6 +381,7 @@ return [
     'life_event_create_life_event' => 'Add life event',
     'life_event_create_default_title' => 'Title (optional)',
     'life_event_create_default_story' => 'Story (optional)',
+    'life_event_create_date' => 'You do not need to indicate a month or a day - only the year is mandatory.',
     'life_event_create_default_description' => 'Add information about what you know',
     'life_event_create_success' => 'The life event has been added',
     'life_event_delete_title' => 'Delete a life event',

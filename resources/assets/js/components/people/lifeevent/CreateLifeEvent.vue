@@ -57,7 +57,7 @@
                 <!-- This field will be the same for every life event type no matter what, as the date is the only required field -->
                 <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
                     <label for="another" class="mr2">{{ $t('people.life_event_date_it_happened') }}</label>
-                    <div class="flex">
+                    <div class="flex mb3">
                         <div class="mr2">
                             <form-select
                                 v-model="selectedYear"
@@ -86,6 +86,7 @@
                             </form-select>
                         </div>
                     </div>
+                    <p class="f6">{{ $t('people.life_event_create_date') }}</p>
                 </div>
 
                 <create-default-life-event v-on:contentChange="updateLifeEventContent($event)"></create-default-life-event>
