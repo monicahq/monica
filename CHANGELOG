@@ -11,6 +11,7 @@ UNRELEASED CHANGES:
 * Support papertrail logging
 * Add sentry:release command
 * Add Envoy file template
+* Add passport config file
 
 RELEASED VERSIONS:
 
