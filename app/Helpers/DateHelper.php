@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class DateHelper
@@ -254,16 +255,19 @@ class DateHelper
      * @param int min
      * @param int max
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfYears($max = 120, $min = 0)
     {
-        $years = [];
+        $years = collect([]);
         $maxYear = now(static::getTimezone())->subYears($min)->year;
         $minYear = now(static::getTimezone())->subYears($max)->year;
 
         for ($year = $maxYear; $year >= $minYear; $year--) {
-            array_push($years, $year);
+            $years->push([
+                'id' => $year,
+                'name' => $year,
+            ]);
         }
 
         return $years;
@@ -272,7 +276,7 @@ class DateHelper
     /**
      * Gets a list of all the months in a year.
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfMonths()
     {
@@ -294,7 +298,7 @@ class DateHelper
     /**
      * Gets a list of all the days in a month.
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfDays()
     {

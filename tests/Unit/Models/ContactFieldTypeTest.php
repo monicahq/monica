@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Models;
 
 use Tests\FeatureTestCase;
 use App\Models\Account\Account;
