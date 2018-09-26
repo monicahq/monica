@@ -17,6 +17,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Display Name
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application displayed in email notifications.
+    |
+    */
+
+    'display_name' => env('APP_DISPLAY_NAME', env('APP_NAME', 'Monica')),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
