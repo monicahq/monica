@@ -5,12 +5,13 @@ namespace Tests\Unit\Jobs;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Mail\StayInTouchEmail;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Mail;
+use App\Notifications\StayInTouchEmail;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class ScheduleStayInTouchTest extends TestCase
 {
@@ -18,9 +19,9 @@ class ScheduleStayInTouchTest extends TestCase
 
     public function test_it_dispatches_an_email()
     {
-        Mail::fake();
+        NotificationFacade::fake();
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'America/New_York'));
 
         $account = factory(Account::class)->create([
             'default_time_reminder_is_sent' => '07:00',
@@ -34,14 +35,22 @@ class ScheduleStayInTouchTest extends TestCase
         $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
-            'locale' => 'US\Eastern',
+            'timezone' => 'America/New_York',
         ]);
 
         dispatch(new ScheduleStayInTouch($contact));
 
-        Mail::assertSent(StayInTouchEmail::class, function ($mail) {
-            return $mail->hasTo('john@doe.com');
-        });
+        NotificationFacade::assertSentTo($user, StayInTouchEmail::class,
+            function ($notification, $channels) use ($contact) {
+                return $channels[0] == 'mail'
+                && $notification->assertSentFor($contact);
+            }
+        );
+
+        $notifications = NotificationFacade::sent($user, StayInTouchEmail::class);
+        $message = $notifications[0]->toMail($user);
+
+        $this->assertArraySubset(['You asked to be reminded to stay in touch with John Doe every 5 days.'], $message->introLines);
 
         $this->assertDatabaseHas('contacts', [
             'stay_in_touch_trigger_date' => '2017-01-06 07:00:00',
@@ -50,9 +59,9 @@ class ScheduleStayInTouchTest extends TestCase
 
     public function test_it_doesnt_dispatches_an_email_if_free_account()
     {
-        Mail::fake();
+        NotificationFacade::fake();
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
+        Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'America/New_York'));
 
         config(['monica.requires_subscription' => true]);
 
@@ -68,14 +77,13 @@ class ScheduleStayInTouchTest extends TestCase
         $user = factory(User::class)->create([
             'account_id' => $account->id,
             'email' => 'john@doe.com',
-            'locale' => 'US\Eastern',
+            'timezone' => 'America/New_York',
         ]);
 
         dispatch(new ScheduleStayInTouch($contact));
 
-        Mail::assertNotSent(StayInTouchEmail::class, function ($mail) {
-            return $mail->hasTo('john@doe.com');
-        });
+        NotificationFacade::assertNotSentTo($user, StayInTouchEmail::class);
+        NotificationFacade::assertNothingSent();
 
         $this->assertDatabaseHas('contacts', [
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',

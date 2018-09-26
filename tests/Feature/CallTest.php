@@ -84,15 +84,6 @@ class CallTest extends FeatureTestCase
         $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
         $response->assertSee('Last called: Jan 01, 2013');
-
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'call';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
     }
 
     public function test_user_can_add_a_call_with_a_description()
@@ -118,15 +109,6 @@ class CallTest extends FeatureTestCase
         $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
         $response->assertSee('This is a test call');
-
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'call';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
     }
 
     public function test_user_can_delete_a_call()
@@ -151,17 +133,8 @@ class CallTest extends FeatureTestCase
 
         $this->assertDatabaseMissing('calls', $params);
 
-        $eventParams = [];
-
-        // make sure no event is in the database about this object
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_id'] = $call->id;
-
         // Check that the Contact view contains Last activity: unknown
         $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Last called: unknown');
-
-        $this->assertDatabaseMissing('events', $eventParams);
     }
 }

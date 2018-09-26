@@ -56,8 +56,6 @@ class RemindersController extends Controller
 
         $reminder->scheduleNotifications();
 
-        $contact->logEvent('reminder', $reminder->id, 'create');
-
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));
     }
@@ -112,8 +110,6 @@ class RemindersController extends Controller
         $reminder->purgeNotifications();
         $reminder->scheduleNotifications();
 
-        $contact->logEvent('reminder', $reminder->id, 'update');
-
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_update_success'));
     }
@@ -132,8 +128,6 @@ class RemindersController extends Controller
 
         $reminder->purgeNotifications();
         $reminder->delete();
-
-        $contact->events()->forObject($reminder)->get()->each->delete();
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_delete_success'));

@@ -5,15 +5,12 @@ namespace App\Models\Contact;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
-use App\Models\Account\Event;
 use App\Models\Journal\Entry;
-use App\Mail\StayInTouchEmail;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
@@ -189,16 +186,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the event records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function events()
-    {
-        return $this->hasMany(Event::class)->orderBy('created_at', 'desc');
-    }
-
-    /**
      * Get the note records associated with the contact.
      *
      * @return HasMany
@@ -366,6 +353,16 @@ class Contact extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get the Life event records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function lifeEvents()
+    {
+        return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');
     }
 
     /**
@@ -803,26 +800,6 @@ class Contact extends Model
         ];
 
         $this->default_avatar_color = $color ?? $colors[mt_rand(0, count($colors) - 1)];
-    }
-
-    /**
-     * Log an event in the Event table about this contact.
-     *
-     * @param  string $objectType Contact, Activity, Kid,...
-     * @param  int $objectId ID of the object
-     * @param  string $natureOfOperation 'add', 'update', 'delete'
-     * @return int                          Id of the created event
-     */
-    public function logEvent($objectType, $objectId, $natureOfOperation)
-    {
-        $event = $this->events()->make();
-        $event->account_id = $this->account_id;
-        $event->object_type = $objectType;
-        $event->object_id = $objectId;
-        $event->nature_of_operation = $natureOfOperation;
-        $event->save();
-
-        return $event->id;
     }
 
     /**
@@ -1579,16 +1556,5 @@ class Contact extends Model
         }
 
         $this->save();
-    }
-
-    /**
-     * Send the email about staying in touch with the contact.
-     *
-     * @param  User $user
-     * @return void
-     */
-    public function sendStayInTouchEmail(User $user)
-    {
-        Mail::to($user->email)->send(new StayInTouchEmail($this, $user));
     }
 }
