@@ -36,6 +36,7 @@
     "pretty-checkbox-vue": "^1.1.8",
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
+    "tributejs": "^3.3.5",
     "typeahead.js": "^0.11.1",
     "v-selectmenu": "^1.0.5",
     "vue": "^2.5.16",

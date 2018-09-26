@@ -17,6 +17,9 @@ require('jquery-tags-input/dist/jquery.tagsinput.min');
 //Vue.component('example', require('./components/people/dashboard/kids.vue'));
 const Vue = require('vue');
 
+// Mentions
+import Tribute from "tributejs";
+
 // Notifications
 import Notifications from 'vue-notification';
 Vue.use(Notifications);
@@ -322,4 +325,12 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
 
 // jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
+    var tribute = new Tribute({
+      values: [
+        {key: 'Alexis Saettler', value: 'asbin'},
+        {key: 'Gordon Ramsey', value: 'gramsey'}
+      ]
+    })
+
+    tribute.attach(document.querySelectorAll('.mentionable'));
 });

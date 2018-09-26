@@ -11,7 +11,7 @@
     <div>
       <div>
         <form class="bg-near-white pa2 br2 mb3">
-          <textarea class="w-100 br2 pa2 b--light-gray" cy-name="add-note-textarea" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="$t('people.notes_add_cta')"></textarea>
+          <textarea class="mentionable w-100 br2 pa2 b--light-gray" cy-name="add-note-textarea" v-model="newNote.body" @focus="addMode = true" @keyup.esc="addMode = false" :placeholder="$t('people.notes_add_cta')"></textarea>
           <a class="pointer btn btn-primary" cy-name="add-note-button" @click.prevent="store" v-if="addMode">{{ $t('app.add') }}</a>
           <a class="pointer btn btn-secondary" cy-name="cancel-note-button" @click="addMode = false" v-if="addMode">{{ $t('app.cancel') }}</a>
         </form>
