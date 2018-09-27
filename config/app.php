@@ -20,7 +20,7 @@ return [
     | Application Display Name
     |--------------------------------------------------------------------------
     |
-    | This value is the name of your application displayed in email notifications.
+    | This is the name of the application that will be displayed in the notification emails.
     |
     */
 
