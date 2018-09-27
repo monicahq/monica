@@ -399,12 +399,10 @@ class CreateLifeEventsTable extends Migration
 
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
-                if ($account->id == 1) {
-                    (new PopulateLifeEventsTable)->execute([
+                (new PopulateLifeEventsTable)->execute([
                     'account_id' => $account->id,
                     'migrate_existing_data' => true,
                 ]);
-                }
             }
         });
     }
