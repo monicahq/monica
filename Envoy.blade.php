@@ -7,8 +7,8 @@
 @endsetup
 
 @story('deploy')
+    sentry-set
     git
-    update
     sentry
 @endstory
 
@@ -23,12 +23,8 @@
     git push -u fortrabbit {{ $branch ?? 'master' }}
 @endtask
 
-@task('composer', ['on' => 'web'])
-    composer install --no-interaction --no-dev
-@endtask
-
-@task('update', ['on' => 'web'])
-    php artisan monica:update --force -vvv
+@task('sentry-set', ['on' => 'web'])
+    echo {{ $release }} > .sentry-release
 @endtask
 
 @task('sentry', ['on' => 'web'])

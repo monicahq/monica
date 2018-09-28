@@ -12,6 +12,7 @@ UNRELEASED CHANGES:
 * Add sentry:release command
 * Add Envoy file template
 * Add passport config file
+* Add new variable APP_DISPLAY_NAME
 
 RELEASED VERSIONS:
 
