@@ -55,6 +55,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'profile_new_life_event_badge_seen' => 'boolean',
+    ];
+
+    /**
      * Create a new User.
      *
      * @param int $account_id
