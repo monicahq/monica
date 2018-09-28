@@ -23,9 +23,8 @@ function Search(form, input, resultsContainer, showResults) {
     /* -----------------------------------------------------------------------------------
      | Search-related functions.
      |---------------------------------------------------------------------------------- */
-    function showNoResults(message) {
-        let html = `<li class="header-search-result" style="padding: 10px">${message}</li>`;
-        appendResults(html);
+    function showNoResults() {
+        showResults([], search);
     }
 
     function parseResults(data) {
@@ -92,8 +91,8 @@ function Search(form, input, resultsContainer, showResults) {
                 accountId: search.accountId
             }
         }).done(function (data) {
-            if (data.noResults !== undefined) {
-                showNoResults(data.noResults);
+            if (!data.data) {
+                showNoResults();
                 return;
             }
             const results = parseResults(data.data);
@@ -141,6 +140,7 @@ const HeaderSearch = Search(
     $('.header-search-results'),
     function(results, search) {
         let html = '';
+        
         results.forEach(function (result) {
             // The span is styled to cover the whole <li>, providing a clickable area over the whole result.
             html += `
@@ -150,6 +150,16 @@ const HeaderSearch = Search(
                 </li>
             `;
         });
+
+        if (results.length == 0) {
+            html = `
+                <li class="header-search-result">
+                    <div class="avatar avatar-initials" style="background-color: #fdb660;">+</div>
+                    <a href="/people/add">Add new person<span /></a>
+                </li>
+            `;
+        }
+
         search.resultsContainer.empty();
         search.resultsContainer.append(html);
     }
@@ -167,10 +177,19 @@ if (multiUserInput.length > 0) {
                 html += `
                 <li class="header-search-result" data-contact="${result.id}" data-name="${result.name}">
                 ${result.avatar}
-                ${result.name}
+                <a href="#">${result.name}<span /></a>
                 </li>
             `;
             });
+
+            if (results.length == 0) {
+                html = `
+                <li class="header-search-result">
+                    <div class="avatar avatar-initials" style="background-color: #fdb660; color: #fdb660;">.</div>
+                    <a href="#">No results found<span /></a>
+                </li>
+                `;
+            }
             search.resultsContainer.empty();
             search.resultsContainer.append(html);
         }
@@ -180,8 +199,8 @@ if (multiUserInput.length > 0) {
 $('.user-input-search-results').on( "click", ".header-search-result", function() {
     let t = $(this);
 
-    // Make sure this isn't a duplicate
-    if ($(`.contacts-list input[value="${t.data('contact')}"]`).length) {
+    // Make sure this isn't a duplicate or a not found message 
+    if (!t.data('contact') || $(`.contacts-list input[value="${t.data('contact')}"]`).length) {
         return false;
     }
 

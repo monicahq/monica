@@ -20,6 +20,7 @@
           'csrfToken' => csrf_token(),
           'locale' => \App::getLocale(),
           'htmldir' => htmldir(),
+          'profileDefaultView' => auth()->user()->profile_active_tab,
       ]); !!}
     </script>
   </head>

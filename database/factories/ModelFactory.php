@@ -305,6 +305,46 @@ $factory->define(App\Models\Contact\Message::class, function (Faker\Generator $f
     ];
 });
 
+$factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => $faker->text(100),
+        'core_monica_data' => true,
+    ];
+});
+
+$factory->define(App\Models\Contact\LifeEventType::class, function (Faker\Generator $faker) {
+    $lifeEventCategory = factory(App\Models\Contact\LifeEventCategory::class)->create([
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+    ]);
+
+    return [
+        'account_id' => $lifeEventCategory->account_id,
+        'name' => $faker->text(100),
+        'life_event_category_id' => $lifeEventCategory->id,
+        'core_monica_data' => true,
+    ];
+});
+
+$factory->define(App\Models\Contact\LifeEvent::class, function (Faker\Generator $faker) {
+    $lifeEventType = factory(App\Models\Contact\LifeEventType::class)->create([
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+    ]);
+
+    $contact = factory(App\Models\Contact\Contact::class)->create([
+        'account_id' => $lifeEventType->account_id,
+    ]);
+
+    return [
+        'contact_id' => $contact->id,
+        'account_id' => $lifeEventType->account_id,
+        'name' => $faker->text(100),
+        'life_event_type_id' => $lifeEventType->id,
+        'note' => $faker->text(100),
+        'happened_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+    ];
+});
+
 $factory->define(App\Models\User\Changelog::class, function (Faker\Generator $faker) {
     return [];
 });

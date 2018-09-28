@@ -200,6 +200,19 @@ class ContactsController extends Controller
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
+        // add `---` at the top of the dropdowns
+        $days = DateHelper::getListOfDays();
+        $days->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
+        $months = DateHelper::getListOfMonths();
+        $months->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
@@ -207,7 +220,10 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withDays($days)
+            ->withMonths($months)
+            ->withYears(DateHelper::getListOfYears());
     }
 
     /**
