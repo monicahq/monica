@@ -13,11 +13,11 @@ return [
     |
     */
 
-    'password' => 'Heslo musí obsahovat alespoň 6 znaků a musí se shodovat s ověřením.',
-    'reset' => 'Heslo bylo obnoveno!',
-    'sent' => 'E-mail s instrukcemi k obnovení hesla byl odeslán!',
-    'token' => 'Klíč pro obnovu hesla je nesprávný.',
-    'user' => 'Nepodařilo se najít uživatele s touto e-mailovou adresou.',
+    'password' => 'Lozinke moraju biti duge barem 6 znakova i moraju odgovarati potvrdi.',
+    'reset' => 'Lozinka je postavljena!',
+    'sent' => 'Poveznica za ponovono postavljanje lozinke je poslana!',
+    'token' => 'Oznaka za ponovno postavljanje lozinke više nije važeća.',
+    'user' => 'Korisnik nije pronađen.',
     'changed' => 'Password changed successfuly.',
     'invalid' => 'Current password you entered is not correct.',
 
