@@ -13,6 +13,7 @@ UNRELEASED CHANGES:
 * Add Envoy file template
 * Add passport config file
 * Add new variable APP_DISPLAY_NAME
+* Rename variable 2FA_ENABLED to MFA_ENABLED (2FA_ENABLED is still functional for compatibility reasons)
 
 RELEASED VERSIONS:
 
