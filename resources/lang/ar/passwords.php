@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfuly.',
-    'invalid' => 'Current password you entered is not correct.',
+    'password' => 'يجب أن لا يقل طول كلمة المرور عن ستة أحرف، كما يجب أن تتطابق مع حقل التأكيد',
+    'reset' => 'تمت إعادة تعيين كلمة المرور',
+    'sent' => 'تم إرسال تفاصيل استعادة كلمة المرور الخاصة بك إلى بريدك الإلكتروني',
+    'token' => '.رمز استعادة كلمة المرور الذي أدخلته غير صحيح',
+    'user' => 'لم يتم العثور على أيّ حسابٍ بهذا العنوان الإلكتروني',
+    'changed' => 'تم تغيير كلمة المرور بنجاح.',
+    'invalid' => 'كلمة السر الحالية التي أدخلتها غير صحيحة.',
 
 ];
