@@ -1,21 +1,26 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.8.0 - 2018-09-28
+-------------------
+
 * Add ability to track life events
-* Fix select boxes not working properly anymore
-* Improve search
-* Fix reminders displaying wrong date
 * Add ability to define the default email address used for support
-* Fix confirm email sent when signup_double_optin is false
-* Fix now() without timezone functions
-* Remove notion of events
-* Support papertrail logging
 * Add sentry:release command
 * Add Envoy file template
 * Add passport config file
 * Add new variable APP_DISPLAY_NAME
-* Rename variable 2FA_ENABLED to MFA_ENABLED (2FA_ENABLED is still functional for compatibility reasons)
-
-RELEASED VERSIONS:
+* Rename env variable 2FA_ENABLED to MFA_ENABLED (2FA_ENABLED is still functional for compatibility reasons)
+* Improve search
+* Fix reminders displaying wrong date
+* Fix select boxes not working properly anymore
+* Fix confirm email sent when signup_double_optin is false
+* Fix now() without timezone functions
+* Remove notion of events
+* Support papertrail logging
 
 v2.7.1 - 2018-09-05
 -------------------

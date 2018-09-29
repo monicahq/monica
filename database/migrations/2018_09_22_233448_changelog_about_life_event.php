@@ -18,11 +18,11 @@ class ChangelogAboutLifeEvent extends Migration
 
 You can now log major life events that happen to a contact. Like if the contact has had a surgery, or where he travelled to. You have access to nearly 50 different possible life events to document what happens to the people you care about.
 
-![image](/img/changelogs/2018-09-24-life-events.png)';
+![image](/img/changelogs/2018-09-28-life-events.png)';
 
         $id = DB::table('changelogs')->insertGetId([
             'description' => $description,
-            'created_at' => '2018-09-24',
+            'created_at' => '2018-09-28',
         ]);
 
         $instance = Instance::first();
