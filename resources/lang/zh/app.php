@@ -88,6 +88,11 @@ return [
     'error_unauthorized' => '你没有权限编辑此页',
     'error_save' => '当储存数据时出现了一个错误',
     'error_try_again' => '出了点问题，请再试一次。',
+    'error_id' => '错误代码：:id',
+    'error_unavailable' => '服务不可用',
+    'error_maintenance' => '网站维护中，待会见！',
+    'error_help' => '待会见！',
+    'error_twitter' => '关注我们的<a href="https://twitter.com/:twitter">推特</a>来得知网站的最新消息！',
 
     'default_save_success' => '数据已被保存',
 
