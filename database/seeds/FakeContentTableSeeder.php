@@ -7,9 +7,11 @@ use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
@@ -50,7 +52,6 @@ class FakeContentTableSeeder extends Seeder
         $arrayPictures = json_decode($res->getBody());
 
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
-            $timezone = config('app.timezone');
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
             $this->contact = new Contact;
@@ -59,7 +60,7 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->first_name = $this->faker->firstName($gender);
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
             $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
-            $this->contact->is_starred = (rand(1, 5) == 1) ? true : false;
+            $this->contact->is_starred = (rand(1, 5) == 1);
             $this->contact->has_avatar = false;
             $this->contact->setAvatarColor();
             $this->contact->save();
@@ -83,6 +84,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateDebts();
             $this->populateCalls();
             $this->populateConversations();
+            $this->populateLifeEvents();
             $this->populateGifts();
             $this->populateAddresses();
             $this->populateContactFields();
@@ -237,8 +239,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_favorited' => rand(1, 3) == 1,
                     'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
-
-                $this->contact->logEvent('note', $note->id, 'create');
             }
         }
     }
@@ -257,14 +257,12 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->contact->account_id,
                 ], ['account_id' => $this->contact->account_id]);
 
-                $entry = DB::table('journal_entries')->insertGetId([
+                DB::table('journal_entries')->insertGetId([
                     'account_id' => $this->account->id,
                     'date' => $date,
                     'journalable_id' => $activity->id,
                     'journalable_type' => 'App\Models\Contact\Activity',
                 ]);
-
-                $this->contact->logEvent('activity', $activity->id, 'create');
             }
         }
     }
@@ -280,8 +278,6 @@ class FakeContentTableSeeder extends Seeder
                     'completed_at' => (rand(1, 2) == 1 ? $this->faker->dateTimeThisCentury() : null),
                     'account_id' => $this->contact->account_id,
                 ]);
-
-                $this->contact->logEvent('task', $task->id, 'create');
             }
         }
     }
@@ -297,8 +293,6 @@ class FakeContentTableSeeder extends Seeder
                     'status' => 'inprogress',
                     'account_id' => $this->contact->account_id,
                 ]);
-
-                $this->contact->logEvent('debt', $debt->id, 'create');
             }
         }
     }
@@ -317,8 +311,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_an_idea' => true,
                     'has_been_offered' => false,
                 ]);
-
-                $this->contact->logEvent('gift', $gift->id, 'create');
             }
         }
     }
@@ -326,7 +318,7 @@ class FakeContentTableSeeder extends Seeder
     public function populateAddresses()
     {
         if (rand(1, 3) == 1) {
-            $address = $this->contact->addresses()->create([
+            $this->contact->addresses()->create([
                 'account_id' => $this->contact->account_id,
                 'country' => $this->getRandomCountry(),
                 'name' => $this->faker->word,
@@ -386,7 +378,7 @@ class FakeContentTableSeeder extends Seeder
                     break;
                 }
 
-                $contactField = $this->contact->contactFields()->create([
+                $this->contact->contactFields()->create([
                     'contact_field_type_id' => $contactFieldType->id,
                     'data' => $data,
                     'account_id' => $this->contact->account->id,
@@ -407,7 +399,7 @@ class FakeContentTableSeeder extends Seeder
                 'created_at' => $date,
             ]);
 
-            $journalEntry = DB::table('journal_entries')->insertGetId([
+            DB::table('journal_entries')->insertGetId([
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $entryId,
@@ -423,7 +415,7 @@ class FakeContentTableSeeder extends Seeder
             for ($j = 0; $j < rand(1, 3); $j++) {
                 $date = $this->faker->dateTimeThisYear();
 
-                $petId = DB::table('pets')->insertGetId([
+                DB::table('pets')->insertGetId([
                     'account_id' => $this->account->id,
                     'contact_id' => $this->contact->id,
                     'pet_category_id' => rand(1, 11),
@@ -446,7 +438,7 @@ class FakeContentTableSeeder extends Seeder
                 'created_at' => $date,
             ]);
 
-            $journalEntry = DB::table('journal_entries')->insertGetId([
+            DB::table('journal_entries')->insertGetId([
                 'account_id' => $this->account->id,
                 'date' => $date,
                 'journalable_id' => $dayId,
@@ -465,7 +457,7 @@ class FakeContentTableSeeder extends Seeder
     public function populateCalls()
     {
         if (rand(1, 3) == 1) {
-            $calls = $this->contact->calls()->create([
+            $this->contact->calls()->create([
                 'account_id' => $this->contact->account_id,
                 'called_at' => $this->faker->dateTimeThisYear(),
             ]);
@@ -486,15 +478,33 @@ class FakeContentTableSeeder extends Seeder
                 ]);
 
                 for ($k = 0; $k < rand(1, 20); $k++) {
-                    $message = (new AddMessageToConversation)->execute([
+                    (new AddMessageToConversation)->execute([
                         'account_id' => $this->contact->account->id,
                         'contact_id' => $this->contact->id,
                         'conversation_id' => $conversation->id,
                         'written_at' => $this->faker->dateTimeThisCentury(),
-                        'written_by_me' => (rand(1, 2) == 1 ? true : false),
+                        'written_by_me' => (rand(1, 2) == 1),
                         'content' => $this->faker->realText(),
                     ]);
                 }
+            }
+        }
+    }
+
+    public function populateLifeEvents()
+    {
+        if (rand(1, 1) == 1) {
+            for ($j = 0; $j < rand(1, 20); $j++) {
+                $lifeEventType = LifeEventType::orderBy(DB::raw('RAND()'))->firstOrFail();
+
+                (new CreateLifeEvent)->execute([
+                    'account_id' => $this->contact->account->id,
+                    'contact_id' => $this->contact->id,
+                    'life_event_type_id' => $lifeEventType->id,
+                    'happened_at' => $this->faker->dateTimeThisCentury(),
+                    'name' => $this->faker->realText(),
+                    'note' => $this->faker->realText(),
+                ]);
             }
         }
     }

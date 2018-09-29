@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Http\Request;
-use App\Notifications\ConfirmEmail;
+use App\Services\User\EmailChange;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EmailChangeRequest;
@@ -76,17 +76,13 @@ class EmailChangeController extends Controller
      */
     protected function validateAndEmailChange(EmailChangeRequest $request)
     {
-        $user = auth()->user();
+        $user = $request->user();
 
-        // Change email of the user
-        $user->email = $request->get('newmail');
-
-        // Resend validation token
-        $user->confirmation_code = str_random(30);
-        $user->confirmed = false;
-        $user->save();
-
-        $user->notify(new ConfirmEmail);
+        (new EmailChange)->execute([
+            'account_id' => $user->account_id,
+            'email' => $request->get('newmail'),
+            'user_id' => $user->id,
+        ]);
 
         // Logout the user
         Auth::guard()->logout();

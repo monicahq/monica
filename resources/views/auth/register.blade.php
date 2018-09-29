@@ -19,7 +19,7 @@
             </li>
             @foreach($locales as $locale)
               <li>
-                @if (App::getLocale() == $locale['lang'])
+                @if (App::isLocale($locale['lang']))
                   {{ $locale['lang'] }}
                 @else
                   <a href="?lang={{ $locale['lang'] }}" title="{{ trans('auth.change_language', ['lang' => $locale['name']]) }}">{{ $locale['lang'] }}</a>
