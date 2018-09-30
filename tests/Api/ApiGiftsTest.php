@@ -15,7 +15,7 @@ class ApiGiftsTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id
+            'account_id' => $user->account->id,
             ]);
         $gift = factory(Gift::class)->create([
             'account_id' => $user->account->id,
