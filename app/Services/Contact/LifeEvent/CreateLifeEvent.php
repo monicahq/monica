@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\LifeEvent;
 
-use App\Services\Contact\LifeEvent\AddReminderToLifeEvent;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;

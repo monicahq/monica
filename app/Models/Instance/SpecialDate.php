@@ -8,8 +8,8 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Services\Contact\Reminder\CreateReminder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * A special date is a date that is not necessarily based on a year that we know.

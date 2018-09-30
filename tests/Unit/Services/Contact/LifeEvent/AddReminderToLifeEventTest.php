@@ -2,15 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
-use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Exceptions\MissingParameterException;
-use App\Services\Contact\LifeEvent\AddReminderToLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\LifeEvent\AddReminderToLifeEvent;
 
 class AddReminderToLifeEventTest extends TestCase
 {

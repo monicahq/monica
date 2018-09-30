@@ -3,7 +3,6 @@
 namespace App\Services\Contact\LifeEvent;
 
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Exceptions\MissingParameterException;
@@ -32,7 +31,7 @@ class AddReminderToLifeEvent extends BaseService
      */
     public function execute(array $data) : Reminder
     {
-        if (!$this->validateDataStructure($data, $this->structure)) {
+        if (! $this->validateDataStructure($data, $this->structure)) {
             throw new MissingParameterException('Missing parameters');
         }
 
@@ -51,6 +50,7 @@ class AddReminderToLifeEvent extends BaseService
         ];
 
         $reminder = (new CreateReminder)->execute($request);
+
         return $reminder;
     }
 }
