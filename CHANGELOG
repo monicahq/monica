@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to set a reminder for a life event
 * Stop reporting OAuth exceptions
 
 RELEASED VERSIONS:
