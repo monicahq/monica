@@ -152,9 +152,11 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'name' => 'This is a text',
             'note' => 'This is a text',
             'has_reminder' => false,
+            'happened_at_month_unknown' => false,
+            'happened_at_day_unknown' => false,
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
 
         $response->assertJsonStructure([
             'data' => $this->jsonLifeEvents,
@@ -176,6 +178,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'name' => 'This is a text',
             'note' => 'This is a text',
             'has_reminder' => false,
+            'happened_at_month_unknown' => false,
+            'happened_at_day_unknown' => false,
         ]);
 
         $this->expectNotFound($response);
@@ -191,6 +195,8 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'name' => 'This is a text',
             'note' => 'This is a text',
             'has_reminder' => false,
+            'happened_at_month_unknown' => false,
+            'happened_at_day_unknown' => false,
         ]);
 
         $this->expectNotFound($response);
