@@ -30,6 +30,9 @@ class CreateLifeEventTest extends TestCase
             'happened_at' => Carbon::now(),
             'name' => 'This is a name',
             'note' => 'This is a note',
+            'has_reminder' => false,
+            'happened_at_day_unknown' => false,
+            'happened_at_month_unknown' => false,
         ];
 
         $lifeEventService = new CreateLifeEvent;
@@ -42,12 +45,44 @@ class CreateLifeEventTest extends TestCase
             'life_event_type_id' => $lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',
+            'reminder_id' => null,
         ]);
 
         $this->assertInstanceOf(
             LifeEvent::class,
             $lifeEvent
         );
+    }
+
+    public function test_it_stores_a_life_event_and_set_a_reminder()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'life_event_type_id' => $lifeEventType->id,
+            'happened_at' => Carbon::now(),
+            'name' => 'This is a name',
+            'note' => 'This is a note',
+            'has_reminder' => true,
+            'happened_at_day_unknown' => false,
+            'happened_at_month_unknown' => false,
+        ];
+
+        $lifeEventService = new CreateLifeEvent;
+        $lifeEvent = $lifeEventService->execute($request);
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $lifeEvent->reminder->id,
+        ]);
+
+        $this->assertDatabaseHas('life_events', [
+            'reminder_id' => $lifeEvent->reminder->id,
+        ]);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -75,6 +110,9 @@ class CreateLifeEventTest extends TestCase
             'life_event_type_id' => $lifeEvent->lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',
+            'has_reminder' => false,
+            'happened_at_day_unknown' => false,
+            'happened_at_month_unknown' => false,
             'happened_at' => Carbon::now(),
         ];
 
@@ -95,6 +133,9 @@ class CreateLifeEventTest extends TestCase
             'life_event_type_id' => $lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',
+            'has_reminder' => false,
+            'happened_at_day_unknown' => false,
+            'happened_at_month_unknown' => false,
             'happened_at' => Carbon::now(),
         ];
 

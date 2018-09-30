@@ -84,6 +84,9 @@ class LifeEventsController extends Controller
             'happened_at' => $request->get('happened_at'),
             'name' => $request->get('name'),
             'note' => $request->get('note'),
+            'has_reminder' => $request->get('has_reminder'),
+            'happened_at_month_unknown' => $request->get('happened_at_month_unknown'),
+            'happened_at_day_unknown' => $request->get('happened_at_day_unknown'),
         ];
 
         // create the conversation

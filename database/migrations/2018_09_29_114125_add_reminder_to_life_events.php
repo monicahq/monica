@@ -15,7 +15,6 @@ class AddReminderToLifeEvents extends Migration
     {
         Schema::table('life_events', function (Blueprint $table) {
             $table->unsignedInteger('reminder_id')->nullable()->after('life_event_type_id');
-            $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('cascade');
         });
     }
 }

@@ -151,6 +151,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'happened_at' => '1989-02-02',
             'name' => 'This is a text',
             'note' => 'This is a text',
+            'has_reminder' => false,
         ]);
 
         $response->assertStatus(201);
@@ -174,6 +175,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'happened_at' => '1989-02-02',
             'name' => 'This is a text',
             'note' => 'This is a text',
+            'has_reminder' => false,
         ]);
 
         $this->expectNotFound($response);
@@ -188,6 +190,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'happened_at' => '1989-02-02',
             'name' => 'This is a text',
             'note' => 'This is a text',
+            'has_reminder' => false,
         ]);
 
         $this->expectNotFound($response);
