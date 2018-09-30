@@ -3,8 +3,8 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
-use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -39,7 +39,7 @@ class DestroyLifeEventTest extends TestCase
     {
         $lifeEvent = factory(LifeEvent::class)->create([]);
         $reminder = factory(Reminder::class)->create([
-            'account_id' => $lifeEvent->account_id
+            'account_id' => $lifeEvent->account_id,
         ]);
         $lifeEvent->reminder_id = $reminder->id;
         $lifeEvent->save();

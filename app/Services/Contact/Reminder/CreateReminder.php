@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\Reminder;
 
-use Illuminate\Support\Facades\Validator;
 use App\Helpers\DateHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
@@ -10,6 +9,7 @@ use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use App\Exceptions\WrongValueException;
+use Illuminate\Support\Facades\Validator;
 use App\Exceptions\MissingParameterException;
 
 class CreateReminder extends BaseService
