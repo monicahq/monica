@@ -2,7 +2,7 @@
 
 namespace App\Services\Contact\Reminder;
 
-use Illuminate\Validation\Validator;
+use Illuminate\Support\Facades\Validator;
 use App\Helpers\DateHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
