@@ -88,6 +88,11 @@ return [
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
     'error_try_again' => 'Something went wrong. Please try again.',
+    'error_id' => 'Error ID: :id',
+    'error_unavailable' => 'Service Unavailable',
+    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_help' => 'We’ll be right back.',
+    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
 

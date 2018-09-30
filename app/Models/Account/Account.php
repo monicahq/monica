@@ -21,6 +21,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
@@ -29,14 +30,18 @@ use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
+use App\Models\Contact\LifeEventType;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ActivityStatistic;
+use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
 use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Auth\Population\PopulateLifeEventsTable;
 
 class Account extends Model
 {
@@ -370,6 +375,36 @@ class Account extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get the Life Event Category records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEventCategories()
+    {
+        return $this->hasMany(LifeEventCategory::class);
+    }
+
+    /**
+     * Get the Life Event Type records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEventTypes()
+    {
+        return $this->hasMany(LifeEventType::class);
+    }
+
+    /**
+     * Get the Life Event records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEvents()
+    {
+        return $this->hasMany(LifeEvent::class);
     }
 
     /**
@@ -782,10 +817,10 @@ class Account extends Model
         $account->created_at = now();
         $account->save();
 
-        $account->populateDefaultFields();
-
         // create the first user for this account
         User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+
+        $account->populateDefaultFields();
 
         return $account;
     }
@@ -804,6 +839,11 @@ class Account extends Model
         $this->populateModulesTable();
         $this->populateChangelogsTable();
         $this->populateActivityTypeTable();
+
+        (new PopulateLifeEventsTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
     }
 
     /**
@@ -923,5 +963,24 @@ class Account extends Model
         foreach ($changelogs as $changelog) {
             AddChangelogEntry::dispatch($this, $changelog->id);
         }
+    }
+
+    /**
+     * Get the first available locale in an account. This gets the first user
+     * in the account and reads his locale.
+     *
+     * @return string
+     *
+     * @throws ModelNotFoundException
+     */
+    public function getFirstLocale()
+    {
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return;
+        }
+
+        return $user->locale;
     }
 }

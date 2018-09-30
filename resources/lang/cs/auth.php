@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'Tyto přihlašovací údaje neodpovídají uloženým záznamům.',
-    'throttle' => 'Příliš mnoho pokusů o přihlášení. Opakujte pokus za :seconds sekund.',
+    'failed' => 'Tyto přihlašovací údaje neodpovídají žadnému záznamu.',
+    'throttle' => 'Příliš mnoho pokusů o přihlášení. Zkuste to prosím znovu za :seconds vteřin.',
     'not_authorized' => 'Nejste oprávněni provést tuto akci',
     'signup_disabled' => 'Nové registrace jsou aktuálně zastaveny',
     'back_homepage' => 'Zpět na domovskou stránku',
