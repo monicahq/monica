@@ -95,7 +95,7 @@
                 <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
                     <label :class="[dirltr ? 'mr3 mb0 form-check-label pointer' : 'ml3 mb0 form-check-label pointer']">
                         <input class="form-check-input" id="addReminder" name="addReminder" type="checkbox" v-model="newLifeEvent.has_reminder">
-                        Add a yearly reminder for this event
+                        {{ $t('people.life_event_create_add_yearly_reminder') }}
                     </label>
                 </div>
 
