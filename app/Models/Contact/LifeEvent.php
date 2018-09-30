@@ -4,6 +4,7 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LifeEvent extends Model
@@ -21,6 +22,7 @@ class LifeEvent extends Model
         'happened_at',
         'account_id',
         'contact_id',
+        'reminder_id',
         'life_event_type_id',
     ];
 
@@ -57,6 +59,14 @@ class LifeEvent extends Model
     public function lifeEventType()
     {
         return $this->belongsTo(LifeEventType::class, 'life_event_type_id');
+    }
+
+    /**
+     * Get the reminder record associated with the life event.
+     */
+    public function reminder()
+    {
+        return $this->belongsTo(Reminder::class);
     }
 
     /**
