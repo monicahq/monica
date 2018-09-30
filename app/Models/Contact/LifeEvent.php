@@ -4,7 +4,6 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class LifeEvent extends Model

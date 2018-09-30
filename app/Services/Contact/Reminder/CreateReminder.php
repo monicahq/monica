@@ -3,15 +3,14 @@
 namespace App\Services\Contact\Reminder;
 
 use Validator;
-use Illuminate\Validation\Rule;
 use App\Helpers\DateHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Account;
+use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Exceptions\MissingParameterException;
 use App\Exceptions\WrongValueException;
+use App\Exceptions\MissingParameterException;
 
 class CreateReminder extends BaseService
 {
@@ -41,7 +40,7 @@ class CreateReminder extends BaseService
      */
     public function execute(array $data) : Reminder
     {
-        if (!$this->validateDataStructure($data, $this->structure)) {
+        if (! $this->validateDataStructure($data, $this->structure)) {
             throw new MissingParameterException('Missing parameters');
         }
 
@@ -87,7 +86,7 @@ class CreateReminder extends BaseService
     /**
      * Make sure the frequency_type is in the range of authorized values.
      *
-     * @param Array $data
+     * @param array $data
      */
     private function validateFrequency($data)
     {

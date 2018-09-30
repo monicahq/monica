@@ -3,8 +3,8 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LifeEventTest extends TestCase
