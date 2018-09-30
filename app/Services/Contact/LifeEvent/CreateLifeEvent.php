@@ -61,7 +61,7 @@ class CreateLifeEvent extends BaseService
      */
     private function addYearlyReminder($data, $lifeEvent)
     {
-        if ($data['has_reminder'] == true) {
+        if ($data['has_reminder']) {
             $array = [
                 'account_id' => $data['account_id'],
                 'life_event_id' => $lifeEvent->id,

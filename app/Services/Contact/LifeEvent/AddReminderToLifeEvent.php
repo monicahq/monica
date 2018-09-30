@@ -49,8 +49,6 @@ class AddReminderToLifeEvent extends BaseService
             'special_date_id' => null,
         ];
 
-        $reminder = (new CreateReminder)->execute($request);
-
-        return $reminder;
+        return (new CreateReminder)->execute($request);
     }
 }

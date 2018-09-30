@@ -54,7 +54,7 @@ class CreateReminder extends BaseService
 
         $this->validateFrequency($data);
 
-        $reminder = $this->createReminder($data);
+        $reminder = $this->attachReminderToLifeEvent($data);
 
         $reminder->calculateNextExpectedDate()->save();
         $reminder->scheduleNotifications();
@@ -67,7 +67,7 @@ class CreateReminder extends BaseService
      *
      * @return Reminder
      */
-    private function createReminder(array $data) : Reminder
+    private function attachReminderToLifeEvent(array $data) : Reminder
     {
         $reminder = new Reminder;
         $reminder->frequency_type = $data['frequency_type'];
