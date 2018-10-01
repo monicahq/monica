@@ -383,6 +383,7 @@ return [
     'life_event_create_default_story' => 'סיפור (רשות)',
     'life_event_create_date' => 'אין צורך לציין חודש או יום - חובה לציין שנה בלבד.',
     'life_event_create_default_description' => 'הוספת המידע כפי שידוע לך',
+    'life_event_create_add_yearly_reminder' => 'Add a yearly reminder for this event',
     'life_event_create_success' => 'האירוע המשמעותי נוסף',
     'life_event_delete_title' => 'מחיקת אירוע משמעותי',
     'life_event_delete_description' => 'למחוק את האירוע המשמעותי הזה? מחיקה היא לצמיתות.',
