@@ -339,7 +339,7 @@ return [
     'personalization_activity_type_modal_delete_error' => 'Impossible de trouver ce type d’activité.',
     'personalization_activity_type_category_modal_delete_error' => 'Impossible de trouver cette catégorie de type d’activité.',
 
-    'personalization_life_event_category_work_education' => 'Travail & éducation',
+    'personalization_life_event_category_work_education' => 'Travail & formation',
     'personalization_life_event_category_family_relationships' => 'Famille & relations',
     'personalization_life_event_category_home_living' => 'Foyer & vie domestique',
     'personalization_life_event_category_travel_experiences' => 'Voyages & expériences',
