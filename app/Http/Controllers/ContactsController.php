@@ -61,9 +61,12 @@ class ContactsController extends Controller
 
         $contacts = $user->account->contacts()->real();
         if ($active) {
+            $nbarchived = $contacts->count();
             $contacts = $contacts->active();
+            $nbarchived = $nbarchived - $contacts->count();
         } else {
             $contacts = $contacts->notActive();
+            $nbarchived = $contacts->count();
         }
 
         if ($request->get('no_tag')) {
@@ -108,6 +111,8 @@ class ContactsController extends Controller
             ->withContacts($contacts->unique('id'))
             ->withUnstarredContacts($unstarredContacts)
             ->withStarredContacts($starredContacts)
+            ->withActive($active)
+            ->withHasArchived($nbarchived > 0)
             ->withTags($tags)
             ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)

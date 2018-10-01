@@ -16,7 +16,11 @@
                 <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
+                @if ($contact->is_active)
                 <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
+                @else
+                <a href="{{ route('people.archived') }}">{{ trans('app.breadcrumb_archived_contacts') }}</a>
+                @endif
               </li>
               <li>
                 {{ $contact->name }}

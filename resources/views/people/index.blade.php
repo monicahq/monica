@@ -14,7 +14,11 @@
                 <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
+                @if ($active)
                 {{ trans('app.breadcrumb_list_contacts') }}
+                @else
+                {{ trans('app.breadcrumb_archived_contacts') }}
+                @endif
               </li>
             </ul>
           </div>
@@ -55,6 +59,11 @@
                 <h3>{{ trans('people.people_list_blank_title') }}</h3>
                 <div class="cta-blank">
                   <a href="{{ route('people.create') }}" class="btn btn-primary" id="button-add-contact">{{ trans('people.people_list_blank_cta') }}</a>
+                </div>
+                <div class="cta-blank">
+                  @if ($hasArchived)
+                  <a href="{{ route('people.archived') }}">@lang('people.link_to_archived')</a>
+                  @endif
                 </div>
               </div>
             </div>
@@ -195,6 +204,14 @@
               <a href="{{ route('people.create') }}" id="button-add-contact" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>
+
+              @if ($hasArchived)
+                @if ($active)
+                <a href="{{ route('people.archived') }}">@lang('people.link_to_archived')</a>
+                @else
+                <a href="{{ route('people.index') }}">@lang('people.link_to_list')</a>
+                @endif
+              @endif
 
               {{-- Only for subscriptions --}}
               @include('partials.components.people-upgrade-sidebar')

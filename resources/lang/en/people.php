@@ -58,6 +58,7 @@ return [
 
     //
     'link_to_list' => 'List of people',
+    'link_to_archived' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Edit contact information',
