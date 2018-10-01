@@ -383,6 +383,7 @@ return [
     'life_event_create_default_story' => 'Histoire (optionnel)',
     'life_event_create_date' => 'Vous n\'avez pas à renseigner le mois ou le jour - seule l\'année est obligatoire.',
     'life_event_create_default_description' => 'Ajouter des informations sur ce que vous savez',
+    'life_event_create_add_yearly_reminder' => 'Add a yearly reminder for this event',
     'life_event_create_success' => 'L\'événement a été sauvegardé',
     'life_event_delete_title' => 'Supprimer l\'événement',
     'life_event_delete_description' => 'Etes-vous sûr de vouloir supprimer cet évènement marquant? La suppression est permanente.',
