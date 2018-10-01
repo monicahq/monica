@@ -375,7 +375,7 @@ return [
     'personalization_life_event_type_weight_loss' => 'Perte de poids',
     'personalization_life_event_type_wear_glass_or_contact' => 'Port de lunettes ou lentilles',
     'personalization_life_event_type_broken_bone' => 'Os cassé',
-    'personalization_life_event_type_removed_braces' => 'Removed braces',
+    'personalization_life_event_type_removed_braces' => 'Retiré un appareil dentaire',
     'personalization_life_event_type_surgery' => 'Opération chirurgicale',
     'personalization_life_event_type_dentist' => 'Dentiste',
     'personalization_life_event_type_new_sport' => 'Nouveau sport',
