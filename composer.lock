@@ -224,16 +224,16 @@
         },
         {
             "name": "colinodell/json5",
-            "version": "v1.0.4",
+            "version": "v1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/colinodell/json5.git",
-                "reference": "a720fbdaa07c802797524ab46575a74a6ac30719"
+                "reference": "8c73e1a5cd933ed0e29fb5d5997f23902bd9804c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/colinodell/json5/zipball/a720fbdaa07c802797524ab46575a74a6ac30719",
-                "reference": "a720fbdaa07c802797524ab46575a74a6ac30719",
+                "url": "https://api.github.com/repos/colinodell/json5/zipball/8c73e1a5cd933ed0e29fb5d5997f23902bd9804c",
+                "reference": "8c73e1a5cd933ed0e29fb5d5997f23902bd9804c",
                 "shasum": ""
             },
             "require": {
@@ -243,9 +243,9 @@
             },
             "require-dev": {
                 "mikehaertl/php-shellcommand": "^1.2.5",
-                "phpunit/phpunit": "^4.8.36",
+                "phpunit/phpunit": "^4.8.36|^7.3",
                 "squizlabs/php_codesniffer": "^2.3",
-                "symfony/finder": "^2.3"
+                "symfony/finder": "^2.8|^3.4|^4.1"
             },
             "bin": [
                 "bin/json5"
@@ -284,7 +284,7 @@
                 "json5_decode",
                 "json_decode"
             ],
-            "time": "2018-01-14T23:52:11+00:00"
+            "time": "2018-09-20T15:43:07+00:00"
         },
         {
             "name": "creativeorange/gravatar",
@@ -3217,16 +3217,16 @@
         },
         {
             "name": "nette/utils",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/utils.git",
-                "reference": "183069866dc477fcfbac393ed486aaa6d93d19a5"
+                "reference": "17b9f76f2abd0c943adfb556e56f2165460b15ce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/utils/zipball/183069866dc477fcfbac393ed486aaa6d93d19a5",
-                "reference": "183069866dc477fcfbac393ed486aaa6d93d19a5",
+                "url": "https://api.github.com/repos/nette/utils/zipball/17b9f76f2abd0c943adfb556e56f2165460b15ce",
+                "reference": "17b9f76f2abd0c943adfb556e56f2165460b15ce",
                 "shasum": ""
             },
             "require": {
@@ -3295,7 +3295,7 @@
                 "utility",
                 "validation"
             ],
-            "time": "2018-05-02T17:16:08+00:00"
+            "time": "2018-09-18T10:22:16+00:00"
         },
         {
             "name": "nikic/php-parser",
@@ -3626,16 +3626,16 @@
         },
         {
             "name": "pragmarx/coollection",
-            "version": "v0.6.0",
+            "version": "v0.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/coollection.git",
-                "reference": "fdc6df241d7d631ffac0093378874200638f03e4"
+                "reference": "3a155ded3186f723774e65c9ea2d79ab439c4a84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/coollection/zipball/fdc6df241d7d631ffac0093378874200638f03e4",
-                "reference": "fdc6df241d7d631ffac0093378874200638f03e4",
+                "url": "https://api.github.com/repos/antonioribeiro/coollection/zipball/3a155ded3186f723774e65c9ea2d79ab439c4a84",
+                "reference": "3a155ded3186f723774e65c9ea2d79ab439c4a84",
                 "shasum": ""
             },
             "require": {
@@ -3686,20 +3686,20 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2018-08-19T20:13:00+00:00"
+            "time": "2018-09-26T21:11:58+00:00"
         },
         {
             "name": "pragmarx/countries",
-            "version": "v0.5.8",
+            "version": "v0.5.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries.git",
-                "reference": "df4a00d7567b412e9426e341c6aa5fa71b6fa15e"
+                "reference": "26290e847ebc7fbed4cf6226ab7ad89a1fe74ccf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/df4a00d7567b412e9426e341c6aa5fa71b6fa15e",
-                "reference": "df4a00d7567b412e9426e341c6aa5fa71b6fa15e",
+                "url": "https://api.github.com/repos/antonioribeiro/countries/zipball/26290e847ebc7fbed4cf6226ab7ad89a1fe74ccf",
+                "reference": "26290e847ebc7fbed4cf6226ab7ad89a1fe74ccf",
                 "shasum": ""
             },
             "require": {
@@ -3748,20 +3748,20 @@
                 "timezones",
                 "topology"
             ],
-            "time": "2018-08-19T21:44:15+00:00"
+            "time": "2018-09-28T16:50:37+00:00"
         },
         {
             "name": "pragmarx/countries-laravel",
-            "version": "v0.6.1",
+            "version": "v0.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/countries-laravel.git",
-                "reference": "234bda05277cde3e6cec47c1c7280bae273c6023"
+                "reference": "eb9b56045bdc4ba27483d264da5ab9e67aade455"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/234bda05277cde3e6cec47c1c7280bae273c6023",
-                "reference": "234bda05277cde3e6cec47c1c7280bae273c6023",
+                "url": "https://api.github.com/repos/antonioribeiro/countries-laravel/zipball/eb9b56045bdc4ba27483d264da5ab9e67aade455",
+                "reference": "eb9b56045bdc4ba27483d264da5ab9e67aade455",
                 "shasum": ""
             },
             "require": {
@@ -3819,7 +3819,7 @@
                 "timezones",
                 "topology"
             ],
-            "time": "2018-08-19T22:00:14+00:00"
+            "time": "2018-08-24T02:30:46+00:00"
         },
         {
             "name": "pragmarx/google2fa",
@@ -4021,16 +4021,16 @@
         },
         {
             "name": "pragmarx/ia-collection",
-            "version": "v5.6.33",
+            "version": "v5.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/ia-collection.git",
-                "reference": "0625ac534a31fe91cfb1d48ab8d8cb31694034a1"
+                "reference": "a7bdd40c452e60f55ce81a9af01e12fea0c60a93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/ia-collection/zipball/0625ac534a31fe91cfb1d48ab8d8cb31694034a1",
-                "reference": "0625ac534a31fe91cfb1d48ab8d8cb31694034a1",
+                "url": "https://api.github.com/repos/antonioribeiro/ia-collection/zipball/a7bdd40c452e60f55ce81a9af01e12fea0c60a93",
+                "reference": "a7bdd40c452e60f55ce81a9af01e12fea0c60a93",
                 "shasum": ""
             },
             "require": {
@@ -4081,7 +4081,7 @@
                 "laravel",
                 "pragmarx"
             ],
-            "time": "2018-08-19T20:16:53+00:00"
+            "time": "2018-09-20T18:19:48+00:00"
         },
         {
             "name": "pragmarx/ia-str",
@@ -8303,6 +8303,7 @@
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
+                "alterphp/easyadmin-extension-bundle": ">=1.2,<1.2.11|>=1.3,<1.3.1",
                 "amphp/artax": "<1.0.6|>=2,<2.0.6",
                 "amphp/http": "<1.0.1",
                 "asymmetricrypt/asymmetricrypt": ">=0,<9.9.99",
@@ -8470,7 +8471,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-09-17T20:20:31+00:00"
+            "time": "2018-10-02T16:19:22+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
