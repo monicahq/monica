@@ -417,7 +417,7 @@ return [
     'life_event_sentence_new_eating_habits' => 'A commencé de nouvelles habitudes alimentaires',
     'life_event_sentence_weight_loss' => 'A perdu du poids',
     'life_event_sentence_wear_glass_or_contact' => 'A commencé à porter des lunettes ou des lentilles de contact',
-    'life_event_sentence_broken_bone' => 'S\'est cassé·e un os',
+    'life_event_sentence_broken_bone' => 'S\'est cassé un os',
     'life_event_sentence_removed_braces' => 'S’est fait retiré un appareil dentaire',
     'life_event_sentence_surgery' => 'S’est fait opéré',
     'life_event_sentence_dentist' => 'Est allé chez le dentiste',
