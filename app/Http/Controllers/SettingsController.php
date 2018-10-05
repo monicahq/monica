@@ -15,8 +15,8 @@ use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
+use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
 use PragmaRX\Google2FALaravel\Google2FA;
 
-class SettingsController extends Controller
+class SettingsController
 {
     protected $ignoredTables = [
         'accounts',
@@ -40,6 +40,8 @@ class SettingsController extends Controller
         'default_activity_type_categories',
         'default_contact_field_types',
         'default_contact_modules',
+        'default_life_event_categories',
+        'default_life_event_types',
         'default_relationship_type_groups',
         'default_relationship_types',
         'failed_jobs',
@@ -113,12 +115,11 @@ class SettingsController extends Controller
         );
 
         if ($user->email != $request->get('email')) {
-            $user->email = $request->get('email');
-            $user->confirmation_code = str_random(30);
-            $user->confirmed = false;
-            $user->save();
-
-            $user->notify(new ConfirmEmail);
+            (new EmailChange)->execute([
+                'account_id' => $user->account_id,
+                'email' => $request->get('email'),
+                'user_id' => $user->id,
+            ]);
         }
 
         $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
@@ -214,10 +215,10 @@ class SettingsController extends Controller
      */
     public function exportToSql()
     {
-        $path = $this->dispatchNow(new ExportAccountAsSQL());
+        $path = dispatch_now(new ExportAccountAsSQL());
 
         return response()
-            ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
+            ->download(Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
             ->deleteFileAfterSend(true);
     }
 
@@ -425,7 +426,7 @@ class SettingsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function deleteAdditionalUser(Request $request, $userID)
+    public function deleteAdditionalUser($userID)
     {
         $user = User::where('account_id', auth()->user()->account_id)
             ->findOrFail($userID);
@@ -449,7 +450,7 @@ class SettingsController extends Controller
         return view('settings.tags');
     }
 
-    public function deleteTag(Request $request, $tagId)
+    public function deleteTag($tagId)
     {
         $tag = Tag::where('account_id', auth()->user()->account_id)
             ->findOrFail($tagId);
@@ -467,8 +468,37 @@ class SettingsController extends Controller
         return view('settings.api.index');
     }
 
-    public function security(Request $request)
+    public function security()
     {
         return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
+    }
+
+    /**
+     * Update the default view when viewing a contact.
+     * The default view can be either the life events feed or the general data
+     * about the contact (notes, reminders, ...).
+     * Possible values: life-events | notes.
+     *
+     * @param  Request $request
+     * @return bool
+     */
+    public function updateDefaultProfileView(Request $request)
+    {
+        $allowedValues = ['life-events', 'notes'];
+        $view = $request->get('name');
+
+        if (! in_array($view, $allowedValues)) {
+            return 'not allowed';
+        }
+
+        auth()->user()->profile_active_tab = $view;
+
+        if ($view == 'life-events') {
+            auth()->user()->profile_new_life_event_badge_seen = true;
+        }
+
+        auth()->user()->save();
+
+        return $view;
     }
 }

@@ -6,9 +6,12 @@ use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Helpers\DateHelper;
 use App\Helpers\TimezoneHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DateHelperTest extends FeatureTestCase
 {
+    use DatabaseTransactions;
+
     public function testParseDateTime()
     {
         $date = '2017-01-22 17:56:03';
@@ -328,29 +331,22 @@ class DateHelperTest extends FeatureTestCase
             3,
             DateHelper::getListOfYears(2)
         );
-    }
-
-    public function test_it_returns_a_list_with_years2()
-    {
-        $user = $this->signIn();
-        $user->locale = 'en';
-        $user->save();
 
         $this->assertEquals(
             now()->year,
-            DateHelper::getListOfYears(2)[0]
+            DateHelper::getListOfYears(2)->first()['name']
         );
         $this->assertEquals(
             now()->subYears(2)->year,
-            DateHelper::getListOfYears(2)[2]
+            DateHelper::getListOfYears(2)->last()['name']
         );
         $this->assertEquals(
             now()->subYears(-2)->year,
-            DateHelper::getListOfYears(2, -2)[0]
+            DateHelper::getListOfYears(2, -2)->first()['name']
         );
         $this->assertEquals(
             now()->year,
-            DateHelper::getListOfYears(2, -2)[2]
+            DateHelper::getListOfYears(2, -2)[2]['name']
         );
     }
 

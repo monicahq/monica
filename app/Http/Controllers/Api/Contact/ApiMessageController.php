@@ -7,6 +7,7 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
+use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Conversation\UpdateMessage;
 use App\Services\Contact\Conversation\DestroyMessage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -41,7 +42,7 @@ class ApiMessageController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (\Exception $e) {
+        } catch (MissingParameterException $e) {
             return $this->setHTTPStatusCode(500)
                         ->setErrorCode(41)
                         ->respondWithError(config('api.error_codes.41'));
@@ -82,7 +83,7 @@ class ApiMessageController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (\Exception $e) {
+        } catch (MissingParameterException $e) {
             return $this->setHTTPStatusCode(500)
                         ->setErrorCode(41)
                         ->respondWithError(config('api.error_codes.41'));
@@ -118,7 +119,7 @@ class ApiMessageController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (\Exception $e) {
+        } catch (MissingParameterException $e) {
             return $this->setHTTPStatusCode(500)
                 ->setErrorCode(41)
                 ->respondWithError(config('api.error_codes.41'));

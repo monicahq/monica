@@ -10,8 +10,7 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class AddMessageToConversation extends BaseService
 {
@@ -38,23 +37,13 @@ class AddMessageToConversation extends BaseService
     public function execute(array $data): Message
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            Conversation::where('contact_id', $data['contact_id'])
-                                ->where('account_id', $data['account_id'])
-                                ->findOrFail($data['conversation_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        Conversation::where('contact_id', $data['contact_id'])
+                        ->where('account_id', $data['account_id'])
+                        ->findOrFail($data['conversation_id']);
 
-        try {
-            $message = Message::create($data);
-        } catch (QueryException $e) {
-            throw $e;
-        }
-
-        return $message;
+        return Message::create($data);
     }
 }

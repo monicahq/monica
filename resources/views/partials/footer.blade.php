@@ -3,7 +3,7 @@
     <div class="flex f6">
       <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-40-ns w-100 pa2 bt b--gray-monica pt3">
         <ul>
-          <li class="di mr2">{{ trans('app.footer_remarks') }} <a href="mailto:regis@monicahq.com">{{ trans('app.footer_send_email') }}</a></li>
+          <li class="di mr2">{{ trans('app.footer_remarks') }} <a href="mailto:{{ config('monica.support_email_address') }}">{{ trans('app.footer_send_email') }}</a></li>
           <li class="di mr2"><a href="https://monicahq.com/privacy" hreflang="en">{{ trans('app.footer_privacy') }}</a></li>
           <li class="di"><a href="https://tinyletter.com/monicahq" hreflang="en">{{ trans('app.footer_newsletter') }}</a></li>
         </ul>

@@ -4,13 +4,26 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use App\Models\Account\Account;
-use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\App;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification as LaravelNotification;
 
-class ConfirmEmail extends Notification implements ShouldQueue
+class ConfirmEmail extends LaravelNotification implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable;
+
+    /**
+     * @var bool
+     */
+    public $force;
+
+    public function __construct($force = false)
+    {
+        $this->force = $force;
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -19,9 +32,11 @@ class ConfirmEmail extends Notification implements ShouldQueue
      */
     public function via()
     {
-        $first = Account::count() == 1;
-        if (! config('monica.signup_double_optin') || $first) {
-            return [];
+        if (! $this->force) {
+            $first = Account::count() == 1;
+            if (! config('monica.signup_double_optin') || $first) {
+                return [];
+            }
         }
 
         return ['mail'];
@@ -33,13 +48,15 @@ class ConfirmEmail extends Notification implements ShouldQueue
      * @param  mixed  $notifiable
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail($notifiable)
+    public function toMail($user)
     {
+        App::setLocale($user->locale);
+
         return (new MailMessage)
             ->subject(trans('mail.confirmation_email_title'))
             ->line(trans('mail.confirmation_email_title'))
             ->line(trans('mail.confirmation_email_intro'))
             ->action(trans('mail.confirmation_email_button'),
-                url("confirmation/$notifiable->id/$notifiable->confirmation_code"));
+                url("confirmation/$user->id/$user->confirmation_code"));
     }
 }

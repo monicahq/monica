@@ -16,6 +16,7 @@
 @import '~pretty-checkbox/src/pretty-checkbox';
 
 $border-color: #dfdfdf;
+$bg-hover-monica: #f1f5fd;
 $htmldir: ltr !default;
 
 @import "buttons";
@@ -39,6 +40,12 @@ $htmldir: ltr !default;
 
 .b--gray-monica {
   border-color: #dde2e9;
+}
+
+.bg-hover-monica {
+  &:hover {
+    background-color: $bg-hover-monica;
+  }
 }
 
 .w-5 {
@@ -170,6 +177,30 @@ $htmldir: ltr !default;
     &:hover {
       background-color: transparent;
       color: #fff;
+    }
+  }
+}
+
+.life-event {
+  .life-event-add-row {
+    &:hover {
+      background-color: $bg-hover-monica;
+    }
+  }
+
+  .life-event-add-arrow {
+    right: 10px;
+    top: 12px;
+  }
+
+  .life-event-add-icon {
+    background-color: #d7e3ec;
+    border-radius: 50%;
+    padding: 20px;
+    width: 65px;
+
+    img {
+      width: 70px;
     }
   }
 }
@@ -406,6 +437,24 @@ input:disabled {
   .table-cell {
     display: table-cell;
     padding: 8px 10px;
+  }
+}
+
+.profile-selected {
+  .profile-selected-left {
+    border-left: 1px solid #dde2e9;
+    border-top: 1px solid #dde2e9;
+    border-bottom: 1px solid #dde2e9;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  .profile-selected-right {
+    border-right: 1px solid #dde2e9;
+    border-top: 1px solid #dde2e9;
+    border-bottom: 1px solid #dde2e9;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
   }
 }
 
