@@ -3,6 +3,7 @@
 namespace App\Console\Commands\Helpers;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CommandExecutor implements CommandExecutorInterface
@@ -25,14 +26,12 @@ class CommandExecutor implements CommandExecutorInterface
     public function exec($message, $commandline)
     {
         $this->command->info($message);
-        $this->command->line($commandline);
+        $this->command->line($commandline, null, OutputInterface::VERBOSITY_VERBOSE);
         exec($commandline.' 2>&1', $output);
-        if ($this->command->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            foreach ($output as $line) {
-                $this->command->line($line);
-            }
+        foreach ($output as $line) {
+            $this->command->line($line, null, OutputInterface::VERBOSITY_VERY_VERBOSE);
         }
-        $this->command->line('');
+        $this->command->line('', null, OutputInterface::VERBOSITY_VERBOSE);
     }
 
     public function artisan($message, $commandline, array $arguments = [])
@@ -45,6 +44,6 @@ class CommandExecutor implements CommandExecutorInterface
                 $info .= ' '.$value;
             }
         }
-        $this->exec($message, 'php artisan '.$commandline.$info);
+        $this->exec($message, Application::formatCommandString($commandline.$info));
     }
 }

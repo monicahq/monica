@@ -7,9 +7,11 @@ use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
@@ -82,6 +84,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateDebts();
             $this->populateCalls();
             $this->populateConversations();
+            $this->populateLifeEvents();
             $this->populateGifts();
             $this->populateAddresses();
             $this->populateContactFields();
@@ -236,8 +239,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_favorited' => rand(1, 3) == 1,
                     'favorited_at' => $this->faker->dateTimeThisCentury(),
                 ]);
-
-                $this->contact->logEvent('note', $note->id, 'create');
             }
         }
     }
@@ -262,8 +263,6 @@ class FakeContentTableSeeder extends Seeder
                     'journalable_id' => $activity->id,
                     'journalable_type' => 'App\Models\Contact\Activity',
                 ]);
-
-                $this->contact->logEvent('activity', $activity->id, 'create');
             }
         }
     }
@@ -279,8 +278,6 @@ class FakeContentTableSeeder extends Seeder
                     'completed_at' => (rand(1, 2) == 1 ? $this->faker->dateTimeThisCentury() : null),
                     'account_id' => $this->contact->account_id,
                 ]);
-
-                $this->contact->logEvent('task', $task->id, 'create');
             }
         }
     }
@@ -296,8 +293,6 @@ class FakeContentTableSeeder extends Seeder
                     'status' => 'inprogress',
                     'account_id' => $this->contact->account_id,
                 ]);
-
-                $this->contact->logEvent('debt', $debt->id, 'create');
             }
         }
     }
@@ -316,8 +311,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_an_idea' => true,
                     'has_been_offered' => false,
                 ]);
-
-                $this->contact->logEvent('gift', $gift->id, 'create');
             }
         }
     }
@@ -494,6 +487,27 @@ class FakeContentTableSeeder extends Seeder
                         'content' => $this->faker->realText(),
                     ]);
                 }
+            }
+        }
+    }
+
+    public function populateLifeEvents()
+    {
+        if (rand(1, 1) == 1) {
+            for ($j = 0; $j < rand(1, 20); $j++) {
+                $lifeEventType = LifeEventType::orderBy(DB::raw('RAND()'))->firstOrFail();
+
+                (new CreateLifeEvent)->execute([
+                    'account_id' => $this->contact->account->id,
+                    'contact_id' => $this->contact->id,
+                    'life_event_type_id' => $lifeEventType->id,
+                    'happened_at' => $this->faker->dateTimeThisCentury(),
+                    'name' => $this->faker->realText(),
+                    'note' => $this->faker->realText(),
+                    'has_reminder' => false,
+                    'happened_at_month_unknown' => false,
+                    'happened_at_day_unknown' => false,
+                ]);
             }
         }
     }

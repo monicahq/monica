@@ -88,6 +88,11 @@ return [
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
     'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
     'error_try_again' => 'משהו השתבש. נא לנסות שוב.',
+    'error_id' => 'מזהה שגיאה: :id',
+    'error_unavailable' => 'השירות אינו זמין',
+    'error_maintenance' => 'מתבצעות עבודות תחזוקה. תכף נשוב.',
+    'error_help' => 'מיד נשוב.',
+    'error_twitter' => 'ניתן לעקוב אחר <a href="https://twitter.com/:twitter">חשבון הטוויטר שלנו</a> כדי להתעדכן אם השירות שב לפעילות.',
 
     'default_save_success' => 'הנתונים נשמרו.',
 

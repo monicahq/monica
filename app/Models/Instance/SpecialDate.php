@@ -8,6 +8,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Database\Eloquent\Model;
+use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -118,22 +119,21 @@ class SpecialDate extends Model
     {
         $this->deleteReminder();
 
-        $reminder = new Reminder;
-        $reminder->frequency_type = $frequency;
-        $reminder->frequency_number = $frequencyNumber;
-        $reminder->next_expected_date = $this->date;
-        $reminder->special_date_id = $this->id;
-        $reminder->account_id = $this->account_id;
-        $reminder->contact_id = $this->contact_id;
-        $reminder->title = $title;
-        $reminder->save();
+        $request = [
+            'contact_id' => $this->contact_id,
+            'account_id'  => $this->account_id,
+            'date' => $this->date,
+            'frequency_type' => $frequency,
+            'frequency_number' => $frequencyNumber,
+            'title' => $title,
+            'description' => null,
+            'special_date_id' => $this->id,
+        ];
 
-        $reminder->calculateNextExpectedDate()->save();
+        $reminder = (new CreateReminder)->execute($request);
 
         $this->reminder_id = $reminder->id;
         $this->save();
-
-        $reminder->scheduleNotifications();
 
         return $reminder;
     }
