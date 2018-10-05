@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5a84be1ebe381f562f45ec0f45da9cf0",
+    "content-hash": "c5f8fc66d230f96996beb72aec8e3f13",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2797,16 +2797,16 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "0.2",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "48c7fd6414fa6621670560c90b2f4ab4f75567a5"
+                "reference": "36a063b10713863667f80fe6a00d391aa0d18b54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/48c7fd6414fa6621670560c90b2f4ab4f75567a5",
-                "reference": "48c7fd6414fa6621670560c90b2f4ab4f75567a5",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/36a063b10713863667f80fe6a00d391aa0d18b54",
+                "reference": "36a063b10713863667f80fe6a00d391aa0d18b54",
                 "shasum": ""
             },
             "require": {
@@ -2848,7 +2848,7 @@
                 "php",
                 "proxies"
             ],
-            "time": "2018-10-05T10:13:55+00:00"
+            "time": "2018-10-05T10:40:38+00:00"
         },
         {
             "name": "monolog/monolog",

@@ -30,7 +30,7 @@
         "mariuzzo/laravel-js-localization": "^1.4",
         "matriphe/iso-639": "^1.0",
         "moneyphp/money": "^3.1",
-        "monicahq/laravel-cloudflare": "^0.2",
+        "monicahq/laravel-cloudflare": "^1.0",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/countries-laravel": "^0.6.1",
         "pragmarx/google2fa": "^3.0",
