@@ -18,6 +18,7 @@ class VersionCheckTest extends FeatureTestCase
     public function test_check_version_set_to_false_disables_the_check()
     {
         config(['monica.check_version' => false]);
+        $this->withoutMockingConsoleOutput();
 
         $resultCommand = $this->artisan('monica:ping');
         $this->assertEquals(0, $resultCommand);
