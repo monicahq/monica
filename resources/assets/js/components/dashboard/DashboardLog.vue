@@ -45,7 +45,7 @@
       <!-- Notes -->
       <div v-if="activeTab == 'notes'">
         <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0" v-bind:key="note.id">
-          <div class="fl w-10">
+          <div class="fl w-10 avatars">
             <avatar v-bind:contact="note.contact" v-bind:clickable="true"></avatar>
           </div>
           <div class="pl3 fl w-90">
