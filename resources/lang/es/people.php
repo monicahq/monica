@@ -134,7 +134,7 @@ return [
     'information_no_work_defined' => 'Información de trabajo no definida',
     'information_work_at' => 'en: company',
     'linkedin_profile' => 'Perfil de LinkedIn',
-    'work_add_cta' => 'Actualizar la información de tranajo',
+    'work_add_cta' => 'Actualizar la información de trabajo',
     'work_edit_success' => 'La información de trabajo ha sido actualizada con éxito',
     'work_edit_title' => 'Actualizar la información de trabajo de :name',
     'work_edit_job' => 'Título (opcional)',
