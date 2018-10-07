@@ -474,18 +474,18 @@
         <!-- CREATE LIFE EVENT BOX -->
         <create-life-event :hash="hash"
                             v-if="showAdd == true"
-                            v-on:updateLifeEventTimeline="updateLifeEventsList($event)"
-                            v-on:dismissModal="showAdd = false"
-                            v-bind:months="months"
-                            v-bind:days="days"
-                            v-bind:years="years"
+                            @updateLifeEventTimeline="updateLifeEventsList($event)"
+                            @dismissModal="showAdd = false"
+                            :months="months"
+                            :days="days"
+                            :years="years"
                             >
         </create-life-event>
 
         <!-- LISTING OF LIFE EVENTS -->
         <div v-if="lifeEvents.length != 0">
             <div class="bt b--gray-monica" style="margin-left: 20px;">
-                <div v-for="lifeEvent in lifeEvents" v-bind:key="lifeEvent.id">
+                <div v-for="lifeEvent in lifeEvents" :key="lifeEvent.id">
                     <div class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content" :id="'lifeEvent' + lifeEvent.id">
                         <div class="absolute life-event-list-icon">
                             <img class="relative" :src="'/img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'">

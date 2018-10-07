@@ -78,7 +78,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             {{ $t('settings.api_oauth_create') }}
@@ -144,7 +144,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             Edit Client

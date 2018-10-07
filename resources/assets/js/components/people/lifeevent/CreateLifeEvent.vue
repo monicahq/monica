@@ -20,7 +20,7 @@
             <ul class="ba b--gray-monica br2" v-if="view != 'add'">
 
                 <!-- CATEGORIES -->
-                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" v-if="view == 'categories'" v-bind:key="category.id">
+                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" v-if="view == 'categories'" :key="category.id">
                     <div class="dib mr2">
                         <img :src="'/img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" style="min-width: 12px;">
                     </div>
@@ -32,7 +32,7 @@
                 </li>
 
                 <!-- TYPES -->
-                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="type in types" @click="displayAddScreen(type)" v-if="view == 'types'" v-bind:key="type.id">
+                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="type in types" @click="displayAddScreen(type)" v-if="view == 'types'" :key="type.id">
                     <div class="dib mr2">
                         <img :src="'/img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" style="min-width: 12px;">
                     </div>
@@ -89,7 +89,7 @@
                     <p class="f6">{{ $t('people.life_event_create_date') }}</p>
                 </div>
 
-                <create-default-life-event v-on:contentChange="updateLifeEventContent($event)"></create-default-life-event>
+                <create-default-life-event @contentChange="updateLifeEventContent($event)"></create-default-life-event>
 
                 <!-- YEARLY REMINDER -->
                 <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">

@@ -5,13 +5,13 @@
   <div class="br3 ba b--gray-monica bg-white mb4">
     <div class="pa3 bb b--gray-monica tc">
       <ul>
-        <li @click.prevent="setActiveTab('calls')" v-bind:class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('calls')" :class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_recent_calls') }}
         </li>
-        <li @click.prevent="setActiveTab('notes')" v-bind:class="[activeTab == 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('notes')" :class="[activeTab == 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_favorite_notes') }}
         </li>
-        <li @click.prevent="setActiveTab('debts')" v-bind:class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('debts')" :class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_debts') }}
         </li>
       </ul>
@@ -21,7 +21,7 @@
       <!-- Calls -->
       <div v-if="activeTab == 'calls'">
         <ul v-if="calls.length != 0">
-          <li class="pb2" v-for="call in calls" v-bind:key="call.id">
+          <li class="pb2" v-for="call in calls" :key="call.id">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 473.806 473.806" style="enable-background:new 0 0 473.806 473.806;" xml:space="preserve" width="15px" height="15px" class="mr2">
               <g>
                 <g>
@@ -44,9 +44,9 @@
 
       <!-- Notes -->
       <div v-else-if="activeTab == 'notes'">
-        <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0" v-bind:key="note.id">
+        <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0" :key="note.id">
           <div class="fl w-10">
-            <avatar v-bind:contact="note.contact" v-bind:clickable="true"></avatar>
+            <avatar :contact="note.contact" :clickable="true"></avatar>
           </div>
           <div class="pl3 fl w-90">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -91,7 +91,7 @@
       <!-- Debts -->
       <div v-else-if="activeTab == 'debts'">
         <ul v-if="debts.length != 0">
-          <li class="pb2" v-for="debt in debts" v-bind:key="debt.id">
+          <li class="pb2" v-for="debt in debts" :key="debt.id">
             <span class="black-50 mr1 f6">{{ debt.created_at | formatDate }}</span>
             <span class="mr1 black-50">•</span>
             <a :href="'/people/' + debt.contact.hash_id">{{ debt.contact.first_name }}</a>

@@ -5,7 +5,7 @@
   <div>
 
     <!-- Left columns: showing calendar -->
-    <journal-calendar v-bind:journal-entry="journalEntry"></journal-calendar>
+    <journal-calendar :journal-entry="journalEntry"></journal-calendar>
 
     <!-- Right column: showing logs -->
     <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-content">
@@ -104,7 +104,7 @@
           <div class="flex-none w-90 mt2 pt0 pr3 pb2">
             <ul class="f7">
               <li class="di">
-                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" v-on:click="destroy()">{{ $t('app.delete') }}</a>
+                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" @click="destroy()">{{ $t('app.delete') }}</a>
               </li>
             </ul>
           </div>

@@ -89,7 +89,7 @@
           </g>
         </svg>
       </div>
-      <form v-on:submit.prevent="update()">
+      <form @submit.prevent="update()">
         <div class="mb4">
           <div class="mt3 mb3 form-information-message br2" v-if="limited">
             <div class="pa3 flex">
@@ -103,7 +103,7 @@
           </div>
           <p class="mt3 b mb3">{{ $t('people.stay_in_touch_modal_desc', { firstname: contact.first_name }) }}</p>
           <div class="mb2">
-            <toggle-button class="mr2" :sync="true" :labels="true" :value="isActive" v-on:change="isActive = !isActive" />
+            <toggle-button class="mr2" :sync="true" :labels="true" :value="isActive" @change="isActive = !isActive" />
             <div class="dib relative" style="top: -2px;">
               <span>{{ $t('people.stay_in_touch_modal_label') }}</span>
               <div class="dib">

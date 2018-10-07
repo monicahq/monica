@@ -116,11 +116,11 @@
 
       <!-- Logs -->
       <div class="cf" v-for="journalEntry in journalEntries.data" :key="journalEntry.id" :cy-name="'entry-body-' + journalEntry.id">
-        <journal-content-rate v-on:deleteJournalEntry="deleteJournalEntry" v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" v-bind:journal-entry="journalEntry"></journal-content-rate>
+        <journal-content-rate @deleteJournalEntry="deleteJournalEntry" v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry"></journal-content-rate>
 
-        <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Contact\\Activity'" v-bind:journal-entry="journalEntry"></journal-content-activity>
+        <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Contact\\Activity'" :journal-entry="journalEntry"></journal-content-activity>
 
-        <journal-content-entry v-on:deleteJournalEntry="deleteJournalEntry" v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" v-bind:journal-entry="journalEntry"></journal-content-entry>
+        <journal-content-entry @deleteJournalEntry="deleteJournalEntry" v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry"></journal-content-entry>
       </div>
 
       <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total">

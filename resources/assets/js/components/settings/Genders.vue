@@ -45,7 +45,7 @@
 
     <!-- Create Gender type -->
     <sweet-modal ref="createModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_add')">
-      <form v-on:submit.prevent="store()">
+      <form @submit.prevent="store()">
         <div class="mb4">
           <p class="b mb2"></p>
           <form-input

@@ -10,7 +10,7 @@
       <img src="/img/people/gifts.svg" class="icon-section icon-tasks">
       <h3>
         {{ $t('people.gifts_title') }}
-        <a :href="'/people/' + hash + '/gifts/add'" cy-name="add-gift-button" class="btn f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]">{{ $t('people.gifts_add_gift') }}</a>
+        <a :href="'/people/' + hash + '/gifts/add'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">{{ $t('people.gifts_add_gift') }}</a>
       </h3>
     </div>
 
@@ -18,13 +18,13 @@
     <div>
         <ul class="mb3">
             <li class="di">
-                <p @click.prevent="setActiveTab('ideas')" v-bind:class="[activeTab == 'ideas' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_ideas') }} ({{ ideas.length }})</p>
+                <p @click.prevent="setActiveTab('ideas')" :class="[activeTab == 'ideas' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_ideas') }} ({{ ideas.length }})</p>
             </li>
             <li class="di">
-                <p @click.prevent="setActiveTab('offered')" v-bind:class="[activeTab == 'offered' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_offered') }} ({{ offered.length }})</p>
+                <p @click.prevent="setActiveTab('offered')" :class="[activeTab == 'offered' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_offered') }} ({{ offered.length }})</p>
             </li>
             <li class="di">
-                <p @click.prevent="setActiveTab('received')" v-bind:class="[activeTab == 'received' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_received') }} ({{ received.length }})</p>
+                <p @click.prevent="setActiveTab('received')" :class="[activeTab == 'received' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_received') }} ({{ received.length }})</p>
             </li>
         </ul>
 
