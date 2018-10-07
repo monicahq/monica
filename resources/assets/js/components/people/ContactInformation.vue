@@ -9,7 +9,7 @@
       </div>
       <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactInformationData.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
+        <a class="pointer" @click="[editMode = false, addMode = false]" v-else>{{ $t('app.done') }}</a>
       </div>
     </div>
 
@@ -23,10 +23,10 @@
         <div class="w-100 dt" v-show="!contactInformation.edit">
           <div class="dtc">
             <i :class="contactInformation.fontawesome_icon" class="pr2 f6 light-silver" v-if="contactInformation.fontawesome_icon"></i>
-            <i class="pr2 fa fa-address-card-o f6 gray" v-if="!contactInformation.fontawesome_icon"></i>
+            <i class="pr2 fa fa-address-card-o f6 gray" v-else></i>
 
             <a :href="contactInformation.protocol + contactInformation.data" v-if="contactInformation.protocol">{{ contactInformation.data }}</a>
-            <a :href="contactInformation.data" v-if="!contactInformation.protocol">{{ contactInformation.data }}</a>
+            <a :href="contactInformation.data" v-else>{{ contactInformation.data }}</a>
           </div>
           <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="editMode">
             <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactInformation)"></i>

@@ -9,7 +9,7 @@
       </div>
       <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactAddresses.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
+        <a class="pointer" @click="[editMode = false, addMode = false]" v-else>{{ $t('app.done') }}</a>
       </div>
     </div>
 
@@ -26,9 +26,9 @@
         <div class="w-100 dt" v-show="!contactAddress.edit">
           <div class="dtc">
             <i class="f6 light-silver fa fa-globe pr2"></i>
-            <a :href="contactAddress.googleMapAddress" target="_blank" v-if="!editMode">{{ contactAddress.address }}</a>
 
-            <span v-if="editMode">{{ contactAddress.address }}</span>
+            <a :href="contactAddress.googleMapAddress" target="_blank" v-if="!editMode">{{ contactAddress.address }}</a>
+            <span v-else>{{ contactAddress.address }}</span>
 
             <span class="light-silver" v-if="contactAddress.name">({{ contactAddress.name }})</span>
 

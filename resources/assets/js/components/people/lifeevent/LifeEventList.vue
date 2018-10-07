@@ -460,13 +460,13 @@
         </section>
 
         <!-- TITLE -->
-        <div v-if="lifeEvents.length != 0">
+        <div v-else>
           <h3 class="mb3 relative">
             🎭 {{ $t('people.life_event_list_title') }}
 
             <span class="absolute" style="top: -5px; right: 0;">
               <a class="btn edit-information" @click="showAdd = true" v-if="showAdd == false">{{ $t('people.life_event_list_cta') }}</a>
-              <a class="btn edit-information" @click="showAdd = false" v-if="showAdd == true">{{ $t('app.cancel') }}</a>
+              <a class="btn edit-information" @click="showAdd = false" v-else>{{ $t('app.cancel') }}</a>
             </span>
           </h3>
         </div>

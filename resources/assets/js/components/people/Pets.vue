@@ -12,7 +12,7 @@
       </div>
       <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="pets.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
+        <a class="pointer" @click="[editMode = false, addMode = false]" v-else>{{ $t('app.done') }}</a>
       </div>
     </div>
 

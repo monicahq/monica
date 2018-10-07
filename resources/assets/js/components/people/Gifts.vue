@@ -60,7 +60,7 @@
 
         </div>
 
-        <div v-for="gift in offered" class="ba b--gray-monica mb3 br2" :key="gift.id" v-if="activeTab == 'offered'">
+        <div v-for="gift in offered" class="ba b--gray-monica mb3 br2" :key="gift.id" v-else-if="activeTab == 'offered'">
             <p class="mb1 bb b--gray-monica pa2">
                 <strong>{{ gift.name }}</strong>
 
@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        <div v-for="gift in received" class="ba b--gray-monica mb3 br2" :key="gift.id" v-if="activeTab == 'received'">
+        <div v-for="gift in received" class="ba b--gray-monica mb3 br2" :key="gift.id" v-else-if="activeTab == 'received'">
             <p class="mb1 bb b--gray-monica pa2">
                 <strong>{{ gift.name }}</strong>
 

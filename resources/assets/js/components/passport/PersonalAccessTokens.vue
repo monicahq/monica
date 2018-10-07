@@ -41,7 +41,7 @@
                     </p>
 
                     <!-- Personal Access Tokens -->
-                    <table class="table table-borderless m-b-none" v-if="tokens.length > 0">
+                    <table class="table table-borderless m-b-none" v-else>
                         <thead>
                             <tr>
                                 <th>{{ $t('settings.api_token_name') }}</th>

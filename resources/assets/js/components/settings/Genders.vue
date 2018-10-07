@@ -113,7 +113,7 @@
         <span class="fr">
             <a @click="closeDeleteModal()" class="btn">{{ $t('app.cancel') }}</a>
             <a @click="trash()" class="btn btn-primary" v-if="numberOfContacts == 0">{{ $t('app.delete') }}</a>
-            <a @click="trashAndReplace()" class="btn btn-primary" v-if="numberOfContacts != 0">{{ $t('app.delete') }}</a>
+            <a @click="trashAndReplace()" class="btn btn-primary" v-else>{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>

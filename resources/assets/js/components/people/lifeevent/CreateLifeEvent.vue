@@ -12,8 +12,8 @@
             <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
                 <li class="di"><a class="pointer" @click="view = 'categories'">{{ $t('people.life_event_create_category') }}</a></li>
                 <li class="di" v-if="view == 'types'">> {{ this.activeCategory.name }}</li>
-                <li class="di" v-if="view == 'add'">> <a class="pointer" @click="view = 'types'">{{ this.activeCategory.name }}</a></li>
-                <li class="di" v-if="view == 'add'">> {{ $t('people.life_event_create_life_event') }}</li>
+                <li class="di" v-else-if="view == 'add'">> <a class="pointer" @click="view = 'types'">{{ this.activeCategory.name }}</a></li>
+                <li class="di" v-else-if="view == 'add'">> {{ $t('people.life_event_create_life_event') }}</li>
             </ul>
 
             <!-- List of events -->
@@ -45,7 +45,7 @@
             </ul>
 
             <!-- ADD SCREEN -->
-            <div class="ba b--gray-monica br2 pt4" v-if="view == 'add'">
+            <div class="ba b--gray-monica br2 pt4" v-else>
                 <div class="life-event-add-icon tc center">
                     <img :src="'/img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'" style="min-width: 17px;">
                 </div>

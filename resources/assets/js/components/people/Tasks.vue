@@ -10,7 +10,7 @@
 
         <span class="f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" v-if="tasks.length != 0">
           <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-          <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false" v-if="editMode">{{ $t('app.done') }}</a>
+          <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false" v-else>{{ $t('app.done') }}</a>
         </span>
       </h3>
     </div>

@@ -47,7 +47,7 @@
         <div class="dtc">
           <div class="pa2">
             <i :class="contactFieldType.fontawesome_icon" class="pr2" v-if="contactFieldType.fontawesome_icon"></i>
-            <i class="pr2 fa fa-address-card-o" v-if="!contactFieldType.fontawesome_icon"></i>
+            <i class="pr2 fa fa-address-card-o" v-else></i>
             {{ contactFieldType.name }}
           </div>
         </div>

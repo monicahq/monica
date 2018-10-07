@@ -43,7 +43,7 @@
       </div>
 
       <!-- Notes -->
-      <div v-if="activeTab == 'notes'">
+      <div v-else-if="activeTab == 'notes'">
         <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0" v-bind:key="note.id">
           <div class="fl w-10">
             <avatar v-bind:contact="note.contact" v-bind:clickable="true"></avatar>
@@ -89,7 +89,7 @@
       </div>
 
       <!-- Debts -->
-      <div v-if="activeTab == 'debts'">
+      <div v-else-if="activeTab == 'debts'">
         <ul v-if="debts.length != 0">
           <li class="pb2" v-for="debt in debts" v-bind:key="debt.id">
             <span class="black-50 mr1 f6">{{ debt.created_at | formatDate }}</span>
@@ -104,7 +104,7 @@
         </ul>
 
         <!-- Debts: Blank state -->
-        <div class="tc mt4 mb4" v-if="debts.length == 0">
+        <div class="tc mt4 mb4" v-else>
           <p>{{ $t('dashboard.tab_debts_blank') }}</p>
         </div>
       </div>
