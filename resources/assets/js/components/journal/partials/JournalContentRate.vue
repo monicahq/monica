@@ -58,7 +58,7 @@
             </svg>
 
             <!-- happy day color -->
-            <svg v-if="day.rate == 3" width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]">
+            <svg v-else-if="day.rate == 3" width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]">
                 <defs></defs>
                 <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="Desktop" transform="translate(-814.000000, -345.000000)">

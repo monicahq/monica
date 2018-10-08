@@ -130,7 +130,7 @@
         </p>
       </div>
 
-      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" cy-name="journal-blank-state" v-if="journalEntries.total == 0">
+      <div class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" cy-name="journal-blank-state" v-if="journalEntries.total === 0">
         <div class="tc mb4">
             <img src="/img/journal/blank.svg">
         </div>

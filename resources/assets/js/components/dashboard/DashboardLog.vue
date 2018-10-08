@@ -37,7 +37,7 @@
         </ul>
 
         <!-- Calls: Blank state -->
-        <div class="tc mt4 mb4" v-if="calls.length == 0">
+        <div class="tc mt4 mb4" v-if="calls.length === 0">
           <p>{{ $t('dashboard.tab_calls_blank') }}</p>
         </div>
       </div>
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Notes: Blank state -->
-        <div class="tc mt4 mb4" v-if="notes.length == 0">
+        <div class="tc mt4 mb4" v-if="notes.length === 0">
           <p>{{ $t('dashboard.notes_title') }}</p>
         </div>
       </div>

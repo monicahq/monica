@@ -12,8 +12,10 @@
             <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
                 <li class="di"><a class="pointer" @click="view = 'categories'">{{ $t('people.life_event_create_category') }}</a></li>
                 <li class="di" v-if="view == 'types'">> {{ this.activeCategory.name }}</li>
-                <li class="di" v-else-if="view == 'add'">> <a class="pointer" @click="view = 'types'">{{ this.activeCategory.name }}</a></li>
-                <li class="di" v-else-if="view == 'add'">> {{ $t('people.life_event_create_life_event') }}</li>
+                <template v-else-if="view == 'add'">
+                    <li class="di">> <a class="pointer" @click="view = 'types'">{{ this.activeCategory.name }}</a></li>
+                    <li class="di">> {{ $t('people.life_event_create_life_event') }}</li>
+                </template>
             </ul>
 
             <!-- List of events -->

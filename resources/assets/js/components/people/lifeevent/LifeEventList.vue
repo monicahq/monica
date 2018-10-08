@@ -32,7 +32,7 @@
         <notifications group="main" position="bottom right" />
 
         <!-- BLANK STATE -->
-        <section class="ph3 ph0-ns" v-if="lifeEvents.length == 0">
+        <section class="ph3 ph0-ns" v-if="lifeEvents.length === 0">
             <div class="mt4 mw7 center mb3">
                 <div class="tc mb4">
                     <svg class="center" width="337" height="249" viewBox="0 0 337 249" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -465,7 +465,7 @@
             🎭 {{ $t('people.life_event_list_title') }}
 
             <span class="absolute" style="top: -5px; right: 0;">
-              <a class="btn edit-information" @click="showAdd = true" v-if="showAdd == false">{{ $t('people.life_event_list_cta') }}</a>
+              <a class="btn edit-information" @click="showAdd = true" v-if="showAdd">{{ $t('people.life_event_list_cta') }}</a>
               <a class="btn edit-information" @click="showAdd = false" v-else>{{ $t('app.cancel') }}</a>
             </span>
           </h3>
@@ -473,7 +473,7 @@
 
         <!-- CREATE LIFE EVENT BOX -->
         <create-life-event :hash="hash"
-                            v-if="showAdd == true"
+                            v-if="showAdd"
                             @updateLifeEventTimeline="updateLifeEventsList($event)"
                             @dismissModal="showAdd = false"
                             :months="months"
