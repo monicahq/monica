@@ -27,7 +27,7 @@ class CreateLifeEventsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('default_life_event_category_id');
             $table->string('translation_key');
-            $table->json('specific_information_structure');
+            $table->text('specific_information_structure');
             $table->boolean('migrated')->default(0);
             $table->timestamps();
             $table->foreign('default_life_event_category_id')->references('id')->on('default_life_event_categories')->onDelete('cascade');
@@ -57,7 +57,7 @@ class CreateLifeEventsTable extends Migration
             $table->string('name');
             $table->string('default_life_event_type_key')->nullable();
             $table->boolean('core_monica_data')->default(0);
-            $table->json('specific_information_structure')->nullable();
+            $table->text('specific_information_structure')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('life_event_category_id')->references('id')->on('life_event_categories')->onDelete('cascade');
@@ -73,7 +73,7 @@ class CreateLifeEventsTable extends Migration
             $table->dateTime('happened_at');
             $table->boolean('happened_at_month_unknown')->default(false);
             $table->boolean('happened_at_day_unknown')->default(false);
-            $table->json('specific_information')->nullable();
+            $table->text('specific_information')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
