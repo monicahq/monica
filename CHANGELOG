@@ -3,6 +3,7 @@ UNRELEASED CHANGES:
 * Add ability to set a reminder for a life event
 * Stop reporting OAuth exceptions
 * Replace karakus/laravel-cloudflare with monicahq/laravel-cloudflare to fix dependencies issues
+* Fix use of 'json' mysql column type
 
 RELEASED VERSIONS:
 
