@@ -21,29 +21,33 @@
             <!-- List of events -->
             <ul class="ba b--gray-monica br2" v-if="view != 'add'">
 
-                <!-- CATEGORIES -->
-                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" v-if="view == 'categories'" :key="category.id">
-                    <div class="dib mr2">
-                        <img :src="'/img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" style="min-width: 12px;">
-                    </div>
-                    {{ category.name }}
+                <template v-if="view == 'categories'">
+                    <!-- CATEGORIES -->
+                    <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="category in categories" @click="getType(category)" :key="category.id">
+                        <div class="dib mr2">
+                            <img :src="'/img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" style="min-width: 12px;">
+                        </div>
+                        {{ category.name }}
 
-                    <svg class="absolute life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
-                    </svg>
-                </li>
+                        <svg class="absolute life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
+                        </svg>
+                    </li>
+                </template>
 
-                <!-- TYPES -->
-                <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="type in types" @click="displayAddScreen(type)" v-if="view == 'types'" :key="type.id">
-                    <div class="dib mr2">
-                        <img :src="'/img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" style="min-width: 12px;">
-                    </div>
-                    {{ type.name }}
+                <template v-else-if="view == 'types'">
+                    <!-- TYPES -->
+                    <li class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" v-for="type in types" @click="displayAddScreen(type)" :key="type.id">
+                        <div class="dib mr2">
+                            <img :src="'/img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" style="min-width: 12px;">
+                        </div>
+                        {{ type.name }}
 
-                    <svg class="absolute life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
-                    </svg>
-                </li>
+                        <svg class="absolute life-event-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
+                        </svg>
+                    </li>
+                </template>
             </ul>
 
             <!-- ADD SCREEN -->
@@ -95,7 +99,7 @@
 
                 <!-- YEARLY REMINDER -->
                 <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-                    <label :class="[dirltr ? 'mr3 mb0 form-check-label pointer' : 'ml3 mb0 form-check-label pointer']">
+                    <label class="mb0 form-check-label pointer" :class="[dirltr ? 'mr3' : 'ml3']">
                         <input class="form-check-input" id="addReminder" name="addReminder" type="checkbox" v-model="newLifeEvent.has_reminder">
                         {{ $t('people.life_event_create_add_yearly_reminder') }}
                     </label>
@@ -198,20 +202,18 @@
              * Same for the month.
              */
             updateDate() {
-                this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-' + this.selectedDay
-                this.newLifeEvent.happened_at_month_unknown = false
-                this.newLifeEvent.happened_at_day_unknown = false
-
                 if (this.selectedDay == 0) {
                     this.newLifeEvent.happened_at_day_unknown = true
                     this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-01'
-                }
-
-                if (this.selectedMonth == 0) {
+                } else if (this.selectedMonth == 0) {
                     this.newLifeEvent.happened_at_month_unknown = true
                     this.newLifeEvent.happened_at_day_unknown = true
                     this.newLifeEvent.happened_at = this.selectedYear + '-01-01'
                     this.selectedDay = 0
+                } else {
+                    this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-' + this.selectedDay
+                    this.newLifeEvent.happened_at_month_unknown = false
+                    this.newLifeEvent.happened_at_day_unknown = false
                 }
             },
 
@@ -226,7 +228,7 @@
                                 text: '',
                                 type: 'success'
                             });
-                      });
+                        });
             },
         }
     }
