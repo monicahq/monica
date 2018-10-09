@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.69.0",
+            "version": "3.69.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d6ba5f9250fc8a9cbc1cc11bc80c452b144ab215"
+                "reference": "65c88e074dffe4cb25b840c154b2f39564b39287"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d6ba5f9250fc8a9cbc1cc11bc80c452b144ab215",
-                "reference": "d6ba5f9250fc8a9cbc1cc11bc80c452b144ab215",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/65c88e074dffe4cb25b840c154b2f39564b39287",
+                "reference": "65c88e074dffe4cb25b840c154b2f39564b39287",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-10-04T21:43:42+00:00"
+            "time": "2018-10-08T20:05:34+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2363,16 +2363,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.20",
+            "version": "1.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "398c56027e49653712a8fba1eb12600d2a83f3b7"
+                "reference": "43523fec10a831ea48bedb3277e3f3fa218f4e49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/398c56027e49653712a8fba1eb12600d2a83f3b7",
-                "reference": "398c56027e49653712a8fba1eb12600d2a83f3b7",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/43523fec10a831ea48bedb3277e3f3fa218f4e49",
+                "reference": "43523fec10a831ea48bedb3277e3f3fa218f4e49",
                 "shasum": ""
             },
             "require": {
@@ -2406,7 +2406,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2018-09-25T12:02:44+00:00"
+            "time": "2018-10-08T07:53:55+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
