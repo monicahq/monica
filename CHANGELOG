@@ -1,11 +1,16 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.8.1 - 2018-10-08
+-------------------
+
 * Add ability to set a reminder for a life event
 * Stop reporting OAuth exceptions
 * Replace karakus/laravel-cloudflare with monicahq/laravel-cloudflare to fix dependencies issues
 * Fix use of 'json' mysql column type
-
-RELEASED VERSIONS:
 
 v2.8.0 - 2018-09-28
 -------------------
