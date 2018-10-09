@@ -8,10 +8,8 @@
         <img v-if="contact.has_avatar" :src="contact.avatar_url" class="br4 h3 w3 dib" v-tooltip.bottom="contact.complete_name" @click="goToContact()">
       </div>
 
-      <div class="tc" v-if="contact.gravatar_url">
-        <img
-          :src="contact.gravatar_url"
-          class="br4 h3 w3 dib" width="43" @click="goToContact()">
+      <div class="tc" v-if="contact.avatar_url">
+        <img :src="contact.avatar_url" class="br4 h3 w3 dib" width="43" v-tooltip.bottom="contact.complete_name" @click="goToContact()">
       </div>
 
       <div v-if="!contact.has_avatar" v-tooltip.bottom="contact.complete_name" :style="{ 'background-color': contact.default_avatar_color }" class="br4 h3 w3 dib pt3 white tc f4"  @click="goToContact()">
@@ -24,10 +22,8 @@
         <img v-if="contact.has_avatar" :src="contact.avatar_url" class="br4 h3 w3 dib" v-tooltip="contact.complete_name">
       </div>
 
-      <div class="tc" v-if="contact.gravatar_url">
-        <img
-          :src="contact.gravatar_url"
-          class="br4 h3 w3 dib" width="43">
+      <div class="tc" v-if="contact.avatar_url">
+        <img :src="contact.gravatar_url" class="br4 h3 w3 dib" width="43" v-tooltip="contact.complete_name">
       </div>
 
       <div v-if="!contact.has_avatar" v-tooltip.bottom="contact.complete_name" :style="{ 'background-color': contact.default_avatar_color }" class="br4 h3 w3 dib pt3 white tc f4">
@@ -39,40 +35,9 @@
 
 <script>
     export default {
-        /*
-         * The component's data.
-         */
-        data() {
-            return {
-            };
-        },
-
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
-        },
-
-        /**
-         * Prepare the component (Vue 2.x).
-         */
-        mounted() {
-            this.prepareComponent();
-        },
-
-        props: ['contact', 'clickable'],
-
-        methods: {
-            /**
-             * Prepare the component.
-             */
-            prepareComponent() {
-            },
-
-            goToContact() {
-                window.location.href='/people/' + this.contact.id;
-            }
-        }
+        props: [
+          'contact',
+          'clickable'
+        ],
     }
 </script>
