@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.69.0",
+            "version": "3.69.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d6ba5f9250fc8a9cbc1cc11bc80c452b144ab215"
+                "reference": "65c88e074dffe4cb25b840c154b2f39564b39287"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d6ba5f9250fc8a9cbc1cc11bc80c452b144ab215",
-                "reference": "d6ba5f9250fc8a9cbc1cc11bc80c452b144ab215",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/65c88e074dffe4cb25b840c154b2f39564b39287",
+                "reference": "65c88e074dffe4cb25b840c154b2f39564b39287",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-10-04T21:43:42+00:00"
+            "time": "2018-10-08T20:05:34+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2363,16 +2363,16 @@
         },
         {
             "name": "league/flysystem-aws-s3-v3",
-            "version": "1.0.20",
+            "version": "1.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-aws-s3-v3.git",
-                "reference": "398c56027e49653712a8fba1eb12600d2a83f3b7"
+                "reference": "43523fec10a831ea48bedb3277e3f3fa218f4e49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/398c56027e49653712a8fba1eb12600d2a83f3b7",
-                "reference": "398c56027e49653712a8fba1eb12600d2a83f3b7",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-aws-s3-v3/zipball/43523fec10a831ea48bedb3277e3f3fa218f4e49",
+                "reference": "43523fec10a831ea48bedb3277e3f3fa218f4e49",
                 "shasum": ""
             },
             "require": {
@@ -2406,7 +2406,7 @@
                 }
             ],
             "description": "Flysystem adapter for the AWS S3 SDK v3.x",
-            "time": "2018-09-25T12:02:44+00:00"
+            "time": "2018-10-08T07:53:55+00:00"
         },
         {
             "name": "league/flysystem-cached-adapter",
@@ -6876,16 +6876,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.41",
+            "version": "2.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "f5ba7325e1952248c5b7db406fbab75f2289a740"
+                "reference": "56909a7452adc4eaaf4a334f1f9da47e94492440"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/f5ba7325e1952248c5b7db406fbab75f2289a740",
-                "reference": "f5ba7325e1952248c5b7db406fbab75f2289a740",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/56909a7452adc4eaaf4a334f1f9da47e94492440",
+                "reference": "56909a7452adc4eaaf4a334f1f9da47e94492440",
                 "shasum": ""
             },
             "bin": [
@@ -6910,7 +6910,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2018-08-08T19:01:47+00:00"
+            "time": "2018-10-06T10:53:56+00:00"
         },
         {
             "name": "facebook/webdriver",
@@ -8314,17 +8314,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "67643fa62d521fb76855b0a4cc9a3de7ba38f85b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/67643fa62d521fb76855b0a4cc9a3de7ba38f85b",
-                "reference": "67643fa62d521fb76855b0a4cc9a3de7ba38f85b",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -8400,6 +8389,7 @@
                 "propel/propel": ">=2.0.0-alpha1,<=2.0.0-alpha7",
                 "propel/propel1": ">=1,<=1.7.1",
                 "pusher/pusher-php-server": "<2.2.1",
+                "robrichards/xmlseclibs": ">=1,<3.0.2",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
@@ -8440,7 +8430,7 @@
                 "symfony/web-profiler-bundle": ">=2,<2.3.19|>=2.4,<2.4.9|>=2.5,<2.5.4",
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
+                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
                 "theonedemon/phpwhois": "<=4.2.5",
                 "titon/framework": ">=0,<9.9.99",
                 "truckersmp/phpwhois": "<=4.3.1",
@@ -8496,7 +8486,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-10-02T16:19:22+00:00"
+            "time": "2018-10-05T18:14:02+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -9239,16 +9229,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "2.0.12",
+            "version": "2.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "db3ddaa42cbc81ffb6f9f8290d01c4db6dbbc3e6"
+                "reference": "afebefba19ca8c604f5c2fbc5ede44f4c12e853b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/db3ddaa42cbc81ffb6f9f8290d01c4db6dbbc3e6",
-                "reference": "db3ddaa42cbc81ffb6f9f8290d01c4db6dbbc3e6",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/afebefba19ca8c604f5c2fbc5ede44f4c12e853b",
+                "reference": "afebefba19ca8c604f5c2fbc5ede44f4c12e853b",
                 "shasum": ""
             },
             "require": {
@@ -9302,7 +9292,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-09-21T15:35:51+00:00"
+            "time": "2018-10-07T04:42:25+00:00"
         },
         {
             "name": "webmozart/assert",
