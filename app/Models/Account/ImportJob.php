@@ -301,8 +301,8 @@ class ImportJob extends Model
     public function canImportCurrentEntry(): bool
     {
         return
-            $this->hasFirstnameInN() or
-            $this->hasNickname() or
+            $this->hasFirstnameInN() ||
+            $this->hasNickname() ||
             $this->hasFN();
     }
 
