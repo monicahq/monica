@@ -367,7 +367,7 @@ return [
     'personalization_life_event_type_bought_a_home' => 'רכישת דירה',
     'personalization_life_event_type_home_improvement' => 'שיפוץ הבית',
     'personalization_life_event_type_holidays' => 'חגים',
-    'personalization_life_event_type_new_vehicule' => 'כלי רכב חדש',
+    'personalization_life_event_type_new_vehicle' => 'New vehicle',
     'personalization_life_event_type_new_roommate' => 'New roommate',
     'personalization_life_event_type_overcame_an_illness' => 'החלמה ממחלה',
     'personalization_life_event_type_quit_a_habit' => 'גמילה',
