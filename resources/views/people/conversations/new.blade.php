@@ -43,7 +43,7 @@
             <div class="dib">
               <form-date
                 v-bind:id="'conversationDate'"
-                v-bind:default-date="'{{ now() }}'"
+                v-bind:default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
                 v-bind:locale="'{{ $locale }}'">
               </form-date>
             </div>

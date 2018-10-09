@@ -88,7 +88,6 @@ class ApiActivityController extends ApiController
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
             $contact->activities()->save($activity);
-            $contact->logEvent('activity', $activity->id, 'create');
             $contact->calculateActivitiesStatistics();
         }
 
@@ -143,11 +142,6 @@ class ApiActivityController extends ApiController
             // Has an existing attendee been removed?
             if (! in_array($contact->id, $attendeesID)) {
                 $contact->activities()->detach($activity);
-                $contact->logEvent('activity', $activity->id, 'delete');
-            } else {
-                // Otherwise we're updating an activity that someone's
-                // already a part of
-                $contact->logEvent('activity', $activity->id, 'update');
             }
 
             // Remove this ID from our list of contacts as we don't
@@ -163,7 +157,6 @@ class ApiActivityController extends ApiController
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
             $contact->activities()->save($activity);
-            $contact->logEvent('activity', $activity->id, 'create');
         }
 
         return new ActivityResource($activity);

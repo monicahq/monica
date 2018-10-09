@@ -4,9 +4,12 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\LocaleHelper;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LocaleHelperTest extends FeatureTestCase
 {
+    use DatabaseTransactions;
+
     public function test_get_locale_returns_english_by_default()
     {
         $this->assertEquals(

@@ -4,9 +4,12 @@ namespace Tests\Browser\Pages\Settings;
 
 use Laravel\Dusk\Browser;
 use Tests\Browser\Pages\Page;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SettingsPersonnalization extends Page
 {
+    use DatabaseTransactions;
+
     /**
      * Get the URL for the page.
      *
