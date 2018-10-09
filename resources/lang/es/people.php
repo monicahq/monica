@@ -410,7 +410,7 @@ return [
     'life_event_sentence_bought_a_home' => 'Bought a home',
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'Went on holidays',
-    'life_event_sentence_new_vehicule' => 'Got a new vehicule',
+    'life_event_sentence_new_vehicle' => 'Got a new vehicle',
     'life_event_sentence_new_roommate' => 'Got a roomate',
     'life_event_sentence_overcame_an_illness' => 'Overcam an illness',
     'life_event_sentence_quit_a_habit' => 'Quit a habit',
