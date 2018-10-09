@@ -410,7 +410,7 @@ return [
     'life_event_sentence_bought_a_home' => '买了新房子',
     'life_event_sentence_home_improvement' => '装修了',
     'life_event_sentence_holidays' => '去度假',
-    'life_event_sentence_new_vehicule' => '买了新车',
+    'life_event_sentence_new_vehicle' => 'Got a new vehicle',
     'life_event_sentence_new_roommate' => '有了新室友',
     'life_event_sentence_overcame_an_illness' => '熬过了疾病',
     'life_event_sentence_quit_a_habit' => '戒掉一个习惯',
