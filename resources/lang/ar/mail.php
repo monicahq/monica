@@ -2,24 +2,27 @@
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
-    'want_reminded_of' => 'YOU WANTED TO BE REMINDED OF',
-    'for' => 'FOR:',
-    'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
+    'subject_line' => 'تذكير إلى :contact',
+    'greetings' => 'مرحباً :username',
+    'want_reminded_of' => 'لقد أردتَ أن يتم تذكيرك بـ:reason',
+    'for' => 'لـ: :name',
+    'comment' => 'تعليق: :comment',
+    'footer_contact_info' => 'أضف، عرض، أكمل، و قم بتغيير معلومات عن جهة الإتصال هذه:',
+    'footer_contact_info2' => 'عرض ملف :name الشخصي',
 
-    'notification_subject_line' => 'You have an upcoming event',
-    'notification_description' => 'In :count days (on :date), the following event will happen:',
+    'notification_subject_line' => 'لديك حدث قادم',
+    'notification_description' => 'في :count أيام ( في :date)، سوف يحصل الحدث التالي:',
 
-    'stay_in_touch_subject_line' => 'Stay in touch with :name',
-    'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency days.',
+    'stay_in_touch_subject_line' => 'ابقى على إتصال مع :name',
+    'stay_in_touch_subject_description' => 'لقد طلبتَ أن يتم تذكيرك بالبقاء على اتصال مع :name كل :frequency يوم. | لقد طلبتَ أن يتم تذكيرك بالبقاء على اتصال مع :name كل :frequency أيام.',
 
-    'notifications_whoops' => 'Whoops!',
-    'notifications_hello' => 'Hello!',
-    'notifications_regards' => 'Regards',
-    'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
+    'notifications_whoops' => 'المعذرة!',
+    'notifications_hello' => 'مرحباً!',
+    'notifications_regards' => 'مع خالص التحيات',
+    'notifications_footer' => 'إذا كنتَ تواجه مشكلة في الضغط على زر ":actionText"، انسخ والصق العنوان في متصفح الويب الخاص بك: [:actionURL](:actionURL)',
+    'notifications_rights' => 'جميع الحقوق محفوظة',
 
-    'confirmation_email_title' => 'Monica – Email verification',
-    'confirmation_email_intro'=> 'To validate your email click on the button below',
-    'confirmation_email_button' => 'Verify email address',
+    'confirmation_email_title' => 'Monica - تأكيد البريد الإلكتروني',
+    'confirmation_email_intro'=> 'لتأكيد بريدك اضغط على الزر أدناه',
+    'confirmation_email_button' => 'قم بتأكيد عنوان بريدك',
 ];

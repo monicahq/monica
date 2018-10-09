@@ -148,8 +148,6 @@ class ContactsController extends Controller
         $contact->setAvatarColor();
         $contact->save();
 
-        $contact->logEvent('contact', $contact->id, 'create');
-
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
             return redirect()->route('people.show', $contact);
@@ -175,8 +173,11 @@ class ContactsController extends Controller
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
+
         $contact->last_consulted_at = now(DateHelper::getTimezone());
+        $contact->number_of_views = $contact->number_of_views + 1;
         $contact->save();
+
         $relationships = $contact->relationships;
         // get love relationship type
         $loveRelationships = $relationships->filter(function ($item) {
@@ -202,6 +203,19 @@ class ContactsController extends Controller
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
+        // add `---` at the top of the dropdowns
+        $days = DateHelper::getListOfDays();
+        $days->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
+        $months = DateHelper::getListOfMonths();
+        $months->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
@@ -209,7 +223,10 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withDays($days)
+            ->withMonths($months)
+            ->withYears(DateHelper::getListOfYears());
     }
 
     /**
@@ -346,8 +363,6 @@ class ContactsController extends Controller
 
                 break;
         }
-
-        $contact->logEvent('contact', $contact->id, 'update');
 
         dispatch(new ResizeAvatars($contact));
 

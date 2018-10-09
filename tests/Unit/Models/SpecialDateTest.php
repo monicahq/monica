@@ -126,6 +126,7 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate = factory(SpecialDate::class)->make();
         $specialDate->reminder_id = $reminder->id;
         $specialDate->account_id = $user->account_id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $specialDate->setReminder('year', 1, '');
@@ -136,9 +137,11 @@ class SpecialDateTest extends FeatureTestCase
     public function test_set_reminder_creates_a_new_reminder()
     {
         $user = $this->signIn();
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
 
         $specialDate = factory(SpecialDate::class)->make();
         $specialDate->account_id = $user->account_id;
+        $specialDate->contact_id = $contact->id;
         $specialDate->save();
 
         $specialDate->setReminder('year', 1, '');
@@ -162,7 +165,12 @@ class SpecialDateTest extends FeatureTestCase
             'active' => 1,
         ]);
 
-        $specialDate = factory(SpecialDate::class)->create(['account_id' => $user->account->id, 'date' => '2018-03-02']);
+        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account->id,
+            'date' => '2018-03-02',
+            'contact_id' => $contact->id,
+        ]);
 
         $reminder = $specialDate->setReminder('year', 1, '');
 

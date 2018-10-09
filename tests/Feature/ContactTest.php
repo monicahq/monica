@@ -379,6 +379,26 @@ class ContactTest extends FeatureTestCase
         $response->assertStatus(200);
     }
 
+    public function test_viewing_a_user_increments_the_number_of_views()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'number_of_views' => 0,
+        ]);
+
+        $response = $this->get('/people/'.$contact->hashID());
+        $response = $this->get('/people/'.$contact->hashID());
+
+        $this->assertDatabaseHas('contacts', [
+            'number_of_views' => 2,
+        ]);
+    }
+
     private function changeArrayKey($from, $to, &$array = [])
     {
         $array[$to] = $array[$from];

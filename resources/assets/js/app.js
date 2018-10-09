@@ -161,6 +161,21 @@ Vue.component(
     require('./components/people/conversation/Message.vue')
 );
 
+Vue.component(
+    'create-life-event',
+    require('./components/people/lifeevent/CreateLifeEvent.vue')
+);
+
+Vue.component(
+    'create-default-life-event',
+    require('./components/people/lifeevent/content/CreateDefaultLifeEvent.vue')
+);
+
+Vue.component(
+    'life-event-list',
+    require('./components/people/lifeevent/LifeEventList.vue')
+);
+
 // Journal
 Vue.component(
     'journal-list',
@@ -277,14 +292,20 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     me.app = new Vue({
       i18n,
       data: {
-        activities_description_show: false,
         reminders_frequency: 'once',
         accept_invite_user: false,
         date_met_the_contact: 'known',
         global_relationship_form_new_contact: true,
         htmldir: window.Laravel.htmldir,
+        global_profile_default_view: window.Laravel.profileDefaultView
       },
       methods: {
+        updateDefaultProfileView(view) {
+            axios.post('/settings/updateDefaultProfileView', { 'name': view })
+                        .then(response => {
+                            this.global_profile_default_view = view
+                      });
+        }
       },
       mounted: function() {
 

@@ -38,15 +38,11 @@ class TasksController extends Controller
      */
     public function store(TasksRequest $request, Contact $contact)
     {
-        $task = $contact->tasks()->create([
+        return $contact->tasks()->create([
             'account_id' => auth()->user()->account_id,
             'title' => $request->get('title'),
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
         ]);
-
-        $contact->logEvent('task', $task->id, 'create');
-
-        return $task;
     }
 
     /**
@@ -59,8 +55,6 @@ class TasksController extends Controller
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
             'completed' => $request->get('completed'),
         ]);
-
-        $contact->logEvent('task', $task->id, 'update');
 
         return $task;
     }
@@ -75,8 +69,6 @@ class TasksController extends Controller
             $task->completed = true;
             $task->completed_at = now();
         }
-
-        $contact->logEvent('task', $task->id, 'update');
 
         $task->save();
     }

@@ -136,8 +136,6 @@ trait VCardImporter
         }
 
         $contact->updateGravatar();
-
-        $contact->logEvent('contact', $contact->id, 'create');
     }
 
     private function contactFieldEmailId()

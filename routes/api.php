@@ -137,6 +137,11 @@ Route::group(['middleware' => ['auth:api']], function () {
       'create', 'store', 'destroy', 'edit', 'patch', 'update',
     ]]);
 
+    // Life events
+    Route::resource('lifeevents', 'Api\\Contact\\ApiLifeEventController', ['except' => [
+      'create', 'edit', 'patch',
+    ]]);
+
     /*
      * SETTINGS
      */
