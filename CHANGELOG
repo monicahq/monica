@@ -1,6 +1,8 @@
 UNRELEASED CHANGES:
 
 * Fix gravatar not displayed on dashboard view
+* Hide dead people from dashboard's 'Last Consulted' section
+* Filter dead people from people list by default
 
 RELEASED VERSIONS:
 
