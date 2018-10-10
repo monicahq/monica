@@ -410,7 +410,7 @@ return [
     'life_event_sentence_bought_a_home' => 'A acheté une maison',
     'life_event_sentence_home_improvement' => 'A fait des rénovations',
     'life_event_sentence_holidays' => 'Est allé en vacances',
-    'life_event_sentence_new_vehicle' => 'Got a new vehicle',
+    'life_event_sentence_new_vehicle' => 'Acquisition dʼun nouveau véhicule',
     'life_event_sentence_new_roommate' => 'A eu un colocataire',
     'life_event_sentence_overcame_an_illness' => 'A surmonté une maladie',
     'life_event_sentence_quit_a_habit' => 'A quitté une habitude',
