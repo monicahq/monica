@@ -367,7 +367,7 @@ return [
     'personalization_life_event_type_bought_a_home' => 'Nouvelle maison',
     'personalization_life_event_type_home_improvement' => 'Améliorations de la maison',
     'personalization_life_event_type_holidays' => 'Vacances',
-    'personalization_life_event_type_new_vehicle' => 'New vehicle',
+    'personalization_life_event_type_new_vehicle' => 'Nouveau véhicule',
     'personalization_life_event_type_new_roommate' => 'Nouveau colocataire',
     'personalization_life_event_type_overcame_an_illness' => 'A surmonté une maladie',
     'personalization_life_event_type_quit_a_habit' => 'Perte d’une habitude',
