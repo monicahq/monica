@@ -410,7 +410,7 @@ return [
     'life_event_sentence_bought_a_home' => 'רכישת דירה',
     'life_event_sentence_home_improvement' => 'עריכת שיפוץ',
     'life_event_sentence_holidays' => 'יציאה לחופש',
-    'life_event_sentence_new_vehicle' => 'Got a new vehicle',
+    'life_event_sentence_new_vehicle' => 'קבלת כלי רכב חדש',
     'life_event_sentence_new_roommate' => 'התווספות שותפות',
     'life_event_sentence_overcame_an_illness' => 'החלמה ממחלה',
     'life_event_sentence_quit_a_habit' => 'גמילה',
