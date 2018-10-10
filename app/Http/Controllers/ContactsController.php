@@ -28,6 +28,7 @@ class ContactsController extends Controller
     {
         $user = $request->user();
         $sort = $request->get('sort') ?? $user->contacts_sort_order;
+        $showDead = $request->get('show_dead');
 
         if ($user->contacts_sort_order !== $sort) {
             $user->updateContactViewPreference($sort);
@@ -71,6 +72,18 @@ class ContactsController extends Controller
             $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
         }
 
+        // count the dead
+        $deadCount = $contacts->filter(function ($item) {
+            return $item->is_dead === true;
+        })->count();
+
+        // filter out dead if necessary
+        if ($showDead != 'true') {
+            $contacts = $contacts->filter(function ($item) {
+                return $item->is_dead === false;
+            });
+        }
+
         // starred contacts
         $starredContacts = $contacts->filter(function ($item) {
             return $item->is_starred === true;
@@ -81,6 +94,8 @@ class ContactsController extends Controller
         });
 
         return view('people.index')
+            ->with('hidingDead', $showDead != 'true')
+            ->with('deadCount', $deadCount)
             ->withContacts($contacts->unique('id'))
             ->withUnstarredContacts($unstarredContacts)
             ->withStarredContacts($starredContacts)

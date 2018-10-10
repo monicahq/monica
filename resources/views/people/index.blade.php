@@ -214,6 +214,12 @@
                     <a href="{{ route('people.index') }}?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
               @endif
+
+              @if ($hidingDead)
+                <a href="{{ route('people.index') }}?show_dead=true">{{ trans_choice('people.people_list_show_dead', $deadCount, ['count' => $deadCount]) }}</a>
+              @else 
+                <a href="{{ route('people.index') }}?show_dead=false">{{ trans_choice('people.people_list_hide_dead', $deadCount, ['count' => $deadCount]) }}</a>
+              @endif
               </ul>
             </div>
 
