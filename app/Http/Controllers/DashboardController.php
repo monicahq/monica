@@ -34,6 +34,10 @@ class DashboardController extends Controller
         $lastUpdatedContactsCollection = collect([]);
         $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
         foreach ($lastUpdatedContacts as $contact) {
+            if ($contact->is_dead) {
+                continue;
+            }
+
             $data = [
                 'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
