@@ -3253,16 +3253,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.0.4",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "fa6ee28600d21d49b2b4e1006b48426cec8e579c"
+                "reference": "d0230c5c77a7e3cfa69446febf340978540958c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/fa6ee28600d21d49b2b4e1006b48426cec8e579c",
-                "reference": "fa6ee28600d21d49b2b4e1006b48426cec8e579c",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/d0230c5c77a7e3cfa69446febf340978540958c0",
+                "reference": "d0230c5c77a7e3cfa69446febf340978540958c0",
                 "shasum": ""
             },
             "require": {
@@ -3278,7 +3278,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.0-dev"
+                    "dev-master": "4.1-dev"
                 }
             },
             "autoload": {
@@ -3300,7 +3300,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2018-09-18T07:03:24+00:00"
+            "time": "2018-10-10T09:24:14+00:00"
         },
         {
             "name": "opis/closure",
@@ -9229,16 +9229,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "2.0.13",
+            "version": "2.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "afebefba19ca8c604f5c2fbc5ede44f4c12e853b"
+                "reference": "792144def40d678b7fa7c8a52da6cdbd34dd415a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/afebefba19ca8c604f5c2fbc5ede44f4c12e853b",
-                "reference": "afebefba19ca8c604f5c2fbc5ede44f4c12e853b",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/792144def40d678b7fa7c8a52da6cdbd34dd415a",
+                "reference": "792144def40d678b7fa7c8a52da6cdbd34dd415a",
                 "shasum": ""
             },
             "require": {
@@ -9292,7 +9292,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2018-10-07T04:42:25+00:00"
+            "time": "2018-10-10T18:22:06+00:00"
         },
         {
             "name": "webmozart/assert",
