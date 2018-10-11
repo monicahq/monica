@@ -42,7 +42,7 @@ class ApiConversationController extends ApiController
     public function conversations(Request $request, $contactId)
     {
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
+            Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $contactId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
