@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
