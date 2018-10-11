@@ -127,7 +127,7 @@ class ApiConversationControllerTest extends ApiTestCase
 
         $conversation = $this->createConversation($user);
 
-        $response = $this->json('GET', '/api/contacts/' . $conversation['contact_id'] . '/conversations');
+        $response = $this->json('GET', '/api/contacts/'.$conversation['contact_id'].'/conversations');
 
         $response->assertStatus(200);
 
