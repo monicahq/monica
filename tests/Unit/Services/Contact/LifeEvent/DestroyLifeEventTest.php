@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
@@ -31,6 +32,28 @@ class DestroyLifeEventTest extends TestCase
 
         $this->assertDatabaseMissing('life_events', [
             'id' => $lifeEvent->id,
+        ]);
+    }
+
+    public function test_it_destroys_a_life_event_and_associated_reminder()
+    {
+        $lifeEvent = factory(LifeEvent::class)->create([]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $lifeEvent->account_id,
+        ]);
+        $lifeEvent->reminder_id = $reminder->id;
+        $lifeEvent->save();
+
+        $request = [
+            'account_id' => $lifeEvent->account->id,
+            'life_event_id' => $lifeEvent->id,
+        ];
+
+        $lifeEventService = new DestroyLifeEvent;
+        $bool = $lifeEventService->execute($request);
+
+        $this->assertDatabaseMissing('reminders', [
+            'id' => $reminder->id,
         ]);
     }
 

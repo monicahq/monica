@@ -1,3 +1,13 @@
+.avatars {
+  a {
+    text-decoration: none;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
+
 .people-list {
   .breadcrumb {
     border-bottom: 1px solid #eee;

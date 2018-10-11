@@ -51,13 +51,8 @@ function Search(form, input, resultsContainer, showResults) {
     function getAvatar(contact) {
         let avatar;
 
-        if ((contact.has_avatar && contact.avatar_file_name !== null)) {
-            avatar = `<img src="/storage/${contact.avatar_file_name}" class="avatar">`;
-            console.log("here");
-        } else if (contact.gravatar_url !== null) {
-            avatar = `<img src="${contact.gravatar_url}" class="avatar">`;
-        } else if (contact.avatar_external_url !== null ) {
-            avatar = `<img src="${contact.avatar_external_url}" class="avatar">`;
+        if (contact.avatar_url !== null) {
+            avatar = `<img src="${contact.avatar_url}" class="avatar">`;
         } else {
             let initials = contact.first_name.substring(0, 1);
             initials += contact.middle_name ? contact.middle_name.substring(0, 1) : '';

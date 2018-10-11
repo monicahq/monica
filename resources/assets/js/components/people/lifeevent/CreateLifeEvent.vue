@@ -91,6 +91,15 @@
 
                 <create-default-life-event v-on:contentChange="updateLifeEventContent($event)"></create-default-life-event>
 
+                <!-- YEARLY REMINDER -->
+                <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
+                    <label :class="[dirltr ? 'mr3 mb0 form-check-label pointer' : 'ml3 mb0 form-check-label pointer']">
+                        <input class="form-check-input" id="addReminder" name="addReminder" type="checkbox" v-model="newLifeEvent.has_reminder">
+                        {{ $t('people.life_event_create_add_yearly_reminder') }}
+                    </label>
+                </div>
+
+                <!-- FORM ACTIONS -->
                 <div class="ph4-ns ph3 pv3 bb b--gray-monica">
                     <div class="flex-ns justify-between">
                         <div>
@@ -123,6 +132,7 @@
                     happened_at_month_unknown: false,
                     happened_at_day_unknown: false,
                     specific_information: '',
+                    has_reminder: false,
                 },
                 categories: [],
                 activeCategory: '',
