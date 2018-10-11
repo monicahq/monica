@@ -34,6 +34,33 @@ class ApiConversationController extends ApiController
     }
 
     /**
+     * Get the list of conversations for a specific contact.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function conversations(Request $request, $contactId)
+    {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        try {
+            $conversations = auth()->user()->account->conversations()
+                ->where('contact_id', $contactId)
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return ConversationResource::collection($conversations);
+    }
+
+    /**
      * Get the detail of a given conversation.
      *
      * @param  Request $request
