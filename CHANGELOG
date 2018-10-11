@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to retrieve all conversations for one contact through the API
 * Fix gravatar not displayed on dashboard view
 
 RELEASED VERSIONS:
