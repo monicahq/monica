@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age سنوات',
     'age_exact_birthdate' => 'ولد في :date',
 
-    // Last called
-    'last_called' => 'آخر مكالمة: :date',
-    'last_called_empty' => 'آخر مكالمة: غير معلوم',
-    'last_activity_date' => 'آخر نشاط معا: :date',
-    'last_activity_date_empty' => 'آخر نشاط معا: غير معروف',
-
     // additional information
     'information_edit_success' => 'تم تحديث الملف الشخصي بنجاح',
     'information_edit_title' => 'تعديل معلومات :name الشخصية',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => 'الحد الأقصى :size ميغابايت.',
     'information_edit_firstname' => 'الاسم الأول',
     'information_edit_lastname' => 'اسم العائلة (اختياري)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'ملف LinkedIn (اختياري)',
     'information_edit_unknown' => 'أنا لا أعرف عمر هذا الشخص',
     'information_edit_probably' => 'هذا الشخص قد يكون...',
