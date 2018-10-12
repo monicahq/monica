@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age岁',
     'age_exact_birthdate' => '出生:date',
 
-    // Last called
-    'last_called' => '最近通话: :date',
-    'last_called_empty' => '最近通话: 未知',
-    'last_activity_date' => '最近一起的活动: :date',
-    'last_activity_date_empty' => '最后一起的活动: 未知',
-
     // additional information
     'information_edit_success' => '记录更新成功',
     'information_edit_title' => '编辑 :name的个人信息',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => '最大值 :size 兆。',
     'information_edit_firstname' => '名字',
     'information_edit_lastname' => '姓氏（可选）',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => '领英® 链接 (可选)',
     'information_edit_unknown' => '我不知道具体年龄',
     'information_edit_probably' => '此人可能是...',
