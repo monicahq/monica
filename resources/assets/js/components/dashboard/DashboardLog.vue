@@ -3,6 +3,9 @@
 
 <template>
   <div class="br3 ba b--gray-monica bg-white mb4">
+
+    <notifications group="main" position="bottom right" width="400" />
+
     <div class="pa3 bb b--gray-monica tc">
       <ul>
         <li @click.prevent="setActiveTab('calls')" v-bind:class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
@@ -13,6 +16,9 @@
         </li>
         <li @click.prevent="setActiveTab('debts')" v-bind:class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_debts') }}
+        </li>
+        <li @click.prevent="setActiveTab('tasks')" v-bind:class="[activeTab == 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+          {{ $t('dashboard.tab_tasks') }}
         </li>
       </ul>
     </div>
@@ -108,6 +114,27 @@
           <p>{{ $t('dashboard.tab_debts_blank') }}</p>
         </div>
       </div>
+
+      <!-- Tasks -->
+      <div v-if="activeTab == 'tasks'">
+        <ul v-if="tasks.length != 0">
+          <li class="pb0" v-for="task in tasks" v-bind:key="task.id">
+            <label class="pointer mb0">
+              <input type="checkbox" @click="toggleComplete(task)">
+              {{ task.title }}
+            </label>
+            <span class="black-50 mr1 f7">
+              {{ task.created_at | formatDate }}
+              <a :href="'/people/' + task.contact.hash_id">{{ task.contact.first_name }}</a>
+            </span>
+          </li>
+        </ul>
+
+        <!-- Tasks: Blank state -->
+        <div class="tc mt4 mb4" v-if="tasks.length == 0">
+          <p>{{ $t('dashboard.tab_tasks_blank') }}</p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -124,18 +151,13 @@
               callsAlreadyLoaded: false,
               notesAlreadyLoaded: false,
               debtsAlreadyLoaded: false,
+              tasksAlreadyLoaded: false,
 
               calls: [],
               notes: [],
               debts: [],
+              tasks: [],
             };
-        },
-
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
         },
 
         /**
@@ -180,6 +202,13 @@
                         this.debtsAlreadyLoaded = true;
                     }
                 }
+
+                if (view == 'tasks') {
+                    if (! this.tasksAlreadyLoaded) {
+                        this.getTasks();
+                        this.tasksAlreadyLoaded = true;
+                    }
+                }
             },
 
             saveTab(view) {
@@ -206,6 +235,25 @@
                 axios.get('/dashboard/debts')
                         .then(response => {
                             this.debts = response.data;
+                        });
+            },
+
+            getTasks() {
+                axios.get('/dashboard/tasks')
+                        .then(response => {
+                            this.tasks = response.data;
+                        });
+            },
+
+            toggleComplete(task) {
+                axios.post('/people/' + task.contact.hash_id + '/tasks/' + task.id + '/toggle')
+                        .then(response => {
+                            this.$notify({
+                              group: 'main',
+                              title: this.$t('app.default_save_success'),
+                              text: '',
+                              type: 'success'
+                          });
                         });
             },
         }
