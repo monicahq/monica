@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => '{1}בגיל שנה|{2}בגיל שנתיים|[3,*]בגיל :age שנים',
     'age_exact_birthdate' => 'לידה ב־:date',
 
-    // Last called
-    'last_called' => 'שיחת הטלפון האחרונה: :date',
-    'last_called_empty' => 'שיחת הטלפון האחרונה: לא ידוע',
-    'last_activity_date' => 'פעילות אחרונה יחד: :date',
-    'last_activity_date_empty' => 'פעילות אחרונה יחד: לא ידוע',
-
     // additional information
     'information_edit_success' => 'הפרופיל עודכן בהצלחה',
     'information_edit_title' => 'עריכת הפרטים האישיים של :name',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => ':size מ״ב לכל היותר.',
     'information_edit_firstname' => 'שם פרטי',
     'information_edit_lastname' => 'שם משפחה (רשות)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'פרופיל LinkedIn (רשות)',
     'information_edit_unknown' => 'גיל האדם הזה לא ידוע לי',
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
