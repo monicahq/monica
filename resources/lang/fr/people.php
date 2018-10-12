@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age ans',
     'age_exact_birthdate' => 'né le :date',
 
-    // Last called
-    'last_called' => 'Dernier appel : :date',
-    'last_called_empty' => 'Dernier appel : inconnu',
-    'last_activity_date' => 'Dernière activité ensemble : :date',
-    'last_activity_date_empty' => 'Dernière activité ensemble : inconnu',
-
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => 'Max :size mo.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'Profil LinkedIn (optionnel)',
     'information_edit_unknown' => 'Je ne connais pas son âge',
     'information_edit_probably' => 'Cette personne a probablement …',
