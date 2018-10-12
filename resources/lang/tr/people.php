@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age yaşında',
     'age_exact_birthdate' => 'doğum tarihi :date',
 
-    // Last called
-    'last_called' => 'Last called: :date',
-    'last_called_empty' => 'Last called: unknown',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
-
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name’s personal information',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => 'En fazla :size Mb.',
     'information_edit_firstname' => 'Ad',
     'information_edit_lastname' => 'Soyad (isteğe bağlı)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'LinkedIn profili (isteğe bağlı)',
     'information_edit_unknown' => 'Bu kişinin yaşını bilmiyorum',
     'information_edit_probably' => 'This person is probably...',
