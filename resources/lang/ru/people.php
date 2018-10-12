@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age лет',
     'age_exact_birthdate' => 'день рожнения: :date',
 
-    // Last called
-    'last_called' => 'Последний звонок: :date',
-    'last_called_empty' => 'Последний звонок: неизвестно',
-    'last_activity_date' => 'Последняя активность вместе: :date',
-    'last_activity_date_empty' => 'Последняя активность вместе: неизвестно',
-
     // additional information
     'information_edit_success' => 'Профиль был успешно обновлён',
     'information_edit_title' => 'Редактировать данные :name',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => 'Макс :size Мб.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обяз.)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'LinkedIn (не обяз.)',
     'information_edit_unknown' => 'Я не знаю возраст',
     'information_edit_probably' => 'Этому человеку примерно',
