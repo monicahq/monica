@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age anni',
     'age_exact_birthdate' => 'nato :date',
 
-    // Last called
-    'last_called' => 'Ultima chiamata il: :date',
-    'last_called_empty' => 'Ultima chiamata il: sconosciuto',
-    'last_activity_date' => 'Ultima attività assieme: :date',
-    'last_activity_date_empty' => 'Ultima attività assieme: sconosciuto',
-
     // additional information
     'information_edit_success' => 'Il profilo è stato aggiornato',
     'information_edit_title' => 'Modifica le informazioni personali di :name',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => 'Massimo :size Mb.',
     'information_edit_firstname' => 'Nome',
     'information_edit_lastname' => 'Cognome (facoltativo)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'Profilo LinkedIn (facoltativo)',
     'information_edit_unknown' => 'Non conosco l\'età di questa persona',
     'information_edit_probably' => 'Questa persona probabilmente ha',
