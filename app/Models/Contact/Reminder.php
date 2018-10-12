@@ -75,7 +75,7 @@ class Reminder extends Model
      */
     public function getNextExpectedDateAttribute($value)
     {
-        return DateHelper::parseDate($value, DateHelper::getTimezone());
+        return DateHelper::parseDate($value);
     }
 
     /**

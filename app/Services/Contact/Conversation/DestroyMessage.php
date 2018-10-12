@@ -9,8 +9,7 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Message;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Exceptions\MissingParameterException;
 
 class DestroyMessage extends BaseService
 {
@@ -34,22 +33,14 @@ class DestroyMessage extends BaseService
     public function execute(array $data) : bool
     {
         if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
+            throw new MissingParameterException('Missing parameters');
         }
 
-        try {
-            $message = Message::where('account_id', $data['account_id'])
-                ->where('conversation_id', $data['conversation_id'])
-                ->findOrFail($data['message_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        $message = Message::where('account_id', $data['account_id'])
+                            ->where('conversation_id', $data['conversation_id'])
+                            ->findOrFail($data['message_id']);
 
-        try {
-            $message->delete();
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        $message->delete();
 
         return true;
     }

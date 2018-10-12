@@ -3,6 +3,9 @@
 
 <template>
   <div class="br3 ba b--gray-monica bg-white mb4">
+
+    <notifications group="main" position="bottom right" width="400" />
+
     <div class="pa3 bb b--gray-monica tc">
       <ul>
         <li @click.prevent="setActiveTab('calls')" v-bind:class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
@@ -14,6 +17,9 @@
         <li @click.prevent="setActiveTab('debts')" v-bind:class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_debts') }}
         </li>
+        <li @click.prevent="setActiveTab('tasks')" v-bind:class="[activeTab == 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+          {{ $t('dashboard.tab_tasks') }}
+        </li>
       </ul>
     </div>
     <div class="pa3">
@@ -21,7 +27,7 @@
       <!-- Calls -->
       <div v-if="activeTab == 'calls'">
         <ul v-if="calls.length != 0">
-          <li class="pb2" v-for="call in calls">
+          <li class="pb2" v-for="call in calls" v-bind:key="call.id">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 473.806 473.806" style="enable-background:new 0 0 473.806 473.806;" xml:space="preserve" width="15px" height="15px" class="mr2">
               <g>
                 <g>
@@ -44,8 +50,8 @@
 
       <!-- Notes -->
       <div v-if="activeTab == 'notes'">
-        <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0">
-          <div class="fl w-10">
+        <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0" v-bind:key="note.id">
+          <div class="fl w-10 avatars">
             <avatar v-bind:contact="note.contact" v-bind:clickable="true"></avatar>
           </div>
           <div class="pl3 fl w-90">
@@ -91,7 +97,7 @@
       <!-- Debts -->
       <div v-if="activeTab == 'debts'">
         <ul v-if="debts.length != 0">
-          <li class="pb2" v-for="debt in debts">
+          <li class="pb2" v-for="debt in debts" v-bind:key="debt.id">
             <span class="black-50 mr1 f6">{{ debt.created_at | formatDate }}</span>
             <span class="mr1 black-50">•</span>
             <a :href="'/people/' + debt.contact.hash_id">{{ debt.contact.first_name }}</a>
@@ -106,6 +112,27 @@
         <!-- Debts: Blank state -->
         <div class="tc mt4 mb4" v-if="debts.length == 0">
           <p>{{ $t('dashboard.tab_debts_blank') }}</p>
+        </div>
+      </div>
+
+      <!-- Tasks -->
+      <div v-if="activeTab == 'tasks'">
+        <ul v-if="tasks.length != 0">
+          <li class="pb0" v-for="task in tasks" v-bind:key="task.id">
+            <label class="pointer mb0">
+              <input type="checkbox" @click="toggleComplete(task)">
+              {{ task.title }}
+            </label>
+            <span class="black-50 mr1 f7">
+              {{ task.created_at | formatDate }}
+              <a :href="'/people/' + task.contact.hash_id">{{ task.contact.first_name }}</a>
+            </span>
+          </li>
+        </ul>
+
+        <!-- Tasks: Blank state -->
+        <div class="tc mt4 mb4" v-if="tasks.length == 0">
+          <p>{{ $t('dashboard.tab_tasks_blank') }}</p>
         </div>
       </div>
     </div>
@@ -124,18 +151,13 @@
               callsAlreadyLoaded: false,
               notesAlreadyLoaded: false,
               debtsAlreadyLoaded: false,
+              tasksAlreadyLoaded: false,
 
               calls: [],
               notes: [],
               debts: [],
+              tasks: [],
             };
-        },
-
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
         },
 
         /**
@@ -180,6 +202,13 @@
                         this.debtsAlreadyLoaded = true;
                     }
                 }
+
+                if (view == 'tasks') {
+                    if (! this.tasksAlreadyLoaded) {
+                        this.getTasks();
+                        this.tasksAlreadyLoaded = true;
+                    }
+                }
             },
 
             saveTab(view) {
@@ -206,6 +235,25 @@
                 axios.get('/dashboard/debts')
                         .then(response => {
                             this.debts = response.data;
+                        });
+            },
+
+            getTasks() {
+                axios.get('/dashboard/tasks')
+                        .then(response => {
+                            this.tasks = response.data;
+                        });
+            },
+
+            toggleComplete(task) {
+                axios.post('/people/' + task.contact.hash_id + '/tasks/' + task.id + '/toggle')
+                        .then(response => {
+                            this.$notify({
+                              group: 'main',
+                              title: this.$t('app.default_save_success'),
+                              text: '',
+                              type: 'success'
+                          });
                         });
             },
         }

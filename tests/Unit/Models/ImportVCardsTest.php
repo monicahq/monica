@@ -15,6 +15,8 @@ class ImportVCardsTest extends TestCase
 
     public function testItValidatesUser()
     {
+        $this->withoutMockingConsoleOutput();
+
         $path = base_path('tests/stubs/vcard_stub.vcf');
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
@@ -30,6 +32,8 @@ class ImportVCardsTest extends TestCase
 
     public function testItValidatesFile()
     {
+        $this->withoutMockingConsoleOutput();
+
         $user = $this->getUser();
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
@@ -45,6 +49,8 @@ class ImportVCardsTest extends TestCase
 
     public function testItImportsContacts()
     {
+        $this->withoutMockingConsoleOutput();
+
         $user = $this->getUser();
         $path = base_path('tests/stubs/vcard_stub.vcf');
 
