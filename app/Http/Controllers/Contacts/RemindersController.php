@@ -10,18 +10,6 @@ use App\Http\Requests\People\RemindersRequest;
 class RemindersController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Contact $contact)
-    {
-        return view('people.reminders.index')
-            ->withContact($contact);
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
@@ -58,18 +46,6 @@ class RemindersController extends Controller
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Reminder $reminder)
-    {
-        //
     }
 
     /**

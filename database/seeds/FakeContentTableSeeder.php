@@ -504,6 +504,9 @@ class FakeContentTableSeeder extends Seeder
                     'happened_at' => $this->faker->dateTimeThisCentury(),
                     'name' => $this->faker->realText(),
                     'note' => $this->faker->realText(),
+                    'has_reminder' => false,
+                    'happened_at_month_unknown' => false,
+                    'happened_at_day_unknown' => false,
                 ]);
             }
         }

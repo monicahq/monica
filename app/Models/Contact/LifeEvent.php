@@ -21,7 +21,10 @@ class LifeEvent extends Model
         'happened_at',
         'account_id',
         'contact_id',
+        'reminder_id',
         'life_event_type_id',
+        'happened_at_month_unknown',
+        'happened_at_day_unknown',
     ];
 
     /**
@@ -30,6 +33,16 @@ class LifeEvent extends Model
      * @var array
      */
     protected $dates = ['happened_at'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'happened_at_month_unknown' => 'boolean',
+        'happened_at_day_unknown' => 'boolean',
+    ];
 
     /**
      * Get the account record associated with the life event.
@@ -57,6 +70,14 @@ class LifeEvent extends Model
     public function lifeEventType()
     {
         return $this->belongsTo(LifeEventType::class, 'life_event_type_id');
+    }
+
+    /**
+     * Get the reminder record associated with the life event.
+     */
+    public function reminder()
+    {
+        return $this->belongsTo(Reminder::class);
     }
 
     /**

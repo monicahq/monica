@@ -173,8 +173,11 @@ class ContactsController extends Controller
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
+
         $contact->last_consulted_at = now(DateHelper::getTimezone());
+        $contact->number_of_views = $contact->number_of_views + 1;
         $contact->save();
+
         $relationships = $contact->relationships;
         // get love relationship type
         $loveRelationships = $relationships->filter(function ($item) {
@@ -268,6 +271,7 @@ class ContactsController extends Controller
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
             'nickname' => 'max:100',
+            'description' => 'max:240',
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
@@ -287,6 +291,7 @@ class ContactsController extends Controller
         }
 
         $contact->gender_id = $request->input('gender');
+        $contact->description = $request->input('description');
         $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
