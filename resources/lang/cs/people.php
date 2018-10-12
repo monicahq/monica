@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age let',
     'age_exact_birthdate' => 'narozeniny :date',
 
-    // Last called
-    'last_called' => 'Poslední telefonát: :date',
-    'last_called_empty' => 'Poslední telefonát: neznámo',
-    'last_activity_date' => 'Poslední společná aktivita: :date',
-    'last_activity_date_empty' => 'Poslední společná aktivita: neznámo',
-
     // additional information
     'information_edit_success' => 'Profil byl úspěšně aktualizován',
     'information_edit_title' => 'Upravit osobní informace o :name',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Jméno',
     'information_edit_lastname' => 'Příjmení (volitelné)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'LinkedIn profil (volitelné)',
     'information_edit_unknown' => 'Neznám věk této osoby',
     'information_edit_probably' => 'Tato osoba je přibližně',
