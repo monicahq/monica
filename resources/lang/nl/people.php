@@ -112,12 +112,6 @@ return [
     'age_exact_in_years' => ':age jaren oud',
     'age_exact_birthdate' => 'geboren :date',
 
-    // Last called
-    'last_called' => 'Laatste keer gebeld :date',
-    'last_called_empty' => 'Laatste keer gebeld: onbekend',
-    'last_activity_date' => 'Laatste activiteit samen: :date',
-    'last_activity_date_empty' => 'Laatste activiteit samen: onbekend',
-
     // additional information
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
@@ -125,6 +119,8 @@ return [
     'information_edit_max_size' => 'Max :size Mb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'LinkedIn profiel (optioneel)',
     'information_edit_unknown' => 'Ik weet de leeftijd van deze persoon niet',
     'information_edit_probably' => 'Deze persoon is waarschijnlijk...',
