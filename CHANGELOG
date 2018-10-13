@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix gravatar not displayed on dashboard view
+* Add export:all command
 
 RELEASED VERSIONS:
 
