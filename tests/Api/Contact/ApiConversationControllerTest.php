@@ -121,6 +121,23 @@ class ApiConversationControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_it_gets_a_conversation_for_a_specific_contact()
+    {
+        $user = $this->signin();
+
+        $conversation = $this->createConversation($user);
+
+        $response = $this->json('GET', '/api/contacts/'.$conversation['contact_id'].'/conversations');
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => [
+                '*' => $this->jsonConversations,
+            ],
+        ]);
+    }
+
     public function test_it_creates_a_conversation()
     {
         $user = $this->signin();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
@@ -24,6 +25,33 @@ class ApiConversationController extends ApiController
     {
         try {
             $conversations = auth()->user()->account->conversations()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return ConversationResource::collection($conversations);
+    }
+
+    /**
+     * Get the list of conversations for a specific contact.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function conversations(Request $request, $contactId)
+    {
+        try {
+            Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        try {
+            $conversations = auth()->user()->account->conversations()
+                ->where('contact_id', $contactId)
                 ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
