@@ -13,7 +13,7 @@
     </li>
     @endif
 
-    @if (Route::currentRouteName() == 'settings.personalization')
+    @if (Route::currentRouteName() == 'settings.personalization.index')
     <li class="selected">
       <i class="fa fa-handshake-o" aria-hidden="true"></i>
       <strong>{{ trans('settings.sidebar_personalization') }}</strong>
@@ -75,7 +75,7 @@
       @endif
     @endif
 
-    @if (Route::currentRouteName() == 'settings.tags')
+    @if (Route::currentRouteName() == 'settings.tags.index')
     <li class="selected">
       <i class="fa fa-tags" aria-hidden="true"></i>
       <strong>{{ trans('settings.sidebar_settings_tags') }}</strong>
@@ -99,14 +99,14 @@
     </li>
     @endif
 
-    @if (Route::currentRouteName() == 'settings.security')
+    @if (Route::currentRouteName() == 'settings.security.index')
     <li class="selected">
-      <i class="fa fa-cog"></i>
+      <i class="fa fa-shield"></i>
       <strong>{{ trans('settings.sidebar_settings_security') }}</strong>
     </li>
     @else
     <li class="bg-white">
-      <i class="fa fa-cog"></i>
+      <i class="fa fa-shield"></i>
       <a href="{{ route('settings.security.index') }}">{{ trans('settings.sidebar_settings_security') }}</a>
     </li>
     @endif
