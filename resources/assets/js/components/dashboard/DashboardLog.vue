@@ -17,7 +17,7 @@
         <li @click.prevent="setActiveTab('debts')" :class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_debts') }}
         </li>
-        <li @click.prevent="setActiveTab('tasks')" v-bind:class="[activeTab == 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('tasks')" :class="[activeTab == 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_tasks') }}
         </li>
       </ul>
@@ -118,7 +118,7 @@
       <!-- Tasks -->
       <div v-if="activeTab == 'tasks'">
         <ul v-if="tasks.length != 0">
-          <li class="pb0" v-for="task in tasks" v-bind:key="task.id">
+          <li class="pb0" v-for="task in tasks" :key="task.id">
             <label class="pointer mb0">
               <input type="checkbox" @click="toggleComplete(task)">
               {{ task.title }}
