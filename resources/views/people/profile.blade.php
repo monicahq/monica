@@ -104,6 +104,10 @@
               @include('people.debt.index')
             </div>
             @endif
+
+            <div class="row section">
+              @include('people.documents.index')
+            </div>
           </div>
         </div>
 
