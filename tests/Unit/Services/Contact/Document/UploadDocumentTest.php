@@ -2,10 +2,9 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Document;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Exceptions\MissingParameterException;
@@ -26,7 +25,7 @@ class UploadDocumentTest extends TestCase
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'document' => UploadedFile::fake()->image('document.pdf')
+            'document' => UploadedFile::fake()->image('document.pdf'),
         ];
 
         $uploadService = new UploadDocument;
@@ -67,7 +66,7 @@ class UploadDocumentTest extends TestCase
         $request = [
             'account_id' => 1,
             'contact_id' => 2,
-            'document' => UploadedFile::fake()->image('document.pdf')
+            'document' => UploadedFile::fake()->image('document.pdf'),
         ];
 
         $this->expectException(ModelNotFoundException::class);
