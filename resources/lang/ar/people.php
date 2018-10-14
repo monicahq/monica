@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'تم تحديث الملف الشخصي بنجاح',
     'information_edit_title' => 'تعديل معلومات :name الشخصية',
     'information_edit_avatar' => 'صورة شخصية لجهة الاتصال',
-    'information_edit_max_size' => 'الحد الأقصى :size ميغابايت.',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'الاسم الأول',
     'information_edit_lastname' => 'اسم العائلة (اختياري)',
     'information_edit_description' => 'Description (Optional)',
