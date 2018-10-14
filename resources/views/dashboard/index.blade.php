@@ -11,7 +11,7 @@
               {{ trans('people.people_list_last_updated') }}
             </div>
             @foreach($lastUpdatedContacts as $contact)
-            <div class="pr2 pointer">
+            <div class="pr2 pointer avatars">
               <avatar v-bind:contact="{{ $contact }}" v-bind:clickable="true"></avatar>
             </div>
             @endforeach
