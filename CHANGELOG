@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Allow to define a max file size for uploaded document in an ENV variable (default to 10240kb)
 * Add description field for a contact
 * Add ability to retrieve all conversations for one contact through the API
 * Add all tasks not yet completed on the dashboard
