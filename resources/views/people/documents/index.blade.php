@@ -3,7 +3,7 @@
     🗣 {{ trans('people.document_list_title') }}
 
     <span class="relative {{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}" style="top: -7px;">
-      <a href="{{ route('people.conversation.new', $contact) }}" class="btn edit-information">{{ trans('people.conversation_list_cta') }}</a>
+      <a href="{{ route('people.document.new', $contact) }}" class="btn edit-information">{{ trans('people.document_list_cta') }}</a>
     </span>
   </h3>
 </div>

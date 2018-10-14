@@ -192,4 +192,15 @@ return [
     |
      */
     'twitter_account' => env('SUPPORT_TWITTER', 'monicaHQ_app'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Accepted file types for documents upload
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the twitter account shown in case of maintenance in
+    | progress.
+    |
+     */
+    'twitter_account' => env('SUPPORT_TWITTER', 'monicaHQ_app'),
 ];
