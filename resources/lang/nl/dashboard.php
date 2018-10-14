@@ -13,6 +13,8 @@ return [
     'tab_calls_blank' => 'Je hebt nog geen oproepen opgeslagen.',
     'tab_debts' => 'Schulden',
     'tab_debts_blank' => 'Je hebt nog geen schulden opgegeven.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
 
     'debts_you_owe' => 'U bent verschuldigd',
 
