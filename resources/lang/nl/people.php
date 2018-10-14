@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
     'information_edit_avatar' => 'Foto/avatar van het contact',
-    'information_edit_max_size' => 'Max :size Mb.',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
     'information_edit_description' => 'Description (Optional)',
