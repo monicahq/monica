@@ -116,7 +116,7 @@ return [
     'information_edit_success' => '记录更新成功',
     'information_edit_title' => '编辑 :name的个人信息',
     'information_edit_avatar' => '联系人照片/头像',
-    'information_edit_max_size' => '最大值 :size 兆。',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => '名字',
     'information_edit_lastname' => '姓氏（可选）',
     'information_edit_description' => 'Description (Optional)',
