@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'Профиль был успешно обновлён',
     'information_edit_title' => 'Редактировать данные :name',
     'information_edit_avatar' => 'Фото/Аватар контакта',
-    'information_edit_max_size' => 'Макс :size Мб.',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обяз.)',
     'information_edit_description' => 'Description (Optional)',
