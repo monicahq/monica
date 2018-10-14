@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Http\Controllers\Controller;
 use App\Models\Contact\Document;
-use App\Services\Contact\Document\UploadDocument;
+use App\Http\Controllers\Controller;
 
 class DocumentsController extends Controller
 {
@@ -94,8 +93,8 @@ class DocumentsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_' . $messageId) == 'me'),
-                'content' => $request->get('content_' . $messageId),
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me'),
+                'content' => $request->get('content_'.$messageId),
             ];
 
             try {
@@ -191,8 +190,8 @@ class DocumentsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_' . $messageId) == 'me'),
-                'content' => $request->get('content_' . $messageId),
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me'),
+                'content' => $request->get('content_'.$messageId),
             ];
 
             try {
