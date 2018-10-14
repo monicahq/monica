@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'Il profilo è stato aggiornato',
     'information_edit_title' => 'Modifica le informazioni personali di :name',
     'information_edit_avatar' => 'Foto/avatar del contatto',
-    'information_edit_max_size' => 'Massimo :size Mb.',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'Nome',
     'information_edit_lastname' => 'Cognome (facoltativo)',
     'information_edit_description' => 'Description (Optional)',
