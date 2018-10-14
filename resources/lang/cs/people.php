@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'Profil byl úspěšně aktualizován',
     'information_edit_title' => 'Upravit osobní informace o :name',
     'information_edit_avatar' => 'Fotografie/avatar kontaktu',
-    'information_edit_max_size' => 'Max :size Mb.',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'Jméno',
     'information_edit_lastname' => 'Příjmení (volitelné)',
     'information_edit_description' => 'Description (Optional)',
