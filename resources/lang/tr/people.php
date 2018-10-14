@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name’s personal information',
     'information_edit_avatar' => 'Photo/avatar of the contact',
-    'information_edit_max_size' => 'En fazla :size Mb.',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'Ad',
     'information_edit_lastname' => 'Soyad (isteğe bağlı)',
     'information_edit_description' => 'Description (Optional)',
