@@ -13,6 +13,8 @@ return [
     'tab_calls_blank' => 'You haven’t logged a call yet.',
     'tab_debts' => 'Debts',
     'tab_debts_blank' => 'You haven’t logged any debt yet.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
 
     'debts_you_owe' => 'You owe',
 
