@@ -285,14 +285,9 @@ class ContactsController extends Controller
                 }
             }
 
-            // $contact->has_avatar = true;
-            // $contact->avatar_location = config('filesystems.default');
-            // $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
-            (new UploadDocument)->execute([
-                    'account_id' => auth()->user()->account->id,
-                    'contact_id' => $contact->id,
-                    'document' => $request->avatar,
-            ]);
+            $contact->has_avatar = true;
+            $contact->avatar_location = config('filesystems.default');
+            $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
         }
 
         // Is the person deceased?

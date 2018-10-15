@@ -184,10 +184,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         // Documents
         Route::name('document.')->group(function () {
             Route::get('/people/{contact}/documents', 'Contacts\\DocumentsController@index')->name('index');
-            Route::get('/people/{contact}/document/new', 'Contacts\\DocumentsController@new')->name('new');
             Route::post('/people/{contact}/document/store', 'Contacts\\DocumentsController@store')->name('store');
-            Route::get('/people/{contact}/document/{document}/edit', 'Contacts\\DocumentsController@edit')->name('edit');
-            Route::post('/people/{contact}/document/{document}', 'Contacts\\DocumentsController@update')->name('update');
             Route::delete('/people/{contact}/document/{document}', 'Contacts\\DocumentsController@destroy')->name('destroy');
         });
 
