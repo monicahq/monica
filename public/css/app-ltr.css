@@ -17981,6 +17981,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .header-search {
   padding: 0;
+  position: relative;
   margin: auto 0;
 }
 
@@ -18198,6 +18199,14 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   }
 }
 
+.avatars a {
+  text-decoration: none;
+}
+
+.avatars a:hover {
+  background-color: transparent;
+}
+
 .people-list .breadcrumb {
   border-bottom: 1px solid #eee;
 }
@@ -18365,7 +18374,7 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   background-color: #f9f9fb;
   border-bottom: 1px solid #eee;
   position: relative;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 .people-show .pagehead .people-profile-information {
@@ -19551,6 +19560,10 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   border-color: #dde2e9;
 }
 
+.bg-hover-monica:hover {
+  background-color: #f1f5fd;
+}
+
 .w-5 {
   width: 5%;
 }
@@ -19681,6 +19694,26 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 .pretty-tag a:hover {
   background-color: transparent;
   color: #fff;
+}
+
+.life-event .life-event-add-row:hover {
+  background-color: #f1f5fd;
+}
+
+.life-event .life-event-add-arrow {
+  right: 10px;
+  top: 12px;
+}
+
+.life-event .life-event-add-icon {
+  background-color: #d7e3ec;
+  border-radius: 50%;
+  padding: 20px;
+  width: 65px;
+}
+
+.life-event .life-event-add-icon img {
+  width: 70px;
 }
 
 .chart-activities {
@@ -19907,6 +19940,22 @@ input:disabled {
 .table .table-cell {
   display: table-cell;
   padding: 8px 10px;
+}
+
+.profile-selected .profile-selected-left {
+  border-left: 1px solid #dde2e9;
+  border-top: 1px solid #dde2e9;
+  border-bottom: 1px solid #dde2e9;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.profile-selected .profile-selected-right {
+  border-right: 1px solid #dde2e9;
+  border-top: 1px solid #dde2e9;
+  border-bottom: 1px solid #dde2e9;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
 }
 
 .full-page-modal {

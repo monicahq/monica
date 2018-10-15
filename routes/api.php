@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/conversations/{conversation}/messages', 'Api\\Contact\\ApiMessageController@store');
     Route::put('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@update');
     Route::delete('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@destroy');
+    Route::get('/contacts/{contact}/conversations', 'Api\\Contact\\ApiConversationController@conversations');
 
     // Activities
     Route::resource('activities', 'Api\\ApiActivityController', ['except' => [
@@ -135,6 +136,11 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Relationship Types
     Route::resource('relationshiptypes', 'Api\\ApiRelationshipTypeController', ['except' => [
       'create', 'store', 'destroy', 'edit', 'patch', 'update',
+    ]]);
+
+    // Life events
+    Route::resource('lifeevents', 'Api\\Contact\\ApiLifeEventController', ['except' => [
+      'create', 'edit', 'patch',
     ]]);
 
     /*

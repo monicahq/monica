@@ -41,6 +41,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
         Route::get('/dashboard/debts', 'DashboardController@debts');
+        Route::get('/dashboard/tasks', 'DashboardController@tasks');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
 
@@ -59,6 +60,15 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::get('/people/{contact}/edit', 'ContactsController@edit')->name('edit');
         Route::post('/people/{contact}/update', 'ContactsController@update')->name('update');
         Route::delete('/people/{contact}', 'ContactsController@delete')->name('delete');
+
+        // Life events
+        Route::name('lifeevent.')->group(function () {
+            Route::get('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@index')->name('index');
+            Route::get('/lifeevents/categories', 'Contacts\\LifeEventsController@categories')->name('categories');
+            Route::get('/lifeevents/categories/{lifeEventCategory}/types', 'Contacts\\LifeEventsController@types')->name('types');
+            Route::post('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@store')->name('store');
+            Route::delete('/lifeevents/{lifeevent}', 'Contacts\\LifeEventsController@destroy')->name('destroy');
+        });
 
         // Contact information
         Route::get('/people/{contact}/contactfield', 'Contacts\\ContactFieldsController@getContactFields');
@@ -292,6 +302,8 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         });
 
         Route::get('/settings/api', 'SettingsController@api')->name('api');
+
+        Route::post('/settings/updateDefaultProfileView', 'SettingsController@updateDefaultProfileView');
 
         // Security
         Route::name('security.')->group(function () {

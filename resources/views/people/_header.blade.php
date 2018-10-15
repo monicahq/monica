@@ -53,18 +53,7 @@
               </li>
             @endif
             <li>
-              @if (is_null($contact->getLastCalled()))
-                {{ trans('people.last_called_empty') }}
-              @else
-                {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastCalled())]) }}
-              @endif
-            </li>
-            <li>
-              @if (is_null($contact->getLastActivityDate()))
-                {{ trans('people.last_activity_date_empty') }}
-              @else
-                {{ trans('people.last_activity_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastActivityDate())]) }}
-              @endif
+              {{ $contact->description }}
             </li>
           </ul>
 

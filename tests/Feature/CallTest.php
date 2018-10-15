@@ -61,10 +61,6 @@ class CallTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        // Check that the Contact view contains Last activity: unknown
-        $response = $this->get('people/'.$contact->hashID());
-        $response->assertSee('Last called: unknown');
-
         $params = [
             'called_at' => '2013-01-01',
             'content' => null,
@@ -83,7 +79,6 @@ class CallTest extends FeatureTestCase
         // Check that the Contact view contains the newly created call
         $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
-        $response->assertSee('Last called: Jan 01, 2013');
     }
 
     public function test_user_can_add_a_call_with_a_description()
@@ -132,9 +127,5 @@ class CallTest extends FeatureTestCase
         $params['id'] = $call->id;
 
         $this->assertDatabaseMissing('calls', $params);
-
-        // Check that the Contact view contains Last activity: unknown
-        $response = $this->get('people/'.$contact->hashID());
-        $response->assertSee('Last called: unknown');
     }
 }

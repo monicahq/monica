@@ -14,6 +14,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
+use App\Models\Contact\LifeEvent;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
@@ -106,6 +107,17 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($contact->documents()->exists());
+    }
+
+    public function test_it_has_many_life_events()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $lifeEvents = factory(LifeEvent::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($contact->lifeEvents()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()

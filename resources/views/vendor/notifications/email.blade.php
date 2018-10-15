@@ -45,7 +45,7 @@
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('mail.notifications_regards'),<br>{{ config('app.name') }}
+@lang('mail.notifications_regards'),<br>{{ config('app.display_name') }}
 @endif
 
 {{-- Subcopy --}}

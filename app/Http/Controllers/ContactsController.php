@@ -174,8 +174,11 @@ class ContactsController extends Controller
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
         }]);
+
         $contact->last_consulted_at = now(DateHelper::getTimezone());
+        $contact->number_of_views = $contact->number_of_views + 1;
         $contact->save();
+
         $relationships = $contact->relationships;
         // get love relationship type
         $loveRelationships = $relationships->filter(function ($item) {
@@ -201,6 +204,19 @@ class ContactsController extends Controller
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
+        // add `---` at the top of the dropdowns
+        $days = DateHelper::getListOfDays();
+        $days->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
+        $months = DateHelper::getListOfMonths();
+        $months->prepend([
+            'id' => 0,
+            'name' => '---',
+        ]);
+
         return view('people.profile')
             ->withLoveRelationships($loveRelationships)
             ->withFamilyRelationships($familyRelationships)
@@ -208,7 +224,10 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withContact($contact);
+            ->withContact($contact)
+            ->withDays($days)
+            ->withMonths($months)
+            ->withYears(DateHelper::getListOfYears());
     }
 
     /**
@@ -253,6 +272,7 @@ class ContactsController extends Controller
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
             'nickname' => 'max:100',
+            'description' => 'max:240',
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
@@ -272,6 +292,7 @@ class ContactsController extends Controller
         }
 
         $contact->gender_id = $request->input('gender');
+        $contact->description = $request->input('description');
         $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {

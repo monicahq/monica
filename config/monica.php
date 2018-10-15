@@ -12,7 +12,7 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.7.1',
+    'app_version' => '2.9.0',
 
    /*
     |--------------------------------------------------------------------------
@@ -195,12 +195,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Accepted file types for documents upload
+    | Maximum allowed size for uploaded files, in kilobytes.
     |--------------------------------------------------------------------------
     |
-    | This value determines the twitter account shown in case of maintenance in
-    | progress.
+    | This value determines maximum size when uploading a file, in kilobytes.
     |
      */
-    'twitter_account' => env('SUPPORT_TWITTER', 'monicaHQ_app'),
+    'max_upload_size' => env('DEFAULT_MAX_UPLOAD_SIZE', 10240),
 ];
