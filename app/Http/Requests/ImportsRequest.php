@@ -24,7 +24,7 @@ class ImportsRequest extends FormRequest
     public function rules()
     {
         return [
-            'vcard' => 'required|max:10240|mimes:vcf,vcard',
+            'vcard' => 'required|max:'.config('monica.max_upload_size').'|mimes:vcf,vcard',
         ];
     }
 }
