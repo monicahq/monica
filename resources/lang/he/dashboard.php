@@ -13,6 +13,8 @@ return [
     'tab_calls_blank' => 'לא תיעדת אף שיחה עדיין.',
     'tab_debts' => 'חובות',
     'tab_debts_blank' => 'לא תיעדת חובות עדיין.',
+    'tab_tasks' => 'משימות',
+    'tab_tasks_blank' => 'אין לך משימות עדיין.',
 
     'debts_you_owe' => 'חובך הוא',
 
