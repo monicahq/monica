@@ -143,6 +143,12 @@ Route::group(['middleware' => ['auth:api']], function () {
       'create', 'edit', 'patch',
     ]]);
 
+    // Documents
+    Route::resource('documents', 'Api\\Contact\\ApiDocumentController', ['except' => [
+      'create', 'edit', 'patch', 'store', 'update',
+    ]]);
+    Route::get('/contacts/{contact}/documents', 'Api\\Contact\\ApiDocumentController@documents');
+
     /*
      * SETTINGS
      */

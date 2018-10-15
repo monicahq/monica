@@ -37,7 +37,7 @@ class Document extends Model
      *
      * @return BelongsTo
      */
-    public function contacts()
+    public function contact()
     {
         return $this->belongsTo(Contact::class);
     }
