@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'הפרופיל עודכן בהצלחה',
     'information_edit_title' => 'עריכת הפרטים האישיים של :name',
     'information_edit_avatar' => 'תמונה/ציור של איש הקשר',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => ':size ק״ב לכל היותר.',
     'information_edit_firstname' => 'שם פרטי',
     'information_edit_lastname' => 'שם משפחה (רשות)',
     'information_edit_description' => 'תיאור (רשות)',
