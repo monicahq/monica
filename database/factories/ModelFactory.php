@@ -312,6 +312,8 @@ $factory->define(App\Models\Contact\Document::class, function (Faker\Generator $
     return [
         'account_id' => $contact->account_id,
         'contact_id' => $contact->id,
+        'original_filename' => 'file.jpg',
+        'new_filename' => 'file.jpg',
     ];
 });
 
