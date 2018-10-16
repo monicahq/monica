@@ -69,6 +69,13 @@
             </h3>
         </div>
 
+        <!-- EMPTY STATE -->
+        <div class="ltr w-100 pt2" v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false && documents.length == 0">
+            <div class="section-blank">
+                <h3 class="mb0">Upload documents related to XX.</h3>
+            </div>
+        </div>
+
         <!-- FIRST STEP OF DOCUMENT UPLOAD -->
         <transition name="fade">
             <div class="ba br3 document-upload-zone mb3 pa3" v-if="displayUploadZone">
