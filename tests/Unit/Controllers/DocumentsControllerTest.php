@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Controllers;
 
+use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
-use Tests\FeatureTestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DocumentsControllerTest extends FeatureTestCase
@@ -37,7 +37,7 @@ class DocumentsControllerTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('GET', '/people/' . $contact->hashID() . '/documents');
+        $response = $this->json('GET', '/people/'.$contact->hashID().'/documents');
 
         $response->assertStatus(200);
 

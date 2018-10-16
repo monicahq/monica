@@ -305,7 +305,6 @@ $factory->define(App\Models\Contact\Message::class, function (Faker\Generator $f
     ];
 });
 
-
 $factory->define(App\Models\Contact\Document::class, function (Faker\Generator $faker) {
     $contact = factory(App\Models\Contact\Contact::class)->create();
 

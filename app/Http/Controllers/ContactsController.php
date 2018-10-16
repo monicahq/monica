@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
-use App\Services\Contact\Document\UploadDocument;
 
 class ContactsController extends Controller
 {

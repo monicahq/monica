@@ -106,7 +106,7 @@ class ApiDocumentControllerTest extends ApiTestCase
 
         $document = $this->createDocument($user);
 
-        $response = $this->json('GET', '/api/documents/' . $document->id);
+        $response = $this->json('GET', '/api/documents/'.$document->id);
 
         $response->assertStatus(200);
 
@@ -121,7 +121,7 @@ class ApiDocumentControllerTest extends ApiTestCase
 
         $document = $this->createDocument($user);
 
-        $response = $this->json('GET', '/api/contacts/' . $document['contact_id'] . '/documents');
+        $response = $this->json('GET', '/api/contacts/'.$document['contact_id'].'/documents');
 
         $response->assertStatus(200);
 

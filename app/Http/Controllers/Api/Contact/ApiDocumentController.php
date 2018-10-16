@@ -7,9 +7,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use App\Exceptions\MissingParameterException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\Document\UploadDocument;
 use App\Http\Resources\Document\Document as DocumentResource;
 
 class ApiDocumentController extends ApiController

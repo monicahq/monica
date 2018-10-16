@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Document\Document as DocumentResource;
 use App\Services\Contact\Document\UploadDocument;
+use App\Http\Resources\Document\Document as DocumentResource;
 
 class DocumentsController extends Controller
 {
@@ -21,6 +20,7 @@ class DocumentsController extends Controller
     public function index(Request $request, Contact $contact)
     {
         $documents = $contact->documents()->get();
+
         return DocumentResource::collection($documents);
     }
 
