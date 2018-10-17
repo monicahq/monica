@@ -36,6 +36,17 @@
         box-shadow: 1px 0px 1px rgba(43, 45, 80, 0.16), -1px 1px 1px rgba(43, 45, 80, 0.16), 0px 1px 4px rgba(43, 45, 80, 0.18);
     }
 
+    .document-action-menu {
+        border-radius: 3px;
+        box-shadow: 1px 0px 1px rgba(43, 45, 80, 0.16), -1px 1px 1px rgba(43, 45, 80, 0.16), 0px 1px 4px rgba(43, 45, 80, 0.18);
+        right: 10px;
+        top: 34px;
+    }
+
+    .document-action-menu-item.delete {
+        color: #CB4066;
+    }
+
     progress {
         -webkit-appearance: none;
         border: none;
@@ -174,12 +185,31 @@
                             <circle cx="18.5" cy="2.5" r="2.5" fill="#505473" fill-opacity="0.86"/>
                         </svg>
                     </div>
-                    <ul class="absolute">
-                        <li>
-                            <a href="">Download</a>
+                    <ul class="absolute bg-white z-max document-action-menu" v-if="modalToDisplay == document.id">
+                        <li class="tc">
+                            <a class="pv2 ph3 inline-flex items-center no-underline">
+                                <span class="dib">
+                                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <g clip-path="url(#clip0)">
+                                            <path d="M8.45 5.20005V1.30005H4.55V5.20005H1.3L6.5 10.4L11.7 5.20005H8.45ZM0 11.7H13V13H0V11.7Z" fill="#5A6F84"/>
+                                        </g>
+                                        <defs>
+                                            <clipPath id="clip0">
+                                                <rect width="13" height="13" fill="white"/>
+                                            </clipPath>
+                                        </defs>
+                                    </svg>
+                                </span>
+                                Download
+                            </a>
                         </li>
-                        <li>
-                            <a href="">Delete</a>
+                        <li class="tc">
+                            <a class="pv2 ph3 document-action-menu-item delete">
+                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M3.8998 1.3L5.1998 0H7.7998L9.0998 1.3H11.6998V2.6H1.2998V1.3H3.8998ZM1.9498 3.9H11.0498L10.3998 13H2.5998L1.9498 3.9ZM5.1998 5.2V11.7H5.8498V5.2H5.1998ZM7.1498 5.2V11.7H7.7998V5.2H7.1498Z" fill="#CB4066"/>
+                                </svg>
+                                Delete
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -198,7 +228,8 @@
                 displayUploadProgress: false,
                 displayUploadError: false,
                 file: '',
-                uploadPercentage: 0
+                uploadPercentage: 0,
+                modalToDisplay: null,
             };
         },
 
@@ -230,7 +261,7 @@
             },
 
             toggleActionsModal(id) {
-
+                this.modalToDisplay = id
             },
 
             handleFileUpload(){
