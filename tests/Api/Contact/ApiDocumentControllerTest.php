@@ -20,6 +20,7 @@ class ApiDocumentControllerTest extends ApiTestCase
         'filesize',
         'type',
         'number_of_downloads',
+        'link',
         'account' => [
             'id',
         ],

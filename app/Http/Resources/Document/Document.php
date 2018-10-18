@@ -24,6 +24,7 @@ class Document extends Resource
             'filesize' => $this->filesize,
             'type' => $this->type,
             'number_of_downloads' => $this->number_of_downloads,
+            'link' => $this->getDownloadLink(),
             'account' => [
                 'id' => $this->account->id,
             ],

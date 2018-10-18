@@ -133,9 +133,10 @@
                         <path d="M111.248 50.4712H110.31V52.9712H111.248V50.4712Z" fill="#868E99"/>
                     </svg>
                 </div>
-                <p class="tc">
-                    <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-                </p>
+                <div class="tc dib w-100">
+                    <button class="btn">Upload a file</button>
+                    <input type="file" id="file" class="absolute o-0 w-100 h-100 pointer" style="left:0;" ref="file" v-on:change="handleFileUpload()"/>
+                </div>
             </div>
         </transition>
 
@@ -191,7 +192,7 @@
                     </div>
                     <ul class="absolute bg-white z-max pv1 document-action-menu" v-if="modalToDisplay == document.id">
                         <li class="tc">
-                            <a class="pv2 pointer ph3 inline-flex items-center w-100 no-underline document-action-menu-item" href="">
+                            <a class="pv2 pointer ph3 inline-flex items-center w-100 no-underline document-action-menu-item" :href="document.link" target="_blank" @click="modalToDisplay = null">
                                 Download
                             </a>
                         </li>
@@ -250,7 +251,11 @@
             },
 
             toggleActionsModal(id) {
-                this.modalToDisplay = id
+                if (this.modalToDisplay == id) {
+                    this.modalToDisplay = null
+                } else {
+                    this.modalToDisplay = id
+                }
             },
 
             handleFileUpload(){
