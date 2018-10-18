@@ -367,7 +367,7 @@ return [
     'personalization_life_event_type_bought_a_home' => '买了新房子',
     'personalization_life_event_type_home_improvement' => '装修',
     'personalization_life_event_type_holidays' => '假日',
-    'personalization_life_event_type_new_vehicle' => 'New vehicle',
+    'personalization_life_event_type_new_vehicle' => '新车',
     'personalization_life_event_type_new_roommate' => '新室友',
     'personalization_life_event_type_overcame_an_illness' => '熬过了疾病',
     'personalization_life_event_type_quit_a_habit' => '戒掉一个习惯',
