@@ -49,12 +49,12 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
-    
+
         $response = $this->json('GET', '/api/gifts');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift]
+            'data' => ['*' => $this->jsonGift],
         ]);
         $response->assertJsonFragment([
             'object' => 'gift',
@@ -65,7 +65,6 @@ class ApiGiftsTest extends ApiTestCase
             'id' => $gift2->id,
         ]);
     }
-
 
     public function test_gift_get_contact_all_gifts()
     {
@@ -89,7 +88,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift]
+            'data' => ['*' => $this->jsonGift],
         ]);
         $response->assertJsonFragment([
             'object' => 'gift',
@@ -115,12 +114,12 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
-    
+
         $response = $this->json('GET', '/api/gifts/'.$gift1->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift
+            'data' => $this->jsonGift,
         ]);
         $response->assertJsonFragment([
             'object' => 'gift',
@@ -138,7 +137,7 @@ class ApiGiftsTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-    
+
         $response = $this->json('POST', '/api/gifts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
@@ -147,7 +146,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift
+            'data' => $this->jsonGift,
         ]);
         $gift_id = $response->json('data.id');
         $response->assertJsonFragment([
@@ -174,7 +173,7 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-    
+
         $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
             'contact_id' => $contact->id,
             'name' => 'the gift',
@@ -183,7 +182,7 @@ class ApiGiftsTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift
+            'data' => $this->jsonGift,
         ]);
         $gift_id = $response->json('data.id');
         $this->assertEquals($gift->id, $gift_id);
@@ -217,7 +216,7 @@ class ApiGiftsTest extends ApiTestCase
             'contact_id' => $contact->id,
             'id' => $gift->id,
         ]);
-    
+
         $response = $this->json('DELETE', '/api/gifts/'.$gift->id);
 
         $response->assertStatus(200);
