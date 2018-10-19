@@ -116,7 +116,7 @@ return [
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
     'information_edit_avatar' => 'Photo/avatar du contact',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => 'Maximum :size Ko.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
     'information_edit_description' => 'Description (facultatif)',
