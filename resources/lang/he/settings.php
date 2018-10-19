@@ -382,7 +382,7 @@ return [
     'personalization_life_event_type_new_hobby' => 'תחביב חדש',
     'personalization_life_event_type_new_instrument' => 'כלי נגינה חדש',
     'personalization_life_event_type_new_language' => 'שפה חדשה',
-    'personalization_life_event_type_tatoo_or_piercing' => 'קעקוע או ניזום',
+    'personalization_life_event_type_tattoo_or_piercing' => 'Tattoo or piercing',
     'personalization_life_event_type_new_license' => 'רישיון חדש',
     'personalization_life_event_type_travel' => 'טיול',
     'personalization_life_event_type_achievement_or_award' => 'הישג או פרס',
