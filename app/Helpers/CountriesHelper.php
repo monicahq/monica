@@ -102,7 +102,7 @@ class CountriesHelper
      */
     public static function getCountryFromLang($locale)
     {
-        $countryCode = self::getDefaultCountryFromLang($locale);
+        $countryCode = self::getDefaultCountryFromLocale($locale);
 
         if (is_null($countryCode)) {
             $lang = LocaleHelper::getLocaleAlpha($locale);
@@ -123,7 +123,7 @@ class CountriesHelper
      * @param string $locale   language code (iso)
      * @return string  cca3 code
      */
-    public static function getDefaultCountryFromLang($locale)
+    private static function getDefaultCountryFromLocale($locale)
     {
         switch (mb_strtolower($locale)) {
             case 'cs':
