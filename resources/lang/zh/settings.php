@@ -382,7 +382,7 @@ return [
     'personalization_life_event_type_new_hobby' => '新的爱好',
     'personalization_life_event_type_new_instrument' => '新乐器',
     'personalization_life_event_type_new_language' => '新语言',
-    'personalization_life_event_type_tattoo_or_piercing' => 'Tattoo or piercing',
+    'personalization_life_event_type_tattoo_or_piercing' => '纹身或耳洞',
     'personalization_life_event_type_new_license' => '新驾照',
     'personalization_life_event_type_travel' => '旅行',
     'personalization_life_event_type_achievement_or_award' => '成就或奖项',
