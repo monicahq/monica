@@ -421,7 +421,7 @@ return [
     'life_event_sentence_new_hobby' => '有了新爱好',
     'life_event_sentence_new_instrument' => '学会了新乐器',
     'life_event_sentence_new_language' => '学了一门新的语言',
-    'life_event_sentence_tattoo_or_piercing' => 'Got a tattoo or piercing',
+    'life_event_sentence_tattoo_or_piercing' => '纹身了或者打了耳洞',
     'life_event_sentence_new_license' => '获得驾照',
     'life_event_sentence_travel' => '旅游了',
     'life_event_sentence_achievement_or_award' => '获得成就或奖项',
