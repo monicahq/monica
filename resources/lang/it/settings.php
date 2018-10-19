@@ -382,7 +382,7 @@ return [
     'personalization_life_event_type_new_hobby' => 'New hobby',
     'personalization_life_event_type_new_instrument' => 'New instrument',
     'personalization_life_event_type_new_language' => 'New language',
-    'personalization_life_event_type_tatoo_or_piercing' => 'Tatoo or piercing',
+    'personalization_life_event_type_tattoo_or_piercing' => 'Tattoo or piercing',
     'personalization_life_event_type_new_license' => 'New license',
     'personalization_life_event_type_travel' => 'Travel',
     'personalization_life_event_type_achievement_or_award' => 'Achievement or award',
