@@ -85,8 +85,8 @@ class ApiTagsTest extends ApiTestCase
         $response->assertStatus(404);
         $response->assertJson([
             'error' => [
-                'error_code' => 31
-            ]
+                'error_code' => 31,
+            ],
         ]);
     }
 
@@ -126,8 +126,8 @@ class ApiTagsTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertJson([
             'error' => [
-                'error_code' => 32
-            ]
+                'error_code' => 32,
+            ],
         ]);
     }
 
@@ -136,7 +136,7 @@ class ApiTagsTest extends ApiTestCase
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
-            'name' => 'old name'
+            'name' => 'old name',
         ]);
 
         $response = $this->json('PUT', '/api/tags/'.$tag->id, [
@@ -194,7 +194,7 @@ class ApiTagsTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', '/api/contacts/'.$contact->id.'/setTags', [
-            'tags' => ['tag1', 'tag2']
+            'tags' => ['tag1', 'tag2'],
         ]);
 
         $response->assertStatus(200);
@@ -204,12 +204,12 @@ class ApiTagsTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'tag',
             'name' => 'tag1',
-            'id' => $tag_id1
+            'id' => $tag_id1,
         ]);
         $response->assertJsonFragment([
             'object' => 'tag',
             'name' => 'tag2',
-            'id' => $tag_id2
+            'id' => $tag_id2,
         ]);
 
         $this->assertDatabaseHas('contact_tag', [
@@ -239,7 +239,7 @@ class ApiTagsTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', '/api/contacts/'.$contact->id.'/unsetTag', [
-            'tags' => [$tag->id]
+            'tags' => [$tag->id],
         ]);
 
         $response->assertStatus(200);

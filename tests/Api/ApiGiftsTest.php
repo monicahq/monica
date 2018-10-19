@@ -141,8 +141,8 @@ class ApiGiftsTest extends ApiTestCase
         $response->assertStatus(404);
         $response->assertJson([
             'error' => [
-                'error_code' => 31
-            ]
+                'error_code' => 31,
+            ],
         ]);
     }
 
@@ -191,8 +191,8 @@ class ApiGiftsTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertJson([
             'error' => [
-                'error_code' => 32
-            ]
+                'error_code' => 32,
+            ],
         ]);
     }
 
@@ -212,8 +212,8 @@ class ApiGiftsTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertJson([
             'error' => [
-                'error_code' => 32
-            ]
+                'error_code' => 32,
+            ],
         ]);
     }
 
