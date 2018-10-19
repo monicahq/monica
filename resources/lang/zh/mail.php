@@ -14,13 +14,13 @@ return [
     'notification_description' => '在:count天后(:date),将有以下事件发生：',
 
     'stay_in_touch_subject_line' => '您的『常联系』提醒 :name',
-    'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency day.|You asked to be reminded to stay in touch with :name every :frequency days.',
+    'stay_in_touch_subject_description' => '您的常联系提醒： 每 :frequency 天 与 :name 联系.|您的常联系提醒： 每 :frequency 天 与 :name 联系.',
 
     'notifications_whoops' => '糟了!',
     'notifications_hello' => '您好！',
     'notifications_regards' => '此致',
     'notifications_footer' => '如果您无法点击 ":actionText" 按钮, 复制以下链接至浏览器打开: [:actionURL](:actionURL)',
-    'notifications_rights' => 'All rights reserved',
+    'notifications_rights' => '版权所有',
 
     'confirmation_email_title' => 'Monica – Email 认证',
     'confirmation_email_intro'=> '请点击以下按钮来完成Email认证',
