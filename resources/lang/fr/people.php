@@ -421,7 +421,7 @@ return [
     'life_event_sentence_new_hobby' => 'A commencé un passe-temps',
     'life_event_sentence_new_instrument' => 'A commencé à apprendre un nouvel instrument',
     'life_event_sentence_new_language' => 'A commencé à apprendre une nouvelle langue',
-    'life_event_sentence_tatoo_or_piercing' => 'S’est fait tatoué ou percé',
+    'life_event_sentence_tattoo_or_piercing' => 'Got a tattoo or piercing',
     'life_event_sentence_new_license' => 'A eu le permis',
     'life_event_sentence_travel' => 'A voyagé',
     'life_event_sentence_achievement_or_award' => 'A eu une récompense ou un prix',
