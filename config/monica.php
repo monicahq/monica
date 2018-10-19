@@ -12,7 +12,7 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.8.0',
+    'app_version' => '2.9.0',
 
    /*
     |--------------------------------------------------------------------------
@@ -192,4 +192,14 @@ return [
     |
      */
     'twitter_account' => env('SUPPORT_TWITTER', 'monicaHQ_app'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Maximum allowed size for uploaded files, in kilobytes.
+    |--------------------------------------------------------------------------
+    |
+    | This value determines maximum size when uploading a file, in kilobytes.
+    |
+     */
+    'max_upload_size' => env('DEFAULT_MAX_UPLOAD_SIZE', 10240),
 ];

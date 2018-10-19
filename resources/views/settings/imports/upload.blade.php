@@ -58,7 +58,7 @@
                   <div class="form-group">
                       <label for="vcard">{!! trans('settings.import_upload_form_file') !!}</label>
                       <input type="file" class="form-control-file" name="vcard" id="vcard">
-                      <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
+                      <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => config('monica.max_upload_size')]) }}</small>
                   </div>
 
                 <div class="form-group">
