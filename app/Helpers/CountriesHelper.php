@@ -100,7 +100,7 @@ class CountriesHelper
      * @param string $locale  language code (iso)
      * @return object  the Country element
      */
-    public static function getCountryFromLang($locale)
+    public static function getCountryFromLocale($locale)
     {
         $countryCode = self::getDefaultCountryFromLocale($locale);
 

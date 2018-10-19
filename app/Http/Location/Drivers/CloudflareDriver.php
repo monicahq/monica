@@ -28,18 +28,22 @@ class CloudflareDriver extends Driver
         }
 
         try {
-            $country = Request::header('Cf-Ipcountry');
-            if (! is_null($country)) {
-                $response = ['country_code' => $country];
-
-                return new Fluent($response);
-            }
-
-            return $this->fallback->get(RequestHelper::ip());
+            return $this->getCountry();
         } catch (\Exception $e) {
             return false;
         }
+    }
 
-        return false;
+    private function getCountry()
+    {
+        $country = Request::header('Cf-Ipcountry');
+
+        if (! is_null($country)) {
+            $response = ['country_code' => $country];
+
+            return new Fluent($response);
+        }
+
+        return $this->fallback->get(RequestHelper::ip());
     }
 }

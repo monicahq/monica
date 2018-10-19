@@ -89,7 +89,7 @@ class User extends Authenticatable
         $user->created_at = now();
         $user->locale = $lang ?: App::getLocale();
 
-        $user->setDefaultCurrencyAndTimezone($ipAddress);
+        $user->setDefaultCurrencyAndTimezone($ipAddress, $user->locale);
 
         $user->save();
 
@@ -98,7 +98,7 @@ class User extends Authenticatable
         return $user;
     }
 
-    private function setDefaultCurrencyAndTimezone($ipAddress = null)
+    private function setDefaultCurrencyAndTimezone($ipAddress, $locale)
     {
         $infos = RequestHelper::infos($ipAddress);
 
@@ -110,7 +110,7 @@ class User extends Authenticatable
             if ($infos['country']) {
                 $country = CountriesHelper::getCountry($infos['country']);
             } else {
-                $country = CountriesHelper::getCountryFromLang($this->locale);
+                $country = CountriesHelper::getCountryFromLocale($locale);
             }
         }
 
