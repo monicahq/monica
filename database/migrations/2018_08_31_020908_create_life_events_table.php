@@ -354,7 +354,7 @@ class CreateLifeEventsTable extends Migration
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'tatoo_or_piercing',
+            'translation_key' => 'tattoo_or_piercing',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
