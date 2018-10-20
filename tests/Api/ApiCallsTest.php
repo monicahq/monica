@@ -3,22 +3,20 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\Task;
+use App\Models\Contact\Call;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiTasksTest extends ApiTestCase
+class ApiCallsTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonTask = [
+    protected $jsonCall = [
         'id',
         'object',
-        'title',
-        'description',
-        'completed',
-        'completed_at',
+        'called_at',
+        'content',
         'account' => [
             'id',
         ],
@@ -29,110 +27,110 @@ class ApiTasksTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_tasks_get_all_tasks()
+    public function test_calls_get_all_calls()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task1 = factory(Task::class)->create([
+        $call1 = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task2 = factory(Task::class)->create([
+        $call2 = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/tasks');
+        $response = $this->json('GET', '/api/calls');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonTask],
+            'data' => ['*' => $this->jsonCall],
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task1->id,
+            'object' => 'call',
+            'id' => $call1->id,
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task2->id,
+            'object' => 'call',
+            'id' => $call2->id,
         ]);
     }
 
-    public function test_tasks_get_contact_all_tasks()
+    public function test_calls_get_contact_all_calls()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task1 = factory(Task::class)->create([
+        $call1 = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task2 = factory(Task::class)->create([
+        $call2 = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/tasks');
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/calls');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonTask],
+            'data' => ['*' => $this->jsonCall],
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task1->id,
+            'object' => 'call',
+            'id' => $call1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'task',
-            'id' => $task2->id,
+            'object' => 'call',
+            'id' => $call2->id,
         ]);
     }
 
-    public function test_tasks_get_one_task()
+    public function test_calls_get_one_call()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task1 = factory(Task::class)->create([
+        $call1 = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
-        $task2 = factory(Task::class)->create([
+        $call2 = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
 
-        $response = $this->json('GET', '/api/tasks/'.$task1->id);
+        $response = $this->json('GET', '/api/calls/'.$call1->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonTask,
+            'data' => $this->jsonCall,
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task1->id,
+            'object' => 'call',
+            'id' => $call1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'task',
-            'id' => $task2->id,
+            'object' => 'call',
+            'id' => $call2->id,
         ]);
     }
 
-    public function test_tasks_get_one_task_error()
+    public function test_calls_get_one_call_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/tasks/0');
+        $response = $this->json('GET', '/api/calls/0');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -142,47 +140,47 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_create_task()
+    public function test_calls_create_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/tasks', [
+        $response = $this->json('POST', '/api/calls', [
             'contact_id' => $contact->id,
-            'title' => 'the task',
-            'completed' => false,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonTask,
+            'data' => $this->jsonCall,
         ]);
-        $task_id = $response->json('data.id');
+        $call_id = $response->json('data.id');
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task_id,
+            'object' => 'call',
+            'id' => $call_id,
         ]);
 
-        $this->assertGreaterThan(0, $task_id);
-        $this->assertDatabaseHas('tasks', [
+        $this->assertGreaterThan(0, $call_id);
+        $this->assertDatabaseHas('calls', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task_id,
-            'title' => 'the task',
-            'completed' => false,
+            'id' => $call_id,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
         ]);
     }
 
-    public function test_tasks_create_task_error()
+    public function test_calls_create_call_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/tasks', [
+        $response = $this->json('POST', '/api/calls', [
             'contact_id' => $contact->id,
         ]);
 
@@ -194,7 +192,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_create_task_error_bad_account()
+    public function test_calls_create_call_error_bad_account()
     {
         $user = $this->signin();
 
@@ -203,7 +201,7 @@ class ApiTasksTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('POST', '/api/tasks', [
+        $response = $this->json('POST', '/api/calls', [
             'contact_id' => $contact->id,
         ]);
 
@@ -215,67 +213,67 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_update_task()
+    public function test_calls_update_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task = factory(Task::class)->create([
+        $call = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/tasks/'.$task->id, [
+        $response = $this->json('PUT', '/api/calls/'.$call->id, [
             'contact_id' => $contact->id,
-            'title' => 'the task',
-            'completed' => false,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonTask,
+            'data' => $this->jsonCall,
         ]);
-        $task_id = $response->json('data.id');
-        $this->assertEquals($task->id, $task_id);
+        $call_id = $response->json('data.id');
+        $this->assertEquals($call->id, $call_id);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task_id,
+            'object' => 'call',
+            'id' => $call_id,
         ]);
 
-        $this->assertGreaterThan(0, $task_id);
-        $this->assertDatabaseHas('tasks', [
+        $this->assertGreaterThan(0, $call_id);
+        $this->assertDatabaseHas('calls', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task_id,
-            'title' => 'the task',
-            'completed' => false,
+            'id' => $call_id,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
         ]);
     }
 
-    public function test_tasks_delete_task()
+    public function test_calls_delete_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task = factory(Task::class)->create([
+        $call = factory(Call::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $this->assertDatabaseHas('tasks', [
+        $this->assertDatabaseHas('calls', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task->id,
+            'id' => $call->id,
         ]);
 
-        $response = $this->json('DELETE', '/api/tasks/'.$task->id);
+        $response = $this->json('DELETE', '/api/calls/'.$call->id);
 
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('tasks', [
+        $this->assertDatabaseMissing('calls', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task->id,
+            'id' => $call->id,
         ]);
     }
 }

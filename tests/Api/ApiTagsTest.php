@@ -112,8 +112,8 @@ class ApiTagsTest extends ApiTestCase
         $this->assertGreaterThan(0, $tag_id);
         $this->assertDatabaseHas('tags', [
             'account_id' => $user->account->id,
-            'name' => 'the tag',
             'id' => $tag_id,
+            'name' => 'the tag',
         ]);
     }
 
@@ -158,8 +158,8 @@ class ApiTagsTest extends ApiTestCase
         $this->assertGreaterThan(0, $tag_id);
         $this->assertDatabaseHas('tags', [
             'account_id' => $user->account->id,
-            'name' => 'the tag',
             'id' => $tag_id,
+            'name' => 'the tag',
         ]);
     }
 
@@ -203,13 +203,13 @@ class ApiTagsTest extends ApiTestCase
 
         $response->assertJsonFragment([
             'object' => 'tag',
-            'name' => 'tag1',
             'id' => $tag_id1,
+            'name' => 'tag1',
         ]);
         $response->assertJsonFragment([
             'object' => 'tag',
-            'name' => 'tag2',
             'id' => $tag_id2,
+            'name' => 'tag2',
         ]);
 
         $this->assertDatabaseHas('contact_tag', [

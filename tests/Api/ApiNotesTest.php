@@ -3,22 +3,21 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\Task;
+use App\Models\Contact\Note;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiTasksTest extends ApiTestCase
+class ApiNotesTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonTask = [
+    protected $jsonNote = [
         'id',
         'object',
-        'title',
-        'description',
-        'completed',
-        'completed_at',
+        'body',
+        'is_favorited',
+        'favorited_at',
         'account' => [
             'id',
         ],
@@ -29,110 +28,110 @@ class ApiTasksTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_tasks_get_all_tasks()
+    public function test_notes_get_all_notes()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task1 = factory(Task::class)->create([
+        $note1 = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task2 = factory(Task::class)->create([
+        $note2 = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/tasks');
+        $response = $this->json('GET', '/api/notes');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonTask],
+            'data' => ['*' => $this->jsonNote],
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task1->id,
+            'object' => 'note',
+            'id' => $note1->id,
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task2->id,
+            'object' => 'note',
+            'id' => $note2->id,
         ]);
     }
 
-    public function test_tasks_get_contact_all_tasks()
+    public function test_notes_get_contact_all_notes()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task1 = factory(Task::class)->create([
+        $note1 = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task2 = factory(Task::class)->create([
+        $note2 = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/tasks');
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/notes');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonTask],
+            'data' => ['*' => $this->jsonNote],
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task1->id,
+            'object' => 'note',
+            'id' => $note1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'task',
-            'id' => $task2->id,
+            'object' => 'note',
+            'id' => $note2->id,
         ]);
     }
 
-    public function test_tasks_get_one_task()
+    public function test_notes_get_one_note()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task1 = factory(Task::class)->create([
+        $note1 = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
-        $task2 = factory(Task::class)->create([
+        $note2 = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
 
-        $response = $this->json('GET', '/api/tasks/'.$task1->id);
+        $response = $this->json('GET', '/api/notes/'.$note1->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonTask,
+            'data' => $this->jsonNote,
         ]);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task1->id,
+            'object' => 'note',
+            'id' => $note1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'task',
-            'id' => $task2->id,
+            'object' => 'note',
+            'id' => $note2->id,
         ]);
     }
 
-    public function test_tasks_get_one_task_error()
+    public function test_notes_get_one_note_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/tasks/0');
+        $response = $this->json('GET', '/api/notes/0');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -142,47 +141,49 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_create_task()
+    public function test_notes_create_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/tasks', [
+        $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
-            'title' => 'the task',
-            'completed' => false,
+            'body' => 'the body of the note',
+            'is_favorited' => false,
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonTask,
+            'data' => $this->jsonNote,
         ]);
-        $task_id = $response->json('data.id');
+        $note_id = $response->json('data.id');
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task_id,
+            'object' => 'note',
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => false,
         ]);
 
-        $this->assertGreaterThan(0, $task_id);
-        $this->assertDatabaseHas('tasks', [
+        $this->assertGreaterThan(0, $note_id);
+        $this->assertDatabaseHas('notes', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task_id,
-            'title' => 'the task',
-            'completed' => false,
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => false,
         ]);
     }
 
-    public function test_tasks_create_task_error()
+    public function test_notes_create_note_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/tasks', [
+        $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
         ]);
 
@@ -194,7 +195,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_create_task_error_bad_account()
+    public function test_notes_create_note_error_bad_account()
     {
         $user = $this->signin();
 
@@ -203,7 +204,7 @@ class ApiTasksTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('POST', '/api/tasks', [
+        $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
         ]);
 
@@ -215,67 +216,69 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_update_task()
+    public function test_notes_update_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task = factory(Task::class)->create([
+        $note = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/tasks/'.$task->id, [
+        $response = $this->json('PUT', '/api/notes/'.$note->id, [
             'contact_id' => $contact->id,
-            'title' => 'the task',
-            'completed' => false,
+            'body' => 'the body of the note',
+            'is_favorited' => false,
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonTask,
+            'data' => $this->jsonNote,
         ]);
-        $task_id = $response->json('data.id');
-        $this->assertEquals($task->id, $task_id);
+        $note_id = $response->json('data.id');
+        $this->assertEquals($note->id, $note_id);
         $response->assertJsonFragment([
-            'object' => 'task',
-            'id' => $task_id,
+            'object' => 'note',
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => false,
         ]);
 
-        $this->assertGreaterThan(0, $task_id);
-        $this->assertDatabaseHas('tasks', [
+        $this->assertGreaterThan(0, $note_id);
+        $this->assertDatabaseHas('notes', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task_id,
-            'title' => 'the task',
-            'completed' => false,
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => false,
         ]);
     }
 
-    public function test_tasks_delete_task()
+    public function test_notes_delete_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $task = factory(Task::class)->create([
+        $note = factory(Note::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $this->assertDatabaseHas('tasks', [
+        $this->assertDatabaseHas('notes', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task->id,
+            'id' => $note->id,
         ]);
 
-        $response = $this->json('DELETE', '/api/tasks/'.$task->id);
+        $response = $this->json('DELETE', '/api/notes/'.$note->id);
 
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('tasks', [
+        $this->assertDatabaseMissing('notes', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $task->id,
+            'id' => $note->id,
         ]);
     }
 }

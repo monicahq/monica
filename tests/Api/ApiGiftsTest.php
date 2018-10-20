@@ -172,8 +172,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->assertDatabaseHas('gifts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'name' => 'the gift',
             'id' => $gift_id,
+            'name' => 'the gift',
         ]);
     }
 
@@ -249,9 +249,9 @@ class ApiGiftsTest extends ApiTestCase
         $this->assertDatabaseHas('gifts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
+            'id' => $gift_id,
             'name' => 'the gift',
             'comment' => 'one comment',
-            'id' => $gift_id,
         ]);
     }
 
