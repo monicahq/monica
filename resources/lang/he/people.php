@@ -421,7 +421,7 @@ return [
     'life_event_sentence_new_hobby' => 'התחלת תחביב',
     'life_event_sentence_new_instrument' => 'למידת כלי נגינה חדש',
     'life_event_sentence_new_language' => 'למידת שפה חדשה',
-    'life_event_sentence_tattoo_or_piercing' => 'Got a tattoo or piercing',
+    'life_event_sentence_tattoo_or_piercing' => 'קעקוע או פירסינג חדש',
     'life_event_sentence_new_license' => 'הוצאת רישיון',
     'life_event_sentence_travel' => 'טיול',
     'life_event_sentence_achievement_or_award' => 'קבלת הישג או פרס',
