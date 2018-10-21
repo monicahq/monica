@@ -219,12 +219,14 @@ class ApiTasksTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/tasks', [
             'contact_id' => $contact->id,
+            'title' => 'the task',
+            'completed' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(404);
         $response->assertJson([
             'error' => [
-                'error_code' => 32,
+                'error_code' => 31,
             ],
         ]);
     }

@@ -217,12 +217,14 @@ class ApiCallsTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/calls', [
             'contact_id' => $contact->id,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(404);
         $response->assertJson([
             'error' => [
-                'error_code' => 32,
+                'error_code' => 31,
             ],
         ]);
     }

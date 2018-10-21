@@ -168,6 +168,38 @@ class ApiJournalTest extends ApiTestCase
         ]);
     }
 
+    public function test_journal_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/journal/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_journal_update_error2()
+    {
+        $user = $this->signin();
+        $entry = factory(Entry::class)->create([
+            'account_id' => $user->account->id,
+            'title' => 'xxx',
+        ]);
+
+        $response = $this->json('PUT', '/api/journal/'.$entry->id, [ ]);
+
+        $response->assertStatus(200);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 32,
+            ],
+        ]);
+    }
+
     public function test_journal_delete_journal()
     {
         $user = $this->signin();
@@ -185,6 +217,20 @@ class ApiJournalTest extends ApiTestCase
         $this->assertDatabaseMissing('entries', [
             'account_id' => $user->account->id,
             'id' => $entry->id,
+        ]);
+    }
+
+    public function test_journal_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/journal/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }

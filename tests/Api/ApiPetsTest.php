@@ -222,15 +222,17 @@ class ApiPetsTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
+        $pet_category = factory(PetCategory::class)->create();
 
         $response = $this->json('POST', '/api/pets', [
             'contact_id' => $contact->id,
+            'pet_category_id' => $pet_category->id,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(404);
         $response->assertJson([
             'error' => [
-                'error_code' => 32,
+                'error_code' => 31,
             ],
         ]);
     }

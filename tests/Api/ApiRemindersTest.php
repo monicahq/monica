@@ -223,6 +223,8 @@ class ApiRemindersTest extends ApiTestCase
 
     public function test_reminders_create_error_bad_account()
     {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
         $user = $this->signin();
 
         $account = factory(Account::class)->create();
@@ -232,12 +234,16 @@ class ApiRemindersTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/reminders', [
             'contact_id' => $contact->id,
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01',
+            'frequency_type' => 'one_time',
+            'description' => 'the description',
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(404);
         $response->assertJson([
             'error' => [
-                'error_code' => 32,
+                'error_code' => 31,
             ],
         ]);
     }
