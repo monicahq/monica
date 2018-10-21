@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Pets
     Route::resource('pets', 'Api\\ApiPetController')->only([
-      'show', 'store', 'update', 'destroy'
+      'show', 'store', 'update', 'destroy',
     ]);
 
     // Contact Pets
@@ -102,12 +102,12 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Relationship Type Groups
     Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController')->only([
-      'index', 'show'
+      'index', 'show',
     ]);
 
     // Relationship Types
     Route::resource('relationshiptypes', 'Api\\ApiRelationshipTypeController')->only([
-      'index', 'show'
+      'index', 'show',
     ]);
 
     // Life events
