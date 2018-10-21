@@ -101,7 +101,6 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-
     public function test_gifts_get_contact_all_error()
     {
         $user = $this->signin();
