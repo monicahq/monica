@@ -151,7 +151,7 @@ class ApiNotesTest extends ApiTestCase
         $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
             'body' => 'the body of the note',
-            'is_favorited' => false,
+            'is_favorited' => 0,
         ]);
 
         $response->assertStatus(201);

@@ -6,6 +6,7 @@ use Tests\ApiTestCase;
 use App\Models\Contact\Debt;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiDebtsTest extends ApiTestCase
@@ -17,7 +18,7 @@ class ApiDebtsTest extends ApiTestCase
         'object',
         'in_debt',
         'status',
-        'ammount',
+        'amount',
         'amount_with_currency',
         'reason',
         'account' => [
@@ -149,10 +150,17 @@ class ApiDebtsTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
+        $currency = factory(Currency::class)->create([
+            'iso' => 'USD',
+            'symbol' => '$',
+        ]);
+        //$user->associateCurrency($currency);
+        $user->currency_id = $currency->id;
+        $user->save();
 
         $response = $this->json('POST', '/api/debts', [
             'contact_id' => $contact->id,
-            'in_debt' => true,
+            'in_debt' => 'yes',
             'status' => 'inprogress',
             'amount' => 42,
             'reason' => 'that\'s why'
@@ -166,10 +174,10 @@ class ApiDebtsTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'debt',
             'id' => $debt_id,
-            'in_debt' => true,
+            'in_debt' => 'yes',
             'status' => 'inprogress',
             'amount' => 42,
-            'amount_with_currency' => '$42',
+            'amount_with_currency' => '$42.00',
             'reason' => 'that\'s why'
         ]);
 
@@ -178,7 +186,7 @@ class ApiDebtsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $debt_id,
-            'in_debt' => true,
+            'in_debt' => 'yes',
             'status' => 'inprogress',
             'amount' => 42,
             'reason' => 'that\'s why'
@@ -238,8 +246,8 @@ class ApiDebtsTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/debts/'.$debt->id, [
             'contact_id' => $contact->id,
-            'in_debt' => true,
-            'status' => 'complete',
+            'in_debt' => 'yes',
+            'status' => 'completed',
             'amount' => 142,
             'reason' => 'voilà'
         ]);
@@ -253,8 +261,8 @@ class ApiDebtsTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'debt',
             'id' => $debt_id,
-            'in_debt' => true,
-            'status' => 'complete',
+            'in_debt' => 'yes',
+            'status' => 'completed',
             'amount' => 142,
             'reason' => 'voilà'
         ]);
@@ -264,8 +272,8 @@ class ApiDebtsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $debt_id,
-            'in_debt' => true,
-            'status' => 'complete',
+            'in_debt' => 'yes',
+            'status' => 'completed',
             'amount' => 142,
             'reason' => 'voilà'
         ]);
