@@ -190,7 +190,7 @@ class ApiJournalTest extends ApiTestCase
             'title' => 'xxx',
         ]);
 
-        $response = $this->json('PUT', '/api/journal/'.$entry->id, [ ]);
+        $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
 
         $response->assertStatus(200);
         $response->assertJson([
