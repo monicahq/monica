@@ -33,7 +33,7 @@ class ApiGiftsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_gifts_get_all_gifts()
+    public function test_gifts_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -67,7 +67,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_contact_all_gifts()
+    public function test_gifts_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -101,7 +101,22 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_one_gift()
+
+    public function test_gifts_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/gifts');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_gifts_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -132,7 +147,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_one_gift_error()
+    public function test_gifts_get_one_error()
     {
         $user = $this->signin();
 
@@ -146,7 +161,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_gift()
+    public function test_gifts_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -177,7 +192,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_gift_error()
+    public function test_gifts_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -196,7 +211,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_gift_error_bad_account()
+    public function test_gifts_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -217,7 +232,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_gift()
+    public function test_gifts_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -255,7 +270,48 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_delete_gift()
+    public function test_gifts_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/gifts/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_gifts_update_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $gift = factory(Gift::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+            'contact_id' => $contact->id,
+            'name' => 'the gift',
+            'comment' => 'one comment',
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_gifts_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -278,6 +334,20 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $gift->id,
+        ]);
+    }
+
+    public function test_gifts_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/gifts/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }

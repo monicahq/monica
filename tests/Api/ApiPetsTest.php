@@ -34,7 +34,7 @@ class ApiPetsTest extends ApiTestCase
     ];
 
     /*
-    public function test_pets_get_all_pets()
+    public function test_pets_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -69,7 +69,7 @@ class ApiPetsTest extends ApiTestCase
     }
     */
 
-    public function test_pets_get_contact_all_pets()
+    public function test_pets_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -103,7 +103,21 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_get_one_pet()
+    public function test_pets_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/pets');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_pets_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -134,7 +148,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_get_one_pet_error()
+    public function test_pets_get_one_error()
     {
         $user = $this->signin();
 
@@ -148,7 +162,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_create_pet()
+    public function test_pets_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -160,6 +174,7 @@ class ApiPetsTest extends ApiTestCase
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
         ]);
+        // No 'name' parameter ?
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
@@ -180,7 +195,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_create_pet_error()
+    public function test_pets_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -199,7 +214,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_create_pet_error_bad_account()
+    public function test_pets_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -220,7 +235,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_update_pet()
+    public function test_pets_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -257,7 +272,50 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_delete_pet()
+    public function test_pets_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/pets/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    /*
+    public function test_pets_update_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $pet = factory(Pet::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $pet_category = factory(PetCategory::class)->create();
+
+        $response = $this->json('PUT', '/api/pets/'.$pet->id, [
+            'contact_id' => $contact->id,
+            'pet_category_id' => $pet_category->id,
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+    */
+
+    public function test_pets_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -280,6 +338,20 @@ class ApiPetsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $pet->id,
+        ]);
+    }
+
+    public function test_pets_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/pets/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }

@@ -28,7 +28,7 @@ class ApiNotesTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_notes_get_all_notes()
+    public function test_notes_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -62,7 +62,7 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_contact_all_notes()
+    public function test_notes_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -96,7 +96,21 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_one_note()
+    public function test_notes_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/notes');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_notes_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -127,7 +141,7 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_one_note_error()
+    public function test_notes_get_one_error()
     {
         $user = $this->signin();
 
@@ -141,7 +155,7 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_note()
+    public function test_notes_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -176,7 +190,7 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_note_error()
+    public function test_notes_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -195,7 +209,7 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_note_error_bad_account()
+    public function test_notes_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -216,7 +230,7 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_update_note()
+    public function test_notes_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -256,7 +270,48 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_delete_note()
+    public function test_notes_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/notes/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_notes_update_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $note = factory(Note::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/notes/'.$note->id, [
+            'contact_id' => $contact->id,
+            'body' => 'the body of the note',
+            'is_favorited' => false,
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_notes_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -279,6 +334,20 @@ class ApiNotesTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $note->id,
+        ]);
+    }
+
+    public function test_notes_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/notes/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }

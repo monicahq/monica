@@ -27,7 +27,7 @@ class ApiCallsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_calls_get_all_calls()
+    public function test_calls_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -61,7 +61,7 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_get_contact_all_calls()
+    public function test_calls_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -95,7 +95,21 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_get_one_call()
+    public function test_calls_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/calls');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_calls_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -126,7 +140,7 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_get_one_call_error()
+    public function test_calls_get_one_error()
     {
         $user = $this->signin();
 
@@ -140,7 +154,7 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_create_call()
+    public function test_calls_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -173,7 +187,7 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_create_call_error()
+    public function test_calls_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -192,7 +206,7 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_create_call_error_bad_account()
+    public function test_calls_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -213,7 +227,7 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_update_call()
+    public function test_calls_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -251,7 +265,48 @@ class ApiCallsTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_delete_call()
+    public function test_calls_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/calls/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_calls_update_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $call = factory(Call::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/calls/'.$call->id, [
+            'contact_id' => $contact->id,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_calls_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -274,6 +329,20 @@ class ApiCallsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $call->id,
+        ]);
+    }
+
+    public function test_calls_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/calls/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }

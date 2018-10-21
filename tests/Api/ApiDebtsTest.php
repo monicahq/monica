@@ -31,7 +31,7 @@ class ApiDebtsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_debts_get_all_debts()
+    public function test_debts_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -65,7 +65,7 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_get_contact_all_debts()
+    public function test_debts_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -99,7 +99,21 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_get_one_debt()
+    public function test_debts_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/debts');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_debts_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -130,7 +144,7 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_get_one_debt_error()
+    public function test_debts_get_one_error()
     {
         $user = $this->signin();
 
@@ -144,7 +158,7 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_create_debt()
+    public function test_debts_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -193,7 +207,7 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_create_debt_error()
+    public function test_debts_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -212,7 +226,7 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_create_debt_error_bad_account()
+    public function test_debts_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -233,7 +247,7 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_update_debt()
+    public function test_debts_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -279,7 +293,50 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_delete_debt()
+    public function test_debts_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/debts/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_dets_update_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $debt = factory(Debt::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/debts/'.$debt->id, [
+            'contact_id' => $contact->id,
+            'in_debt' => 'yes',
+            'status' => 'completed',
+            'amount' => 142,
+            'reason' => 'voilà',
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_debts_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -302,6 +359,20 @@ class ApiDebtsTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $debt->id,
+        ]);
+    }
+
+    public function test_debts_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/debts/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }

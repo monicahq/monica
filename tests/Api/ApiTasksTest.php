@@ -29,7 +29,7 @@ class ApiTasksTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_tasks_get_all_tasks()
+    public function test_tasks_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -63,7 +63,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_get_contact_all_tasks()
+    public function test_tasks_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -97,7 +97,21 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_get_one_task()
+    public function test_tasks_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/tasks');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_tasks_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -128,7 +142,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_get_one_task_error()
+    public function test_tasks_get_one_error()
     {
         $user = $this->signin();
 
@@ -142,7 +156,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_create_task()
+    public function test_tasks_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -175,7 +189,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_create_task_error()
+    public function test_tasks_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -194,7 +208,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_create_task_error_bad_account()
+    public function test_tasks_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -215,7 +229,7 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_update_task()
+    public function test_tasks_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -253,7 +267,48 @@ class ApiTasksTest extends ApiTestCase
         ]);
     }
 
-    public function test_tasks_delete_task()
+    public function test_tasks_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/tasks/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_tasks_update_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $task = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/tasks/'.$task->id, [
+            'contact_id' => $contact->id,
+            'title' => 'the task',
+            'completed' => false,
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_tasks_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -276,6 +331,20 @@ class ApiTasksTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $task->id,
+        ]);
+    }
+
+    public function test_tasks_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/tasks/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }

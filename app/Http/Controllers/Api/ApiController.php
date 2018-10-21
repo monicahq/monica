@@ -288,6 +288,7 @@ class ApiController extends Controller
      */
     public function respondWithError($message)
     {
+        // TODO status code
         return $this->respond([
             'error' => [
                 'message' => $message,

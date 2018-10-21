@@ -32,7 +32,7 @@ class ApiRemindersTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_reminders_get_all_reminders()
+    public function test_reminders_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -66,7 +66,7 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_get_contact_all_reminders()
+    public function test_reminders_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -100,7 +100,21 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_get_one_reminder()
+    public function test_reminders_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/reminders');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_reminders_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -131,7 +145,7 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_get_one_reminder_error()
+    public function test_reminders_get_one_error()
     {
         $user = $this->signin();
 
@@ -145,7 +159,7 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_create_reminder()
+    public function test_reminders_create()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
@@ -188,7 +202,7 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_create_reminder_error()
+    public function test_reminders_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -207,7 +221,7 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_create_reminder_error_bad_account()
+    public function test_reminders_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -228,7 +242,7 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_update_reminder()
+    public function test_reminders_update()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
@@ -276,7 +290,52 @@ class ApiRemindersTest extends ApiTestCase
         ]);
     }
 
-    public function test_reminders_delete_reminder()
+    public function test_reminders_update_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('PUT', '/api/reminders/0', []);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_reminders_update_error_bad_account()
+    {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/reminders/'.$reminder->id, [
+            'contact_id' => $contact->id,
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01',
+            'frequency_type' => 'day',
+            'description' => 'the description'
+        ]);
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
+        ]);
+    }
+
+    public function test_reminders_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -299,6 +358,20 @@ class ApiRemindersTest extends ApiTestCase
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'id' => $reminder->id,
+        ]);
+    }
+
+    public function test_reminders_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/reminders/0');
+
+        $response->assertStatus(404);
+        $response->assertJson([
+            'error' => [
+                'error_code' => 31,
+            ],
         ]);
     }
 }
