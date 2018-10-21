@@ -214,6 +214,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
+    /*
     public function test_pets_create_error_bad_account()
     {
         $user = $this->signin();
@@ -236,6 +237,7 @@ class ApiPetsTest extends ApiTestCase
             ],
         ]);
     }
+    */
 
     public function test_pets_update()
     {
