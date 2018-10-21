@@ -4,9 +4,9 @@ namespace Tests\Api;
 
 use Carbon\Carbon;
 use Tests\ApiTestCase;
-use App\Models\Contact\Reminder;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiRemindersTest extends ApiTestCase
@@ -173,7 +173,7 @@ class ApiRemindersTest extends ApiTestCase
             'title' => 'the title',
             'next_expected_date' => '2018-05-01',
             'frequency_type' => 'one_time',
-            'description' => 'the description'
+            'description' => 'the description',
         ]);
 
         $response->assertStatus(201);
@@ -187,7 +187,7 @@ class ApiRemindersTest extends ApiTestCase
             'title' => 'the title',
             'next_expected_date' => '2018-05-01T00:00:00Z',
             'frequency_type' => 'one_time',
-            'description' => 'the description'
+            'description' => 'the description',
         ]);
 
         $this->assertGreaterThan(0, $reminder_id);
@@ -198,7 +198,7 @@ class ApiRemindersTest extends ApiTestCase
             'title' => 'the title',
             'next_expected_date' => '2018-05-01 00:00:00',
             'frequency_type' => 'one_time',
-            'description' => 'the description'
+            'description' => 'the description',
         ]);
     }
 
@@ -260,7 +260,7 @@ class ApiRemindersTest extends ApiTestCase
             'title' => 'the title',
             'next_expected_date' => '2018-05-01',
             'frequency_type' => 'day',
-            'description' => 'the description'
+            'description' => 'the description',
         ]);
 
         $response->assertStatus(200);
@@ -275,7 +275,7 @@ class ApiRemindersTest extends ApiTestCase
             'title' => 'the title',
             'next_expected_date' => '2018-05-01T00:00:00Z',
             'frequency_type' => 'day',
-            'description' => 'the description'
+            'description' => 'the description',
         ]);
 
         $this->assertGreaterThan(0, $reminder_id);
@@ -286,7 +286,7 @@ class ApiRemindersTest extends ApiTestCase
             'title' => 'the title',
             'next_expected_date' => '2018-05-01 00:00:00',
             'frequency_type' => 'day',
-            'description' => 'the description'
+            'description' => 'the description',
         ]);
     }
 
