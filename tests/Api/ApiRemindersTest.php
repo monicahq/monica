@@ -324,7 +324,7 @@ class ApiRemindersTest extends ApiTestCase
             'title' => 'the title',
             'next_expected_date' => '2018-05-01',
             'frequency_type' => 'day',
-            'description' => 'the description'
+            'description' => 'the description',
         ]);
 
         $response->assertStatus(404);
