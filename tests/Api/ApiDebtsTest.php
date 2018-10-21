@@ -163,7 +163,7 @@ class ApiDebtsTest extends ApiTestCase
             'in_debt' => 'yes',
             'status' => 'inprogress',
             'amount' => 42,
-            'reason' => 'that\'s why'
+            'reason' => 'that\'s why',
         ]);
 
         $response->assertStatus(201);
@@ -178,7 +178,7 @@ class ApiDebtsTest extends ApiTestCase
             'status' => 'inprogress',
             'amount' => 42,
             'amount_with_currency' => '$42.00',
-            'reason' => 'that\'s why'
+            'reason' => 'that\'s why',
         ]);
 
         $this->assertGreaterThan(0, $debt_id);
@@ -189,7 +189,7 @@ class ApiDebtsTest extends ApiTestCase
             'in_debt' => 'yes',
             'status' => 'inprogress',
             'amount' => 42,
-            'reason' => 'that\'s why'
+            'reason' => 'that\'s why',
         ]);
     }
 
@@ -249,7 +249,7 @@ class ApiDebtsTest extends ApiTestCase
             'in_debt' => 'yes',
             'status' => 'completed',
             'amount' => 142,
-            'reason' => 'voilà'
+            'reason' => 'voilà',
         ]);
 
         $response->assertStatus(200);
@@ -264,7 +264,7 @@ class ApiDebtsTest extends ApiTestCase
             'in_debt' => 'yes',
             'status' => 'completed',
             'amount' => 142,
-            'reason' => 'voilà'
+            'reason' => 'voilà',
         ]);
 
         $this->assertGreaterThan(0, $debt_id);
@@ -275,7 +275,7 @@ class ApiDebtsTest extends ApiTestCase
             'in_debt' => 'yes',
             'status' => 'completed',
             'amount' => 142,
-            'reason' => 'voilà'
+            'reason' => 'voilà',
         ]);
     }
 
