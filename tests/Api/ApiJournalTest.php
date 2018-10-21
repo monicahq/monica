@@ -3,9 +3,8 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Account\Account;
 use App\Models\Journal\Entry;
-use App\Models\Journal\JournalEntry;
+use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiJournalTest extends ApiTestCase
@@ -96,7 +95,7 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/journal', [
             'title' => 'my title',
-            'post' => 'content post'
+            'post' => 'content post',
         ]);
 
         $response->assertStatus(201);
@@ -108,7 +107,7 @@ class ApiJournalTest extends ApiTestCase
             'object' => 'entry',
             'id' => $entry_id,
             'title' => 'my title',
-            'post' => '<p>content post</p>'
+            'post' => '<p>content post</p>',
         ]);
 
         $this->assertGreaterThan(0, $entry_id);
@@ -116,7 +115,7 @@ class ApiJournalTest extends ApiTestCase
             'account_id' => $user->account->id,
             'id' => $entry_id,
             'title' => 'my title',
-            'post' => 'content post'
+            'post' => 'content post',
         ]);
     }
 
@@ -144,7 +143,7 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/journal/'.$entry->id, [
             'title' => 'my title',
-            'post' => 'content post'
+            'post' => 'content post',
         ]);
 
         $response->assertStatus(200);
@@ -157,7 +156,7 @@ class ApiJournalTest extends ApiTestCase
             'object' => 'entry',
             'id' => $entry_id,
             'title' => 'my title',
-            'post' => '<p>content post</p>'
+            'post' => '<p>content post</p>',
         ]);
 
         $this->assertGreaterThan(0, $entry_id);
@@ -165,7 +164,7 @@ class ApiJournalTest extends ApiTestCase
             'account_id' => $user->account->id,
             'id' => $entry_id,
             'title' => 'my title',
-            'post' => 'content post'
+            'post' => 'content post',
         ]);
     }
 
