@@ -3,109 +3,128 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\Pet;
+use App\Models\Contact\Activity;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\PetCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiPetsTest extends ApiTestCase
+class ApiActivitiesTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonPet = [
+    protected $jsonActivity = [
         'id',
         'object',
-        'name',
-        'pet_category' => [
+        'summary',
+        'description',
+        'date_it_happened',
+        'activity_type' => [
             'id',
             'object',
             'name',
-            'is_common',
+            'location_type',
+            'activity_type_category' => [
+                'id',
+                'object',
+                'name',
+                'account' => [
+                    'id'
+                ],
+                'created_at',
+                'updated_at'
+            ],
+            'account'=> [
+                'id'
+            ],
+            'created_at',
+            'updated_at'
+        ],
+        'attendees' => [
+            'total',
+            'contacts' => [
+                'id',
+            ]
         ],
         'account' => [
-            'id',
-        ],
-        'contact' => [
             'id',
         ],
         'created_at',
         'updated_at',
     ];
 
-    public function test_pets_get_all()
+    public function test_activities_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet1 = factory(Pet::class)->create([
+        $activity1 = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet2 = factory(Pet::class)->create([
+        $activity2 = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/pets');
+        $response = $this->json('GET', '/api/activities');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonPet],
+            'data' => ['*' => $this->jsonActivity],
         ]);
         $response->assertJsonFragment([
-            'object' => 'pet',
-            'id' => $pet1->id,
+            'object' => 'activity',
+            'id' => $activity1->id,
         ]);
         $response->assertJsonFragment([
-            'object' => 'pet',
-            'id' => $pet2->id,
+            'object' => 'activity',
+            'id' => $activity2->id,
         ]);
     }
 
-    public function test_pets_get_contact_all()
+    public function test_activities_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet1 = factory(Pet::class)->create([
+        $activity1 = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet2 = factory(Pet::class)->create([
+        $activity2 = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/pets');
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/activities');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonPet],
+            'data' => ['*' => $this->jsonActivity],
         ]);
         $response->assertJsonFragment([
-            'object' => 'pet',
-            'id' => $pet1->id,
+            'object' => 'activity',
+            'id' => $activity1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'pet',
-            'id' => $pet2->id,
+            'object' => 'activity',
+            'id' => $activity2->id,
         ]);
     }
 
-    public function test_pets_get_contact_all_error()
+    public function test_activities_get_contact_all_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/contacts/0/pets');
+        $response = $this->json('GET', '/api/contacts/0/activities');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -115,42 +134,42 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_get_one()
+    public function test_activities_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet1 = factory(Pet::class)->create([
+        $activity1 = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
-        $pet2 = factory(Pet::class)->create([
+        $activity2 = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
 
-        $response = $this->json('GET', '/api/pets/'.$pet1->id);
+        $response = $this->json('GET', '/api/activities/'.$activity1->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonPet,
+            'data' => $this->jsonActivity,
         ]);
         $response->assertJsonFragment([
-            'object' => 'pet',
-            'id' => $pet1->id,
+            'object' => 'activity',
+            'id' => $activity1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'pet',
-            'id' => $pet2->id,
+            'object' => 'activity',
+            'id' => $activity2->id,
         ]);
     }
 
-    public function test_pets_get_one_error()
+    public function test_activities_get_one_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/pets/0');
+        $response = $this->json('GET', '/api/activities/0');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -160,49 +179,47 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_create()
+    public function test_activities_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet_category = factory(PetCategory::class)->create();
 
-        $response = $this->json('POST', '/api/pets', [
+        $response = $this->json('POST', '/api/activities', [
             'contact_id' => $contact->id,
-            'pet_category_id' => $pet_category->id,
-            'name' => 'the name'
+            'content' => 'the activity',
+            'activityed_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonPet,
+            'data' => $this->jsonActivity,
         ]);
-        $pet_id = $response->json('data.id');
+        $activity_id = $response->json('data.id');
         $response->assertJsonFragment([
-            'object' => 'pet',
-            'id' => $pet_id,
-            'name' => 'the name'
+            'object' => 'activity',
+            'id' => $activity_id,
         ]);
 
-        $this->assertGreaterThan(0, $pet_id);
-        $this->assertDatabaseHas('pets', [
+        $this->assertGreaterThan(0, $activity_id);
+        $this->assertDatabaseHas('activities', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'pet_category_id' => $pet_category->id,
-            'id' => $pet_id,
-            'name' => 'the name'
+            'id' => $activity_id,
+            'content' => 'the activity',
+            'activityed_at' => '2018-05-01',
         ]);
     }
 
-    public function test_pets_create_error()
+    public function test_activities_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/pets', [
+        $response = $this->json('POST', '/api/activities', [
             'contact_id' => $contact->id,
         ]);
 
@@ -214,7 +231,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_create_error_bad_account()
+    public function test_activities_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -222,11 +239,11 @@ class ApiPetsTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $pet_category = factory(PetCategory::class)->create();
 
-        $response = $this->json('POST', '/api/pets', [
+        $response = $this->json('POST', '/api/activities', [
             'contact_id' => $contact->id,
-            'pet_category_id' => $pet_category->id,
+            'content' => 'the activity',
+            'activityed_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(404);
@@ -237,51 +254,49 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_update()
+    public function test_activities_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet = factory(Pet::class)->create([
+        $activity = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $pet_category = factory(PetCategory::class)->create();
 
-        $response = $this->json('PUT', '/api/pets/'.$pet->id, [
+        $response = $this->json('PUT', '/api/activities/'.$activity->id, [
             'contact_id' => $contact->id,
-            'pet_category_id' => $pet_category->id,
-            'name' => 'the name'
+            'content' => 'the activity',
+            'activityed_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonPet,
+            'data' => $this->jsonActivity,
         ]);
-        $pet_id = $response->json('data.id');
-        $this->assertEquals($pet->id, $pet_id);
+        $activity_id = $response->json('data.id');
+        $this->assertEquals($activity->id, $activity_id);
         $response->assertJsonFragment([
-            'object' => 'pet',
-            'id' => $pet_id,
-            'name' => 'the name'
+            'object' => 'activity',
+            'id' => $activity_id,
         ]);
 
-        $this->assertGreaterThan(0, $pet_id);
-        $this->assertDatabaseHas('pets', [
+        $this->assertGreaterThan(0, $activity_id);
+        $this->assertDatabaseHas('activities', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'pet_category_id' => $pet_category->id,
-            'id' => $pet_id,
-            'name' => 'the name'
+            'id' => $activity_id,
+            'content' => 'the activity',
+            'activityed_at' => '2018-05-01',
         ]);
     }
 
-    public function test_pets_update_error()
+    public function test_activities_update_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('PUT', '/api/pets/0', []);
+        $response = $this->json('PUT', '/api/activities/0', []);
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -291,7 +306,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_update_error_bad_account()
+    public function test_activities_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -299,15 +314,15 @@ class ApiPetsTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $pet = factory(Pet::class)->create([
+        $activity = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $pet_category = factory(PetCategory::class)->create();
 
-        $response = $this->json('PUT', '/api/pets/'.$pet->id, [
+        $response = $this->json('PUT', '/api/activities/'.$activity->id, [
             'contact_id' => $contact->id,
-            'pet_category_id' => $pet_category->id,
+            'content' => 'the activity',
+            'activityed_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(404);
@@ -318,37 +333,37 @@ class ApiPetsTest extends ApiTestCase
         ]);
     }
 
-    public function test_pets_delete()
+    public function test_activities_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $pet = factory(Pet::class)->create([
+        $activity = factory(Activity::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $this->assertDatabaseHas('pets', [
+        $this->assertDatabaseHas('activities', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $pet->id,
+            'id' => $activity->id,
         ]);
 
-        $response = $this->json('DELETE', '/api/pets/'.$pet->id);
+        $response = $this->json('DELETE', '/api/activities/'.$activity->id);
 
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('pets', [
+        $this->assertDatabaseMissing('activities', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $pet->id,
+            'id' => $activity->id,
         ]);
     }
 
-    public function test_pets_delete_error()
+    public function test_activities_delete_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('DELETE', '/api/pets/0');
+        $response = $this->json('DELETE', '/api/activities/0');
 
         $response->assertStatus(404);
         $response->assertJson([

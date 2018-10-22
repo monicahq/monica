@@ -82,8 +82,7 @@ class ApiTaskController extends ApiController
     {
         try {
             $task = Task::where('account_id', auth()->user()->account_id)
-                ->where('id', $taskId)
-                ->firstOrFail();
+                ->findOrFail($taskId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }

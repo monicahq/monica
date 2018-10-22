@@ -43,14 +43,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contacts/{contact}/contactfields', 'Api\\ApiContactFieldController@contactFields');
 
     // Pets
-    Route::resource('pets', 'Api\\ApiPetController')->only([
-      'show', 'store', 'update', 'destroy',
-    ]);
-
-    // Contact Pets
-    Route::get('/contacts/{contact}/pets', 'Api\\ApiPetController@listContactPets');
-    Route::post('/contacts/{contact}/pets', 'Api\\ApiPetController@storeContactPet');
-    Route::put('/contacts/{contact}/pets/{pet}', 'Api\\ApiPetController@moveContactPet');
+    Route::apiResource('pets', 'Api\\ApiPetController');
+    Route::get('/contacts/{contact}/pets', 'Api\\ApiPetController@pets');
 
     // Tags
     Route::apiResource('tags', 'Api\\ApiTagController');

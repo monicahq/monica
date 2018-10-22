@@ -2,6 +2,7 @@
 
 namespace Tests\Api;
 
+use Carbon\Carbon;
 use Tests\ApiTestCase;
 use App\Models\Contact\Note;
 use App\Models\Account\Account;
@@ -165,7 +166,7 @@ class ApiNotesTest extends ApiTestCase
         $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
             'body' => 'the body of the note',
-            'is_favorited' => 0,
+            'is_favorited' => false,
         ]);
 
         $response->assertStatus(201);
@@ -187,6 +188,45 @@ class ApiNotesTest extends ApiTestCase
             'id' => $note_id,
             'body' => 'the body of the note',
             'is_favorited' => false,
+        ]);
+    }
+
+    public function test_notes_create_favorite()
+    {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('POST', '/api/notes', [
+            'contact_id' => $contact->id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'data' => $this->jsonNote,
+        ]);
+        $note_id = $response->json('data.id');
+        $response->assertJsonFragment([
+            'object' => 'note',
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01T07:00:00Z'
+        ]);
+
+        $this->assertGreaterThan(0, $note_id);
+        $this->assertDatabaseHas('notes', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01'
         ]);
     }
 
@@ -221,7 +261,7 @@ class ApiNotesTest extends ApiTestCase
         $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
             'body' => 'the body of the note',
-            'is_favorited' => 0,
+            'is_favorited' => false,
         ]);
 
         $response->assertStatus(404);
@@ -269,6 +309,50 @@ class ApiNotesTest extends ApiTestCase
             'id' => $note_id,
             'body' => 'the body of the note',
             'is_favorited' => false,
+        ]);
+    }
+
+    public function test_notes_update_favorite()
+    {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $note = factory(Note::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/notes/'.$note->id, [
+            'contact_id' => $contact->id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonNote,
+        ]);
+        $note_id = $response->json('data.id');
+        $this->assertEquals($note->id, $note_id);
+        $response->assertJsonFragment([
+            'object' => 'note',
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01T07:00:00Z'
+        ]);
+
+        $this->assertGreaterThan(0, $note_id);
+        $this->assertDatabaseHas('notes', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01'
         ]);
     }
 

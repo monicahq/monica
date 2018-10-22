@@ -55,24 +55,9 @@ class ApiNoteController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'body' => 'required|max:100000',
-            'contact_id' => 'required|integer',
-            'is_favorited' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
-        }
-
-        try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -83,7 +68,6 @@ class ApiNoteController extends ApiController
 
         if ($request->get('is_favorited')) {
             $note->favorited_at = now();
-            $note->save();
         }
 
         $note->account_id = auth()->user()->account_id;
@@ -108,10 +92,41 @@ class ApiNoteController extends ApiController
             return $this->respondNotFound();
         }
 
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
+        }
+
+        try {
+            $note->update($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
+
+        if ($request->get('is_favorited')) {
+            $note->favorited_at = now();
+        } else {
+            $note->favorited_at = null;
+        }
+        $note->save();
+
+        return new NoteResource($note);
+    }
+
+
+    /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
             'body' => 'required|max:100000',
             'contact_id' => 'required|integer',
+            'is_favorited' => 'boolean',
         ]);
 
         if ($validator->fails()) {
@@ -127,21 +142,7 @@ class ApiNoteController extends ApiController
             return $this->respondNotFound();
         }
 
-        try {
-            $note->update($request->all());
-        } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
-        }
-
-        if ($request->get('is_favorited')) {
-            $note->favorited_at = now();
-            $note->save();
-        } else {
-            $note->favorited_at = null;
-            $note->save();
-        }
-
-        return new NoteResource($note);
+        return true;
     }
 
     /**
