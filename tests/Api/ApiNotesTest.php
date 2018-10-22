@@ -216,7 +216,7 @@ class ApiNotesTest extends ApiTestCase
             'id' => $note_id,
             'body' => 'the body of the note',
             'is_favorited' => true,
-            'favorited_at' => '2018-01-01T07:00:00Z'
+            'favorited_at' => '2018-01-01T07:00:00Z',
         ]);
 
         $this->assertGreaterThan(0, $note_id);
@@ -226,7 +226,7 @@ class ApiNotesTest extends ApiTestCase
             'id' => $note_id,
             'body' => 'the body of the note',
             'is_favorited' => true,
-            'favorited_at' => '2018-01-01'
+            'favorited_at' => '2018-01-01',
         ]);
     }
 
@@ -342,7 +342,7 @@ class ApiNotesTest extends ApiTestCase
             'id' => $note_id,
             'body' => 'the body of the note',
             'is_favorited' => true,
-            'favorited_at' => '2018-01-01T07:00:00Z'
+            'favorited_at' => '2018-01-01T07:00:00Z',
         ]);
 
         $this->assertGreaterThan(0, $note_id);
@@ -352,7 +352,7 @@ class ApiNotesTest extends ApiTestCase
             'id' => $note_id,
             'body' => 'the body of the note',
             'is_favorited' => true,
-            'favorited_at' => '2018-01-01'
+            'favorited_at' => '2018-01-01',
         ]);
     }
 

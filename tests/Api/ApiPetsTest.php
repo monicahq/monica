@@ -171,7 +171,7 @@ class ApiPetsTest extends ApiTestCase
         $response = $this->json('POST', '/api/pets', [
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
-            'name' => 'the name'
+            'name' => 'the name',
         ]);
 
         $response->assertStatus(201);
@@ -182,7 +182,7 @@ class ApiPetsTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'pet',
             'id' => $pet_id,
-            'name' => 'the name'
+            'name' => 'the name',
         ]);
 
         $this->assertGreaterThan(0, $pet_id);
@@ -191,7 +191,7 @@ class ApiPetsTest extends ApiTestCase
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
             'id' => $pet_id,
-            'name' => 'the name'
+            'name' => 'the name',
         ]);
     }
 
@@ -252,7 +252,7 @@ class ApiPetsTest extends ApiTestCase
         $response = $this->json('PUT', '/api/pets/'.$pet->id, [
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
-            'name' => 'the name'
+            'name' => 'the name',
         ]);
 
         $response->assertStatus(200);
@@ -264,7 +264,7 @@ class ApiPetsTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'pet',
             'id' => $pet_id,
-            'name' => 'the name'
+            'name' => 'the name',
         ]);
 
         $this->assertGreaterThan(0, $pet_id);
@@ -273,7 +273,7 @@ class ApiPetsTest extends ApiTestCase
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
             'id' => $pet_id,
-            'name' => 'the name'
+            'name' => 'the name',
         ]);
     }
 

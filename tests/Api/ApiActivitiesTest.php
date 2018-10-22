@@ -3,9 +3,9 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\Activity;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiActivitiesTest extends ApiTestCase
@@ -28,22 +28,22 @@ class ApiActivitiesTest extends ApiTestCase
                 'object',
                 'name',
                 'account' => [
-                    'id'
+                    'id',
                 ],
                 'created_at',
-                'updated_at'
+                'updated_at',
             ],
             'account'=> [
-                'id'
+                'id',
             ],
             'created_at',
-            'updated_at'
+            'updated_at',
         ],
         'attendees' => [
             'total',
             'contacts' => [
                 'id',
-            ]
+            ],
         ],
         'account' => [
             'id',

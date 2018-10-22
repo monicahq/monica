@@ -113,7 +113,6 @@ class ApiNoteController extends ApiController
         return new NoteResource($note);
     }
 
-
     /**
      * Validate the request for update.
      *
