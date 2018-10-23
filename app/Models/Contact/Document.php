@@ -2,8 +2,8 @@
 
 namespace App\Models\Contact;
 
-use Illuminate\Support\Facades\Storage;
 use App\Models\Account\Account;
+use Illuminate\Support\Facades\Storage;
 use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -51,6 +51,7 @@ class Document extends Model
     public function getDownloadLink() : string
     {
         $url = $this->new_filename;
+
         return asset(Storage::disk(config('filesystems.default'))->url($url));
     }
 }
