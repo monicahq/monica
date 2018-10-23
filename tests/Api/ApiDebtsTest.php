@@ -3,26 +3,24 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\Gift;
+use App\Models\Contact\Debt;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiGiftsTest extends ApiTestCase
+class ApiDebtsTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonGift = [
+    protected $jsonDebt = [
         'id',
         'object',
-        'date_offered',
-        'has_been_offered',
-        'comment',
-        'is_an_idea',
-        'is_for',
-        'name',
-        'url',
-        'value',
+        'in_debt',
+        'status',
+        'amount',
+        'amount_with_currency',
+        'reason',
         'account' => [
             'id',
         ],
@@ -33,79 +31,79 @@ class ApiGiftsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_gifts_get_all()
+    public function test_debts_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $debt1 = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $debt2 = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/gifts');
+        $response = $this->json('GET', '/api/debts');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift],
+            'data' => ['*' => $this->jsonDebt],
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'debt',
+            'id' => $debt1->id,
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'debt',
+            'id' => $debt2->id,
         ]);
     }
 
-    public function test_gifts_get_contact_all()
+    public function test_debts_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $debt1 = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $debt2 = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/gifts');
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/debts');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift],
+            'data' => ['*' => $this->jsonDebt],
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'debt',
+            'id' => $debt1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'debt',
+            'id' => $debt2->id,
         ]);
     }
 
-    public function test_gifts_get_contact_all_error()
+    public function test_debts_get_contact_all_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/contacts/0/gifts');
+        $response = $this->json('GET', '/api/contacts/0/debts');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -115,42 +113,42 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_one()
+    public function test_debts_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $debt1 = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $debt2 = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
 
-        $response = $this->json('GET', '/api/gifts/'.$gift1->id);
+        $response = $this->json('GET', '/api/debts/'.$debt1->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonDebt,
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'debt',
+            'id' => $debt1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'debt',
+            'id' => $debt2->id,
         ]);
     }
 
-    public function test_gifts_get_one_error()
+    public function test_debts_get_one_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/gifts/0');
+        $response = $this->json('GET', '/api/debts/0');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -160,45 +158,63 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create()
+    public function test_debts_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
+        $currency = factory(Currency::class)->create([
+            'iso' => 'USD',
+            'symbol' => '$',
+        ]);
+        //$user->associateCurrency($currency);
+        $user->currency_id = $currency->id;
+        $user->save();
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/debts', [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
+            'in_debt' => 'yes',
+            'status' => 'inprogress',
+            'amount' => 42,
+            'reason' => 'that\'s why',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonDebt,
         ]);
-        $gift_id = $response->json('data.id');
+        $debt_id = $response->json('data.id');
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift_id,
+            'object' => 'debt',
+            'id' => $debt_id,
+            'in_debt' => 'yes',
+            'status' => 'inprogress',
+            'amount' => 42,
+            'amount_with_currency' => '$42.00',
+            'reason' => 'that\'s why',
         ]);
 
-        $this->assertGreaterThan(0, $gift_id);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertGreaterThan(0, $debt_id);
+        $this->assertDatabaseHas('debts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift_id,
-            'name' => 'the gift',
+            'id' => $debt_id,
+            'in_debt' => 'yes',
+            'status' => 'inprogress',
+            'amount' => 42,
+            'reason' => 'that\'s why',
         ]);
     }
 
-    public function test_gifts_create_error()
+    public function test_debts_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/debts', [
             'contact_id' => $contact->id,
         ]);
 
@@ -210,7 +226,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_error_bad_account()
+    public function test_debts_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -219,9 +235,12 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/debts', [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
+            'in_debt' => 'yes',
+            'status' => 'inprogress',
+            'amount' => 42,
+            'reason' => 'that\'s why',
         ]);
 
         $response->assertStatus(404);
@@ -232,49 +251,57 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update()
+    public function test_debts_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $debt = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+        $response = $this->json('PUT', '/api/debts/'.$debt->id, [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'in_debt' => 'yes',
+            'status' => 'completed',
+            'amount' => 142,
+            'reason' => 'voilà',
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonDebt,
         ]);
-        $gift_id = $response->json('data.id');
-        $this->assertEquals($gift->id, $gift_id);
+        $debt_id = $response->json('data.id');
+        $this->assertEquals($debt->id, $debt_id);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift_id,
+            'object' => 'debt',
+            'id' => $debt_id,
+            'in_debt' => 'yes',
+            'status' => 'completed',
+            'amount' => 142,
+            'reason' => 'voilà',
         ]);
 
-        $this->assertGreaterThan(0, $gift_id);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertGreaterThan(0, $debt_id);
+        $this->assertDatabaseHas('debts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift_id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'id' => $debt_id,
+            'in_debt' => 'yes',
+            'status' => 'completed',
+            'amount' => 142,
+            'reason' => 'voilà',
         ]);
     }
 
-    public function test_gifts_update_error()
+    public function test_debts_update_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('PUT', '/api/gifts/0', []);
+        $response = $this->json('PUT', '/api/debts/0', []);
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -284,7 +311,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_error_bad_account()
+    public function test_dets_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -292,15 +319,17 @@ class ApiGiftsTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $debt = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+        $response = $this->json('PUT', '/api/debts/'.$debt->id, [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'in_debt' => 'yes',
+            'status' => 'completed',
+            'amount' => 142,
+            'reason' => 'voilà',
         ]);
 
         $response->assertStatus(404);
@@ -311,37 +340,37 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_delete()
+    public function test_debts_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $debt = factory(Debt::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertDatabaseHas('debts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift->id,
+            'id' => $debt->id,
         ]);
 
-        $response = $this->json('DELETE', '/api/gifts/'.$gift->id);
+        $response = $this->json('DELETE', '/api/debts/'.$debt->id);
 
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('gifts', [
+        $this->assertDatabaseMissing('debts', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift->id,
+            'id' => $debt->id,
         ]);
     }
 
-    public function test_gifts_delete_error()
+    public function test_debts_delete_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('DELETE', '/api/gifts/0');
+        $response = $this->json('DELETE', '/api/debts/0');
 
         $response->assertStatus(404);
         $response->assertJson([

@@ -3,26 +3,22 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\Gift;
+use App\Models\Contact\Task;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiGiftsTest extends ApiTestCase
+class ApiTasksTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonGift = [
+    protected $jsonTask = [
         'id',
         'object',
-        'date_offered',
-        'has_been_offered',
-        'comment',
-        'is_an_idea',
-        'is_for',
-        'name',
-        'url',
-        'value',
+        'title',
+        'description',
+        'completed',
+        'completed_at',
         'account' => [
             'id',
         ],
@@ -33,79 +29,79 @@ class ApiGiftsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_gifts_get_all()
+    public function test_tasks_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $task1 = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $task2 = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/gifts');
+        $response = $this->json('GET', '/api/tasks');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift],
+            'data' => ['*' => $this->jsonTask],
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'task',
+            'id' => $task1->id,
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'task',
+            'id' => $task2->id,
         ]);
     }
 
-    public function test_gifts_get_contact_all()
+    public function test_tasks_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $task1 = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $task2 = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/gifts');
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/tasks');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift],
+            'data' => ['*' => $this->jsonTask],
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'task',
+            'id' => $task1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'task',
+            'id' => $task2->id,
         ]);
     }
 
-    public function test_gifts_get_contact_all_error()
+    public function test_tasks_get_contact_all_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/contacts/0/gifts');
+        $response = $this->json('GET', '/api/contacts/0/tasks');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -115,42 +111,42 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_one()
+    public function test_tasks_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $task1 = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $task2 = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
 
-        $response = $this->json('GET', '/api/gifts/'.$gift1->id);
+        $response = $this->json('GET', '/api/tasks/'.$task1->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonTask,
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'task',
+            'id' => $task1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'task',
+            'id' => $task2->id,
         ]);
     }
 
-    public function test_gifts_get_one_error()
+    public function test_tasks_get_one_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/gifts/0');
+        $response = $this->json('GET', '/api/tasks/0');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -160,45 +156,47 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create()
+    public function test_tasks_create()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/tasks', [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
+            'title' => 'the task',
+            'completed' => false,
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonTask,
         ]);
-        $gift_id = $response->json('data.id');
+        $task_id = $response->json('data.id');
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift_id,
+            'object' => 'task',
+            'id' => $task_id,
         ]);
 
-        $this->assertGreaterThan(0, $gift_id);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertGreaterThan(0, $task_id);
+        $this->assertDatabaseHas('tasks', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift_id,
-            'name' => 'the gift',
+            'id' => $task_id,
+            'title' => 'the task',
+            'completed' => false,
         ]);
     }
 
-    public function test_gifts_create_error()
+    public function test_tasks_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/tasks', [
             'contact_id' => $contact->id,
         ]);
 
@@ -210,7 +208,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_error_bad_account()
+    public function test_tasks_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -219,9 +217,10 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/tasks', [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
+            'title' => 'the task',
+            'completed' => false,
         ]);
 
         $response->assertStatus(404);
@@ -232,49 +231,49 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update()
+    public function test_tasks_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $task = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+        $response = $this->json('PUT', '/api/tasks/'.$task->id, [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'title' => 'the task',
+            'completed' => false,
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonTask,
         ]);
-        $gift_id = $response->json('data.id');
-        $this->assertEquals($gift->id, $gift_id);
+        $task_id = $response->json('data.id');
+        $this->assertEquals($task->id, $task_id);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift_id,
+            'object' => 'task',
+            'id' => $task_id,
         ]);
 
-        $this->assertGreaterThan(0, $gift_id);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertGreaterThan(0, $task_id);
+        $this->assertDatabaseHas('tasks', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift_id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'id' => $task_id,
+            'title' => 'the task',
+            'completed' => false,
         ]);
     }
 
-    public function test_gifts_update_error()
+    public function test_tasks_update_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('PUT', '/api/gifts/0', []);
+        $response = $this->json('PUT', '/api/tasks/0', []);
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -284,7 +283,7 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_error_bad_account()
+    public function test_tasks_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -292,15 +291,15 @@ class ApiGiftsTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $task = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+        $response = $this->json('PUT', '/api/tasks/'.$task->id, [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'title' => 'the task',
+            'completed' => false,
         ]);
 
         $response->assertStatus(404);
@@ -311,37 +310,37 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_delete()
+    public function test_tasks_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $task = factory(Task::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertDatabaseHas('tasks', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift->id,
+            'id' => $task->id,
         ]);
 
-        $response = $this->json('DELETE', '/api/gifts/'.$gift->id);
+        $response = $this->json('DELETE', '/api/tasks/'.$task->id);
 
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('gifts', [
+        $this->assertDatabaseMissing('tasks', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift->id,
+            'id' => $task->id,
         ]);
     }
 
-    public function test_gifts_delete_error()
+    public function test_tasks_delete_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('DELETE', '/api/gifts/0');
+        $response = $this->json('DELETE', '/api/tasks/0');
 
         $response->assertStatus(404);
         $response->assertJson([
