@@ -197,7 +197,7 @@
                             </a>
                         </li>
                         <li class="tc">
-                            <a class="pv2 pointer ph3 inline-flex items-center no-underline w-100 document-action-menu-item delete" @click="deleteDocument(document.id)">
+                            <a class="pv2 pointer ph3 inline-flex items-center no-underline w-100 document-action-menu-item delete" @click="deleteDocument(document)">
                                 Delete
                             </a>
                         </li>
@@ -300,12 +300,13 @@
                 });
             },
 
-            downloadDocument(id) {
-
-            },
-
-            deleteDocument(id) {
-
+            deleteDocument(document) {
+                axios.delete( '/people/' + this.hash + '/document/' + document.id)
+                    .then(response => {
+                        this.documents.splice(this.documents.indexOf(document), 1);
+                    })
+                    .catch(error => {
+                    });
             },
         }
     }
