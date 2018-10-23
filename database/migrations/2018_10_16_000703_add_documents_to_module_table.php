@@ -16,7 +16,10 @@ class AddDocumentsToModuleTable extends Migration
 
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
-                $account->populateModulesTable();
+                (new PopulateModulesTable)->execute([
+                    'account_id' => $account->id,
+                    'migrate_existing_data' => false,
+                ]);
             }
         });
 
