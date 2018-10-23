@@ -66,7 +66,7 @@ class NoteTest extends FeatureTestCase
         $this->put('/people/'.$contact->hashID().'/notes/'.$note->id, $params);
 
         // Assert the note has been added for the correct user.
-        $this->assertDatabaseHas('notes', [
+        $this->assertDatabaseHas($this->getTablePrefix() . 'notes', [
             'body' => 'this is another test',
         ]);
     }
