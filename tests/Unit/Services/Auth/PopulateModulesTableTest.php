@@ -7,8 +7,8 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\MissingParameterException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Auth\Population\PopulateModulesTable;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PopulateModulesTableTest extends TestCase
 {
