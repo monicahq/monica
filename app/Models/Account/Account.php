@@ -709,7 +709,7 @@ class Account extends Model
         $defaultModules = DB::table('default_contact_modules')->get();
 
         foreach ($defaultModules as $defaultModule) {
-            if (! $ignoreTableAlreadyMigrated && $defaultModule->migrated == 0) {
+            if (! $ignoreTableAlreadyMigrated || $defaultModule->migrated == 0) {
                 Module::create([
                     'account_id' => $this->id,
                     'key' => $defaultModule->key,
