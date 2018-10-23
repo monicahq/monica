@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\DB;
 use App\Models\Account\Account;
 use Illuminate\Database\Migrations\Migration;
 use App\Services\Auth\Population\PopulateModulesTable;
