@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Contact\ContactField;
-use App\Models\Contact\Address;
 use App\Models\User\User;
 use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
+use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 
 class ImportCSV extends Command
@@ -156,7 +156,7 @@ class ImportCSV extends Command
         $contact->setAvatarColor();
         $contact->save();
 
-        if (!empty($data[28])) {
+        if (! empty($data[28])) {
             // Email 1 Value
             ContactField::firstOrCreate([
                 'account_id' => $contact->account_id,
@@ -177,7 +177,7 @@ class ImportCSV extends Command
             ]);
         }
 
-        if (!empty($data[42])) {
+        if (! empty($data[42])) {
             // Phone 1 Value
             ContactField::firstOrCreate([
                 'account_id' => $contact->account_id,
@@ -200,7 +200,7 @@ class ImportCSV extends Command
     /**
      * Get the default contact field email id for the account.
      *
-     * @return integer
+     * @return int
      */
     private function contactFieldEmailId()
     {
