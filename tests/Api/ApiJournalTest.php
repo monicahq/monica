@@ -122,7 +122,7 @@ class ApiJournalTest extends ApiTestCase
 
         $this->expectDataError($response, [
             'The title field is required.',
-            'The post field is required.'
+            'The post field is required.',
         ]);
     }
 
@@ -182,7 +182,7 @@ class ApiJournalTest extends ApiTestCase
 
         $this->expectDataError($response, [
             'The title field is required.',
-            'The post field is required.'
+            'The post field is required.',
         ]);
     }
 
