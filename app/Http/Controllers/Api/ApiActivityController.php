@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\Note;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
@@ -88,7 +87,7 @@ class ApiActivityController extends ApiController
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
             $contact->activities()->attach($activity, [
-                'account_id' => auth()->user()->account_id
+                'account_id' => auth()->user()->account_id,
             ]);
             $contact->calculateActivitiesStatistics();
         }
@@ -159,7 +158,7 @@ class ApiActivityController extends ApiController
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
             $contact->activities()->attach($activity, [
-                'account_id' => auth()->user()->account_id
+                'account_id' => auth()->user()->account_id,
             ]);
         }
 

@@ -232,7 +232,7 @@ class ApiNotesTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The body field is required.'
+            'The body field is required.',
         ]);
     }
 

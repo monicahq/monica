@@ -207,7 +207,7 @@ class ApiRemindersTest extends ApiTestCase
             'The title field is required.',
             'The description field is required.',
             'The next expected date field is required.',
-            'The frequency type field is required.'
+            'The frequency type field is required.',
         ]);
     }
 

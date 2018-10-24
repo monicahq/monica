@@ -7,7 +7,6 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ActivityType;
-use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiActivitiesTest extends ApiTestCase
@@ -46,7 +45,7 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [
                 '*' => [
                     'id',
-                ]
+                ],
             ],
         ],
         'account' => [
@@ -232,7 +231,7 @@ class ApiActivitiesTest extends ApiTestCase
             'The summary field is required.',
             'The description field is required.',
             'The date it happened field is required.',
-            'The contacts field is required.'
+            'The contacts field is required.',
         ]);
     }
 

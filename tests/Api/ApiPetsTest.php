@@ -197,7 +197,7 @@ class ApiPetsTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The pet category id field is required.'
+            'The pet category id field is required.',
         ]);
     }
 

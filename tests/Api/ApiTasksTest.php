@@ -192,7 +192,7 @@ class ApiTasksTest extends ApiTestCase
 
         $this->expectDataError($response, [
             'The title field is required.',
-            'The completed field is required.'
+            'The completed field is required.',
         ]);
     }
 

@@ -210,7 +210,7 @@ class ApiDebtsTest extends ApiTestCase
         $this->expectDataError($response, [
             'The in debt field is required.',
             'The status field is required.',
-            'The amount field is required.'
+            'The amount field is required.',
         ]);
     }
 

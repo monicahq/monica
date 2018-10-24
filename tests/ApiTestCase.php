@@ -23,7 +23,7 @@ class ApiTestCase extends TestCase
             'error' => [
                 'message' => 'The resource has not been found',
                 'error_code' => 31,
-            ]
+            ],
         ]);
     }
 
@@ -41,7 +41,7 @@ class ApiTestCase extends TestCase
             'error' => [
                 'message' => $message,
                 'error_code' => 32,
-            ]
+            ],
         ]);
     }
 }

@@ -190,7 +190,7 @@ class ApiCallsTest extends ApiTestCase
 
         $this->expectDataError($response, [
             'The content field is required.',
-            'The called at field is required.'
+            'The called at field is required.',
         ]);
     }
 
