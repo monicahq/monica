@@ -117,7 +117,9 @@ class ApiTagsTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/tags', []);
 
-        $this->expectDataError($response);
+        $this->expectDataError($response, [
+            'The name field is required.'
+        ]);
     }
 
     public function test_tags_update_tag()

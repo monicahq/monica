@@ -120,7 +120,10 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/journal', []);
 
-        $this->expectDataError($response);
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The post field is required.'
+        ]);
     }
 
     public function test_journal_update_journal()
@@ -177,7 +180,10 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
 
-        $this->expectDataError($response);
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The post field is required.'
+        ]);
     }
 
     public function test_journal_delete_journal()
