@@ -103,12 +103,7 @@ class ApiNotesTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/contacts/0/notes');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_get_one()
@@ -148,12 +143,7 @@ class ApiNotesTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/notes/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_create()
@@ -241,11 +231,8 @@ class ApiNotesTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The body field is required.'
         ]);
     }
 
@@ -264,12 +251,7 @@ class ApiNotesTest extends ApiTestCase
             'is_favorited' => false,
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_update()
@@ -362,12 +344,7 @@ class ApiNotesTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/notes/0', []);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_update_error_bad_account()
@@ -389,12 +366,7 @@ class ApiNotesTest extends ApiTestCase
             'is_favorited' => false,
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_delete()
@@ -429,11 +401,6 @@ class ApiNotesTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/notes/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 }

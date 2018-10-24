@@ -72,11 +72,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'of_contact' => 1,
                         ]);
 
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_it_fails_if_contact_is_id_is_invalid()
@@ -89,11 +85,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'of_contact' => 1,
                         ]);
 
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_it_fails_if_of_contact_id_is_invalid()
@@ -106,11 +98,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'of_contact' => 1,
                         ]);
 
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_it_creates_a_new_resource()
@@ -258,11 +246,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'relationship_type_id' => 1,
                         ]);
 
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_it_updates_a_relationship()

@@ -87,7 +87,9 @@ class ApiActivityController extends ApiController
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
-            $contact->activities()->save($activity);
+            $contact->activities()->attach($activity, [
+                'account_id' => auth()->user()->account_id
+            ]);
             $contact->calculateActivitiesStatistics();
         }
 
@@ -156,7 +158,9 @@ class ApiActivityController extends ApiController
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
-            $contact->activities()->save($activity);
+            $contact->activities()->attach($activity, [
+                'account_id' => auth()->user()->account_id
+            ]);
         }
 
         return new ActivityResource($activity);
@@ -196,6 +200,17 @@ class ApiActivityController extends ApiController
             }
         }
 
+        // Make sure the activity type has the right to be associated with
+        // this account
+        if ($request->get('activity_type_id')) {
+            try {
+                ActivityType::where('account_id', auth()->user()->account_id)
+                    ->findOrFail($request->get('activity_type_id'));
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
+        }
+
         return true;
     }
 
@@ -207,7 +222,7 @@ class ApiActivityController extends ApiController
     public function destroy(Request $request, $activityId)
     {
         try {
-            $activity = Note::where('account_id', auth()->user()->account_id)
+            $activity = Activity::where('account_id', auth()->user()->account_id)
                 ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -254,7 +269,8 @@ class ApiActivityController extends ApiController
      */
     public function activitytypes(Request $request)
     {
-        $activities = ActivityType::all();
+        $activities = ActivityType::where('account_id', auth()->user()->account_id)
+                                     ->all();
 
         return ActivityTypeResource::collection($activities);
     }

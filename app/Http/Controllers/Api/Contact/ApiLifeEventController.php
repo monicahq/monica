@@ -34,7 +34,7 @@ class ApiLifeEventController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, int $lifeEventId)
+    public function show(Request $request, $lifeEventId)
     {
         try {
             $lifeEvent = LifeEvent::where('account_id', auth()->user()->account_id)

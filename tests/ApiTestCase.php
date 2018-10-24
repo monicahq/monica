@@ -19,9 +19,29 @@ class ApiTestCase extends TestCase
     {
         $response->assertStatus(404);
 
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
+        $response->assertJson([
+            'error' => [
+                'message' => 'The resource has not been found',
+                'error_code' => 31,
+            ]
+        ]);
+    }
+
+    /**
+     * Test that the response contains a not found notification.
+     *
+     * @param TestResponse $response
+     * @return mixed
+     */
+    public function expectDataError(TestResponse $response, array $message = [''])
+    {
+        $response->assertStatus(200);
+
+        $response->assertJson([
+            'error' => [
+                'message' => $message,
+                'error_code' => 32,
+            ]
         ]);
     }
 }
