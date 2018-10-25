@@ -189,7 +189,7 @@ return [
     'relationship_form_associate_dropdown' => 'بحث واختيار جهة اتصال موجودة من القائمة المنسدلة أدناه',
     'relationship_form_associate_dropdown_placeholder' => 'بحث واختيار جهة اتصال موجودة',
     'relationship_form_also_create_contact' => 'إنشاء جهة اتصال لهذا الشخص.',
-    'relationship_form_add_description' => 'يتيح لك هذا التعامل مع هذا الشريك مثل أي جهة اتصال أخرى.',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'ليس لديك أي جهة اتصال قد تكون على قرابة بـ:name حاليا.',
     'relationship_delete_confirmation' => 'هل أنت متأكد من أنك تريد حذف هذه العلاقة؟ الحذف دائم.',
     'relationship_unlink_confirmation' => 'هل أنت متأكد من أنك تريد حذف هذه العلاقة؟ لن يتم حذف هذا الشخص – فقط العلاقة بين الشخصين.',
