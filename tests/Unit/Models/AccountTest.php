@@ -742,6 +742,18 @@ class AccountTest extends FeatureTestCase
         ]);
     }
 
+    public function test_it_create_default_account()
+    {
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'account_id' => $account->id,
+        ]);
+    }
+
     public function test_account_has_reached_contact_limit_on_free_plan()
     {
         $account = factory(Account::class)->create();

@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Set currency and timezone for new users
 * Fix settings' sidebar links and change security icon
 * Fix CSV import
 
