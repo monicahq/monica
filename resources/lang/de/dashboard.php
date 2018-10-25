@@ -13,6 +13,8 @@ return [
     'tab_calls_blank' => 'Du hast noch keine Telefonate protokolliert.',
     'tab_debts' => 'Schulden',
     'tab_debts_blank' => 'Du hast noch keine Schulden protokolliert.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
 
     'debts_you_owe' => 'Du schuldest',
 
