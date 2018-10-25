@@ -38,8 +38,16 @@ Read the general [setup instructions](https://github.com/monicahq/monica/blob/ma
 
 ## Limitations
 
-* No email by default. Email configuration isn't required to use Monica on Heroku, but it's recommended. Mailgun has a [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun) that is easy to set up.
 * No upload of photos for your contacts. Heroku doesn't support storage.
+* No email by default - email configuration isn't required to use Monica on Heroku, but it's recommended. The easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
+  * [Sign up for Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
+  * In Heroku, go to your app, then to the Settings tab. In it, you will have a button that reads "Reveal Config Vars". Click it, and change the following vars:
+    * `MAIL_DRIVER` = `mailgun`
+    * `MAILGUN_DOMAIN`: your Mailgun domain
+    * `MAILGUN_SECRET`: your Mailgun API key — find it [here](https://app.mailgun.com/app/account/security)
+    * `MAIL_FROM_ADDRESS`: email address to use for 'from' email (could just use your own)
+    * `MAIL_FROM_NAME`: name of the 'from' user (could just use "Monica")
+  
 
 ## Updating Heroku instance
 
