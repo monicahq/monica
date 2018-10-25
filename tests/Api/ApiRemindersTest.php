@@ -2,27 +2,26 @@
 
 namespace Tests\Api;
 
+use Carbon\Carbon;
 use Tests\ApiTestCase;
-use App\Models\Contact\Gift;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiGiftsTest extends ApiTestCase
+class ApiRemindersTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonGift = [
+    protected $jsonReminder = [
         'id',
         'object',
-        'date_offered',
-        'has_been_offered',
-        'comment',
-        'is_an_idea',
-        'is_for',
-        'name',
-        'url',
-        'value',
+        'title',
+        'description',
+        'frequency_type',
+        'frequency_number',
+        'last_triggered_date',
+        'next_expected_date',
         'account' => [
             'id',
         ],
@@ -33,79 +32,79 @@ class ApiGiftsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_gifts_get_all()
+    public function test_reminders_get_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $reminder1 = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $reminder2 = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/gifts');
+        $response = $this->json('GET', '/api/reminders');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift],
+            'data' => ['*' => $this->jsonReminder],
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'reminder',
+            'id' => $reminder1->id,
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'reminder',
+            'id' => $reminder2->id,
         ]);
     }
 
-    public function test_gifts_get_contact_all()
+    public function test_reminders_get_contact_all()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $reminder1 = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
         $contact2 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $reminder2 = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
         ]);
 
-        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/gifts');
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/reminders');
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonGift],
+            'data' => ['*' => $this->jsonReminder],
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'reminder',
+            'id' => $reminder1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'reminder',
+            'id' => $reminder2->id,
         ]);
     }
 
-    public function test_gifts_get_contact_all_error()
+    public function test_reminders_get_contact_all_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/contacts/0/gifts');
+        $response = $this->json('GET', '/api/contacts/0/reminders');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -115,42 +114,42 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_one()
+    public function test_reminders_get_one()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift1 = factory(Gift::class)->create([
+        $reminder1 = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
-        $gift2 = factory(Gift::class)->create([
+        $reminder2 = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact1->id,
         ]);
 
-        $response = $this->json('GET', '/api/gifts/'.$gift1->id);
+        $response = $this->json('GET', '/api/reminders/'.$reminder1->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonReminder,
         ]);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift1->id,
+            'object' => 'reminder',
+            'id' => $reminder1->id,
         ]);
         $response->assertJsonMissingExact([
-            'object' => 'gift',
-            'id' => $gift2->id,
+            'object' => 'reminder',
+            'id' => $reminder2->id,
         ]);
     }
 
-    public function test_gifts_get_one_error()
+    public function test_reminders_get_one_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', '/api/gifts/0');
+        $response = $this->json('GET', '/api/reminders/0');
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -160,45 +159,57 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create()
+    public function test_reminders_create()
     {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/reminders', [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01',
+            'frequency_type' => 'one_time',
+            'description' => 'the description',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonReminder,
         ]);
-        $gift_id = $response->json('data.id');
+        $reminder_id = $response->json('data.id');
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift_id,
+            'object' => 'reminder',
+            'id' => $reminder_id,
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01T00:00:00Z',
+            'frequency_type' => 'one_time',
+            'description' => 'the description',
         ]);
 
-        $this->assertGreaterThan(0, $gift_id);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertGreaterThan(0, $reminder_id);
+        $this->assertDatabaseHas('reminders', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift_id,
-            'name' => 'the gift',
+            'id' => $reminder_id,
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01 00:00:00',
+            'frequency_type' => 'one_time',
+            'description' => 'the description',
         ]);
     }
 
-    public function test_gifts_create_error()
+    public function test_reminders_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/reminders', [
             'contact_id' => $contact->id,
         ]);
 
@@ -210,8 +221,10 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_error_bad_account()
+    public function test_reminders_create_error_bad_account()
     {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
         $user = $this->signin();
 
         $account = factory(Account::class)->create();
@@ -219,9 +232,12 @@ class ApiGiftsTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('POST', '/api/gifts', [
+        $response = $this->json('POST', '/api/reminders', [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01',
+            'frequency_type' => 'one_time',
+            'description' => 'the description',
         ]);
 
         $response->assertStatus(404);
@@ -232,49 +248,59 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update()
+    public function test_reminders_update()
     {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $reminder = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+        $response = $this->json('PUT', '/api/reminders/'.$reminder->id, [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01',
+            'frequency_type' => 'day',
+            'description' => 'the description',
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => $this->jsonGift,
+            'data' => $this->jsonReminder,
         ]);
-        $gift_id = $response->json('data.id');
-        $this->assertEquals($gift->id, $gift_id);
+        $reminder_id = $response->json('data.id');
+        $this->assertEquals($reminder->id, $reminder_id);
         $response->assertJsonFragment([
-            'object' => 'gift',
-            'id' => $gift_id,
+            'object' => 'reminder',
+            'id' => $reminder_id,
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01T00:00:00Z',
+            'frequency_type' => 'day',
+            'description' => 'the description',
         ]);
 
-        $this->assertGreaterThan(0, $gift_id);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertGreaterThan(0, $reminder_id);
+        $this->assertDatabaseHas('reminders', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift_id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'id' => $reminder_id,
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01 00:00:00',
+            'frequency_type' => 'day',
+            'description' => 'the description',
         ]);
     }
 
-    public function test_gifts_update_error()
+    public function test_reminders_update_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('PUT', '/api/gifts/0', []);
+        $response = $this->json('PUT', '/api/reminders/0', []);
 
         $response->assertStatus(404);
         $response->assertJson([
@@ -284,23 +310,27 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_error_bad_account()
+    public function test_reminders_update_error_bad_account()
     {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
         $user = $this->signin();
 
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $reminder = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+        $response = $this->json('PUT', '/api/reminders/'.$reminder->id, [
             'contact_id' => $contact->id,
-            'name' => 'the gift',
-            'comment' => 'one comment',
+            'title' => 'the title',
+            'next_expected_date' => '2018-05-01',
+            'frequency_type' => 'day',
+            'description' => 'the description',
         ]);
 
         $response->assertStatus(404);
@@ -311,37 +341,37 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_delete()
+    public function test_reminders_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $gift = factory(Gift::class)->create([
+        $reminder = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
-        $this->assertDatabaseHas('gifts', [
+        $this->assertDatabaseHas('reminders', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift->id,
+            'id' => $reminder->id,
         ]);
 
-        $response = $this->json('DELETE', '/api/gifts/'.$gift->id);
+        $response = $this->json('DELETE', '/api/reminders/'.$reminder->id);
 
         $response->assertStatus(200);
-        $this->assertDatabaseMissing('gifts', [
+        $this->assertDatabaseMissing('reminders', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $gift->id,
+            'id' => $reminder->id,
         ]);
     }
 
-    public function test_gifts_delete_error()
+    public function test_reminders_delete_error()
     {
         $user = $this->signin();
 
-        $response = $this->json('DELETE', '/api/gifts/0');
+        $response = $this->json('DELETE', '/api/reminders/0');
 
         $response->assertStatus(404);
         $response->assertJson([

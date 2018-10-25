@@ -701,36 +701,6 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
-    {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'work_information',
-        ]);
-
-        $account->populateModulesTable();
-
-        $this->assertDatabaseHas('modules', [
-            'key' => 'work_information',
-        ]);
-    }
-
-    public function test_it_skips_default_account_modules_table_for_types_already_migrated()
-    {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'awesome',
-            'migrated' => 1,
-        ]);
-
-        $account->populateModulesTable(true);
-
-        $this->assertDatabaseMissing('modules', [
-            'account_id' => $account->id,
-            'key' => 'awesome',
-        ]);
-    }
-
     public function test_it_adds_an_unread_changelog_entry_to_all_users()
     {
         $account = factory(Account::class)->create();
