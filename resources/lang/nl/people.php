@@ -189,7 +189,7 @@ return [
     'relationship_form_associate_dropdown' => 'Zoek en selecteer een bestaande contactpersoon met het dropdown menu hieronder',
     'relationship_form_associate_dropdown_placeholder' => 'Zoek en selecteer een bestaande contactpersoon',
     'relationship_form_also_create_contact' => 'Een contact-kaart maken voor deze persoon.',
-    'relationship_form_add_description' => 'Hierdoor kan je deze partner bewerken, net als elk ander contact.',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'Je hebt nog geen contacten die een :name gekoppeld kunnen worden.',
     'relationship_delete_confirmation' => 'Weet je zeker dat je deze relatie wilt verwijderen? Dit is permanent.',
     'relationship_unlink_confirmation' => 'Weet je zeker dat je deze relatie wilt verwijderen? Deze persoon wordt niet verwijdert, alleen de relatie tussen de twee personen.',
