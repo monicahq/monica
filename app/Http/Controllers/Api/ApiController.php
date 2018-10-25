@@ -295,7 +295,7 @@ class ApiController extends Controller
 
     /**
      * Sends an error when the validator failed.
-     * @param \Illuminate\Support\Facades\Validator $validator
+     * @param \Illuminate\Contracts\Validation\Validator $validator
      */
     public function respondValidatorFailed($validator)
     {
