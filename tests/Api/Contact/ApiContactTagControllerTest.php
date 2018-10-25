@@ -21,12 +21,7 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/setTags");
 
-        $response->assertStatus(200);
-
-        $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
-            'error_code' => 32,
-        ]);
+        $this->expectDataError($response, ['The tags field is required.']);
     }
 
     public function test_it_associates_tags_to_a_contact()
@@ -78,12 +73,7 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTag");
 
-        $response->assertStatus(200);
-
-        $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
-            'error_code' => 32,
-        ]);
+        $this->expectDataError($response, ['The tags field is required.']);
     }
 
     public function test_it_removes_one_tag_from_a_contact()

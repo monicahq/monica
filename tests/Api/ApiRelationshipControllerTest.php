@@ -29,11 +29,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'of_contact' => 1,
                         ]);
 
-        $response->assertStatus(200);
-        $response->assertJsonFragment([
-            'message' => ['The contact is must be an integer.'],
-            'error_code' => 41,
-        ]);
+        $this->expectDataError($response, ['The contact is must be an integer.']);
 
         // make sure relationship type id is an integer
         $response = $this->json('POST', '/api/relationships', [
@@ -42,11 +38,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'of_contact' => 1,
                         ]);
 
-        $response->assertStatus(200);
-        $response->assertJsonFragment([
-            'message' => ['The relationship type id must be an integer.'],
-            'error_code' => 41,
-        ]);
+        $this->expectDataError($response, ['The relationship type id must be an integer.']);
 
         // make sure of_contact is an integer
         $response = $this->json('POST', '/api/relationships', [
@@ -55,11 +47,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'of_contact' => 'a',
                         ]);
 
-        $response->assertStatus(200);
-        $response->assertJsonFragment([
-            'message' => ['The of contact must be an integer.'],
-            'error_code' => 41,
-        ]);
+        $this->expectDataError($response, ['The of contact must be an integer.']);
     }
 
     public function test_it_fails_if_relationship_type_id_is_invalid()
@@ -231,11 +219,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'relationship_type_id' => 'a',
                         ]);
 
-        $response->assertStatus(200);
-        $response->assertJsonFragment([
-            'message' => ['The relationship type id must be an integer.'],
-            'error_code' => 41,
-        ]);
+        $this->expectDataError($response, ['The relationship type id must be an integer.']);
     }
 
     public function test_it_fails_the_update_if_relationship_type_id_is_invalid()

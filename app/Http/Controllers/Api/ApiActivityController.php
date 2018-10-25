@@ -86,9 +86,9 @@ class ApiActivityController extends ApiController
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
-            $contact->activities()->attach($activity, [
-                'account_id' => auth()->user()->account_id,
-            ]);
+                $contact->activities()->attach($activity, [
+                    'account_id' => auth()->user()->account_id,
+                ]);
             $contact->calculateActivitiesStatistics();
         }
 
@@ -183,8 +183,7 @@ class ApiActivityController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         // Make sure each contact exists and has the right to be associated with

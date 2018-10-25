@@ -121,9 +121,7 @@ class ApiActivityTypeCategoryController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setHTTPStatusCode(400)
-                        ->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         return true;

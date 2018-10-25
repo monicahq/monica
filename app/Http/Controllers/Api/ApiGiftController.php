@@ -61,13 +61,13 @@ class ApiGiftController extends ApiController
         }
 
         try {
-            $gift = Gift::create($request->all());
+            $gift = Gift::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
-
-        $gift->account_id = auth()->user()->account_id;
-        $gift->save();
 
         return new GiftResource($gift);
     }
@@ -129,8 +129,7 @@ class ApiGiftController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         try {

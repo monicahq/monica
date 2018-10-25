@@ -61,17 +61,18 @@ class ApiNoteController extends ApiController
         }
 
         try {
-            $note = Note::create($request->all());
+            $note = Note::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
 
         if ($request->get('is_favorited')) {
             $note->favorited_at = now();
+            $note->save();
         }
-
-        $note->account_id = auth()->user()->account_id;
-        $note->save();
 
         return new NoteResource($note);
     }
@@ -129,8 +130,7 @@ class ApiNoteController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         try {

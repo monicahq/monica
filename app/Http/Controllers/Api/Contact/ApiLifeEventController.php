@@ -65,9 +65,7 @@ class ApiLifeEventController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->setHTTPStatusCode(500)
-                ->setErrorCode(41)
-                ->respondWithError(config('api.error_codes.41'));
+            return $this->respondInvalidParameters();
         }
 
         return new LifeEventResource($lifeEvent);
@@ -94,9 +92,7 @@ class ApiLifeEventController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->setHTTPStatusCode(500)
-                ->setErrorCode(41)
-                ->respondWithError(config('api.error_codes.41'));
+            return $this->respondInvalidParameters();
         }
 
         return new LifeEventResource($lifeEvent);

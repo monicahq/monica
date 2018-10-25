@@ -62,10 +62,8 @@ class ApiPetController extends ApiController
 
         try {
             $pet = Pet::create(
-              $request->all()
-              + [
-                'account_id' => auth()->user()->account_id,
-              ]
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
@@ -120,8 +118,7 @@ class ApiPetController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         try {
