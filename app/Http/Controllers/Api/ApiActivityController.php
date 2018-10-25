@@ -86,7 +86,7 @@ class ApiActivityController extends ApiController
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
-                $contact->activities()->attach($activity, [
+            $contact->activities()->attach($activity, [
                     'account_id' => auth()->user()->account_id,
                 ]);
             $contact->calculateActivitiesStatistics();

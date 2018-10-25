@@ -89,12 +89,12 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Relationship Type Groups
     Route::apiResource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController', ['only' => [
-      'index', 'show'
+      'index', 'show',
     ]]);
 
     // Relationship Types
     Route::apiResource('relationshiptypes', 'Api\\ApiRelationshipTypeController', ['only' => [
-      'index', 'show'
+      'index', 'show',
     ]]);
 
     // Life events

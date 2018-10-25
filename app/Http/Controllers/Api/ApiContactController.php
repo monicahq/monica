@@ -114,7 +114,7 @@ class ApiContactController extends ApiController
                     'deceased_date',
                 ]) + [
                 'avatar_external_url' => $request->get('avatar_url'),
-                'account_id' => auth()->user()->account_id
+                'account_id' => auth()->user()->account_id,
             ]);
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
