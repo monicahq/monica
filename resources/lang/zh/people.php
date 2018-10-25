@@ -189,7 +189,7 @@ return [
     'relationship_form_associate_dropdown' => '请从下拉菜单选择一位联系人',
     'relationship_form_associate_dropdown_placeholder' => '搜索并选择一位现有联系人',
     'relationship_form_also_create_contact' => '将此人创建为您的联系人',
-    'relationship_form_add_description' => '此选项能让您将其创建为您Monica中的联系人',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => '您暂时没有能与 :name 链接的联系人',
     'relationship_delete_confirmation' => '您确定要将关系删除吗？本操作无法撤销。',
     'relationship_unlink_confirmation' => '您确定要将关系删除吗？此操作不会从您的联系人列表将其删除。',
