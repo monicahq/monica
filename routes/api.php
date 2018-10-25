@@ -20,9 +20,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/me/compliance', 'Api\\Account\\ApiUserController@set');
 
     // Contacts
-    Route::resource('contacts', 'Api\\ApiContactController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('contacts', 'Api\\ApiContactController');
 
     // Relationships
     Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
@@ -37,19 +35,17 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactTagController@unsetTag');
 
     // Addresses
-    Route::resource('addresses', 'Api\\ApiAddressController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('addresses', 'Api\\ApiAddressController');
     Route::get('/contacts/{contact}/addresses', 'Api\\ApiAddressController@addresses');
 
     // Contact Fields
-    Route::resource('contactfields', 'Api\\ApiContactFieldController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('contactfields', 'Api\\ApiContactFieldController');
     Route::get('/contacts/{contact}/contactfields', 'Api\\ApiContactFieldController@contactFields');
 
     // Pets
-    Route::resource('pets', 'Api\\ApiPetController');
+    Route::resource('pets', 'Api\\ApiPetController')->only([
+      'show', 'store', 'update', 'destroy',
+    ]);
 
     // Contact Pets
     Route::get('/contacts/{contact}/pets', 'Api\\ApiPetController@listContactPets');
@@ -57,98 +53,70 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::put('/contacts/{contact}/pets/{pet}', 'Api\\ApiPetController@moveContactPet');
 
     // Tags
-    Route::resource('tags', 'Api\\ApiTagController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('tags', 'Api\\ApiTagController');
 
     // Notes
-    Route::resource('notes', 'Api\\ApiNoteController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('notes', 'Api\\ApiNoteController');
     Route::get('/contacts/{contact}/notes', 'Api\\ApiNoteController@notes');
 
     // Calls
-    Route::resource('calls', 'Api\\ApiCallController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('calls', 'Api\\ApiCallController');
     Route::get('/contacts/{contact}/calls', 'Api\\ApiCallController@calls');
 
     // Conversations & messages
-    Route::resource('conversations', 'Api\\Contact\\ApiConversationController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('conversations', 'Api\\Contact\\ApiConversationController');
     Route::post('/conversations/{conversation}/messages', 'Api\\Contact\\ApiMessageController@store');
     Route::put('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@update');
     Route::delete('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@destroy');
     Route::get('/contacts/{contact}/conversations', 'Api\\Contact\\ApiConversationController@conversations');
 
     // Activities
-    Route::resource('activities', 'Api\\ApiActivityController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('activities', 'Api\\ApiActivityController');
     Route::get('/contacts/{contact}/activities', 'Api\\ApiActivityController@activities');
     Route::get('/activitytypes', 'Api\\ApiActivityController@activitytypes');
 
     // Reminders
-    Route::resource('reminders', 'Api\\ApiReminderController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('reminders', 'Api\\ApiReminderController');
     Route::get('/contacts/{contact}/reminders', 'Api\\ApiReminderController@reminders');
 
     // Tasks
-    Route::resource('tasks', 'Api\\ApiTaskController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('tasks', 'Api\\ApiTaskController');
     Route::get('/contacts/{contact}/tasks', 'Api\\ApiTaskController@tasks');
 
     // Gifts
-    Route::resource('gifts', 'Api\\ApiGiftController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('gifts', 'Api\\ApiGiftController');
     Route::get('/contacts/{contact}/gifts', 'Api\\ApiGiftController@gifts');
 
     // Debts
-    Route::resource('debts', 'Api\\ApiDebtController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('debts', 'Api\\ApiDebtController');
     Route::get('/contacts/{contact}/debts', 'Api\\ApiDebtController@debts');
 
     // Journal
-    Route::resource('journal', 'Api\\ApiJournalController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('journal', 'Api\\ApiJournalController');
 
     // Activity Types
-    Route::resource('activitytypes', 'Api\\Contact\\ApiActivityTypeController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('activitytypes', 'Api\\Contact\\ApiActivityTypeController');
 
     // Activity Type Categories
-    Route::resource('activitytypecategories', 'Api\\Contact\\ApiActivityTypeCategoryController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('activitytypecategories', 'Api\\Contact\\ApiActivityTypeCategoryController');
 
     // Relationship Type Groups
-    Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController', ['except' => [
-      'create', 'store', 'destroy', 'edit', 'patch', 'update',
-    ]]);
+    Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController')->only([
+      'index', 'show',
+    ]);
 
     // Relationship Types
-    Route::resource('relationshiptypes', 'Api\\ApiRelationshipTypeController', ['except' => [
-      'create', 'store', 'destroy', 'edit', 'patch', 'update',
-    ]]);
+    Route::resource('relationshiptypes', 'Api\\ApiRelationshipTypeController')->only([
+      'index', 'show',
+    ]);
 
     // Life events
-    Route::resource('lifeevents', 'Api\\Contact\\ApiLifeEventController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('lifeevents', 'Api\\Contact\\ApiLifeEventController');
 
     /*
      * SETTINGS
      */
-    Route::resource('contactfieldtypes', 'Api\\Settings\\ApiContactFieldTypeController', ['except' => [
-      'create', 'edit', 'patch',
-    ]]);
+    Route::apiResource('contactfieldtypes', 'Api\\Settings\\ApiContactFieldTypeController');
 
     /*
      * MISC
