@@ -189,7 +189,7 @@ return [
     'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
     'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
-    'relationship_form_add_description' => 'This will let you treat this significant other like any other contact.',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'You don’t have any contacts who can be related to :name at the moment.',
     'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
     'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted – only the relationship between the two.',
