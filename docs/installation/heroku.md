@@ -23,7 +23,7 @@ After deployment, the configuration of your app should look like this:
 
 Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno ("web") is activated while the "queue" one is not. That is OK - the "queue" dyno is only helpful if you set `QUEUE_DRIVER=database` (default is 'sync').
 
-In addition, makee sure to setup a new job that runs every hour using the Heroku Scheudler (it's located on the bottom of the screen shown above). After creating a new job, set it to be: `php artisan schedule:run`.
+In addition, make sure to setup a new job that runs every hour using the Heroku Scheduler (it's located on the bottom of the screen shown above). After creating a new job, set it to be: `php artisan schedule:run`.
 
 ### Generating Personal Access Tokens
 
