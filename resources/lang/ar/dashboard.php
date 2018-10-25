@@ -13,6 +13,8 @@ return [
     'tab_calls_blank' => 'لم تقم بتسجيل أي مكالمة بعد.',
     'tab_debts' => 'الديون',
     'tab_debts_blank' => 'لم تقم بتسجيل أي دَين بعد.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
 
     'debts_you_owe' => 'أنت مدين',
 

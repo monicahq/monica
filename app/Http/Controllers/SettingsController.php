@@ -8,6 +8,7 @@ use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
+use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
@@ -408,7 +409,11 @@ class SettingsController
                     $request->input('first_name'),
                     $request->input('last_name'),
                     $request->input('email'),
-                    $request->input('password'));
+                    $request->input('password'),
+                    RequestHelper::ip()
+                );
+        $user->invited_by_user_id = $invitation->invited_by_user_id;
+        $user->save();
 
         $invitation->delete();
 
