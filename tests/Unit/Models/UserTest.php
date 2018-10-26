@@ -10,6 +10,7 @@ use App\Models\Settings\Term;
 use App\Models\User\Changelog;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
@@ -335,5 +336,214 @@ class UserTest extends TestCase
             'lastname',
             $user->getNameOrderForForms()
         );
+    }
+
+    public function test_it_create_default_user_en()
+    {
+        App::setLocale('en');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'en',
+            'timezone' => 'America/Chicago',
+            'currency_id' => 2,
+        ]);
+    }
+
+    public function test_it_create_default_user_fr()
+    {
+        App::setLocale('fr');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'fr',
+            'timezone' => 'Europe/Paris',
+            'currency_id' => 4,
+        ]);
+    }
+
+    public function test_it_create_default_user_cs()
+    {
+        App::setLocale('cs');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'cs',
+            'timezone' => 'Europe/Prague',
+            'currency_id' => 43,
+        ]);
+    }
+
+    public function test_it_create_default_user_de()
+    {
+        App::setLocale('de');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'de',
+            'timezone' => 'Europe/Berlin',
+            'currency_id' => 4,
+        ]);
+    }
+
+    public function test_it_create_default_user_es()
+    {
+        App::setLocale('es');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'es',
+            'timezone' => 'Europe/Madrid',
+            'currency_id' => 4,
+        ]);
+    }
+
+    public function test_it_create_default_user_he()
+    {
+        App::setLocale('he');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'he',
+            'timezone' => 'Asia/Jerusalem',
+            'currency_id' => 66,
+        ]);
+    }
+
+    public function test_it_create_default_user_it()
+    {
+        App::setLocale('it');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'it',
+            'timezone' => 'Europe/Rome',
+            'currency_id' => 4,
+        ]);
+    }
+
+    public function test_it_create_default_user_nl()
+    {
+        App::setLocale('nl');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'nl',
+            'timezone' => 'Europe/Amsterdam',
+            'currency_id' => 4,
+        ]);
+    }
+
+    public function test_it_create_default_user_pt()
+    {
+        App::setLocale('pt');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'pt',
+            'timezone' => 'Europe/Lisbon',
+            'currency_id' => 4,
+        ]);
+    }
+
+    public function test_it_create_default_user_ru()
+    {
+        App::setLocale('ru');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'ru',
+            'timezone' => 'Europe/Moscow',
+            'currency_id' => 5,
+        ]);
+    }
+
+    public function test_it_create_default_user_zh()
+    {
+        App::setLocale('zh');
+
+        $account = factory(Account::class)->create([]);
+        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'account_id' => $account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'email' => 'john@doe.com',
+            'locale' => 'zh',
+            'timezone' => 'Asia/Shanghai',
+            'currency_id' => 37,
+        ]);
     }
 }
