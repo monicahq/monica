@@ -335,20 +335,13 @@ class ImportJob extends Model
             return;
         }
 
-        $contactFieldType = ContactFieldType::where([
+        $contactField = ContactField::where([
             ['account_id', $this->account_id],
-            ['type', 'email'],
-        ])->first();
+            ['contact_field_type_id', $this->contactFieldEmailId()],
+        ])->whereIn('data', iterator_to_array($this->currentEntry->EMAIL))->first();
 
-        if ($contactFieldType) {
-            $contactField = ContactField::where([
-                ['account_id', $this->account_id],
-                ['contact_field_type_id', $contactFieldType->id],
-            ])->whereIn('data', iterator_to_array($this->currentEntry->EMAIL))->first();
-
-            if ($contactField) {
-                return $contactField->contact;
-            }
+        if ($contactField) {
+            return $contactField->contact;
         }
     }
 
@@ -556,8 +549,13 @@ class ImportJob extends Model
     private function contactFieldEmailId()
     {
         if (! $this->contactFieldEmailId) {
-            $contactFieldType = ContactFieldType::where('type', 'email')->first();
-            $this->contactFieldEmailId = $contactFieldType->id;
+            $contactFieldType = ContactFieldType::where([
+                ['account_id', $this->account_id],
+                ['type', 'email'],
+            ])->first();
+            if ($contactFieldType) {
+                $this->contactFieldEmailId = $contactFieldType->id;
+            }
         }
 
         return $this->contactFieldEmailId;
@@ -566,8 +564,13 @@ class ImportJob extends Model
     private function contactFieldPhoneId()
     {
         if (! $this->contactFieldPhoneId) {
-            $contactFieldType = ContactFieldType::where('type', 'phone')->first();
-            $this->contactFieldPhoneId = $contactFieldType->id;
+            $contactFieldType = ContactFieldType::where([
+                ['account_id', $this->account_id],
+                ['type', 'phone'],
+            ])->first();
+            if ($contactFieldType) {
+                $this->contactFieldPhoneId = $contactFieldType->id;
+            }
         }
 
         return $this->contactFieldPhoneId;

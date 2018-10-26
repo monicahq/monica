@@ -4,8 +4,11 @@ namespace App\Console\Commands;
 
 use App\Models\User\User;
 use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 
 class ImportCSV extends Command
 {
@@ -22,6 +25,20 @@ class ImportCSV extends Command
      * @var string
      */
     protected $description = 'Imports CSV in Google format to user account';
+
+    /**
+     * The contact field email object.
+     *
+     * @var array
+     */
+    public $contactFieldEmailId;
+
+    /**
+     * The contact field phone object.
+     *
+     * @var array
+     */
+    public $contactFieldPhoneId;
 
     /**
      * Execute the console command.
@@ -112,39 +129,63 @@ class ImportCSV extends Command
             $contact->last_name = $data[3];     // Family Name
         }
 
-        if (! empty($data[28])) {
-            $contact->email = $data[28];        // Email 1 Value
-        }
-
-        if (! empty($data[42])) {
-            $contact->phone_number = $data[42]; // Phone 1 Value
-        }
-
+        $street = null;
         if (! empty($data[49])) {
-            $contact->street = $data[49];       // address 1 street
+            $street = $data[49];       // address 1 street
         }
 
+        $city = null;
         if (! empty($data[50])) {
-            $contact->city = $data[50];         // address 1 city
-        }
-        if (! empty($data[52])) {
-            $contact->province = $data[52];     // address 1 region (state)
+            $city = $data[50];         // address 1 city
         }
 
-        if (! empty($data[53])) {
-            $contact->postal_code = $data[53];  // address 1 postal code (zip) 53
+        $province = null;
+        if (! empty($data[52])) {
+            $province = $data[52];     // address 1 region (state)
         }
+
+        $postalCode = null;
+        if (! empty($data[53])) {
+            $postalCode = $data[53];  // address 1 postal code (zip) 53
+        }
+
         if (! empty($data[66])) {
             $contact->job = $data[66];          // organization 1 name 66
         }
 
-        // can't have empty email
-        if (empty($contact->email)) {
-            $contact->email = null;
-        }
-
         $contact->setAvatarColor();
         $contact->save();
+
+        if (! empty($data[28])) {
+            // Email 1 Value
+            ContactField::firstOrCreate([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'data' => $data[28],
+                'contact_field_type_id' => $this->contactFieldEmailId(),
+            ]);
+        }
+
+        if ($postalCode || $province || $street || $city) {
+            Address::firstOrCreate([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'street' => $street,
+                'city' => $city,
+                'province' => $province,
+                'postal_code' => $postalCode,
+            ]);
+        }
+
+        if (! empty($data[42])) {
+            // Phone 1 Value
+            ContactField::firstOrCreate([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'data' => $data[42],
+                'contact_field_type_id' => $this->contactFieldPhoneId(),
+            ]);
+        }
 
         if (! empty($data[14])) {
             $birthdate = new \DateTime(strtotime($data[14]));
@@ -154,5 +195,35 @@ class ImportCSV extends Command
         }
 
         $contact->updateGravatar();
+    }
+
+    /**
+     * Get the default contact field email id for the account.
+     *
+     * @return int
+     */
+    private function contactFieldEmailId()
+    {
+        if (! $this->contactFieldEmailId) {
+            $contactFieldType = ContactFieldType::where('type', 'email')->first();
+            $this->contactFieldEmailId = $contactFieldType->id;
+        }
+
+        return $this->contactFieldEmailId;
+    }
+
+    /**
+     * Get the default contact field phone id for the account.
+     *
+     * @return void
+     */
+    private function contactFieldPhoneId()
+    {
+        if (! $this->contactFieldPhoneId) {
+            $contactFieldType = ContactFieldType::where('type', 'phone')->first();
+            $this->contactFieldPhoneId = $contactFieldType->id;
+        }
+
+        return $this->contactFieldPhoneId;
     }
 }

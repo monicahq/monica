@@ -6,7 +6,9 @@ use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
+use App\Helpers\RequestHelper;
 use App\Models\Account\Account;
+use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
@@ -72,6 +74,7 @@ class User extends Authenticatable
      * @param string $email
      * @param string $password
      * @param string $ipAddress
+     * @param string $lang
      * @return $this
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
@@ -83,14 +86,65 @@ class User extends Authenticatable
         $user->last_name = $last_name;
         $user->email = $email;
         $user->password = bcrypt($password);
-        $user->timezone = config('app.timezone');
         $user->created_at = now();
         $user->locale = $lang ?: App::getLocale();
+
+        $user->setDefaultCurrencyAndTimezone($ipAddress, $user->locale);
+
         $user->save();
 
         $user->acceptPolicy($ipAddress);
 
         return $user;
+    }
+
+    private function setDefaultCurrencyAndTimezone($ipAddress, $locale)
+    {
+        $infos = RequestHelper::infos($ipAddress);
+
+        // Associate timezone and currency
+        $currencyCode = $infos['currency'];
+        $timezone = $infos['timezone'];
+        $country = null;
+        if (is_null($currencyCode) || is_null($timezone)) {
+            if ($infos['country']) {
+                $country = CountriesHelper::getCountry($infos['country']);
+            } else {
+                $country = CountriesHelper::getCountryFromLocale($locale);
+            }
+        }
+
+        // Timezone
+        if (! is_null($timezone)) {
+            $this->timezone = $timezone;
+        } elseif (! is_null($country)) {
+            $this->timezone = CountriesHelper::getDefaultTimezone($country);
+        } else {
+            $this->timezone = config('app.timezone');
+        }
+
+        // Currency
+        if (! is_null($currencyCode)) {
+            $this->associateCurrency($currencyCode);
+        } elseif (! is_null($country)) {
+            foreach ($country->currencies as $currency) {
+                if ($this->associateCurrency($currency)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private function associateCurrency($currency) : bool
+    {
+        $currencyObj = Currency::where('iso', $currency)->first();
+        if (! is_null($currencyObj)) {
+            $this->currency()->associate($currencyObj);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

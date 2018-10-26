@@ -466,6 +466,10 @@ END:VCARD
             'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@doe.com',
         ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $importJob->account->id,
+            'type' => 'email',
+        ]);
 
         $importJob->currentEntry = $vcard;
 
@@ -601,6 +605,10 @@ END:VCARD
         $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $importJob->account->id,
+            'type' => 'email',
+        ]);
         $importJob->importEmail($contact);
 
         $this->assertDatabaseHas('contact_fields', [
@@ -621,6 +629,10 @@ END:VCARD
         $contact = factory(Contact::class)->create([
             'account_id' => $importJob->account->id,
         ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $importJob->account->id,
+            'type' => 'phone',
+        ]);
         $importJob->importTel($contact);
 
         $this->assertDatabaseHas('contact_fields', [
@@ -636,11 +648,10 @@ END:VCARD
         $user = factory(User::class)->create([
             'account_id' => $account->id,
         ]);
-        $importJob = factory(ImportJob::class)->create([
+
+        return factory(ImportJob::class)->create([
             'account_id' => $account->id,
             'user_id' => $user->id,
         ]);
-
-        return $importJob;
     }
 }

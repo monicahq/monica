@@ -286,6 +286,7 @@ class ContactsController extends Controller
             'firstname' => 'required|max:50',
             'lastname' => 'max:100',
             'nickname' => 'max:100',
+            'description' => 'max:240',
             'gender' => 'required',
             'file' => 'max:10240',
             'birthdate' => 'required|string',
@@ -305,6 +306,7 @@ class ContactsController extends Controller
         }
 
         $contact->gender_id = $request->input('gender');
+        $contact->description = $request->input('description');
         $contact->nickname = $request->input('nickname', null);
 
         if ($request->file('avatar') != '') {
