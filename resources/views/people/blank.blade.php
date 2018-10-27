@@ -21,7 +21,7 @@
             @endif
 
         <div class="illustration-blank">
-            <img src="/img/people/blank.svg">
+            <img src="/img/people/blank.svg" alt="Image showing a blank state">
         </div>
         <h3>{{ trans('people.people_list_blank_title') }}</h3>
 
