@@ -21,7 +21,7 @@ class FixJsonColumn extends Migration
         $databasename = $connection->getDatabaseName();
 
         $columns = DB::select(
-            'select table_name, column_name from information_schema.columns where table_schema = ? and data_type = ? ' .
+            'select table_name, column_name from information_schema.columns where table_schema = ? and data_type = ? '.
             ' and table_name in (?, ?, ?)',
             [$databasename, 'json', 'default_life_event_types', 'life_event_types', 'life_events']
         );
