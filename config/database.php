@@ -24,9 +24,25 @@ $db = [
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
     |
+    | PostgreSQL users: insert 'pgsql' and edit the 'pgsql' section below.
+    |
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Use utf8mb4 charset format
+    |--------------------------------------------------------------------------
+    |
+    | Use the new utf8mb4 charset format
+    | ⚠ be sure your DBMS supports utf8mb4 format
+    | See https://dev.mysql.com/doc/refman/5.5/en/charset-unicode-utf8mb4.html
+    | MySQL > 5.7.7 fully support it.
+    |
+    */
+
+    'use_utf8mb4' => env('DB_USE_UTF8MB4', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -41,6 +57,10 @@ $db = [
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
+    |
+    | PostgreSQL users: comment out host and port for UNIX domain socket
+    | connections (local file-based connection without the need to edit the
+    | firewall settings).
     |
     */
 
@@ -60,8 +80,8 @@ $db = [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
+            'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
             'prefix' => env('DB_PREFIX', ''),
             'strict' => false,
             'engine' => null,
@@ -74,8 +94,8 @@ $db = [
             'database' => env('DB_TEST_DATABASE'),
             'username' => env('DB_TEST_USERNAME'),
             'password' => env('DB_TEST_PASSWORD'),
-            'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
+            'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
+            'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
             'prefix' => '',
             'strict' => false,
         ],
@@ -87,8 +107,8 @@ $db = [
             'database' => env('DB_DATABASE', 'forge'),
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
             'prefix' => env('DB_PREFIX', ''),
+            'charset' => 'utf8',
             'schema' => 'public',
         ],
 
@@ -100,7 +120,6 @@ $db = [
             'username' => env('DB_TEST_USERNAME'),
             'password' => env('DB_TEST_PASSWORD'),
             'charset' => 'utf8',
-            'collation' => 'utf8_unicode_ci',
             'prefix' => '',
             'schema' => 'public',
         ],
@@ -139,7 +158,7 @@ $db = [
             'host' => env('REDIS_HOST', 'localhost'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => 0,
+            'database' => env('REDIS_DATABASE', 0),
         ],
 
     ],
@@ -160,8 +179,9 @@ if (env('HEROKU')) {
         'database' => starts_with($url['path'], '/') ? str_after($url['path'], '/') : $url['path'],
         'username' => $url['user'],
         'password' => $url['pass'],
-        'charset' => 'utf8',
-        'prefix' => '',
+        'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
+        'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
+        'prefix' => env('DB_PREFIX', ''),
         'strict' => false,
         'schema' => 'public',
     ];

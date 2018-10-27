@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_tags') }}
@@ -66,13 +66,13 @@
                     {{ $tag->name }}
                     <span class="tags-list-contact-number">({{ trans_choice('settings.tags_list_contact_number', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }})</span>
                   </div>
-                  <div class="table-cell actions {{ \App\Helpers\LocaleHelper::getDirection() }}">
+                  <div class="table-cell actions">
                     <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">
                       <i class="fa fa-trash-o" aria-hidden="true"></i>
                     </a>
                   </div>
 
-                  <form method="POST" action="{{ action('SettingsController@deleteTag', $tag) }}" class="entry-delete-form hidden">
+                  <form method="POST" action="{{ route('settings.tags.delete', $tag) }}" class="entry-delete-form hidden">
                     {{ method_field('DELETE') }}
                     {{ csrf_field() }}
                   </form>

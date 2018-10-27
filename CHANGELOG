@@ -1,9 +1,199 @@
 UNRELEASED CHANGES:
 
-* Remove automatic birthday reminder creation when editing a contact
-* Use external list of countries, with translations and reliability
+* Add ability to archive a contact
+* Add right-click support on contact list
+* Add a command (export:all) to export all data from an instance in SQL
+* Standardize phonenumber format while importing vCard
+* Set currency and timezone for new users
+* Fix settings' sidebar links and change security icon
+* Fix CSV import
+* Highlight buttons when selected using keyboard
+* Hide deceased people from dashboard's 'Last Consulted' section
+* Filter deceased people from people list by default
+* Fix errors during PostgreSQL migration
+* Better documentation for PostgreSQL users
 
 RELEASED VERSIONS:
+
+v2.9.0 - 2018-10-14
+-------------------
+
+* Allow to define a max file size for uploaded document in an ENV variable (default to 10240kb)
+* Add description field for a contact
+* Add ability to retrieve all conversations for one contact through the API
+* Add all tasks not yet completed on the dashboard
+* Fix gravatar not displayed on dashboard view
+
+v2.8.1 - 2018-10-08
+-------------------
+
+* Add ability to set a reminder for a life event
+* Stop reporting OAuth exceptions
+* Replace karakus/laravel-cloudflare with monicahq/laravel-cloudflare to fix dependencies issues
+* Fix use of 'json' mysql column type
+
+v2.8.0 - 2018-09-28
+-------------------
+
+* Add ability to track life events
+* Add ability to define the default email address used for support
+* Add sentry:release command
+* Add Envoy file template
+* Add passport config file
+* Add new variable APP_DISPLAY_NAME
+* Rename env variable 2FA_ENABLED to MFA_ENABLED (2FA_ENABLED is still functional for compatibility reasons)
+* Improve search
+* Fix reminders displaying wrong date
+* Fix select boxes not working properly anymore
+* Fix confirm email sent when signup_double_optin is false
+* Fix now() without timezone functions
+* Remove notion of events
+* Support papertrail logging
+
+v2.7.1 - 2018-09-05
+-------------------
+
+* Fix duplication of modules in the Settings page
+
+v2.7.0 - 2018-09-04
+-------------------
+
+* Add ability to log conversations made on social networks or SMS
+* Add language selector on register page
+* Support Arabic language
+* Improve automatic route binding
+* Split app css in two files for better support of ltr/rtl text direction
+* Add helper function htmldir()
+* Fix gifts not showing when value was not set
+* Fix phpunit not parsing all test files
+* Fix login remember with 2fa and u2f enabled
+* Fix gender update
+* Fix how comparing version is done
+* Fix search with wrong search field
+* Fix gift recipient relation
+* Fix subscription cancel on account deletion
+* Fix email maximum size on settings
+* Fix reminder link in email sent
+
+v2.6.0 - 2018-08-17
+-------------------
+
+* Add ability to set a contact as favorite
+* Add ability to search for a contact in the dropdown when creating a relationship
+* Add activity reports page, which shows useful statistics about activities with a specific contact
+* Fix reminders not being sent for single-digit hours
+* Fix accounts with an empty reminder time
+* Fix account id get for acceptPolicy
+* Use our own docker image (central perk) to run tests
+* Add end-2-end testing with Cypress
+* Render timezone listbox dynamically
+* Use a new formatter to display money (debts), with right locale handle
+* Get first existing gravatar if contact has multiple emails
+* Display the date and time of the next reminder sent in settings page
+
+v2.5.0 - 2018-08-08
+-------------------
+
+* Add ability to define custom activity types and activity type categories
+* Add ability to search a contact by job title
+* Fix invoice page not showing properly
+* Fix translation not being displayed correctly on Subscription page
+* Add the TrimStrings middleware to trim all inputs
+* Call to monica:ping when updating instance
+* Fix idHasher decode function
+* Fix storage folder not being linked to public if migrations fail
+
+v2.4.2 - 2018-07-26
+-------------------
+
+* Add functional tests for account deletion and account reset
+* Fix activities not being displayed in the journal
+* Fix food preferencies not being able to be updated
+* Add functional test for account exporting
+* Fix fake content seeder for testing purposes
+
+v2.4.1 - 2018-07-25
+-------------------
+
+* Add ability to discover Cloudflare trusted proxies automatically. This adds a new ENV variable.
+* Fix avatar link in journal page
+* Fix broken migration
+* Fix Settings not displaying under some conditions
+
+v2.4.0 - 2018-07-23
+-------------------
+
+* Fix account deletion, reset and export
+* Fix export feature which exported 'changelog_user' table, which it shouldn't
+* Change how dates are stored, from local timezone to UTC
+* Remove the APP_TIMEZONE env variable
+* Add U2F/yubikey support and refactor MultiFactor Authentication
+* Add a script to update assets automatically
+* Allow for plus sign search in contacts api (contact_fields_data)
+* Fix sonar run for pull requests
+* Improve date and datetime parsing
+
+v2.3.1 - 2018-06-21
+-------------------
+
+* Fix journal entries not being displayed
+* Add ability to click on entire row on the contact list
+* Fix first name of a relation which could not be saved
+* Fix last name not being reset when set empty
+
+v2.3.0 - 2018-06-13
+-------------------
+
+* Add a new variable DB_USE_UTF8MB4. Please read instructions carefully for this one.
+* Add support for nicknames
+* Fix resetting account not working
+* Fix CSV import that can break if dates have the wrong format
+* Add default accounts email confirmation in setup:test
+* Set the default tooltip delay to 0 so the tooltip does not stay displayed for 200ms by default
+* Replace queries with hardcoded "monica" database name to use the current default connection database
+* Set the default_avatar_color property before saving a contact model.
+* Move docs folder back to the repository
+
+v2.2.1 - 2018-05-31
+-------------------
+
+* Fix url of confirmation email resend
+* Update translations
+* Fix sonar run on release version
+
+v2.2.0 - 2018-05-30
+-------------------
+
+* Add debts on the dashboard
+* Add support for User and Currency objects in the API
+* Add ability to force users to accept privacy and terms of use
+* Fix journal entry with date different than today's date not working
+* Fix Contact search dropdown showing non-contacts that link to nowhere
+* Add ability to sort contact list by untagged contacts
+* Allow multiple imported fields and replace existing contacts
+* Add ex wife/husband relationship
+* Fix duplication of tags when filtering contacts
+* Add trusted proxies to run behind a ssl terminating loadbalancer
+* Fix reminders for past events are visible on the dashboard
+* Add email address verification on register, and email change
+* Change table structure to support emojis in texts
+
+v2.1.1 - 2018-05-13
+-------------------
+
+* Change file structure inside the People folder (backend change)
+* Remove automatic birthday reminder creation when editing a contact
+* Set fixed version for MySQL in docker-compose
+* Build absolute path to stubs files in UploadVCardTest and UploadVCardsTest (backend)
+* Refactor how countries are fetched
+* Change address fetching in API
+* Add ComposerScripts links
+* Fix tests to prepare for foreign keys (backend)
+* Fix deploy tagged version
+* Fix vagrant box
+* Fix notifications being sent even if reminder rule is set to off
+* Fix API locale
+* Fix update command (backend)
 
 v2.1.0 - 2018-05-03
 -------------------

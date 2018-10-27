@@ -4,12 +4,12 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">{{ trans('people.modal_call_title') }}</h5>
-        <button type="button" class="close {{ \App\Helpers\LocaleHelper::getDirection() }}" data-dismiss="modal">
+        <button type="button" class="close" data-dismiss="modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST" action="/people/{{ $contact->hashID() }}/call/store">
+        <form method="POST" action="{{ route('people.call.store', $contact) }}">
           {{ csrf_field() }}
 
           <div class="form-group">
@@ -26,16 +26,16 @@
             <p class="exact-date">
               {{ trans('people.modal_call_exact_date') }}
               <input type="date" name="called_at" class="form-control"
-                           value="{{ now()->format('Y-m-d') }}"
-                           min="{{ now(Auth::user()->timezone)->subYears(120)->format('Y-m-d') }}"
-                           max="{{ now(Auth::user()->timezone)->format('Y-m-d') }}">
+                           value="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
+                           min="{{ now(\App\Helpers\DateHelper::getTimezone())->subYears(120)->toDateString() }}"
+                           max="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}">
             </p>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ trans('app.cancel') }}</button>
-        <button type="button" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
+        <button type="button" cy-name="save-call-button" class="btn btn-primary modal-cta">{{ trans('app.save') }}</button>
       </div>
     </div>
   </div>

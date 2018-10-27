@@ -2,7 +2,7 @@
 
 <div class="mt2">
 
-  <select id="{{ $class }}_month" name="{{ $class }}_month" class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'mr2' : '' }}">
+  <select id="{{ $class }}_month" name="{{ $class }}_month" class="{{ htmldir() == 'ltr' ? 'mr2' : '' }}">
     @foreach($months as $month)
       <option value="{{ $month['id'] }}"
         @if ($specialDate && $specialDate instanceof Carbon\Carbon)
@@ -30,22 +30,22 @@
     @endfor
   </select>
 
-    <select id="{{ $class }}_year" name="{{ $class }}_year" class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? '' : 'mr2' }}">
-      @if ($specialDate && $specialDate instanceof APP\SpecialDate)
+    <select id="{{ $class }}_year" name="{{ $class }}_year" class="{{ htmldir() == 'ltr' ? '' : 'mr2' }}">
+      @if ($specialDate && $specialDate instanceof APP\Models\Instance\SpecialDate)
         <option value="0" {{ ! $specialDate->is_year_unknown ? '' : 'selected="selected"' }}>{{ trans('app.unknown') }}</option>
       @else
         <option value="0">{{ trans('app.unknown') }}</option>
       @endif
 
-      @foreach($years as $year => $value)
-        <option value="{{ $value }}"
+      @foreach($years as $year)
+        <option value="{{ $year['id'] }}"
           @if ($specialDate && $specialDate instanceof Carbon\Carbon)
-            {{ $specialDate->year == $value ? 'selected="selected"': '' }}
+            {{ $specialDate->year == $year['id'] ? 'selected="selected"': '' }}
           @else
-            {{ ($specialDate == null) ? '' : ($specialDate->is_year_unknown ? '' : (($specialDate->date->year == $value) ? 'selected="selected"': '')) }}
+            {{ ($specialDate == null) ? '' : ($specialDate->is_year_unknown ? '' : (($specialDate->date->year == $year['id']) ? 'selected="selected"': '')) }}
           @endif
         >
-          {{ $value }}
+          {{ $year['id'] }}
         </option>
       @endforeach
     </select>

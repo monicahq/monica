@@ -2,12 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\User;
-use App\Account;
-use App\Reminder;
-use App\Jobs\SendReminderEmail;
 use Illuminate\Console\Command;
-use App\Jobs\SetNextReminderDate;
+use App\Models\Contact\Reminder;
+use App\Jobs\Reminders\ScheduleReminders;
 
 class SendReminders extends Command
 {
@@ -36,9 +33,15 @@ class SendReminders extends Command
         // Why 2? because in terms of timezone, we can have up to more than 24 hours
         // between two timezones and we need to take into accounts reminders
         // that are not in the same timezone.
-        $reminders = Reminder::where('next_expected_date', '<', now()->addDays(2))
-                                ->orderBy('next_expected_date', 'asc')->get();
+        Reminder::where('next_expected_date', '<', now()->addDays(2))
+                    ->orderBy('next_expected_date', 'asc')
+                    ->chunk(500, function ($reminders) {
+                        $this->schedule($reminders);
+                    });
+    }
 
+    private function schedule($reminders)
+    {
         foreach ($reminders as $reminder) {
             // Skip the reminder if the contact has been deleted (and for some
             // reasons, the reminder hasn't)
@@ -46,29 +49,8 @@ class SendReminders extends Command
                 $reminder->delete();
                 continue;
             }
-            $this->handleReminder($reminder);
-        }
-    }
 
-    private function handleReminder($reminder)
-    {
-        $account = $reminder->contact->account;
-        $numberOfUsersInAccount = $account->users->count();
-        $counter = 1;
-
-        foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($reminder->next_expected_date)) {
-                if (! $account->hasLimitations()) {
-                    dispatch(new SendReminderEmail($reminder, $user));
-                }
-
-                if ($counter == $numberOfUsersInAccount) {
-                    // We should only do this when we are sure that this is
-                    // the last user who should be warned in this account.
-                    dispatch(new SetNextReminderDate($reminder, $user->timezone));
-                }
-            }
-            $counter++;
+            ScheduleReminders::dispatch($reminder);
         }
     }
 }

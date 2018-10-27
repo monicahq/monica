@@ -2,6 +2,18 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Version of the application that you run
+    |--------------------------------------------------------------------------
+    |
+    | This is used to indicate which version of Monica you are running. You
+    | should not change this setting yourself. DO NOT CHANGE IT YOURSELF. Or
+    | bad things will happen.
+    |
+    */
+    'app_version' => '2.9.0',
+
    /*
     |--------------------------------------------------------------------------
     | Disable User registration
@@ -11,6 +23,16 @@ return [
     |
     */
     'disable_signup' => env('APP_DISABLE_SIGNUP', false),
+
+   /*
+    |--------------------------------------------------------------------------
+    | Activate double optin on signup
+    |--------------------------------------------------------------------------
+    |
+    | Activates double optin on signup
+    |
+    */
+    'signup_double_optin' => env('APP_SIGNUP_DOUBLE_OPTIN', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,38 +56,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Access to paid features
-    |--------------------------------------------------------------------------
-    |
-    | This value determines if the instance can access the paid features that
-    | are available on https://monicahq.com, for free.
-    | If set to false, the instance won't have access to the paid features.
-    |
-    | Available Settings: true, false
-    |
-    */
-    'requires_subscription' => env('REQUIRES_SUBSCRIPTION', false),
-
-    /*
-    |--------------------------------------------------------------------------
-    | Paid plan settings
-    |--------------------------------------------------------------------------
-    |
-    | This value determines the name and the cost of the paid plan offered
-    | on https://monicahq.com. These settings make sense only if you do activate
-    | the `unlock_paid_features` above.
-    |
-    |
-    */
-   'paid_plan_monthly_friendly_name' => env('PAID_PLAN_MONTHLY_FRIENDLY_NAME', null),
-   'paid_plan_monthly_id' => env('PAID_PLAN_MONTHLY_ID', null),
-   'paid_plan_monthly_price' => env('PAID_PLAN_MONTHLY_PRICE', null),
-   'paid_plan_annual_friendly_name' => env('PAID_PLAN_ANNUAL_FRIENDLY_NAME', null),
-   'paid_plan_annual_id' => env('PAID_PLAN_ANNUAL_ID', null),
-   'paid_plan_annual_price' => env('PAID_PLAN_ANNUAL_PRICE', null),
-
-    /*
-    |--------------------------------------------------------------------------
     | Ping that checks if a new version is available
     |--------------------------------------------------------------------------
     |
@@ -86,6 +76,7 @@ return [
     |
     */
     'allow_statistics_through_public_api_access' => env('ALLOW_STATISTICS_THROUGH_PUBLIC_API_ACCESS', false),
+
     /*
     |--------------------------------------------------------------------------
     | URL of the server for the version check
@@ -114,6 +105,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Compliance to various international policies.
+    |--------------------------------------------------------------------------
+    |
+    | Indicates whether we should comply to international policies like GDPR or
+    | CASL. Defaults to false, but if you do, it's at your own risk.
+    |
+    */
+    'policy_compliant' => env('POLICY_COMPLIANT', true),
+
+    /*
+    |--------------------------------------------------------------------------
     | Specific to the official Monica mobile application
     |--------------------------------------------------------------------------
     |
@@ -129,13 +131,75 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Version of the application that you run
+    | Access to paid features
     |--------------------------------------------------------------------------
     |
-    | This is used to indicate which version of Monica you are running. You
-    | should not change this setting yourself. DO NOT CHANGE IT YOURSELF. Or
-    | bad things will happen.
+    | This value determines if the instance can access the paid features that
+    | are available on https://monicahq.com, for free.
+    | If set to false, the instance won't have access to the paid features.
     |
-    */
-    'app_version' => '2.1.0',
+    | Available Settings: true, false
+    |
+     */
+    'requires_subscription' => env('REQUIRES_SUBSCRIPTION', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Paid plan settings
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the name and the cost of the paid plan offered
+    | on https://monicahq.com. These settings make sense only if you do activate
+    | the `unlock_paid_features` above.
+    |
+    |
+     */
+    'paid_plan_monthly_friendly_name' => env('PAID_PLAN_MONTHLY_FRIENDLY_NAME', null),
+    'paid_plan_monthly_id' => env('PAID_PLAN_MONTHLY_ID', null),
+    'paid_plan_monthly_price' => env('PAID_PLAN_MONTHLY_PRICE', null),
+    'paid_plan_annual_friendly_name' => env('PAID_PLAN_ANNUAL_FRIENDLY_NAME', null),
+    'paid_plan_annual_id' => env('PAID_PLAN_ANNUAL_ID', null),
+    'paid_plan_annual_price' => env('PAID_PLAN_ANNUAL_PRICE', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Number of allowed contacts
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the number of contacts allowed on a free account.
+    |
+     */
+    'number_of_allowed_contacts_free_account' => env('NUMBER_OF_ALLOWED_CONTACTS_FREE_ACCOUNT', 10),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Email address to contact for support
+    |--------------------------------------------------------------------------
+    |
+    | This value will be the email address used in the footer of the application
+    | to contact support.
+    |
+     */
+    'support_email_address' => env('SUPPORT_EMAIL_ADDRESS', 'support@monicahq.com'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Twitter account for support
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the twitter account shown in case of maintenance in
+    | progress.
+    |
+     */
+    'twitter_account' => env('SUPPORT_TWITTER', 'monicaHQ_app'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Maximum allowed size for uploaded files, in kilobytes.
+    |--------------------------------------------------------------------------
+    |
+    | This value determines maximum size when uploading a file, in kilobytes.
+    |
+     */
+    'max_upload_size' => env('DEFAULT_MAX_UPLOAD_SIZE', 10240),
 ];

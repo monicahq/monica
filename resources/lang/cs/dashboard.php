@@ -11,6 +11,12 @@ return [
     'tab_recent_calls' => 'Recent calls',
     'tab_favorite_notes' => 'Favorite notes',
     'tab_calls_blank' => 'You haven’t logged a call yet.',
+    'tab_debts' => 'Debts',
+    'tab_debts_blank' => 'You haven’t logged any debt yet.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
+
+    'debts_you_owe' => 'You owe',
 
     'statistics_contacts' => 'Kontaktů',
     'statistics_activities' => 'Aktivit',

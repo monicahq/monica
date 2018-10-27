@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_subscriptions') }}
@@ -29,11 +29,12 @@
     <div class="br3 ba b--gray-monica bg-white pa4">
       <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_choose', ['plan' => $planInformation['type']]) }}</h2>
       <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_infos') }}</p>
-      <form action="/settings/subscriptions/processPayment" method="post" id="payment-form" class="mb4">
+      <form action="{{ route('settings.subscriptions.payment') }}" method="post" id="payment-form" class="mb4">
         {{ csrf_field() }}
 
         <input type="hidden" name="plan" value="{{ $planInformation['type'] }}">
         <div class="b--gray-monica ba pa4 br2 mb3 bg-black-05">
+          @include('partials.errors')
           <div class="form-row">
             <div class="mb3">
               <span>{{ trans('settings.subscriptions_upgrade_name') }}</span>

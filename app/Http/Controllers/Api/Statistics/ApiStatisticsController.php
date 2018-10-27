@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api\Statistics;
 
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use App\Models\Instance\Instance;
+use App\Models\Instance\Statistic;
 use App\Http\Controllers\Api\ApiController;
 
 class ApiStatisticsController extends ApiController
@@ -19,20 +22,20 @@ class ApiStatisticsController extends ApiController
         }
 
         // Collecting statistics
-        $statistic = \App\Statistic::orderBy('created_at', 'desc')->first();
-        $instance = \App\Instance::first();
+        $statistic = Statistic::orderBy('created_at', 'desc')->first();
+        $instance = Instance::first();
 
         // Get the date of the monday of last week
-        $dateMondayLastWeek = \Carbon\Carbon::now()->subDays(7);
+        $dateMondayLastWeek = now()->subDays(7);
         $dateMondayLastWeek = $dateMondayLastWeek->startOfWeek();
 
         // Get the date of the sunday of last week
-        $dateSundayLastWeek = \Carbon\Carbon::now()->subDays(7);
+        $dateSundayLastWeek = now()->subDays(7);
         $dateSundayLastWeek = $dateSundayLastWeek->endOfWeek();
 
         // Get the number of users last monday
-        $instanceLastMonday = \App\Statistic::whereDate('created_at', '=', $dateMondayLastWeek->format('Y-m-d'))->first();
-        $instanceLastSunday = \App\Statistic::whereDate('created_at', '=', $dateSundayLastWeek->format('Y-m-d'))->first();
+        $instanceLastMonday = Statistic::whereDate('created_at', '=', $dateMondayLastWeek->toDateString())->first();
+        $instanceLastSunday = Statistic::whereDate('created_at', '=', $dateSundayLastWeek->toDateString())->first();
 
         $numberNewUsers = 0;
         if ($instanceLastMonday && $instanceLastSunday) {
@@ -41,7 +44,7 @@ class ApiStatisticsController extends ApiController
 
         $statistics = collect();
         $statistics->push([
-            'instance_creation_date' => $instance->created_at->format(config('api.timestamp_format')),
+            'instance_creation_date' => DateHelper::getTimestamp($instance->created_at),
             'number_of_contacts' => ($statistic ? $statistic->number_of_contacts : 0),
             'number_of_users' => ($statistic ? $statistic->number_of_users : 0),
             'number_of_activities' => ($statistic ? $statistic->number_of_activities : 0),

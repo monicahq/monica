@@ -2,14 +2,16 @@
 
 namespace App\Traits;
 
-use App\Gender;
-use App\Address;
-use App\Contact;
-use App\ContactField;
-use App\ContactFieldType;
 use Sabre\VObject\Reader;
+use App\Helpers\VCardHelper;
+use App\Helpers\LocaleHelper;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 
 trait VCardImporter
 {
@@ -126,18 +128,21 @@ trait VCardImporter
         }
 
         if (! is_null($this->formatValue($vcard->TEL))) {
+            $tel = (string) $vcard->TEL;
+
+            $countryISO = VCardHelper::getCountryISOFromSabreVCard($vcard);
+            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO);
+
             // Saves the phone number
             $contactField = new ContactField;
             $contactField->contact_id = $contact->id;
             $contactField->account_id = $contact->account_id;
-            $contactField->data = $this->formatValue($vcard->TEL);
+            $contactField->data = $this->formatValue($tel);
             $contactField->contact_field_type_id = $this->contactFieldPhoneId();
             $contactField->save();
         }
 
         $contact->updateGravatar();
-
-        $contact->logEvent('contact', $contact->id, 'create');
     }
 
     private function contactFieldEmailId()
@@ -236,6 +241,6 @@ trait VCardImporter
      */
     public function contactHasName(VCard $vcard): bool
     {
-        return ! empty($vcard->N->getParts()[1]) || ! empty((string) $vcard->NICKNAME);
+        return ($vcard->N !== null && ! empty($vcard->N->getParts()[1])) || ! empty((string) $vcard->NICKNAME);
     }
 }

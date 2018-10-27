@@ -2,7 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\User\User;
 use Tests\FeatureTestCase;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends FeatureTestCase
@@ -18,7 +22,7 @@ class ActivityTest extends FeatureTestCase
     {
         $user = $this->signIn();
 
-        $contact = factory('App\Contact')->create([
+        $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -29,7 +33,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -46,7 +50,7 @@ class ActivityTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/activities/add/'.$contact->id);
+        $response = $this->get('/activities/add/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -62,15 +66,11 @@ class ActivityTest extends FeatureTestCase
         $activityTitle = 'This is the title';
         $activityDate = now();
 
-        $params = [
-            'summary' => $activityTitle,
-            'date_it_happened' => $activityDate,
-        ];
-
-        $response = $this->post('/activities/store/'.$contact->id, $params + ['contacts' => [$contact->id]]);
+        $response = $this->addActivity($contact, $activityTitle, $activityDate);
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the activity has been added
+        $params = [];
         $params['account_id'] = $user->account_id;
         $params['summary'] = $activityTitle;
         $params['date_it_happened'] = $activityDate;
@@ -79,32 +79,75 @@ class ActivityTest extends FeatureTestCase
 
         // Get the activity that we just created
         // and make sure it's in our pivot table
-        $latestActivity = \App\Activity::all('id')->last();
+        $latestActivity = Activity::all('id')->last();
 
         $this->assertDatabaseHas('activity_contact', [
             'contact_id' => $contact->id,
             'activity_id' => $latestActivity->id,
         ]);
 
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'activity';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
-
         // Check that the Contact view contains the newly created note
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
         $response->assertSee($activityTitle);
+    }
+
+    public function test_add_an_activity_account_mismatch()
+    {
+        list($user1, $contact1) = $this->fetchUser();
+        $account2 = factory(Account::class)->create();
+        $user2 = factory(User::class)->create([
+            'account_id' => $account2->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $account2->id,
+        ]);
+
+        $activityTitle = 'This is the title';
+        $activityDate = now();
+
+        $params = [
+            'summary' => $activityTitle,
+            'date_it_happened' => $activityDate,
+        ];
+
+        $response = $this->post('/activities/store/'.$contact1->hashID(), $params + ['contacts' => [$contact2->id]]);
+
+        // Assert the activity is missing
+        $params['account_id'] = $user1->account_id;
+        $this->assertDatabaseMissing('activities', $params);
+
+        $params['account_id'] = $user2->account_id;
+        $this->assertDatabaseMissing('activities', $params);
+    }
+
+    public function test_add_an_activity_account_mismatch_return_notfound()
+    {
+        list($user1, $contact1) = $this->fetchUser();
+        $account2 = factory(Account::class)->create();
+        $user2 = factory(User::class)->create([
+            'account_id' => $account2->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $account2->id,
+        ]);
+
+        $activityTitle = 'This is the title';
+        $activityDate = now();
+
+        $params = [
+            'summary' => $activityTitle,
+            'date_it_happened' => $activityDate,
+        ];
+
+        $response = $this->post('/activities/store/'.$contact1->hashID(), $params + ['contacts' => [$contact2->id]]);
+        $response->assertStatus(302);
     }
 
     public function test_user_can_edit_an_activity()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $activity = factory(\App\Activity::class)->create([
+        $activity = factory(Activity::class)->create([
             'account_id' => $user->account_id,
             'summary' => 'This is the title',
             'date_it_happened' => now(),
@@ -114,7 +157,7 @@ class ActivityTest extends FeatureTestCase
         $contact->activities()->save($activity);
 
         // check that we can access the edit activity view
-        $response = $this->get('/activities/'.$activity->id.'/edit/'.$contact->id);
+        $response = $this->get('/activities/'.$activity->hashID().'/edit/'.$contact->hashID());
         $response->assertStatus(200);
 
         // now edit the activity
@@ -126,7 +169,8 @@ class ActivityTest extends FeatureTestCase
             'description' => null,
         ];
 
-        $this->put('/activities/'.$activity->id.'/'.$contact->id, $params);
+        $response = $this->put('/activities/'.$activity->hashID().'/'.$contact->hashID(), $params);
+        $response->assertRedirect('/people/'.$contact->hashID());
 
         $newParams = [];
 
@@ -136,16 +180,90 @@ class ActivityTest extends FeatureTestCase
         $newParams['summary'] = 'this is another test';
 
         $this->assertDatabaseHas('activities', $newParams);
+    }
 
-        $eventParams = [];
+    public function test_user_doesnt_see_activity_report_link_when_no_activities_are_available()
+    {
+        list($user, $contact) = $this->fetchUser();
 
-        // make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'activity';
-        $eventParams['object_id'] = $activity->id;
-        $eventParams['nature_of_operation'] = 'update';
+        $response = $this->get('/people/'.$contact->hashID());
 
-        $this->assertDatabaseHas('events', $eventParams);
+        $response->assertStatus(200);
+
+        // is the default blank state present?
+        $response->assertDontSee(
+            'View activities report'
+        );
+    }
+
+    public function test_user_see_activity_report_link_when_activities_are_available()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID());
+
+        $response->assertStatus(200);
+
+        // is the default blank state present?
+        $response->assertDontSee(
+            'View activities report'
+        );
+    }
+
+    public function test_user_see_activity_report_page()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $activity = factory(Activity::class)->create([
+            'account_id' => $user->account_id,
+            'summary' => 'This is the title',
+            'date_it_happened' => '1990-01-05',
+        ]);
+        $contact->activities()->save($activity);
+
+        $activity = factory(Activity::class)->create([
+            'account_id' => $user->account_id,
+            'summary' => 'This is a second title',
+            'date_it_happened' => '2000-01-05',
+        ]);
+        $contact->activities()->save($activity);
+
+        $contact->calculateActivitiesStatistics();
+
+        $response = $this->followingRedirects()
+                ->get('/people/'.$contact->hashID().'/activities');
+
+        $response->assertStatus(200);
+
+        $response->assertSee(
+            'Here is what you two have done in 2000'
+        );
+
+        $response->assertSee(
+            'This is a second title'
+        );
+
+        $response = $this->get('/people/'.$contact->hashID().'/activities/1990');
+
+        $response->assertStatus(200);
+
+        $response->assertSee(
+            'Here is what you two have done in 1990'
+        );
+
+        $response->assertSee(
+            'This is the title'
+        );
+    }
+
+    /* private methods */
+    private function addActivity($contact, $title, $date)
+    {
+        $params = [
+            'summary' => $title,
+            'date_it_happened' => $date,
+        ];
+
+        return $this->post('/activities/store/'.$contact->hashID(), $params + ['contacts' => [$contact->id]]);
     }
 }

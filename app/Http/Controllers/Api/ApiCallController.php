@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Call;
-use App\Contact;
+use App\Models\Contact\Call;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Call\Call as CallResource;
@@ -68,7 +68,7 @@ class ApiCallController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $call->account_id = auth()->user()->account->id;
+        $call->account_id = auth()->user()->account_id;
         $call->save();
 
         return new CallResource($call);

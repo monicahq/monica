@@ -2,23 +2,12 @@
 
 namespace App\Providers;
 
-use App\Day;
-use App\Pet;
-use App\Debt;
-use App\Gift;
-use App\Note;
-use App\Task;
-use App\Gender;
-use App\Module;
-use App\Contact;
-use App\Activity;
-use App\Reminder;
-use App\ContactField;
-use App\Relationship;
-use App\ReminderRule;
 use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
+use App\Models\Contact\Contact;
+use App\Exceptions\WrongIdException;
 use Illuminate\Support\Facades\Route;
+use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
@@ -44,120 +33,38 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('contact', function ($value) {
             try {
-                $value = app('idhasher')->decodeId($value);
+                $id = app('idhasher')->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $value)
-                    ->firstOrFail();
+                    ->findOrFail($id);
+            } catch (WrongIdException $ex) {
+                redirect()->route('people.missing')->send();
             } catch (ModelNotFoundException $ex) {
-                redirect('/people/notfound')->send();
+                redirect()->route('people.missing')->send();
             }
         });
 
-        Route::bind('contactfield', function ($value, $route) {
-            $value = app('idhasher')->decodeId($value);
+        Route::model('otherContact', Contact::class);
 
-            return ContactField::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $value)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('activity', function ($value, $route) {
-            $value = app('idhasher')->decodeId($value);
-
-            return  Activity::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('reminder', function ($value, $route) {
-            $value = app('idhasher')->decodeId($value);
-
-            return  Reminder::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('task', function ($value, $route) {
-            return  Task::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('gift', function ($value, $route) {
-            return  Gift::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('debt', function ($value, $route) {
-            $value = app('idhasher')->decodeId($value);
-
-            return  Debt::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
+        /*
+        //This route is not used
         Route::bind('relationships', function ($value, $route) {
-            Contact::findOrFail($route->parameter('contact')->id);
+            Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($route->parameter('contact')->id);
 
             $value = app('idhasher')->decodeId($value);
+
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($value);
 
             Relationship::where('account_id', auth()->user()->account_id)
                 ->where('contact_is', $route->parameter('contact')->id)
                 ->where('of_contact', $value)
                 ->firstOrFail();
 
-            return Contact::findOrFail($value);
+            return $contact;
         });
-
-        Route::bind('note', function ($value, $route) {
-            return  Note::where('account_id', auth()->user()->account_id)
-                ->where('contact_id', $route->parameter('contact')->id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('journalEntry', function ($value, $route) {
-            return  JournalEntry::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('day', function ($value, $route) {
-            return  Day::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('pet', function ($value, $route) {
-            return Pet::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('gender', function ($value) {
-            return Gender::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('reminderRule', function ($value) {
-            return ReminderRule::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
-
-        Route::bind('module', function ($value) {
-            return Module::where('account_id', auth()->user()->account_id)
-                ->where('id', $value)
-                ->firstOrFail();
-        });
+        */
     }
 
     /**
@@ -175,6 +82,8 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapOAuthRoutes($router);
 
         $this->mapCardDAVRoutes($router);
+
+        $this->mapSpecialRoutes($router);
     }
 
     /**
@@ -224,7 +133,7 @@ class RouteServiceProvider extends ServiceProvider
             'prefix' => 'api',
             'middleware' => 'api',
             'namespace' => $this->namespace,
-        ], function ($router) {
+        ], function () {
             require base_path('routes/api.php');
         });
     }
@@ -241,8 +150,25 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'prefix' => 'carddav',
             'namespace' => $this->namespace,
-        ], function ($router) {
+        ], function () {
             require base_path('routes/carddav.php');
+        });
+    }
+
+    /**
+     * Define the "special" routes for the application.
+     *
+     * These routes are typically stateless.
+     *
+     * @return void
+     */
+    protected function mapSpecialRoutes(Router $router)
+    {
+        $router->group([
+            'middleware' => 'web',
+            'namespace' => $this->namespace,
+        ], function () {
+            require base_path('routes/special.php');
         });
     }
 }

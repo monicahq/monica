@@ -43,7 +43,7 @@
         </div>
       </div>
 
-      <div class="dt-row bb b--light-gray" v-for="contactFieldType in contactFieldTypes">
+      <div class="dt-row hover bb b--light-gray" v-for="contactFieldType in contactFieldTypes">
         <div class="dtc">
           <div class="pa2">
             <i :class="contactFieldType.fontawesome_icon" class="pr2" v-if="contactFieldType.fontawesome_icon"></i>
@@ -243,7 +243,7 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.dirltr = $('html').attr('dir') == 'ltr';
+                this.dirltr = this.$root.htmldir == 'ltr';
                 this.getContactFieldTypes();
 
                 $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
@@ -347,7 +347,7 @@
                         if (typeof error.response.data === 'object') {
                             form.errors = _.flatten(_.toArray(error.response.data));
                         } else {
-                            form.errors = ['Something went wrong. Please try again.'];
+                            form.errors = [this.$t('app.error_try_again')];
                         }
                     });
             },

@@ -10,13 +10,13 @@
           <div class="col-xs-12">
             <ul class="horizontal">
               <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
-                <a href="/people">{{ trans('app.breadcrumb_list_contacts') }}</a>
+                <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
               </li>
               <li>
-                <a href="{{ route('people.show', $contact) }}">{{ $contact->getCompleteName(auth()->user()->name_order) }}</a>
+                <a href="{{ route('people.show', $contact) }}">{{ $contact->name }}</a>
               </li>
               <li>
                 {{ trans('app.breadcrumb_edit_introductions') }}
@@ -49,11 +49,11 @@
                   <label for="metThroughId">{{ trans('people.introductions_edit_met_through') }}</label>
                   <select class="form-control" name="metThroughId" id="metThroughId">
                     <option value="">{{ trans('people.introductions_no_met_through') }}</option>
-                    @foreach (auth()->user()->account->contacts()->real()->get() as $metThroughContact)
+                    @foreach (auth()->user()->account->contacts()->real()->active()->get() as $metThroughContact)
 
                       @if ($metThroughContact->id != $contact->id)
                       <option value="{{ $metThroughContact->id }}" {{ (is_null($contact->first_met_through_contact_id)) ? '' : (($metThroughContact->id == $contact->first_met_through_contact_id) ? 'selected' : '') }}>
-                        {{ $metThroughContact->getCompleteName(auth()->user()->name_order) }}
+                        {{ $metThroughContact->name }}
                       </option>
                       @endif
 
@@ -86,7 +86,7 @@
                       >
 
                       {{ trans('people.introductions_first_met_date_known') }}
-                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate ?? Carbon\Carbon::now(), 'class' => 'first_met'])
+                      @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->firstMetDate ?? now(\App\Helpers\DateHelper::getTimezone()), 'class' => 'first_met'])
                     </label>
                   </div>
                 </fieldset>

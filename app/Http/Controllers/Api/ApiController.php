@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\ApiUsage;
 use Illuminate\Http\Request;
+use App\Models\Account\ApiUsage;
 use App\Http\Controllers\Controller;
 
 class ApiController extends Controller

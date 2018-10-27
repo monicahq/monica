@@ -2,25 +2,13 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Contact;
-use App\Reminder;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\RemindersRequest;
 
 class RemindersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Contact $contact)
-    {
-        return view('people.reminders.index')
-            ->withContact($contact);
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -56,22 +44,8 @@ class RemindersController extends Controller
 
         $reminder->scheduleNotifications();
 
-        $contact->logEvent('reminder', $reminder->id, 'create');
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Reminder $reminder)
-    {
-        //
     }
 
     /**
@@ -112,9 +86,7 @@ class RemindersController extends Controller
         $reminder->purgeNotifications();
         $reminder->scheduleNotifications();
 
-        $contact->logEvent('reminder', $reminder->id, 'update');
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_update_success'));
     }
 
@@ -124,20 +96,16 @@ class RemindersController extends Controller
      * @param Reminder $reminder
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, $reminderId)
+    public function destroy(Contact $contact, Reminder $reminder)
     {
-        $reminder = Reminder::findOrFail($reminderId);
-
         if ($reminder->account_id != auth()->user()->account_id) {
-            return redirect('/people/');
+            return redirect()->route('people.index');
         }
 
         $reminder->purgeNotifications();
         $reminder->delete();
 
-        $contact->events()->forObject($reminder)->get()->each->delete();
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_delete_success'));
     }
 }

@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Matriphe\ISO639\ISO639;
 use Illuminate\Support\Facades\Auth;
+use libphonenumber\PhoneNumberFormat;
 
 class LocaleHelper
 {
@@ -103,5 +104,33 @@ class LocaleHelper
         static::$locales[$locale] = $lang;
 
         return $lang;
+    }
+
+    /**
+     * Format phone number by country.
+     *
+     * @param string $tel
+     * @param $iso
+     * @param int $format
+     *
+     * @return null | string
+     */
+    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL)
+    {
+        if (empty($iso)) {
+            return $tel;
+        }
+
+        try {
+            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+
+            $phoneInstance = $phoneUtil->parse($tel, strtoupper($iso));
+
+            $tel = $phoneUtil->format($phoneInstance, $format);
+        } catch (\libphonenumber\NumberParseException $e) {
+            // Do nothing if the number cannot be parsed successfully
+        }
+
+        return $tel;
     }
 }

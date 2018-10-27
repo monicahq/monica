@@ -4,7 +4,6 @@
 
     <h2>{{ trans('people.activities_add_title', ['name' => $contact->first_name]) }}</h2>
 
-
     <div class="form-group user-input">
         <label for="summary">{{ trans('people.activities_who_was_involved') }}</label>
         <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control user-input-search-input">
@@ -13,11 +12,11 @@
         <ul class="contacts">
             <ul class="contacts-list">
                 @if ($contact && $method == 'POST')
-                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endif
                 @foreach ($activity->contacts as $contact)
-                    <li class="pretty-tag"><a href="/people/{{ $contact->id }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
+                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                     <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
                 @endforeach
             </ul>
@@ -39,9 +38,9 @@
     <div class="form-group{{ $errors->has('date_it_happened') ? ' has-error' : '' }}">
         <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
         <input type="date" id="date_it_happened" name="date_it_happened" class="form-control"
-               value="{{ old('date_it_happened') ?? $activity->date_it_happened->format('Y-m-d') ?? now(Auth::user()->timezone)->format('Y-m-d') }}"
-               min="{{ now(Auth::user()->timezone)->subYears(10)->format('Y-m-d') }}"
-               max="{{ now(Auth::user()->timezone)->format('Y-m-d') }}"
+               value="{{ old('date_it_happened') ?? (! is_null($activity->date_it_happened) ? $activity->date_it_happened->toDateString() : now(\App\Helpers\DateHelper::getTimezone())->toDateString()) }}"
+               min="{{ now(\App\Helpers\DateHelper::getTimezone())->subYears(10)->toDateString() }}"
+               max="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
         >
         @if ($errors->has('date_it_happened'))
             <span class="help-block">
@@ -61,12 +60,18 @@
             </option>
 
             {{-- Predefined options --}}
-            @foreach (App\ActivityTypeGroup::all() as $activityTypeGroup)
-                <optgroup label="{{ trans('people.activity_type_group_'.$activityTypeGroup->key) }}">
-                    @foreach (App\ActivityType::where('activity_type_group_id', $activityTypeGroup->id)->get() as $activityType)
-                        <option value="{{ $activityType->id }}">
-                            {{ trans('people.activity_type_'.$activityType->key) }}
-                        </option>
+            @foreach (auth()->user()->account->activityTypeCategories as $activityTypeCategory)
+                <optgroup label="{{ $activityTypeCategory->name }}">
+                    @foreach (App\Models\Contact\ActivityType::where('activity_type_category_id', $activityTypeCategory->id)->get() as $activityType)
+                        @if (! is_null($activity->type) && $activity->type->id == $activityType->id)
+                            <option value="{{ $activityType->id }}" selected>
+                                {{ $activityType->name }}
+                            </option>
+                        @else
+                            <option value="{{ $activityType->id }}">
+                                {{ $activityType->name }}
+                            </option>
+                        @endif
                     @endforeach
                 </optgroup>
             @endforeach
@@ -89,7 +94,7 @@
     </div>
 
     <div class="form-group actions">
-        <button type="submit" class="btn btn-primary">{{ trans('people.activities_add_cta') }}</button>
+        <button type="submit" cy-name="save-activity-button" class="btn btn-primary">{{ trans('people.activities_add_cta') }}</button>
         <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
     </div>
 </form>

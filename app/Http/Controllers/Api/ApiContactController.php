@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Contact;
+use App\Helpers\DBHelper;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -25,7 +27,7 @@ class ApiContactController extends ApiController
     public function index(Request $request)
     {
         if ($request->get('query')) {
-            $needle = $request->get('query');
+            $needle = rawurldecode($request->get('query'));
 
             try {
                 $contacts = SearchHelper::searchContacts(
@@ -47,16 +49,16 @@ class ApiContactController extends ApiController
         }
 
         try {
-            $contacts = auth()->user()->account->contacts()->real()
+            $contacts = auth()->user()->account->contacts()
+                            ->real()
+                            ->active()
                             ->orderBy($this->sort, $this->sortDirection)
                             ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
-
-        return $collection;
+        return $this->applyWithParameter($contacts, $this->getWithParameter());
     }
 
     /**
@@ -99,12 +101,14 @@ class ApiContactController extends ApiController
                 $request->only([
                     'first_name',
                     'last_name',
+                    'nickname',
                     'gender_id',
                     'job',
                     'company',
                     'food_preferencies',
                     'linkedin_profile_url',
                     'first_met_through_contact_id',
+                    'is_starred',
                     'is_partial',
                     'is_dead',
                     'deceased_date',
@@ -124,14 +128,15 @@ class ApiContactController extends ApiController
             $contact->first_met_additional_info = $request->get('first_met_information');
         }
 
-        $contact->account_id = auth()->user()->account->id;
+        $contact->account_id = auth()->user()->account_id;
+        $contact->setAvatarColor();
         $contact->save();
 
         // birthdate
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -147,7 +152,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -163,7 +168,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
@@ -176,7 +181,6 @@ class ApiContactController extends ApiController
         }
 
         $contact->setAvatarColor();
-        $contact->logEvent('contact', $contact->id, 'create');
 
         return new ContactResource($contact);
     }
@@ -221,7 +225,7 @@ class ApiContactController extends ApiController
         if ($request->get('birthdate')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('birthdate'));
+            $date = DateHelper::parseDate($request->get('birthdate'));
 
             if ($request->get('birthdate_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
@@ -238,7 +242,7 @@ class ApiContactController extends ApiController
         if ($request->get('first_met_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('first_met_date'));
+            $date = DateHelper::parseDate($request->get('first_met_date'));
 
             if ($request->get('first_met_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
@@ -255,7 +259,7 @@ class ApiContactController extends ApiController
         if ($request->get('deceased_date')) {
 
             // in this case, we know the month and day, but not necessarily the year
-            $date = \Carbon\Carbon::parse($request->get('deceased_date'));
+            $date = DateHelper::parseDate($request->get('deceased_date'));
 
             if ($request->get('deceased_date_is_year_unknown')) {
                 $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
@@ -266,8 +270,6 @@ class ApiContactController extends ApiController
         } elseif ($request->get('deceased_date_is_age_based')) {
             $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
         }
-
-        $contact->logEvent('contact', $contact->id, 'update');
 
         return new ContactResource($contact);
     }
@@ -284,6 +286,7 @@ class ApiContactController extends ApiController
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'nullable|max:100',
+            'nickname' => 'nullable|max:100',
             'gender_id' => 'integer|required',
             'birthdate' => 'nullable|date',
             'birthdate_is_age_based' => 'boolean',
@@ -299,6 +302,7 @@ class ApiContactController extends ApiController
             'first_met_date_is_year_unknown' => 'boolean',
             'first_met_date_age' => 'nullable|integer',
             'first_met_through_contact_id' => 'nullable|integer',
+            'is_starred' => 'required|boolean',
             'is_partial' => 'required|boolean',
             'is_dead' => 'required|boolean',
             'deceased_date' => 'nullable|date',
@@ -343,7 +347,7 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
         foreach ($tables as $table) {
             $tableName = $table->table_name;
             $tableData = DB::table($tableName)->get();

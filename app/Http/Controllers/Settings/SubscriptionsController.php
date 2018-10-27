@@ -17,7 +17,7 @@ class SubscriptionsController extends Controller
     public function index()
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         if (! auth()->user()->account->isSubscribed()) {
@@ -42,11 +42,11 @@ class SubscriptionsController extends Controller
     public function upgrade(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         if (auth()->user()->account->isSubscribed()) {
-            return redirect('/settings/subscriptions');
+            return redirect()->route('settings.subscriptions.index');
         }
 
         $plan = $request->query('plan');
@@ -65,7 +65,7 @@ class SubscriptionsController extends Controller
     public function upgradeSuccess(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         return view('settings.subscriptions.success');
@@ -79,7 +79,7 @@ class SubscriptionsController extends Controller
     public function downgradeSuccess(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         return view('settings.subscriptions.downgrade-success');
@@ -93,11 +93,11 @@ class SubscriptionsController extends Controller
     public function downgrade()
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         if (! auth()->user()->account->isSubscribed()) {
-            return redirect('/settings');
+            return redirect()->route('settings.index');
         }
 
         return view('settings.subscriptions.downgrade-checklist');
@@ -111,16 +111,16 @@ class SubscriptionsController extends Controller
     public function processDowngrade()
     {
         if (! auth()->user()->account->canDowngrade()) {
-            return redirect('/settings/users/subscriptions/downgrade');
+            return redirect()->route('settings.subscriptions.downgrade');
         }
 
         if (! auth()->user()->account->isSubscribed()) {
-            return redirect('/settings');
+            return redirect()->route('settings.index');
         }
 
         auth()->user()->account->subscription(auth()->user()->account->getSubscribedPlanName())->cancelNow();
 
-        return redirect('/settings/subscriptions/downgrade/success');
+        return redirect()->route('settings.subscriptions.downgrade.success');
     }
 
     /**
@@ -131,19 +131,43 @@ class SubscriptionsController extends Controller
     public function processPayment(Request $request)
     {
         if (! config('monica.requires_subscription')) {
-            return redirect('settings/');
+            return redirect()->route('settings.index');
         }
 
         $stripeToken = $request->input('stripeToken');
 
         $plan = InstanceHelper::getPlanInformationFromConfig($request->input('plan'));
+        $errorMessage = '';
 
-        auth()->user()->account->newSubscription($plan['name'], $plan['id'])
-                    ->create($stripeToken, [
-                        'email' => auth()->user()->email,
-                    ]);
+        try {
+            auth()->user()->account->newSubscription($plan['name'], $plan['id'])
+                        ->create($stripeToken, [
+                            'email' => auth()->user()->email,
+                        ]);
 
-        return redirect('settings/subscriptions/upgrade/success');
+            return redirect()->route('settings.subscriptions.upgrade.success');
+        } catch (\Stripe\Error\Card $e) {
+            // Since it's a decline, \Stripe\Error\Card will be caught
+            $body = $e->getJsonBody();
+            $err = $body['error'];
+            $errorMessage = trans('settings.stripe_error_card', ['message' => $err['message']]);
+        } catch (\Stripe\Error\RateLimit $e) {
+            // Too many requests made to the API too quickly
+            $errorMessage = trans('settings.stripe_error_rate_limit');
+        } catch (\Stripe\Error\Authentication $e) {
+            // Authentication with Stripe's API failed
+            // (maybe you changed API keys recently)
+            $errorMessage = trans('settings.stripe_error_authentication');
+        } catch (\Stripe\Error\ApiConnection $e) {
+            // Network communication with Stripe failed
+            $errorMessage = trans('settings.stripe_error_api_connection_error');
+        } catch (\Stripe\Error\Base $e) {
+            $errorMessage = $e->getMessage();
+        }
+
+        return back()
+            ->withInput()
+            ->withErrors($errorMessage);
     }
 
     /**

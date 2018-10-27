@@ -8,10 +8,10 @@
       <div class="mw9 center pa2">
           <ul>
             <li class="di">
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li class="di">
-              &gt; <a href="/journal">{{ trans('app.breadcrumb_journal') }}</a>
+              &gt; <a href="{{ route('journal.index') }}">{{ trans('app.breadcrumb_journal') }}</a>
             </li>
             <li class="di">
               &gt; {{ trans('journal.journal_add') }}
@@ -25,7 +25,7 @@
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
-            <form method="POST" action="/journal/create">
+            <form method="POST" action="{{ route('journal.save') }}">
               {{ csrf_field() }}
 
               @include('partials.errors')
@@ -40,7 +40,7 @@
 
               <div class="form-group">
                 <label for="field-entry">{{ trans('journal.journal_add_date') }}</label>
-                <input type="date" id="field-date" name="date" class="form-control" value="{{ now(Auth::user()->timezone)->format('Y-m-d') }}">
+                <input type="date" id="field-date" name="date" class="form-control" value="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}">
               </div>
 
               <div class="form-group">
@@ -50,8 +50,8 @@
               </div>
 
               <div class="form-group actions">
-                <button type="submit" class="btn btn-primary">{{ trans('journal.journal_add_cta') }}</button>
-                <a href="/journal" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                <button type="submit" cy-name="save-entry-button" class="btn btn-primary">{{ trans('journal.journal_add_cta') }}</button>
+                <a href="{{ route('journal.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
           </div>

@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactFieldTest extends FeatureTestCase
@@ -30,17 +32,17 @@ class ContactFieldTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $feild = factory(\App\ContactFieldType::class)->create([
+        $feild = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $feild->id,
         ]);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfield');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfield');
 
         $response->assertStatus(200);
 
@@ -51,11 +53,11 @@ class ContactFieldTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $feild = factory(\App\ContactFieldType::class)->create([
+        $feild = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfieldtypes');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfieldtypes');
 
         $response->assertStatus(200);
 
@@ -66,7 +68,7 @@ class ContactFieldTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $feild = factory(\App\ContactFieldType::class)->create([
+        $feild = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Test Name',
             'type' => 'test',
@@ -77,7 +79,7 @@ class ContactFieldTest extends FeatureTestCase
             'data' => 'test_data',
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/contactfield', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/contactfield', $params);
 
         $response->assertStatus(201);
 
@@ -87,7 +89,7 @@ class ContactFieldTest extends FeatureTestCase
 
         $this->assertDatabaseHas('contact_fields', $params);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfield');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfield');
 
         $response->assertStatus(200);
 
@@ -100,13 +102,13 @@ class ContactFieldTest extends FeatureTestCase
 
         $params = ['data' => 'test_data'];
 
-        $feild = factory(\App\ContactFieldType::class)->create([
+        $feild = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Test Name',
             'type' => 'test',
         ]);
 
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $feild->id,
@@ -115,7 +117,7 @@ class ContactFieldTest extends FeatureTestCase
         $params['id'] = $contactField->id;
         $params['contact_field_type_id'] = $feild->id;
 
-        $response = $this->put('/people/'.$contact->id.'/contactfield/'.$contactField->id, $params);
+        $response = $this->put('/people/'.$contact->hashID().'/contactfield/'.$contactField->id, $params);
 
         $response->assertStatus(200);
 
@@ -125,7 +127,7 @@ class ContactFieldTest extends FeatureTestCase
 
         $this->assertDatabaseHas('contact_fields', $params);
 
-        $response = $this->get('/people/'.$contact->id.'/contactfield');
+        $response = $this->get('/people/'.$contact->hashID().'/contactfield');
 
         $response->assertStatus(200);
 
@@ -136,17 +138,17 @@ class ContactFieldTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $feild = factory(\App\ContactFieldType::class)->create([
+        $feild = factory(ContactFieldType::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $contactField = factory(\App\ContactField::class)->create([
+        $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $feild->id,
         ]);
 
-        $response = $this->delete('/people/'.$contact->id.'/contactfield/'.$contactField->id);
+        $response = $this->delete('/people/'.$contact->hashID().'/contactfield/'.$contactField->id);
         $response->assertStatus(200);
 
         $params = ['id' => $contactField->id];

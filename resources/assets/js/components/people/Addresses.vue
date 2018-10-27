@@ -208,7 +208,7 @@
              * Prepare the component.
              */
             prepareComponent() {
-                this.dirltr = $('html').attr('dir') == 'ltr';
+                this.dirltr = this.$root.htmldir == 'ltr';
                 this.getAddresses();
                 this.getCountries();
             },
@@ -221,7 +221,7 @@
             },
 
             getCountries() {
-                axios.get('/people/' + this.hash + '/countries')
+                axios.get('/countries')
                         .then(response => {
                             this.countries = response.data;
                         });
@@ -292,7 +292,7 @@
                         if (typeof error.response.data === 'object') {
                             form.errors = _.flatten(_.toArray(error.response.data));
                         } else {
-                            form.errors = ['Something went wrong. Please try again.'];
+                            form.errors = [this.$t('app.error_try_again')];
                         }
                     });
             },

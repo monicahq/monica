@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Gift;
-use App\Contact;
+use App\Models\Contact\Gift;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Gift\Gift as GiftResource;
@@ -66,7 +66,7 @@ class ApiGiftController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $gift->account_id = auth()->user()->account->id;
+        $gift->account_id = auth()->user()->account_id;
         $gift->save();
 
         return new GiftResource($gift);

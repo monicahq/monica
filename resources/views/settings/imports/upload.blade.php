@@ -11,13 +11,13 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-                <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+                <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
-                <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+                <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
               </li>
               <li>
-              <a href="/settings/import">{{ trans('app.breadcrumb_settings_import') }}</a>
+                <a href="{{ route('settings.import') }}">{{ trans('app.breadcrumb_settings_import') }}</a>
               </li>
               <li>
                 {{ trans('app.breadcrumb_settings_import_upload') }}
@@ -37,7 +37,7 @@
             <div class="pa3 bb b--gray-monica">
               <h2>{{ trans('settings.import_upload_title') }}</h2>
 
-              <div class="warning-zone {{ \App\Helpers\LocaleHelper::getDirection() }}">
+              <div class="warning-zone">
                 <p>{{ trans('settings.import_upload_rules_desc') }}</p>
                 <ul>
                     <li>{!! trans('settings.import_upload_rule_format') !!}</li>
@@ -52,19 +52,28 @@
 
               @include('partials.errors')
 
-              <form action="/settings/import/storeImport" method="POST" enctype="multipart/form-data">
+              <form action="{{ route('settings.storeImport') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
 
                   <div class="form-group">
                       <label for="vcard">{!! trans('settings.import_upload_form_file') !!}</label>
                       <input type="file" class="form-control-file" name="vcard" id="vcard">
-                      <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
+                      <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => config('monica.max_upload_size')]) }}</small>
                   </div>
 
-                  <div class="form-group actions">
-                      <button id="upload" type="submit" class="btn btn-primary">{{ trans('app.upload') }}</button>
-                      <a href="/settings/import" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
-                  </div> <!-- .form-group -->
+                <div class="form-group">
+                    <label for="behaviour">{{ trans('settings.import_upload_behaviour') }}</label>
+                    <select class="form-control" name="behaviour" id="behaviour">
+                        <option value="{{ \App\Models\Account\ImportJob::BEHAVIOUR_ADD }}" selected>{{ trans('settings.import_upload_behaviour_add') }}</option>
+                        <option value="{{ \App\Models\Account\ImportJob::BEHAVIOUR_REPLACE }}">{{ trans('settings.import_upload_behaviour_replace') }}</option>
+                    </select>
+                    <small id="behaviourHelp" class="form-text text-muted">{{ trans('settings.import_upload_behaviour_help') }}</small>
+                </div>
+
+                <div class="form-group actions">
+                    <button id="upload" type="submit" class="btn btn-primary">{{ trans('app.upload') }}</button>
+                    <a href="{{ route('settings.import') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
+                </div> <!-- .form-group -->
               </form>
             </div>
           </div>

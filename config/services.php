@@ -17,6 +17,7 @@ return [
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
+        'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
     'ses' => [
@@ -30,7 +31,7 @@ return [
     ],
 
     'stripe' => [
-        'model' => App\Account::class,
+        'model' => App\Models\Account\Account::class,
         'key' => env('STRIPE_KEY', null),
         'secret' => env('STRIPE_SECRET', null),
     ],

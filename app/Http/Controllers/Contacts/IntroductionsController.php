@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Gift;
-use App\Contact;
+use App\Models\Contact\Gift;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\IntroductionsRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,8 +37,7 @@ class IntroductionsController extends Controller
         if ($request->get('metThroughId') !== null) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $request->get('metThroughId'))
-                    ->firstOrFail();
+                    ->findOrFail($request->get('metThroughId'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
@@ -66,9 +65,7 @@ class IntroductionsController extends Controller
 
         $contact->save();
 
-        $contact->logEvent('contact', $contact->id, 'update');
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.introductions_update_success'));
     }
 
@@ -83,9 +80,7 @@ class IntroductionsController extends Controller
     {
         $gift->delete();
 
-        $contact->events()->forObject($gift)->get()->each->delete();
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.gifts_delete_success'));
     }
 }

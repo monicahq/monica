@@ -21,6 +21,11 @@ return [
     'loading' => 'Caricamento in corso...',
     'with' => 'con',
     'days' => 'giorno | giorni',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica è uno strumento per gestire le interazioni con i vostri cari, amici e familiari.',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalizzazione',
     'breadcrumb_settings_security' => 'Sicurezza',
     'breadcrumb_settings_security_2fa' => 'Autenticazione due fattori',
+    'breadcrumb_profile' => 'Profile of :name',
 
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',
@@ -81,8 +87,19 @@ return [
     'error_title' => 'Ops! Qualcosa è andato storto.',
     'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',
     'error_save' => 'Abbiamo avuto un errore cercando di salvare i dati.',
+    'error_try_again' => 'Something went wrong. Please try again.',
+    'error_id' => 'Error ID: :id',
+    'error_unavailable' => 'Service Unavailable',
+    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_help' => 'We’ll be right back.',
+    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
 
     'default_save_success' => 'I dati sono stati salvati.',
+
+    'compliance_title' => 'Sorry for the interruption.',
+    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
+    'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -216,4 +233,9 @@ return [
     'relationship_type_protege_female' => 'protege',
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
+
+    'relationship_type_ex_husband' => 'ex husband',
+    'relationship_type_ex_husband_female' => 'ex wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
 ];

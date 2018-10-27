@@ -3,8 +3,8 @@
 namespace App\Helpers;
 
 use Auth;
-use App\Contact;
-use App\ContactFieldType;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactFieldType;
 
 class SearchHelper
 {
@@ -18,18 +18,21 @@ class SearchHelper
     public static function searchContacts($query, $limitPerPage, $order)
     {
         $needle = $query;
-        $accountId = auth()->user()->account->id;
+        $accountId = auth()->user()->account_id;
 
         if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
             $search_field = $matches[1];
             $search_term = $matches[2];
 
-            $field = ContactFieldType::where('name', 'LIKE', $search_field)->first();
+            $field = ContactFieldType::where('account_id', $accountId)
+                ->where('name', 'LIKE', $search_field)
+                ->first();
 
-            $field_id = $field->id;
+            $field_id = is_null($field) ? 0 : $field->id;
 
-            $results = Contact::whereHas('contactFields', function ($query) use ($field_id, $search_term) {
+            $results = Contact::whereHas('contactFields', function ($query) use ($accountId, $field_id, $search_term) {
                 $query->where([
+                    ['account_id', $accountId],
                     ['data', 'like', "$search_term%"],
                     ['contact_field_type_id', $field_id],
                 ]);

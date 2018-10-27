@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Contact;
-use App\Activity;
-use App\JournalEntry;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
+use App\Models\Journal\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivitiesController extends Controller
 {
@@ -43,8 +44,20 @@ class ActivitiesController extends Controller
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
-        $user = $request->user();
-        $account = $user->account;
+        $specifiedContacts = $request->get('contacts');
+        $specifiedContactsObj = [];
+
+        try {
+            // Test if every attached contact are found before creating the activity
+            foreach ($specifiedContacts as $newContactId) {
+                $newContact = Contact::where('account_id', $request->user()->account_id)
+                    ->findOrFail($newContactId);
+                array_push($specifiedContactsObj, $newContact);
+            }
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('people.show', $contact)
+                ->withErrors(trans('people.activities_add_error'));
+        }
 
         $activity = Activity::create(
             $request->only([
@@ -53,35 +66,20 @@ class ActivitiesController extends Controller
                 'activity_type_id',
                 'description',
             ])
-            + ['account_id' => $account->id]
+            + ['account_id' => $request->user()->account_id]
         );
 
         // New attendees
-        $specifiedContacts = $request->get('contacts');
-        foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::findOrFail($newContactId);
-            $newContact->activities()->attach($activity, ['account_id' => $newContact->account_id]);
-            $newContact->logEvent('activity', $activity->id, 'create');
+        foreach ($specifiedContactsObj as $newContact) {
+            $newContact->activities()->attach($activity, ['account_id' => $request->user()->account_id]);
             $newContact->calculateActivitiesStatistics();
         }
 
         // Log a journal entry
         (new JournalEntry)->add($activity);
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_add_success'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param Contact $contact
-     * @param Activity $activity
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Contact $contact, Activity $activity)
-    {
-        //
     }
 
     /**
@@ -110,6 +108,19 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
+        $specifiedContacts = $request->get('contacts');
+        $specifiedContactsObj = [];
+
+        try {
+            // Test if every attached contact are found before updating the activity
+            foreach ($specifiedContacts as $newContactId) {
+                $specifiedContactsObj[$newContactId] = Contact::where('account_id', $account->id)
+                    ->findOrFail($newContactId);
+            }
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('people.show', $contact)
+                ->withErrors(trans('people.activities_add_error'));
+        }
 
         $activity->update(
             $request->only([
@@ -121,39 +132,28 @@ class ActivitiesController extends Controller
             + ['account_id' => $account->id]
         );
 
-        // Who did we send through via the form?
-        $specifiedContacts = $request->get('contacts');
-
         // Find existing attendees
         $existing = $activity->contacts()->get();
 
         foreach ($existing as $existingContact) {
             // Has an existing attendee been removed?
-            if (! in_array($existingContact->id, $specifiedContacts)) {
+            if (! array_key_exists($existingContact->id, $specifiedContactsObj)) {
                 $existingContact->activities()->detach($activity);
-                $existingContact->logEvent('activity', $activity->id, 'delete');
-            } else {
-                // Otherwise we're updating an activity that someone's
-                // already a part of
-                $existingContact->logEvent('activity', $activity->id, 'update');
             }
 
             // Remove this ID from our list of contacts as we don't
             // want to add them to the activity again
-            $idx = array_search($existingContact->id, $specifiedContacts);
-            unset($specifiedContacts[$idx]);
+            unset($specifiedContactsObj[$existingContact->id]);
 
             $existingContact->calculateActivitiesStatistics();
         }
 
         // New attendees
-        foreach ($specifiedContacts as $newContactId) {
-            $newContact = Contact::findOrFail($newContactId);
+        foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->save($activity);
-            $newContact->logEvent('activity', $activity->id, 'create');
         }
 
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));
     }
 
@@ -164,17 +164,17 @@ class ActivitiesController extends Controller
      * @param Activity $activity
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Activity $activity)
+    public function destroy(Activity $activity, Contact $contact)
     {
         $activity->deleteJournalEntry();
 
+        foreach ($activity->contacts as $contactActivity) {
+            $contactActivity->calculateActivitiesStatistics();
+        }
+
         $activity->delete();
 
-        $contact->events()->forObject($activity)->get()->each->delete();
-
-        $contact->calculateActivitiesStatistics();
-
-        return redirect('/people/'.$contact->hashID())
+        return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_delete_success'));
     }
 }
