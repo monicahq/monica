@@ -102,6 +102,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
         $vcard = new VObject\Component\VCard([
             'FN'  => $contact->name,
             'N'   => [$contact->first_name, $contact->last_name],
+            'UID' => $contact->hashid(),
         ]);
 
         // Picture
@@ -145,15 +146,12 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
             }
         }
 
-        $uri = $contact->id;
-        $timestamp = $contact->updated_at->timestamp;
-
         return [
-            'id'           => md5($contact->id),
-            'uri'          => $uri,
-            'lastmodified' => $timestamp,
-            //'etag'         => '"' . md5($uri.$timestamp) . '"',
-            'carddata'     => $vcard->serialize(),
+            'id' => $contact->hashid(),
+            'etag' => '"'.md5($vcard->serialize()).'"',
+            'uri' => $contact->id,
+            'lastmodified' => $contact->updated_at->timestamp,
+            'carddata' => $vcard->serialize(),
         ];
     }
 
@@ -210,7 +208,8 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getCard', func_get_args());
 
-        $contact = Contact::where('account_id', Auth::user()->account_id)->where('id', $cardUri)->firstOrFail();
+        $contact = Contact::where('account_id', Auth::user()->account_id)
+            ->findOrFail($cardUri);
 
         return $this->prepareCard($contact);
     }
@@ -231,7 +230,9 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getMultipleCards', func_get_args());
 
-        $contacts = \App\Contact::where('account_id', Auth::user()->account_id)->whereIn('id', $uris)->get();
+        $contacts = Contact::where('account_id', Auth::user()->account_id)
+            ->whereIn('id', $uris)
+            ->get();
 
         return $this->prepareCards($contacts);
     }

@@ -37,7 +37,6 @@ class AuthenticateWithBasicTokenAuth
      */
     public function handle($request, Closure $next, $guard = null, $field = null)
     {
-
         // Try Bearer authentication, with token in 'password' basic 
         if (! $request->bearerToken()) {
             $password = $request->getPassword();
