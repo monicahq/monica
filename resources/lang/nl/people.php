@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Tonen alle contactpersonen gelabeld met',
     'people_list_clear_filter' => 'Filter wissen',
     'people_list_contacts_per_tags' => '1 contact|:count contacts',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Zoek in je contacten...',
     'people_search_no_results' => 'Geen relevante contacten gevonden :(',
     'people_list_account_usage' => 'Je huidige gebruik: :current/:limit contacten',
