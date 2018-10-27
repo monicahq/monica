@@ -16,9 +16,7 @@ class ChangelogAboutArchiving extends Migration
         $description = '
 **New feature: archiving contact**
 
-You can now archive a contact to no longer see it in the Dashboard, or in the searchs. Archived contacts can still be found on the Contacts board.
-
-![image](/img/changelogs/2018-10-19-archiving.png)';
+You can now archive a contact to no longer see him/her on the Dashboard, or the Contacts list. Archived contacts can still be found by search.';
 
         $id = DB::table('changelogs')->insertGetId([
             'description' => $description,

@@ -1,11 +1,17 @@
 <style scoped>
+.fa {
+    top: 1px;
+    color: #b1b1b1;
+}
 </style>
 
 <template>
     <div>
-        <notifications group="archive" position="top middle" duration=5000 width="400" />
+        <notifications group="archive" position="bottom right" duration=5000 width="400" />
 
-        <a class="btn btn-special" @click="toggle" :title="$t('people.contact_archive_help')">{{ isActive ? $t('people.contact_archive') : $t('people.contact_unarchive') }}</a>
+        <a class="pointer" @click="toggle" :title="$t('people.contact_archive_help')">{{ isActive ? $t('people.contact_archive') : $t('people.contact_unarchive') }}</a>
+
+        <span v-tooltip.top="$t('people.contact_archive_help')"><i class="fa fa-info-circle relative pointer"></i></span>
     </div>
 </template>
 

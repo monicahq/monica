@@ -61,12 +61,12 @@ class ContactsController extends Controller
 
         $contacts = $user->account->contacts()->real();
         if ($active) {
-            $nbarchived = $contacts->count();
+            $nbArchived = $contacts->count();
             $contacts = $contacts->active();
-            $nbarchived = $nbarchived - $contacts->count();
+            $nbArchived = $nbArchived - $contacts->count();
         } else {
             $contacts = $contacts->notActive();
-            $nbarchived = $contacts->count();
+            $nbArchived = $contacts->count();
         }
 
         if ($request->get('no_tag')) {
@@ -112,7 +112,8 @@ class ContactsController extends Controller
             ->withUnstarredContacts($unstarredContacts)
             ->withStarredContacts($starredContacts)
             ->withActive($active)
-            ->withHasArchived($nbarchived > 0)
+            ->withHasArchived($nbArchived > 0)
+            ->withArchivedCOntacts($nbArchived)
             ->withTags($tags)
             ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
@@ -593,7 +594,7 @@ class ContactsController extends Controller
     }
 
     /**
-     * Toggle archive of a contact.
+     * Toggle archive state of a contact.
      *
      * @param  Request $request
      * @param  Contact $contact

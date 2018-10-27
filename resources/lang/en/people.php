@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Gender',
     'people_delete_success' => 'The contact has been deleted',
-    'people_delete_message' => 'If you need to delete this contact,',
-    'people_delete_click_here' => 'click here',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
@@ -56,15 +55,15 @@ return [
     'section_personal_gifts' => 'Gifts',
     'section_personal_notes' => 'Notes',
 
-    //
-    'link_to_list' => 'List of people',
-    'link_to_archived' => 'List of archived contacts',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Edit contact information',
     'contact_archive' => 'Archive contact',
     'contact_unarchive' => 'Unarchive contact',
-    'contact_archive_help' => 'Archived contacts will not be shown in the contact list',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Log a call',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
@@ -193,7 +192,7 @@ return [
     'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
     'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
-    'relationship_form_add_description' => 'This will let you treat this significant other like any other contact.',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'You don’t have any contacts who can be related to :name at the moment.',
     'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
     'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted – only the relationship between the two.',

@@ -176,7 +176,7 @@ elif [ "$PR_NUMBER" != "false" ] && [ -n "${SONAR_TOKEN:-}" ] && [ -n "${GITHUB_
     echo '== SONAR:Analyze external pull request =='
     echo '========================================='
     echo "== External repository: $PULL_REQUEST_REPOSITORY"
-    PULL_REQUEST_BRANCH="$PULL_REQUEST_USER:$PULL_REQUEST_HEADBRANCH"
+    PULL_REQUEST_BRANCH="${PULL_REQUEST_USER}__$PULL_REQUEST_HEADBRANCH"
   fi
   echo "PULL_REQUEST_BRANCH=$PULL_REQUEST_BRANCH"
   echo "PULL_REQUEST_REPOSITORY=$PULL_REQUEST_REPOSITORY"
