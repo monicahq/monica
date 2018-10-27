@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Es werden alle Kontakte mit den folgenden Tags angezeigt',
     'people_list_clear_filter' => 'Filter löschen',
     'people_list_contacts_per_tags' => '1 Kontakt|:count Kontakte',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
