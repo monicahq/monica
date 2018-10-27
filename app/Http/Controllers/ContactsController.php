@@ -26,8 +26,31 @@ class ContactsController extends Controller
      */
     public function index(Request $request)
     {
+        return $this->contacts($request, true);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function archived(Request $request)
+    {
+        return $this->contacts($request, false);
+    }
+
+    /**
+     * Display contacts.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    private function contacts(Request $request, bool $active)
+    {
         $user = $request->user();
         $sort = $request->get('sort') ?? $user->contacts_sort_order;
+        $showDeceased = $request->get('show_dead');
 
         if ($user->contacts_sort_order !== $sort) {
             $user->updateContactViewPreference($sort);
@@ -37,10 +60,19 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
+        $contacts = $user->account->contacts()->real();
+        if ($active) {
+            $nbArchived = $contacts->count();
+            $contacts = $contacts->active();
+            $nbArchived = $nbArchived - $contacts->count();
+        } else {
+            $contacts = $contacts->notActive();
+            $nbArchived = $contacts->count();
+        }
+
         if ($request->get('no_tag')) {
             //get tag less contacts
-            $contacts = $user->account->contacts()->real()->sortedBy($sort);
-            $contacts = $contacts->tags('NONE')->get();
+            $contacts = $contacts->tags('NONE');
         } elseif ($request->get('tag1')) {
             // get contacts with selected tags
 
@@ -63,12 +95,20 @@ class ContactsController extends Controller
                 return redirect()->route('people.index');
             }
 
-            $contacts = $user->account->contacts()->real()->sortedBy($sort);
+            $contacts = $contacts->tags($tags);
+        }
+        $contacts = $contacts->sortedBy($sort)->get();
 
-            $contacts = $contacts->tags($tags)->get();
-        } else {
-            // get all contacts
-            $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
+        // count the deceased
+        $deceasedCount = $contacts->filter(function ($item) {
+            return $item->is_dead === true;
+        })->count();
+
+        // filter out deceased if necessary
+        if ($showDeceased != 'true') {
+            $contacts = $contacts->filter(function ($item) {
+                return $item->is_dead === false;
+            });
         }
 
         // starred contacts
@@ -81,9 +121,14 @@ class ContactsController extends Controller
         });
 
         return view('people.index')
+            ->with('hidingDeceased', $showDeceased != 'true')
+            ->with('deceasedCount', $deceasedCount)
             ->withContacts($contacts->unique('id'))
             ->withUnstarredContacts($unstarredContacts)
             ->withStarredContacts($starredContacts)
+            ->withActive($active)
+            ->withHasArchived($nbArchived > 0)
+            ->withArchivedCOntacts($nbArchived)
             ->withTags($tags)
             ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
@@ -560,6 +605,23 @@ class ContactsController extends Controller
 
         return [
             'is_starred' => $bool,
+        ];
+    }
+
+    /**
+     * Toggle archive state of a contact.
+     *
+     * @param  Request $request
+     * @param  Contact $contact
+     * @return array
+     */
+    public function archive(Request $request, Contact $contact)
+    {
+        $contact->is_active = ! $contact->is_active;
+        $contact->save();
+
+        return [
+            'is_active' => $contact->is_active,
         ];
     }
 }

@@ -22,6 +22,7 @@ class RelationshipsController extends Controller
         // getting top 100 of existing contacts
         $existingContacts = auth()->user()->account->contacts()
                                     ->real()
+                                    ->active()
                                     ->select(['id', 'first_name', 'last_name'])
                                     ->sortedBy('name')
                                     ->take(100)

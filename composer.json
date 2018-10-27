@@ -14,6 +14,7 @@
         "doctrine/dbal": "^2.5",
         "erusev/parsedown": "~1.7",
         "fideloper/proxy": "^4.0",
+        "giggsey/libphonenumber-for-php": "^8.9",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
         "ircop/antiflood": "^0.1.4",
