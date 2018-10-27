@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name başarıyla kayıt edildi',
     'people_add_gender' => 'Cinsiyet',
     'people_delete_success' => 'Bağlantı silindi',
-    'people_delete_message' => 'Bu kişiyi silmeniz gerekirse',
-    'people_delete_click_here' => 'buraya tıklayın',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Bu kişiyi silmek istediğinizden emin misiniz? Silinen kayıtlar geri alınamaz.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_import' => '<a href=":url">Bağlantılarınızı aktarmak</a> istiyor musunuz?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'Hediyeler',
     'section_personal_notes' => 'Notlar',
 
-    //
-    'link_to_list' => 'Kişi Listesi',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'İletişim bilgilerini düzenle',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Log a call',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
