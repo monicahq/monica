@@ -22,10 +22,12 @@ class UploadDocumentTest extends TestCase
 
         $contact = factory(Contact::class)->create([]);
 
+        $file = UploadedFile::fake()->image('document.pdf');
+
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'document' => UploadedFile::fake()->image('document.pdf'),
+            'document' => $file,
         ];
 
         $uploadService = new UploadDocument;

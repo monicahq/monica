@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Document\UploadDocument;
+use App\Services\Contact\Document\DestroyDocument;
 use App\Http\Resources\Document\Document as DocumentResource;
 
 class DocumentsController extends Controller
@@ -41,22 +42,22 @@ class DocumentsController extends Controller
     }
 
     /**
-     * Delete the conversation.
+     * Delete the document.
      *
      * @param Request $request
      * @param Contact $contact
-     * @param Conversation $conversation
+     * @param Document $document
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Contact $contact, Conversation $conversation)
+    public function destroy(Request $request, Contact $contact, Document $document)
     {
         $data = [
             'account_id' => auth()->user()->account->id,
-            'conversation_id' => $conversation->id,
+            'document_id' => $document->id,
         ];
 
         try {
-            (new DestroyConversation)->execute($data);
+            (new DestroyDocument)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

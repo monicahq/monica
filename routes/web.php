@@ -196,7 +196,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::name('document.')->group(function () {
             Route::get('/people/{contact}/documents', 'Contacts\\DocumentsController@index')->name('index');
             Route::post('/people/{contact}/document/store', 'Contacts\\DocumentsController@store')->name('store');
-            Route::delete('/people/{contact}/document/{document}', 'Contacts\\DocumentsController@destroy')->name('destroy');
+            Route::delete('/people/{contact}/documents/{document}', 'Contacts\\DocumentsController@destroy')->name('destroy');
         });
 
         // Search
