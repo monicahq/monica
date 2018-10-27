@@ -642,6 +642,31 @@ END:VCARD
         ]);
     }
 
+    public function test_it_imports_phone_by_international_format()
+    {
+        $importJob = $this->createImportJob();
+        $vcard = new VCard([
+            'TEL' => '202-555-0191',
+            'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
+        ]);
+
+        $importJob->currentEntry = $vcard;
+        $contact = factory(Contact::class)->create([
+            'account_id' => $importJob->account->id,
+        ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $importJob->account->id,
+            'type' => 'phone',
+        ]);
+        $importJob->importTel($contact);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $importJob->account_id,
+            'contact_id' => $contact->id,
+            'data' => '+44 20 2555 0191',
+        ]);
+    }
+
     private function createImportJob()
     {
         $account = factory(Account::class)->create([]);

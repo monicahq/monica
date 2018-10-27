@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94804e5b8c3726b5119aa7c6b4d02dc9",
+    "content-hash": "c1ea9284fe06c55e1c67234cfe57083e",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.69.2",
+            "version": "3.69.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "65c88e074dffe4cb25b840c154b2f39564b39287"
+                "reference": "eda89d207e40f3abb0b5e2fb1fabcebe668116fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/65c88e074dffe4cb25b840c154b2f39564b39287",
-                "reference": "65c88e074dffe4cb25b840c154b2f39564b39287",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/eda89d207e40f3abb0b5e2fb1fabcebe668116fb",
+                "reference": "eda89d207e40f3abb0b5e2fb1fabcebe668116fb",
                 "shasum": ""
             },
             "require": {
@@ -25,7 +25,7 @@
                 "ext-pcre": "*",
                 "ext-simplexml": "*",
                 "ext-spl": "*",
-                "guzzlehttp/guzzle": "^5.3.1|^6.2.1",
+                "guzzlehttp/guzzle": "^5.3.3|^6.2.1",
                 "guzzlehttp/promises": "~1.0",
                 "guzzlehttp/psr7": "^1.4.1",
                 "mtdowling/jmespath.php": "~2.2",
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-10-08T20:05:34+00:00"
+            "time": "2018-10-26T20:05:18+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -291,16 +291,16 @@
         },
         {
             "name": "composer/ca-bundle",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/ca-bundle.git",
-                "reference": "46afded9720f40b9dc63542af4e3e43a1177acb0"
+                "reference": "8afa52cd417f4ec417b4bfe86b68106538a87660"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/46afded9720f40b9dc63542af4e3e43a1177acb0",
-                "reference": "46afded9720f40b9dc63542af4e3e43a1177acb0",
+                "url": "https://api.github.com/repos/composer/ca-bundle/zipball/8afa52cd417f4ec417b4bfe86b68106538a87660",
+                "reference": "8afa52cd417f4ec417b4bfe86b68106538a87660",
                 "shasum": ""
             },
             "require": {
@@ -343,7 +343,7 @@
                 "ssl",
                 "tls"
             ],
-            "time": "2018-08-08T08:57:40+00:00"
+            "time": "2018-10-18T06:09:13+00:00"
         },
         {
             "name": "creativeorange/gravatar",
@@ -1210,6 +1210,123 @@
                 "maxmind"
             ],
             "time": "2018-01-18T21:30:24+00:00"
+        },
+        {
+            "name": "giggsey/libphonenumber-for-php",
+            "version": "8.9.16",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/giggsey/libphonenumber-for-php.git",
+                "reference": "04425318e27b3a41ef9910fc0a9e43c9d3c3e725"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/04425318e27b3a41ef9910fc0a9e43c9d3c3e725",
+                "reference": "04425318e27b3a41ef9910fc0a9e43c9d3c3e725",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "giggsey/locale": "^1.2",
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "pear/pear-core-minimal": "^1.9",
+                "pear/pear_exception": "^1.0",
+                "pear/versioncontrol_git": "^0.5",
+                "phing/phing": "^2.7",
+                "php-coveralls/php-coveralls": "^1.0|^2.0",
+                "phpunit/phpunit": "^4.8.36|^5.0",
+                "symfony/console": "^2.8|^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "libphonenumber\\": "src/"
+                },
+                "exclude-from-classmap": [
+                    "/src/data/",
+                    "/src/carrier/data/",
+                    "/src/geocoding/data/",
+                    "/src/timezone/data/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Joshua Gigg",
+                    "email": "giggsey@gmail.com",
+                    "homepage": "https://giggsey.com/"
+                }
+            ],
+            "description": "PHP Port of Google's libphonenumber",
+            "homepage": "https://github.com/giggsey/libphonenumber-for-php",
+            "keywords": [
+                "geocoding",
+                "geolocation",
+                "libphonenumber",
+                "mobile",
+                "phonenumber",
+                "validation"
+            ],
+            "time": "2018-10-18T08:12:16+00:00"
+        },
+        {
+            "name": "giggsey/locale",
+            "version": "1.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/giggsey/Locale.git",
+                "reference": "da6845720b5d104d319d7e84576f54e44dd9e4f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/giggsey/Locale/zipball/da6845720b5d104d319d7e84576f54e44dd9e4f5",
+                "reference": "da6845720b5d104d319d7e84576f54e44dd9e4f5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "pear/pear-core-minimal": "^1.9",
+                "pear/pear_exception": "^1.0",
+                "pear/versioncontrol_git": "^0.5",
+                "phing/phing": "~2.7",
+                "phpunit/phpunit": "^4.8|^5.0",
+                "satooshi/php-coveralls": "^1.0",
+                "symfony/console": "^2.8|^3.0|^4.0",
+                "symfony/filesystem": "^2.8|^3.0|^4.0",
+                "symfony/finder": "^2.8|^3.0|^4.0",
+                "symfony/process": "^2.8|^3.0|^4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Giggsey\\Locale\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Joshua Gigg",
+                    "email": "giggsey@gmail.com",
+                    "homepage": "http://giggsey.com/"
+                }
+            ],
+            "description": "Locale functions required by libphonenumber-for-php",
+            "time": "2018-10-18T07:17:52+00:00"
         },
         {
             "name": "graham-campbell/manager",
@@ -3518,16 +3635,16 @@
         },
         {
             "name": "ok/ipstack-client",
-            "version": "1.2",
+            "version": "1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GitHubHubus/ipstack-client.git",
-                "reference": "0c0f3927a503cb01515b8b2dd6bc353493ab7076"
+                "reference": "6891193164428dbb50bcfe7a64ede9960bfed839"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GitHubHubus/ipstack-client/zipball/0c0f3927a503cb01515b8b2dd6bc353493ab7076",
-                "reference": "0c0f3927a503cb01515b8b2dd6bc353493ab7076",
+                "url": "https://api.github.com/repos/GitHubHubus/ipstack-client/zipball/6891193164428dbb50bcfe7a64ede9960bfed839",
+                "reference": "6891193164428dbb50bcfe7a64ede9960bfed839",
                 "shasum": ""
             },
             "require": {
@@ -3559,7 +3676,7 @@
                 "ipstack",
                 "php"
             ],
-            "time": "2018-07-05T07:24:24+00:00"
+            "time": "2018-10-26T13:11:34+00:00"
         },
         {
             "name": "opis/closure",
@@ -5196,16 +5313,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "22e96661458c55a2e532885922bf4a232186f6a1"
+                "reference": "c5f510f8d0fa8135de9495145e2758f56037aa1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/22e96661458c55a2e532885922bf4a232186f6a1",
-                "reference": "22e96661458c55a2e532885922bf4a232186f6a1",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/c5f510f8d0fa8135de9495145e2758f56037aa1e",
+                "reference": "c5f510f8d0fa8135de9495145e2758f56037aa1e",
                 "shasum": ""
             },
             "require": {
@@ -5217,8 +5334,7 @@
                 "sabre/uri": ">=1.0,<3.0.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "*",
-                "sabre/cs": "~1.0.0"
+                "phpunit/phpunit": "*"
             },
             "type": "library",
             "autoload": {
@@ -5255,7 +5371,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2018-02-08T11:00:49+00:00"
+            "time": "2018-10-09T11:41:10+00:00"
         },
         {
             "name": "sentry/sentry",
@@ -5323,16 +5439,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "0.10.0",
+            "version": "0.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "bca732f2947adc9f41811bde25c54f2fd0a7e700"
+                "reference": "bad3ebf478143a14297f6a25c3e94b3ab5c26378"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/bca732f2947adc9f41811bde25c54f2fd0a7e700",
-                "reference": "bca732f2947adc9f41811bde25c54f2fd0a7e700",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/bad3ebf478143a14297f6a25c3e94b3ab5c26378",
+                "reference": "bad3ebf478143a14297f6a25c3e94b3ab5c26378",
                 "shasum": ""
             },
             "require": {
@@ -5383,7 +5499,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2018-09-04T13:48:59+00:00"
+            "time": "2018-10-26T13:09:52+00:00"
         },
         {
             "name": "stevebauman/location",
@@ -8766,6 +8882,17 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2",
+                "reference": "0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2",
+                "shasum": ""
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",

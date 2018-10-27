@@ -61,4 +61,14 @@ class LocaleHelperTest extends FeatureTestCase
             LocaleHelper::getDirection()
         );
     }
+
+    public function test_format_telephone_by_iso()
+    {
+        $tel = LocaleHelper::formatTelephoneNumberByISO('202-555-0191', 'gb');
+
+        $this->assertEquals(
+            '+44 20 2555 0191',
+            $tel
+        );
+    }
 }

@@ -5,6 +5,8 @@ namespace App\Models\Account;
 use Exception;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
+use App\Helpers\VCardHelper;
+use App\Helpers\LocaleHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -537,6 +539,12 @@ class ImportJob extends Model
         }
 
         foreach ($this->currentEntry->TEL as $tel) {
+            $tel = (string) $this->currentEntry->TEL;
+
+            $countryISO = VCardHelper::getCountryISOFromSabreVCard($this->currentEntry);
+
+            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO);
+
             ContactField::firstOrCreate([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
