@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => ':count contact|:count contacts',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Recherchez dans vos contacts...',
     'people_search_no_results' => 'Aucun contact ne correspond à ce critère',
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
