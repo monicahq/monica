@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\CardDAV;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App;
 use Log;
+use Illuminate\Http\Request;
+use App\Models\CardDAV\MonicaAddressBookRoot;
+use App\Models\CardDAV\Backends\MonicaSabreBackend;
+use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
+use App\Models\CardDAV\Backends\MonicaPrincipleBackend;
 
 class CardDAVController extends Controller
 {
@@ -27,11 +30,8 @@ class CardDAVController extends Controller
 
         $nodes = [
                 new \Sabre\DAVACL\PrincipalCollection($principalBackend),
-                new \Sabre\CardDAV\AddressBookRoot($principalBackend, $carddavBackend)
+                new MonicaAddressBookRoot($principalBackend, $carddavBackend),
         ];
-
-        
-        dd($carddavBackend->prepareCard($contact));
 
         // Initiate Sabre server
         $server = new \Sabre\DAV\Server($nodes);
@@ -44,11 +44,15 @@ class CardDAVController extends Controller
 
         // Add required plugins
         $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV'));
-        $server->addPlugin(new \Sabre\DAV\Browser\Plugin());
         $server->addPlugin(new \Sabre\CardDAV\Plugin());
         $aclPlugin = new \Sabre\DAVACL\Plugin();
         $aclPlugin->allowUnauthenticatedAccess = false;
         $server->addPlugin($aclPlugin);
+
+        // In debug mode add browser plugin
+        if (App::environment('local')) {
+            $server->addPlugin(new \Sabre\DAV\Browser\Plugin());
+        }
 
         // Execute requests and catch output
         // We do this because laravel always sends a 200 back, but we need to use the StatusCode and of Sabre
@@ -61,6 +65,7 @@ class CardDAVController extends Controller
 
         // Return response through laravel
         Log::debug(__CLASS__.' init', ['status' => $status, 'content' => $content]);
+
         return response($content, $status)->withHeaders($headers);
     }
 }

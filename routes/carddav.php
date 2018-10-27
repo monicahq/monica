@@ -22,4 +22,4 @@ $verbs = [
 
 Illuminate\Routing\Router::$verbs = $verbs;
 
-Route::match($verbs, '{path?}', 'CardDAV\\CardDAVController@init')->where('path', '(.)*');
+Route::match($verbs, '{path?}', 'CardDAVController@init')->where('path', '(.)*');

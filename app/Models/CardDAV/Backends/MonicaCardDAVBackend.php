@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\CardDAV;
+namespace App\Models\CardDAV\Backends;
 
-use Sabre\DAV, Sabre\CalDAV, Sabre\DAVACL, Sabre\VObject;
-use Auth;
 use Log;
+use Auth;
+use Sabre\DAV;
+use Sabre\VObject;
+use App\Models\Contact\Contact;
 
-class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
-
+class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
+{
     /**
      * Returns the list of addressbooks for a specific user.
      *
@@ -25,14 +27,16 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param string $principalUri
      * @return array
      */
-    function getAddressBooksForUser($principalUri) {
+    public function getAddressBooksForUser($principalUri)
+    {
         Log::debug(__CLASS__.' getAddressBooksForUser', func_get_args());
+
         return [
             [
-                "id" => '0',
-                "uri" => 'Contacts',
-                "principaluri" => 'principals/'.Auth::user()->email,
-            ]
+                'id' => '0',
+                'uri' => 'Contacts',
+                'principaluri' => 'principals/'.Auth::user()->email,
+            ],
         ];
     }
 
@@ -52,8 +56,10 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param \Sabre\DAV\PropPatch $propPatch
      * @return void
      */
-    function updateAddressBook($addressBookId, \Sabre\DAV\PropPatch $propPatch) {
+    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
+    {
         Log::debug(__CLASS__.' updateAddressBook', func_get_args());
+
         return false;
     }
 
@@ -68,48 +74,98 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param array $properties
      * @return mixed
      */
-    function createAddressBook($principalUri, $url, array $properties) {
+    public function createAddressBook($principalUri, $url, array $properties)
+    {
         Log::debug(__CLASS__.' createAddressBook', func_get_args());
+
         return false;
     }
 
     /**
-     * Deletes an entire addressbook and all its contents
+     * Deletes an entire addressbook and all its contents.
      *
      * @param mixed $addressBookId
      * @return void
      */
-    function deleteAddressBook($addressBookId) {
+    public function deleteAddressBook($addressBookId)
+    {
         Log::debug(__CLASS__.' deleteAddressBook', func_get_args());
+
         return false;
     }
 
-    public function prepareCard($contact) {
+    private function prepareCard($contact)
+    {
+        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
+
+        // Basic information
         $vcard = new VObject\Component\VCard([
-            'FN'  => $contact->getCompleteName(),
-            'TEL' => '+1 555 34567 455',
-            'N'   => ['Henk', 'Cowboy', '', 'Dr.', 'MD'],
+            'FN'  => $contact->name,
+            'N'   => [$contact->first_name, $contact->last_name],
         ]);
+
+        // Picture
+        $picture = $contact->getAvatarURL();
+        if (! is_null($picture)) {
+            $vcard->add('PHOTO', $picture);
+        }
+
+        // Gender
+        $gender = 'O';
+        switch ($contact->gender->name) {
+            case 'Man':
+                $gender = 'M';
+            break;
+            case 'Woman':
+                $gender = 'F';
+            break;
+        }
+        $vcard->add('GENDER', $gender.';'.$contact->gender->name);
+
+        // Birthday
+        if (! is_null($contact->birthdate)) {
+            $date = $contact->birthdate->date->format('Ymd');
+            $vcard->add('BDAY', $date);
+        }
+
+        // Contactfields
+        foreach ($contact->contactFields as $contactField) {
+            switch ($contactField->contactFieldType->name) {
+                case 'Phone':
+                    $vcard->add('TEL', $contactField->data);
+                break;
+                case 'Email':
+                    $vcard->add('EMAIL', $contactField->data);
+                break;
+                case 'Facebook':
+                    $vcard->add('socialProfile', $contactField->data, ['type' => 'facebook']);
+                break;
+
+                // TODO: Twitter, Whatsapp, Telegram, other
+            }
+        }
 
         $uri = $contact->id;
         $timestamp = $contact->updated_at->timestamp;
+
         return [
             'id'           => md5($contact->id),
             'uri'          => $uri,
             'lastmodified' => $timestamp,
-            'etag'         => '"' . md5($uri.$timestamp) . '"',
-            'carddata'     => $vcard->serialize()
+            //'etag'         => '"' . md5($uri.$timestamp) . '"',
+            'carddata'     => $vcard->serialize(),
         ];
     }
 
-    function prepareCards($contacts) {
+    private function prepareCards($contacts)
+    {
         $results = [];
-        
-        foreach($contacts as $contact) {
+
+        foreach ($contacts as $contact) {
             $results[] = $this->prepareCard($contact);
         }
 
-        Log::debug(__CLASS__.' prepareCards', $results);
+        Log::debug(__CLASS__.' prepareCards', ['count' => count($results)]);
 
         return $results;
     }
@@ -133,11 +189,12 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param mixed $addressbookId
      * @return array
      */
-    function getCards($addressbookId) {
+    public function getCards($addressbookId)
+    {
         Log::debug(__CLASS__.' getCards', func_get_args());
 
         $contacts = Auth::user()->account->contacts()->real()->get();
-        
+
         return $this->prepareCards($contacts);
     }
 
@@ -149,10 +206,11 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param string $cardUri
      * @return array
      */
-    function getCard($addressBookId, $cardUri) {
+    public function getCard($addressBookId, $cardUri)
+    {
         Log::debug(__CLASS__.' getCard', func_get_args());
 
-        $contact = \App\Contact::where('account_id', Auth::user()->account_id)->where('id', $cardUri)->firstOrFail();
+        $contact = Contact::where('account_id', Auth::user()->account_id)->where('id', $cardUri)->firstOrFail();
 
         return $this->prepareCard($contact);
     }
@@ -169,10 +227,11 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param array $uris
      * @return array
      */
-    function getMultipleCards($addressBookId, array $uris) {
+    public function getMultipleCards($addressBookId, array $uris)
+    {
         Log::debug(__CLASS__.' getMultipleCards', func_get_args());
 
-        $contacts = \App\Contact::where('account_id', Auth::user()->account_id)->where('id', $uris)->get();
+        $contacts = \App\Contact::where('account_id', Auth::user()->account_id)->whereIn('id', $uris)->get();
 
         return $this->prepareCards($contacts);
     }
@@ -202,7 +261,8 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param string $cardData
      * @return string|null
      */
-    function createCard($addressBookId, $cardUri, $cardData) {
+    public function createCard($addressBookId, $cardUri, $cardData)
+    {
         Log::debug(__CLASS__.' createCard', func_get_args());
     }
 
@@ -231,19 +291,20 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface {
      * @param string $cardData
      * @return string|null
      */
-    function updateCard($addressBookId, $cardUri, $cardData) {
+    public function updateCard($addressBookId, $cardUri, $cardData)
+    {
         Log::debug(__CLASS__.' updateCard', func_get_args());
     }
 
     /**
-     * Deletes a card
+     * Deletes a card.
      *
      * @param mixed $addressBookId
      * @param string $cardUri
      * @return bool
      */
-    function deleteCard($addressBookId, $cardUri) {
+    public function deleteCard($addressBookId, $cardUri)
+    {
         Log::debug(__CLASS__.' deleteCard', func_get_args());
     }
-
 }
