@@ -20,6 +20,8 @@ v2.9.0 - 2018-10-14
 * Add ability to retrieve all conversations for one contact through the API
 * Add all tasks not yet completed on the dashboard
 * Fix gravatar not displayed on dashboard view
+* Fix errors during PostgreSQL migration
+* Better documentation for PostgreSQL users 
 
 v2.8.1 - 2018-10-08
 -------------------
