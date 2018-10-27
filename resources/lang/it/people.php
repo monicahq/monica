@@ -39,8 +39,7 @@ return [
     'people_add_success' => 'Contatto creato con successo',
     'people_add_gender' => 'Sesso',
     'people_delete_success' => 'Il contatto è stato rimosso',
-    'people_delete_message' => 'Se vuoi rimuovere questo contatto,',
-    'people_delete_click_here' => 'clicca qui',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Rimuovere questo contatto? Questo cambio è permanente.',
     'people_add_birthday_reminder' => 'Fai gli auguri di compleanno a :name',
     'people_add_import' => 'Vuoi <a href=":url">importare i tuoi contatti</a>?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'Regali',
     'section_personal_notes' => 'Note',
 
-    //
-    'link_to_list' => 'Lista dei contatti',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Modifica informazioni del contatto',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Aggiungi chiamata',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
