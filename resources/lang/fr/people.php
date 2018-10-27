@@ -64,7 +64,7 @@ return [
     // Header
     'edit_contact_information' => 'Mettre à jour les informations',
     'contact_archive' => 'Archiver le contact',
-    'contact_unarchive' => 'Contacts actifs',
+    'contact_unarchive' => 'Désarchiver le contact',
     'contact_archive_help' => 'Les contacts archivés n’apparaîtront pas sur la liste de contacts, mais apparaîtront toujours dans les résultats de recherches.',
     'call_button' => 'Enregistrer un appel téléphonique',
     'set_favorite' => 'Les contacts favoris sont placés en haut de la liste des contacts',
