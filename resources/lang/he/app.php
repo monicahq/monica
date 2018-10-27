@@ -59,6 +59,7 @@ return [
 
     'breadcrumb_dashboard' => 'לוח מחוונים',
     'breadcrumb_list_contacts' => 'רשימת אנשים',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'יומן',
     'breadcrumb_settings' => 'הגדרות',
     'breadcrumb_settings_export' => 'יצוא',
