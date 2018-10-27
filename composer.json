@@ -21,7 +21,7 @@
         "jenssegers/date": "^3.3",
         "jeroendesloovere/vcard": "^1.5",
         "lahaxearnaud/laravel-u2f": "^1.3",
-        "laravel/cashier": "~7.0",
+        "laravel/cashier": "~8.0",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.0",
         "laravel/socialite": "^3.0",
