@@ -2,27 +2,88 @@
 
 namespace App\Models\CardDAV\Backends;
 
-use Log;
-use Auth;
+use Sabre\HTTP\RequestInterface;
+use Sabre\HTTP\ResponseInterface;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Sabre\DAV\Auth\Backend\BackendInterface;
 
-class MonicaSabreBackend extends \Sabre\DAV\Auth\Backend\AbstractBasic
-{
+class MonicaSabreBackend implements BackendInterface {
+
     /**
-     * Validates a username and password.
+     * Authentication Realm.
      *
-     * This method should return true or false depending on if login
-     * succeeded.
+     * The realm is often displayed by browser clients when showing the
+     * authentication dialog.
      *
-     * @param string $username
-     * @param string $password
-     * @return bool
+     * @var string
      */
-    protected function validateUserPass($username, $password)
+    protected $realm = 'sabre/dav';
+
+    /**
+     * This is the prefix that will be used to generate principal urls.
+     *
+     * @var string
+     */
+    protected $principalPrefix = 'principals/';
+
+    /**
+     * Sets the authentication realm for this backend.
+     *
+     * @param string $realm
+     * @return void
+     */
+    function setRealm($realm)
     {
-        $attempt = Auth::attempt(['email' => $username, 'password' => $password]);
+        $this->realm = $realm;
+    }
 
-        Log::debug(__CLASS__.' validateUserPass', [$attempt]);
+    /**
+     * Check Laravel authentication
+     *
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return array
+     */
+    function check(RequestInterface $request, ResponseInterface $response)
+    {
+        if (! Auth::check()) {
+            return [false, "User is not authenticated"];
+        }
 
-        return $attempt;
+        Log::debug(__CLASS__.' validateUserPass', [Auth::user()->name]);
+
+        return [true, $this->principalPrefix . Auth::user()->email];
+    }
+
+    /**
+     * This method is called when a user could not be authenticated, and
+     * authentication was required for the current request.
+     *
+     * This gives you the opportunity to set authentication headers. The 401
+     * status code will already be set.
+     *
+     * In this case of Bearer Auth, this would for example mean that the
+     * following header needs to be set:
+     *
+     * $response->addHeader('WWW-Authenticate', 'Bearer realm=SabreDAV');
+     *
+     * Keep in mind that in the case of multiple authentication backends, other
+     * WWW-Authenticate headers may already have been set, and you'll want to
+     * append your own WWW-Authenticate header instead of overwriting the
+     * existing one.
+     *
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return void
+     */
+    function challenge(RequestInterface $request, ResponseInterface $response)
+    {
+        $auth = new HTTP\Auth\Bearer(
+            $this->realm,
+            $request,
+            $response
+        );
+        $auth->requireLogin();
     }
 }

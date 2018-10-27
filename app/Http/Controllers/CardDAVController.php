@@ -64,8 +64,12 @@ class CardDAVController extends Controller
         ob_end_clean();
 
         // Return response through laravel
-        Log::debug(__CLASS__.' init', ['status' => $status, 'content' => $content]);
+        Log::debug(__CLASS__.' init', [
+            'status' => $status,
+            'content' => $content
+        ]);
 
-        return response($content, $status)->withHeaders($headers);
+        return response($content, $status)
+            ->withHeaders($headers);
     }
 }

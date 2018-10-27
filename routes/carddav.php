@@ -22,4 +22,6 @@ $verbs = [
 
 Illuminate\Routing\Router::$verbs = $verbs;
 
-Route::match($verbs, '{path?}', 'CardDAVController@init')->where('path', '(.)*');
+Route::group(['middleware' => ['auth:api']], function () use ($verbs) {
+    Route::match($verbs, '{path?}', 'CardDAVController@init')->where('path', '(.)*');
+});

@@ -149,6 +149,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->group([
             'prefix' => 'carddav',
+            'middleware' => 'api',
             'namespace' => $this->namespace,
         ], function () {
             require base_path('routes/carddav.php');
