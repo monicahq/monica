@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Пол',
     'people_delete_success' => 'Контакт был удалён',
-    'people_delete_message' => 'Если вам нужно удалить этот контакт,',
-    'people_delete_click_here' => 'нажмите сюда',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Вы уверены что хотите удалить этот контакт? Восстановление невозможно.',
     'people_add_birthday_reminder' => 'Поздравить :name с днём рождения',
     'people_add_import' => 'Вы хотите <a href=":url">импортировать ваши контакты</a>?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'Подарки',
     'section_personal_notes' => 'Notes',
 
-    //
-    'link_to_list' => 'Список людей',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Редактировать контакты',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Log a call',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
