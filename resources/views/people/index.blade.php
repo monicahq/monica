@@ -177,11 +177,13 @@
                 {{ trans('people.people_list_blank_cta') }}
               </a>
 
-              @if ($hasArchived)
-                @if ($active)
-                <a href="{{ route('people.archived') }}">@lang('people.list_link_to_archived_contacts')</a>
+              <ul>
+                @if ($hasArchived)
+                  @if ($active)
+                  <li><a href="{{ route('people.archived') }}">@lang('people.list_link_to_archived_contacts')</a></li>
+                  @endif
                 @endif
-              @endif
+              </ul>
 
               {{-- Only for subscriptions --}}
               @include('partials.components.people-upgrade-sidebar')
@@ -200,6 +202,14 @@
                 <li class="f7 mt3">
                     <a href="{{ route('people.index') }}?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>
+              @endif
+
+              @if ($deceasedCount > 0)
+                @if ($hidingDeceased)
+                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=true">{{ trans_choice('people.people_list_show_dead', $deceasedCount, ['count' => $deceasedCount]) }}</a></li>
+                @else
+                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=false">{{ trans_choice('people.people_list_hide_dead', $deceasedCount, ['count' => $deceasedCount]) }}</a></li>
+                @endif
               @endif
               </ul>
             </div>

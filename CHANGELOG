@@ -7,6 +7,8 @@ UNRELEASED CHANGES:
 * Fix settings' sidebar links and change security icon
 * Fix CSV import
 * Highlight buttons when selected using keyboard
+* Hide deceased people from dashboard's 'Last Consulted' section
+* Filter deceased people from people list by default
 
 RELEASED VERSIONS:
 
