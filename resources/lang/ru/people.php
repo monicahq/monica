@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Поиск по контактам...',
     'people_search_no_results' => 'Контакты не найдены :(',
     'people_list_account_usage' => 'Лимиты контактов: :current/:limit',
