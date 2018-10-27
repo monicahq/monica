@@ -241,6 +241,6 @@ trait VCardImporter
      */
     public function contactHasName(VCard $vcard): bool
     {
-        return ! empty($vcard->N->getParts()[1]) || ! empty((string) $vcard->NICKNAME);
+        return ($vcard->N !== null && ! empty($vcard->N->getParts()[1])) || ! empty((string) $vcard->NICKNAME);
     }
 }

@@ -265,7 +265,7 @@ class ImportJob extends Model
      */
     public function processSingleEntry($behaviour = self::BEHAVIOUR_ADD)
     {
-        if (! $this->checkImportFeasibility()) {
+        if (! $this->canImportCurrentEntry()) {
             $this->skipEntry(self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
 
             return;
@@ -300,13 +300,27 @@ class ImportJob extends Model
      * @param VCard $vcard
      * @return bool
      */
-    public function checkImportFeasibility(): bool
+    public function canImportCurrentEntry(): bool
     {
-        if (is_null($this->currentEntry->N)) {
-            return false;
-        }
+        return
+            $this->hasFirstnameInN() ||
+            $this->hasNickname() ||
+            $this->hasFN();
+    }
 
-        return ! empty($this->currentEntry->N->getParts()[1]) || ! empty((string) $this->currentEntry->NICKNAME);
+    private function hasFirstnameInN(): bool
+    {
+        return $this->currentEntry->N !== null && ! empty($this->currentEntry->N->getParts()[1]);
+    }
+
+    private function hasNICKNAME(): bool
+    {
+        return ! empty((string) $this->currentEntry->NICKNAME);
+    }
+
+    private function hasFN(): bool
+    {
+        return ! empty((string) $this->currentEntry->FN);
     }
 
     /**
@@ -376,14 +390,20 @@ class ImportJob extends Model
      */
     public function name(): string
     {
-        if (is_null($this->currentEntry->N)) {
-            return trans('settings.import_vcard_unknown_entry');
+        if ($this->hasFirstnameInN()) {
+            $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+            $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
+            $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
+            $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
+        } elseif ($this->hasNICKNAME()) {
+            $name = $this->formatValue($this->currentEntry->NICKNAME);
+            $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
+        } elseif ($this->hasFN()) {
+            $name = $this->formatValue($this->currentEntry->FN);
+            $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
+        } else {
+            $name = trans('settings.import_vcard_unknown_entry');
         }
-
-        $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
-        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
-        $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
-        $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
 
         return $name;
     }
@@ -437,13 +457,34 @@ class ImportJob extends Model
      */
     public function importNames(Contact $contact): void
     {
-        if ($this->currentEntry->N && ! empty($this->currentEntry->N->getParts()[1])) {
-            $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
-            $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
-            $contact->last_name = $this->formatValue($this->currentEntry->N->getParts()[0]);
+        if ($this->hasFirstnameInN()) {
+            $this->importFromN($contact);
+        } elseif ($this->hasNICKNAME()) {
+            $this->importFromNICKNAME($contact);
+        } elseif ($this->hasFN()) {
+            $this->importFromFN($contact);
         } else {
-            $contact->first_name = $this->formatValue($this->currentEntry->NICKNAME);
+            throw new \LogicException('Check if you can import entry!');
         }
+    }
+
+    private function importFromN(Contact $contact)
+    {
+        $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
+        $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
+        $contact->last_name = $this->formatValue($this->currentEntry->N->getParts()[0]);
+    }
+
+    private function importFromNICKNAME(Contact $contact)
+    {
+        $contact->first_name = $this->formatValue($this->currentEntry->NICKNAME);
+    }
+
+    private function importFromFN(Contact $contact)
+    {
+        $fullnameParts = preg_split('/ +/', $this->currentEntry->FN);
+        $contact->first_name = $this->formatValue($fullnameParts[0]);
+        $contact->last_name = $this->formatValue($fullnameParts[1]);
     }
 
     /**

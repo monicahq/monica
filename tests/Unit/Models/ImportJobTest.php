@@ -306,31 +306,79 @@ END:VCARD
         ]);
     }
 
-    public function test_it_checks_import_feasibility()
+    public function test_it_can_not_import_because_no_firstname_or_nickname_in_vcard()
     {
         $importJob = $this->createImportJob();
 
-        // false because no N entry in the vcard
-        $vcard = new VCard([]);
-        $importJob->currentEntry = $vcard;
-        $this->assertFalse($importJob->checkImportFeasibility());
+        $importJob->currentEntry = new VCard([]);
 
-        // false because no firstname
-        $vcard = new VCard([
+        $this->assertFalse($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_not_import_because_no_firstname_in_vcard()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
             'N'   => ['John', '', '', '', ''],
         ]);
-        $importJob->currentEntry = $vcard;
-        $this->assertFalse($importJob->checkImportFeasibility());
 
-        // false because no nickname
-        $vcard = new VCard([
+        $this->assertFalse($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_not_import_because_empty_nickname_in_vcard()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
             'NICKNAME'   => '',
-            'N'   => '',
         ]);
-        $importJob->currentEntry = $vcard;
 
-        // false because no firstname
-        $this->assertFalse($importJob->checkImportFeasibility());
+        $this->assertFalse($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_not_import_because_empty_fullname_in_vcard()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'FN'   => '',
+        ]);
+
+        $this->assertFalse($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_import_firstname()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'N'   => ['', 'John', '', '', ''],
+        ]);
+
+        $this->assertTrue($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_import_nickname()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'NICKNAME'   => 'John',
+        ]);
+
+        $this->assertTrue($importJob->canImportCurrentEntry());
+    }
+
+    public function test_it_can_import_fullname()
+    {
+        $importJob = $this->createImportJob();
+
+        $importJob->currentEntry = new VCard([
+            'FN'   => 'John Doe',
+        ]);
+
+        $this->assertTrue($importJob->canImportCurrentEntry());
     }
 
     public function test_it_validates_email()
@@ -388,20 +436,37 @@ END:VCARD
         );
     }
 
-    public function test_it_returns_a_name_of_the_current_entry()
+    public function test_it_returns_a_name_for_N()
     {
         $importJob = $this->createImportJob();
-        $vcard = new VCard([
+        $importJob->currentEntry = new VCard([
             'N' => ['John', 'Doe', '', '', ''],
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $importJob->currentEntry = $vcard;
+        $this->assertEquals('Doe  John john@doe.com', $importJob->name());
+    }
 
-        $this->assertEquals(
-            'Doe  John john@doe.com',
-            $importJob->name()
-        );
+    public function test_it_returns_a_name_for_NICKNAME()
+    {
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'NICKNAME' => 'John',
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $this->assertEquals('John john@doe.com', $importJob->name());
+    }
+
+    public function test_it_returns_a_name_for_FN()
+    {
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'FN' => 'John Doe',
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $this->assertEquals('John Doe john@doe.com', $importJob->name());
     }
 
     public function test_it_files_an_import_job_report()
@@ -502,38 +567,60 @@ END:VCARD
         );
     }
 
-    public function test_it_imports_names()
+    public function test_it_imports_names_N()
     {
-        $importJob = $this->createImportJob();
-        $vcard = new VCard([
-            'N' => ['John', 'Doe', '', '', ''],
-        ]);
-
-        $importJob->currentEntry = $vcard;
         $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'N' => ['Doe', 'John', 'Jane', '', ''],
+        ]);
         $importJob->importNames($contact);
 
-        $this->assertEquals(
-            'Doe',
-            $contact->first_name
-        );
-        $this->assertEquals(
-            'John',
-            $contact->last_name
-        );
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe', $contact->last_name);
+        $this->assertEquals('Jane', $contact->middle_name);
+    }
 
-        $vcard = new VCard([
+    public function test_it_imports_names_NICKNAME()
+    {
+        $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
             'NICKNAME' => 'John',
         ]);
-
-        $importJob->currentEntry = $vcard;
-        $contact = new Contact;
         $importJob->importNames($contact);
 
-        $this->assertEquals(
-            'John',
-            $contact->first_name
-        );
+        $this->assertEquals('John', $contact->first_name);
+    }
+
+    public function test_it_imports_names_FN()
+    {
+        $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'FN' => 'John Doe',
+        ]);
+        $importJob->importNames($contact);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe', $contact->last_name);
+    }
+
+    public function test_it_imports_names_FN_extra_space()
+    {
+        $contact = new Contact;
+
+        $importJob = $this->createImportJob();
+        $importJob->currentEntry = new VCard([
+            'FN' => 'John  Doe',
+        ]);
+        $importJob->importNames($contact);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe', $contact->last_name);
     }
 
     public function test_it_imports_work_information()
