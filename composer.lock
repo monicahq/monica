@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c1ea9284fe06c55e1c67234cfe57083e",
+    "content-hash": "13a952baa156ec065aebb7e35296930f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1997,16 +1997,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v7.2.2",
+            "version": "v8.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "d450aa31f1b5e9f9618088ebe9fa4c2d77962d5d"
+                "reference": "be0bbad876b7510e39a7d29bc6ce9cff7a3979e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/d450aa31f1b5e9f9618088ebe9fa4c2d77962d5d",
-                "reference": "d450aa31f1b5e9f9618088ebe9fa4c2d77962d5d",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/be0bbad876b7510e39a7d29bc6ce9cff7a3979e4",
+                "reference": "be0bbad876b7510e39a7d29bc6ce9cff7a3979e4",
                 "shasum": ""
             },
             "require": {
@@ -2014,7 +2014,7 @@
                 "illuminate/database": "~5.3",
                 "illuminate/support": "~5.3",
                 "nesbot/carbon": "~1.0",
-                "php": ">=5.5.9",
+                "php": ">=7.0",
                 "stripe/stripe-php": "~5.0",
                 "symfony/http-kernel": "~2.7|~3.0|~4.0"
             },
@@ -2023,7 +2023,7 @@
                 "illuminate/routing": "~5.3",
                 "illuminate/view": "~5.3",
                 "mockery/mockery": "~1.0",
-                "phpunit/phpunit": "~5.0",
+                "phpunit/phpunit": "~6.0",
                 "vlucas/phpdotenv": "~2.0"
             },
             "type": "library",
@@ -2058,7 +2058,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2018-10-11T15:18:37+00:00"
+            "time": "2018-10-23T17:12:51+00:00"
         },
         {
             "name": "laravel/framework",
@@ -8882,17 +8882,6 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2",
-                "reference": "0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2",
-                "shasum": ""
-            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
