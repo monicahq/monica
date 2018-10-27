@@ -59,6 +59,7 @@ return [
 
     'breadcrumb_dashboard' => '仪表盘',
     'breadcrumb_list_contacts' => '人名单',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => '日记',
     'breadcrumb_settings' => '设置',
     'breadcrumb_settings_export' => '导出',
