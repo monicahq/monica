@@ -2,10 +2,10 @@
 
 namespace App\Models\CardDAV\Backends;
 
-use Log;
-use Auth;
 use Sabre\DAV;
 use Sabre\CalDAV;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendInterface
 {

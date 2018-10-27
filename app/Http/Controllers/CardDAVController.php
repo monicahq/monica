@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App;
-use Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Models\CardDAV\MonicaAddressBookRoot;
 use App\Models\CardDAV\Backends\MonicaSabreBackend;
 use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
@@ -18,7 +19,7 @@ class CardDAVController extends Controller
     public function init(Request $request)
     {
         // Disable debugger for caldav output
-        \Debugbar::disable();
+        Debugbar::disable();
 
         // TODO: Not sure if this is needed, check later
         date_default_timezone_set('UTC');

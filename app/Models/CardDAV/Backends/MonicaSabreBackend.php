@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Auth\Backend\BackendInterface;
 
-class MonicaSabreBackend implements BackendInterface {
+class MonicaSabreBackend implements BackendInterface
+{
 
     /**
      * Authentication Realm.

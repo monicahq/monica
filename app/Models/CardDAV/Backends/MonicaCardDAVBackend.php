@@ -2,11 +2,11 @@
 
 namespace App\Models\CardDAV\Backends;
 
-use Log;
-use Auth;
 use Sabre\DAV;
 use Sabre\VObject;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
 {
