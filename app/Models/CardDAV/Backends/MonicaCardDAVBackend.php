@@ -3,7 +3,6 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use Sabre\VObject;
 use VObject\Component\VCard;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
@@ -55,7 +54,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
      *
      * @param string $addressBookId
      * @param \Sabre\DAV\PropPatch $propPatch
-     * @return void|boolean
+     * @return void|bool
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
@@ -73,7 +72,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
      * @param string $principalUri
      * @param string $url Just the 'basename' of the url.
      * @param array $properties
-     * @return int|boolean
+     * @return int|bool
      */
     public function createAddressBook($principalUri, $url, array $properties)
     {
@@ -86,7 +85,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
      * Deletes an entire addressbook and all its contents.
      *
      * @param mixed $addressBookId
-     * @return void|boolean
+     * @return void|bool
      */
     public function deleteAddressBook($addressBookId)
     {
