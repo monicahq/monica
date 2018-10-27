@@ -13,6 +13,8 @@ return [
     'tab_calls_blank' => '您还没有电话拨打记录。',
     'tab_debts' => '债务',
     'tab_debts_blank' => '您还没有添加债务信息。',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
 
     'debts_you_owe' => '待还金额',
 

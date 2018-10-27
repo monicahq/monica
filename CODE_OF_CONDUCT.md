@@ -6,6 +6,10 @@ In the interest of fostering an open and welcoming environment, we as contributo
 
 ## Our Standards
 
+We want everyone to be able to participate to our project no matter what they are or are from, as long as you don't bring drama or something irrelevant to the project. We are here to discuss Monica, its direction and the code around Monica - that's it. We will never judge someone, no matter the differences. On the contrary, we welcome differences. We will only judge the code that is submitted, and it will never be personal.
+
+To summarize, don't be an ass - we are here to create something good, and something that is useful for the world. Don't bring your personal story and everything will be alright.
+
 Examples of behavior that contributes to creating a positive environment include:
 
 * Using welcoming and inclusive language
@@ -16,6 +20,7 @@ Examples of behavior that contributes to creating a positive environment include
 
 Examples of unacceptable behavior by participants include:
 
+* Discussion about politics, culture, gender, ethnicity,...
 * The use of sexualized language or imagery and unwelcome sexual attention or advances
 * Trolling, insulting/derogatory comments, and personal or political attacks
 * Public or private harassment
@@ -30,7 +35,7 @@ Project maintainers have the right and responsibility to remove, edit, or reject
 
 ## Scope
 
-This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers.
+This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community.
 
 ## Enforcement
 

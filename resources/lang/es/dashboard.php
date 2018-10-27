@@ -13,6 +13,8 @@ return [
     'tab_calls_blank' => 'Todavía no has registrado una llamada.',
     'tab_debts' => 'Deudas',
     'tab_debts_blank' => 'Todavía no has registrado una deuda.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
 
     'debts_you_owe' => 'Le debes a',
 

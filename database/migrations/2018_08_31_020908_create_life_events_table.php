@@ -27,7 +27,7 @@ class CreateLifeEventsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('default_life_event_category_id');
             $table->string('translation_key');
-            $table->text('specific_information_structure');
+            $table->text('specific_information_structure')->nullable();
             $table->boolean('migrated')->default(0);
             $table->timestamps();
             $table->foreign('default_life_event_category_id')->references('id')->on('default_life_event_categories')->onDelete('cascade');
@@ -354,7 +354,7 @@ class CreateLifeEventsTable extends Migration
             'updated_at' => now(),
         ]);
         DB::table('default_life_event_types')->insert([
-            'translation_key' => 'tatoo_or_piercing',
+            'translation_key' => 'tattoo_or_piercing',
             'default_life_event_category_id' => $defaultCategoryId,
             'created_at' => now(),
             'updated_at' => now(),
