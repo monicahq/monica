@@ -12,6 +12,11 @@ UNRELEASED CHANGES:
 * Filter deceased people from people list by default
 * Fix errors during PostgreSQL migration
 * Better documentation for PostgreSQL users
+* Fix some API methods
+* API Breaking: Removed 'POST /contacts/:contact_id/pets' in favor of 'POST /pets/' with a 'contact_id'
+* API Breaking: Removed 'PUT /contacts/:contact_id/pets/:id' in favor of 'PUT /pets/:id' with a 'contact_id'
+* API Breaking: Every validator fails now send a HTTP 400 code (was 200) with the error 32
+* API Breaking: Every Invald Parameters errors now send a HTTP 400 (was 500 or 200) code with the error 41
 
 RELEASED VERSIONS:
 
