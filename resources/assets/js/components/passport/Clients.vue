@@ -91,7 +91,7 @@
                             <p><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
                             <ul>
-                                <li v-for="error in createForm.errors" v-bind:key="error.id">
+                                <li v-for="error in createForm.errors" :key="error.id">
                                     {{ error }}
                                 </li>
                             </ul>
@@ -157,7 +157,7 @@
                             <p><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
                             <ul>
-                                <li v-for="error in editForm.errors" v-bind:key="error.id">
+                                <li v-for="error in editForm.errors" :key="error.id">
                                     {{ error }}
                                 </li>
                             </ul>

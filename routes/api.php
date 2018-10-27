@@ -101,8 +101,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('lifeevents', 'Api\\Contact\\ApiLifeEventController');
 
     // Documents
-    Route::resource('documents', 'Api\\Contact\\ApiDocumentController', ['except' => [
-      'create', 'edit', 'patch', 'store', 'update',
+    Route::apiResource('documents', 'Api\\Contact\\ApiDocumentController', ['only' => [
+      'index', 'show',
     ]]);
     Route::get('/contacts/{contact}/documents', 'Api\\Contact\\ApiDocumentController@documents');
 
