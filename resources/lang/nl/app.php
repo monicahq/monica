@@ -59,6 +59,7 @@ return [
 
     'breadcrumb_dashboard' => 'Dashboard',
     'breadcrumb_list_contacts' => 'Lijst van mensen',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'Dagboek',
     'breadcrumb_settings' => 'Instellingen',
     'breadcrumb_settings_export' => 'Exporteren',
