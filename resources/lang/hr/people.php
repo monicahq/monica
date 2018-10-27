@@ -39,8 +39,7 @@ return [
     'people_add_success' => 'Kontakt :name je uspješno unesen',
     'people_add_gender' => 'Spol',
     'people_delete_success' => 'Kontakt je obrisan',
-    'people_delete_message' => 'Ako želite obrisati ovaj kontakt,',
-    'people_delete_click_here' => 'kliknite ovdje',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Jeste li sigurni da želite izbrisati kontakt? Brisanje je trajno.',
     'people_add_birthday_reminder' => 'Zaželi sretan rođendan :name',
     'people_add_import' => 'Želite li <a href=":url">uvesti svoje kontakte</a>?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'Pokloni',
     'section_personal_notes' => 'Bilješke',
 
-    //
-    'link_to_list' => 'Popis osoba',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Uredi kontakt',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Zabilježi poziv',
     'set_favorite' => 'Omiljeni kontakti smješteni su na vrhu popisa',
 
