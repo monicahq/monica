@@ -49,7 +49,7 @@
                   <label for="metThroughId">{{ trans('people.introductions_edit_met_through') }}</label>
                   <select class="form-control" name="metThroughId" id="metThroughId">
                     <option value="">{{ trans('people.introductions_no_met_through') }}</option>
-                    @foreach (auth()->user()->account->contacts()->real()->get() as $metThroughContact)
+                    @foreach (auth()->user()->account->contacts()->real()->active()->get() as $metThroughContact)
 
                       @if ($metThroughContact->id != $contact->id)
                       <option value="{{ $metThroughContact->id }}" {{ (is_null($contact->first_met_through_contact_id)) ? '' : (($metThroughContact->id == $contact->first_met_through_contact_id) ? 'selected' : '') }}>

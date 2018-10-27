@@ -14,7 +14,11 @@
                 <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
+                @if ($active)
                 {{ trans('app.breadcrumb_list_contacts') }}
+                @else
+                {{ trans('app.breadcrumb_archived_contacts') }}
+                @endif
               </li>
             </ul>
           </div>
@@ -27,44 +31,20 @@
 
       @if ($contacts->count() == 0)
 
-        <div class="blank-people-state">
-          <div class="{{ Auth::user()->getFluidLayout() }}">
-            <div class="row">
-              <div class="col-xs-12">
-                  @if (! is_null($tags))
-                      <p class="clear-filter">
-                        {{ trans('people.people_list_filter_tag') }}
-                        @foreach ($tags as $tag)
-                            <span class="pretty-tag">
-                            {{ $tag->name }}
-                            </span>
-                        @endforeach
-                        <a href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
-                      </p>
-                  @endif
-                  @if ($tagLess)
-                      <p class="clear-filter">
-                        <span class="mr2">{{ trans('people.people_list_filter_untag') }}</span>
-                        <a href="{{ route('people.index') }}">{{ trans('people.people_list_clear_filter') }}</a>
-                      </p>
-                  @endif
-
-                <div class="illustration-blank">
-                  <img src="/img/people/blank.svg">
-                </div>
-                <h3>{{ trans('people.people_list_blank_title') }}</h3>
-                <div class="cta-blank">
-                  <a href="{{ route('people.create') }}" class="btn btn-primary" id="button-add-contact">{{ trans('people.people_list_blank_cta') }}</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        @include('people.blank')
 
       @else
 
         <div class="{{ auth()->user()->getFluidLayout() }}">
           <div class="row">
+
+            @if ($hasArchived and !$active)
+            <div class="col-xs-12">
+              <div class="ba mb3 br3 pa3 tc b--gray-monica bg-gray-monica">
+                {!! trans('people.list_link_to_active_contacts', ['url' => route('people.index')]) !!}
+              </div>
+            </div>
+            @endif
 
             <div class="col-xs-12 col-md-9 mb4">
 
@@ -197,10 +177,16 @@
                 {{ trans('people.people_list_blank_cta') }}
               </a>
 
+              @if ($hasArchived)
+                @if ($active)
+                <a href="{{ route('people.archived') }}">@lang('people.list_link_to_archived_contacts')</a>
+                @endif
+              @endif
+
               {{-- Only for subscriptions --}}
               @include('partials.components.people-upgrade-sidebar')
 
-              <ul>
+              <ul class="mb4">
               @foreach ($userTags as $dbtag)
                 @if ($dbtag->contacts()->count() > 0)
                 <li>

@@ -101,7 +101,11 @@ docker_push_bintray: .deploy.json
 
 .PHONY: docker docker_build docker_tag docker_push docker_push_bintray
 
-build: build-dev
+build:
+	composer install --no-interaction --no-suggest --ignore-platform-reqs
+	php artisan lang:generate
+	yarn install
+	yarn run production
 
 build-prod:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
