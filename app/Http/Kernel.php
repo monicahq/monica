@@ -59,7 +59,7 @@ class Kernel extends HttpKernel
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.basic.once' => \App\Http\Middleware\AuthenticateOnceWithBasicAuth::class,
-        'auth.tokenbasic' => \App\Http\Middleware\AuthenticateWithBasicTokenAuth::class,        
+        'auth.tokenbasic' => \App\Http\Middleware\AuthenticateWithBasicTokenAuth::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,

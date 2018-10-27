@@ -4,6 +4,7 @@ namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
 use Sabre\VObject;
+use VObject\Component\VCard;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +55,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
      *
      * @param string $addressBookId
      * @param \Sabre\DAV\PropPatch $propPatch
-     * @return void
+     * @return void|boolean
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
@@ -72,7 +73,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
      * @param string $principalUri
      * @param string $url Just the 'basename' of the url.
      * @param array $properties
-     * @return mixed
+     * @return int|boolean
      */
     public function createAddressBook($principalUri, $url, array $properties)
     {
@@ -85,7 +86,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
      * Deletes an entire addressbook and all its contents.
      *
      * @param mixed $addressBookId
-     * @return void
+     * @return void|boolean
      */
     public function deleteAddressBook($addressBookId)
     {
@@ -99,7 +100,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
 
         // Basic information
-        $vcard = new VObject\Component\VCard([
+        $vcard = new VCard([
             'FN'  => $contact->name,
             'N'   => [$contact->first_name, $contact->last_name],
             'UID' => $contact->hashid(),

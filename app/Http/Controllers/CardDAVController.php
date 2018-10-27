@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Models\CardDAV\MonicaAddressBookRoot;
 use App\Models\CardDAV\Backends\MonicaSabreBackend;
@@ -72,7 +71,7 @@ class CardDAVController extends Controller
         // Return response through laravel
         Log::debug(__CLASS__.' init', [
             'status' => $status,
-            'content' => $content
+            'content' => $content,
         ]);
 
         return response($content, $status)

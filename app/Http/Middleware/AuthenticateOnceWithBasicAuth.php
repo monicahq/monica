@@ -17,5 +17,4 @@ class AuthenticateOnceWithBasicAuth
     {
         return Auth::onceBasic() ?: $next($request);
     }
-
 }

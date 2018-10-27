@@ -3,25 +3,24 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Illuminate\Auth\AuthManager;
 
 class AuthenticateWithBasicTokenAuth
 {
     /**
      * The guard factory instance.
      *
-     * @var \Illuminate\Contracts\Auth\Factory
+     * @var AuthManager
      */
     protected $auth;
 
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Factory  $auth
+     * @param  AuthManager  $auth
      * @return void
      */
-    public function __construct(AuthFactory $auth)
+    public function __construct(AuthManager $auth)
     {
         $this->auth = $auth;
     }
@@ -37,7 +36,7 @@ class AuthenticateWithBasicTokenAuth
      */
     public function handle($request, Closure $next, $guard = null, $field = null)
     {
-        // Try Bearer authentication, with token in 'password' basic 
+        // Try Bearer authentication, with token in 'password' basic
         if (! $request->bearerToken()) {
             $password = $request->getPassword();
             $request->headers->set('Authorization', 'Bearer '.$password);
@@ -47,6 +46,7 @@ class AuthenticateWithBasicTokenAuth
 
         if ($user && (! $request->getUser() || $request->getUser() === $user->email)) {
             $this->auth->setUser($user);
+
             return $next($request);
         }
 

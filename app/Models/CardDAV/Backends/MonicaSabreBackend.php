@@ -10,7 +10,6 @@ use Sabre\DAV\Auth\Backend\BackendInterface;
 
 class MonicaSabreBackend implements BackendInterface
 {
-
     /**
      * Authentication Realm.
      *
@@ -34,27 +33,27 @@ class MonicaSabreBackend implements BackendInterface
      * @param string $realm
      * @return void
      */
-    function setRealm($realm)
+    public function setRealm($realm)
     {
         $this->realm = $realm;
     }
 
     /**
-     * Check Laravel authentication
+     * Check Laravel authentication.
      *
      * @param RequestInterface $request
      * @param ResponseInterface $response
      * @return array
      */
-    function check(RequestInterface $request, ResponseInterface $response)
+    public function check(RequestInterface $request, ResponseInterface $response)
     {
         if (! Auth::check()) {
-            return [false, "User is not authenticated"];
+            return [false, 'User is not authenticated'];
         }
 
         Log::debug(__CLASS__.' validateUserPass', [Auth::user()->name]);
 
-        return [true, $this->principalPrefix . Auth::user()->email];
+        return [true, $this->principalPrefix.Auth::user()->email];
     }
 
     /**
@@ -78,7 +77,7 @@ class MonicaSabreBackend implements BackendInterface
      * @param ResponseInterface $response
      * @return void
      */
-    function challenge(RequestInterface $request, ResponseInterface $response)
+    public function challenge(RequestInterface $request, ResponseInterface $response)
     {
         $auth = new \Sabre\HTTP\Auth\Bearer(
             $this->realm,
