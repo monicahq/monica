@@ -5,6 +5,8 @@ namespace App\Models\Account;
 use Exception;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
+use App\Helpers\VCardHelper;
+use App\Helpers\LocaleHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -349,20 +351,13 @@ class ImportJob extends Model
             return;
         }
 
-        $contactFieldType = ContactFieldType::where([
+        $contactField = ContactField::where([
             ['account_id', $this->account_id],
-            ['type', 'email'],
-        ])->first();
+            ['contact_field_type_id', $this->contactFieldEmailId()],
+        ])->whereIn('data', iterator_to_array($this->currentEntry->EMAIL))->first();
 
-        if ($contactFieldType) {
-            $contactField = ContactField::where([
-                ['account_id', $this->account_id],
-                ['contact_field_type_id', $contactFieldType->id],
-            ])->whereIn('data', iterator_to_array($this->currentEntry->EMAIL))->first();
-
-            if ($contactField) {
-                return $contactField->contact;
-            }
+        if ($contactField) {
+            return $contactField->contact;
         }
     }
 
@@ -585,6 +580,12 @@ class ImportJob extends Model
         }
 
         foreach ($this->currentEntry->TEL as $tel) {
+            $tel = (string) $this->currentEntry->TEL;
+
+            $countryISO = VCardHelper::getCountryISOFromSabreVCard($this->currentEntry);
+
+            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO);
+
             ContactField::firstOrCreate([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
@@ -597,8 +598,13 @@ class ImportJob extends Model
     private function contactFieldEmailId()
     {
         if (! $this->contactFieldEmailId) {
-            $contactFieldType = ContactFieldType::where('type', 'email')->first();
-            $this->contactFieldEmailId = $contactFieldType->id;
+            $contactFieldType = ContactFieldType::where([
+                ['account_id', $this->account_id],
+                ['type', 'email'],
+            ])->first();
+            if ($contactFieldType) {
+                $this->contactFieldEmailId = $contactFieldType->id;
+            }
         }
 
         return $this->contactFieldEmailId;
@@ -607,8 +613,13 @@ class ImportJob extends Model
     private function contactFieldPhoneId()
     {
         if (! $this->contactFieldPhoneId) {
-            $contactFieldType = ContactFieldType::where('type', 'phone')->first();
-            $this->contactFieldPhoneId = $contactFieldType->id;
+            $contactFieldType = ContactFieldType::where([
+                ['account_id', $this->account_id],
+                ['type', 'phone'],
+            ])->first();
+            if ($contactFieldType) {
+                $this->contactFieldPhoneId = $contactFieldType->id;
+            }
         }
 
         return $this->contactFieldPhoneId;
