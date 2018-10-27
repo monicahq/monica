@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'عرض كل جهات الاتصال ذات الوسم',
     'people_list_clear_filter' => 'مسح التصفية',
     'people_list_contacts_per_tags' => 'جهة اتصال واحدة|:count جهات اتصال',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'البحث في جهات الاتصال الخاصة بك...',
     'people_search_no_results' => 'لم يتم العثور على جهات اتصال ذات صلة :(',
     'people_list_account_usage' => 'استخدام حسابك: :current/:limit جهة اتصال',
