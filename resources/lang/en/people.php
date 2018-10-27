@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Showing all the contacts tagged with',
     'people_list_clear_filter' => 'Clear filter',
     'people_list_contacts_per_tags' => '1 contact|:count contacts',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Search your contacts...',
     'people_search_no_results' => 'No relevant contacts found :(',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',

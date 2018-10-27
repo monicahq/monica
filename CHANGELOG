@@ -2,10 +2,14 @@ UNRELEASED CHANGES:
 
 * Add ability to archive a contact
 * Add right-click support on contact list
+* Add a command (export:all) to export all data from an instance in SQL
 * Standardize phonenumber format while importing vCard
 * Set currency and timezone for new users
 * Fix settings' sidebar links and change security icon
 * Fix CSV import
+* Highlight buttons when selected using keyboard
+* Hide deceased people from dashboard's 'Last Consulted' section
+* Filter deceased people from people list by default
 
 RELEASED VERSIONS:
 

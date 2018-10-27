@@ -40,6 +40,10 @@ class DashboardController extends Controller
             ->limit(10)
             ->get();
         foreach ($lastUpdatedContacts as $contact) {
+            if ($contact->is_dead) {
+                continue;
+            }
+
             $data = [
                 'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
