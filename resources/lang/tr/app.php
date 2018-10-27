@@ -59,6 +59,7 @@ return [
 
     'breadcrumb_dashboard' => 'Başlangıç',
     'breadcrumb_list_contacts' => 'Kişi Listesi',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'Günlük',
     'breadcrumb_settings' => 'Ayarlar',
     'breadcrumb_settings_export' => 'Dışa aktar',
