@@ -82,7 +82,7 @@
                   v-bind:input-type="'text'"
                   v-bind:id="'nickname'"
                   v-bind:required="false"
-                  v-bind:title="'{{ trans('people.people_add_nickname') }}'">
+                  v-bind:title="'{{ trans('people.information_edit_description') }}'">
                 </form-input>
               </div>
             </div>
@@ -101,6 +101,20 @@
               v-bind:title="'{{ trans('people.people_add_gender') }}'"
               v-bind:id="'gender'">
             </form-select>
+          </div>
+        </div>
+
+        {{-- Description --}}
+        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          <div class="mb3 mb0-ns">
+            <form-input
+              value="{{ $contact->description }}"
+              v-bind:input-type="'text'"
+              v-bind:id="'description'"
+              v-bind:required="false"
+              v-bind:title="'{{ trans('people.information_edit_description') }}'">
+            </form-input>
+            <small id="emailHelp" class="form-text text-muted">{{ trans('people.information_edit_description_help') }}</small>
           </div>
         </div>
 
@@ -130,23 +144,23 @@
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           <div class="mb3 mb0-ns">
             <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" id="markPersonDeceased" name="markPersonDeceased" type="checkbox" value="markPersonDeceased"
+              <label class="pointer">
+                <input class="pointer" id="markPersonDeceased" name="markPersonDeceased" type="checkbox" value="markPersonDeceased"
                 {{ $contact->is_dead ? 'checked' : '' }}>
                 {{ trans('people.deceased_mark_person_deceased') }}
               </label>
             </div>
             <div class="form-check {{ $contact->is_dead ? '' : 'hidden' }}" id="datePersonDeceased">
-            <label class="form-check-label">
-              <input class="form-check-input" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
+            <label class="pointer">
+              <input class="pointer" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
               {{ trans('people.deceased_know_date') }}
 
               @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->deceasedDate, 'class' => 'deceased_date'])
 
             </div>
             <div class="form-check {{ $contact->deceasedDate == null ? 'hidden' : '' }}" id="reminderDeceased">
-              <label class="form-check-label">
-                <input class="form-check-input" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate != null) ? (($contact->deceasedDate->reminder_id != null) ? 'checked' : '') : '' }}>
+              <label class="pointer">
+                <input class="pointer" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate != null) ? (($contact->deceasedDate->reminder_id != null) ? 'checked' : '') : '' }}>
                 {{ trans('people.deceased_add_reminder') }}
               </label>
             </div>

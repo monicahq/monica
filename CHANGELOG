@@ -1,11 +1,31 @@
 UNRELEASED CHANGES:
 
-* Add ability to set a reminder for a life event
-* Stop reporting OAuth exceptions
-* Replace karakus/laravel-cloudflare with monicahq/laravel-cloudflare to fix dependencies issues
+* Add ability to archive a contact
+* Add right-click support on contact list
+* Standardize phonenumber format while importing vCard
+* Set currency and timezone for new users
+* Fix settings' sidebar links and change security icon
+* Fix CSV import
 * Highlight buttons when selected using keyboard
 
 RELEASED VERSIONS:
+
+v2.9.0 - 2018-10-14
+-------------------
+
+* Allow to define a max file size for uploaded document in an ENV variable (default to 10240kb)
+* Add description field for a contact
+* Add ability to retrieve all conversations for one contact through the API
+* Add all tasks not yet completed on the dashboard
+* Fix gravatar not displayed on dashboard view
+
+v2.8.1 - 2018-10-08
+-------------------
+
+* Add ability to set a reminder for a life event
+* Stop reporting OAuth exceptions
+* Replace karakus/laravel-cloudflare with monicahq/laravel-cloudflare to fix dependencies issues
+* Fix use of 'json' mysql column type
 
 v2.8.0 - 2018-09-28
 -------------------

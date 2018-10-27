@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Gender',
     'people_delete_success' => 'The contact has been deleted',
-    'people_delete_message' => 'If you need to delete this contact,',
-    'people_delete_click_here' => 'click here',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Are you sure you want to delete this contact? Deletion is permanent.',
     'people_add_birthday_reminder' => 'Wish happy birthday to :name',
     'people_add_import' => 'Do you want to <a href=":url">import your contacts</a>?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'Gifts',
     'section_personal_notes' => 'Notes',
 
-    //
-    'link_to_list' => 'List of people',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Edit contact information',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Log a call',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
@@ -112,19 +115,15 @@ return [
     'age_exact_in_years' => ':age years old',
     'age_exact_birthdate' => 'born :date',
 
-    // Last called
-    'last_called' => 'Last called: :date',
-    'last_called_empty' => 'Last called: unknown',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
-
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name’s personal information',
     'information_edit_avatar' => 'Photo/avatar of the contact',
-    'information_edit_max_size' => 'Max :size Mb.',
+    'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'First name',
     'information_edit_lastname' => 'Last name (Optional)',
+    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_linkedin' => 'LinkedIn profile (optional)',
     'information_edit_unknown' => 'I do not know this person’s age',
     'information_edit_probably' => 'This person is probably...',
@@ -193,7 +192,7 @@ return [
     'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
     'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
-    'relationship_form_add_description' => 'This will let you treat this significant other like any other contact.',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'You don’t have any contacts who can be related to :name at the moment.',
     'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
     'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted – only the relationship between the two.',
@@ -410,7 +409,7 @@ return [
     'life_event_sentence_bought_a_home' => 'Bought a home',
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'Went on holidays',
-    'life_event_sentence_new_vehicule' => 'Got a new vehicule',
+    'life_event_sentence_new_vehicle' => 'Got a new vehicle',
     'life_event_sentence_new_roommate' => 'Got a roomate',
     'life_event_sentence_overcame_an_illness' => 'Overcam an illness',
     'life_event_sentence_quit_a_habit' => 'Quit a habit',
@@ -425,7 +424,7 @@ return [
     'life_event_sentence_new_hobby' => 'Started a hobby',
     'life_event_sentence_new_instrument' => 'Learned a new instrument',
     'life_event_sentence_new_language' => 'Learned a new language',
-    'life_event_sentence_tatoo_or_piercing' => 'Got a tatoo or piercing',
+    'life_event_sentence_tattoo_or_piercing' => 'Got a tattoo or piercing',
     'life_event_sentence_new_license' => 'Got a license',
     'life_event_sentence_travel' => 'Traveled',
     'life_event_sentence_achievement_or_award' => 'Got an achievement or award',

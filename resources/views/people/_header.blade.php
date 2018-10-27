@@ -29,7 +29,7 @@
           <h3>
             <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
 
-            <contact-favorite hash="{!! $contact->hashID() !!}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
+            <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
 
             @if ($contact->birthday_special_date_id && !($contact->is_dead))
               @if ($contact->birthdate->getAge())
@@ -53,18 +53,7 @@
               </li>
             @endif
             <li>
-              @if (is_null($contact->getLastCalled()))
-                {{ trans('people.last_called_empty') }}
-              @else
-                {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastCalled())]) }}
-              @endif
-            </li>
-            <li>
-              @if (is_null($contact->getLastActivityDate()))
-                {{ trans('people.last_activity_date_empty') }}
-              @else
-                {{ trans('people.last_activity_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastActivityDate())]) }}
-              @endif
+              {{ $contact->description }}
             </li>
           </ul>
 
