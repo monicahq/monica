@@ -59,6 +59,7 @@ return [
 
     'breadcrumb_dashboard' => 'Painel',
     'breadcrumb_list_contacts' => 'Lista de contatos',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'Diário',
     'breadcrumb_settings' => 'Configurações',
     'breadcrumb_settings_export' => 'Exportar',
