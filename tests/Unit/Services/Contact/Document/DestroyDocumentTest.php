@@ -3,13 +3,13 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
-use App\Models\Contact\Document;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Exceptions\MissingParameterException;
-use App\Services\Contact\Document\DestroyDocument;
 use App\Services\Contact\Document\UploadDocument;
+use App\Services\Contact\Document\DestroyDocument;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -79,6 +79,7 @@ class DestroyDocumentTest extends TestCase
         ];
 
         $uploadService = new UploadDocument;
+
         return $uploadService->execute($request);
     }
 }
