@@ -23,6 +23,7 @@ class Document extends Resource
             'new_filename' => $this->new_filename,
             'filesize' => $this->filesize,
             'type' => $this->type,
+            'mime_type' => $this->mime_type,
             'number_of_downloads' => $this->number_of_downloads,
             'link' => $this->getDownloadLink(),
             'account' => [

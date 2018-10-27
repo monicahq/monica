@@ -61,8 +61,5 @@ class DocumentsController extends Controller
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }
-
-        return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.conversation_delete_success'));
     }
 }

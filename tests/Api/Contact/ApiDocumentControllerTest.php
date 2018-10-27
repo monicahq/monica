@@ -19,6 +19,7 @@ class ApiDocumentControllerTest extends ApiTestCase
         'new_filename',
         'filesize',
         'type',
+        'mime_type',
         'number_of_downloads',
         'link',
         'account' => [

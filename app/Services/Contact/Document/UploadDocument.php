@@ -55,6 +55,7 @@ class UploadDocument extends BaseService
             'original_filename' => $document->getClientOriginalName(),
             'filesize' => $document->getClientSize(),
             'type' => $document->guessClientExtension(),
+            'mime_type' => (new \Mimey\MimeTypes)->getMimeType($document->guessClientExtension()),
         ];
 
         $filename = $document->storePublicly('documents', config('filesystems.default'));

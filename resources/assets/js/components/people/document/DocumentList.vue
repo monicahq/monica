@@ -192,7 +192,7 @@
                     </div>
                     <ul class="absolute bg-white z-max pv1 document-action-menu" v-if="modalToDisplay == document.id">
                         <li class="tc">
-                            <a class="pv2 pointer ph3 inline-flex items-center w-100 no-underline document-action-menu-item" :href="document.link" target="_blank">
+                            <a class="pv2 pointer ph3 inline-flex items-center w-100 no-underline document-action-menu-item" @click="downloadDocument(document)" :href="document.link" target="_blank">
                                 {{ $t('app.download') }}
                             </a>
                         </li>
@@ -298,6 +298,13 @@
                     this.file = null
                     this.displayUploadError = true
                 });
+            },
+
+            downloadDocument(doc) {
+                window.open(doc.link, '_blank')
+
+                // Close the modal menu
+                this.modalToDisplay = null
             },
 
             deleteDocument(document) {

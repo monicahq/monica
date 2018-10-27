@@ -21,6 +21,7 @@ class AddDocumentsTable extends Migration
             $table->string('new_filename');
             $table->integer('filesize')->nullable();
             $table->string('type')->nullable();
+            $table->string('mime_type')->nullable();
             $table->integer('number_of_downloads')->default(0);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
