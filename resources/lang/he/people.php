@@ -39,8 +39,7 @@ return [
     'people_add_success' => 'היצירה של :name הושלמה בהצלחה',
     'people_add_gender' => 'מגדר',
     'people_delete_success' => 'איש הקשר נמחק',
-    'people_delete_message' => 'אם עליך למחוק את איש הקשר הזה,',
-    'people_delete_click_here' => 'נא ללחוץ כאן',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'למחוק את איש הקשר הזה? מחיקה היא לצמיתות.',
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'מתנות',
     'section_personal_notes' => 'הערות',
 
-    //
-    'link_to_list' => 'רשימת אנשים',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'תיעוד שיחה',
     'set_favorite' => 'אנשי קשר מועדפים עולים לראש רשימת אני הקשר',
 
