@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => '拥有以下标签的联系人：',
     'people_list_clear_filter' => '清除筛选',
     'people_list_contacts_per_tags' => ':count 个联系人',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => '搜索联系人...',
     'people_search_no_results' => '未找到相关联系人:(',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
