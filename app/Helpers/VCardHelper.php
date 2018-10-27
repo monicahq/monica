@@ -118,7 +118,7 @@ class VCardHelper
     }
 
     /**
-     * Get country model object from given VCard file
+     * Get country model object from given VCard file.
      *
      * @param \Sabre\VObject\Component\VCard $VCard
      *
@@ -129,7 +129,7 @@ class VCardHelper
         $VCardAddress = $VCard->ADR;
 
         if (empty($VCardAddress)) {
-            return null;
+            return;
         }
 
         $iso = CountriesHelper::find($VCardAddress->getParts()[6]);

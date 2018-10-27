@@ -201,7 +201,7 @@ class VCardHelperTest extends FeatureTestCase
     {
         $vcard = new \Sabre\VObject\Component\VCard([
             'TEL' => '202-555-0191',
-            'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom']
+            'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
         ]);
 
         $iso = VCardHelper::getCountryISOFromSabreVCard($vcard);

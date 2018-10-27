@@ -107,7 +107,7 @@ class LocaleHelper
     }
 
     /**
-     * Format phone number by country
+     * Format phone number by country.
      *
      * @param string $tel
      * @param $iso

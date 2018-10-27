@@ -647,7 +647,7 @@ END:VCARD
         $importJob = $this->createImportJob();
         $vcard = new VCard([
             'TEL' => '202-555-0191',
-            'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom']
+            'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
         ]);
 
         $importJob->currentEntry = $vcard;

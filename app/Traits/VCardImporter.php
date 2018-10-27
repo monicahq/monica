@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-use App\Helpers\LocaleHelper;
-use App\Helpers\VCardHelper;
 use Sabre\VObject\Reader;
+use App\Helpers\VCardHelper;
+use App\Helpers\LocaleHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
