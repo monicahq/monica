@@ -3,7 +3,7 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use VObject\Component\VCard;
+use Sabre\VObject\Component\VCard;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
