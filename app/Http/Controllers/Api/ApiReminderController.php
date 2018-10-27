@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Contact;
-use App\Reminder;
+use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
+use App\Models\Contact\Reminder;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -67,7 +68,7 @@ class ApiReminderController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $reminder->account_id = auth()->user()->account->id;
+        $reminder->account_id = auth()->user()->account_id;
         $reminder->save();
 
         return new ReminderResource($reminder);
@@ -129,7 +130,7 @@ class ApiReminderController extends ApiController
                         ->respondWithError($validator->errors()->all());
         }
 
-        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $request->get('next_expected_date'), auth()->user()->timezone);
+        $date = DateHelper::parseDate($request->get('next_expected_date'));
         if ($date->isPast()) {
             return $this->setErrorCode(38)
                         ->respondWithError('Date should be in the future');

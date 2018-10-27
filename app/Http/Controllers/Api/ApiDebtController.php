@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Debt;
-use App\Contact;
+use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
@@ -67,7 +67,7 @@ class ApiDebtController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $debt->account_id = auth()->user()->account->id;
+        $debt->account_id = auth()->user()->account_id;
         $debt->save();
 
         return new DebtResource($debt);

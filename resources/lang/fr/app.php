@@ -20,7 +20,12 @@ return [
     'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
     'with' => 'avec',
-    'days' => 'jour|jours',
+    'days' => 'jour|jour|jours',
+    'today' => 'aujourd\'hui',
+    'yesterday' => 'hier',
+    'another_day' => 'un autre jour',
+    'date' => 'Date',
+    'type' => 'Type',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personnalisation',
     'breadcrumb_settings_security' => 'Sécurité',
     'breadcrumb_settings_security_2fa' => 'Authentification à deux facteurs',
+    'breadcrumb_profile' => 'Profil de :name',
 
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',
@@ -81,8 +87,19 @@ return [
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',
     'error_save' => 'Une erreur est intervenue pendant la sauvegarde des données.',
+    'error_try_again' => 'Une erreur s’est produite. Merci d’essayer à nouveau.',
+    'error_id' => 'Erreur numéro : :id',
+    'error_unavailable' => 'Service non disponible',
+    'error_maintenance' => 'Maintenance en cours. On revient vite !',
+    'error_help' => 'On revient tout de suite.',
+    'error_twitter' => 'Suivez <a href="https://twitter.com/:twitter">notre compte Twitter</a> pour être alerté de l’évolution de la situation.',
 
     'default_save_success' => 'Les modifications ont été enregistrées.',
+
+    'compliance_title' => 'Désolé pour l’interruption.',
+    'compliance_desc' => 'Nous avons changé nos <a href=":urlterm" hreflang=":hreflang">Conditions d’Utilisation</a> et notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a>. Nous devons vous demander de les consulter et les accepter si vous voulez continuer à utiliser votre compte.',
+    'compliance_desc_end' => 'Nous ne faisons rien de méchant avec vos données ou votre compte et nous ne le ferons jamais.',
+    'compliance_terms' => 'Accepter les nouvelles conditions et politique de confidentialité',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -119,7 +136,7 @@ return [
 
     'relationship_type_inlovewith' => 'amoureux',
     'relationship_type_inlovewith_female' => 'amoureuse',
-    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux·se',
+    'relationship_type_inlovewith_with_name' => 'une personne dont :name est amoureux',
     'relationship_type_inlovewith_female_with_name' => 'une personne dont :name est amoureuse',
 
     'relationship_type_lovedby' => 'aimé par',
@@ -216,4 +233,9 @@ return [
     'relationship_type_protege_female' => 'protégée',
     'relationship_type_protege_with_name' => 'protégé de :name',
     'relationship_type_protege_female_with_name' => 'protégée de :name',
+
+    'relationship_type_ex_husband' => 'ex-mari',
+    'relationship_type_ex_husband_female' => 'ex-femme',
+    'relationship_type_ex_husband_with_name' => 'ex-mari de :name',
+    'relationship_type_ex_husband_female_with_name' => 'ex-femme de :name',
 ];

@@ -2,7 +2,12 @@
 
 namespace App\Helpers;
 
-use App\Currency;
+use Money\Money;
+use App\Models\Settings\Currency;
+use Illuminate\Support\Facades\App;
+use Money\Currencies\ISOCurrencies;
+use Money\Currency as MoneyCurrency;
+use Money\Formatter\IntlMoneyFormatter;
 
 class MoneyHelper
 {
@@ -14,7 +19,7 @@ class MoneyHelper
      * defined, then the amount will be returned without a currency symbol.
      *
      * @param  int|null     $amount   Amount to format.
-     * @param  App\Currency $currency Currency of amount.
+     * @param  Currency     $currency Currency of amount.
      * @return string                 Amount formatted with currency symbol.
      */
     public static function format($amount, Currency $currency = null)
@@ -27,16 +32,18 @@ class MoneyHelper
             $currency = auth()->user()->currency;
         }
 
-        if ($currency) {
-            switch ($currency->iso) {
-                case 'BRL':
-                    $amount = number_format($amount, 2, ',', '.');
-                    break;
-            }
+        if (! $currency) {
+            $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
 
-            $amount = $currency->symbol.$amount;
+            return $numberFormatter->format($amount);
         }
 
-        return (string) $amount;
+        $money = new Money($amount * 100, new MoneyCurrency($currency->iso));
+        $currencies = new ISOCurrencies();
+
+        $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::CURRENCY);
+        $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
+
+        return $moneyFormatter->format($money);
     }
 }

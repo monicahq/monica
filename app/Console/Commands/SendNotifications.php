@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Notification;
 use Illuminate\Console\Command;
+use App\Models\Contact\Notification;
 use App\Jobs\Notification\ScheduleNotification;
 
 class SendNotifications extends Command
@@ -29,10 +29,15 @@ class SendNotifications extends Command
      */
     public function handle()
     {
-        // we add two days to make sure we cover all timezones
-        $notifications = Notification::where('trigger_date', '<', now()->addDays(2))
-                                ->orderBy('trigger_date', 'asc')->get();
+        Notification::where('trigger_date', '<', now()->addDays(2))
+                    ->orderBy('trigger_date', 'asc')
+                    ->chunk(500, function ($notifications) {
+                        $this->schedule($notifications);
+                    });
+    }
 
+    private function schedule($notifications)
+    {
         foreach ($notifications as $notification) {
             if (! $notification->contact) {
                 $notification->delete();

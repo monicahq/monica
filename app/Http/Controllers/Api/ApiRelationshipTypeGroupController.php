@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\RelationshipTypeGroup;
+use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\RelationshipTypeGroup\RelationshipTypeGroup as RelationshipTypeGroupResource;
 

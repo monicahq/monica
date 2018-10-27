@@ -1,23 +1,29 @@
 <?php
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
-    'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
-    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
+    'dashboard_blank_title' => '¡Bienvenido/a a tu cuenta!',
+    'dashboard_blank_description' => 'Monica es el lugar donde organizar todas las interacciones con los que te importan.',
+    'dashboard_blank_cta' => 'Añade tu primer contacto',
+    'dashboard_blank_illustration' => 'Ilustración por <a href=":url">Freepik</a>',
 
-    'notes_title' => 'You don’t have any starred notes yet.',
+    'notes_title' => 'Todavía no tienes notas destacadas.',
 
-    'tab_recent_calls' => 'Recent calls',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven’t logged a call yet.',
+    'tab_recent_calls' => 'Llamadas recientes',
+    'tab_favorite_notes' => 'Notas favoritas',
+    'tab_calls_blank' => 'Todavía no has registrado una llamada.',
+    'tab_debts' => 'Deudas',
+    'tab_debts_blank' => 'Todavía no has registrado una deuda.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
 
-    'statistics_contacts' => 'Contacts',
-    'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'debts_you_owe' => 'Le debes a',
 
-    'reminders_next_months' => 'Events in the next 3 months',
-    'reminders_none' => 'No reminder for this month',
+    'statistics_contacts' => 'Contactos',
+    'statistics_activities' => 'Actividades',
+    'statistics_gifts' => 'Regalos',
+
+    'reminders_next_months' => 'Eventos en los próximos 3 meses',
+    'reminders_none' => 'Ningún recordatorio este mes',
 
     'linkedin_profile' => 'LinkedIn',
 ];

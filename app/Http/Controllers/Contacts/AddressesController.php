@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Address;
-use App\Contact;
 use App\Helpers\LocaleHelper;
+use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -60,7 +60,7 @@ class AddressesController extends Controller
     public function store(AddressesRequest $request, Contact $contact)
     {
         return $contact->addresses()->create([
-            'account_id' => auth()->user()->account->id,
+            'account_id' => auth()->user()->account_id,
             'country' => ($request->get('country') == '0' ? null : $request->get('country')),
             'name' => ($request->get('name') == '' ? null : $request->get('name')),
             'street' => ($request->get('street') == '' ? null : $request->get('street')),

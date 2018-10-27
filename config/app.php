@@ -4,6 +4,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Name
+    |--------------------------------------------------------------------------
+    |
+    | This value is the name of your application. This value is used when the
+    | framework needs to place the application's name in a notification or
+    | any other location as required by the application or its packages.
+    |
+    */
+
+    'name' => env('APP_NAME', 'Monica'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Application Display Name
+    |--------------------------------------------------------------------------
+    |
+    | This is the name of the application that will be displayed in the notification emails.
+    |
+    */
+
+    'display_name' => env('APP_DISPLAY_NAME', env('APP_NAME', 'Monica')),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
@@ -43,16 +67,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application Timezone
+    | TIMEZONE
     |--------------------------------------------------------------------------
     |
-    | Here you may specify the default timezone for your application, which
-    | will be used by the PHP date and date-time functions. We have gone
-    | ahead and set this to a sensible default for you out of the box.
+    | Timezone is not configurable in the .env file as everything is stored in
+    | UTC.
     |
     */
 
-    'timezone' => env('APP_DEFAULT_TIMEZONE', 'US/Eastern'),
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -148,6 +171,7 @@ return [
         Sentry\SentryLaravel\SentryLaravelServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
+        Lahaxearnaud\U2f\U2fServiceProvider::class,
         Ircop\Antiflood\AntifloodServiceProvider::class,
     ],
 
@@ -200,6 +224,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
+        'U2f' => Lahaxearnaud\U2f\U2fFacade::class,
         'Antiflood' => Ircop\Antiflood\Facade\Antiflood::class,
     ],
 

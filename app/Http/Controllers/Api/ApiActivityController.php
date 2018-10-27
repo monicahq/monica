@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Note;
-use App\Contact;
-use App\Activity;
-use App\ActivityType;
-use App\JournalEntry;
+use App\Models\Contact\Note;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
+use App\Models\Contact\ActivityType;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,8 +45,7 @@ class ApiActivityController extends ApiController
     {
         try {
             $activity = Activity::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityId)
-                ->firstOrFail();
+                ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -61,9 +60,9 @@ class ApiActivityController extends ApiController
      */
     public function store(Request $request)
     {
-        $contact = $this->validateUpdate($request);
-        if (! $contact instanceof Contact) {
-            return $contact;
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -74,7 +73,7 @@ class ApiActivityController extends ApiController
                     'activity_type_id',
                     'description',
                 ])
-                + ['account_id' => auth()->user()->account->id]
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
@@ -86,9 +85,9 @@ class ApiActivityController extends ApiController
         // Now we associate the activity with each one of the attendees
         $attendeesID = $request->get('contacts');
         foreach ($attendeesID as $attendeeID) {
-            $contact = Contact::findOrFail($attendeeID);
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($attendeeID);
             $contact->activities()->save($activity);
-            $contact->logEvent('activity', $activity->id, 'create');
             $contact->calculateActivitiesStatistics();
         }
 
@@ -105,8 +104,7 @@ class ApiActivityController extends ApiController
     {
         try {
             $activity = Activity::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityId)
-                ->firstOrFail();
+                ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -135,35 +133,30 @@ class ApiActivityController extends ApiController
         (new JournalEntry)->add($activity);
 
         // Get the attendees
-        $attendees = $request->get('contacts');
+        $attendeesID = $request->get('contacts');
 
         // Find existing contacts
         $existing = $activity->contacts()->get();
 
         foreach ($existing as $contact) {
             // Has an existing attendee been removed?
-            if (! in_array($contact->id, $attendees)) {
+            if (! in_array($contact->id, $attendeesID)) {
                 $contact->activities()->detach($activity);
-                $contact->logEvent('activity', $activity->id, 'delete');
-            } else {
-                // Otherwise we're updating an activity that someone's
-                // already a part of
-                $contact->logEvent('activity', $activity->id, 'update');
             }
 
             // Remove this ID from our list of contacts as we don't
             // want to add them to the activity again
-            $idx = array_search($contact->id, $attendees);
-            unset($attendees[$idx]);
+            $idx = array_search($contact->id, $attendeesID);
+            unset($attendeesID[$idx]);
 
             $contact->calculateActivitiesStatistics();
         }
 
         // New attendees
-        foreach ($attendees as $newContactId) {
-            $contact = Contact::findOrFail($newContactId);
+        foreach ($attendeesID as $attendeeID) {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($attendeeID);
             $contact->activities()->save($activity);
-            $contact->logEvent('activity', $activity->id, 'create');
         }
 
         return new ActivityResource($activity);
@@ -196,9 +189,8 @@ class ApiActivityController extends ApiController
         $attendeesID = $request->get('contacts');
         foreach ($attendeesID as $attendeeID) {
             try {
-                $contact = Contact::where('account_id', auth()->user()->account_id)
-                    ->where('id', $attendeeID)
-                    ->firstOrFail();
+                Contact::where('account_id', auth()->user()->account_id)
+                    ->findOrFail($attendeeID);
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
@@ -216,8 +208,7 @@ class ApiActivityController extends ApiController
     {
         try {
             $activity = Note::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityId)
-                ->firstOrFail();
+                ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -238,8 +229,7 @@ class ApiActivityController extends ApiController
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactId)
-                ->firstOrFail();
+                ->findOrFail($contactId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }

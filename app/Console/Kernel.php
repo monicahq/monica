@@ -23,9 +23,15 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\SendNotifications',
         'App\Console\Commands\SendReminders',
         'App\Console\Commands\SendStayInTouch',
+        'App\Console\Commands\SentryRelease',
         'App\Console\Commands\SetupProduction',
         'App\Console\Commands\SetupTest',
+        'App\Console\Commands\SetupFrontEndTest',
+        'App\Console\Commands\SetPremiumAccount',
         'App\Console\Commands\Update',
+        'App\Console\Commands\MigrateDatabaseCollation',
+        'App\Console\Commands\OneTime\MoveAvatars',
+        'App\Console\Commands\Reminder\ProcessOldReminders',
     ];
 
     /**
@@ -40,6 +46,10 @@ class Kernel extends ConsoleKernel
         $schedule->command('send:reminders')->hourly();
         $schedule->command('send:stay_in_touch')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
+        $schedule->command('process:old_reminders')->daily();
         $schedule->command('monica:ping')->daily();
+        if (config('trustedproxy.cloudflare')) {
+            $schedule->command('cloudflare:reload')->daily();
+        }
     }
 }

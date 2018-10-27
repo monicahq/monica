@@ -4,15 +4,15 @@
     @foreach (auth()->user()->account->getRemindersForMonth($month) as $reminder)
     <li class="pb2">
       <span class="ttu f6 mr2 black-60">{{ \App\Helpers\DateHelper::getShortDateWithoutYear($reminder->next_expected_date) }}</span>
-      <span class="">
+      <span>
 
         @if ($reminder->contact->is_partial)
 
-        <a href="/people/{{ $reminder->contact->getRelatedRealContact()->hashID() }}">{{ $reminder->contact->getRelatedRealContact()->getIncompleteName() }}</a>
+        <a href="{{ route('people.show', $reminder->contact->getRelatedRealContact()) }}">{{ $reminder->contact->getRelatedRealContact()->getIncompleteName() }}</a>
 
         @else
 
-        <a href="/people/{{ $reminder->contact->hashID() }}">{{ $reminder->contact->getIncompleteName() }}</a>
+        <a href="{{ route('people.show', $reminder->contact) }}">{{ $reminder->contact->getIncompleteName() }}</a>
 
         @endif
       </span>

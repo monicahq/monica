@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Contact;
+use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 
@@ -23,26 +23,22 @@ class SendStayInTouch extends Command
     protected $description = 'Send notifications about staying in touch with contacts';
 
     /**
-     * Create a new command instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
-    /**
      * Execute the console command.
      *
      * @return mixed
      */
     public function handle()
     {
-        // we had two days to make sure we cover all timezones
-        $contacts = Contact::where('stay_in_touch_trigger_date', '<', now()->addDays(2))
-                                ->orderBy('stay_in_touch_trigger_date', 'asc')->get();
+        // we add two days to make sure we cover all timezones
+        Contact::where('stay_in_touch_trigger_date', '<', now()->addDays(2))
+                ->orderBy('stay_in_touch_trigger_date', 'asc')
+                ->chunk(500, function ($contacts) {
+                    $this->schedule($contacts);
+                });
+    }
 
+    private function schedule($contacts)
+    {
         foreach ($contacts as $contact) {
             ScheduleStayInTouch::dispatch($contact);
         }

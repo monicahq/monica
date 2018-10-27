@@ -29,7 +29,11 @@
       }
 
       i {
-        margin-right: 5px;
+        @if $htmldir == ltr {
+          margin-right: 5px;
+        } @else {
+          margin-left: 5px;
+        }
         color: #999;
       }
     }
@@ -44,6 +48,11 @@
     h2 {
       font-weight: normal;
       font-size: 16px;
+    }
+
+    h3 {
+      font-weight: normal;
+      font-size: 14px;
     }
   }
 
@@ -76,8 +85,9 @@
     }
 
     .table-cell.actions {
-      text-align: right;
-      &.rtl {
+      @if $htmldir == ltr {
+        text-align: right;
+      } @else {
         text-align: left;
       }
     }
@@ -254,15 +264,12 @@
       padding: 20px 15px;
 
       ul {
-        margin-left: 20px;
-        list-style-type: disc;
-      }
-
-      &.rtl {
-        ul {
-          margin-left: 0;
+        @if $htmldir == ltr {
+          margin-left: 20px;
+        } @else {
           margin-right: 20px;
         }
+        list-style-type: disc;
       }
     }
   }
@@ -274,10 +281,15 @@
     }
 
     .actions {
-      text-align: right;
-      &.rtl {
+      @if $htmldir == ltr {
+        text-align: right;
+      } @else {
         text-align: left;
       }
     }
+  }
+
+  .reminder-info {
+    text-decoration: underline dotted;
   }
 }

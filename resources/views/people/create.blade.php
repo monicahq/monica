@@ -21,12 +21,12 @@
 
     @include('partials.errors')
 
-    <form action="/people" method="POST">
+    <form action="{{ route('people.store') }}" method="POST">
       {{ csrf_field() }}
 
       <div class="pa4-ns ph3 pv2 bb b--gray-monica">
         {{-- This check is for the cultures that are used to say the last name first --}}
-        @if (auth()->user()->name_order == 'firstname_first')
+        @if (auth()->user()->getNameOrderForForms() == 'firstname')
 
         <div class="mb3">
           <form-input
@@ -37,12 +37,21 @@
           </form-input>
         </div>
 
-        <div class="mb3 mb0-ns">
+        <div class="mb3">
           <form-input
             v-bind:id="'last_name'"
             v-bind:input-type="'text'"
             v-bind:required="false"
             v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3 mb0-ns">
+          <form-input
+            v-bind:id="'nickname'"
+            v-bind:input-type="'text'"
+            v-bind:required="false"
+            v-bind:title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>
         </div>
 
@@ -57,12 +66,21 @@
           </form-input>
         </div>
 
-        <div class="mb3 mb0-ns">
+        <div class="mb3">
           <form-input
             v-bind:id="'first_name'"
             v-bind:input-type="'text'"
             v-bind:required="true"
             v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3 mb0-ns">
+          <form-input
+            v-bind:id="'nickname'"
+            v-bind:input-type="'text'"
+            v-bind:required="false"
+            v-bind:title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>
         </div>
 
@@ -81,12 +99,12 @@
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
-          <div class="">
-            <a href="/people" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+          <div>
+            <a href="{{ route('people.index') }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
           </div>
-          <div class="">
+          <div>
             <button class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" name="save_and_add_another" type="submit">{{ trans('people.people_save_and_add_another_cta') }}</button>
-            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('people.people_add_cta') }}</button>
+            <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" value="true" type="submit">{{ trans('people.people_add_cta') }}</button>
           </div>
         </div>
       </div>

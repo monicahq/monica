@@ -24,7 +24,9 @@ Vue.use(Notifications);
 // Tooltip
 import Tooltip from 'vue-directive-tooltip';
 import 'vue-directive-tooltip/css/index.css';
-Vue.use(Tooltip);
+Vue.use(Tooltip, {
+    delay: 0,
+});
 
 // Toggle Buttons
 import ToggleButton from 'vue-js-toggle-button';
@@ -33,6 +35,15 @@ Vue.use(ToggleButton);
 // Radio buttons
 import PrettyCheckbox from 'pretty-checkbox-vue';
 Vue.use(PrettyCheckbox);
+
+// Select used on list items to display edit and delete buttons
+import vSelectMenu from 'v-selectmenu';
+Vue.use(vSelectMenu);
+
+// Tables
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css'
+Vue.use(VueGoodTablePlugin);
 
 // Custom components
 Vue.component(
@@ -48,6 +59,12 @@ Vue.component(
 Vue.component(
     'passport-personal-access-tokens',
     require('./components/passport/PersonalAccessTokens.vue')
+);
+
+// Vue select
+Vue.component(
+    'contact-select',
+    require('./components/people/ContactSelect.vue')
 );
 
 // Partials
@@ -77,6 +94,10 @@ Vue.component(
     'form-radio',
     require('./components/partials/form/Radio.vue')
 );
+Vue.component(
+    'form-textarea',
+    require('./components/partials/form/Textarea.vue')
+);
 
 // Dashboard
 Vue.component(
@@ -85,6 +106,15 @@ Vue.component(
 );
 
 // Contacts
+Vue.component(
+    'contact-favorite',
+    require('./components/people/SetFavorite.vue')
+);
+Vue.component(
+    'contact-archive',
+    require('./components/people/Archive.vue')
+);
+
 Vue.component(
     'contact-address',
     require('./components/people/Addresses.vue')
@@ -120,6 +150,36 @@ Vue.component(
     require('./components/people/StayInTouch.vue')
 );
 
+Vue.component(
+    'conversation-list',
+    require('./components/people/conversation/ConversationList.vue')
+);
+
+Vue.component(
+    'conversation',
+    require('./components/people/conversation/Conversation.vue')
+);
+
+Vue.component(
+    'message',
+    require('./components/people/conversation/Message.vue')
+);
+
+Vue.component(
+    'create-life-event',
+    require('./components/people/lifeevent/CreateLifeEvent.vue')
+);
+
+Vue.component(
+    'create-default-life-event',
+    require('./components/people/lifeevent/content/CreateDefaultLifeEvent.vue')
+);
+
+Vue.component(
+    'life-event-list',
+    require('./components/people/lifeevent/LifeEventList.vue')
+);
+
 // Journal
 Vue.component(
     'journal-list',
@@ -151,20 +211,35 @@ Vue.component(
     'contact-field-types',
     require('./components/settings/ContactFieldTypes.vue')
 );
-
 Vue.component(
     'genders',
     require('./components/settings/Genders.vue')
 );
-
 Vue.component(
     'reminder-rules',
     require('./components/settings/ReminderRules.vue')
+);
+Vue.component(
+    'reminder-time',
+    require('./components/settings/ReminderTime.vue')
+);
+Vue.component(
+    'mfa-activate',
+    require('./components/settings/MfaActivate.vue')
+);
+Vue.component(
+    'u2f-connector',
+    require('./components/settings/U2fConnector.vue')
 );
 
 Vue.component(
     'modules',
     require('./components/settings/Modules.vue')
+);
+
+Vue.component(
+    'activity-types',
+    require('./components/settings/ActivityTypes.vue')
 );
 
 // axios
@@ -173,6 +248,14 @@ import axios from 'axios';
 // i18n
 import VueI18n from 'vue-i18n';
 Vue.use(VueI18n);
+
+// Moments
+import moment from 'moment';
+Vue.filter('formatDate', function(value) {
+    if (value) {
+        return moment(String(value)).format('LL')
+    }
+});
 
 import messages from '../../../public/js/langs/en.json';
 
@@ -207,18 +290,26 @@ export function loadLanguageAsync (lang, set) {
 const app = null;
 const me = this;
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
+    moment.locale(lang);
 
     // the Vue appplication
     me.app = new Vue({
       i18n,
       data: {
-        activities_description_show: false,
         reminders_frequency: 'once',
         accept_invite_user: false,
         date_met_the_contact: 'known',
         global_relationship_form_new_contact: true,
+        htmldir: window.Laravel.htmldir,
+        global_profile_default_view: window.Laravel.profileDefaultView
       },
       methods: {
+        updateDefaultProfileView(view) {
+            axios.post('/settings/updateDefaultProfileView', { 'name': view })
+                        .then(response => {
+                            this.global_profile_default_view = view
+                      });
+        }
       },
       mounted: function() {
 

@@ -11,10 +11,10 @@
         <div class="col-xs-12">
           <ul class="horizontal">
             <li>
-              <a href="/dashboard">{{ trans('app.breadcrumb_dashboard') }}</a>
+              <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
             </li>
             <li>
-              <a href="/settings">{{ trans('app.breadcrumb_settings') }}</a>
+              <a href="{{ route('settings.index') }}">{{ trans('app.breadcrumb_settings') }}</a>
             </li>
             <li>
               {{ trans('app.breadcrumb_settings_subscriptions') }}
@@ -48,15 +48,21 @@
               <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_invitations_constraint', auth()->user()->account->invitations()->count(), ['url' => '/settings/users', 'count' => auth()->user()->account->invitations()->count()]) !!}</span>
             </li>
 
+            <li class="{{ (auth()->user()->account->hasReachedContactLimit() == true)?'fail':'success' }}">
+              <span class="icon"></span>
+              <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_contacts', ['number' => config('monica.number_of_allowed_contacts_free_account')]) }}</span>
+              <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_contacts_constraint', auth()->user()->account->contacts()->count(), ['url' => '/people', 'count' => auth()->user()->account->contacts()->count()]) !!}</span>
+            </li>
+
           </ul>
 
-          <form method="POST" action="/settings/subscriptions/downgrade">
+          <form method="POST" action="{{ route('settings.subscriptions.downgrade') }}">
             {{ csrf_field() }}
 
             @if (auth()->user()->account->canDowngrade())
-            <p><button href="" class="btn btn-primary">{{ trans('settings.subscriptions_downgrade_cta') }}</button></p>
+            <p class="mb4"><button href="" class="btn btn-primary">{{ trans('settings.subscriptions_downgrade_cta') }}</button></p>
             @else
-            <p><button class="btn btn-primary" disabled="disabled">{{ trans('settings.subscriptions_downgrade_cta') }}</button></p>
+            <p class="mb4"><button class="btn btn-primary" disabled="disabled">{{ trans('settings.subscriptions_downgrade_cta') }}</button></p>
             @endif
 
           </form>

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'update' => 'Ändern',
+    'update' => 'Aktualisieren',
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
@@ -21,12 +21,17 @@ return [
     'loading' => 'Lade mehr...',
     'with' => 'mit',
     'days' => 'Tag|Tage',
+    'today' => 'today',
+    'yesterday' => 'yesterday',
+    'another_day' => 'another day',
+    'date' => 'Date',
+    'type' => 'Type',
 
-    'application_title' => 'Monica - persönlicher Beziehungsmanager',
+    'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
     'application_og_title' => 'Haben Sie bessere Beziehungen zu Ihren Lieben. Kostenloses Online CRM für Freunde und Familie.',
 
-    'markdown_description' => 'Du möchtest deinen Test schöner formatieren? Monica unterstützt Markdown.',
+    'markdown_description' => 'Du möchtest deinen Text schöner formatieren? Monica unterstützt Markdown.',
     'markdown_link' => 'Öffne die Dokumentation',
 
     'header_settings_link' => 'Einstellungen',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'Personalisierung',
     'breadcrumb_settings_security' => 'Sicherheit',
     'breadcrumb_settings_security_2fa' => 'Zwei-Faktor-Authentifizierung',
+    'breadcrumb_profile' => 'Profile of :name',
 
     'gender_male' => 'Männlich',
     'gender_female' => 'Weiblich',
@@ -81,8 +87,19 @@ return [
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
     'error_save' => 'Beim Versuch die Daten zu speichern ist ein Fehler aufgetreten.',
+    'error_try_again' => 'Something went wrong. Please try again.',
+    'error_id' => 'Error ID: :id',
+    'error_unavailable' => 'Service Unavailable',
+    'error_maintenance' => 'Maintenance in progress. Be right back.',
+    'error_help' => 'We’ll be right back.',
+    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
 
     'default_save_success' => 'Die Daten wurden gespeichert.',
+
+    'compliance_title' => 'Entschuldige die Unterbrechung.',
+    'compliance_desc' => 'Wir haben unsere <a href=":urlterm" hreflang=":hreflang">AGBs</a> und <a href=":url" hreflang=":hreflang">Datenschutzerklärung</a> geändert. Wir sind gesetzlich dazu verpflichtet zu verlangen, dass du beides durchliest und akzeptierst, damit du deinen Account weiter nutzen kannst.',
+    'compliance_desc_end' => 'Wir machen nichts Böses mit deinen Daten oder deinem Account und werden das auch nie tun.',
+    'compliance_terms' => 'Neue AGB und Datenschutzerklärung akzeptieren',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -216,4 +233,9 @@ return [
     'relationship_type_protege_female' => 'Schützling',
     'relationship_type_protege_with_name' => ':name\'s Schützling',
     'relationship_type_protege_female_with_name' => ':name\'s Schützling',
+
+    'relationship_type_ex_husband' => 'Ex-Mann',
+    'relationship_type_ex_husband_female' => 'Ex-Frau',
+    'relationship_type_ex_husband_with_name' => ':name’s Ex-Mann',
+    'relationship_type_ex_husband_female_with_name' => ':name’s Ex-Frau',
 ];

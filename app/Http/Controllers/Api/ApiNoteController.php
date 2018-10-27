@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Note;
-use App\Contact;
+use App\Models\Contact\Note;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Note\Note as NoteResource;
@@ -86,7 +86,7 @@ class ApiNoteController extends ApiController
             $note->save();
         }
 
-        $note->account_id = auth()->user()->account->id;
+        $note->account_id = auth()->user()->account_id;
         $note->save();
 
         return new NoteResource($note);

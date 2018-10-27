@@ -3,7 +3,6 @@
 namespace App\Http\ViewComposers;
 
 use Illuminate\View\View;
-use Jenssegers\Date\Date;
 use App\Helpers\DateHelper;
 
 class DateSelectViewComposer
@@ -24,13 +23,7 @@ class DateSelectViewComposer
         $months = DateHelper::getListOfMonths();
 
         // Years
-        $years = [];
-        $maxYear = Date::now(auth()->user()->timezone)->year;
-        $minYear = Date::now(auth()->user()->timezone)->subYears(120)->format('Y');
-
-        for ($year = $maxYear; $year >= $minYear; $year--) {
-            array_push($years, $year);
-        }
+        $years = DateHelper::getListOfYears(120);
 
         $view->with([
             'months' => $months,

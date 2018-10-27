@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Call;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CallTest extends FeatureTestCase
@@ -30,7 +31,7 @@ class CallTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -47,7 +48,7 @@ class CallTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
         $response->assertStatus(200);
 
@@ -60,16 +61,12 @@ class CallTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        // Check that the Contact view contains Last activity: unknown
-        $response = $this->get('people/'.$contact->id);
-        $response->assertSee('Last called: unknown');
-
         $params = [
             'called_at' => '2013-01-01',
             'content' => null,
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/call/store', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/call/store', $params);
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
@@ -80,18 +77,8 @@ class CallTest extends FeatureTestCase
         $this->assertDatabaseHas('calls', $params);
 
         // Check that the Contact view contains the newly created call
-        $response = $this->get('people/'.$contact->id);
+        $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
-        $response->assertSee('Last called: Jan 01, 2013');
-
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'call';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
     }
 
     public function test_user_can_add_a_call_with_a_description()
@@ -103,7 +90,7 @@ class CallTest extends FeatureTestCase
             'content' => 'This is a test call',
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/call/store', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/call/store', $params);
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
@@ -114,34 +101,25 @@ class CallTest extends FeatureTestCase
         $this->assertDatabaseHas('calls', $params);
 
         // Check that the Contact view contains the newly created call
-        $response = $this->get('people/'.$contact->id);
+        $response = $this->get('people/'.$contact->hashID());
         $response->assertSee('Jan 01, 2013');
         $response->assertSee('This is a test call');
-
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'call';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
     }
 
     public function test_user_can_delete_a_call()
     {
         list($user, $contact) = $this->fetchUser();
 
-        $call = factory(\App\Call::class)->create([
+        $call = factory(Call::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'content' => 'this is a test',
             'called_at' => '2013-01-01 00:00:00',
         ]);
 
-        $response = $this->get('/people/'.$contact->id);
+        $response = $this->get('/people/'.$contact->hashID());
 
-        $response = $this->delete('/people/'.$contact->id.'/call/'.$call->id);
+        $response = $this->delete('/people/'.$contact->hashID().'/call/'.$call->id);
         $response->assertStatus(302);
 
         $params = [];
@@ -149,18 +127,5 @@ class CallTest extends FeatureTestCase
         $params['id'] = $call->id;
 
         $this->assertDatabaseMissing('calls', $params);
-
-        $eventParams = [];
-
-        // make sure no event is in the database about this object
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_id'] = $call->id;
-
-        // Check that the Contact view contains Last activity: unknown
-        $response = $this->get('people/'.$contact->id);
-        $response->assertSee('Last called: unknown');
-
-        $this->assertDatabaseMissing('events', $eventParams);
     }
 }

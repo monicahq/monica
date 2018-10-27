@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Tag;
+use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
@@ -67,7 +67,7 @@ class ApiTagController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        $tag->account_id = auth()->user()->account->id;
+        $tag->account_id = auth()->user()->account_id;
         $tag->name_slug = str_slug($tag->name);
         $tag->save();
 

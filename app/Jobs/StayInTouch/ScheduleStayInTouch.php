@@ -2,12 +2,14 @@
 
 namespace App\Jobs\StayInTouch;
 
-use App\Contact;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Contact;
 use Illuminate\Queue\SerializesModels;
+use App\Notifications\StayInTouchEmail;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class ScheduleStayInTouch implements ShouldQueue
 {
@@ -33,19 +35,18 @@ class ScheduleStayInTouch implements ShouldQueue
     public function handle()
     {
         $account = $this->contact->account;
-        $mailSent = false;
 
+        $users = [];
         foreach ($account->users as $user) {
-            if ($user->shouldBeReminded($this->contact->stay_in_touch_trigger_date)
+            if ($user->isTheRightTimeToBeReminded($this->contact->stay_in_touch_trigger_date)
                 && ! $account->hasLimitations()) {
-                $this->contact->sendStayInTouchEmail($user);
-                $mailSent = true;
-                $timezone = $user->timezone;
+                array_push($users, $user);
             }
         }
 
-        if ($mailSent) {
-            $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency, $timezone);
+        if (count($users) > 0) {
+            NotificationFacade::send($users, new StayInTouchEmail($this->contact));
+            $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency);
         }
     }
 }

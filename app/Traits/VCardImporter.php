@@ -2,16 +2,16 @@
 
 namespace App\Traits;
 
-use App\Gender;
-use App\Address;
-use App\Contact;
-use App\ContactField;
-use App\ContactFieldType;
 use App\Helpers\LocaleHelper;
 use App\Helpers\VCardHelper;
 use Sabre\VObject\Reader;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 
 trait VCardImporter
 {
@@ -143,8 +143,6 @@ trait VCardImporter
         }
 
         $contact->updateGravatar();
-
-        $contact->logEvent('contact', $contact->id, 'create');
     }
 
     private function contactFieldEmailId()

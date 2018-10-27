@@ -2,8 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Contact;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -44,13 +45,13 @@ class AddressTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'name' => 'test',
         ]);
 
-        $response = $this->get('/people/'.$contact->id.'/addresses');
+        $response = $this->get('/people/'.$contact->hashID().'/addresses');
 
         $response->assertStatus(200);
 
@@ -65,7 +66,7 @@ class AddressTest extends FeatureTestCase
             'name' => 'test',
         ];
 
-        $response = $this->post('/people/'.$contact->id.'/addresses', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/addresses', $params);
 
         $response->assertStatus(201);
 
@@ -75,7 +76,7 @@ class AddressTest extends FeatureTestCase
 
         $this->assertDatabaseHas('addresses', $params);
 
-        $response = $this->get('/people/'.$contact->id.'/addresses');
+        $response = $this->get('/people/'.$contact->hashID().'/addresses');
 
         $response->assertStatus(200);
 
@@ -90,12 +91,12 @@ class AddressTest extends FeatureTestCase
             'name' => 'test2',
         ];
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->put('/people/'.$contact->id.'/addresses/'.$address->id, $params);
+        $response = $this->put('/people/'.$contact->hashID().'/addresses/'.$address->id, $params);
 
         $response->assertStatus(200);
 
@@ -105,7 +106,7 @@ class AddressTest extends FeatureTestCase
 
         $this->assertDatabaseHas('addresses', $params);
 
-        $response = $this->get('/people/'.$contact->id.'/addresses');
+        $response = $this->get('/people/'.$contact->hashID().'/addresses');
 
         $response->assertStatus(200);
 
@@ -116,12 +117,12 @@ class AddressTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $address = factory(\App\Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->delete('/people/'.$contact->id.'/addresses/'.$address->id);
+        $response = $this->delete('/people/'.$contact->hashID().'/addresses/'.$address->id);
         $response->assertStatus(200);
 
         $params = ['id' => $address->id];

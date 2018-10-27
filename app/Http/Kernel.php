@@ -15,7 +15,10 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        \App\Http\Middleware\TrustProxies::class,
+        \Monicahq\Cloudflare\Http\Middleware\TrustProxies::class,
     ];
 
     /**
@@ -28,15 +31,18 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
+            'sentry.context',
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             'bindings',
             'locale',
             \App\Http\Middleware\CheckVersion::class,
+            \App\Http\Middleware\CheckCompliance::class,
         ],
 
         'api' => [
             'throttle:60,1',
+            'sentry.context',
             //'bindings',
             'locale',
         ],
@@ -58,6 +64,9 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
+        'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
+        'auth.confirm' => \App\Http\Middleware\AuthEmailConfirm::class,
+        'sentry.context' => \App\Http\Middleware\SentryContext::class,
     ];
 }

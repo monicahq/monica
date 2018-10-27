@@ -1,10 +1,10 @@
-<div class="col-xs-12 section-title {{ \App\Helpers\LocaleHelper::getDirection() }}">
+<div class="col-xs-12 section-title">
   <img src="/img/people/reminders.svg" class="icon-section icon-reminders">
   <h3>
     {{ trans('people.section_personal_reminders') }}
 
-    <span class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fr' : 'fl' }}">
-      <a href="/people/{{ $contact->hashID() }}/reminders/add" class="btn">{{ trans('people.reminders_cta') }}</a>
+    <span class="{{ htmldir() == 'ltr' ? 'fr' : 'fl' }}">
+      <a href="{{ route('people.reminders.add', $contact) }}" class="btn">{{ trans('people.reminders_cta') }}</a>
     </span>
   </h3>
 </div>
@@ -15,7 +15,7 @@
   <div class="col-xs-12">
     <div class="section-blank">
       <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->first_name]) }}</h3>
-      <a href="/people/{{ $contact->hashID() }}/reminders/add">{{ trans('people.reminders_blank_add_activity') }}</a>
+      <a href="{{ route('people.reminders.add', $contact) }}">{{ trans('people.reminders_blank_add_activity') }}</a>
     </div>
   </div>
 
@@ -67,7 +67,7 @@
           @endif
         </div>
 
-        <form method="POST" action="/people/{{ $contact->hashID() }}/reminders/{{ $reminder->id }}" class="entry-delete-form hidden">
+        <form method="POST" action="{{ route('people.reminders.delete', [$contact, $reminder]) }}" class="entry-delete-form hidden">
           {{ method_field('DELETE') }}
           {{ csrf_field() }}
         </form>

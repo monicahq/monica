@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Helpers\DBHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -13,18 +14,23 @@ class ExportAccountAsSQL
 
     protected $ignoredTables = [
         'accounts',
-        'activity_type_groups',
+        'activity_type_activities',
         'activity_types',
         'api_usage',
         'cache',
+        'changelog_user',
+        'changelogs',
+        'countries',
         'currencies',
+        'default_activity_types',
+        'default_activity_type_categories',
         'default_contact_field_types',
         'default_contact_modules',
+        'default_life_event_categories',
+        'default_life_event_types',
         'default_relationship_type_groups',
         'default_relationship_types',
         'failed_jobs',
-        'import_jobs',
-        'import_job_reports',
         'instances',
         'jobs',
         'migrations',
@@ -38,6 +44,9 @@ class ExportAccountAsSQL
         'sessions',
         'statistics',
         'subscriptions',
+        'terms',
+        'u2f_key',
+        'users',
     ];
 
     protected $ignoredColumns = [
@@ -49,6 +58,12 @@ class ExportAccountAsSQL
 
     protected $file = '';
     protected $path = '';
+
+    /**
+     * Storage disk used to store the exported file.
+     * @var string
+     */
+    public const STORAGE = 'public';
 
     /**
      * Create a new job instance.
@@ -82,7 +97,7 @@ class ExportAccountAsSQL
 
 '.PHP_EOL;
 
-        $tables = DB::select('SELECT table_name FROM information_schema.tables WHERE table_schema="monica"');
+        $tables = DBHelper::getTables();
 
         // Looping over the tables
         foreach ($tables as $table) {
@@ -132,29 +147,24 @@ class ExportAccountAsSQL
         }
 
         // Specific to `accounts` table
-        $accounts = array_filter($tables, function ($e) {
-            return $e->table_name == 'accounts';
-        }
-        )[0];
-        $tableName = $accounts->table_name;
-        $tableData = DB::table($tableName)->get()->toArray();
+        $tableName = 'accounts';
+        $tableData = DB::table($tableName)
+            ->where('id', '=', $account->id)
+            ->get()
+            ->toArray();
         foreach ($tableData as $data) {
-            $newSQLLine = 'INSERT INTO '.$tableName.' VALUES (';
             $data = (array) $data;
-            if ($data['id'] === $account->id):
-                $values = [
-                    $data['id'],
-                    "'".addslashes($data['api_key'])."'",
-                    $data['number_of_invitations_sent'] !== null
-                        ? $data['number_of_invitations_sent']
-                        : 'NULL',
-                ];
+            $values = [
+                $data['id'],
+                "'".addslashes($data['api_key'])."'",
+                $data['number_of_invitations_sent'] ?? 'NULL',
+            ];
+            $newSQLLine = 'INSERT INTO '.$tableName.' (id, api_key, number_of_invitations_sent) VALUES (';
             $newSQLLine .= implode(',', $values).');'.PHP_EOL;
             $sql .= $newSQLLine;
-            endif;
         }
 
-        Storage::disk(config('filesystems.default'))->put($downloadPath, $sql);
+        Storage::disk(self::STORAGE)->put($downloadPath, $sql);
 
         return $downloadPath;
     }

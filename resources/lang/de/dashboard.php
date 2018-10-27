@@ -11,12 +11,18 @@ return [
     'tab_recent_calls' => 'Kürzliche Telefonate',
     'tab_favorite_notes' => 'Markierte Notizen',
     'tab_calls_blank' => 'Du hast noch keine Telefonate protokolliert.',
+    'tab_debts' => 'Schulden',
+    'tab_debts_blank' => 'Du hast noch keine Schulden protokolliert.',
+    'tab_tasks' => 'Tasks',
+    'tab_tasks_blank' => 'You haven’t any task yet.',
+
+    'debts_you_owe' => 'Du schuldest',
 
     'statistics_contacts' => 'Kontakte',
     'statistics_activities' => 'Aktivitäten',
     'statistics_gifts' => 'Geschenke',
 
-    'reminders_next_months' => 'Ereignisse in den letzten 3 Monaten',
+    'reminders_next_months' => 'Ereignisse der nächsten 3 Monate',
     'reminders_none' => 'Keine Erinnerungen für diesen Monat',
 
     'linkedin_profile' => 'LinkedIn',

@@ -9,7 +9,7 @@ services:
       - 80:80
     env_file: .env
     volumes:
-      - ./persist/storage/app/public:/var/www/monica/storage/app/public
+      - ./persist/storage:/var/www/monica/storage
 
   mysql:
     image: mysql:5.7

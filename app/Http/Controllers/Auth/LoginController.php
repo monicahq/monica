@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Account;
+use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Bestmomo\LaravelEmailConfirmation\Traits\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -42,7 +42,7 @@ class LoginController extends Controller
     {
         $first = ! Account::hasAny();
         if ($first) {
-            return redirect('/register');
+            return redirect()->route('register');
         }
 
         return $this->showLoginForm();

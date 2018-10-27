@@ -21,6 +21,11 @@ return [
     'loading' => 'בטעינה…',
     'with' => 'עם',
     'days' => 'day|days',
+    'today' => 'היום',
+    'yesterday' => 'אתמול',
+    'another_day' => 'יום אחר',
+    'date' => 'תאריך',
+    'type' => 'סוג',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
@@ -73,6 +78,7 @@ return [
     'breadcrumb_settings_personalization' => 'התאמה אישית',
     'breadcrumb_settings_security' => 'אבטחה',
     'breadcrumb_settings_security_2fa' => 'אימות דו־שלבי',
+    'breadcrumb_profile' => 'הפרופיל של :name',
 
     'gender_male' => 'גבר',
     'gender_female' => 'אישה',
@@ -81,8 +87,19 @@ return [
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
     'error_save' => 'אירעה שגיאה בעת שמירת הנתונים.',
+    'error_try_again' => 'משהו השתבש. נא לנסות שוב.',
+    'error_id' => 'מזהה שגיאה: :id',
+    'error_unavailable' => 'השירות אינו זמין',
+    'error_maintenance' => 'מתבצעות עבודות תחזוקה. תכף נשוב.',
+    'error_help' => 'מיד נשוב.',
+    'error_twitter' => 'ניתן לעקוב אחר <a href="https://twitter.com/:twitter">חשבון הטוויטר שלנו</a> כדי להתעדכן אם השירות שב לפעילות.',
 
     'default_save_success' => 'הנתונים נשמרו.',
+
+    'compliance_title' => 'סליחה על ההפרעה.',
+    'compliance_desc' => 'ערכנו את <a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> ואת <a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> שלנו. מכוח החוק עלינו לבקש ממך לעיין בשינויים ולאשר את הסכמתך להם כדי להמשיך לאפשר לך להשתמש בחשבונך.',
+    'compliance_desc_end' => 'אנו לא משתמשים בנתונים או בחשבון שלך לאף מטרה זדונית וגם לא נעשה זאת בעתיד.',
+    'compliance_terms' => 'קבלת התנאים ומדיניות הפרטיות החדשים',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -107,7 +124,7 @@ return [
     'relationship_type_spouse_with_name' => 'בעלה של :name',
     'relationship_type_spouse_female_with_name' => 'אשתו של :name',
 
-    'relationship_type_date' => 'יוצא קבוע',
+    'relationship_type_date' => 'ליציאה',
     'relationship_type_date_female' => 'יוצאת קבוע',
     'relationship_type_date_with_name' => 'יוצא קבוע עם :name',
     'relationship_type_date_female_with_name' => 'יוצאת קבוע עם :name',
@@ -216,4 +233,9 @@ return [
     'relationship_type_protege_female' => 'חניכה',
     'relationship_type_protege_with_name' => 'חניך של :name',
     'relationship_type_protege_female_with_name' => 'חניכה של :name',
+
+    'relationship_type_ex_husband' => 'גרוש',
+    'relationship_type_ex_husband_female' => 'גרושה',
+    'relationship_type_ex_husband_with_name' => 'הגרוש של :name',
+    'relationship_type_ex_husband_female_with_name' => 'הגרושה של :name',
 ];
