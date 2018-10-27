@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name is succesvol toegevoegd',
     'people_add_gender' => 'Geslacht',
     'people_delete_success' => 'De contactpersoon is verwijderd',
-    'people_delete_message' => 'Als je dit contact wil wissen,',
-    'people_delete_click_here' => 'klik hier',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Weet je zeker dat je dit contact wilt verwijderen? Dit is permanent.',
     'people_add_birthday_reminder' => 'Feliciteer :name met zijn/haar verjaardag',
     'people_add_import' => 'Wil je <a href=":url">contacten importeren</a>?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'Cadeaux',
     'section_personal_notes' => 'Notities',
 
-    //
-    'link_to_list' => 'Lijst van contacten',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Bewerk contact informatie',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Registreer een belgesprek',
     'set_favorite' => 'Favoriete contacten worden bovenaan de lijst met contactpersonen geplaatst',
 
