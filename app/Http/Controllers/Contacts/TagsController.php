@@ -2,12 +2,50 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\TagsRequest;
+use App\Http\Resources\Tag\Tag as TagResource;
 
 class TagsController extends Controller
 {
+    /**
+     * Get the list of all the tags in the account.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $tags = auth()->user()->account->tags()->get();
+        $tagsCollection = collect();
+        foreach ($tags as $tag) {
+            $data = [
+                $tag->id => $tag->name,
+            ];
+            $tagsCollection->push($data);
+        }
+
+        return $tagsCollection->toJson();
+    }
+
+    /**
+     * Get the list of all the tags for this contact.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function get(Request $request, Contact $contact)
+    {
+        $tags = $contact->tags()->get();
+        $tagString = '';
+        foreach ($tags as $tag) {
+            $tagString .= $tag->name;
+        }
+        return $tagString;
+    }
+
     /**
      * Update the specified resource in storage.
      *
