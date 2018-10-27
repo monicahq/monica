@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Pohlaví',
     'people_delete_success' => 'Kontakt byl smazán',
-    'people_delete_message' => 'Pokud potřebujete smazat tento účet,',
-    'people_delete_click_here' => 'klikněte zde',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Opravdu chcete smazat tento kontakt? Smazání je trvalé.',
     'people_add_birthday_reminder' => 'Popřát k narozeninám :name',
     'people_add_import' => 'Chcete <a href=":url">importovat své kontakty</a>?',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'Dárky',
     'section_personal_notes' => 'Notes',
 
-    //
-    'link_to_list' => 'Seznam osob',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Upravit informace kontaktu',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Zaznamenat telefonát',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
