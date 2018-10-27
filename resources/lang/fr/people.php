@@ -19,8 +19,8 @@ return [
     'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => ':count contact|:count contacts',
-    'people_list_show_dead' => 'Show deceased people (:count)',
-    'people_list_hide_dead' => 'Hide deceased people (:count)',
+    'people_list_show_dead' => 'Afficher les contacts décédés (:count)',
+    'people_list_hide_dead' => 'Masquer les contacts décédés (:count)',
     'people_search' => 'Recherchez dans vos contacts...',
     'people_search_no_results' => 'Aucun contact ne correspond à ce critère',
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
@@ -41,7 +41,7 @@ return [
     'people_add_success' => ':name a été crée avec succès',
     'people_add_gender' => 'Sexe',
     'people_delete_success' => 'Le contact a été supprimé',
-    'people_delete_message' => 'Delete contact',
+    'people_delete_message' => 'Supprimer le contact',
     'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
     'people_add_birthday_reminder' => 'Souhaiter un bon anniversaire à :name',
     'people_add_import' => 'Souhaitez-vous <a href=":url">importer vos contacts</a> ?',
@@ -58,14 +58,14 @@ return [
     'section_personal_notes' => 'Notes',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_active_contacts' => 'Vous visualisez les contacts archivés. Afficher la <a href=":url">liste des contacts actifs</a> à la place.',
+    'list_link_to_archived_contacts' => 'Liste de contacts archivés',
 
     // Header
     'edit_contact_information' => 'Mettre à jour les informations',
-    'contact_archive' => 'Archive contact',
-    'contact_unarchive' => 'Unarchive contact',
-    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
+    'contact_archive' => 'Archiver le contact',
+    'contact_unarchive' => 'Contacts actifs',
+    'contact_archive_help' => 'Les contacts archivés n’apparaîtront pas sur la liste de contacts, mais apparaîtront toujours dans les résultats de recherches.',
     'call_button' => 'Enregistrer un appel téléphonique',
     'set_favorite' => 'Les contacts favoris sont placés en haut de la liste des contacts',
 
