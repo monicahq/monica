@@ -26,7 +26,7 @@
   appearance: none;
   text-decoration: none;
 
-  &:hover {
+  &:hover, &:focus {
     text-decoration: none;
     background-color: #e6ebf1;
     background-image: -webkit-linear-gradient(270deg, #f0f3f6 0%, #e6ebf1 90%);
@@ -60,7 +60,7 @@
   background-image: -webkit-linear-gradient(270deg, #34d058 0%, #28a745 90%);
   background-image: linear-gradient(-180deg, #34d058 0%, #28a745 90%);
 
-  &:hover {
+  &:hover, &:focus {
     background-color: #269f42;
     background-image: -webkit-linear-gradient(270deg, #2fcb53 0%, #269f42 90%);
     background-image: linear-gradient(-180deg, #2fcb53 0%, #269f42 90%);
@@ -72,7 +72,7 @@
 .btn-danger {
   color: #900;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: #b33630;
     background-image: linear-gradient(#dc5f59, #b33630);
     border-color: #cd504a;
