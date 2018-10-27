@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name تم إضافته بنجاح',
     'people_add_gender' => 'الجنس',
     'people_delete_success' => 'تم حذف جهة الاتصال',
-    'people_delete_message' => 'إذا كنت بحاجة إلى حذف جهة الاتصال هذه،',
-    'people_delete_click_here' => 'اضغط هنا',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'هل أنت متأكد من أنك تريد حذف جهة الاتصال هذه؟ الحذف دائم.',
     'people_add_birthday_reminder' => 'تمنى :name عيد ميلاد سعيد',
     'people_add_import' => 'هل تريد <a href=":url">استيراد جهات الاتصال الخاصة بك</a>؟',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => 'الهدايا',
     'section_personal_notes' => 'الملاحظات',
 
-    //
-    'link_to_list' => 'قائمة الأشخاص',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'تعديل معلومات الإتصال',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'تسجيل مكالمة',
     'set_favorite' => 'جهات الاتصال المفضلة يتم وضعها في قمة قائمة جهات الاتصال',
 
