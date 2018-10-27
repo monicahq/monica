@@ -4,7 +4,7 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Storage;
-use App\Models\ModelBindingHasher as Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Document extends Model
