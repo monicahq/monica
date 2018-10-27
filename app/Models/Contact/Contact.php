@@ -1398,6 +1398,11 @@ class Contact extends Model
         ]);
 
         $tag->name_slug = str_slug($tag->name);
+
+        if(empty($tag->name_slug)) {
+            $tag->name_slug = htmlentities($tag->name);
+        }
+
         $tag->save();
 
         $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account_id]]);

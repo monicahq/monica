@@ -953,6 +953,22 @@ class ContactTest extends FeatureTestCase
         );
     }
 
+    public function test_it_creates_a_non_english_tag_and_sets_it_to_a_contact()
+    {
+        $user = $this->signIn();
+
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $tag = $contact->setTag('朋友');
+
+        $this->assertDatabaseHas(
+            'tags',
+            [
+                'name' => '朋友',
+                'name_slug' => '朋友',
+            ]
+        );
+    }
+
     public function test_it_uses_an_existing_tag_to_associate_it_with_the_contact()
     {
         $user = $this->signIn();
