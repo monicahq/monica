@@ -220,11 +220,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'note' => 'This is a text',
         ]);
 
-        $response->assertStatus(500);
-
-        $response->assertJsonFragment([
-            'error_code' => 41,
-        ]);
+        $this->expectInvalidParameter($response, 'Invalid parameters.');
     }
 
     public function test_it_updates_a_life_event()
@@ -293,11 +289,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'note' => 'This is a text',
         ]);
 
-        $response->assertStatus(500);
-
-        $response->assertJsonFragment([
-            'error_code' => 41,
-        ]);
+        $this->expectInvalidParameter($response, 'Invalid parameters.');
     }
 
     public function test_it_destroys_a_life_event()

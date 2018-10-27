@@ -61,13 +61,13 @@ class ApiTaskController extends ApiController
         }
 
         try {
-            $task = Task::create($request->all());
+            $task = Task::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
-
-        $task->account_id = auth()->user()->account_id;
-        $task->save();
 
         return new TaskResource($task);
     }
@@ -82,8 +82,7 @@ class ApiTaskController extends ApiController
     {
         try {
             $task = Task::where('account_id', auth()->user()->account_id)
-                ->where('id', $taskId)
-                ->firstOrFail();
+                ->findOrFail($taskId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -120,8 +119,7 @@ class ApiTaskController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         try {

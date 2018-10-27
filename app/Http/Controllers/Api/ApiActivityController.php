@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Contact\Note;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
@@ -87,7 +86,9 @@ class ApiActivityController extends ApiController
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
-            $contact->activities()->save($activity);
+            $contact->activities()->attach($activity, [
+                    'account_id' => auth()->user()->account_id,
+                ]);
             $contact->calculateActivitiesStatistics();
         }
 
@@ -156,7 +157,9 @@ class ApiActivityController extends ApiController
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
-            $contact->activities()->save($activity);
+            $contact->activities()->attach($activity, [
+                'account_id' => auth()->user()->account_id,
+            ]);
         }
 
         return new ActivityResource($activity);
@@ -180,8 +183,7 @@ class ApiActivityController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         // Make sure each contact exists and has the right to be associated with
@@ -191,6 +193,17 @@ class ApiActivityController extends ApiController
             try {
                 Contact::where('account_id', auth()->user()->account_id)
                     ->findOrFail($attendeeID);
+            } catch (ModelNotFoundException $e) {
+                return $this->respondNotFound();
+            }
+        }
+
+        // Make sure the activity type has the right to be associated with
+        // this account
+        if ($request->get('activity_type_id')) {
+            try {
+                ActivityType::where('account_id', auth()->user()->account_id)
+                    ->findOrFail($request->get('activity_type_id'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
@@ -207,7 +220,7 @@ class ApiActivityController extends ApiController
     public function destroy(Request $request, $activityId)
     {
         try {
-            $activity = Note::where('account_id', auth()->user()->account_id)
+            $activity = Activity::where('account_id', auth()->user()->account_id)
                 ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -254,7 +267,8 @@ class ApiActivityController extends ApiController
      */
     public function activitytypes(Request $request)
     {
-        $activities = ActivityType::all();
+        $activities = ActivityType::where('account_id', auth()->user()->account_id)
+                                     ->all();
 
         return ActivityTypeResource::collection($activities);
     }

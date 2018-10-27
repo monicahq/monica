@@ -33,7 +33,6 @@ class ApiPetsTest extends ApiTestCase
         'updated_at',
     ];
 
-    /*
     public function test_pets_get_all()
     {
         $user = $this->signin();
@@ -67,7 +66,6 @@ class ApiPetsTest extends ApiTestCase
             'id' => $pet2->id,
         ]);
     }
-    */
 
     public function test_pets_get_contact_all()
     {
@@ -109,12 +107,7 @@ class ApiPetsTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/contacts/0/pets');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_pets_get_one()
@@ -154,12 +147,7 @@ class ApiPetsTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/pets/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_pets_create()
@@ -173,8 +161,8 @@ class ApiPetsTest extends ApiTestCase
         $response = $this->json('POST', '/api/pets', [
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
+            'name' => 'the name',
         ]);
-        // No 'name' parameter ?
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
@@ -184,6 +172,7 @@ class ApiPetsTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'pet',
             'id' => $pet_id,
+            'name' => 'the name',
         ]);
 
         $this->assertGreaterThan(0, $pet_id);
@@ -192,6 +181,7 @@ class ApiPetsTest extends ApiTestCase
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
             'id' => $pet_id,
+            'name' => 'the name',
         ]);
     }
 
@@ -206,15 +196,11 @@ class ApiPetsTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The pet category id field is required.',
         ]);
     }
 
-    /*
     public function test_pets_create_error_bad_account()
     {
         $user = $this->signin();
@@ -230,14 +216,8 @@ class ApiPetsTest extends ApiTestCase
             'pet_category_id' => $pet_category->id,
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
-    */
 
     public function test_pets_update()
     {
@@ -254,6 +234,7 @@ class ApiPetsTest extends ApiTestCase
         $response = $this->json('PUT', '/api/pets/'.$pet->id, [
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
+            'name' => 'the name',
         ]);
 
         $response->assertStatus(200);
@@ -265,6 +246,7 @@ class ApiPetsTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'pet',
             'id' => $pet_id,
+            'name' => 'the name',
         ]);
 
         $this->assertGreaterThan(0, $pet_id);
@@ -273,6 +255,7 @@ class ApiPetsTest extends ApiTestCase
             'contact_id' => $contact->id,
             'pet_category_id' => $pet_category->id,
             'id' => $pet_id,
+            'name' => 'the name',
         ]);
     }
 
@@ -282,15 +265,9 @@ class ApiPetsTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/pets/0', []);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
-    /*
     public function test_pets_update_error_bad_account()
     {
         $user = $this->signin();
@@ -310,14 +287,8 @@ class ApiPetsTest extends ApiTestCase
             'pet_category_id' => $pet_category->id,
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
-    */
 
     public function test_pets_delete()
     {
@@ -351,11 +322,6 @@ class ApiPetsTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/pets/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 }

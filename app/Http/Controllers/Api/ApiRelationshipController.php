@@ -56,7 +56,7 @@ class ApiRelationshipController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $validParameters = $this->validateParameters($request);
         if ($validParameters !== true) {
@@ -74,7 +74,7 @@ class ApiRelationshipController extends ApiController
         try {
             $contact->setRelationship($partner, $relationshipType->id);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         $relationship = $contact->getRelationshipNatureWith($partner);
@@ -149,8 +149,7 @@ class ApiRelationshipController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(41)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         if ($request->get('relationship_type_id')) {
@@ -197,8 +196,7 @@ class ApiRelationshipController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(41)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         if ($request->get('relationship_type_id')) {

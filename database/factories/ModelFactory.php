@@ -35,8 +35,10 @@ $factory->define(App\Models\Account\Account::class, function (Faker\Generator $f
 $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'activity_type_id' => function () {
-            return factory(App\Models\Contact\ActivityType::class)->create()->id;
+        'activity_type_id' => function (array $data) {
+            return factory(App\Models\Contact\ActivityType::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
         },
         'description' => $faker->sentence,
         'summary' => $faker->sentence,
@@ -47,8 +49,10 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
 $factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'activity_type_category_id' => function () {
-            return factory(App\Models\Contact\ActivityTypeCategory::class)->create([])->id;
+        'activity_type_category_id' => function (array $data) {
+            return factory(App\Models\Contact\ActivityTypeCategory::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
         },
         'translation_key' => $faker->sentence,
         'location_type' => $faker->word,
@@ -64,75 +68,87 @@ $factory->define(App\Models\Contact\ActivityTypeCategory::class, function (Faker
 });
 
 $factory->define(App\Models\Contact\Reminder::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
 $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $faker) {
     return [
-        'account_id' => function () {
-            return factory(App\Models\Account\Account::class)->create()->id;
-        },
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'first_name' => 'John',
         'last_name' => 'Doe',
         'has_avatar' => false,
-        'gender_id' => function () {
-            return factory(App\Models\Contact\Gender::class)->create()->id;
+        'gender_id' => function (array $data) {
+            return factory(App\Models\Contact\Gender::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
         },
     ];
 });
 
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
 $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
 $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
 $factory->define(App\Models\Instance\SpecialDate::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'date' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
 $factory->define(App\Models\Contact\Note::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'body' => encrypt($faker->text(200)),
     ];
 });
@@ -198,11 +214,13 @@ $factory->define(App\Models\Journal\Entry::class, function (Faker\Generator $fak
 });
 
 $factory->define(App\Models\Contact\Debt::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
@@ -225,11 +243,13 @@ $factory->define(App\Models\Journal\JournalEntry::class, function (Faker\Generat
 });
 
 $factory->define(App\Models\Contact\Pet::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'pet_category_id' => factory(App\Models\Contact\PetCategory::class)->create()->id,
     ];
 });
@@ -248,11 +268,13 @@ $factory->define(App\Models\Contact\ContactFieldType::class, function (Faker\Gen
 });
 
 $factory->define(App\Models\Contact\ContactField::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'contact_field_type_id' => 1,
         'data' => 'john@doe.com',
     ];
@@ -265,11 +287,13 @@ $factory->define(App\Models\Contact\ReminderRule::class, function (Faker\Generat
 });
 
 $factory->define(App\Models\Contact\Notification::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
@@ -280,28 +304,34 @@ $factory->define(App\Models\User\Module::class, function (Faker\Generator $faker
 });
 
 $factory->define(App\Models\Contact\Conversation::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-    $contactFieldType = factory(App\Models\Contact\ContactFieldType::class)->create([
-        'account_id' => $contact->account_id,
-    ]);
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
-        'contact_field_type_id' => $contactFieldType->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'contact_field_type_id' => function (array $data) {
+            return factory(App\Models\Contact\ContactFieldType::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
 $factory->define(App\Models\Contact\Message::class, function (Faker\Generator $faker) {
-    $contact = factory(App\Models\Contact\Contact::class)->create();
-    $conversation = factory(App\Models\Contact\Conversation::class)->create([
-        'account_id' => $contact->account_id,
-    ]);
-
     return [
-        'account_id' => $contact->account_id,
-        'contact_id' => $contact->id,
-        'conversation_id' => $conversation->id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'conversation_id' => function (array $data) {
+            return factory(App\Models\Contact\Conversation::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
@@ -314,32 +344,32 @@ $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Ge
 });
 
 $factory->define(App\Models\Contact\LifeEventType::class, function (Faker\Generator $faker) {
-    $lifeEventCategory = factory(App\Models\Contact\LifeEventCategory::class)->create([
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-    ]);
-
     return [
-        'account_id' => $lifeEventCategory->account_id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'life_event_category_id' => function (array $data) {
+            return factory(App\Models\Contact\LifeEventCategory::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'name' => $faker->text(100),
-        'life_event_category_id' => $lifeEventCategory->id,
         'core_monica_data' => true,
     ];
 });
 
 $factory->define(App\Models\Contact\LifeEvent::class, function (Faker\Generator $faker) {
-    $lifeEventType = factory(App\Models\Contact\LifeEventType::class)->create([
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-    ]);
-
-    $contact = factory(App\Models\Contact\Contact::class)->create([
-        'account_id' => $lifeEventType->account_id,
-    ]);
-
     return [
-        'contact_id' => $contact->id,
-        'account_id' => $lifeEventType->account_id,
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'life_event_type_id' => function (array $data) {
+            return factory(App\Models\Contact\LifeEventType::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'name' => $faker->text(100),
-        'life_event_type_id' => $lifeEventType->id,
         'note' => $faker->text(100),
         'happened_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
