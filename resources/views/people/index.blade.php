@@ -71,7 +71,7 @@
 
                 {{-- Sorting options --}}
                 <li class="people-list-item sorting">
-                  {{ trans_choice('people.people_list_stats', $contacts->count(), ['count' => $contacts->count()]) }}
+                  {{ trans('people.people_list_stats', ['count' => $contacts->count()]) }}
                   <div class="options">
                     <div class="options-dropdowns">
                       <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>

@@ -10,6 +10,8 @@ UNRELEASED CHANGES:
 * Highlight buttons when selected using keyboard
 * Hide deceased people from dashboard's 'Last Consulted' section
 * Filter deceased people from people list by default
+* Fix errors during PostgreSQL migration
+* Better documentation for PostgreSQL users
 
 RELEASED VERSIONS:
 
