@@ -80,7 +80,7 @@ class MonicaSabreBackend implements BackendInterface
      */
     function challenge(RequestInterface $request, ResponseInterface $response)
     {
-        $auth = new HTTP\Auth\Bearer(
+        $auth = new \Sabre\HTTP\Auth\Bearer(
             $this->realm,
             $request,
             $response
