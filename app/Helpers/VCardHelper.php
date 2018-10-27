@@ -132,8 +132,6 @@ class VCardHelper
             return;
         }
 
-        $iso = CountriesHelper::find($VCardAddress->getParts()[6]);
-
-        return $iso;
+        return CountriesHelper::find($VCardAddress->getParts()[6]);
     }
 }
