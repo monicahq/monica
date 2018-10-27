@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 * Add ability to archive a contact
 * Add right-click support on contact list
+* Add a command (export:all) to export all data from an instance in SQL
 * Standardize phonenumber format while importing vCard
 * Set currency and timezone for new users
 * Fix settings' sidebar links and change security icon
@@ -20,8 +21,6 @@ v2.9.0 - 2018-10-14
 * Add ability to retrieve all conversations for one contact through the API
 * Add all tasks not yet completed on the dashboard
 * Fix gravatar not displayed on dashboard view
-* Fix errors during PostgreSQL migration
-* Better documentation for PostgreSQL users 
 
 v2.8.1 - 2018-10-08
 -------------------
