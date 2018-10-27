@@ -39,8 +39,7 @@ return [
     'people_add_success' => ':name 已成功创建',
     'people_add_gender' => '性别',
     'people_delete_success' => '联系人已被删除',
-    'people_delete_message' => '如果需要删除此联系人,',
-    'people_delete_click_here' => '点击这里',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => '确实要删除此联系人吗？删除是永久性的。',
     'people_add_birthday_reminder' => '祝: name生日快乐',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
@@ -56,11 +55,15 @@ return [
     'section_personal_gifts' => '礼物',
     'section_personal_notes' => '便签',
 
-    //
-    'link_to_list' => '联系人',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => '编辑联系人信息',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => '记录通话',
     'set_favorite' => '您收藏的联系人将在联系人列表置顶显示。',
 
