@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -45,7 +46,11 @@ class CardDAVController extends Controller
 
         // Add required plugins
         $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV'));
+
+        // CardDAV plugin
         $server->addPlugin(new \Sabre\CardDAV\Plugin());
+
+        // ACL plugnin
         $aclPlugin = new \Sabre\DAVACL\Plugin();
         $aclPlugin->allowUnauthenticatedAccess = false;
         $server->addPlugin($aclPlugin);
