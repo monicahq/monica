@@ -106,12 +106,7 @@ class ApiRemindersTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/contacts/0/reminders');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_reminders_get_one()
@@ -151,12 +146,7 @@ class ApiRemindersTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/reminders/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_reminders_create()
@@ -213,11 +203,11 @@ class ApiRemindersTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The description field is required.',
+            'The next expected date field is required.',
+            'The frequency type field is required.',
         ]);
     }
 
@@ -240,12 +230,7 @@ class ApiRemindersTest extends ApiTestCase
             'description' => 'the description',
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_reminders_update()
@@ -302,12 +287,7 @@ class ApiRemindersTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/reminders/0', []);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_reminders_update_error_bad_account()
@@ -333,12 +313,7 @@ class ApiRemindersTest extends ApiTestCase
             'description' => 'the description',
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_reminders_delete()
@@ -373,11 +348,6 @@ class ApiRemindersTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/reminders/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 }

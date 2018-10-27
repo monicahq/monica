@@ -150,9 +150,11 @@ class Activity extends Model implements IsJournalableInterface
         $attendees = collect([]);
 
         foreach ($this->contacts as $contact) {
-            $attendee = Contact::where('account_id', $this->account_id)
-                ->find($contact->id);
-            $attendees->push(new ContactShortResource($attendee));
+            if ($contact->account_id !== $this->account_id) {
+                // This should not be possible!
+                continue;
+            }
+            $attendees->push(new ContactShortResource($contact));
         }
 
         return $attendees;

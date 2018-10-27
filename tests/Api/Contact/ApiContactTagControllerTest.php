@@ -21,12 +21,7 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/setTags");
 
-        $response->assertStatus(200);
-
-        $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
-            'error_code' => 32,
-        ]);
+        $this->expectDataError($response, ['The tags field is required.']);
     }
 
     public function test_it_associates_tags_to_a_contact()
@@ -42,10 +37,29 @@ class ApiContactTagControllerTest extends ApiTestCase
                         ]);
 
         $response->assertStatus(200);
+        $tag_id1 = $response->json('data.tags.0.id');
+        $tag_id2 = $response->json('data.tags.1.id');
 
         $response->assertJsonFragment([
-            'id' => $contact->id,
+            'object' => 'tag',
+            'id' => $tag_id1,
+            'name' => 'very-specific-tag-name',
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'tag',
+            'id' => $tag_id2,
             'name' => 'very-specific-tag-name-2',
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag_id1,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag_id2,
         ]);
     }
 
@@ -59,12 +73,7 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTag");
 
-        $response->assertStatus(200);
-
-        $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
-            'error_code' => 32,
-        ]);
+        $this->expectDataError($response, ['The tags field is required.']);
     }
 
     public function test_it_removes_one_tag_from_a_contact()
@@ -100,6 +109,17 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response->assertJsonMissing([
             'name' => $tag->name,
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'contact_id' => $contact->id,
+            'tag_id' => $tag2->id,
+            'account_id' => $user->account->id,
+        ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'tag_id' => $tag->id,
+            'account_id' => $user->account->id,
         ]);
     }
 
@@ -142,6 +162,21 @@ class ApiContactTagControllerTest extends ApiTestCase
         $response->assertJsonMissing([
             'name' => $tag2->name,
         ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
+            'tag_id' => $tag->id,
+        ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
+            'tag_id' => $tag2->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
+            'tag_id' => $tag3->id,
+        ]);
     }
 
     public function test_it_removes_all_tags_from_a_contact()
@@ -170,6 +205,11 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response->assertJsonMissing([
             'name' => $tag2->name,
+        ]);
+
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
         ]);
     }
 }

@@ -63,13 +63,13 @@ class ApiCallController extends ApiController
         }
 
         try {
-            $call = Call::create($request->all());
+            $call = Call::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
-
-        $call->account_id = auth()->user()->account_id;
-        $call->save();
 
         return new CallResource($call);
     }
@@ -120,8 +120,7 @@ class ApiCallController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         try {

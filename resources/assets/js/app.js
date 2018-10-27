@@ -110,6 +110,10 @@ Vue.component(
     'contact-favorite',
     require('./components/people/SetFavorite.vue')
 );
+Vue.component(
+    'contact-archive',
+    require('./components/people/Archive.vue')
+);
 
 Vue.component(
     'contact-address',

@@ -71,15 +71,14 @@ class ApiUserController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         // Create the contact
         try {
             $term = auth()->user()->acceptPolicy($request->get('ip_address'));
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         $userCompliance = auth()->user()->getStatusForCompliance($term->id);

@@ -2,13 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/statistics', 'Api\\Statistics\\ApiStatisticsController@index');
+Route::apiResource('statistics', 'Api\\Statistics\\ApiStatisticsController', ['only' => ['index']]);
 
-Route::get('/compliance', 'Api\\Settings\\ApiComplianceController@index');
-Route::get('/compliance/{id}', 'Api\\Settings\\ApiComplianceController@show');
+Route::resource('compliance', 'Api\\Settings\\ApiComplianceController', ['only' => ['index', 'show']]);
 
-Route::get('/currencies', 'Api\\Settings\\ApiCurrencyController@index');
-Route::get('/currencies/{id}', 'Api\\Settings\\ApiCurrencyController@show');
+Route::resource('currencies', 'Api\\Settings\\ApiCurrencyController', ['only' => ['index', 'show']]);
 
 Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/', 'Api\\ApiController@success');
@@ -23,11 +21,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('contacts', 'Api\\ApiContactController');
 
     // Relationships
+    Route::apiResource('relationships', 'Api\\ApiRelationshipController', ['except' => ['index']]);
     Route::get('/contacts/{contact}/relationships', 'Api\\ApiRelationshipController@index');
-    Route::get('/relationships/{id}', 'Api\\ApiRelationshipController@show');
-    Route::post('/relationships', 'Api\\ApiRelationshipController@create');
-    Route::put('/relationships/{id}', 'Api\\ApiRelationshipController@update');
-    Route::delete('/relationships/{id}', 'Api\\ApiRelationshipController@destroy');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
@@ -43,14 +38,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contacts/{contact}/contactfields', 'Api\\ApiContactFieldController@contactFields');
 
     // Pets
-    Route::resource('pets', 'Api\\ApiPetController')->only([
-      'show', 'store', 'update', 'destroy',
-    ]);
-
-    // Contact Pets
-    Route::get('/contacts/{contact}/pets', 'Api\\ApiPetController@listContactPets');
-    Route::post('/contacts/{contact}/pets', 'Api\\ApiPetController@storeContactPet');
-    Route::put('/contacts/{contact}/pets/{pet}', 'Api\\ApiPetController@moveContactPet');
+    Route::apiResource('pets', 'Api\\ApiPetController');
+    Route::get('/contacts/{contact}/pets', 'Api\\ApiPetController@pets');
 
     // Tags
     Route::apiResource('tags', 'Api\\ApiTagController');
@@ -65,9 +54,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Conversations & messages
     Route::apiResource('conversations', 'Api\\Contact\\ApiConversationController');
-    Route::post('/conversations/{conversation}/messages', 'Api\\Contact\\ApiMessageController@store');
-    Route::put('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@update');
-    Route::delete('/conversations/{conversation}/messages/{message}', 'Api\\Contact\\ApiMessageController@destroy');
+    Route::apiResource('conversations/{conversation}/messages', 'Api\\Contact\\ApiMessageController', ['except' => ['index', 'show']]);
     Route::get('/contacts/{contact}/conversations', 'Api\\Contact\\ApiConversationController@conversations');
 
     // Activities
@@ -101,14 +88,14 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('activitytypecategories', 'Api\\Contact\\ApiActivityTypeCategoryController');
 
     // Relationship Type Groups
-    Route::resource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController')->only([
+    Route::apiResource('relationshiptypegroups', 'Api\\ApiRelationshipTypeGroupController', ['only' => [
       'index', 'show',
-    ]);
+    ]]);
 
     // Relationship Types
-    Route::resource('relationshiptypes', 'Api\\ApiRelationshipTypeController')->only([
+    Route::apiResource('relationshiptypes', 'Api\\ApiRelationshipTypeController', ['only' => [
       'index', 'show',
-    ]);
+    ]]);
 
     // Life events
     Route::apiResource('lifeevents', 'Api\\Contact\\ApiLifeEventController');
