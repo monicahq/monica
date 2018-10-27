@@ -38,12 +38,6 @@ class MonicaAddressBook extends AddressBook
      */
     public function getChildACL()
     {
-        return [
-            [
-                'privilege' => '{DAV:}read',
-                'principal' => $this->getOwner(),
-                'protected' => true,
-            ],
-        ];
+        return $this->getACL();
     }
 }

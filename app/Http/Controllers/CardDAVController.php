@@ -21,9 +21,6 @@ class CardDAVController extends Controller
         // Disable debugger for caldav output
         Debugbar::disable();
 
-        // TODO: Not sure if this is needed, check later
-        date_default_timezone_set('UTC');
-
         // Initiate custom backends for link between Sabra and Monica
         $authBackend = new MonicaSabreBackend();            // Authentication
         $principalBackend = new MonicaPrincipleBackend();   // User rights

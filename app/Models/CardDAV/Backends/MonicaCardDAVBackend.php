@@ -112,14 +112,16 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
         }
 
         // Gender
-        $gender = 'O';
         switch ($contact->gender->name) {
             case 'Man':
                 $gender = 'M';
-            break;
+                break;
             case 'Woman':
                 $gender = 'F';
-            break;
+                break;
+            default:
+                $gender = 'O';
+                break;
         }
         $vcard->add('GENDER', $gender.';'.$contact->gender->name);
 
@@ -134,13 +136,15 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
             switch ($contactField->contactFieldType->name) {
                 case 'Phone':
                     $vcard->add('TEL', $contactField->data);
-                break;
+                    break;
                 case 'Email':
                     $vcard->add('EMAIL', $contactField->data);
-                break;
+                    break;
                 case 'Facebook':
                     $vcard->add('socialProfile', $contactField->data, ['type' => 'facebook']);
-                break;
+                    break;
+                default:
+                    break;
 
                 // TODO: Twitter, Whatsapp, Telegram, other
             }
