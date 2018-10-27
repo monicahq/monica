@@ -116,4 +116,22 @@ class VCardHelper
 
         return $vCard;
     }
+
+    /**
+     * Get country model object from given VCard file.
+     *
+     * @param \Sabre\VObject\Component\VCard $VCard
+     *
+     * @return null | string
+     */
+    public static function getCountryISOFromSabreVCard(\Sabre\VObject\Component\VCard $VCard)
+    {
+        $VCardAddress = $VCard->ADR;
+
+        if (empty($VCardAddress)) {
+            return;
+        }
+
+        return CountriesHelper::find($VCardAddress->getParts()[6]);
+    }
 }

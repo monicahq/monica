@@ -49,16 +49,16 @@ class ApiContactController extends ApiController
         }
 
         try {
-            $contacts = auth()->user()->account->contacts()->real()
+            $contacts = auth()->user()->account->contacts()
+                            ->real()
+                            ->active()
                             ->orderBy($this->sort, $this->sortDirection)
                             ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        $collection = $this->applyWithParameter($contacts, $this->getWithParameter());
-
-        return $collection;
+        return $this->applyWithParameter($contacts, $this->getWithParameter());
     }
 
     /**

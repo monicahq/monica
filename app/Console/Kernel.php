@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         'App\Console\Commands\CalculateStatistics',
         'App\Console\Commands\Deactivate2FA',
+        'App\Console\Commands\ExportAll',
         'App\Console\Commands\GetVersion',
         'App\Console\Commands\ImportCSV',
         'App\Console\Commands\ImportVCards',
