@@ -27,14 +27,14 @@ class DestroyAllDocuments extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (!$this->validateDataStructure($data, $this->structure)) {
+        if (! $this->validateDataStructure($data, $this->structure)) {
             throw new MissingParameterException('Missing parameters');
         }
 
         $documents = Document::where('account_id', $data['account_id'])
                                 ->get();
 
-        foreach($documents as $document) {
+        foreach ($documents as $document) {
             try {
                 Storage::delete($document->new_filename);
             } catch (FileNotFoundException $e) {

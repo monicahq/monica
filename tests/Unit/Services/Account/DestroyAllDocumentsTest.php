@@ -8,10 +8,9 @@ use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Exceptions\MissingParameterException;
-use App\Services\Contact\Document\UploadDocument;
 use App\Services\Account\DestroyAllDocuments;
+use App\Services\Contact\Document\UploadDocument;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyAllDocumentsTest extends TestCase
 {
@@ -21,7 +20,7 @@ class DestroyAllDocumentsTest extends TestCase
     {
         $contact = factory(Contact::class)->create([]);
 
-        for ($i = 0 ; $i < 10 ; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $document = $this->uploadDocument($contact);
         }
 

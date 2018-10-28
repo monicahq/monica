@@ -187,7 +187,6 @@ class SettingsController
             'account_id' => $account->id,
         ]);
 
-
         $tables = DBHelper::getTables();
 
         // TODO(tom@tomrochette.com): We cannot simply iterate over tables to reset an account
