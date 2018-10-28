@@ -8,7 +8,7 @@ use Illuminate\Auth\AuthManager;
 /**
  * Authenticate user with Basic Authentication, with two methods:
  * - Basic auth: login + password
- * - Bearer on basic: login + api token
+ * - Bearer on basic: login + api token.
  */
 class AuthenticateWithTokenOnBasicAuth
 {
@@ -40,6 +40,7 @@ class AuthenticateWithTokenOnBasicAuth
     public function handle($request, Closure $next)
     {
         $this->authenticate($request);
+
         return $next($request);
     }
 
