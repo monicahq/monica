@@ -8,6 +8,7 @@ return [
     'delete' => 'Sil',
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
+    'download' => 'Download',
     'close' => 'Kapat',
     'create' => 'Oluştur',
     'remove' => 'Kaldır',
