@@ -8,6 +8,7 @@ return [
     'delete' => 'Удалить',
     'edit' => 'Редактировать',
     'upload' => 'Закачать',
+    'download' => 'Download',
     'close' => 'Закрыть',
     'create' => 'Create',
     'remove' => 'Убрать',
