@@ -3,8 +3,8 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\Storage;
 use App\Models\ModelBinding as Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Document extends Model
