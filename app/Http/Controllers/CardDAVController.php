@@ -21,7 +21,7 @@ class CardDAVController extends Controller
         // Disable debugger for caldav output
         Debugbar::disable();
 
-        // Initiate custom backends for link between Sabra and Monica
+        // Initiate custom backends for link between Sabre and Monica
         $authBackend = new MonicaSabreBackend();            // Authentication
         $principalBackend = new MonicaPrincipleBackend();   // User rights
         $carddavBackend = new MonicaCardDAVBackend();       // Contacts

@@ -53,7 +53,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
     }
 
     /**
-     * Returns a specific principal, specified by it's path.
+     * Returns a specific principal, specified by its path.
      * The returned structure should be the exact same as from
      * getPrincipalsByPrefix.
      *
