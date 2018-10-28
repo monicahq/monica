@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\Auth\Validate2faController;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -14,17 +16,20 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'PragmaRX\Google2FALaravel\Events\LoginSucceeded' => [
-            'App\Listeners\LoginSucceed2fa',
+        \PragmaRX\Google2FALaravel\Events\LoginSucceeded::class => [
+            \App\Listeners\LoginSucceed2fa::class,
         ],
-        'Illuminate\Auth\Events\Login' => [
-            'App\Listeners\LoginListener',
+        \Illuminate\Auth\Events\Login::class => [
+            \App\Listeners\LoginListener::class,
         ],
-        'Illuminate\Foundation\Events\LocaleUpdated' => [
-            'App\Listeners\LocaleUpdated',
+        \Illuminate\Foundation\Events\LocaleUpdated::class => [
+            \App\Listeners\LocaleUpdated::class,
         ],
-        'Illuminate\Notifications\Events\NotificationSent' => [
-            'App\Listeners\NotificationSent',
+        \Illuminate\Notifications\Events\NotificationSent::class => [
+            \App\Listeners\NotificationSent::class,
+        ],
+        \Illuminate\Auth\Events\Registered::class => [
+            \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
         ],
     ];
 

@@ -519,8 +519,6 @@ class FakeContentTableSeeder extends Seeder
 
     public function confirmUser($user)
     {
-        $user->confirmation_code = null;
-        $user->confirmed = true;
-        $user->save();
+        $user->markEmailAsVerified();
     }
 }
