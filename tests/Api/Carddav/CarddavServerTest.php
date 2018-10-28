@@ -80,12 +80,12 @@ class CarddavServerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks");
+        $response = $this->call('PROPFIND', '/carddav/addressbooks');
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/</d:href>");
+        $response->assertSee('<d:response><d:href>/carddav/addressbooks/</d:href>');
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/</d:href>");
     }
 
