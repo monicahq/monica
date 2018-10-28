@@ -19,8 +19,8 @@ return [
     'people_list_filter_tag' => 'מוצגים כל אנשי הקשר עם התגית',
     'people_list_clear_filter' => 'ניקוי מסנן',
     'people_list_contacts_per_tags' => 'איש קשר אחד|:count אנשי קשר',
-    'people_list_show_dead' => 'Show deceased people (:count)',
-    'people_list_hide_dead' => 'Hide deceased people (:count)',
+    'people_list_show_dead' => 'הצגת מנוחים (:count)',
+    'people_list_hide_dead' => 'הסתרת מנוחים (:count)',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
     'people_search_no_results' => 'לא נמצאי אנשי קשר מתאימים :(',
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
@@ -41,7 +41,7 @@ return [
     'people_add_success' => 'היצירה של :name הושלמה בהצלחה',
     'people_add_gender' => 'מגדר',
     'people_delete_success' => 'איש הקשר נמחק',
-    'people_delete_message' => 'Delete contact',
+    'people_delete_message' => 'מחיקת איש קשר',
     'people_delete_confirmation' => 'למחוק את איש הקשר הזה? מחיקה היא לצמיתות.',
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
@@ -58,14 +58,14 @@ return [
     'section_personal_notes' => 'הערות',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_active_contacts' => 'הרשימה המוצגת היא אנשי קשר בארכיון. עליך לצפות ב<a href=":url">רשימת אנשי הקשר הפעילים</a> במקום.',
+    'list_link_to_archived_contacts' => 'הצגת אנשי קשר בארכיון',
 
     // Header
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
-    'contact_archive' => 'Archive contact',
-    'contact_unarchive' => 'Unarchive contact',
-    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
+    'contact_archive' => 'העברת איש קשר לארכיון',
+    'contact_unarchive' => 'הוצאת איש קשר מהארכיון',
+    'contact_archive_help' => 'אנשי קשר בארכיון יופיעו ברשימת אנשי הקשר אך עדיין יופיעו בתוצאות החיפוש.',
     'call_button' => 'תיעוד שיחה',
     'set_favorite' => 'אנשי קשר מועדפים עולים לראש רשימת אני הקשר',
 
@@ -435,10 +435,10 @@ return [
     'life_event_sentence_first_kiss' => 'נשיקה ראשונה',
 
     // documents
-    'document_list_title' => 'Documents',
-    'document_list_cta' => 'Upload document',
-    'document_list_blank_desc' => 'Here you can store documents related to this person.',
-    'document_upload_zone_cta' => 'Upload a file',
-    'document_upload_zone_progress' => 'Uploading the document...',
-    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+    'document_list_title' => 'מסמכים',
+    'document_list_cta' => 'העלאת מסמך',
+    'document_list_blank_desc' => 'כאן ניתן לאחסן מסמכים שקשורים לאדם זה.',
+    'document_upload_zone_cta' => 'העלאת קובץ',
+    'document_upload_zone_progress' => 'המסמך נשלח…',
+    'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
 ];
