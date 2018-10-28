@@ -8,6 +8,7 @@ return [
     'delete' => '删除',
     'edit' => '编辑',
     'upload' => '上传',
+    'download' => 'Download',
     'close' => '关闭',
     'create' => '创建',
     'remove' => '删除',
