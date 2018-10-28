@@ -194,7 +194,7 @@ return [
     'relationship_form_associate_dropdown' => 'ניתן לחפש ולבחור איש קשר קיים מהרשימה הנגללת שלהלן',
     'relationship_form_associate_dropdown_placeholder' => 'חיפוש ובחירה באיש קשר קיים',
     'relationship_form_also_create_contact' => 'יצירת רשומת איש קשר לאדם זה.',
-    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
+    'relationship_form_add_description' => 'בחירה זו תאפשר לך להתייחס לאדם כמו לכל איש קשר אחר.',
     'relationship_form_add_no_existing_contact' => 'אין לך אנשי קשר שיכולים לקיים איזשהו קשר מול :name כרגע.',
     'relationship_delete_confirmation' => 'למחוק את הקשר הזה? מחיקה היא בלתי הפיכה.',
     'relationship_unlink_confirmation' => 'למחוק את הקשר הזה? האדם לא יימחק – רק הקשר בין השניים.',
