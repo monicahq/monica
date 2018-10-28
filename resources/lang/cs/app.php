@@ -8,6 +8,7 @@ return [
     'delete' => 'Smazat',
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
+    'download' => 'Download',
     'close' => 'Zavřít',
     'create' => 'Create',
     'remove' => 'Odstranit',
