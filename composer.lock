@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1125345fe676f07b68931ad95c87fdfe",
+    "content-hash": "251e221e6b645534037348feff30e0d1",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -178,52 +178,6 @@
                 "transliterator"
             ],
             "time": "2017-04-04T11:38:05+00:00"
-        },
-        {
-            "name": "bestmomo/laravel-email-confirmation",
-            "version": "V1.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bestmomo/laravel-email-confirmation.git",
-                "reference": "ab5ba9c25fe37df8d45d3f71ef7fb09d919eca92"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bestmomo/laravel-email-confirmation/zipball/ab5ba9c25fe37df8d45d3f71ef7fb09d919eca92",
-                "reference": "ab5ba9c25fe37df8d45d3f71ef7fb09d919eca92",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "~5.4",
-                "php": ">=5.6.4"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Bestmomo\\LaravelEmailConfirmation\\ServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Bestmomo\\LaravelEmailConfirmation\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bestmomo",
-                    "email": "grandheretique@free.fr",
-                    "homepage": "http://laravel.sillo.org"
-                }
-            ],
-            "description": "Email address confirmation with Laravel",
-            "homepage": "http://github.com/laravel-email-confirmation",
-            "time": "2018-07-31T16:49:27+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -2446,7 +2400,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "developer"
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -9111,7 +9065,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-10-21T18:01:48+00:00"
+            "time": "2018-10-02T16:19:22+00:00"
         },
         {
             "name": "sabre/event",
