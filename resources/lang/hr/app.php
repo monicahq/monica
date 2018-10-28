@@ -8,6 +8,7 @@ return [
     'delete' => 'Delete',
     'edit' => 'Edit',
     'upload' => 'Upload',
+    'download' => 'Download',
     'close' => 'Close',
     'create' => 'Create',
     'remove' => 'Remove',
