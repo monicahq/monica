@@ -24,6 +24,7 @@ use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
 use PragmaRX\Google2FALaravel\Google2FA;
+use App\Services\Account\DestroyAllDocuments;
 
 class SettingsController
 {
@@ -141,6 +142,10 @@ class SettingsController
         $user = $request->user();
         $account = $user->account;
 
+        (new DestroyAllDocuments)->execute([
+            'account_id' => $account->id,
+        ]);
+
         $tables = DBHelper::getTables();
 
         // Looping over the tables
@@ -177,6 +182,10 @@ class SettingsController
     {
         $user = $request->user();
         $account = $user->account;
+
+        (new DestroyAllDocuments)->execute([
+            'account_id' => $account->id,
+        ]);
 
         $tables = DBHelper::getTables();
 

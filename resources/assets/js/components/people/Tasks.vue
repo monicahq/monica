@@ -8,14 +8,14 @@
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
-        <span class="f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" v-if="tasks.length != 0">
+        <span class="f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]" v-if="tasks.length != 0">
           <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-          <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false" v-if="editMode">{{ $t('app.done') }}</a>
+          <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false" v-else>{{ $t('app.done') }}</a>
         </span>
       </h3>
     </div>
 
-    <div v-bind:class="[editMode ? 'bg-washed-yellow b--yellow ba pa2' : '']">
+    <div :class="[editMode ? 'bg-washed-yellow b--yellow ba pa2' : '']">
 
       <!-- EMPTY STATE -->
       <div v-if="tasks.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3" cy-name="task-blank-state">
@@ -25,7 +25,7 @@
 
       <!-- LIST OF IN PROGRESS TASKS -->
       <ul>
-        <li v-for="task in inProgress(tasks)" :cy-name="'task-item-' + task.id">
+        <li v-for="task in inProgress(tasks)" :cy-name="'task-item-' + task.id" :key="task.id">
           <input type="checkbox" id="checkbox" v-model="task.completed" @click="toggleComplete(task)" class="mr1">
           {{ task.title }} <span class="silver ml3" v-if="task.description">{{ task.description }}</span>
 
@@ -85,7 +85,7 @@
 
       <!-- LIST OF COMPLETED TASKS -->
       <ul>
-        <li v-for="task in completed(tasks)" class="f6" :cy-name="'task-item-completed-' + task.id">
+        <li v-for="task in completed(tasks)" class="f6" :cy-name="'task-item-completed-' + task.id" :key="task.id">
           <input type="checkbox" id="checkbox" v-model="task.completed" @click="toggleComplete(task)" class="mr1">
           <span class="light-silver mr1">{{ task.completed_at }}</span> <span class="moon-gray">{{ task.title }}</span> <span class="silver ml3" v-if="task.description">{{ task.description }}</span>
 

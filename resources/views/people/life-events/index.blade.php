@@ -2,9 +2,9 @@
     <div class="br2 bg-white mb4">
         <life-event-list
             hash="{{ $contact->hashID() }}"
-            v-bind:months="{{ $months }}"
-            v-bind:days="{{ $days }}"
-            v-bind:years="{{ $years }}"
+            :months="{{ $months }}"
+            :days="{{ $days }}"
+            :years="{{ $years }}"
             contact-name="{{ $contact->first_name }}">
         </life-event-list>
     </div>

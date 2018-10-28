@@ -13,7 +13,7 @@
     </div>
 
     <sweet-modal id="enableModal" ref="enableModal" overlay-theme="dark" :title="$t('settings.2fa_otp_title')">
-      <form v-on:submit.prevent="register()">
+      <form @submit.prevent="register()">
         <p>{{ $t('settings.2fa_enable_description') }}</p>
 
         <div class="panel-body">
@@ -46,7 +46,7 @@
     </sweet-modal>
 
     <sweet-modal id="disableModal" ref="disableModal" overlay-theme="dark" :title="$t('settings.2fa_otp_title')">
-      <form v-on:submit.prevent="register()">
+      <form @submit.prevent="register()">
         <p>{{ $t('settings.2fa_disable_description') }}</p>
 
         <div class="form-group">

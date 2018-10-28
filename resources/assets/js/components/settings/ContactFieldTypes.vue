@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_contact_field_type_title') }}
-      <a class="btn nt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" @click="add">{{ $t('settings.personalization_contact_field_type_add') }}</a>
+      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" @click="add">{{ $t('settings.personalization_contact_field_type_add') }}</a>
     </h3>
     <p>{{ $t('settings.personalization_contact_field_type_description') }}</p>
 
@@ -36,7 +36,7 @@
             {{ $t('settings.personalization_contact_field_type_table_protocol') }}
           </div>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
@@ -47,7 +47,7 @@
         <div class="dtc">
           <div class="pa2">
             <i :class="contactFieldType.fontawesome_icon" class="pr2" v-if="contactFieldType.fontawesome_icon"></i>
-            <i class="pr2 fa fa-address-card-o" v-if="!contactFieldType.fontawesome_icon"></i>
+            <i class="pr2 fa fa-address-card-o" v-else></i>
             {{ contactFieldType.name }}
           </div>
         </div>
@@ -56,7 +56,7 @@
             {{ contactFieldType.protocol }}
           </code>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]" >
           <div class="pa2">
             <i class="fa fa-pencil-square-o pointer pr2" @click="edit(contactFieldType)"></i>
             <i class="fa fa-trash-o pointer" @click="showDelete(contactFieldType)" v-if="contactFieldType.delible"></i>
@@ -72,7 +72,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_title') }}</h5>
-            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
+            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -88,7 +88,7 @@
               </ul>
             </div>
 
-            <form class="form-horizontal" role="form" v-on:submit.prevent="store">
+            <form class="form-horizontal" role="form" @submit.prevent="store">
               <div class="form-group">
                 <div class="form-group">
                   <label for="name">{{ $t('settings.personalization_contact_field_type_modal_name') }}</label>
@@ -123,7 +123,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_edit_title') }}</h5>
-            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
+            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -139,7 +139,7 @@
               </ul>
             </div>
 
-            <form class="form-horizontal" role="form" v-on:submit.prevent="update">
+            <form class="form-horizontal" role="form" @submit.prevent="update">
               <div class="form-group">
                 <div class="form-group">
                   <label for="name">{{ $t('settings.personalization_contact_field_type_modal_name') }}</label>
@@ -174,7 +174,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('settings.personalization_contact_field_type_modal_delete_title') }}</h5>
-            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
+            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
