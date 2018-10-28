@@ -37,8 +37,13 @@ class CardDAVController extends Controller
         $server->debugExceptions = true;
 
         // Modify Laravel request to include trailing slash. Laravel removes it by default, Sabre needs it.
-        $server->httpRequest->setUrl(str_replace('/carddav', '/carddav/', $server->httpRequest->getUrl()));
+        $server->httpRequest->setUrl(str_replace('/carddav', '/carddav/', $request->getRequestUri()));
         $server->httpRequest->setBaseUrl('/carddav/');
+
+        // Testing needs method verb to be set manually
+        if (App::environment('testing')) {
+            $server->httpRequest->setMethod($request->method());
+        }
 
         // Add required plugins
         $server->addPlugin(new \Sabre\DAV\Auth\Plugin($authBackend, 'SabreDAV'));
