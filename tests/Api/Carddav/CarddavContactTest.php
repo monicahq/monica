@@ -6,13 +6,13 @@ use Tests\ApiTestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+/**
+ * @runTestsInSeparateProcesses
+ */
 class CarddavContactTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    /**
-     * @runInSeparateProcess
-     */
     public function test_carddav_get_one_contact()
     {
         $user = $this->signin();
