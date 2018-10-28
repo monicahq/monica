@@ -63,7 +63,7 @@
                           this.isFavorite = response.data.is_starred
 
                           this.$notify({
-                              group: 'main',
+                              group: 'favorite',
                               title: this.$t('app.default_save_success'),
                               text: '',
                               type: 'success'

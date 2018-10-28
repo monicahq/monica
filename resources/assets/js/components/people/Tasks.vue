@@ -25,7 +25,7 @@
 
       <!-- LIST OF IN PROGRESS TASKS -->
       <ul>
-        <li v-for="task in inProgress(tasks)" :cy-name="'task-item-' + task.id">
+        <li v-for="task in inProgress(tasks)" :cy-name="'task-item-' + task.id" :key="task.id">
           <input type="checkbox" id="checkbox" v-model="task.completed" @click="toggleComplete(task)" class="mr1">
           {{ task.title }} <span class="silver ml3" v-if="task.description">{{ task.description }}</span>
 
@@ -85,7 +85,7 @@
 
       <!-- LIST OF COMPLETED TASKS -->
       <ul>
-        <li v-for="task in completed(tasks)" class="f6" :cy-name="'task-item-completed-' + task.id">
+        <li v-for="task in completed(tasks)" class="f6" :cy-name="'task-item-completed-' + task.id" :key="task.id">
           <input type="checkbox" id="checkbox" v-model="task.completed" @click="toggleComplete(task)" class="mr1">
           <span class="light-silver mr1">{{ task.completed_at }}</span> <span class="moon-gray">{{ task.title }}</span> <span class="silver ml3" v-if="task.description">{{ task.description }}</span>
 

@@ -54,6 +54,7 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
         Route::get('/people/add', 'ContactsController@create')->name('create');
         Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
         Route::post('/people', 'ContactsController@store')->name('store');
+        Route::get('/people/archived', 'ContactsController@archived')->name('archived');
 
         // Dashboard
         Route::get('/people/{contact}', 'ContactsController@show')->name('show');
@@ -191,6 +192,13 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
             Route::delete('/people/{contact}/conversation/{conversation}', 'Contacts\\ConversationsController@destroy')->name('destroy');
         });
 
+        // Documents
+        Route::name('document.')->group(function () {
+            Route::get('/people/{contact}/documents', 'Contacts\\DocumentsController@index')->name('index');
+            Route::post('/people/{contact}/document/store', 'Contacts\\DocumentsController@store')->name('store');
+            Route::delete('/people/{contact}/documents/{document}', 'Contacts\\DocumentsController@destroy')->name('destroy');
+        });
+
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('search');
 
@@ -199,6 +207,9 @@ Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
 
         // Set favorite
         Route::post('/people/{contact}/favorite', 'ContactsController@favorite');
+
+        // Archive/Unarchive
+        Route::put('/people/{contact}/archive', 'ContactsController@archive');
 
         // Activities
         Route::get('/people/{contact}/activities', 'Contacts\\ActivitiesController@index')->name('activities.index');

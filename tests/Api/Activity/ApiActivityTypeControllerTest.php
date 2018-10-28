@@ -16,8 +16,16 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         'id',
         'object',
         'name',
+        'location_type',
         'activity_type_category' => [
             'id',
+            'object',
+            'name',
+            'account' => [
+                'id',
+            ],
+            'created_at',
+            'updated_at',
         ],
         'account' => [
             'id',

@@ -110,6 +110,10 @@ Vue.component(
     'contact-favorite',
     require('./components/people/SetFavorite.vue')
 );
+Vue.component(
+    'contact-archive',
+    require('./components/people/Archive.vue')
+);
 
 Vue.component(
     'contact-address',
@@ -159,6 +163,11 @@ Vue.component(
 Vue.component(
     'message',
     require('./components/people/conversation/Message.vue')
+);
+
+Vue.component(
+    'document-list',
+    require('./components/people/document/DocumentList.vue')
 );
 
 Vue.component(

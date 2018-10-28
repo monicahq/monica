@@ -46,6 +46,7 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
+        'description',
         'job',
     ];
 
@@ -115,6 +116,7 @@ class Contact extends Model
         'is_dead' => 'boolean',
         'has_avatar' => 'boolean',
         'is_starred' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -356,6 +358,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Document records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
      * Get the Life event records associated with the contact.
      *
      * @return HasMany
@@ -411,6 +423,28 @@ class Contact extends Model
     public function scopeReal($query)
     {
         return $query->where('is_partial', 0);
+    }
+
+    /**
+     * Scope a query to only include contacts who are active.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
+
+    /**
+     * Scope a query to only include contacts who are not active.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active', 0);
     }
 
     /**

@@ -27,14 +27,23 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        if ($account->contacts()->count() === 0) {
+        if ($account->contacts()->real()->active()->count() === 0) {
             return view('dashboard.blank');
         }
 
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
-        $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
+        $lastUpdatedContacts = $account->contacts()
+            ->real()
+            ->active()
+            ->latest('updated_at')
+            ->limit(10)
+            ->get();
         foreach ($lastUpdatedContacts as $contact) {
+            if ($contact->is_dead) {
+                continue;
+            }
+
             $data = [
                 'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
@@ -60,7 +69,7 @@ class DashboardController extends Controller
 
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts()->real()->count(),
+            'number_of_contacts' => $account->contacts()->real()->active()->count(),
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,
             'number_of_activities' => $account->activities_count,

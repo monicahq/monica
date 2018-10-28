@@ -20,6 +20,7 @@ use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,7 @@ use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 
@@ -378,6 +380,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Document records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
      * Get the Life Event Category records associated with the account.
      *
      * @return HasMany
@@ -688,29 +700,6 @@ class Account extends Model
     }
 
     /**
-     * Populate the account modules table based on the default ones.
-     *
-     * @param  bool $ignoreTableAlreadyMigrated
-     * @return void
-     */
-    public function populateModulesTable($ignoreTableAlreadyMigrated = false)
-    {
-        $defaultModules = DB::table('default_contact_modules')->get();
-
-        foreach ($defaultModules as $defaultModule) {
-            if (! $ignoreTableAlreadyMigrated || $defaultModule->migrated == 0) {
-                Module::create([
-                    'account_id' => $this->id,
-                    'key' => $defaultModule->key,
-                    'translation_key' => $defaultModule->translation_key,
-                    'delible' => $defaultModule->delible,
-                    'active' => $defaultModule->active,
-                ]);
-            }
-        }
-    }
-
-    /**
      * Get the reminders for the month given in parameter.
      * - 0 means current month
      * - 1 means month+1
@@ -836,11 +825,15 @@ class Account extends Model
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();
         $this->populateRelationshipTypesTable();
-        $this->populateModulesTable();
         $this->populateChangelogsTable();
         $this->populateActivityTypeTable();
 
         (new PopulateLifeEventsTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
+
+        (new PopulateModulesTable)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);

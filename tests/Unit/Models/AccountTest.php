@@ -13,6 +13,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Account\Invitation;
@@ -175,6 +176,16 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->lifeEvents()->exists());
+    }
+
+    public function test_it_has_many_documents()
+    {
+        $account = factory(Account::class)->create([]);
+        $document = factory(Document::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->documents()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
@@ -701,36 +712,6 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
-    {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'work_information',
-        ]);
-
-        $account->populateModulesTable();
-
-        $this->assertDatabaseHas('modules', [
-            'key' => 'work_information',
-        ]);
-    }
-
-    public function test_it_skips_default_account_modules_table_for_types_already_migrated()
-    {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'awesome',
-            'migrated' => 1,
-        ]);
-
-        $account->populateModulesTable(true);
-
-        $this->assertDatabaseMissing('modules', [
-            'account_id' => $account->id,
-            'key' => 'awesome',
-        ]);
-    }
-
     public function test_it_adds_an_unread_changelog_entry_to_all_users()
     {
         $account = factory(Account::class)->create();
@@ -769,6 +750,18 @@ class AccountTest extends FeatureTestCase
             'user_id' => $user->id,
             'changelog_id' => $changelog->id,
             'read' => 0,
+        ]);
+    }
+
+    public function test_it_create_default_account()
+    {
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'account_id' => $account->id,
         ]);
     }
 
