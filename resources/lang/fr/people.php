@@ -433,4 +433,12 @@ return [
     'life_event_sentence_changed_beliefs' => 'A changé de croyances',
     'life_event_sentence_first_word' => 'A parlé pour la première fois',
     'life_event_sentence_first_kiss' => 'A eu son premier baiser',
+
+    // documents
+    'document_list_title' => 'Documents',
+    'document_list_cta' => 'Upload document',
+    'document_list_blank_desc' => 'Here you can store documents related to this person.',
+    'document_upload_zone_cta' => 'Upload a file',
+    'document_upload_zone_progress' => 'Uploading the document...',
+    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 ];
