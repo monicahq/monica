@@ -67,7 +67,7 @@ class Kernel extends HttpKernel
         'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
         'sentry.context' => \App\Http\Middleware\SentryContext::class,
-        'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
     ];
 
