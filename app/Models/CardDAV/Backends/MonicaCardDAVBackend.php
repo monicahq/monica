@@ -3,8 +3,8 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use Sabre\VObject\Component\VCard;
 use App\Models\Contact\Contact;
+use Sabre\VObject\Component\VCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
@@ -143,10 +143,9 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
                 case 'Facebook':
                     $vcard->add('socialProfile', $contactField->data, ['type' => 'facebook']);
                     break;
+                // ... Twitter, Whatsapp, Telegram, other
                 default:
                     break;
-
-                // TODO: Twitter, Whatsapp, Telegram, other
             }
         }
 
