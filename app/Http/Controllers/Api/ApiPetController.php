@@ -13,14 +13,22 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ApiPetController extends ApiController
 {
     /**
-     * Account ID column name.
+     * Get the list of pet.
+     *
+     * @return \Illuminate\Http\Response
      */
-    const ACCOUNT_ID = 'account_id';
+    public function index(Request $request)
+    {
+        try {
+            $pets = Pet::where('account_id', auth()->user()->account_id)
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
-    /**
-     * Contact ID column name.
-     */
-    const CONTACT_ID = 'contact_id';
+        return PetResource::collection($pets);
+    }
 
     /**
      * Get the detail of a given pet.
@@ -30,7 +38,7 @@ class ApiPetController extends ApiController
     public function show(Request $request, $id)
     {
         try {
-            $pet = Pet::where(static::ACCOUNT_ID, auth()->user()->account_id)
+            $pet = Pet::where('account_id', auth()->user()->account_id)
                 ->where('id', $id)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -47,23 +55,15 @@ class ApiPetController extends ApiController
      */
     public function store(Request $request)
     {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'pet_category_id' => 'integer|required|exists:pet_categories,id',
-            static::CONTACT_ID => 'required|integer|exists:contacts,id',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
             $pet = Pet::create(
-              $request->all()
-              + [
-                static::ACCOUNT_ID => auth()->user()->account_id,
-              ]
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
@@ -81,22 +81,16 @@ class ApiPetController extends ApiController
     public function update(Request $request, $petId)
     {
         try {
-            $pet = Pet::where(static::ACCOUNT_ID, auth()->user()->account_id)
+            $pet = Pet::where('account_id', auth()->user()->account_id)
                 ->where('id', $petId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'pet_category_id' => 'sometimes|integer|required|exists:pet_categories,id',
-            static::CONTACT_ID => 'sometimes|required|integer|exists:contacts,id',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -109,6 +103,36 @@ class ApiPetController extends ApiController
     }
 
     /**
+     * Validate the request for update.
+     *
+     * @param  Request $request
+     * @return mixed
+     */
+    private function validateUpdate(Request $request)
+    {
+        // Validates basic fields to create the entry
+        $validator = Validator::make($request->all(), [
+            'pet_category_id' => 'integer|required|exists:pet_categories,id',
+            'contact_id' => 'required|integer',
+            'name' => 'max:255',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->respondValidatorFailed($validator);
+        }
+
+        try {
+            Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->input('contact_id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        return true;
+    }
+
+    /**
      * Delete a pet.
      * @param  Request $request
      * @param  int $petId
@@ -117,7 +141,7 @@ class ApiPetController extends ApiController
     public function destroy(Request $request, $petId)
     {
         try {
-            $pet = Pet::where(static::ACCOUNT_ID, auth()->user()->account_id)
+            $pet = Pet::where('account_id', auth()->user()->account_id)
                 ->where('id', $petId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -135,10 +159,10 @@ class ApiPetController extends ApiController
      * @param  int $contactId
      * @return \Illuminate\Http\Response
      */
-    public function listContactPets(Request $request, $contactId)
+    public function pets(Request $request, $contactId)
     {
         try {
-            $contact = Contact::where(static::ACCOUNT_ID, auth()->user()->account_id)
+            $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->where('id', $contactId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
@@ -149,32 +173,5 @@ class ApiPetController extends ApiController
                 ->paginate($this->getLimitPerPage());
 
         return PetResource::collection($pets);
-    }
-
-    /**
-     * Store the pet, associated to a specific contact.
-     * @param  Request $request
-     * @param  int $contactId
-     * @return \Illuminate\Http\Response
-     */
-    public function storeContactPet(Request $request, $contactId)
-    {
-        $request->request->add([static::CONTACT_ID => $contactId]);
-
-        return $this->store($request);
-    }
-
-    /**
-     * Update the pet, associated to a specific contact.
-     * @param  Request $request
-     * @param  int $contactId
-     * @param  int $petId
-     * @return \Illuminate\Http\Response
-     */
-    public function moveContactPet(Request $request, $contactId, $petId)
-    {
-        $request->request->add([static::CONTACT_ID => $contactId]);
-
-        return $this->update($request, $petId);
     }
 }

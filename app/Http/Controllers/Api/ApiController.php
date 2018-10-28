@@ -263,11 +263,11 @@ class ApiController extends Controller
      * Sends a response invalid query to the request.
      * @param string $message
      */
-    public function respondInvalidQuery($message = 'Invalid query')
+    public function respondInvalidQuery($message = null)
     {
         return $this->setHTTPStatusCode(500)
             ->setErrorCode(40)
-            ->respondWithError($message);
+            ->respondWithError($message ?? config('api.error_codes.40'));
     }
 
     /**
@@ -275,11 +275,33 @@ class ApiController extends Controller
      * creating an object.
      * @param string $message
      */
-    public function respondNotTheRightParameters($message = 'Too many parameters')
+    public function respondNotTheRightParameters($message = null)
     {
         return $this->setHTTPStatusCode(500)
                     ->setErrorCode(33)
-                    ->respondWithError($message);
+                    ->respondWithError($message ?? config('api.error_codes.33'));
+    }
+
+    /**
+     * Sends an error when the query contains invalid parameters.
+     * @param string $message
+     */
+    public function respondInvalidParameters($message = null)
+    {
+        return $this->setHTTPStatusCode(400)
+                    ->setErrorCode(41)
+                    ->respondWithError($message ?? config('api.error_codes.41'));
+    }
+
+    /**
+     * Sends an error when the validator failed.
+     * @param \Illuminate\Contracts\Validation\Validator $validator
+     */
+    public function respondValidatorFailed($validator)
+    {
+        return $this->setHTTPStatusCode(400)
+                    ->setErrorCode(32)
+                    ->respondWithError($validator->errors()->all());
     }
 
     /**

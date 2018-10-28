@@ -44,10 +44,8 @@ class ApiContactFieldController extends ApiController
 
         try {
             $contactField = ContactField::create(
-              $request->all()
-              + [
-                'account_id' => auth()->user()->account_id,
-              ]
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
@@ -95,8 +93,7 @@ class ApiContactFieldController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         try {

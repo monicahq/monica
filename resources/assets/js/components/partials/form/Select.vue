@@ -12,7 +12,7 @@ select:focus {
 
 <template>
   <div>
-    <label :for="id" class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</label>
+    <label :for="id" class="mb2" :class="{ b: required }" v-if="title">{{ title }}</label>
     <select
         :value="selectedOption"
         @input="event => { $emit('input', event.target.value) }"

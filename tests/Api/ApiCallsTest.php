@@ -101,12 +101,7 @@ class ApiCallsTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/contacts/0/calls');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_calls_get_one()
@@ -146,12 +141,7 @@ class ApiCallsTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/calls/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_calls_create()
@@ -198,11 +188,9 @@ class ApiCallsTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The content field is required.',
+            'The called at field is required.',
         ]);
     }
 
@@ -221,12 +209,7 @@ class ApiCallsTest extends ApiTestCase
             'called_at' => '2018-05-01',
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_calls_update()
@@ -273,12 +256,7 @@ class ApiCallsTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/calls/0', []);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_calls_update_error_bad_account()
@@ -300,12 +278,7 @@ class ApiCallsTest extends ApiTestCase
             'called_at' => '2018-05-01',
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_calls_delete()
@@ -340,11 +313,6 @@ class ApiCallsTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/calls/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 }

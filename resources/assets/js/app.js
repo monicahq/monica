@@ -166,6 +166,11 @@ Vue.component(
 );
 
 Vue.component(
+    'document-list',
+    require('./components/people/document/DocumentList.vue')
+);
+
+Vue.component(
     'create-life-event',
     require('./components/people/lifeevent/CreateLifeEvent.vue')
 );

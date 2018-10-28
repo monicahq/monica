@@ -52,7 +52,7 @@
       </div>
     </template>
 
-    <template v-if="!journalEntry.show_calendar">
+    <template v-else>
       &nbsp;
     </template>
   </div>

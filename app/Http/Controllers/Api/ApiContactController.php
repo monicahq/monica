@@ -114,6 +114,7 @@ class ApiContactController extends ApiController
                     'deceased_date',
                 ]) + [
                 'avatar_external_url' => $request->get('avatar_url'),
+                'account_id' => auth()->user()->account_id,
             ]);
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
@@ -128,7 +129,6 @@ class ApiContactController extends ApiController
             $contact->first_met_additional_info = $request->get('first_met_information');
         }
 
-        $contact->account_id = auth()->user()->account_id;
         $contact->setAvatarColor();
         $contact->save();
 
@@ -313,8 +313,7 @@ class ApiContactController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         // Make sure the `first_met_through_contact_id` is a contact id that the

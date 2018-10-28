@@ -2,6 +2,7 @@
 
 namespace Tests\Api;
 
+use Carbon\Carbon;
 use Tests\ApiTestCase;
 use App\Models\Contact\Note;
 use App\Models\Account\Account;
@@ -102,12 +103,7 @@ class ApiNotesTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/contacts/0/notes');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_get_one()
@@ -147,12 +143,7 @@ class ApiNotesTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/notes/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_create()
@@ -165,7 +156,7 @@ class ApiNotesTest extends ApiTestCase
         $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
             'body' => 'the body of the note',
-            'is_favorited' => 0,
+            'is_favorited' => false,
         ]);
 
         $response->assertStatus(201);
@@ -190,6 +181,45 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
+    public function test_notes_create_favorite()
+    {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('POST', '/api/notes', [
+            'contact_id' => $contact->id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'data' => $this->jsonNote,
+        ]);
+        $note_id = $response->json('data.id');
+        $response->assertJsonFragment([
+            'object' => 'note',
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01T07:00:00Z',
+        ]);
+
+        $this->assertGreaterThan(0, $note_id);
+        $this->assertDatabaseHas('notes', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01',
+        ]);
+    }
+
     public function test_notes_create_error()
     {
         $user = $this->signin();
@@ -201,11 +231,8 @@ class ApiNotesTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The body field is required.',
         ]);
     }
 
@@ -221,15 +248,10 @@ class ApiNotesTest extends ApiTestCase
         $response = $this->json('POST', '/api/notes', [
             'contact_id' => $contact->id,
             'body' => 'the body of the note',
-            'is_favorited' => 0,
+            'is_favorited' => false,
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_update()
@@ -272,18 +294,57 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
+    public function test_notes_update_favorite()
+    {
+        Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $note = factory(Note::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/notes/'.$note->id, [
+            'contact_id' => $contact->id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonNote,
+        ]);
+        $note_id = $response->json('data.id');
+        $this->assertEquals($note->id, $note_id);
+        $response->assertJsonFragment([
+            'object' => 'note',
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01T07:00:00Z',
+        ]);
+
+        $this->assertGreaterThan(0, $note_id);
+        $this->assertDatabaseHas('notes', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $note_id,
+            'body' => 'the body of the note',
+            'is_favorited' => true,
+            'favorited_at' => '2018-01-01',
+        ]);
+    }
+
     public function test_notes_update_error()
     {
         $user = $this->signin();
 
         $response = $this->json('PUT', '/api/notes/0', []);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_update_error_bad_account()
@@ -305,12 +366,7 @@ class ApiNotesTest extends ApiTestCase
             'is_favorited' => false,
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_notes_delete()
@@ -345,11 +401,6 @@ class ApiNotesTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/notes/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 }

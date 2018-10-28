@@ -39,6 +39,7 @@
         "pragmarx/google2fa-laravel": "^0.2",
         "pragmarx/recovery": "^0.1",
         "predis/predis": "^1.1",
+        "ralouphie/mimey": "^2.0",
         "sabre/dav": "~3.2.0",
         "sentry/sentry-laravel": "^0.10",
         "stevebauman/location": "^3.0",

@@ -54,10 +54,10 @@ class PopulateModulesTableTest extends TestCase
         $populateModulesService = new PopulateModulesTable;
         $populateModulesService->execute($request);
 
-        // by defauult there is 17 columns in the default table.
-        // therefore, we need 17 entries for the new account.
+        // by defauult there is 18 columns in the default table.
+        // therefore, we need 18 entries for the new account.
         $this->assertEquals(
-            17,
+            18,
             DB::table('modules')->where('account_id', $account->id)->get()->count()
         );
 
@@ -90,10 +90,10 @@ class PopulateModulesTableTest extends TestCase
         $populateModulesService = new PopulateModulesTable;
         $populateModulesService->execute($request);
 
-        // by defauult there is 17 columns in the default table.
-        // therefore, we need 16 entries for the new account.
+        // by defauult there is 18 columns in the default table.
+        // therefore, we need 17 entries for the new account.
         $this->assertEquals(
-            16,
+            17,
             DB::table('modules')->where('account_id', $account->id)->get()->count()
         );
     }
