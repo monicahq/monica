@@ -21,7 +21,7 @@ class DestroyAllDocumentsTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         for ($i = 0; $i < 10; $i++) {
-            $document = $this->uploadDocument($contact);
+            $this->uploadDocument($contact);
         }
 
         $request = [
