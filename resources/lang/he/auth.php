@@ -66,6 +66,11 @@ return [
     'register_policy' => 'הרשמה מאמתת שקראת והסכמת ל<a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> ול<a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> שלנו.',
     'register_invitation_email' => 'מטעמי אבטחה, נא לציין את כתובת הדוא״ל של מי שהזמין אותך להצטרף לחשבון הזה. המידע הזה מופיע בהודעת ההזמנה.',
 
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+
     'confirmation_again' => 'כדי לשנות את כתובת הדוא״ל שלך נא <a href=":url" class="alert-link">ללחוץ כאן</a>.',
     'email_change_current_email' => 'כתובת הדוא״ל הנוכחית:',
     'email_change_title' => 'החלפת כתובת הדוא״ל שלך',
