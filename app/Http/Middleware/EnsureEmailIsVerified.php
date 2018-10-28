@@ -3,8 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Middleware\EnsureEmailIsVerified as EnsureEmailIsVerifiedBase;
 
 class EnsureEmailIsVerified extends EnsureEmailIsVerifiedBase

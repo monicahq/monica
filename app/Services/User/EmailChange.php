@@ -4,7 +4,6 @@ namespace App\Services\User;
 
 use App\Models\User\User;
 use App\Services\BaseService;
-use App\Notifications\ConfirmEmail;
 use App\Exceptions\MissingParameterException;
 
 class EmailChange extends BaseService
