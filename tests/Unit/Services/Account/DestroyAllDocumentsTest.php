@@ -32,7 +32,7 @@ class DestroyAllDocumentsTest extends TestCase
         $bool = $destroyAllDocumentsService->execute($request);
 
         $this->assertDatabaseMissing('documents', [
-            'id' => $document->id,
+            'account_id' => $contact->account->id,
         ]);
 
         Storage::disk('documents')->assertMissing('document.pdf');
