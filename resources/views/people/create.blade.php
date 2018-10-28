@@ -30,28 +30,28 @@
 
         <div class="mb3">
           <form-input
-            v-bind:id="'first_name'"
-            v-bind:input-type="'text'"
-            v-bind:required="true"
-            v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+            :id="'first_name'"
+            :input-type="'text'"
+            :required="true"
+            :title="'{{ trans('people.people_add_firstname') }}'">
           </form-input>
         </div>
 
         <div class="mb3">
           <form-input
-            v-bind:id="'last_name'"
-            v-bind:input-type="'text'"
-            v-bind:required="false"
-            v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+            :id="'last_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_lastname') }}'">
           </form-input>
         </div>
 
         <div class="mb3 mb0-ns">
           <form-input
-            v-bind:id="'nickname'"
-            v-bind:input-type="'text'"
-            v-bind:required="false"
-            v-bind:title="'{{ trans('people.people_add_nickname') }}'">
+            :id="'nickname'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>
         </div>
 
@@ -59,28 +59,28 @@
 
         <div class="mb3">
           <form-input
-            v-bind:id="'last_name'"
-            v-bind:input-type="'text'"
-            v-bind:required="false"
-            v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+            :id="'last_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_lastname') }}'">
           </form-input>
         </div>
 
         <div class="mb3">
           <form-input
-            v-bind:id="'first_name'"
-            v-bind:input-type="'text'"
-            v-bind:required="true"
-            v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+            :id="'first_name'"
+            :input-type="'text'"
+            :required="true"
+            :title="'{{ trans('people.people_add_firstname') }}'">
           </form-input>
         </div>
 
         <div class="mb3 mb0-ns">
           <form-input
-            v-bind:id="'nickname'"
-            v-bind:input-type="'text'"
-            v-bind:required="false"
-            v-bind:title="'{{ trans('people.people_add_nickname') }}'">
+            :id="'nickname'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_nickname') }}'">
           </form-input>
         </div>
 
@@ -90,9 +90,9 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $genders }}"
-          v-bind:required="true"
-          v-bind:title="'{{ trans('people.people_add_gender') }}'"
-          v-bind:id="'gender'">
+          :required="true"
+          :title="'{{ trans('people.people_add_gender') }}'"
+          :id="'gender'">
         </form-select>
       </div>
 

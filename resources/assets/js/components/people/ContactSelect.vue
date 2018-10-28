@@ -1,8 +1,8 @@
 <template>
     <div>
-        <p class="mb2" v-bind:class="{ b: required }" v-if="title">{{ title }}</p>
+        <p class="mb2" :class="{ b: required }" v-if="title">{{ title }}</p>
         <input type="hidden" :name="name" :value="selected ? selected.id : ''">
-        <vSelect placeholder="search" v-bind:label="'name'" @search="search" :options="computedOption" v-model="selected"></vSelect>
+        <vSelect placeholder="search" :label="'name'" @search="search" :options="computedOption" v-model="selected"></vSelect>
     </div>
 </template>
 
