@@ -100,6 +100,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Life events
     Route::apiResource('lifeevents', 'Api\\Contact\\ApiLifeEventController');
 
+    // Documents
+    Route::apiResource('documents', 'Api\\Contact\\ApiDocumentController', ['only' => [
+      'index', 'show',
+    ]]);
+    Route::get('/contacts/{contact}/documents', 'Api\\Contact\\ApiDocumentController@documents');
+
     /*
      * SETTINGS
      */
