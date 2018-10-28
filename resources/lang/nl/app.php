@@ -8,6 +8,7 @@ return [
     'delete' => 'Verwijderen',
     'edit' => 'Bewerken',
     'upload' => 'Uploaden',
+    'download' => 'Download',
     'close' => 'Sluiten',
     'create' => 'Maak',
     'remove' => 'Verwijderen',
