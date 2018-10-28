@@ -96,7 +96,7 @@ $db = [
             'password' => env('DB_TEST_PASSWORD'),
             'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
             'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
-            'prefix' => '',
+            'prefix' => env('DB_TEST_PREFIX', ''),
             'strict' => false,
         ],
 
