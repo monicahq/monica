@@ -19,7 +19,7 @@
 
       <!-- LIST OF NORMAL NOTES -->
       <ul>
-        <li v-for="note in notes" class="note" v-bind:key="note.id">
+        <li v-for="note in notes" class="note" :key="note.id">
           <div class="ba br2 b--black-10 br--top w-100 mb2" v-show="!note.edit" :cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">
               <span v-html="note.parsed_body"></span>
@@ -27,7 +27,7 @@
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
                 <div class="f5 di mr1">
-                  <i @click="toggleFavorite(note)" class="pointer" v-bind:class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" v-tooltip.top="$t('people.notes_favorite')"></i>
+                  <i @click="toggleFavorite(note)" class="pointer" :class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" v-tooltip.top="$t('people.notes_favorite')"></i>
                 </div>
                 {{ note.created_at_short }}
               </div>
@@ -56,7 +56,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">{{ $t('people.notes_delete_title') }}</h5>
-            <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
+            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
