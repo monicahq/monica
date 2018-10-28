@@ -12,7 +12,7 @@
             </div>
             @foreach($lastUpdatedContacts as $contact)
             <div class="pr2 pointer avatars">
-              <avatar v-bind:contact="{{ $contact }}" v-bind:clickable="true"></avatar>
+              <avatar :contact="{{ $contact }}" :clickable="true"></avatar>
             </div>
             @endforeach
           </div>
@@ -68,7 +68,7 @@
             </div>
           </div>
 
-          <dashboard-log v-bind:default-active-tab="'{!! auth()->user()->dashboard_active_tab !!}'"></dashboard-log>
+          <dashboard-log :default-active-tab="'{!! auth()->user()->dashboard_active_tab !!}'"></dashboard-log>
         </div>
       </div>
     </section>

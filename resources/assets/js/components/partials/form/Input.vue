@@ -11,7 +11,7 @@ input:focus {
 
 <template>
   <div>
-    <p class="mb2" v-bind:class="{ b: required }">{{ title }}</p>
+    <p class="mb2" :class="{ b: required }">{{ title }}</p>
     <input :type="inputType"
             :value="value"
             @input="updateInput($event.target.value)"

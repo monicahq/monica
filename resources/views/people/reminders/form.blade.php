@@ -31,7 +31,7 @@
                 <label class="form-check-label" for="frequency_type_once">
                     <input type="radio" id="frequency_type_once" class="form-check-input" name="frequency_type" value="once"
                            v-model="reminders_frequency"
-                           v-bind:value="'once'"
+                           :value="'once'"
                            :checked="'once'"
                     >
                     {{ trans('people.reminders_add_once') }}
@@ -43,7 +43,7 @@
                 <label class="form-check-label">
                     <input type="radio" class="form-check-input" name="reminderRecurringFrequency" value="recurring"
                            v-model="reminders_frequency"
-                           v-bind:value="'recurrent'"
+                           :value="'recurrent'"
                            :checked="'recurrent'"
                     >
 

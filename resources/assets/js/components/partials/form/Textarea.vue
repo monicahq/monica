@@ -11,7 +11,7 @@ textarea:focus {
 
 <template>
   <div>
-    <p class="mb2" v-bind:class="{ b: required }" v-if="! noLabel">{{ label }}</p>
+    <p class="mb2" :class="{ b: required }" v-if="! noLabel">{{ label }}</p>
     <textarea
             v-model="buffer"
             @input="$emit('contentChange', buffer)"

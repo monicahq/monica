@@ -17,7 +17,7 @@
   <div>
 
     <!-- Left columns: showing calendar -->
-    <journal-calendar v-bind:journal-entry="journalEntry"></journal-calendar>
+    <journal-calendar :journal-entry="journalEntry"></journal-calendar>
 
     <!-- Right column: showing logs -->
     <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-content">
@@ -42,7 +42,7 @@
 
           <!-- Comment -->
           <template v-if="activity.description">
-            <div class="flex-none w-5 pointer" v-on:click="toggleDescription()">
+            <div class="flex-none w-5 pointer" @click="toggleDescription()">
               <div class="flex justify-center items-center h-100">
                 <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flex-none" v-tooltip.top="'Show comment'">
                   <defs></defs>
@@ -77,8 +77,9 @@
           <div class="flex-auto w-60 tr mt2 pa1 pr3 pb2">
             <span class="f6 gray">{{ $t('app.with') }} </span>
             <div v-for="attendees in activity.attendees" class="dib pointer ml2" @click="redirect(attendees)">
-              <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" v-tooltip="attendees.complete_name">
-              <div v-if="!attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" v-bind:style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">
+              <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" v-tooltip="attendees.complete_name" />
+              <img v-else-if="attendees.information.avatar.gravatar_url" :src="attendees.information.avatar.gravatar_url" class="br3 journal-avatar-small" v-tooltip.bottom="attendees.complete_name" />
+              <div v-else v-tooltip="attendees.complete_name" :style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">
                 {{ attendees.initials }}
               </div>
             </div>

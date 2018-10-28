@@ -335,6 +335,17 @@ $factory->define(App\Models\Contact\Message::class, function (Faker\Generator $f
     ];
 });
 
+$factory->define(App\Models\Contact\Document::class, function (Faker\Generator $faker) {
+    $contact = factory(App\Models\Contact\Contact::class)->create();
+
+    return [
+        'account_id' => $contact->account_id,
+        'contact_id' => $contact->id,
+        'original_filename' => 'file.jpg',
+        'new_filename' => 'file.jpg',
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
