@@ -66,6 +66,11 @@ return [
     'register_policy' => '我已阅读并同意 <a href=":url" hreflang=":hreflang">隐私政策</a> 与 <a href=":urlterm" hreflang=":hreflang">用户协议</a>',
     'register_invitation_email' => '为了安全，请您输入邀请人的电子邮件地址。这可以在受邀邮件中找到',
 
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+
     'confirmation_again' => '如果要更改电子邮件地址, 可以 <a href=":url" class="alert-link">单击此处</a>。',
     'email_change_current_email' => '当前邮件地址：',
     'email_change_title' => '更换您的电子邮箱',
