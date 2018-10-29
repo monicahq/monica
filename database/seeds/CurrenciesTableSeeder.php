@@ -39,7 +39,7 @@ class CurrenciesTableSeeder extends Seeder
                 'name' => $currency['name'],
                 'symbol' => $currency['units']['major']['symbol'],
             ];
-        })->values();
+        })->values()->toArray();
 
         DB::table('currencies')->insert($insert);
     }
