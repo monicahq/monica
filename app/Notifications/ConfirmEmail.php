@@ -3,8 +3,10 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -56,7 +58,22 @@ class ConfirmEmail extends LaravelNotification implements ShouldQueue
             ->subject(trans('mail.confirmation_email_title'))
             ->line(trans('mail.confirmation_email_title'))
             ->line(trans('mail.confirmation_email_intro'))
-            ->action(trans('mail.confirmation_email_button'),
-                url("confirmation/$user->id/$user->confirmation_code"));
+            ->action(
+                trans('mail.confirmation_email_button'),
+                $this->verificationUrl($user)
+            );
+    }
+
+    /**
+     * Get the verification URL for the given notifiable.
+     *
+     * @param  mixed  $notifiable
+     * @return string
+     */
+    protected function verificationUrl($notifiable)
+    {
+        return URL::temporarySignedRoute(
+            'verification.verify', Carbon::now()->addMinutes(60), ['id' => $notifiable->getKey()]
+        );
     }
 }

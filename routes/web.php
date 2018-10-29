@@ -22,7 +22,7 @@ if (App::environment('production')) {
 
 Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
@@ -35,7 +35,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
     Route::post('/validate2fa', 'Auth\Validate2faController@index');
 });
 
-Route::middleware(['auth', 'auth.confirm', 'u2f', '2fa'])->group(function () {
+Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
     Route::name('dashboard.')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
