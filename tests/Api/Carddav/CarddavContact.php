@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 /**
  * @runTestsInSeparateProcesses
  */
-class CarddavContactTest extends ApiTestCase
+class CarddavContact extends ApiTestCase
 {
     use DatabaseTransactions;
 
