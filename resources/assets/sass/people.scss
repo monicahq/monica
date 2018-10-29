@@ -628,7 +628,11 @@
       a.edit {
         position: relative;
         top: 1px;
+    @if $htmldir == ltr {
         margin-right: 5px;
+    } @else {
+        margin-left: 5px;
+    }
       }
     }
 
