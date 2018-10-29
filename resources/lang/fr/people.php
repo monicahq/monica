@@ -436,9 +436,9 @@ return [
 
     // documents
     'document_list_title' => 'Documents',
-    'document_list_cta' => 'Upload document',
-    'document_list_blank_desc' => 'Here you can store documents related to this person.',
-    'document_upload_zone_cta' => 'Upload a file',
-    'document_upload_zone_progress' => 'Uploading the document...',
-    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+    'document_list_cta' => 'Télécharger un document',
+    'document_list_blank_desc' => 'Ici vous pouvez stocker les documents reliés à cette personne.',
+    'document_upload_zone_cta' => 'Télécharger un fichier',
+    'document_upload_zone_progress' => 'Télécharger le document...',
+    'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
 ];
