@@ -73,6 +73,7 @@ class FakeContentTableSeeder extends Seeder
                 $this->contact->save();
             }
 
+            $this->populateTags();
             $this->populateFoodPreferences();
             $this->populateDeceasedDate();
             $this->populateBirthday();
@@ -103,6 +104,17 @@ class FakeContentTableSeeder extends Seeder
         $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
         $blankUser = $blankAccount->users()->first();
         $this->confirmUser($blankUser);
+    }
+
+    public function populateTags()
+    {
+        if (rand(1, 2) == 1) {
+            $i = 0;
+            do {
+                $this->contact->setTag($this->faker->word);
+                $i++;
+            } while ($i < 10);
+        }
     }
 
     public function populateFoodPreferences()

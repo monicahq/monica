@@ -19442,15 +19442,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   list-style-type: disc;
 }
 
-.settings .tags-list .tags-list-contact-number {
-  margin-left: 10px;
-  color: #999;
-}
-
-.settings .tags-list .actions {
-  text-align: right;
-}
-
 .settings .reminder-info {
   -webkit-text-decoration: underline dotted;
           text-decoration: underline dotted;
@@ -19591,53 +19582,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 
 .badge-danger {
   background-color: #d9534f;
-}
-
-.pretty-tag {
-  background: #eee;
-  border-radius: 3px;
-  color: #555;
-  display: inline-block;
-  font-size: 11px;
-  height: 22px;
-  line-height: 22px;
-  padding-right: 10px;
-  padding-left: 19px;
-  position: relative;
-  margin-right: 10px;
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
-}
-
-.pretty-tag:before {
-  background: #fff;
-  border-radius: 10px;
-  -webkit-box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-          box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-  content: '';
-  height: 6px;
-  left: 7px;
-  position: absolute;
-  width: 6px;
-  top: 9px;
-}
-
-.pretty-tag:hover {
-  background-color: #0366d6;
-}
-
-.pretty-tag:hover a {
-  color: #fff;
-}
-
-.pretty-tag a {
-  text-decoration: none;
-  color: #555;
-}
-
-.pretty-tag a:hover {
-  background-color: transparent;
-  color: #fff;
 }
 
 .life-event .life-event-add-row:hover {

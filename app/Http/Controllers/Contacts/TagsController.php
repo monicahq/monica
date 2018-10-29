@@ -19,15 +19,7 @@ class TagsController extends Controller
     public function index(Request $request)
     {
         $tags = auth()->user()->account->tags()->get();
-        $tagsCollection = collect();
-        foreach ($tags as $tag) {
-            $data = [
-                $tag->id => $tag->name,
-            ];
-            $tagsCollection->push($data);
-        }
-
-        return $tagsCollection->toJson();
+        return TagResource::collection($tags);
     }
 
     /**
@@ -39,11 +31,7 @@ class TagsController extends Controller
     public function get(Request $request, Contact $contact)
     {
         $tags = $contact->tags()->get();
-        $tagString = '';
-        foreach ($tags as $tag) {
-            $tagString .= $tag->name;
-        }
-        return $tagString;
+        return TagResource::collection($tags);
     }
 
     /**

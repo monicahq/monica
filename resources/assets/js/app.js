@@ -44,11 +44,6 @@ import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css'
 Vue.use(VueGoodTablePlugin);
 
-// Tags selector
-import VoerroTagsInput from '@voerro/vue-tagsinput';
-import '@voerro/vue-tagsinput/dist/style.css'
-Vue.component('tags-input', VoerroTagsInput);
-
 // Custom components
 Vue.component(
     'passport-clients',

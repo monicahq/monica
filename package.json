@@ -20,7 +20,6 @@
     "mocha-multi-reporters": "^1.1.7"
   },
   "dependencies": {
-    "@voerro/vue-tagsinput": "^1.9.1",
     "animate.css": "^3.6.1",
     "axios": "^0.18.0",
     "bootstrap": "4.0.0-alpha.2",

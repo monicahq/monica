@@ -57,17 +57,7 @@
             </li>
           </ul>
 
-          <ul class="tags">
-            <li class="{{ htmldir() == 'rtl' ? 'ml3' : 'mr3' }}">
-              <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
-            </li>
-            <ul class="tags-list">
-              @foreach ($contact->tags as $tag)
-                <li class="pretty-tag"><a href="{{ route('people.index') }}?tag1={{ $tag->name_slug }}">{{ $tag->name }}</a></li>
-              @endforeach
-            </ul>
-            <li class="{{ htmldir() == 'rtl' ? 'ml3' : 'mr3' }}"><a href="#" id="showTagForm">{{ trans('people.tag_edit') }}</a></li>
-          </ul>
+          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
 
           <tags hash="{{ $contact->hashID() }}"></tags>
 
