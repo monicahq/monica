@@ -82,7 +82,7 @@
             },
 
             filterResults() {
-                this.results = this.existingTags.filter(item => item.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+                this.results = this.existingTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
             },
         }
     }
