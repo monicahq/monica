@@ -13,6 +13,13 @@ class CarddavContactTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
+    public function setUp()
+    {
+        if (! (bool) env('CARDDAV_ENABLED', false)) {
+            $this->markTestSkipped('carddav disabled');
+        }
+    }
+
     /**
      * @group carddav
      */
