@@ -13,6 +13,9 @@ class CarddavContactTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_get_one_contact()
     {
         $user = $this->signin();

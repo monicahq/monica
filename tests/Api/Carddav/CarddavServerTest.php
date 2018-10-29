@@ -13,6 +13,9 @@ class CarddavServerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_propfind_base()
     {
         $user = $this->signin();
@@ -27,6 +30,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertSee('<d:response><d:href>/carddav/addressbooks/</d:href>');
     }
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_propfind_principals()
     {
         $user = $this->signin();
@@ -40,6 +46,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertSee("<d:response><d:href>/carddav/principals/{$user->email}/</d:href>");
     }
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_propfind_principals_user()
     {
         $user = $this->signin();
@@ -52,6 +61,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertSee("<d:response><d:href>/carddav/principals/{$user->email}/</d:href>");
     }
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_ensure_browser_plugin_not_enabled()
     {
         $user = $this->signin();
@@ -64,6 +76,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertSee('There was no plugin in the system that was willing to handle this GET method. Enable the Browser plugin to get a better result here.');
     }
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_propfind_addressbooks()
     {
         $user = $this->signin();
@@ -77,6 +92,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/</d:href>");
     }
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_propfind_addressbooks_user()
     {
         $user = $this->signin();
@@ -90,6 +108,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/Contacts/</d:href>");
     }
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_propfind_contacts()
     {
         $user = $this->signin();
@@ -106,6 +127,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/Contacts/{$contact->id}</d:href>");
     }
 
+    /**
+     * @group carddav
+     */
     public function test_carddav_propfind_one_contact()
     {
         $user = $this->signin();
