@@ -18,6 +18,7 @@ UNRELEASED CHANGES:
 * API breaking change: Remove 'PUT /contacts/:contact_id/pets/:id' in favor of 'PUT /pets/:id' with a 'contact_id'
 * API breaking change: Every validator fails now send a HTTP 400 code (was 200) with the error 32
 * API breaking change: Every Invald Parameters errors now send a HTTP 400 (was 500 or 200) code with the error 41
+* Add CardDAV support — disabled by default. To enable it, toggle the `CARDDAV_ENABLED` env variable.
 * Use Laravel email verification, and remove the old module used for that
 
 RELEASED VERSIONS:
