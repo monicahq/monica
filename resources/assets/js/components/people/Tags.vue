@@ -16,7 +16,10 @@
                 @input="onChange">
 
         <ul class="autocomplete-results" v-show="isOpen">
-            <li class="autocomplete-result" v-for="result in results" :key="result.id">
+            <li class="autocomplete-result"
+                v-for="result in results"
+                :key="result.id"
+                @click="setResult(result)">
                 {{ result.name }}
             </li>
         </ul>
@@ -73,16 +76,22 @@
             },
 
             removeTag(tag) {
-                this.contactTags.splice(this.contactTags.indexOf(tag), 1);
+                this.contactTags.splice(this.contactTags.indexOf(tag), 1)
             },
 
             onChange() {
-                this.isOpen = true;
-                this.filterResults();
+                this.isOpen = true
+                this.filterResults()
+            },
+
+            setResult(result) {
+                this.search = null
+                this.isOpen = false
+                this.contactTags.push(result)
             },
 
             filterResults() {
-                this.results = this.existingTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+                this.results = this.existingTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
             },
         }
     }
