@@ -36,7 +36,8 @@
     export default {
         data() {
             return {
-                existingTags: [],
+                allTags: [],
+                availableTags: [],
                 contactTags: [],
                 editMode: false,
                 search: '',
@@ -59,12 +60,13 @@
             prepareComponent() {
                 this.getExistingTags()
                 this.getContactTags()
+                this.filterAllTags()
             },
 
             getExistingTags() {
                 axios.get('/tags')
                     .then(response => {
-                        this.existingTags = response.data.data
+                        this.allTags = response.data.data
                     })
             },
 
@@ -88,11 +90,18 @@
                 this.search = null
                 this.isOpen = false
                 this.contactTags.push(result)
+                this.filterAllTags()
             },
 
             filterResults() {
-                this.results = this.existingTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
+                this.results = this.availableTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
             },
+
+            filterAllTags() {
+                this.availableTags = this.allTags.filter((item) => {
+                    return !this.contactTags.includes(item)
+                })
+            }
         }
     }
 </script>
