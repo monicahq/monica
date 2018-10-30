@@ -9,7 +9,6 @@
         "ext-bcmath": "*",
         "ext-intl": "*",
         "bacon/bacon-qr-code": "^1.0",
-        "bestmomo/laravel-email-confirmation": "^1.1",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
         "erusev/parsedown": "~1.7",
@@ -40,7 +39,7 @@
         "pragmarx/recovery": "^0.1",
         "predis/predis": "^1.1",
         "ralouphie/mimey": "^2.0",
-        "sabre/vobject": "^4.1",
+        "sabre/dav": "^3.2",
         "sentry/sentry-laravel": "^0.10",
         "stevebauman/location": "^3.0",
         "symfony/translation": "^4.0",
@@ -62,7 +61,7 @@
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~4.0",
-        "vimeo/psalm": "^2.0"
+        "vimeo/psalm": "~2.0"
     },
     "suggest": {
         "ext-apcu": "*"

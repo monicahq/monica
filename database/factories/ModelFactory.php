@@ -13,16 +13,16 @@
 
 $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) {
     return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->safeEmail,
+        'email_verified_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
         'locale' => 'en',
-        'confirmed' => true,
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
