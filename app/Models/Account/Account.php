@@ -518,8 +518,11 @@ class Account extends Model
     {
         // Weird method to get the next billing date from Laravel Cashier
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $timestamp = $this->asStripeCustomer()['subscriptions']
-                            ->data[0]['current_period_end'];
+        $subscriptions = $this->asStripeCustomer()['subscriptions'];
+        if (count($subscriptions->data) <= 0) {
+            return;
+        }
+        $timestamp = $subscriptions->data[0]['current_period_end'];
 
         return DateHelper::getShortDate($timestamp);
     }
