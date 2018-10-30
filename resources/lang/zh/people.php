@@ -19,8 +19,8 @@ return [
     'people_list_filter_tag' => '拥有以下标签的联系人：',
     'people_list_clear_filter' => '清除筛选',
     'people_list_contacts_per_tags' => ':count 个联系人',
-    'people_list_show_dead' => 'Show deceased people (:count)',
-    'people_list_hide_dead' => 'Hide deceased people (:count)',
+    'people_list_show_dead' => '显示已故人员 (:count)',
+    'people_list_hide_dead' => '隐藏已故人员 (:count)',
     'people_search' => '搜索联系人...',
     'people_search_no_results' => '未找到相关联系人:(',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
@@ -41,7 +41,7 @@ return [
     'people_add_success' => ':name 已成功创建',
     'people_add_gender' => '性别',
     'people_delete_success' => '联系人已被删除',
-    'people_delete_message' => 'Delete contact',
+    'people_delete_message' => '删除联系人',
     'people_delete_confirmation' => '确实要删除此联系人吗？删除是永久性的。',
     'people_add_birthday_reminder' => '祝: name生日快乐',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
@@ -58,14 +58,14 @@ return [
     'section_personal_notes' => '便签',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_active_contacts' => '您正在查看存档的联系人， <a href=":url">单击这里</a> 来查看活动的联系人列表。',
+    'list_link_to_archived_contacts' => '已存档联系人列表',
 
     // Header
     'edit_contact_information' => '编辑联系人信息',
-    'contact_archive' => 'Archive contact',
-    'contact_unarchive' => 'Unarchive contact',
-    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
+    'contact_archive' => '存档联系人',
+    'contact_unarchive' => '取消存档',
+    'contact_archive_help' => '存档的联系人将不会显示在联系人列表中, 但仍会显示在搜索结果中。',
     'call_button' => '记录通话',
     'set_favorite' => '您收藏的联系人将在联系人列表置顶显示。',
 
@@ -194,7 +194,7 @@ return [
     'relationship_form_associate_dropdown' => '请从下拉菜单选择一位联系人',
     'relationship_form_associate_dropdown_placeholder' => '搜索并选择一位现有联系人',
     'relationship_form_also_create_contact' => '将此人创建为您的联系人',
-    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
+    'relationship_form_add_description' => '这会让你像其他联系人一样对待这个人。',
     'relationship_form_add_no_existing_contact' => '您暂时没有能与 :name 链接的联系人',
     'relationship_delete_confirmation' => '您确定要将关系删除吗？本操作无法撤销。',
     'relationship_unlink_confirmation' => '您确定要将关系删除吗？此操作不会从您的联系人列表将其删除。',
@@ -435,10 +435,10 @@ return [
     'life_event_sentence_first_kiss' => '第一次接吻',
 
     // documents
-    'document_list_title' => 'Documents',
-    'document_list_cta' => 'Upload document',
-    'document_list_blank_desc' => 'Here you can store documents related to this person.',
-    'document_upload_zone_cta' => 'Upload a file',
-    'document_upload_zone_progress' => 'Uploading the document...',
-    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+    'document_list_title' => '文档',
+    'document_list_cta' => '上载文档',
+    'document_list_blank_desc' => '在这里, 您可以存储与此人相关的文档。',
+    'document_upload_zone_cta' => '上传文件',
+    'document_upload_zone_progress' => '正在上传文档',
+    'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 ];
