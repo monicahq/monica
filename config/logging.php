@@ -76,5 +76,9 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+        'testing' => [
+            'driver' => 'errorlog',
+            'level' => 'info',
+        ],
     ],
 ];
