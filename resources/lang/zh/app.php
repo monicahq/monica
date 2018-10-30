@@ -8,7 +8,7 @@ return [
     'delete' => '删除',
     'edit' => '编辑',
     'upload' => '上传',
-    'download' => 'Download',
+    'download' => '下载',
     'close' => '关闭',
     'create' => '创建',
     'remove' => '删除',
@@ -60,7 +60,7 @@ return [
 
     'breadcrumb_dashboard' => '仪表盘',
     'breadcrumb_list_contacts' => '人名单',
-    'breadcrumb_archived_contacts' => 'Archived contacts',
+    'breadcrumb_archived_contacts' => '存档的联系人',
     'breadcrumb_journal' => '日记',
     'breadcrumb_settings' => '设置',
     'breadcrumb_settings_export' => '导出',
