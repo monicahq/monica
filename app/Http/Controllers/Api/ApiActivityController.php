@@ -11,7 +11,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class ApiActivityController extends ApiController
 {
