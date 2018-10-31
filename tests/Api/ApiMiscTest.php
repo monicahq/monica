@@ -3,7 +3,6 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiMiscTest extends ApiTestCase
@@ -14,7 +13,7 @@ class ApiMiscTest extends ApiTestCase
             'id',
             'iso',
             'name',
-            'object'
+            'object',
     ];
 
     public function test_misc_get()
@@ -33,7 +32,7 @@ class ApiMiscTest extends ApiTestCase
                 'iso' => 'DE',
                 'name' => 'Germany',
                 'object' => 'country',
-            ]
+            ],
         ]);
     }
 
@@ -55,7 +54,7 @@ class ApiMiscTest extends ApiTestCase
                 'iso' => 'DE',
                 'name' => 'Allemagne',
                 'object' => 'country',
-            ]
+            ],
         ]);
     }
 }

@@ -134,14 +134,14 @@ class ApiContactControllerTest extends ApiTestCase
             ],
             'food_preferencies',
             'how_you_met' => [
-                'general_information', 
+                'general_information',
                 'first_met_date' => [
                     'is_age_based',
                     'is_year_unknown',
                     'date',
                 ],
-                'first_met_through_contact'
-            ]
+                'first_met_through_contact',
+            ],
         ],
         'addresses' => [],
         'tags' => [],
@@ -179,7 +179,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'contact' => [],
                 'created_at',
                 'updated_at',
-            ]
+            ],
         ],
         'account' => [
             'id',
@@ -895,7 +895,6 @@ class ApiContactControllerTest extends ApiTestCase
             'is_dead' => false,
             'first_met_through_contact_id' => $contactFirstMet->id,
         ]);
-
 
         $this->expectNotFound($response);
     }
