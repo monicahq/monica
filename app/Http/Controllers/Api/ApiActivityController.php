@@ -259,17 +259,4 @@ class ApiActivityController extends ApiController
             'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
         ]]);
     }
-
-    /**
-     * Get the list of all activity types.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function activitytypes(Request $request)
-    {
-        $activities = ActivityType::where('account_id', auth()->user()->account_id)
-                                     ->all();
-
-        return ActivityTypeResource::collection($activities);
-    }
 }

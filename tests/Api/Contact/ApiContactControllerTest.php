@@ -5,6 +5,8 @@ namespace Tests\Api\Contact;
 use Carbon\Carbon;
 use Tests\ApiTestCase;
 use App\Helpers\DateHelper;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
@@ -120,15 +122,65 @@ class ApiContactControllerTest extends ApiTestCase
                     'date',
                 ],
             ],
-            'career',
-            'avatar',
+            'career' => [
+                'job',
+                'company',
+                'linkedin_profile_url',
+            ],
+            'avatar' => [
+                'url',
+                'source',
+                'default_avatar_color',
+            ],
             'food_preferencies',
-            'how_you_met',
+            'how_you_met' => [
+                'general_information', 
+                'first_met_date' => [
+                    'is_age_based',
+                    'is_year_unknown',
+                    'date',
+                ],
+                'first_met_through_contact'
+            ]
         ],
-        'addresses',
-        'tags',
-        'statistics',
-        'contactFields' => [],
+        'addresses' => [],
+        'tags' => [],
+        'statistics' => [
+            'number_of_calls',
+            'number_of_notes',
+            'number_of_activities',
+            'number_of_reminders',
+            'number_of_tasks',
+            'number_of_gifts',
+            'number_of_debts',
+        ],
+        'contactFields' => [
+            '*' => [
+                'id',
+                'object',
+                'content',
+                'contact_field_type' => [
+                    'id',
+                    'object',
+                    'name',
+                    'fontawesome_icon',
+                    'protocol',
+                    'delible',
+                    'type',
+                    'account' => [
+                        'id',
+                    ],
+                    'created_at',
+                    'updated_at',
+                ],
+                'account' => [
+                    'id',
+                ],
+                'contact' => [],
+                'created_at',
+                'updated_at',
+            ]
+        ],
         'account' => [
             'id',
         ],
@@ -543,6 +595,123 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_contact_get_withcontactfields()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'first_name' => 'roger',
+        ]);
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id.'?with=contactfields');
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureContactWithContactFields,
+        ]);
+
+        $response->assertJsonFragment([
+            'birthdate' => [
+                'date' => null,
+                'is_age_based' => null,
+                'is_year_unknown' => null,
+            ],
+        ]);
+        $response->assertJsonFragment([
+            'id' => $contactField->id,
+            'object' => 'contactfield',
+            'content' => 'john@doe.com',
+        ]);
+        $response->assertJsonFragment([
+            'id' => $field->id,
+            'object' => 'contactfieldtype',
+            'name' => 'Email',
+        ]);
+    }
+
+    public function test_contact_field_query_all_account()
+    {
+        $firstuser = $this->signin();
+        $firstcontact = factory(Contact::class)->create([
+            'account_id' => $firstuser->account->id,
+            'first_name' => 'Bad',
+        ]);
+        $firstfield = factory(ContactFieldType::class)->create([
+            'account_id' => $firstuser->account_id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $firstcontact->id,
+            'account_id' => $firstuser->account_id,
+            'contact_field_type_id' => $firstfield->id,
+        ]);
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts?with=contactfields&page=1&limit=100&query=email:john@doe');
+
+        $response->assertStatus(200);
+        // Assure that firstcontact from other account is not get (wrong filter on account id)
+        $response->assertJsonMissing([
+            'id' => $firstcontact->id,
+            'first_name' => 'Bad',
+            'account' => [
+                'id' => $firstuser->account->id,
+            ],
+        ]);
+    }
+
+    public function test_contact_query_internationalphone()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+            'name' => 'Phone',
+            'protocol' => 'tel:',
+            'type' => 'phone',
+            ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $user->account_id,
+            'contact_field_type_id' => $field->id,
+            'data' => '+447007007007',
+        ]);
+
+        $response = $this->json('GET', '/api/contacts?query=Phone:%2B447007007007');
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+                'id' => $contact->id,
+                'first_name' => 'John',
+                'last_name' => 'Doe',
+                'account' => [
+                    'id' => $user->account->id,
+                ],
+        ]);
+    }
+
     public function test_contact_update_birthdate_age()
     {
         $user = $this->signin();
@@ -599,5 +768,135 @@ class ApiContactControllerTest extends ApiTestCase
             'is_age_based' => '1',
             'is_year_unknown' => '0',
         ]);
+    }
+
+    public function test_contact_create()
+    {
+        $user = $this->signin();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/contacts/', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'gender_id' => $gender->id,
+            'is_starred' => false,
+            'is_partial' => false,
+            'is_dead' => false,
+        ]);
+
+        $response->assertStatus(201);
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureContact,
+        ]);
+        $contact_id = $response->json('data.id');
+        $response->assertJsonFragment([
+            'object' => 'contact',
+            'id' => $contact_id,
+        ]);
+
+        $this->assertGreaterThan(0, $contact_id);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'id' => $contact_id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'gender_id' => $gender->id,
+            'is_starred' => false,
+            'is_partial' => false,
+            'is_dead' => false,
+        ]);
+    }
+
+    public function test_contact_create_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('POST', '/api/contacts/', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+
+        $this->expectDataError($response, [
+            'The gender id field is required.',
+            'The is starred field is required.',
+            'The is partial field is required.',
+            'The is dead field is required.',
+        ]);
+    }
+
+    public function test_contact_create_first_met()
+    {
+        $user = $this->signin();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $contactFirstMet = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/contacts/', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'gender_id' => $gender->id,
+            'is_starred' => false,
+            'is_partial' => false,
+            'is_dead' => false,
+            'first_met_through_contact_id' => $contactFirstMet->id,
+        ]);
+
+        $response->assertStatus(201);
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureContact,
+        ]);
+        $contact_id = $response->json('data.id');
+        $response->assertJsonFragment([
+            'object' => 'contact',
+            'id' => $contact_id,
+        ]);
+
+        $this->assertGreaterThan(0, $contact_id);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'id' => $contact_id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'gender_id' => $gender->id,
+            'is_starred' => false,
+            'is_partial' => false,
+            'is_dead' => false,
+        ]);
+    }
+
+    public function test_contact_create_first_met_bad_account()
+    {
+        $user = $this->signin();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $account = factory(Account::class)->create();
+        $contactFirstMet = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $response = $this->json('POST', '/api/contacts/', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'gender_id' => $gender->id,
+            'is_starred' => false,
+            'is_partial' => false,
+            'is_dead' => false,
+            'first_met_through_contact_id' => $contactFirstMet->id,
+        ]);
+
+
+        $this->expectNotFound($response);
     }
 }

@@ -60,7 +60,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Activities
     Route::apiResource('activities', 'Api\\ApiActivityController');
     Route::get('/contacts/{contact}/activities', 'Api\\ApiActivityController@activities');
-    Route::get('/activitytypes', 'Api\\ApiActivityController@activitytypes');
 
     // Reminders
     Route::apiResource('reminders', 'Api\\ApiReminderController');
