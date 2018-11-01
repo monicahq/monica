@@ -6,7 +6,6 @@ use App\Services\BaseService;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
-use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Reminder\CreateReminder;
 
 class AddReminderToLifeEvent extends BaseService
@@ -24,7 +23,7 @@ class AddReminderToLifeEvent extends BaseService
             'date' => 'required|date',
             'frequency_type' => [
                 'required',
-                Rule::in(Reminder::$frequencyTypes)
+                Rule::in(Reminder::$frequencyTypes),
             ],
             'frequency_number' => 'required|integer',
         ];

@@ -11,7 +11,6 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
-use App\Exceptions\MissingParameterException;
 
 class CreateConversation extends BaseService
 {

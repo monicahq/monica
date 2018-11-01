@@ -8,7 +8,6 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Exceptions\WrongValueException;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -149,11 +148,9 @@ class CreateReminderTest extends TestCase
 
         try {
             $reminderService = (new CreateReminder)->execute($request);
-        }
-        catch (MissingParameterException $e) {
+        } catch (MissingParameterException $e) {
             $this->assertEquals(['The selected frequency type is invalid.'], $e->errors);
             throw $e;
         }
-
     }
 }

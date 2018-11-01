@@ -5,7 +5,6 @@ namespace App\Services\Contact\Document;
 use App\Services\BaseService;
 use App\Models\Contact\Document;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 
 class DestroyDocument extends BaseService
 {

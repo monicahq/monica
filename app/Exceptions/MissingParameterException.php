@@ -16,7 +16,7 @@ class MissingParameterException extends RuntimeException
      */
     public $errors;
 
-    function __construct(string $message, array $errors = null, int $code = 0, \Throwable $previous = null)
+    public function __construct(string $message, array $errors = null, int $code = 0, \Throwable $previous = null)
     {
         $this->errors = $errors;
         parent::__construct($message, $code, $previous);

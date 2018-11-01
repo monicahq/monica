@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\App;
 use App\Models\Contact\LifeEventType;
 use Illuminate\Database\QueryException;
 use App\Models\Contact\LifeEventCategory;
-use App\Exceptions\MissingParameterException;
 
 /**
  * Populate life event types and life event categories for a given account.

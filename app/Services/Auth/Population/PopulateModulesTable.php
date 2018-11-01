@@ -8,7 +8,6 @@ use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
-use App\Exceptions\MissingParameterException;
 
 /**
  * Populate the modules table for a given account.

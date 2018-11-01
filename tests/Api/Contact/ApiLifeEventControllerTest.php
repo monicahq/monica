@@ -295,7 +295,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
 
         $this->expectInvalidParameter($response, [
-            "The happened at field is required."
+            'The happened at field is required.',
         ]);
     }
 

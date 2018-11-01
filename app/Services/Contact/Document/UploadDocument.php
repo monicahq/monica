@@ -5,7 +5,6 @@ namespace App\Services\Contact\Document;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
-use App\Exceptions\MissingParameterException;
 
 class UploadDocument extends BaseService
 {

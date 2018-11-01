@@ -6,7 +6,6 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
-use App\Exceptions\MissingParameterException;
 
 class CreateLifeEvent extends BaseService
 {
