@@ -8,6 +8,7 @@
 namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
 
@@ -42,6 +43,13 @@ class UpdateMessage extends BaseService
         if (! $this->validate($data)) {
             return null;
         }
+
+        Contact::where('account_id', $data['account_id'])
+                ->findOrFail($data['contact_id']);
+
+        Conversation::where('contact_id', $data['contact_id'])
+                    ->where('account_id', $data['account_id'])
+                    ->findOrFail($data['conversation_id']);
 
         $message = Message::where('contact_id', $data['contact_id'])
                             ->where('conversation_id', $data['conversation_id'])

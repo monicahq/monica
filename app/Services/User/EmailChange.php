@@ -16,7 +16,7 @@ class EmailChange extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'user_id' => 'required|integer',
         ];
     }

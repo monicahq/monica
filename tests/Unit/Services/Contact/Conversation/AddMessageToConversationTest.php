@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\Contact\Conversation;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
 use App\Exceptions\MissingParameterException;
@@ -63,9 +64,34 @@ class AddMessageToConversationTest extends TestCase
     public function test_it_throws_an_exception_if_conversation_is_not_found()
     {
         $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create();
         $request = [
             'conversation_id' => 0,
-            'contact_id' => 0,
+            'contact_id' => $contact->id,
+            'account_id' => $account->id,
+            'written_by_me' => true,
+            'written_at' => Carbon::now(),
+            'content' => 'lorem ipsum',
+        ];
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $conversationService = (new AddMessageToConversation)->execute($request);
+    }
+
+    public function test_it_throws_an_exception_if_conversation_is_not_found2()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id
+        ]);
+        $account2 = factory(Account::class)->create();
+        $conversation = factory(Conversation::class)->create([
+            'account_id' => $account2->id
+        ]);
+        $request = [
+            'conversation_id' => $conversation->id,
+            'contact_id' => $contact->id,
             'account_id' => $account->id,
             'written_by_me' => true,
             'written_at' => Carbon::now(),

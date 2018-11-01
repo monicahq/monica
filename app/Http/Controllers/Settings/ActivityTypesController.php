@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\ActivityType;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivityTypesController extends Controller
@@ -19,6 +20,13 @@ class ActivityTypesController extends Controller
             'name' => 'required|max:255',
             'activity_type_category_id' => 'required|integer',
         ])->validate();
+
+        try {
+            ActivityTypeCategory::where('account_id', auth()->user()->account_id)
+                ->findOrFail($request->get('activity_type_category_id'));
+        } catch (ModelNotFoundException $e) {
+            return false;
+        }
 
         $activityType = ActivityType::create(
             $request->only([
@@ -44,6 +52,7 @@ class ActivityTypesController extends Controller
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
+            'id' => 'required|integer',
         ])->validate();
 
         try {
