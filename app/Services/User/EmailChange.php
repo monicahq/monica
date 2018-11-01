@@ -29,9 +29,7 @@ class EmailChange extends BaseService
      */
     public function execute(array $data) : User
     {
-        if (! $this->validate($data)) {
-            return null;
-        }
+        $this->validate($data);
 
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);

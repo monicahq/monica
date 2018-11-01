@@ -33,9 +33,7 @@ class DestroyConversation extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validate($data)) {
-            return false;
-        }
+        $this->validate($data);
 
         $conversation = Conversation::where('account_id', $data['account_id'])
                                     ->findOrFail($data['conversation_id']);

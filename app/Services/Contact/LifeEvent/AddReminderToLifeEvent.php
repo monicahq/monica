@@ -37,9 +37,7 @@ class AddReminderToLifeEvent extends BaseService
      */
     public function execute(array $data) : Reminder
     {
-        if (! $this->validate($data)) {
-            return null;
-        }
+        $this->validate($data);
 
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
                                 ->findOrFail($data['life_event_id']);

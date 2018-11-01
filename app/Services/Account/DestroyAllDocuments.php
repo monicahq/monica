@@ -29,9 +29,7 @@ class DestroyAllDocuments extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validate($data)) {
-            return false;
-        }
+        $this->validate($data);
 
         $documents = Document::where('account_id', $data['account_id'])
                                 ->get();

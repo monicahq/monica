@@ -5,7 +5,7 @@ namespace App\Services;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\MissingParameterException;
 
-class BaseService
+abstract class BaseService
 {
     /**
      * Get the validation rules that apply to the service.

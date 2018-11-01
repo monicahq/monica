@@ -30,9 +30,7 @@ class UploadDocument extends BaseService
      */
     public function execute(array $data) : Document
     {
-        if (! $this->validate($data)) {
-            return null;
-        }
+        $this->validate($data);
 
         Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);

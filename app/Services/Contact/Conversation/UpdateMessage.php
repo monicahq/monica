@@ -40,9 +40,7 @@ class UpdateMessage extends BaseService
      */
     public function execute(array $data): Message
     {
-        if (! $this->validate($data)) {
-            return null;
-        }
+        $this->validate($data);
 
         Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);

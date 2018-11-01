@@ -29,9 +29,7 @@ class DestroyLifeEvent extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validate($data)) {
-            return false;
-        }
+        $this->validate($data);
 
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_id']);
