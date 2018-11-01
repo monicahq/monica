@@ -1,4 +1,6 @@
 <style scoped>
+.tag-list-item {
+}
 </style>
 
 <template>
@@ -9,8 +11,17 @@
             <a @click="editMode = false" v-show="editMode">Save</a>
         </div>
 
+        <ul>
+            <li v-for="tag in contactTags" :key="tag.id" class="di mr2">
+                <span class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba">
+                    {{ tag.name }}
+                    <span @click="removeTag(tag)" v-show="editMode" class="pointer">×</span>
+                </span>
+            </li>
+        </ul>
+
         <input type="text"
-                class="mt7 mb5"
+                class=""
                 v-show="editMode"
                 v-model="search"
                 @input="onChange">
@@ -21,12 +32,6 @@
                 :key="result.id"
                 @click="setResult(result)">
                 {{ result.name }}
-            </li>
-        </ul>
-        <ul>
-            <li v-for="tag in contactTags" :key="tag.id">
-                <span>{{ tag.name }}</span>
-                <a @click="removeTag(tag)" v-show="editMode">remove tag</a>
             </li>
         </ul>
     </div>
@@ -60,7 +65,7 @@
             prepareComponent() {
                 this.getExistingTags()
                 this.getContactTags()
-                this.filterAllTags()
+                //this.filterAllTags()
             },
 
             getExistingTags() {
@@ -90,17 +95,21 @@
                 this.search = null
                 this.isOpen = false
                 this.contactTags.push(result)
-                this.filterAllTags()
+                //this.filterAllTags()
             },
 
             filterResults() {
-                this.results = this.availableTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
+                this.results = this.allTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1)
             },
 
             filterAllTags() {
                 this.availableTags = this.allTags.filter((item) => {
                     return !this.contactTags.includes(item)
                 })
+            },
+
+            save() {
+
             }
         }
     }
