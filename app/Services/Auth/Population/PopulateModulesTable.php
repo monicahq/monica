@@ -38,9 +38,9 @@ class PopulateModulesTable extends BaseService
      * Execute the service.
      *
      * @param array $data
-     * @return void
+     * @return bool
      */
-    public function execute(array $givenData)
+    public function execute(array $givenData) : bool
     {
         $this->data = $givenData;
 
@@ -49,6 +49,8 @@ class PopulateModulesTable extends BaseService
         }
 
         $this->createEntries();
+
+        return true;
     }
 
     /**

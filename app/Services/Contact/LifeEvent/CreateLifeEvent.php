@@ -38,7 +38,7 @@ class CreateLifeEvent extends BaseService
     public function execute(array $data) : LifeEvent
     {
         if (! $this->validate($data)) {
-            return false;
+            return null;
         }
 
         Contact::where('account_id', $data['account_id'])

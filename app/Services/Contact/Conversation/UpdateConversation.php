@@ -37,7 +37,7 @@ class UpdateConversation extends BaseService
     public function execute(array $data): Conversation
     {
         if (! $this->validate($data)) {
-            return false;
+            return null;
         }
 
         $conversation = Conversation::where('account_id', $data['account_id'])

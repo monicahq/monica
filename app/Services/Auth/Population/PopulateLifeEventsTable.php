@@ -41,9 +41,9 @@ class PopulateLifeEventsTable extends BaseService
      * Execute the service.
      *
      * @param array $data
-     * @return void
+     * @return bool
      */
-    public function execute(array $givenData)
+    public function execute(array $givenData) : bool
     {
         $this->data = $givenData;
 
@@ -53,12 +53,14 @@ class PopulateLifeEventsTable extends BaseService
 
         $locale = $this->getLocaleOfAccount($this->data['account_id']);
         if (is_null($locale)) {
-            return;
+            return false;
         }
 
         $this->createEntries($locale);
 
         $this->markTableAsMigrated();
+
+        return true;
     }
 
     /**

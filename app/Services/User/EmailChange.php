@@ -30,7 +30,7 @@ class EmailChange extends BaseService
     public function execute(array $data) : User
     {
         if (! $this->validate($data)) {
-            return false;
+            return null;
         }
 
         $user = User::where('account_id', $data['account_id'])
