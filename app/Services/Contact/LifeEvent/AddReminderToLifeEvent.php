@@ -3,6 +3,7 @@
 namespace App\Services\Contact\LifeEvent;
 
 use App\Services\BaseService;
+use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Exceptions\MissingParameterException;
@@ -11,17 +12,23 @@ use App\Services\Contact\Reminder\CreateReminder;
 class AddReminderToLifeEvent extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'life_event_id',
-        'date',
-        'frequency_type',
-        'frequency_number',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'life_event_id' => 'required|integer',
+            'date' => 'required|date',
+            'frequency_type' => [
+                'required',
+                Rule::in(Reminder::$frequencyTypes)
+            ],
+            'frequency_number' => 'required|integer',
+        ];
+    }
 
     /**
      * Add a reminder to the life event.
@@ -31,8 +38,8 @@ class AddReminderToLifeEvent extends BaseService
      */
     public function execute(array $data) : Reminder
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
+        if (! $this->validate($data)) {
+            return false;
         }
 
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])

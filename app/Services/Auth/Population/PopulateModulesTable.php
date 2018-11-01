@@ -16,14 +16,17 @@ use App\Exceptions\MissingParameterException;
 class PopulateModulesTable extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'migrate_existing_data',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'migrate_existing_data' => 'required|boolean',
+        ];
+    }
 
     /**
      * The data needed for the query to be executed.
@@ -42,8 +45,8 @@ class PopulateModulesTable extends BaseService
     {
         $this->data = $givenData;
 
-        if (! $this->validateDataStructure($this->data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
+        if (! $this->validate($this->data)) {
+            return false;
         }
 
         $this->createEntries();

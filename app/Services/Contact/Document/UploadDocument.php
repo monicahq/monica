@@ -10,15 +10,18 @@ use App\Exceptions\MissingParameterException;
 class UploadDocument extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'contact_id',
-        'document',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'document' => 'required|file',
+        ];
+    }
 
     /**
      * Upload a document.
@@ -28,8 +31,8 @@ class UploadDocument extends BaseService
      */
     public function execute(array $data) : Document
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
+        if (! $this->validate($data)) {
+            return false;
         }
 
         Contact::where('account_id', $data['account_id'])

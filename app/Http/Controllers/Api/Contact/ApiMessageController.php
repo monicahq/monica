@@ -43,7 +43,7 @@ class ApiMessageController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters();
+            return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -82,7 +82,7 @@ class ApiMessageController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters();
+            return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -116,7 +116,7 @@ class ApiMessageController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters();
+            return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }

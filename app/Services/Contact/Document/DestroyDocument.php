@@ -10,14 +10,17 @@ use App\Exceptions\MissingParameterException;
 class DestroyDocument extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'document_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'document_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Destroy a document.
@@ -27,8 +30,8 @@ class DestroyDocument extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
+        if (! $this->validate($data)) {
+            return false;
         }
 
         $document = Document::where('account_id', $data['account_id'])

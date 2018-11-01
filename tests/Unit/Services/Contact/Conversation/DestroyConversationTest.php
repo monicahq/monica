@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
 use App\Exceptions\MissingParameterException;
@@ -61,8 +62,7 @@ class DestroyConversationTest extends TestCase
             'conversation_id' => $conversation->id,
         ];
 
-        $conversationService = new DestroyConversation;
-        $bool = $conversationService->execute($request);
+        $conversationService = (new DestroyConversation)->execute($request);
 
         $this->assertDatabaseMissing('messages', [
             'id' => $message->id,
@@ -81,22 +81,21 @@ class DestroyConversationTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $conversationService = new DestroyConversation;
-        $bool = $conversationService->execute($request);
+        $conversationService = (new DestroyConversation)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_conversation_doesnt_exist()
     {
+        $account = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([]);
 
         $request = [
-            'account_id' => 231,
+            'account_id' => $account->id,
             'conversation_id' => $conversation->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyConversation = new DestroyConversation;
-        $conversation = $destroyConversation->execute($request);
+        $destroyConversation = (new DestroyConversation)->execute($request);
     }
 }

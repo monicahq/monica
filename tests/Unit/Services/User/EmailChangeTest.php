@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\User;
 
 use Tests\TestCase;
 use App\Models\User\User;
+use App\Models\Account\Account;
 use App\Services\User\EmailChange;
 use App\Notifications\ConfirmEmail;
 use App\Exceptions\MissingParameterException;
@@ -62,18 +63,18 @@ class EmailChangeTest extends TestCase
 
     public function test_it_throws_an_exception_if_user_is_not_linked_to_account()
     {
+        $account = factory(Account::class)->create();
         $user = factory(User::class)->create();
 
         $request = [
-            'account_id' => -1,
+            'account_id' => $account->id,
             'user_id' => $user->id,
             'email' => 'newmail@ok.com',
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $emailChangeService = new EmailChange;
-        $user = $emailChangeService->execute($request);
+        $emailChangeService = (new EmailChange)->execute($request);
     }
 
     public function test_it_update_user_email_and_send_confirmation()

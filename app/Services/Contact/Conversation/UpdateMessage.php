@@ -15,19 +15,22 @@ use App\Exceptions\MissingParameterException;
 class UpdateMessage extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'contact_id',
-        'conversation_id',
-        'message_id',
-        'written_at',
-        'written_by_me',
-        'content',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'conversation_id' => 'required|integer',
+            'message_id' => 'required|integer',
+            'written_at' => 'required|date',
+            'written_by_me' => 'required|boolean',
+            'content' => 'required|string',
+        ];
+    }
 
     /**
      * Update message in a conversation.
@@ -37,8 +40,8 @@ class UpdateMessage extends BaseService
      */
     public function execute(array $data): Message
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
+        if (! $this->validate($data)) {
+            return false;
         }
 
         $message = Message::where('contact_id', $data['contact_id'])
