@@ -83,11 +83,11 @@ class AddMessageToConversationTest extends TestCase
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $account2 = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([
-            'account_id' => $account2->id
+            'account_id' => $account2->id,
         ]);
         $request = [
             'conversation_id' => $conversation->id,

@@ -10,7 +10,6 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Conversation;
 
 class AddMessageToConversation extends BaseService
@@ -43,7 +42,7 @@ class AddMessageToConversation extends BaseService
         if (! $this->validate($data)) {
             return null;
         }
-        
+
         Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
 
