@@ -34,7 +34,7 @@ class UpdateLifeEvent extends BaseService
     public function execute(array $data) : LifeEvent
     {
         if (! $this->validate($data)) {
-            return false;
+            return null;
         }
 
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
