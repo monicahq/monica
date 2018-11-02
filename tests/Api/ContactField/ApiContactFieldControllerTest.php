@@ -3,6 +3,7 @@
 namespace Tests\Api\Contact;
 
 use Tests\ApiTestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
@@ -12,7 +13,7 @@ class ApiContactFieldControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonStructureContactField = [
+    protected $jsonContactField = [
         'id',
         'object',
         'content',
@@ -25,109 +26,272 @@ class ApiContactFieldControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_contact_field()
+    public function test_contact_fields_get_contact_all()
     {
         $user = $this->signin();
-
-        $contact = factory(Contact::class)->create([
-            'account_id' => $user->account_id,
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contactField1 = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contactField2 = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
         ]);
 
-        $field = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account_id,
-        ]);
-
-        $contactField = factory(ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
-            'contact_field_type_id' => $field->id,
-        ]);
-
-        $response = $this->json('GET', '/api/contactfields/'.$contactField->id);
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/contactfields');
 
         $response->assertStatus(200);
-
-        $response->assertJsonFragment([
-            'id' => $contactField->id,
-            'object' => 'contactfield',
-        ]);
-
         $response->assertJsonStructure([
-            'data' => $this->jsonStructureContactField,
+            'data' => ['*' => $this->jsonContactField],
         ]);
-    }
-
-    public function test_contact_field_query_all_account()
-    {
-        $firstuser = $this->signin();
-        $firstcontact = factory(Contact::class)->create([
-            'account_id' => $firstuser->account->id,
-            'first_name' => 'Bad',
-        ]);
-        $firstfield = factory(ContactFieldType::class)->create([
-            'account_id' => $firstuser->account_id,
-        ]);
-        $contactField = factory(ContactField::class)->create([
-            'contact_id' => $firstcontact->id,
-            'account_id' => $firstuser->account_id,
-            'contact_field_type_id' => $firstfield->id,
-        ]);
-
-        $user = $this->signin();
-        $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
-        ]);
-        $field = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account_id,
-        ]);
-        $contactField = factory(ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
-            'contact_field_type_id' => $field->id,
-        ]);
-
-        $response = $this->json('GET', '/api/contacts?with=contactfields&page=1&limit=100&query=email:john@doe');
-
-        $response->assertStatus(200);
-        // Assure that firstcontact from other account is not get (wrong filter on account id)
-        $response->assertJsonMissing([
-            'id' => $firstcontact->id,
-            'first_name' => 'Bad',
-            'account' => [
-                'id' => $firstuser->account->id,
-            ],
-        ]);
-    }
-
-    public function test_contact_query_internationalphone()
-    {
-        $user = $this->signin();
-        $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
-        ]);
-        $field = factory(ContactFieldType::class)->create([
-            'account_id' => $user->account_id,
-            'name' => 'Phone',
-            'protocol' => 'tel:',
-            'type' => 'phone',
-            ]);
-        $contactField = factory(ContactField::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
-            'contact_field_type_id' => $field->id,
-            'data' => '+447007007007',
-        ]);
-
-        $response = $this->json('GET', '/api/contacts?query=Phone:%2B447007007007');
-
-        $response->assertStatus(200);
         $response->assertJsonFragment([
-                'id' => $contact->id,
-                'first_name' => 'John',
-                'last_name' => 'Doe',
-                'account' => [
-                    'id' => $user->account->id,
-                ],
+            'object' => 'contactfield',
+            'id' => $contactField1->id,
         ]);
+        $response->assertJsonMissingExact([
+            'object' => 'contactfield',
+            'id' => $contactField2->id,
+        ]);
+    }
+
+    public function test_contact_fields_get_contact_all_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contacts/0/contactfields');
+
+        $this->expectNotFound($response);
+    }
+
+    public function test_contact_fields_get_one()
+    {
+        $user = $this->signin();
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contactField1 = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+        ]);
+        $contactField2 = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+        ]);
+
+        $response = $this->json('GET', '/api/contactfields/'.$contactField1->id);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonContactField,
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'contactfield',
+            'id' => $contactField1->id,
+        ]);
+        $response->assertJsonMissingExact([
+            'object' => 'contactfield',
+            'id' => $contactField2->id,
+        ]);
+    }
+
+    public function test_contact_fields_get_one_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('GET', '/api/contactfields/0');
+
+        $this->expectNotFound($response);
+    }
+
+    public function test_contact_fields_create()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/contactfields', [
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $field->id,
+            'data' => 'ok',
+        ]);
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'data' => $this->jsonContactField,
+        ]);
+        $contactField_id = $response->json('data.id');
+        $response->assertJsonFragment([
+            'object' => 'contactfield',
+            'id' => $contactField_id,
+        ]);
+
+        $this->assertGreaterThan(0, $contactField_id);
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $contactField_id,
+            'contact_field_type_id' => $field->id,
+            'data' => 'ok',
+        ]);
+    }
+
+    public function test_contact_fields_create_error()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('POST', '/api/contactfields', [
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->expectDataError($response, [
+            'The data field is required.',
+            'The contact field type id field is required.',
+        ]);
+    }
+
+    public function test_contact_fields_create_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $field = factory(ContactFieldType::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/contactfields', [
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $field->id,
+            'data' => 'ok',
+        ]);
+
+        $this->expectNotFound($response);
+    }
+
+    public function test_contact_fields_update()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contactfields/'.$contactField->id, [
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactField->contact_field_type_id,
+            'data' => 'ok',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonContactField,
+        ]);
+        $contactField_id = $response->json('data.id');
+        $this->assertEquals($contactField->id, $contactField_id);
+        $response->assertJsonFragment([
+            'object' => 'contactfield',
+            'id' => $contactField_id,
+        ]);
+
+        $this->assertGreaterThan(0, $contactField_id);
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $contactField_id,
+            'contact_field_type_id' => $contactField->contact_field_type_id,
+            'data' => 'ok',
+        ]);
+    }
+
+    public function test_contact_fields_update_error()
+    {
+        $user = $this->signin();
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contactfields/'.$contactField->id, [
+            'contact_id' => $contactField->contact_id,
+        ]);
+
+        $this->expectDataError($response, [
+            'The data field is required.',
+            'The contact field type id field is required.',
+        ]);
+    }
+
+    public function test_contact_fields_update_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contactfields/'.$contactField->id, [
+            'contact_id' => $contact->id,
+            'contact_field_type_id' => $contactField->contact_field_type_id,
+            'data' => 'ok',
+        ]);
+
+        $this->expectNotFound($response);
+    }
+
+    public function test_contact_fields_delete()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $contactField->id,
+        ]);
+
+        $response = $this->json('DELETE', '/api/contactfields/'.$contactField->id);
+
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('contact_fields', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $contactField->id,
+        ]);
+    }
+
+    public function test_contact_fields_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/contactfields/0');
+
+        $this->expectNotFound($response);
     }
 }

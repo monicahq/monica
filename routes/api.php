@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contacts/{contact}/addresses', 'Api\\ApiAddressController@addresses');
 
     // Contact Fields
-    Route::apiResource('contactfields', 'Api\\ApiContactFieldController');
+    Route::apiResource('contactfields', 'Api\\ApiContactFieldController', ['except' => ['index']]);
     Route::get('/contacts/{contact}/contactfields', 'Api\\ApiContactFieldController@contactFields');
 
     // Pets
@@ -60,7 +60,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Activities
     Route::apiResource('activities', 'Api\\ApiActivityController');
     Route::get('/contacts/{contact}/activities', 'Api\\ApiActivityController@activities');
-    Route::get('/activitytypes', 'Api\\ApiActivityController@activitytypes');
 
     // Reminders
     Route::apiResource('reminders', 'Api\\ApiReminderController');
