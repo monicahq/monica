@@ -31,6 +31,7 @@ class Controller extends BaseController
      */
     protected function respondUnauthorized($errorMessage = null)
     {
+        $data = [];
         if ($errorMessage) {
             $data = ['errors' => $errorMessage];
         }
