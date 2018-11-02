@@ -4,12 +4,10 @@ namespace Tests\Api\Contact;
 
 use Tests\ApiTestCase;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\ContactFieldTypeType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiContactFieldTypeTypeControllerTest extends ApiTestCase
+class ApiContactFieldTypeControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
