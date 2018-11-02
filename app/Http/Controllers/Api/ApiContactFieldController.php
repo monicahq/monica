@@ -37,11 +37,6 @@ class ApiContactFieldController extends ApiController
      */
     public function store(Request $request)
     {
-        $contactField = $this->validateUpdate($request, $request->input('contact_field_type_id'));
-        if (! $contactField instanceof ContactField) {
-            return $contactField;
-        }
-
         try {
             $contactField = ContactField::create(
                 $request->all()
