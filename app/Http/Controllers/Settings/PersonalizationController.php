@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PersonalizationController extends Controller
 {

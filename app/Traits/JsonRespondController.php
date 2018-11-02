@@ -20,7 +20,7 @@ trait JsonRespondController
 
     /**
      * Get HTTP status code of the response.
-     * 
+     *
      * @return int
      */
     public function getHTTPStatusCode()
@@ -30,7 +30,7 @@ trait JsonRespondController
 
     /**
      * Set HTTP status code of the response.
-     * 
+     *
      * @param int $statusCode
      * @return $this
      */
@@ -43,7 +43,7 @@ trait JsonRespondController
 
     /**
      * Get error code of the response.
-     * 
+     *
      * @return int
      */
     public function getErrorCode()
@@ -53,7 +53,7 @@ trait JsonRespondController
 
     /**
      * Set error code of the response.
-     * 
+     *
      * @param int $errorCode
      * @return $this
      */
@@ -66,7 +66,7 @@ trait JsonRespondController
 
     /**
      * Sends a JSON to the consumer.
-     * 
+     *
      * @param  array $data
      * @param  array  $headers [description]
      * @return JsonResponse
@@ -78,7 +78,7 @@ trait JsonRespondController
 
     /**
      * Sends a response not found (404) to the request.
-     * 
+     *
      * @param string $message
      * @return JsonResponse
      */
@@ -91,7 +91,7 @@ trait JsonRespondController
 
     /**
      * Sends a response invalid query (http 500) to the request.
-     * 
+     *
      * @param string $message
      * @return JsonResponse
      */
@@ -105,7 +105,7 @@ trait JsonRespondController
     /**
      * Sends an error when the query didn't have the right parameters for
      * creating an object.
-     * 
+     *
      * @param string $message
      * @return JsonResponse
      */
@@ -118,7 +118,7 @@ trait JsonRespondController
 
     /**
      * Sends an error when the query contains invalid parameters.
-     * 
+     *
      * @param string $message
      * @return JsonResponse
      */
@@ -131,7 +131,7 @@ trait JsonRespondController
 
     /**
      * Sends an error when the validator failed.
-     * 
+     *
      * @param Validator $validator
      * @return JsonResponse
      */
@@ -144,7 +144,7 @@ trait JsonRespondController
 
     /**
      * Sends a response with error.
-     * 
+     *
      * @param string message
      * @return JsonResponse
      */
@@ -161,7 +161,7 @@ trait JsonRespondController
     /**
      * Sends a response that the object has been deleted, and also indicates
      * the id of the object that has been deleted.
-     * 
+     *
      * @param  int $id
      * @return JsonResponse
      */

@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contact\ActivityTypeCategory;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivityTypeCategoriesController extends Controller
 {
