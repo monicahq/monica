@@ -15,7 +15,7 @@ class ApiContactFieldController extends ApiController
 {
     /**
      * Get the detail of a given contactField.
-     * 
+     *
      * @param  Request $request
      * @param  int $contactFieldId
      * @return \Illuminate\Http\Response
@@ -34,7 +34,7 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Store the contactField.
-     * 
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -59,7 +59,7 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Update the contactField.
-     * 
+     *
      * @param  Request $request
      * @param  int $contactFieldId
      * @return \Illuminate\Http\Response
@@ -125,7 +125,7 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Delete a contactField.
-     * 
+     *
      * @param  Request $request
      * @param  int $contactFieldId
      * @return \Illuminate\Http\Response
