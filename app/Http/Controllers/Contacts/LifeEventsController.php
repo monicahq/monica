@@ -124,6 +124,6 @@ class LifeEventsController extends Controller
                 ->withErrors(trans('app.error_save'));
         }
 
-        return 'done';
+        return $this->respondObjectDeleted($lifeEvent->id);
     }
 }

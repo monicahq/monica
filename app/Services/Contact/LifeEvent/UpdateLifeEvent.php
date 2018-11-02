@@ -20,8 +20,8 @@ class UpdateLifeEvent extends BaseService
             'life_event_id' => 'required|integer',
             'life_event_type_id' => 'required|integer',
             'happened_at' => 'required|date',
-            'name' => 'required',
-            'note' => 'required',
+            'name' => 'nullable|string',
+            'note' => 'nullable|string',
         ];
     }
 

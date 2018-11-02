@@ -21,11 +21,11 @@ class CreateLifeEvent extends BaseService
             'contact_id' => 'required|integer',
             'life_event_type_id' => 'required|integer',
             'happened_at' => 'required|date',
-            'name' => 'required',
-            'note' => 'required',
+            'name' => 'string|nullable',
+            'note' => 'string|nullable',
             'has_reminder' => 'required|boolean',
-            'happened_at_month_unknown' => 'required',
-            'happened_at_day_unknown' => 'required',
+            'happened_at_month_unknown' => 'required|boolean',
+            'happened_at_day_unknown' => 'required|boolean',
         ];
     }
 
