@@ -14,7 +14,7 @@ class Controller extends BaseController
 
     /**
      * Handle the ModelNotFoundException.
-     * 
+     *
      * @param ModelNotFoundException $e
      * @return \Illuminate\Http\Response
      */
@@ -25,7 +25,7 @@ class Controller extends BaseController
 
     /**
      * Respond with an Unauthorized message.
-     * 
+     *
      * @param string $errorMessage
      * @return \Illuminate\Http\Response
      */
@@ -34,6 +34,7 @@ class Controller extends BaseController
         if ($errorMessage) {
             $data = ['errors' => $errorMessage];
         }
+
         return response()->json([
             'message' => trans('app.error_unauthorized'),
         ] + $data, 400);
