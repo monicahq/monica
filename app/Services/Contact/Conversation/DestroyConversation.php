@@ -9,19 +9,21 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
-use App\Exceptions\MissingParameterException;
 
 class DestroyConversation extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'conversation_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'conversation_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Destroy a conversation.
@@ -31,9 +33,7 @@ class DestroyConversation extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         $conversation = Conversation::where('account_id', $data['account_id'])
                                     ->findOrFail($data['conversation_id']);

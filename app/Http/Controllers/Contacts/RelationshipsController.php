@@ -86,7 +86,7 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
-            'gender_id' => 'required',
+            'gender_id' => 'required|integer',
             'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
@@ -224,7 +224,7 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
-            'gender_id' => 'required',
+            'gender_id' => 'required|integer',
             'birthdayDate' => 'date_format:Y-m-d',
         ]);
 

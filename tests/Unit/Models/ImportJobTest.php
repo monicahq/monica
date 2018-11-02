@@ -648,6 +648,7 @@ END:VCARD
 
     public function test_it_imports_birthday()
     {
+        config(['monica.requires_subscription' => false]);
         $importJob = $this->createImportJob();
         $vcard = new VCard([
             'BDAY' => '1990-01-01',

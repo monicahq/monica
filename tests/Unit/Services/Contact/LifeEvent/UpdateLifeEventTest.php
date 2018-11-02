@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\LifeEvent;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
@@ -64,19 +65,19 @@ class UpdateLifeEventTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $updateConversation = new UpdateLifeEvent;
-        $lifeEvent = $updateConversation->execute($request);
+        $updateConversation = (new UpdateLifeEvent)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_type_doesnt_exist()
     {
+        $account = factory(Account::class)->create();
         $lifeEvent = factory(LifeEvent::class)->create([]);
         $lifeEventType = factory(LifeEventType::class)->create([
             'account_id' => $lifeEvent->account->id,
         ]);
 
         $request = [
-            'account_id' => 231,
+            'account_id' => $account->id,
             'contact_id' => $lifeEvent->contact->id,
             'life_event_id' => $lifeEvent->id,
             'happened_at' => '2010-02-02',
@@ -87,7 +88,6 @@ class UpdateLifeEventTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateConversation = new UpdateLifeEvent;
-        $lifeEvent = $updateConversation->execute($request);
+        $updateConversation = (new UpdateLifeEvent)->execute($request);
     }
 }

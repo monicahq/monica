@@ -4,20 +4,22 @@ namespace App\Services\User;
 
 use App\Models\User\User;
 use App\Services\BaseService;
-use App\Exceptions\MissingParameterException;
 
 class EmailChange extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'email',
-        'user_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'email' => 'required|email|unique:users',
+            'user_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Update email of the user.
@@ -27,9 +29,7 @@ class EmailChange extends BaseService
      */
     public function execute(array $data) : User
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
