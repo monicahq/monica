@@ -319,6 +319,72 @@ class ApiActivitiesTest extends ApiTestCase
         ]);
     }
 
+    public function test_activities_update_existing()
+    {
+        $user = $this->signin();
+        $activity = factory(Activity::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contact->activities()->attach($activity, [
+            'account_id' => $user->account->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contact2->activities()->attach($activity, [
+            'account_id' => $user->account->id,
+        ]);
+        $this->assertDatabaseHas('activity_contact', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'activity_id' => $activity->id,
+        ]);
+        $this->assertDatabaseHas('activity_contact', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+            'activity_id' => $activity->id,
+        ]);
+
+        $response = $this->json('PUT', '/api/activities/'.$activity->id, [
+            'contacts' => [$contact->id],
+            'description' => 'the description',
+            'summary' => 'the activity',
+            'date_it_happened' => '2018-05-01',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonActivityFull,
+        ]);
+        $activity_id = $response->json('data.id');
+        $this->assertEquals($activity->id, $activity_id);
+        $response->assertJsonFragment([
+            'object' => 'activity',
+            'id' => $activity_id,
+        ]);
+
+        $this->assertGreaterThan(0, $activity_id);
+        $this->assertDatabaseHas('activities', [
+            'account_id' => $user->account->id,
+            'id' => $activity_id,
+            'summary' => 'the activity',
+            'date_it_happened' => '2018-05-01',
+        ]);
+        $this->assertDatabaseHas('activity_contact', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'activity_id' => $activity_id,
+        ]);
+        $this->assertDatabaseMissing('activity_contact', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+            'activity_id' => $activity_id,
+        ]);
+    }
+
     public function test_activities_update_error()
     {
         $user = $this->signin();
