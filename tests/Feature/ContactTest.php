@@ -102,7 +102,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -138,7 +138,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -171,7 +171,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 

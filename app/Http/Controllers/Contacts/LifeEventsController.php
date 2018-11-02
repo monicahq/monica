@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\LifeEventCategory;
@@ -108,11 +109,11 @@ class LifeEventsController extends Controller
      * @param  LifeEvent $lifeEvent
      * @return bool
      */
-    public function destroy(Request $request, Contact $contat, $lifeEventId)
+    public function destroy(Request $request, Contact $contat, LifeEvent $lifeEvent)
     {
         $data = [
             'account_id' => auth()->user()->account->id,
-            'life_event_id' => $lifeEventId,
+            'life_event_id' => $lifeEvent->id,
         ];
 
         try {

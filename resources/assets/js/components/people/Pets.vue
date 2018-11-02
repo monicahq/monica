@@ -162,7 +162,7 @@
             },
 
             getPets() {
-                axios.get('/people/' + this.hash + '/pets')
+                axios.get('/people/' + this.hash + '/pet')
                         .then(response => {
                             this.pets = response.data;
                         });

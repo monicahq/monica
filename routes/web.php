@@ -68,14 +68,14 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/lifeevents/categories', 'Contacts\\LifeEventsController@categories')->name('categories');
             Route::get('/lifeevents/categories/{lifeEventCategory}/types', 'Contacts\\LifeEventsController@types')->name('types');
             Route::post('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@store')->name('store');
-            Route::delete('/lifeevents/{lifeevent}', 'Contacts\\LifeEventsController@destroy')->name('destroy');
+            Route::put('/lifeevents/{lifeEvent}', 'Contacts\\LifeEventsController@update')->name('update');
         });
 
         // Contact information
         Route::get('/people/{contact}/contactfield', 'Contacts\\ContactFieldsController@getContactFields');
         Route::post('/people/{contact}/contactfield', 'Contacts\\ContactFieldsController@storeContactField');
-        Route::put('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@editContactField');
-        Route::delete('/people/{contact}/contactfield/{contact_field}', 'Contacts\\ContactFieldsController@destroyContactField');
+        Route::put('/people/{contact}/contactfield/{contactField}', 'Contacts\\ContactFieldsController@editContactField');
+        Route::delete('/people/{contact}/contactfield/{contactField}', 'Contacts\\ContactFieldsController@destroyContactField');
         Route::get('/people/{contact}/contactfieldtypes', 'Contacts\\ContactFieldsController@getContactFieldTypes');
 
         // Export as vCard
@@ -122,26 +122,26 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Relationships
         Route::name('relationships.')->group(function () {
-            Route::get('/people/{contact}/relationships/new', 'Contacts\\RelationshipsController@new')->name('create');
-            Route::post('/people/{contact}/relationships/store', 'Contacts\\RelationshipsController@store')->name('store');
+            Route::get('/people/{contact}/relationships/create', 'Contacts\\RelationshipsController@create')->name('create');
+            Route::post('/people/{contact}/relationships', 'Contacts\\RelationshipsController@store')->name('store');
             Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('edit');
-            Route::post('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
+            Route::put('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
             Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('delete');
         });
 
         // Pets
         Route::name('pets.')->group(function () {
-            Route::get('/people/{contact}/pets', 'Contacts\\PetsController@get')->name('index');
+            Route::get('/people/{contact}/pet', 'Contacts\\PetsController@index')->name('index');
             Route::post('/people/{contact}/pet', 'Contacts\\PetsController@store')->name('store');
             Route::put('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@update')->name('update');
-            Route::delete('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@trash')->name('delete');
+            Route::delete('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@destroy')->name('delete');
             Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
         });
 
         // Reminders
         Route::name('reminders.')->group(function () {
-            Route::get('/people/{contact}/reminders/add', 'Contacts\\RemindersController@create')->name('add');
-            Route::post('/people/{contact}/reminders/store', 'Contacts\\RemindersController@store')->name('store');
+            Route::get('/people/{contact}/reminders/create', 'Contacts\\RemindersController@create')->name('add');
+            Route::post('/people/{contact}/reminders', 'Contacts\\RemindersController@store')->name('store');
             Route::get('/people/{contact}/reminders/{reminder}/edit', 'Contacts\\RemindersController@edit')->name('edit');
             Route::put('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@update')->name('update');
             Route::delete('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@destroy')->name('delete');
@@ -149,7 +149,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Tasks
         Route::name('tasks.')->group(function () {
-            Route::get('/people/{contact}/tasks', 'Contacts\\TasksController@get')->name('index');
+            Route::get('/people/{contact}/tasks', 'Contacts\\TasksController@index')->name('index');
             Route::post('/people/{contact}/tasks', 'Contacts\\TasksController@store')->name('store');
             Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
             Route::put('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@update')->name('update');
@@ -158,19 +158,19 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Gifts
         Route::name('gifts.')->group(function () {
-            Route::get('/people/{contact}/gifts', 'Contacts\\GiftsController@get')->name('index');
+            Route::get('/people/{contact}/gifts', 'Contacts\\GiftsController@index')->name('index');
             Route::post('/people/{contact}/gifts/{gift}/toggle', 'Contacts\\GiftsController@toggle');
-            Route::get('/people/{contact}/gifts/add', 'Contacts\\GiftsController@create')->name('add');
+            Route::get('/people/{contact}/gifts/create', 'Contacts\\GiftsController@create')->name('add');
             Route::get('/people/{contact}/gifts/{gift}/edit', 'Contacts\\GiftsController@edit')->name('edit');
-            Route::post('/people/{contact}/gifts/store', 'Contacts\\GiftsController@store')->name('store');
+            Route::post('/people/{contact}/gifts', 'Contacts\\GiftsController@store')->name('store');
             Route::post('/people/{contact}/gifts/{gift}/update', 'Contacts\\GiftsController@update')->name('update');
             Route::delete('/people/{contact}/gifts/{gift}', 'Contacts\\GiftsController@destroy')->name('delete');
         });
 
         // Debt
         Route::name('debt.')->group(function () {
-            Route::get('/people/{contact}/debt/add', 'Contacts\\DebtController@create')->name('add');
-            Route::post('/people/{contact}/debt/store', 'Contacts\\DebtController@store')->name('store');
+            Route::get('/people/{contact}/debt/create', 'Contacts\\DebtController@create')->name('add');
+            Route::post('/people/{contact}/debt', 'Contacts\\DebtController@store')->name('store');
             Route::get('/people/{contact}/debt/{debt}/edit', 'Contacts\\DebtController@edit')->name('edit');
             Route::put('/people/{contact}/debt/{debt}', 'Contacts\\DebtController@update')->name('update');
             Route::delete('/people/{contact}/debt/{debt}', 'Contacts\\DebtController@destroy')->name('delete');
@@ -185,7 +185,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         // Conversations
         Route::name('conversation.')->group(function () {
             Route::get('/people/{contact}/conversations', 'Contacts\\ConversationsController@index')->name('index');
-            Route::get('/people/{contact}/conversation/new', 'Contacts\\ConversationsController@new')->name('new');
+            Route::get('/people/{contact}/conversation/create', 'Contacts\\ConversationsController@create')->name('new');
             Route::post('/people/{contact}/conversation/store', 'Contacts\\ConversationsController@store')->name('store');
             Route::get('/people/{contact}/conversation/{conversation}/edit', 'Contacts\\ConversationsController@edit')->name('edit');
             Route::post('/people/{contact}/conversation/{conversation}', 'Contacts\\ConversationsController@update')->name('update');
@@ -195,7 +195,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         // Documents
         Route::name('document.')->group(function () {
             Route::get('/people/{contact}/documents', 'Contacts\\DocumentsController@index')->name('index');
-            Route::post('/people/{contact}/document/store', 'Contacts\\DocumentsController@store')->name('store');
+            Route::post('/people/{contact}/document', 'Contacts\\DocumentsController@store')->name('store');
             Route::delete('/people/{contact}/documents/{document}', 'Contacts\\DocumentsController@destroy')->name('destroy');
         });
 
@@ -248,29 +248,20 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/personalization', 'Settings\\PersonalizationController@index')->name('index');
             Route::get('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@getContactFieldTypes');
             Route::post('/settings/personalization/contactfieldtypes', 'Settings\\PersonalizationController@storeContactFieldType');
-            Route::put('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@editContactFieldType');
-            Route::delete('/settings/personalization/contactfieldtypes/{contactfieldtype_id}', 'Settings\\PersonalizationController@destroyContactFieldType');
+            Route::put('/settings/personalization/contactfieldtypes/{contactFieldType}', 'Settings\\PersonalizationController@editContactFieldType');
+            Route::delete('/settings/personalization/contactfieldtypes/{contactFieldType}', 'Settings\\PersonalizationController@destroyContactFieldType');
 
-            Route::get('/settings/personalization/genders', 'Settings\\GendersController@getGenderTypes');
-            Route::post('/settings/personalization/genders', 'Settings\\GendersController@storeGender');
-            Route::put('/settings/personalization/genders/{gender}', 'Settings\\GendersController@updateGender');
-            Route::delete('/settings/personalization/genders/{gender}/replaceby/{gender_id}', 'Settings\\GendersController@destroyAndReplaceGender');
-            Route::delete('/settings/personalization/genders/{gender}', 'Settings\\GendersController@destroyGender');
+            Route::apiResource('/settings/personalization/genders', 'Settings\\GendersController');
+            Route::delete('/settings/personalization/genders/{gender}/replaceby/{genderToReplaceWith}', 'Settings\\GendersController@destroyAndReplaceGender');
 
-            Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@get');
+            Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@index');
             Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
 
-            Route::get('/settings/personalization/modules', 'Settings\\ModulesController@get');
+            Route::get('/settings/personalization/modules', 'Settings\\ModulesController@index');
             Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
 
-            Route::get('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@index');
-            Route::post('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@create');
-            Route::put('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController@update');
-            Route::delete('/settings/personalization/activitytypecategories/{activityTypeCategory}', 'Settings\\ActivityTypeCategoriesController@destroy');
-
-            Route::post('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@create');
-            Route::put('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController@update');
-            Route::delete('/settings/personalization/activitytypes/{activityType}', 'Settings\\ActivityTypesController@destroy');
+            Route::apiResource('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController');
+            Route::apiResource('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController', ['except' => ['index']]);
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');

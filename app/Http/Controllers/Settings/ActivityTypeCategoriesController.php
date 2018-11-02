@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivityTypeCategoriesController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get all the activity type categories.
      */
@@ -44,7 +47,7 @@ class ActivityTypeCategoriesController extends Controller
     /**
      * Store the activity type category.
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -68,18 +71,11 @@ class ActivityTypeCategoriesController extends Controller
     /**
      * Update the given activity type category.
      */
-    public function update(Request $request)
+    public function update(Request $request, ActivityTypeCategory $activityTypeCategory)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
         ])->validate();
-
-        try {
-            $activityTypeCategory = ActivityTypeCategory::where('account_id', auth()->user()->account_id)
-                ->findOrFail($request->get('id'));
-        } catch (ModelNotFoundException $e) {
-            return trans('settings.personalization_activity_type_modal_delete_error');
-        }
 
         $activityTypeCategory->update(
             $request->only([
@@ -93,16 +89,11 @@ class ActivityTypeCategoriesController extends Controller
     /**
      * Destroy an activity type category.
      */
-    public function destroy(Request $request, $activityTypeCategoryId)
+    public function destroy(Request $request, ActivityTypeCategory $activityTypeCategory)
     {
-        try {
-            $activityTypeCategory = ActivityTypeCategory::where('account_id', auth()->user()->account_id)
-                ->findOrFail($activityTypeCategoryId);
-        } catch (ModelNotFoundException $e) {
-            return trans('settings.personalization_activity_type_modal_delete_error');
-        }
-
         $activityTypeCategory->deleteAllAssociatedActivityTypes();
         $activityTypeCategory->delete();
+
+        return $this->respondObjectDeleted($activityTypeCategory->id);
     }
 }
