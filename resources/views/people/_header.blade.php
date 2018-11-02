@@ -1,3 +1,40 @@
+<div class="ph3 ph5-ns pv2 cf w-100">
+    <div class="mw9 center dt w-100 box-shadow pa4">
+      <h1 class="tc">
+        <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
+      </h1>
+      <ul class="tc {{ htmldir() == 'ltr' ? 'tl-ns' : 'tc-ns' }}">
+        {{-- AGE --}}
+        <li class="di {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+          @if ($contact->birthday_special_date_id && !($contact->is_dead))
+            @if ($contact->birthdate->getAge())
+              <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_birthday')</span>
+              <span class="light-silver f4">{{ $contact->birthdate->getAge() }}</span>
+            @endif
+          @elseif ($contact->is_dead)
+            @if (! is_null($contact->deceasedDate))
+              <span class="light-silver f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
+            @endif
+          @endif
+        </li>
+
+        {{-- FAMILY --}}
+        <li class="di {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+          <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_people')</span>
+          3 family members
+        </li>
+
+        {{-- DESCRIPTION --}}
+        @if ($contact->description)
+        <li class="di {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+          @include('partials.icons.header_description')
+          {{ $contact->description }}
+        </li>
+        @endif
+      </ul>
+    </div>
+</div>
+
 <div class="pagehead">
   <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">

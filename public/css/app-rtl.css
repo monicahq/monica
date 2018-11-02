@@ -19509,6 +19509,14 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
   background-color: #f1f5fd;
 }
 
+.box-shadow {
+  background: #fff;
+  border: 1px solid #e7e7e7;
+  -webkit-box-shadow: 1px -1px 4px rgba(122, 122, 122, 0.25);
+          box-shadow: 1px -1px 4px rgba(122, 122, 122, 0.25);
+  border-radius: 11px;
+}
+
 .w-5 {
   width: 5%;
 }
