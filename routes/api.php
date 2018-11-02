@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contacts/{contact}/addresses', 'Api\\ApiAddressController@addresses');
 
     // Contact Fields
-    Route::apiResource('contactfields', 'Api\\ApiContactFieldController');
+    Route::apiResource('contactfields', 'Api\\ApiContactFieldController', ['except' => ['index']]);
     Route::get('/contacts/{contact}/contactfields', 'Api\\ApiContactFieldController@contactFields');
 
     // Pets
