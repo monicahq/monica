@@ -35,7 +35,7 @@
         </div>
 
         <div class="w-100" v-show="contactInformation.edit">
-          <form class="measure center">
+          <form class="measure center" v-on:submit.prevent="update(contactInformation)">
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
                 {{ $t('people.contact_info_form_content') }}
@@ -56,7 +56,7 @@
     </ul>
 
     <div v-if="addMode">
-      <form class="measure center">
+      <form class="measure center" v-on:submit.prevent="store">
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
             {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">{{ $t('people.contact_info_form_personalize') }}</a>
