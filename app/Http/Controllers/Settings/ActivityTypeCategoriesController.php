@@ -70,29 +70,29 @@ class ActivityTypeCategoriesController extends Controller
     /**
      * Update the given activity type category.
      */
-    public function update(Request $request, ActivityTypeCategory $activityTypeCategory)
+    public function update(Request $request, ActivityTypeCategory $activitytypecategory)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
         ])->validate();
 
-        $activityTypeCategory->update(
+        $activitytypecategory->update(
             $request->only([
                 'name',
             ])
         );
 
-        return $activityTypeCategory;
+        return $activitytypecategory;
     }
 
     /**
      * Destroy an activity type category.
      */
-    public function destroy(Request $request, ActivityTypeCategory $activityTypeCategory)
+    public function destroy(Request $request, ActivityTypeCategory $activitytypecategory)
     {
-        $activityTypeCategory->deleteAllAssociatedActivityTypes();
-        $activityTypeCategory->delete();
+        $activitytypecategory->deleteAllAssociatedActivityTypes();
+        $activitytypecategory->delete();
 
-        return $this->respondObjectDeleted($activityTypeCategory->id);
+        return $this->respondObjectDeleted($activitytypecategory->id);
     }
 }

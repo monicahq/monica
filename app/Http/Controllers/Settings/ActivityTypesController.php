@@ -51,30 +51,30 @@ class ActivityTypesController extends Controller
     /**
      * Update the given activity type.
      */
-    public function update(Request $request, ActivityType $activityType)
+    public function update(Request $request, ActivityType $activitytype)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
             'id' => 'required|integer',
         ])->validate();
 
-        $activityType->update(
+        $activitytype->update(
             $request->only([
                 'name',
             ])
         );
 
-        return $activityType;
+        return $activitytype;
     }
 
     /**
      * Destroy an activity type.
      */
-    public function destroy(Request $request, ActivityType $activityType)
+    public function destroy(Request $request, ActivityType $activitytype)
     {
-        $activityType->resetAssociationWithActivities();
-        $activityType->delete();
+        $activitytype->resetAssociationWithActivities();
+        $activitytype->delete();
 
-        return $this->respondObjectDeleted($activityType->id);
+        return $this->respondObjectDeleted($activitytype->id);
     }
 }

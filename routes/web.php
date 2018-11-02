@@ -251,7 +251,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::put('/settings/personalization/contactfieldtypes/{contactFieldType}', 'Settings\\PersonalizationController@editContactFieldType');
             Route::delete('/settings/personalization/contactfieldtypes/{contactFieldType}', 'Settings\\PersonalizationController@destroyContactFieldType');
 
-            Route::apiResource('/settings/personalization/genders', 'Settings\\GendersController');
+            Route::apiResource('settings/personalization/genders', 'Settings\\GendersController');
             Route::delete('/settings/personalization/genders/{gender}/replaceby/{genderToReplaceWith}', 'Settings\\GendersController@destroyAndReplaceGender');
 
             Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@index');
@@ -260,8 +260,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/personalization/modules', 'Settings\\ModulesController@index');
             Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
 
-            Route::apiResource('/settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController');
-            Route::apiResource('/settings/personalization/activitytypes', 'Settings\\ActivityTypesController', ['except' => ['index']]);
+            Route::apiResource('settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController');
+            Route::apiResource('settings/personalization/activitytypes', 'Settings\\ActivityTypesController', ['except' => ['index']]);
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
