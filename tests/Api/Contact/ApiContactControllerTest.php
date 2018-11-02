@@ -525,7 +525,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonStructureContactWithContactFields,],
+            'data' => ['*' => $this->jsonStructureContactWithContactFields],
         ]);
 
         $response->assertJsonFragment([
@@ -777,7 +777,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2002-01-01T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertGreaterThan(0, $contact_id);
@@ -799,7 +799,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->first_met_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
-            'date' => '2002-01-01'
+            'date' => '2002-01-01',
         ]);
     }
 
@@ -843,7 +843,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => false,
             'birthdate' => '1980-05-01',
-            'birthdate_is_year_unknown' => false
+            'birthdate_is_year_unknown' => false,
         ]);
 
         $response->assertStatus(201);
@@ -861,7 +861,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '1980-05-01T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertGreaterThan(0, $contact_id);
@@ -882,7 +882,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->birthday_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
-            'date' => '1980-05-01'
+            'date' => '1980-05-01',
         ]);
     }
 
@@ -904,7 +904,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => false,
             'birthdate' => '2010-05-01',
-            'birthdate_is_year_unknown' => true
+            'birthdate_is_year_unknown' => true,
         ]);
 
         $response->assertStatus(201);
@@ -922,7 +922,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2017-05-01T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => true,
-            ]
+            ],
         ]);
 
         $this->assertGreaterThan(0, $contact_id);
@@ -943,7 +943,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->birthday_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => true,
-            'date' => '2017-05-01'
+            'date' => '2017-05-01',
         ]);
     }
 
@@ -983,7 +983,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '1980-01-01T00:00:00Z',
                 'is_age_based' => true,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertGreaterThan(0, $contact_id);
@@ -1004,10 +1004,9 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->birthday_special_date_id,
             'is_age_based' => true,
             'is_year_unknown' => false,
-            'date' => '1980-01-01'
+            'date' => '1980-01-01',
         ]);
     }
-
 
     public function test_contact_create_deceased_date()
     {
@@ -1024,7 +1023,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => true,
             'deceased_date' => '2009-06-25',
-            'deceased_date_is_year_unknown' => false
+            'deceased_date_is_year_unknown' => false,
         ]);
 
         $response->assertStatus(201);
@@ -1042,7 +1041,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2009-06-25T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertGreaterThan(0, $contact_id);
@@ -1063,7 +1062,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->deceased_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
-            'date' => '2009-06-25'
+            'date' => '2009-06-25',
         ]);
     }
 
@@ -1085,7 +1084,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => true,
             'deceased_date' => '2009-06-25',
-            'deceased_date_is_year_unknown' => true
+            'deceased_date_is_year_unknown' => true,
         ]);
 
         $response->assertStatus(201);
@@ -1103,7 +1102,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2017-06-25T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => true,
-            ]
+            ],
         ]);
 
         $this->assertGreaterThan(0, $contact_id);
@@ -1124,7 +1123,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->deceased_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => true,
-            'date' => '2017-06-25'
+            'date' => '2017-06-25',
         ]);
     }
 
@@ -1146,7 +1145,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => true,
             'deceased_date_age' => '8',
-            'deceased_date_is_age_based' => true
+            'deceased_date_is_age_based' => true,
         ]);
 
         $response->assertStatus(201);
@@ -1164,7 +1163,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2009-01-01T00:00:00Z',
                 'is_age_based' => true,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertGreaterThan(0, $contact_id);
@@ -1186,7 +1185,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->deceased_special_date_id,
             'is_age_based' => true,
             'is_year_unknown' => false,
-            'date' => '2009-01-01'
+            'date' => '2009-01-01',
         ]);
     }
 
@@ -1372,7 +1371,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2002-01-01T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1392,7 +1391,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact->id)->first_met_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
-            'date' => '2002-01-01'
+            'date' => '2002-01-01',
         ]);
     }
 
@@ -1442,7 +1441,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => false,
             'birthdate' => '1980-05-01',
-            'birthdate_is_year_unknown' => false
+            'birthdate_is_year_unknown' => false,
         ]);
 
         $response->assertStatus(200);
@@ -1459,7 +1458,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '1980-05-01T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1478,7 +1477,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact->id)->birthday_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
-            'date' => '1980-05-01'
+            'date' => '1980-05-01',
         ]);
     }
 
@@ -1503,7 +1502,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => false,
             'birthdate' => '2010-05-01',
-            'birthdate_is_year_unknown' => true
+            'birthdate_is_year_unknown' => true,
         ]);
 
         $response->assertStatus(200);
@@ -1520,7 +1519,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2017-05-01T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => true,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1539,7 +1538,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact->id)->birthday_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => true,
-            'date' => '2017-05-01'
+            'date' => '2017-05-01',
         ]);
     }
 
@@ -1581,7 +1580,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '1980-01-01T00:00:00Z',
                 'is_age_based' => true,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1600,7 +1599,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact->id)->birthday_special_date_id,
             'is_age_based' => true,
             'is_year_unknown' => false,
-            'date' => '1980-01-01'
+            'date' => '1980-01-01',
         ]);
     }
 
@@ -1622,7 +1621,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => true,
             'deceased_date' => '2009-06-25',
-            'deceased_date_is_year_unknown' => false
+            'deceased_date_is_year_unknown' => false,
         ]);
 
         $response->assertStatus(200);
@@ -1639,7 +1638,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2009-06-25T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1658,7 +1657,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact->id)->deceased_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
-            'date' => '2009-06-25'
+            'date' => '2009-06-25',
         ]);
     }
 
@@ -1683,7 +1682,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => true,
             'deceased_date' => '2009-06-25',
-            'deceased_date_is_year_unknown' => true
+            'deceased_date_is_year_unknown' => true,
         ]);
 
         $response->assertStatus(200);
@@ -1700,7 +1699,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2017-06-25T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => true,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1719,7 +1718,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact->id)->deceased_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => true,
-            'date' => '2017-06-25'
+            'date' => '2017-06-25',
         ]);
     }
 
@@ -1744,7 +1743,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_partial' => false,
             'is_dead' => true,
             'deceased_date_age' => '8',
-            'deceased_date_is_age_based' => true
+            'deceased_date_is_age_based' => true,
         ]);
 
         $response->assertStatus(200);
@@ -1761,7 +1760,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'date' => '2009-01-01T00:00:00Z',
                 'is_age_based' => true,
                 'is_year_unknown' => false,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1781,7 +1780,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact->id)->deceased_special_date_id,
             'is_age_based' => true,
             'is_year_unknown' => false,
-            'date' => '2009-01-01'
+            'date' => '2009-01-01',
         ]);
     }
 }

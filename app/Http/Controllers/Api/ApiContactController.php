@@ -156,9 +156,9 @@ class ApiContactController extends ApiController
         try {
             $contact->update(
                 $request->except([
-                    'first_met_information'
+                    'first_met_information',
                 ]) + [
-                    'first_met_additional_info' => $request->get('first_met_information')
+                    'first_met_additional_info' => $request->get('first_met_information'),
                 ]
             );
         } catch (QueryException $e) {

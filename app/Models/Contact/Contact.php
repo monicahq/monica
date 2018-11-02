@@ -1335,7 +1335,7 @@ class Contact extends Model
         $specialDate = new SpecialDate;
         $specialDate->setToContact($this)->createFromAge($age);
 
-        switch($occasion) {
+        switch ($occasion) {
             case 'birthdate':
                 $this->birthday_special_date_id = $specialDate->id;
                 break;
