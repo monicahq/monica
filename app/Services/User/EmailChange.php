@@ -4,7 +4,6 @@ namespace App\Services\User;
 
 use App\Models\User\User;
 use App\Services\BaseService;
-use App\Notifications\ConfirmEmail;
 use App\Exceptions\MissingParameterException;
 
 class EmailChange extends BaseService
@@ -40,11 +39,10 @@ class EmailChange extends BaseService
 
         if (config('monica.signup_double_optin')) {
             // Resend validation token
-            $user->confirmation_code = str_random(30);
-            $user->confirmed = false;
+            $user->email_verified_at = null;
             $user->save();
 
-            $user->notify(new ConfirmEmail(true));
+            $user->sendEmailVerificationNotification();
         } else {
             $user->save();
         }

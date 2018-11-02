@@ -9,7 +9,6 @@
         "ext-bcmath": "*",
         "ext-intl": "*",
         "bacon/bacon-qr-code": "^1.0",
-        "bestmomo/laravel-email-confirmation": "^1.1",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
         "erusev/parsedown": "~1.7",
@@ -31,15 +30,16 @@
         "mariuzzo/laravel-js-localization": "^1.4",
         "matriphe/iso-639": "^1.0",
         "moneyphp/money": "^3.1",
-        "ok/ipstack-client": "^1.2",
         "monicahq/laravel-cloudflare": "^1.0",
+        "ok/ipstack-client": "^1.2",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/countries-laravel": "^0.6.1",
         "pragmarx/google2fa": "^3.0",
         "pragmarx/google2fa-laravel": "^0.2",
         "pragmarx/recovery": "^0.1",
         "predis/predis": "^1.1",
-        "sabre/vobject": "^4.1",
+        "ralouphie/mimey": "^2.0",
+        "sabre/dav": "^3.2",
         "sentry/sentry-laravel": "^0.10",
         "stevebauman/location": "^3.0",
         "symfony/translation": "^4.0",
@@ -61,7 +61,7 @@
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~4.0",
-        "vimeo/psalm": "^2.0"
+        "vimeo/psalm": "~2.0"
     },
     "suggest": {
         "ext-apcu": "*"

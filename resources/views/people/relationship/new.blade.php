@@ -51,19 +51,19 @@
               <div class="dtc pr2">
                 <form-input
                   value=""
-                  v-bind:input-type="'text'"
-                  v-bind:id="'first_name'"
-                  v-bind:required="true"
-                  v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                  :input-type="'text'"
+                  :id="'first_name'"
+                  :required="true"
+                  :title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
               <div class="dtc">
                 <form-input
                   value=""
-                  v-bind:input-type="'text'"
-                  v-bind:id="'last_name'"
-                  v-bind:required="false"
-                  v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                  :input-type="'text'"
+                  :id="'last_name'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
             </div>
@@ -74,19 +74,19 @@
               <div class="dtc pr2">
                 <form-input
                   value=""
-                  v-bind:input-type="'text'"
-                  v-bind:id="'last_name'"
-                  v-bind:required="false"
-                  v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                  :input-type="'text'"
+                  :id="'last_name'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
               <div class="dtc">
                 <form-input
                   value=""
-                  v-bind:input-type="'text'"
-                  v-bind:id="'first_name'"
-                  v-bind:required="true"
-                  v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                  :input-type="'text'"
+                  :id="'first_name'"
+                  :required="true"
+                  :title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
             </div>
@@ -99,18 +99,18 @@
         <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
           <form-select
             :options="{{ $genders }}"
-            v-bind:required="true"
-            v-bind:title="'{{ trans('people.people_add_gender') }}'"
-            v-bind:id="'gender_id'">
+            :required="true"
+            :title="'{{ trans('people.people_add_gender') }}'"
+            :id="'gender_id'">
           </form-select>
         </div>
 
         {{-- Birthdate --}}
         <form-specialdate
-          v-bind:months="{{ $months }}"
-          v-bind:days="{{ $days }}"
-          v-bind:default-date="'{{ $birthdate }}'"
-          v-bind:locale="'{{ auth()->user()->locale }}'"
+          :months="{{ $months }}"
+          :days="{{ $days }}"
+          :default-date="'{{ $birthdate }}'"
+          :locale="'{{ auth()->user()->locale }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
@@ -131,13 +131,13 @@
             </div>
           @else
             <contact-select
-              v-bind:required="true"
-              v-bind:title="'{{ trans('people.relationship_form_associate_dropdown') }}'"
-              v-bind:name="'existing_contact_id'"
-              v-bind:placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
-              v-bind:default-options="{{ $existingContacts }}"
-              v-bind:user-contact-id="'{{ $contact->hashID() }}'"
-              v-bind:inputId="'{{ $contact->hashID() }}'">
+              :required="true"
+              :title="'{{ trans('people.relationship_form_associate_dropdown') }}'"
+              :name="'existing_contact_id'"
+              :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
+              :default-options="{{ $existingContacts }}"
+              :user-contact-id="'{{ $contact->hashID() }}'"
+              :inputId="'{{ $contact->hashID() }}'">
             </contact-select>
           @endif
         </div>
@@ -148,9 +148,9 @@
         <form-select
           :options="{{ $relationshipTypes }}"
           value="{{ $type }}"
-          v-bind:required="true"
-          v-bind:title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
-          v-bind:id="'relationship_type_id'">
+          :required="true"
+          :title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
+          :id="'relationship_type_id'">
         </form-select>
       </div>
 

@@ -29,28 +29,28 @@
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
-                  v-bind:input-type="'text'"
-                  v-bind:id="'firstname'"
-                  v-bind:required="true"
-                  v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                  :input-type="'text'"
+                  :id="'firstname'"
+                  :required="true"
+                  :title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
-                  v-bind:input-type="'text'"
-                  v-bind:id="'lastname'"
-                  v-bind:required="false"
-                  v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                  :input-type="'text'"
+                  :id="'lastname'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
               <div class="dtc-ns pb0-ns w-100">
                 <form-input
                   value="{{ $contact->nickname }}"
-                  v-bind:input-type="'text'"
-                  v-bind:id="'nickname'"
-                  v-bind:required="false"
-                  v-bind:title="'{{ trans('people.people_add_nickname') }}'">
+                  :input-type="'text'"
+                  :id="'nickname'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_nickname') }}'">
                 </form-input>
               </div>
             </div>
@@ -61,28 +61,28 @@
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->last_name }}"
-                  v-bind:input-type="'text'"
-                  v-bind:id="'lastname'"
-                  v-bind:required="false"
-                  v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                  :input-type="'text'"
+                  :id="'lastname'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
               <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->first_name }}"
-                  v-bind:input-type="'text'"
-                  v-bind:id="'firstname'"
-                  v-bind:required="true"
-                  v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                  :input-type="'text'"
+                  :id="'firstname'"
+                  :required="true"
+                  :title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
               <div class="dtc-ns pb0-ns w-100">
                 <form-input
                   value="{{ $contact->nickname }}"
-                  v-bind:input-type="'text'"
-                  v-bind:id="'nickname'"
-                  v-bind:required="false"
-                  v-bind:title="'{{ trans('people.information_edit_description') }}'">
+                  :input-type="'text'"
+                  :id="'nickname'"
+                  :required="false"
+                  :title="'{{ trans('people.information_edit_description') }}'">
                 </form-input>
               </div>
             </div>
@@ -97,9 +97,9 @@
             <form-select
               :options="{{ $genders }}"
               value="{{ $contact->gender_id }}"
-              v-bind:required="true"
-              v-bind:title="'{{ trans('people.people_add_gender') }}'"
-              v-bind:id="'gender'">
+              :required="true"
+              :title="'{{ trans('people.people_add_gender') }}'"
+              :id="'gender'">
             </form-select>
           </div>
         </div>
@@ -109,10 +109,10 @@
           <div class="mb3 mb0-ns">
             <form-input
               value="{{ $contact->description }}"
-              v-bind:input-type="'text'"
-              v-bind:id="'description'"
-              v-bind:required="false"
-              v-bind:title="'{{ trans('people.information_edit_description') }}'">
+              :input-type="'text'"
+              :id="'description'"
+              :required="false"
+              :title="'{{ trans('people.information_edit_description') }}'">
             </form-input>
             <small id="emailHelp" class="form-text text-muted">{{ trans('people.information_edit_description_help') }}</small>
           </div>
@@ -129,14 +129,14 @@
 
         {{-- Birthdate --}}
         <form-specialdate
-          v-bind:months="{{ $months }}"
-          v-bind:days="{{ $days }}"
-          v-bind:month="{{ $month }}"
-          v-bind:day="{{ $day }}"
-          v-bind:age="'{{ $age }}'"
-          v-bind:default-date="'{{ $birthdate }}'"
-          v-bind:locale="'{{ auth()->user()->locale }}'"
-          v-bind:reminder={{ $hasBirthdayReminder }}
+          :months="{{ $months }}"
+          :days="{{ $days }}"
+          :month="{{ $month }}"
+          :day="{{ $day }}"
+          :age="'{{ $age }}'"
+          :default-date="'{{ $birthdate }}'"
+          :locale="'{{ auth()->user()->locale }}'"
+          :reminder={{ $hasBirthdayReminder }}
           :value="'{{ $birthdayState }}'"
         ></form-specialdate>
 

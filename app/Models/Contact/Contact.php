@@ -5,6 +5,7 @@ namespace App\Models\Contact;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
+use Illuminate\Support\Str;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
@@ -358,6 +359,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Document records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
      * Get the Life event records associated with the contact.
      *
      * @return HasMany
@@ -519,7 +530,7 @@ class Contact extends Model
      */
     public function getInitialsAttribute()
     {
-        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->name, $initials);
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', Str::ascii($this->name), $initials);
 
         return implode('', $initials[0]);
     }

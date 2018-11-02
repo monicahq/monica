@@ -133,6 +133,13 @@
                 @include('people.debt.index')
               </div>
               @endif
+
+              @if ($modules->contains('key', 'documents'))
+              <div class="row section">
+                @include('people.documents.index')
+              </div>
+              @endif
+
             </div>
           </div>
         </div>

@@ -47,8 +47,6 @@ class PopulateModulesTable extends BaseService
         }
 
         $this->createEntries();
-
-        $this->markTableAsMigrated();
     }
 
     /**
@@ -100,16 +98,5 @@ class PopulateModulesTable extends BaseService
             'delible' => $defaultModule->delible,
             'active' => $defaultModule->active,
         ]);
-    }
-
-    /**
-     * Mark the table as migrated.
-     *
-     * @return void
-     */
-    private function markTableAsMigrated()
-    {
-        DB::table('default_contact_modules')
-            ->update(['migrated' => 1]);
     }
 }

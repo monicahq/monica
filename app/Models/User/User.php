@@ -12,15 +12,17 @@ use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasApiTokens;
 
@@ -473,5 +475,15 @@ class User extends Authenticatable
         }
 
         return $nameOrder;
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new ConfirmEmail(true));
     }
 }

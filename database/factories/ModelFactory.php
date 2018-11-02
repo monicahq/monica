@@ -13,16 +13,16 @@
 
 $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) {
     return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
         'email' => $faker->safeEmail,
+        'email_verified_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
         'locale' => 'en',
-        'confirmed' => true,
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
     ];
 });
 
@@ -332,6 +332,17 @@ $factory->define(App\Models\Contact\Message::class, function (Faker\Generator $f
                 'account_id' => $data['account_id'],
             ])->id;
         },
+    ];
+});
+
+$factory->define(App\Models\Contact\Document::class, function (Faker\Generator $faker) {
+    $contact = factory(App\Models\Contact\Contact::class)->create();
+
+    return [
+        'account_id' => $contact->account_id,
+        'contact_id' => $contact->id,
+        'original_filename' => 'file.jpg',
+        'new_filename' => 'file.jpg',
     ];
 });
 
