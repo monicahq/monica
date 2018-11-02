@@ -162,14 +162,14 @@
             },
 
             getPets() {
-                axios.get('/people/' + this.hash + '/pet')
+                axios.get('/people/' + this.hash + '/pets')
                         .then(response => {
                             this.pets = response.data;
                         });
             },
 
             store() {
-                axios.post('/people/' + this.hash + '/pet', this.createForm)
+                axios.post('/people/' + this.hash + '/pets', this.createForm)
                       .then(response => {
                           this.addMode = false;
                           this.pets.push(response.data);
@@ -198,7 +198,7 @@
             },
 
             update(pet) {
-                axios.put('/people/' + this.hash + '/pet/' + pet.id, this.updateForm)
+                axios.put('/people/' + this.hash + '/pets/' + pet.id, this.updateForm)
                       .then(response => {
                           Vue.set(pet, 'edit', !pet.edit);
                           Vue.set(pet, 'name', response.data.name);
@@ -215,7 +215,7 @@
             },
 
             trash(pet) {
-                axios.delete('/people/' + this.hash + '/pet/' + pet.id)
+                axios.delete('/people/' + this.hash + '/pets/' + pet.id)
                       .then(response => {
                           this.getPets();
 

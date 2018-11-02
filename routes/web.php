@@ -50,17 +50,17 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
     Route::get('/changelog', 'ChangelogController@index')->name('changelog.index');
 
     Route::name('people.')->group(function () {
-        Route::get('/people', 'ContactsController@index')->name('index');
-        Route::get('/people/add', 'ContactsController@create')->name('create');
         Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
-        Route::post('/people', 'ContactsController@store')->name('store');
         Route::get('/people/archived', 'ContactsController@archived')->name('archived');
 
         // Dashboard
+        Route::get('/people', 'ContactsController@index')->name('index');
+        Route::get('/people/add', 'ContactsController@create')->name('create');
+        Route::post('/people', 'ContactsController@store')->name('store');
         Route::get('/people/{contact}', 'ContactsController@show')->name('show');
         Route::get('/people/{contact}/edit', 'ContactsController@edit')->name('edit');
-        Route::post('/people/{contact}/update', 'ContactsController@update')->name('update');
-        Route::delete('/people/{contact}', 'ContactsController@delete')->name('delete');
+        Route::put('/people/{contact}', 'ContactsController@update')->name('update');
+        Route::delete('/people/{contact}', 'ContactsController@destroy')->name('destroy');
 
         // Life events
         Route::name('lifeevent.')->group(function () {
@@ -83,7 +83,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Addresses
         Route::get('/countries', 'Contacts\\AddressesController@getCountries');
-        Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@get');
+        Route::get('/people/{contact}/addresses', 'Contacts\\AddressesController@index');
         Route::post('/people/{contact}/addresses', 'Contacts\\AddressesController@store');
         Route::put('/people/{contact}/addresses/{address}', 'Contacts\\AddressesController@edit');
         Route::delete('/people/{contact}/addresses/{address}', 'Contacts\\AddressesController@destroy');
@@ -106,13 +106,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         // Notes
-        Route::name('notes.')->group(function () {
-            Route::get('/people/{contact}/notes', 'Contacts\\NotesController@get');
-            Route::post('/people/{contact}/notes', 'Contacts\\NotesController@store')->name('store');
-            Route::put('/people/{contact}/notes/{note}', 'Contacts\\NotesController@update');
-            Route::delete('/people/{contact}/notes/{note}', 'Contacts\\NotesController@destroy');
-            Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
-        });
+        Route::resource('/people/{contact}/notes', 'Contacts\\NotesController')->only([
+            'index', 'store', 'update', 'destroy'
+        ]);
+        Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle')->name('notes.toggle');
 
         // Food preferencies
         Route::name('food.')->group(function () {
@@ -121,83 +118,43 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         // Relationships
+        Route::resource('/people/{contact}/relationships', 'Contacts\\RelationshipsController')->only(['create', 'store']);
         Route::name('relationships.')->group(function () {
-            Route::get('/people/{contact}/relationships/create', 'Contacts\\RelationshipsController@create')->name('create');
-            Route::post('/people/{contact}/relationships', 'Contacts\\RelationshipsController@store')->name('store');
             Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('edit');
             Route::put('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
             Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('delete');
         });
 
         // Pets
-        Route::name('pets.')->group(function () {
-            Route::get('/people/{contact}/pet', 'Contacts\\PetsController@index')->name('index');
-            Route::post('/people/{contact}/pet', 'Contacts\\PetsController@store')->name('store');
-            Route::put('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@update')->name('update');
-            Route::delete('/people/{contact}/pet/{pet}', 'Contacts\\PetsController@destroy')->name('delete');
-            Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
-        });
+        Route::resource('/people/{contact}/pets', 'Contacts\\PetsController')->only([
+            'index', 'store', 'update', 'destroy'
+        ]);
+        Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
 
         // Reminders
-        Route::name('reminders.')->group(function () {
-            Route::get('/people/{contact}/reminders/create', 'Contacts\\RemindersController@create')->name('add');
-            Route::post('/people/{contact}/reminders', 'Contacts\\RemindersController@store')->name('store');
-            Route::get('/people/{contact}/reminders/{reminder}/edit', 'Contacts\\RemindersController@edit')->name('edit');
-            Route::put('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@update')->name('update');
-            Route::delete('/people/{contact}/reminders/{reminder}', 'Contacts\\RemindersController@destroy')->name('delete');
-        });
+        Route::resource('/people/{contact}/reminders', 'Contacts\\RemindersController')->except(['index', 'show']);
 
         // Tasks
-        Route::name('tasks.')->group(function () {
-            Route::get('/people/{contact}/tasks', 'Contacts\\TasksController@index')->name('index');
-            Route::post('/people/{contact}/tasks', 'Contacts\\TasksController@store')->name('store');
-            Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
-            Route::put('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@update')->name('update');
-            Route::delete('/people/{contact}/tasks/{task}', 'Contacts\\TasksController@destroy')->name('delete');
-        });
+        Route::resource('/people/{contact}/tasks', 'Contacts\\TasksController')->only([
+            'index', 'store', 'update', 'destroy'
+        ]);
+        Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
 
         // Gifts
-        Route::name('gifts.')->group(function () {
-            Route::get('/people/{contact}/gifts', 'Contacts\\GiftsController@index')->name('index');
-            Route::post('/people/{contact}/gifts/{gift}/toggle', 'Contacts\\GiftsController@toggle');
-            Route::get('/people/{contact}/gifts/create', 'Contacts\\GiftsController@create')->name('add');
-            Route::get('/people/{contact}/gifts/{gift}/edit', 'Contacts\\GiftsController@edit')->name('edit');
-            Route::post('/people/{contact}/gifts', 'Contacts\\GiftsController@store')->name('store');
-            Route::post('/people/{contact}/gifts/{gift}/update', 'Contacts\\GiftsController@update')->name('update');
-            Route::delete('/people/{contact}/gifts/{gift}', 'Contacts\\GiftsController@destroy')->name('delete');
-        });
+        Route::resource('/people/{contact}/gifts', 'Contacts\\GiftsController')->except(['show']);
+        Route::post('/people/{contact}/gifts/{gift}/toggle', 'Contacts\\GiftsController@toggle');
 
         // Debt
-        Route::name('debt.')->group(function () {
-            Route::get('/people/{contact}/debt/create', 'Contacts\\DebtController@create')->name('add');
-            Route::post('/people/{contact}/debt', 'Contacts\\DebtController@store')->name('store');
-            Route::get('/people/{contact}/debt/{debt}/edit', 'Contacts\\DebtController@edit')->name('edit');
-            Route::put('/people/{contact}/debt/{debt}', 'Contacts\\DebtController@update')->name('update');
-            Route::delete('/people/{contact}/debt/{debt}', 'Contacts\\DebtController@destroy')->name('delete');
-        });
+        Route::resource('/people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
         // Phone calls
-        Route::name('call.')->group(function () {
-            Route::post('/people/{contact}/call/store', 'Contacts\\CallsController@store')->name('store');
-            Route::delete('/people/{contact}/call/{call}', 'Contacts\\CallsController@destroy')->name('delete');
-        });
+        Route::resource('/people/{contact}/calls', 'Contacts\\CallsController')->only(['store', 'destroy']);
 
         // Conversations
-        Route::name('conversation.')->group(function () {
-            Route::get('/people/{contact}/conversations', 'Contacts\\ConversationsController@index')->name('index');
-            Route::get('/people/{contact}/conversation/create', 'Contacts\\ConversationsController@create')->name('new');
-            Route::post('/people/{contact}/conversation/store', 'Contacts\\ConversationsController@store')->name('store');
-            Route::get('/people/{contact}/conversation/{conversation}/edit', 'Contacts\\ConversationsController@edit')->name('edit');
-            Route::post('/people/{contact}/conversation/{conversation}', 'Contacts\\ConversationsController@update')->name('update');
-            Route::delete('/people/{contact}/conversation/{conversation}', 'Contacts\\ConversationsController@destroy')->name('destroy');
-        });
+        Route::resource('/people/{contact}/conversations', 'Contacts\\DebtController')->except(['show']);
 
         // Documents
-        Route::name('document.')->group(function () {
-            Route::get('/people/{contact}/documents', 'Contacts\\DocumentsController@index')->name('index');
-            Route::post('/people/{contact}/document', 'Contacts\\DocumentsController@store')->name('store');
-            Route::delete('/people/{contact}/documents/{document}', 'Contacts\\DocumentsController@destroy')->name('destroy');
-        });
+        Route::resource('/people/{contact}/documents', 'Contacts\\DocumentsController')->only(['index', 'store', 'destroy']);
 
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('search');
