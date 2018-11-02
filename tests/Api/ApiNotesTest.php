@@ -341,10 +341,17 @@ class ApiNotesTest extends ApiTestCase
     public function test_notes_update_error()
     {
         $user = $this->signin();
+        $note = factory(Note::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/notes/0', []);
+        $response = $this->json('PUT', '/api/notes/'.$note->id, [
+            'contact_id' => $note->contact_id,
+        ]);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The body field is required.',
+        ]);
     }
 
     public function test_notes_update_error_bad_account()

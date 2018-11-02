@@ -1252,28 +1252,28 @@ class ContactTest extends FeatureTestCase
         $user = $this->signIn();
 
         $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contact->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
         $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contactB->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactB->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contactB->birthday_special_date_id = $specialDate->id;
         $contactB->save();
 
         $contactC = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contactC->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactC->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contactC->birthday_special_date_id = $specialDate->id;
         $contactC->save();
@@ -1571,6 +1571,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sends_the_stay_in_touch_email()
     {
+        config(['monica.requires_subscription' => false]);
         NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0, 'America/New_York'));

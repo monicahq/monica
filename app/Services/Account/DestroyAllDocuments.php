@@ -5,19 +5,21 @@ namespace App\Services\Account;
 use App\Services\BaseService;
 use App\Models\Contact\Document;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class DestroyAllDocuments extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+        ];
+    }
 
     /**
      * Destroy all documents in an account.
@@ -27,9 +29,7 @@ class DestroyAllDocuments extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         $documents = Document::where('account_id', $data['account_id'])
                                 ->get();

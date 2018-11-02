@@ -275,7 +275,11 @@ $factory->define(App\Models\Contact\ContactField::class, function (Faker\Generat
                 'account_id' => $data['account_id'],
             ])->id;
         },
-        'contact_field_type_id' => 1,
+        'contact_field_type_id' => function (array $data) {
+            return factory(App\Models\Contact\ContactFieldType::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'data' => 'john@doe.com',
     ];
 });

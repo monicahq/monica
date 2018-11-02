@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
@@ -63,17 +64,17 @@ class UploadDocumentTest extends TestCase
     {
         Storage::fake('documents');
 
+        $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => 1,
+            'account_id' => $account->id,
             'contact_id' => 2,
             'document' => UploadedFile::fake()->image('document.pdf'),
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $uploadService = new UploadDocument;
-        $document = $uploadService->execute($request);
+        $uploadService = (new UploadDocument)->execute($request);
     }
 }
