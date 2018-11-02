@@ -355,10 +355,17 @@ class ApiGiftsTest extends ApiTestCase
     public function test_gifts_update_error()
     {
         $user = $this->signin();
+        $gift = factory(Gift::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/gifts/0', []);
+        $response = $this->json('PUT', '/api/gifts/'.$gift->id, [
+            'contact_id' => $gift->contact_id,
+        ]);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The name field is required.',
+        ]);
     }
 
     public function test_gifts_update_error_bad_account()

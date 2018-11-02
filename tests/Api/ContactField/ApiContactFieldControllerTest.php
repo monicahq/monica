@@ -224,10 +224,18 @@ class ApiContactFieldControllerTest extends ApiTestCase
     public function test_contact_fields_update_error()
     {
         $user = $this->signin();
+        $contactField = factory(ContactField::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/contactfields/0', []);
+        $response = $this->json('PUT', '/api/contactfields/'.$contactField->id, [
+            'contact_id' => $contactField->contact_id,
+        ]);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The data field is required.',
+            'The contact field type id field is required.',
+        ]);
     }
 
     public function test_contact_fields_update_error_bad_account()

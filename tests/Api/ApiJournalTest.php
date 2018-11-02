@@ -164,10 +164,16 @@ class ApiJournalTest extends ApiTestCase
     public function test_journal_update_error()
     {
         $user = $this->signin();
+        $entry = factory(Entry::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/journal/0', []);
+        $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The post field is required.',
+        ]);
     }
 
     public function test_journal_update_error2()
