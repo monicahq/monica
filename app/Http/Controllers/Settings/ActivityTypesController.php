@@ -55,6 +55,7 @@ class ActivityTypesController extends Controller
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
+            'id' => 'required|integer',
         ])->validate();
 
         $activityType->update(

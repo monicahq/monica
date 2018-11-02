@@ -255,10 +255,18 @@ class ApiTasksTest extends ApiTestCase
     public function test_tasks_update_error()
     {
         $user = $this->signin();
+        $task = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/tasks/0', []);
+        $response = $this->json('PUT', '/api/tasks/'.$task->id, [
+            'contact_id' => $task->contact_id,
+        ]);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The completed field is required.',
+        ]);
     }
 
     public function test_tasks_update_error_bad_account()
