@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Contact\Tag;
-use App\Exceptions\MissingParameterException;
 use Illuminate\Http\Request;
 use App\Services\Contact\Tag\CreateTag;
 use App\Services\Contact\Tag\UpdateTag;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Tag\DestroyTag;
+use App\Exceptions\MissingParameterException;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
