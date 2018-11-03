@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
+use App\Helpers\AvatarHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
@@ -267,6 +268,7 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withDays($days)
             ->withMonths($months)

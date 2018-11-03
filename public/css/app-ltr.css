@@ -19785,6 +19785,22 @@ input:disabled {
   padding: 15px;
 }
 
+.profile-page-avatar {
+  left: 48%;
+  top: -60px;
+}
+
+.profile-page-avatar img,
+.profile-page-avatar div {
+  border-radius: 50%;
+}
+
+@media (max-width: 480px) {
+  .profile-page-avatar {
+    left: 40%;
+  }
+}
+
 .avatar-photo img {
   border-radius: 3px;
 }

@@ -332,6 +332,19 @@ input:disabled {
   }
 }
 
+.profile-page-avatar {
+  left: 48%;
+  top: -60px;
+
+  img, div {
+    border-radius: 50%;
+  }
+
+  @media (max-width: 480px) {
+    left: 40%;
+  }
+}
+
 .avatar-photo {
   img {
     border-radius: 3px;

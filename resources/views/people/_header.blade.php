@@ -1,16 +1,17 @@
-<div class="ph3 ph5-ns pv2 cf w-100">
+<div class="ph3 ph5-ns pv2 cf w-100 mt4 mt0-ns">
     <div class="mw9 center dt w-100 box-shadow pa4">
 
       {{-- AVATAR --}}
-      <div class="">
-
+      <div class="relative">
+        {!! $avatar !!}
       </div>
 
       <h1 class="tc mb2 mt0">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
+        <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
       </h1>
 
-      <ul class="tc-ns mb4 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
+      <ul class="tc-ns mb3 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
 
         {{-- AGE --}}
         <li class="di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
@@ -39,6 +40,12 @@
           {{ $contact->description }}
         </li>
         @endif
+
+        {{-- STAY IN TOUCH --}}
+        <li class="di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+          @include('partials.icons.header_stayintouch')
+          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
+        </li>
       </ul>
 
       <tags hash="{{ $contact->hashID() }}"></tags>
@@ -80,8 +87,6 @@
           <h3>
             <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
 
-            <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
-
             @if ($contact->birthday_special_date_id && !($contact->is_dead))
               @if ($contact->birthdate->getAge())
                 <span class="ml3 f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
@@ -107,8 +112,6 @@
               {{ $contact->description }}
             </li>
           </ul>
-
-          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
 
           <ul class="horizontal quick-actions">
             <li>
