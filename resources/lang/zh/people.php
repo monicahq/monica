@@ -375,7 +375,6 @@ return [
     'life_event_list_tab_life_events' => '生活事件',
     'life_event_list_tab_other' => '便签、提醒..',
     'life_event_list_title' => '生活事件',
-    'life_event_list_title' => '生活事件',
     'life_event_blank' => '记录在{name} 身上发生的事情以供将来参考',
     'life_event_list_cta' => '添加生活事件',
     'life_event_create_category' => '全部类别',
