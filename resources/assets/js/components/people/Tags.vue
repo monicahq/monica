@@ -125,7 +125,6 @@
                     this.arrowCounter = -1
                     this.isOpen = false
                     this.search = null
-                    this.store()
                 }
             },
 

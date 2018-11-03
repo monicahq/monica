@@ -50,7 +50,7 @@ class TagsController extends Controller
         $tags = $request->all();
 
         // detaching all the tags
-        $contactTags = $contact->tags();
+        $contactTags = $contact->tags()->get();
         foreach ($contactTags as $tag) {
             (new DetachTag)->execute([
                 'account_id' => auth()->user()->account->id,
