@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Services\Contact\Tag\DetachTags;
+use App\Services\Contact\Tag\DetachTag;
 use App\Services\Contact\Tag\AssociateTag;
 use App\Http\Resources\Tag\Tag as TagResource;
 
@@ -49,13 +49,18 @@ class TagsController extends Controller
     {
         $tags = $request->all();
 
-        foreach ($tags as $tag) {
+        // detaching all the tags
+        $contactTags = $contact->tags();
+        foreach ($contactTags as $tag) {
             (new DetachTag)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,
-                'tag_id' => $tag['id'],
+                'tag_id' => $tag->id,
             ]);
+        }
 
+        // attach all the new/updated tags
+        foreach ($tags as $tag) {
             (new AssociateTag)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,

@@ -1402,44 +1402,6 @@ class Contact extends Model
     }
 
     /**
-     * Sets a tag to the contact.
-     *
-     * @param string $tag
-     * @return Tag
-     */
-    public function setTag(string $name)
-    {
-        $tag = $this->account->tags()->firstOrCreate([
-            'name' => $name,
-        ]);
-
-        $tag->name_slug = str_slug($tag->name);
-        $tag->save();
-
-        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account_id]]);
-
-        return $tag;
-    }
-
-    /**
-     * Unset all the tags associated with the contact.
-     * @return bool
-     */
-    public function unsetTags()
-    {
-        $this->tags()->detach();
-    }
-
-    /**
-     * Unset one tag associated with the contact.
-     * @return bool
-     */
-    public function unsetTag(Tag $tag)
-    {
-        $this->tags()->detach($tag->id);
-    }
-
-    /**
      * Get the Relationship object representing the relation between two contacts.
      *
      * @param  Contact $otherContact

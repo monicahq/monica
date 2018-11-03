@@ -26,7 +26,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'Api\\ApiContactTagController@setTags');
-    Route::get('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
+    Route::post('/contacts/{contact}/unsetTags', 'Api\\ApiContactTagController@unsetTags');
     Route::post('/contacts/{contact}/unsetTag', 'Api\\ApiContactTagController@unsetTag');
 
     // Addresses
