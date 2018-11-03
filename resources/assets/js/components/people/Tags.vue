@@ -47,8 +47,11 @@
                     <span @click="removeTag(tag)" v-show="editMode" class="pointer">×</span>
                 </span>
             </li>
-            <li class="di">
+            <li class="di" v-show="contactTags.length > 0">
                 <a @click="editMode = true" v-show="!editMode" class="pointer">{{ $t('app.edit') }}</a>
+            </li>
+            <li class="di" v-show="contactTags.length == 0">
+                <span class="i mr2">{{ $t('people.tag_no_tags') }}</span><a @click="editMode = true" v-show="!editMode" class="pointer">{{ $t('people.tag_add') }}</a>
             </li>
         </ul>
     </div>
