@@ -3,7 +3,7 @@
 
       {{-- AVATAR --}}
       <div class="">
-        {{ $contact->getAvatar() }}
+
       </div>
 
       <h1 class="tc mb2 mt0">

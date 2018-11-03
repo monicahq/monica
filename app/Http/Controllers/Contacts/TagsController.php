@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Services\Contact\Tag\DestroyTags;
+use App\Services\Contact\Tag\DetachTags;
 use App\Services\Contact\Tag\AssociateTag;
 use App\Http\Resources\Tag\Tag as TagResource;
 
@@ -49,15 +49,13 @@ class TagsController extends Controller
     {
         $tags = $request->all();
 
-        // destroy all the tags associated with this contact (so we can
-        // recreate all tag associations).
-        (new DestroyTags)->execute([
-            'account_id' => auth()->user()->account->id,
-            'contact_id' => $contact->id,
-        ]);
-
-        // associate all tags
         foreach ($tags as $tag) {
+            (new DetachTag)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => $contact->id,
+                'tag_id' => $tag['id'],
+            ]);
+
             (new AssociateTag)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,

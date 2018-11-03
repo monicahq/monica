@@ -40,13 +40,4 @@ class Tag extends Model
     {
         return $this->belongsToMany(Contact::class)->withPivot('account_id')->withTimestamps();
     }
-
-    /**
-     * Update the slug.
-     */
-    public function updateSlug()
-    {
-        $this->name_slug = str_slug($this->name);
-        $this->save();
-    }
 }

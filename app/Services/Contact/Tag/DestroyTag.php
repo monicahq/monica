@@ -2,10 +2,13 @@
 
 namespace App\Services\Contact\Tag;
 
+use Illuminate\Support\Facades\DB;
+use App\Models\Contact\Tag;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Services\Contact\Tag\DetachTag;
 
-class DestroyTags extends BaseService
+class DestroyTag extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
@@ -16,23 +19,27 @@ class DestroyTags extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
+            'tag_id' => 'required|integer',
         ];
     }
 
     /**
-     * Destroy all the tags associated with a contact.
+     * Destroy a tag.
      *
      * @param array $data
-     * @return void
+     * @return boolean
      */
     public function execute(array $data)
     {
         $this->validate($data);
 
-        $contact = Contact::where('account_id', $data['account_id'])
-                            ->findOrFail($data['contact_id']);
+        $tag = Tag::where('account_id', $data['account_id'])
+            ->findOrFail($data['tag_id']);
 
-        $contact->tags()->detach();
+        DB::table('contact_tag')->where('tag_id', $tag->id)->delete();
+
+        $tag->delete();
+
+        return true;
     }
 }
