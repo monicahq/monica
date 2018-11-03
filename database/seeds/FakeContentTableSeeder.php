@@ -1,6 +1,5 @@
 <?php
 
-use App\Services\Contact\Tag\AssociateTag;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Account\Account;
@@ -10,6 +9,7 @@ use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
