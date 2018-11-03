@@ -46,6 +46,7 @@ class TagsController extends Controller
      */
     public function update(TagsRequest $request, Contact $contact)
     {
+        dd($request->all());
         if (auth()->user()->account_id != $contact->account_id) {
             return response()->json(['status' => 'no']);
         }

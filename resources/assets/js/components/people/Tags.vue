@@ -11,7 +11,7 @@
         <div class="mt4">
             <a @click="editMode = true" v-show="!editMode">Edit tag</a>
             <a @click="editMode = false" v-show="editMode">Cancel</a>
-            <a @click="save()" v-show="editMode">Save</a>
+            <a @click="store()" v-show="editMode">Save</a>
         </div>
 
         <ul>
@@ -102,25 +102,28 @@
             },
 
             onEnter() {
-                this.search = this.results[this.arrowCounter].name
-                this.contactTags.push({
-                    id: moment().format(),
-                    name: this.search
-                })
-                this.arrowCounter = -1
-                this.isOpen = false
-                this.search = null
+                if (this.search != '') {
+                    this.contactTags.push({
+                        id: moment().format(),
+                        name: this.search
+                    })
+                    this.arrowCounter = -1
+                    this.isOpen = false
+                    this.search = null
+                }
             },
 
             onArrowDown() {
                 if (this.arrowCounter < this.results.length) {
                     this.arrowCounter = this.arrowCounter + 1;
+                    this.search = this.results[this.arrowCounter].name
                 }
             },
 
             onArrowUp() {
                 if (this.arrowCounter > 0) {
                     this.arrowCounter = this.arrowCounter - 1;
+                    this.search = this.results[this.arrowCounter].name
                 }
             },
 
@@ -142,7 +145,7 @@
                 })
             },
 
-            save() {
+            store() {
                 this.editMode = false
                 axios.post('/people/' + this.hash + '/tags/update', this.contactTags)
                         .then(response => {
