@@ -1,6 +1,9 @@
 <style scoped>
-.tag-list-item {
-}
+.autocomplete-result.is-active,
+  .autocomplete-result:hover {
+    background-color: #4AAE9B;
+    color: white;
+  }
 </style>
 
 <template>
@@ -8,7 +11,7 @@
         <div class="mt4">
             <a @click="editMode = true" v-show="!editMode">Edit tag</a>
             <a @click="editMode = false" v-show="editMode">Cancel</a>
-            <a @click="editMode = false" v-show="editMode">Save</a>
+            <a @click="save()" v-show="editMode">Save</a>
         </div>
 
         <ul>
@@ -24,13 +27,17 @@
                 class=""
                 v-show="editMode"
                 v-model="search"
+                @keydown.down="onArrowDown"
+                @keydown.up="onArrowUp"
+                @keydown.enter="onEnter"
                 @input="onChange">
 
         <ul class="autocomplete-results" v-show="isOpen">
             <li class="autocomplete-result"
-                v-for="result in results"
-                :key="result.id"
-                @click="setResult(result)">
+                v-for="(result, i) in results"
+                :key="i"
+                @click="setResult(result)"
+                :class="{ 'is-active': i === arrowCounter }">
                 {{ result.name }}
             </li>
         </ul>
@@ -38,6 +45,8 @@
 </template>
 
 <script>
+    import moment from 'moment'
+
     export default {
         data() {
             return {
@@ -48,6 +57,7 @@
                 search: '',
                 results: [],
                 isOpen: false,
+                arrowCounter: 0
             };
         },
 
@@ -91,6 +101,29 @@
                 this.filterResults()
             },
 
+            onEnter() {
+                this.search = this.results[this.arrowCounter].name
+                this.contactTags.push({
+                    id: moment().format(),
+                    name: this.search
+                })
+                this.arrowCounter = -1
+                this.isOpen = false
+                this.search = null
+            },
+
+            onArrowDown() {
+                if (this.arrowCounter < this.results.length) {
+                    this.arrowCounter = this.arrowCounter + 1;
+                }
+            },
+
+            onArrowUp() {
+                if (this.arrowCounter > 0) {
+                    this.arrowCounter = this.arrowCounter - 1;
+                }
+            },
+
             setResult(result) {
                 this.search = null
                 this.isOpen = false
@@ -110,7 +143,11 @@
             },
 
             save() {
-
+                this.editMode = false
+                axios.post('/people/' + this.hash + '/tags/update', this.contactTags)
+                        .then(response => {
+                            console.log('df')
+                        })
             }
         }
     }
