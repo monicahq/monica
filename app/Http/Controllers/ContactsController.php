@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Helpers\AvatarHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Helpers\AvatarHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;

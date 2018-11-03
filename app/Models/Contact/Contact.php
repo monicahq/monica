@@ -1515,7 +1515,7 @@ class Contact extends Model
      */
     public function getAgeAtDeath()
     {
-        if (!$this->deceasedDate) {
+        if (! $this->deceasedDate) {
             return;
         }
 
@@ -1523,7 +1523,7 @@ class Contact extends Model
             return;
         }
 
-        if (!$this->birthdate) {
+        if (! $this->birthdate) {
             return;
         }
 
