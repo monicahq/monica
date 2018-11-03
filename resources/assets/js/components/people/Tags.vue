@@ -1,4 +1,8 @@
 <style scoped>
+.autocomplete-results {
+    width: 150px;
+}
+
 .autocomplete-result.is-active,
   .autocomplete-result:hover {
     background-color: #4AAE9B;
@@ -7,38 +11,44 @@
 </style>
 
 <template>
-    <div class="">
-        <div class="mt4">
-            <a @click="editMode = true" v-show="!editMode">Edit tag</a>
-            <a @click="editMode = false" v-show="editMode">Cancel</a>
-            <a @click="store()" v-show="editMode">Save</a>
+    <div class="tc">
+        <div class="mb3" v-show="editMode">
+            <div class="relative di mr2">
+                <input type="text"
+                        class="di br2 f5 ba b--black-40 pa2 outline-0"
+                        v-model="search"
+                        :placeholder="$t('people.tag_add_search')"
+                        @keydown.down="onArrowDown"
+                        @keydown.up="onArrowUp"
+                        @keydown.enter="onEnter"
+                        @keydown.esc="onEscape"
+                        @input="onChange">
+
+                <ul class="autocomplete-results ba b--gray-monica absolute bg-white left-0 z-9999" v-show="isOpen">
+                    <li class="autocomplete-result"
+                        v-for="(result, i) in results"
+                        :key="i"
+                        @click="setResult(result)"
+                        :class="{ 'is-active': i === arrowCounter }">
+                        {{ result.name }}
+                    </li>
+                </ul>
+            </div>
+
+            <a @click="editMode = false" class="pointer">{{ $t('app.cancel') }}</a>
+            <a @click="store()" class="pointer">{{ $t('app.save_close') }}</a>
         </div>
 
         <ul>
             <li v-for="tag in contactTags" :key="tag.id" class="di mr2">
                 <span class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba">
-                    {{ tag.name }}
+                    <span @click="navigateTo(tag)" class="pointer" v-show="!editMode">{{ tag.name }}</span>
+                    <span v-show="editMode">{{ tag.name }}</span>
                     <span @click="removeTag(tag)" v-show="editMode" class="pointer">×</span>
                 </span>
             </li>
-        </ul>
-
-        <input type="text"
-                class=""
-                v-show="editMode"
-                v-model="search"
-                @keydown.down="onArrowDown"
-                @keydown.up="onArrowUp"
-                @keydown.enter="onEnter"
-                @input="onChange">
-
-        <ul class="autocomplete-results" v-show="isOpen">
-            <li class="autocomplete-result"
-                v-for="(result, i) in results"
-                :key="i"
-                @click="setResult(result)"
-                :class="{ 'is-active': i === arrowCounter }">
-                {{ result.name }}
+            <li class="di">
+                <a @click="editMode = true" v-show="!editMode" class="pointer">{{ $t('app.edit') }}</a>
             </li>
         </ul>
     </div>
@@ -63,6 +73,11 @@
 
         mounted() {
             this.prepareComponent();
+            document.addEventListener('click', this.handleClickOutside)
+        },
+
+        destroyed() {
+            document.removeEventListener('click', this.handleClickOutside)
         },
 
         props: {
@@ -104,12 +119,13 @@
             onEnter() {
                 if (this.search != '') {
                     this.contactTags.push({
-                        id: moment().format(),
+                        id: moment().format(), // we just need a random ID here
                         name: this.search
                     })
                     this.arrowCounter = -1
                     this.isOpen = false
                     this.search = null
+                    this.store()
                 }
             },
 
@@ -125,6 +141,12 @@
                     this.arrowCounter = this.arrowCounter - 1;
                     this.search = this.results[this.arrowCounter].name
                 }
+            },
+
+            onEscape() {
+                this.arrowCounter = -1
+                this.isOpen = false
+                this.search = null
             },
 
             setResult(result) {
@@ -149,8 +171,19 @@
                 this.editMode = false
                 axios.post('/people/' + this.hash + '/tags/update', this.contactTags)
                         .then(response => {
-                            console.log('df')
+                            this.getExistingTags()
                         })
+            },
+
+            navigateTo(tag) {
+                window.location.href = "/people?tag1=" + tag.name_slug
+            },
+
+            handleClickOutside(evt) {
+                if (!this.$el.contains(evt.target)) {
+                    this.isOpen = false;
+                    this.arrowCounter = -1;
+                }
             }
         }
     }

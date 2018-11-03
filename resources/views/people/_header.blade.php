@@ -1,19 +1,27 @@
 <div class="ph3 ph5-ns pv2 cf w-100">
     <div class="mw9 center dt w-100 box-shadow pa4">
-      <h1 class="tc">
+
+      {{-- AVATAR --}}
+      <div class="">
+        {{ $contact->getAvatar() }}
+      </div>
+
+      <h1 class="tc mb2 mt0">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
       </h1>
-      <ul class="tc {{ htmldir() == 'ltr' ? 'tl-ns' : 'tc-ns' }}">
+
+      <ul class="tc-ns mb4 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
+
         {{-- AGE --}}
         <li class="di {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @if ($contact->birthday_special_date_id && !($contact->is_dead))
             @if ($contact->birthdate->getAge())
               <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_birthday')</span>
-              <span class="light-silver f4">{{ $contact->birthdate->getAge() }}</span>
+              <span>{{ $contact->birthdate->getAge() }}</span>
             @endif
           @elseif ($contact->is_dead)
             @if (! is_null($contact->deceasedDate))
-              <span class="light-silver f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
+              <span>({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
             @endif
           @endif
         </li>
@@ -32,6 +40,8 @@
         </li>
         @endif
       </ul>
+
+      <tags hash="{{ $contact->hashID() }}"></tags>
     </div>
 </div>
 
@@ -70,11 +80,11 @@
 
             @if ($contact->birthday_special_date_id && !($contact->is_dead))
               @if ($contact->birthdate->getAge())
-                <span class="ml3 light-silver f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
+                <span class="ml3 f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
               @endif
             @elseif ($contact->is_dead)
                 @if (! is_null($contact->deceasedDate))
-                  <span class="ml3 light-silver f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
+                  <span class="ml3 f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
                 @endif
             @endif
           </h3>
@@ -95,8 +105,6 @@
           </ul>
 
           <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
-
-          <tags hash="{{ $contact->hashID() }}"></tags>
 
           <ul class="horizontal quick-actions">
             <li>

@@ -310,6 +310,7 @@ return [
     // tags
     'tag_edit' => 'Edit tag',
     'tag_add' => 'add a tag',
+    'tag_add_search' => 'Add or search tags',
 
     // Introductions
     'introductions_sidebar_title' => 'How you met',
