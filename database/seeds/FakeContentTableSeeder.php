@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\Contact\Tag\AssociateTag;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Account\Account;
@@ -111,7 +112,11 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             $i = 0;
             do {
-                $this->contact->setTag($this->faker->word);
+                (new AssociateTag)->execute([
+                    'account_id' => $this->contact->account->id,
+                    'contact_id' => $this->contact->id,
+                    'name' => $this->faker->word,
+                ]);
                 $i++;
             } while ($i < 10);
         }

@@ -493,6 +493,7 @@ class ContactsController extends Controller
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
         return view('people.food-preferencies.edit')
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact);
     }
 
