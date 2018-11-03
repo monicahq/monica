@@ -5,17 +5,10 @@ namespace App\Models\Account;
 use Exception;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
-use App\Helpers\VCardHelper;
-use App\Helpers\LocaleHelper;
-use App\Models\Contact\Gender;
-use App\Models\Contact\Address;
-use App\Models\Contact\Contact;
-use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
-use App\Models\Contact\ContactField;
+use App\Services\Carddav\ImportCarddav;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Contact\ContactFieldType;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -29,12 +22,6 @@ class ImportJob extends Model
     const VCARD_SKIPPED = 1;
     const VCARD_IMPORTED = 0;
 
-    const ERROR_CONTACT_EXIST = 'import_vcard_contact_exist';
-    const ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME = 'import_vcard_contact_no_firstname';
-
-    const BEHAVIOUR_ADD = 'behaviour_add';
-    const BEHAVIOUR_REPLACE = 'behaviour_replace';
-
     protected $table = 'import_jobs';
 
     /**
@@ -46,13 +33,6 @@ class ImportJob extends Model
      * All individual entries in the vCard file.
      */
     public $entries;
-
-    /**
-     * The "Vcard" gender that will be associated with all imported contacts.
-     *
-     * @var Gender
-     */
-    public $gender;
 
     /**
      * The current entry that is being processed.
@@ -76,18 +56,9 @@ class ImportJob extends Model
     protected $dates = ['started_at', 'ended_at'];
 
     /**
-     * The contact field email object.
-     *
-     * @var array
+     * @var ImportCarddav
      */
-    public $contactFieldEmailId;
-
-    /**
-     * The contact field phone object.
-     *
-     * @var array
-     */
-    public $contactFieldPhoneId;
+    private $service;
 
     /**
      * Get the account record associated with the import job.
@@ -166,24 +137,6 @@ class ImportJob extends Model
     }
 
     /**
-     * Get or create the gender called "Vcard" that is associated with all
-     * imported contacts.
-     *
-     * @return Gender
-     */
-    public function getSpecialGender()
-    {
-        $this->gender = Gender::where('name', 'vCard')->first();
-
-        if (! $this->gender) {
-            $this->gender = new Gender;
-            $this->gender->account_id = $this->account_id;
-            $this->gender->name = 'vCard';
-            $this->gender->save();
-        }
-    }
-
-    /**
      * Mark the import job as failed.
      *
      * @param  string $reason
@@ -252,8 +205,7 @@ class ImportJob extends Model
         collect($this->entries[0])->map(function ($vcard) {
             return Reader::read($vcard);
         })->each(function (VCard $vCard) use ($behaviour) {
-            $this->currentEntry = $vCard;
-            $this->processSingleEntry($behaviour);
+            $this->processSingleEntry($vCard, $behaviour);
         });
     }
 
@@ -261,24 +213,40 @@ class ImportJob extends Model
      * Process a single vCard entry.
      *
      * @param  VCard  $vCard
-     * @return [type]        [description]
+     * @param  string $behaviour
+     * @return Contact
      */
-    public function processSingleEntry($behaviour = self::BEHAVIOUR_ADD)
+    public function processSingleEntry($vCard, $behaviour = self::BEHAVIOUR_ADD): Contact
     {
-        if (! $this->canImportCurrentEntry()) {
-            $this->skipEntry(self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME);
+        $result = $this->getService()->execute([
+            'user_id' => $this->user_id,
+            'entry' => $vCard,
+            'behaviour' => $behaviour
+        ]);
 
-            return;
+        if ($result == ImportCarddav::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME
+            || $result == ImportCarddav::ERROR_CONTACT_EXIST) {
+            $this->skipEntry($result);
+
+            return null;
         }
 
-        $contact = $this->existingContact();
-        if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
-            $this->skipEntry(self::ERROR_CONTACT_EXIST);
+        $this->contacts_imported++;
+        $this->fileImportJobReport(self::VCARD_IMPORTED);
 
-            return;
+        return $result;
+    }
+
+    /**
+     * @return ImportCarddav
+     */
+    private function getService()
+    {
+        if (! $this->service)
+        {
+            $this->service = new ImportCarddav($this->account_id);
         }
-
-        $this->createContactFromCurrentEntry($contact);
+        return $this->service;
     }
 
     /**
@@ -291,74 +259,6 @@ class ImportJob extends Model
     {
         $this->fileImportJobReport(self::VCARD_SKIPPED, $reason);
         $this->contacts_skipped++;
-    }
-
-    /**
-     * Check whether a contact has a first name or a nickname. If not, contact
-     * can not be imported.
-     *
-     * @param VCard $vcard
-     * @return bool
-     */
-    public function canImportCurrentEntry(): bool
-    {
-        return
-            $this->hasFirstnameInN() ||
-            $this->hasNickname() ||
-            $this->hasFN();
-    }
-
-    private function hasFirstnameInN(): bool
-    {
-        return $this->currentEntry->N !== null && ! empty($this->currentEntry->N->getParts()[1]);
-    }
-
-    private function hasNICKNAME(): bool
-    {
-        return ! empty((string) $this->currentEntry->NICKNAME);
-    }
-
-    private function hasFN(): bool
-    {
-        return ! empty((string) $this->currentEntry->FN);
-    }
-
-    /**
-     * Check whether the email is valid.
-     *
-     * @param string $email
-     * @return bool
-     */
-    public function isValidEmail(string $email): bool
-    {
-        return filter_var($email, FILTER_VALIDATE_EMAIL);
-    }
-
-    /**
-     * Check whether the contact already exists in the database.
-     *
-     * @return Contact|null
-     */
-    public function existingContact()
-    {
-        if (is_null($this->currentEntry->EMAIL)) {
-            return;
-        }
-
-        $email = (string) $this->currentEntry->EMAIL;
-
-        if (! $this->isValidEmail($email)) {
-            return;
-        }
-
-        $contactField = ContactField::where([
-            ['account_id', $this->account_id],
-            ['contact_field_type_id', $this->contactFieldEmailId()],
-        ])->whereIn('data', iterator_to_array($this->currentEntry->EMAIL))->first();
-
-        if ($contactField) {
-            return $contactField->contact;
-        }
     }
 
     /**
@@ -380,248 +280,5 @@ class ImportJob extends Model
         $importJobReport->skipped = $status;
         $importJobReport->skip_reason = $reason;
         $importJobReport->save();
-    }
-
-    /**
-     * Return the name and email address of the current entry.
-     * John Doe Johnny john@doe.com.
-     *
-     * @return string
-     */
-    public function name(): string
-    {
-        if ($this->hasFirstnameInN()) {
-            $name = $this->formatValue($this->currentEntry->N->getParts()[1]);
-            $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[2]);
-            $name .= ' '.$this->formatValue($this->currentEntry->N->getParts()[0]);
-            $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
-        } elseif ($this->hasNICKNAME()) {
-            $name = $this->formatValue($this->currentEntry->NICKNAME);
-            $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
-        } elseif ($this->hasFN()) {
-            $name = $this->formatValue($this->currentEntry->FN);
-            $name .= ' '.$this->formatValue($this->currentEntry->EMAIL);
-        } else {
-            $name = trans('settings.import_vcard_unknown_entry');
-        }
-
-        return $name;
-    }
-
-    /**
-     * Formats and returns a string for the contact.
-     *
-     * @param null|string $value
-     * @return null|string
-     */
-    private function formatValue($value)
-    {
-        return ! empty((string) $value) ? (string) $value : null;
-    }
-
-    /**
-     * Create the Contact object matching the current entry.
-     *
-     * @return Contact
-     */
-    public function createContactFromCurrentEntry($contact = null)
-    {
-        if (! $contact) {
-            $contact = new Contact;
-            $contact->account_id = $this->account_id;
-            $contact->gender_id = $this->gender->id;
-            $contact->setAvatarColor();
-            $contact->save();
-        }
-
-        $this->importNames($contact);
-        $this->importWorkInformation($contact);
-        $this->importBirthday($contact);
-        $this->importAddress($contact);
-        $this->importEmail($contact);
-        $this->importTel($contact);
-
-        $this->contacts_imported++;
-        $this->fileImportJobReport(self::VCARD_IMPORTED);
-
-        $contact->save();
-
-        return $contact;
-    }
-
-    /**
-     * Import names of the contact.
-     *
-     * @param Contact $contact
-     * @return void
-     */
-    public function importNames(Contact $contact): void
-    {
-        if ($this->hasFirstnameInN()) {
-            $this->importFromN($contact);
-        } elseif ($this->hasNICKNAME()) {
-            $this->importFromNICKNAME($contact);
-        } elseif ($this->hasFN()) {
-            $this->importFromFN($contact);
-        } else {
-            throw new \LogicException('Check if you can import entry!');
-        }
-    }
-
-    private function importFromN(Contact $contact)
-    {
-        $contact->first_name = $this->formatValue($this->currentEntry->N->getParts()[1]);
-        $contact->middle_name = $this->formatValue($this->currentEntry->N->getParts()[2]);
-        $contact->last_name = $this->formatValue($this->currentEntry->N->getParts()[0]);
-    }
-
-    private function importFromNICKNAME(Contact $contact)
-    {
-        $contact->first_name = $this->formatValue($this->currentEntry->NICKNAME);
-    }
-
-    private function importFromFN(Contact $contact)
-    {
-        $fullnameParts = preg_split('/ +/', $this->currentEntry->FN);
-        $contact->first_name = $this->formatValue($fullnameParts[0]);
-        $contact->last_name = $this->formatValue($fullnameParts[1]);
-    }
-
-    /**
-     * @param Contact $contact
-     * @return void
-     */
-    public function importWorkInformation(Contact $contact): void
-    {
-        if ($this->currentEntry->ORG) {
-            $contact->company = $this->formatValue($this->currentEntry->ORG);
-        }
-
-        if ($this->currentEntry->ROLE) {
-            $contact->job = $this->formatValue($this->currentEntry->ROLE);
-        }
-
-        if ($this->currentEntry->TITLE) {
-            $contact->job = $this->formatValue($this->currentEntry->TITLE);
-        }
-    }
-
-    /**
-     * @param Contact $contact
-     * @return void
-     */
-    public function importBirthday(Contact $contact): void
-    {
-        if ($this->currentEntry->BDAY && ! empty((string) $this->currentEntry->BDAY)) {
-            try {
-                $birthdate = new \DateTime((string) $this->currentEntry->BDAY);
-            } catch (Exception $e) {
-                return;
-            }
-
-            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-            $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-        }
-    }
-
-    /**
-     * @param Contact $contact
-     * @return void
-     */
-    public function importAddress(Contact $contact): void
-    {
-        if (! $this->currentEntry->ADR) {
-            return;
-        }
-
-        foreach ($this->currentEntry->ADR as $adr) {
-            Address::firstOrCreate([
-                'account_id' => $contact->account_id,
-                'contact_id' => $contact->id,
-                'street' => $this->formatValue($adr->getParts()[2]),
-                'city' => $this->formatValue($adr->getParts()[3]),
-                'province' => $this->formatValue($adr->getParts()[4]),
-                'postal_code' => $this->formatValue($adr->getParts()[5]),
-                'country' => CountriesHelper::find($adr->getParts()[6]),
-            ]);
-        }
-    }
-
-    /**
-     * @param Contact $contact
-     * @return void
-     */
-    public function importEmail(Contact $contact): void
-    {
-        if (is_null($this->currentEntry->EMAIL)) {
-            return;
-        }
-
-        foreach ($this->currentEntry->EMAIL as $email) {
-            if ($this->isValidEmail($email)) {
-                ContactField::firstOrCreate([
-                    'account_id' => $contact->account_id,
-                    'contact_id' => $contact->id,
-                    'data' => $this->formatValue($email),
-                    'contact_field_type_id' => $this->contactFieldEmailId(),
-                ]);
-            }
-        }
-    }
-
-    /**
-     * @param Contact $contact
-     * @return void
-     */
-    public function importTel(Contact $contact): void
-    {
-        if (is_null($this->currentEntry->TEL)) {
-            return;
-        }
-
-        foreach ($this->currentEntry->TEL as $tel) {
-            $tel = (string) $this->currentEntry->TEL;
-
-            $countryISO = VCardHelper::getCountryISOFromSabreVCard($this->currentEntry);
-
-            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO);
-
-            ContactField::firstOrCreate([
-                'account_id' => $contact->account_id,
-                'contact_id' => $contact->id,
-                'data' => $this->formatValue($tel),
-                'contact_field_type_id' => $this->contactFieldPhoneId(),
-            ]);
-        }
-    }
-
-    private function contactFieldEmailId()
-    {
-        if (! $this->contactFieldEmailId) {
-            $contactFieldType = ContactFieldType::where([
-                ['account_id', $this->account_id],
-                ['type', 'email'],
-            ])->first();
-            if ($contactFieldType) {
-                $this->contactFieldEmailId = $contactFieldType->id;
-            }
-        }
-
-        return $this->contactFieldEmailId;
-    }
-
-    private function contactFieldPhoneId()
-    {
-        if (! $this->contactFieldPhoneId) {
-            $contactFieldType = ContactFieldType::where([
-                ['account_id', $this->account_id],
-                ['type', 'phone'],
-            ])->first();
-            if ($contactFieldType) {
-                $this->contactFieldPhoneId = $contactFieldType->id;
-            }
-        }
-
-        return $this->contactFieldPhoneId;
     }
 }
