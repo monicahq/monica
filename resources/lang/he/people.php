@@ -375,7 +375,6 @@ return [
     'life_event_list_tab_life_events' => 'אירועים משמעותיים',
     'life_event_list_tab_other' => 'פתקיות, תזכורות, …',
     'life_event_list_title' => 'אירועים משמעותיים',
-    'life_event_list_title' => 'אירועים משמעותיים',
     'life_event_blank' => 'תיעוד אירועים משמעותיים בחיים של {name} להפניה עתידית.',
     'life_event_list_cta' => 'הוספת אירוע משמעותי',
     'life_event_create_category' => 'כל הקטגוריות',
