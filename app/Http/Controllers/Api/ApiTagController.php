@@ -4,12 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\Tag\Tag as TagResource;
 use App\Services\Contact\Tag\CreateTag;
 use App\Services\Contact\Tag\UpdateTag;
+use Illuminate\Database\QueryException;
 use App\Services\Contact\Tag\DestroyTag;
+use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiTagController extends ApiController

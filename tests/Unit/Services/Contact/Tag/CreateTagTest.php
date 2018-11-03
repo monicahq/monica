@@ -4,12 +4,9 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
 use App\Models\Contact\Tag;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Services\Contact\Tag\CreateTag;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateTagTest extends TestCase
 {

@@ -2,11 +2,9 @@
 
 namespace App\Services\Contact\Tag;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Contact\Tag;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
-use App\Services\Contact\Tag\DetachTag;
+use Illuminate\Support\Facades\DB;
 
 class DestroyTag extends BaseService
 {
@@ -27,7 +25,7 @@ class DestroyTag extends BaseService
      * Destroy a tag.
      *
      * @param array $data
-     * @return boolean
+     * @return bool
      */
     public function execute(array $data)
     {

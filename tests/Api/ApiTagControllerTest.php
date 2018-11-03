@@ -38,7 +38,7 @@ class ApiTagControllerTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->jsonTag
+                '*' => $this->jsonTag,
             ],
         ]);
 

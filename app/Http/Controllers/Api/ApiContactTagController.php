@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Tag\AssociateTag;
 use App\Services\Contact\Tag\DetachTag;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 
