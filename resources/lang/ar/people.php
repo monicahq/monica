@@ -375,7 +375,6 @@ return [
     'life_event_list_tab_life_events' => 'أحداث الحياة',
     'life_event_list_tab_other' => 'ملاحظات، تذكيرات، ...',
     'life_event_list_title' => 'أحداث الحياة',
-    'life_event_list_title' => 'أحداث الحياة',
     'life_event_blank' => 'قم بتسجيل ما يحدث في حياة {name} كمرجع لك في المستقبل.',
     'life_event_list_cta' => 'إضافة حدث الحياة',
     'life_event_create_category' => 'كل الفئات',
