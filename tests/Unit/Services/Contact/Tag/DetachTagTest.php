@@ -42,7 +42,7 @@ class DetachTagTest extends TestCase
         ];
 
         $detachTagService = new DetachTag;
-        $tag = $detachTagService->execute($request);
+        $detachTagService->execute($request);
 
         $this->assertDatabaseMissing('contact_tag', [
             'account_id' => $contact->account->id,
@@ -59,7 +59,7 @@ class DetachTagTest extends TestCase
         $this->expectException(MissingParameterException::class);
 
         $detachTagService = new DetachTag;
-        $tag = $detachTagService->execute($request);
+        $detachTagService->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_does_not_exist()

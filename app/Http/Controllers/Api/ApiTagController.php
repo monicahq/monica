@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Contact\Tag;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Http\Request;
 use App\Services\Contact\Tag\CreateTag;
 use App\Services\Contact\Tag\UpdateTag;
