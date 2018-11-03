@@ -21,9 +21,14 @@
               <span>{{ $contact->birthdate->getAge() }}</span>
             @endif
           @elseif ($contact->is_dead)
-            @if (! is_null($contact->deceasedDate))
-              <span>({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
-            @endif
+              @if (! is_null($contact->deceasedDate))
+                {{ trans('people.deceased_label_with_date', ['date' => $contact->deceasedDate->toShortString()]) }}
+                @if ($contact->deceasedDate->is_year_unknown == 0)
+                  <span>({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
+                @endif
+              @else
+                {{ trans('people.deceased_label') }}
+              @endif
           @endif
         </li>
 
@@ -65,38 +70,6 @@
       <div class="col-xs-12">
 
         <div class="people-profile-information">
-
-          @if ($contact->has_avatar)
-            <img src="{{ $contact->getAvatarURL(110) }}" width="87">
-          @else
-            @if (! is_null($contact->gravatar_url))
-              <img src="{{ $contact->gravatar_url }}" width="87">
-            @else
-              @if (strlen($contact->getInitials()) == 1)
-              <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
-                {{ $contact->getInitials() }}
-              </div>
-              @else
-              <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
-                {{ $contact->getInitials() }}
-              </div>
-              @endif
-            @endif
-          @endif
-
-          <h3>
-            <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
-
-            @if ($contact->birthday_special_date_id && !($contact->is_dead))
-              @if ($contact->birthdate->getAge())
-                <span class="ml3 f4">(<i class="fa fa-birthday-cake mr1"></i> {{ $contact->birthdate->getAge() }})</span>
-              @endif
-            @elseif ($contact->is_dead)
-                @if (! is_null($contact->deceasedDate))
-                  <span class="ml3 f4">({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
-                @endif
-            @endif
-          </h3>
 
           <ul class="horizontal profile-detail-summary">
             @if ($contact->is_dead)

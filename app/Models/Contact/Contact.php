@@ -1515,7 +1515,19 @@ class Contact extends Model
      */
     public function getAgeAtDeath()
     {
-        return $this->deceasedDate->getAgeAtDeath();
+        if (!$this->deceasedDate) {
+            return;
+        }
+
+        if ($this->deceasedDate->is_year_unkown == 1) {
+            return;
+        }
+
+        if (!$this->birthdate) {
+            return;
+        }
+
+        return $this->birthdate->date->diffInYears($this->deceasedDate->date);
     }
 
     /**

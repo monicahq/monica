@@ -1347,4 +1347,28 @@ class ContactTest extends FeatureTestCase
             }
         );
     }
+
+    public function test_it_gets_the_age_at_death()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $specialDate = $contact->setSpecialDate('birthdate', 1980, 10, 10);
+        $specialDate = $contact->setSpecialDate('deceased_date', 2010, 10, 10);
+
+        $this->assertEquals(
+            30,
+            $contact->getAgeAtDeath()
+        );
+    }
+
+    public function test_getting_age_at_death_returns_null()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $specialDate = $contact->setSpecialDate('birthdate', 1980, 10, 10);
+
+        $this->assertNull(
+            $contact->getAgeAtDeath()
+        );
+    }
 }
