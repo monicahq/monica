@@ -109,7 +109,7 @@ class ApiTagController extends ApiController
     public function destroy(Request $request, $id)
     {
         try {
-            $tag = (new DestroyTag)->execute([
+            (new DestroyTag)->execute([
                 'tag_id' => $id,
                 'account_id' => auth()->user()->account->id,
             ]);
