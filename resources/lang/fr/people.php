@@ -375,7 +375,6 @@ return [
     'life_event_list_tab_life_events' => 'Événements marquants',
     'life_event_list_tab_other' => 'Notes, rappels, ...',
     'life_event_list_title' => 'Événements marquants',
-    'life_event_list_title' => 'Événements marquants',
     'life_event_blank' => 'Prenez des notes sur ce qui arrive dans la vie de {name} pour votre référence future.',
     'life_event_list_cta' => 'Ajouter un événement marquant',
     'life_event_create_category' => 'Toutes les catégories',
