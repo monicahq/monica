@@ -109,7 +109,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::resource('/people/{contact}/notes', 'Contacts\\NotesController')->only([
             'index', 'store', 'update', 'destroy'
         ]);
-        Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle')->name('notes.toggle');
+        Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
 
         // Food preferencies
         Route::name('food.')->group(function () {
@@ -230,9 +230,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         Route::name('users.')->group(function () {
             Route::get('/settings/users', 'SettingsController@users')->name('index');
-            Route::get('/settings/users/add', 'SettingsController@addUser')->name('add');
-            Route::delete('/settings/users/{user}', 'SettingsController@deleteAdditionalUser')->name('delete');
-            Route::post('/settings/users/save', 'SettingsController@inviteUser')->name('save');
+            Route::get('/settings/users/create', 'SettingsController@addUser')->name('create');
+            Route::post('/settings/users', 'SettingsController@inviteUser')->name('store');
+            Route::delete('/settings/users/{user}', 'SettingsController@deleteAdditionalUser')->name('destroy');
             Route::delete('/settings/users/invitations/{invitation}', 'SettingsController@destroyInvitation')->name('invitation.delete');
         });
 
