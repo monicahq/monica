@@ -91,6 +91,7 @@ class Contact extends Model
         'avatar_external_url',
         'last_consulted_at',
         'created_at',
+        'first_met_additional_info',
     ];
 
     /**
@@ -1334,16 +1335,18 @@ class Contact extends Model
         $specialDate = new SpecialDate;
         $specialDate->setToContact($this)->createFromAge($age);
 
-        if ($occasion == 'birthdate') {
-            $this->birthday_special_date_id = $specialDate->id;
-        }
-
-        if ($occasion == 'deceased_date') {
-            $this->deceased_special_date_id = $specialDate->id;
-        }
-
-        if ($occasion == 'first_met') {
-            $this->first_met_special_date_id = $specialDate->id;
+        switch ($occasion) {
+            case 'birthdate':
+                $this->birthday_special_date_id = $specialDate->id;
+                break;
+            case 'deceased_date':
+                $this->deceased_special_date_id = $specialDate->id;
+                break;
+            case 'first_met':
+                $this->first_met_special_date_id = $specialDate->id;
+                break;
+            default:
+                break;
         }
 
         $this->save();
@@ -1369,10 +1372,10 @@ class Contact extends Model
                     $this->birthday_special_date_id = null;
                     $this->save();
 
-                    $this->birthdate->deleteReminder();
-                    $this->birthdate->delete();
+                    $birthdate->deleteReminder();
+                    $birthdate->delete();
                 }
-            break;
+                break;
             case 'deceased_date':
                 if ($this->deceased_special_date_id) {
                     $deceasedDate = $this->deceasedDate;
@@ -1382,7 +1385,7 @@ class Contact extends Model
                     $deceasedDate->deleteReminder();
                     $deceasedDate->delete();
                 }
-            break;
+                break;
             case 'first_met':
                 if ($this->first_met_special_date_id) {
                     $firstMetDate = $this->firstMetDate;
@@ -1393,6 +1396,8 @@ class Contact extends Model
                     $firstMetDate->delete();
                 }
             break;
+            default:
+                break;
         }
     }
 

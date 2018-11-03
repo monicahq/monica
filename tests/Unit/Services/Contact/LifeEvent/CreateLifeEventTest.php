@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\LifeEvent;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
@@ -102,11 +103,12 @@ class CreateLifeEventTest extends TestCase
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
+        $account = factory(Account::class)->create();
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $request = [
             'contact_id' => $lifeEvent->contact->id,
-            'account_id' => 2,
+            'account_id' => $account->id,
             'life_event_type_id' => $lifeEvent->lifeEventType->id,
             'name' => 'This is a name',
             'note' => 'This is a note',
@@ -118,8 +120,7 @@ class CreateLifeEventTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createLifeEvent = new CreateLifeEvent;
-        $lifeEvent = $createLifeEvent->execute($request);
+        $createLifeEvent = (new CreateLifeEvent)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_event_type_is_not_linked_to_account()

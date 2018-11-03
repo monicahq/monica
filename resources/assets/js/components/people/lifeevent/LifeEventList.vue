@@ -465,8 +465,8 @@
             🎭 {{ $t('people.life_event_list_title') }}
 
             <span class="absolute" style="top: -5px; right: 0;">
-              <a class="btn edit-information" @click="showAdd = true" v-if="showAdd">{{ $t('people.life_event_list_cta') }}</a>
-              <a class="btn edit-information" @click="showAdd = false" v-else>{{ $t('app.cancel') }}</a>
+              <a class="btn edit-information" @click="showAdd = false" v-if="showAdd">{{ $t('app.cancel') }}</a>
+              <a class="btn edit-information" @click="showAdd = true" v-else>{{ $t('people.life_event_list_cta') }}</a>
             </span>
           </h3>
         </div>

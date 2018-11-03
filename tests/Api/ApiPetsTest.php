@@ -262,10 +262,17 @@ class ApiPetsTest extends ApiTestCase
     public function test_pets_update_error()
     {
         $user = $this->signin();
+        $pet = factory(Pet::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/pets/0', []);
+        $response = $this->json('PUT', '/api/pets/'.$pet->id, [
+            'contact_id' => $pet->contact_id,
+        ]);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The pet category id field is required.',
+        ]);
     }
 
     public function test_pets_update_error_bad_account()

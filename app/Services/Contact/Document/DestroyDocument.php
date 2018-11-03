@@ -5,19 +5,21 @@ namespace App\Services\Contact\Document;
 use App\Services\BaseService;
 use App\Models\Contact\Document;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 
 class DestroyDocument extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'document_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'document_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Destroy a document.
@@ -27,9 +29,7 @@ class DestroyDocument extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         $document = Document::where('account_id', $data['account_id'])
                     ->findOrFail($data['document_id']);

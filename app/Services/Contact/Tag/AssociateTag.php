@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Services\Contact\Reminder;
+namespace App\Services\Contact\Tag;
 
 use App\Helpers\DateHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
-use App\Models\Contact\Reminder;
-use App\Models\Instance\SpecialDate;
+use App\Models\Contact\Tag;
 use App\Exceptions\WrongValueException;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\MissingParameterException;
@@ -15,90 +14,91 @@ use App\Exceptions\MissingParameterException;
 class AssociateTag extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
-     * Frequency: 'day', 'week', 'year', 'one_time'.
-     * Date: string.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'contact_id',
-        'date',
-        'frequency_type',
-        'frequency_number',
-        'title',
-        'description',
-        'special_date_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'name' => 'required|string',
+        ];
+    }
 
     /**
      * Associate a tag to a contact.
      *
      * @param array $data
-     * @return Reminder
+     * @return Tag
      */
-    public function execute(array $data) : Reminder
+    public function execute(array $data) : Tag
     {
-        if (!$this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_id']);
+        $contact = Contact::where('account_id', $data['account_id'])
+                            ->findOrFail($data['contact_id']);
 
-        if ($data['special_date_id']) {
-            SpecialDate::where('account_id', $data['account_id'])
-                ->findOrFail($data['special_date_id']);
-        }
+        // check if the tag already exists in the account
+        $tag = $this->tagExistOrCreate($data);
 
-        $this->validateFrequency($data);
+        // associate the tag to the contact
+        $this->associateToContact($tag, $contact);
 
-        $reminder = $this->attachReminderToLifeEvent($data);
-
-        $reminder->calculateNextExpectedDate()->save();
-        $reminder->scheduleNotifications();
-
-        return $reminder;
+        return $tag;
     }
 
     /**
-     * Actually create the reminder.
+     * Check if the tag already exists in the account.
+     * If it does, returns it.
+     * If it doesn't, create it.
      *
-     * @return Reminder
+     * @return Tag
      */
-    private function attachReminderToLifeEvent(array $data) : Reminder
+    private function tagExistOrCreate(array $data) : Tag
     {
-        $reminder = new Reminder;
-        $reminder->frequency_type = $data['frequency_type'];
-        $reminder->frequency_number = $data['frequency_number'];
-        $reminder->next_expected_date = DateHelper::parseDate($data['date']);
-        $reminder->special_date_id = $data['special_date_id'];
-        $reminder->account_id = $data['account_id'];
-        $reminder->contact_id = $data['contact_id'];
-        $reminder->title = $data['title'];
-        $reminder->description = $data['description'];
-        $reminder->save();
+        $tag = Tag::where('name', $data['name'])
+                ->where('account_id', $data['account_id'])
+                ->first();
 
-        return $reminder;
+        if (!$tag) {
+            return $this->createTag($data);
+        }
+
+        return $tag;
     }
 
     /**
-     * Make sure the frequency_type is in the range of authorized values.
+     * Creates the tag.
      *
-     * @param array $data
+     * @return Tag
      */
-    private function validateFrequency($data)
+    private function createTag(array $data) : Tag
     {
-        $validator = Validator::make($data, [
-            'frequency_type' => [
-                'required',
-                Rule::in(['week', 'monk', 'year', 'one_time']),
-            ],
+        $array = [
+            'account_id' => $data['account_id'],
+            'name' => $data['name'],
+            'name_slug' => str_slug($data['name']),
+        ];
+
+        return Tag::create($array);
+    }
+
+    /**
+     * Associate the tag to the contact.
+     *
+     * @return void
+     */
+    private function associateToContact(Tag $tag, Contact $contact)
+    {
+        // make sure the tag is not associated with the contact already
+        $contact->tags()->detach($tag->id);
+
+        $contact->tags()->syncWithoutDetaching([
+            $tag->id => [
+                'account_id' => $contact->account_id
+            ]
         ]);
-
-        if ($validator->fails()) {
-            throw new WrongValueException('Authorized values: week, month, year, one_time');
-        }
     }
 }

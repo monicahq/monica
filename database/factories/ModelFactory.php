@@ -233,6 +233,8 @@ $factory->define(App\Models\Journal\Day::class, function (Faker\Generator $faker
 $factory->define(App\Models\Contact\Tag::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => $faker->word,
+        'name_slug' => str_slug($faker->word),
     ];
 });
 
@@ -275,7 +277,11 @@ $factory->define(App\Models\Contact\ContactField::class, function (Faker\Generat
                 'account_id' => $data['account_id'],
             ])->id;
         },
-        'contact_field_type_id' => 1,
+        'contact_field_type_id' => function (array $data) {
+            return factory(App\Models\Contact\ContactFieldType::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'data' => 'john@doe.com',
     ];
 });

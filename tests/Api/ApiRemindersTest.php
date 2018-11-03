@@ -284,10 +284,20 @@ class ApiRemindersTest extends ApiTestCase
     public function test_reminders_update_error()
     {
         $user = $this->signin();
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/reminders/0', []);
+        $response = $this->json('PUT', '/api/reminders/'.$reminder->id, [
+            'contact_id' => $reminder->contact_id,
+        ]);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The description field is required.',
+            'The next expected date field is required.',
+            'The frequency type field is required.',
+        ]);
     }
 
     public function test_reminders_update_error_bad_account()

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
@@ -572,7 +571,7 @@ class ContactsController extends Controller
         $state = $request->get('state');
 
         if (auth()->user()->account->hasLimitations()) {
-            throw new Exception(trans('people.stay_in_touch_premium'));
+            throw new \LogicException(trans('people.stay_in_touch_premium'));
         }
 
         // if not active, set frequency to 0
@@ -582,7 +581,7 @@ class ContactsController extends Controller
         $result = $contact->updateStayInTouchFrequency($frequency);
 
         if (! $result) {
-            throw new Exception(trans('people.stay_in_touch_invalid'));
+            throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
         $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
