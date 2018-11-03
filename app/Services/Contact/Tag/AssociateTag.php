@@ -2,13 +2,9 @@
 
 namespace App\Services\Contact\Tag;
 
+use App\Models\Contact\Tag;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
-use App\Models\Contact\Tag;
-use App\Exceptions\WrongValueException;
-use Illuminate\Support\Facades\Validator;
-use App\Exceptions\MissingParameterException;
 
 class AssociateTag extends BaseService
 {
@@ -61,7 +57,7 @@ class AssociateTag extends BaseService
                 ->where('account_id', $data['account_id'])
                 ->first();
 
-        if (!$tag) {
+        if (! $tag) {
             return $this->createTag($data);
         }
 
@@ -96,8 +92,8 @@ class AssociateTag extends BaseService
 
         $contact->tags()->syncWithoutDetaching([
             $tag->id => [
-                'account_id' => $contact->account_id
-            ]
+                'account_id' => $contact->account_id,
+            ],
         ]);
     }
 }

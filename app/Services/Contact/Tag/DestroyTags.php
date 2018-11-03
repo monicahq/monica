@@ -4,11 +4,6 @@ namespace App\Services\Contact\Tag;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
-use App\Models\Contact\Tag;
-use App\Exceptions\WrongValueException;
-use Illuminate\Support\Facades\Validator;
-use App\Exceptions\MissingParameterException;
 
 class DestroyTags extends BaseService
 {

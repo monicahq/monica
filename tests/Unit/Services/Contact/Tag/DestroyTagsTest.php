@@ -3,11 +3,11 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
+use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Tag;
-use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Tag\DestroyTags;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -19,14 +19,14 @@ class DestroyTagsTest extends TestCase
     {
         $contact = factory(Contact::class)->create([]);
 
-        for ($i = 0 ; $i < 5 ; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $tag = factory(Tag::class)->create([
                 'account_id' => $contact->account->id,
             ]);
             $contact->tags()->syncWithoutDetaching([
                 $tag->id => [
-                    'account_id' => $contact->account_id
-                ]
+                    'account_id' => $contact->account_id,
+                ],
             ]);
         }
 

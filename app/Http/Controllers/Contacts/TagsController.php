@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Contacts;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Services\Contact\Tag\AssociateTag;
 use App\Services\Contact\Tag\DestroyTags;
+use App\Services\Contact\Tag\AssociateTag;
 use App\Http\Resources\Tag\Tag as TagResource;
 
 class TagsController extends Controller
