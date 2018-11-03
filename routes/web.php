@@ -107,7 +107,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Notes
         Route::resource('/people/{contact}/notes', 'Contacts\\NotesController')->only([
-            'index', 'store', 'update', 'destroy'
+            'index', 'store', 'update', 'destroy',
         ]);
         Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
 
@@ -127,7 +127,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Pets
         Route::resource('/people/{contact}/pets', 'Contacts\\PetsController')->only([
-            'index', 'store', 'update', 'destroy'
+            'index', 'store', 'update', 'destroy',
         ]);
         Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
 
@@ -136,7 +136,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Tasks
         Route::resource('/people/{contact}/tasks', 'Contacts\\TasksController')->only([
-            'index', 'store', 'update', 'destroy'
+            'index', 'store', 'update', 'destroy',
         ]);
         Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
 
