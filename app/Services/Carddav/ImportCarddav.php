@@ -138,7 +138,7 @@ class ImportCarddav extends BaseService
                     $gender = $this->getGenderOfName('vCard');
                     break;
             }
-    
+
             if (! $gender) {
                 $gender = new Gender;
                 $gender->account_id = $this->accountId;
@@ -162,7 +162,7 @@ class ImportCarddav extends BaseService
     {
         return Gender::where([
             ['account_id', $this->accountId],
-            ['name', $name]
+            ['name', $name],
         ])->first();
     }
 
