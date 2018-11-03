@@ -103,8 +103,9 @@
             },
 
             filterAllTags() {
+                var me = this.contactTags
                 this.availableTags = this.allTags.filter((item) => {
-                    return !this.contactTags.includes(item)
+                    return !me.includes(item)
                 })
             },
 

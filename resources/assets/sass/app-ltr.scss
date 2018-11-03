@@ -45,6 +45,13 @@ $htmldir: ltr !default;
   }
 }
 
+.box-shadow {
+  background: #fff;
+  border: 1px solid #e7e7e7;
+  box-shadow: 1px -1px 4px rgba(122, 122, 122, 0.25);
+  border-radius: 11px;
+}
+
 .w-5 {
   width: 5%;
 }
