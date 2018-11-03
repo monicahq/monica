@@ -13,7 +13,7 @@
       <ul class="tc-ns mb4 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
 
         {{-- AGE --}}
-        <li class="di {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+        <li class="di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @if ($contact->birthday_special_date_id && !($contact->is_dead))
             @if ($contact->birthdate->getAge())
               <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_birthday')</span>
@@ -27,14 +27,14 @@
         </li>
 
         {{-- FAMILY --}}
-        <li class="di {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+        <li class="di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_people')</span>
           3 family members
         </li>
 
         {{-- DESCRIPTION --}}
         @if ($contact->description)
-        <li class="di {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+        <li class="di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @include('partials.icons.header_description')
           {{ $contact->description }}
         </li>
@@ -45,13 +45,17 @@
     </div>
 </div>
 
+<div class="ph3 ph5-ns pv2 cf w-100">
+    <div class="mw9 center dt w-100">
+      @include ('partials.errors')
+      @include ('partials.notification')
+    </div>
+</div>
+
 <div class="pagehead">
   <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
       <div class="col-xs-12">
-
-        @include ('partials.errors')
-        @include ('partials.notification')
 
         <div class="people-profile-information">
 

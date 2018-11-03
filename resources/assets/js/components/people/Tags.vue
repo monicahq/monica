@@ -41,7 +41,7 @@
 
         <ul>
             <li v-for="tag in contactTags" :key="tag.id" class="di mr2">
-                <span class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba">
+                <span class="bg-white ph2 pb1 pt0 dib br3 b--light-gray ba mb2">
                     <span @click="navigateTo(tag)" class="pointer" v-show="!editMode">{{ tag.name }}</span>
                     <span v-show="editMode">{{ tag.name }}</span>
                     <span @click="removeTag(tag)" v-show="editMode" class="pointer">×</span>
@@ -67,11 +67,13 @@
                 search: '',
                 results: [],
                 isOpen: false,
-                arrowCounter: 0
+                arrowCounter: 0,
+                dirltr: true,
             };
         },
 
         mounted() {
+            this.dirltr = this.$root.htmldir == 'ltr';
             this.prepareComponent();
             document.addEventListener('click', this.handleClickOutside)
         },

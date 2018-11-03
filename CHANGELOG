@@ -3,13 +3,16 @@ UNRELEASED CHANGES:
 * Add ability to upload documents
 * Add ability to archive a contact
 * Add right-click support on contact list
+* Add autocompletion on tags
 * Add a command (export:all) to export all data from an instance in SQL
+* New header on a profile page
 * Standardize phonenumber format while importing vCard
 * Set currency and timezone for new users
-* Fix settings' sidebar links and change security icon
-* Fix CSV import
 * Highlight buttons when selected using keyboard
 * Hide deceased people from dashboard's 'Last Consulted' section
+* Improve API methods for tag management
+* Fix settings' sidebar links and change security icon
+* Fix CSV import
 * Filter deceased people from people list by default
 * Fix errors during PostgreSQL migration
 * Better documentation for PostgreSQL users
