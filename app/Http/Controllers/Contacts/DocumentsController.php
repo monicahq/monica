@@ -13,7 +13,7 @@ use App\Http\Resources\Document\Document as DocumentResource;
 class DocumentsController extends Controller
 {
     /**
-     * Display the list of documents.
+     * Get the list of documents.
      *
      * @param  Contact $contact
      * @return \Illuminate\Http\Response

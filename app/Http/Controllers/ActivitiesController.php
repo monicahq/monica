@@ -7,19 +7,20 @@ use App\Models\Contact\Activity;
 use App\Models\Journal\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Activity\Activity as ActivityResource;
 
 class ActivitiesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get the list of documents.
      *
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function index(Contact $contact)
+    public function index(Request $request, Contact $contact)
     {
-        return view('activities.index')
-            ->withContact($contact);
+        $activities = $contact->activities()->get();
+        return ActivityResource::collection($activities);
     }
 
     /**

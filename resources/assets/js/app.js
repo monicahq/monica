@@ -171,6 +171,11 @@ Vue.component(
 );
 
 Vue.component(
+    'activity-list',
+    require('./components/people/activity/ActivityList.vue')
+);
+
+Vue.component(
     'create-life-event',
     require('./components/people/lifeevent/CreateLifeEvent.vue')
 );
