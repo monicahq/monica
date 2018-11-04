@@ -219,7 +219,7 @@ class ImportJob extends Model
         $result = $this->getService()->execute([
             'user_id' => $this->user_id,
             'entry' => $vCard,
-            'behaviour' => $behaviour
+            'behaviour' => $behaviour,
         ]);
 
         if ($result == ImportVCard::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME
@@ -244,6 +244,7 @@ class ImportJob extends Model
         {
             $this->service = new ImportVCard($this->account_id);
         }
+
         return $this->service;
     }
 
