@@ -1,19 +1,23 @@
 <?php
 
-namespace App\Services\Carddav;
+namespace App\Services\VCard;
 
-use App\Helpers\VCardHelper;
+use App\Models\User\User;
+use Sabre\VObject\Reader;
+use App\Helpers\DateHelper;
 use App\Helpers\LocaleHelper;
+use App\Helpers\VCardHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
+use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 
-class ImportCarddav extends BaseService
+class ImportVCard extends BaseService
 {
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
@@ -27,22 +31,15 @@ class ImportCarddav extends BaseService
      * @var array
      */
     public static $behaviourTypes = [
-        BEHAVIOUR_ADD, BEHAVIOUR_REPLACE,
+        self::BEHAVIOUR_ADD, self::BEHAVIOUR_REPLACE,
     ];
 
     /**
-     * The contact field email object.
+     * The contact fields ids.
      *
-     * @var int
+     * @var array
      */
-    protected $contactFieldEmailId;
-
-    /**
-     * The contact field phone object.
-     *
-     * @var int
-     */
-    protected $contactFieldPhoneId;
+    protected $contactFields;
 
     /**
      * The Account id.
@@ -66,7 +63,7 @@ class ImportCarddav extends BaseService
     public function __construct($accountId)
     {
         $this->accountId = $accountId;
-        parent::__construct();
+        //parent::__construct();
     }
 
     /**
@@ -78,6 +75,7 @@ class ImportCarddav extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'nullable|integer',
             'user_id' => 'required|integer',
             'entry' => 'required|string',
             'behaviour' => [
@@ -88,7 +86,7 @@ class ImportCarddav extends BaseService
     }
 
     /**
-     * Destroy all documents in an account.
+     * Import one VCard.
      *
      * @param array $data
      * @return int
@@ -96,25 +94,45 @@ class ImportCarddav extends BaseService
     public function execute(array $data) : int
     {
         $this->validate(
-            $data
+            array_except($data, ['account_id'])
             + ['account_id' => $this->accountId]
         );
 
+        if ($data['contact_id']) {
+            Contact::where('account_id', $this->accountId)
+                ->findOrFail($data['contact_id']);
+        }
+
+        User::where('account_id', $this->accountId)
+            ->findOrFail($data['user_id']);
+
+        return $this->process($data);
+    }
+
+    /**
+     * Import one VCard.
+     *
+     * @param array $data
+     * @return int
+     */
+    public function process(array $data) : int
+    {
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
-        $entry = $data['entry'];
+
+        $entry = Reader::read($data['entry']);
 
         if (! $this->canImportCurrentEntry($entry)) {
             return self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME;
         }
 
-        $contact = $this->existingContact($entry);
+        $contact = $this->existingContact($entry, $data['contact_id']);
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
             return self::ERROR_CONTACT_EXIST;
         }
 
-        $contact = $this->createContactFromCurrentEntry($contact, $entry->GENDER);
+        $contact = $this->createContactFromCurrentEntry($contact, $entry);
 
-        return (int) $contact != null;
+        return $contact->id;
     }
 
     /**
@@ -124,9 +142,9 @@ class ImportCarddav extends BaseService
      * @param  char  $genderCode
      * @return Gender
      */
-    private function getGender($genderCode)
+    private function getGender($genderCode) : Gender
     {
-        if (! $this->genders[$genderCode]) {
+        if (! array_has($this->genders, $genderCode)) {
             switch ($genderCode) {
                 case 'M':
                     $gender = $this->getGenderOfName('Man') ?? $this->getGenderOfName('vCard');
@@ -146,17 +164,17 @@ class ImportCarddav extends BaseService
                 $gender->save();
             }
 
-            $this->genders[$genderCode] = $gender;
+            array_set($this->genders, $genderCode, $gender);
         }
 
-        return $this->genders[$genderCode];
+        return array_get($this->genders, $genderCode);
     }
 
     /**
-     * Get the gender.
+     * Get the gender by name.
      *
      * @param  string  $name
-     * @return Gender
+     * @return Gender|null
      */
     private function getGenderOfName($name)
     {
@@ -173,7 +191,7 @@ class ImportCarddav extends BaseService
      * @param VCard $entry
      * @return bool
      */
-    private function canImportCurrentEntry($entry): bool
+    private function canImportCurrentEntry(VCard $entry) : bool
     {
         return
             $this->hasFirstnameInN($entry) ||
@@ -185,7 +203,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return bool
      */
-    private function hasFirstnameInN($entry): bool
+    private function hasFirstnameInN(VCard $entry) : bool
     {
         return $entry->N !== null && ! empty($entry->N->getParts()[1]);
     }
@@ -194,7 +212,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return bool
      */
-    private function hasNICKNAME($entry): bool
+    private function hasNICKNAME(VCard $entry) : bool
     {
         return ! empty((string) $entry->NICKNAME);
     }
@@ -203,7 +221,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return bool
      */
-    private function hasFN($entry): bool
+    private function hasFN(VCard $entry): bool
     {
         return ! empty((string) $entry->FN);
     }
@@ -222,55 +240,71 @@ class ImportCarddav extends BaseService
     /**
      * Check whether the contact already exists in the database.
      *
+     * @param  VCard $entry
+     * @param  int $contact_id
      * @return Contact|null
      */
-    private function existingContact($entry)
+    private function existingContact(VCard $entry, $contact_id = null)
     {
-        if (is_null($entry->EMAIL)) {
+        if (! is_null($contact_id)) {
+            $contact = Contact::where('account_id', $this->accountId)
+                ->find($contact_id);
+        }
+
+        if (! $contact) {
+            $contact = $this->existingContactWithEmail($entry);
+        }
+
+        if (! $contact) {
+            $contact = $this->existingContactWithName($entry);
+        }
+
+        return $contact;
+    }
+
+    /**
+     * Search with email field.
+     * 
+     * @param  VCard $entry
+     * @return Contact|null
+     */
+    private function existingContactWithEmail(VCard $entry)
+    {
+        if (empty($entry->EMAIL)) {
             return;
         }
 
         $email = (string) $entry->EMAIL;
 
-        if (! $this->isValidEmail($email)) {
-            return;
-        }
+        if ($this->isValidEmail($email)) {
+            $contactField = ContactField::where([
+                ['account_id', $this->accountId],
+                ['contact_field_type_id', $this->contactFieldTypeId('email')],
+            ])->whereIn('data', iterator_to_array($email))->first();
 
-        $contactField = ContactField::where([
-            ['account_id', $this->accountId],
-            ['contact_field_type_id', $this->contactFieldEmailId()],
-        ])->whereIn('data', iterator_to_array($email))->first();
-
-        if ($contactField) {
-            return $contactField->contact;
+            if ($contactField) {
+                return $contactField->contact;
+            }
         }
     }
 
     /**
-     * Return the name and email address of the current entry.
-     * John Doe Johnny john@doe.com.
-     *
+     * Search with names fields.
+     * 
      * @param  VCard $entry
-     * @return string
+     * @return Contact|null
      */
-    private function name($entry): string
+    private function existingContactWithName(VCard $entry)
     {
-        if ($this->hasFirstnameInN($entry)) {
-            $name = $this->formatValue($entry->N->getParts()[1]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
-            $name .= ' '.$this->formatValue($entry->EMAIL);
-        } elseif ($this->hasNICKNAME($entry)) {
-            $name = $this->formatValue($entry->NICKNAME);
-            $name .= ' '.$this->formatValue($entry->EMAIL);
-        } elseif ($this->hasFN($entry)) {
-            $name = $this->formatValue($entry->FN);
-            $name .= ' '.$this->formatValue($entry->EMAIL);
-        } else {
-            $name = trans('settings.import_vcard_unknown_entry');
-        }
+        $contact = new Contact;
+        importNames($contact, $entry);
 
-        return $name;
+        return Contact::where([
+            ['account_id', $this->accountId],
+            ['first_name', $contact->first_name],
+            ['middle_name', $contact->middle_name],
+            ['last_name', $contact->last_name],
+        ])->first();
     }
 
     /**
@@ -279,9 +313,9 @@ class ImportCarddav extends BaseService
      * @param null|string $value
      * @return null|string
      */
-    private function formatValue($value)
+    private function formatValue($value): string
     {
-        return ! empty((string) $value) ? (string) $value : null;
+        return ! empty((string) $value) ? str_replace('\;', ';', trim((string) $value)) : (string) null;
     }
 
     /**
@@ -291,17 +325,16 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return Contact
      */
-    private function createContactFromCurrentEntry(Contact $contact, $entry)
+    private function createContactFromCurrentEntry(Contact $contact, VCard $entry): Contact
     {
         if (! $contact) {
             $contact = new Contact;
             $contact->account_id = $this->accountId;
-            $contact->gender_id = $this->getGender($entry->GENDER)->id;
             $contact->setAvatarColor();
-            $contact->save();
         }
 
         $this->importNames($contact, $entry);
+        $this->importGender($contact, $entry);
         $this->importWorkInformation($contact, $entry);
         $this->importBirthday($contact, $entry);
         $this->importAddress($contact, $entry);
@@ -320,14 +353,14 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importNames(Contact $contact, $entry): void
+    private function importNames(Contact $contact, VCard $entry): void
     {
         if ($this->hasFirstnameInN($entry)) {
             $this->importFromN($contact, $entry);
-        } elseif ($this->hasNICKNAME($entry)) {
-            $this->importFromNICKNAME($contact, $entry);
         } elseif ($this->hasFN($entry)) {
             $this->importFromFN($contact, $entry);
+        } elseif ($this->hasNICKNAME($entry)) {
+            $this->importFromNICKNAME($contact, $entry);
         } else {
             throw new \LogicException('Check if you can import entry!');
         }
@@ -338,11 +371,17 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importFromN(Contact $contact, $entry): void
+    private function importFromN(Contact $contact, VCard $entry): void
     {
+        $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
         $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
         $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
-        $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
+        //$contact->prefix = $this->formatValue($entry->N->getParts()[3]);
+        //$contact->suffix = $this->formatValue($entry->N->getParts()[4]);
+
+        if (! empty($entry->NICKNAME)) {
+            $contact->nickname = $this->formatValue($entry->NICKNAME);
+        }
     }
 
     /**
@@ -350,7 +389,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importFromNICKNAME(Contact $contact, $entry): void
+    private function importFromNICKNAME(Contact $contact, VCard $entry): void
     {
         $contact->first_name = $this->formatValue($entry->NICKNAME);
     }
@@ -360,11 +399,29 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importFromFN(Contact $contact, $entry): void
+    private function importFromFN(Contact $contact, VCard $entry): void
     {
         $fullnameParts = preg_split('/ +/', $entry->FN);
         $contact->first_name = $this->formatValue($fullnameParts[0]);
         $contact->last_name = $this->formatValue($fullnameParts[1]);
+
+        if (! empty($entry->NICKNAME)) {
+            $contact->nickname = $this->formatValue($entry->NICKNAME);
+        }
+    }
+
+    /**
+     * Import gender of the contact.
+     *
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importGender(Contact $contact, VCard $entry): void
+    {
+        if ($entry->GENDER) {
+            $contact->gender_id = $this->getGender($entry->GENDER)->id;
+        }
     }
 
     /**
@@ -372,7 +429,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importWorkInformation(Contact $contact, $entry): void
+    private function importWorkInformation(Contact $contact, VCard $entry): void
     {
         if ($entry->ORG) {
             $contact->company = $this->formatValue($entry->ORG);
@@ -392,17 +449,14 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importBirthday(Contact $contact, $entry): void
+    private function importBirthday(Contact $contact, VCard $entry): void
     {
         if ($entry->BDAY && ! empty((string) $entry->BDAY)) {
-            try {
-                $birthdate = new \DateTime((string) $entry->BDAY);
-            } catch (\Exception $e) {
-                return;
+            $birthdate = DateHelper::parseDate((string) $entry->BDAY);
+            if (! is_null($birthdate)) {
+                $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
             }
-
-            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-            $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
         }
     }
 
@@ -411,7 +465,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importAddress(Contact $contact, $entry): void
+    private function importAddress(Contact $contact, VCard $entry): void
     {
         if (! $entry->ADR) {
             return;
@@ -435,7 +489,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importEmail(Contact $contact, $entry): void
+    private function importEmail(Contact $contact, VCard $entry): void
     {
         if (is_null($entry->EMAIL)) {
             return;
@@ -447,7 +501,7 @@ class ImportCarddav extends BaseService
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'data' => $this->formatValue($email),
-                    'contact_field_type_id' => $this->contactFieldEmailId(),
+                    'contact_field_type_id' => $this->contactFieldTypeId('email'),
                 ]);
             }
         }
@@ -458,7 +512,7 @@ class ImportCarddav extends BaseService
      * @param  VCard $entry
      * @return void
      */
-    private function importTel(Contact $contact, $entry): void
+    private function importTel(Contact $contact, VCard $entry): void
     {
         if (is_null($entry->TEL)) {
             return;
@@ -475,48 +529,33 @@ class ImportCarddav extends BaseService
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'data' => $this->formatValue($tel),
-                'contact_field_type_id' => $this->contactFieldPhoneId(),
+                'contact_field_type_id' => $this->contactFieldTypeId('phone'),
             ]);
         }
     }
 
     /**
+     * Get the contact field type id for the $type.
+     * 
+     * @param string $type  The type of the ContactFieldType, or the name
      * @return int
      */
-    private function contactFieldEmailId(): int
+    private function contactFieldTypeId(string $type): int
     {
-        if (! $this->contactFieldEmailId) {
+        if (! array_has($this->contactFields, $type)) {
             $contactFieldType = ContactFieldType::where([
                 ['account_id', $this->accountId],
-                ['type', 'email'],
+                ['type', $type],
             ])->first();
-            if ($contactFieldType) {
-                $this->contactFieldEmailId = $contactFieldType->id;
-            } else {
-                // TODO
+            if (is_null($contactFieldType)) {
+                $contactFieldType = ContactFieldType::where([
+                    ['account_id', $this->accountId],
+                    ['name', $type],
+                ])->first();
             }
+            array_set($this->contactFields, $type, $contactFieldType != null ? $contactFieldType->id : null);
         }
 
-        return $this->contactFieldEmailId;
-    }
-
-    /**
-     * @return int
-     */
-    private function contactFieldPhoneId(): int
-    {
-        if (! $this->contactFieldPhoneId) {
-            $contactFieldType = ContactFieldType::where([
-                ['account_id', $this->accountId],
-                ['type', 'phone'],
-            ])->first();
-            if ($contactFieldType) {
-                $this->contactFieldPhoneId = $contactFieldType->id;
-            } else {
-                // TODO
-            }
-        }
-
-        return $this->contactFieldPhoneId;
+        return array_get($this->contactFields, $type);
     }
 }

@@ -6,7 +6,7 @@ use Exception;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
 use Sabre\VObject\Component\VCard;
-use App\Services\Carddav\ImportCarddav;
+use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -56,7 +56,7 @@ class ImportJob extends Model
     protected $dates = ['started_at', 'ended_at'];
 
     /**
-     * @var ImportCarddav
+     * @var ImportVCard
      */
     private $service;
 
@@ -102,8 +102,6 @@ class ImportJob extends Model
         $this->getPhysicalFile();
 
         $this->getEntries();
-
-        $this->getSpecialGender();
 
         $this->processEntries($behaviour);
 
@@ -224,27 +222,27 @@ class ImportJob extends Model
             'behaviour' => $behaviour
         ]);
 
-        if ($result == ImportCarddav::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME
-            || $result == ImportCarddav::ERROR_CONTACT_EXIST) {
-            $this->skipEntry($result);
+        if ($result == ImportVCard::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME
+            || $result == ImportVCard::ERROR_CONTACT_EXIST) {
+            $this->skipEntry($vCard, $result);
 
             return null;
         }
 
         $this->contacts_imported++;
-        $this->fileImportJobReport(self::VCARD_IMPORTED);
+        $this->fileImportJobReport($vCard, self::VCARD_IMPORTED);
 
         return $result;
     }
 
     /**
-     * @return ImportCarddav
+     * @return ImportVCard
      */
     private function getService()
     {
         if (! $this->service)
         {
-            $this->service = new ImportCarddav($this->account_id);
+            $this->service = new ImportVCard($this->account_id);
         }
         return $this->service;
     }
@@ -252,25 +250,27 @@ class ImportJob extends Model
     /**
      * Skip the current entry.
      *
+     * @param  VCard $entry
      * @param  string $reason
      * @return void
      */
-    public function skipEntry($reason = null): void
+    public function skipEntry($entry, $reason = null): void
     {
-        $this->fileImportJobReport(self::VCARD_SKIPPED, $reason);
+        $this->fileImportJobReport($entry, self::VCARD_SKIPPED, $reason);
         $this->contacts_skipped++;
     }
 
     /**
      * File an import job report for the current entry.
      *
+     * @param  VCard $entry
      * @param  bool $status
      * @param  string $reason
      * @return void
      */
-    public function fileImportJobReport($status, $reason = null): void
+    public function fileImportJobReport($entry, $status, $reason = null): void
     {
-        $name = $this->name();
+        $name = $this->name($entry);
 
         $importJobReport = new ImportJobReport;
         $importJobReport->account_id = $this->account_id;
@@ -280,5 +280,32 @@ class ImportJob extends Model
         $importJobReport->skipped = $status;
         $importJobReport->skip_reason = $reason;
         $importJobReport->save();
+    }
+
+    /**
+     * Return the name and email address of the current entry.
+     * John Doe Johnny john@doe.com.
+     *
+     * @param  VCard $entry
+     * @return string
+     */
+    private function name($entry): string
+    {
+        if ($this->hasFirstnameInN($entry)) {
+            $name = $this->formatValue($entry->N->getParts()[1]);
+            $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
+            $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            $name .= ' '.$this->formatValue($entry->EMAIL);
+        } elseif ($this->hasNICKNAME($entry)) {
+            $name = $this->formatValue($entry->NICKNAME);
+            $name .= ' '.$this->formatValue($entry->EMAIL);
+        } elseif ($this->hasFN($entry)) {
+            $name = $this->formatValue($entry->FN);
+            $name .= ' '.$this->formatValue($entry->EMAIL);
+        } else {
+            $name = trans('settings.import_vcard_unknown_entry');
+        }
+
+        return $name;
     }
 }
