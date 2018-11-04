@@ -195,8 +195,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         try {
             return (new Contact)->resolveRouteBinding($this->decodeUri($uri));
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             return;
         }
     }
@@ -279,7 +278,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getMultipleCards', func_get_args());
 
-        $contacts = array_map(function($uri) {
+        $contacts = array_map(function ($uri) {
             return $this->getContact($uri);
         }, $uris);
 
