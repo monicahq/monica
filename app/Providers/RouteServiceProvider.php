@@ -81,7 +81,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapOAuthRoutes($router);
 
-        if (config('carddav.enabled')) {
+        if (config('carddav.enabled') && ! auth()->user()->account()->hasLimitations()) {
             $this->mapCardDAVRoutes($router);
         }
 
