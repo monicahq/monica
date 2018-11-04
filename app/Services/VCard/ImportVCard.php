@@ -139,7 +139,7 @@ class ImportVCard extends BaseService
      * Get or create the gender called "Vcard" that is associated with all
      * imported contacts.
      *
-     * @param  char  $genderCode
+     * @param  string  $genderCode
      * @return Gender
      */
     private function getGender($genderCode) : Gender
@@ -246,6 +246,7 @@ class ImportVCard extends BaseService
      */
     private function existingContact(VCard $entry, $contact_id = null)
     {
+        $contact = null;
         if (! is_null($contact_id)) {
             $contact = Contact::where('account_id', $this->accountId)
                 ->find($contact_id);
@@ -297,7 +298,7 @@ class ImportVCard extends BaseService
     private function existingContactWithName(VCard $entry)
     {
         $contact = new Contact;
-        importNames($contact, $entry);
+        $this->importNames($contact, $entry);
 
         return Contact::where([
             ['account_id', $this->accountId],

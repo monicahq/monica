@@ -95,7 +95,7 @@ class ImportJob extends Model
      *
      * @return [type] [description]
      */
-    public function process($behaviour = self::BEHAVIOUR_ADD)
+    public function process($behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
         $this->initJob();
 
@@ -198,7 +198,7 @@ class ImportJob extends Model
      *
      * @return
      */
-    public function processEntries($behaviour = self::BEHAVIOUR_ADD)
+    public function processEntries($behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
         collect($this->entries[0])->map(function ($vcard) {
             return Reader::read($vcard);
@@ -212,9 +212,9 @@ class ImportJob extends Model
      *
      * @param  VCard  $vCard
      * @param  string $behaviour
-     * @return Contact
+     * @return int : id of the Contact
      */
-    public function processSingleEntry($vCard, $behaviour = self::BEHAVIOUR_ADD): Contact
+    public function processSingleEntry($vCard, $behaviour = ImportVCard::BEHAVIOUR_ADD): int
     {
         $result = $this->getService()->execute([
             'user_id' => $this->user_id,

@@ -3,7 +3,6 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use App\Traits\Hasher;
 use Sabre\VObject\Reader;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
@@ -13,8 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
 {
-    use Hasher;
-
     /**
      * Returns the list of addressbooks for a specific user.
      *
@@ -333,9 +330,10 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
 
     private function importCard($cardUri, $cardData)
     {
+        $contact_id = $cardUri;
         if ($cardUri) {
             try {
-                $contact_id = $this->decodeId($cardUri);
+                $contact_id = app('idhasher')->decodeId($cardUri);
             } catch (\App\Exceptions\WrongIdException $e) {
                 $contact_id = $cardUri;
             }
