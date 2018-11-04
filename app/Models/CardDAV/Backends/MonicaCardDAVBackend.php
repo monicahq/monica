@@ -3,7 +3,6 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use Sabre\VObject\Reader;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
