@@ -326,11 +326,12 @@ class ImportVCard extends BaseService
      * @param  VCard $entry
      * @return Contact
      */
-    private function createContactFromCurrentEntry(Contact $contact, VCard $entry): Contact
+    private function createContactFromCurrentEntry($contact, VCard $entry): Contact
     {
         if (! $contact) {
             $contact = new Contact;
             $contact->account_id = $this->accountId;
+            $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
         }
 

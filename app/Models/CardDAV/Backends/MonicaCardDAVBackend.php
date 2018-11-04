@@ -8,6 +8,7 @@ use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Relationship\Relationship;
 
 class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
 {
@@ -97,6 +98,9 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
 
     private function prepareCard($contact)
     {
+        if (! $contact) {
+            return;
+        }
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
 
         // Basic information
@@ -166,7 +170,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
         return [
             'id' => $contact->hashid(),
             'etag' => md5($vcard->serialize()),
-            'uri' => $contact->id,
+            'uri' => $this->encodeUri($contact),
             'lastmodified' => $contact->updated_at->timestamp,
             'carddata' => $vcard->serialize(),
         ];
@@ -175,6 +179,26 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     private function escape($value) : string
     {
         return ! empty((string) $value) ? trim((string) $value) : (string) null;
+    }
+
+    private function encodeUri($contact)
+    {
+        return urlencode($contact->hashid().'.vcf');
+    }
+
+    private function decodeUri($uri)
+    {
+        return str_replace('.vcf', '', urldecode($uri));
+    }
+
+    private function getContact($uri)
+    {
+        try {
+            return (new Contact)->resolveRouteBinding($this->decodeUri($uri));
+        }
+        catch (\Exception $e) {
+            return;
+        }
     }
 
     private function prepareCards($contacts)
@@ -234,8 +258,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getCard', func_get_args());
 
-        $contact = Contact::where('account_id', Auth::user()->account_id)
-            ->findOrFail($cardUri);
+        $contact = $this->getContact($cardUri);
 
         return $this->prepareCard($contact);
     }
@@ -256,9 +279,9 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getMultipleCards', func_get_args());
 
-        $contacts = Contact::where('account_id', Auth::user()->account_id)
-            ->whereIn('id', $uris)
-            ->get();
+        $contacts = array_map(function($uri) {
+            return $this->getContact($uri);
+        }, $uris);
 
         return $this->prepareCards($contacts);
     }
@@ -292,7 +315,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' createCard', func_get_args());
 
-        return $this->importCard($cardUri, $cardData);
+        return $this->importCard(null, $cardData);
     }
 
     /**
@@ -329,12 +352,12 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
 
     private function importCard($cardUri, $cardData)
     {
-        $contact_id = $cardUri;
+        $contact_id = null;
         if ($cardUri) {
-            try {
-                $contact_id = app('idhasher')->decodeId($cardUri);
-            } catch (\App\Exceptions\WrongIdException $e) {
-                $contact_id = $cardUri;
+            $contact = $this->getContact($cardUri);
+
+            if ($contact) {
+                $contact_id = $contact->id;
             }
         }
 
@@ -369,5 +392,23 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     public function deleteCard($addressBookId, $cardUri)
     {
         Log::debug(__CLASS__.' deleteCard', func_get_args());
+
+        $contact = $this->getContact($cardUri);
+
+        if ($contact) {
+            // delete contact
+            Relationship::where('account_id', $contact->account_id)
+                ->where('contact_is', $contact->id)
+                ->delete();
+            Relationship::where('account_id', $contact->account_id)
+                ->where('of_contact', $contact->id)
+                ->delete();
+
+            $contact->deleteEverything();
+
+            return true;
+        }
+
+        return false;
     }
 }

@@ -57,7 +57,6 @@ class CardDAVController extends Controller
         // ACL plugnin
         $aclPlugin = new \Sabre\DAVACL\Plugin();
         $aclPlugin->allowUnauthenticatedAccess = false;
-        $aclPlugin->defaultUsernamePath = 'principals/'.Auth::user()->email;
         $aclPlugin->hideNodesFromListings = true;
         $server->addPlugin($aclPlugin);
 
