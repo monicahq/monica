@@ -240,8 +240,7 @@ class ImportJob extends Model
      */
     private function getService()
     {
-        if (! $this->service)
-        {
+        if (! $this->service) {
             $this->service = new ImportVCard($this->account_id);
         }
 
