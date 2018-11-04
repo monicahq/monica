@@ -20,7 +20,9 @@ class CardDAVController extends Controller
     public function init(Request $request)
     {
         // Disable debugger for caldav output
-        Debugbar::disable();
+        if (config('app.debug')) {
+            Debugbar::disable();
+        }
 
         // Initiate custom backends for link between Sabre and Monica
         $authBackend = new MonicaSabreBackend();            // Authentication
