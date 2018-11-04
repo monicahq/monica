@@ -4,7 +4,6 @@ namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
 use App\Traits\Hasher;
-use Sabre\VObject\Reader;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
@@ -109,13 +108,13 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
             'N'   => [
                 $this->escape($contact->last_name),
                 $this->escape($contact->first_name),
-                $this->escape($contact->middle_name)
+                $this->escape($contact->middle_name),
             ],
             'UID' => $contact->hashid(),
         ]);
 
         // Nickname
-        if (!empty($contact->nickname)) {
+        if (! empty($contact->nickname)) {
             $vcard->add('NICKNAME', $this->escape($contact->nickname));
         }
 
@@ -357,6 +356,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
             $contact = Contact::where('account_id', Auth::user()->account_id)
                 ->find($result);
             $card = $this->prepareCard($contact);
+
             return $card['etag'];
         }
     }

@@ -5,8 +5,8 @@ namespace App\Services\VCard;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
-use App\Helpers\LocaleHelper;
 use App\Helpers\VCardHelper;
+use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
@@ -264,7 +264,7 @@ class ImportVCard extends BaseService
 
     /**
      * Search with email field.
-     * 
+     *
      * @param  VCard $entry
      * @return Contact|null
      */
@@ -290,7 +290,7 @@ class ImportVCard extends BaseService
 
     /**
      * Search with names fields.
-     * 
+     *
      * @param  VCard $entry
      * @return Contact|null
      */
@@ -536,7 +536,7 @@ class ImportVCard extends BaseService
 
     /**
      * Get the contact field type id for the $type.
-     * 
+     *
      * @param string $type  The type of the ContactFieldType, or the name
      * @return int
      */
