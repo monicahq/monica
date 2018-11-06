@@ -4,18 +4,15 @@ namespace App\Http\Controllers\CardDAV;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
-use Sabre\DAVACL\PrincipalCollection;
 use Sabre\DAVACL\Plugin as AclPlugin;
+use Sabre\DAVACL\PrincipalCollection;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use App\Models\CardDAV\MonicaAddressBookRoot;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
-use App\Http\Controllers\CardDAV\SapiServerMock;
 use App\Models\CardDAV\Backends\MonicaSabreBackend;
 use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
 use App\Models\CardDAV\Backends\MonicaPrincipleBackend;
@@ -73,7 +70,6 @@ class CardDAVController extends Controller
             $server->httpRequest->setBody($request->getContent(true));
             $server->httpRequest->setHeaders($request->headers->all());
         }
-
 
         return $server;
     }

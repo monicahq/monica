@@ -5,11 +5,10 @@ namespace App\Models\CardDAV\Backends;
 use Sabre\DAV;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
-use App\Services\VCard\ImportVCard;
 use App\Services\VCard\ExportVCard;
+use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Relationship\Relationship;
 use Sabre\CardDAV\Backend\BackendInterface as SabreBackendInterface;
 
 class MonicaCardDAVBackend implements SabreBackendInterface

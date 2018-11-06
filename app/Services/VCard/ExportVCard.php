@@ -2,20 +2,10 @@
 
 namespace App\Services\VCard;
 
-use App\Models\User\User;
-use Sabre\VObject\Reader;
-use App\Helpers\DateHelper;
-use App\Helpers\VCardHelper;
-use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
-use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
-use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
-use App\Models\Contact\ContactField;
-use App\Models\Contact\ContactFieldType;
 
 class ExportVCard extends BaseService
 {
@@ -104,7 +94,7 @@ class ExportVCard extends BaseService
                 $gender = 'O';
                 break;
         }
-        $vcard->add('GENDER', [$gender,$contact->gender->name]);
+        $vcard->add('GENDER', [$gender, $contact->gender->name]);
     }
 
     /**
@@ -152,8 +142,7 @@ class ExportVCard extends BaseService
      */
     private function exportAddress(Contact $contact, VCard $vcard)
     {
-        foreach ($contact->addresses as $address)
-        {
+        foreach ($contact->addresses as $address) {
             $vcard->add('ADR', [
                 '',
                 '',
@@ -164,7 +153,6 @@ class ExportVCard extends BaseService
                 $address->country,
             ]);
         }
-
     }
 
     /**
@@ -193,6 +181,5 @@ class ExportVCard extends BaseService
                     break;
             }
         }
-
     }
 }

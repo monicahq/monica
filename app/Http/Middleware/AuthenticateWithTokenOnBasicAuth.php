@@ -69,8 +69,8 @@ class AuthenticateWithTokenOnBasicAuth
             $this->auth->setUser($user);
         } else {
             */
-            // Basic authentication
-            $this->auth->onceBasic();
+        // Basic authentication
+        $this->auth->onceBasic();
         //}
     }
 }

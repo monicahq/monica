@@ -24,7 +24,7 @@ class ImportVCard extends BaseService
 
     private $ErrorResults = [
         'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
-        'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname'
+        'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname',
     ];
 
     /**
@@ -487,8 +487,7 @@ class ImportVCard extends BaseService
                 } else {
                     // assume monica asset
                 }
-            }
-            else if (starts_with($entry->PHOTO, 'data:')) {
+            } elseif (starts_with($entry->PHOTO, 'data:')) {
                 // Import photo image
             }
         }
