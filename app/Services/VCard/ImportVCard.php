@@ -22,8 +22,10 @@ class ImportVCard extends BaseService
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
-    public const ERROR_CONTACT_EXIST = -1;
-    public const ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME = -2;
+    private $ErrorResults = [
+        'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
+        'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname'
+    ];
 
     /**
      * Valids value for frequency type.
@@ -63,7 +65,6 @@ class ImportVCard extends BaseService
     public function __construct($accountId)
     {
         $this->accountId = $accountId;
-        //parent::__construct();
     }
 
     /**
@@ -89,22 +90,22 @@ class ImportVCard extends BaseService
      * Import one VCard.
      *
      * @param array $data
-     * @return int
+     * @return array
      */
-    public function execute(array $data) : int
+    public function execute(array $data) : array
     {
         $this->validate(
             array_except($data, ['account_id'])
             + ['account_id' => $this->accountId]
         );
 
-        if ($data['contact_id']) {
+        if (array_has($data, 'contact_id')) {
             Contact::where('account_id', $this->accountId)
                 ->findOrFail($data['contact_id']);
         }
 
         User::where('account_id', $this->accountId)
-            ->findOrFail($data['user_id']);
+            ->findOrFail(array_get($data, 'user_id'));
 
         return $this->process($data);
     }
@@ -113,26 +114,40 @@ class ImportVCard extends BaseService
      * Import one VCard.
      *
      * @param array $data
-     * @return int
+     * @return array
      */
-    public function process(array $data) : int
+    public function process(array $data) : array
     {
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
 
         $entry = Reader::read($data['entry']);
 
         if (! $this->canImportCurrentEntry($entry)) {
-            return self::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME;
+            return [
+                'error' => 'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME',
+                'reason' => $this->ErrorResults['ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME'],
+                'name' => $this->name($entry),
+            ];
         }
 
-        $contact = $this->existingContact($entry, $data['contact_id']);
+        $contact_id = array_has($data, 'contact_id') ? $data['contact_id'] : null;
+        $contact = $this->existingContact($entry, $contact_id);
+
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
-            return self::ERROR_CONTACT_EXIST;
+            return [
+                'contact_id' => $contact->id,
+                'error' => 'ERROR_CONTACT_EXIST',
+                'reason' => $this->ErrorResults['ERROR_CONTACT_EXIST'],
+                'name' => $this->name($entry),
+            ];
         }
 
         $contact = $this->createContactFromCurrentEntry($contact, $entry);
 
-        return $contact->id;
+        return [
+            'contact_id' => $contact->id,
+            'name' => $this->name($entry),
+        ];
     }
 
     /**
@@ -333,10 +348,12 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
+            $contact->save();
         }
 
         $this->importNames($contact, $entry);
         $this->importGender($contact, $entry);
+        $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
         $this->importBirthday($contact, $entry);
         $this->importAddress($contact, $entry);
@@ -369,6 +386,33 @@ class ImportVCard extends BaseService
     }
 
     /**
+     * Return the name and email address of the current entry.
+     * John Doe Johnny john@doe.com.
+     *
+     * @param  VCard $entry
+     * @return string
+     */
+    private function name($entry): string
+    {
+        if ($this->hasFirstnameInN($entry)) {
+            $name = $this->formatValue($entry->N->getParts()[1]);
+            $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
+            $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            $name .= ' '.$this->formatValue($entry->EMAIL);
+        } elseif ($this->hasNICKNAME($entry)) {
+            $name = $this->formatValue($entry->NICKNAME);
+            $name .= ' '.$this->formatValue($entry->EMAIL);
+        } elseif ($this->hasFN($entry)) {
+            $name = $this->formatValue($entry->FN);
+            $name .= ' '.$this->formatValue($entry->EMAIL);
+        } else {
+            $name = trans('settings.import_vcard_unknown_entry');
+        }
+
+        return $name;
+    }
+
+    /**
      * @param Contact $contact
      * @param  VCard $entry
      * @return void
@@ -378,8 +422,8 @@ class ImportVCard extends BaseService
         $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
         $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
         $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
-        //$contact->prefix = $this->formatValue($entry->N->getParts()[3]);
-        //$contact->suffix = $this->formatValue($entry->N->getParts()[4]);
+        // prefix [3]
+        // suffix [4]
 
         if (! empty($entry->NICKNAME)) {
             $contact->nickname = $this->formatValue($entry->NICKNAME);
@@ -422,7 +466,31 @@ class ImportVCard extends BaseService
     private function importGender(Contact $contact, VCard $entry): void
     {
         if ($entry->GENDER) {
-            $contact->gender_id = $this->getGender($entry->GENDER)->id;
+            $contact->gender_id = $this->getGender((string) $entry->GENDER)->id;
+        }
+    }
+
+    /**
+     * Import photo of the contact.
+     *
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importPhoto(Contact $contact, VCard $entry): void
+    {
+        if ($entry->PHOTO) {
+            if ($entry->PHOTO instanceof \Sabre\VObject\Property\Uri) {
+                if (starts_with((string) $entry->PHOTO, 'https://secure.gravatar.com') || starts_with((string) $entry->PHOTO, 'https://www.gravatar.com')) {
+                    // Gravatar
+                    $contact->gravatar_url = (string) $entry->PHOTO;
+                } else {
+                    // assume monica asset
+                }
+            }
+            else if (starts_with($entry->PHOTO, 'data:')) {
+                // Import photo image
+            }
         }
     }
 

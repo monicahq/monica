@@ -9,6 +9,7 @@ use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -212,27 +213,27 @@ class ImportJob extends Model
      *
      * @param  VCard  $vCard
      * @param  string $behaviour
-     * @return int : id of the Contact
      */
-    public function processSingleEntry($vCard, $behaviour = ImportVCard::BEHAVIOUR_ADD): int
+    public function processSingleEntry($vCard, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
     {
-        $result = $this->getService()->execute([
-            'user_id' => $this->user_id,
-            'entry' => $vCard,
-            'behaviour' => $behaviour,
-        ]);
+        try {
+            $result = $this->getService()->execute([
+                'user_id' => $this->user_id,
+                'entry' => $vCard->serialize(),
+                'behaviour' => $behaviour,
+            ]);
+        } catch (MissingParameterException $e) {
+            $this->fail((string) $e);
+        }
 
-        if ($result == ImportVCard::ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME
-            || $result == ImportVCard::ERROR_CONTACT_EXIST) {
-            $this->skipEntry($vCard, $result);
+        if (array_has($result, 'error') && ! empty($result['error'])) {
+            $this->skipEntry($result['name'], $result['reason']);
 
-            return null;
+            return;
         }
 
         $this->contacts_imported++;
-        $this->fileImportJobReport($vCard, self::VCARD_IMPORTED);
-
-        return $result;
+        $this->fileImportJobReport($result['name'], self::VCARD_IMPORTED);
     }
 
     /**
@@ -250,28 +251,26 @@ class ImportJob extends Model
     /**
      * Skip the current entry.
      *
-     * @param  VCard $entry
+     * @param  string $name
      * @param  string $reason
      * @return void
      */
-    public function skipEntry($entry, $reason = null): void
+    public function skipEntry($name, $reason = null): void
     {
-        $this->fileImportJobReport($entry, self::VCARD_SKIPPED, $reason);
+        $this->fileImportJobReport($name, self::VCARD_SKIPPED, $reason);
         $this->contacts_skipped++;
     }
 
     /**
      * File an import job report for the current entry.
      *
-     * @param  VCard $entry
+     * @param  string $name
      * @param  bool $status
      * @param  string $reason
      * @return void
      */
-    public function fileImportJobReport($entry, $status, $reason = null): void
+    public function fileImportJobReport($name, $status, $reason = null): void
     {
-        $name = $this->name($entry);
-
         $importJobReport = new ImportJobReport;
         $importJobReport->account_id = $this->account_id;
         $importJobReport->user_id = $this->user_id;
@@ -280,32 +279,5 @@ class ImportJob extends Model
         $importJobReport->skipped = $status;
         $importJobReport->skip_reason = $reason;
         $importJobReport->save();
-    }
-
-    /**
-     * Return the name and email address of the current entry.
-     * John Doe Johnny john@doe.com.
-     *
-     * @param  VCard $entry
-     * @return string
-     */
-    private function name($entry): string
-    {
-        if ($this->hasFirstnameInN($entry)) {
-            $name = $this->formatValue($entry->N->getParts()[1]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
-            $name .= ' '.$this->formatValue($entry->EMAIL);
-        } elseif ($this->hasNICKNAME($entry)) {
-            $name = $this->formatValue($entry->NICKNAME);
-            $name .= ' '.$this->formatValue($entry->EMAIL);
-        } elseif ($this->hasFN($entry)) {
-            $name = $this->formatValue($entry->FN);
-            $name .= ' '.$this->formatValue($entry->EMAIL);
-        } else {
-            $name = trans('settings.import_vcard_unknown_entry');
-        }
-
-        return $name;
     }
 }

@@ -6,19 +6,9 @@ use Tests\ApiTestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-/**
- * @runTestsInSeparateProcesses
- */
-class CarddavContact extends ApiTestCase
+class CarddavContactTest extends ApiTestCase
 {
     use DatabaseTransactions;
-
-    public function setUp()
-    {
-        if (! (bool) env('CARDDAV_ENABLED', false)) {
-            $this->markTestSkipped('carddav disabled');
-        }
-    }
 
     /**
      * @group carddav
@@ -30,14 +20,14 @@ class CarddavContact extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->get("/carddav/addressbooks/{$user->email}/Contacts/{$contact->id}");
+        $response = $this->get("/carddav/addressbooks/{$user->email}/Contacts/{$contact->hashid()}");
 
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
 
         $response->assertSee('PRODID:-//Sabre//Sabre VObject');
         $response->assertSee('FN:'.$contact->name);
-        $response->assertSee('N:'.$contact->first_name.';'.$contact->last_name);
-        $response->assertSee('GENDER:O\;');
+        $response->assertSee('N:'.$contact->last_name.';'.$contact->first_name);
+        $response->assertSee('GENDER:O;');
     }
 }
