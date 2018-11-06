@@ -22,7 +22,7 @@ class ImportVCard extends BaseService
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
-    private $ErrorResults = [
+    protected $ErrorResults = [
         'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
         'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname',
     ];
@@ -77,7 +77,6 @@ class ImportVCard extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'nullable|integer',
-            'user_id' => 'required|integer',
             'entry' => 'required|string',
             'behaviour' => [
                 'required',
@@ -104,9 +103,6 @@ class ImportVCard extends BaseService
                 ->findOrFail($data['contact_id']);
         }
 
-        User::where('account_id', $this->accountId)
-            ->findOrFail(array_get($data, 'user_id'));
-
         return $this->process($data);
     }
 
@@ -116,7 +112,7 @@ class ImportVCard extends BaseService
      * @param array $data
      * @return array
      */
-    public function process(array $data) : array
+    private function process(array $data) : array
     {
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
 
@@ -290,13 +286,11 @@ class ImportVCard extends BaseService
             return;
         }
 
-        $email = (string) $entry->EMAIL;
-
-        if ($this->isValidEmail($email)) {
+        if ($this->isValidEmail((string) $entry->EMAIL)) {
             $contactField = ContactField::where([
                 ['account_id', $this->accountId],
                 ['contact_field_type_id', $this->contactFieldTypeId('email')],
-            ])->whereIn('data', iterator_to_array($email))->first();
+            ])->whereIn('data', iterator_to_array($entry->EMAIL))->first();
 
             if ($contactField) {
                 return $contactField->contact;

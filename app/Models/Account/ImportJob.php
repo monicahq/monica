@@ -36,13 +36,6 @@ class ImportJob extends Model
     public $entries;
 
     /**
-     * The current entry that is being processed.
-     *
-     * @var VCard
-     */
-    public $currentEntry;
-
-    /**
      * The attributes that aren't mass assignable.
      *
      * @var array
@@ -218,7 +211,6 @@ class ImportJob extends Model
     {
         try {
             $result = $this->getService()->execute([
-                'user_id' => $this->user_id,
                 'entry' => $vCard->serialize(),
                 'behaviour' => $behaviour,
             ]);
