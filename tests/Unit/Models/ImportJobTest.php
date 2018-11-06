@@ -4,7 +4,6 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Account\ImportJob;
@@ -297,7 +296,6 @@ END:VCARD
             'skip_reason' => 'the reason why',
         ]);
     }
-
 
     private function createImportJob()
     {

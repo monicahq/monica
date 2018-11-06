@@ -3,16 +3,11 @@
 namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
-use App\Services\VCard\ImportVCard;
-use App\Models\User\User;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Account\ImportJob;
 use Sabre\VObject\Component\VCard;
+use App\Services\VCard\ImportVCard;
 use App\Models\Contact\ContactField;
-use App\Models\Account\ImportJobReport;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

@@ -2,7 +2,6 @@
 
 namespace App\Services\VCard;
 
-use App\Models\User\User;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
