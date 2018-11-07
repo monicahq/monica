@@ -4,6 +4,7 @@ namespace Tests\Api;
 
 use Tests\ApiTestCase;
 use App\Models\Contact\Tag;
+use App\Models\Contact\Contact;
 use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -154,6 +155,57 @@ class ApiTagControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
 
+        $this->assertDatabaseMissing('contact_tag', [
+            'account_id' => $user->account->id,
+            'id' => $tag->id,
+        ]);
+        $this->assertDatabaseMissing('tags', [
+            'account_id' => $user->account->id,
+            'id' => $tag->id,
+        ]);
+    }
+
+    public function test_it_deletes_a_tag_associated()
+    {
+        $user = $this->signin();
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', "/api/contacts/{$contact1->id}/setTags", ['tags' => [$tag->name]]);
+        $response = $this->json('POST', "/api/contacts/{$contact2->id}/setTags", ['tags' => [$tag->name]]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+            'tag_id' => $tag->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+            'tag_id' => $tag->id,
+        ]);
+
+        $response = $this->json('DELETE', '/api/tags/'.$tag->id);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+            'tag_id' => $tag->id,
+        ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+            'tag_id' => $tag->id,
+        ]);
         $this->assertDatabaseMissing('tags', [
             'account_id' => $user->account->id,
             'id' => $tag->id,
