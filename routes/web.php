@@ -122,7 +122,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::name('relationships.')->group(function () {
             Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('edit');
             Route::put('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
-            Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('delete');
+            Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('destroy');
         });
 
         // Pets
