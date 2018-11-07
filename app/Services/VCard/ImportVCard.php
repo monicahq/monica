@@ -611,6 +611,7 @@ class ImportVCard extends BaseService
         foreach ($entry->socialProfile as $socialProfile) {
             $type = $socialProfile['type'];
             $contactFieldTypeId = null;
+            $data = null;
             switch ((string) $type) {
                 case 'facebook':
                     $contactFieldTypeId = $this->contactFieldTypeId('Facebook');
@@ -638,7 +639,7 @@ class ImportVCard extends BaseService
                     break;
             }
 
-            if (! is_null($contactFieldTypeId)) {
+            if (! is_null($contactFieldTypeId) && ! is_null($data)) {
                 ContactField::firstOrCreate([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,

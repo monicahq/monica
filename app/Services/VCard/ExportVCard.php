@@ -193,7 +193,7 @@ class ExportVCard extends BaseService
         }
 
         if (! is_null($contact->linkedin_profile_url)) {
-            $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contactField->data), ['type' => 'linkedin']);
+            $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->linkedin_profile_url), ['type' => 'linkedin']);
         }
     }
 }
