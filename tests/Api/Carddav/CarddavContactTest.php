@@ -3,7 +3,6 @@
 namespace Tests\Api\Carddav;
 
 use Tests\ApiTestCase;
-use Illuminate\Http\Testing\File;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -40,10 +39,10 @@ class CarddavContactTest extends ApiTestCase
         $user = $this->signin();
 
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/Contacts/single_vcard_stub.vcf", [], [], [],
-            ['content-type' => 'text/vcard; charset=utf-8'], 
+            ['content-type' => 'text/vcard; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nN:Doe;John;;;\nEND:VCARD"
         );
-        
+
         $response->assertStatus(201);
         $response->assertHeader('X-Sabre-Version');
         $response->assertHeaderMissing('ETag');
@@ -67,10 +66,10 @@ class CarddavContactTest extends ApiTestCase
         $filename = urlencode($contact->hashid().'.vcf');
 
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/Contacts/{$filename}", [], [], [],
-            ['content-type' => 'text/vcard; charset=utf-8'], 
+            ['content-type' => 'text/vcard; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:3.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
-        
+
         $response->assertStatus(204);
         $response->assertHeader('X-Sabre-Version');
         $response->assertHeaderMissing('ETag');
@@ -97,10 +96,10 @@ class CarddavContactTest extends ApiTestCase
         $data = $response->getContent();
 
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/Contacts/{$filename}", [], [], [],
-            ['content-type' => 'text/vcard; charset=utf-8'], 
+            ['content-type' => 'text/vcard; charset=utf-8'],
             $data
         );
-        
+
         $response->assertStatus(204);
         $response->assertHeader('X-Sabre-Version');
         $response->assertHeader('ETag');

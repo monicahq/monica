@@ -309,7 +309,7 @@ class MonicaCardDAVBackend implements SabreBackendInterface
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
                 ]);
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' importCard: '. (string) $e);
+            Log::debug(__CLASS__.' importCard: '.(string) $e);
         }
 
         if (! array_has($result, 'error')) {
