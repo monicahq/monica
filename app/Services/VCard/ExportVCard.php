@@ -35,7 +35,6 @@ class ExportVCard extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-
         return $this->export($contact);
     }
 

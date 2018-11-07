@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 
 class VCardHelper
