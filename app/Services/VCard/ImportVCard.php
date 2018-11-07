@@ -97,7 +97,7 @@ class ImportVCard extends BaseService
             + ['account_id' => $this->accountId]
         );
 
-        if (array_has($data, 'contact_id')) {
+        if (array_has($data, 'contact_id') && ! is_null($data['contact_id'])) {
             Contact::where('account_id', $this->accountId)
                 ->findOrFail($data['contact_id']);
         }

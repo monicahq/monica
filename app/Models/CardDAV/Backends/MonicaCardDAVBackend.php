@@ -305,12 +305,11 @@ class MonicaCardDAVBackend implements SabreBackendInterface
             $result = (new ImportVCard(Auth::user()->account_id))
                 ->execute([
                     'contact_id' => $contact_id,
-                    'user_id' => Auth::user()->id,
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
                 ]);
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' importCard', (string) $e);
+            Log::debug(__CLASS__.' importCard: '. (string) $e);
         }
 
         if (! array_has($result, 'error')) {
