@@ -40,6 +40,7 @@ class ExportVCard extends BaseService
         // Basic information
         $vcard = new VCard([
             'UID' => $contact->hashid(),
+            'SOURCE' => route('people.show', $contact),
         ]);
 
         $this->exportNames($contact, $vcard);
@@ -173,13 +174,26 @@ class ExportVCard extends BaseService
                     break;
             }
             switch ($contactField->contactFieldType->name) {
+                // See https://tools.ietf.org/id/draft-george-vcarddav-vcard-extension-02.html
                 case 'Facebook':
-                    $vcard->add('socialProfile', $this->escape($contactField->data), ['type' => 'facebook']);
+                    $vcard->add('socialProfile', $this->escape('https://www.facebook.com/'.$contactField->data), ['type' => 'facebook']);
                     break;
-                // ... Twitter, Whatsapp, Telegram, other
+                case 'Twitter':
+                    $vcard->add('socialProfile', $this->escape('https://twitter.com/'.$contactField->data), ['type' => 'twitter']);
+                    break;
+                case 'Whatsapp':
+                    $vcard->add('socialProfile', $this->escape('https://wa.me/'.$contactField->data), ['type' => 'whatsapp']);
+                    break;
+                case 'Telegram':
+                    $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactField->data), ['type' => 'telegram']);
+                    break;
                 default:
                     break;
             }
+        }
+
+        if (! is_null($contact->linkedin_profile_url)) {
+            $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contactField->data), ['type' => 'linkedin']);
         }
     }
 }

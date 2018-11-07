@@ -8,12 +8,14 @@ use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use App\Models\Contact\ContactField;
+use Sabre\VObject\PHPUnitAssertions;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardTest extends TestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions,
+        PHPUnitAssertions;
 
     public function test_it_can_not_import_because_no_firstname_or_nickname_in_vcard()
     {
@@ -198,7 +200,7 @@ class ImportVCardTest extends TestCase
         $importVCard = new ImportVCard($account->id);
 
         $result = $this->invokePrivateMethod($importVCard, 'formatValue', ['']);
-        //$this->assertNull($result);
+        $this->assertNull($result);
 
         $result = $this->invokePrivateMethod($importVCard, 'formatValue', ['This is a value']);
         $this->assertEquals(

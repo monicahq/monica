@@ -322,9 +322,9 @@ class ImportVCard extends BaseService
      * @param null|string $value
      * @return null|string
      */
-    private function formatValue($value): string
+    private function formatValue($value)
     {
-        return ! empty((string) $value) ? str_replace('\;', ';', trim((string) $value)) : (string) null;
+        return ! empty($value) ? str_replace('\;', ';', trim((string) $value)) : null;
     }
 
     /**
@@ -352,6 +352,7 @@ class ImportVCard extends BaseService
         $this->importAddress($contact, $entry);
         $this->importEmail($contact, $entry);
         $this->importTel($contact, $entry);
+        $this->importSocialProfile($contact, $entry);
 
         $contact->save();
 
@@ -593,6 +594,58 @@ class ImportVCard extends BaseService
                 'data' => $this->formatValue($tel),
                 'contact_field_type_id' => $this->contactFieldTypeId('phone'),
             ]);
+        }
+    }
+
+    /**
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importSocialProfile(Contact $contact, VCard $entry): void
+    {
+        if (is_null($entry->socialProfile)) {
+            return;
+        }
+
+        foreach ($entry->socialProfile as $socialProfile) {
+            $type = $socialProfile['type'];
+            $contactFieldTypeId = null;
+            switch ((string) $type) {
+                case 'facebook':
+                    $contactFieldTypeId = $this->contactFieldTypeId('Facebook');
+                    $data = str_replace('https://www.facebook.com/', '', $this->formatValue((string) $socialProfile));
+                    break;
+                case 'twitter':
+                    $contactFieldTypeId = $this->contactFieldTypeId('Twitter');
+                    $data = str_replace('https://twitter.com/', '', $this->formatValue((string) $socialProfile));
+                    break;
+                case 'whatsapp':
+                    $contactFieldTypeId = $this->contactFieldTypeId('Whatsapp');
+                    $data = str_replace('https://wa.me/', '', $this->formatValue((string) $socialProfile));
+                    break;
+                case 'telegram':
+                    $contactFieldTypeId = $this->contactFieldTypeId('Telegram');
+                    $data = str_replace('http://t.me/', '', $this->formatValue((string) $socialProfile));
+                    break;
+                case 'linkedin':
+                    $data = str_replace('http://www.linkedin.com/in/', '', $this->formatValue((string) $socialProfile));
+                    $contact->linkedin_profile_url = $data;
+                    continue;
+                    break;
+                default:
+                    // Not supported
+                    break;
+            }
+
+            if (! is_null($contactFieldTypeId)) {
+                ContactField::firstOrCreate([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'data' => $data,
+                    'contact_field_type_id' => $contactFieldTypeId,
+                ]);
+            }
         }
     }
 
