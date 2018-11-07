@@ -102,7 +102,7 @@ class CarddavServerTest extends ApiTestCase
         $response->assertHeader('X-Sabre-Version');
 
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/</d:href>");
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/Contacts/</d:href>");
+        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>");
     }
 
     /**
@@ -115,14 +115,14 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/Contacts");
+        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts");
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/Contacts/</d:href>");
+        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>");
         $contactId = urlencode(urlencode($contact->hashid()));
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/Contacts/{$contactId}.vcf</d:href>");
+        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contactId}.vcf</d:href>");
     }
 
     /**
@@ -135,11 +135,11 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/Contacts/{$contact->hashid()}");
+        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/{$contact->hashid()}");
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/Contacts/{$contact->hashid()}</d:href>");
+        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->hashid()}</d:href>");
     }
 }

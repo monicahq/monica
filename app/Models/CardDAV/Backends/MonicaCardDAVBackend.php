@@ -37,7 +37,7 @@ class MonicaCardDAVBackend implements SabreBackendInterface
         return [
             [
                 'id' => '0',
-                'uri' => 'Contacts',
+                'uri' => 'contacts',
                 'principaluri' => 'principals/'.Auth::user()->email,
             ],
         ];
@@ -110,7 +110,7 @@ class MonicaCardDAVBackend implements SabreBackendInterface
                     'contact_id' => $contact->id,
                 ]);
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' importCard', (string) $e);
+            Log::debug(__CLASS__.' prepareCard: '. (string) $e);
         }
 
         return [

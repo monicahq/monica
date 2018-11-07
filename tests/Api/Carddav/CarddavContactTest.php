@@ -20,7 +20,7 @@ class CarddavContactTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->get("/carddav/addressbooks/{$user->email}/Contacts/{$contact->hashid()}.vcf");
+        $response = $this->get("/carddav/addressbooks/{$user->email}/contacts/{$contact->hashid()}.vcf");
 
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
@@ -38,7 +38,7 @@ class CarddavContactTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/Contacts/single_vcard_stub.vcf", [], [], [],
+        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
             ['content-type' => 'text/vcard; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nN:Doe;John;;;\nEND:VCARD"
         );
@@ -65,7 +65,7 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->hashid().'.vcf');
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/Contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             ['content-type' => 'text/vcard; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:3.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
@@ -92,10 +92,10 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->hashid().'.vcf');
 
-        $response = $this->get("/carddav/addressbooks/{$user->email}/Contacts/{$filename}");
+        $response = $this->get("/carddav/addressbooks/{$user->email}/contacts/{$filename}");
         $data = $response->getContent();
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/Contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             ['content-type' => 'text/vcard; charset=utf-8'],
             $data
         );
