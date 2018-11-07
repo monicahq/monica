@@ -21,7 +21,7 @@ class ConversationsController extends Controller
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function new(Request $request, Contact $contact)
+    public function create(Request $request, Contact $contact)
     {
         return view('people.conversations.new')
             ->withContact($contact)
@@ -48,7 +48,7 @@ class ConversationsController extends Controller
                 'icon' => $conversation->contactFieldType->fontawesome_icon,
                 'content' => str_limit($conversation->messages->last()->content, 50),
                 'happened_at' => DateHelper::getShortDate($conversation->happened_at),
-                'route' => route('people.conversation.edit', [$contact, $conversation]),
+                'route' => route('people.conversations.edit', [$contact, $conversation]),
             ];
             $conversationsCollection->push($data);
         }
