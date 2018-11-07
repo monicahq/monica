@@ -383,10 +383,6 @@ class ContactTest extends FeatureTestCase
     {
         list($user, $contact) = $this->fetchUser();
 
-        $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
-        ]);
-
         $this->assertDatabaseHas('contacts', [
             'number_of_views' => 0,
         ]);
@@ -405,5 +401,17 @@ class ContactTest extends FeatureTestCase
         unset($array[$from]);
 
         return $array;
+    }
+
+    public function test_vcard_download()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID().'/vcard');
+
+        $response->assertOk();
+        $response->assertHeader('Content-type', 'text/x-vcard; charset=UTF-8');
+        $response->assertSee('FN:John Doe');
+        $response->assertSee('N:Doe;John;;;');
     }
 }
