@@ -35,6 +35,21 @@ class ExportVCard extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+
+        return $this->export($contact);
+    }
+
+    private function escape($value) : string
+    {
+        return ! empty((string) $value) ? trim((string) $value) : (string) null;
+    }
+
+    /**
+     * @param Contact $contact
+     * @return VCard
+     */
+    private function export(Contact $contact) : VCard
+    {
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
 
         // Basic information
@@ -52,11 +67,6 @@ class ExportVCard extends BaseService
         $this->exportContactFields($contact, $vcard);
 
         return $vcard;
-    }
-
-    private function escape($value) : string
-    {
-        return ! empty((string) $value) ? trim((string) $value) : (string) null;
     }
 
     /**

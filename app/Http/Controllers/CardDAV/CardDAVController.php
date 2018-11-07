@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CardDAV;
 
 use Illuminate\Http\Request;
+use Sabre\CardDAV\VCFExportPlugin;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Sabre\DAV\Server as SabreServer;
@@ -104,6 +105,9 @@ class CardDAVController extends Controller
         $aclPlugin->allowUnauthenticatedAccess = false;
         $aclPlugin->hideNodesFromListings = true;
         $server->addPlugin($aclPlugin);
+
+        // VCFExport
+        $server->addPlugin(new VCFExportPlugin());
 
         // In debug mode add browser plugin
         if (App::environment('local')) {
