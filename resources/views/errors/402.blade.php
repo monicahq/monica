@@ -8,7 +8,7 @@
       <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
 
         <div class="alert alert-danger">
-          <h3><i class="fa fa-ban"></i> @lang('auth.not_authorized')</h3>
+          <h3><em class="fa fa-ban"></em> @lang('auth.not_authorized')</h3>
 
           @lang('settings.personalisation_paid_upgrade')
 
