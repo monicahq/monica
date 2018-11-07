@@ -4,8 +4,8 @@ namespace Tests\Api;
 
 use Tests\ApiTestCase;
 use App\Models\Contact\Tag;
-use App\Models\Contact\Contact;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiTagControllerTest extends ApiTestCase
