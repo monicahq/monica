@@ -110,7 +110,7 @@ class MonicaCardDAVBackend implements SabreBackendInterface
                     'contact_id' => $contact->id,
                 ]);
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' prepareCard: '. (string) $e);
+            Log::debug(__CLASS__.' prepareCard: '.(string) $e);
         }
 
         return [
