@@ -59,9 +59,8 @@ class CardDAVController extends Controller
         $server = new SabreServer($nodes);
         $server->sapi = new SapiServerMock();
 
+        // Base Uri of carddav
         $server->setBaseUri(self::BASE_URI);
-        $server->debugExceptions = true;
-
         // Set Url with trailing slash
         $server->httpRequest->setUrl($this->fullUrl($request));
 
@@ -70,6 +69,10 @@ class CardDAVController extends Controller
             $server->httpRequest->setMethod($request->method());
             $server->httpRequest->setBody($request->getContent(true));
             $server->httpRequest->setHeaders($request->headers->all());
+        }
+
+        if (! App::environment('production')) {
+            $server->debugExceptions = true;
         }
 
         return $server;
