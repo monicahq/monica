@@ -57,7 +57,6 @@ class AuthenticateWithTokenOnBasicAuth
         }
 
         // Try Bearer authentication, with token in 'password' field on basic auth
-        /*
         if (! $request->bearerToken()) {
             $password = $request->getPassword();
             $request->headers->set('Authorization', 'Bearer '.$password);
@@ -68,9 +67,8 @@ class AuthenticateWithTokenOnBasicAuth
         if ($user && (! $request->getUser() || $request->getUser() === $user->email)) {
             $this->auth->setUser($user);
         } else {
-            */
-        // Basic authentication
-        $this->auth->onceBasic();
-        //}
+            // Basic authentication
+            $this->auth->onceBasic();
+        }
     }
 }
