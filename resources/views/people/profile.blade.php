@@ -55,7 +55,7 @@
               </li>
               <li>
                 <a id="link-delete-contact" class="pointer" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_message') }}</a>
-                <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
+                <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
                   {{ method_field('DELETE') }}
                   {{ csrf_field() }}
                 </form>

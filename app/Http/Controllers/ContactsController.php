@@ -425,7 +425,7 @@ class ContactsController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, Contact $contact)
+    public function destroy(Request $request, Contact $contact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
             return redirect()->route('people.index');

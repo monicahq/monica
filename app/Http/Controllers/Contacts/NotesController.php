@@ -14,7 +14,7 @@ class NotesController extends Controller
     /**
      * Get all the tasks of this contact.
      */
-    public function get(Contact $contact)
+    public function index(Contact $contact)
     {
         $notesCollection = collect([]);
         $notes = $contact->notes()->latest()->get();
