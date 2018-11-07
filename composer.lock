@@ -3082,16 +3082,16 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "36a063b10713863667f80fe6a00d391aa0d18b54"
+                "reference": "a93e8df1110444b045abaa6b5d71358a85dd480e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/36a063b10713863667f80fe6a00d391aa0d18b54",
-                "reference": "36a063b10713863667f80fe6a00d391aa0d18b54",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/a93e8df1110444b045abaa6b5d71358a85dd480e",
+                "reference": "a93e8df1110444b045abaa6b5d71358a85dd480e",
                 "shasum": ""
             },
             "require": {
@@ -3101,7 +3101,8 @@
                 "illuminate/support": "^5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.4"
+                "phpunit/phpunit": "^7.4",
+                "vimeo/psalm": "^2.0"
             },
             "type": "library",
             "extra": {
@@ -3133,7 +3134,7 @@
                 "php",
                 "proxies"
             ],
-            "time": "2018-10-05T10:40:38+00:00"
+            "time": "2018-11-03T19:42:49+00:00"
         },
         {
             "name": "monolog/monolog",
