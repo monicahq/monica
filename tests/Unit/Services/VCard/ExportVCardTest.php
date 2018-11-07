@@ -4,8 +4,8 @@ namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ExportVCard;
 use App\Models\Contact\ContactField;
@@ -45,7 +45,7 @@ class ExportVCardTest extends TestCase
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
-            'nickname' => 'the nickname'
+            'nickname' => 'the nickname',
         ]);
         $vCard = new VCard();
 
@@ -103,7 +103,7 @@ class ExportVCardTest extends TestCase
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
-            'company' => 'the company'
+            'company' => 'the company',
         ]);
         $vCard = new VCard();
 
@@ -316,7 +316,6 @@ END:VCARD", $vCard);
             'account_id' => $account->id,
             'contact_field_type_id' => $contactFieldType->id,
         ]);
-
 
         $exportVCard = new ExportVCard();
         $vCard = $this->invokePrivateMethod($exportVCard, 'export', [$contact]);
