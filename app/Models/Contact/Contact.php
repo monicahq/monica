@@ -1415,7 +1415,7 @@ class Contact extends Model
 
         $tag->name_slug = str_slug($tag->name);
 
-        if(empty($tag->name_slug)) {
+        if (empty($tag->name_slug)) {
             $tag->name_slug = htmlentities($tag->name);
         }
 
