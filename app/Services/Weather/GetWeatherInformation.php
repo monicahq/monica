@@ -2,11 +2,9 @@
 
 namespace App\Services\Weather;
 
-use App\Models\Account\Weather;
 use App\Services\BaseService;
-use Illuminate\Validation\Rule;
+use App\Models\Account\Weather;
 use Naughtonium\LaravelDarkSky\Facades\DarkSky;
-use Naughtonium\LaravelDarkSky\LaravelDarkSkyServiceProvider;
 
 class GetWeatherInformation extends BaseService
 {

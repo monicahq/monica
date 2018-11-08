@@ -31,8 +31,10 @@ class Weather extends Model
      *
      * @return string
      */
-    public function getTemperatureAttribute($value) {
+    public function getTemperatureAttribute($value)
+    {
         $json = $this->weather_json;
+
         return $json['currently']['temperature'];
     }
 
@@ -44,6 +46,7 @@ class Weather extends Model
     public function getSummaryAttribute($value)
     {
         $json = $this->weather_json;
+
         return $json['currently']['summary'];
     }
 
@@ -55,6 +58,7 @@ class Weather extends Model
     public function getSummaryIconAttribute($value)
     {
         $json = $this->weather_json;
+
         return $json['currently']['icon'];
     }
 }

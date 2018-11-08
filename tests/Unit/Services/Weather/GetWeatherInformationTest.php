@@ -7,7 +7,6 @@ use App\Models\Account\Weather;
 use App\Exceptions\MissingParameterException;
 use App\Services\Weather\GetWeatherInformation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetWeatherInformationTest extends TestCase
 {
