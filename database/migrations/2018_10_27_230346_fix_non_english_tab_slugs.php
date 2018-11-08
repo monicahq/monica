@@ -1,7 +1,7 @@
 <?php
 
+use App\Models\Contact\Tag;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Support\Facades\DB;
 
 class FixNonEnglishTabSlugs extends Migration
 {
@@ -12,6 +12,14 @@ class FixNonEnglishTabSlugs extends Migration
      */
     public function up()
     {
-        DB::table('tags')->update(['name_slug' => DB::raw('`name`')]);
+        Tag::chunk(200, function ($tags) {
+            foreach ($tags as $tag) {
+                if (empty($tag->name_slug)) {
+                    $tag->forceFill([
+                        'name_slug' => htmlentities($tag->name),
+                    ])->save();
+                }
+            }
+        });
     }
 }
