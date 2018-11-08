@@ -15,6 +15,7 @@
 
     <div class="mw7 center br3 ba b--gray-monica bg-white mb5">
       <form method="POST" action="{{ route('people.update', $contact) }}" enctype="multipart/form-data">
+        @method('PUT')
         {{ csrf_field() }}
 
         @include('partials.errors')
@@ -182,7 +183,7 @@
     </div>
   </div>
 
-  <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
+  <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
     {{ method_field('DELETE') }}
     {{ csrf_field() }}
   </form>

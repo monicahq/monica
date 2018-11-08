@@ -17,7 +17,7 @@ class GiftsController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function get(Contact $contact)
+    public function index(Contact $contact)
     {
         $giftsCollection = collect([]);
         $gifts = $contact->gifts()->get();

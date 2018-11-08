@@ -11,7 +11,7 @@ class ReminderRulesController extends Controller
     /**
      * Get all the reminder rules.
      */
-    public function get()
+    public function index()
     {
         $reminderRulesData = collect([]);
         $reminderRules = auth()->user()->account->reminderRules;

@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\ActivityType;
+use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivityTypesController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Store the activity type.
      */
-    public function create(Request $request)
+    public function store(Request $request)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -25,7 +28,7 @@ class ActivityTypesController extends Controller
             ActivityTypeCategory::where('account_id', auth()->user()->account_id)
                 ->findOrFail($request->get('activity_type_category_id'));
         } catch (ModelNotFoundException $e) {
-            return false;
+            return $this->handleModelNotFound($e);
         }
 
         $activityType = ActivityType::create(
@@ -48,42 +51,29 @@ class ActivityTypesController extends Controller
     /**
      * Update the given activity type.
      */
-    public function update(Request $request)
+    public function update(Request $request, ActivityType $activitytype)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
-            'id' => 'required|integer',
         ])->validate();
 
-        try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->findOrFail($request->get('id'));
-        } catch (ModelNotFoundException $e) {
-            return false;
-        }
-
-        $activityType->update(
+        $activitytype->update(
             $request->only([
                 'name',
             ])
         );
 
-        return $activityType;
+        return $activitytype;
     }
 
     /**
      * Destroy an activity type.
      */
-    public function destroy(Request $request, $activityTypeId)
+    public function destroy(Request $request, ActivityType $activitytype)
     {
-        try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->findOrFail($activityTypeId);
-        } catch (ModelNotFoundException $e) {
-            return trans('settings.personalization_activity_type_modal_delete_error');
-        }
+        $activitytype->resetAssociationWithActivities();
+        $activitytype->delete();
 
-        $activityType->resetAssociationWithActivities();
-        $activityType->delete();
+        return $this->respondObjectDeleted($activitytype->id);
     }
 }
