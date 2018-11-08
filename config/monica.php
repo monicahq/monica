@@ -212,4 +212,17 @@ return [
     |
      */
     'max_storage_size' => env('DEFAULT_MAX_STORAGE_SIZE', 512000),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable weather.
+    |--------------------------------------------------------------------------
+    |
+    | Darksky provides an api with 1000 free API calls per day.
+    | https://darksky.net/dev/register
+    | If you enable weather, don't forget to add your Darksky API key through the
+    | `DARKSKY_API_KEY` env variable.
+    |
+     */
+    'weather_enabled' => env('WEATHER_ENABLED', false),
 ];

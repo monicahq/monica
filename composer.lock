@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ac83b6b34aa6ec6713fd02923adc75e",
+    "content-hash": "b31387725896c0424ab39318da82b084",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3267,6 +3267,59 @@
                 "jsonpath"
             ],
             "time": "2016-12-03T22:08:25+00:00"
+        },
+        {
+            "name": "naughtonium/laravel-dark-sky",
+            "version": "1.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/naughtonium/laravel-dark-sky.git",
+                "reference": "259edd5edc38016819a90debe302f1eed5d0b8af"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/naughtonium/laravel-dark-sky/zipball/259edd5edc38016819a90debe302f1eed5d0b8af",
+                "reference": "259edd5edc38016819a90debe302f1eed5d0b8af",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~5.3|~6.0",
+                "illuminate/support": "~5.3",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Naughtonium\\LaravelDarkSky\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jack Naughton",
+                    "email": "jack.naughton18@gmail.com",
+                    "homepage": "http://naughton.io",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Provides a Wrapper for the DarkSky API",
+            "homepage": "https://github.com/naughtonium/laravel-dark-sky",
+            "keywords": [
+                "laravel-dark-sky",
+                "naughtonium"
+            ],
+            "time": "2018-03-22T21:59:06+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -8943,6 +8996,17 @@
         {
             "name": "roave/security-advisories",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Roave/SecurityAdvisories.git",
+                "reference": "0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2",
+                "reference": "0d96c6cd7cee8572be836fca71f9f01c8b1c0cb2",
+                "shasum": ""
+            },
             "conflict": {
                 "3f/pygmentize": "<1.2",
                 "adodb/adodb-php": "<5.20.12",
@@ -9123,7 +9187,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2018-11-01T18:39:28+00:00"
+            "time": "2018-10-21T18:01:48+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
