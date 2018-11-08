@@ -117,12 +117,12 @@ class Update extends Command
 
         $databasename = $connection->getDatabaseName();
 
-        $schemata = $connection->table('information_schema.schemata')
-                ->select('DEFAULT_CHARACTER_SET_NAME')
-                ->where('schema_name', '=', $databasename)
-                ->get();
+        $schemata = DB::select(
+            'select DEFAULT_CHARACTER_SET_NAME from information_schema.schemata where schema_name = ?',
+            [$databasename]
+        );
 
-        $schema = $schemata->first()->DEFAULT_CHARACTER_SET_NAME;
+        $schema = $schemata[0]->DEFAULT_CHARACTER_SET_NAME;
 
         return config('database.use_utf8mb4') && $schema == 'utf8'
             || ! config('database.use_utf8mb4') && $schema == 'utf8mb4';

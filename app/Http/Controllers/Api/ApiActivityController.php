@@ -11,7 +11,6 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class ApiActivityController extends ApiController
 {
@@ -258,18 +257,5 @@ class ApiActivityController extends ApiController
         return ActivityResource::collection($activities)->additional(['meta' => [
             'statistics' => auth()->user()->account->getYearlyActivitiesStatistics(),
         ]]);
-    }
-
-    /**
-     * Get the list of all activity types.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function activitytypes(Request $request)
-    {
-        $activities = ActivityType::where('account_id', auth()->user()->account_id)
-                                     ->all();
-
-        return ActivityTypeResource::collection($activities);
     }
 }

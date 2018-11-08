@@ -26,7 +26,7 @@
                     {{ $t('settings.api_oauth_not_created') }}
                 </p>
 
-                <table class="table table-borderless m-b-none" v-if="clients.length > 0">
+                <table class="table table-borderless m-b-none" v-else>
                     <thead>
                         <tr>
                             <th>{{ $t('settings.api_oauth_clientid') }}</th>
@@ -38,7 +38,7 @@
                     </thead>
 
                     <tbody>
-                        <tr v-for="client in clients">
+                        <tr v-for="client in clients" :key="client.id">
                             <!-- ID -->
                             <td style="vertical-align: middle;">
                                 {{ client.id }}
@@ -78,7 +78,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             {{ $t('settings.api_oauth_create') }}
@@ -91,7 +91,7 @@
                             <p><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
                             <ul>
-                                <li v-for="error in createForm.errors">
+                                <li v-for="error in createForm.errors" :key="error.id">
                                     {{ error }}
                                 </li>
                             </ul>
@@ -144,7 +144,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" v-bind:class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">&times;</button>
 
                         <h4 class="modal-title">
                             Edit Client
@@ -157,7 +157,7 @@
                             <p><strong>Whoops!</strong> Something went wrong!</p>
                             <br>
                             <ul>
-                                <li v-for="error in editForm.errors">
+                                <li v-for="error in editForm.errors" :key="error.id">
                                     {{ error }}
                                 </li>
                             </ul>

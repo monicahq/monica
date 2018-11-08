@@ -20,6 +20,7 @@ use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\DB;
@@ -379,6 +380,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Document records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
      * Get the Life Event Category records associated with the account.
      *
      * @return HasMany
@@ -507,8 +518,11 @@ class Account extends Model
     {
         // Weird method to get the next billing date from Laravel Cashier
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $timestamp = $this->asStripeCustomer()['subscriptions']
-                            ->data[0]['current_period_end'];
+        $subscriptions = $this->asStripeCustomer()['subscriptions'];
+        if (count($subscriptions->data) <= 0) {
+            return;
+        }
+        $timestamp = $subscriptions->data[0]['current_period_end'];
 
         return DateHelper::getShortDate($timestamp);
     }

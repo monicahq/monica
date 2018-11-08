@@ -41,7 +41,7 @@
               <i class="fa fa-trash-o" aria-hidden="true"></i>
             </a>
 
-            <form method="POST" action="{{ route('people.call.delete', [$contact, $call]) }}" class="entry-delete-form hidden">
+            <form method="POST" action="{{ route('people.calls.destroy', [$contact, $call]) }}" class="entry-delete-form hidden">
               {{ method_field('DELETE') }}
               {{ csrf_field() }}
             </form>

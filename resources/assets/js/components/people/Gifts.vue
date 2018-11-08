@@ -10,7 +10,7 @@
       <img src="/img/people/gifts.svg" class="icon-section icon-tasks">
       <h3>
         {{ $t('people.gifts_title') }}
-        <a :href="'/people/' + hash + '/gifts/add'" cy-name="add-gift-button" class="btn f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]">{{ $t('people.gifts_add_gift') }}</a>
+        <a :href="'/people/' + hash + '/gifts/create'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">{{ $t('people.gifts_add_gift') }}</a>
       </h3>
     </div>
 
@@ -18,13 +18,13 @@
     <div>
         <ul class="mb3">
             <li class="di">
-                <p @click.prevent="setActiveTab('ideas')" v-bind:class="[activeTab == 'ideas' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_ideas') }} ({{ ideas.length }})</p>
+                <p @click.prevent="setActiveTab('ideas')" :class="[activeTab == 'ideas' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_ideas') }} ({{ ideas.length }})</p>
             </li>
             <li class="di">
-                <p @click.prevent="setActiveTab('offered')" v-bind:class="[activeTab == 'offered' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_offered') }} ({{ offered.length }})</p>
+                <p @click.prevent="setActiveTab('offered')" :class="[activeTab == 'offered' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_offered') }} ({{ offered.length }})</p>
             </li>
             <li class="di">
-                <p @click.prevent="setActiveTab('received')" v-bind:class="[activeTab == 'received' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_received') }} ({{ received.length }})</p>
+                <p @click.prevent="setActiveTab('received')" :class="[activeTab == 'received' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">{{ $t('people.gifts_received') }} ({{ received.length }})</p>
             </li>
         </ul>
 
@@ -60,62 +60,66 @@
 
         </div>
 
-        <div v-for="gift in offered" class="ba b--gray-monica mb3 br2" :key="gift.id" v-if="activeTab == 'offered'">
-            <p class="mb1 bb b--gray-monica pa2">
-                <strong>{{ gift.name }}</strong>
+        <template v-else-if="activeTab == 'offered'">
+            <div v-for="gift in offered" class="ba b--gray-monica mb3 br2" :key="gift.id">
+                <p class="mb1 bb b--gray-monica pa2">
+                    <strong>{{ gift.name }}</strong>
 
-                <span v-if="gift.recipient_name">
-                    <span class="mr1 black-50">•</span>
-                    {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
-                </span>
+                    <span v-if="gift.recipient_name">
+                        <span class="mr1 black-50">•</span>
+                        {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
+                    </span>
 
-                <span v-if="gift.url">
-                    <span class="mr1 black-50">•</span>
-                    <a :href="gift.url" target="_blank">{{ $t('people.gifts_link') }}</a>
-                </span>
-            </p>
-            <div class="f6 ph2 pv1 mb1">
-                <span v-if="gift.does_value_exist">
-                    {{ gift.value }}
-                    <span class="ml1 mr1 black-50">•</span>
-                </span>
-                <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
-                <a @click="toggle(gift)" class="pointer mr1">{{ $t('people.gifts_offered_as_an_idea') }}</a>
-                <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">{{ $t('app.edit') }}</a>
-                <a @click="showDeleteModal(gift)" class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id">{{ $t('app.delete') }}</a>
-                <div v-if="gift.show_comment" class="mb1 mt1">
-                    {{ gift.comment }}
+                    <span v-if="gift.url">
+                        <span class="mr1 black-50">•</span>
+                        <a :href="gift.url" target="_blank">{{ $t('people.gifts_link') }}</a>
+                    </span>
+                </p>
+                <div class="f6 ph2 pv1 mb1">
+                    <span v-if="gift.does_value_exist">
+                        {{ gift.value }}
+                        <span class="ml1 mr1 black-50">•</span>
+                    </span>
+                    <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
+                    <a @click="toggle(gift)" class="pointer mr1">{{ $t('people.gifts_offered_as_an_idea') }}</a>
+                    <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">{{ $t('app.edit') }}</a>
+                    <a @click="showDeleteModal(gift)" class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id">{{ $t('app.delete') }}</a>
+                    <div v-if="gift.show_comment" class="mb1 mt1">
+                        {{ gift.comment }}
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
 
-        <div v-for="gift in received" class="ba b--gray-monica mb3 br2" :key="gift.id" v-if="activeTab == 'received'">
-            <p class="mb1 bb b--gray-monica pa2">
-                <strong>{{ gift.name }}</strong>
+        <template v-else-if="activeTab == 'received'">
+            <div v-for="gift in received" class="ba b--gray-monica mb3 br2" :key="gift.id">
+                <p class="mb1 bb b--gray-monica pa2">
+                    <strong>{{ gift.name }}</strong>
 
-                <span v-if="gift.recipient_name">
-                    <span class="mr1 black-50">•</span>
-                    {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
-                </span>
+                    <span v-if="gift.recipient_name">
+                        <span class="mr1 black-50">•</span>
+                        {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
+                    </span>
 
-                <span v-if="gift.url">
-                    <span class="mr1 black-50">•</span>
-                    <a :href="gift.url" target="_blank">{{ $t('people.gifts_link') }}</a>
-                </span>
-            </p>
-            <div class="f6 ph2 pv1 mb1">
-                <span v-if="gift.does_value_exist">
-                    {{ gift.value }}
-                    <span class="ml1 mr1 black-50">•</span>
-                </span>
-                <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
-                <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
-                <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
-                <div v-if="gift.show_comment" class="mb1 mt1">
-                    {{ gift.comment }}
+                    <span v-if="gift.url">
+                        <span class="mr1 black-50">•</span>
+                        <a :href="gift.url" target="_blank">{{ $t('people.gifts_link') }}</a>
+                    </span>
+                </p>
+                <div class="f6 ph2 pv1 mb1">
+                    <span v-if="gift.does_value_exist">
+                        {{ gift.value }}
+                        <span class="ml1 mr1 black-50">•</span>
+                    </span>
+                    <a v-if="gift.comment" @click="toggleComment(gift)" class="ml1 mr1 pointer">{{ $t('people.gifts_view_comment') }}</a>
+                    <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">{{ $t('app.edit') }}</a>
+                    <a @click="showDeleteModal(gift)" class="mr1 pointer">{{ $t('app.delete') }}</a>
+                    <div v-if="gift.show_comment" class="mb1 mt1">
+                        {{ gift.comment }}
+                    </div>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
 
     <sweet-modal ref="modal" overlay-theme="dark" title="Delete gift">

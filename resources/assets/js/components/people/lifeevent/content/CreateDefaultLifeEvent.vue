@@ -11,11 +11,11 @@
         <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
             <label for="another" class="mr2">{{ $t('people.life_event_create_default_story') }}</label>
             <form-textarea
-              v-bind:required="false"
-              v-bind:noLabel="true"
-              v-bind:rows="4"
-              v-bind:placeholder="$t('people.life_event_create_default_description')"
-              v-on:contentChange="updateNote($event)">
+              :required="false"
+              :noLabel="true"
+              :rows="4"
+              :placeholder="$t('people.life_event_create_default_description')"
+              @contentChange="updateNote($event)">
             </form-textarea>
         </div>
     </div>

@@ -39,7 +39,7 @@ class IntroductionsController extends Controller
                 Contact::where('account_id', auth()->user()->account_id)
                     ->findOrFail($request->get('metThroughId'));
             } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
+                return $this->handleModelNotFound($e);
             }
 
             $contact->first_met_through_contact_id = $request->get('metThroughId');

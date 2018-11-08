@@ -23,6 +23,7 @@
     @include('partials.errors')
 
     <form action="{{ route('people.relationships.update', [$contact, $partner]) }}" method="POST">
+      {{ method_field('DELETE') }}
       {{ csrf_field() }}
       <input type="hidden" name="type" value="{{ $type }}">
 
@@ -31,9 +32,9 @@
         <form-select
           :options="{{ $relationshipTypes }}"
           value="{{ $type }}"
-          v-bind:required="true"
-          v-bind:title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
-          v-bind:id="'relationship_type_id'">
+          :required="true"
+          :title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
+          :id="'relationship_type_id'">
         </form-select>
       </div>
 
@@ -47,19 +48,19 @@
             <div class="dtc pr2">
               <form-input
                 value="{{ $partner->first_name }}"
-                v-bind:input-type="'text'"
-                v-bind:id="'first_name'"
-                v-bind:required="true"
-                v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                :input-type="'text'"
+                :id="'first_name'"
+                :required="true"
+                :title="'{{ trans('people.people_add_firstname') }}'">
               </form-input>
             </div>
             <div class="dtc">
               <form-input
                 value="{{ $partner->last_name }}"
-                v-bind:input-type="'text'"
-                v-bind:id="'last_name'"
-                v-bind:required="false"
-                v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                :input-type="'text'"
+                :id="'last_name'"
+                :required="false"
+                :title="'{{ trans('people.people_add_lastname') }}'">
               </form-input>
             </div>
           </div>
@@ -70,19 +71,19 @@
             <div class="dtc pr2">
               <form-input
                 value="{{ $partner->last_name }}"
-                v-bind:input-type="'text'"
-                v-bind:id="'last_name'"
-                v-bind:required="false"
-                v-bind:title="'{{ trans('people.people_add_lastname') }}'">
+                :input-type="'text'"
+                :id="'last_name'"
+                :required="false"
+                :title="'{{ trans('people.people_add_lastname') }}'">
               </form-input>
             </div>
             <div class="dtc">
               <form-input
                 value="{{ $partner->first_name }}"
-                v-bind:input-type="'text'"
-                v-bind:id="'first_name'"
-                v-bind:required="true"
-                v-bind:title="'{{ trans('people.people_add_firstname') }}'">
+                :input-type="'text'"
+                :id="'first_name'"
+                :required="true"
+                :title="'{{ trans('people.people_add_firstname') }}'">
               </form-input>
             </div>
           </div>
@@ -95,23 +96,23 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $genders }}"
-          v-bind:required="true"
+          :required="true"
           value="{{ $partner->gender->id }}"
-          v-bind:title="'{{ trans('people.people_add_gender') }}'"
-          v-bind:id="'gender_id'">
+          :title="'{{ trans('people.people_add_gender') }}'"
+          :id="'gender_id'">
         </form-select>
       </div>
 
       {{-- Birthdate --}}
       <form-specialdate
-        v-bind:months="{{ $months }}"
-        v-bind:days="{{ $days }}"
-        v-bind:locale="'{{ auth()->user()->locale }}'"
-        v-bind:month="{{ $month }}"
-        v-bind:day="{{ $day }}"
-        v-bind:age="'{{ $age }}'"
-        v-bind:default-date="'{{ $birthdate }}'"
-        v-bind:reminder={{ $hasBirthdayReminder }}
+        :months="{{ $months }}"
+        :days="{{ $days }}"
+        :locale="'{{ auth()->user()->locale }}'"
+        :month="{{ $month }}"
+        :day="{{ $day }}"
+        :age="'{{ $age }}'"
+        :default-date="'{{ $birthdate }}'"
+        :reminder={{ $hasBirthdayReminder }}
         :value="'{{ $birthdayState }}'"
       ></form-specialdate>
 

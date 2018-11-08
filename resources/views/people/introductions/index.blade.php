@@ -10,10 +10,10 @@
     </p>
   @else
     <ul>
-      @if ($contact->getIntroducer())
+      @if ($introducer = $contact->getIntroducer())
       <li>
         <i class="fa fa-sign-language"></i>
-        {!! trans('people.introductions_met_through', ['url' => '/people/'.$contact->first_met_through_contact_id, 'name' => $contact->getIntroducer()->name]) !!}
+        {!! trans('people.introductions_met_through', ['url' => route('people.show', $introducer), 'name' => $introducer->name]) !!}
       </li>
       @endif
 

@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
@@ -64,13 +65,14 @@ class UpdateConversationTest extends TestCase
 
     public function test_it_throws_an_exception_if_conversation_doesnt_exist()
     {
+        $account = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([]);
         $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $conversation->account->id,
         ]);
 
         $request = [
-            'account_id' => 231,
+            'account_id' => $account->id,
             'conversation_id' => $conversation->id,
             'happened_at' => '2010-02-02',
             'contact_field_type_id' => $contactFieldType->id,

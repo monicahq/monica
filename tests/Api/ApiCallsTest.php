@@ -253,10 +253,18 @@ class ApiCallsTest extends ApiTestCase
     public function test_calls_update_error()
     {
         $user = $this->signin();
+        $call = factory(Call::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/calls/0', []);
+        $response = $this->json('PUT', '/api/calls/'.$call->id, [
+            'contact_id' => $call->contact_id,
+        ]);
 
-        $this->expectNotFound($response);
+        $this->expectDataError($response, [
+            'The content field is required.',
+            'The called at field is required.',
+        ]);
     }
 
     public function test_calls_update_error_bad_account()

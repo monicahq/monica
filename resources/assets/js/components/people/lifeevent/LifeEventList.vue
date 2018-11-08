@@ -32,7 +32,7 @@
         <notifications group="main" position="bottom right" />
 
         <!-- BLANK STATE -->
-        <section class="ph3 ph0-ns" v-if="lifeEvents.length == 0">
+        <section class="ph3 ph0-ns" v-if="lifeEvents.length === 0">
             <div class="mt4 mw7 center mb3">
                 <div class="tc mb4">
                     <svg class="center" width="337" height="249" viewBox="0 0 337 249" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -460,32 +460,32 @@
         </section>
 
         <!-- TITLE -->
-        <div v-if="lifeEvents.length != 0">
+        <div v-else>
           <h3 class="mb3 relative">
             🎭 {{ $t('people.life_event_list_title') }}
 
             <span class="absolute" style="top: -5px; right: 0;">
-              <a class="btn edit-information" @click="showAdd = true" v-if="showAdd == false">{{ $t('people.life_event_list_cta') }}</a>
-              <a class="btn edit-information" @click="showAdd = false" v-if="showAdd == true">{{ $t('app.cancel') }}</a>
+              <a class="btn edit-information" @click="showAdd = false" v-if="showAdd">{{ $t('app.cancel') }}</a>
+              <a class="btn edit-information" @click="showAdd = true" v-else>{{ $t('people.life_event_list_cta') }}</a>
             </span>
           </h3>
         </div>
 
         <!-- CREATE LIFE EVENT BOX -->
         <create-life-event :hash="hash"
-                            v-if="showAdd == true"
-                            v-on:updateLifeEventTimeline="updateLifeEventsList($event)"
-                            v-on:dismissModal="showAdd = false"
-                            v-bind:months="months"
-                            v-bind:days="days"
-                            v-bind:years="years"
+                            v-if="showAdd"
+                            @updateLifeEventTimeline="updateLifeEventsList($event)"
+                            @dismissModal="showAdd = false"
+                            :months="months"
+                            :days="days"
+                            :years="years"
                             >
         </create-life-event>
 
         <!-- LISTING OF LIFE EVENTS -->
         <div v-if="lifeEvents.length != 0">
             <div class="bt b--gray-monica" style="margin-left: 20px;">
-                <div v-for="lifeEvent in lifeEvents" v-bind:key="lifeEvent.id">
+                <div v-for="lifeEvent in lifeEvents" :key="lifeEvent.id">
                     <div class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content" :id="'lifeEvent' + lifeEvent.id">
                         <div class="absolute life-event-list-icon">
                             <img class="relative" :src="'/img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'">

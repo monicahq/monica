@@ -10,7 +10,7 @@ describe('Gifts', function () {
     // add a gift
     cy.get('[cy-name=add-gift-button]').should('be.visible')
     cy.get('[cy-name=add-gift-button]').click()
-    cy.url().should('include', '/gifts/add')
+    cy.url().should('include', '/gifts/create')
 
     cy.get('[name=name]').type('This is a gift')
     cy.get('[cy-name=save-gift-button]').click()

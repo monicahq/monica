@@ -28,17 +28,17 @@
     <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
       <p class="mb2 b">{{ $t('people.conversation_add_what_was_said') }}</p>
         <div class="pa3 ba b--gray-monica br3 conversation-block">
-            <div v-for="message in messages" class="relative" v-bind:key="message.uid">
-                <div v-bind:class="message.author + ' absolute'"></div>
+            <div v-for="message in messages" class="relative" :key="message.uid">
+                <div :class="message.author + ' absolute'"></div>
                 <message
-                    v-bind:class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
+                    :class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
                     :author="message.author"
                     :content="message.content"
                     :uid="message.uid"
                     :participant-name="participantName"
-                    v-on:updateAuthor="updateAuthor($event, message)"
-                    v-on:contentChange="updateContent($event, message)"
-                    v-on:deleteMessage="deleteMessage($event, message)"
+                    @updateAuthor="updateAuthor($event, message)"
+                    @contentChange="updateContent($event, message)"
+                    @deleteMessage="deleteMessage($event, message)"
                     :display-trash="displayTrash">
                 </message>
             </div>

@@ -375,7 +375,6 @@ return [
     'life_event_list_tab_life_events' => 'Life events',
     'life_event_list_tab_other' => 'Notes, reminders, ...',
     'life_event_list_title' => 'Life events',
-    'life_event_list_title' => 'Life events',
     'life_event_blank' => 'Log what happens to the life of {name} for your future reference.',
     'life_event_list_cta' => 'Add life event',
     'life_event_create_category' => 'All categories',
@@ -433,4 +432,12 @@ return [
     'life_event_sentence_changed_beliefs' => 'Changed beliefs',
     'life_event_sentence_first_word' => 'Spoke for the first time',
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
+
+    // documents
+    'document_list_title' => 'Documents',
+    'document_list_cta' => 'Upload document',
+    'document_list_blank_desc' => 'Here you can store documents related to this person.',
+    'document_upload_zone_cta' => 'Upload a file',
+    'document_upload_zone_progress' => 'Uploading the document...',
+    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 ];

@@ -13,6 +13,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
@@ -96,6 +97,18 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contact->messages()->exists());
     }
 
+    public function test_it_has_many_documents()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $documents = factory(Document::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->documents()->exists());
+    }
+
     public function test_it_has_many_life_events()
     {
         $account = factory(Account::class)->create([]);
@@ -104,7 +117,6 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
-
         $this->assertTrue($contact->lifeEvents()->exists());
     }
 
@@ -1256,28 +1268,28 @@ class ContactTest extends FeatureTestCase
         $user = $this->signIn();
 
         $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contact->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
         $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contactB->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactB->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contactB->birthday_special_date_id = $specialDate->id;
         $contactB->save();
 
         $contactC = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contactC->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactC->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contactC->birthday_special_date_id = $specialDate->id;
         $contactC->save();
@@ -1575,6 +1587,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sends_the_stay_in_touch_email()
     {
+        config(['monica.requires_subscription' => false]);
         NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0, 'America/New_York'));

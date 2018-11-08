@@ -71,7 +71,7 @@
 
                 {{-- Sorting options --}}
                 <li class="people-list-item sorting">
-                  {{ trans('people.people_list_stats', ['count' => $contacts->count()]) }}
+                  {{ trans_choice('people.people_list_stats', $contacts->count(), ['count' => $contacts->count()]) }}
                   <div class="options">
                     <div class="options-dropdowns">
                       <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
@@ -206,9 +206,9 @@
 
               @if ($deceasedCount > 0)
                 @if ($hidingDeceased)
-                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=true">{{ trans_choice('people.people_list_show_dead', $deceasedCount, ['count' => $deceasedCount]) }}</a></li>
+                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=true">{{ trans('people.people_list_show_dead', ['count' => $deceasedCount]) }}</a></li>
                 @else
-                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=false">{{ trans_choice('people.people_list_hide_dead', $deceasedCount, ['count' => $deceasedCount]) }}</a></li>
+                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=false">{{ trans('people.people_list_hide_dead', ['count' => $deceasedCount]) }}</a></li>
                 @endif
               @endif
               </ul>
