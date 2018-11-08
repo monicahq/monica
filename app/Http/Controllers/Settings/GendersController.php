@@ -5,16 +5,19 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use App\Models\Contact\Gender;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Settings\GendersRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GendersController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get all the gender types.
      */
-    public function getGenderTypes()
+    public function index()
     {
         $gendersData = collect([]);
         $genders = auth()->user()->account->genders;
@@ -34,7 +37,7 @@ class GendersController extends Controller
     /**
      * Store the gender.
      */
-    public function storeGender(Request $request)
+    public function store(Request $request)
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',
@@ -59,7 +62,7 @@ class GendersController extends Controller
     /**
      * Update the given gender.
      */
-    public function updateGender(GendersRequest $request, Gender $gender)
+    public function update(GendersRequest $request, Gender $gender)
     {
         $gender->update(
             $request->only([
@@ -88,13 +91,17 @@ class GendersController extends Controller
         auth()->user()->account->replaceGender($gender, $genderToReplaceWith);
 
         $gender->delete();
+
+        return $this->respondObjectDeleted($gender->id);
     }
 
     /**
      * Destroy a gender type.
      */
-    public function destroyGender(GendersRequest $request, Gender $gender)
+    public function destroy(GendersRequest $request, Gender $gender)
     {
         $gender->delete();
+
+        return $this->respondObjectDeleted($gender->id);
     }
 }

@@ -65,7 +65,7 @@ class ApiLifeEventController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters();
+            return $this->respondInvalidParameters($e->errors);
         }
 
         return new LifeEventResource($lifeEvent);
@@ -92,7 +92,7 @@ class ApiLifeEventController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters();
+            return $this->respondInvalidParameters($e->errors);
         }
 
         return new LifeEventResource($lifeEvent);

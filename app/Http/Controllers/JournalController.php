@@ -145,8 +145,8 @@ class JournalController extends Controller
     public function save(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'entry' => 'required',
-            'date' => 'required',
+            'entry' => 'required|string',
+            'date' => 'required|date',
         ]);
 
         if ($validator->fails()) {

@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Contact\Reminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Exceptions\WrongValueException;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -32,8 +32,7 @@ class CreateReminderTest extends TestCase
             'special_date_id' => null,
         ];
 
-        $reminderService = new CreateReminder;
-        $reminder = $reminderService->execute($request);
+        $reminder = (new CreateReminder)->execute($request);
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
@@ -65,8 +64,7 @@ class CreateReminderTest extends TestCase
             'special_date_id' => $specialDate->id,
         ];
 
-        $reminderService = new CreateReminder;
-        $reminder = $reminderService->execute($request);
+        $reminder = (new CreateReminder)->execute($request);
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
@@ -92,17 +90,17 @@ class CreateReminderTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $reminderService = new CreateReminder;
-        $reminder = $reminderService->execute($request);
+        $reminderService = (new CreateReminder)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_are_not_found()
     {
+        $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([]);
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => 3,
+            'account_id' => $account->id,
             'date' => '2017-02-02',
             'frequency_type' => 'year',
             'frequency_number' => 1,
@@ -113,8 +111,7 @@ class CreateReminderTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $reminderService = new CreateReminder;
-        $reminder = $reminderService->execute($request);
+        $reminder = (new CreateReminder)->execute($request);
 
         $request = [
             'contact_id' => $contact->id,
@@ -129,8 +126,7 @@ class CreateReminderTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $reminderService = new CreateReminder;
-        $reminder = $reminderService->execute($request);
+        $reminderService = (new CreateReminder)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_frequency_type_is_not_right()
@@ -148,9 +144,13 @@ class CreateReminderTest extends TestCase
             'special_date_id' => null,
         ];
 
-        $this->expectException(WrongValueException::class);
+        $this->expectException(MissingParameterException::class);
 
-        $reminderService = new CreateReminder;
-        $reminder = $reminderService->execute($request);
+        try {
+            $reminderService = (new CreateReminder)->execute($request);
+        } catch (MissingParameterException $e) {
+            $this->assertEquals(['The selected frequency type is invalid.'], $e->errors);
+            throw $e;
+        }
     }
 }

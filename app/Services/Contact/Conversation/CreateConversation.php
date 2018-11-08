@@ -11,21 +11,23 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
-use App\Exceptions\MissingParameterException;
 
 class CreateConversation extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'happened_at',
-        'account_id',
-        'contact_id',
-        'contact_field_type_id',
-    ];
+    public function rules()
+    {
+        return [
+            'happened_at' => 'required|date',
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'contact_field_type_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Create a conversation.
@@ -35,9 +37,7 @@ class CreateConversation extends BaseService
      */
     public function execute(array $data): Conversation
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);

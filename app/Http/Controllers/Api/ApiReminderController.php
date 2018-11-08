@@ -119,7 +119,7 @@ class ApiReminderController extends ApiController
             'next_expected_date' => 'required|date',
             'frequency_type' => [
                 'required',
-                Rule::in(['one_time', 'day', 'month', 'year']),
+                Rule::in(Reminder::$frequencyTypes),
             ],
             'frequency_number' => 'integer',
             'contact_id' => 'required|integer',

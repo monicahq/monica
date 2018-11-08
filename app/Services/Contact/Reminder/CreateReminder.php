@@ -8,29 +8,30 @@ use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Exceptions\WrongValueException;
-use Illuminate\Support\Facades\Validator;
-use App\Exceptions\MissingParameterException;
 
 class CreateReminder extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
-     * Frequency: 'day', 'week', 'year', 'one_time'.
-     * Date: string.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'contact_id',
-        'date',
-        'frequency_type',
-        'frequency_number',
-        'title',
-        'description',
-        'special_date_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'date' => 'required|date',
+            'frequency_type' => [
+                'required',
+                Rule::in(Reminder::$frequencyTypes),
+            ],
+            'frequency_number' => 'required|integer',
+            'title' => 'string|max:100000',
+            'description' => 'nullable|max:1000000',
+            'special_date_id' => 'nullable|integer',
+        ];
+    }
 
     /**
      * Create a reminder.
@@ -40,9 +41,7 @@ class CreateReminder extends BaseService
      */
     public function execute(array $data) : Reminder
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
@@ -51,8 +50,6 @@ class CreateReminder extends BaseService
             SpecialDate::where('account_id', $data['account_id'])
                 ->findOrFail($data['special_date_id']);
         }
-
-        $this->validateFrequency($data);
 
         $reminder = $this->attachReminderToLifeEvent($data);
 
@@ -81,24 +78,5 @@ class CreateReminder extends BaseService
         $reminder->save();
 
         return $reminder;
-    }
-
-    /**
-     * Make sure the frequency_type is in the range of authorized values.
-     *
-     * @param array $data
-     */
-    private function validateFrequency($data)
-    {
-        $validator = Validator::make($data, [
-            'frequency_type' => [
-                'required',
-                Rule::in(['week', 'monk', 'year', 'one_time']),
-            ],
-        ]);
-
-        if ($validator->fails()) {
-            throw new WrongValueException('Authorized values: week, month, year, one_time');
-        }
     }
 }

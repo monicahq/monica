@@ -5,23 +5,25 @@ namespace App\Services\Contact\LifeEvent;
 use App\Services\BaseService;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
-use App\Exceptions\MissingParameterException;
 
 class UpdateLifeEvent extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'life_event_id',
-        'life_event_type_id',
-        'happened_at',
-        'name',
-        'note',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'life_event_id' => 'required|integer',
+            'life_event_type_id' => 'required|integer',
+            'happened_at' => 'required|date',
+            'name' => 'nullable|string',
+            'note' => 'nullable|string',
+        ];
+    }
 
     /**
      * Update a life event.
@@ -31,9 +33,7 @@ class UpdateLifeEvent extends BaseService
      */
     public function execute(array $data) : LifeEvent
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         $lifeEvent = LifeEvent::where('account_id', $data['account_id'])
             ->findOrFail($data['life_event_id']);

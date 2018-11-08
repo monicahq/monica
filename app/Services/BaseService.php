@@ -2,29 +2,33 @@
 
 namespace App\Services;
 
-class BaseService
+use Illuminate\Support\Facades\Validator;
+use App\Exceptions\MissingParameterException;
+
+abstract class BaseService
 {
     /**
-     * Check if an array has a given structure.
+     * Get the validation rules that apply to the service.
      *
-     * @param  array  $data
-     * @param  array  $structure
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
+    }
+
+    /**
+     * Validate all documents in an account.
+     *
+     * @param array $data
      * @return bool
      */
-    public function validateDataStructure(array $data, array $structure)
+    public function validate(array $data) : bool
     {
-        foreach ($structure as $structKey => $structValue) {
-            $found = false;
+        $validator = Validator::make($data, $this->rules());
 
-            foreach ($data as $key => $value) {
-                if ($key == $structValue) {
-                    $found = true;
-                }
-            }
-
-            if (! $found) {
-                return false;
-            }
+        if ($validator->fails()) {
+            throw new MissingParameterException('Missing parameters', $validator->errors()->all());
         }
 
         return true;

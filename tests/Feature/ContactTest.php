@@ -102,7 +102,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -138,7 +138,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -171,7 +171,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -206,8 +206,8 @@ class ContactTest extends FeatureTestCase
             'comment' => $this->faker->sentence(),
         ];
 
-        $this->post(
-            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
+        $this->put(
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id,
             $gift
         );
 
@@ -247,8 +247,8 @@ class ContactTest extends FeatureTestCase
             'recipient' => $otherContact->id,
         ];
 
-        $this->post(
-            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
+        $this->put(
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id,
             $gift
         );
 
@@ -280,7 +280,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            route('people.debt.store', $contact),
+            route('people.debts.store', $contact),
             $debt
         );
 
@@ -302,7 +302,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            route('people.debt.store', $contact),
+            route('people.debts.store', $contact),
             $debt
         );
 
@@ -338,7 +338,7 @@ class ContactTest extends FeatureTestCase
             'birthdate' => 'unknown',
         ];
 
-        $this->post('/people/'.$contact->hashID().'/update', $data);
+        $this->put('/people/'.$contact->hashID(), $data);
 
         $data['id'] = $contact->id;
         $this->assertDatabaseHas('contacts', [

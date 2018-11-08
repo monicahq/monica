@@ -6,26 +6,28 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
-use App\Exceptions\MissingParameterException;
 
 class CreateLifeEvent extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'contact_id',
-        'life_event_type_id',
-        'happened_at',
-        'name',
-        'note',
-        'has_reminder',
-        'happened_at_month_unknown',
-        'happened_at_day_unknown',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'life_event_type_id' => 'required|integer',
+            'happened_at' => 'required|date',
+            'name' => 'nullable|string',
+            'note' => 'nullable|string',
+            'has_reminder' => 'required|boolean',
+            'happened_at_month_unknown' => 'required|boolean',
+            'happened_at_day_unknown' => 'required|boolean',
+        ];
+    }
 
     /**
      * Create a life event.
@@ -35,9 +37,7 @@ class CreateLifeEvent extends BaseService
      */
     public function execute(array $data) : LifeEvent
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new MissingParameterException('Missing parameters');
-        }
+        $this->validate($data);
 
         Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
