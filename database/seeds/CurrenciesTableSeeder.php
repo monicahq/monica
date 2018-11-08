@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * Seed world currencies to the database.
- * 
- * Originally contributed by Themodem (https://github.com/Themodem) 
+ *
+ * Originally contributed by Themodem (https://github.com/Themodem)
  * in PR#509 (https://github.com/monicahq/monica/pull/509)
  */
-class CurrenciesTableSeeder extends Seeder 
+class CurrenciesTableSeeder extends Seeder
 {
     private const CURRENCIES_JSON_FILE = __DIR__.'/json/2017_08_02_124102_add_world_currencies.json';
 
@@ -23,11 +23,11 @@ class CurrenciesTableSeeder extends Seeder
     private $ignore = ['CAD', 'USD', 'GBP', 'EUR', 'RUB', 'ZAR'];
 
     /**
-     * Runs the seeder
-     * 
+     * Runs the seeder.
+     *
      * @return void
      */
-    public function run() 
+    public function run()
     {
         $currencies = collect(json_decode(file_get_contents(self::CURRENCIES_JSON_FILE), $assoc = true));
 
