@@ -11,7 +11,6 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
-use App\Services\Contact\Tag\DestroyTag;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
@@ -24,6 +23,7 @@ use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
+use App\Services\Contact\Tag\DestroyTag;
 use PragmaRX\Google2FALaravel\Google2FA;
 use App\Services\Account\DestroyAllDocuments;
 
