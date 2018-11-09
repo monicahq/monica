@@ -157,7 +157,7 @@ class ApiTagControllerTest extends ApiTestCase
 
         $this->assertDatabaseMissing('contact_tag', [
             'account_id' => $user->account->id,
-            'id' => $tag->id,
+            'tag_id' => $tag->id,
         ]);
         $this->assertDatabaseMissing('tags', [
             'account_id' => $user->account->id,
