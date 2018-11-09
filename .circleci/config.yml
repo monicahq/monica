@@ -362,6 +362,12 @@ jobs:
       - *docker-install
       - *docker-build
       - *docker-push-bintray
+
+  deploy-docker-staging:
+    <<: *defaults
+    machine: true
+
+    steps:
       - run:
           name: Update staging
           command: |
@@ -434,6 +440,7 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
+      - deploy-docker-staging
   deploy:
     jobs:
       - build:
@@ -465,6 +472,7 @@ workflows:
             branches:
               only:
                 - master
+      - deploy-docker-staging
       - deploy-docker:
           filters:
             branches:
