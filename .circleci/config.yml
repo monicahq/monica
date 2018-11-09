@@ -365,7 +365,8 @@ jobs:
       - run:
           name: Update staging
           command: |
-            ssh $SSH_USER@$SSH_HOST "docker pull monicahq-docker-docker.bintray.io/monicahq/monicahq:master"
+            ssh $SSH_USER@$SSH_HOST "docker-compose -f $DOCKER_FILE pull"
+            ssh $SSH_USER@$SSH_HOST "docker-compose -f $DOCKER_FILE up -d"
 
   deploy-docker:
     <<: *defaults
