@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'Account settings',
     'sidebar_personalization' => 'Personalization',
+    'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'Export data',
     'sidebar_settings_users' => 'Users',
     'sidebar_settings_subscriptions' => 'Subscription',
