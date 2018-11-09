@@ -440,7 +440,6 @@ workflows:
               ignore: /l10n_master.*/
             tags:
               only: /.*/
-      - deploy-docker-staging
   deploy:
     jobs:
       - build:
@@ -472,7 +471,13 @@ workflows:
             branches:
               only:
                 - master
-      - deploy-docker-staging
+      - deploy-docker-staging:
+          requires:
+            - deploy-docker-master
+          filters:
+            branches:
+              only:
+                - master
       - deploy-docker:
           filters:
             branches:
