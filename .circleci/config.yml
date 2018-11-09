@@ -362,6 +362,10 @@ jobs:
       - *docker-install
       - *docker-build
       - *docker-push-bintray
+      - run:
+          name: Update staging
+          command: |
+            ssh $SSH_USER@$SSH_HOST "docker pull monicahq-docker-docker.bintray.io/monicahq/monicahq:master"
 
   deploy-docker:
     <<: *defaults
