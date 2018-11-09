@@ -11,7 +11,7 @@ describe('Debts', function () {
     // add a debt
     cy.get('[cy-name=add-debt-button]').should('be.visible')
     cy.get('[cy-name=add-debt-button]').click()
-    cy.url().should('include', '/debt/add')
+    cy.url().should('include', '/debts/create')
 
     cy.get('[name=amount]').type('123')
     cy.get('[cy-name=save-debt-button]').click()

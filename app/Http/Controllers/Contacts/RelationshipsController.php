@@ -17,7 +17,7 @@ class RelationshipsController extends Controller
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function new(Request $request, Contact $contact)
+    public function create(Request $request, Contact $contact)
     {
         // getting top 100 of existing contacts
         $existingContacts = auth()->user()->account->contacts()

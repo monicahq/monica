@@ -66,7 +66,7 @@ class CallTest extends FeatureTestCase
             'content' => null,
         ];
 
-        $response = $this->post('/people/'.$contact->hashID().'/call/store', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/calls', $params);
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
@@ -90,7 +90,7 @@ class CallTest extends FeatureTestCase
             'content' => 'This is a test call',
         ];
 
-        $response = $this->post('/people/'.$contact->hashID().'/call/store', $params);
+        $response = $this->post('/people/'.$contact->hashID().'/calls', $params);
         $response->assertRedirect('/people/'.$contact->hashID());
 
         // Assert the call has been added for the correct user.
@@ -119,7 +119,7 @@ class CallTest extends FeatureTestCase
 
         $response = $this->get('/people/'.$contact->hashID());
 
-        $response = $this->delete('/people/'.$contact->hashID().'/call/'.$call->id);
+        $response = $this->delete('/people/'.$contact->hashID().'/calls/'.$call->id);
         $response->assertStatus(302);
 
         $params = [];

@@ -279,7 +279,7 @@
 
                 formData.append('document', this.file)
 
-                axios.post( '/people/' + this.hash + '/document/store',
+                axios.post( '/people/' + this.hash + '/documents',
                     formData,
                     {
                     headers: {
