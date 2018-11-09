@@ -11,6 +11,7 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
+use App\Services\Contact\Tag\DestroyTag;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
@@ -464,14 +465,18 @@ class SettingsController
         return view('settings.tags');
     }
 
+    /**
+     * Destroy the tag.
+     *
+     * @param int $tagId
+     * @return void
+     */
     public function deleteTag($tagId)
     {
-        $tag = Tag::where('account_id', auth()->user()->account_id)
-            ->findOrFail($tagId);
-
-        $tag->contacts()->detach();
-
-        $tag->delete();
+        (new DestroyTag)->execute([
+            'tag_id' => $tagId,
+            'account_id' => auth()->user()->account->id,
+        ]);
 
         return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));

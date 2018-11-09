@@ -34,7 +34,7 @@ class DestroyTag extends BaseService
         $tag = Tag::where('account_id', $data['account_id'])
             ->findOrFail($data['tag_id']);
 
-        DB::table('contact_tag')->where('tag_id', $tag->id)->delete();
+        $tag->contacts()->detach();
 
         $tag->delete();
 
