@@ -21,7 +21,7 @@ class ImportVCard extends BaseService
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
-    protected $ErrorResults = [
+    protected $errorResults = [
         'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
         'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname',
     ];
@@ -120,7 +120,7 @@ class ImportVCard extends BaseService
         if (! $this->canImportCurrentEntry($entry)) {
             return [
                 'error' => 'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME',
-                'reason' => $this->ErrorResults['ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME'],
+                'reason' => $this->errorResults['ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME'],
                 'name' => $this->name($entry),
             ];
         }
@@ -132,7 +132,7 @@ class ImportVCard extends BaseService
             return [
                 'contact_id' => $contact->id,
                 'error' => 'ERROR_CONTACT_EXIST',
-                'reason' => $this->ErrorResults['ERROR_CONTACT_EXIST'],
+                'reason' => $this->errorResults['ERROR_CONTACT_EXIST'],
                 'name' => $this->name($entry),
             ];
         }
@@ -157,13 +157,13 @@ class ImportVCard extends BaseService
         if (! array_has($this->genders, $genderCode)) {
             switch ($genderCode) {
                 case 'M':
-                    $gender = $this->getGenderOfName('Man') ?? $this->getGenderOfName('vCard');
+                    $gender = $this->getGenderByName('Man') ?? $this->getGenderByName('vCard');
                     break;
                 case 'F':
-                    $gender = $this->getGenderOfName('Woman') ?? $this->getGenderOfName('vCard');
+                    $gender = $this->getGenderByName('Woman') ?? $this->getGenderByName('vCard');
                     break;
                 default:
-                    $gender = $this->getGenderOfName('vCard');
+                    $gender = $this->getGenderByName('vCard');
                     break;
             }
 
@@ -186,7 +186,7 @@ class ImportVCard extends BaseService
      * @param  string  $name
      * @return Gender|null
      */
-    private function getGenderOfName($name)
+    private function getGenderByName($name)
     {
         return Gender::where([
             ['account_id', $this->accountId],
