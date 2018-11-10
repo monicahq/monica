@@ -8,7 +8,7 @@ needs to be performed.
 
 If you have Monica installed locally, and have HTTPS set up on your Apache server,
 the only configuration required for Monica to support HTTPS is to set your `APP_URL`
-to start with `https://`. This configuration paramter is used to generate external
+to start with `https://`. This configuration parameter is used to generate external
 links to your application for emails and such.
 
 ## With a proxy
