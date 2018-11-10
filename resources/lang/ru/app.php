@@ -9,6 +9,7 @@ return [
     'edit' => 'Редактировать',
     'upload' => 'Закачать',
     'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Закрыть',
     'create' => 'Create',
     'remove' => 'Убрать',
