@@ -153,7 +153,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->only(['store', 'destroy']);
 
         // Conversations
-        Route::resource('people/{contact}/conversations', 'Contacts\\DebtController')->except(['show']);
+        Route::resource('people/{contact}/conversations', 'Contacts\\ConversationsController')->except(['show']);
 
         // Documents
         Route::resource('people/{contact}/documents', 'Contacts\\DocumentsController')->only(['index', 'store', 'destroy']);
