@@ -9,6 +9,7 @@ return [
     'edit' => '编辑',
     'upload' => '上传',
     'download' => '下载',
+    'save_close' => 'Save and close',
     'close' => '关闭',
     'create' => '创建',
     'remove' => '删除',
