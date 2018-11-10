@@ -96,9 +96,9 @@ class ImportVCard extends BaseService
     {
         $this->validate(
             array_except($data, [
-                'account_id'
+                'account_id',
             ]) + [
-                'account_id' => $this->accountId
+                'account_id' => $this->accountId,
             ]
         );
 
