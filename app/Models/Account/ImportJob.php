@@ -194,24 +194,22 @@ class ImportJob extends Model
      */
     public function processEntries($behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
-        collect($this->entries[0])->map(function ($vcard) {
-            return Reader::read($vcard);
-        })->each(function (VCard $vCard) use ($behaviour) {
-            $this->processSingleEntry($vCard, $behaviour);
+        collect($this->entries[0])->each(function ($entry) use ($behaviour) {
+            $this->processSingleEntry($entry, $behaviour);
         });
     }
 
     /**
      * Process a single vCard entry.
      *
-     * @param  VCard  $vCard
+     * @param  string $entry
      * @param  string $behaviour
      */
-    public function processSingleEntry($vCard, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
+    public function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
     {
         try {
             $result = $this->getService()->execute([
-                'entry' => $vCard->serialize(),
+                'entry' => $entry,
                 'behaviour' => $behaviour,
             ]);
         } catch (MissingParameterException $e) {

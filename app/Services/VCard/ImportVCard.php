@@ -12,6 +12,7 @@ use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Helpers\CountriesHelper;
+use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
@@ -22,6 +23,7 @@ class ImportVCard extends BaseService
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
     protected $errorResults = [
+        'ERROR_PARSER' => 'import_vcard_parse_error',
         'ERROR_CONTACT_EXIST' => 'import_vcard_contact_exist',
         'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME' => 'import_vcard_contact_no_firstname',
     ];
@@ -113,9 +115,14 @@ class ImportVCard extends BaseService
      */
     private function process(array $data) : array
     {
-        $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
-
-        $entry = Reader::read($data['entry']);
+        $entry = $this->getEntry($data);
+        if (! $entry) {
+            return [
+                'error' => 'ERROR_PARSER',
+                'reason' => $this->errorResults['ERROR_PARSER'],
+                'name' => '(unknow)',
+            ];
+        }
 
         if (! $this->canImportCurrentEntry($entry)) {
             return [
@@ -128,6 +135,7 @@ class ImportVCard extends BaseService
         $contact_id = array_has($data, 'contact_id') ? $data['contact_id'] : null;
         $contact = $this->existingContact($entry, $contact_id);
 
+        $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
             return [
                 'contact_id' => $contact->id,
@@ -143,6 +151,21 @@ class ImportVCard extends BaseService
             'contact_id' => $contact->id,
             'name' => $this->name($entry),
         ];
+    }
+
+    /**
+     * @param string $data
+     * @return VCard
+     */
+    private function getEntry($data)
+    {
+        try {
+            $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+        }
+        catch (ParseException $e) {
+            return;
+        }
+        return $entry;
     }
 
     /**
