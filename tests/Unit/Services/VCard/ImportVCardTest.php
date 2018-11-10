@@ -136,7 +136,7 @@ class ImportVCardTest extends TestCase
             'EMAIL' => 'john@',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'existingContact', [$vcard]);
+        $contact = $this->invokePrivateMethod($importVCard, 'getExistingContact', [$vcard]);
         $this->assertNull($contact);
     }
 
@@ -223,7 +223,7 @@ class ImportVCardTest extends TestCase
             'type' => 'email',
         ]);
 
-        $contact = $this->invokePrivateMethod($importVCard, 'createContactFromCurrentEntry', [null, $vcard]);
+        $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [null, $vcard]);
 
         $this->assertTrue($contact->exists);
     }
