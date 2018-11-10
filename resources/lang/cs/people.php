@@ -117,6 +117,12 @@ return [
     'age_exact_in_years' => ':age let',
     'age_exact_birthdate' => 'narozeniny :date',
 
+    // Last called
+    'last_called' => 'Last called: :date',
+    'last_called_empty' => 'Last called: unknown',
+    'last_activity_date' => 'Last activity together: :date',
+    'last_activity_date_empty' => 'Last activity together: unknown',
+
     // additional information
     'information_edit_success' => 'Profil byl úspěšně aktualizován',
     'information_edit_title' => 'Upravit osobní informace o :name',
@@ -309,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'Upravit tag',
-    'tag_add' => 'add a tag',
+    'tag_add' => 'Add tags',
+    'tag_add_search' => 'Add or search tags',
+    'tag_no_tags' => 'No tags yet',
 
     // Introductions
     'introductions_sidebar_title' => 'How you met',
