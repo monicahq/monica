@@ -213,6 +213,7 @@ class ImportJob extends Model
             ]);
         } catch (MissingParameterException $e) {
             $this->fail((string) $e);
+
             return;
         }
 

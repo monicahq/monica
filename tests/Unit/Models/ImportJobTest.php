@@ -94,7 +94,7 @@ END:VCARD
     {
         $importJob = factory(ImportJob::class)->create([]);
         $this->invokePrivateMethod($importJob, 'fail', [
-            'reason'
+            'reason',
         ]);
 
         $this->assertTrue($importJob->failed);
@@ -208,7 +208,7 @@ END:VCARD
             'N'   => ['', '', '', '', ''],
         ]);
         $this->invokePrivateMethod($importJob, 'processSingleEntry', [
-            $vcard->serialize()
+            $vcard->serialize(),
         ]);
         $this->assertEquals(
             1,
@@ -239,7 +239,7 @@ END:VCARD
         ]);
 
         $this->invokePrivateMethod($importJob, 'processSingleEntry', [
-            $vcard->serialize()
+            $vcard->serialize(),
         ]);
         $this->assertEquals(
             1,
@@ -252,7 +252,7 @@ END:VCARD
         $importJob = $this->createImportJob();
 
         $this->invokePrivateMethod($importJob, 'skipEntry', [
-            'John Doe'
+            'John Doe',
         ]);
 
         $this->assertEquals(
@@ -276,7 +276,7 @@ END:VCARD
 
         $this->invokePrivateMethod($importJob, 'fileImportJobReport', [
             'Doe  John john@doe.com',
-            $importJob::VCARD_SKIPPED
+            $importJob::VCARD_SKIPPED,
         ]);
         $this->assertDatabaseHas('import_job_reports', [
             'account_id' => $importJob->account_id,
@@ -289,7 +289,7 @@ END:VCARD
 
         $this->invokePrivateMethod($importJob, 'fileImportJobReport', [
             'Doe  John john@doe.com',
-            $importJob::VCARD_IMPORTED
+            $importJob::VCARD_IMPORTED,
         ]);
         $this->assertDatabaseHas('import_job_reports', [
             'account_id' => $importJob->account_id,
@@ -303,7 +303,7 @@ END:VCARD
         $this->invokePrivateMethod($importJob, 'fileImportJobReport', [
             'Doe  John john@doe.com',
             $importJob::VCARD_SKIPPED,
-            'the reason why'
+            'the reason why',
         ]);
         $this->assertDatabaseHas('import_job_reports', [
             'account_id' => $importJob->account_id,
