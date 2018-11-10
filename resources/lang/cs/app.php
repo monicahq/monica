@@ -9,6 +9,7 @@ return [
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
     'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Zavřít',
     'create' => 'Create',
     'remove' => 'Odstranit',
