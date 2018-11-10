@@ -74,7 +74,7 @@ END:VCARD
 
         $this->assertNull($importJob->started_at);
 
-        $importJob->initJob();
+        $this->invokePrivateMethod($importJob, 'initJob');
 
         $this->assertNotNull($importJob->started_at);
     }
@@ -85,7 +85,7 @@ END:VCARD
 
         $this->assertNull($importJob->ended_at);
 
-        $importJob->endJob();
+        $this->invokePrivateMethod($importJob, 'endJob');
 
         $this->assertNotNull($importJob->ended_at);
     }
@@ -93,7 +93,9 @@ END:VCARD
     public function test_it_fails_and_throws_an_exception()
     {
         $importJob = factory(ImportJob::class)->create([]);
-        $importJob->fail('reason');
+        $this->invokePrivateMethod($importJob, 'fail', [
+            'reason'
+        ]);
 
         $this->assertTrue($importJob->failed);
         $this->assertEquals(
@@ -117,7 +119,7 @@ END:VCARD
         Storage::disk('public')->assertExists($importJob->filename);
 
         $this->assertNull($importJob->physicalFile);
-        $importJob->getPhysicalFile();
+        $this->invokePrivateMethod($importJob, 'getPhysicalFile');
 
         $this->assertEquals(
             'fakeContent',
@@ -132,7 +134,7 @@ END:VCARD
             'filename' => 'testfile.vcf',
         ]);
 
-        $importJob->getPhysicalFile();
+        $this->invokePrivateMethod($importJob, 'getPhysicalFile');
 
         $this->assertEquals(
             trans('settings.import_vcard_file_not_found'),
@@ -152,7 +154,7 @@ END:VCARD
             'fakeContent'
         );
 
-        $importJob->deletePhysicalFile();
+        $this->invokePrivateMethod($importJob, 'deletePhysicalFile');
 
         Storage::disk('public')->assertMissing($importJob->filename);
     }
@@ -164,7 +166,7 @@ END:VCARD
             'filename' => 'testfile.vcf',
         ]);
 
-        $importJob->deletePhysicalFile();
+        $this->invokePrivateMethod($importJob, 'deletePhysicalFile');
         $this->assertEquals(
             trans('settings.import_vcard_file_not_found'),
             $importJob->failed_reason
@@ -183,8 +185,8 @@ END:VCARD
             $this->vcfContent
         );
 
-        $importJob->getPhysicalFile();
-        $importJob->getEntries();
+        $this->invokePrivateMethod($importJob, 'getPhysicalFile');
+        $this->invokePrivateMethod($importJob, 'getEntries');
 
         $this->assertEquals(
             3,
@@ -205,7 +207,9 @@ END:VCARD
             'TEL' => '+1 555 34567 455',
             'N'   => ['', '', '', '', ''],
         ]);
-        $importJob->processSingleEntry($vcard);
+        $this->invokePrivateMethod($importJob, 'processSingleEntry', [
+            $vcard->serialize()
+        ]);
         $this->assertEquals(
             1,
             $importJob->contacts_skipped
@@ -234,7 +238,9 @@ END:VCARD
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $importJob->processSingleEntry($vcard);
+        $this->invokePrivateMethod($importJob, 'processSingleEntry', [
+            $vcard->serialize()
+        ]);
         $this->assertEquals(
             1,
             $importJob->contacts_skipped
@@ -245,7 +251,9 @@ END:VCARD
     {
         $importJob = $this->createImportJob();
 
-        $importJob->skipEntry('John Doe');
+        $this->invokePrivateMethod($importJob, 'skipEntry', [
+            'John Doe'
+        ]);
 
         $this->assertEquals(
             1,
@@ -266,7 +274,10 @@ END:VCARD
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $importJob->fileImportJobReport('Doe  John john@doe.com', $importJob::VCARD_SKIPPED);
+        $this->invokePrivateMethod($importJob, 'fileImportJobReport', [
+            'Doe  John john@doe.com',
+            $importJob::VCARD_SKIPPED
+        ]);
         $this->assertDatabaseHas('import_job_reports', [
             'account_id' => $importJob->account_id,
             'user_id' => $importJob->user_id,
@@ -276,7 +287,10 @@ END:VCARD
             'skip_reason' => null,
         ]);
 
-        $importJob->fileImportJobReport('Doe  John john@doe.com', $importJob::VCARD_IMPORTED);
+        $this->invokePrivateMethod($importJob, 'fileImportJobReport', [
+            'Doe  John john@doe.com',
+            $importJob::VCARD_IMPORTED
+        ]);
         $this->assertDatabaseHas('import_job_reports', [
             'account_id' => $importJob->account_id,
             'user_id' => $importJob->user_id,
@@ -286,7 +300,11 @@ END:VCARD
             'skip_reason' => null,
         ]);
 
-        $importJob->fileImportJobReport('Doe  John john@doe.com', $importJob::VCARD_SKIPPED, 'the reason why');
+        $this->invokePrivateMethod($importJob, 'fileImportJobReport', [
+            'Doe  John john@doe.com',
+            $importJob::VCARD_SKIPPED,
+            'the reason why'
+        ]);
         $this->assertDatabaseHas('import_job_reports', [
             'account_id' => $importJob->account_id,
             'user_id' => $importJob->user_id,

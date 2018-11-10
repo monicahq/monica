@@ -108,7 +108,7 @@ class ImportJob extends Model
      *
      * @return void
      */
-    public function initJob(): void
+    private function initJob(): void
     {
         $this->started_at = now();
         $this->contacts_imported = 0;
@@ -121,7 +121,7 @@ class ImportJob extends Model
      *
      * @return void
      */
-    public function endJob(): void
+    private function endJob(): void
     {
         $this->ended_at = now();
         $this->save();
@@ -133,7 +133,7 @@ class ImportJob extends Model
      * @param  string $reason
      * @return Exception
      */
-    public function fail(string $reason)
+    private function fail(string $reason)
     {
         $this->failed = true;
         $this->failed_reason = $reason;
@@ -145,7 +145,7 @@ class ImportJob extends Model
      *
      * @return $this
      */
-    public function getPhysicalFile()
+    private function getPhysicalFile()
     {
         try {
             $this->physicalFile = Storage::disk('public')->get($this->filename);
@@ -161,7 +161,7 @@ class ImportJob extends Model
      *
      * @return $this
      */
-    public function deletePhysicalFile()
+    private function deletePhysicalFile()
     {
         if (! Storage::disk('public')->delete($this->filename)) {
             $this->fail(trans('settings.import_vcard_file_not_found'));
@@ -173,7 +173,7 @@ class ImportJob extends Model
      *
      * @return void
      */
-    public function getEntries()
+    private function getEntries()
     {
         $this->contacts_found = preg_match_all('/(BEGIN:VCARD.*?END:VCARD)/s',
                                                 $this->physicalFile,
@@ -191,7 +191,7 @@ class ImportJob extends Model
      *
      * @return
      */
-    public function processEntries($behaviour = ImportVCard::BEHAVIOUR_ADD)
+    private function processEntries($behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
         collect($this->entries[0])->each(function ($entry) use ($behaviour) {
             $this->processSingleEntry($entry, $behaviour);
@@ -204,7 +204,7 @@ class ImportJob extends Model
      * @param  string $entry
      * @param  string $behaviour
      */
-    public function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
+    private function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
     {
         try {
             $result = $this->getService()->execute([
@@ -213,6 +213,7 @@ class ImportJob extends Model
             ]);
         } catch (MissingParameterException $e) {
             $this->fail((string) $e);
+            return;
         }
 
         if (array_has($result, 'error') && ! empty($result['error'])) {
@@ -244,7 +245,7 @@ class ImportJob extends Model
      * @param  string $reason
      * @return void
      */
-    public function skipEntry($name, $reason = null): void
+    private function skipEntry($name, $reason = null): void
     {
         $this->fileImportJobReport($name, self::VCARD_SKIPPED, $reason);
         $this->contacts_skipped++;
@@ -258,7 +259,7 @@ class ImportJob extends Model
      * @param  string $reason
      * @return void
      */
-    public function fileImportJobReport($name, $status, $reason = null): void
+    private function fileImportJobReport($name, $status, $reason = null): void
     {
         $importJobReport = new ImportJobReport;
         $importJobReport->account_id = $this->account_id;
