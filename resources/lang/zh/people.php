@@ -117,6 +117,12 @@ return [
     'age_exact_in_years' => ':age岁',
     'age_exact_birthdate' => '出生:date',
 
+    // Last called
+    'last_called' => 'Last called: :date',
+    'last_called_empty' => 'Last called: unknown',
+    'last_activity_date' => 'Last activity together: :date',
+    'last_activity_date_empty' => 'Last activity together: unknown',
+
     // additional information
     'information_edit_success' => '记录更新成功',
     'information_edit_title' => '编辑 :name的个人信息',
@@ -309,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => '编辑标签',
-    'tag_add' => '添加标签',
+    'tag_add' => 'Add tags',
+    'tag_add_search' => 'Add or search tags',
+    'tag_no_tags' => 'No tags yet',
 
     // Introductions
     'introductions_sidebar_title' => '你们是如何认识的？',
