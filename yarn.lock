@@ -4520,10 +4520,6 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-jquery-tags-input@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/jquery-tags-input/-/jquery-tags-input-1.3.5.tgz#1c89cb95c61983ad14386d30a006920476b93ed7"
-
 jquery@>=1.7, jquery@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"

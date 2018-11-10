@@ -102,6 +102,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Tags
         Route::name('tags.')->group(function () {
+            Route::get('/tags', 'Contacts\\TagsController@index')->name('index');
+            Route::get('/people/{contact}/tags', 'Contacts\\TagsController@get')->name('get');
             Route::post('/people/{contact}/tags/update', 'Contacts\\TagsController@update')->name('update');
         });
 
