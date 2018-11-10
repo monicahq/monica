@@ -161,10 +161,10 @@ class ImportVCard extends BaseService
     {
         try {
             $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-        }
-        catch (ParseException $e) {
+        } catch (ParseException $e) {
             return;
         }
+
         return $entry;
     }
 
