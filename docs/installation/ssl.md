@@ -35,7 +35,7 @@ If you use Cloudflare, you can also simply set `APP_TRUSTED_CLOUDFLARE` to true 
 automatically add cloudflare's IP addresses to the list.
 
 If you fail to have `APP_TRUSTED_PROXIES` set correctly, Monica will generate internal links that
-have the wrong protocol or host on them. this might seem to work if you have redirects set up,
+have the wrong protocol or host on them. This might seem to work if you have redirects set up,
 but can fail with insecure form submission errors.
 
 Remember to also update your `APP_URL` to correctly point to the HTTPS version of your application.
