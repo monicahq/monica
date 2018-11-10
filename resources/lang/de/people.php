@@ -117,6 +117,12 @@ return [
     'age_exact_in_years' => ':age Jahre alt',
     'age_exact_birthdate' => 'geboren am :date',
 
+    // Last called
+    'last_called' => 'Last called: :date',
+    'last_called_empty' => 'Last called: unknown',
+    'last_activity_date' => 'Last activity together: :date',
+    'last_activity_date_empty' => 'Last activity together: unknown',
+
     // additional information
     'information_edit_success' => 'Das Profil wurde erfolgreich aktualisiert',
     'information_edit_title' => 'Ändere :name\'s persönliche Daten',
@@ -309,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'Tag bearbeiten',
-    'tag_add' => 'Einen Tag hinzufügen',
+    'tag_add' => 'Add tags',
+    'tag_add_search' => 'Add or search tags',
+    'tag_no_tags' => 'No tags yet',
 
     // Introductions
     'introductions_sidebar_title' => 'Wie ihr euch kennengelernt habt',
