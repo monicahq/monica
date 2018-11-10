@@ -118,10 +118,10 @@ return [
     'age_exact_birthdate' => 'né le :date',
 
     // Last called
-    'last_called' => 'Last called: :date',
-    'last_called_empty' => 'Last called: unknown',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
+    'last_called' => 'Dernier appel : :date',
+    'last_called_empty' => 'Dernier appel : inconnu',
+    'last_activity_date' => 'Dernière activité ensemble : :date',
+    'last_activity_date_empty' => 'Dernière activité ensemble : inconnu',
 
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
@@ -315,9 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'Modifier le tag',
-    'tag_add' => 'Add tags',
-    'tag_add_search' => 'Add or search tags',
-    'tag_no_tags' => 'No tags yet',
+    'tag_add' => 'Ajouter des étiquettes',
+    'tag_add_search' => 'Ajouter ou rechercher une étiquette',
+    'tag_no_tags' => 'Aucune étiquette',
 
     // Introductions
     'introductions_sidebar_title' => 'Comment vous vous êtes rencontré',
