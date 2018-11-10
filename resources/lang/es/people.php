@@ -117,6 +117,12 @@ return [
     'age_exact_in_years' => ':age años de edad',
     'age_exact_birthdate' => 'nació el :date',
 
+    // Last called
+    'last_called' => 'Last called: :date',
+    'last_called_empty' => 'Last called: unknown',
+    'last_activity_date' => 'Last activity together: :date',
+    'last_activity_date_empty' => 'Last activity together: unknown',
+
     // additional information
     'information_edit_success' => 'El perfil ha sido actualizado exitosamente',
     'information_edit_title' => 'Editar la información personal de :name',
@@ -309,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'Editar etiqueta',
-    'tag_add' => 'añade una etiqueta',
+    'tag_add' => 'Add tags',
+    'tag_add_search' => 'Add or search tags',
+    'tag_no_tags' => 'No tags yet',
 
     // Introductions
     'introductions_sidebar_title' => 'Cómo nos conocimos',
