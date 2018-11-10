@@ -95,8 +95,11 @@ class ImportVCard extends BaseService
     public function execute(array $data) : array
     {
         $this->validate(
-            array_except($data, ['account_id'])
-            + ['account_id' => $this->accountId]
+            array_except($data, [
+                'account_id'
+            ]) + [
+                'account_id' => $this->accountId
+            ]
         );
 
         if (array_has($data, 'contact_id') && ! is_null($data['contact_id'])) {
@@ -116,6 +119,7 @@ class ImportVCard extends BaseService
     private function process(array $data) : array
     {
         $entry = $this->getEntry($data);
+
         if (! $entry) {
             return [
                 'error' => 'ERROR_PARSER',
@@ -133,7 +137,7 @@ class ImportVCard extends BaseService
         }
 
         $contact_id = array_has($data, 'contact_id') ? $data['contact_id'] : null;
-        $contact = $this->existingContact($entry, $contact_id);
+        $contact = $this->getExistingContact($entry, $contact_id);
 
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
@@ -145,7 +149,7 @@ class ImportVCard extends BaseService
             ];
         }
 
-        $contact = $this->createContactFromCurrentEntry($contact, $entry);
+        $contact = $this->importEntry($contact, $entry);
 
         return [
             'contact_id' => $contact->id,
@@ -154,7 +158,7 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * @param string $data
+     * @param array $data
      * @return VCard
      */
     private function getEntry($data)
@@ -277,7 +281,7 @@ class ImportVCard extends BaseService
      * @param  int $contact_id
      * @return Contact|null
      */
-    private function existingContact(VCard $entry, $contact_id = null)
+    private function getExistingContact(VCard $entry, $contact_id = null)
     {
         $contact = null;
         if (! is_null($contact_id)) {
@@ -311,7 +315,7 @@ class ImportVCard extends BaseService
         if ($this->isValidEmail((string) $entry->EMAIL)) {
             $contactField = ContactField::where([
                 ['account_id', $this->accountId],
-                ['contact_field_type_id', $this->contactFieldTypeId('email')],
+                ['contact_field_type_id', $this->getContactFieldTypeId('email')],
             ])->whereIn('data', iterator_to_array($entry->EMAIL))->first();
 
             if ($contactField) {
@@ -357,7 +361,7 @@ class ImportVCard extends BaseService
      * @param  VCard $entry
      * @return Contact
      */
-    private function createContactFromCurrentEntry($contact, VCard $entry): Contact
+    private function importEntry($contact, VCard $entry): Contact
     {
         if (! $contact) {
             $contact = new Contact;
@@ -587,7 +591,7 @@ class ImportVCard extends BaseService
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'data' => $this->formatValue($email),
-                    'contact_field_type_id' => $this->contactFieldTypeId('email'),
+                    'contact_field_type_id' => $this->getContactFieldTypeId('email'),
                 ]);
             }
         }
@@ -615,7 +619,7 @@ class ImportVCard extends BaseService
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'data' => $this->formatValue($tel),
-                'contact_field_type_id' => $this->contactFieldTypeId('phone'),
+                'contact_field_type_id' => $this->getContactFieldTypeId('phone'),
             ]);
         }
     }
@@ -637,19 +641,19 @@ class ImportVCard extends BaseService
             $data = null;
             switch ((string) $type) {
                 case 'facebook':
-                    $contactFieldTypeId = $this->contactFieldTypeId('Facebook');
+                    $contactFieldTypeId = $this->getContactFieldTypeId('Facebook');
                     $data = str_replace('https://www.facebook.com/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'twitter':
-                    $contactFieldTypeId = $this->contactFieldTypeId('Twitter');
+                    $contactFieldTypeId = $this->getContactFieldTypeId('Twitter');
                     $data = str_replace('https://twitter.com/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'whatsapp':
-                    $contactFieldTypeId = $this->contactFieldTypeId('Whatsapp');
+                    $contactFieldTypeId = $this->getContactFieldTypeId('Whatsapp');
                     $data = str_replace('https://wa.me/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'telegram':
-                    $contactFieldTypeId = $this->contactFieldTypeId('Telegram');
+                    $contactFieldTypeId = $this->getContactFieldTypeId('Telegram');
                     $data = str_replace('http://t.me/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'linkedin':
@@ -679,7 +683,7 @@ class ImportVCard extends BaseService
      * @param string $type  The type of the ContactFieldType, or the name
      * @return int
      */
-    private function contactFieldTypeId(string $type): int
+    private function getContactFieldTypeId(string $type): int
     {
         if (! array_has($this->contactFields, $type)) {
             $contactFieldType = ContactFieldType::where([
