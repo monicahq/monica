@@ -31,7 +31,7 @@ APP_TRUSTED_CLOUDFLARE=false
 ```
 
 Make sure that whatever proxy you are using is in your `APP_TRUSTED_PROXIES` list.
-If you you use Cloudflare, you can also simply set `APP_TRUSTED_CLOUDFLARE` to true to
+If you use Cloudflare, you can also simply set `APP_TRUSTED_CLOUDFLARE` to true to
 automatically add cloudflare's IP addresses to the list.
 
 If you fail to have `APP_TRUSTED_PROXIES` set correctly, Monica will generate internal links that
