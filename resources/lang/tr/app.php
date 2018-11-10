@@ -9,6 +9,7 @@ return [
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
     'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Kapat',
     'create' => 'Oluştur',
     'remove' => 'Kaldır',
