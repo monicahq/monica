@@ -6,6 +6,7 @@ use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
+use App\Helpers\AvatarHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
@@ -209,6 +210,7 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
+
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
@@ -267,6 +269,7 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withDays($days)
             ->withMonths($months)
@@ -425,7 +428,7 @@ class ContactsController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, Contact $contact)
+    public function destroy(Request $request, Contact $contact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
             return redirect()->route('people.index');
@@ -490,6 +493,7 @@ class ContactsController extends Controller
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
         return view('people.food-preferencies.edit')
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact);
     }
 

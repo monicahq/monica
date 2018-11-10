@@ -9,6 +9,7 @@ return [
     'edit' => 'Edit',
     'upload' => 'Upload',
     'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Close',
     'create' => 'Create',
     'remove' => 'Remove',

@@ -24,8 +24,8 @@ class CreateLifeEvent extends BaseService
             'name' => 'nullable|string',
             'note' => 'nullable|string',
             'has_reminder' => 'required|boolean',
-            'happened_at_month_unknown' => 'required',
-            'happened_at_day_unknown' => 'required',
+            'happened_at_month_unknown' => 'required|boolean',
+            'happened_at_day_unknown' => 'required|boolean',
         ];
     }
 

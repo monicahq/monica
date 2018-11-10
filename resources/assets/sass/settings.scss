@@ -274,21 +274,6 @@
     }
   }
 
-  .tags-list {
-    .tags-list-contact-number {
-      margin-left: 10px;
-      color: #999;
-    }
-
-    .actions {
-      @if $htmldir == ltr {
-        text-align: right;
-      } @else {
-        text-align: left;
-      }
-    }
-  }
-
   .reminder-info {
     text-decoration: underline dotted;
   }

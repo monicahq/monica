@@ -23,6 +23,7 @@ use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
+use App\Services\Contact\Tag\DestroyTag;
 use PragmaRX\Google2FALaravel\Google2FA;
 use App\Services\Account\DestroyAllDocuments;
 
@@ -464,14 +465,18 @@ class SettingsController
         return view('settings.tags');
     }
 
+    /**
+     * Destroy the tag.
+     *
+     * @param int $tagId
+     * @return void
+     */
     public function deleteTag($tagId)
     {
-        $tag = Tag::where('account_id', auth()->user()->account_id)
-            ->findOrFail($tagId);
-
-        $tag->contacts()->detach();
-
-        $tag->delete();
+        (new DestroyTag)->execute([
+            'tag_id' => $tagId,
+            'account_id' => auth()->user()->account->id,
+        ]);
 
         return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));
