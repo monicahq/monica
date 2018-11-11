@@ -62,7 +62,6 @@ class SettingsController
         'terms',
         'u2f_key',
         'users',
-        'weather',
     ];
 
     /**

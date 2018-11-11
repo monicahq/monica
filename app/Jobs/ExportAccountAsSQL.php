@@ -45,7 +45,6 @@ class ExportAccountAsSQL
         'terms',
         'u2f_key',
         'users',
-        'weather',
     ];
 
     protected $ignoredColumns = [
