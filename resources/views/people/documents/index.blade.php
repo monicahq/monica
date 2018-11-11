@@ -15,7 +15,7 @@
 
     @else
 
-    <document-list hash="{{ $contact->hashID() }}" reach-limit="{{ $contact->account->hasReachedAccountStorageLimit() }}"></document-list>
+    <document-list hash="{{ $contact->hashID() }}" reach-limit="{{ json_encode($contact->account->hasReachedAccountStorageLimit()) }}"></document-list>
 
     @endif
   </div>
