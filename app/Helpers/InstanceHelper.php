@@ -40,7 +40,7 @@ class InstanceHelper
     /**
      * Get changelogs entries.
      *
-     * @param integer $number
+     * @param int $number
      * @return array
      */
     public static function getChangelogEntries($limit = null)

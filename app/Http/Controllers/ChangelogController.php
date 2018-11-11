@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Storage;
-use Auth;
-use App\Helpers\InstanceHelper;
 use Illuminate\Http\Request;
 use App\Models\User\Changelog;
+use App\Helpers\InstanceHelper;
 
 class ChangelogController extends Controller
 {
