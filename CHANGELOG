@@ -4,10 +4,12 @@ UNRELEASED CHANGES:
 * Add ability to archive a contact
 * Add right-click support on contact list
 * Add autocompletion on tags
+* Add CardDAV support — disabled by default. To enable it, toggle the `CARDDAV_ENABLED` env variable.
 * Add a command (export:all) to export all data from an instance in SQL
 * New header on a profile page
 * Standardize phonenumber format while importing vCard
 * Set currency and timezone for new users
+* Remove changelogs from the database and manage changelogs from a json file instead
 * Highlight buttons when selected using keyboard
 * Hide deceased people from dashboard's 'Last Consulted' section
 * Improve API methods for tag management
@@ -21,7 +23,6 @@ UNRELEASED CHANGES:
 * API breaking change: Remove 'PUT /contacts/:contact_id/pets/:id' in favor of 'PUT /pets/:id' with a 'contact_id'
 * API breaking change: Every validator fails now send a HTTP 400 code (was 200) with the error 32
 * API breaking change: Every Invald Parameters errors now send a HTTP 400 (was 500 or 200) code with the error 41
-* Add CardDAV support — disabled by default. To enable it, toggle the `CARDDAV_ENABLED` env variable.
 * Use Laravel email verification, and remove the old package used for that
 * Prevent submitting an empty form when pressing enter
 * Remove Antiflood package on oauth/login and use Laravel throttle
