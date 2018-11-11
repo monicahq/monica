@@ -238,6 +238,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::delete('/settings/users/invitations/{invitation}', 'SettingsController@destroyInvitation')->name('invitation.delete');
         });
 
+        Route::name('storage.')->group(function () {
+            Route::get('/settings/storage', 'Settings\\StorageController@index')->name('index');
+        });
+
         Route::name('subscriptions.')->group(function () {
             Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('index');
             Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('upgrade');

@@ -14,6 +14,12 @@
     @endcomponent
 
     @component('components.sidebar', [
+      'route' => 'settings.storage.index',
+      'icon' => 'fa fa-cube',
+      'title' => 'settings.sidebar_settings_storage'])
+    @endcomponent
+
+    @component('components.sidebar', [
       'route' => 'settings.export',
       'icon' => 'fa fa-cloud-download',
       'title' => 'settings.sidebar_settings_export'])

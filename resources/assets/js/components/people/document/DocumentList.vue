@@ -77,12 +77,14 @@
             <h3>
                 📄 {{ $t('people.document_list_title') }}
 
-                <span class="fr relative" style="top: -7px;">
+                <span class="fr relative" style="top: -7px;" v-show="!reachLimit">
                     <a @click="displayUploadZone = true" class="btn edit-information" v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false">{{ $t('people.document_list_cta') }}</a>
                     <a @click="displayUploadZone = false; displayUploadError = false; displayUploadProgress = false" class="btn edit-information" v-if="displayUploadZone || displayUploadError || displayUploadProgress">{{ $t('app.cancel') }}</a>
                 </span>
             </h3>
         </div>
+
+        <p v-show="reachLimit">{{ $t('settings.storage_upgrade_notice') }}</p>
 
         <!-- EMPTY STATE -->
         <div class="ltr w-100 pt2" v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false && documents.length == 0">
@@ -148,7 +150,7 @@
             <div class="tc mb1">
                 <progress max="100" :value.prop="uploadPercentage"></progress>
             </div>
-            <p class="tc f6 mb0">{{ uploadPercentage }}% of 1.4Mb uploaded</p>
+            <p class="tc f6 mb0">{{ uploadPercentage }}% uploaded</p>
         </div>
 
         <!-- ERROR STEP WHEN UPLOADING A DOCUMENT -->
@@ -226,6 +228,9 @@
         props: {
             hash: {
                 type: String,
+            },
+            reachLimit: {
+                type: Boolean,
             },
         },
 
