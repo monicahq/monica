@@ -621,19 +621,6 @@
       text-align: center;
       width: 90px;
 
-      a:first-child {
-        margin-right: 5px;
-      }
-
-      a.edit {
-        position: relative;
-        top: 1px;
-    @if $htmldir == ltr {
-    .list-actions {
-      position: relative;
-      text-align: center;
-      width: 90px;
-
       a:not(:last-child) {
         @if $htmldir == ltr {
           margin-right: 5px;
@@ -645,11 +632,6 @@
       a.edit {
         position: relative;
         top: 1px;
-      }
-    }
-    } @else {
-        margin-left: 5px;
-    }
       }
     }
 
