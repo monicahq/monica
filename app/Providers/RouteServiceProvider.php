@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
 use Illuminate\Support\Facades\Route;
-use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 
