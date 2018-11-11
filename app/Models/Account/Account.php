@@ -984,7 +984,7 @@ class Account extends Model
      * Indicates whether the account has the reached the maximum storage size
      * for document upload.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasReachedAccountStorageLimit()
     {

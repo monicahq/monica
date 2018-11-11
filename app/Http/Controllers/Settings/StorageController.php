@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
 use App\Models\Contact\Document;
 use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\Settings\GendersRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StorageController extends Controller
 {
