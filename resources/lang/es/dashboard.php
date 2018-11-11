@@ -26,4 +26,7 @@ return [
     'reminders_none' => 'Ningún recordatorio este mes',
 
     'linkedin_profile' => 'LinkedIn',
+
+    'product_changes' => 'Product changes',
+    'product_view_details' => 'View details',
 ];

@@ -8,6 +8,8 @@ return [
     'delete' => 'Удалить',
     'edit' => 'Редактировать',
     'upload' => 'Закачать',
+    'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Закрыть',
     'create' => 'Create',
     'remove' => 'Убрать',
@@ -59,6 +61,7 @@ return [
 
     'breadcrumb_dashboard' => 'Обзор',
     'breadcrumb_list_contacts' => 'Список контактов',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'Журнал',
     'breadcrumb_settings' => 'Настройки',
     'breadcrumb_settings_export' => 'Экспорт',

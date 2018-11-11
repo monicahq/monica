@@ -8,6 +8,8 @@ return [
     'delete' => 'Sil',
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
+    'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Kapat',
     'create' => 'Oluştur',
     'remove' => 'Kaldır',
@@ -59,6 +61,7 @@ return [
 
     'breadcrumb_dashboard' => 'Başlangıç',
     'breadcrumb_list_contacts' => 'Kişi Listesi',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'Günlük',
     'breadcrumb_settings' => 'Ayarlar',
     'breadcrumb_settings_export' => 'Dışa aktar',

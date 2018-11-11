@@ -8,6 +8,8 @@ return [
     'delete' => 'Smazat',
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
+    'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Zavřít',
     'create' => 'Create',
     'remove' => 'Odstranit',
@@ -59,6 +61,7 @@ return [
 
     'breadcrumb_dashboard' => 'Dashboard',
     'breadcrumb_list_contacts' => 'Seznam kontaktů',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'Deník',
     'breadcrumb_settings' => 'Nastavení',
     'breadcrumb_settings_export' => 'Export',

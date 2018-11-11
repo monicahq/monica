@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => '拥有以下标签的联系人：',
     'people_list_clear_filter' => '清除筛选',
     'people_list_contacts_per_tags' => ':count 个联系人',
+    'people_list_show_dead' => '显示已故人员 (:count)',
+    'people_list_hide_dead' => '隐藏已故人员 (:count)',
     'people_search' => '搜索联系人...',
     'people_search_no_results' => '未找到相关联系人:(',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
@@ -39,8 +41,7 @@ return [
     'people_add_success' => ':name 已成功创建',
     'people_add_gender' => '性别',
     'people_delete_success' => '联系人已被删除',
-    'people_delete_message' => '如果需要删除此联系人,',
-    'people_delete_click_here' => '点击这里',
+    'people_delete_message' => '删除联系人',
     'people_delete_confirmation' => '确实要删除此联系人吗？删除是永久性的。',
     'people_add_birthday_reminder' => '祝: name生日快乐',
     'people_add_import' => '是否要 <a href=":url">导入您的联系人</a>？',
@@ -56,11 +57,15 @@ return [
     'section_personal_gifts' => '礼物',
     'section_personal_notes' => '便签',
 
-    //
-    'link_to_list' => '联系人',
+    // archived contacts
+    'list_link_to_active_contacts' => '您正在查看存档的联系人， <a href=":url">单击这里</a> 来查看活动的联系人列表。',
+    'list_link_to_archived_contacts' => '已存档联系人列表',
 
     // Header
     'edit_contact_information' => '编辑联系人信息',
+    'contact_archive' => '存档联系人',
+    'contact_unarchive' => '取消存档',
+    'contact_archive_help' => '存档的联系人将不会显示在联系人列表中, 但仍会显示在搜索结果中。',
     'call_button' => '记录通话',
     'set_favorite' => '您收藏的联系人将在联系人列表置顶显示。',
 
@@ -112,15 +117,21 @@ return [
     'age_exact_in_years' => ':age岁',
     'age_exact_birthdate' => '出生:date',
 
+    // Last called
+    'last_called' => 'Last called: :date',
+    'last_called_empty' => 'Last called: unknown',
+    'last_activity_date' => 'Last activity together: :date',
+    'last_activity_date_empty' => 'Last activity together: unknown',
+
     // additional information
     'information_edit_success' => '记录更新成功',
     'information_edit_title' => '编辑 :name的个人信息',
     'information_edit_avatar' => '联系人照片/头像',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => '最大值 :size Kb',
     'information_edit_firstname' => '名字',
     'information_edit_lastname' => '姓氏（可选）',
-    'information_edit_description' => 'Description (Optional)',
-    'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
+    'information_edit_description' => '说明 (可选)',
+    'information_edit_description_help' => '用于在联系人列表中添加一些元素（如有必要）',
     'information_edit_linkedin' => '领英® 链接 (可选)',
     'information_edit_unknown' => '我不知道具体年龄',
     'information_edit_probably' => '此人可能是...',
@@ -189,7 +200,7 @@ return [
     'relationship_form_associate_dropdown' => '请从下拉菜单选择一位联系人',
     'relationship_form_associate_dropdown_placeholder' => '搜索并选择一位现有联系人',
     'relationship_form_also_create_contact' => '将此人创建为您的联系人',
-    'relationship_form_add_description' => '此选项能让您将其创建为您Monica中的联系人',
+    'relationship_form_add_description' => '这会让你像其他联系人一样对待这个人。',
     'relationship_form_add_no_existing_contact' => '您暂时没有能与 :name 链接的联系人',
     'relationship_delete_confirmation' => '您确定要将关系删除吗？本操作无法撤销。',
     'relationship_unlink_confirmation' => '您确定要将关系删除吗？此操作不会从您的联系人列表将其删除。',
@@ -304,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => '编辑标签',
-    'tag_add' => '添加标签',
+    'tag_add' => 'Add tags',
+    'tag_add_search' => 'Add or search tags',
+    'tag_no_tags' => 'No tags yet',
 
     // Introductions
     'introductions_sidebar_title' => '你们是如何认识的？',
@@ -370,7 +383,6 @@ return [
     'life_event_list_tab_life_events' => '生活事件',
     'life_event_list_tab_other' => '便签、提醒..',
     'life_event_list_title' => '生活事件',
-    'life_event_list_title' => '生活事件',
     'life_event_blank' => '记录在{name} 身上发生的事情以供将来参考',
     'life_event_list_cta' => '添加生活事件',
     'life_event_create_category' => '全部类别',
@@ -406,7 +418,7 @@ return [
     'life_event_sentence_bought_a_home' => '买了新房子',
     'life_event_sentence_home_improvement' => '装修了',
     'life_event_sentence_holidays' => '去度假',
-    'life_event_sentence_new_vehicle' => 'Got a new vehicle',
+    'life_event_sentence_new_vehicle' => '买了辆新车',
     'life_event_sentence_new_roommate' => '有了新室友',
     'life_event_sentence_overcame_an_illness' => '熬过了疾病',
     'life_event_sentence_quit_a_habit' => '戒掉一个习惯',
@@ -421,11 +433,19 @@ return [
     'life_event_sentence_new_hobby' => '有了新爱好',
     'life_event_sentence_new_instrument' => '学会了新乐器',
     'life_event_sentence_new_language' => '学了一门新的语言',
-    'life_event_sentence_tatoo_or_piercing' => '纹身了或者打了耳洞',
+    'life_event_sentence_tattoo_or_piercing' => '纹身了或者打了耳洞',
     'life_event_sentence_new_license' => '获得驾照',
     'life_event_sentence_travel' => '旅游了',
     'life_event_sentence_achievement_or_award' => '获得成就或奖项',
     'life_event_sentence_changed_beliefs' => '改变信仰',
     'life_event_sentence_first_word' => '第一次发言',
     'life_event_sentence_first_kiss' => '第一次接吻',
+
+    // documents
+    'document_list_title' => '文档',
+    'document_list_cta' => '上载文档',
+    'document_list_blank_desc' => '在这里, 您可以存储与此人相关的文档。',
+    'document_upload_zone_cta' => '上传文件',
+    'document_upload_zone_progress' => '正在上传文档',
+    'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 ];

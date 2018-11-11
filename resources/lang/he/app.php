@@ -8,6 +8,8 @@ return [
     'delete' => 'מחיקה',
     'edit' => 'עריכה',
     'upload' => 'העלאה',
+    'download' => 'הורדה',
+    'save_close' => 'שמירה וסגירה',
     'close' => 'סגירה',
     'create' => 'יצירה',
     'remove' => 'הסרה',
@@ -59,6 +61,7 @@ return [
 
     'breadcrumb_dashboard' => 'לוח מחוונים',
     'breadcrumb_list_contacts' => 'רשימת אנשים',
+    'breadcrumb_archived_contacts' => 'אנשי קשר בארכיון',
     'breadcrumb_journal' => 'יומן',
     'breadcrumb_settings' => 'הגדרות',
     'breadcrumb_settings_export' => 'יצוא',

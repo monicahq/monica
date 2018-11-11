@@ -66,6 +66,11 @@ return [
     'register_policy' => 'L’inscription signifie vous avez lu et acceptez notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a> et nos <a href=":urlterm" hreflang=":hreflang">Conditions d’Utilisation</a>.',
     'register_invitation_email' => 'Pour des raisons de sécurité, merci d’indiquer l’adresse courriel de la personne qui vous a invité à joindre son compte. Cette information est indiquée dans le courriel d’invitation.',
 
+    'confirmation_title' => 'Vérifiez votre adresse courriel',
+    'confirmation_fresh' => 'Un nouveau lien de vérification a été envoyé à votre adresse courriel.',
+    'confirmation_check' => 'Avant de continuer, veuillez vérifier votre boîte mail pour un lien de vérification.',
+    'confirmation_request_another' => 'Si vous n’avez pas reçu le courriel <a href=":url">cliquez ici pour en demander un autre</a>.',
+
     'confirmation_again' => 'Si vous souhaitez modifier votre adresse courriel vous pouvez <a href=":url" class="alert-link">cliquer ici</a>.',
     'email_change_current_email' => 'Adresse courriel actuelle :',
     'email_change_title' => 'Modifier votre adresse courriel',
