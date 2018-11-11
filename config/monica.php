@@ -205,11 +205,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Maximum allowed storage size per account, in kilobytes.
+    | Maximum allowed storage size per account, in megabytes.
     |--------------------------------------------------------------------------
     |
-    | This the default limit for each new account. Default value: 500Mb.
+    | This the default limit for each new account. Default value: 512Mb.
     |
      */
-    'max_storage_size' => env('DEFAULT_MAX_STORAGE_SIZE', 512000),
+    'max_storage_size' => env('DEFAULT_MAX_STORAGE_SIZE', 512),
 ];

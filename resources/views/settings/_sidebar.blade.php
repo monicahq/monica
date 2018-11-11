@@ -14,7 +14,7 @@
     @endcomponent
 
     @component('components.sidebar', [
-      'route' => 'settings.storage',
+      'route' => 'settings.storage.index',
       'icon' => 'fa fa-cube',
       'title' => 'settings.sidebar_settings_storage'])
     @endcomponent

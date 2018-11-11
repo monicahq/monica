@@ -237,7 +237,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         Route::name('storage.')->group(function () {
-            Route::get('/settings/storage', 'StorageController@index')->name('index');
+            Route::get('/settings/storage', 'Settings\\StorageController@index')->name('index');
         });
 
         Route::name('subscriptions.')->group(function () {
