@@ -221,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'عدد جهات الإتصال المتخطى عنها',
     'import_report_status_imported' => 'تم استيراده',
     'import_report_status_skipped' => 'تم تخطيه',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => 'جهة الإتصال موجودة مسبقاً',
     'import_vcard_contact_no_firstname' => 'لا اسم أول (مطلوب)',
     'import_vcard_file_not_found' => 'لم يتم إيجاد الملف',
