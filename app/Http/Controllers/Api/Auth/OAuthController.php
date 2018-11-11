@@ -2,25 +2,23 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use Exception;
+use GuzzleHttp\Client;
 use App\Models\User\User;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Api\ApiController;
 
-class OAuthController extends ApiController
+class OAuthController extends Controller
 {
-    private $app;
-
-    public function __construct(Application $app)
-    {
-        $this->app = $app;
-    }
+    use JsonRespondController;
 
     /**
      * Log in a user and returns an accessToken.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
      */
     public function login(Request $request)
     {
@@ -42,7 +40,7 @@ class OAuthController extends ApiController
             ]);
 
             return $this->respond($token);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return $this->respondUnauthorized();
         }
     }
@@ -83,7 +81,7 @@ class OAuthController extends ApiController
      */
     private function proxy(array $data = [])
     {
-        $http = new \GuzzleHttp\Client;
+        $http = new Client();
         $response = $http->post(route('passport.token'), [
             'form_params' => [
                 'grant_type' => $data['grantType'],
