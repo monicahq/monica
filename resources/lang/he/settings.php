@@ -395,4 +395,5 @@ return [
     'storage_title' => 'אחסון',
     'storage_account_info' => 'מגבלת החשבון שלך: :accountLimit מ״ב /  הניצולת הנוכחית שלך: :currentAccountSize מ״ב (:percentUsage%)',
     'storage_upgrade_notice' => 'ניתן לשדרג את החשבון שלך כדי לאפשר העלאת מסמכים.',
+    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
 ];
