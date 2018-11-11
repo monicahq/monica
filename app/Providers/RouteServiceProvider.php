@@ -116,7 +116,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $router->group([
             'prefix' => 'oauth',
-            'namespace' => $this->namespace,
+            'namespace' => $this->namespace.'\Api',
         ], function () {
             require base_path('routes/oauth.php');
         });
