@@ -124,7 +124,7 @@
           <div class="mb3 mb0-ns">
             <label for="avatar">{{ trans('people.information_edit_avatar') }}</label>
             <input type="file" class="form-control-file" name="avatar" id="avatar">
-            <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
+            <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => config('monica.max_upload_size')]) }}</small>
           </div>
         </div>
 
