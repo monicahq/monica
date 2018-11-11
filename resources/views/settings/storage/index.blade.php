@@ -39,7 +39,7 @@
 
             <p>{{ trans('settings.storage_account_info', ['accountLimit' => $accountLimit, 'currentAccountSize' => $currentAccountSize, 'percentUsage' => $percentUsage,]) }}</p>
 
-            <p>{{ trans('settings.storage_upgrade_notice') }}</p>
+            <p>{{ trans('settings.storage_description') }}</p>
 
             <ul class="table">
                 @foreach($documents as $document)
