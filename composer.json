@@ -16,7 +16,6 @@
         "giggsey/libphonenumber-for-php": "^8.9",
         "guzzlehttp/guzzle": "^6.2",
         "intervention/image": "^2.3",
-        "ircop/antiflood": "^0.1.4",
         "jenssegers/date": "^3.3",
         "lahaxearnaud/laravel-u2f": "^1.3",
         "laravel/cashier": "~8.0",

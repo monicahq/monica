@@ -22,8 +22,9 @@ UNRELEASED CHANGES:
 * API breaking change: Every validator fails now send a HTTP 400 code (was 200) with the error 32
 * API breaking change: Every Invald Parameters errors now send a HTTP 400 (was 500 or 200) code with the error 41
 * Add CardDAV support — disabled by default. To enable it, toggle the `CARDDAV_ENABLED` env variable.
-* Use Laravel email verification, and remove the old module used for that
+* Use Laravel email verification, and remove the old package used for that
 * Prevent submitting an empty form when pressing enter
+* Remove Antiflood package on oauth/login and use Laravel throttle
 
 RELEASED VERSIONS:
 

@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-if (App::environment('production')) {
-    URL::forceScheme('https');
-}
 
 Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
@@ -236,6 +230,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::post('/settings/users', 'SettingsController@inviteUser')->name('store');
             Route::delete('/settings/users/{user}', 'SettingsController@deleteAdditionalUser')->name('destroy');
             Route::delete('/settings/users/invitations/{invitation}', 'SettingsController@destroyInvitation')->name('invitation.delete');
+        });
+
+        Route::name('storage.')->group(function () {
+            Route::get('/settings/storage', 'Settings\\StorageController@index')->name('index');
         });
 
         Route::name('subscriptions.')->group(function () {

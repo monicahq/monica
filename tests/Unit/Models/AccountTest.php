@@ -835,4 +835,20 @@ class AccountTest extends FeatureTestCase
             DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
         );
     }
+
+    public function test_it_tests_account_storage_limit()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $document = factory(Document::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.max_storage_size' => 0.1]);
+        $this->assertTrue($account->hasReachedAccountStorageLimit());
+
+        config(['monica.max_storage_size' => 1]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+    }
 }
