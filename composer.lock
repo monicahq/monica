@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "46372ac4660f9e33652dd217a3e32b38",
+    "content-hash": "9d08c31e954748073958dbe4bcacd39a",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -134,50 +134,6 @@
             "description": "BaconQrCode is a QR code generator for PHP.",
             "homepage": "https://github.com/Bacon/BaconQrCode",
             "time": "2017-10-17T09:59:25+00:00"
-        },
-        {
-            "name": "behat/transliterator",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Behat/Transliterator.git",
-                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Behat/Transliterator/zipball/826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
-                "reference": "826ce7e9c2a6664c0d1f381cbb38b1fb80a7ee2c",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "chuyskywalker/rolling-curl": "^3.1",
-                "php-yaoi/php-yaoi": "^1.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Behat\\Transliterator": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Artistic-1.0"
-            ],
-            "description": "String transliterator",
-            "keywords": [
-                "i18n",
-                "slug",
-                "transliterator"
-            ],
-            "time": "2017-04-04T11:38:05+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -1811,55 +1767,6 @@
                 "translation"
             ],
             "time": "2018-05-16T11:53:55+00:00"
-        },
-        {
-            "name": "jeroendesloovere/vcard",
-            "version": "1.7.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jeroendesloovere/vcard.git",
-                "reference": "6f4627dd36b6ce18cbfdf1375efd78a38c482a25"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jeroendesloovere/vcard/zipball/6f4627dd36b6ce18cbfdf1375efd78a38c482a25",
-                "reference": "6f4627dd36b6ce18cbfdf1375efd78a38c482a25",
-                "shasum": ""
-            },
-            "require": {
-                "behat/transliterator": "~1.0",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.6.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "JeroenDesloovere\\VCard\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeroen Desloovere",
-                    "email": "info@jeroendesloovere.be",
-                    "homepage": "http://jeroendesloovere.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "This VCard PHP class can generate a vCard with some data. When using an iOS device it will export as a .ics file because iOS devices don't support the default .vcf files.",
-            "homepage": "https://github.com/jeroendesloovere/vcard",
-            "keywords": [
-                ".vcf",
-                "generator",
-                "php",
-                "vCard"
-            ],
-            "time": "2018-07-04T09:44:33+00:00"
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
