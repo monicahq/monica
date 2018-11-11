@@ -53,7 +53,7 @@ class ActivityTypesControllerTest extends FeatureTestCase
                             'activity_type_category_id' => $activityTypeCategory->id,
                         ]);
 
-        $this->expectUnauthorizedError($response);
+        $this->expectNotFound($response);
 
         $this->assertDatabaseMissing('activity_types', [
             'name' => 'Movies',
