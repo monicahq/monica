@@ -8,11 +8,11 @@ use Tests\FeatureTestCase;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Contact\Gender;
-use App\Models\User\Changelog;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Account\Invitation;
@@ -175,6 +175,16 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->lifeEvents()->exists());
+    }
+
+    public function test_it_has_many_documents()
+    {
+        $account = factory(Account::class)->create([]);
+        $document = factory(Document::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->documents()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
@@ -701,74 +711,15 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
+    public function test_it_create_default_account()
     {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'work_information',
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
         ]);
-
-        $account->populateModulesTable();
-
-        $this->assertDatabaseHas('modules', [
-            'key' => 'work_information',
-        ]);
-    }
-
-    public function test_it_skips_default_account_modules_table_for_types_already_migrated()
-    {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'awesome',
-            'migrated' => 1,
-        ]);
-
-        $account->populateModulesTable(true);
-
-        $this->assertDatabaseMissing('modules', [
+        $this->assertDatabaseHas('users', [
             'account_id' => $account->id,
-            'key' => 'awesome',
-        ]);
-    }
-
-    public function test_it_adds_an_unread_changelog_entry_to_all_users()
-    {
-        $account = factory(Account::class)->create();
-        $user = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $user2 = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $changelog = factory(Changelog::class)->create();
-
-        $account->addUnreadChangelogEntry($changelog->id);
-
-        $this->assertDatabaseHas('changelog_user', [
-            'changelog_id' => $changelog->id,
-            'user_id' => $user->id,
-        ]);
-
-        $this->assertDatabaseHas('changelog_user', [
-            'changelog_id' => $changelog->id,
-            'user_id' => $user2->id,
-        ]);
-    }
-
-    public function test_it_populates_account_with_changelogs()
-    {
-        $account = factory(Account::class)->create();
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $changelog = factory(Changelog::class)->create();
-        $changelog->users()->sync($user->id);
-
-        $account->populateChangelogsTable();
-
-        $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
-            'changelog_id' => $changelog->id,
-            'read' => 0,
         ]);
     }
 
@@ -841,5 +792,21 @@ class AccountTest extends FeatureTestCase
             43,
             DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
         );
+    }
+
+    public function test_it_tests_account_storage_limit()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $document = factory(Document::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.max_storage_size' => 0.1]);
+        $this->assertTrue($account->hasReachedAccountStorageLimit());
+
+        config(['monica.max_storage_size' => 1]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
     }
 }

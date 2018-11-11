@@ -16,7 +16,11 @@
                 <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
               </li>
               <li>
+                @if ($contact->is_active)
                 <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
+                @else
+                <a href="{{ route('people.archived') }}">{{ trans('app.breadcrumb_archived_contacts') }}</a>
+                @endif
               </li>
               <li>
                 {{ $contact->name }}
@@ -42,15 +46,21 @@
 
             @include('people.sidebar')
 
-            <p><a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a></p>
-            <p>
-              {{ trans('people.people_delete_message') }}
-              <a href="#" id="link-delete-contact" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_click_here') }}</a>.
-              <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
-                {{ method_field('DELETE') }}
-                {{ csrf_field() }}
-              </form>
-            </p>
+            <ul>
+              <li>
+                <a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a>
+              </li>
+              <li>
+                <contact-archive hash="{{ $contact->hashID() }}" :active="{{ json_encode($contact->is_active) }}"></contact-archive>
+              </li>
+              <li>
+                <a id="link-delete-contact" class="pointer" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_message') }}</a>
+                <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
+                  {{ method_field('DELETE') }}
+                  {{ csrf_field() }}
+                </form>
+              </li>
+            </ul>
           </div>
 
           <div class="col-xs-12 col-sm-9">
@@ -123,6 +133,13 @@
                 @include('people.debt.index')
               </div>
               @endif
+
+              @if ($modules->contains('key', 'documents'))
+              <div class="row section">
+                @include('people.documents.index')
+              </div>
+              @endif
+
             </div>
           </div>
         </div>

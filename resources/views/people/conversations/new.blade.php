@@ -22,7 +22,7 @@
 
     @include('partials.errors')
 
-    <form action="{{ route('people.conversation.store', $contact) }}" method="POST">
+    <form action="{{ route('people.conversations.store', $contact) }}" method="POST">
       {{ csrf_field() }}
 
       {{-- When did it take place --}}
@@ -42,9 +42,9 @@
             <label for="another" class="pointer mr2">{{ trans('app.another_day') }}</label>
             <div class="dib">
               <form-date
-                v-bind:id="'conversationDate'"
-                v-bind:default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
-                v-bind:locale="'{{ $locale }}'">
+                :id="'conversationDate'"
+                :default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
+                :locale="'{{ $locale }}'">
               </form-date>
             </div>
           </div>
@@ -55,9 +55,9 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $contactFieldTypes }}"
-          v-bind:required="true"
-          v-bind:title="'{{ trans('people.conversation_add_how') }}'"
-          v-bind:id="'contactFieldTypeId'">
+          :required="true"
+          :title="'{{ trans('people.conversation_add_how') }}'"
+          :id="'contactFieldTypeId'">
         </form-select>
       </div>
 

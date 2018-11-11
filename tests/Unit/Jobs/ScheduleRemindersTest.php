@@ -103,6 +103,7 @@ class ScheduleRemindersTest extends TestCase
 
     public function test_it_sends_a_reminder_email()
     {
+        config(['monica.requires_subscription' => false]);
         NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'America/New_York'));

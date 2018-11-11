@@ -10,7 +10,7 @@
     <div class="mt4 mw7 center mb3">
       <h3 class="f3 fw5">{{ trans('people.conversation_edit_title') }}</h3>
       <p><a href="#" onclick="if (confirm('{{ trans('people.conversation_edit_delete') }}')) { $('#conversation-delete-form').submit(); } return false;" class="w-auto-ns w-100 mb2 pb0-ns">{{ trans('people.conversation_delete_link') }}</a></p>
-      <form method="POST" action="{{ route('people.conversation.destroy', [$contact, $conversation]) }}" id="conversation-delete-form" class="hidden">
+      <form method="POST" action="{{ route('people.conversations.destroy', [$contact, $conversation]) }}" id="conversation-delete-form" class="hidden">
         {{ method_field('DELETE') }}
         {{ csrf_field() }}
       </form>
@@ -27,7 +27,7 @@
 
     @include('partials.errors')
 
-    <form action="{{ route('people.conversation.update', [$contact, $conversation]) }}" method="POST">
+    <form action="{{ route('people.conversations.update', [$contact, $conversation]) }}" method="POST">
       {{ csrf_field() }}
 
       {{-- When did it take place --}}
@@ -47,9 +47,9 @@
             <label for="another" class="pointer mr2">{{ trans('app.another_day') }}</label>
             <div class="dib">
               <form-date
-                v-bind:id="'conversationDate'"
-                v-bind:default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
-                v-bind:locale="'{{ $locale }}'">
+                :id="'conversationDate'"
+                :default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
+                :locale="'{{ $locale }}'">
               </form-date>
             </div>
           </div>
@@ -60,15 +60,15 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $contactFieldTypes }}"
-          v-bind:required="true"
+          :required="true"
           value="{{ $conversation->contact_field_type_id }}"
-          v-bind:title="'{{ trans('people.conversation_add_how') }}'"
-          v-bind:id="'contactFieldTypeId'">
+          :title="'{{ trans('people.conversation_add_how') }}'"
+          :id="'contactFieldTypeId'">
         </form-select>
       </div>
 
       {{-- Conversation --}}
-      <conversation participant-name="{{ $contact->first_name }}" v-bind:existing-messages="{{ $messages }}"></conversation>
+      <conversation participant-name="{{ $contact->first_name }}" :existing-messages="{{ $messages }}"></conversation>
 
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">

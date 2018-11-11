@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use App\Helpers\MoneyHelper;
 use App\Models\Contact\Gift;
+use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\GiftsRequest;
@@ -17,7 +18,7 @@ class GiftsController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function get(Contact $contact)
+    public function index(Contact $contact)
     {
         $giftsCollection = collect([]);
         $gifts = $contact->gifts()->get();
@@ -79,6 +80,7 @@ class GiftsController extends Controller
         return view('people.gifts.add')
             ->withContact($contact)
             ->withFamilyRelationships($familyRelationships)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withGift(new Gift);
     }
 
@@ -111,6 +113,7 @@ class GiftsController extends Controller
         return view('people.gifts.edit')
             ->withContact($contact)
             ->withFamilyRelationships($familyRelationships)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withGift($gift);
     }
 

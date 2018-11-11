@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use App\Services\Contact\Tag\DetachTag;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 
@@ -23,9 +25,23 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
+        // detach all existing tags
+        $contactTags = $contact->tags()->get();
+        foreach ($contactTags as $tag) {
+            (new DetachTag)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => $contact->id,
+                'tag_id' => $tag->id,
+            ]);
+        }
+
         $tags = $request->get('tags');
         foreach ($tags as $tag) {
-            $contact->setTag($tag);
+            (new AssociateTag)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => $contact->id,
+                'name' => $tag,
+            ]);
         }
 
         return new ContactResource($contact);
@@ -33,6 +49,7 @@ class ApiContactTagController extends ApiController
 
     /**
      * Remove all the tags associated with the contact.
+     *
      * @param Request $request
      * @param int  $contactId
      */
@@ -46,13 +63,22 @@ class ApiContactTagController extends ApiController
             return $this->respondNotFound();
         }
 
-        $contact->unsetTags();
+        $contactTags = $contact->tags()->get();
+
+        foreach ($contactTags as $tag) {
+            (new DetachTag)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => $contact->id,
+                'tag_id' => $tag->id,
+            ]);
+        }
 
         return new ContactResource($contact);
     }
 
     /**
      * Remove one or more specific tags associated with the contact.
+     *
      * @param Request $request
      * @param int  $contactId
      */
@@ -65,16 +91,11 @@ class ApiContactTagController extends ApiController
 
         $tags = $request->get('tags');
         foreach ($tags as $tag) {
-            // does the tag exist?
-            try {
-                $tag = Tag::where('account_id', auth()->user()->account_id)
-                    ->where('id', $tag)
-                    ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-
-            $contact->unsetTag($tag);
+            (new DetachTag)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => $contact->id,
+                'tag_id' => $tag,
+            ]);
         }
 
         return new ContactResource($contact);
@@ -102,8 +123,7 @@ class ApiContactTagController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         return $contact;

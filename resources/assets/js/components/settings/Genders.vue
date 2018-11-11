@@ -45,7 +45,7 @@
 
     <!-- Create Gender type -->
     <sweet-modal ref="createModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_add')">
-      <form v-on:submit.prevent="store()">
+      <form @submit.prevent="store()">
         <div class="mb4">
           <p class="b mb2"></p>
           <form-input
@@ -112,8 +112,8 @@
       <div class="relative">
         <span class="fr">
             <a @click="closeDeleteModal()" class="btn">{{ $t('app.cancel') }}</a>
-            <a @click="trash()" class="btn btn-primary" v-if="numberOfContacts == 0">{{ $t('app.delete') }}</a>
-            <a @click="trashAndReplace()" class="btn btn-primary" v-if="numberOfContacts != 0">{{ $t('app.delete') }}</a>
+            <a @click="trash()" class="btn btn-primary" v-if="numberOfContacts === 0">{{ $t('app.delete') }}</a>
+            <a @click="trashAndReplace()" class="btn btn-primary" v-else>{{ $t('app.delete') }}</a>
         </span>
       </div>
     </sweet-modal>

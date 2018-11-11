@@ -15,11 +15,10 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
-use App\Models\User\Changelog;
-use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +39,7 @@ use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 
@@ -378,6 +378,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Document records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
      * Get the Life Event Category records associated with the account.
      *
      * @return HasMany
@@ -506,8 +516,11 @@ class Account extends Model
     {
         // Weird method to get the next billing date from Laravel Cashier
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $timestamp = $this->asStripeCustomer()['subscriptions']
-                            ->data[0]['current_period_end'];
+        $subscriptions = $this->asStripeCustomer()['subscriptions'];
+        if (count($subscriptions->data) <= 0) {
+            return;
+        }
+        $timestamp = $subscriptions->data[0]['current_period_end'];
 
         return DateHelper::getShortDate($timestamp);
     }
@@ -688,29 +701,6 @@ class Account extends Model
     }
 
     /**
-     * Populate the account modules table based on the default ones.
-     *
-     * @param  bool $ignoreTableAlreadyMigrated
-     * @return void
-     */
-    public function populateModulesTable($ignoreTableAlreadyMigrated = false)
-    {
-        $defaultModules = DB::table('default_contact_modules')->get();
-
-        foreach ($defaultModules as $defaultModule) {
-            if (! $ignoreTableAlreadyMigrated || $defaultModule->migrated == 0) {
-                Module::create([
-                    'account_id' => $this->id,
-                    'key' => $defaultModule->key,
-                    'translation_key' => $defaultModule->translation_key,
-                    'delible' => $defaultModule->delible,
-                    'active' => $defaultModule->active,
-                ]);
-            }
-        }
-    }
-
-    /**
      * Get the reminders for the month given in parameter.
      * - 0 means current month
      * - 1 means month+1
@@ -836,11 +826,14 @@ class Account extends Model
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();
         $this->populateRelationshipTypesTable();
-        $this->populateModulesTable();
-        $this->populateChangelogsTable();
         $this->populateActivityTypeTable();
 
         (new PopulateLifeEventsTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
+
+        (new PopulateModulesTable)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);
@@ -939,33 +932,6 @@ class Account extends Model
     }
 
     /**
-     * Add the given changelog entry and mark it unread for all users in this
-     * account.
-     *
-     * @param int $changelogId
-     */
-    public function addUnreadChangelogEntry(int $changelogId)
-    {
-        foreach ($this->users as $user) {
-            $user->changelogs()->syncWithoutDetaching([$changelogId => ['read' => 0]]);
-        }
-    }
-
-    /**
-     * Populate the changelog_user table, which contains all the new changes
-     * made on the application.
-     *
-     * @return void
-     */
-    public function populateChangelogsTable()
-    {
-        $changelogs = Changelog::all();
-        foreach ($changelogs as $changelog) {
-            AddChangelogEntry::dispatch($this, $changelog->id);
-        }
-    }
-
-    /**
      * Get the first available locale in an account. This gets the first user
      * in the account and reads his locale.
      *
@@ -982,5 +948,25 @@ class Account extends Model
         }
 
         return $user->locale;
+    }
+
+    /**
+     * Indicates whether the account has the reached the maximum storage size
+     * for document upload.
+     *
+     * @return bool
+     */
+    public function hasReachedAccountStorageLimit()
+    {
+        $documents = Document::with(['contact' => function ($query) {
+            $query->where('account_id', $this->id);
+        }])->orderBy('created_at', 'desc')->get();
+
+        $currentAccountSize = 0;
+        foreach ($documents as $document) {
+            $currentAccountSize += $document->filesize;
+        }
+
+        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
     }
 }

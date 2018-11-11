@@ -22,6 +22,12 @@ class ScheduleNotificationTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function setUp()
+    {
+        parent::setUp();
+        config(['monica.requires_subscription' => false]);
+    }
+
     public function test_it_dispatches_an_email_and_deletes_the_notification()
     {
         NotificationFacade::fake();

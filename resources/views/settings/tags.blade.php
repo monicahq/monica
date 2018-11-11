@@ -30,7 +30,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9 tags-list">
+      <div class="col-xs-12 col-sm-9">
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
             @if (auth()->user()->account->tags->count() == 0)

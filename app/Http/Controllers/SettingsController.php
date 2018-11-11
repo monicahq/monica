@@ -8,6 +8,7 @@ use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
+use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
@@ -22,7 +23,9 @@ use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
+use App\Services\Contact\Tag\DestroyTag;
 use PragmaRX\Google2FALaravel\Google2FA;
+use App\Services\Account\DestroyAllDocuments;
 
 class SettingsController
 {
@@ -32,8 +35,6 @@ class SettingsController
         'activity_types',
         'api_usage',
         'cache',
-        'changelog_user',
-        'changelogs',
         'countries',
         'currencies',
         'default_activity_types',
@@ -140,6 +141,10 @@ class SettingsController
         $user = $request->user();
         $account = $user->account;
 
+        (new DestroyAllDocuments)->execute([
+            'account_id' => $account->id,
+        ]);
+
         $tables = DBHelper::getTables();
 
         // Looping over the tables
@@ -176,6 +181,10 @@ class SettingsController
     {
         $user = $request->user();
         $account = $user->account;
+
+        (new DestroyAllDocuments)->execute([
+            'account_id' => $account->id,
+        ]);
 
         $tables = DBHelper::getTables();
 
@@ -408,7 +417,11 @@ class SettingsController
                     $request->input('first_name'),
                     $request->input('last_name'),
                     $request->input('email'),
-                    $request->input('password'));
+                    $request->input('password'),
+                    RequestHelper::ip()
+                );
+        $user->invited_by_user_id = $invitation->invited_by_user_id;
+        $user->save();
 
         $invitation->delete();
 
@@ -450,14 +463,18 @@ class SettingsController
         return view('settings.tags');
     }
 
+    /**
+     * Destroy the tag.
+     *
+     * @param int $tagId
+     * @return void
+     */
     public function deleteTag($tagId)
     {
-        $tag = Tag::where('account_id', auth()->user()->account_id)
-            ->findOrFail($tagId);
-
-        $tag->contacts()->detach();
-
-        $tag->delete();
+        (new DestroyTag)->execute([
+            'tag_id' => $tagId,
+            'account_id' => auth()->user()->account->id,
+        ]);
 
         return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));

@@ -3,6 +3,7 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -22,7 +23,7 @@ class ApiAdressesTest extends ApiTestCase
             'street' => 'street',
             'postal_code' => '12345',
             'country' => 'FR',
-            ]);
+        ]);
 
         $response = $this->json('GET', '/api/contacts');
 
@@ -53,7 +54,7 @@ class ApiAdressesTest extends ApiTestCase
             'street' => 'street',
             'postal_code' => '12345',
             'country' => 'FR',
-            ]);
+        ]);
 
         $response = $this->json('GET', '/api/contacts/'.$contact->id);
 
@@ -84,7 +85,7 @@ class ApiAdressesTest extends ApiTestCase
             'street' => 'street',
             'postal_code' => '12345',
             'country' => 'FR',
-            ]);
+        ]);
 
         $response = $this->json('GET', '/api/contacts/'.$contact->id.'/addresses');
 
@@ -104,6 +105,26 @@ class ApiAdressesTest extends ApiTestCase
         ]);
     }
 
+    public function test_address_get_contactid_address_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $address = factory(Address::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'name' => 'address name',
+            'street' => 'street',
+            'postal_code' => '12345',
+            'country' => 'FR',
+        ]);
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id.'/addresses');
+
+        $this->expectNotFound($response);
+    }
+
     public function test_address_get_addressid()
     {
         $user = $this->signin();
@@ -115,7 +136,7 @@ class ApiAdressesTest extends ApiTestCase
             'street' => 'street',
             'postal_code' => '12345',
             'country' => 'FR',
-            ]);
+        ]);
 
         $response = $this->json('GET', '/api/addresses/'.$address->id);
 
@@ -141,7 +162,6 @@ class ApiAdressesTest extends ApiTestCase
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
 
         $response = $this->json('POST', '/api/addresses', [
-            'account_id' => $user->account->id,
             'contact_id' => $contact->id,
             'name' => 'address name',
             'street' => 'street',
@@ -175,6 +195,40 @@ class ApiAdressesTest extends ApiTestCase
 
         $address_id = $response->json('data.id');
         $this->assertGreaterThan(0, $address_id);
+    }
+
+    public function test_address_post_error()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+
+        $response = $this->json('POST', '/api/addresses', [
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->expectDataError($response, [
+            'The name field is required.',
+        ]);
+    }
+
+    public function test_address_post_error_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $response = $this->json('POST', '/api/addresses', [
+            'contact_id' => $contact->id,
+            'name' => 'address name',
+            'street' => 'street',
+            'postal_code' => '12345',
+            'country' => 'FR',
+        ]);
+
+        $this->expectNotFound($response);
     }
 
     public function test_address_put()
@@ -223,6 +277,30 @@ class ApiAdressesTest extends ApiTestCase
         ]);
     }
 
+    public function test_address_put_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $address = factory(Address::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'name' => 'address name',
+            'street' => 'street',
+            'postal_code' => '12345',
+            'country' => 'FR',
+        ]);
+
+        $response = $this->json('PUT', '/api/addresses/'.$address->id, [
+            'contact_id' => $contact->id,
+            'name' => 'address name up',
+            'country' => 'US',
+        ]);
+
+        $this->expectNotFound($response);
+    }
+
     public function test_address_delete()
     {
         $user = $this->signin();
@@ -250,5 +328,14 @@ class ApiAdressesTest extends ApiTestCase
             'contact_id' => $contact->id,
             'id' => $address->id,
         ]);
+    }
+
+    public function test_address_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/addresses/0');
+
+        $this->expectNotFound($response);
     }
 }

@@ -1,114 +1,67 @@
 <div class="col-xs-12 col-sm-3 sidebar-menu">
   <ul class="mb4">
 
-    @if (Route::currentRouteName() == 'settings.index')
-    <li class="selected">
-      <i class="fa fa-cog" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_settings') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-cog" aria-hidden="true"></i>
-      <a href="{{ route('settings.index') }}">{{ trans('settings.sidebar_settings') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.index',
+      'icon' => 'fa fa-cog',
+      'title' => 'settings.sidebar_settings'])
+    @endcomponent
 
-    @if (Route::currentRouteName() == 'settings.personalization')
-    <li class="selected">
-      <i class="fa fa-handshake-o" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_personalization') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-handshake-o" aria-hidden="true"></i>
-      <a href="{{ route('settings.personalization.index') }}">{{ trans('settings.sidebar_personalization') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.personalization.index',
+      'icon' => 'fa fa-handshake-o',
+      'title' => 'settings.sidebar_personalization'])
+    @endcomponent
 
-    @if (Route::currentRouteName() == 'settings.export')
-    <li class="selected">
-      <i class="fa fa-cloud-download" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_settings_export') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-cloud-download" aria-hidden="true"></i>
-      <a href="{{ route('settings.export') }}">{{ trans('settings.sidebar_settings_export') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.storage.index',
+      'icon' => 'fa fa-cube',
+      'title' => 'settings.sidebar_settings_storage'])
+    @endcomponent
 
-    @if (Route::currentRouteName() == 'settings.import')
-    <li class="selected">
-      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_settings_import') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-      <a href="{{ route('settings.import') }}">{{ trans('settings.sidebar_settings_import') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.export',
+      'icon' => 'fa fa-cloud-download',
+      'title' => 'settings.sidebar_settings_export'])
+    @endcomponent
 
-    @if (Route::currentRouteName() == 'settings.users.index')
-    <li class="selected">
-      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_settings_users') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-      <a href="{{ route('settings.users.index') }}">{{ trans('settings.sidebar_settings_users') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.import',
+      'icon' => 'fa fa-cloud-upload',
+      'title' => 'settings.sidebar_settings_import'])
+    @endcomponent
+
+    @component('components.sidebar', [
+      'route' => 'settings.users.index',
+      'icon' => 'fa fa-user-circle-o',
+      'title' => 'settings.sidebar_settings_users'])
+    @endcomponent
 
     @if (config('monica.requires_subscription') && ! auth()->user()->account->has_access_to_paid_version_for_free)
-      @if (Route::currentRouteName() == 'settings.subscriptions.index')
-      <li class="selected">
-        <i class="fa fa-money" aria-hidden="true"></i>
-        <strong>{{ trans('settings.sidebar_settings_subscriptions') }}</strong>
-      </li>
-      @else
-      <li class="bg-white">
-        <i class="fa fa-money" aria-hidden="true"></i>
-        <a href="{{ route('settings.subscriptions.index') }}">{{ trans('settings.sidebar_settings_subscriptions') }}</a>
-      </li>
-      @endif
+      @component('components.sidebar', [
+        'route' => 'settings.subscriptions.index',
+        'icon' => 'fa fa-money',
+        'title' => 'settings.sidebar_settings_subscriptions'])
+      @endcomponent
     @endif
 
-    @if (Route::currentRouteName() == 'settings.tags')
-    <li class="selected">
-      <i class="fa fa-tags" aria-hidden="true"></i>
-      <strong>{{ trans('settings.sidebar_settings_tags') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-tags" aria-hidden="true"></i>
-      <a href="{{ route('settings.tags.index') }}">{{ trans('settings.sidebar_settings_tags') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.tags.index',
+      'icon' => 'fa fa-tags',
+      'title' => 'settings.sidebar_settings_tags'])
+    @endcomponent
 
-    @if (Route::currentRouteName() == 'settings.api')
-    <li class="selected">
-      <i class="fa fa-random"></i>
-      <strong>{{ trans('settings.sidebar_settings_api') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-random"></i>
-      <a href="{{ route('settings.api') }}">{{ trans('settings.sidebar_settings_api') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.api',
+      'icon' => 'fa fa-random',
+      'title' => 'settings.sidebar_settings_api'])
+    @endcomponent
 
-    @if (Route::currentRouteName() == 'settings.security')
-    <li class="selected">
-      <i class="fa fa-cog"></i>
-      <strong>{{ trans('settings.sidebar_settings_security') }}</strong>
-    </li>
-    @else
-    <li class="bg-white">
-      <i class="fa fa-cog"></i>
-      <a href="{{ route('settings.security.index') }}">{{ trans('settings.sidebar_settings_security') }}</a>
-    </li>
-    @endif
+    @component('components.sidebar', [
+      'route' => 'settings.security.index',
+      'icon' => 'fa fa-shield',
+      'title' => 'settings.sidebar_settings_security'])
+    @endcomponent
+
   </ul>
 </div>

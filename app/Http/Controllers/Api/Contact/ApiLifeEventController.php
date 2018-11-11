@@ -34,7 +34,7 @@ class ApiLifeEventController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, int $lifeEventId)
+    public function show(Request $request, $lifeEventId)
     {
         try {
             $lifeEvent = LifeEvent::where('account_id', auth()->user()->account_id)
@@ -65,9 +65,7 @@ class ApiLifeEventController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->setHTTPStatusCode(500)
-                ->setErrorCode(41)
-                ->respondWithError(config('api.error_codes.41'));
+            return $this->respondInvalidParameters($e->errors);
         }
 
         return new LifeEventResource($lifeEvent);
@@ -94,9 +92,7 @@ class ApiLifeEventController extends ApiController
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
-            return $this->setHTTPStatusCode(500)
-                ->setErrorCode(41)
-                ->respondWithError(config('api.error_codes.41'));
+            return $this->respondInvalidParameters($e->errors);
         }
 
         return new LifeEventResource($lifeEvent);

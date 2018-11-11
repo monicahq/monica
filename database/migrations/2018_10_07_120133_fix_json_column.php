@@ -20,21 +20,15 @@ class FixJsonColumn extends Migration
 
         $databasename = $connection->getDatabaseName();
 
-        $columns = $connection->table('information_schema.columns')
-                            ->select('table_name', 'column_name')
-                            ->where([
-                                ['table_schema', '=', $databasename],
-                                ['data_type', '=', 'json'],
-                            ])
-                            ->whereIn('table_name', [
-                                'default_life_event_types',
-                                'life_event_types',
-                                'life_events',
-                            ])
-                            ->get();
+        $columns = DB::select(
+            'select table_name, column_name from information_schema.columns where table_schema = ? and data_type = ? '.
+            ' and table_name in (?, ?, ?)',
+            [$databasename, 'json', 'default_life_event_types', 'life_event_types', 'life_events']
+        );
+        $tablePrefix = DB::connection()->getTablePrefix();
 
         foreach ($columns as $column) {
-            DB::statement('ALTER TABLE `'.$databasename.'`.`'.$column->table_name.'` MODIFY `'.$column->column_name.'` text;');
+            DB::statement('ALTER TABLE `'.$databasename.'`.`'.$tablePrefix.$column->table_name.'` MODIFY `'.$column->column_name.'` text;');
         }
     }
 }

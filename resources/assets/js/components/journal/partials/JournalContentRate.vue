@@ -5,7 +5,7 @@
   <div>
 
     <!-- Left columns: showing calendar -->
-    <journal-calendar v-bind:journal-entry="journalEntry"></journal-calendar>
+    <journal-calendar :journal-entry="journalEntry"></journal-calendar>
 
     <!-- Right column: showing logs -->
     <div :class="[ dirltr ? 'fl' : 'fr' ]" class="journal-calendar-content">
@@ -27,7 +27,7 @@
           <div class="flex-none">
 
             <!-- sad smiley color -->
-            <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]" v-if="day.rate == 1">
+            <svg v-if="day.rate == 1" width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]">
                 <defs></defs>
                 <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="Desktop" transform="translate(-695.000000, -345.000000)">
@@ -43,7 +43,7 @@
             </svg>
 
             <!-- mediocre day monochrome -->
-            <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]" v-if="day.rate == 2">
+            <svg v-else-if="day.rate == 2" width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]">
                 <defs></defs>
                 <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="Desktop" transform="translate(-754.000000, -165.000000)">
@@ -58,7 +58,7 @@
             </svg>
 
             <!-- happy day color -->
-            <svg width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]" v-if="day.rate == 3">
+            <svg v-else-if="day.rate == 3" width="42px" height="42px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1"  :class="[ dirltr ? 'mr3' : 'ml3' ]">
                 <defs></defs>
                 <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                     <g id="Desktop" transform="translate(-814.000000, -345.000000)">
@@ -76,25 +76,23 @@
           </div>
 
           <!-- Show comment -->
-          <template v-if="day.comment">
-            <div class="flex-none w-5">
-              <div class="flex justify-center items-center h-100">
-                <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flex-none">
-                  <defs></defs>
-                  <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
-                      <g id="Desktop" transform="translate(-839.000000, -279.000000)" stroke="#979797">
-                          <g id="Group-4" transform="translate(839.000000, 278.000000)">
-                              <path d="M0.5,1.5 L15.5,1.5" id="Line-2"></path>
-                              <path d="M0.5,9.5 L15.5,9.5" id="Line-2"></path>
-                              <path d="M0.5,5.5 L13.5,5.5" id="Line-2"></path>
-                              <path d="M0.5,13.5 L10.5,13.5" id="Line-2"></path>
-                          </g>
-                      </g>
+          <div v-if="day.comment" class="flex-none w-5">
+            <div class="flex justify-center items-center h-100">
+              <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flex-none">
+                <defs></defs>
+                <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
+                  <g id="Desktop" transform="translate(-839.000000, -279.000000)" stroke="#979797">
+                    <g id="Group-4" transform="translate(839.000000, 278.000000)">
+                      <path d="M0.5,1.5 L15.5,1.5" id="Line-2"></path>
+                      <path d="M0.5,9.5 L15.5,9.5" id="Line-2"></path>
+                      <path d="M0.5,5.5 L13.5,5.5" id="Line-2"></path>
+                      <path d="M0.5,13.5 L10.5,13.5" id="Line-2"></path>
+                    </g>
                   </g>
-                </svg>
-              </div>
+                </g>
+              </svg>
             </div>
-          </template>
+          </div>
 
         </div>
 
@@ -106,7 +104,7 @@
           <div class="flex-none w-90 mt2 pt0 pr3 pb2">
             <ul class="f7">
               <li class="di">
-                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" v-on:click="destroy()">{{ $t('app.delete') }}</a>
+                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" @click="destroy()">{{ $t('app.delete') }}</a>
               </li>
             </ul>
           </div>

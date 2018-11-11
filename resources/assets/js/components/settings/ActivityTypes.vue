@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_activity_type_category_title') }}
-      <a class="btn nt2" v-if="!limited" cy-name="add-activity-category-type-button" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateCategoryModal">{{ $t('settings.personalization_activity_type_category_add') }}</a>
+      <a class="btn nt2" v-if="!limited" cy-name="add-activity-category-type-button" :class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateCategoryModal">{{ $t('settings.personalization_activity_type_category_add') }}</a>
     </h3>
     <p>{{ $t('settings.personalization_activity_type_category_description') }}</p>
 
@@ -29,7 +29,7 @@
             {{ $t('settings.personalization_activity_type_category_table_name') }}
           </div>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_activity_type_category_table_actions') }}
           </div>
@@ -38,7 +38,7 @@
     </div>
 
     <div cy-name="activity-types">
-      <div class="dt dt--fixed w-100 collapse br--top br--bottom" v-for="activityTypeCategory in activityTypeCategories" v-bind:key="activityTypeCategory.id">
+      <div class="dt dt--fixed w-100 collapse br--top br--bottom" v-for="activityTypeCategory in activityTypeCategories" :key="activityTypeCategory.id">
         <div class="dt-row hover bb b--light-gray">
           <div class="dtc">
             <div class="pa2 b">
@@ -46,7 +46,7 @@
             </div>
           </div>
           <div class="dtc">
-            <div class="pa2" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
+            <div class="pa2" :class="[ dirltr ? 'tr' : 'tl' ]" >
               <i class="fa fa-pencil-square-o pointer pr2" :cy-name="'activity-type-category-edit-button-' + activityTypeCategory.id" v-if="!limited" @click="showEditCategory(activityTypeCategory)"></i>
               <i class="fa fa-trash-o pointer" :cy-name="'activity-type-category-delete-button-' + activityTypeCategory.id" v-if="!limited" @click="showDeleteCategory(activityTypeCategory)"></i>
             </div>
@@ -58,7 +58,7 @@
               {{ activityType.name }}
             </div>
           </div>
-          <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" >
+          <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]" >
             <div class="pa2">
               <i class="fa fa-pencil-square-o pointer pr2" :cy-name="'activity-type-edit-button-' + activityType.id" v-if="!limited" @click="showEditType(activityType)"></i>
               <i class="fa fa-trash-o pointer" :cy-name="'activity-type-delete-button-' + activityType.id" v-if="!limited" @click="showDeleteType(activityType)"></i>
@@ -77,15 +77,15 @@
 
     <!-- Create Activity Type Category -->
     <sweet-modal ref="createCategoryModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_category_modal_add')">
-      <form v-on:submit.prevent="storeCategory()">
+      <form @submit.prevent="storeCategory()">
         <div class="mb4">
           <p class="b mb2"></p>
           <form-input
             v-model="createCategoryForm.name"
-            v-bind:input-type="'text'"
-            v-bind:id="'add-category-name'"
-            v-bind:required="true"
-            v-bind:title="$t('settings.personalization_activity_type_category_modal_question')">
+            :input-type="'text'"
+            :id="'add-category-name'"
+            :required="true"
+            :title="$t('settings.personalization_activity_type_category_modal_question')">
           </form-input>
         </div>
       </form>
@@ -99,15 +99,15 @@
 
     <!-- Update Activity Type Category -->
     <sweet-modal ref="updateCategoryModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_category_modal_edit')">
-      <form v-on:submit.prevent="updateCategory()">
+      <form @submit.prevent="updateCategory()">
         <div class="mb4">
           <p class="b mb2"></p>
           <form-input
             v-model="updateCategoryForm.name"
-            v-bind:input-type="'text'"
-            v-bind:id="'update-category-name'"
-            v-bind:required="true"
-            v-bind:title="$t('settings.personalization_activity_type_category_modal_question')">
+            :input-type="'text'"
+            :id="'update-category-name'"
+            :required="true"
+            :title="$t('settings.personalization_activity_type_category_modal_question')">
           </form-input>
         </div>
       </form>
@@ -121,15 +121,15 @@
 
     <!-- Create Activity Type -->
     <sweet-modal ref="createTypeModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_modal_add')">
-      <form v-on:submit.prevent="storeType()">
+      <form @submit.prevent="storeType()">
         <div class="mb4">
           <p class="b mb2"></p>
           <form-input
             v-model="createTypeForm.name"
-            v-bind:input-type="'text'"
-            v-bind:id="'add-type-name'"
-            v-bind:required="true"
-            v-bind:title="$t('settings.personalization_activity_type_modal_question')">
+            :input-type="'text'"
+            :id="'add-type-name'"
+            :required="true"
+            :title="$t('settings.personalization_activity_type_modal_question')">
           </form-input>
         </div>
       </form>
@@ -143,15 +143,15 @@
 
     <!-- Update Activity Type -->
     <sweet-modal ref="updateTypeModal" overlay-theme="dark" :title="$t('settings.personalization_activity_type_modal_edit')">
-      <form v-on:submit.prevent="updateType()">
+      <form @submit.prevent="updateType()">
         <div class="mb4">
           <p class="b mb2"></p>
           <form-input
             v-model="updateTypeForm.name"
-            v-bind:input-type="'text'"
-            v-bind:id="'update-type-name'"
-            v-bind:required="true"
-            v-bind:title="$t('settings.personalization_activity_type_modal_question')">
+            :input-type="'text'"
+            :id="'update-type-name'"
+            :required="true"
+            :title="$t('settings.personalization_activity_type_modal_question')">
           </form-input>
         </div>
       </form>
@@ -365,7 +365,7 @@
             },
 
             updateCategory() {
-                axios.put('/settings/personalization/activitytypecategories/', this.updateCategoryForm)
+                axios.put('/settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
                       .then(response => {
                           this.$refs.updateCategoryModal.close();
                           this.updatedCategory.name = this.updateCategoryForm.name;
@@ -407,7 +407,7 @@
             },
 
             updateType() {
-                axios.put('/settings/personalization/activitytypes/', this.updateTypeForm)
+                axios.put('/settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
                       .then(response => {
                           this.$refs.updateTypeModal.close();
                           this.updatedCategory.name = this.updateTypeForm.name;

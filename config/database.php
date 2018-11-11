@@ -24,6 +24,8 @@ $db = [
     | to use as your default connection for all database work. Of course
     | you may use many connections at once using the Database library.
     |
+    | PostgreSQL users: insert 'pgsql' and edit the 'pgsql' section below.
+    |
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
@@ -55,6 +57,10 @@ $db = [
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
     | choice installed on your machine before you begin development.
+    |
+    | PostgreSQL users: comment out host and port for UNIX domain socket
+    | connections (local file-based connection without the need to edit the
+    | firewall settings).
     |
     */
 
@@ -90,7 +96,7 @@ $db = [
             'password' => env('DB_TEST_PASSWORD'),
             'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
             'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
-            'prefix' => '',
+            'prefix' => env('DB_TEST_PREFIX', ''),
             'strict' => false,
         ],
 

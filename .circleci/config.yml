@@ -363,6 +363,17 @@ jobs:
       - *docker-build
       - *docker-push-bintray
 
+  deploy-docker-staging:
+    <<: *defaults
+    machine: true
+
+    steps:
+      - run:
+          name: Update staging
+          command: |
+            ssh $SSH_USER@$SSH_HOST "docker-compose -f $DOCKER_FILE pull"
+            ssh $SSH_USER@$SSH_HOST "docker-compose -f $DOCKER_FILE up -d"
+
   deploy-docker:
     <<: *defaults
     machine: true
@@ -456,6 +467,13 @@ workflows:
             tags:
               only: /^v\d+\.\d+(\.\d+)?(-\S*)?$/
       - deploy-docker-master:
+          filters:
+            branches:
+              only:
+                - master
+      - deploy-docker-staging:
+          requires:
+            - deploy-docker-master
           filters:
             branches:
               only:

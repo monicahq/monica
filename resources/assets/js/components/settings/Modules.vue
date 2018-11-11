@@ -31,7 +31,7 @@
             {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
           </div>
@@ -44,9 +44,9 @@
             {{ module.name }}
           </div>
         </div>
-        <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]">
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <toggle-button :class="'module-'" :value="module.active" :disabled="limited" :sync="true" :labels="true" v-on:change="toggle(module)" />
+            <toggle-button :class="'module-'" :value="module.active" :disabled="limited" :sync="true" :labels="true" @change="toggle(module)" />
           </div>
         </div>
       </div>

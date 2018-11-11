@@ -14,7 +14,7 @@ class TasksController extends Controller
     /**
      * Get all the tasks of this contact.
      */
-    public function get(Contact $contact)
+    public function index(Contact $contact)
     {
         $tasks = collect([]);
 
@@ -83,7 +83,5 @@ class TasksController extends Controller
     public function destroy(Contact $contact, Task $task)
     {
         $task->delete();
-
-        $contact->events()->forObject($task)->get()->each->delete();
     }
 }

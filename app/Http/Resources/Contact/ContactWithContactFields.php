@@ -26,6 +26,7 @@ class ContactWithContactFields extends Resource
             'gender' => $this->gender->name,
             'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
+            'is_active' => (bool) $this->is_active,
             'is_dead' => (bool) $this->is_dead,
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
