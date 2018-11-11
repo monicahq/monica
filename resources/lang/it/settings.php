@@ -395,4 +395,5 @@ return [
     'storage_title' => 'Storage',
     'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
     'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
+    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
 ];
