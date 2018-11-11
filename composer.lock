@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ac83b6b34aa6ec6713fd02923adc75e",
+    "content-hash": "46372ac4660f9e33652dd217a3e32b38",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1660,49 +1660,6 @@
             "time": "2018-05-29T14:19:03+00:00"
         },
         {
-            "name": "ircop/antiflood",
-            "version": "v0.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ircop/antiflood.git",
-                "reference": "dbe604b11e0909c80e06d8dea852c8f14c0a380b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ircop/antiflood/zipball/dbe604b11e0909c80e06d8dea852c8f14c0a380b",
-                "reference": "dbe604b11e0909c80e06d8dea852c8f14c0a380b",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": ">=5.1",
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Ircop\\Antiflood\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPLv2"
-            ],
-            "authors": [
-                {
-                    "name": "wingman",
-                    "email": "wingman@ip-home.net"
-                }
-            ],
-            "description": "Request flood protection for laravel",
-            "keywords": [
-                "antiflood",
-                "flood",
-                "laravel",
-                "spam"
-            ],
-            "time": "2017-07-28T13:16:03+00:00"
-        },
-        {
             "name": "jakub-onderka/php-console-color",
             "version": "v0.2",
             "source": {
@@ -2401,7 +2358,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "developer"
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
