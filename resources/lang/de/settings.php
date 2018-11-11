@@ -221,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'Anzahl der übersprungenden Kontakte',
     'import_report_status_imported' => 'Importiert',
     'import_report_status_skipped' => 'Übersprungen',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => 'Kontakt existiert bereits',
     'import_vcard_contact_no_firstname' => 'Kein Vorname (Pflicht)',
     'import_vcard_file_not_found' => 'Datei nicht gefunden',
