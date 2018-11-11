@@ -3,7 +3,7 @@
 return [
     'sidebar_settings' => 'Paramètres du compte',
     'sidebar_personalization' => 'Personnalisation',
-    'sidebar_settings_storage' => 'Storage',
+    'sidebar_settings_storage' => 'Espace de stockage',
     'sidebar_settings_export' => 'Exporter les données',
     'sidebar_settings_users' => 'Utilisateurs',
     'sidebar_settings_subscriptions' => 'Abonnement',
@@ -391,7 +391,7 @@ return [
     'personalization_life_event_type_first_word' => 'Premier mot',
     'personalization_life_event_type_first_kiss' => 'Premier baiser',
 
-    'storage_title' => 'Storage',
-    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
-    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
+    'storage_title' => 'Espace de stockage',
+    'storage_account_info' => 'Limite de votre compte : :accountLimit Mo / Votre utilisation actuelle : :currentAccountSize Mo (:percentUsage %)',
+    'storage_upgrade_notice' => 'Mettez à niveau votre compte pour pouvoir télécharger des documents.',
 ];
