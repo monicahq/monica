@@ -221,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => '跳过的联系人数',
     'import_report_status_imported' => '导入',
     'import_report_status_skipped' => '跳过',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => '联系人已存在',
     'import_vcard_contact_no_firstname' => '无名字 (必填)',
     'import_vcard_file_not_found' => '文件不存在',
