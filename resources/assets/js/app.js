@@ -6,7 +6,6 @@
  */
 
 require('./bootstrap');
-require('jquery-tags-input/dist/jquery.tagsinput.min');
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -107,9 +106,15 @@ Vue.component(
 
 // Contacts
 Vue.component(
+    'tags',
+    require('./components/people/Tags.vue')
+);
+
+Vue.component(
     'contact-favorite',
     require('./components/people/SetFavorite.vue')
 );
+
 Vue.component(
     'contact-archive',
     require('./components/people/Archive.vue')
@@ -319,7 +324,6 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       mounted: function() {
 
         // required modules
-        require('./tags');
         require('./search');
         require('./contacts');
 
@@ -329,6 +333,5 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     return app;
 });
 
-// jQuery-Tags-Input for the tags on the contact
 $(document).ready(function() {
 });
