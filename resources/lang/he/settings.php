@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'הגדרות חשבון',
     'sidebar_personalization' => 'התאמה אישית',
+    'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'יצוא נתונים',
     'sidebar_settings_users' => 'משתמשים',
     'sidebar_settings_subscriptions' => 'הרשמה',
@@ -389,4 +390,8 @@ return [
     'personalization_life_event_type_changed_beliefs' => 'שינוי אמונה',
     'personalization_life_event_type_first_word' => 'מילה ראשונה',
     'personalization_life_event_type_first_kiss' => 'נשיקה ראשונה',
+
+    'storage_title' => 'Storage',
+    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
 ];
