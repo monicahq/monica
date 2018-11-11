@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'Hesap ayarları',
     'sidebar_personalization' => 'Kişiselleştirme',
+    'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'Verileri dışa aktar',
     'sidebar_settings_users' => 'Kullanıcılar',
     'sidebar_settings_subscriptions' => 'Abonelik',
@@ -389,4 +390,8 @@ return [
     'personalization_life_event_type_changed_beliefs' => 'Değişen inançlar',
     'personalization_life_event_type_first_word' => 'İlk kelime',
     'personalization_life_event_type_first_kiss' => 'İlk öpücük',
+
+    'storage_title' => 'Storage',
+    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
 ];
