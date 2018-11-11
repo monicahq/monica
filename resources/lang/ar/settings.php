@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'إعدادات الحساب',
     'sidebar_personalization' => 'التخصيص',
+    'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'تصدير البيانات',
     'sidebar_settings_users' => 'المستخدمين',
     'sidebar_settings_subscriptions' => 'الإشتراك',
@@ -389,4 +390,8 @@ return [
     'personalization_life_event_type_changed_beliefs' => 'تغير المعتقدات',
     'personalization_life_event_type_first_word' => 'أول كلمة',
     'personalization_life_event_type_first_kiss' => 'First kiss',
+
+    'storage_title' => 'Storage',
+    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
 ];
