@@ -26,4 +26,7 @@ return [
     'reminders_none' => '本月尚无提醒事项',
 
     'linkedin_profile' => '领英®',
+
+    'product_changes' => 'Product changes',
+    'product_view_details' => 'View details',
 ];
