@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => '帐户设置',
     'sidebar_personalization' => '个性化',
+    'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => '导出数据',
     'sidebar_settings_users' => '用户',
     'sidebar_settings_subscriptions' => '订阅',
@@ -389,4 +390,8 @@ return [
     'personalization_life_event_type_changed_beliefs' => '改变信仰',
     'personalization_life_event_type_first_word' => '第一次发言',
     'personalization_life_event_type_first_kiss' => '初吻',
+
+    'storage_title' => 'Storage',
+    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
 ];
