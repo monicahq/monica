@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-if (App::environment('production')) {
-    URL::forceScheme('https');
-}
 
 Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
@@ -102,6 +96,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Tags
         Route::name('tags.')->group(function () {
+            Route::get('/tags', 'Contacts\\TagsController@index')->name('index');
+            Route::get('/people/{contact}/tags', 'Contacts\\TagsController@get')->name('get');
             Route::post('/people/{contact}/tags/update', 'Contacts\\TagsController@update')->name('update');
         });
 
@@ -151,7 +147,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->only(['store', 'destroy']);
 
         // Conversations
-        Route::resource('people/{contact}/conversations', 'Contacts\\DebtController')->except(['show']);
+        Route::resource('people/{contact}/conversations', 'Contacts\\ConversationsController')->except(['show']);
 
         // Documents
         Route::resource('people/{contact}/documents', 'Contacts\\DocumentsController')->only(['index', 'store', 'destroy']);
@@ -234,6 +230,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::post('/settings/users', 'SettingsController@inviteUser')->name('store');
             Route::delete('/settings/users/{user}', 'SettingsController@deleteAdditionalUser')->name('destroy');
             Route::delete('/settings/users/invitations/{invitation}', 'SettingsController@destroyInvitation')->name('invitation.delete');
+        });
+
+        Route::name('storage.')->group(function () {
+            Route::get('/settings/storage', 'Settings\\StorageController@index')->name('index');
         });
 
         Route::name('subscriptions.')->group(function () {

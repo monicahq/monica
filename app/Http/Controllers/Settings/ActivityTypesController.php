@@ -28,7 +28,7 @@ class ActivityTypesController extends Controller
             ActivityTypeCategory::where('account_id', auth()->user()->account_id)
                 ->findOrFail($request->get('activity_type_category_id'));
         } catch (ModelNotFoundException $e) {
-            return $this->handleModelNotFound($e);
+            return $this->respondNotFound();
         }
 
         $activityType = ActivityType::create(

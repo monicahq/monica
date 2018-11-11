@@ -5,9 +5,10 @@ namespace Tests\Api;
 use Tests\ApiTestCase;
 use App\Models\Contact\Tag;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiTagsTest extends ApiTestCase
+class ApiTagControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
@@ -23,7 +24,7 @@ class ApiTagsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_tags_get_all_tags()
+    public function test_it_get_all_tags()
     {
         $user = $this->signin();
         $tag1 = factory(Tag::class)->create([
@@ -37,45 +38,44 @@ class ApiTagsTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonStructure([
-            'data' => ['*' => $this->jsonTag],
+            'data' => [
+                '*' => $this->jsonTag,
+            ],
         ]);
+
         $response->assertJsonFragment([
             'object' => 'tag',
             'id' => $tag1->id,
         ]);
+
         $response->assertJsonFragment([
             'object' => 'tag',
             'id' => $tag2->id,
         ]);
     }
 
-    public function test_tags_get_one_tag()
+    public function test_it_gets_a_specific_tag()
     {
         $user = $this->signin();
-        $tag1 = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
-        ]);
-        $tag2 = factory(Tag::class)->create([
+        $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('GET', '/api/tags/'.$tag1->id);
+        $response = $this->json('GET', '/api/tags/'.$tag->id);
 
         $response->assertStatus(200);
+
         $response->assertJsonStructure([
             'data' => $this->jsonTag,
         ]);
+
         $response->assertJsonFragment([
             'object' => 'tag',
-            'id' => $tag1->id,
-        ]);
-        $response->assertJsonMissingExact([
-            'object' => 'tag',
-            'id' => $tag2->id,
+            'id' => $tag->id,
         ]);
     }
 
-    public function test_tags_get_one_tag_error()
+    public function test_it_triggers_error_if_tag_unknown()
     {
         $user = $this->signin();
 
@@ -84,7 +84,7 @@ class ApiTagsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_tags_create_tag()
+    public function test_it_creates_a_tag()
     {
         $user = $this->signin();
 
@@ -111,23 +111,11 @@ class ApiTagsTest extends ApiTestCase
         ]);
     }
 
-    public function test_tags_create_tag_error()
-    {
-        $user = $this->signin();
-
-        $response = $this->json('POST', '/api/tags', []);
-
-        $this->expectDataError($response, [
-            'The name field is required.',
-        ]);
-    }
-
-    public function test_tags_update_tag()
+    public function test_it_updates_a_tag()
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
-            'name' => 'old name',
         ]);
 
         $response = $this->json('PUT', '/api/tags/'.$tag->id, [
@@ -138,8 +126,10 @@ class ApiTagsTest extends ApiTestCase
         $response->assertJsonStructure([
             'data' => $this->jsonTag,
         ]);
+
         $tag_id = $response->json('data.id');
         $this->assertEquals($tag->id, $tag_id);
+
         $response->assertJsonFragment([
             'object' => 'tag',
             'id' => $tag_id,
@@ -154,20 +144,68 @@ class ApiTagsTest extends ApiTestCase
         ]);
     }
 
-    public function test_tags_delete_tag()
+    public function test_it_deletes_a_tag()
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $this->assertDatabaseHas('tags', [
+
+        $response = $this->json('DELETE', '/api/tags/'.$tag->id);
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('contact_tag', [
+            'account_id' => $user->account->id,
+            'tag_id' => $tag->id,
+        ]);
+        $this->assertDatabaseMissing('tags', [
             'account_id' => $user->account->id,
             'id' => $tag->id,
+        ]);
+    }
+
+    public function test_it_deletes_a_tag_associated()
+    {
+        $user = $this->signin();
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', "/api/contacts/{$contact1->id}/setTags", ['tags' => [$tag->name]]);
+        $response = $this->json('POST', "/api/contacts/{$contact2->id}/setTags", ['tags' => [$tag->name]]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+            'tag_id' => $tag->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+            'tag_id' => $tag->id,
         ]);
 
         $response = $this->json('DELETE', '/api/tags/'.$tag->id);
 
         $response->assertStatus(200);
+
+        $this->assertDatabaseMissing('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+            'tag_id' => $tag->id,
+        ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+            'tag_id' => $tag->id,
+        ]);
         $this->assertDatabaseMissing('tags', [
             'account_id' => $user->account->id,
             'id' => $tag->id,

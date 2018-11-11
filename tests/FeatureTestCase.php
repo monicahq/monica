@@ -10,28 +10,19 @@ class FeatureTestCase extends TestCase
     use SignIn;
 
     /**
-     * Test that the response contains an error.
+     * Test that the response contains a not found notification.
      *
      * @param TestResponse $response
-     * @param string|array $message
      */
-    public function expectUnauthorizedError(TestResponse $response, $message = null)
+    public function expectNotFound(TestResponse $response)
     {
-        $this->expectDataError($response, $message ?? trans('app.error_unauthorized'));
-    }
-
-    /**
-     * Test that the response contains an error.
-     *
-     * @param TestResponse $response
-     * @param string|array $message
-     */
-    public function expectDataError(TestResponse $response, $message = '')
-    {
-        $response->assertStatus(400);
+        $response->assertStatus(404);
 
         $response->assertJson([
-            'message' => $message,
+            'error' => [
+                'message' => 'The resource has not been found',
+                'error_code' => 31,
+            ],
         ]);
     }
 }

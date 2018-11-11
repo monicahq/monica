@@ -979,4 +979,24 @@ class Account extends Model
 
         return $user->locale;
     }
+
+    /**
+     * Indicates whether the account has the reached the maximum storage size
+     * for document upload.
+     *
+     * @return bool
+     */
+    public function hasReachedAccountStorageLimit()
+    {
+        $documents = Document::with(['contact' => function ($query) {
+            $query->where('account_id', $this->id);
+        }])->orderBy('created_at', 'desc')->get();
+
+        $currentAccountSize = 0;
+        foreach ($documents as $document) {
+            $currentAccountSize += $document->filesize;
+        }
+
+        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
+    }
 }
