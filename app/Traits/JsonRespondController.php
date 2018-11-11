@@ -77,6 +77,19 @@ trait JsonRespondController
     }
 
     /**
+     * Sends a response unauthorized (401) to the request.
+     *
+     * @param string $message
+     * @return JsonResponse
+     */
+    public function respondUnauthorized($message = null)
+    {
+        return $this->setHTTPStatusCode(401)
+                    ->setErrorCode(42)
+                    ->respondWithError($message);
+    }
+
+    /**
      * Sends a response not found (404) to the request.
      *
      * @param string $message

@@ -8,7 +8,6 @@ use Tests\FeatureTestCase;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Contact\Gender;
-use App\Models\User\Changelog;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
@@ -710,47 +709,6 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue(
             $statistics->contains(2)
         );
-    }
-
-    public function test_it_adds_an_unread_changelog_entry_to_all_users()
-    {
-        $account = factory(Account::class)->create();
-        $user = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $user2 = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $changelog = factory(Changelog::class)->create();
-
-        $account->addUnreadChangelogEntry($changelog->id);
-
-        $this->assertDatabaseHas('changelog_user', [
-            'changelog_id' => $changelog->id,
-            'user_id' => $user->id,
-        ]);
-
-        $this->assertDatabaseHas('changelog_user', [
-            'changelog_id' => $changelog->id,
-            'user_id' => $user2->id,
-        ]);
-    }
-
-    public function test_it_populates_account_with_changelogs()
-    {
-        $account = factory(Account::class)->create();
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $changelog = factory(Changelog::class)->create();
-        $changelog->users()->sync($user->id);
-
-        $account->populateChangelogsTable();
-
-        $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
-            'changelog_id' => $changelog->id,
-            'read' => 0,
-        ]);
     }
 
     public function test_it_create_default_account()

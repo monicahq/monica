@@ -69,6 +69,20 @@
           </div>
 
           <dashboard-log :default-active-tab="'{!! auth()->user()->dashboard_active_tab !!}'"></dashboard-log>
+
+          <div class="br3 ba b--gray-monica bg-white mb3">
+            <div class="pa3 bb b--gray-monica">
+              <p class="mb1">{{ trans('dashboard.product_changes') }} <span class="fr"><a href="/changelog">{{ trans('dashboard.product_view_details') }}</a></span></p>
+              <ul>
+                @foreach ($changelogs as $changelog)
+                <li class="">
+                  <span class="gray f6">{{ $changelog['date'] }}</span>
+                  <span class="stat-description">{{ $changelog['title'] }}</span>
+                </li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>

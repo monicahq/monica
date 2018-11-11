@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use Illuminate\Bus\Queueable;
 use App\Models\Account\ImportJob;
+use App\Services\VCard\ImportVCard;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,7 +22,7 @@ class AddContactFromVCard implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(ImportJob $importJob, $behaviour = ImportJob::BEHAVIOUR_ADD)
+    public function __construct(ImportJob $importJob, $behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
         $this->importJob = $importJob;
         $this->behaviour = $behaviour;

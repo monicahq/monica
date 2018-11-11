@@ -15,8 +15,6 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
-use App\Models\User\Changelog;
-use App\Jobs\AddChangelogEntry;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
@@ -828,7 +826,6 @@ class Account extends Model
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();
         $this->populateRelationshipTypesTable();
-        $this->populateChangelogsTable();
         $this->populateActivityTypeTable();
 
         (new PopulateLifeEventsTable)->execute([
@@ -932,33 +929,6 @@ class Account extends Model
         }
 
         return $activitiesStatistics;
-    }
-
-    /**
-     * Add the given changelog entry and mark it unread for all users in this
-     * account.
-     *
-     * @param int $changelogId
-     */
-    public function addUnreadChangelogEntry(int $changelogId)
-    {
-        foreach ($this->users as $user) {
-            $user->changelogs()->syncWithoutDetaching([$changelogId => ['read' => 0]]);
-        }
-    }
-
-    /**
-     * Populate the changelog_user table, which contains all the new changes
-     * made on the application.
-     *
-     * @return void
-     */
-    public function populateChangelogsTable()
-    {
-        $changelogs = Changelog::all();
-        foreach ($changelogs as $changelog) {
-            AddChangelogEntry::dispatch($this, $changelog->id);
-        }
     }
 
     /**
