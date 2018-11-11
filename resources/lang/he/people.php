@@ -118,10 +118,10 @@ return [
     'age_exact_birthdate' => 'לידה ב־:date',
 
     // Last called
-    'last_called' => 'Last called: :date',
-    'last_called_empty' => 'Last called: unknown',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
+    'last_called' => 'שיחת הטלפון האחרונה: :date',
+    'last_called_empty' => 'שיחת הטלפון האחרונה: לא ידוע',
+    'last_activity_date' => 'פעילות אחרונה יחד: :date',
+    'last_activity_date_empty' => 'פעילות אחרונה יחד: לא ידוע',
 
     // additional information
     'information_edit_success' => 'הפרופיל עודכן בהצלחה',
@@ -315,9 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'עריכת תגית',
-    'tag_add' => 'Add tags',
-    'tag_add_search' => 'Add or search tags',
-    'tag_no_tags' => 'No tags yet',
+    'tag_add' => 'הוספת תגיות',
+    'tag_add_search' => 'הוספה או חיפוש תגיות',
+    'tag_no_tags' => 'אין תגיות עדיין',
 
     // Introductions
     'introductions_sidebar_title' => 'איך נפגשתם',
