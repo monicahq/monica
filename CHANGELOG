@@ -1,5 +1,12 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.10.0 - 2018-11-11
+-------------------
+
 * Add ability to upload documents
 * Add ability to archive a contact
 * Add right-click support on contact list
@@ -26,8 +33,6 @@ UNRELEASED CHANGES:
 * Use Laravel email verification, and remove the old package used for that
 * Prevent submitting an empty form when pressing enter
 * Remove Antiflood package on oauth/login and use Laravel throttle
-
-RELEASED VERSIONS:
 
 v2.9.0 - 2018-10-14
 -------------------
