@@ -221,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'מספר אנשי הקשר שדולגו',
     'import_report_status_imported' => 'יובאו',
     'import_report_status_skipped' => 'דולגו',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => 'איש הקשר כבר קיים',
     'import_vcard_contact_no_firstname' => 'אין שם פרטי (חובה)',
     'import_vcard_file_not_found' => 'הקובץ לא נמצא',
