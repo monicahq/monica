@@ -55,20 +55,21 @@ class OAuthController extends ApiController
      */
     private function validateRequest(Request $request)
     {
-        // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
-            'email' => 'email|required|exists:users,email',
+            'email' => 'email|required',
             'password' => 'required',
         ]);
 
+        if ($validator->fails()) {
+            return $this->respondValidatorFailed($validator);
+        }
+
+        // Check if email exists. If not respond with an Unauthorized, this way a hacker
+        // doesn't know if the login email exist or not, or if the password os wrong
         $count = User::where('email', $request->get('email'))
                     ->count();
         if ($count === 0) {
             return $this->respondUnauthorized();
-        }
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
         }
 
         return true;
