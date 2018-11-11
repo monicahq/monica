@@ -22,6 +22,6 @@ $verbs = [
 
 Illuminate\Routing\Router::$verbs = $verbs;
 
-Route::group(['middleware' => ['auth.tokenonbasic']], function () use ($verbs) {
-    Route::match($verbs, '{path?}', 'CardDAVController@init')->where('path', '(.)*');
+Route::group(['middleware' => ['auth.tokenonbasic', 'limitations']], function () use ($verbs) {
+    Route::match($verbs, '{path?}', 'CardDAV\\CardDAVController@init')->where('path', '(.)*');
 });

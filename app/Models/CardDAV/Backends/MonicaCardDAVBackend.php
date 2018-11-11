@@ -5,10 +5,13 @@ namespace App\Models\CardDAV\Backends;
 use Sabre\DAV;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
+use App\Services\VCard\ExportVCard;
+use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Sabre\CardDAV\Backend\BackendInterface as SabreBackendInterface;
 
-class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
+class MonicaCardDAVBackend implements SabreBackendInterface
 {
     /**
      * Returns the list of addressbooks for a specific user.
@@ -34,7 +37,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
         return [
             [
                 'id' => '0',
-                'uri' => 'Contacts',
+                'uri' => 'contacts',
                 'principaluri' => 'principals/'.Auth::user()->email,
             ],
         ];
@@ -96,66 +99,46 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
 
     private function prepareCard($contact)
     {
-        // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
-
-        // Basic information
-        $vcard = new VCard([
-            'FN'  => $contact->name,
-            'N'   => [$contact->first_name, $contact->last_name],
-            'UID' => $contact->hashid(),
-        ]);
-
-        // Picture
-        $picture = $contact->getAvatarURL();
-        if (! is_null($picture)) {
-            $vcard->add('PHOTO', $picture);
+        if (! $contact) {
+            return;
         }
 
-        // Gender
-        switch ($contact->gender->name) {
-            case 'Man':
-                $gender = 'M';
-                break;
-            case 'Woman':
-                $gender = 'F';
-                break;
-            default:
-                $gender = 'O';
-                break;
-        }
-        $vcard->add('GENDER', $gender.';'.$contact->gender->name);
-
-        // Birthday
-        if (! is_null($contact->birthdate)) {
-            $date = $contact->birthdate->date->format('Ymd');
-            $vcard->add('BDAY', $date);
-        }
-
-        // Contactfields
-        foreach ($contact->contactFields as $contactField) {
-            switch ($contactField->contactFieldType->name) {
-                case 'Phone':
-                    $vcard->add('TEL', $contactField->data);
-                    break;
-                case 'Email':
-                    $vcard->add('EMAIL', $contactField->data);
-                    break;
-                case 'Facebook':
-                    $vcard->add('socialProfile', $contactField->data, ['type' => 'facebook']);
-                    break;
-                // ... Twitter, Whatsapp, Telegram, other
-                default:
-                    break;
-            }
+        try {
+            $vcard = (new ExportVCard())
+                ->execute([
+                    'account_id' => Auth::user()->account_id,
+                    'contact_id' => $contact->id,
+                ]);
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' prepareCard: '.(string) $e);
         }
 
         return [
             'id' => $contact->hashid(),
-            'etag' => '"'.md5($vcard->serialize()).'"',
-            'uri' => $contact->id,
+            'etag' => md5($vcard->serialize()),
+            'uri' => $this->encodeUri($contact),
             'lastmodified' => $contact->updated_at->timestamp,
             'carddata' => $vcard->serialize(),
         ];
+    }
+
+    private function encodeUri($contact)
+    {
+        return urlencode($contact->hashid().'.vcf');
+    }
+
+    private function decodeUri($uri)
+    {
+        return str_replace('.vcf', '', urldecode($uri));
+    }
+
+    private function getContact($uri)
+    {
+        try {
+            return (new Contact)->resolveRouteBinding($this->decodeUri($uri));
+        } catch (\Exception $e) {
+            return;
+        }
     }
 
     private function prepareCards($contacts)
@@ -194,7 +177,11 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getCards', func_get_args());
 
-        $contacts = Auth::user()->account->contacts()->real()->get();
+        $contacts = Auth::user()->account
+                        ->contacts()
+                        ->real()
+                        ->active()
+                        ->get();
 
         return $this->prepareCards($contacts);
     }
@@ -211,8 +198,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getCard', func_get_args());
 
-        $contact = Contact::where('account_id', Auth::user()->account_id)
-            ->findOrFail($cardUri);
+        $contact = $this->getContact($cardUri);
 
         return $this->prepareCard($contact);
     }
@@ -233,9 +219,9 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     {
         Log::debug(__CLASS__.' getMultipleCards', func_get_args());
 
-        $contacts = Contact::where('account_id', Auth::user()->account_id)
-            ->whereIn('id', $uris)
-            ->get();
+        $contacts = array_map(function ($uri) {
+            return $this->getContact($uri);
+        }, $uris);
 
         return $this->prepareCards($contacts);
     }
@@ -268,6 +254,8 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     public function createCard($addressBookId, $cardUri, $cardData)
     {
         Log::debug(__CLASS__.' createCard', func_get_args());
+
+        return $this->importCard(null, $cardData);
     }
 
     /**
@@ -298,6 +286,39 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     public function updateCard($addressBookId, $cardUri, $cardData)
     {
         Log::debug(__CLASS__.' updateCard', func_get_args());
+
+        return $this->importCard($cardUri, $cardData);
+    }
+
+    private function importCard($cardUri, $cardData)
+    {
+        $contact_id = null;
+        if ($cardUri) {
+            $contact = $this->getContact($cardUri);
+
+            if ($contact) {
+                $contact_id = $contact->id;
+            }
+        }
+
+        try {
+            $result = (new ImportVCard(Auth::user()->account_id))
+                ->execute([
+                    'contact_id' => $contact_id,
+                    'entry' => $cardData,
+                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
+                ]);
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' importCard: '.(string) $e);
+        }
+
+        if (! array_has($result, 'error')) {
+            $contact = Contact::where('account_id', Auth::user()->account_id)
+                ->find($result['contact_id']);
+            $card = $this->prepareCard($contact);
+
+            return $card['etag'];
+        }
     }
 
     /**
@@ -310,5 +331,7 @@ class MonicaCardDAVBackend implements \Sabre\CardDAV\Backend\BackendInterface
     public function deleteCard($addressBookId, $cardUri)
     {
         Log::debug(__CLASS__.' deleteCard', func_get_args());
+
+        return false;
     }
 }

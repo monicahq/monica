@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Auth;
 
 use Tests\TestCase;
 use App\Models\User\User;

@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
-use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
+use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
@@ -556,9 +556,14 @@ class ContactsController extends Controller
             Debugbar::disable();
         }
 
-        $vcard = VCardHelper::prepareVCard($contact);
+        $vcard = (new ExportVCard)->execute([
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $contact->id,
+        ]);
 
-        return  $vcard->download();
+        return response($vcard->serialize())
+            ->header('Content-type', 'text/x-vcard')
+            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name).'.vcf');
     }
 
     /**
