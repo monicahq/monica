@@ -5,10 +5,9 @@ namespace App\Http\Controllers\Api\Auth;
 use Exception;
 use App\Models\User\User;
 use Illuminate\Http\Request;
-use App\Helpers\RequestHelper;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Validator;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
 
 class OAuthController extends ApiController
@@ -67,7 +66,7 @@ class OAuthController extends ApiController
         if ($count === 0) {
             return $this->respondUnauthorized();
         }
-        
+
         if ($validator->fails()) {
             return $this->respondValidatorFailed($validator);
         }
