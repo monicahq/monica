@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User\User;
 use App\Helpers\DateHelper;
+use App\Helpers\InstanceHelper;
 use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
@@ -67,6 +68,9 @@ class DashboardController extends Controller
                 return $totalOwedDebt + $debt->amount;
             }, 0);
 
+        // get last 3 changelog entries
+        $changelogs = InstanceHelper::getChangelogEntries(3);
+
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
             'number_of_contacts' => $account->contacts()->real()->active()->count(),
@@ -79,6 +83,7 @@ class DashboardController extends Controller
             'debt_owed' => $debt_owed,
             'debts' => $debt,
             'user' => auth()->user(),
+            'changelogs' => $changelogs,
         ];
 
         return view('dashboard.index', $data);

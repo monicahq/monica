@@ -8,6 +8,7 @@ UNRELEASED CHANGES:
 * New header on a profile page
 * Standardize phonenumber format while importing vCard
 * Set currency and timezone for new users
+* Remove changelogs from the database and manage changelogs from a json file instead
 * Highlight buttons when selected using keyboard
 * Hide deceased people from dashboard's 'Last Consulted' section
 * Improve API methods for tag management

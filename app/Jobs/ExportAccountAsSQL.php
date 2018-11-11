@@ -18,8 +18,6 @@ class ExportAccountAsSQL
         'activity_types',
         'api_usage',
         'cache',
-        'changelog_user',
-        'changelogs',
         'countries',
         'currencies',
         'default_activity_types',
@@ -47,6 +45,7 @@ class ExportAccountAsSQL
         'terms',
         'u2f_key',
         'users',
+        'weather',
     ];
 
     protected $ignoredColumns = [

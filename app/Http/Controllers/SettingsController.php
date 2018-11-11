@@ -35,8 +35,6 @@ class SettingsController
         'activity_types',
         'api_usage',
         'cache',
-        'changelog_user',
-        'changelogs',
         'countries',
         'currencies',
         'default_activity_types',
@@ -64,6 +62,7 @@ class SettingsController
         'terms',
         'u2f_key',
         'users',
+        'weather',
     ];
 
     /**
