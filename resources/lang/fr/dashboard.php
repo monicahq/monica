@@ -27,6 +27,6 @@ return [
 
     'linkedin_profile' => 'LinkedIn',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Évolutions du produit',
+    'product_view_details' => 'Afficher les détails',
 ];
