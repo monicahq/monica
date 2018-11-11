@@ -221,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'Number of skipped contacts',
     'import_report_status_imported' => 'Imported',
     'import_report_status_skipped' => 'Skipped',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => 'Contact already exists',
     'import_vcard_contact_no_firstname' => 'No firstname (mandatory)',
     'import_vcard_file_not_found' => 'File not found',
