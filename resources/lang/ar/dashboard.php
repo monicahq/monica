@@ -13,8 +13,8 @@ return [
     'tab_calls_blank' => 'لم تقم بتسجيل أي مكالمة بعد.',
     'tab_debts' => 'الديون',
     'tab_debts_blank' => 'لم تقم بتسجيل أي دَين بعد.',
-    'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any task yet.',
+    'tab_tasks' => 'المهام',
+    'tab_tasks_blank' => 'ليس لديك أي مهمة حتى الآن.',
 
     'debts_you_owe' => 'أنت مدين',
 
@@ -26,4 +26,7 @@ return [
     'reminders_none' => 'لا يوجد تذكير لهذا الشهر',
 
     'linkedin_profile' => 'LinkedIn',
+
+    'product_changes' => 'Product changes',
+    'product_view_details' => 'View details',
 ];

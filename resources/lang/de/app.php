@@ -8,6 +8,8 @@ return [
     'delete' => 'Löschen',
     'edit' => 'Bearbeiten',
     'upload' => 'Hochladen',
+    'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'Schließen',
     'create' => 'Erstellen',
     'remove' => 'Entfernen',
@@ -59,6 +61,7 @@ return [
 
     'breadcrumb_dashboard' => 'Dashboard',
     'breadcrumb_list_contacts' => 'Kontaktliste',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'Tagebuch',
     'breadcrumb_settings' => 'Einstellungen',
     'breadcrumb_settings_export' => 'Export',

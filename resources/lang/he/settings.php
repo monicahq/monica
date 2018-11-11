@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'הגדרות חשבון',
     'sidebar_personalization' => 'התאמה אישית',
+    'sidebar_settings_storage' => 'אחסון',
     'sidebar_settings_export' => 'יצוא נתונים',
     'sidebar_settings_users' => 'משתמשים',
     'sidebar_settings_subscriptions' => 'הרשמה',
@@ -220,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'מספר אנשי הקשר שדולגו',
     'import_report_status_imported' => 'יובאו',
     'import_report_status_skipped' => 'דולגו',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => 'איש הקשר כבר קיים',
     'import_vcard_contact_no_firstname' => 'אין שם פרטי (חובה)',
     'import_vcard_file_not_found' => 'הקובץ לא נמצא',
@@ -382,11 +384,16 @@ return [
     'personalization_life_event_type_new_hobby' => 'תחביב חדש',
     'personalization_life_event_type_new_instrument' => 'כלי נגינה חדש',
     'personalization_life_event_type_new_language' => 'שפה חדשה',
-    'personalization_life_event_type_tatoo_or_piercing' => 'קעקוע או ניזום',
+    'personalization_life_event_type_tattoo_or_piercing' => 'קעקוע או פירסינג',
     'personalization_life_event_type_new_license' => 'רישיון חדש',
     'personalization_life_event_type_travel' => 'טיול',
     'personalization_life_event_type_achievement_or_award' => 'הישג או פרס',
     'personalization_life_event_type_changed_beliefs' => 'שינוי אמונה',
     'personalization_life_event_type_first_word' => 'מילה ראשונה',
     'personalization_life_event_type_first_kiss' => 'נשיקה ראשונה',
+
+    'storage_title' => 'אחסון',
+    'storage_account_info' => 'מגבלת החשבון שלך: :accountLimit מ״ב /  הניצולת הנוכחית שלך: :currentAccountSize מ״ב (:percentUsage%)',
+    'storage_upgrade_notice' => 'ניתן לשדרג את החשבון שלך כדי לאפשר העלאת מסמכים.',
+    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
 ];
