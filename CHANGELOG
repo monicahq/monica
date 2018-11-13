@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix work information not being able to be edited
 * Display contacts for each tag in the Tags view on the Settings page
 
 RELEASED VERSIONS:
