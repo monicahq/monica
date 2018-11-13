@@ -1,12 +1,17 @@
 UNRELEASED CHANGES:
 
-* Fix work information not being able to be edited
-* Display contacts for each tag in the Tags view on the Settings page
+*
 
 RELEASED VERSIONS:
 
+v2.10.1 - 2018-11-13
+--------------------
+
+* Fix work information not being able to be edited
+* Display contacts for each tag in the Tags view on the Settings page
+
 v2.10.0 - 2018-11-11
--------------------
+--------------------
 
 * Add ability to upload documents
 * Add ability to archive a contact
