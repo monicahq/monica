@@ -96,6 +96,7 @@
             "@php artisan key:generate"
         ],
         "post-autoload-dump": [
+            "rm -f bootstrap/cache/config.php",
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
         ],
