@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Nov 13, 2018",
+            "title": "Contacts for each tag in the Settings page",
+            "description": "In the [Tags tab](/settings/tags) under the Settings page, you can now see which contacts are associated with each tag."
+        },
+        {
             "date": "Oct 27, 2018",
             "title": "New feature: documents upload",
             "description": "You can now upload and attach documents to a contact. The only limitation is the size of those documents - apart from this limitation, you can upload any type of documents. ![image](/img/changelogs/2018-10-27-documents.png)"
