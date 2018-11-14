@@ -95,6 +95,12 @@
         "post-create-project-cmd": [
             "@php artisan key:generate"
         ],
+        "pre-install-cmd": [
+            "App\\Helpers\\ComposerScripts::preInstall"
+        ],
+        "pre-update-cmd": [
+            "App\\Helpers\\ComposerScripts::preUpdate"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
