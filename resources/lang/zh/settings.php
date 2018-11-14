@@ -393,7 +393,7 @@ return [
     'personalization_life_event_type_first_kiss' => '初吻',
 
     'storage_title' => '存储空间',
-    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
-    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
-    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
+    'storage_account_info' => '您的账户容量: :accountLimit Mb /  您目前已使用: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => '升级您的帐户, 以便能够上传文档。',
+    'storage_description' => '在这里, 您可以看到上传的有关您的联系人的所有文档。',
 ];
