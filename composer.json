@@ -31,6 +31,7 @@
         "matriphe/iso-639": "^1.0",
         "moneyphp/money": "^3.1",
         "monicahq/laravel-cloudflare": "^1.0",
+        "naughtonium/laravel-dark-sky": "^1.2",
         "ok/ipstack-client": "^1.2",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/countries-laravel": "^0.6.1",
@@ -43,6 +44,7 @@
         "sentry/sentry-laravel": "^0.11",
         "stevebauman/location": "^3.0",
         "symfony/translation": "^4.0",
+        "toin0u/geocoder-laravel": "^4.0",
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^5.0",
         "vluzrmos/language-detector": "^1.0"
