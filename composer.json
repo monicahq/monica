@@ -96,12 +96,10 @@
             "@php artisan key:generate"
         ],
         "pre-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "@php artisan config:clear"
+            "App\\Helpers\\ComposerScripts::preInstall"
         ],
         "pre-update-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "@php artisan config:clear"
+            "App\\Helpers\\ComposerScripts::preUpdate"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
