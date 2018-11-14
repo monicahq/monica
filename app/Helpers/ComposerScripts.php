@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use Composer\Script\Event;
-
 class ComposerScripts
 {
     const CONFIG = 'bootstrap/cache/config.php';
@@ -11,10 +9,10 @@ class ComposerScripts
     /**
      * Handle the pre-install Composer event.
      *
-     * @param  \Composer\Script\Event  $event
+     * @param  mixed  $event
      * @return void
      */
-    public static function preInstall(Event $event)
+    public static function preInstall($event)
     {
         if (file_exists('vendor')) {
             \Illuminate\Foundation\ComposerScripts::postInstall($event);
@@ -25,10 +23,10 @@ class ComposerScripts
     /**
      * Handle the pre-update Composer event.
      *
-     * @param  \Composer\Script\Event  $event
+     * @param  mixed  $event
      * @return void
      */
-    public static function preUpdate(Event $event)
+    public static function preUpdate($event)
     {
         if (file_exists('vendor')) {
             \Illuminate\Foundation\ComposerScripts::postUpdate($event);
