@@ -233,6 +233,8 @@ $factory->define(App\Models\Journal\Day::class, function (Faker\Generator $faker
 $factory->define(App\Models\Contact\Tag::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => $faker->word,
+        'name_slug' => str_slug($faker->word),
     ];
 });
 

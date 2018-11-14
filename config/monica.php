@@ -12,7 +12,7 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.9.0',
+    'app_version' => '2.10.1',
 
    /*
     |--------------------------------------------------------------------------
@@ -205,10 +205,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Maximum allowed storage size per account, in kilobytes.
+    | Maximum allowed storage size per account, in megabytes.
     |--------------------------------------------------------------------------
     |
-    | This the default limit for each new account. Default value: 500Mb.
+    | This the default limit for each new account. Default value: 512Mb.
     |
      */
     'max_storage_size' => env('DEFAULT_MAX_STORAGE_SIZE', 512000),
@@ -218,6 +218,7 @@ return [
     | Enable weather.
     |--------------------------------------------------------------------------
     |
+    | Weather needs two things to work TBD
     | Darksky provides an api with 1000 free API calls per day.
     | https://darksky.net/dev/register
     | If you enable weather, don't forget to add your Darksky API key through the

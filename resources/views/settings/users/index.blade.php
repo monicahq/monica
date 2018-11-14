@@ -36,7 +36,7 @@
           <div class="pa3 bb b--gray-monica">
             <h3 class="with-actions">
               {{ trans('settings.users_list_title') }}
-              <a href="{{ route('settings.users.add') }}" class="btn">{{ trans('settings.users_list_add_user') }}</a>
+              <a href="{{ route('settings.users.create') }}" class="btn">{{ trans('settings.users_list_add_user') }}</a>
             </h3>
             <ul class="table">
             @foreach ($users as $user)
@@ -54,7 +54,7 @@
                   @endif
                 </div>
 
-                <form method="POST" action="{{ route('settings.users.delete', $user) }}" class="entry-delete-form hidden">
+                <form method="POST" action="{{ route('settings.users.destroy', $user) }}" class="entry-delete-form hidden">
                   {{ method_field('DELETE') }}
                   {{ csrf_field() }}
                 </form>

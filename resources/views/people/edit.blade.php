@@ -15,6 +15,7 @@
 
     <div class="mw7 center br3 ba b--gray-monica bg-white mb5">
       <form method="POST" action="{{ route('people.update', $contact) }}" enctype="multipart/form-data">
+        @method('PUT')
         {{ csrf_field() }}
 
         @include('partials.errors')
@@ -123,7 +124,7 @@
           <div class="mb3 mb0-ns">
             <label for="avatar">{{ trans('people.information_edit_avatar') }}</label>
             <input type="file" class="form-control-file" name="avatar" id="avatar">
-            <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => 10]) }}</small>
+            <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => config('monica.max_upload_size')]) }}</small>
           </div>
         </div>
 
@@ -182,7 +183,7 @@
     </div>
   </div>
 
-  <form method="POST" action="{{ route('people.delete', $contact) }}" id="contact-delete-form" class="hidden">
+  <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
     {{ method_field('DELETE') }}
     {{ csrf_field() }}
   </form>

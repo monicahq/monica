@@ -8,6 +8,8 @@ return [
     'delete' => 'حذف',
     'edit' => 'تعديل',
     'upload' => 'رفع',
+    'download' => 'Download',
+    'save_close' => 'Save and close',
     'close' => 'إغلاق',
     'create' => 'إنشاء',
     'remove' => 'إزالة',
@@ -59,6 +61,7 @@ return [
 
     'breadcrumb_dashboard' => 'لوحة التحكم',
     'breadcrumb_list_contacts' => 'قائمة الأشخاص',
+    'breadcrumb_archived_contacts' => 'Archived contacts',
     'breadcrumb_journal' => 'يوميات',
     'breadcrumb_settings' => 'الإعدادات',
     'breadcrumb_settings_export' => 'استخراج',

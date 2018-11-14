@@ -66,6 +66,11 @@ return [
     'register_policy' => 'Deine Anmeldung bedeutet, dass du unsere <a href=":url" hreflang=":hreflang">Datenschutzrichtlinien</a> and <a href=":urlterm" hreflang=":hreflang">AGBs</a> gelesen und akzeptiert hast.',
     'register_invitation_email' => 'Aus Sicherheitsgründen geben Sie bitte die E-Mail-Adresse der Person an, die Sie eingeladen hat, diesem Konto beizutreten. Diese Informationen finden Sie in der Einladungs-E-Mail.',
 
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+
     'confirmation_again' => 'Wenn Sie Ihre E-Mail-Adresse ändern möchten, <a href=":url" class="alert-link">klicken Sie bitte hier</a>.',
     'email_change_current_email' => 'Aktuelle E-Mail-Adresse:',
     'email_change_title' => 'E-Mail-Adresse ändern',

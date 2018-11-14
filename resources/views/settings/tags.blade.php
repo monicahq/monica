@@ -30,7 +30,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-sm-9 tags-list">
+      <div class="col-xs-12 col-sm-9">
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
             @if (auth()->user()->account->tags->count() == 0)
@@ -65,6 +65,11 @@
                   <div class="table-cell">
                     {{ $tag->name }}
                     <span class="tags-list-contact-number">({{ trans_choice('settings.tags_list_contact_number', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }})</span>
+                    <ul>
+                      @foreach($tag->contacts as $contact)
+                      <li class="di mr1"><a href="/people/{{ $contact->hashID() }}">{{ $contact->name }}</a></li>
+                      @endforeach
+                    </ul>
                   </div>
                   <div class="table-cell actions">
                     <a href="#" onclick="if (confirm('{{ trans('settings.tags_list_delete_confirmation') }}')) { $(this).closest('.table-row').find('.entry-delete-form').submit(); } return false;">

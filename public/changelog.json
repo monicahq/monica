@@ -1,0 +1,74 @@
+{
+    "entries": [
+        {
+            "date": "Nov 13, 2018",
+            "title": "Contacts for each tag in the Settings page",
+            "description": "In the [Tags tab](/settings/tags) under the Settings page, you can now see which contacts are associated with each tag."
+        },
+        {
+            "date": "Oct 27, 2018",
+            "title": "New feature: documents upload",
+            "description": "You can now upload and attach documents to a contact. The only limitation is the size of those documents - apart from this limitation, you can upload any type of documents. ![image](/img/changelogs/2018-10-27-documents.png)"
+        },
+        {
+            "date": "Oct 19, 2018",
+            "title": "New feature: archiving contact",
+            "description": "You can now archive a contact to no longer see him/her on the Dashboard, or the Contacts list. Archived contacts can still be found by search."
+        },
+        {
+            "date": "Sept 28, 2018",
+            "title": "New feature: life events",
+            "description": "You can now log major life events that happen to a contact. Like if the contact has had a surgery, or where he travelled to. You have access to nearly 50 different possible life events to document what happens to the people you care about. ![image](/img/changelogs/2018-09-28-life-events.png)"
+        },
+        {
+            "date": "Sept 04, 2018",
+            "title": "New feature: conversations",
+            "description": "You can now log conversations that you have on social media or SMS or else. While you could already do that using notes, conversations is an easier way to record them using a nice user interface. ![image](/img/changelogs/2018-09-04-conversations.png)"
+        },
+        {
+            "date": "Aug 17, 2018",
+            "title": "Set as favorite",
+            "description": "You can now set a contact as favorite. Favorites will always appear at the top of the contact list, no matter the filter you are using. ![image](/img/changelogs/2018-08-17-favorite.png)"
+        },
+        {
+            "date": "Aug 17, 2018",
+            "title": "New activity report page",
+            "description": "When viewing a contact, you now have access to a new activity report page that will display useful statistics regarding all the activities you've done with a specific contact. ![image](/img/changelogs/2018-08-17-activity-report.png)"
+        },
+        {
+            "date": "Aug 08, 2018",
+            "title": "Customization of activity types",
+            "description": "What you do with your friends is different than what I do with my friends. Therefore, you can now add, edit or delete activity types in the Settings tab. This is a premium feature. ![image](/img/changelogs/2018-08-08-activity-types.png)"
+        },
+        {
+            "date": "May 23, 2018",
+            "title": "Debts on the dashboard",
+            "description": "We now display all the debts you owe (or the ones your contacts owe to you) on the dashboard. That way, it will be easier to keep an eye of who owes what. ![image](/img/changelogs/2018-05-21-debts.png)"
+        },
+        {
+            "date": "May 21, 2018",
+            "title": "Support for nicknames",
+            "description": "Many of you have asked for it - we now support nicknames for your contacts. By default, if you set a nickname, we will display it after a contact name (like John Doe (Rambo)). You can choose how the nickname is displayed in your Settings - there are actually 7 different ways now to display a name. ![image](/img/changelogs/2018-05-21-nicknames.png)"
+        },
+        {
+            "date": "May 04, 2018",
+            "title": "Disable automatic birthday reminders",
+            "description": "When you edit a contact, or manage a relationship, and add a birthday, we used to add a reminder for it automatically. This has annoyed you a lot, considering the number of emails you have sent about this. We've change this behaviour. You now have the option to decide if you want to be reminded for the birthday. Hope you like it! ![image](/img/changelogs/2018-05-04-screenshot-macpro.png)"
+        },
+        {
+            "date": "Apr 21, 2018",
+            "title": "Stay in touch with your contacts",
+            "description": "You can now indicate if you want to stay in touch with someone at a regular interval. If you do, you will receive an email at a given number of days that you decide, reminding you to contact the person. This feature is available only if you have a paid account. ![image](/img/changelogs/2018-04-21-stayintouch.gif)"
+        },
+        {
+            "date": "Apr 20, 2018",
+            "title": "New relationships",
+            "description": "You now have much more control on how you link contacts together. Before you could only have parent/child relationships and significant other relationships. Now you can have much more types of relationships, like uncle/nephew, lover, coworker, and so on. We hope you will like what we have done. ![image](/img/changelogs/2018-04-14-relationships.png)"
+        },
+        {
+            "date": "Apr 15, 2018",
+            "title": "Introducing a new product changes section",
+            "description": "There is a new header now in Monica. It shows a bell that slowly pulsate, with a red dot, if there is a new feature or an important change in the application. You will not have to find out by yourself what has changed in the product. ![image](/img/changelogs/2018-04-14-new-product-section.png)"
+        }
+    ]
+}

@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
-use App\Models\User\Changelog;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
@@ -23,20 +22,6 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
 
         $this->assertTrue($user->account()->exists());
-    }
-
-    public function test_it_belongs_to_many_changelogs()
-    {
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $changelog = factory(Changelog::class)->create([]);
-        $user->changelogs()->sync($changelog->id);
-
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $changelog = factory(Changelog::class)->create([]);
-        $user->changelogs()->sync($changelog->id);
-
-        $this->assertTrue($user->changelogs()->exists());
     }
 
     public function test_it_belongs_to_many_terms()
@@ -202,28 +187,6 @@ class UserTest extends TestCase
         $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
 
         $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
-    }
-
-    public function test_it_marks_all_changelog_entries_as_read()
-    {
-        $account = factory(Account::class)->create([]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $changelog = factory(Changelog::class)->create([]);
-        $changelog->users()->sync($user->id);
-
-        $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
-            'changelog_id' => $changelog->id,
-            'read' => 0,
-        ]);
-
-        $user->markChangelogAsRead();
-
-        $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
-            'changelog_id' => $changelog->id,
-            'read' => 1,
-        ]);
     }
 
     public function test_it_indicates_user_is_compliant()

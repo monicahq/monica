@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use Illuminate\Http\Request;
 use App\Models\User\Changelog;
+use App\Helpers\InstanceHelper;
 
 class ChangelogController extends Controller
 {
@@ -16,9 +16,7 @@ class ChangelogController extends Controller
      */
     public function index(Request $request)
     {
-        $changelogs = auth()->user()->changelogs()->orderBy('created_at', 'desc')->get();
-
-        auth()->user()->markChangelogAsRead();
+        $changelogs = InstanceHelper::getChangelogEntries();
 
         return view('changelog.index')->withChangelogs($changelogs);
     }

@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'Nastavení účtu',
     'sidebar_personalization' => 'Personalization',
+    'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'Exportovat data',
     'sidebar_settings_users' => 'Uživatelé',
     'sidebar_settings_subscriptions' => 'Odběry',
@@ -220,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'Počet přeskočených kontaktů',
     'import_report_status_imported' => 'Importováno',
     'import_report_status_skipped' => 'Přeskočeno',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => 'Kontakt již existuje',
     'import_vcard_contact_no_firstname' => 'Chybí jméno (vyžadováno)',
     'import_vcard_file_not_found' => 'File not found',
@@ -382,11 +384,16 @@ return [
     'personalization_life_event_type_new_hobby' => 'New hobby',
     'personalization_life_event_type_new_instrument' => 'New instrument',
     'personalization_life_event_type_new_language' => 'New language',
-    'personalization_life_event_type_tatoo_or_piercing' => 'Tatoo or piercing',
+    'personalization_life_event_type_tattoo_or_piercing' => 'Tattoo or piercing',
     'personalization_life_event_type_new_license' => 'New license',
     'personalization_life_event_type_travel' => 'Travel',
     'personalization_life_event_type_achievement_or_award' => 'Achievement or award',
     'personalization_life_event_type_changed_beliefs' => 'Changed beliefs',
     'personalization_life_event_type_first_word' => 'First word',
     'personalization_life_event_type_first_kiss' => 'First kiss',
+
+    'storage_title' => 'Storage',
+    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
+    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
 ];

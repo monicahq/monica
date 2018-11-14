@@ -365,7 +365,7 @@
             },
 
             updateCategory() {
-                axios.put('/settings/personalization/activitytypecategories/', this.updateCategoryForm)
+                axios.put('/settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
                       .then(response => {
                           this.$refs.updateCategoryModal.close();
                           this.updatedCategory.name = this.updateCategoryForm.name;
@@ -407,7 +407,7 @@
             },
 
             updateType() {
-                axios.put('/settings/personalization/activitytypes/', this.updateTypeForm)
+                axios.put('/settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
                       .then(response => {
                           this.$refs.updateTypeModal.close();
                           this.updatedCategory.name = this.updateTypeForm.name;

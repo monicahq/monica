@@ -34,7 +34,7 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
             @include('people.debt.form', [
               'method' => 'PUT',
-              'action' => route('people.debt.update', [$contact, $debt]),
+              'action' => route('people.debts.update', [$contact, $debt]),
               'update_or_add' =>'edit'
             ])
           </div>
