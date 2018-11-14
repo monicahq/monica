@@ -6,6 +6,8 @@ use Composer\Script\Event;
 
 class ComposerScripts
 {
+    const CONFIG = 'bootstrap/cache/config.php';
+
     /**
      * Handle the pre-install Composer event.
      *
@@ -17,9 +19,7 @@ class ComposerScripts
         if (file_exists('vendor')) {
             \Illuminate\Foundation\ComposerScripts::postInstall($event);
         }
-        if (file_exists('bootstrap/cache/config.php')) {
-            exec('php artisan config:clear');
-        }
+        static::clear();
     }
 
     /**
@@ -33,8 +33,13 @@ class ComposerScripts
         if (file_exists('vendor')) {
             \Illuminate\Foundation\ComposerScripts::postUpdate($event);
         }
-        if (file_exists('bootstrap/cache/config.php')) {
-            exec('php artisan config:clear');
+        static::clear();
+    }
+
+    protected static function clear()
+    {
+        if (file_exists(self::CONFIG)) {
+            unlink(self::CONFIG);
         }
     }
 }
