@@ -97,6 +97,7 @@ Or an apache.conf file similar to:
 
     SSLCertificateFile /etc/letsencrypt/live/monica.yourdomain.com/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/monica.yourdomain.com/privkey.pem
+    SSLCACertificateFile    /etc/letsencrypt/live/monica.yourdomain.com/chain.pem
     Include /etc/letsencrypt/options-ssl-apache.conf
 </VirtualHost>
 </IfModule>
