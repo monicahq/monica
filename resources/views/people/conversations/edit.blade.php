@@ -27,8 +27,8 @@
 
     @include('partials.errors')
 
-    <form action="{{ route('people.conversations.update', [$contact, $conversation]) }}" method="POST">
-      {{ method_field('PUT') }}
+    <form action="{{ route('people.conversations.update', [$contact, $conversation]) }}" method="POST" enctype="multipart/form-data">
+      @method('PUT')
       {{ csrf_field() }}
 
       {{-- When did it take place --}}
