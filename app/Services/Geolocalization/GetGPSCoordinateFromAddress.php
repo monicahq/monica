@@ -33,8 +33,6 @@ class GetGPSCoordinateFromAddress extends BaseService
     {
         $this->validate($data);
 
-
-
         $weather->save();
 
         return $weather;
