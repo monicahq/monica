@@ -1,9 +1,9 @@
 <?php
 
+use Http\Client\Curl\Client;
 use Geocoder\Provider\Chain\Chain;
 use Geocoder\Provider\GeoPlugin\GeoPlugin;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
-use Http\Client\Curl\Client;
 
 return [
     'cache' => [
