@@ -1,6 +1,6 @@
 UNRELEASED CHANGES:
 
-*
+* Fix incompatibility of people search queries with PostgreSQL
 
 RELEASED VERSIONS:
 
