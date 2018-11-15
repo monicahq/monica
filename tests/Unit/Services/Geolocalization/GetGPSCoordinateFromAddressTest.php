@@ -4,8 +4,8 @@ namespace Tests\Unit\Services\Geolocalization;
 
 use Tests\TestCase;
 use App\Exceptions\MissingParameterException;
-use App\Services\Geolocalization\GetGPSCoordinateFromAddress;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Geolocalization\GetGPSCoordinateFromAddress;
 
 class GetGPSCoordinateFromAddressTest extends TestCase
 {

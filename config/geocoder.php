@@ -2,7 +2,6 @@
 
 use Http\Client\Curl\Client;
 use Geocoder\Provider\Chain\Chain;
-use Geocoder\Provider\GeoPlugin\GeoPlugin;
 use Geocoder\Provider\LocationIQ\LocationIQ;
 
 return [
