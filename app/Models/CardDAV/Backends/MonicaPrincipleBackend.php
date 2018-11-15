@@ -156,7 +156,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function getGroupMemberSet($principal)
     {
-        debug('getGroupMemberSet');
+        Log::debug(__CLASS__.' getGroupMemberSet', func_get_args());
 
         return [
             'principals/'.Auth::user()->email,
@@ -171,7 +171,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function getGroupMembership($principal)
     {
-        debug('getGroupMembership');
+        Log::debug(__CLASS__.' getGroupMembership', func_get_args());
 
         return [
             'principals/'.Auth::user()->email,
@@ -189,6 +189,6 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function setGroupMemberSet($principal, array $members)
     {
-        dd('setGroupMemberSet');
+        Log::debug(__CLASS__.' setGroupMemberSet', func_get_args());
     }
 }
