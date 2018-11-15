@@ -117,6 +117,9 @@
 
       <!-- Tasks -->
       <div v-if="activeTab == 'tasks'">
+
+        <a href="">Add a task</a>
+
         <ul v-if="tasks.length != 0">
           <li class="pb0" v-for="task in tasks" :key="task.id">
             <label class="pointer mb0">
@@ -129,6 +132,15 @@
             </span>
           </li>
         </ul>
+
+        CLEAR CHECKED TASKS
+        VIEW CHECKED TASKS
+        LINK TASK TO A CONTACT
+        ASSIGN TASK TO A USER
+
+
+        <!-- Tasks: Create task -->
+
 
         <!-- Tasks: Blank state -->
         <div class="tc mt4 mb4" v-if="tasks.length == 0">
