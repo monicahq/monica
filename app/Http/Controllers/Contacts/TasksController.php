@@ -7,6 +7,7 @@ use App\Models\Contact\Task;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\TasksRequest;
+use App\Services\Task\CreateTask;
 use App\Http\Requests\People\TaskToggleRequest;
 
 class TasksController extends Controller
@@ -38,8 +39,9 @@ class TasksController extends Controller
      */
     public function store(TasksRequest $request, Contact $contact)
     {
-        return $contact->tasks()->create([
-            'account_id' => auth()->user()->account_id,
+        return (new CreateTask)->execute([
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
             'title' => $request->get('title'),
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
         ]);
