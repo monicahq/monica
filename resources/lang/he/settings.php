@@ -221,7 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'מספר אנשי הקשר שדולגו',
     'import_report_status_imported' => 'יובאו',
     'import_report_status_skipped' => 'דולגו',
-    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
+    'import_vcard_parse_error' => 'שגיאה בעת ניתוח רשומת vCard',
     'import_vcard_contact_exist' => 'איש הקשר כבר קיים',
     'import_vcard_contact_no_firstname' => 'אין שם פרטי (חובה)',
     'import_vcard_file_not_found' => 'הקובץ לא נמצא',
@@ -395,5 +395,5 @@ return [
     'storage_title' => 'אחסון',
     'storage_account_info' => 'מגבלת החשבון שלך: :accountLimit מ״ב /  הניצולת הנוכחית שלך: :currentAccountSize מ״ב (:percentUsage%)',
     'storage_upgrade_notice' => 'ניתן לשדרג את החשבון שלך כדי לאפשר העלאת מסמכים.',
-    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
+    'storage_description' => 'כאן ניתן לצפות בכל המסמכים שהועלו על אנשי הקשר שלך.',
 ];

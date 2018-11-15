@@ -3,7 +3,7 @@
 return [
     'sidebar_settings' => '帐户设置',
     'sidebar_personalization' => '个性化',
-    'sidebar_settings_storage' => 'Storage',
+    'sidebar_settings_storage' => '存储空间',
     'sidebar_settings_export' => '导出数据',
     'sidebar_settings_users' => '用户',
     'sidebar_settings_subscriptions' => '订阅',
@@ -221,7 +221,7 @@ return [
     'import_report_number_contacts_skipped' => '跳过的联系人数',
     'import_report_status_imported' => '导入',
     'import_report_status_skipped' => '跳过',
-    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
+    'import_vcard_parse_error' => '分析 vcard 项时出错',
     'import_vcard_contact_exist' => '联系人已存在',
     'import_vcard_contact_no_firstname' => '无名字 (必填)',
     'import_vcard_file_not_found' => '文件不存在',
@@ -392,8 +392,8 @@ return [
     'personalization_life_event_type_first_word' => '第一次发言',
     'personalization_life_event_type_first_kiss' => '初吻',
 
-    'storage_title' => 'Storage',
-    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
-    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
-    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
+    'storage_title' => '存储空间',
+    'storage_account_info' => '您的账户容量: :accountLimit Mb /  您目前已使用: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => '升级您的帐户, 以便能够上传文档。',
+    'storage_description' => '在这里, 您可以看到上传的有关您的联系人的所有文档。',
 ];
