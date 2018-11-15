@@ -33,7 +33,7 @@ class GetGPSCoordinateFromAddress extends BaseService
     {
         $this->validate($data);
 
-        $weather->save();
+        dd(app('geocoder')->geocode('Los Angeles, CA')->get());
 
         return $weather;
     }

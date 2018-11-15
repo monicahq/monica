@@ -226,4 +226,5 @@ return [
     |
      */
     'weather_enabled' => env('WEATHER_ENABLED', false),
+    'location_iq_api_key' => env('LOCATION_IQ_API_KEY', null),
 ];

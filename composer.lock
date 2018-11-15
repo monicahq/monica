@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dad039a14026678b42195e53a732c0af",
+    "content-hash": "121942c7f92eb30eb1351bb5b2b98a65",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1397,6 +1397,69 @@
             "description": "Geocoder GoogleMaps adapter",
             "homepage": "http://geocoder-php.org/Geocoder/",
             "time": "2018-03-03T14:37:50+00:00"
+        },
+        {
+            "name": "geocoder-php/locationiq-provider",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/geocoder-php/locationiq-provider.git",
+                "reference": "f2ec09974e5cf53f9cbee37e30c2174146386af8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/geocoder-php/locationiq-provider/zipball/f2ec09974e5cf53f9cbee37e30c2174146386af8",
+                "reference": "f2ec09974e5cf53f9cbee37e30c2174146386af8",
+                "shasum": ""
+            },
+            "require": {
+                "geocoder-php/common-http": "^4.0",
+                "php": "^7.0",
+                "willdurand/geocoder": "^4.0"
+            },
+            "provide": {
+                "geocoder-php/provider-implementation": "1.0"
+            },
+            "require-dev": {
+                "geocoder-php/provider-integration-tests": "^1.0",
+                "nyholm/psr7": "^0.2.2",
+                "php-http/curl-client": "^1.7",
+                "php-http/message": "^1.0",
+                "phpunit/phpunit": "^6.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Geocoder\\Provider\\LocationIQ\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Srihari Thalla",
+                    "email": "srihari@unwiredlabs.com"
+                }
+            ],
+            "description": "Geocoder LocationIQ adapter",
+            "homepage": "http://geocoder-php.org/Geocoder/",
+            "keywords": [
+                "address",
+                "geocoder",
+                "geocoding",
+                "locationiq"
+            ],
+            "time": "2017-09-16T10:10:14+00:00"
         },
         {
             "name": "geoip2/geoip2",
