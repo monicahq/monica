@@ -2,16 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Contact\Task;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Task;
-use App\Models\Contact\ContactFieldType;
+use App\Services\Task\CreateTask;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Task\CreateTask;
 
 class CreateTaskTest extends TestCase
 {

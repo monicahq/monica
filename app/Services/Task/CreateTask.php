@@ -2,8 +2,8 @@
 
 namespace App\Services\Task;
 
-use App\Services\BaseService;
 use App\Models\Contact\Task;
+use App\Services\BaseService;
 use App\Models\Contact\Contact;
 
 class CreateTask extends BaseService
