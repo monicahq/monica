@@ -17,9 +17,9 @@ class CreateTask extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'integer',
+            'contact_id' => 'nullable|integer',
             'title' => 'required|string:255',
-            'description' => 'required|string:400000000',
+            'description' => 'nullable|string:400000000',
         ];
     }
 

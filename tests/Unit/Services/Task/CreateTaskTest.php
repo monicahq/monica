@@ -70,6 +70,32 @@ class CreateTaskTest extends TestCase
         );
     }
 
+    public function test_it_stores_a_task_without_description()
+    {
+        $contact = factory(Contact::class)->create([]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'title' => 'This is a title',
+            'description' => null,
+        ];
+
+        $taskService = new CreateTask;
+        $task = $taskService->execute($request);
+
+        $this->assertDatabaseHas('tasks', [
+            'id' => $task->id,
+            'contact_id' => $contact->id,
+            'title' => 'This is a title',
+        ]);
+
+        $this->assertInstanceOf(
+            Task::class,
+            $task
+        );
+    }
+
     public function test_it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
