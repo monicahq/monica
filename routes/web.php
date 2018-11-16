@@ -134,6 +134,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::resource('people/{contact}/tasks', 'Contacts\\TasksController')->only([
             'index', 'store', 'update', 'destroy',
         ]);
+        Route::resource('tasks', 'TasksController')->only([
+            'index', 'store', 'update', 'destroy',
+        ]);
         Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
 
         // Gifts
