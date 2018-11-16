@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
-use App\Models\Journal\JournalEntry;
 use App\Services\Task\CreateTask;
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TasksController extends Controller
@@ -96,7 +95,7 @@ class TasksController extends Controller
 
         foreach ($existing as $existingContact) {
             // Has an existing attendee been removed?
-            if (!array_key_exists($existingContact->id, $specifiedContactsObj)) {
+            if (! array_key_exists($existingContact->id, $specifiedContactsObj)) {
                 $existingContact->activities()->detach($activity);
             }
 
