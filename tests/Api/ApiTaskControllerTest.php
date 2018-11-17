@@ -322,38 +322,34 @@ class ApiTaskControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    // public function test_tasks_delete()
-    // {
-    //     $user = $this->signin();
-    //     $contact = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $task = factory(Task::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //     ]);
-    //     $this->assertDatabaseHas('tasks', [
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'id' => $task->id,
-    //     ]);
+    public function test_it_deletes_a_task()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $task = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
 
-    //     $response = $this->json('DELETE', '/api/tasks/'.$task->id);
+        $response = $this->json('DELETE', '/api/tasks/'.$task->id);
 
-    //     $response->assertStatus(200);
-    //     $this->assertDatabaseMissing('tasks', [
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'id' => $task->id,
-    //     ]);
-    // }
+        $response->assertStatus(200);
 
-    // public function test_tasks_delete_error()
-    // {
-    //     $user = $this->signin();
+        $this->assertDatabaseMissing('tasks', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $task->id,
+        ]);
+    }
 
-    //     $response = $this->json('DELETE', '/api/tasks/0');
+    public function test_it_cant_delete_a_task_if_wrong_task_id()
+    {
+        $user = $this->signin();
 
-    //     $this->expectNotFound($response);
-    // }
+        $response = $this->json('DELETE', '/api/tasks/0');
+
+        $this->expectNotFound($response);
+    }
 }

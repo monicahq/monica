@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
+use App\Services\Task\DestroyTask;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Task\Task as TaskResource;
@@ -108,16 +109,17 @@ class ApiTaskController extends ApiController
     public function destroy(Request $request, $taskId)
     {
         try {
-            $task = Task::where('account_id', auth()->user()->account_id)
-                ->where('id', $taskId)
-                ->firstOrFail();
+            (new DestroyTask)->execute([
+                'task_id' => $taskId,
+                'account_id' => auth()->user()->account->id,
+            ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
         }
 
-        $task->delete();
-
-        return $this->respondObjectDeleted($task->id);
+        return $this->respondObjectDeleted($taskId);
     }
 
     /**
