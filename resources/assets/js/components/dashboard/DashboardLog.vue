@@ -119,11 +119,9 @@
       <div v-if="activeTab == 'tasks'">
 
         <ul class="tc mb3">
-          <li class="di mr2"><span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">Task related to contacts ({{ contactRelatedTasks.length }})</span></li>
+          <li class="di mr2"><span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">Task related to your contacts ({{ contactRelatedTasks.length }})</span></li>
           <li class="di"><span :class="[contactRelatedTasksView == true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">Your tasks ({{ yourTasks.length }})</span></li>
         </ul>
-
-        <p class=""><a href="" @click.prevent="taskAddMode = true">Add a task</a></p>
 
         <!-- Tasks: Create task -->
         <div class="br3 pa2 ba" v-show="taskAddMode">
@@ -140,8 +138,8 @@
         <!-- Tasks: list of contact related tasks -->
         <ul v-if="contactRelatedTasks.length != 0 && contactRelatedTasksView">
           <li class="pb0 mb2" v-for="task in contactRelatedTasks" :key="task.id">
-            <label class="pointer mb0">
-              <input type="checkbox" @click="toggleComplete(task)">
+            <label class="pointer mb1">
+              <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
               {{ task.title }}
             </label>
             <span class="black-50 mr1 f7">
@@ -151,22 +149,23 @@
         </ul>
 
         <!-- Tasks: list of non contact related tasks -->
+        <p v-show="!contactRelatedTasksView"><a href="" @click.prevent="taskAddMode = true">Add a task</a></p>
         <ul v-if="yourTasks.length != 0 && !contactRelatedTasksView">
           <li class="pb0 mb2" v-for="task in yourTasks" :key="task.id">
-            <label class="pointer mb0">
-              <input type="checkbox" @click="toggleComplete(task)">
+            <label class="pointer mb1">
+              <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
               {{ task.title }}
             </label>
-            <span class="black-50 mr1 f7 hide-child">
-              <a :href="'/people/' + task.contact.hash_id">{{ task.contact.first_name }}</a>
-            </span>
           </li>
         </ul>
-
-        CLEAR CHECKED TASKS
-        VIEW CHECKED TASKS
-        LINK TASK TO A CONTACT
-        ASSIGN TASK TO A USER
+        <ul v-if="yourCompletedTasks.length != 0 && !contactRelatedTasksView">
+          <li class="pb0 mb2" v-for="task in yourCompletedTasks" :key="task.id">
+            <label class="pointer mb1">
+              <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
+              {{ task.title }}
+            </label>
+          </li>
+        </ul>
 
         <!-- Tasks: Blank state -->
         <div class="tc mt4 mb4" v-if="tasks.length == 0">
@@ -200,6 +199,7 @@
               contactRelatedTasksView: true,
               contactRelatedTasks: [],
               yourTasks: [],
+              yourCompletedTasks: [],
               newTask: {
                   id: 0,
                   title: '',
@@ -281,39 +281,40 @@
             },
 
             getTasks() {
-                axios.get('/dashboard/tasks')
+                axios.get('/tasks')
                         .then(response => {
-                            this.tasks = response.data;
+                            this.tasks = response.data.data;
                             this.filterTasks()
                         });
             },
 
             filterTasks() {
-                this.yourTasks = this.tasks.filter(item => item.contact.id == null)
-                this.contactRelatedTasks = this.tasks.filter(item => item.contact.id != null)
+                this.yourTasks = this.tasks.filter(item => (item.contact == null && item.completed == false))
+                this.yourCompletedTasks = this.tasks.filter(item => (item.contact == null && item.completed == true))
+                this.contactRelatedTasks = this.tasks.filter(item => item.contact != null)
             },
 
-            toggleComplete(task) {
-                axios.post('/people/' + task.contact.hash_id + '/tasks/' + task.id + '/toggle')
+            updateTask(task) {
+                task.completed = !task.completed
+                axios.put('/tasks/' + task.id, task)
                         .then(response => {
+                            this.filterTasks()
                             this.$notify({
-                              group: 'main',
-                              title: this.$t('app.default_save_success'),
-                              text: '',
-                              type: 'success'
-                          });
+                                group: 'main',
+                                title: this.$t('app.default_save_success'),
+                                text: '',
+                                type: 'success'
+                            });
                         });
             },
 
             saveTask() {
               axios.post('/tasks', this.newTask)
                         .then(response => {
-                            this.$notify({
-                              group: 'main',
-                              title: this.$t('app.default_save_success'),
-                              text: '',
-                              type: 'success'
-                          });
+                            this.newTask.title = ''
+                            this.taskAddMode = false
+                            this.tasks.push(response.data)
+                            this.filterTasks()
                         });
             }
         }

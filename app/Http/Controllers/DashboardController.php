@@ -158,23 +158,6 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get tasks for the dashboard.
-     *
-     * @return Collection
-     */
-    public function tasks()
-    {
-        $tasksCollection = collect([]);
-        $tasks = auth()->user()->account->tasks()->where('completed', 0)->get();
-
-        foreach ($tasks as $task) {
-            $tasksCollection->push(new TaskResource($task));
-        }
-
-        return $tasksCollection;
-    }
-
-    /**
      * Save the current active tab to the User table.
      */
     public function setTab(Request $request)
