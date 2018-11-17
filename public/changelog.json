@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Nov 17, 2018",
+            "title": "New feature: tasks not related to contacts",
+            "description": "In the dashboard, you can now create tasks that are not linked to any contacts. ![image](/img/changelogs/2018-11-17-custom-tasks.png)"
+        },
+        {
             "date": "Nov 13, 2018",
             "title": "Contacts for each tag in the Settings page",
             "description": "In the [Tags tab](/settings/tags) under the Settings page, you can now see which contacts are associated with each tag."

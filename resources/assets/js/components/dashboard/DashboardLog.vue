@@ -2,7 +2,7 @@
 </style>
 
 <template>
-  <div class="br3 ba b--gray-monica bg-white mb4">
+  <div class="br3 ba b--gray-monica bg-white mb3">
 
     <notifications group="main" position="bottom right" width="400" />
 
@@ -119,63 +119,73 @@
       <div v-if="activeTab == 'tasks'">
 
         <ul class="tc mb3">
-          <li class="di mr2"><span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">Task related to your contacts ({{ contactRelatedTasks.length }})</span></li>
-          <li class="di"><span :class="[contactRelatedTasksView == true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">Your tasks ({{ yourTasks.length }})</span></li>
+          <li class="di mr4"><span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">{{ $t('dashboard.tasks_tab_your_contacts') }} ({{ contactRelatedTasks.length }})</span></li>
+          <li class="di"><span :class="[contactRelatedTasksView == true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">{{ $t('dashboard.tasks_tab_your_tasks') }} ({{ yourTasks.length }})</span></li>
         </ul>
 
         <!-- Tasks: Create task -->
-        <div class="br3 pa2 ba" v-show="taskAddMode">
+        <div class="br3 pa2 ba b--gray-monica mb3" v-show="taskAddMode">
           <div class="flex items-center mb2">
-            <input type="checkbox" disabled class="di mr2">
-            <input type="text" class="b--none b--none w-100 di" v-model="newTask.title">
+            <input type="checkbox" disabled class="di mr2 pb2">
+            <input type="text" v-model="newTask.title" v-on:keyup.enter="saveTask()" v-on:keyup.esc="taskAddMode = false" class="bt-0 br-0 bl-0 w-100 di bb b--gray-monica pt2 pb2" :placeholder="$t('dashboard.tasks_add_task_placeholder')">
+            <a class="pointer" @click.prevent="taskAddMode = false; newTask.title=''">{{ $t('app.cancel') }}</a>
           </div>
-          <div>
-            <a class="btn btn-primary" @click.prevent="saveTask()">Save</a>
-            <a class="btn btn-primary" @click.prevent="cancelTask()">Cancel</a>
-          </div>
+          <div class="f7 relative" style="left: 20px;"><span v-html="$t('dashboard.tasks_add_note')"></span></div>
         </div>
 
         <!-- Tasks: list of contact related tasks -->
-        <ul v-if="contactRelatedTasks.length != 0 && contactRelatedTasksView">
-          <li class="pb0 mb2" v-for="task in contactRelatedTasks" :key="task.id">
-            <label class="pointer mb1">
-              <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
-              {{ task.title }}
-            </label>
-            <span class="black-50 mr1 f7">
-              <a :href="'/people/' + task.contact.hash_id">{{ task.contact.first_name }}</a>
-            </span>
-          </li>
-        </ul>
+        <div v-if="contactRelatedTasks.length != 0 && contactRelatedTasksView">
+          <ul>
+            <li class="pb0 mb2" v-for="task in contactRelatedTasks" :key="task.id">
+              <label class="pointer mb1">
+                <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
+                {{ task.title }}
+              </label>
+              <span class="black-50 mr1 f7">
+                <a :href="'/people/' + task.contact.hash_id">{{ task.contact.first_name }}</a>
+              </span>
+            </li>
+          </ul>
+        </div>
 
         <!-- Tasks: list of non contact related tasks -->
-        <p v-show="!contactRelatedTasksView"><a href="" @click.prevent="taskAddMode = true">Add a task</a></p>
-        <ul v-if="yourTasks.length != 0 && !contactRelatedTasksView">
-          <li class="pb0 mb2" v-for="task in yourTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
-            <label class="pointer mb1">
-              <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
-              {{ task.title }}
-            </label>
-            <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">Delete</a>
-            <a class="pointer mr1" v-show="confirmDestroyTask == task.id" @click.prevent="confirmDestroyTask = 0">Cancel</a>
-            <a class="pointer red" v-show="confirmDestroyTask == task.id" @click.prevent="destroyTask(task)">Sure?</a>
-          </li>
-        </ul>
-        <ul v-if="yourCompletedTasks.length != 0 && !contactRelatedTasksView">
-          <li class="pb0 mb0 f6" v-for="task in yourCompletedTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
-            <label class="pointer mb1 mr1">
-              <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
-              {{ task.title }}
-            </label>
-            <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">Delete</a>
-            <a class="pointer mr1" v-show="confirmDestroyTask == task.id" @click.prevent="confirmDestroyTask = 0">Cancel</a>
-            <a class="pointer red" v-show="confirmDestroyTask == task.id" @click.prevent="destroyTask(task)">Sure?</a>
-          </li>
-        </ul>
+        <div v-if="!contactRelatedTasksView">
+          <!-- Your tasks: Blank state -->
+          <div class="tc mt4 mb4" v-if="yourTasks.length == 0">
+            <p class="mb4"><a class="btn pointer" @click.prevent="taskAddMode = true" v-show="!taskAddMode">{{ $t('dashboard.task_add_cta') }}</a></p>
+            <img src="/img/dashboard/blank_your_tasks.svg">
+          </div>
 
-        <!-- Tasks: Blank state -->
-        <div class="tc mt4 mb4" v-if="tasks.length == 0">
-          <p>{{ $t('dashboard.tab_tasks_blank') }}</p>
+          <!-- Add a task -->
+          <p v-if="yourTasks.length != 0"><a class="pointer" @click.prevent="taskAddMode = true" v-show="!taskAddMode">{{ $t('dashboard.task_add_cta') }}</a></p>
+
+          <!-- Actual list -->
+          <ul v-if="yourTasks.length != 0">
+            <li class="pb0 mb2" v-for="task in yourTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
+              <label class="pointer mb1">
+                <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
+                {{ task.title }}
+              </label>
+              <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">{{ $t('app.delete') }}</a>
+              <ul class="di" v-show="confirmDestroyTask == task.id">
+                <li class="di"><a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">{{ $t('app.cancel') }}</a></li>
+                <li class="di"><a class="pointer red" @click.prevent="destroyTask(task)">{{ $t('app.delete_confirm') }}</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul v-if="yourCompletedTasks.length != 0 && !contactRelatedTasksView">
+            <li class="pb0 mb0 f6" v-for="task in yourCompletedTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
+              <label class="pointer mb1 mr1">
+                <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
+                {{ task.title }}
+              </label>
+              <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">Delete</a>
+              <ul class="di" v-show="confirmDestroyTask == task.id">
+                <li class="di"><a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">{{ $t('app.cancel') }}</a></li>
+                <li class="di"><a class="pointer red" @click.prevent="destroyTask(task)">{{ $t('app.delete_confirm') }}</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -321,8 +331,7 @@
                         .then(response => {
                             this.newTask.title = ''
                             this.taskAddMode = false
-                            this.tasks.push(response.data)
-                            this.filterTasks()
+                            this.getTasks()
                         });
             },
 
