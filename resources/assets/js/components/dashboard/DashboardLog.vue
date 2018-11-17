@@ -119,8 +119,8 @@
       <div v-if="activeTab == 'tasks'">
 
         <ul class="tc mb3">
-          <li class="di mr4"><span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">{{ $t('dashboard.tasks_tab_your_contacts') }} ({{ contactRelatedTasks.length }})</span></li>
-          <li class="di"><span :class="[contactRelatedTasksView == true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">{{ $t('dashboard.tasks_tab_your_tasks') }} ({{ yourTasks.length }})</span></li>
+          <li class="di mr4"><span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">{{ $t('dashboard.tasks_tab_your_contacts') }} ({{ contactRelated(tasks).length }})</span></li>
+          <li class="di"><span :class="[contactRelatedTasksView == true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">{{ $t('dashboard.tasks_tab_your_tasks') }} ({{ customNotCompleted(tasks).length }})</span></li>
         </ul>
 
         <!-- Tasks: Create task -->
@@ -134,9 +134,9 @@
         </div>
 
         <!-- Tasks: list of contact related tasks -->
-        <div v-if="contactRelatedTasks.length != 0 && contactRelatedTasksView">
+        <div v-if="contactRelated(tasks).length != 0 && contactRelatedTasksView">
           <ul>
-            <li class="pb0 mb2" v-for="task in contactRelatedTasks" :key="task.id">
+            <li class="pb0 mb2" v-for="task in contactRelated(tasks)" :key="task.id">
               <label class="pointer mb1">
                 <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
                 {{ task.title }}
@@ -150,18 +150,19 @@
 
         <!-- Tasks: list of non contact related tasks -->
         <div v-if="!contactRelatedTasksView">
+
           <!-- Your tasks: Blank state -->
-          <div class="tc mt4 mb4" v-if="yourTasks.length == 0">
+          <div class="tc mt4 mb4" v-if="customNotCompleted(tasks).length == 0">
             <p class="mb4"><a class="btn pointer" @click.prevent="taskAddMode = true" v-show="!taskAddMode">{{ $t('dashboard.task_add_cta') }}</a></p>
             <img src="/img/dashboard/blank_your_tasks.svg">
           </div>
 
           <!-- Add a task -->
-          <p v-if="yourTasks.length != 0"><a class="pointer" @click.prevent="taskAddMode = true" v-show="!taskAddMode">{{ $t('dashboard.task_add_cta') }}</a></p>
+          <p v-if="customNotCompleted(tasks).length != 0"><a class="pointer" @click.prevent="taskAddMode = true" v-show="!taskAddMode">{{ $t('dashboard.task_add_cta') }}</a></p>
 
           <!-- Actual list -->
-          <ul v-if="yourTasks.length != 0">
-            <li class="pb0 mb2" v-for="task in yourTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
+          <ul v-if="customNotCompleted(tasks).length != 0">
+            <li class="pb0 mb2" v-for="task in customNotCompleted(tasks)" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
               <label class="pointer mb1">
                 <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
                 {{ task.title }}
@@ -173,8 +174,9 @@
               </ul>
             </li>
           </ul>
-          <ul v-if="yourCompletedTasks.length != 0 && !contactRelatedTasksView">
-            <li class="pb0 mb0 f6" v-for="task in yourCompletedTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
+
+          <ul v-if="customCompleted(tasks).length != 0 && !contactRelatedTasksView">
+            <li class="pb0 mb0 f6" v-for="task in customCompleted(tasks)" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
               <label class="pointer mb1 mr1">
                 <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
                 {{ task.title }}
@@ -213,9 +215,6 @@
 
               taskAddMode: false,
               contactRelatedTasksView: true,
-              contactRelatedTasks: [],
-              yourTasks: [],
-              yourCompletedTasks: [],
               confirmDestroyTask: 0,
               showTaskAction: 0,
               newTask: {
@@ -302,21 +301,34 @@
                 axios.get('/tasks')
                         .then(response => {
                             this.tasks = response.data.data;
-                            this.filterTasks()
                         });
             },
 
-            filterTasks() {
-                this.yourTasks = this.tasks.filter(item => (item.contact == null && item.completed == false))
-                this.yourCompletedTasks = this.tasks.filter(item => (item.contact == null && item.completed == true))
-                this.contactRelatedTasks = this.tasks.filter(item => item.contact != null)
+            // All the custom tasks not yet completed
+            customNotCompleted: function (tasks) {
+              return tasks.filter(function (task) {
+                return task.contact === null && task.completed === false
+              })
+            },
+
+            // All the custom completed tasks
+            customCompleted: function (tasks) {
+              return tasks.filter(function (task) {
+                return task.contact === null && task.completed === true
+              })
+            },
+
+            // All the contact related tasks
+            contactRelated: function (tasks) {
+              return tasks.filter(function (task) {
+                return task.contact != null
+              })
             },
 
             updateTask(task) {
                 task.completed = !task.completed
                 axios.put('/tasks/' + task.id, task)
                         .then(response => {
-                            this.filterTasks()
                             this.$notify({
                                 group: 'main',
                                 title: this.$t('app.default_save_success'),
@@ -332,6 +344,12 @@
                             this.newTask.title = ''
                             this.taskAddMode = false
                             this.getTasks()
+                            this.$notify({
+                                group: 'main',
+                                title: this.$t('app.default_save_success'),
+                                text: '',
+                                type: 'success'
+                            });
                         });
             },
 
@@ -339,7 +357,6 @@
               axios.delete('/tasks/' + task.id)
                         .then(response => {
                             this.tasks.splice(this.tasks.indexOf(task), 1);
-                            this.filterTasks()
                         });
             }
         }

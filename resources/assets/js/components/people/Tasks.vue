@@ -102,9 +102,6 @@
 <script>
 
     export default {
-        /*
-         * The component's data.
-         */
         data() {
             return {
                 tasks: [],
@@ -130,16 +127,6 @@
             };
         },
 
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
-        },
-
-        /**
-         * Prepare the component (Vue 2.x).
-         */
         mounted() {
             this.prepareComponent();
         },
@@ -147,9 +134,6 @@
         props: ['hash'],
 
         methods: {
-            /**
-             * Prepare the component.
-             */
             prepareComponent() {
                 this.dirltr = this.$root.htmldir == 'ltr';
                 this.getTasks();
@@ -232,22 +216,6 @@
                 if (this.tasks.length <= 1) {
                     this.editMode = false;
                 }
-            },
-
-            persistClient(method, uri, form) {
-                form.errors = {};
-
-                axios[method](uri, form)
-                    .then(response => {
-                        this.getTasks();
-                    })
-                    .catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            form.errors = _.flatten(_.toArray(error.response.data));
-                        } else {
-                            form.errors = [this.$t('app.error_try_again')];
-                        }
-                    });
             },
         }
     }
