@@ -97,6 +97,8 @@ return [
     'conversation_delete_link' => 'Borrar conversación',
     'conversation_edit_title' => 'Editar conversación',
     'conversation_edit_delete' => '¿Estás seguro que quieres eliminar esta conversación? Esta acción es permanente.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'La conversación ha sido eliminada exitosamente.',
     'conversation_add_title' => 'Registrar una nueva conversación',
     'conversation_add_when' => '¿Cuándo tuviste esta conversación?',

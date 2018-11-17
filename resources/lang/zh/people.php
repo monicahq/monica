@@ -97,6 +97,8 @@ return [
     'conversation_delete_link' => '删除对话',
     'conversation_edit_title' => '编辑对话',
     'conversation_edit_delete' => '您是否要删除这个对话？操作无法撤销。',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => '对话成功删除',
     'conversation_add_title' => '记录一个新对话',
     'conversation_add_when' => '你们何时进行的对话？',

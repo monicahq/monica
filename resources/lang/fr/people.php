@@ -97,6 +97,8 @@ return [
     'conversation_delete_link' => 'Supprimer la discussion',
     'conversation_edit_title' => 'Éditer la discussion',
     'conversation_edit_delete' => 'Êtes-vous sûr de vouloir supprimer la discussion ? La suppression est permanente.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'La discussion a été supprimée avec succès.',
     'conversation_add_title' => 'Enregistrer une discussion',
     'conversation_add_when' => 'Quand avez-vous eu cette discussion ?',
