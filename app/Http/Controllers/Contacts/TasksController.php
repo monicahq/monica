@@ -7,6 +7,7 @@ use App\Models\Contact\Task;
 use App\Models\Contact\Contact;
 use App\Services\Task\CreateTask;
 use App\Http\Controllers\Controller;
+use App\Services\Task\DestroyTask;
 
 class TasksController extends Controller
 {
@@ -30,17 +31,5 @@ class TasksController extends Controller
         }
 
         return $tasks;
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Contact $contact
-     * @param Task $task
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Contact $contact, Task $task)
-    {
-        $task->delete();
     }
 }

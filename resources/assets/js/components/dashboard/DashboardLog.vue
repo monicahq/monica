@@ -151,19 +151,25 @@
         <!-- Tasks: list of non contact related tasks -->
         <p v-show="!contactRelatedTasksView"><a href="" @click.prevent="taskAddMode = true">Add a task</a></p>
         <ul v-if="yourTasks.length != 0 && !contactRelatedTasksView">
-          <li class="pb0 mb2" v-for="task in yourTasks" :key="task.id">
+          <li class="pb0 mb2" v-for="task in yourTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
             <label class="pointer mb1">
               <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
               {{ task.title }}
             </label>
+            <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">Delete</a>
+            <a class="pointer mr1" v-show="confirmDestroyTask == task.id" @click.prevent="confirmDestroyTask = 0">Cancel</a>
+            <a class="pointer red" v-show="confirmDestroyTask == task.id" @click.prevent="destroyTask(task)">Sure?</a>
           </li>
         </ul>
         <ul v-if="yourCompletedTasks.length != 0 && !contactRelatedTasksView">
-          <li class="pb0 mb2" v-for="task in yourCompletedTasks" :key="task.id">
-            <label class="pointer mb1">
+          <li class="pb0 mb0 f6" v-for="task in yourCompletedTasks" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
+            <label class="pointer mb1 mr1">
               <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
               {{ task.title }}
             </label>
+            <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">Delete</a>
+            <a class="pointer mr1" v-show="confirmDestroyTask == task.id" @click.prevent="confirmDestroyTask = 0">Cancel</a>
+            <a class="pointer red" v-show="confirmDestroyTask == task.id" @click.prevent="destroyTask(task)">Sure?</a>
           </li>
         </ul>
 
@@ -200,6 +206,8 @@
               contactRelatedTasks: [],
               yourTasks: [],
               yourCompletedTasks: [],
+              confirmDestroyTask: 0,
+              showTaskAction: 0,
               newTask: {
                   id: 0,
                   title: '',
@@ -314,6 +322,14 @@
                             this.newTask.title = ''
                             this.taskAddMode = false
                             this.tasks.push(response.data)
+                            this.filterTasks()
+                        });
+            },
+
+            destroyTask(task) {
+              axios.delete('/tasks/' + task.id)
+                        .then(response => {
+                            this.tasks.splice(this.tasks.indexOf(task), 1);
                             this.filterTasks()
                         });
             }

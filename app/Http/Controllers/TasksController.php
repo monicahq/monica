@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Task;
 use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
+use App\Services\Task\DestroyTask;
 use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -55,6 +56,21 @@ class TasksController extends Controller
             'title' => $request->get('title'),
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
             'completed' => $request->get('completed'),
+        ]);
+    }
+
+    /**
+     * Destroy the task.
+     *
+     * @param Contact $contact
+     * @param Task $task
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Contact $contact, $taskId)
+    {
+        (new DestroyTask)->execute([
+            'task_id' => $taskId,
+            'account_id' => auth()->user()->account->id,
         ]);
     }
 }
