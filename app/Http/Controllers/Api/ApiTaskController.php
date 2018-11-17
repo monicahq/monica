@@ -9,9 +9,8 @@ use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
 use App\Services\Task\DestroyTask;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\Task\Task as TaskResource;
 use App\Exceptions\MissingParameterException;
+use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiTaskController extends ApiController

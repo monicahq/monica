@@ -5,7 +5,6 @@ namespace App\Services\Task;
 use Carbon\Carbon;
 use App\Models\Contact\Task;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 
 class UpdateTask extends BaseService
 {
@@ -47,7 +46,7 @@ class UpdateTask extends BaseService
 
         $task->update([
             'title' => $data['title'],
-            'description' => (!empty($data['description']) ? $data['description'] : null),
+            'description' => (! empty($data['description']) ? $data['description'] : null),
             'completed' => $data['completed'],
             'completed_at' => ($data['completed'] == true ? Carbon::now() : null),
         ]);

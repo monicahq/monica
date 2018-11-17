@@ -2,15 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Task;
+use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
 use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
 use App\Services\Task\DestroyTask;
 use App\Http\Resources\Task\Task as TaskResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TasksController extends Controller
 {

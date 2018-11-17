@@ -11,7 +11,6 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;
-use App\Http\Resources\Task\Task as TaskResource;
 
 class DashboardController extends Controller
 {

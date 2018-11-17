@@ -2,9 +2,8 @@
 
 namespace App\Services\Task;
 
-use App\Services\BaseService;
 use App\Models\Contact\Task;
-use Illuminate\Support\Facades\Storage;
+use App\Services\BaseService;
 
 class DestroyTask extends BaseService
 {
