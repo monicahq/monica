@@ -97,8 +97,6 @@ return [
     'conversation_delete_link' => 'מחיקת הדיון',
     'conversation_edit_title' => 'עריכת הדיון',
     'conversation_edit_delete' => 'למחוק את הדיון? מחיקה היא לצמיתות.',
-    'conversation_add_success' => 'The conversation has been successfully added.',
-    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'הדיון נמחק בהצלחה.',
     'conversation_add_title' => 'תיעוד דיון חדש',
     'conversation_add_when' => 'מתי הדיון הזה התרחש?',

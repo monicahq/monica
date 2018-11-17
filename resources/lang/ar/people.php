@@ -97,8 +97,6 @@ return [
     'conversation_delete_link' => 'حذف المحادثة',
     'conversation_edit_title' => 'تحرير المحادثة',
     'conversation_edit_delete' => 'هل أنت متأكد من حذف هذه المحادثة؟ الحذف دائم.',
-    'conversation_add_success' => 'The conversation has been successfully added.',
-    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'لقد تم حذف المحادثة بنجاح.',
     'conversation_add_title' => 'سَجل محادثة جديدة',
     'conversation_add_when' => 'متى تمت هذه المحادثة؟',

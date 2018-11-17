@@ -97,8 +97,6 @@ return [
     'conversation_delete_link' => 'Unterhaltung löschen',
     'conversation_edit_title' => 'Unterhaltung bearbeiten',
     'conversation_edit_delete' => 'Bist du sicher, dass du diese Unterhaltung löschen willst? Dies kann nicht rückgängig gemacht werden.',
-    'conversation_add_success' => 'The conversation has been successfully added.',
-    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'Die Unterhaltung wurde gelöscht.',
     'conversation_add_title' => 'Eine neue Unterhaltung ins Logbuch protokollieren',
     'conversation_add_when' => 'Wann hattet ihr diese Unterhaltung?',
