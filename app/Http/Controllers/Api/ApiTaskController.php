@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Models\Contact\Task;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use App\Services\Task\CreateTask;
+use App\Services\Task\UpdateTask;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Task\Task as TaskResource;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiTaskController extends ApiController
@@ -55,18 +58,17 @@ class ApiTaskController extends ApiController
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
         try {
-            $task = Task::create(
-                $request->all()
-                + ['account_id' => auth()->user()->account_id]
-            );
-        } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            $task = (new CreateTask)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
+                'title' => $request->get('title'),
+                'description' => ($request->get('description') == '' ? null : $request->get('description')),
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
         }
 
         return new TaskResource($task);
@@ -81,56 +83,21 @@ class ApiTaskController extends ApiController
     public function update(Request $request, $taskId)
     {
         try {
-            $task = Task::where('account_id', auth()->user()->account_id)
-                ->findOrFail($taskId);
+            $task = (new UpdateTask)->execute(
+                $request->all()
+                    +
+                    [
+                    'task_id' => $taskId,
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        }
-
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
-        try {
-            $task->update($request->all());
-        } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
         }
 
         return new TaskResource($task);
-    }
-
-    /**
-     * Validate the request for update.
-     *
-     * @param  Request $request
-     * @return mixed
-     */
-    private function validateUpdate(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'description' => 'string|max:1000000',
-            'completed_at' => 'date',
-            'completed' => 'boolean|required',
-            'contact_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return true;
     }
 
     /**

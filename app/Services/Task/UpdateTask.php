@@ -46,9 +46,8 @@ class UpdateTask extends BaseService
         }
 
         $task->update([
-            'id' => $data['task_id'],
             'title' => $data['title'],
-            'description' => $data['description'],
+            'description' => (!empty($data['description']) ? $data['description'] : null),
             'completed' => $data['completed'],
             'completed_at' => ($data['completed'] == true ? Carbon::now() : null),
         ]);
