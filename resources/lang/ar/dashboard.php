@@ -16,6 +16,12 @@ return [
     'tab_tasks' => 'المهام',
     'tab_tasks_blank' => 'ليس لديك أي مهمة حتى الآن.',
 
+    'tasks_add_task_placeholder' => 'What is this task about?',
+    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
+    'tasks_tab_your_tasks' => 'Your tasks',
+    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
+    'task_add_cta' => 'Add a task',
+
     'debts_you_owe' => 'أنت مدين',
 
     'statistics_contacts' => 'جهات الإتصال',
