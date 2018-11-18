@@ -132,9 +132,11 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Tasks
         Route::resource('people/{contact}/tasks', 'Contacts\\TasksController')->only([
+            'index',
+        ]);
+        Route::resource('tasks', 'TasksController')->only([
             'index', 'store', 'update', 'destroy',
         ]);
-        Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
 
         // Gifts
         Route::resource('people/{contact}/gifts', 'Contacts\\GiftsController')->except(['show']);

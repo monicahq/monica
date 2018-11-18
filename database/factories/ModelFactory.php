@@ -124,6 +124,9 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
                 'account_id' => $data['account_id'],
             ])->id;
         },
+        'title' => $faker->word,
+        'description' => $faker->word,
+        'completed' => 0,
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
