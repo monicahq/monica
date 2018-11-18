@@ -5,6 +5,7 @@ return [
     'save' => 'Kaydet',
     'add' => 'Ekle',
     'cancel' => 'Vazgeç',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Sil',
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
