@@ -1,8 +1,15 @@
 UNRELEASED CHANGES:
 
-*
+* Add ability to create tasks that are not linked to any contacts
 
 RELEASED VERSIONS:
+
+v2.10.2 - 2018-11-14
+--------------------
+
+* Fix composer install problems
+* Fix editing conversations not working
+* Fix deletion of relationships not working
 
 v2.10.1 - 2018-11-13
 --------------------
