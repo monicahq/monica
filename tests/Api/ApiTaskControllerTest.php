@@ -160,7 +160,7 @@ class ApiTaskControllerTest extends ApiTestCase
             'completed' => false,
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => $this->jsonTask,
         ]);
@@ -194,7 +194,7 @@ class ApiTaskControllerTest extends ApiTestCase
             'completed' => false,
         ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $response->assertJsonStructure([
             'data' => $this->jsonTask,
         ]);

@@ -356,7 +356,7 @@
             destroyTask(task) {
               axios.delete('/tasks/' + task.id)
                         .then(response => {
-                            this.tasks.splice(this.tasks.indexOf(task), 1);
+                            this.tasks.splice(this.tasks.indexOf(task), 1)
                         });
             }
         }

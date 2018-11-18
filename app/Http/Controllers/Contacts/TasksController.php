@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Task;
+use App\Services\Task\CreateTask;
+use App\Services\Task\UpdateTask;
+use Illuminate\Http\Request;
+use App\Services\Task\DestroyTask;
 use App\Http\Controllers\Controller;
 
 class TasksController extends Controller
