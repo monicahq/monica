@@ -5,6 +5,7 @@ return [
     'save' => 'Salvar',
     'add' => 'Adicionar',
     'cancel' => 'Cancelar',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Deletar',
     'edit' => 'Editar',
     'upload' => 'Enviar',
