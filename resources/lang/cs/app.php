@@ -5,6 +5,7 @@ return [
     'save' => 'Uložit',
     'add' => 'Přidat',
     'cancel' => 'Zrušit',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Smazat',
     'edit' => 'Upravit',
     'upload' => 'Nahrát',
