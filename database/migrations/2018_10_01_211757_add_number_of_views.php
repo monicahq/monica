@@ -14,7 +14,7 @@ class AddNumberOfViews extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->integer('number_of_views')->after('last_consulted_at');
+            $table->integer('number_of_views')->after('last_consulted_at')->default(0);
         });
     }
 }

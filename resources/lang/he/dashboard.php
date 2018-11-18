@@ -26,4 +26,7 @@ return [
     'reminders_none' => 'אין תזכורת לחודש הזה',
 
     'linkedin_profile' => 'LinkedIn',
+
+    'product_changes' => 'שינויים במוצר',
+    'product_view_details' => 'הצגת פרטים',
 ];

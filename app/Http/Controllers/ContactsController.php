@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
-use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Helpers\AvatarHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
+use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
@@ -26,8 +26,31 @@ class ContactsController extends Controller
      */
     public function index(Request $request)
     {
+        return $this->contacts($request, true);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function archived(Request $request)
+    {
+        return $this->contacts($request, false);
+    }
+
+    /**
+     * Display contacts.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    private function contacts(Request $request, bool $active)
+    {
         $user = $request->user();
         $sort = $request->get('sort') ?? $user->contacts_sort_order;
+        $showDeceased = $request->get('show_dead');
 
         if ($user->contacts_sort_order !== $sort) {
             $user->updateContactViewPreference($sort);
@@ -37,10 +60,19 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
+        $contacts = $user->account->contacts()->real();
+        if ($active) {
+            $nbArchived = $contacts->count();
+            $contacts = $contacts->active();
+            $nbArchived = $nbArchived - $contacts->count();
+        } else {
+            $contacts = $contacts->notActive();
+            $nbArchived = $contacts->count();
+        }
+
         if ($request->get('no_tag')) {
             //get tag less contacts
-            $contacts = $user->account->contacts()->real()->sortedBy($sort);
-            $contacts = $contacts->tags('NONE')->get();
+            $contacts = $contacts->tags('NONE');
         } elseif ($request->get('tag1')) {
             // get contacts with selected tags
 
@@ -63,12 +95,20 @@ class ContactsController extends Controller
                 return redirect()->route('people.index');
             }
 
-            $contacts = $user->account->contacts()->real()->sortedBy($sort);
+            $contacts = $contacts->tags($tags);
+        }
+        $contacts = $contacts->sortedBy($sort)->get();
 
-            $contacts = $contacts->tags($tags)->get();
-        } else {
-            // get all contacts
-            $contacts = $user->account->contacts()->real()->sortedBy($sort)->get();
+        // count the deceased
+        $deceasedCount = $contacts->filter(function ($item) {
+            return $item->is_dead === true;
+        })->count();
+
+        // filter out deceased if necessary
+        if ($showDeceased != 'true') {
+            $contacts = $contacts->filter(function ($item) {
+                return $item->is_dead === false;
+            });
         }
 
         // starred contacts
@@ -81,9 +121,14 @@ class ContactsController extends Controller
         });
 
         return view('people.index')
+            ->with('hidingDeceased', $showDeceased != 'true')
+            ->with('deceasedCount', $deceasedCount)
             ->withContacts($contacts->unique('id'))
             ->withUnstarredContacts($unstarredContacts)
             ->withStarredContacts($starredContacts)
+            ->withActive($active)
+            ->withHasArchived($nbArchived > 0)
+            ->withArchivedCOntacts($nbArchived)
             ->withTags($tags)
             ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
@@ -223,6 +268,7 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withDays($days)
             ->withMonths($months)
@@ -381,7 +427,7 @@ class ContactsController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, Contact $contact)
+    public function destroy(Request $request, Contact $contact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
             return redirect()->route('people.index');
@@ -446,6 +492,7 @@ class ContactsController extends Controller
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
         return view('people.food-preferencies.edit')
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact);
     }
 
@@ -508,9 +555,14 @@ class ContactsController extends Controller
             Debugbar::disable();
         }
 
-        $vcard = VCardHelper::prepareVCard($contact);
+        $vcard = (new ExportVCard)->execute([
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $contact->id,
+        ]);
 
-        return  $vcard->download();
+        return response($vcard->serialize())
+            ->header('Content-type', 'text/x-vcard')
+            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name).'.vcf');
     }
 
     /**
@@ -527,7 +579,7 @@ class ContactsController extends Controller
         $state = $request->get('state');
 
         if (auth()->user()->account->hasLimitations()) {
-            throw new Exception(trans('people.stay_in_touch_premium'));
+            throw new \LogicException(trans('people.stay_in_touch_premium'));
         }
 
         // if not active, set frequency to 0
@@ -537,7 +589,7 @@ class ContactsController extends Controller
         $result = $contact->updateStayInTouchFrequency($frequency);
 
         if (! $result) {
-            throw new Exception(trans('people.stay_in_touch_invalid'));
+            throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
         $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
@@ -560,6 +612,23 @@ class ContactsController extends Controller
 
         return [
             'is_starred' => $bool,
+        ];
+    }
+
+    /**
+     * Toggle archive state of a contact.
+     *
+     * @param  Request $request
+     * @param  Contact $contact
+     * @return array
+     */
+    public function archive(Request $request, Contact $contact)
+    {
+        $contact->is_active = ! $contact->is_active;
+        $contact->save();
+
+        return [
+            'is_active' => $contact->is_active,
         ];
     }
 }

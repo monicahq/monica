@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "cross-env": "^5.1.4",
-    "cypress": "3.1.0",
+    "cypress": "3.1.1",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.17.0",
     "mocha-multi-reporters": "^1.1.7"
@@ -27,7 +27,6 @@
     "gulp": "^3.9.1",
     "hint.css": "^2.3.2",
     "jquery": "^3.3.1",
-    "jquery-tags-input": "^1.3.5",
     "laravel-mix": "^2.1.7",
     "list.js": "^1.5.0",
     "lodash": "^4.17.5",

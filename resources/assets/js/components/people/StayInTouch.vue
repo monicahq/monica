@@ -2,18 +2,15 @@
 </style>
 
 <template>
-  <div>
+  <div class="di">
     <notifications group="main" position="bottom right" />
 
     <!-- Contact doesn't have a frequency set -->
     <a class="pointer" @click="showUpdate" v-if="!isActive">{{ $t('people.stay_in_touch_modal_title') }}</a>
 
     <!-- Contact has a frequency set -->
-    <div v-if="isActive">
+    <div class="di" v-else>
       <span>
-        <span class="mr1 relative" style="top: 3px;">
-          <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" width="16" height="16" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M4.79 6.11c.25-.25.25-.67 0-.92-.32-.33-.48-.76-.48-1.19 0-.43.16-.86.48-1.19.25-.26.25-.67 0-.92a.613.613 0 0 0-.45-.19c-.16 0-.33.06-.45.19-.57.58-.85 1.35-.85 2.11 0 .76.29 1.53.85 2.11.25.25.66.25.9 0zM2.33.52a.651.651 0 0 0-.92 0C.48 1.48.01 2.74.01 3.99c0 1.26.47 2.52 1.4 3.48.25.26.66.26.91 0s.25-.68 0-.94c-.68-.7-1.02-1.62-1.02-2.54 0-.92.34-1.84 1.02-2.54a.66.66 0 0 0 .01-.93zm5.69 5.1A1.62 1.62 0 1 0 6.4 4c-.01.89.72 1.62 1.62 1.62zM14.59.53a.628.628 0 0 0-.91 0c-.25.26-.25.68 0 .94.68.7 1.02 1.62 1.02 2.54 0 .92-.34 1.83-1.02 2.54-.25.26-.25.68 0 .94a.651.651 0 0 0 .92 0c.93-.96 1.4-2.22 1.4-3.48A5.048 5.048 0 0 0 14.59.53zM8.02 6.92c-.41 0-.83-.1-1.2-.3l-3.15 8.37h1.49l.86-1h4l.84 1h1.49L9.21 6.62c-.38.2-.78.3-1.19.3zm-.01.48L9.02 11h-2l.99-3.6zm-1.99 5.59l1-1h2l1 1h-4zm5.19-11.1c-.25.25-.25.67 0 .92.32.33.48.76.48 1.19 0 .43-.16.86-.48 1.19-.25.26-.25.67 0 .92a.63.63 0 0 0 .9 0c.57-.58.85-1.35.85-2.11 0-.76-.28-1.53-.85-2.11a.634.634 0 0 0-.9 0z" fill="#219653"/></svg>
-        </span>
         {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency }) }}</span>
         <a class="pointer" @click="showUpdate">{{ $t('app.edit') }}</a>
     </div>
@@ -89,7 +86,7 @@
           </g>
         </svg>
       </div>
-      <form v-on:submit.prevent="update()">
+      <form @submit.prevent="update()">
         <div class="mb4">
           <div class="mt3 mb3 form-information-message br2" v-if="limited">
             <div class="pa3 flex">
@@ -101,9 +98,9 @@
               </div>
             </div>
           </div>
-          <p class="mt3 b mb3">{{ $t('people.stay_in_touch_modal_desc', { firstname: contact.first_name }) }}</p>
+          <p class="mt3 b mb3" :class="[ dirltr ? 'tl' : 'tr' ]">{{ $t('people.stay_in_touch_modal_desc', { firstname: contact.first_name }) }}</p>
           <div class="mb2">
-            <toggle-button class="mr2" :sync="true" :labels="true" :value="isActive" v-on:change="isActive = !isActive" />
+            <toggle-button class="mr2" :sync="true" :labels="true" :value="isActive" @change="isActive = !isActive" />
             <div class="dib relative" style="top: -2px;">
               <span>{{ $t('people.stay_in_touch_modal_label') }}</span>
               <div class="dib">
@@ -128,7 +125,7 @@
         </div>
       </form>
       <div class="relative">
-        <span class="fr">
+        <span class="fr-ns tc">
             <a @click="closeModal()" class="btn">{{ $t('app.cancel') }}</a>
             <a @click="update()" class="btn btn-primary">{{ $t('app.save') }}</a>
         </span>
@@ -151,6 +148,7 @@
                 errorMessage: '',
                 initialFrequency: 0,
                 initialState: false,
+                dirltr: true,
             };
         },
 
@@ -171,6 +169,7 @@
          * Prepare the component (Vue 2.x).
          */
         mounted() {
+            this.dirltr = this.$root.htmldir == 'ltr';
             this.prepareComponent();
         },
 

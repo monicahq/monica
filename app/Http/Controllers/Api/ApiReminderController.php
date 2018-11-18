@@ -63,13 +63,13 @@ class ApiReminderController extends ApiController
         }
 
         try {
-            $reminder = Reminder::create($request->all());
+            $reminder = Reminder::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
-
-        $reminder->account_id = auth()->user()->account_id;
-        $reminder->save();
 
         return new ReminderResource($reminder);
     }
@@ -119,21 +119,20 @@ class ApiReminderController extends ApiController
             'next_expected_date' => 'required|date',
             'frequency_type' => [
                 'required',
-                Rule::in(['one_time', 'day', 'month', 'year']),
+                Rule::in(Reminder::$frequencyTypes),
             ],
             'frequency_number' => 'integer',
             'contact_id' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         $date = DateHelper::parseDate($request->get('next_expected_date'));
         if ($date->isPast()) {
             return $this->setErrorCode(38)
-                        ->respondWithError('Date should be in the future');
+                        ->respondWithError(config('api.error_codes.38'));
         }
 
         try {

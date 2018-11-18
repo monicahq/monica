@@ -43,12 +43,12 @@
     <!-- ACTUAL COMMENT -->
     <form-textarea
       v-model="buffer"
-      v-bind:required="true"
-      v-bind:noLabel="true"
-      v-bind:rows="4"
-      v-bind:placeholder="$t('people.conversation_add_content')"
-      v-bind:id="'content_' + uid"
-      v-on:contentChange="updateContent($event)">
+      :required="true"
+      :noLabel="true"
+      :rows="4"
+      :placeholder="$t('people.conversation_add_content')"
+      :id="'content_' + uid"
+      @contentChange="updateContent($event)">
     </form-textarea>
   </div>
 </template>

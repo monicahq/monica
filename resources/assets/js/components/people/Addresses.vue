@@ -2,14 +2,14 @@
 </style>
 
 <template>
-  <div class="br2 pa3 mb3 f6" v-bind:class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
+  <div class="br2 pa3 mb3 f6" :class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
     <div class="w-100 dt">
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.contact_address_title') }}</h3>
       </div>
-      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactAddresses.length > 0">
+      <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactAddresses.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
+        <a class="pointer" @click="[editMode = false, addMode = false]" v-else>{{ $t('app.done') }}</a>
       </div>
     </div>
 
@@ -26,9 +26,9 @@
         <div class="w-100 dt" v-show="!contactAddress.edit">
           <div class="dtc">
             <i class="f6 light-silver fa fa-globe pr2"></i>
-            <a :href="contactAddress.googleMapAddress" target="_blank" v-if="!editMode">{{ contactAddress.address }}</a>
 
-            <span v-if="editMode">{{ contactAddress.address }}</span>
+            <a :href="contactAddress.googleMapAddress" target="_blank" v-if="!editMode">{{ contactAddress.address }}</a>
+            <span v-else>{{ contactAddress.address }}</span>
 
             <span class="light-silver" v-if="contactAddress.name">({{ contactAddress.name }})</span>
 
@@ -77,7 +77,7 @@
                 {{ $t('people.contact_address_form_country') }}
               </label>
               <select class="db w-100 h2" v-model="updateForm.country">
-                <option v-for="country in countries" v-bind:value="country.id">
+                <option v-for="country in countries" :value="country.id">
                   {{ country.country }}
                 </option>
               </select>
@@ -137,7 +137,7 @@
           </label>
           <select class="db w-100 h2" v-model="createForm.country">
             <option value="0"></option>
-            <option v-for="country in countries" v-bind:value="country.id">
+            <option v-for="country in countries" :value="country.id">
               {{ country.country }}
             </option>
           </select>

@@ -6,11 +6,11 @@ use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
+use App\Helpers\InstanceHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;
-use App\Http\Resources\Task\Task as TaskResource;
 
 class DashboardController extends Controller
 {
@@ -27,14 +27,23 @@ class DashboardController extends Controller
             )->with('debts.contact')
             ->first();
 
-        if ($account->contacts()->count() === 0) {
+        if ($account->contacts()->real()->active()->count() === 0) {
             return view('dashboard.blank');
         }
 
         // Fetch last updated contacts
         $lastUpdatedContactsCollection = collect([]);
-        $lastUpdatedContacts = $account->contacts()->where('is_partial', false)->latest('updated_at')->limit(10)->get();
+        $lastUpdatedContacts = $account->contacts()
+            ->real()
+            ->active()
+            ->latest('updated_at')
+            ->limit(10)
+            ->get();
         foreach ($lastUpdatedContacts as $contact) {
+            if ($contact->is_dead) {
+                continue;
+            }
+
             $data = [
                 'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
@@ -58,9 +67,12 @@ class DashboardController extends Controller
                 return $totalOwedDebt + $debt->amount;
             }, 0);
 
+        // get last 3 changelog entries
+        $changelogs = InstanceHelper::getChangelogEntries(3);
+
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
-            'number_of_contacts' => $account->contacts()->real()->count(),
+            'number_of_contacts' => $account->contacts()->real()->active()->count(),
             'number_of_reminders' => $account->reminders_count,
             'number_of_notes' => $account->notes_count,
             'number_of_activities' => $account->activities_count,
@@ -70,6 +82,7 @@ class DashboardController extends Controller
             'debt_owed' => $debt_owed,
             'debts' => $debt,
             'user' => auth()->user(),
+            'changelogs' => $changelogs,
         ];
 
         return view('dashboard.index', $data);
@@ -141,23 +154,6 @@ class DashboardController extends Controller
         }
 
         return $debtsCollection;
-    }
-
-    /**
-     * Get tasks for the dashboard.
-     *
-     * @return Collection
-     */
-    public function tasks()
-    {
-        $tasksCollection = collect([]);
-        $tasks = auth()->user()->account->tasks()->where('completed', 0)->get();
-
-        foreach ($tasks as $task) {
-            $tasksCollection->push(new TaskResource($task));
-        }
-
-        return $tasksCollection;
     }
 
     /**

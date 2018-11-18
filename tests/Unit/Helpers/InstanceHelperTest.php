@@ -95,4 +95,21 @@ class InstanceHelperTest extends TestCase
             InstanceHelper::getPlanInformationFromConfig('unknown_plan')
         );
     }
+
+    public function test_it_gets_latest_changelog_entries()
+    {
+        $json = public_path('changelog.json');
+        $changelogs = json_decode(file_get_contents($json), true)['entries'];
+        $count = count($changelogs);
+
+        $this->assertCount(
+            $count,
+            InstanceHelper::getChangelogEntries()
+        );
+
+        $this->assertCount(
+            3,
+            InstanceHelper::getChangelogEntries(3)
+        );
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Auth;
 
 use Tests\TestCase;
 use App\Models\User\User;
@@ -84,7 +84,7 @@ class PopulateLifeEventsTableTest extends TestCase
         ];
 
         $populateLifeEventService = new PopulateLifeEventsTable;
-        $this->assertNull($populateLifeEventService->execute($request));
+        $this->assertFalse($populateLifeEventService->execute($request));
     }
 
     public function test_it_only_populates_life_event_tables_partially()

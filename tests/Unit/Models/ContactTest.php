@@ -5,7 +5,6 @@ namespace Tests\Unit\Models;
 use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
-use App\Models\Contact\Tag;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gender;
@@ -13,6 +12,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
@@ -96,6 +96,18 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contact->messages()->exists());
     }
 
+    public function test_it_has_many_documents()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $documents = factory(Document::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $this->assertTrue($contact->documents()->exists());
+    }
+
     public function test_it_has_many_life_events()
     {
         $account = factory(Account::class)->create([]);
@@ -104,7 +116,6 @@ class ContactTest extends FeatureTestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
-
         $this->assertTrue($contact->lifeEvents()->exists());
     }
 
@@ -930,115 +941,6 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    public function test_it_creates_a_tag_and_sets_it_to_a_contact()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $tag = $contact->setTag('friend');
-
-        $this->assertDatabaseHas(
-            'tags',
-            [
-                'name' => 'friend',
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'contact_tag',
-            [
-                'tag_id' => $tag->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-    }
-
-    public function test_it_uses_an_existing_tag_to_associate_it_with_the_contact()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
-            'name' => 'friend',
-        ]);
-
-        $newTag = $contact->setTag('friend');
-
-        $this->assertEquals(
-            $tag->id,
-            $newTag->id
-        );
-    }
-
-    public function test_it_unsets_all_the_tags()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $tag1 = $contact->setTag('friend');
-        $tag2 = $contact->setTag('family');
-        $tag3 = $contact->setTag('world');
-
-        $this->assertDatabaseHas(
-            'contact_tag',
-            [
-                'tag_id' => $tag3->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-
-        $this->assertEquals(
-            3,
-            $contact->tags()->count()
-        );
-
-        $contact->unsetTags();
-
-        $this->assertDatabaseMissing(
-            'contact_tag',
-            [
-                'tag_id' => $tag3->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-
-        $this->assertEquals(
-            0,
-            $contact->tags()->count()
-        );
-    }
-
-    public function it_unsets_a_particular_tag()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $tag1 = $contact->setTag('friend');
-        $tag2 = $contact->setTag('family');
-        $tag3 = $contact->setTag('world');
-
-        $this->assertEquals(
-            3,
-            $contact->tags()->count()
-        );
-
-        $contact->unsetTag($tag3->id);
-
-        $this->assertDatabaseMissing(
-            'contact_tag',
-            [
-                'tag_id' => $tag3->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-
-        $this->assertEquals(
-            2,
-            $contact->tags()->count()
-        );
-    }
-
     public function test_it_sets_a_relationship_between_two_contacts()
     {
         $account = factory(Account::class)->create([]);
@@ -1240,28 +1142,28 @@ class ContactTest extends FeatureTestCase
         $user = $this->signIn();
 
         $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contact->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contact->birthday_special_date_id = $specialDate->id;
         $contact->save();
 
         $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contactB->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactB->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contactB->birthday_special_date_id = $specialDate->id;
         $contactB->save();
 
         $contactC = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contactC->id;
-        $specialDate->save();
+        $specialDate = factory(SpecialDate::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactC->id,
+        ]);
         $specialDate->setReminder('year', 1, '');
         $contactC->birthday_special_date_id = $specialDate->id;
         $contactC->save();
@@ -1333,146 +1235,6 @@ class ContactTest extends FeatureTestCase
         $contact->deleteEverything();
 
         $this->assertEquals(0, Contact::where('id', $id)->count());
-    }
-
-    public function test_it_can_get_tagged()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        factory(Tag::class)->create([
-            'account_id' => $user->account->id,
-            'name' => 'friend',
-        ]);
-        $tag = $contact->setTag('friend');
-
-        $this->assertDatabaseHas(
-            'tags',
-            [
-                'name' => 'friend',
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'contact_tag',
-            [
-                'tag_id' => $tag->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-
-        $tag = Tag::where('id', $tag->id)
-                    ->where('account_id', $user->account->account_id)
-                    ->get();
-
-        $contacts = $user->account->contacts()->real()->tags($tag)->get();
-
-        $this->assertTrue($contacts->contains($contact));
-    }
-
-    public function test_it_can_get_untagged()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        factory(Tag::class)->create([
-            'account_id' => $user->account->id,
-            'name' => 'friend',
-        ]);
-        $tag = $contact->setTag('friend');
-
-        $this->assertDatabaseHas(
-            'tags',
-            [
-                'name' => 'friend',
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'contact_tag',
-            [
-                'tag_id' => $tag->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-
-        $contacts = $user->account->contacts()->real()->tags('NONE')->get();
-
-        $this->assertFalse($contacts->contains($contact));
-    }
-
-    public function test_it_can_get_multiple_tags()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $tag = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
-            'name' => 'friend',
-        ]);
-        $contact->setTag($tag->name);
-        $tag2 = factory(Tag::class)->create([
-            'account_id' => $user->account->id,
-            'name' => 'test2',
-        ]);
-        $contact->setTag($tag2->name);
-
-        $contact2 = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        $contact2->setTag($tag2->name);
-
-        $this->assertDatabaseHas(
-            'tags',
-            [
-                'name' => 'friend',
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'tags',
-            [
-                'name' => 'test2',
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'contact_tag',
-            [
-                'tag_id' => $tag->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'contact_tag',
-            [
-                'tag_id' => $tag2->id,
-                'contact_id' => $contact->id,
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'contact_tag',
-            [
-                'tag_id' => $tag2->id,
-                'contact_id' => $contact2->id,
-            ]
-        );
-
-        $tags = collect();
-
-        $tags = $tags->concat(Tag::where('name_slug', $tag->name)
-                    ->where('account_id', auth()->user()->account_id)
-                    ->get());
-
-        $tags = $tags->concat(Tag::where('name_slug', $tag2->name)
-                    ->where('account_id', auth()->user()->account_id)
-                    ->get());
-
-        $contacts = $user->account->contacts()->real()->tags($tags)->get();
-
-        $this->assertTrue($contacts->contains($contact));
-
-        $this->assertFalse($contacts->contains($contact2));
     }
 
     public function test_it_updates_stay_in_touch_frequency()
@@ -1559,6 +1321,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_it_sends_the_stay_in_touch_email()
     {
+        config(['monica.requires_subscription' => false]);
         NotificationFacade::fake();
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 12, 0, 0, 'America/New_York'));
@@ -1582,6 +1345,30 @@ class ContactTest extends FeatureTestCase
                 return $channels[0] == 'mail'
                 && $notification->assertSentFor($contact);
             }
+        );
+    }
+
+    public function test_it_gets_the_age_at_death()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $specialDate = $contact->setSpecialDate('birthdate', 1980, 10, 10);
+        $specialDate = $contact->setSpecialDate('deceased_date', 2010, 10, 10);
+
+        $this->assertEquals(
+            30,
+            $contact->getAgeAtDeath()
+        );
+    }
+
+    public function test_getting_age_at_death_returns_null()
+    {
+        $contact = factory(Contact::class)->create();
+
+        $specialDate = $contact->setSpecialDate('birthdate', 1980, 10, 10);
+
+        $this->assertNull(
+            $contact->getAgeAtDeath()
         );
     }
 }

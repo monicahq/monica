@@ -3,6 +3,7 @@
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
+use App\Services\Auth\Population\PopulateModulesTable;
 
 class AddConversationsToModules extends Migration
 {
@@ -22,7 +23,10 @@ class AddConversationsToModules extends Migration
 
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
-                $account->populateModulesTable();
+                (new PopulateModulesTable)->execute([
+                    'account_id' => $account->id,
+                    'migrate_existing_data' => false,
+                ]);
             }
         });
 

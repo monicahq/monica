@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
-use Bestmomo\LaravelEmailConfirmation\Traits\AuthenticatesUsers;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {

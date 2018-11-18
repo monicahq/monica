@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Es werden alle Kontakte mit den folgenden Tags angezeigt',
     'people_list_clear_filter' => 'Filter löschen',
     'people_list_contacts_per_tags' => '1 Kontakt|:count Kontakte',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
@@ -39,8 +41,7 @@ return [
     'people_add_success' => ':name wurde erfolgreich angelegt.',
     'people_add_gender' => 'Geschlecht',
     'people_delete_success' => 'Der Kontakt wurde gelöscht',
-    'people_delete_message' => 'Wenn du den Kontakt entfernen möchtest,',
-    'people_delete_click_here' => 'klick hier',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Möchtest du den Kontakt wirklich löschen? Es gibt kein Zurück.',
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
     'people_add_import' => 'Möchtest du Kontakte <a href=":url">importieren</a>?',
@@ -56,11 +57,15 @@ return [
     'section_personal_gifts' => 'Geschenke',
     'section_personal_notes' => 'Notizen',
 
-    //
-    'link_to_list' => 'Personenliste',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Kontaktinformationen bearbeiten',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Telefonat vermerken',
     'set_favorite' => 'Favoriten werden in der Kontaktliste ganz oben angezeigt',
 
@@ -111,6 +116,12 @@ return [
     'age_approximate_in_years' => 'ungefähr :age Jahre alt',
     'age_exact_in_years' => ':age Jahre alt',
     'age_exact_birthdate' => 'geboren am :date',
+
+    // Last called
+    'last_called' => 'Last called: :date',
+    'last_called_empty' => 'Last called: unknown',
+    'last_activity_date' => 'Last activity together: :date',
+    'last_activity_date_empty' => 'Last activity together: unknown',
 
     // additional information
     'information_edit_success' => 'Das Profil wurde erfolgreich aktualisiert',
@@ -189,7 +200,7 @@ return [
     'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
     'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Erstellen Sie einen Kontakt-Eintrag für diese Person.',
-    'relationship_form_add_description' => 'Auf diese Weise können Sie diese Lebensgefährten wie jeden anderen Kontakt zu behandeln.',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'Sie haben zur Zeit keine Kontakte, die mit :name in Verbindung gebracht werden können.',
     'relationship_delete_confirmation' => 'Sind Sie sicher, dass Sie diese Beziehung löschen wollen? Das Löschen ist dauerhaft.',
     'relationship_unlink_confirmation' => 'Sind Sie sicher, dass Sie diese Beziehung löschen wollen? Diese Person wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
@@ -304,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'Tag bearbeiten',
-    'tag_add' => 'Einen Tag hinzufügen',
+    'tag_add' => 'Add tags',
+    'tag_add_search' => 'Add or search tags',
+    'tag_no_tags' => 'No tags yet',
 
     // Introductions
     'introductions_sidebar_title' => 'Wie ihr euch kennengelernt habt',
@@ -370,7 +383,6 @@ return [
     'life_event_list_tab_life_events' => 'Life events',
     'life_event_list_tab_other' => 'Notes, reminders, ...',
     'life_event_list_title' => 'Life events',
-    'life_event_list_title' => 'Life events',
     'life_event_blank' => 'Log what happens to the life of {name} for your future reference.',
     'life_event_list_cta' => 'Add life event',
     'life_event_create_category' => 'All categories',
@@ -421,11 +433,19 @@ return [
     'life_event_sentence_new_hobby' => 'Started a hobby',
     'life_event_sentence_new_instrument' => 'Learned a new instrument',
     'life_event_sentence_new_language' => 'Learned a new language',
-    'life_event_sentence_tatoo_or_piercing' => 'Got a tatoo or piercing',
+    'life_event_sentence_tattoo_or_piercing' => 'Got a tattoo or piercing',
     'life_event_sentence_new_license' => 'Got a license',
     'life_event_sentence_travel' => 'Traveled',
     'life_event_sentence_achievement_or_award' => 'Got an achievement or award',
     'life_event_sentence_changed_beliefs' => 'Changed beliefs',
     'life_event_sentence_first_word' => 'Spoke for the first time',
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
+
+    // documents
+    'document_list_title' => 'Documents',
+    'document_list_cta' => 'Upload document',
+    'document_list_blank_desc' => 'Here you can store documents related to this person.',
+    'document_upload_zone_cta' => 'Upload a file',
+    'document_upload_zone_progress' => 'Uploading the document...',
+    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 ];

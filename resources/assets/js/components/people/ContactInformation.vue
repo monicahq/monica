@@ -2,14 +2,14 @@
 </style>
 
 <template>
-  <div class="br2 pa3 mb3 f6" v-bind:class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
+  <div class="br2 pa3 mb3 f6" :class="[editMode ? 'bg-washed-yellow b--yellow ba' : 'bg-near-white']">
     <div class="w-100 dt">
       <div class="dtc">
         <h3 class="f6 ttu normal">{{ $t('people.contact_info_title') }}</h3>
       </div>
-      <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactInformationData.length > 0">
+      <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]" v-if="contactInformationData.length > 0">
         <a class="pointer" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-        <a class="pointer" @click="[editMode = false, addMode = false]" v-if="editMode">{{ $t('app.done') }}</a>
+        <a class="pointer" @click="[editMode = false, addMode = false]" v-else>{{ $t('app.done') }}</a>
       </div>
     </div>
 
@@ -18,24 +18,24 @@
     </p>
 
     <ul v-if="contactInformationData.length > 0">
-      <li v-for="contactInformation in contactInformationData" class="mb2" v-bind:key="contactInformation.id">
+      <li v-for="contactInformation in contactInformationData" class="mb2" :key="contactInformation.id">
 
         <div class="w-100 dt" v-show="!contactInformation.edit">
           <div class="dtc">
             <i :class="contactInformation.fontawesome_icon" class="pr2 f6 light-silver" v-if="contactInformation.fontawesome_icon"></i>
-            <i class="pr2 fa fa-address-card-o f6 gray" v-if="!contactInformation.fontawesome_icon"></i>
+            <i class="pr2 fa fa-address-card-o f6 gray" v-else></i>
 
             <a :href="contactInformation.protocol + contactInformation.data" v-if="contactInformation.protocol">{{ contactInformation.data }}</a>
-            <a :href="contactInformation.data" v-if="!contactInformation.protocol">{{ contactInformation.data }}</a>
+            <a :href="contactInformation.data" v-else>{{ contactInformation.data }}</a>
           </div>
-          <div class="dtc" v-bind:class="[ dirltr ? 'tr' : 'tl' ]" v-if="editMode">
+          <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]" v-if="editMode">
             <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactInformation)"></i>
             <i class="fa fa-trash-o pointer" @click="trash(contactInformation)"></i>
           </div>
         </div>
 
         <div class="w-100" v-show="contactInformation.edit">
-          <form class="measure center">
+          <form class="measure center" v-on:submit.prevent="update(contactInformation)">
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
                 {{ $t('people.contact_info_form_content') }}
@@ -56,13 +56,13 @@
     </ul>
 
     <div v-if="addMode">
-      <form class="measure center">
+      <form class="measure center" v-on:submit.prevent="store">
         <div class="mt3">
           <label class="db fw6 lh-copy f6">
             {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">{{ $t('people.contact_info_form_personalize') }}</a>
           </label>
           <select class="db w-100 h2" v-model="createForm.contact_field_type_id">
-            <option v-for="contactFieldType in contactFieldTypes" v-bind:key="contactFieldType.id" v-bind:value="contactFieldType.id">
+            <option v-for="contactFieldType in contactFieldTypes" :key="contactFieldType.id" :value="contactFieldType.id">
               {{ contactFieldType.name }}
             </option>
           </select>

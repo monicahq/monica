@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Tonen alle contactpersonen gelabeld met',
     'people_list_clear_filter' => 'Filter wissen',
     'people_list_contacts_per_tags' => '1 contact|:count contacts',
+    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Zoek in je contacten...',
     'people_search_no_results' => 'Geen relevante contacten gevonden :(',
     'people_list_account_usage' => 'Je huidige gebruik: :current/:limit contacten',
@@ -39,8 +41,7 @@ return [
     'people_add_success' => ':name is succesvol toegevoegd',
     'people_add_gender' => 'Geslacht',
     'people_delete_success' => 'De contactpersoon is verwijderd',
-    'people_delete_message' => 'Als je dit contact wil wissen,',
-    'people_delete_click_here' => 'klik hier',
+    'people_delete_message' => 'Delete contact',
     'people_delete_confirmation' => 'Weet je zeker dat je dit contact wilt verwijderen? Dit is permanent.',
     'people_add_birthday_reminder' => 'Feliciteer :name met zijn/haar verjaardag',
     'people_add_import' => 'Wil je <a href=":url">contacten importeren</a>?',
@@ -56,11 +57,15 @@ return [
     'section_personal_gifts' => 'Cadeaux',
     'section_personal_notes' => 'Notities',
 
-    //
-    'link_to_list' => 'Lijst van contacten',
+    // archived contacts
+    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
     'edit_contact_information' => 'Bewerk contact informatie',
+    'contact_archive' => 'Archive contact',
+    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Registreer een belgesprek',
     'set_favorite' => 'Favoriete contacten worden bovenaan de lijst met contactpersonen geplaatst',
 
@@ -111,6 +116,12 @@ return [
     'age_approximate_in_years' => 'ongeveer :age jaren oud',
     'age_exact_in_years' => ':age jaren oud',
     'age_exact_birthdate' => 'geboren :date',
+
+    // Last called
+    'last_called' => 'Last called: :date',
+    'last_called_empty' => 'Last called: unknown',
+    'last_activity_date' => 'Last activity together: :date',
+    'last_activity_date_empty' => 'Last activity together: unknown',
 
     // additional information
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
@@ -189,7 +200,7 @@ return [
     'relationship_form_associate_dropdown' => 'Zoek en selecteer een bestaande contactpersoon met het dropdown menu hieronder',
     'relationship_form_associate_dropdown_placeholder' => 'Zoek en selecteer een bestaande contactpersoon',
     'relationship_form_also_create_contact' => 'Een contact-kaart maken voor deze persoon.',
-    'relationship_form_add_description' => 'Hierdoor kan je deze partner bewerken, net als elk ander contact.',
+    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'Je hebt nog geen contacten die een :name gekoppeld kunnen worden.',
     'relationship_delete_confirmation' => 'Weet je zeker dat je deze relatie wilt verwijderen? Dit is permanent.',
     'relationship_unlink_confirmation' => 'Weet je zeker dat je deze relatie wilt verwijderen? Deze persoon wordt niet verwijdert, alleen de relatie tussen de twee personen.',
@@ -304,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'Edit tag',
-    'tag_add' => 'add a tag',
+    'tag_add' => 'Add tags',
+    'tag_add_search' => 'Add or search tags',
+    'tag_no_tags' => 'No tags yet',
 
     // Introductions
     'introductions_sidebar_title' => 'How you met',
@@ -370,7 +383,6 @@ return [
     'life_event_list_tab_life_events' => 'Life events',
     'life_event_list_tab_other' => 'Notes, reminders, ...',
     'life_event_list_title' => 'Life events',
-    'life_event_list_title' => 'Life events',
     'life_event_blank' => 'Log what happens to the life of {name} for your future reference.',
     'life_event_list_cta' => 'Add life event',
     'life_event_create_category' => 'All categories',
@@ -421,11 +433,19 @@ return [
     'life_event_sentence_new_hobby' => 'Started a hobby',
     'life_event_sentence_new_instrument' => 'Learned a new instrument',
     'life_event_sentence_new_language' => 'Learned a new language',
-    'life_event_sentence_tatoo_or_piercing' => 'Got a tatoo or piercing',
+    'life_event_sentence_tattoo_or_piercing' => 'Got a tattoo or piercing',
     'life_event_sentence_new_license' => 'Got a license',
     'life_event_sentence_travel' => 'Traveled',
     'life_event_sentence_achievement_or_award' => 'Got an achievement or award',
     'life_event_sentence_changed_beliefs' => 'Changed beliefs',
     'life_event_sentence_first_word' => 'Spoke for the first time',
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
+
+    // documents
+    'document_list_title' => 'Documents',
+    'document_list_cta' => 'Upload document',
+    'document_list_blank_desc' => 'Here you can store documents related to this person.',
+    'document_upload_zone_cta' => 'Upload a file',
+    'document_upload_zone_progress' => 'Uploading the document...',
+    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 ];

@@ -9,6 +9,7 @@ use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
@@ -73,6 +74,7 @@ class FakeContentTableSeeder extends Seeder
                 $this->contact->save();
             }
 
+            $this->populateTags();
             $this->populateFoodPreferences();
             $this->populateDeceasedDate();
             $this->populateBirthday();
@@ -103,6 +105,21 @@ class FakeContentTableSeeder extends Seeder
         $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
         $blankUser = $blankAccount->users()->first();
         $this->confirmUser($blankUser);
+    }
+
+    public function populateTags()
+    {
+        if (rand(1, 2) == 1) {
+            $i = 0;
+            do {
+                (new AssociateTag)->execute([
+                    'account_id' => $this->contact->account->id,
+                    'contact_id' => $this->contact->id,
+                    'name' => $this->faker->word,
+                ]);
+                $i++;
+            } while ($i < 10);
+        }
     }
 
     public function populateFoodPreferences()
@@ -519,8 +536,6 @@ class FakeContentTableSeeder extends Seeder
 
     public function confirmUser($user)
     {
-        $user->confirmation_code = null;
-        $user->confirmed = true;
-        $user->save();
+        $user->markEmailAsVerified();
     }
 }

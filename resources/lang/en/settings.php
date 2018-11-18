@@ -3,6 +3,7 @@
 return [
     'sidebar_settings' => 'Account settings',
     'sidebar_personalization' => 'Personalization',
+    'sidebar_settings_storage' => 'Storage',
     'sidebar_settings_export' => 'Export data',
     'sidebar_settings_users' => 'Users',
     'sidebar_settings_subscriptions' => 'Subscription',
@@ -220,6 +221,7 @@ return [
     'import_report_number_contacts_skipped' => 'Number of skipped contacts',
     'import_report_status_imported' => 'Imported',
     'import_report_status_skipped' => 'Skipped',
+    'import_vcard_parse_error' => 'Error when parsing the vCard entry',
     'import_vcard_contact_exist' => 'Contact already exists',
     'import_vcard_contact_no_firstname' => 'No firstname (mandatory)',
     'import_vcard_file_not_found' => 'File not found',
@@ -389,4 +391,9 @@ return [
     'personalization_life_event_type_changed_beliefs' => 'Changed beliefs',
     'personalization_life_event_type_first_word' => 'First word',
     'personalization_life_event_type_first_kiss' => 'First kiss',
+
+    'storage_title' => 'Storage',
+    'storage_account_info' => 'Your account limit: :accountLimit Mb /  Your current usage: :currentAccountSize Mb (:percentUsage%)',
+    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents.',
+    'storage_description' => 'Here you can see all the documents uploaded about your contacts.',
 ];

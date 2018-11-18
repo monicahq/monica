@@ -66,6 +66,11 @@ return [
     'register_policy' => 'بتسجيل إشتراكك تُفيد بأنك قرأت و قبِلت <a href=":url" hreflang=":hreflang">سياسة الخصوصية</a> و <a href=":urlterm" hreflang=":hreflang">شروط الإستخدام</a> الخاصة بنا.',
     'register_invitation_email' => 'لأسباب أمنية، الرجاء تحديد البريد الإلكتروني للشخص الذي قمت بدعوته للإنضمام لهذا الحساب. المعلومات موجودة في رسالة الدعوة.',
 
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+
     'confirmation_again' => 'إذا أردت تغيير بريدك الإلكتروني يمكنك <a href=":url" class="alert-link">الضغط هنا</a>.',
     'email_change_current_email' => 'البريد الإلكتروني الحالي:',
     'email_change_title' => 'قم بتغيير عنوان بريدك',

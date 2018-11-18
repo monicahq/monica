@@ -12,15 +12,17 @@ use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasApiTokens;
 
@@ -155,14 +157,6 @@ class User extends Authenticatable
     public function account()
     {
         return $this->belongsTo(Account::class);
-    }
-
-    /**
-     * Get the changelog records associated with the user.
-     */
-    public function changelogs()
-    {
-        return $this->belongsToMany(Changelog::class)->withPivot('read', 'upvote')->withTimestamps();
     }
 
     /**
@@ -340,28 +334,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if user has one or more unread changelog entries.
-     *
-     * @return bool
-     */
-    public function hasUnreadChangelogs()
-    {
-        return $this->changelogs()->wherePivot('read', 0)->count() > 0;
-    }
-
-    /**
-     * Mark all changelog entries as read.
-     *
-     * @return void
-     */
-    public function markChangelogAsRead()
-    {
-        DB::table('changelog_user')
-            ->where('user_id', $this->id)
-            ->update(['read' => 1]);
-    }
-
-    /**
      * Indicate if the user has accepted the most current terms and privacy.
      *
      * @return bool
@@ -473,5 +445,15 @@ class User extends Authenticatable
         }
 
         return $nameOrder;
+    }
+
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new ConfirmEmail(true));
     }
 }

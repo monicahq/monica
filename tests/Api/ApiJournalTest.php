@@ -81,12 +81,7 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/journal/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_journal_create_journal()
@@ -125,11 +120,9 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/journal', []);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The post field is required.',
         ]);
     }
 
@@ -171,14 +164,15 @@ class ApiJournalTest extends ApiTestCase
     public function test_journal_update_error()
     {
         $user = $this->signin();
+        $entry = factory(Entry::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/journal/0', []);
+        $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The post field is required.',
         ]);
     }
 
@@ -192,11 +186,9 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/journal/'.$entry->id, []);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The title field is required.',
+            'The post field is required.',
         ]);
     }
 
@@ -226,11 +218,6 @@ class ApiJournalTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/journal/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 }

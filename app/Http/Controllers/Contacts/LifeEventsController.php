@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use App\Models\Contact\LifeEventCategory;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
@@ -15,6 +17,8 @@ use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
 
 class LifeEventsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get the list of life event categories.
      *
@@ -108,11 +112,11 @@ class LifeEventsController extends Controller
      * @param  LifeEvent $lifeEvent
      * @return bool
      */
-    public function destroy(Request $request, Contact $contat, $lifeEventId)
+    public function destroy(Request $request, Contact $contat, LifeEvent $lifeevent)
     {
         $data = [
             'account_id' => auth()->user()->account->id,
-            'life_event_id' => $lifeEventId,
+            'life_event_id' => $lifeevent->id,
         ];
 
         try {
@@ -123,6 +127,6 @@ class LifeEventsController extends Controller
                 ->withErrors(trans('app.error_save'));
         }
 
-        return 'done';
+        return $this->respondObjectDeleted($lifeevent->id);
     }
 }

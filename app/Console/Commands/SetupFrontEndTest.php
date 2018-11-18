@@ -77,7 +77,6 @@ class SetupFrontEndTest extends Command
         // get first user
         $this->info('Fix first user');
         $user = $this->account->users()->first();
-        $user->confirmed = true;
-        $user->save();
+        $user->markEmailAsVerified();
     }
 }

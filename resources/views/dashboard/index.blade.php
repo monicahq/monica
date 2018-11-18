@@ -12,7 +12,7 @@
             </div>
             @foreach($lastUpdatedContacts as $contact)
             <div class="pr2 pointer avatars">
-              <avatar v-bind:contact="{{ $contact }}" v-bind:clickable="true"></avatar>
+              <avatar :contact="{{ $contact }}" :clickable="true"></avatar>
             </div>
             @endforeach
           </div>
@@ -32,7 +32,7 @@
           <div class="br3 ba b--gray-monica bg-white mb4">
             <div class="pa3 bb b--gray-monica">
               <p class="mb0">
-                <img src="/img/people/reminders.svg" width="17">
+                📅
                 {{ trans('dashboard.reminders_next_months') }}
               </p>
             </div>
@@ -49,6 +49,22 @@
           </div>
         </div>
         <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa2">
+          <div class="br3 ba b--gray-monica bg-white mb3">
+            <div class="pa3 bb b--gray-monica">
+              <p class="mb1 b">☀️ {{ trans('dashboard.product_changes') }} <span class="fr normal"><a href="/changelog">{{ trans('dashboard.product_view_details') }}</a></span></p>
+              <ul>
+                @foreach ($changelogs as $changelog)
+                <li class="mb1">
+                  <span class="gray f6">{{ $changelog['date'] }}</span>
+                  <span class="stat-description">{{ $changelog['title'] }}</span>
+                </li>
+                @endforeach
+              </ul>
+            </div>
+          </div>
+
+          <dashboard-log :default-active-tab="'{!! auth()->user()->dashboard_active_tab !!}'"></dashboard-log>
+
           <div class="br3 ba b--gray-monica bg-white mb3">
             <div class="pa3 bb b--gray-monica tc">
               <ul>
@@ -67,8 +83,6 @@
               </ul>
             </div>
           </div>
-
-          <dashboard-log v-bind:default-active-tab="'{!! auth()->user()->dashboard_active_tab !!}'"></dashboard-log>
         </div>
       </div>
     </section>

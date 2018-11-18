@@ -21,6 +21,8 @@ class Tag extends Model
      */
     protected $fillable = [
         'name',
+        'name_slug',
+        'account_id',
     ];
 
     /**
@@ -37,14 +39,5 @@ class Tag extends Model
     public function contacts()
     {
         return $this->belongsToMany(Contact::class)->withPivot('account_id')->withTimestamps();
-    }
-
-    /**
-     * Update the slug.
-     */
-    public function updateSlug()
-    {
-        $this->name_slug = str_slug($this->name);
-        $this->save();
     }
 }

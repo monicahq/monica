@@ -8,14 +8,14 @@
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
-        <span class="f6 pt2" v-bind:class="[ dirltr ? 'fr' : 'fl' ]" v-if="tasks.length != 0">
+        <span class="f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]" v-if="tasks.length != 0">
           <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = true" v-if="!editMode">{{ $t('app.edit') }}</a>
-          <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false" v-if="editMode">{{ $t('app.done') }}</a>
+          <a class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false" v-else>{{ $t('app.done') }}</a>
         </span>
       </h3>
     </div>
 
-    <div v-bind:class="[editMode ? 'bg-washed-yellow b--yellow ba pa2' : '']">
+    <div :class="[editMode ? 'bg-washed-yellow b--yellow ba pa2' : '']">
 
       <!-- EMPTY STATE -->
       <div v-if="tasks.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3" cy-name="task-blank-state">
@@ -25,7 +25,7 @@
 
       <!-- LIST OF IN PROGRESS TASKS -->
       <ul>
-        <li v-for="task in inProgress(tasks)" :cy-name="'task-item-' + task.id">
+        <li v-for="task in inProgress(tasks)" :cy-name="'task-item-' + task.id" :key="task.id">
           <input type="checkbox" id="checkbox" v-model="task.completed" @click="toggleComplete(task)" class="mr1">
           {{ task.title }} <span class="silver ml3" v-if="task.description">{{ task.description }}</span>
 
@@ -68,13 +68,13 @@
             <label class="db fw6 lh-copy f6">
               {{ $t('people.tasks_form_title') }}
             </label>
-            <input class="pa2 db w-100" type="text" cy-name="task-add-title" v-model="createForm.title" @keyup.esc="addMode = false">
+            <input class="pa2 db w-100" type="text" cy-name="task-add-title" v-model="task.title" @keyup.esc="addMode = false">
           </div>
           <div class="mt3">
             <label class="db fw6 lh-copy f6">
               {{ $t('people.tasks_form_description') }}
             </label>
-            <textarea class="pa2 db w-100" type="text" v-model="createForm.description" @keyup.esc="addMode = false"></textarea>
+            <textarea class="pa2 db w-100" type="text" v-model="task.description" @keyup.esc="addMode = false"></textarea>
           </div>
           <div class="lh-copy mt3">
             <a @click.prevent="store" class="btn btn-primary" cy-name="save-task-button">{{ $t('app.add') }}</a>
@@ -85,7 +85,7 @@
 
       <!-- LIST OF COMPLETED TASKS -->
       <ul>
-        <li v-for="task in completed(tasks)" class="f6" :cy-name="'task-item-completed-' + task.id">
+        <li v-for="task in completed(tasks)" class="f6" :cy-name="'task-item-completed-' + task.id" :key="task.id">
           <input type="checkbox" id="checkbox" v-model="task.completed" @click="toggleComplete(task)" class="mr1">
           <span class="light-silver mr1">{{ task.completed_at }}</span> <span class="moon-gray">{{ task.title }}</span> <span class="silver ml3" v-if="task.description">{{ task.description }}</span>
 
@@ -102,9 +102,6 @@
 <script>
 
     export default {
-        /*
-         * The component's data.
-         */
         data() {
             return {
                 tasks: [],
@@ -113,14 +110,8 @@
                 addMode: false,
                 editMode: false,
 
-                createForm: {
-                    title: '',
-                    description: '',
-                    completed: 0
-                },
-
-                updateForm: {
-                    id: 0,
+                task: {
+                    contact_id: 0,
                     title: '',
                     description: '',
                     completed: 0
@@ -130,46 +121,34 @@
             };
         },
 
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
-        },
-
-        /**
-         * Prepare the component (Vue 2.x).
-         */
         mounted() {
             this.prepareComponent();
         },
 
-        props: ['hash'],
+        props: ['hash', 'contactId'],
 
         methods: {
-            /**
-             * Prepare the component.
-             */
             prepareComponent() {
                 this.dirltr = this.$root.htmldir == 'ltr';
-                this.getTasks();
+                this.task.contact_id = this.contactId;
+                this.index();
             },
 
             reinitialize() {
-                this.createForm.title = '';
-                this.createForm.description = '';
+                this.task.title = '';
+                this.task.description = '';
             },
 
             completed: function (tasks) {
-              return tasks.filter(function (task) {
-                return task.completed === true
-              })
+                return tasks.filter(function (task) {
+                    return task.completed === true
+                })
             },
 
             inProgress: function (tasks) {
-              return tasks.filter(function (task) {
-                return task.completed === false
-              })
+                return tasks.filter(function (task) {
+                    return task.completed === false
+                })
             },
 
             toggleAddMode() {
@@ -179,12 +158,9 @@
 
             toggleEditMode(task) {
                 Vue.set(task, 'edit', !task.edit);
-                this.updateForm.id = task.id;
-                this.updateForm.title = task.title;
-                this.updateForm.description = task.description;
             },
 
-            getTasks() {
+            index() {
                 axios.get('/people/' + this.hash + '/tasks')
                         .then(response => {
                             this.tasks = response.data;
@@ -192,62 +168,44 @@
             },
 
             store() {
-                this.persistClient(
-                    'post', '/people/' + this.hash + '/tasks',
-                    this.createForm
-                );
-
-                this.addMode = false;
-            },
-
-            toggleComplete(task) {
-                axios.post('/people/' + this.hash + '/tasks/' + task.id + '/toggle')
+                axios.post('/tasks/', this.task)
                         .then(response => {
-                            this.getTasks();
+                            this.task.title = ''
+                            this.addMode = false
+                            this.tasks.push(response.data)
+                            this.$notify({
+                                group: 'main',
+                                title: this.$t('app.default_save_success'),
+                                text: '',
+                                type: 'success'
+                            });
                         });
             },
 
             update(task) {
-                this.updateForm.id = task.id;
-                this.updateForm.title = task.title;
-                this.updateForm.description = task.description;
-                this.updateForm.completed = task.completed;
-
-                this.persistClient(
-                    'put', '/people/' + this.hash + '/tasks/' + task.id,
-                    this.updateForm
-                );
-
-                this.updateMode = false;
+                axios.put('/tasks/' + task.id, task)
+                        .then(response => {
+                            this.updateMode = false
+                            this.toggleEditMode(task)
+                            this.reinitialize()
+                            this.$notify({
+                                group: 'main',
+                                title: this.$t('app.default_save_success'),
+                                text: '',
+                                type: 'success'
+                            });
+                        });
             },
 
             trash(task) {
-                this.updateForm.id = task.id;
-
-                this.persistClient(
-                    'delete', '/people/' + this.hash + '/tasks/' + task.id,
-                    this.updateForm
-                );
+                axios.delete('/tasks/' + task.id)
+                        .then(response => {
+                            this.tasks.splice(this.tasks.indexOf(task), 1)
+                        });
 
                 if (this.tasks.length <= 1) {
                     this.editMode = false;
                 }
-            },
-
-            persistClient(method, uri, form) {
-                form.errors = {};
-
-                axios[method](uri, form)
-                    .then(response => {
-                        this.getTasks();
-                    })
-                    .catch(error => {
-                        if (typeof error.response.data === 'object') {
-                            form.errors = _.flatten(_.toArray(error.response.data));
-                        } else {
-                            form.errors = [this.$t('app.error_try_again')];
-                        }
-                    });
             },
         }
     }

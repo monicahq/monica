@@ -105,12 +105,7 @@ class ApiDebtsTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/contacts/0/debts');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_debts_get_one()
@@ -150,12 +145,7 @@ class ApiDebtsTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/debts/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_debts_create()
@@ -168,8 +158,7 @@ class ApiDebtsTest extends ApiTestCase
             'iso' => 'USD',
             'symbol' => '$',
         ]);
-        //$user->associateCurrency($currency);
-        $user->currency_id = $currency->id;
+        $user->currency()->associate($currency);
         $user->save();
 
         $response = $this->json('POST', '/api/debts', [
@@ -218,11 +207,10 @@ class ApiDebtsTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response->assertStatus(200);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 32,
-            ],
+        $this->expectDataError($response, [
+            'The in debt field is required.',
+            'The status field is required.',
+            'The amount field is required.',
         ]);
     }
 
@@ -243,12 +231,7 @@ class ApiDebtsTest extends ApiTestCase
             'reason' => 'that\'s why',
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_debts_update()
@@ -300,14 +283,18 @@ class ApiDebtsTest extends ApiTestCase
     public function test_debts_update_error()
     {
         $user = $this->signin();
+        $debt = factory(Debt::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-        $response = $this->json('PUT', '/api/debts/0', []);
+        $response = $this->json('PUT', '/api/debts/'.$debt->id, [
+            'contact_id' => $debt->contact_id,
+        ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
+        $this->expectDataError($response, [
+            'The in debt field is required.',
+            'The status field is required.',
+            'The amount field is required.',
         ]);
     }
 
@@ -332,12 +319,7 @@ class ApiDebtsTest extends ApiTestCase
             'reason' => 'voilà',
         ]);
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 
     public function test_debts_delete()
@@ -372,11 +354,6 @@ class ApiDebtsTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/debts/0');
 
-        $response->assertStatus(404);
-        $response->assertJson([
-            'error' => [
-                'error_code' => 31,
-            ],
-        ]);
+        $this->expectNotFound($response);
     }
 }

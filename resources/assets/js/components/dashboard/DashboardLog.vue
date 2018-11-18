@@ -2,32 +2,32 @@
 </style>
 
 <template>
-  <div class="br3 ba b--gray-monica bg-white mb4">
+  <div class="br3 ba b--gray-monica bg-white mb3">
 
     <notifications group="main" position="bottom right" width="400" />
 
     <div class="pa3 bb b--gray-monica tc">
       <ul>
-        <li @click.prevent="setActiveTab('calls')" v-bind:class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('calls')" :class="[activeTab == 'calls' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_recent_calls') }}
         </li>
-        <li @click.prevent="setActiveTab('notes')" v-bind:class="[activeTab == 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('notes')" :class="[activeTab == 'notes' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_favorite_notes') }}
         </li>
-        <li @click.prevent="setActiveTab('debts')" v-bind:class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('debts')" :class="[activeTab == 'debts' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_debts') }}
         </li>
-        <li @click.prevent="setActiveTab('tasks')" v-bind:class="[activeTab == 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
+        <li @click.prevent="setActiveTab('tasks')" :class="[activeTab == 'tasks' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']">
           {{ $t('dashboard.tab_tasks') }}
         </li>
       </ul>
     </div>
-    <div class="pa3">
+    <div class="pa4">
 
       <!-- Calls -->
       <div v-if="activeTab == 'calls'">
         <ul v-if="calls.length != 0">
-          <li class="pb2" v-for="call in calls" v-bind:key="call.id">
+          <li class="pb2" v-for="call in calls" :key="call.id">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 473.806 473.806" style="enable-background:new 0 0 473.806 473.806;" xml:space="preserve" width="15px" height="15px" class="mr2">
               <g>
                 <g>
@@ -43,16 +43,16 @@
         </ul>
 
         <!-- Calls: Blank state -->
-        <div class="tc mt4 mb4" v-if="calls.length == 0">
+        <div class="tc mt4 mb4" v-if="calls.length === 0">
           <p>{{ $t('dashboard.tab_calls_blank') }}</p>
         </div>
       </div>
 
       <!-- Notes -->
-      <div v-if="activeTab == 'notes'">
-        <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0" v-bind:key="note.id">
+      <div v-else-if="activeTab == 'notes'">
+        <div class="pb3 cf" v-for="note in notes" v-if="notes.length != 0" :key="note.id">
           <div class="fl w-10 avatars">
-            <avatar v-bind:contact="note.contact" v-bind:clickable="true"></avatar>
+            <avatar :contact="note.contact" :clickable="true"></avatar>
           </div>
           <div class="pl3 fl w-90">
             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
@@ -89,15 +89,15 @@
         </div>
 
         <!-- Notes: Blank state -->
-        <div class="tc mt4 mb4" v-if="notes.length == 0">
+        <div class="tc mt4 mb4" v-if="notes.length === 0">
           <p>{{ $t('dashboard.notes_title') }}</p>
         </div>
       </div>
 
       <!-- Debts -->
-      <div v-if="activeTab == 'debts'">
+      <div v-else-if="activeTab == 'debts'">
         <ul v-if="debts.length != 0">
-          <li class="pb2" v-for="debt in debts" v-bind:key="debt.id">
+          <li class="pb2" v-for="debt in debts" :key="debt.id">
             <span class="black-50 mr1 f6">{{ debt.created_at | formatDate }}</span>
             <span class="mr1 black-50">•</span>
             <a :href="'/people/' + debt.contact.hash_id">{{ debt.contact.first_name }}</a>
@@ -110,29 +110,84 @@
         </ul>
 
         <!-- Debts: Blank state -->
-        <div class="tc mt4 mb4" v-if="debts.length == 0">
+        <div class="tc mt4 mb4" v-else>
           <p>{{ $t('dashboard.tab_debts_blank') }}</p>
         </div>
       </div>
 
       <!-- Tasks -->
       <div v-if="activeTab == 'tasks'">
-        <ul v-if="tasks.length != 0">
-          <li class="pb0" v-for="task in tasks" v-bind:key="task.id">
-            <label class="pointer mb0">
-              <input type="checkbox" @click="toggleComplete(task)">
-              {{ task.title }}
-            </label>
-            <span class="black-50 mr1 f7">
-              {{ task.created_at | formatDate }}
-              <a :href="'/people/' + task.contact.hash_id">{{ task.contact.first_name }}</a>
-            </span>
-          </li>
+
+        <ul class="tc mb3">
+          <li class="di mr4"><span :class="[contactRelatedTasksView == true ? 'b' : 'pointer']" @click.prevent="contactRelatedTasksView = true">{{ $t('dashboard.tasks_tab_your_contacts') }} ({{ contactRelated(tasks).length }})</span></li>
+          <li class="di"><span :class="[contactRelatedTasksView == true ? 'pointer' : 'b']" @click.prevent="contactRelatedTasksView = false">{{ $t('dashboard.tasks_tab_your_tasks') }} ({{ customNotCompleted(tasks).length }})</span></li>
         </ul>
 
-        <!-- Tasks: Blank state -->
-        <div class="tc mt4 mb4" v-if="tasks.length == 0">
-          <p>{{ $t('dashboard.tab_tasks_blank') }}</p>
+        <!-- Tasks: Create task -->
+        <div class="br3 pa2 ba b--gray-monica mb3" v-show="taskAddMode">
+          <div class="flex items-center mb2">
+            <input type="checkbox" disabled class="di mr2 pb2">
+            <input type="text" v-model="newTask.title" v-on:keyup.enter="saveTask()" v-on:keyup.esc="taskAddMode = false" class="bt-0 br-0 bl-0 w-100 di bb b--gray-monica pt2 pb2" :placeholder="$t('dashboard.tasks_add_task_placeholder')">
+            <a class="pointer" @click.prevent="taskAddMode = false; newTask.title=''">{{ $t('app.cancel') }}</a>
+          </div>
+          <div class="f7 relative" style="left: 20px;"><span v-html="$t('dashboard.tasks_add_note')"></span></div>
+        </div>
+
+        <!-- Tasks: list of contact related tasks -->
+        <div v-if="contactRelated(tasks).length != 0 && contactRelatedTasksView">
+          <ul>
+            <li class="pb0 mb2" v-for="task in contactRelated(tasks)" :key="task.id">
+              <label class="pointer mb1">
+                <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
+                {{ task.title }}
+              </label>
+              <span class="black-50 mr1 f7">
+                <a :href="'/people/' + task.contact.hash_id">{{ task.contact.first_name }}</a>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Tasks: list of non contact related tasks -->
+        <div v-if="!contactRelatedTasksView">
+
+          <!-- Your tasks: Blank state -->
+          <div class="tc mt4 mb4" v-if="customNotCompleted(tasks).length == 0">
+            <p class="mb4"><a class="btn pointer" @click.prevent="taskAddMode = true" v-show="!taskAddMode">{{ $t('dashboard.task_add_cta') }}</a></p>
+            <img src="/img/dashboard/blank_your_tasks.svg">
+          </div>
+
+          <!-- Add a task -->
+          <p v-if="customNotCompleted(tasks).length != 0"><a class="pointer" @click.prevent="taskAddMode = true" v-show="!taskAddMode">{{ $t('dashboard.task_add_cta') }}</a></p>
+
+          <!-- Actual list -->
+          <ul v-if="customNotCompleted(tasks).length != 0">
+            <li class="pb0 mb2" v-for="task in customNotCompleted(tasks)" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
+              <label class="pointer mb1">
+                <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
+                {{ task.title }}
+              </label>
+              <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">{{ $t('app.delete') }}</a>
+              <ul class="di" v-show="confirmDestroyTask == task.id">
+                <li class="di"><a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">{{ $t('app.cancel') }}</a></li>
+                <li class="di"><a class="pointer red" @click.prevent="destroyTask(task)">{{ $t('app.delete_confirm') }}</a></li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul v-if="customCompleted(tasks).length != 0 && !contactRelatedTasksView">
+            <li class="pb0 mb0 f6" v-for="task in customCompleted(tasks)" :key="task.id" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
+              <label class="pointer mb1 mr1">
+                <input type="checkbox" class="mr1" @click="updateTask(task)" v-model="task.completed">
+                {{ task.title }}
+              </label>
+              <a class="pointer mr1" v-show="showTaskAction == task.id" @click.prevent="confirmDestroyTask = task.id">Delete</a>
+              <ul class="di" v-show="confirmDestroyTask == task.id">
+                <li class="di"><a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">{{ $t('app.cancel') }}</a></li>
+                <li class="di"><a class="pointer red" @click.prevent="destroyTask(task)">{{ $t('app.delete_confirm') }}</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -157,12 +212,19 @@
               notes: [],
               debts: [],
               tasks: [],
+
+              taskAddMode: false,
+              contactRelatedTasksView: true,
+              confirmDestroyTask: 0,
+              showTaskAction: 0,
+              newTask: {
+                  id: 0,
+                  title: '',
+                  description: ''
+              },
             };
         },
 
-        /**
-         * Prepare the component (Vue 2.x).
-         */
         mounted() {
             this.prepareComponent();
         },
@@ -170,9 +232,6 @@
         props: ['defaultActiveTab'],
 
         methods: {
-            /**
-             * Prepare the component.
-             */
             prepareComponent() {
                 this.setActiveTab(this.defaultActiveTab);
             },
@@ -239,23 +298,67 @@
             },
 
             getTasks() {
-                axios.get('/dashboard/tasks')
+                axios.get('/tasks')
                         .then(response => {
-                            this.tasks = response.data;
+                            this.tasks = response.data.data;
                         });
             },
 
-            toggleComplete(task) {
-                axios.post('/people/' + task.contact.hash_id + '/tasks/' + task.id + '/toggle')
+            // All the custom tasks not yet completed
+            customNotCompleted: function (tasks) {
+              return tasks.filter(function (task) {
+                return task.contact === null && task.completed === false
+              })
+            },
+
+            // All the custom completed tasks
+            customCompleted: function (tasks) {
+              return tasks.filter(function (task) {
+                return task.contact === null && task.completed === true
+              })
+            },
+
+            // All the contact related tasks
+            contactRelated: function (tasks) {
+              return tasks.filter(function (task) {
+                return task.contact != null
+              })
+            },
+
+            updateTask(task) {
+                task.completed = !task.completed
+                axios.put('/tasks/' + task.id, task)
                         .then(response => {
                             this.$notify({
-                              group: 'main',
-                              title: this.$t('app.default_save_success'),
-                              text: '',
-                              type: 'success'
-                          });
+                                group: 'main',
+                                title: this.$t('app.default_save_success'),
+                                text: '',
+                                type: 'success'
+                            });
                         });
             },
+
+            saveTask() {
+              axios.post('/tasks', this.newTask)
+                        .then(response => {
+                            this.newTask.title = ''
+                            this.taskAddMode = false
+                            this.getTasks()
+                            this.$notify({
+                                group: 'main',
+                                title: this.$t('app.default_save_success'),
+                                text: '',
+                                type: 'success'
+                            });
+                        });
+            },
+
+            destroyTask(task) {
+              axios.delete('/tasks/' + task.id)
+                        .then(response => {
+                            this.tasks.splice(this.tasks.indexOf(task), 1)
+                        });
+            }
         }
     }
 </script>

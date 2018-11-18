@@ -21,12 +21,7 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/setTags");
 
-        $response->assertStatus(200);
-
-        $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
-            'error_code' => 32,
-        ]);
+        $this->expectDataError($response, ['The tags field is required.']);
     }
 
     public function test_it_associates_tags_to_a_contact()
@@ -42,10 +37,31 @@ class ApiContactTagControllerTest extends ApiTestCase
                         ]);
 
         $response->assertStatus(200);
+        $tagId1 = $response->json('data.tags.0.id');
+        $tagId2 = $response->json('data.tags.1.id');
 
         $response->assertJsonFragment([
-            'id' => $contact->id,
+            'object' => 'tag',
+            'id' => $tagId1,
+            'name' => 'very-specific-tag-name',
+        ]);
+
+        $response->assertJsonFragment([
+            'object' => 'tag',
+            'id' => $tagId2,
             'name' => 'very-specific-tag-name-2',
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tagId1,
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tagId2,
         ]);
     }
 
@@ -59,12 +75,7 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTag");
 
-        $response->assertStatus(200);
-
-        $response->assertJsonFragment([
-            'message' => ['The tags field is required.'],
-            'error_code' => 32,
-        ]);
+        $this->expectDataError($response, ['The tags field is required.']);
     }
 
     public function test_it_removes_one_tag_from_a_contact()
@@ -84,8 +95,14 @@ class ApiContactTagControllerTest extends ApiTestCase
             'name' => 'family',
         ]);
 
-        $contact->setTag($tag->name);
-        $contact->setTag($tag2->name);
+        $contact->tags()->syncWithoutDetaching([
+            $tag->id => [
+                'account_id' => $contact->account_id,
+            ],
+            $tag2->id => [
+                'account_id' => $contact->account_id,
+            ],
+        ]);
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTag", [
                             'tags' => [$tag->id],
@@ -100,6 +117,17 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response->assertJsonMissing([
             'name' => $tag->name,
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'contact_id' => $contact->id,
+            'tag_id' => $tag2->id,
+            'account_id' => $user->account->id,
+        ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'tag_id' => $tag->id,
+            'account_id' => $user->account->id,
         ]);
     }
 
@@ -124,9 +152,17 @@ class ApiContactTagControllerTest extends ApiTestCase
             'name' => 'work',
         ]);
 
-        $contact->setTag($tag->name);
-        $contact->setTag($tag2->name);
-        $contact->setTag($tag3->name);
+        $contact->tags()->syncWithoutDetaching([
+            $tag->id => [
+                'account_id' => $contact->account_id,
+            ],
+            $tag2->id => [
+                'account_id' => $contact->account_id,
+            ],
+            $tag3->id => [
+                'account_id' => $contact->account_id,
+            ],
+        ]);
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTag", [
                             'tags' => [$tag->id, $tag2->id],
@@ -141,6 +177,21 @@ class ApiContactTagControllerTest extends ApiTestCase
 
         $response->assertJsonMissing([
             'name' => $tag2->name,
+        ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
+            'tag_id' => $tag->id,
+        ]);
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
+            'tag_id' => $tag2->id,
+        ]);
+        $this->assertDatabaseHas('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
+            'tag_id' => $tag3->id,
         ]);
     }
 
@@ -161,15 +212,26 @@ class ApiContactTagControllerTest extends ApiTestCase
             'name' => 'family',
         ]);
 
-        $contact->setTag($tag->name);
-        $contact->setTag($tag2->name);
+        $contact->tags()->syncWithoutDetaching([
+            $tag->id => [
+                'account_id' => $contact->account_id,
+            ],
+            $tag2->id => [
+                'account_id' => $contact->account_id,
+            ],
+        ]);
 
-        $response = $this->json('GET', "/api/contacts/{$contact->id}/unsetTags");
+        $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTags");
 
         $response->assertStatus(200);
 
         $response->assertJsonMissing([
             'name' => $tag2->name,
+        ]);
+
+        $this->assertDatabaseMissing('contact_tag', [
+            'contact_id' => $contact->id,
+            'account_id' => $user->account->id,
         ]);
     }
 }
