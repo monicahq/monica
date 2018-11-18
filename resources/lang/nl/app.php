@@ -5,6 +5,7 @@ return [
     'save' => 'Opslaan',
     'add' => 'Toevoegen',
     'cancel' => 'Annuleren',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Verwijderen',
     'edit' => 'Bewerken',
     'upload' => 'Uploaden',
