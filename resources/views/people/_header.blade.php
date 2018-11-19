@@ -1,6 +1,10 @@
 <div class="ph3 ph5-ns pv2 cf w-100 mt4 mt0-ns">
     <div class="mw9 center dt w-100 box-shadow pa4 relative">
 
+      <div class="absolute dib br6">
+        <img src="https://api.adorable.io/avatars/285/sadfasdfasf.png" style="height: 115px;border-radius: 7px;">
+      </div>
+
       {{-- AVATAR --}}
       <div class="relative">
         {!! $avatar !!}
