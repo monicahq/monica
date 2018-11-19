@@ -16,11 +16,11 @@ return [
     'tab_tasks' => 'משימות',
     'tab_tasks_blank' => 'אין לך משימות עדיין.',
 
-    'tasks_add_task_placeholder' => 'What is this task about?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_add_task_placeholder' => 'מה מהות המשימה הזאת?',
+    'tasks_tab_your_contacts' => 'משימות שקשורות לאנשי הקשר שלך',
+    'tasks_tab_your_tasks' => 'המשימות שלך',
+    'tasks_add_note' => 'נא ללחוץ על <kbd>Enter</kbd> כדי להוסיף את המשימה.',
+    'task_add_cta' => 'הוספת משימה',
 
     'debts_you_owe' => 'חובך הוא',
 
