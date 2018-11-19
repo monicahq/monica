@@ -5,7 +5,7 @@ return [
     'save' => 'שמירה',
     'add' => 'הוספה',
     'cancel' => 'ביטול',
-    'delete_confirm' => 'Sure?',
+    'delete_confirm' => 'להמשיך?',
     'delete' => 'מחיקה',
     'edit' => 'עריכה',
     'upload' => 'העלאה',
