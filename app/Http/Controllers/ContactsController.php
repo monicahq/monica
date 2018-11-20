@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -538,7 +539,7 @@ class ContactsController extends Controller
                 }
             }
 
-            return $results;
+            return ContactResource::collection($results);
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }
