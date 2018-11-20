@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Contact\url;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ContactField;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
+use App\Models\Contact\ContactFieldType;
 use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GetAvatarsFromInternetTest extends TestCase

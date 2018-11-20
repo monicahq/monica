@@ -4,10 +4,6 @@ namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Message;
-use App\Models\Contact\Conversation;
-use App\Services\Contact\Avatar\GetAdorableAvatar;
-use App\Services\Contact\Avatar\GetGravatar;
 
 class GetAvatarsFromInternet extends BaseService
 {

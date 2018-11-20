@@ -3,8 +3,8 @@
 namespace Tests\Unit\Services\Contact\url;
 
 use Tests\TestCase;
-use App\Services\Contact\Avatar\GetAdorableAvatar;
 use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Avatar\GetAdorableAvatar;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GetAdorableAvatarTest extends TestCase

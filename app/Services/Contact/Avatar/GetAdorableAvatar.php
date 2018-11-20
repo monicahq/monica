@@ -3,9 +3,6 @@
 namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Message;
-use App\Models\Contact\Conversation;
 
 class GetAdorableAvatar extends BaseService
 {
@@ -35,7 +32,7 @@ class GetAdorableAvatar extends BaseService
 
         $size = $this->size($data);
 
-        return 'https://api.adorable.io/avatars/' . $size .  '/' . $data['uuid'] . '.png';
+        return 'https://api.adorable.io/avatars/'.$size.'/'.$data['uuid'].'.png';
     }
 
     /**
