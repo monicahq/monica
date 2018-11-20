@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Services\Contact\Conversation;
+namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
+use App\Services\Contact\Avatar\GetAdorableAvatar;
+use App\Services\Contact\Avatar\GetGravatar;
 
 class GetAvatarsFromInternet extends BaseService
 {
@@ -29,19 +31,37 @@ class GetAvatarsFromInternet extends BaseService
      * - Gravatar only gives an avatar only if it's set.
      *
      * @param array $data
-     * @return Message
+     * @return Contact
      */
-    public function execute(array $data): Message
+    public function execute(array $data): Contact
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
-                ->findOrFail($data['contact_id']);
+        $contact = Contact::findOrFail($data['contact_id']);
 
-        Conversation::where('contact_id', $data['contact_id'])
-                    ->where('account_id', $data['account_id'])
-                    ->findOrFail($data['conversation_id']);
+        $contact->avatar_gravatar_url = (new GetGravatar)->execute([
+            'email' => $this->getEmail($contact),
+            'size' => 200,
+        ]);
 
-        return Message::create($data);
+        $contact->avatar_adorable_url = (new GetAdorableAvatar)->execute([
+            'uuid' => bcrypt($contact->id),
+            'size' => 200,
+        ]);
+
+        $contact->save();
+
+        return $contact;
+    }
+
+    private function getEmail(Contact $contact)
+    {
+        $contactField = $contact->contactFields()
+            ->whereHas('contactFieldType', function ($query) {
+                $query->where('type', '=', 'email');
+            })
+            ->first();
+
+        return $contactField->data;
     }
 }
