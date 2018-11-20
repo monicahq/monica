@@ -59,6 +59,20 @@ class GetGravatarTest extends TestCase
         );
     }
 
+    public function test_it_returns_null_if_no_avatar_is_found()
+    {
+        $request = [
+            'email' => 'jlskjdfl@dskfjlsd.com',
+        ];
+
+        $gravatarService = new GetGravatar;
+
+        // should return an avatar of 200 px wide
+        $this->assertNull(
+            $gravatarService->execute($request)
+        );
+    }
+
     public function test_it_fails_if_wrong_parameters_are_given()
     {
         $request = [
