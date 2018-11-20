@@ -15,6 +15,7 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
@@ -415,6 +416,16 @@ class Account extends Model
     public function lifeEvents()
     {
         return $this->hasMany(LifeEvent::class);
+    }
+
+    /**
+     * Get the Photos records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
     }
 
     /**
