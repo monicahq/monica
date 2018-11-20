@@ -3,15 +3,9 @@
 namespace Tests\Unit\Services\Contact\url;
 
 use Tests\TestCase;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Contact\url;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Avatar\GetGravatar;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetGravatarTest extends TestCase
 {

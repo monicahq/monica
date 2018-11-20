@@ -51,7 +51,7 @@ class GetGravatar extends BaseService
      * default otherwise.
      *
      * @param  array  $data
-     * @return integer
+     * @return int
      */
     private function size(array $data)
     {
