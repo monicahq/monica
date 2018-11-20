@@ -956,13 +956,31 @@ class Contact extends Model
     }
 
     /**
-     * Returns the URL of the avatar with the given size.
+     * Returns the URL of the avatar, properly sized.
+     * The avatar can come from 3 sources: Adorable avatar, Gravatar or a photo
+     * that has been uploaded.
      *
      * @param  int $size
      * @return string
      */
     public function getAvatarURL($size = 110)
     {
+        $avatarURL = '';
+
+        switch ($this->avatar_source) {
+            case 'adorable':
+                $avatarURL = $this->avatar_adorable_url;
+                break;
+            case 'gravatar':
+                $avatarURL = $this->avatar_gravatar_url;
+                break;
+            case 'photo':
+                $avatarURL = $this->photo->find($this->avatar_photo_id)->url;
+                break;
+        }
+
+        return $avatarURL;
+
         // it either returns null or the gravatar url if it's defined
         if (! $this->has_avatar) {
             return $this->gravatar_url;
@@ -1054,43 +1072,6 @@ class Contact extends Model
             $this->gravatar_url = null;
         }
         $this->save();
-    }
-
-    /**
-     * Get the first gravatar of all emails, if found.
-     *
-     * @param  int $size
-     * @return string|bool
-     */
-    public function getGravatar($size)
-    {
-        $emails = $this->contactFields()
-            ->whereHas('contactFieldType', function ($query) {
-                $query->where('type', '=', 'email');
-            })
-            ->get();
-
-        foreach ($emails as $email) {
-            if (is_null($email) || empty($email->data)) {
-                continue;
-            }
-
-            try {
-                if (! app('gravatar')->exists($email->data)) {
-                    continue;
-                }
-            } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
-                // catch invalid email
-                continue;
-            }
-
-            return app('gravatar')->get($email->data, [
-                'size' => $size,
-                'secure' => config('app.env') === 'production',
-            ]);
-        }
-
-        return false;
     }
 
     /**

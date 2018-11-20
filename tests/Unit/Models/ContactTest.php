@@ -671,32 +671,6 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    public function test_get_avatar_source_returns_external_or_internal()
-    {
-        $contact = new Contact();
-        $contact->has_avatar = false;
-
-        $this->assertNull(
-            $contact->getAvatarSource()
-        );
-
-        $contact->has_avatar = true;
-        $contact->avatar_location = 'external';
-
-        $this->assertEquals(
-            'external',
-            $contact->getAvatarSource()
-        );
-
-        $contact->has_avatar = true;
-        $contact->avatar_location = 'public';
-
-        $this->assertEquals(
-            'internal',
-            $contact->getAvatarSource()
-        );
-    }
-
     public function testHasDebt()
     {
         $contact = new Contact;
