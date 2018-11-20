@@ -74,7 +74,6 @@ class RelationshipsController extends Controller
     {
         // case of linking to an existing contact
         if ($request->get('relationship_type') == 'existing') {
-
             $validator = Validator::make($request->all(), [
                 'existing_contact_id' => 'required|integer',
                 'relationship_type_id' => 'required|integer',
