@@ -23,7 +23,7 @@ class RelationshipsController extends Controller
         $existingContacts = auth()->user()->account->contacts()
                                     ->real()
                                     ->active()
-                                    ->select(['id', 'first_name', 'last_name', 'middle_name'])
+                                    ->select(['id', 'first_name', 'last_name', 'middle_name', 'nickname'])
                                     ->sortedBy('name')
                                     ->take(100)
                                     ->get();

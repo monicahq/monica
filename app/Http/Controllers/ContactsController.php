@@ -529,16 +529,6 @@ class ContactsController extends Controller
         $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
-            foreach ($results as $key => $result) {
-                if ($result->is_partial) {
-                    $real = $result->getRelatedRealContact();
-
-                    $results[$key]->hash = $real->hashID();
-                } else {
-                    $results[$key]->hash = $result->hashID();
-                }
-            }
-
             return ContactResource::collection($results);
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
