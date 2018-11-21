@@ -8,7 +8,6 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class RelationshipsController extends Controller
 {
