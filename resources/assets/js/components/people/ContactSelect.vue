@@ -54,7 +54,7 @@
                 }).then(function(response) {
                     let data = [];
                     response.data.data.forEach(function (contact) {
-                        if (contact.hash_id === vm.userContactId) {
+                        if (contact.id === vm.userContactId) {
                             return;
                         }
                         data.push(contact);
