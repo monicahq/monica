@@ -51,9 +51,7 @@ class MonicaAddressBook extends AddressBook
      *
      * @return void
      */
-    function getLastModified() {
-
-        return null;
-
+    public function getLastModified()
+    {
     }
 }

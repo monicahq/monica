@@ -10,7 +10,6 @@ use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\CardDAV\Backend\AbstractBackend;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
 class MonicaCardDAVBackend extends AbstractBackend
 {
@@ -116,6 +115,7 @@ class MonicaCardDAVBackend extends AbstractBackend
         }
 
         $carddata = $vcard->serialize();
+
         return [
             'id' => $contact->hashid(),
             'uri' => $this->encodeUri($contact),
@@ -176,7 +176,7 @@ class MonicaCardDAVBackend extends AbstractBackend
                         ->active()
                         ->get();
 
-        return $contacts->map(function($contact) {
+        return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);
         });
     }
