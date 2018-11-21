@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class RelationshipsController extends Controller
 {
@@ -23,7 +24,7 @@ class RelationshipsController extends Controller
         $existingContacts = auth()->user()->account->contacts()
                                     ->real()
                                     ->active()
-                                    ->select(['id', 'first_name', 'last_name'])
+                                    ->select(['id', 'first_name', 'last_name', 'middle_name'])
                                     ->sortedBy('name')
                                     ->take(100)
                                     ->get();
