@@ -24,6 +24,8 @@ class GetAvatarsFromInternet extends BaseService
      * the contact.
      *
      * - http://avatars.adorable.io/ gives avatars based on a random string.
+     * This random string comes from the `avatar_adorable_uuid` field in the
+     * Contact object.
      * - Gravatar only gives an avatar only if it's set.
      *
      * @param array $data
@@ -41,7 +43,7 @@ class GetAvatarsFromInternet extends BaseService
         ]);
 
         $contact->avatar_adorable_url = (new GetAdorableAvatar)->execute([
-            'uuid' => bcrypt($contact->id),
+            'uuid' => $contact->avatar_adorable_uuid,
             'size' => 200,
         ]);
 

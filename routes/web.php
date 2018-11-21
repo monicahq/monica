@@ -101,6 +101,11 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::post('/people/{contact}/tags/update', 'Contacts\\TagsController@update')->name('update');
         });
 
+        // Avatars
+        Route::resource('people/{contact}/avatar', 'Contacts\\AvatarController')->only([
+            'index', 'store', 'update', 'destroy',
+        ]);
+
         // Notes
         Route::resource('people/{contact}/notes', 'Contacts\\NotesController')->only([
             'index', 'store', 'update', 'destroy',

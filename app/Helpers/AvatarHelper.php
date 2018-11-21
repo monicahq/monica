@@ -30,4 +30,14 @@ class AvatarHelper
 
         return $htmlString;
     }
+
+    /**
+     * Generate a new UUID to grab a new adorable avatar.
+     *
+     * @return string
+     */
+    public static function generateAdorableUUID()
+    {
+        return str_random(32);
+    }
 }
