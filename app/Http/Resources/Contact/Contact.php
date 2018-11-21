@@ -16,10 +16,20 @@ class Contact extends Resource
      */
     public function toArray($request)
     {
+        $hashid = '';
+        if ($this->is_partial) {
+            $realContact = $this->getRelatedRealContact();
+            if ($realContact) {
+                $hashid = $realContact->hashID();
+            }
+        } else {
+            $hashid = $this->hashID();
+        }
+
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->is_partial ? $this->getRelatedRealContact()->hashID() : $this->hashID(),
+            'hash_id' => $hashid,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
