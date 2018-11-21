@@ -36,20 +36,11 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
             ],
         ];
 
-        $prefixPath = trim($prefixPath, '/');
-        if ($prefixPath) {
-            $prefixPath .= '/';
-        }
+        $prefixPath = str_finish($prefixPath, '/');
 
-        $return = [];
-        foreach ($principals as $principal) {
-            if ($prefixPath && strpos($principal['uri'], $prefixPath) !== 0) {
-                continue;
-            }
-            $return[] = $principal;
-        }
-
-        return $return;
+        return array_filter($principals, function($principal) use ($prefixPath) {
+            return ! $prefixPath || strpos($principal['uri'], $prefixPath) == 0;
+        });
     }
 
     /**

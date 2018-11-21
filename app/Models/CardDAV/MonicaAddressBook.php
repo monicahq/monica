@@ -45,4 +45,15 @@ class MonicaAddressBook extends AddressBook
     {
         return $this->getACL();
     }
+
+    /**
+     * Returns the last modification date as a unix timestamp.
+     *
+     * @return void
+     */
+    function getLastModified() {
+
+        return null;
+
+    }
 }

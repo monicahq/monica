@@ -9,9 +9,10 @@ use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Sabre\CardDAV\Backend\BackendInterface as SabreBackendInterface;
+use Sabre\CardDAV\Backend\AbstractBackend;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
-class MonicaCardDAVBackend implements SabreBackendInterface
+class MonicaCardDAVBackend extends AbstractBackend
 {
     /**
      * Returns the list of addressbooks for a specific user.
@@ -39,6 +40,7 @@ class MonicaCardDAVBackend implements SabreBackendInterface
                 'id' => '0',
                 'uri' => 'contacts',
                 'principaluri' => 'principals/'.Auth::user()->email,
+                '{DAV:}displayname' => Auth::user()->name,
             ],
         ];
     }
@@ -113,18 +115,19 @@ class MonicaCardDAVBackend implements SabreBackendInterface
             Log::debug(__CLASS__.' prepareCard: '.(string) $e);
         }
 
+        $carddata = $vcard->serialize();
         return [
             'id' => $contact->hashid(),
-            'etag' => md5($vcard->serialize()),
             'uri' => $this->encodeUri($contact),
+            'carddata' => $carddata,
+            'etag' => '"'.md5($carddata).'"',
             'lastmodified' => $contact->updated_at->timestamp,
-            'carddata' => $vcard->serialize(),
         ];
     }
 
     private function encodeUri($contact)
     {
-        return urlencode($contact->hashid().'.vcf');
+        return urlencode($contact->uuid.'.vcf');
     }
 
     private function decodeUri($uri)
@@ -135,23 +138,13 @@ class MonicaCardDAVBackend implements SabreBackendInterface
     private function getContact($uri)
     {
         try {
-            return (new Contact)->resolveRouteBinding($this->decodeUri($uri));
+            return Contact::where([
+                'account_id' => Auth::user()->account_id,
+                'uuid' => $this->decodeUri($uri),
+            ])->first();
         } catch (\Exception $e) {
             return;
         }
-    }
-
-    private function prepareCards($contacts)
-    {
-        $results = [];
-
-        foreach ($contacts as $contact) {
-            $results[] = $this->prepareCard($contact);
-        }
-
-        Log::debug(__CLASS__.' prepareCards', ['count' => count($results)]);
-
-        return $results;
     }
 
     /**
@@ -183,11 +176,13 @@ class MonicaCardDAVBackend implements SabreBackendInterface
                         ->active()
                         ->get();
 
-        return $this->prepareCards($contacts);
+        return $contacts->map(function($contact) {
+            return $this->prepareCard($contact);
+        });
     }
 
     /**
-     * Returns a specfic card.
+     * Returns a specific card.
      *
      * The same set of prope
      * @param mixed $addressBookId
@@ -201,29 +196,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
         $contact = $this->getContact($cardUri);
 
         return $this->prepareCard($contact);
-    }
-
-    /**
-     * Returns a list of cards.
-     *
-     * This method should work identical to getCard, but instead return all the
-     * cards in the list as an array.
-     *
-     * If the backend supports this, it may allow for some speed-ups.
-     *
-     * @param mixed $addressBookId
-     * @param array $uris
-     * @return array
-     */
-    public function getMultipleCards($addressBookId, array $uris)
-    {
-        Log::debug(__CLASS__.' getMultipleCards', func_get_args());
-
-        $contacts = array_map(function ($uri) {
-            return $this->getContact($uri);
-        }, $uris);
-
-        return $this->prepareCards($contacts);
     }
 
     /**

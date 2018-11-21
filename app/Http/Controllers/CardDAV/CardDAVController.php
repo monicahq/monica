@@ -112,7 +112,7 @@ class CardDAVController extends Controller
         // VCFExport
         $server->addPlugin(new VCFExportPlugin());
 
-        // In debug mode add browser plugin
+        // In local environment add browser plugin
         if (App::environment('local')) {
             $server->addPlugin(new BrowserPlugin());
         }
