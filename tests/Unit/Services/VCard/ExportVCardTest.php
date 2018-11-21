@@ -274,7 +274,7 @@ class ExportVCardTest extends TestCase
             self::defaultPropsCount + 4,
             $vCard->children()
         );
-        $hash = $contact->hashid();
+        $hash = $contact->hashID();
         $url = config('app.url');
         $this->assertVObjectEqualsVObject("BEGIN:VCARD
 VERSION:4.0
@@ -324,7 +324,7 @@ END:VCARD", $vCard);
             self::defaultPropsCount + 7,
             $vCard->children()
         );
-        $hash = $contact->hashid();
+        $hash = $contact->hashID();
         $url = config('app.url');
         $this->assertVObjectEqualsVObject("BEGIN:VCARD
 VERSION:4.0

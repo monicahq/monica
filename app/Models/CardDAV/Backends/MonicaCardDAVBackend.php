@@ -117,7 +117,7 @@ class MonicaCardDAVBackend extends AbstractBackend
 
         $carddata = $vcard->serialize();
         return [
-            'id' => $contact->hashid(),
+            'id' => $contact->hashID(),
             'uri' => $this->encodeUri($contact),
             'carddata' => $carddata,
             'etag' => '"'.md5($carddata).'"',
