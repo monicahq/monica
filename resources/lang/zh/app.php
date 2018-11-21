@@ -5,7 +5,7 @@ return [
     'save' => '保存',
     'add' => '添加',
     'cancel' => '取消',
-    'delete_confirm' => 'Sure?',
+    'delete_confirm' => '您确定吗？',
     'delete' => '删除',
     'edit' => '编辑',
     'upload' => '上传',
