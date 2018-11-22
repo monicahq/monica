@@ -506,6 +506,17 @@ class ContactTest extends FeatureTestCase
         );
     }
 
+    public function test_it_returns_the_url_of_the_avatar()
+    {
+        $contact = factory(Contact::class)->create([
+            'avatar_adorable_url' => 'url',
+            'avatar_gravatar_url' => 'url',
+            'avatar_source' => 'adorable',
+        ]);
+
+
+    }
+
     public function testGetAvatarReturnsPath()
     {
         config(['filesystems.default' => 'public']);

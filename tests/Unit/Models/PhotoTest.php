@@ -20,4 +20,14 @@ class PhotoTest extends TestCase
 
         $this->assertTrue($photo->account()->exists());
     }
+
+    public function test_it_gets_the_url()
+    {
+        $photo = factory(Photo::class)->create();
+
+        $this->assertEquals(
+            config('app.url') . '/storage/' . $photo->new_filename,
+            $photo->url()
+        );
+    }
 }
