@@ -95,7 +95,6 @@
             prepareComponent() {
                 this.getExistingTags()
                 this.getContactTags()
-                //this.filterAllTags()
             },
 
             getExistingTags() {
@@ -157,7 +156,6 @@
                 this.search = null
                 this.isOpen = false
                 this.contactTags.push(result)
-                //this.filterAllTags()
             },
 
             filterResults() {

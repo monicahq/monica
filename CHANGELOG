@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Fix incompatibility of people search queries with PostgreSQL
+* Add ability to create tasks that are not linked to any contacts
 
 RELEASED VERSIONS:
 

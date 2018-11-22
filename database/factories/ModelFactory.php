@@ -91,6 +91,9 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
         },
     ];
 });
+$factory->state(App\Models\Contact\Contact::class, 'partial', [
+    'is_partial' => 1,
+]);
 
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     return [
@@ -124,6 +127,9 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
                 'account_id' => $data['account_id'],
             ])->id;
         },
+        'title' => $faker->word,
+        'description' => $faker->word,
+        'completed' => 0,
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
