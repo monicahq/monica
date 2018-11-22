@@ -513,8 +513,6 @@ class ContactTest extends FeatureTestCase
             'avatar_gravatar_url' => 'url',
             'avatar_source' => 'adorable',
         ]);
-
-
     }
 
     public function testGetAvatarReturnsPath()
