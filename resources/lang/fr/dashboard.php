@@ -17,10 +17,10 @@ return [
     'tab_tasks_blank' => 'Vous n’avez encore aucune tâche.',
 
     'tasks_add_task_placeholder' => 'En quoi consiste cette tâche ?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_tab_your_contacts' => 'Tâches liées à vos contacts',
+    'tasks_tab_your_tasks' => 'Vos tâches',
+    'tasks_add_note' => 'Appuyez sur <kbd>Entrée</kbd> pour ajouter la tâche.',
+    'task_add_cta' => 'Ajouter une tâche',
 
     'debts_you_owe' => 'Vous devez',
 
