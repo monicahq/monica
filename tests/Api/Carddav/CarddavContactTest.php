@@ -20,7 +20,7 @@ class CarddavContactTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->get("/carddav/addressbooks/{$user->email}/contacts/{$contact->hashid()}.vcf");
+        $response = $this->get("/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf");
 
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
@@ -63,7 +63,7 @@ class CarddavContactTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $filename = urlencode($contact->hashid().'.vcf');
+        $filename = urlencode($contact->uuid.'.vcf');
 
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             ['content-type' => 'text/vcard; charset=utf-8'],
@@ -90,7 +90,7 @@ class CarddavContactTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $filename = urlencode($contact->hashid().'.vcf');
+        $filename = urlencode($contact->uuid.'.vcf');
 
         $response = $this->get("/carddav/addressbooks/{$user->email}/contacts/{$filename}");
         $data = $response->getContent();
@@ -103,5 +103,54 @@ class CarddavContactTest extends ApiTestCase
         $response->assertStatus(204);
         $response->assertHeader('X-Sabre-Version');
         $response->assertHeader('ETag');
+    }
+
+    public function test_carddav_contacts_report()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'HTTP_DEPTH' => '1',
+            ],
+            '<card:addressbook-query xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">
+               <d:prop>
+                 <d:getetag />
+                 <card:address-data />
+               </d:prop>
+             </card:addressbook-query>'
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $peopleurl = route('people.show', $contact);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+        '<d:response>'.
+          "<d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>".
+          '<d:propstat>'.
+            '<d:prop>'.
+              '<d:getetag>&quot;');
+        $response->assertSee('&quot;</d:getetag>'.
+              "<card:address-data>BEGIN:VCARD&#13;\n".
+        "VERSION:3.0&#13;\n".
+        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
+        "UID:{$contact->uuid}&#13;\n".
+        "SOURCE:{$peopleurl}&#13;\n".
+        "FN:John Doe&#13;\n".
+        "N:Doe;John;;;&#13;\n".
+        "GENDER:O;&#13;\n".
+        "END:VCARD&#13;\n".
+               '</card:address-data>'.
+             '</d:prop>'.
+             '<d:status>HTTP/1.1 200 OK</d:status>'.
+           '</d:propstat>'.
+          '</d:response>'.
+        '</d:multistatus>');
     }
 }
