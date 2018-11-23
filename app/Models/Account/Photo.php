@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 use App\Models\ModelBinding as Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Photo extends Model
@@ -29,5 +30,17 @@ class Photo extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Gets the full path of the photo.
+     *
+     * @return string
+     */
+    public function url()
+    {
+        $url = $this->new_filename;
+
+        return asset(Storage::disk(config('filesystems.default'))->url($url));
     }
 }

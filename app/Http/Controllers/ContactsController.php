@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
@@ -15,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class ContactsController extends Controller
 {
@@ -193,6 +193,10 @@ class ContactsController extends Controller
         $contact->setAvatarColor();
         $contact->save();
 
+        $contact = (new GetAvatarsFromInternet)->execute([
+            'contact_id' => $contact->id,
+        ]);
+
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
             return redirect()->route('people.show', $contact);
@@ -340,22 +344,6 @@ class ContactsController extends Controller
         $contact->description = $request->input('description');
         $contact->nickname = $request->input('nickname', null);
 
-        if ($request->file('avatar') != '') {
-            if ($contact->has_avatar) {
-                try {
-                    $contact->deleteAvatars();
-                } catch (\Exception $e) {
-                    return back()
-                        ->withInput()
-                        ->withErrors(trans('app.error_save'));
-                }
-            }
-
-            $contact->has_avatar = true;
-            $contact->avatar_location = config('filesystems.default');
-            $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
-        }
-
         // Is the person deceased?
         $contact->removeSpecialDate('deceased_date');
         $contact->is_dead = false;
@@ -411,10 +399,6 @@ class ContactsController extends Controller
 
                 break;
         }
-
-        dispatch(new ResizeAvatars($contact));
-
-        $contact->updateGravatar();
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));

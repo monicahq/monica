@@ -1,16 +1,27 @@
 <div class="ph3 ph5-ns pv2 cf w-100 mt4 mt0-ns">
+
+    <div class="mw9 center tc w-100 avatar-header relative">
+      {{-- AVATAR --}}
+      <div class="relative center dib z-3">
+        <div class="relative hide-child">
+          <div class="image-header">
+            <img src="{{ $contact->getAvatarURL() }}" class="br3" style="height: 115px;">
+          </div>
+          <div class="child absolute top-0 left-0 h-100 w-100 br3">
+            <div class="db w-100 h-50 center tc pt3">
+              <a class="no-underline white" href="">Zoom</a>
+            </div>
+            <div class="db w-100 h-50 center tc pt3">
+              <a class="no-underline white" href="/people/{{ $contact->hashID() }}/avatar">Change</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="mw9 center dt w-100 box-shadow pa4 relative">
 
-      <div class="absolute dib br6">
-        <img src="https://api.adorable.io/avatars/285/sadfasdfasf.png" style="height: 115px;border-radius: 7px;">
-      </div>
-
-      {{-- AVATAR --}}
-      <div class="relative">
-        {!! $avatar !!}
-      </div>
-
-      <h1 class="tc mb2 mt0">
+      <h1 class="tc mb2 mt4">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
         <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
       </h1>

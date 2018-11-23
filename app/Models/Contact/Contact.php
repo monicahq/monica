@@ -6,6 +6,7 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
+use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
@@ -975,27 +976,11 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->photo->find($this->avatar_photo_id)->url;
+                $avatarURL = Photo::find($this->avatar_photo_id)->url();
                 break;
         }
 
         return $avatarURL;
-
-        // it either returns null or the gravatar url if it's defined
-        if (! $this->has_avatar) {
-            return $this->gravatar_url;
-        }
-
-        if ($this->avatar_location == 'external') {
-            return $this->avatar_external_url;
-        }
-
-        $originalAvatarUrl = $this->avatar_file_name;
-        $avatarFilename = pathinfo($originalAvatarUrl, PATHINFO_FILENAME);
-        $avatarExtension = pathinfo($originalAvatarUrl, PATHINFO_EXTENSION);
-        $resizedAvatar = 'avatars/'.$avatarFilename.'_'.$size.'.'.$avatarExtension;
-
-        return asset(Storage::disk($this->avatar_location)->url($resizedAvatar));
     }
 
     /**

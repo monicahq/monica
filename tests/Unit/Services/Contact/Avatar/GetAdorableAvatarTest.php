@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\url;
+namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
 use App\Exceptions\MissingParameterException;
