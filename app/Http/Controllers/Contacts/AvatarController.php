@@ -3,16 +3,11 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Helpers\LocaleHelper;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Validator;
 use App\Services\Account\Photo\UploadPhoto;
-use App\Http\Requests\People\AddressesRequest;
 
 class AvatarController extends Controller
 {

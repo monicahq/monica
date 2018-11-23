@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
@@ -16,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class ContactsController extends Controller
 {

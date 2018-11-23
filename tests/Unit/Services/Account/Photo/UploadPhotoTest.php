@@ -3,16 +3,14 @@
 namespace Tests\Unit\Services\Account\Photo;
 
 use Tests\TestCase;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Account\Photo;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 use App\Services\Account\Photo\UploadPhoto;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UploadPhotoTest extends TestCase
 {

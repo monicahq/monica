@@ -13,8 +13,8 @@ use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Models\Contact\ContactField;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\ContactFieldsRequest;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class ContactFieldsController extends Controller
 {

@@ -4,9 +4,9 @@ namespace App\Models\Contact;
 
 use App\Helpers\DBHelper;
 use App\Models\User\User;
-use App\Models\Account\Photo;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
+use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;

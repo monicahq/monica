@@ -2,9 +2,8 @@
 
 namespace App\Services\Account\Photo;
 
-use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Models\Account\Photo;
+use App\Services\BaseService;
 
 class UploadPhoto extends BaseService
 {
