@@ -4,7 +4,6 @@ namespace Tests\Unit\Helpers;
 
 use Tests\TestCase;
 use App\Helpers\AvatarHelper;
-use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AvatarHelperTest extends TestCase
