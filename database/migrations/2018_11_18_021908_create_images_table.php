@@ -19,6 +19,7 @@ class CreateImagesTable extends Migration
             $table->string('original_filename');
             $table->string('new_filename');
             $table->integer('filesize')->nullable();
+            $table->string('mime_type')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });

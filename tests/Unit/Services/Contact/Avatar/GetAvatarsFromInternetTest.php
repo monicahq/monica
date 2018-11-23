@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\url;
+namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
@@ -45,6 +45,58 @@ class GetAvatarsFromInternetTest extends TestCase
 
         $this->assertNotNull(
             $contact->avatar_gravatar_url
+        );
+    }
+
+    public function test_gravatar_is_null_if_contact_doesnt_have_an_email()
+    {
+        $contact = factory(Contact::class)->create([]);
+
+        $request = [
+            'contact_id' => $contact->id,
+        ];
+
+        $avatarService = new GetAvatarsFromInternet;
+        $contact = $avatarService->execute($request);
+
+        $this->assertNull(
+            $contact->avatar_gravatar_url
+        );
+    }
+
+    public function test_avatar_source_is_reset_and_set_to_adorable_if_gravatar_doesnt_exist_anymore()
+    {
+        $contact = factory(Contact::class)->create([
+            'avatar_source' => 'gravatar',
+        ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $contact->account->id,
+        ]);
+        $contactField = factory(ContactField::class)->create([
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'contact_field_type_id' => $contactFieldType->id,
+            'data' => 'matt@wordpress.com',
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+        ];
+
+        $avatarService = new GetAvatarsFromInternet;
+        $contact = $avatarService->execute($request);
+
+        // now we call the service again to reset the gravatar url
+        $contactField->delete();
+        $contact = $avatarService->execute($request);
+
+        $this->assertNull(
+            $contact->avatar_gravatar_url
+        );
+
+        $this->assertEquals(
+            'adorable',
+            $contact->avatar_source
         );
     }
 

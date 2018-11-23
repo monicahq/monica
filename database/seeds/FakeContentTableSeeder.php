@@ -13,6 +13,7 @@ use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
@@ -62,17 +63,7 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
             $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
             $this->contact->is_starred = (rand(1, 5) == 1);
-            $this->contact->has_avatar = false;
-            $this->contact->setAvatarColor();
             $this->contact->save();
-
-            // set an external avatar
-            if (rand(1, 2) == 1) {
-                $this->contact->has_avatar = true;
-                $this->contact->avatar_location = 'external';
-                $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
-                $this->contact->save();
-            }
 
             $this->populateTags();
             $this->populateFoodPreferences();
@@ -92,6 +83,7 @@ class FakeContentTableSeeder extends Seeder
             $this->populateContactFields();
             $this->populatePets();
             $this->changeUpdatedAt();
+            $this->populateAvatars();
 
             $progress->advance();
         }
@@ -527,6 +519,13 @@ class FakeContentTableSeeder extends Seeder
                 ]);
             }
         }
+    }
+
+    public function populateAvatars()
+    {
+        $contact = (new GetAvatarsFromInternet)->execute([
+            'contact_id' => $this->contact->id,
+        ]);
     }
 
     public function getRandomGender()
