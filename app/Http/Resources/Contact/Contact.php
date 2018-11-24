@@ -115,6 +115,7 @@ class Contact extends Resource
         } else {
             $hashid = $this->hashID();
         }
+
         return $hashid;
     }
 }
