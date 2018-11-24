@@ -136,8 +136,7 @@
               :name="'existing_contact_id'"
               :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
               :default-options="{{ $existingContacts }}"
-              :user-contact-id="'{{ $contact->hashID() }}'"
-              :inputId="'{{ $contact->hashID() }}'">
+              :user-contact-id="'{{ $contact->id }}'">
             </contact-select>
           @endif
         </div>
