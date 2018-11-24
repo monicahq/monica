@@ -19,8 +19,8 @@ return [
     'people_list_filter_tag' => 'Es werden alle Kontakte mit den folgenden Tags angezeigt',
     'people_list_clear_filter' => 'Filter löschen',
     'people_list_contacts_per_tags' => '1 Kontakt|:count Kontakte',
-    'people_list_show_dead' => 'Show deceased people (:count)',
-    'people_list_hide_dead' => 'Hide deceased people (:count)',
+    'people_list_show_dead' => 'Verstorbene Kontakte anzeigen (:count)',
+    'people_list_hide_dead' => 'Verstorbene Kontakte ausblenden (:count)',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
@@ -41,7 +41,7 @@ return [
     'people_add_success' => ':name wurde erfolgreich angelegt.',
     'people_add_gender' => 'Geschlecht',
     'people_delete_success' => 'Der Kontakt wurde gelöscht',
-    'people_delete_message' => 'Delete contact',
+    'people_delete_message' => 'Kontakt löschen',
     'people_delete_confirmation' => 'Möchtest du den Kontakt wirklich löschen? Es gibt kein Zurück.',
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
     'people_add_import' => 'Möchtest du Kontakte <a href=":url">importieren</a>?',
@@ -59,11 +59,11 @@ return [
 
     // archived contacts
     'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_archived_contacts' => 'Liste der archivierten Kontakte',
 
     // Header
     'edit_contact_information' => 'Kontaktinformationen bearbeiten',
-    'contact_archive' => 'Archive contact',
+    'contact_archive' => 'Kontakt archivieren',
     'contact_unarchive' => 'Unarchive contact',
     'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Telefonat vermerken',
