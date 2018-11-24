@@ -26,9 +26,9 @@
             defaultOptions : {
                 type: Array
             },
-            placeholder: {
+            placeholder : {
                 type: String
-            },
+            }
         },
         data () {
             return {
