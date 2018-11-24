@@ -1880,16 +1880,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.7.13",
+            "version": "v5.7.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "3ff3110ac14f2b4876acaff289bb55a1af74f02e"
+                "reference": "ad6c1fe1e455c0f73a431928282704879ccbd856"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/3ff3110ac14f2b4876acaff289bb55a1af74f02e",
-                "reference": "3ff3110ac14f2b4876acaff289bb55a1af74f02e",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ad6c1fe1e455c0f73a431928282704879ccbd856",
+                "reference": "ad6c1fe1e455c0f73a431928282704879ccbd856",
                 "shasum": ""
             },
             "require": {
@@ -2020,7 +2020,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2018-11-07T12:41:02+00:00"
+            "time": "2018-11-21T13:46:08+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2327,16 +2327,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.48",
+            "version": "1.0.49",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "a6ded5b2f6055e2db97b4b859fdfca2b952b78aa"
+                "reference": "a63cc83d8a931b271be45148fa39ba7156782ffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a6ded5b2f6055e2db97b4b859fdfca2b952b78aa",
-                "reference": "a6ded5b2f6055e2db97b4b859fdfca2b952b78aa",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/a63cc83d8a931b271be45148fa39ba7156782ffd",
+                "reference": "a63cc83d8a931b271be45148fa39ba7156782ffd",
                 "shasum": ""
             },
             "require": {
@@ -2407,7 +2407,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2018-10-15T13:53:10+00:00"
+            "time": "2018-11-23T23:41:29+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -3143,16 +3143,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "1.36.0",
+            "version": "1.36.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "f5e9fa283fa389ffa49e58391a02f063dcdd1815"
+                "reference": "63da8cdf89d7a5efe43aabc794365f6e7b7b8983"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/f5e9fa283fa389ffa49e58391a02f063dcdd1815",
-                "reference": "f5e9fa283fa389ffa49e58391a02f063dcdd1815",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/63da8cdf89d7a5efe43aabc794365f6e7b7b8983",
+                "reference": "63da8cdf89d7a5efe43aabc794365f6e7b7b8983",
                 "shasum": ""
             },
             "require": {
@@ -3197,7 +3197,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2018-11-16T11:47:11+00:00"
+            "time": "2018-11-22T18:23:02+00:00"
         },
         {
             "name": "nette/caching",
