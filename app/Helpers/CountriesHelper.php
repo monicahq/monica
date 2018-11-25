@@ -14,10 +14,11 @@ class CountriesHelper
      */
     public static function getAll()
     {
-        $countries = Countries::all()->map(function ($item) {
+        $countries = Countries::all()->hydrate('flag')->map(function ($item) {
             return [
                 'id' => $item->cca2,
                 'country' => static::getCommonNameLocale($item),
+                'icon' => $item->flag->flag_icon
             ];
         });
 
@@ -106,12 +107,12 @@ class CountriesHelper
 
         if (is_null($countryCode)) {
             $lang = LocaleHelper::getLocaleAlpha($locale);
-            $country = Countries::whereLanguage($lang);
+            $country = Countries::whereISO639_3($lang);
             if ($country->count() === 0) {
                 return;
             }
         } else {
-            $country = Countries::where('cca3', $countryCode);
+            $country = Countries::where('cca2', $countryCode);
         }
 
         return $country->first();
@@ -121,43 +122,49 @@ class CountriesHelper
      * Get default country for a language.
      *
      * @param string $locale   language code (iso)
-     * @return string  cca3 code
+     * @return string  cca2 code
      */
-    private static function getDefaultCountryFromLocale($locale)
+    public static function getDefaultCountryFromLocale($locale)
     {
         switch (mb_strtolower($locale)) {
             case 'cs':
-                $country = 'CZE';
+                $country = 'CZ';
                 break;
             case 'de':
-                $country = 'DEU';
+                $country = 'DE';
                 break;
             case 'en':
-                $country = 'USA';
+                $country = 'US';
                 break;
             case 'es':
-                $country = 'ESP';
+                $country = 'ES';
                 break;
             case 'fr':
-                $country = 'FRA';
+                $country = 'FR';
                 break;
             case 'he':
-                $country = 'ISR';
+                $country = 'IL';
+                break;
+            case 'hr':
+                $country = 'HR';
                 break;
             case 'it':
-                $country = 'ITA';
+                $country = 'IT';
                 break;
             case 'nl':
-                $country = 'NLD';
+                $country = 'NL';
                 break;
             case 'pt':
-                $country = 'PRT';
+                $country = 'PT';
                 break;
             case 'ru':
-                $country = 'RUS';
+                $country = 'RU';
+                break;
+            case 'tr':
+                $country = 'TR';
                 break;
             case 'zh':
-                $country = 'CHN';
+                $country = 'CN';
                 break;
             default:
                 $country = null;
