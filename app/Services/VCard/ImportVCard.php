@@ -468,7 +468,7 @@ class ImportVCard extends BaseService
      */
     private function importFromFN(Contact $contact, VCard $entry): void
     {
-        $fullnameParts = preg_split('/ +/', $entry->FN, 2);
+        $fullnameParts = preg_split('/\s+/', $entry->FN, 2);
         $contact->first_name = $this->formatValue($fullnameParts[0]);
         if (count($fullnameParts) > 1) {
             $contact->last_name = $this->formatValue($fullnameParts[1]);
