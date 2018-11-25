@@ -93,7 +93,7 @@ return [
     'call_blank_desc' => 'Du hast :name angerufen',
 
     // Conversation
-    'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :Henning auf Social Media, via SMS etc. hast',
+    'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :name auf Social Media, via SMS etc. hast...',
     'conversation_delete_link' => 'Unterhaltung löschen',
     'conversation_edit_title' => 'Unterhaltung bearbeiten',
     'conversation_edit_delete' => 'Bist du sicher, dass du diese Unterhaltung löschen willst? Dies kann nicht rückgängig gemacht werden.',
