@@ -14,11 +14,10 @@ class CountriesHelper
      */
     public static function getAll()
     {
-        $countries = Countries::all()->hydrate('flag')->map(function ($item) {
+        $countries = Countries::all()->map(function ($item) {
             return [
                 'id' => $item->cca2,
                 'country' => static::getCommonNameLocale($item),
-                'icon' => $item->flag->flag_icon,
             ];
         });
 
