@@ -91,6 +91,9 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
         },
     ];
 });
+$factory->state(App\Models\Contact\Contact::class, 'partial', [
+    'is_partial' => 1,
+]);
 
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     return [
@@ -124,6 +127,9 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
                 'account_id' => $data['account_id'],
             ])->id;
         },
+        'title' => $faker->word,
+        'description' => $faker->word,
+        'completed' => 0,
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
@@ -233,6 +239,8 @@ $factory->define(App\Models\Journal\Day::class, function (Faker\Generator $faker
 $factory->define(App\Models\Contact\Tag::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => $faker->word,
+        'name_slug' => str_slug($faker->word),
     ];
 });
 
@@ -275,7 +283,11 @@ $factory->define(App\Models\Contact\ContactField::class, function (Faker\Generat
                 'account_id' => $data['account_id'],
             ])->id;
         },
-        'contact_field_type_id' => 1,
+        'contact_field_type_id' => function (array $data) {
+            return factory(App\Models\Contact\ContactFieldType::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'data' => 'john@doe.com',
     ];
 });

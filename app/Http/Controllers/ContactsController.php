@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
-use App\Helpers\VCardHelper;
 use Illuminate\Http\Request;
+use App\Helpers\AvatarHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
+use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -268,6 +269,7 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withDays($days)
             ->withMonths($months)
@@ -426,7 +428,7 @@ class ContactsController extends Controller
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, Contact $contact)
+    public function destroy(Request $request, Contact $contact)
     {
         if ($contact->account_id != auth()->user()->account_id) {
             return redirect()->route('people.index');
@@ -491,6 +493,7 @@ class ContactsController extends Controller
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
         return view('people.food-preferencies.edit')
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact);
     }
 
@@ -526,17 +529,7 @@ class ContactsController extends Controller
         $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
-            foreach ($results as $key => $result) {
-                if ($result->is_partial) {
-                    $real = $result->getRelatedRealContact();
-
-                    $results[$key]->hash = $real->hashID();
-                } else {
-                    $results[$key]->hash = $result->hashID();
-                }
-            }
-
-            return $results;
+            return ContactResource::collection($results);
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }
@@ -553,9 +546,14 @@ class ContactsController extends Controller
             Debugbar::disable();
         }
 
-        $vcard = VCardHelper::prepareVCard($contact);
+        $vcard = (new ExportVCard)->execute([
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $contact->id,
+        ]);
 
-        return  $vcard->download();
+        return response($vcard->serialize())
+            ->header('Content-type', 'text/x-vcard')
+            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name).'.vcf');
     }
 
     /**
@@ -572,7 +570,7 @@ class ContactsController extends Controller
         $state = $request->get('state');
 
         if (auth()->user()->account->hasLimitations()) {
-            throw new Exception(trans('people.stay_in_touch_premium'));
+            throw new \LogicException(trans('people.stay_in_touch_premium'));
         }
 
         // if not active, set frequency to 0
@@ -582,7 +580,7 @@ class ContactsController extends Controller
         $result = $contact->updateStayInTouchFrequency($frequency);
 
         if (! $result) {
-            throw new Exception(trans('people.stay_in_touch_invalid'));
+            throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
         $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());

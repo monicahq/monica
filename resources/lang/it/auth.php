@@ -66,6 +66,11 @@ return [
     'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
     'register_invitation_email' => 'Per ragioni di sicurezza, inserisci l\'indirizzo email della persona che ti ha invitato. Trovi questa informazione nella mail di invito.',
 
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
+
     'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
     'email_change_current_email' => 'Current email address:',
     'email_change_title' => 'Change your email address',

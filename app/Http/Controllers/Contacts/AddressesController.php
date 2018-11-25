@@ -16,7 +16,7 @@ class AddressesController extends Controller
     /**
      * Get all the addresses for this contact.
      */
-    public function get(Contact $contact)
+    public function index(Contact $contact)
     {
         $contactAddresses = collect([]);
 

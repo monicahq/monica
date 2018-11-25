@@ -5,10 +5,8 @@ This document lists some tips that developers can use to add new content in Moni
 Changelog entries are used to describe what's new in the product. Each time an entry is created, we also need to create an association between users of the instance and the entry that has been created. This association is stored in `changelog_user`.
 
 To add a new changelog entry, you need to:
-* create a migration that will insert a new changelog entry (example here)
-* call `addUnreadChangelogEntry` method on the Instance object. This will create jobs to create the association between users and the entry.
-
-Note: why jobs and not direct inserts? Because on our hosted version, we have so many users that this will timeout. So we process jobs, that are short and will never time out. The downside of this approach is that it creates a lot of jobs, but that's ok.
+* create a new entry in the `changelog.json` file in the public folder.
+* make sure your new entry is at the TOP of the file, not the bottom.
 
 ### When is it relevant to create a changelog entry
 

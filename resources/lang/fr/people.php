@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'Affichage des contacts avec l’étiquette',
     'people_list_clear_filter' => 'Enlever le filtre',
     'people_list_contacts_per_tags' => ':count contact|:count contacts',
+    'people_list_show_dead' => 'Afficher les contacts décédés (:count)',
+    'people_list_hide_dead' => 'Masquer les contacts décédés (:count)',
     'people_search' => 'Recherchez dans vos contacts...',
     'people_search_no_results' => 'Aucun contact ne correspond à ce critère',
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
@@ -39,8 +41,7 @@ return [
     'people_add_success' => ':name a été crée avec succès',
     'people_add_gender' => 'Sexe',
     'people_delete_success' => 'Le contact a été supprimé',
-    'people_delete_message' => 'Si vous devez supprimer ce contact,',
-    'people_delete_click_here' => 'cliquez ici',
+    'people_delete_message' => 'Supprimer le contact',
     'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
     'people_add_birthday_reminder' => 'Souhaiter un bon anniversaire à :name',
     'people_add_import' => 'Souhaitez-vous <a href=":url">importer vos contacts</a> ?',
@@ -56,11 +57,15 @@ return [
     'section_personal_gifts' => 'Cadeaux',
     'section_personal_notes' => 'Notes',
 
-    //
-    'link_to_list' => 'Retour à la liste',
+    // archived contacts
+    'list_link_to_active_contacts' => 'Vous visualisez les contacts archivés. Afficher la <a href=":url">liste des contacts actifs</a> à la place.',
+    'list_link_to_archived_contacts' => 'Liste de contacts archivés',
 
     // Header
     'edit_contact_information' => 'Mettre à jour les informations',
+    'contact_archive' => 'Archiver le contact',
+    'contact_unarchive' => 'Désarchiver le contact',
+    'contact_archive_help' => 'Les contacts archivés n’apparaîtront pas sur la liste de contacts, mais apparaîtront toujours dans les résultats de recherches.',
     'call_button' => 'Enregistrer un appel téléphonique',
     'set_favorite' => 'Les contacts favoris sont placés en haut de la liste des contacts',
 
@@ -112,11 +117,17 @@ return [
     'age_exact_in_years' => ':age ans',
     'age_exact_birthdate' => 'né le :date',
 
+    // Last called
+    'last_called' => 'Dernier appel : :date',
+    'last_called_empty' => 'Dernier appel : inconnu',
+    'last_activity_date' => 'Dernière activité ensemble : :date',
+    'last_activity_date_empty' => 'Dernière activité ensemble : inconnu',
+
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
     'information_edit_avatar' => 'Photo/avatar du contact',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => 'Maximum :size Ko.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
     'information_edit_description' => 'Description (facultatif)',
@@ -304,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'Modifier le tag',
-    'tag_add' => 'ajouter une étiquette',
+    'tag_add' => 'Ajouter des étiquettes',
+    'tag_add_search' => 'Ajouter ou rechercher une étiquette',
+    'tag_no_tags' => 'Aucune étiquette',
 
     // Introductions
     'introductions_sidebar_title' => 'Comment vous vous êtes rencontré',
@@ -370,7 +383,6 @@ return [
     'life_event_list_tab_life_events' => 'Événements marquants',
     'life_event_list_tab_other' => 'Notes, rappels, ...',
     'life_event_list_title' => 'Événements marquants',
-    'life_event_list_title' => 'Événements marquants',
     'life_event_blank' => 'Prenez des notes sur ce qui arrive dans la vie de {name} pour votre référence future.',
     'life_event_list_cta' => 'Ajouter un événement marquant',
     'life_event_create_category' => 'Toutes les catégories',
@@ -421,11 +433,19 @@ return [
     'life_event_sentence_new_hobby' => 'A commencé un passe-temps',
     'life_event_sentence_new_instrument' => 'A commencé à apprendre un nouvel instrument',
     'life_event_sentence_new_language' => 'A commencé à apprendre une nouvelle langue',
-    'life_event_sentence_tatoo_or_piercing' => 'S’est fait tatoué ou percé',
+    'life_event_sentence_tattoo_or_piercing' => 'S’est fait tatoué ou percé',
     'life_event_sentence_new_license' => 'A eu le permis',
     'life_event_sentence_travel' => 'A voyagé',
     'life_event_sentence_achievement_or_award' => 'A eu une récompense ou un prix',
     'life_event_sentence_changed_beliefs' => 'A changé de croyances',
     'life_event_sentence_first_word' => 'A parlé pour la première fois',
     'life_event_sentence_first_kiss' => 'A eu son premier baiser',
+
+    // documents
+    'document_list_title' => 'Documents',
+    'document_list_cta' => 'Télécharger un document',
+    'document_list_blank_desc' => 'Ici vous pouvez stocker les documents reliés à cette personne.',
+    'document_upload_zone_cta' => 'Télécharger un fichier',
+    'document_upload_zone_progress' => 'Télécharger le document...',
+    'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
 ];

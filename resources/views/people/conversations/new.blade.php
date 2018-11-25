@@ -22,7 +22,7 @@
 
     @include('partials.errors')
 
-    <form action="{{ route('people.conversation.store', $contact) }}" method="POST">
+    <form action="{{ route('people.conversations.store', $contact) }}" method="POST">
       {{ csrf_field() }}
 
       {{-- When did it take place --}}

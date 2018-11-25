@@ -1,8 +1,9 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\LifeEvent;
 
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Exceptions\MissingParameterException;
@@ -65,22 +66,21 @@ class DestroyLifeEventTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $destroyMessage = new DestroyLifeEvent;
-        $result = $destroyMessage->execute($request);
+        $destroyMessage = (new DestroyLifeEvent)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_event_doesnt_exist()
     {
+        $account = factory(Account::class)->create();
         $lifeEvent = factory(LifeEvent::class)->create([]);
 
         $request = [
-            'account_id' => 231,
+            'account_id' => $account->id,
             'life_event_id' => $lifeEvent->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyMessage = new DestroyLifeEvent;
-        $lifeEvent = $destroyMessage->execute($request);
+        $destroyMessage = (new DestroyLifeEvent)->execute($request);
     }
 }

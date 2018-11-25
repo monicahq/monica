@@ -19,6 +19,8 @@ return [
     'people_list_filter_tag' => 'מוצגים כל אנשי הקשר עם התגית',
     'people_list_clear_filter' => 'ניקוי מסנן',
     'people_list_contacts_per_tags' => 'איש קשר אחד|:count אנשי קשר',
+    'people_list_show_dead' => 'הצגת מנוחים (:count)',
+    'people_list_hide_dead' => 'הסתרת מנוחים (:count)',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
     'people_search_no_results' => 'לא נמצאי אנשי קשר מתאימים :(',
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
@@ -39,8 +41,7 @@ return [
     'people_add_success' => 'היצירה של :name הושלמה בהצלחה',
     'people_add_gender' => 'מגדר',
     'people_delete_success' => 'איש הקשר נמחק',
-    'people_delete_message' => 'אם עליך למחוק את איש הקשר הזה,',
-    'people_delete_click_here' => 'נא ללחוץ כאן',
+    'people_delete_message' => 'מחיקת איש קשר',
     'people_delete_confirmation' => 'למחוק את איש הקשר הזה? מחיקה היא לצמיתות.',
     'people_add_birthday_reminder' => 'נא לאחל יום הולדת שמח ל־:name',
     'people_add_import' => 'ברצונך <a href=":url">לייבא את אנשי הקשר שלך</a>?',
@@ -56,11 +57,15 @@ return [
     'section_personal_gifts' => 'מתנות',
     'section_personal_notes' => 'הערות',
 
-    //
-    'link_to_list' => 'רשימת אנשים',
+    // archived contacts
+    'list_link_to_active_contacts' => 'הרשימה המוצגת היא אנשי קשר בארכיון. עליך לצפות ב<a href=":url">רשימת אנשי הקשר הפעילים</a> במקום.',
+    'list_link_to_archived_contacts' => 'הצגת אנשי קשר בארכיון',
 
     // Header
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
+    'contact_archive' => 'העברת איש קשר לארכיון',
+    'contact_unarchive' => 'הוצאת איש קשר מהארכיון',
+    'contact_archive_help' => 'אנשי קשר בארכיון יופיעו ברשימת אנשי הקשר אך עדיין יופיעו בתוצאות החיפוש.',
     'call_button' => 'תיעוד שיחה',
     'set_favorite' => 'אנשי קשר מועדפים עולים לראש רשימת אני הקשר',
 
@@ -112,11 +117,17 @@ return [
     'age_exact_in_years' => '{1}בגיל שנה|{2}בגיל שנתיים|[3,*]בגיל :age שנים',
     'age_exact_birthdate' => 'לידה ב־:date',
 
+    // Last called
+    'last_called' => 'שיחת הטלפון האחרונה: :date',
+    'last_called_empty' => 'שיחת הטלפון האחרונה: לא ידוע',
+    'last_activity_date' => 'פעילות אחרונה יחד: :date',
+    'last_activity_date_empty' => 'פעילות אחרונה יחד: לא ידוע',
+
     // additional information
     'information_edit_success' => 'הפרופיל עודכן בהצלחה',
     'information_edit_title' => 'עריכת הפרטים האישיים של :name',
     'information_edit_avatar' => 'תמונה/ציור של איש הקשר',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => ':size ק״ב לכל היותר.',
     'information_edit_firstname' => 'שם פרטי',
     'information_edit_lastname' => 'שם משפחה (רשות)',
     'information_edit_description' => 'תיאור (רשות)',
@@ -189,7 +200,7 @@ return [
     'relationship_form_associate_dropdown' => 'ניתן לחפש ולבחור איש קשר קיים מהרשימה הנגללת שלהלן',
     'relationship_form_associate_dropdown_placeholder' => 'חיפוש ובחירה באיש קשר קיים',
     'relationship_form_also_create_contact' => 'יצירת רשומת איש קשר לאדם זה.',
-    'relationship_form_add_description' => 'בחירה זו תאפשר לך להתייחס לצד בקשר הזוגי כמו כל איש קשר אחר.',
+    'relationship_form_add_description' => 'בחירה זו תאפשר לך להתייחס לאדם כמו לכל איש קשר אחר.',
     'relationship_form_add_no_existing_contact' => 'אין לך אנשי קשר שיכולים לקיים איזשהו קשר מול :name כרגע.',
     'relationship_delete_confirmation' => 'למחוק את הקשר הזה? מחיקה היא בלתי הפיכה.',
     'relationship_unlink_confirmation' => 'למחוק את הקשר הזה? האדם לא יימחק – רק הקשר בין השניים.',
@@ -304,7 +315,9 @@ return [
 
     // tags
     'tag_edit' => 'עריכת תגית',
-    'tag_add' => 'הוספת תגית',
+    'tag_add' => 'הוספת תגיות',
+    'tag_add_search' => 'הוספה או חיפוש תגיות',
+    'tag_no_tags' => 'אין תגיות עדיין',
 
     // Introductions
     'introductions_sidebar_title' => 'איך נפגשתם',
@@ -370,7 +383,6 @@ return [
     'life_event_list_tab_life_events' => 'אירועים משמעותיים',
     'life_event_list_tab_other' => 'פתקיות, תזכורות, …',
     'life_event_list_title' => 'אירועים משמעותיים',
-    'life_event_list_title' => 'אירועים משמעותיים',
     'life_event_blank' => 'תיעוד אירועים משמעותיים בחיים של {name} להפניה עתידית.',
     'life_event_list_cta' => 'הוספת אירוע משמעותי',
     'life_event_create_category' => 'כל הקטגוריות',
@@ -421,11 +433,19 @@ return [
     'life_event_sentence_new_hobby' => 'התחלת תחביב',
     'life_event_sentence_new_instrument' => 'למידת כלי נגינה חדש',
     'life_event_sentence_new_language' => 'למידת שפה חדשה',
-    'life_event_sentence_tatoo_or_piercing' => 'קעקוע חדש',
+    'life_event_sentence_tattoo_or_piercing' => 'קעקוע או פירסינג חדש',
     'life_event_sentence_new_license' => 'הוצאת רישיון',
     'life_event_sentence_travel' => 'טיול',
     'life_event_sentence_achievement_or_award' => 'קבלת הישג או פרס',
     'life_event_sentence_changed_beliefs' => 'שינוי אמונה',
     'life_event_sentence_first_word' => 'דיבור בפעם הראשונה',
     'life_event_sentence_first_kiss' => 'נשיקה ראשונה',
+
+    // documents
+    'document_list_title' => 'מסמכים',
+    'document_list_cta' => 'העלאת מסמך',
+    'document_list_blank_desc' => 'כאן ניתן לאחסן מסמכים שקשורים לאדם זה.',
+    'document_upload_zone_cta' => 'העלאת קובץ',
+    'document_upload_zone_progress' => 'המסמך נשלח…',
+    'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
 ];

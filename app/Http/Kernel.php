@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.tokenonbasic' => \App\Http\Middleware\AuthenticateWithTokenOnBasicAuth::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,
@@ -65,6 +66,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
         'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
+        'limitations' => \App\Http\Middleware\CheckAccountLimitations::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
         'sentry.context' => \App\Http\Middleware\SentryContext::class,
         'verified' => \App\Http\Middleware\EnsureEmailIsVerified::class,

@@ -231,28 +231,4 @@ class SpecialDate extends Model
 
         return $this;
     }
-
-    /**
-     * Returns the age that a contact died assuming we know when they were born
-     * and died.
-     * @return int
-     */
-    public function getAgeAtDeath()
-    {
-        if (is_null($this->date)) {
-            return;
-        }
-
-        if ($this->is_year_unknown) {
-            return;
-        }
-
-        $contact = $this->contact;
-
-        if (is_null($contact->birthdate)) {
-            return;
-        }
-
-        return $contact->birthdate->date->diffInYears($this->date);
-    }
 }

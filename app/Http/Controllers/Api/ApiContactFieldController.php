@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use Illuminate\Database\QueryException;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
@@ -14,15 +15,16 @@ class ApiContactFieldController extends ApiController
 {
     /**
      * Get the detail of a given contactField.
+     *
      * @param  Request $request
+     * @param  int $contactFieldId
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $id)
+    public function show(Request $request, $contactFieldId)
     {
         try {
             $contactField = ContactField::where('account_id', auth()->user()->account_id)
-                ->where('id', $id)
-                ->firstOrFail();
+                ->findOrFail($contactFieldId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -32,14 +34,15 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Store the contactField.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $contactField = $this->validateUpdate($request, $request->input('contact_field_type_id'));
-        if (! $contactField instanceof ContactField) {
-            return $contactField;
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -56,15 +59,23 @@ class ApiContactFieldController extends ApiController
 
     /**
      * Update the contactField.
+     *
      * @param  Request $request
      * @param  int $contactFieldId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $contactFieldId)
     {
-        $contactField = $this->validateUpdate($request, $contactFieldId);
-        if (! $contactField instanceof ContactField) {
-            return $contactField;
+        try {
+            $contactField = ContactField::where('account_id', auth()->user()->account_id)
+                ->findOrFail($contactFieldId);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
+
+        $isvalid = $this->validateUpdate($request);
+        if ($isvalid !== true) {
+            return $isvalid;
         }
 
         try {
@@ -80,10 +91,9 @@ class ApiContactFieldController extends ApiController
      * Validate the request for update.
      *
      * @param  Request $request
-     * @param  int $contactFieldId
      * @return mixed
      */
-    private function validateUpdate(Request $request, $contactFieldId)
+    private function validateUpdate(Request $request)
     {
         // Validates basic fields to create the entry
         $validator = Validator::make($request->all(), [
@@ -97,27 +107,27 @@ class ApiContactFieldController extends ApiController
         }
 
         try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
+            ContactFieldType::where('account_id', auth()->user()->account_id)
+                ->findOrFail($request->input('contact_field_type_id'));
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
         try {
-            $contactField = ContactField::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactFieldId)
-                ->firstOrFail();
+            Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($request->input('contact_id'));
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return $contactField;
+        return true;
     }
 
     /**
      * Delete a contactField.
+     *
      * @param  Request $request
+     * @param  int $contactFieldId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $contactFieldId)
@@ -138,6 +148,8 @@ class ApiContactFieldController extends ApiController
     /**
      * Get the list of contact fields for the given contact.
      *
+     * @param  Request $request
+     * @param  int $contactFieldId
      * @return \Illuminate\Http\Response
      */
     public function contactFields(Request $request, $contactId)
