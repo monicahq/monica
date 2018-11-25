@@ -28,7 +28,7 @@ class LocaleHelper
 
     /**
      * Get the current lang from locale.
-     * 
+     *
      * @return string  lang, lowercase form.
      */
     public static function getLang($locale = null)
@@ -39,12 +39,13 @@ class LocaleHelper
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[0];
         }
+
         return mb_strtolower($locale);
     }
 
     /**
      * Get the current country from locale.
-     * 
+     *
      * @return string  country, uppercase form.
      */
     public static function getCountry($locale = null)
@@ -58,6 +59,7 @@ class LocaleHelper
             $country = CountriesHelper::getCountryFromLocale($locale);
             $locale = $country->cca2;
         }
+
         return mb_strtoupper($locale);
     }
 

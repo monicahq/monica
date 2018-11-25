@@ -18,7 +18,7 @@ class CountriesHelper
             return [
                 'id' => $item->cca2,
                 'country' => static::getCommonNameLocale($item),
-                'icon' => $item->flag->flag_icon
+                'icon' => $item->flag->flag_icon,
             ];
         });
 
