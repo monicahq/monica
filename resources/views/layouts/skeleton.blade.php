@@ -24,11 +24,10 @@
       ]); !!}
     </script>
   </head>
-  <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
-
-    @include('partials.header')
+  <body data-account-id="{{ auth()->user()->account_id }}" class="bg-gray-monica">
 
     <div id="app">
+      @include('partials.header')
       @yield('content')
     </div>
 
@@ -37,19 +36,17 @@
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
-      <script src="{{ mix('js/manifest.js') }}"></script>
-      <script src="{{ mix('js/vendor.js') }}"></script>
-      <script src="{{ mix('js/app.js') }}"></script>
-    @endif
-
+      <script async src="{{ mix('js/manifest.js') }}"></script>
+      <script async src="{{ mix('js/vendor.js') }}"></script>
+      <script async src="{{ mix('js/app.js') }}"></script>
+    @else
     {{-- Required only for the Upgrade account page --}}
-    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
-      <script src="https://js.stripe.com/v3/"></script>
+      <script async src="https://js.stripe.com/v3/"></script>
       <script>
         var stripe = Stripe('{{config('services.stripe.key')}}');
       </script>
-      <script src="{{ mix('js/manifest.js') }}"></script>
-      <script src="{{ mix('js/stripe.js') }}"></script>
+      <script async src="{{ mix('js/manifest.js') }}"></script>
+      <script async src="{{ mix('js/stripe.js') }}"></script>
     @endif
 
     @stack('scripts')

@@ -8178,6 +8178,11 @@ uuid@^3.0.0, uuid@^3.0.1, uuid@^3.1.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.2.1.tgz#12c528bb9d58d0b9265d9a2f6f0fe8be17ff1f14"
 
+v-autocomplete@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/v-autocomplete/-/v-autocomplete-1.8.2.tgz#966c7b3eda2c74dd683911114a20284cd096961f"
+  integrity sha1-lmx7PtosdN1oORERSiAoTNCWlh8=
+
 v-dropdown@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/v-dropdown/-/v-dropdown-1.0.3.tgz#67b99754227c1edfea2326ee48385e6624b9e516"

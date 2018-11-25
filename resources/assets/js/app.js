@@ -65,6 +65,10 @@ Vue.component(
     'contact-select',
     require('./components/people/ContactSelect.vue')
 );
+Vue.component(
+    'contact-search',
+    require('./components/people/ContactSearch.vue')
+);
 
 // Partials
 Vue.component(
