@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 use App\Models\ModelBinding as Model;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -30,6 +31,14 @@ class Photo extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the contacts record associated with the photo.
+     */
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class)->withTimestamps();
     }
 
     /**

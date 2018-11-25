@@ -49,6 +49,7 @@ class AvatarController extends Controller
                 ]);
 
                 $contact->avatar_photo_id = $photo->id;
+                $contact->photos()->syncWithoutDetaching([$photo->id]);
         }
 
         $contact->save();

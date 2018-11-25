@@ -2,7 +2,8 @@
     <div class="br2 bg-white mb4">
         <photo-list
             hash="{{ $contact->hashID() }}"
-            contact-name="{{ $contact->first_name }}">
+            contact-name="{{ $contact->first_name }}"
+            reach-limit="{{ json_encode($contact->account->hasReachedAccountStorageLimit()) }}">
         </photo-list>
     </div>
 </div>

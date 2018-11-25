@@ -113,9 +113,11 @@ class ContactTest extends FeatureTestCase
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $photos = factory(Photo::class, 2)->create([
+        $photo = factory(Photo::class)->create([
             'account_id' => $account->id,
         ]);
+
+        $contact->photos()->sync([$photo->id]);
 
         $this->assertTrue($contact->photos()->exists());
     }

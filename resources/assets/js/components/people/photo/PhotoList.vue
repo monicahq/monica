@@ -1,4 +1,8 @@
 <style scoped>
+    .photo {
+        height: 250px;
+    }
+
     progress {
         -webkit-appearance: none;
         border: none;
@@ -85,8 +89,17 @@
 
         <!-- LIST OF PHOTO -->
         <div class="flex flex-wrap">
-            <div class="w-third pa3 mr2" v-for="photo in photos" v-bind:key="photo.id">
-                bla
+            <div class="w-third" v-for="photo in photos" v-bind:key="photo.id">
+                <div class="pa3 mr3 mb3 br2 ba b--gray-monica">
+                    <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2" :style="'background-image: url(' + photo.link + ');'">
+                    </div>
+                    <div class="pt2">
+                        <ul>
+                            <li>Set as profile photo</li>
+                            <li>Delete photo</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 

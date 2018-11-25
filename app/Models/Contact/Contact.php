@@ -227,7 +227,7 @@ class Contact extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany(Tag::class)->withPivot('account_id')->withTimestamps();
+        return $this->belongsToMany(Tag::class)->withPivot('account_id')->withTimestamps()->withPivot('account_id')->withTimestamps();
     }
 
     /**
@@ -377,7 +377,7 @@ class Contact extends Model
      */
     public function photos()
     {
-        return $this->hasMany(Photo::class);
+        return $this->belongsToMany(Photo::class)->withTimestamps();
     }
 
     /**

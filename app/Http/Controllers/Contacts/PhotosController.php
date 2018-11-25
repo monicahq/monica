@@ -25,41 +25,41 @@ class PhotosController extends Controller
         return PhotoResource::collection($photos);
     }
 
-    /**
-     * Store the Photo.
-     *
-     * @param Request $request
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request, Contact $contact)
-    {
-        return (new UploadPhoto)->execute([
-            'account_id' => auth()->user()->account->id,
-            'contact_id' => $contact->id,
-            'Photo' => $request->Photo,
-        ]);
-    }
+    // /**
+    //  * Store the Photo.
+    //  *
+    //  * @param Request $request
+    //  * @param Contact $contact
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(Request $request, Contact $contact)
+    // {
+    //     return (new UploadPhoto)->execute([
+    //         'account_id' => auth()->user()->account->id,
+    //         'contact_id' => $contact->id,
+    //         'Photo' => $request->Photo,
+    //     ]);
+    // }
 
-    /**
-     * Delete the Photo.
-     *
-     * @param Request $request
-     * @param Contact $contact
-     * @param Photo $Photo
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, Contact $contact, Photo $Photo)
-    {
-        $data = [
-            'account_id' => auth()->user()->account->id,
-            'Photo_id' => $Photo->id,
-        ];
+    // /**
+    //  * Delete the Photo.
+    //  *
+    //  * @param Request $request
+    //  * @param Contact $contact
+    //  * @param Photo $Photo
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy(Request $request, Contact $contact, Photo $Photo)
+    // {
+    //     $data = [
+    //         'account_id' => auth()->user()->account->id,
+    //         'Photo_id' => $Photo->id,
+    //     ];
 
-        try {
-            (new DestroyPhoto)->execute($data);
-        } catch (\Exception $e) {
-            return $this->respondNotFound();
-        }
-    }
+    //     try {
+    //         (new DestroyPhoto)->execute($data);
+    //     } catch (\Exception $e) {
+    //         return $this->respondNotFound();
+    //     }
+    // }
 }
