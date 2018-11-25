@@ -371,6 +371,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Photo records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
+    /**
      * Get the Life event records associated with the contact.
      *
      * @return HasMany

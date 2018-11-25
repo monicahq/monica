@@ -73,7 +73,8 @@
                   @endif
                   {{ trans('people.life_event_list_tab_life_events') }}
                 </span>
-                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view != 'life-events' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
+                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view == 'notes' ? 'f6 fl bb bt bl ph3 pv2 dib b br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
+                <span @click="updateDefaultProfileView('photos')" :class="[global_profile_default_view == 'photos' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">Photos</span>
               </div>
             </div>
 
@@ -83,7 +84,7 @@
               </div>
             </div>
 
-            <div v-if="global_profile_default_view != 'life-events'">
+            <div v-if="global_profile_default_view == 'notes'">
               @if ($modules->contains('key', 'notes'))
               <div class="row section notes">
                 <div class="col-xs-12 section-title">
@@ -140,6 +141,12 @@
               </div>
               @endif
 
+            </div>
+
+            <div v-if="global_profile_default_view == 'photos'">
+              <div class="row section">
+                @include('people.photos.index')
+              </div>
             </div>
           </div>
         </div>

@@ -190,6 +190,11 @@ Vue.component(
     require('./components/people/lifeevent/LifeEventList.vue')
 );
 
+Vue.component(
+    'photo-list',
+    require('./components/people/photo/PhotoList.vue')
+);
+
 // Journal
 Vue.component(
     'journal-list',

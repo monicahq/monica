@@ -109,6 +109,17 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contact->documents()->exists());
     }
 
+    public function test_it_has_many_photos()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $photos = factory(Photo::class, 2)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($contact->photos()->exists());
+    }
+
     public function test_it_has_many_life_events()
     {
         $account = factory(Account::class)->create([]);
