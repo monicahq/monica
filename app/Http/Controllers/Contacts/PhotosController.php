@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Photo;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Photo\UploadPhoto;
 use App\Services\Contact\Photo\DestroyPhoto;
