@@ -23,7 +23,7 @@ class RelationshipsController extends Controller
         $existingContacts = auth()->user()->account->contacts()
                                     ->real()
                                     ->active()
-                                    ->select(['id', 'first_name', 'last_name'])
+                                    ->select(['id', 'first_name', 'last_name', 'middle_name', 'nickname'])
                                     ->sortedBy('name')
                                     ->take(100)
                                     ->get();
@@ -37,7 +37,7 @@ class RelationshipsController extends Controller
             }
             $arrayContacts->push([
                 'id' => $existingContact->id,
-                'name' => $existingContact->name,
+                'complete_name' => $existingContact->name,
             ]);
         }
 
@@ -74,6 +74,16 @@ class RelationshipsController extends Controller
     {
         // case of linking to an existing contact
         if ($request->get('relationship_type') == 'existing') {
+            $validator = Validator::make($request->all(), [
+                'existing_contact_id' => 'required|integer',
+                'relationship_type_id' => 'required|integer',
+            ]);
+
+            if ($validator->fails()) {
+                return back()
+                    ->withInput()
+                    ->withErrors($validator);
+            }
             $partner = Contact::where('account_id', $request->user()->account_id)
                 ->findOrFail($request->get('existing_contact_id'));
             $contact->setRelationship($partner, $request->get('relationship_type_id'));
@@ -88,6 +98,7 @@ class RelationshipsController extends Controller
             'last_name' => 'max:100',
             'gender_id' => 'required|integer',
             'birthdayDate' => 'date_format:Y-m-d',
+            'relationship_type_id' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
