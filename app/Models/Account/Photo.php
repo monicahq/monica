@@ -2,8 +2,8 @@
 
 namespace App\Models\Account;
 
-use App\Models\ModelBinding as Model;
 use App\Models\Contact\Contact;
+use App\Models\ModelBinding as Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

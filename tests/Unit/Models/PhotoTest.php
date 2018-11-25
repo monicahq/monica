@@ -4,8 +4,8 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Account\Photo;
-use App\Models\Contact\Contact;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PhotoTest extends TestCase
