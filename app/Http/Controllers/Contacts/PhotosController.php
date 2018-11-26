@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
 use App\Http\Resources\Photo\Photo as PhotoResource;
+use App\Services\Contact\Avatar\UpdateAvatar;
 
 class PhotosController extends Controller
 {
@@ -20,7 +21,7 @@ class PhotosController extends Controller
      */
     public function index(Request $request, Contact $contact)
     {
-        $photos = $contact->photos()->get();
+        $photos = $contact->photos()->orderBy('created_at', 'desc')->get();
 
         return PhotoResource::collection($photos);
     }
@@ -43,6 +44,8 @@ class PhotosController extends Controller
 
     /**
      * Delete the Photo.
+     * Also, if this photo was the current avatar of the contact, change the
+     * avatar to the default one.
      *
      * @param Request $request
      * @param Contact $contact
@@ -60,6 +63,16 @@ class PhotosController extends Controller
             (new DestroyPhoto)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
+        }
+
+        if ($contact->avatar_source == 'photo') {
+            if ($contact->avatar_photo_id == $photo->id) {
+                (new UpdateAvatar)->execute([
+                    'account_id' => auth()->user()->account->id,
+                    'contact_id' => $contact->id,
+                    'source' => 'adorable',
+                ]);
+            }
         }
     }
 }
