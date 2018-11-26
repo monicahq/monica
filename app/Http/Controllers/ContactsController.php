@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -528,17 +529,7 @@ class ContactsController extends Controller
         $results = SearchHelper::searchContacts($needle, 20, 'created_at');
 
         if (count($results) !== 0) {
-            foreach ($results as $key => $result) {
-                if ($result->is_partial) {
-                    $real = $result->getRelatedRealContact();
-
-                    $results[$key]->hash = $real->hashID();
-                } else {
-                    $results[$key]->hash = $result->hashID();
-                }
-            }
-
-            return $results;
+            return ContactResource::collection($results);
         } else {
             return ['noResults' => trans('people.people_search_no_results')];
         }
