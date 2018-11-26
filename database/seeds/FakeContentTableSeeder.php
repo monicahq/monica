@@ -2,9 +2,9 @@
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\User\User;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
