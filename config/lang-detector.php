@@ -38,7 +38,7 @@ return [
             'it',
             'nl',
             'pt',
-            //'pt-BR' => 'pt-BR',
+            'pt-BR' => 'pt-BR',
             'ru',
             'tr',
             'zh',
