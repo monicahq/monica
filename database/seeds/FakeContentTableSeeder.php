@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\User\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\User\User;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
@@ -110,7 +110,7 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        if (!User::where('email', 'blank@blank.com')->exists()) {
+        if (! User::where('email', 'blank@blank.com')->exists()) {
             $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
