@@ -2,8 +2,8 @@
 
 namespace App\Services\Account\Photo;
 
-use App\Services\BaseService;
 use App\Models\Account\Photo;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\Storage;
 
 class DestroyPhoto extends BaseService

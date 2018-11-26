@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Avatar;
 
+use App\Models\Account\Photo;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Models\Account\Photo;
 use Illuminate\Validation\Rule;
 
 /**
@@ -42,7 +42,6 @@ class UpdateAvatar extends BaseService
      */
     public function execute(array $data) : Contact
     {
-
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])

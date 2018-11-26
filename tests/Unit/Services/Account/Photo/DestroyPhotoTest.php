@@ -3,13 +3,13 @@
 namespace Tests\Unit\Services\Contact\Document;
 
 use Tests\TestCase;
-use App\Models\Contact\Contact;
 use App\Models\Account\Photo;
+use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
+use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

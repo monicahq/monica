@@ -2,15 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Photo;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Account\Photo;
 use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Avatar\UpdateAvatar;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\Avatar\UpdateAvatar;
 
 class UpdateAvatarTest extends TestCase
 {
