@@ -8,8 +8,8 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
-use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Services\Contact\Avatar\UpdateAvatar;
+use App\Http\Resources\Photo\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {
