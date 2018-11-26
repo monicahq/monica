@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Models\Contact\Photo;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Services\Contact\Photo\UploadPhoto;
-use App\Services\Contact\Photo\DestroyPhoto;
+use App\Services\Account\Photo\UploadPhoto;
+use App\Services\Account\Photo\DestroyPhoto;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 
 class PhotosController extends Controller
@@ -41,25 +41,25 @@ class PhotosController extends Controller
     //     ]);
     // }
 
-    // /**
-    //  * Delete the Photo.
-    //  *
-    //  * @param Request $request
-    //  * @param Contact $contact
-    //  * @param Photo $Photo
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy(Request $request, Contact $contact, Photo $Photo)
-    // {
-    //     $data = [
-    //         'account_id' => auth()->user()->account->id,
-    //         'Photo_id' => $Photo->id,
-    //     ];
+    /**
+     * Delete the Photo.
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @param Photo $photo
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request, Contact $contact, Photo $photo)
+    {
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'photo_id' => $photo->id,
+        ];
 
-    //     try {
-    //         (new DestroyPhoto)->execute($data);
-    //     } catch (\Exception $e) {
-    //         return $this->respondNotFound();
-    //     }
-    // }
+        try {
+            (new DestroyPhoto)->execute($data);
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
+        }
+    }
 }

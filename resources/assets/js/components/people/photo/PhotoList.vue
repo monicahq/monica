@@ -96,7 +96,7 @@
                     <div class="pt2">
                         <ul>
                             <li>Set as profile photo</li>
-                            <li>Delete photo</li>
+                            <li><a class="pointer" @click.prevent="deletePhoto(photo)">Delete photo</a></li>
                         </ul>
                     </div>
                 </div>
@@ -208,7 +208,7 @@
                 this.modalToDisplay = null
             },
 
-            deleteDocument(photo) {
+            deletePhoto(photo) {
                 axios.delete( '/people/' + this.hash + '/photos/' + photo.id)
                     .then(response => {
                         this.photos.splice(this.photos.indexOf(photo), 1);
