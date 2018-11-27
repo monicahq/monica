@@ -26,21 +26,24 @@ class PhotosController extends Controller
         return PhotoResource::collection($photos);
     }
 
-    // /**
-    //  * Store the Photo.
-    //  *
-    //  * @param Request $request
-    //  * @param Contact $contact
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(Request $request, Contact $contact)
-    // {
-    //     return (new UploadPhoto)->execute([
-    //         'account_id' => auth()->user()->account->id,
-    //         'contact_id' => $contact->id,
-    //         'Photo' => $request->Photo,
-    //     ]);
-    // }
+    /**
+     * Store the Photo.
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request, Contact $contact)
+    {
+        $photo = (new UploadPhoto)->execute([
+            'account_id' => auth()->user()->account->id,
+            'photo' => $request->photo,
+        ]);
+
+        $contact->photos()->syncWithoutDetaching([$photo->id]);
+
+        return new PhotoResource($photo);
+    }
 
     /**
      * Delete the Photo.

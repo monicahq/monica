@@ -3,6 +3,12 @@
         height: 250px;
     }
 
+    .photo-upload-zone {
+        background: #fff;
+        border: 1px solid #d6d6d6;
+        border-style: dashed;
+    }
+
     progress {
         -webkit-appearance: none;
         border: none;
@@ -27,7 +33,7 @@
     <div>
         <div class="">
             <h3>
-                📄 All your photos
+                📄 Related photos
 
                 <span class="fr relative" style="top: -7px;" v-show="reachLimit == 'false'">
                     <a @click="displayUploadZone = true" class="btn" v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false">{{ $t('people.photo_list_cta') }}</a>
@@ -41,13 +47,14 @@
         <!-- EMPTY STATE -->
         <div class="ltr w-100 pt2" v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false && photos.length == 0">
             <div class="section-blank">
-                <h3 class="mb0">{{ $t('people.photo_list_blank_desc') }}</h3>
+                <h3 class="mb4 mt3">You can store images about this contact. Upload one now!</h3>
+                <img src="/img/people/photos/photos_empty.svg" class="w-50 center">
             </div>
         </div>
 
         <!-- FIRST STEP OF PHOTO UPLOAD -->
         <transition name="fade">
-            <div class="ba br3 document-upload-zone mb3 pa3" v-if="displayUploadZone">
+            <div class="ba br3 photo-upload-zone mb3 pa3" v-if="displayUploadZone">
                 <div class="tc">
                 </div>
                 <div class="tc dib w-100 relative">
@@ -58,7 +65,7 @@
         </transition>
 
         <!-- LAST STEP OF PHOTO UPLOAD -->
-        <div class="ba br3 document-upload-zone mb3 pa3" v-if="displayUploadProgress">
+        <div class="ba br3 photo-upload-zone mb3 pa3" v-if="displayUploadProgress">
             <p class="tc mb1">
                 {{ $t('people.document_upload_zone_progress') }}
             </p>
@@ -70,7 +77,7 @@
 
         <!-- ERROR STEP WHEN UPLOADING A PHOTO -->
         <transition name="fade">
-            <div class="ba br3 document-upload-zone mb3 pa3" v-if="displayUploadError">
+            <div class="ba br3 photo-upload-zone mb3 pa3" v-if="displayUploadError">
                 <div class="tc">
                     <svg width="120" height="150" viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M27.2012 35.9138V101.562H92.7999V18.4375H44.6762L27.2012 35.9138ZM44.1274 21.6388V35.365H30.4024L44.1274 21.6388ZM46.0024 20.3125H90.9249V99.6875H29.0762V37.24H46.0024V20.3125Z" fill="#868E99"/>
@@ -88,16 +95,19 @@
         </transition>
 
         <!-- LIST OF PHOTO -->
-        <div class="flex flex-wrap">
-            <div class="w-third" v-for="photo in photos" v-bind:key="photo.id">
-                <div class="pa3 mr3 mb3 br2 ba b--gray-monica">
-                    <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2" :style="'background-image: url(' + photo.link + ');'">
-                    </div>
-                    <div class="pt2">
-                        <ul>
-                            <li>Set as profile photo</li>
-                            <li><a class="pointer" @click.prevent="deletePhoto(photo)">Delete photo</a></li>
-                        </ul>
+        <div class="db mt3">
+            <div class="flex flex-wrap">
+                <div class="w-third" v-for="photo in photos" v-bind:key="photo.id">
+                    <div class="pa3 mr3 mb3 br2 ba b--gray-monica">
+                        <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2" :style="'background-image: url(' + photo.link + ');'">
+                        </div>
+                        <div class="pt2">
+                            <ul>
+                                <li v-show="currentPhotoIdAsAvatar == photo.id">🤩 Current profile picture</li>
+                                <li v-show="currentPhotoIdAsAvatar != photo.id"><a class="pointer" @click.prevent="setAsProfile(photo)">Make profile picture</a></li>
+                                <li><a class="pointer" @click.prevent="deletePhoto(photo)">Delete photo</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,6 +136,9 @@
                 type: String,
             },
             reachLimit: {
+                type: String,
+            },
+            currentPhotoIdAsAvatar: {
                 type: String,
             },
         },
@@ -192,7 +205,7 @@
                     }
                 ).then(response => {
                     this.displayUploadProgress = false
-                    this.photos.push(response.data)
+                    this.photos.push(response.data.data)
                 })
                 .catch(error => {
                     this.displayUploadProgress = false
