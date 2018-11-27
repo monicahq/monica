@@ -38,7 +38,7 @@ class FakeContentTableSeeder extends Seeder
         // Get or create the first account
         if (User::where('email', 'admin@admin.com')->exists()) {
             $userId = User::where('email', 'admin@admin.com')->value('id');
-            $this->account = Account::where('id', $user_id)->first();
+            $this->account = Account::where('id', $userId)->first();
         } else {
             $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
