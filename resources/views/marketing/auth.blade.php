@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', trans('app.application_title'))</title>
-    <link rel="manifest" href="href="{{ asset('/manifest.webmanifest') }}"">
+    <link rel="manifest" href="{{ asset('/manifest.webmanifest') }}">
 
     <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
     <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
