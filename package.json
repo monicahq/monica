@@ -27,7 +27,7 @@
     "gulp": "^3.9.1",
     "hint.css": "^2.3.2",
     "jquery": "^3.3.1",
-    "laravel-mix": "^2.1.7",
+    "laravel-mix": "^3.0.0",
     "list.js": "^1.5.0",
     "lodash": "^4.17.5",
     "moment": "^2.22.1",
