@@ -828,5 +828,36 @@ class AccountTest extends FeatureTestCase
 
         config(['monica.max_storage_size' => 1]);
         $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.max_storage_size' => 2]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        config(['monica.max_storage_size' => 1]);
+        $this->assertTrue($account->hasReachedAccountStorageLimit());
+    }
+
+    public function test_it_calculates_storage_size()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $document = factory(Document::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertEquals(
+            2000000,
+            $account->getStorageSize()
+        );
     }
 }

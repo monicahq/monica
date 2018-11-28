@@ -42,6 +42,16 @@ class Photo extends Model
     }
 
     /**
+     * Get the contact record associated with the photo.
+     *
+     * @return Contact
+     */
+    public function contact()
+    {
+        return $this->contacts()->first();
+    }
+
+    /**
      * Gets the full path of the photo.
      *
      * @return string
