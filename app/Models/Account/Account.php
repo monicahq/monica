@@ -566,7 +566,7 @@ class Account extends Model
      */
     public function hasReachedContactLimit()
     {
-        return $this->contacts->count() >= config('monica.number_of_allowed_contacts_free_account');
+        return $this->contacts()->real()->count() >= config('monica.number_of_allowed_contacts_free_account');
     }
 
     /**
