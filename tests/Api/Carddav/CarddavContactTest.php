@@ -228,5 +228,5 @@ class CarddavContactTest extends ApiTestCase
              '</d:propstat>'.
             '</d:response>'.
           '</d:multistatus>');
-      }
+    }
 }
