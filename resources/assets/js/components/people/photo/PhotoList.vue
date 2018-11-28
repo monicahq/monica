@@ -33,7 +33,7 @@
     <div>
         <div class="">
             <h3>
-                📄 Related photos
+                📄 {{ $t('people.photo_list_title') }}
 
                 <span class="fr relative" style="top: -7px;" v-show="reachLimit == 'false'">
                     <a @click="displayUploadZone = true" class="btn" v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false">{{ $t('people.photo_list_cta') }}</a>
@@ -47,7 +47,7 @@
         <!-- EMPTY STATE -->
         <div class="ltr w-100 pt2" v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false && photos.length == 0">
             <div class="section-blank">
-                <h3 class="mb4 mt3">You can store images about this contact. Upload one now!</h3>
+                <h3 class="mb4 mt3">{{ $t('people.photo_list_blank_desc') }}</h3>
                 <img src="/img/people/photos/photos_empty.svg" class="w-50 center">
             </div>
         </div>
@@ -97,21 +97,40 @@
         <!-- LIST OF PHOTO -->
         <div class="db mt3">
             <div class="flex flex-wrap">
-                <div class="w-third" v-for="photo in photos" v-bind:key="photo.id">
+                <div class="w-third-ns w-100" v-for="photo in photos" v-bind:key="photo.id">
                     <div class="pa3 mr3 mb3 br2 ba b--gray-monica">
-                        <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2" :style="'background-image: url(' + photo.link + ');'">
+                        <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2" :style="'background-image: url(' + photo.link + ');'" @click.prevent="modalPhoto(photo)">
                         </div>
                         <div class="pt2">
                             <ul>
-                                <li v-show="currentPhotoIdAsAvatar == photo.id">🤩 Current profile picture</li>
-                                <li v-show="currentPhotoIdAsAvatar != photo.id"><a class="pointer" @click.prevent="setAsProfile(photo)">Make profile picture</a></li>
-                                <li><a class="pointer" @click.prevent="deletePhoto(photo)">Delete photo</a></li>
+                                <li v-show="currentPhotoIdAsAvatar == photo.id">🤩 {{ $t('people.photo_current_profile_pic') }}</li>
+                                <li v-show="currentPhotoIdAsAvatar != photo.id"><a class="pointer" @click.prevent="makeProfilePicture(photo)">{{ $t('people.photo_make_profile_pic') }}</a></li>
+                                <li v-show="confirmDestroyPhotoId != photo.id"><a class="pointer" @click.prevent="confirmDestroyPhotoId = photo.id">{{ $t('people.photo_delete') }}</a></li>
+                                <li v-show="confirmDestroyPhotoId == photo.id"><a class="pointer" @click.prevent="confirmDestroyPhotoId = 0">{{ $t('app.cancel') }}</a> <a class="pointer" @click.prevent="deletePhoto(photo)">{{ $t('app.delete_confirm') }}</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- MODAL ZOOM PHOTO -->
+        <transition name="modal" v-if="showModal">
+            <div class="modal-mask">
+                <div class="modal-wrapper">
+                    <div class="modal-container">
+
+                        <img :src="url" class="mw-90 h-auto mb3">
+
+                        <div class="tc">
+                            <button class="btn" @click="showModal = false">
+                                {{ $t('app.close') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </transition>
 
     </div>
 </template>
@@ -127,7 +146,9 @@
                 displayUploadError: false,
                 file: '',
                 uploadPercentage: 0,
-                modalToDisplay: null,
+                confirmDestroyPhotoId: 0,
+                showModal: false,
+                url: '',
             };
         },
 
@@ -164,25 +185,9 @@
                 this.displayUploadZone = true
             },
 
-            toggleActionsModal(id) {
-                if (this.modalToDisplay == id) {
-                    this.modalToDisplay = null
-                } else {
-                    this.modalToDisplay = id
-                }
-            },
-
             handleFileUpload(){
                 this.file = this.$refs.file.files[0]
                 this.submitFile()
-            },
-
-            formatTime(dateAsString) {
-                var moment = require('moment-timezone')
-                moment.locale(this._i18n.locale)
-
-                var date = moment(dateAsString)
-                return date.format('ll')
             },
 
             submitFile(){
@@ -206,6 +211,12 @@
                 ).then(response => {
                     this.displayUploadProgress = false
                     this.photos.push(response.data.data)
+                    this.$notify({
+                        group: 'main',
+                        title: this.$t('app.default_save_success'),
+                        text: '',
+                        type: 'success'
+                    });
                 })
                 .catch(error => {
                     this.displayUploadProgress = false
@@ -214,21 +225,32 @@
                 });
             },
 
-            downloadPhoto(photo) {
-                window.open(photo.link, '_blank')
-
-                // Close the modal menu
-                this.modalToDisplay = null
-            },
-
             deletePhoto(photo) {
                 axios.delete( '/people/' + this.hash + '/photos/' + photo.id)
                     .then(response => {
                         this.photos.splice(this.photos.indexOf(photo), 1);
+                        this.$notify({
+                              group: 'main',
+                              title: this.$t('app.default_save_success'),
+                              text: '',
+                              type: 'success'
+                          });
                     })
                     .catch(error => {
                     });
             },
+
+            makeProfilePicture(photo) {
+                axios.post( '/people/' + this.hash + '/makeProfilePicture/' + photo.id)
+                    .then(response => {
+                        window.location.href = '/people/' + this.hash
+                    });
+            },
+
+            modalPhoto(photo) {
+                this.url = photo.link
+                this.showModal = true
+            }
         }
     }
 </script>

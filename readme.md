@@ -69,6 +69,7 @@ Monica allows people to keep track of everything that's important about their fr
 * Management of contact pets
 * Basic journal
 * Ability to indicate how the day went
+* Upload documents and photos
 * Export and import of data
 * Export a contact as vCard
 * Ability to set custom genders

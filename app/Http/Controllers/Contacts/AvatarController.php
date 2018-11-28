@@ -26,7 +26,6 @@ class AvatarController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return void
      */
     public function update(Request $request, Contact $contact)
     {
@@ -62,5 +61,25 @@ class AvatarController extends Controller
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
+    }
+
+    /**
+     * Set the given photo as avatar.
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @param int $photoId
+     */
+    public function photo(Request $request, Contact $contact, $photoId)
+    {
+        // update the avatar
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'source' => 'photo',
+            'photo_id' => $photoId,
+        ];
+
+        return (new UpdateAvatar)->execute($data);
     }
 }

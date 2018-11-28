@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Nov 29, 2018",
+            "title": "New feature: photos upload",
+            "description": "You can now upload photos to a contact, as many as your account allows you to. ![image](/img/changelogs/2018-11-17-custom-tasks.png)"
+        },
+        {
             "date": "Nov 17, 2018",
             "title": "New feature: tasks not related to contacts",
             "description": "In the dashboard, you can now create tasks that are not linked to any contacts. ![image](/img/changelogs/2018-11-17-custom-tasks.png)"

@@ -53,6 +53,7 @@ class UpdateAvatar extends BaseService
         }
 
         $contact->avatar_source = $data['source'];
+        $contact->avatar_photo_id = null;
 
         // in case of a photo, set the photo as the avatar
         if ($data['source'] == 'photo') {

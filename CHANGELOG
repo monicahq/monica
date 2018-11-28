@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Add ability to add photos to contacts
+* Change how avatars are managed
 * Add ability to create tasks that are not linked to any contacts
 
 RELEASED VERSIONS:

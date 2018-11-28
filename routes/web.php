@@ -59,6 +59,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         // Avatar
         Route::get('/people/{contact}/avatar', 'Contacts\\AvatarController@edit')->name('avatar.edit');
         Route::post('/people/{contact}/avatar', 'Contacts\\AvatarController@update')->name('avatar.update');
+        Route::post('/people/{contact}/makeProfilePicture/{photo}', 'Contacts\\AvatarController@photo')->name('avatar.photo');
 
         // Life events
         Route::name('lifeevent.')->group(function () {

@@ -5,14 +5,15 @@
       <div class="relative center dib z-3">
         <div class="relative hide-child">
           <div class="image-header">
-            <img src="{{ $contact->getAvatarURL() }}" class="br3" style="height: 115px;">
+            <div class="cover br3 bb b--gray-monica" style="background-image: url('{{ $contact->getAvatarURL() }}'); height: 115px; width: 115px;">
+            </div>
           </div>
           <div class="child absolute top-0 left-0 h-100 w-100 br3">
             <div class="db w-100 h-50 center tc pt3">
-              <a class="no-underline white" href="">Zoom</a>
+              <a class="no-underline white" href="">{{ trans('app.zoom') }}</a>
             </div>
             <div class="db w-100 h-50 center tc pt3">
-              <a class="no-underline white" href="/people/{{ $contact->hashID() }}/avatar">Change</a>
+              <a class="no-underline white" href="/people/{{ $contact->hashID() }}/avatar">{{ trans('app.update' )}}</a>
             </div>
           </div>
         </div>
