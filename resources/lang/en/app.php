@@ -30,6 +30,7 @@ return [
     'date' => 'Date',
     'type' => 'Type',
     'zoom' => 'Zoom',
+    'upgrade' => 'Upgrade to unlock',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',

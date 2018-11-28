@@ -62,7 +62,7 @@
                         <label class="pointer">
                             <input type="radio" id="" name="avatar" value="upload" {{ $contact->account->hasReachedAccountStorageLimit() ? 'disabled' : '' }}>
                             From a photo that you upload
-                            <span class="{{ $contact->account->hasReachedAccountStorageLimit() ? '' : 'hidden' }}"><a href="/settings/subscriptions">Upgrade to unlock</a></span>
+                            <span class="{{ $contact->account->hasReachedAccountStorageLimit() ? '' : 'hidden' }}"><a href="/settings/subscriptions">{{ trans('app.upgrade') }}</a></span>
                         </label>
                     </div>
                 </div>
