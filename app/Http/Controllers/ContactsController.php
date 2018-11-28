@@ -214,6 +214,7 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
+        dd(json_encode($contact->account->hasReachedAccountStorageLimit()));
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
