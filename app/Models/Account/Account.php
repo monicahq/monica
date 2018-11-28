@@ -976,7 +976,7 @@ class Account extends Model
     /**
      * Get the storage size of the account, in bytes.
      *
-     * @return integer
+     * @return int
      */
     public function getStorageSize()
     {
