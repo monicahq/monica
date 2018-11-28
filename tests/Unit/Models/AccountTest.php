@@ -839,6 +839,9 @@ class AccountTest extends FeatureTestCase
 
         config(['monica.max_storage_size' => 1]);
         $this->assertTrue($account->hasReachedAccountStorageLimit());
+
+        config(['monica.requires_subscription' => false]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
     }
 
     public function test_it_calculates_storage_size()

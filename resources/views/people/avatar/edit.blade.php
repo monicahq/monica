@@ -60,8 +60,9 @@
                 <div class="flex mb3">
                     <div class="[dirltr ? 'mr2' : 'ml2']">
                         <label class="pointer">
-                            <input type="radio" id="" name="avatar" value="upload">
+                            <input type="radio" id="" name="avatar" value="upload" {{ $contact->account->hasReachedAccountStorageLimit() ? 'disabled' : '' }}>
                             From a photo that you upload
+                            <span class="{{ $contact->account->hasReachedAccountStorageLimit() ? '' : 'hidden' }}"><a href="/settings/subscriptions">Upgrade to unlock</a></span>
                         </label>
                     </div>
                 </div>

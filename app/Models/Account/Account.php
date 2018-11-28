@@ -968,6 +968,10 @@ class Account extends Model
      */
     public function hasReachedAccountStorageLimit()
     {
+        if (config('monica.requires_subscription') == false) {
+            return false;
+        }
+
         $currentAccountSize = $this->getStorageSize();
 
         return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
