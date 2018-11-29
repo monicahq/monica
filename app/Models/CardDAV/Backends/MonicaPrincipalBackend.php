@@ -32,7 +32,7 @@ class MonicaPrincipalBackend extends AbstractBackend
                 'uri'                                   => static::getPrincipalUser(),
                 '{http://sabredav.org/ns}email-address' => Auth::user()->email,
                 '{DAV:}displayname'                     => Auth::user()->name,
-            ]
+            ],
         ];
     }
 
@@ -140,7 +140,7 @@ class MonicaPrincipalBackend extends AbstractBackend
     public function getGroupMemberSet($principal)
     {
         $principal = $this->getPrincipalByPath($principal);
-        if (!$principal) {
+        if (! $principal) {
             throw new \Sabre\DAV\Exception('Principal not found');
         }
 
