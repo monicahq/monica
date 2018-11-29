@@ -115,7 +115,7 @@ class CarddavContactTest extends ApiTestCase
         $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'HTTP_DEPTH' => '1',
-                'content-type' => 'application/xml; charset=utf-8'
+                'content-type' => 'application/xml; charset=utf-8',
             ],
             '<card:addressbook-query xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">
                <d:prop>
