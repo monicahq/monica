@@ -6,7 +6,7 @@
     {{-- Breadcrumb --}}
     <div class="mt4 mw7 center mb3">
       <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
-      <h3 class="f3 fw5">Change your avatar</h3>
+      <h3 class="f3 fw5">{{ trans('people.avatar_change_title') }}</h3>
     </div>
 
     <div class="mw7 center br3 ba b--gray-monica bg-white mb5">
@@ -17,14 +17,14 @@
 
         {{-- Adorable --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-            <p>Which avatar would you like to use?</p>
+            <p>{{ trans('people.avatar_question') }}</p>
             <div class="mb3 mb0-ns">
                 <!-- Adorable avatar -->
                 <div class="flex mb1">
                     <div class="[dirltr ? 'mr2' : 'ml2']">
                         <label class="pointer">
                             <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'adorable' ? 'checked' : '' }} value="adorable">
-                            The default avatar
+                            {{ trans('people.avatar_default_avatar') }}
                         </label>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="[dirltr ? 'mr2' : 'ml2']">
                         <label class="pointer">
                             <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'gravatar' ? 'checked' : '' }} value="gravatar">
-                            The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.
+                            {{ trans('people.avatar_gravatar') }}
                         </label>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <div class="[dirltr ? 'mr2' : 'ml2']">
                         <label class="pointer">
                             <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'photo' ? 'checked' : '' }} value="gravatar">
-                            Keep this current avatar. If you choose another avatar, this photo will be deleted.
+                            {{ trans('people.avatar_current') }}
                         </label>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                     <div class="[dirltr ? 'mr2' : 'ml2']">
                         <label class="pointer">
                             <input type="radio" id="" name="avatar" value="upload" {{ $contact->account->hasReachedAccountStorageLimit() ? 'disabled' : '' }}>
-                            From a photo that you upload
+                            {{ trans('people.avatar_photo') }}
                             <span class="{{ $contact->account->hasReachedAccountStorageLimit() ? '' : 'hidden' }}"><a href="/settings/subscriptions">{{ trans('app.upgrade') }}</a></span>
                         </label>
                     </div>
