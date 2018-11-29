@@ -3,8 +3,6 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use Sabre\CalDAV;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 
@@ -19,7 +17,7 @@ class MonicaPrincipalBackend extends AbstractBackend
 
     /**
      * Get the principal for current user.
-     * 
+     *
      * @return string
      */
     public static function getPrincipalUser(): string

@@ -3,7 +3,6 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ExportVCard;
@@ -39,7 +38,7 @@ class MonicaCardDAVBackend extends AbstractBackend
                 'uri'               => 'contacts',
                 'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
                 '{DAV:}displayname' => Auth::user()->name,
-            ]
+            ],
         ];
     }
 
