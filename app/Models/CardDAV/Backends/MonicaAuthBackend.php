@@ -4,11 +4,10 @@ namespace App\Models\CardDAV\Backends;
 
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Auth\Backend\BackendInterface;
 
-class MonicaSabreBackend implements BackendInterface
+class MonicaAuthBackend implements BackendInterface
 {
     /**
      * Authentication Realm.
@@ -19,13 +18,6 @@ class MonicaSabreBackend implements BackendInterface
      * @var string
      */
     protected $realm = 'sabre/dav';
-
-    /**
-     * This is the prefix that will be used to generate principal urls.
-     *
-     * @var string
-     */
-    protected $principalPrefix = 'principals/';
 
     /**
      * Sets the authentication realm for this backend.
@@ -51,9 +43,7 @@ class MonicaSabreBackend implements BackendInterface
             return [false, 'User is not authenticated'];
         }
 
-        Log::debug(__CLASS__.' validateUserPass', [Auth::user()->name]);
-
-        return [true, $this->principalPrefix.Auth::user()->email];
+        return [true, MonicaPrincipalBackend::getPrincipalUser()];
     }
 
     /**

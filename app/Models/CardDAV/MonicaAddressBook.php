@@ -30,7 +30,7 @@ class MonicaAddressBook extends AddressBook
                 'privilege' => '{DAV:}write',
                 'principal' => $this->getOwner(),
                 'protected' => true,
-            ],
+            ]
         ];
     }
 
