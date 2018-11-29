@@ -301,7 +301,7 @@ class ImportVCardTest extends TestCase
 
         $vcard = new VCard([
             'FN' => 'John',
-            'N' => 'Mike;;;;'
+            'N' => 'Mike;;;;',
         ]);
         $this->invokePrivateMethod($importVCard, 'importNames', [$contact, $vcard]);
 
@@ -318,7 +318,7 @@ class ImportVCardTest extends TestCase
 
         $vcard = new VCard([
             'FN' => 'John Doe Marco',
-            'N' => 'Mike;;;;'
+            'N' => 'Mike;;;;',
         ]);
         $this->invokePrivateMethod($importVCard, 'importNames', [$contact, $vcard]);
 
