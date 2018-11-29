@@ -25,6 +25,17 @@ class MonicaPrincipalBackend extends AbstractBackend
         return static::PRINCIPAL_PREFIX.Auth::user()->email;
     }
 
+    protected function getPrincipals()
+    {
+        return [
+            [
+                'uri'                                   => static::getPrincipalUser(),
+                '{http://sabredav.org/ns}email-address' => Auth::user()->email,
+                '{DAV:}displayname'                     => Auth::user()->name,
+            ]
+        ];
+    }
+
     /**
      * Returns a list of principals based on a prefix.
      *
@@ -43,17 +54,9 @@ class MonicaPrincipalBackend extends AbstractBackend
      */
     public function getPrincipalsByPrefix($prefixPath)
     {
-        $principals = [
-            [
-                'uri'                                   => static::getPrincipalUser(),
-                '{http://sabredav.org/ns}email-address' => Auth::user()->email,
-                '{DAV:}displayname'                     => Auth::user()->name,
-            ],
-        ];
-
         $prefixPath = str_finish($prefixPath, '/');
 
-        return array_filter($principals, function ($principal) use ($prefixPath) {
+        return array_filter($this->getPrincipals(), function ($principal) use ($prefixPath) {
             return ! $prefixPath || strpos($principal['uri'], $prefixPath) == 0;
         });
     }
@@ -136,7 +139,12 @@ class MonicaPrincipalBackend extends AbstractBackend
      */
     public function getGroupMemberSet($principal)
     {
-        return [static::getPrincipalUser()];
+        $principal = $this->getPrincipalByPath($principal);
+        if (!$principal) {
+            throw new \Sabre\DAV\Exception('Principal not found');
+        }
+
+        return $principal['uri'];
     }
 
     /**
@@ -147,7 +155,7 @@ class MonicaPrincipalBackend extends AbstractBackend
      */
     public function getGroupMembership($principal)
     {
-        return [static::getPrincipalUser()];
+        return $this->getGroupMemberSet($principal);
     }
 
     /**
