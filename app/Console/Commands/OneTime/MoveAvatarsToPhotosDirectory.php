@@ -40,7 +40,7 @@ class MoveAvatarsToPhotosDirectory extends Command
      */
     public function handle()
     {
-        if (!$this->confirmToProceed()) {
+        if (! $this->confirmToProceed()) {
             return;
         }
 
@@ -66,7 +66,7 @@ class MoveAvatarsToPhotosDirectory extends Command
         // move avatars to new location
         $this->moveContactAvatars($contact);
 
-        if (!$this->option('dryrun')) {
+        if (! $this->option('dryrun')) {
             $contact->deleteAvatars();
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                 $this->line('  Files deleted from old location.');
@@ -80,7 +80,7 @@ class MoveAvatarsToPhotosDirectory extends Command
 
     private function moveContactAvatars($contact)
     {
-        $this->line('Contact id:' . $contact->id . ' | Avatar location:' . $contact->avatar_location . ' | File name:' . $contact->avatar_file_name);
+        $this->line('Contact id:'.$contact->id.' | Avatar location:'.$contact->avatar_location.' | File name:'.$contact->avatar_file_name);
 
         $avatarFileName = $this->getFileName($contact);
         $storage = Storage::disk($contact->avatar_location);
@@ -88,17 +88,18 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         if ($newStorage->exists($avatarFileName)) {
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  File already pushed: ' . $avatarFileName);
+                $this->line('  File already pushed: '.$avatarFileName);
             }
+
             return;
         }
-        if (!$this->option('dryrun')) {
+        if (! $this->option('dryrun')) {
             $avatarFile = $storage->get($avatarFileName);
             $newStorage->put($avatarFileName, $avatarFile, 'public');
         }
 
         if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->line('  File pushed: ' . $avatarFileName);
+            $this->line('  File pushed: '.$avatarFileName);
         }
 
         // delete thumbnails of avatars
@@ -114,9 +115,9 @@ class MoveAvatarsToPhotosDirectory extends Command
         $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME);
         $extension = pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
 
-        $avatarFileName = 'avatars/' . $filename . '.' . $extension;
-        if (!is_null($size)) {
-            $avatarFileName = 'avatars/' . $filename . '_' . $size . '.' . $extension;
+        $avatarFileName = 'avatars/'.$filename.'.'.$extension;
+        if (! is_null($size)) {
+            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
         }
 
         if ($this->fileExists($contact->avatar_location, $avatarFileName)) {
@@ -128,9 +129,9 @@ class MoveAvatarsToPhotosDirectory extends Command
     {
         $storage = Storage::disk($storage);
 
-        if (!$storage->exists($avatarFileName)) {
+        if (! $storage->exists($avatarFileName)) {
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  ! File not found: ' . $avatarFileName);
+                $this->line('  ! File not found: '.$avatarFileName);
             }
             throw new FileNotFoundException();
         }
@@ -143,14 +144,15 @@ class MoveAvatarsToPhotosDirectory extends Command
         return config('filesystems.default').'/photos';
     }
 
-    private function deleteThumbnails($contact) {
+    private function deleteThumbnails($contact)
+    {
         $smallThumbnail = $this->getFileName($contact, 110);
-        if (!$this->fileExists($contact->avatar_location, $avatarFileName)) {
+        if (! $this->fileExists($contact->avatar_location, $avatarFileName)) {
             return;
         }
 
         $bigThumbnail = $this->getFileName($contact, 174);
-        if (!$this->fileExists($contact->avatar_location, $avatarFileName)) {
+        if (! $this->fileExists($contact->avatar_location, $avatarFileName)) {
             return;
         }
 
