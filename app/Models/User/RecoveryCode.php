@@ -3,7 +3,6 @@
 namespace App\Models\User;
 
 use App\Models\ModelBinding as Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class RecoveryCode extends Model
 {

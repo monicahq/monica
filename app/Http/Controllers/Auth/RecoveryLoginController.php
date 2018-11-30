@@ -4,14 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Http\Request;
-use App\Models\User\RecoveryCode;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\EmailChangeRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\RedirectsUsers;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class RecoveryLoginController extends Controller
 {
@@ -72,12 +68,11 @@ class RecoveryLoginController extends Controller
                                 ->get();
 
         $success = false;
-        foreach ($recoveryCodes as $recoveryCode)
-        {
+        foreach ($recoveryCodes as $recoveryCode) {
             if ($recoveryCode->recovery == $request->get('recovery')) {
                 $success = true;
                 $recoveryCode->forceFill([
-                    'used' => true
+                    'used' => true,
                 ])->save();
                 break;
             }
@@ -92,5 +87,4 @@ class RecoveryLoginController extends Controller
 
         return redirect($this->redirectPath());
     }
-
 }

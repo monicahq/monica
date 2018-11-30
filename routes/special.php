@@ -7,7 +7,7 @@ Route::get('/auth/login-recovery', 'Auth\RecoveryLoginController@get')->name('re
 
 Route::middleware('throttle:30,1')->group(function () {
     Route::post('/settings/emailchange1', 'Auth\EmailChangeController@login');
-    Route::post('/auth/login-recovery', 'Auth\RecoveryLoginController@store');    
+    Route::post('/auth/login-recovery', 'Auth\RecoveryLoginController@store');
 });
 
 Route::middleware(['auth', '2fa', 'throttle:5,1'])->group(function () {

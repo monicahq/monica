@@ -165,9 +165,9 @@ class MultiFAController extends Controller
         $codes = $recovery->setCount(config('auth.recovery.count'))
                  ->setBlocks(config('auth.recovery.blocks'))
                  ->setChars(config('auth.recovery.chars'))
-                 ->uppercase() 
+                 ->uppercase()
                  ->toArray();
-        
+
         foreach ($codes as $code) {
             $recoveryCode = new RecoveryCode();
             $recoveryCode->user()->associate(auth()->user());
@@ -176,7 +176,7 @@ class MultiFAController extends Controller
         }
 
         return response()->json([
-            'codes' => $codes
+            'codes' => $codes,
         ]);
     }
 }
