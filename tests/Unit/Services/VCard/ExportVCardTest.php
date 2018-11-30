@@ -274,13 +274,15 @@ class ExportVCardTest extends TestCase
             self::defaultPropsCount + 4,
             $vCard->children()
         );
-        $hash = $contact->hashid();
-        $url = config('app.url');
+
+        $url = route('people.show', $contact);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
         $this->assertVObjectEqualsVObject("BEGIN:VCARD
 VERSION:4.0
-PRODID:-//Sabre//Sabre VObject 4.1.6//EN
-UID:{$hash}
-SOURCE:{$url}/people/{$hash}
+PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
+UID:{$contact->uuid}
+SOURCE:{$url}
 FN:John Doe
 N:Doe;John;;;
 GENDER:O;
@@ -324,13 +326,15 @@ END:VCARD", $vCard);
             self::defaultPropsCount + 7,
             $vCard->children()
         );
-        $hash = $contact->hashid();
-        $url = config('app.url');
+
+        $url = route('people.show', $contact);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
         $this->assertVObjectEqualsVObject("BEGIN:VCARD
 VERSION:4.0
-PRODID:-//Sabre//Sabre VObject 4.1.6//EN
-UID:{$hash}
-SOURCE:{$url}/people/{$hash}
+PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
+UID:{$contact->uuid}
+SOURCE:{$url}
 FN:John Doe
 N:Doe;John;;;
 GENDER:O;
