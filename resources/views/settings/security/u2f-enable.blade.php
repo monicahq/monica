@@ -40,10 +40,10 @@
               :currentkeys="{{ json_encode($currentKeys) }}"
               :registerdata="{{ json_encode($registerData) }}"
               :method="'register'"
-              :callbackurl="{{ json_encode(url('settings/security')) }}">
+              :callbackurl="{{ json_encode(route('security.index')) }}">
             </u2f-connector>
 
-            <a href="{{ url('settings/security') }}" class="btn">{{ trans('app.cancel') }}</a>
+            <a href="{{ route('security.index') }}" class="btn">{{ trans('app.cancel') }}</a>
 
           </div>
         </div>
@@ -51,6 +51,6 @@
     </div>
   </div>
 </div>
-<script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
+<script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
 
 @endsection

@@ -104,4 +104,9 @@ return [
         ],
     ],
 
+    'recovery' => [
+        'count' => 8,
+        'blocks' => 2,
+        'chars' => 4,
+    ]
 ];

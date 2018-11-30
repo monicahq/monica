@@ -17,7 +17,7 @@ class LoginListener
      */
     public function handle(Login $event)
     {
-        if (Auth::viaRemember()) {
+        if ($event->remember || Auth::viaRemember()) {
             if (config('google2fa.enabled') && ! empty($event->user->google2fa_secret)) {
                 Validate2faController::loginCallback();
             }

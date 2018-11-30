@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models\User;
+
+use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class RecoveryCode extends Model
+{
+    protected $table = 'recovery_codes';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'recovery',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+}
