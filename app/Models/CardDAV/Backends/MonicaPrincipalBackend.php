@@ -3,12 +3,39 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use Sabre\CalDAV;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 
-class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendInterface
+class MonicaPrincipalBackend extends AbstractBackend
 {
+    /**
+     * This is the prefix that will be used to generate principal urls.
+     *
+     * @var string
+     */
+    public const PRINCIPAL_PREFIX = 'principals/';
+
+    /**
+     * Get the principal for current user.
+     *
+     * @return string
+     */
+    public static function getPrincipalUser(): string
+    {
+        return static::PRINCIPAL_PREFIX.Auth::user()->email;
+    }
+
+    protected function getPrincipals()
+    {
+        return [
+            [
+                'uri'                                   => static::getPrincipalUser(),
+                '{http://sabredav.org/ns}email-address' => Auth::user()->email,
+                '{DAV:}displayname'                     => Auth::user()->name,
+            ],
+        ];
+    }
+
     /**
      * Returns a list of principals based on a prefix.
      *
@@ -27,29 +54,11 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function getPrincipalsByPrefix($prefixPath)
     {
-        Log::debug(__CLASS__.' getPrincipalsByPrefix', func_get_args());
-        $principals = [
-            [
-                'uri'                                   => 'principals/'.Auth::user()->email,
-                '{http://sabredav.org/ns}email-address' => Auth::user()->email,
-                '{DAV:}displayname'                     => Auth::user()->name,
-            ],
-        ];
+        $prefixPath = str_finish($prefixPath, '/');
 
-        $prefixPath = trim($prefixPath, '/');
-        if ($prefixPath) {
-            $prefixPath .= '/';
-        }
-
-        $return = [];
-        foreach ($principals as $principal) {
-            if ($prefixPath && strpos($principal['uri'], $prefixPath) !== 0) {
-                continue;
-            }
-            $return[] = $principal;
-        }
-
-        return $return;
+        return array_filter($this->getPrincipals(), function ($principal) use ($prefixPath) {
+            return ! $prefixPath || strpos($principal['uri'], $prefixPath) == 0;
+        });
     }
 
     /**
@@ -62,9 +71,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function getPrincipalByPath($path)
     {
-        Log::debug(__CLASS__.' getPrincipalByPath', func_get_args());
-
-        foreach ($this->getPrincipalsByPrefix('principals') as $principal) {
+        foreach ($this->getPrincipalsByPrefix(static::PRINCIPAL_PREFIX) as $principal) {
             if ($principal['uri'] === $path) {
                 return $principal;
             }
@@ -89,7 +96,6 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function updatePrincipal($path, DAV\PropPatch $propPatch)
     {
-        Log::debug(__CLASS__.' updatePrincipal', func_get_args());
     }
 
     /**
@@ -123,29 +129,6 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof')
     {
-        Log::debug(__CLASS__.' searchPrincipals', func_get_args());
-    }
-
-    /**
-     * Finds a principal by its URI.
-     *
-     * This method may receive any type of uri, but mailto: addresses will be
-     * the most common.
-     *
-     * Implementation of this API is optional. It is currently used by the
-     * CalDAV system to find principals based on their email addresses. If this
-     * API is not implemented, some features may not work correctly.
-     *
-     * This method must return a relative principal path, or null, if the
-     * principal was not found or you refuse to find it.
-     *
-     * @param string $uri
-     * @param string $principalPrefix
-     * @return string
-     */
-    public function findByUri($uri, $principalPrefix)
-    {
-        Log::debug(__CLASS__.' searchPrincipals', func_get_args());
     }
 
     /**
@@ -156,11 +139,12 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function getGroupMemberSet($principal)
     {
-        Log::debug(__CLASS__.' getGroupMemberSet', func_get_args());
+        $principal = $this->getPrincipalByPath($principal);
+        if (! $principal) {
+            throw new \Sabre\DAV\Exception('Principal not found');
+        }
 
-        return [
-            'principals/'.Auth::user()->email,
-        ];
+        return $principal['uri'];
     }
 
     /**
@@ -171,11 +155,7 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function getGroupMembership($principal)
     {
-        Log::debug(__CLASS__.' getGroupMembership', func_get_args());
-
-        return [
-            'principals/'.Auth::user()->email,
-        ];
+        return $this->getGroupMemberSet($principal);
     }
 
     /**
@@ -189,6 +169,5 @@ class MonicaPrincipleBackend implements \Sabre\DAVACL\PrincipalBackend\BackendIn
      */
     public function setGroupMemberSet($principal, array $members)
     {
-        Log::debug(__CLASS__.' setGroupMemberSet', func_get_args());
     }
 }
