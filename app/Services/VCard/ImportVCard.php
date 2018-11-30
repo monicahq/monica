@@ -372,6 +372,7 @@ class ImportVCard extends BaseService
         }
 
         $this->importNames($contact, $entry);
+        $this->importUid($contact, $entry);
         $this->importGender($contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
@@ -477,6 +478,18 @@ class ImportVCard extends BaseService
         if (! empty($entry->NICKNAME)) {
             $contact->nickname = $this->formatValue($entry->NICKNAME);
         }
+    }
+
+    /**
+     * Import uid of the contact.
+     *
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importUid(Contact $contact, VCard $entry): void
+    {
+        $contact->uuid = (string) $entry->UID;
     }
 
     /**
