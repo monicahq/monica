@@ -466,10 +466,14 @@
     .list-actions {
       position: relative;
       text-align: center;
-      width: 60px;
+      width: 90px;
 
-      a:first-child {
-        margin-right: 5px;
+      a:not(:last-child) {
+        @if $htmldir == ltr {
+          margin-right: 5px;
+        } @else {
+          margin-left: 5px;
+        }
       }
 
       a.edit {
