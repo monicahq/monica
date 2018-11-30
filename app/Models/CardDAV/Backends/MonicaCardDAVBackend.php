@@ -124,7 +124,7 @@ class MonicaCardDAVBackend extends AbstractBackend
 
     private function decodeUri($uri)
     {
-        return preg_replace('/\.vcf$/i', '', urldecode($uri));
+        return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
 
     private function getContact($uri)
