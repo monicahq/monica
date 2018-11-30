@@ -97,6 +97,8 @@ return [
     'conversation_delete_link' => 'Izbriši razgovor',
     'conversation_edit_title' => 'Uredi razgovor',
     'conversation_edit_delete' => 'Jeste li sigurni da želite izbrisati razgovor? Brisanje je trajno.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'Razgovor je uspješno izbrisan.',
     'conversation_add_title' => 'Unesi novi razgovor',
     'conversation_add_when' => 'Kada ste imali ovaj razgovor?',
