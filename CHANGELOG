@@ -5,6 +5,7 @@ UNRELEASED CHANGES:
 * Fix VCard import without firstname
 * Fix avatar display in searches
 * Fix conversation add/update using contact add/update flash messages
+* Fix incompatibility of people search queries with PostgreSQL
 
 RELEASED VERSIONS:
 
