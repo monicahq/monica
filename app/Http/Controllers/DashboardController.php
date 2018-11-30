@@ -11,7 +11,6 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;
-use App\Http\Resources\Task\Task as TaskResource;
 
 class DashboardController extends Controller
 {
@@ -155,23 +154,6 @@ class DashboardController extends Controller
         }
 
         return $debtsCollection;
-    }
-
-    /**
-     * Get tasks for the dashboard.
-     *
-     * @return Collection
-     */
-    public function tasks()
-    {
-        $tasksCollection = collect([]);
-        $tasks = auth()->user()->account->tasks()->where('completed', 0)->get();
-
-        foreach ($tasks as $task) {
-            $tasksCollection->push(new TaskResource($task));
-        }
-
-        return $tasksCollection;
     }
 
     /**

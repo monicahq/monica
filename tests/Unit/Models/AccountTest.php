@@ -736,6 +736,15 @@ class AccountTest extends FeatureTestCase
             $account->hasReachedContactLimit()
         );
 
+        $partials = factory(Contact::class, 5)->state('partial')->create([
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 15]);
+
+        $this->assertFalse(
+            $account->hasReachedContactLimit()
+        );
         config(['monica.number_of_allowed_contacts_free_account' => 100]);
 
         $this->assertFalse(
