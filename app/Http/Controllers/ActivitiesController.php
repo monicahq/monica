@@ -33,7 +33,6 @@ class ActivitiesController extends Controller
     {
         return view('activities.add')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withActivity(new Activity);
     }
 
@@ -95,7 +94,6 @@ class ActivitiesController extends Controller
     {
         return view('activities.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withActivity($activity);
     }
 

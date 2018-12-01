@@ -84,7 +84,6 @@ class DebtController extends Controller
     {
         return view('people.debt.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withDebt($debt);
     }
 

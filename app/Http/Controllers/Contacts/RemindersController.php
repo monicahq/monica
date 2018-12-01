@@ -20,7 +20,6 @@ class RemindersController extends Controller
     {
         return view('people.reminders.add')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withReminder(new Reminder);
     }
 
@@ -61,7 +60,6 @@ class RemindersController extends Controller
     {
         return view('people.reminders.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withReminder($reminder);
     }
 
