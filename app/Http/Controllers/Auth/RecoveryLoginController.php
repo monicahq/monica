@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use App\Events\RecoveryLogin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 
@@ -19,16 +21,6 @@ class RecoveryLoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/dashboard';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
 
     /**
      * Display a listing of the resource.
@@ -50,41 +42,54 @@ class RecoveryLoginController extends Controller
     public function store(Request $request)
     {
         Validator::make($request->all(), [
-            'email' => 'required|email',
             'recovery' => 'required',
         ])->validate();
 
-        $user = User::where('email', $request->get('email'));
+        $user = auth()->user();
+        $recovery = $request->get('recovery');
 
-        // Check if email exists. If not respond with an Unauthorized, this way a hacker
-        // doesn't know if the login email exist or not, or if the recovery code was wrong
-        if ($user->count() === 0) {
+        if ($this->recoveryLogin($user, $recovery)) {
+            $this->fireLoginEvent($user);
+        } else {
             abort(403);
         }
-        $user = $user->first();
 
+        return redirect($this->redirectPath());
+    }
+
+    /**
+     * Try login with the recovery code.
+     * 
+     * @param \App\Models\User\User  $user
+     * @param string  $recovery
+     * @return bool
+     */
+    protected function recoveryLogin(User $user, string $recovery)
+    {
         $recoveryCodes = $user->recoveryCodes()
                                 ->where('used', false)
                                 ->get();
 
-        $success = false;
         foreach ($recoveryCodes as $recoveryCode) {
-            if ($recoveryCode->recovery == $request->get('recovery')) {
-                $success = true;
+            if ($recoveryCode->recovery == $recovery) {
                 $recoveryCode->forceFill([
                     'used' => true,
                 ])->save();
-                break;
+                return true;
             }
         }
 
-        if (! $success) {
-            abort(403);
-        }
+        return false;
+    }
 
-        // login
-        Auth::guard()->login($user, true);
-
-        return redirect($this->redirectPath());
+    /**
+     * Fire the login event.
+     *
+     * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
+     * @return void
+     */
+    protected function fireLoginEvent($user)
+    {
+        Event::dispatch(new RecoveryLogin($user));
     }
 }

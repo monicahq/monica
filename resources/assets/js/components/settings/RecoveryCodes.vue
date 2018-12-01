@@ -68,7 +68,7 @@
 
             showRecoveryModal() {
                 this.codes = [];
-                axios.get('/settings/security/recovery-codes')
+                axios.post('/settings/security/recovery-codes')
                     .then(response => {
                         this.codes = response.data.codes;
                         this.$refs.recoveryModal.open();

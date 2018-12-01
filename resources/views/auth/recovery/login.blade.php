@@ -25,11 +25,6 @@
               {{ csrf_field() }}
 
               <div class="form-group">
-                <label for="email">{{ trans('auth.email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
-              </div>
-
-              <div class="form-group">
                 <label for="recovery">{{ trans('auth.recovery') }}</label>
                 <input type="recovery" class="form-control" id="recovery" name="recovery">
               </div>
@@ -43,12 +38,6 @@
                     <a href="{{ route('login') }}" class="btn btn-secondary w-100 mb2 pb0-ns tc" style="margin-top: 10px">{{ trans('app.cancel') }}</a>
                   </div>
                 </div>
-              </div>
-
-              <div class="checkbox">
-                <label for="remember">
-                  <input type="checkbox" name="remember" id="remember" checked>&nbsp;{{ trans('auth.button_remember') }}
-                </label>
               </div>
 
             </form>

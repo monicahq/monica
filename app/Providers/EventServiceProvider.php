@@ -20,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
         \Illuminate\Auth\Events\Login::class => [
             \App\Listeners\LoginListener::class,
         ],
+        \App\Events\RecoveryLogin::class => [
+            \App\Listeners\RecoveryLoginListener::class,
+        ],
         \Illuminate\Foundation\Events\LocaleUpdated::class => [
             \App\Listeners\LocaleUpdated::class,
         ],

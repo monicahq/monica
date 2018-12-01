@@ -62,7 +62,6 @@
                   <div class="form-group links">
                     <ul>
                       <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
-                      <li>{!! trans('auth.use_recovery', ['url' => route('recovery.login')]) !!}</li>
                     </ul>
                   </div>
                 @endif
