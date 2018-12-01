@@ -59,7 +59,7 @@ class RecoveryLoginController extends Controller
 
     /**
      * Try login with the recovery code.
-     * 
+     *
      * @param \App\Models\User\User  $user
      * @param string  $recovery
      * @return bool
@@ -75,6 +75,7 @@ class RecoveryLoginController extends Controller
                 $recoveryCode->forceFill([
                     'used' => true,
                 ])->save();
+
                 return true;
             }
         }

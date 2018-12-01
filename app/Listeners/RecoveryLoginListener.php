@@ -4,7 +4,6 @@ namespace App\Listeners;
 
 use App\Events\RecoveryLogin;
 use Lahaxearnaud\U2f\Models\U2fKey;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\Validate2faController;
 
 class RecoveryLoginListener

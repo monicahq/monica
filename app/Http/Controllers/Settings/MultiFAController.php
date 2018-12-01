@@ -161,7 +161,7 @@ class MultiFAController extends Controller
 
     /**
      * Generate recovery codes.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
