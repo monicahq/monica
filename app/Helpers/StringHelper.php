@@ -1,3 +1,4 @@
+<?php
 /**
   *  This file is part of Monica.
   *
