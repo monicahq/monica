@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use App\Models\Account\Photo;
 
 /**
  * This command moves current avatars to the new Photos directory and converts
@@ -106,8 +107,23 @@ class MoveAvatarsToPhotosDirectory extends Command
         $this->deleteThumbnails($contact);
 
         // create a Photo object for this avatar
+        $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME) . pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
+
+        $photo = new Photo;
+        $photo->original_filename = $filename;
+        $photo->new_filename = $filename;
+        $photo->filesize = filesize($filename);
+        $photo->mime_type = 'adfad';
+        $photo->save();
 
         // associate the Photo object to the contact
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'source' => $request->get('avatar'),
+            'photo_id' => $photo->id,
+        ];
+        (new UpdateAvatar)->execute($data);
     }
 
     private function getFileName($contact, $size = null)
