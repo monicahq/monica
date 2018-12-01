@@ -67,18 +67,18 @@ class MoveAvatarsToPhotosDirectory extends Command
         // move avatars to new location
         $this->moveContactAvatars($contact);
 
-        if (! $this->option('dryrun')) {
-            $contact->deleteAvatars();
-        }
-
-        // delete thumbnails of avatars
-        $this->deleteThumbnails($contact);
-
         // create a Photo object for this avatar
         $photo = $this->createPhotoObject($contact);
 
         // associate the Photo object to the contact
         $this->associatePhoto($contact, $photo);
+
+        // delete original avatar
+        $this->deleteOriginalAvatar($contact);
+
+        // delete thumbnails of avatars
+        $this->deleteThumbnails($contact);
+
     }
 
     private function moveContactAvatars($contact)
@@ -86,6 +86,7 @@ class MoveAvatarsToPhotosDirectory extends Command
         $this->line('Contact id:'.$contact->id.' | Avatar location:'.$contact->avatar_location.' | File name:'.$contact->avatar_file_name);
 
         $avatarFileName = $this->getFileName($contact);
+        $newAvatarFilename = str_replace('avatars/', '', $avatarFileName);
         $storage = Storage::disk($contact->avatar_location);
 
         if ($storage->exists('photos/' . $avatarFileName)) {
@@ -94,8 +95,14 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         if (! $this->option('dryrun')) {
             $avatarFile = $storage->get($avatarFileName);
-            $storage->put('photos/' . $avatarFileName, $avatarFile, 'public');
+            $storage->put('photos/' . $newAvatarFilename, $avatarFile, 'public');
         }
+    }
+
+    private function deleteOriginalAvatar($contact)
+    {
+        $avatar = $this->getFileName($contact);
+        Storage::delete($avatar);
     }
 
     private function getFileName($contact, $size = null)
@@ -145,7 +152,7 @@ class MoveAvatarsToPhotosDirectory extends Command
 
     private function createPhotoObject($contact)
     {
-        $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME) . pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
+        $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME) . '.' . pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
 
         $photo = new Photo;
         $photo->original_filename = $filename;
