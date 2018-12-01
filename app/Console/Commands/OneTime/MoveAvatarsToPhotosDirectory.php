@@ -87,22 +87,14 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         $avatarFileName = $this->getFileName($contact);
         $storage = Storage::disk($contact->avatar_location);
-        $newStorage = Storage::disk($this->newStorage());
 
-        if ($newStorage->exists($avatarFileName)) {
-            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  File already pushed: '.$avatarFileName);
-            }
-
+        if ($storage->exists('photos/' . $avatarFileName)) {
             return;
         }
+
         if (! $this->option('dryrun')) {
             $avatarFile = $storage->get($avatarFileName);
-            $newStorage->put($avatarFileName, $avatarFile, 'public');
-        }
-
-        if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->line('  File pushed: '.$avatarFileName);
+            $storage->put('photos/' . $avatarFileName, $avatarFile, 'public');
         }
     }
 
@@ -133,11 +125,6 @@ class MoveAvatarsToPhotosDirectory extends Command
         }
 
         return true;
-    }
-
-    private function newStorage()
-    {
-        return config('filesystems.default').'/photos';
     }
 
     private function deleteThumbnails($contact)

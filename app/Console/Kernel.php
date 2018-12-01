@@ -33,6 +33,7 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\MigrateDatabaseCollation',
         'App\Console\Commands\OneTime\MoveAvatars',
         'App\Console\Commands\Reminder\ProcessOldReminders',
+        'App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory',
     ];
 
     /**
