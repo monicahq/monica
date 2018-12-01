@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 

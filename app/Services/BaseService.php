@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Services;
 
 use Illuminate\Support\Facades\Validator;

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace Tests\Browser\Pages\Settings;
 
 use Laravel\Dusk\Browser;

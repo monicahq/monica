@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'message' => 'תודה לך על ההרשמה! נא לבדוק את תיבת הדוא״ל שלך כדי לאמת את אותה.',
     'success' => 'החשבון שלך אומת בהצלחה! כעת יתאפשר לך להיכנס אליו.',

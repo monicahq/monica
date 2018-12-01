@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Http\Resources\Reminder;
 
 use App\Helpers\DateHelper;

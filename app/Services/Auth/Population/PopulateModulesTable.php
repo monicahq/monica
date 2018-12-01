@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Services\Auth\Population;
 
 use App\Models\User\Module;

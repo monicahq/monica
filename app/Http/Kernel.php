@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'type_birthday' => 'تمنى يوم مولد سعيد لـ',
     'type_phone_call' => 'اتصل',

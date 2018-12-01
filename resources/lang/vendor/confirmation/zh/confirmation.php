@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'message' => '感谢您的注册！请检查您的邮箱来验证您的邮件。',
     'success' => '您已成功验证邮件地址！现在您可以正常登录了。',

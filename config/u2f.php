@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     /*
      * Enable the u2f middleware, if false the middleware will not redirect to the u2f authentication page

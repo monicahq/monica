@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'title' => 'تغيرات المنتج',
     'note' => 'ملاحظة: لسوء الحظ، هذه الصفحة تظهر فقط باللغة الإنكليزية.',

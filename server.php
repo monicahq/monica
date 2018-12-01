@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 /**
  * Laravel - A PHP Framework For Web Artisans.
  *

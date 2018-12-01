@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use App\Helpers\LocaleHelper;
 
 if (! function_exists('htmldir')) {

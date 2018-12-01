@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'sidebar_settings' => 'Configuración de cuenta',
     'sidebar_personalization' => 'Personalización',

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

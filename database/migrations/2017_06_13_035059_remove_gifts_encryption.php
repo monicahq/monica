@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use App\Models\Contact\Gift;
 use Illuminate\Database\Migrations\Migration;
 

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use App\Models\Account\Account;
 use App\Models\Instance\Instance;
 use Illuminate\Support\Facades\DB;

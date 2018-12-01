@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'message' => 'Merci pour votre inscription ! Merci de vérifier vos courriels pour confirmer votre adresse courriel.',
     'success' => 'Votre compte a été validé ! Vous pouvez maintenant vous connecter.',

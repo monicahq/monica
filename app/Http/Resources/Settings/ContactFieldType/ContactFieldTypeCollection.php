@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Http\Resources\Settings\ContactFieldType;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;

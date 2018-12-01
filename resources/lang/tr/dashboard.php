@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'dashboard_blank_title' => 'Hesabınıza hoş geldiniz!',
     'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',

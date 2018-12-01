@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 /**
  * Copy of server.php with Code Coverage capture.
  */

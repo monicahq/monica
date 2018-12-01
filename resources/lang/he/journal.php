@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'journal_rate' => 'איך עבר עליך היום? ניתן לדרג פעם ביום.',
     'journal_come_back' => 'תודה. מזמינים אותך לדרג את יומך גם מחר.',

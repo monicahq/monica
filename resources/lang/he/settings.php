@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'sidebar_settings' => 'הגדרות חשבון',
     'sidebar_personalization' => 'התאמה אישית',

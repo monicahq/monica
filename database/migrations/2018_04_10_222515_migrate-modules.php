@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;

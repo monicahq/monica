@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'dashboard_blank_title' => 'ברוך בואך לחשבון שלך!',
     'dashboard_blank_description' => 'מוניקה הוא המקום לארגן את כל המגע החברתי שלך עם אלו שאכפת לך מהם.',

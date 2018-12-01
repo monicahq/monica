@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'title' => 'Ürün değişiklikleri',
     'note' => 'Not: ne yazık ki, bu sayfa yalnızca İngilizce\'dir.',

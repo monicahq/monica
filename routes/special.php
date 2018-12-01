@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use Illuminate\Support\Facades\Route;
 
 Route::get('/settings/emailchange1', 'Auth\EmailChangeController@showLoginFormSpecial');

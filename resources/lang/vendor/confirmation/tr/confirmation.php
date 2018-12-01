@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'message' => 'Hesap oluşturduğunuz için teşekkür ederiz! Lütfen e-posta adresinizi doğrulatmak için e-postanızı kontrol ediniz.',
     'success' => 'Hesabınızı başarıyla doğruladınız. Şimdi giriş yapabilirsiniz.',

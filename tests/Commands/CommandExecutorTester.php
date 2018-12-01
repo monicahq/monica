@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace Tests\Commands;
 
 use App\Console\Commands\Helpers\CommandExecutorInterface;

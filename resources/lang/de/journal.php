@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'journal_rate' => 'Wie war dein Tag? Einmal am Tag kannst du ihn bewerten.',
     'journal_come_back' => 'Danke. Morgen kannst du wieder deinen Tag bewerten.',

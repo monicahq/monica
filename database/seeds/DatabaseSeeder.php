@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\Account\Account;

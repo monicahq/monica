@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Http\Resources\Activity;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;

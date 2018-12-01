@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'type_birthday' => 'Souhait d’anniversaire pour',
     'type_phone_call' => 'Appeler',

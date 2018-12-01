@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'message' => 'Bedankt voor het aanmelden! Controleer uw e-mail om uw e-mailadres bevestigen.',
     'success' => 'U hebt met succes uw account geverifieerd! U kunt nu inloggen.',

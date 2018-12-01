@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'journal_rate' => 'Hoe was je dag? Je kunt hem eens per dag beoordelen.',
     'journal_come_back' => 'Bedankt. Kom morgen terug om je dag opnieuw te beoordelen.',

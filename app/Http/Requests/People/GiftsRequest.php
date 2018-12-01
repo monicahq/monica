@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Http\Requests\People;
 
 use Illuminate\Foundation\Http\FormRequest;

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Services\Contact\Tag;
 
 use App\Models\Contact\Tag;

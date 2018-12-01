@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'type_birthday' => 'נא לאחל יום הולדת שמח ל־',
     'type_phone_call' => 'שיחה',

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'journal_rate' => '今天过得怎么样？你可以每天给它一次评价。',
     'journal_come_back' => '谢谢. 明天再来给你的一天评价一下。',

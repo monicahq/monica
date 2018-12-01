@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Listeners;
 
 use Lahaxearnaud\U2f\Models\U2fKey;

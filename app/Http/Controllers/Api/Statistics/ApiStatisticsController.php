@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Http\Controllers\Api\Statistics;
 
 use App\Helpers\DateHelper;

@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 return [
     'message' => 'شكراً لتسجيل إشتراكك! الرجاء التحقق من بريدك الإلكتروني لتأكيد بريدك.',
     'success' => 'لقد تم تأكيد حسابك بنجاح! يمكنك تسجيل الدخول الآن.',

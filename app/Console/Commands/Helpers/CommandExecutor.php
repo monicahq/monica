@@ -17,8 +17,6 @@
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
 
-
-
 namespace App\Console\Commands\Helpers;
 
 use Illuminate\Console\Command;
