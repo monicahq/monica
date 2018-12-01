@@ -2,7 +2,6 @@
 
 namespace App\Models\User;
 
-use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 
 class RecoveryCode extends Model
