@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use App\Models\User\RecoveryCode;
 use PragmaRX\Google2FA\Google2FA;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;

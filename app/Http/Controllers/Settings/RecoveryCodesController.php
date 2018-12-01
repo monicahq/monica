@@ -36,7 +36,7 @@ class RecoveryCodesController extends Controller
     }
 
     /**
-     * Get list of recovery codes (with POST request)
+     * Get list of recovery codes (with POST request).
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
