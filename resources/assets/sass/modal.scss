@@ -54,6 +54,7 @@
 
 .modal-container {
   max-width: 500px;
+  max-height: 80%;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -61,6 +62,10 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
   transition: all .3s ease;
   font-family: Helvetica, Arial, sans-serif;
+
+  img {
+    max-height: 400px;
+  }
 }
 
 /*

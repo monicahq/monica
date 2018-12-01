@@ -76,12 +76,8 @@
           <!-- Avatars of the attendees -->
           <div class="flex-auto w-60 tr mt2 pa1 pr3 pb2">
             <span class="f6 gray">{{ $t('app.with') }} </span>
-            <div v-for="attendees in activity.attendees" class="dib pointer ml2" @click="redirect(attendees)">
-              <img v-if="attendees.information.avatar.has_avatar" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" v-tooltip="attendees.complete_name" />
-              <img v-else-if="attendees.information.avatar.gravatar_url" :src="attendees.information.avatar.gravatar_url" class="br3 journal-avatar-small" v-tooltip.bottom="attendees.complete_name" />
-              <div v-else v-tooltip="attendees.complete_name" :style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">
-                {{ attendees.initials }}
-              </div>
+            <div v-for="attendees in activity.attendees" class="dib pointer ml2" @click="redirect(attendees)" v-bind:key="attendees.id">
+              <img :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" v-tooltip="attendees.complete_name" />
             </div>
           </div>
         </div>
