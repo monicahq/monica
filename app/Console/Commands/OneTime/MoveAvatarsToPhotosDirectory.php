@@ -69,14 +69,16 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         if (! $this->option('dryrun')) {
             $contact->deleteAvatars();
-            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  Files deleted from old location.');
-            }
-
-            // Update location. The filename has not changed.
-            $contact->avatar_location = $this->newStorage();
-            $contact->save();
         }
+
+        // delete thumbnails of avatars
+        $this->deleteThumbnails($contact);
+
+        // create a Photo object for this avatar
+        $photo = $this->createPhotoObject($contact);
+
+        // associate the Photo object to the contact
+        $this->associatePhoto($contact, $photo);
     }
 
     private function moveContactAvatars($contact)
@@ -102,28 +104,6 @@ class MoveAvatarsToPhotosDirectory extends Command
         if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->line('  File pushed: '.$avatarFileName);
         }
-
-        // delete thumbnails of avatars
-        $this->deleteThumbnails($contact);
-
-        // create a Photo object for this avatar
-        $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME) . pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
-
-        $photo = new Photo;
-        $photo->original_filename = $filename;
-        $photo->new_filename = $filename;
-        $photo->filesize = filesize($filename);
-        $photo->mime_type = 'adfad';
-        $photo->save();
-
-        // associate the Photo object to the contact
-        $data = [
-            'account_id' => auth()->user()->account->id,
-            'contact_id' => $contact->id,
-            'source' => $request->get('avatar'),
-            'photo_id' => $photo->id,
-        ];
-        (new UpdateAvatar)->execute($data);
     }
 
     private function getFileName($contact, $size = null)
@@ -174,5 +154,30 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         Storage::delete($smallThumbnail);
         Storage::delete($bigThumbnail);
+    }
+
+    private function createPhotoObject($contact)
+    {
+        $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME) . pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
+
+        $photo = new Photo;
+        $photo->original_filename = $filename;
+        $photo->new_filename = $filename;
+        $photo->filesize = filesize($filename);
+        $photo->mime_type = 'adfad';
+        $photo->save();
+
+        return $photo;
+    }
+
+    private function associatePhoto($contact, $photo)
+    {
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'source' => $request->get('avatar'),
+            'photo_id' => $photo->id,
+        ];
+        (new UpdateAvatar)->execute($data);
     }
 }
