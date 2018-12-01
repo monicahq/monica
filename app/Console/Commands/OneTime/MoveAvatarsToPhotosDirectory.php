@@ -35,6 +35,11 @@ class MoveAvatarsToPhotosDirectory extends Command
     protected $description = 'Move avatars to the Photos directory, and create a photo object for each one of them';
 
     /**
+     * Storage disk
+     */
+    protected $storage;
+
+    /**
      * Execute the console command.
      *
      * @return mixed
@@ -152,12 +157,14 @@ class MoveAvatarsToPhotosDirectory extends Command
 
     private function createPhotoObject($contact)
     {
-        $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME) . '.' . pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
+        //$storage = Storage::disk(config('filesystems.default'));
+        $newAvatarFilename = str_replace('avatars/', '', $this->getFileName($contact));
+        $fileURL = Storage::url('photos/'. $newAvatarFilename);
 
         $photo = new Photo;
-        $photo->original_filename = $filename;
-        $photo->new_filename = $filename;
-        $photo->filesize = filesize($filename);
+        $photo->original_filename = $newAvatarFilename;
+        $photo->new_filename = $newAvatarFilename;
+        $photo->filesize = filesize($fileURL);
         $photo->mime_type = 'adfad';
         $photo->save();
 
