@@ -22,10 +22,10 @@ return [
     'tasks_add_note' => 'Görevi eklemek için <kbd>Enter</kbd> tuşuna basın.',
     'task_add_cta' => 'Görev ekle',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Borcunuz',
 
-    'statistics_contacts' => 'Contacts',
-    'statistics_activities' => 'Activities',
+    'statistics_contacts' => 'Bağlantılar',
+    'statistics_activities' => 'Etkinlikler',
     'statistics_gifts' => 'Hediyeler',
 
     'reminders_next_months' => 'Events in the next 3 months',
