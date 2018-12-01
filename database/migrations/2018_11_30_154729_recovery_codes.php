@@ -15,10 +15,12 @@ class RecoveryCodes extends Migration
     {
         Schema::create('recovery_codes', function (Blueprint $table) {
             $table->increments('id');
+            $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');
-            $table->string('recovery');
+            $table->string('recovery', 20);
             $table->boolean('used')->default(false);
             $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -30,6 +32,6 @@ class RecoveryCodes extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('recovery_codes');
     }
 }

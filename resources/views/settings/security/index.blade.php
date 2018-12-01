@@ -70,6 +70,8 @@
             <form class="settings-reset">
               <h2>{{ trans('settings.2fa_title') }}</h2>
 
+              <recovery-codes></recovery-codes>
+
               @if (config('google2fa.enabled')===true)
                  <mfa-activate :activated="@if ($is2FAActivated) true @else false @endif"></mfa-activate>
               @endif

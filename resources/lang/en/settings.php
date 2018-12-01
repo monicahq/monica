@@ -101,6 +101,12 @@ return [
     'u2f_error_device_ineligible' => 'The presented device is not eligible for this request. For a registration request this may mean that the token is already registered, and for a sign request it may mean that the token does not know the presented key handle.',
     'u2f_error_timeout' => 'Timeout reached before request could be satisfied.',
 
+    'recovery_title' => 'Recovery codes',
+    'recovery_show' => 'Generate recovery codes',
+    'recovery_copy' => 'Copy codes in clipboard',
+    'recovery_help' => 'These are your recovery codes.',
+    'recovery_clipboard' => 'Codes copied in the clipboard',
+
     'users_list_title' => 'Users with access to your account',
     'users_list_add_user' => 'Invite a new user',
     'users_list_you' => 'That’s you',

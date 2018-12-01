@@ -161,6 +161,13 @@ class MultiFAController extends Controller
 
     public function recoveryCodes(Request $request)
     {
+        // Remove previous codes
+        $codes = auth()->user()->recoveryCodes()
+                        ->each(function ($code) {
+                            $code->delete();
+                        });
+
+        // Generate new codes
         $recovery = new PragmaRXRecovery();
         $codes = $recovery->setCount(config('auth.recovery.count'))
                  ->setBlocks(config('auth.recovery.blocks'))
@@ -169,10 +176,11 @@ class MultiFAController extends Controller
                  ->toArray();
 
         foreach ($codes as $code) {
-            $recoveryCode = new RecoveryCode();
-            $recoveryCode->user()->associate(auth()->user());
-            $recoveryCode->recovery = $code;
-            $recoveryCode->save();
+            RecoveryCode::create([
+                'account_id' => auth()->user()->account_id,
+                'user_id' => auth()->user()->id,
+                'recovery' => $code,
+            ]);
         }
 
         return response()->json([

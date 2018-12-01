@@ -104,6 +104,17 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Recovery codes generate
+    |--------------------------------------------------------------------------
+    |
+    | count: number of recovery codes to generate
+    | blocks: number of blocks in one code
+    | chars: number of characters per block
+    |
+    */
+
     'recovery' => [
         'count' => 8,
         'blocks' => 2,
