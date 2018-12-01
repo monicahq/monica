@@ -168,10 +168,11 @@ class MultiFAController extends Controller
     public function recoveryCodes(Request $request)
     {
         // Remove previous codes
-        $codes = auth()->user()->recoveryCodes()
-                        ->each(function ($code) {
-                            $code->delete();
-                        });
+        auth()->user()
+            ->recoveryCodes()
+            ->each(function ($code) {
+                $code->delete();
+            });
 
         // Generate new codes
         $recovery = new PragmaRXRecovery();
