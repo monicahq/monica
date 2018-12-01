@@ -91,7 +91,7 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         // $avatarFileName has the format `avatars/XXX.jpg`. We need to remove
         // the `avatars/` string to store the new file.
-        $newAvatarFilename = str_replace('avatars/', '', $avatarFileName);
+        $newAvatarFilename = str_replace('avatars/', 'photos/', $avatarFileName);
 
         if ($storage->exists('photos/' . $avatarFileName)) {
             return;
@@ -99,18 +99,13 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         if (! $this->option('dryrun')) {
             $avatarFile = $storage->get($avatarFileName);
-            $storage->put('photos/' . $newAvatarFilename, $avatarFile, 'public');
+            $storage->put($newAvatarFilename, $avatarFile, 'public');
         }
     }
 
     private function createPhotoObject($contact)
     {
         $newAvatarFilename = str_replace('avatars/', '', $this->getAvatarFileName($contact));
-        if (config('filesystems.default') == 'public') {
-            $fileURL = Storage::url('app/public/photos/'.$newAvatarFilename);
-        } else {
-            $fileURL = Storage::url($newAvatarFilename);
-        }
 
         $photo = new Photo;
         $photo->account_id = $contact->account_id;
