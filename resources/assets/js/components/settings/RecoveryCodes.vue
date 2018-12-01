@@ -2,6 +2,9 @@
 .code {
     margin-bottom: 0;
 }
+.used {
+    text-decoration: line-through;
+}
 </style>
 
 <template>
@@ -15,12 +18,23 @@
             <notifications group="recovery" position="top middle" duration="5000" width="400" />
 
             <p>{{ $t('settings.recovery_help') }}</p>
-            <p>
-                <pre v-for="code in codes" :key="code" class="code">{{ code }}</pre>
+            <p :class="[ dirltr ? 'ml3' : 'mr3' ]">
+                <span v-for="code in codes" :key="code.id" :cy-name="'recovery-' + code.id">
+                    <pre class="code" :class="[ code.used ? 'used' : '' ]" :title="[ code.used ? usedHelp : '']">{{ code.recovery }}</pre>
+                </span>
             </p>
             <div class="relative">
                 <span class="fl">
-                    <a @click="copyIntoClipboard" class="btn">{{ $t('settings.recovery_copy') }}</a>
+                    <a @click="generateNewCodes" class="btn">{{ $t('settings.recovery_generate') }}</a>
+                </span>
+            </div>
+            <br class="cb" />
+            <div class="relative">
+                <span class="fl">
+                    <a @click="copyIntoClipboard" class="btn btn-primary" :title="copyHelp">{{ $t('app.copy') }}</a>
+                    <!--
+                    <a @click="download" class="btn">{{ $t('app.download') }}</a>
+                    -->
                 </span>
                 <span class="fr">
                     <a @click="closeRecoveryModal" class="btn">{{ $t('app.close') }}</a>
@@ -40,6 +54,11 @@
         data() {
             return {
                 codes: [],
+                
+                usedHelp: '',
+                copyHelp: '',
+
+                dirltr: true,
             };
         },
 
@@ -64,14 +83,27 @@
 
         methods: {
             prepareComponent() {
+                this.dirltr = this.$root.htmldir == 'ltr';
+                this.usedHelp = this.$t('settings.recovery_already_used_help');
+                this.copyHelp = this.$t('settings.recovery_copy_help');
             },
 
             showRecoveryModal() {
                 this.codes = [];
+                axios.get('/settings/security/recovery-codes')
+                    .then(response => {
+                        this.codes = response.data.data;
+                        this.$refs.recoveryModal.open();
+                    }).catch(error => {
+                        this.notify(error.response.data.message, false);
+                    });
+            },
+
+            generateNewCodes() {
+                this.codes = [];
                 axios.post('/settings/security/recovery-codes')
                     .then(response => {
-                        this.codes = response.data.codes;
-                        this.$refs.recoveryModal.open();
+                        this.codes = response.data.data;
                     }).catch(error => {
                         this.notify(error.response.data.message, false);
                     });
@@ -82,10 +114,27 @@
             },
 
             copyIntoClipboard() {
-                this.$copyText(this.codes)
+                this.$copyText(this.getDataStream())
                     .then(response => {
-                        this.notify($t('settings.recovery_clipboard'), true);
+                        this.notify(this.$t('settings.recovery_clipboard'), true);
                     });
+            },
+
+            getDataStream() {
+                var text = this.$t('settings.recovery_help')+'\n';
+                var i = 1;
+                this.codes.forEach(code => {
+                    if (code.used) {
+                        text += i + '. ---------\n';
+                    } else {
+                        text += i + '. ' + code.recovery + '\n';
+                    }
+                    i++;
+                });
+                return text;
+            },
+
+            download() {
             },
 
             notify(text, success) {

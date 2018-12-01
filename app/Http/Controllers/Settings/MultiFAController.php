@@ -7,7 +7,6 @@ use App\Models\User\RecoveryCode;
 use PragmaRX\Google2FA\Google2FA;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RedirectsUsers;
-use PragmaRX\Recovery\Recovery as PragmaRXRecovery;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 
 class MultiFAController extends Controller
@@ -157,41 +156,5 @@ class MultiFAController extends Controller
             'currentKeys' => $sigs,
             'registerData' => $req,
             ]);
-    }
-
-    /**
-     * Generate recovery codes.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function recoveryCodes(Request $request)
-    {
-        // Remove previous codes
-        auth()->user()
-            ->recoveryCodes()
-            ->each(function ($code) {
-                $code->delete();
-            });
-
-        // Generate new codes
-        $recovery = new PragmaRXRecovery();
-        $codes = $recovery->setCount(config('auth.recovery.count'))
-                 ->setBlocks(config('auth.recovery.blocks'))
-                 ->setChars(config('auth.recovery.chars'))
-                 ->uppercase()
-                 ->toArray();
-
-        foreach ($codes as $code) {
-            RecoveryCode::create([
-                'account_id' => auth()->user()->account_id,
-                'user_id' => auth()->user()->id,
-                'recovery' => $code,
-            ]);
-        }
-
-        return response()->json([
-            'codes' => $codes,
-        ]);
     }
 }

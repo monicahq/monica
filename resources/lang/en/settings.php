@@ -102,10 +102,12 @@ return [
     'u2f_error_timeout' => 'Timeout reached before request could be satisfied.',
 
     'recovery_title' => 'Recovery codes',
-    'recovery_show' => 'Generate recovery codes',
-    'recovery_copy' => 'Copy codes in clipboard',
-    'recovery_help' => 'These are your recovery codes.',
+    'recovery_show' => 'Get recovery codes',
+    'recovery_copy_help' => 'Copy codes in your clipboard',
+    'recovery_help' => 'These are your recovery codes:',
     'recovery_clipboard' => 'Codes copied in the clipboard',
+    'recovery_generate' => 'Generate new codes...',
+    'recovery_already_used_help' => 'Already used code',
 
     'users_list_title' => 'Users with access to your account',
     'users_list_add_user' => 'Invite a new user',

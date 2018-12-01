@@ -270,7 +270,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('2fa-disable');
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
             Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('u2f-register');
-            Route::post('/settings/security/recovery-codes', 'Settings\\MultiFAController@recoveryCodes')->name('recovery-codes');
+
+            Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@store');
+            Route::get('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');
         });
     });
 });
