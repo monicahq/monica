@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Fix editing relationship not working
 * Fix Storage page not being displayed
 * Add ability to create tasks that are not linked to any contacts
 * Fix VCard import without firstname
