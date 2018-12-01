@@ -16,7 +16,6 @@
  *  You should have received a copy of the GNU Affero General Public License
  *  along with Monica.  If not, see <https://www.gnu.org/licenses/>.
  **/
-
 use App\Helpers\LocaleHelper;
 
 if (! function_exists('htmldir')) {
