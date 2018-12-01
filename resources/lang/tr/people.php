@@ -79,8 +79,8 @@ return [
     'stay_in_touch_modal_label' => 'Send me an email every...',
 
     // Calls
-    'modal_call_title' => 'Log a call',
-    'modal_call_comment' => 'What did you talk about? (optional)',
+    'modal_call_title' => 'Çağrıyı logla',
+    'modal_call_comment' => 'Ne hakkında konuştunuz? (isteğe bağlı)',
     'modal_call_date' => 'The phone call happened earlier today.',
     'modal_call_change' => 'Değiştir',
     'modal_call_exact_date' => 'The phone call happened on',
