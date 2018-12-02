@@ -68,15 +68,15 @@
           <div class="br3 ba b--gray-monica bg-white mb3">
             <div class="pa3 bb b--gray-monica tc">
               <ul>
-                <li class="tc dib mr5">
+                <li class="tc dib fl w-third">
                   <span class="db f3 fw5 green">{{ $number_of_contacts }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_contacts') }}</span>
                 </li>
-                <li class="tc dib mr5">
+                <li class="tc dib fl w-third">
                   <span class="db f3 fw5 blue">{{ $number_of_activities }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_activities') }}</span>
                 </li>
-                <li class="tc dib mr5">
+                <li class="tc dib w-third">
                   <span class="db f3 fw5 orange">{{ $number_of_gifts }}</span>
                   <span class="stat-description">{{ trans('dashboard.statistics_gifts') }}</span>
                 </li>

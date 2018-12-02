@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -89,6 +91,7 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
                 'account_id' => $data['account_id'],
             ])->id;
         },
+        'uuid' => Str::uuid(),
     ];
 });
 $factory->state(App\Models\Contact\Contact::class, 'partial', [
