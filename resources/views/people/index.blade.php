@@ -108,23 +108,7 @@
                 <li class="people-list-item bg-white pointer"
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
-                  @if ($contact->has_avatar)
-                   <img src="{{ $contact->getAvatarURL() }}" width="43">
-                  @else
-                   @if (! is_null($contact->gravatar_url))
-                    <img src="{{ $contact->gravatar_url }}" width="43">
-                   @else
-                    @if (strlen($contact->getInitials()) == 1)
-                     <div class="avatar one-letter" style="background-color: {{ $contact->default_avatar_color }};">
-                      {{ $contact->getInitials() }}
-                     </div>
-                    @else
-                     <div class="avatar" style="background-color: {{ $contact->default_avatar_color }};">
-                      {{ $contact->getInitials() }}
-                     </div>
-                    @endif
-                   @endif
-                  @endif
+                  <img src="{{ $contact->getAvatarURL() }}" width="43">
                   <span>
                        <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
                        <svg class="relative" style="top: 5px" width="23" height="22" viewBox="0 0 23 22" fill="none"
@@ -143,23 +127,7 @@
                 <li class="people-list-item bg-white pointer"
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
-                  @if ($contact->has_avatar)
-                   <img src="{{ $contact->getAvatarURL() }}" width="43">
-                  @else
-                   @if (! is_null($contact->gravatar_url))
-                    <img src="{{ $contact->gravatar_url }}" width="43">
-                   @else
-                    @if (strlen($contact->getInitials()) == 1)
-                     <div class="avatar one-letter" style="background-color: {{ $contact->default_avatar_color }};">
-                      {{ $contact->getInitials() }}
-                     </div>
-                    @else
-                     <div class="avatar" style="background-color: {{ $contact->default_avatar_color }};">
-                      {{ $contact->getInitials() }}
-                     </div>
-                    @endif
-                   @endif
-                  @endif
+                  <img src="{{ $contact->getAvatarURL() }}" width="43">
                   <span>
                     {{ $contact->name }}
                   </span>
