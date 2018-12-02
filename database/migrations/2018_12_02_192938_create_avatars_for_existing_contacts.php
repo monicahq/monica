@@ -1,11 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Models\Contact\Contact;
+use Illuminate\Database\Migrations\Migration;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 /**
  * This creates all the avatars (default, adorable and gravatars) for existing
