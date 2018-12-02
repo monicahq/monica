@@ -9,10 +9,7 @@
             </div>
           </div>
           <div class="child absolute top-0 left-0 h-100 w-100 br3">
-            <div class="db w-100 h-50 center tc pt3">
-              <a class="no-underline white" href="">{{ trans('app.zoom') }}</a>
-            </div>
-            <div class="db w-100 h-50 center tc pt3">
+            <div class="db w-100 h-100 center tc pt5">
               <a class="no-underline white" href="/people/{{ $contact->hashID() }}/avatar">{{ trans('app.update' )}}</a>
             </div>
           </div>

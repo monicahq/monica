@@ -126,34 +126,6 @@
       }
     }
 
-    .avatar {
-      background-color: #93521e;
-      border-radius: 3px;
-      color: #fff;
-      display: inline-block;
-      font-size: 15px;
-      height: 43px;
-      margin-right: 5px;
-      padding-top: 10px;
-      vertical-align: middle;
-      width: 43px;
-      @if $htmldir == ltr {
-        padding-left: 5px;
-      } @else {
-        padding-right: 5px;
-      }
-
-      &.one-letter {
-        padding-left: 0;
-        text-align: center;
-      }
-    }
-
-    img {
-      border-radius: 3px;
-      margin-right: 5px;
-    }
-
     a {
       color: #333;
       text-decoration: none;
