@@ -39,6 +39,30 @@ class UpdateAvatarTest extends TestCase
         );
     }
 
+    public function test_it_updates_the_avatar_with_default_avatar()
+    {
+        $contact = factory(Contact::class)->create([]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'source' => 'default',
+        ];
+
+        $avatarService = new UpdateAvatar;
+        $contact = $avatarService->execute($request);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'avatar_source' => 'default',
+        ]);
+
+        $this->assertInstanceOf(
+            Contact::class,
+            $contact
+        );
+    }
+
     public function test_it_updates_the_avatar_with_adorable()
     {
         $contact = factory(Contact::class)->create([]);

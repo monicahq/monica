@@ -19,16 +19,27 @@
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
             <p>{{ trans('people.avatar_question') }}</p>
             <div class="mb3 mb0-ns">
+                <!-- Default avatar -->
+                <div class="flex mb1">
+                    <div class="[dirltr ? 'mr2' : 'ml2']">
+                        <label class="pointer">
+                            <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'default' ? 'checked' : '' }} value="default">
+                            {{ trans('people.avatar_default_avatar') }}
+                        </label>
+                    </div>
+                </div>
+                <img class="mb4 pa2 ba b--gray-monica br3 ml4" style="width: 150px" src="{{ $contact->getAvatarDefaultURL() }}" alt="">
+
                 <!-- Adorable avatar -->
                 <div class="flex mb1">
                     <div class="[dirltr ? 'mr2' : 'ml2']">
                         <label class="pointer">
                             <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'adorable' ? 'checked' : '' }} value="adorable">
-                            {{ trans('people.avatar_default_avatar') }}
+                            {{ trans('people.avatar_adorable_avatar') }}
                         </label>
                     </div>
                 </div>
-                <img class="mb4 pa2 ba b--gray-monica br3 ml4" src="{{ $contact->avatar_adorable_url }}" alt="">
+                <img class="mb4 pa2 ba b--gray-monica br3 ml4" style="width: 150px" src="{{ $contact->avatar_adorable_url }}" alt="">
 
                 <!-- Gravatar -->
                 @if (!is_null($contact->avatar_gravatar_url))
@@ -40,7 +51,7 @@
                         </label>
                     </div>
                 </div>
-                <img class="mb4 pa2 ba b--gray-monica br3 ml4" src="{{ $contact->avatar_gravatar_url }}" alt="">
+                <img class="mb4 pa2 ba b--gray-monica br3 ml4" style="width: 150px" src="{{ $contact->avatar_gravatar_url }}" alt="">
                 @endif
 
                 <!-- Existing avatar -->
