@@ -773,17 +773,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the default avatar URL.
-     *
-     * @param $value
-     * @return string
-     */
-    public function getAvatarDefaultUrlAttribute($value)
-    {
-        return asset(Storage::disk(config('filesystems.default'))->url($value));
-    }
-
-    /**
      * Get all the contacts related to the current contact by a specific
      * relationship type group.
      *
@@ -831,16 +820,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the default color of the avatar if no picture is present.
-     *
-     * @return string
-     */
-    public function getAvatarColor()
-    {
-        return $this->default_avatar_color;
-    }
-
-    /**
      * Set the default avatar color for this object.
      *
      * @param string|null $color
@@ -879,11 +858,6 @@ class Contact extends Model
         $this->first_name = $firstName;
         $this->middle_name = $middleName;
         $this->last_name = $lastName;
-
-        // update default avatar, which is based on the name
-        (new GenerateDefaultAvatar)->execute([
-            'contact_id' => $this->id,
-        ]);
 
         return true;
     }
@@ -985,6 +959,17 @@ class Contact extends Model
     }
 
     /**
+     * Get the default avatar URL.
+     *
+     * @param $value
+     * @return string
+     */
+    public function getAvatarDefaultURL()
+    {
+        return asset(Storage::disk(config('filesystems.default'))->url($this->avatar_default_url));
+    }
+
+    /**
      * Returns the URL of the avatar, properly sized.
      * The avatar can come from 4 sources:
      *  - default,
@@ -1001,7 +986,7 @@ class Contact extends Model
 
         switch ($this->avatar_source) {
             case 'default':
-                $avatarURL = $this->avatar_default_url;
+                $avatarURL = $this->getAvatarDefaultURL();
                 break;
             case 'adorable':
                 $avatarURL = $this->avatar_adorable_url;
@@ -1072,25 +1057,6 @@ class Contact extends Model
         }
 
         return 'internal';
-    }
-
-    /**
-     * Update the gravatar, using the firt email found.
-     */
-    public function updateGravatar()
-    {
-        // for performance reasons, we check if a gravatar exists for this email
-        // address. if it does, we store the gravatar url in the database.
-        // while this is not ideal because the gravatar can change, at least we
-        // won't make constant call to gravatar to load the avatar on every
-        // page load.
-        $response = $this->getGravatar(250);
-        if ($response !== false && is_string($response)) {
-            $this->gravatar_url = $response;
-        } else {
-            $this->gravatar_url = null;
-        }
-        $this->save();
     }
 
     /**

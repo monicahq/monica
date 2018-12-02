@@ -16,7 +16,7 @@ class GenerateDefaultAvatarTest extends TestCase
     public function test_it_generates_a_default_avatar()
     {
         $contact = factory(Contact::class)->create([
-            'default_avatar_color' => '#fff',
+            'default_avatar_color' => '#000',
         ]);
 
         $request = [

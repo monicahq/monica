@@ -39,20 +39,28 @@ class GenerateDefaultAvatar extends BaseService
         // delete existing default avatar
         $this->deleteExistingDefaultAvatar($contact);
 
-        $img = (new Avatar([
-                'width' => '150',
-                'height' => '150',
-                'shape' => 'square',
-                'backgrounds' => [$contact->default_avatar_color],
-            ]))->create($contact->name);
-
-        $filename = 'avatars/'.AvatarHelper::generateAdorableUUID().'.jpg';
-        Storage::put($filename, $img);
+        $filename = $this->createNewAvatar($contact);
 
         $contact->avatar_default_url = $filename;
         $contact->save();
 
         return $contact;
+    }
+
+    private function createNewAvatar($contact)
+    {
+        $img = (new Avatar([
+            'width' => '150',
+            'height' => '150',
+            'shape' => 'square',
+            'backgrounds' => [$contact->default_avatar_color],
+            'ascii' => true,
+        ]))->create($contact->name)->getImageObject()->encode('jpg');
+
+        $filename = 'avatars/' . AvatarHelper::generateAdorableUUID() . '.jpg';
+        Storage::put($filename, $img);
+
+        return $filename;
     }
 
     /**

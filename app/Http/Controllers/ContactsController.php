@@ -15,6 +15,7 @@ use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 
 class ContactsController extends Controller
 {
@@ -398,6 +399,11 @@ class ContactsController extends Controller
 
                 break;
         }
+
+        // update default avatar, which is based on the name
+        (new GenerateDefaultAvatar)->execute([
+            'contact_id' => $contact->id,
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));

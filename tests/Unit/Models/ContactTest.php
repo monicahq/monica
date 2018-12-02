@@ -438,24 +438,14 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    public function testGetAvatarColor()
+    public function test_it_sets_a_default_avatar_color()
     {
-        $contact = new Contact;
-        $contact->default_avatar_color = '#fffeee';
+        $contact = factory(Contact::class)->create([]);
+        $contact->setAvatarColor();
 
         $this->assertEquals(
-            '#fffeee',
-            $contact->getAvatarColor()
-        );
-    }
-
-    public function testSetAvatarColor()
-    {
-        $contact = factory(Contact::class)->make();
-
-        $this->assertEquals(
-            strlen($contact->default_avatar_color) == 7,
-            $contact->setAvatarColor()
+            7,
+            strlen($contact->default_avatar_color)
         );
     }
 
@@ -526,8 +516,8 @@ class ContactTest extends FeatureTestCase
             'avatar_source' => 'default',
         ]);
 
-        $this->assertEquals(
-            'defaultURL',
+        $this->assertContains(
+            'storage/defaultURL',
             $contact->getAvatarURL()
         );
 
@@ -1248,13 +1238,10 @@ class ContactTest extends FeatureTestCase
             'avatar_default_url' => 'avatars/image.jpg',
         ]);
 
-        config([
-            'filesystems.default' => 'public',
-            'app.url' => 'test.test',
-        ]);
+        config(['filesystems.default' => 'public']);
 
-        $this->assertEquals(
-            'http://test.test/storage/avatars/image.jpg',
+        $this->assertContains(
+            'avatars/image.jpg',
             $contact->avatar_default_url
         );
     }

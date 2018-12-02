@@ -115,11 +115,11 @@
                     <img src="{{ $contact->gravatar_url }}" width="43">
                    @else
                     @if (strlen($contact->getInitials()) == 1)
-                     <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                     <div class="avatar one-letter" style="background-color: {{ $contact->default_avatar_color }};">
                       {{ $contact->getInitials() }}
                      </div>
                     @else
-                     <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                     <div class="avatar" style="background-color: {{ $contact->default_avatar_color }};">
                       {{ $contact->getInitials() }}
                      </div>
                     @endif
@@ -150,11 +150,11 @@
                     <img src="{{ $contact->gravatar_url }}" width="43">
                    @else
                     @if (strlen($contact->getInitials()) == 1)
-                     <div class="avatar one-letter" style="background-color: {{ $contact->getAvatarColor() }};">
+                     <div class="avatar one-letter" style="background-color: {{ $contact->default_avatar_color }};">
                       {{ $contact->getInitials() }}
                      </div>
                     @else
-                     <div class="avatar" style="background-color: {{ $contact->getAvatarColor() }};">
+                     <div class="avatar" style="background-color: {{ $contact->default_avatar_color }};">
                       {{ $contact->getInitials() }}
                      </div>
                     @endif
