@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Dec 02, 2018",
+            "title": "Security: recovery codes",
+            "description": "In the [security tab of settings](/settings/security), you can now generate recovery codes. Recovery codes are usefull if you have activated Two Factor Authentication, but you cannot use it temporarely. With a recovery code you can still login, using this one time code, to bypass Two Factor Authentication. Be carefull to save them in a secure place. ![image](/img/changelogs/2018-12-02-recovery-codes.png)"
+        },
+        {
             "date": "Nov 17, 2018",
             "title": "New feature: tasks not related to contacts",
             "description": "In the dashboard, you can now create tasks that are not linked to any contacts. ![image](/img/changelogs/2018-11-17-custom-tasks.png)"

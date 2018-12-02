@@ -1,6 +1,6 @@
 <style scoped>
 .code {
-    margin-bottom: 0;
+    margin-bottom: 0.1em;
 }
 .used {
     text-decoration: line-through;
@@ -17,26 +17,22 @@
         <sweet-modal id="recoveryModal" ref="recoveryModal" overlay-theme="dark" :title="$t('settings.recovery_title')">
             <notifications group="recovery" position="top middle" duration="5000" width="400" />
 
-            <p>{{ $t('settings.recovery_help') }}</p>
+            <p>{{ $t('settings.recovery_help_intro') }}</p>
             <p :class="[ dirltr ? 'ml3' : 'mr3' ]">
                 <span v-for="code in codes" :key="code.id" :cy-name="'recovery-' + code.id">
                     <pre class="code" :class="[ code.used ? 'used' : '' ]" :title="[ code.used ? usedHelp : '']">{{ code.recovery }}</pre>
                 </span>
             </p>
+            <p>{{ $t('settings.recovery_help_information') }}</p>
             <div class="relative">
-                <span class="fl">
+                <span :class="[ dirltr ? 'fl' : 'fr' ]">
                     <a @click="generateNewCodes" class="btn">{{ $t('settings.recovery_generate') }}</a>
                 </span>
-            </div>
-            <br class="cb" />
-            <div class="relative">
-                <span class="fl">
+                <span :class="[ dirltr ? 'fr' : 'fl' ]">
                     <a @click="copyIntoClipboard" class="btn btn-primary" :title="copyHelp">{{ $t('app.copy') }}</a>
                     <!--
                     <a @click="download" class="btn">{{ $t('app.download') }}</a>
                     -->
-                </span>
-                <span class="fr">
                     <a @click="closeRecoveryModal" class="btn">{{ $t('app.close') }}</a>
                 </span>
             </div>
@@ -121,7 +117,7 @@
             },
 
             getDataStream() {
-                var text = this.$t('settings.recovery_help')+'\n';
+                var text = this.$t('settings.recovery_help_intro')+'\n';
                 var i = 1;
                 this.codes.forEach(code => {
                     if (code.used) {
@@ -132,9 +128,6 @@
                     i++;
                 });
                 return text;
-            },
-
-            download() {
             },
 
             notify(text, success) {
