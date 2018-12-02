@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\Contact\Contact;
+use Illuminate\Support\Str;
 
 class AvatarHelper
 {
@@ -13,6 +14,6 @@ class AvatarHelper
      */
     public static function generateAdorableUUID()
     {
-        return str_random(32);
+        return (string) Str::uuid();
     }
 }

@@ -109,7 +109,7 @@
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
                   @if ($contact->has_avatar)
-                   <img src="{{ $contact->getAvatarURL(110) }}" width="43">
+                   <img src="{{ $contact->getAvatarURL() }}" width="43">
                   @else
                    @if (! is_null($contact->gravatar_url))
                     <img src="{{ $contact->gravatar_url }}" width="43">
@@ -144,7 +144,7 @@
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
                   @if ($contact->has_avatar)
-                   <img src="{{ $contact->getAvatarURL(110) }}" width="43">
+                   <img src="{{ $contact->getAvatarURL() }}" width="43">
                   @else
                    @if (! is_null($contact->gravatar_url))
                     <img src="{{ $contact->gravatar_url }}" width="43">

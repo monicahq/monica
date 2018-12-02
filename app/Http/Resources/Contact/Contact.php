@@ -70,7 +70,7 @@ class Contact extends Resource
                     'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
-                    'url' => $this->getAvatarUrl(110),
+                    'url' => $this->getAvatarUrl(),
                     'source' => $this->getAvatarSource(),
                     'default_avatar_color' => $this->default_avatar_color,
                 ]),

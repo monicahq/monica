@@ -816,6 +816,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_tests_account_storage_limit()
     {
+        config(['monica.requires_subscription' => true]);
         $account = factory(Account::class)->create([]);
 
         $document = factory(Document::class)->create([

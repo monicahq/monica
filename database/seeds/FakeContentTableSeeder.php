@@ -63,6 +63,7 @@ class FakeContentTableSeeder extends Seeder
             $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
             $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
             $this->contact->is_starred = (rand(1, 5) == 1);
+            $this->contact->setAvatarColor();
             $this->contact->save();
 
             $this->populateTags();

@@ -13,7 +13,7 @@ class AvatarHelperTest extends TestCase
     public function test_it_returns_a_unique_uuid_for_adorable_url()
     {
         $this->assertEquals(
-            32,
+            36,
             strlen(AvatarHelper::generateAdorableUUID())
         );
 
