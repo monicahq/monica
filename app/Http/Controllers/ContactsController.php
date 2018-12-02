@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 
 class ContactsController extends Controller
 {
