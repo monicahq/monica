@@ -2,14 +2,14 @@
 
 namespace App\Console\Commands\OneTime;
 
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\ConfirmableTrait;
+use App\Services\Contact\Avatar\UpdateAvatar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use App\Models\Account\Photo;
-use App\Services\Contact\Avatar\UpdateAvatar;
 
 /**
  * This command moves current avatars to the new Photos directory and converts
@@ -79,7 +79,6 @@ class MoveAvatarsToPhotosDirectory extends Command
 
         // delete thumbnails of avatars
         $this->deleteThumbnails($contact);
-
     }
 
     private function moveContactAvatars($contact)
@@ -93,7 +92,7 @@ class MoveAvatarsToPhotosDirectory extends Command
         // the `avatars/` string to store the new file.
         $newAvatarFilename = str_replace('avatars/', 'photos/', $avatarFileName);
 
-        if ($storage->exists('photos/' . $avatarFileName)) {
+        if ($storage->exists('photos/'.$avatarFileName)) {
             return;
         }
 
@@ -132,12 +131,12 @@ class MoveAvatarsToPhotosDirectory extends Command
     private function deleteThumbnails($contact)
     {
         $smallThumbnail = $this->getAvatarFileName($contact, 110);
-        if (!$this->fileExists($contact->avatar_location, $smallThumbnail)) {
+        if (! $this->fileExists($contact->avatar_location, $smallThumbnail)) {
             return;
         }
 
         $bigThumbnail = $this->getAvatarFileName($contact, 174);
-        if (!$this->fileExists($contact->avatar_location, $bigThumbnail)) {
+        if (! $this->fileExists($contact->avatar_location, $bigThumbnail)) {
             return;
         }
 
