@@ -57,7 +57,7 @@ class GenerateDefaultAvatar extends BaseService
             'ascii' => true,
         ]))->create($contact->name)->getImageObject()->encode('jpg');
 
-        $filename = 'avatars/' . AvatarHelper::generateAdorableUUID() . '.jpg';
+        $filename = 'avatars/'.AvatarHelper::generateAdorableUUID().'.jpg';
         Storage::put($filename, $img);
 
         return $filename;
