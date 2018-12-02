@@ -1043,22 +1043,6 @@ class Contact extends Model
     }
 
     /**
-     * Returns the source of the avatar, or null if avatar is undefined.
-     */
-    public function getAvatarSource()
-    {
-        if (! $this->has_avatar) {
-            return;
-        }
-
-        if ($this->avatar_location == 'external') {
-            return 'external';
-        }
-
-        return 'internal';
-    }
-
-    /**
      * Check if the contact has debt (by the contact or the user for this contact).
      *
      * @return bool

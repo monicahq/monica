@@ -39,8 +39,8 @@ class ContactShort extends Resource
                     'date' => DateHelper::getTimestamp($this->deceasedDate),
                 ],
                 'avatar' => [
-                    'has_avatar' => $this->has_avatar,
-                    'avatar_url' => $this->getAvatarURL(),
+                    'url' => $this->getAvatarUrl(),
+                    'source' => $this->avatar_source,
                     'default_avatar_color' => $this->default_avatar_color,
                 ],
             ],
