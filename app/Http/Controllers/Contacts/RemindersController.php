@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;

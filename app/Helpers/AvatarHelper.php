@@ -2,7 +2,6 @@
 
 namespace App\Helpers;
 
-use App\Models\Contact\Contact;
 use Illuminate\Support\Str;
 
 class AvatarHelper

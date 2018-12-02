@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Contact\Avatar;
 
-use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Exceptions\MissingParameterException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Contact\Contact;
+use Illuminate\Http\UploadedFile;
+use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Avatar\GenerateDefaultAvatar;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GenerateDefaultAvatarTest extends TestCase
 {

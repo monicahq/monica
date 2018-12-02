@@ -6,6 +6,7 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
+use Laravolt\Avatar\Avatar;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
@@ -24,13 +25,12 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
-use Laravolt\Avatar\Avatar;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 
 class Contact extends Model
 {

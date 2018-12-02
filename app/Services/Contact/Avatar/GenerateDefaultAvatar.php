@@ -2,11 +2,11 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Services\BaseService;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Contact\Contact;
-use App\Helpers\AvatarHelper;
 use Laravolt\Avatar\Avatar;
+use App\Helpers\AvatarHelper;
+use App\Services\BaseService;
+use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class GenerateDefaultAvatar extends BaseService
@@ -46,7 +46,7 @@ class GenerateDefaultAvatar extends BaseService
                 'backgrounds' => [$contact->default_avatar_color],
             ]))->create($contact->name);
 
-        $filename = 'avatars/' . AvatarHelper::generateAdorableUUID() . '.jpg';
+        $filename = 'avatars/'.AvatarHelper::generateAdorableUUID().'.jpg';
         Storage::put($filename, $img);
 
         $contact->avatar_default_url = $filename;

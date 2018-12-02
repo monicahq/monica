@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
