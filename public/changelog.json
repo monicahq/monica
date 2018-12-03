@@ -1,7 +1,12 @@
 {
     "entries": [
         {
-            "date": "Nov 29, 2018",
+            "date": "Dec 06, 2018",
+            "title": "New feature: new avatars",
+            "description": "You now have the possibility to update the avatar of a contact and choose 4 different types of avatars: . ![image](/img/changelogs/2018-11-17-custom-tasks.png)"
+        },
+        {
+            "date": "Dec 05, 2018",
             "title": "New feature: photos upload",
             "description": "You can now upload photos to a contact, as many as your account allows you to. ![image](/img/changelogs/2018-11-17-custom-tasks.png)"
         },

@@ -85,8 +85,8 @@ class ExportVCardTest extends TestCase
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
-        $contact->has_avatar = false;
-        $contact->gravatar_url = 'gravatar';
+        $contact->avatar_source = 'gravatar';
+        $contact->avatar_gravatar_url = 'gravatar';
 
         $exportVCard = new ExportVCard();
         $this->invokePrivateMethod($exportVCard, 'exportPhoto', [$contact, $vCard]);

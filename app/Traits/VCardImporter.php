@@ -12,6 +12,7 @@ use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 trait VCardImporter
 {
@@ -142,7 +143,9 @@ trait VCardImporter
             $contactField->save();
         }
 
-        $contact->updateGravatar();
+        (new GetAvatarsFromInternet)->execute([
+            'contact_id' => $contact->id,
+        ]);
     }
 
     private function contactFieldEmailId()

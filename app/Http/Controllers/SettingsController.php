@@ -36,6 +36,7 @@ class SettingsController
         'api_usage',
         'cache',
         'countries',
+        'contact_photo',
         'currencies',
         'default_activity_types',
         'default_activity_type_categories',
