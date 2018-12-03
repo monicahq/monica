@@ -12,7 +12,7 @@
 
               <label for="summary">{{ trans('people.activities_who_was_involved') }}</label>
                   <ul class="contacts">
-                      <ul class="contacts-list">
+                      <ul class="contacts-list-clickable">
                           @foreach ($activity->contacts as $contact)
                               <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
                           @endforeach
