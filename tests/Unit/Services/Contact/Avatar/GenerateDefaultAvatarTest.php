@@ -23,8 +23,8 @@ class GenerateDefaultAvatarTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $gravatarService = new GenerateDefaultAvatar;
-        $contact = $gravatarService->execute($request);
+        $avatarService = new GenerateDefaultAvatar;
+        $contact = $avatarService->execute($request);
 
         $this->assertContains(
             'avatars/',
@@ -38,8 +38,8 @@ class GenerateDefaultAvatarTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $gravatarService = new GenerateDefaultAvatar;
-        $url = $gravatarService->execute($request);
+        $avatarService = new GenerateDefaultAvatar;
+        $url = $avatarService->execute($request);
     }
 
     public function test_it_replaces_existing_default_avatar()
@@ -57,8 +57,8 @@ class GenerateDefaultAvatarTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $gravatarService = new GenerateDefaultAvatar;
-        $contact = $gravatarService->execute($request);
+        $avatarService = new GenerateDefaultAvatar;
+        $contact = $avatarService->execute($request);
 
         $this->assertContains(
             'avatars/',

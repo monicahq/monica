@@ -28,7 +28,7 @@ class GenerateDefaultAvatar extends BaseService
      * contact and returns the filename.
      *
      * @param array $data
-     * @return string|null
+     * @return Contact
      */
     public function execute(array $data)
     {

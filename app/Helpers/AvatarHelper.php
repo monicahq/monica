@@ -13,6 +13,6 @@ class AvatarHelper
      */
     public static function generateAdorableUUID()
     {
-        return (string) Str::uuid();
+        return Str::uuid();
     }
 }
