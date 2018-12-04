@@ -6,21 +6,22 @@ use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Call;
+use App\Models\Account\Photo;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
-use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Relationship\RelationshipType;
@@ -106,6 +107,19 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($contact->documents()->exists());
+    }
+
+    public function test_it_has_many_photos()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $photo = factory(Photo::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contact->photos()->sync([$photo->id]);
+
+        $this->assertTrue($contact->photos()->exists());
     }
 
     public function test_it_has_many_life_events()

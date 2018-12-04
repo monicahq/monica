@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to upload photos
 * Fix Set Tag api method which deleted existing tags, which it shouldn't
 * Fix editing relationship not working
 * Fix Storage page not being displayed

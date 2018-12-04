@@ -7,6 +7,7 @@ use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
+use App\Models\Account\Photo;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -185,6 +186,15 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->documents()->exists());
+    }
+
+    public function test_it_has_many_photos()
+    {
+        $account = factory(Account::class)->create([]);
+        $photo = factory(Photo::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->photos()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
@@ -805,6 +815,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_tests_account_storage_limit()
     {
+        config(['monica.requires_subscription' => true]);
         $account = factory(Account::class)->create([]);
 
         $document = factory(Document::class)->create([
@@ -817,5 +828,39 @@ class AccountTest extends FeatureTestCase
 
         config(['monica.max_storage_size' => 1]);
         $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.max_storage_size' => 2]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        config(['monica.max_storage_size' => 1]);
+        $this->assertTrue($account->hasReachedAccountStorageLimit());
+
+        config(['monica.requires_subscription' => false]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+    }
+
+    public function test_it_calculates_storage_size()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $document = factory(Document::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertEquals(
+            2000000,
+            $account->getStorageSize()
+        );
     }
 }
