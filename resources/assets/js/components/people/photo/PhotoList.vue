@@ -91,8 +91,6 @@
                         </div>
                         <div class="pt2">
                             <ul>
-                                <li v-show="currentPhotoIdAsAvatar == photo.id">🤩 {{ $t('people.photo_current_profile_pic') }}</li>
-                                <li v-show="currentPhotoIdAsAvatar != photo.id"><a class="pointer" @click.prevent="makeProfilePicture(photo)">{{ $t('people.photo_make_profile_pic') }}</a></li>
                                 <li v-show="confirmDestroyPhotoId != photo.id"><a class="pointer" @click.prevent="confirmDestroyPhotoId = photo.id">{{ $t('people.photo_delete') }}</a></li>
                                 <li v-show="confirmDestroyPhotoId == photo.id"><a class="pointer" @click.prevent="confirmDestroyPhotoId = 0">{{ $t('app.cancel') }}</a> <a class="pointer" @click.prevent="deletePhoto(photo)">{{ $t('app.delete_confirm') }}</a></li>
                             </ul>
