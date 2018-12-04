@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Account\Photo;
 
 use App\Models\Account\Photo;
@@ -18,6 +19,7 @@ class UploadPhoto extends BaseService
             'photo' => 'required|file',
         ];
     }
+
     /**
      * Upload a photo.
      *
@@ -28,8 +30,10 @@ class UploadPhoto extends BaseService
     {
         $this->validate($data);
         $array = $this->populateData($data);
+
         return Photo::create($array);
     }
+
     /**
      * Create an array with the necessary fields to create the photo object.
      *
@@ -45,6 +49,7 @@ class UploadPhoto extends BaseService
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
         ];
         $filename = $photo->storePublicly('photos', config('filesystems.default'));
+
         return array_merge($data, [
             'new_filename' => $filename,
         ]);

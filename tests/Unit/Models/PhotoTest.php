@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class PhotoTest extends TestCase
 {
     use DatabaseTransactions;
+
     public function test_it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
@@ -18,6 +20,7 @@ class PhotoTest extends TestCase
         ]);
         $this->assertTrue($photo->account()->exists());
     }
+
     public function test_it_belongs_to_many_contacts()
     {
         $contact = factory(Contact::class)->create();
@@ -27,11 +30,12 @@ class PhotoTest extends TestCase
         $contact->photos()->sync([$photo->id]);
         $this->assertTrue($photo->contacts()->exists());
     }
+
     public function test_it_gets_the_url()
     {
         $photo = factory(Photo::class)->create();
         $this->assertEquals(
-            config('app.url') . '/storage/' . $photo->new_filename,
+            config('app.url').'/storage/'.$photo->new_filename,
             $photo->url()
         );
     }

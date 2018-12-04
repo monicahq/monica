@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services\Account\Photo;
 
 use App\Models\Account\Photo;
@@ -19,6 +20,7 @@ class DestroyPhoto extends BaseService
             'photo_id' => 'required|integer',
         ];
     }
+
     /**
      * Destroy a photo.
      *
@@ -30,11 +32,12 @@ class DestroyPhoto extends BaseService
         $this->validate($data);
         $photo = Photo::where('account_id', $data['account_id'])
             ->findOrFail($data['photo_id']);
-         // Delete the physical photo
+        // Delete the physical photo
         // Throws FileNotFoundException
         Storage::delete($photo->new_filename);
-         // Delete the object in the DB
+        // Delete the object in the DB
         $photo->delete();
+
         return true;
     }
 }

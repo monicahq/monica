@@ -547,7 +547,7 @@ class Account extends Model
             return false;
         }
 
-        if (!config('monica.requires_subscription')) {
+        if (! config('monica.requires_subscription')) {
             return false;
         }
 
@@ -595,7 +595,7 @@ class Account extends Model
         $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
 
         foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (!$ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
+            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
                 ContactFieldType::create([
                     'account_id' => $this->id,
                     'name' => $defaultContactFieldType->name,
@@ -668,7 +668,7 @@ class Account extends Model
     {
         $defaultRelationshipTypeGroups = DB::table('default_relationship_type_groups')->get();
         foreach ($defaultRelationshipTypeGroups as $defaultRelationshipTypeGroup) {
-            if (!$ignoreTableAlreadyMigrated || $defaultRelationshipTypeGroup->migrated == 0) {
+            if (! $ignoreTableAlreadyMigrated || $defaultRelationshipTypeGroup->migrated == 0) {
                 DB::table('relationship_type_groups')->insert([
                     'account_id' => $this->id,
                     'name' => $defaultRelationshipTypeGroup->name,
@@ -741,7 +741,7 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        if (!is_null($plan)) {
+        if (! is_null($plan)) {
             return $plan->stripe_plan;
         }
     }
@@ -755,7 +755,7 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        if (!is_null($plan)) {
+        if (! is_null($plan)) {
             return $plan->name;
         }
     }
@@ -767,7 +767,7 @@ class Account extends Model
     {
         $plan = $this->subscriptions()->first();
 
-        if (!is_null($plan)) {
+        if (! is_null($plan)) {
             return $plan->cancelNow();
         }
     }
@@ -894,7 +894,7 @@ class Account extends Model
                 }
             }
 
-            if (!$foundInYear) {
+            if (! $foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }
@@ -929,7 +929,7 @@ class Account extends Model
                 }
             }
 
-            if (!$foundInYear) {
+            if (! $foundInYear) {
                 $years[$yearStatistic] = 1;
             }
         }

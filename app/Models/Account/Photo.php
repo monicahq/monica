@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models\Account;
 
 use App\Models\Contact\Contact;
@@ -20,6 +21,7 @@ class Photo extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
     /**
      * Get the account record associated with the photo.
      *
@@ -29,6 +31,7 @@ class Photo extends Model
     {
         return $this->belongsTo(Account::class);
     }
+
     /**
      * Get the contacts record associated with the photo.
      */
@@ -36,6 +39,7 @@ class Photo extends Model
     {
         return $this->belongsToMany(Contact::class)->withTimestamps();
     }
+
     /**
      * Get the contact record associated with the photo.
      *
@@ -45,6 +49,7 @@ class Photo extends Model
     {
         return $this->contacts()->first();
     }
+
     /**
      * Gets the full path of the photo.
      *
@@ -53,6 +58,7 @@ class Photo extends Model
     public function url()
     {
         $url = $this->new_filename;
+
         return asset(Storage::disk(config('filesystems.default'))->url($url));
     }
 }
