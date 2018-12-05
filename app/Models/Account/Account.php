@@ -968,7 +968,7 @@ class Account extends Model
      */
     public function hasReachedAccountStorageLimit()
     {
-        if (!config('monica.requires_subscription')) {
+        if (! config('monica.requires_subscription')) {
             return false;
         }
 
