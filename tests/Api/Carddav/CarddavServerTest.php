@@ -121,8 +121,42 @@ class CarddavServerTest extends ApiTestCase
         $response->assertHeader('X-Sabre-Version');
 
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>");
-        $contactId = urlencode(urlencode($contact->hashid()));
+        $contactId = urlencode($contact->uuid);
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contactId}.vcf</d:href>");
+    }
+
+    public function test_carddav_propfind_contacts_with_props()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'HTTP_DEPTH' => 0,
+            ],
+            '<d:propfind xmlns:d="DAV:">
+               <d:prop>
+                 <d:displayname />
+               </d:prop>
+             </d:propfind>'
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+          '<d:response>'.
+            "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
+            '<d:propstat>'.
+              '<d:prop>'.
+                "<d:displayname>{$user->name}</d:displayname>".
+              '</d:prop>'.
+              '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+          '</d:response>'.
+        '</d:multistatus');
     }
 
     /**
@@ -135,11 +169,11 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/{$contact->hashid()}");
+        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}");
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->hashid()}</d:href>");
+        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}</d:href>");
     }
 }

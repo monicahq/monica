@@ -372,6 +372,7 @@ class ImportVCard extends BaseService
         }
 
         $this->importNames($contact, $entry);
+        $this->importUid($contact, $entry);
         $this->importGender($contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
@@ -468,13 +469,27 @@ class ImportVCard extends BaseService
      */
     private function importFromFN(Contact $contact, VCard $entry): void
     {
-        $fullnameParts = preg_split('/ +/', $entry->FN);
+        $fullnameParts = preg_split('/\s+/', $entry->FN, 2);
         $contact->first_name = $this->formatValue($fullnameParts[0]);
-        $contact->last_name = $this->formatValue($fullnameParts[1]);
+        if (count($fullnameParts) > 1) {
+            $contact->last_name = $this->formatValue($fullnameParts[1]);
+        }
 
         if (! empty($entry->NICKNAME)) {
             $contact->nickname = $this->formatValue($entry->NICKNAME);
         }
+    }
+
+    /**
+     * Import uid of the contact.
+     *
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importUid(Contact $contact, VCard $entry): void
+    {
+        $contact->uuid = (string) $entry->UID;
     }
 
     /**

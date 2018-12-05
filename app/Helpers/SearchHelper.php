@@ -38,7 +38,7 @@ class SearchHelper
                 ]);
             })->paginate($limitPerPage);
         } else {
-            $results = Contact::search($needle, $accountId, $limitPerPage, $order, 'and is_partial=0');
+            $results = Contact::search($needle, $accountId, $limitPerPage, $order, 'AND is_partial = FALSE');
         }
 
         return $results;

@@ -25,16 +25,6 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        // detach all existing tags
-        $contactTags = $contact->tags()->get();
-        foreach ($contactTags as $tag) {
-            (new DetachTag)->execute([
-                'account_id' => auth()->user()->account->id,
-                'contact_id' => $contact->id,
-                'tag_id' => $tag->id,
-            ]);
-        }
-
         $tags = $request->get('tags');
         foreach ($tags as $tag) {
             (new AssociateTag)->execute([
