@@ -39,7 +39,7 @@
         <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
         <input type="date" id="date_it_happened" name="date_it_happened" class="form-control"
                value="{{ old('date_it_happened') ?? (! is_null($activity->date_it_happened) ? $activity->date_it_happened->toDateString() : now(\App\Helpers\DateHelper::getTimezone())->toDateString()) }}"
-               min="{{ now(\App\Helpers\DateHelper::getTimezone())->subYears(10)->toDateString() }}"
+               min="{{ now(\App\Helpers\DateHelper::getTimezone())->subYears(100)->toDateString() }}"
                max="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
         >
         @if ($errors->has('date_it_happened'))
