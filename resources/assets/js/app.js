@@ -156,6 +156,11 @@ Vue.component(
 );
 
 Vue.component(
+    'phone-call-list',
+    require('./components/people/calls/PhoneCallList.vue')
+);
+
+Vue.component(
     'conversation-list',
     require('./components/people/conversation/ConversationList.vue')
 );
