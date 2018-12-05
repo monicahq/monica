@@ -5,7 +5,6 @@ namespace Tests\Unit\Models;
 use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
-use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
 use App\Models\Contact\Call;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Call\CreateCall;

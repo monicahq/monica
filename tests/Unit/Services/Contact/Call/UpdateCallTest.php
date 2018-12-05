@@ -4,13 +4,13 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Contact\Call;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Call;
+use App\Services\Contact\Call\UpdateCall;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\Call\UpdateCall;
 
 class UpdateCallTest extends TestCase
 {

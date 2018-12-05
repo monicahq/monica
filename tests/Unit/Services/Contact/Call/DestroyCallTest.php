@@ -3,13 +3,10 @@
 namespace Tests\Unit\Services\Contact\Call;
 
 use Tests\TestCase;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Call;
-use App\Exceptions\MissingParameterException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Contact\Contact;
 use App\Services\Contact\Call\DestroyCall;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DestroyCallTest extends TestCase
 {
