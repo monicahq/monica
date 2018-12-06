@@ -37,14 +37,7 @@
               </p>
             </div>
             <div class="pt3 pr3 pl3 mb4">
-              {{-- Current month --}}
-              @include('dashboard._monthReminder', ['month' => 0])
-
-              {{-- Current month + 1 --}}
-              @include('dashboard._monthReminder', ['month' => 1])
-
-              {{-- Current month + 2 --}}
-              @include('dashboard._monthReminder', ['month' => 2])
+              @include('dashboard._monthReminder', ['remindersList' => $reminders])
             </div>
           </div>
         </div>
