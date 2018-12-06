@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\AvatarHelper;
 use App\Helpers\DateHelper;
+use App\Jobs\ResizeAvatars;
+use App\Models\Contact\Tag;
+use Illuminate\Http\Request;
+use App\Helpers\AvatarHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\StringHelper;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Tag;
-use App\Models\Relationship\Relationship;
 use App\Services\VCard\ExportVCard;
+use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -645,7 +645,7 @@ class ContactsController extends Controller
 
                 $count++;
             }
-            if (!is_null($tags)) {
+            if (! is_null($tags)) {
                 $contacts = $contacts->tags($tags);
             }
         }
@@ -683,14 +683,13 @@ class ContactsController extends Controller
         }
 
         foreach ($contacts as $contact) {
-
             if ($contact->has_avatar) {
                 $avatar = $contact->getAvatarURL(110);
                 $avatarType = 'url';
-            } else if (! is_null($contact->gravatar_url)) {
+            } elseif (! is_null($contact->gravatar_url)) {
                 $avatar = $contact->gravatar_url;
                 $avatarType = 'gravatar';
-            } else if (strlen($contact->getInitials()) == 1) {
+            } elseif (strlen($contact->getInitials()) == 1) {
                 $avatar = $contact->getInitials();
                 $avatarType = 'initial';
             } else {
