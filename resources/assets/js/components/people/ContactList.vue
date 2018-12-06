@@ -89,10 +89,6 @@
                     .then(response => {
                         this.contacts = response.data.contacts;
                         this.totalRecords = response.data.totalRecords;
-
-                        if (this.totalRecords > 0) {
-                            $('.blank-people-state').removeClass('hidden');
-                        }
                     });
             },
 
