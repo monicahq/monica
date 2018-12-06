@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
-use App\Models\Contact\Tag;
-use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
+use App\Helpers\DateHelper;
 use App\Helpers\SearchHelper;
-use App\Models\Contact\Contact;
-use App\Services\VCard\ExportVCard;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Relationship\Relationship;
-use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Support\Facades\Validator;
+use App\Helpers\StringHelper;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Jobs\ResizeAvatars;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Tag;
+use App\Models\Relationship\Relationship;
+use App\Services\VCard\ExportVCard;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ContactsController extends Controller
 {
@@ -71,12 +70,8 @@ class ContactsController extends Controller
             $nbArchived = $contacts->count();
         }
 
-        if ($request->get('no_tag')) {
-            //get tag less contacts
-            $contacts = $contacts->tags('NONE');
-        } elseif ($request->get('tag1')) {
+        if ($request->get('tag1')) {
             // get contacts with selected tags
-
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
@@ -95,42 +90,22 @@ class ContactsController extends Controller
             if (is_null($tags)) {
                 return redirect()->route('people.index');
             }
-
-            $contacts = $contacts->tags($tags);
-        }
-        $contacts = $contacts->sortedBy($sort)->get();
-
-        // count the deceased
-        $deceasedCount = $contacts->filter(function ($item) {
-            return $item->is_dead === true;
-        })->count();
-
-        // filter out deceased if necessary
-        if ($showDeceased != 'true') {
-            $contacts = $contacts->filter(function ($item) {
-                return $item->is_dead === false;
-            });
         }
 
-        // starred contacts
-        $starredContacts = $contacts->filter(function ($item) {
-            return $item->is_starred === true;
-        });
+        $tagsCount = Tag::contactsCount();
 
-        $unstarredContacts = $contacts->filter(function ($item) {
-            return $item->is_starred === false;
-        });
+        $contactsCount = $contacts->alive()->count();
+        $deceasedCount = $contacts->dead()->count();
 
         return view('people.index')
             ->with('hidingDeceased', $showDeceased != 'true')
             ->with('deceasedCount', $deceasedCount)
-            ->withContacts($contacts->unique('id'))
-            ->withUnstarredContacts($unstarredContacts)
-            ->withStarredContacts($starredContacts)
             ->withActive($active)
+            ->withContactsCount($contactsCount)
             ->withHasArchived($nbArchived > 0)
             ->withArchivedCOntacts($nbArchived)
             ->withTags($tags)
+            ->withTagsCount($tagsCount)
             ->withUserTags(auth()->user()->account->tags)
             ->withUrl($url)
             ->withTagCount($count)
@@ -621,5 +596,120 @@ class ContactsController extends Controller
         return [
             'is_active' => $contact->is_active,
         ];
+    }
+
+    /**
+     * Display the list of contacts.
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function list(Request $request)
+    {
+        $contactsCollection = collect([]);
+
+        $accountId = auth()->user()->account_id;
+
+        $user = $request->user();
+        $sort = $request->get('sort') ?? $user->contacts_sort_order;
+        $showDeceased = $request->get('show_dead');
+
+        if ($user->contacts_sort_order !== $sort) {
+            $user->updateContactViewPreference($sort);
+        }
+
+        $tags = null;
+        $url = '';
+        $count = 1;
+
+        $contacts = $user->account->contacts()->real();
+        $contacts = $contacts->active();
+
+        if ($request->get('no_tag')) {
+            // get tag less contacts
+            $contacts = $contacts->tags('NONE');
+        } elseif ($request->get('tag1')) {
+            // get contacts with selected tags
+            $tags = collect();
+
+            while ($request->get('tag'.$count)) {
+                $tag = Tag::where('account_id', $accountId)
+                    ->where('name_slug', $request->get('tag'.$count))
+                    ->get();
+
+                if (! ($tags->contains($tag[0]))) {
+                    $tags = $tags->concat($tag);
+                }
+
+                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
+
+                $count++;
+            }
+            if (!is_null($tags)) {
+                $contacts = $contacts->tags($tags);
+            }
+        }
+
+        // filter out deceased if necessary
+        if ($showDeceased != 'true') {
+            $contacts = $contacts->where('is_dead', 0);
+        }
+
+        // search contacts
+        if ($request->has('search') && $request->get('search') != '') {
+            $searchable_columns = [
+                'contacts.first_name',
+                'contacts.middle_name',
+                'contacts.last_name',
+                'contacts.nickname',
+                'contacts.description',
+                'contacts.job',
+            ];
+            $queryString = StringHelper::buildQuery($searchable_columns, $request->get('search'));
+            $contacts = $contacts->whereRaw($queryString);
+        }
+
+        // get the number of contacts per page
+        $perPage = $request->has('perPage') ? $request->get('perPage') : 30;
+
+        $totalRecords = $contacts->count();
+        $contacts = $contacts->orderBy('is_starred', 'desc')->sortedBy($sort);
+
+        // Display all the contacts
+        if ($perPage == $totalRecords) {
+            $contacts = $contacts->get();
+        } else {
+            $contacts = $contacts->paginate($perPage);
+        }
+
+        foreach ($contacts as $contact) {
+
+            if ($contact->has_avatar) {
+                $avatar = $contact->getAvatarURL(110);
+                $avatarType = 'url';
+            } else if (! is_null($contact->gravatar_url)) {
+                $avatar = $contact->gravatar_url;
+                $avatarType = 'gravatar';
+            } else if (strlen($contact->getInitials()) == 1) {
+                $avatar = $contact->getInitials();
+                $avatarType = 'initial';
+            } else {
+                $avatar = $contact->getInitials();
+                $avatarType = 'initials';
+            }
+
+            $data = [
+                'avatar' => $avatar,
+                'avatar_color' => $contact->getAvatarColor(),
+                'avatar_type' => $avatarType,
+                'name' => $contact->name,
+                'description' => $contact->description,
+                'is_starred' => $contact->is_starred,
+                'route' => route('people.show', $contact),
+            ];
+            $contactsCollection->push($data);
+        }
+
+        return ['totalRecords' => $totalRecords, 'contacts' => $contactsCollection];
     }
 }

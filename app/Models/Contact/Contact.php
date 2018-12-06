@@ -450,6 +450,28 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to only include contacts who are alive.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAlive($query)
+    {
+        return $query->where('is_dead', 0);
+    }
+
+    /**
+     * Scope a query to only include contacts who are dead.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDead($query)
+    {
+        return $query->where('is_dead', 1);
+    }
+
+    /**
      * Get the first name of the contact.
      *
      * @return string

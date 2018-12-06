@@ -50,6 +50,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         // Dashboard
         Route::get('/people', 'ContactsController@index')->name('index');
         Route::get('/people/add', 'ContactsController@create')->name('create');
+        Route::get('/people/list', 'ContactsController@list')->name('list');
         Route::post('/people', 'ContactsController@store')->name('store');
         Route::get('/people/{contact}', 'ContactsController@show')->name('show');
         Route::get('/people/{contact}/edit', 'ContactsController@edit')->name('edit');

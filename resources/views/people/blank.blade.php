@@ -1,4 +1,4 @@
-<div class="blank-people-state">
+<div class="blank-people-state hidden">
     <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
         <div class="col-xs-12">
