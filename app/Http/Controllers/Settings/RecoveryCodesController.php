@@ -55,7 +55,7 @@ class RecoveryCodesController extends Controller
 
     /**
      * Generate new recovery codes.
-     * 
+     *
      * @return void
      */
     private function generate()
