@@ -6,14 +6,13 @@ use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\Api\ApiController;
-use App\Http\Resources\Call\Call as CallResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Call\CreateCall;
 use App\Services\Contact\Call\UpdateCall;
 use App\Services\Contact\Call\DestroyCall;
+use App\Http\Controllers\Api\ApiController;
 use App\Exceptions\MissingParameterException;
+use App\Http\Resources\Call\Call as CallResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiCallController extends ApiController
 {
@@ -131,7 +130,7 @@ class ApiCallController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$callId);
+        return $this->respondObjectDeleted((int) $callId);
     }
 
     /**
