@@ -106,7 +106,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Recovery codes generate
+    | Recovery codes generation
     |--------------------------------------------------------------------------
     |
     | count: number of recovery codes to generate

@@ -9,7 +9,7 @@ UNRELEASED CHANGES:
 * Fix avatar display in searches
 * Fix conversation add/update using contact add/update flash messages
 * Fix incompatibility of people search queries with PostgreSQL
-* Add ability to generate recovery codes, to bypass Two Factor Authentication
+* Add ability to generate recovery codes in order to bypass 2FA/U2F
 
 RELEASED VERSIONS:
 

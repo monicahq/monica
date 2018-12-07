@@ -36,7 +36,7 @@ class RecoveryCodesController extends Controller
     }
 
     /**
-     * Get list of recovery codes (with POST request).
+     * Get list of recovery codes.
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
@@ -53,6 +53,11 @@ class RecoveryCodesController extends Controller
         return new RecoveryCodeCollection($codes);
     }
 
+    /**
+     * Generate new recovery codes.
+     * 
+     * @return void
+     */
     private function generate()
     {
         // Generate new codes
