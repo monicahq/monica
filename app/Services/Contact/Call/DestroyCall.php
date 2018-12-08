@@ -17,7 +17,7 @@ class DestroyCall extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'call_id' => 'required|integer|exists:calls,id',
+            'call_id' => 'required|integer',
         ];
     }
 
@@ -32,7 +32,7 @@ class DestroyCall extends BaseService
         $this->validate($data);
 
         $call = Call::where('account_id', $data['account_id'])
-        ->findOrFail($data['call_id']);
+            ->findOrFail($data['call_id']);
 
         $contact = $call->contact;
 

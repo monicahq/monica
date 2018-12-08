@@ -309,7 +309,7 @@ class ApiCallControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_calls_delete_error()
+    public function test_it_cant_delete_a_call_if_call_doesnt_exist()
     {
         $user = $this->signin();
 
@@ -329,6 +329,6 @@ class ApiCallControllerTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/calls/'.$call->id);
 
-        $response->assertStatus(200);
+        $this->expectNotFound($response);
     }
 }
