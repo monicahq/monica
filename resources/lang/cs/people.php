@@ -89,8 +89,8 @@ return [
     'call_delete_success' => 'Údaje o telefonátu byly úspěšně smazány',
     'call_title' => 'Telefonáty',
     'call_empty_comment' => 'Bez detailů',
-    'call_blank_title' => 'Udržujte přehled o telefonátech uskutečněných s :name',
-    'call_blank_desc' => 'Volali jste :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
