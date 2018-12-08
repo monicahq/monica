@@ -89,8 +89,8 @@ return [
     'call_delete_success' => '成功删除通话记录！',
     'call_title' => '通话记录',
     'call_empty_comment' => '无详细信息',
-    'call_blank_title' => '记录您与:name的通话记录',
-    'call_blank_desc' => '你打给:name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
 
     // Conversation
     'conversation_blank' => '记录您与:name通过短信或社交媒体的信息记录',
