@@ -27,6 +27,8 @@
             <div class="relative">
                 <span :class="[ dirltr ? 'fl' : 'fr' ]">
                     <a @click="generateNewCodes" class="btn">{{ $t('settings.recovery_generate') }}</a>
+                    <br/>
+                    <small class="form-text text-muted">{{ $t('settings.recovery_generate_help') }}</small>
                 </span>
                 <span :class="[ dirltr ? 'fr' : 'fl' ]">
                     <a @click="copyIntoClipboard" class="btn btn-primary" :title="copyHelp">{{ $t('app.copy') }}</a>
@@ -86,7 +88,7 @@
 
             showRecoveryModal() {
                 this.codes = [];
-                axios.get('/settings/security/recovery-codes')
+                axios.post('/settings/security/recovery-codes')
                     .then(response => {
                         this.codes = response.data.data;
                         this.$refs.recoveryModal.open();
@@ -97,7 +99,7 @@
 
             generateNewCodes() {
                 this.codes = [];
-                axios.post('/settings/security/recovery-codes')
+                axios.post('/settings/security/generate-recovery-codes')
                     .then(response => {
                         this.codes = response.data.data;
                     }).catch(error => {
