@@ -327,7 +327,7 @@ class ApiCallControllerTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('DELETE', '/api/calls/' . $call->id);
+        $response = $this->json('DELETE', '/api/calls/'.$call->id);
 
         $response->assertStatus(200);
     }
