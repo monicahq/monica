@@ -161,17 +161,17 @@ class ApiCallControllerTest extends ApiTestCase
         $response->assertJsonStructure([
             'data' => $this->jsonCall,
         ]);
-        $call_id = $response->json('data.id');
+        $callId = $response->json('data.id');
         $response->assertJsonFragment([
             'object' => 'call',
-            'id' => $call_id,
+            'id' => $callId,
         ]);
 
-        $this->assertGreaterThan(0, $call_id);
+        $this->assertGreaterThan(0, $callId);
         $this->assertDatabaseHas('calls', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $call_id,
+            'id' => $callId,
             'content' => 'the call',
             'called_at' => '2018-05-01',
         ]);
@@ -211,115 +211,124 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    // public function test_it_updates_a_call()
-    // {
-    //     $user = $this->signin();
-    //     $contact = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $call = factory(Call::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //     ]);
+    public function test_it_updates_a_call()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $call = factory(Call::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
 
-    //     $response = $this->json('PUT', '/api/calls/'.$call->id, [
-    //         'contact_id' => $contact->id,
-    //         'content' => 'the call',
-    //         'called_at' => '2018-05-01',
-    //     ]);
+        $response = $this->json('PUT', '/api/calls/'.$call->id, [
+            'contact_id' => $contact->id,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
+        ]);
 
-    //     $response->assertStatus(200);
-    //     $response->assertJsonStructure([
-    //         'data' => $this->jsonCall,
-    //     ]);
-    //     $call_id = $response->json('data.id');
-    //     $this->assertEquals($call->id, $call_id);
-    //     $response->assertJsonFragment([
-    //         'object' => 'call',
-    //         'id' => $call_id,
-    //     ]);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonCall,
+        ]);
+        $callId = $response->json('data.id');
+        $this->assertEquals($call->id, $callId);
+        $response->assertJsonFragment([
+            'object' => 'call',
+            'id' => $callId,
+        ]);
 
-    //     $this->assertGreaterThan(0, $call_id);
-    //     $this->assertDatabaseHas('calls', [
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'id' => $call_id,
-    //         'content' => 'the call',
-    //         'called_at' => '2018-05-01',
-    //     ]);
-    // }
+        $this->assertGreaterThan(0, $callId);
+        $this->assertDatabaseHas('calls', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $callId,
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
+        ]);
+    }
 
-    // public function test_updating_call_generates_an_error()
-    // {
-    //     $user = $this->signin();
-    //     $call = factory(Call::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
+    public function test_updating_call_generates_an_error()
+    {
+        $user = $this->signin();
+        $call = factory(Call::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-    //     $response = $this->json('PUT', '/api/calls/'.$call->id, [
-    //         'contact_id' => $call->contact_id,
-    //     ]);
+        $response = $this->json('PUT', '/api/calls/'.$call->id, [
+            'contact_id' => $call->contact_id,
+        ]);
 
-    //     $this->expectDataError($response, [
-    //         'The content field is required.',
-    //         'The called at field is required.',
-    //     ]);
-    // }
+        $this->expectInvalidParameter($response, [
+            'The called at field is required.',
+        ]);
+    }
 
-    // public function test_it_cant_update_a_call()
-    // {
-    //     $user = $this->signin();
+    public function test_it_cant_update_a_call_if_account_is_not_linked_to_call()
+    {
+        $user = $this->signin();
 
-    //     $account = factory(Account::class)->create();
-    //     $contact = factory(Contact::class)->create([
-    //         'account_id' => $account->id,
-    //     ]);
-    //     $call = factory(Call::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //     ]);
+        $contact = factory(Contact::class)->create([]);
+        $call = factory(Call::class)->create([
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+        ]);
 
-    //     $response = $this->json('PUT', '/api/calls/'.$call->id, [
-    //         'contact_id' => $contact->id,
-    //         'content' => 'the call',
-    //         'called_at' => '2018-05-01',
-    //     ]);
+        $response = $this->json('PUT', '/api/calls/'.$call->id, [
+            'content' => 'the call',
+            'called_at' => '2018-05-01',
+        ]);
 
-    //     $this->expectNotFound($response);
-    // }
+        $this->expectNotFound($response);
+    }
 
-    // public function test_it_deletes_a_call()
-    // {
-    //     $user = $this->signin();
-    //     $contact = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $call = factory(Call::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //     ]);
-    //     $this->assertDatabaseHas('calls', [
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'id' => $call->id,
-    //     ]);
+    public function test_it_deletes_a_call()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $call = factory(Call::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertDatabaseHas('calls', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $call->id,
+        ]);
 
-    //     $response = $this->json('DELETE', '/api/calls/'.$call->id);
+        $response = $this->json('DELETE', '/api/calls/'.$call->id);
 
-    //     $response->assertStatus(200);
-    //     $this->assertDatabaseMissing('calls', [
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'id' => $call->id,
-    //     ]);
-    // }
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('calls', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $call->id,
+        ]);
+    }
 
-    // public function test_calls_delete_error()
-    // {
-    //     $user = $this->signin();
+    public function test_calls_delete_error()
+    {
+        $user = $this->signin();
 
-    //     $response = $this->json('DELETE', '/api/calls/0');
+        $response = $this->json('DELETE', '/api/calls/0');
 
-    //     $this->expectNotFound($response);
-    // }
+        $this->expectNotFound($response);
+    }
+
+    public function test_it_cant_delete_a_call_if_account_is_not_linked()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([]);
+        $call = factory(Call::class)->create([
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('DELETE', '/api/calls/' . $call->id);
+
+        $response->assertStatus(200);
+    }
 }
