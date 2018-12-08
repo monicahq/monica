@@ -108,7 +108,7 @@ return [
     'recovery_help_information' => 'You can use each recovery code once.',
     'recovery_clipboard' => 'Codes copied in the clipboard',
     'recovery_generate' => 'Generate new codes...',
-    'recovery_generate_help' => 'Be aware that generating new codes will invalidate old codes.',
+    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previoulsy generated codes',
     'recovery_already_used_help' => 'This code has already been used',
 
     'users_list_title' => 'Users with access to your account',
