@@ -1,7 +1,12 @@
 {
     "entries": [
         {
-            "date": "Dec 07, 2018",
+            "date": "Dec 10, 2018",
+            "title": "New feature: edit a phone call",
+            "description": "You can finally edit a phone call. Moreover, logging phone call now happens inline and not in a popup anymore."
+        },
+        {
+            "date": "Dec 09, 2018",
             "title": "New feature: photos upload",
             "description": "You can now add photos to a contact. Head over the profile of one of your contact and upload photos now. ![image](/img/changelogs/2018-12-04-photo-upload.png)"
         },
