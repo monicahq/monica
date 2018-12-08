@@ -89,8 +89,8 @@ return [
     'call_delete_success' => 'Deze oproep is succesvol verwijdert',
     'call_title' => 'Telefoon gesprekken',
     'call_empty_comment' => 'Geen details',
-    'call_blank_title' => 'Hou je telefoongesprekken bij met :name',
-    'call_blank_desc' => 'Je hebt gebeld met :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
