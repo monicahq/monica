@@ -7,9 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Services\Contact\Call\CreateCall;
+use App\Services\Contact\Call\UpdateCall;
 use App\Services\Contact\Call\DestroyCall;
 use App\Http\Resources\Call\Call as CallResource;
-use App\Services\Contact\Call\UpdateCall;
 
 class CallsController extends Controller
 {
