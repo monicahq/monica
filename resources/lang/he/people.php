@@ -89,8 +89,8 @@ return [
     'call_delete_success' => 'שיחת הטלפון נמחקה בהצלחה',
     'call_title' => 'שיחות טלפון',
     'call_empty_comment' => 'אין פרטים',
-    'call_blank_title' => 'מעקב אחר שיחות הטלפון שקיימת עם :name',
-    'call_blank_desc' => 'התקשרת אל :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
 
     // Conversation
     'conversation_blank' => 'תיעוד דיונים שערכת עם :name ברשתות חברתיות, מסרונים וכו׳…',
