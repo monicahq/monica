@@ -4,7 +4,7 @@
 <template>
         <div>
             <div class="">
-                <h3>
+                <h3 class="mb2">
                     ☎️ {{ $t('people.call_title') }}
 
                     <span class="fr relative" style="top: -7px;">
@@ -14,11 +14,19 @@
                 </h3>
             </div>
 
+            <!-- BLANK STATE -->
+            <div class="w-100" v-if="!displayLogCall && calls.length == 0">
+                <div class="bg-near-white tc pa3 br2 ba b--light-gray">
+                    <p>{{ $t('people.call_blank_title', { name: name }) }}</p>
+                    <a class="pointer" @click.prevent="displayLogCall = true">{{ $t('people.modal_call_title') }}</a>
+                </div>
+            </div>
+
             <!-- LOG A CALL -->
             <transition name="fade">
-                <div class="ba br3 document-upload-zone mb3 pa3" v-if="displayLogCall">
+                <div class="ba br3 mb3 pa3 b--black-40" v-if="displayLogCall">
                     <div class="">
-                        <label>{{ $t('people.conversation_add_you') }}</label>
+                        <label>{{ $t('people.modal_call_comment') }}</label>
                         <form-textarea
                             v-model="newCall.content"
                             :required="true"
@@ -29,8 +37,8 @@
                         </form-textarea>
                         <p class="f6">Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more. Read documentation</p>
                     </div>
-                    <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-                        <p class="mb2 b">When did you make this call?</p>
+                    <div class="pb3 mb3 mb0-ns bb b--gray-monica">
+                        <p class="mb2">{{ $t('people.modal_call_exact_date') }}</p>
                         <div class="di mr3">
                             <div class="dib">
                                 <form-date
@@ -44,7 +52,7 @@
                     </div>
 
                     <!-- ACTIONS -->
-                    <div class="ph4-ns ph3 pv3 bb b--gray-monica">
+                    <div class="pt3">
                         <div class="flex-ns justify-between">
                         <div class="">
                             <a @click.prevent="displayLogCall = false; resetFields()" class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns">{{ $t('app.cancel') }}</a>
@@ -59,21 +67,56 @@
 
             <!-- LIST OF CALLS -->
             <div class="ba br2 b--black-10 br--top w-100 mb2" v-for="call in calls" v-bind:key="call.id">
-                <div class="pa2">
+                <div class="pa2" v-show="editCallId != call.id">
                     <span v-if="!call.content">{{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}</span>
-                    <span v-if="call.content">{{ call.content }}</span>
+                    <span v-if="call.content" v-html="compiledMarkdown(call.content)"></span>
                 </div>
+
+                <!-- INLINE UPDATE DIV -->
+                <div class="pa2" v-show="editCallId == call.id">
+                    <div>
+                        <div>
+                            <label>{{ $t('people.modal_call_comment') }}</label>
+                            <textarea
+                                v-model="editCall.content"
+                                @contentChange="updateEditCallContent($event)"
+                                autofocus
+                                rows="4"
+                                class="br2 f5 w-100 ba b--black-40 pa2 outline-0"></textarea>
+                            <p class="f6">Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more. Read documentation</p>
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="">
+                            <div class="flex-ns justify-between">
+                            <div class="">
+                                <a @click.prevent="editCallId = 0" class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns">{{ $t('app.cancel') }}</a>
+                            </div>
+                            <div class="">
+                                <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="update()">{{ $t('app.add') }}</button>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADDITIONAL INFORMATION -->
                 <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
                     <div class="w-50" :class="[ dirltr ? 'fl' : 'fr' ]">
                         {{ call.called_at | moment }}
                     </div>
+
                     <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-50">
-                        <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="updateCall(call)">
+                        <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(call)">
                             {{ $t('app.update') }}
                         </a>
-                        <a class="pointer" @click.prevent="destroyCall(call)">
+                        <a class="pointer" @click.prevent="showDestroyCall(call)" v-show="destroyCallId != call.id">
                             {{ $t('app.delete') }}
                         </a>
+                        <ul class="di" v-show="destroyCallId == call.id">
+                            <li class="di"><a class="pointer mr1" @click.prevent="destroyCallId = 0">{{ $t('app.cancel') }}</a></li>
+                            <li class="di"><a class="pointer red" @click.prevent="destroyCall(call)">{{ $t('app.delete_confirm') }}</a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -91,15 +134,23 @@
                 dirltr: true,
                 displayLogCall: false,
                 todayDate: '',
+                editCallId: 0,
+                destroyCallId: 0,
                 newCall: {
                     content: '',
                     called_at: '',
                 },
+                editCall: {
+                    content: '',
+                }
             };
         },
 
         props: {
             hash: {
+                type: String,
+            },
+            name: {
                 type: String,
             },
         },
@@ -125,9 +176,13 @@
                 this.newCall.called_at = this.todayDate
             },
 
+            compiledMarkdown (text) {
+                return marked(text, { sanitize: true })
+            },
+
             resetFields() {
                 this.newCall.content = ''
-                this.newCall.called_at = moment().format()
+                this.newCall.called_at = this.todayDate
             },
 
             getCalls() {
@@ -148,24 +203,56 @@
 
                             this.$notify({
                                 group: 'main',
-                                title: this.$t('people.life_event_create_success'),
+                                title: this.$t('people.calls_add_success'),
                                 text: '',
                                 type: 'success'
                             });
                         });
             },
 
-            onRowClick(params) {
-                window.location.href = params.row.route;
+            update() {
+                axios.put('/people/' + this.hash + '/calls/' + this.editCallId, this.editCall)
+                        .then(response => {
+                            this.getCalls()
+                            this.editCallId = 0
+
+                            this.$notify({
+                                group: 'main',
+                                title: this.$t('app.default_save_success'),
+                                text: '',
+                                type: 'success'
+                            });
+                        });
+            },
+
+            showEditBox(call) {
+                this.editCallId = call.id
+                this.editCall.content = call.content
+                this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD')
             },
 
             updateContent(updatedContent) {
               this.newCall.content = updatedContent
             },
 
+            updateEditCallContent(updatedContent) {
+              this.editCall.content = updatedContent
+            },
+
             updateDate(updatedContent) {
               this.newCall.called_at = updatedContent
             },
+
+            showDestroyCall(call) {
+                this.destroyCallId = call.id
+            },
+
+            destroyCall(call) {
+                axios.delete('/people/' + this.hash + '/calls/' + this.destroyCallId)
+                        .then(response => {
+                            this.calls.splice(this.calls.indexOf(call), 1)
+                        });
+            }
         }
     }
 </script>

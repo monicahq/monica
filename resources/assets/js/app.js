@@ -272,6 +272,9 @@ Vue.filter('formatDate', function(value) {
     }
 });
 
+// Markdown
+window.marked = require('marked');
+
 import messages from '../../../public/js/langs/en.json';
 
 export const i18n = new VueI18n({

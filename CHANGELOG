@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to edit a phone call
 * Remove limitation on the date field when creating an activity
 * Fix Set Tag api method which deleted existing tags, which it shouldn't
 * Fix editing relationship not working

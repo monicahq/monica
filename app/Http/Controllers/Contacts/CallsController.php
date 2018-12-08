@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Contact\Call\CreateCall;
 use App\Services\Contact\Call\DestroyCall;
 use App\Http\Resources\Call\Call as CallResource;
+use App\Services\Contact\Call\UpdateCall;
 
 class CallsController extends Controller
 {
@@ -42,13 +43,31 @@ class CallsController extends Controller
     }
 
     /**
+     * Update a call.
+     *
+     * @param  Contact $contact
+     * @param  Call $call
+     * @return Call
+     */
+    public function update(Request $request, Contact $contact, Call $call)
+    {
+        return (new UpdateCall)->execute([
+            'account_id' => auth()->user()->account->id,
+            'call_id' => $call->id,
+            'content' => $request->get('content'),
+            'called_at' => $request->get('called_at'),
+        ]);
+    }
+
+    /**
      * Delete the call.
      *
      * @param Request $request
+     * @param Contact $contact
      * @param Call $call
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Call $call)
+    public function destroy(Request $request, Contact $contact, Call $call)
     {
         $data = [
             'account_id' => auth()->user()->account->id,
