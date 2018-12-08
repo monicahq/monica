@@ -89,8 +89,8 @@ return [
     'call_delete_success' => 'La llamada telefónica ha sido eliminada exitosamente',
     'call_title' => 'Llamadas telefónicas',
     'call_empty_comment' => 'No hay detalles',
-    'call_blank_title' => 'Dale seguimiento a la llamadas telefónicas que has tenido con :name',
-    'call_blank_desc' => 'Llamaste a :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
 
     // Conversation
     'conversation_blank' => 'Registra conversaciones que has tenido con :name por redes sociales, SMS, ...',
