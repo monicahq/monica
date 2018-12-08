@@ -17,7 +17,7 @@ class RecoveryCodes extends Migration
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('user_id');
-            $table->string('recovery', 20);
+            $table->string('recovery');
             $table->boolean('used')->default(false);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
