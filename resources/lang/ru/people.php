@@ -89,8 +89,8 @@ return [
     'call_delete_success' => 'Звонок был удалён',
     'call_title' => 'Телефонные звонки',
     'call_empty_comment' => 'Нет деталей',
-    'call_blank_title' => 'Keep track of the phone calls you’ve done with :name',
-    'call_blank_desc' => 'Вы звонили :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
