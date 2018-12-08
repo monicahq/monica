@@ -89,8 +89,8 @@ return [
     'call_delete_success' => 'تم حذف المكالمة بنجاح',
     'call_title' => 'المكالمات الهاتفية',
     'call_empty_comment' => 'لا تفاصيل',
-    'call_blank_title' => 'تابع مكالماتك الهاتفية التي قمت بها مع :name',
-    'call_blank_desc' => 'اتصلت بـ:name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
 
     // Conversation
     'conversation_blank' => 'سجل المكالمات التي لديك مع :name على وسائل التواصل الإجتماعي',
