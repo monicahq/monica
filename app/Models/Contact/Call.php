@@ -6,6 +6,7 @@ use Parsedown;
 use App\Models\Account\Account;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Http\Resources\Emotion\Emotion;
 
 class Call extends Model
 {
@@ -50,6 +51,18 @@ class Call extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
+    }
+
+    /**
+     * Get the emotion records associated with the call.
+     *
+     * @return BelongsToMany
+     */
+    public function emotions()
+    {
+        return $this->belongsToMany(Emotion::class, 'emotion_call')
+                    ->withPivot('account_id', 'contact_id')
+                    ->withTimestamps();
     }
 
     /**

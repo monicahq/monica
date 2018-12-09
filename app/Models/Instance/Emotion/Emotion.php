@@ -41,4 +41,16 @@ class Emotion extends Model
     {
         return $this->belongsTo(SecondaryEmotion::class, 'emotion_secondary_id');
     }
+
+    /**
+     * Get the call records associated with the call.
+     *
+     * @return BelongsToMany
+     */
+    public function calls()
+    {
+        return $this->belongsToMany(Call::class, 'emotion_call')
+            ->withPivot('account_id', 'contact_id')
+            ->withTimestamps();
+    }
 }
