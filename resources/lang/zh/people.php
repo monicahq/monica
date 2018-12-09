@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => '记录通话',
     'modal_call_comment' => '你们说了什么？（可选）',
-    'modal_call_date' => '通话是今天早些时候发生的。',
-    'modal_call_change' => '更改',
     'modal_call_exact_date' => '通话日期',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => '已保存通话记录。',
     'call_delete_confirmation' => '你确定要删除此通话记录吗?',
     'call_delete_success' => '成功删除通话记录！',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => '无详细信息',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => '记录您与:name通过短信或社交媒体的信息记录',
