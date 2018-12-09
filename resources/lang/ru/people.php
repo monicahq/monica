@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Log a call',
     'modal_call_comment' => 'О чём вы разговаривали? (не обяз.)',
-    'modal_call_date' => 'Звонок был ранее сегодня.',
-    'modal_call_change' => 'Изменить',
     'modal_call_exact_date' => 'Дата звонка',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'Звонок сохранён.',
     'call_delete_confirmation' => 'Вы уверены что хотите удалить звонок?',
     'call_delete_success' => 'Звонок был удалён',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'Нет деталей',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
