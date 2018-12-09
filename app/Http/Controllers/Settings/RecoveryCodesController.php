@@ -7,7 +7,6 @@ use App\Models\User\RecoveryCode;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use PragmaRX\Recovery\Recovery as PragmaRXRecovery;
-use App\Http\Resources\Settings\RecoveryCode\RecoveryCodeCollection;
 
 class RecoveryCodesController extends Controller
 {
@@ -55,16 +54,17 @@ class RecoveryCodesController extends Controller
 
     /**
      * Format codes collection for response.
-     * 
+     *
      * @param \Illuminate\Database\Eloquent\Collection  $codes
      * @return array
      */
-    private function response($codes) {
+    private function response($codes)
+    {
         return $codes->map(function ($code) {
             return [
                 'id' => $code->id,
                 'recovery' => $code->recovery,
-                'used' => (bool) $code->used
+                'used' => (bool) $code->used,
             ];
         });
     }
