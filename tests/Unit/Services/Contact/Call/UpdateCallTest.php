@@ -47,6 +47,35 @@ class UpdateCallTest extends TestCase
         );
     }
 
+    public function test_it_updates_a_call_and_who_called_info()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $call = factory(Call::class)->create([
+            'contact_id' => $contact,
+            'account_id' => $contact->account->id,
+            'contact_called' => 0,
+        ]);
+
+        $request = [
+            'account_id' => $call->account->id,
+            'call_id' => $call->id,
+            'called_at' => Carbon::now(),
+            'content' => 'this is the content',
+            'contact_called' => 1,
+        ];
+
+        $callService = new UpdateCall;
+        $call = $callService->execute($request);
+
+        $this->assertDatabaseHas('calls', [
+            'id' => $call->id,
+            'contact_id' => $call->contact->id,
+            'account_id' => $call->contact->account->id,
+            'content' => 'this is the content',
+            'contact_called' => 1,
+        ]);
+    }
+
     public function test_it_updates_a_call_without_the_content()
     {
         $contact = factory(Contact::class)->create([]);

@@ -20,6 +20,7 @@ class CreateCall extends BaseService
             'contact_id' => 'required|integer',
             'called_at' => 'required|date',
             'content' => 'nullable|string',
+            'contact_called' => 'nullable|boolean',
         ];
     }
 
