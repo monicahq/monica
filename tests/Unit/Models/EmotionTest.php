@@ -3,9 +3,6 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Document;
 use App\Models\Instance\Emotion\Emotion;
 use App\Models\Instance\Emotion\PrimaryEmotion;
 use App\Models\Instance\Emotion\SecondaryEmotion;
