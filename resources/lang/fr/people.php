@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
-    'modal_call_date' => 'Cet appel téléphonique s’est passé plus tôt dans la journée.',
-    'modal_call_change' => 'Changer',
     'modal_call_exact_date' => 'L’appel s’est passé le',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'L’appel téléphonique a été enregistré.',
     'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L’appel a été supprimé avec succès',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'Aucun details',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Enregistrer les discussions que vous avez avec :name sur les réseaux sociaux, par SMS, etc.',
