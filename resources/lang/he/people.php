@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'תיעוד שיחה',
     'modal_call_comment' => 'על מה דיברתם? (רשות)',
-    'modal_call_date' => 'שיחת הטלפון התקיימה מוקדם יותר היום.',
-    'modal_call_change' => 'שינוי',
     'modal_call_exact_date' => 'שיחת הטלפון התקיימה ב־',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'שיחת הטלפון נשמרה.',
     'call_delete_confirmation' => 'למחוק את השיחה הזאת?',
     'call_delete_success' => 'שיחת הטלפון נמחקה בהצלחה',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'אין פרטים',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'תיעוד דיונים שערכת עם :name ברשתות חברתיות, מסרונים וכו׳…',
