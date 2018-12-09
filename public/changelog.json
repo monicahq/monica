@@ -2,7 +2,7 @@
     "entries": [
         {
             "date": "Dec 09, 2018",
-            "title": "New feature: indicate who made a phone call",
+            "title": "New feature: indicate who initiated a phone call",
             "description": "You can now indicate who has initiated a phone call. ![image](/img/changelogs/2018-12-08-who-called.png)"
         },
         {
