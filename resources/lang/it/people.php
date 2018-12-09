@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Aggiungi chiamata',
     'modal_call_comment' => 'Di cosa avete parlato? (facoltativo)',
-    'modal_call_date' => 'La chiamata é stata fatta prima, quest\'oggi.',
-    'modal_call_change' => 'Cambia',
     'modal_call_exact_date' => 'La chiamata é stata fatta il',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'La chiamata é stata salvata.',
     'call_delete_confirmation' => 'Rimuovere questa chiamata?',
     'call_delete_success' => 'La chiamata é stata rimossa',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'Nessuna informazione',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
