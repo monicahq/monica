@@ -82,7 +82,7 @@ return [
     'modal_call_title' => '记录通话',
     'modal_call_comment' => '你们说了什么？（可选）',
     'modal_call_exact_date' => '通话日期',
-    'modal_call_who_called' => 'Who called?',
+    'modal_call_who_called' => '谁打来的？',
     'calls_add_success' => '已保存通话记录。',
     'call_delete_confirmation' => '你确定要删除此通话记录吗?',
     'call_delete_success' => '成功删除通话记录！',
