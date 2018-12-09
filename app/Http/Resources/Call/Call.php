@@ -21,6 +21,7 @@ class Call extends Resource
             'object' => 'call',
             'called_at' => DateHelper::getTimestamp($this->called_at),
             'content' => $this->content,
+            'contact_called' => $this->contact_called,
             'account' => [
                 'id' => $this->account->id,
             ],

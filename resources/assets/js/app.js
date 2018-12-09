@@ -156,6 +156,11 @@ Vue.component(
 );
 
 Vue.component(
+    'phone-call-list',
+    require('./components/people/calls/PhoneCallList.vue')
+);
+
+Vue.component(
     'conversation-list',
     require('./components/people/conversation/ConversationList.vue')
 );
@@ -266,6 +271,9 @@ Vue.filter('formatDate', function(value) {
         return moment(String(value)).format('LL')
     }
 });
+
+// Markdown
+window.marked = require('marked');
 
 import messages from '../../../public/js/langs/en.json';
 

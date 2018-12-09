@@ -3,58 +3,83 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Models\Contact\Call;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\People\CallsRequest;
+use App\Services\Contact\Call\CreateCall;
+use App\Services\Contact\Call\UpdateCall;
+use App\Services\Contact\Call\DestroyCall;
+use App\Http\Resources\Call\Call as CallResource;
 
 class CallsController extends Controller
 {
     /**
-     * Store a newly created resource in storage.
+     * Display the list of calls.
      *
-     * @param CallsRequest $request
-     * @param Contact $contact
+     * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function store(CallsRequest $request, Contact $contact)
+    public function index(Request $request, Contact $contact)
     {
-        $call = $contact->calls()->create(
-            $request->only([
-                'called_at',
-            ])
-            + [
-                'content' => ($request->get('content') == '' ? null : $request->get('content')),
-                'account_id' => $contact->account_id,
-            ]
-        );
+        $calls = $contact->calls()->get();
 
-        $contact->updateLastCalledInfo($call);
-
-        return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.calls_add_success'));
+        return CallResource::collection($calls);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Store a call.
      *
+     * @param  Contact $contact
+     * @return Call
+     */
+    public function store(Request $request, Contact $contact)
+    {
+        return (new CreateCall)->execute([
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'content' => $request->get('content'),
+            'called_at' => $request->get('called_at'),
+            'contact_called' => $request->get('contact_called'),
+        ]);
+    }
+
+    /**
+     * Update a call.
+     *
+     * @param  Contact $contact
+     * @param  Call $call
+     * @return Call
+     */
+    public function update(Request $request, Contact $contact, Call $call)
+    {
+        return (new UpdateCall)->execute([
+            'account_id' => auth()->user()->account->id,
+            'call_id' => $call->id,
+            'content' => $request->get('content'),
+            'called_at' => $request->get('called_at'),
+            'contact_called' => $request->get('contact_called'),
+        ]);
+    }
+
+    /**
+     * Delete the call.
+     *
+     * @param Request $request
      * @param Contact $contact
      * @param Call $call
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Call $call)
+    public function destroy(Request $request, Contact $contact, Call $call)
     {
-        if ($contact->account_id != $call->account_id) {
-            return redirect()->route('people.index');
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'call_id' => $call->id,
+        ];
+
+        try {
+            (new DestroyCall)->execute($data);
+        } catch (\Exception $e) {
+            return $this->respondNotFound();
         }
-
-        $call->delete();
-
-        if ($contact->calls()->count() == 0) {
-            $contact->last_talked_to = null;
-            $contact->save();
-        }
-
-        return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.call_delete_success'));
     }
 }

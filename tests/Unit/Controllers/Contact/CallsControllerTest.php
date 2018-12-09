@@ -1,30 +1,27 @@
 <?php
 
-namespace Tests\Unit\Controllers;
+namespace Tests\Unit\Controllers\Contact;
 
 use Tests\FeatureTestCase;
+use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Document;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DocumentsControllerTest extends FeatureTestCase
+class CallsControllerTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
     protected $jsonStructure = [
         'id',
         'object',
-        'original_filename',
-        'new_filename',
-        'filesize',
-        'type',
-        'number_of_downloads',
+        'called_at',
+        'content',
         'contact',
         'created_at',
         'updated_at',
     ];
 
-    public function test_it_gets_the_list_of_documents()
+    public function test_it_gets_the_list_of_calls()
     {
         $user = $this->signin();
 
@@ -32,12 +29,12 @@ class DocumentsControllerTest extends FeatureTestCase
             'account_id' => $user->account_id,
         ]);
 
-        factory(Document::class, 10)->create([
+        factory(Call::class, 10)->create([
             'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
 
-        $response = $this->json('GET', '/people/'.$contact->hashID().'/documents');
+        $response = $this->json('GET', '/people/'.$contact->hashID().'/calls');
 
         $response->assertStatus(200);
 
