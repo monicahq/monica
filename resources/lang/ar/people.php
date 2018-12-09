@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'تسجيل مكالمة',
     'modal_call_comment' => 'ماذا تحدثتم عنه؟ (اختياري)',
-    'modal_call_date' => 'حدثت المكالمة الهاتفية في وقت سابق من اليوم.',
-    'modal_call_change' => 'تغيير',
     'modal_call_exact_date' => 'تمت المكالمة الهاتفية في',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'تم حفظ المكالمة الهاتفية.',
     'call_delete_confirmation' => 'هل أنت متأكد من حذف هذه المكالمة؟',
     'call_delete_success' => 'تم حذف المكالمة بنجاح',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'لا تفاصيل',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'سجل المكالمات التي لديك مع :name على وسائل التواصل الإجتماعي',
