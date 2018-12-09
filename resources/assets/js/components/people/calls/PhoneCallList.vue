@@ -25,7 +25,38 @@
             <!-- LOG A CALL -->
             <transition name="fade">
                 <div class="ba br3 mb3 pa3 b--black-40" v-if="displayLogCall">
-                    <div class="">
+                    <div class="dt dt--fixed pb3 mb3 mb0-ns">
+                        <!-- WHEN -->
+                        <div class="dtc pr2">
+                            <p class="mb2">{{ $t('people.modal_call_exact_date') }}</p>
+                            <div class="di mr3">
+                                <div class="dib">
+                                    <form-date
+                                        v-model="newCall.called_at"
+                                        :default-date="todayDate"
+                                        @selected="updateDate($event)"
+                                        :locale="'en'">
+                                    </form-date>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- WHO CALLED -->
+                        <div class="dtc">
+                            <p class="mb2">{{ $t('people.modal_call_who_called') }}</p>
+                            <div class="di mr3">
+                                <input type="radio" class="mr1" id="you" name="contact_called" :value="false" v-model="newCall.contact_called">
+                                <label for="you" class="pointer">{{ $t('people.call_you_called') }}</label>
+                            </div>
+                            <div class="di mr3">
+                                <input type="radio" class="mr1" id="contact" name="contact_called" :value="true" v-model="newCall.contact_called">
+                                <label for="contact" class="pointer">{{ $t('people.call_he_called', { name : name }) }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONTENT -->
+                    <div class="bb b--gray-monica">
                         <label>{{ $t('people.modal_call_comment') }}</label>
                         <form-textarea
                             v-model="newCall.content"
@@ -35,20 +66,7 @@
                             :placeholder="$t('people.conversation_add_content')"
                             @contentChange="updateContent($event)">
                         </form-textarea>
-                        <p class="f6">Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more. Read documentation</p>
-                    </div>
-                    <div class="pb3 mb3 mb0-ns bb b--gray-monica">
-                        <p class="mb2">{{ $t('people.modal_call_exact_date') }}</p>
-                        <div class="di mr3">
-                            <div class="dib">
-                                <form-date
-                                    v-model="newCall.called_at"
-                                    :default-date="todayDate"
-                                    @selected="updateDate($event)"
-                                    :locale="'en'">
-                                </form-date>
-                            </div>
-                        </div>
+                        <p class="f6">{{ $t('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ $t('app.markdown_link') }}</a></p>
                     </div>
 
                     <!-- ACTIONS -->
@@ -86,6 +104,19 @@
                             <p class="f6">Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more. Read documentation</p>
                         </div>
 
+                        <!-- WHO CALLED -->
+                        <div class="pb3 mb3 mb0-ns">
+                            <p class="mb2">{{ $t('people.modal_call_who_called') }}</p>
+                            <div class="di mr3">
+                                <input type="radio" class="mr1" :id="'you' + call.id" :name="'contact_called' + call.id" :value="false" v-model="editCall.contact_called">
+                                <label :for="'you' +  call.id" class="pointer">{{ $t('people.call_you_called') }}</label>
+                            </div>
+                            <div class="di mr3">
+                                <input type="radio" class="mr1" :id="'contact' + call.id" :name="'contact_called' + call.id" :value="true" v-model="editCall.contact_called">
+                                <label :for="'contact' + call.id" class="pointer">{{ $t('people.call_he_called', { name : name }) }}</label>
+                            </div>
+                        </div>
+
                         <!-- ACTIONS -->
                         <div class="">
                             <div class="flex-ns justify-between">
@@ -93,7 +124,7 @@
                                 <a @click.prevent="editCallId = 0" class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns">{{ $t('app.cancel') }}</a>
                             </div>
                             <div class="">
-                                <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="update()">{{ $t('app.add') }}</button>
+                                <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="update()">{{ $t('app.update') }}</button>
                             </div>
                             </div>
                         </div>
@@ -103,7 +134,8 @@
                 <!-- ADDITIONAL INFORMATION -->
                 <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
                     <div class="w-50" :class="[ dirltr ? 'fl' : 'fr' ]">
-                        {{ call.called_at | moment }}
+                        <span :class="[ dirltr ? 'mr3' : 'ml3' ]">{{ call.called_at | moment }}</span>
+                        <span>{{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}</span>
                     </div>
 
                     <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-50">
@@ -139,9 +171,11 @@
                 newCall: {
                     content: '',
                     called_at: '',
+                    contact_called: false,
                 },
                 editCall: {
                     content: '',
+                    contact_called: false,
                 }
             };
         },
@@ -228,6 +262,7 @@
             showEditBox(call) {
                 this.editCallId = call.id
                 this.editCall.content = call.content
+                this.editCall.contact_called = call.contact_called
                 this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD')
             },
 

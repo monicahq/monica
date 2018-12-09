@@ -24,6 +24,15 @@ class Call extends Model
     protected $dates = ['called_at'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'contact_called' => 'boolean',
+    ];
+
+    /**
      * Get the account record associated with the call.
      *
      * @return BelongsTo

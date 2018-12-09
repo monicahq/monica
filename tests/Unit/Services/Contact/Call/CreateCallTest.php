@@ -35,12 +35,37 @@ class CreateCallTest extends TestCase
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
             'content' => 'this is the content',
+            'contact_called' => 0,
         ]);
 
         $this->assertInstanceOf(
             Call::class,
             $call
         );
+    }
+
+    public function test_it_stores_a_call_and_who_called_information()
+    {
+        $contact = factory(Contact::class)->create([]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'called_at' => Carbon::now(),
+            'content' => 'this is the content',
+            'contact_called' => true,
+        ];
+
+        $callService = new CreateCall;
+        $call = $callService->execute($request);
+
+        $this->assertDatabaseHas('calls', [
+            'id' => $call->id,
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'content' => 'this is the content',
+            'contact_called' => 1,
+        ]);
     }
 
     public function test_it_stores_a_call_without_the_content()
