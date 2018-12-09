@@ -90,7 +90,7 @@
                 this.codes = [];
                 axios.post('/settings/security/recovery-codes')
                     .then(response => {
-                        this.codes = response.data.data;
+                        this.codes = response.data;
                         this.$refs.recoveryModal.open();
                     }).catch(error => {
                         this.notify(error.response.data.message, false);
@@ -101,7 +101,7 @@
                 this.codes = [];
                 axios.post('/settings/security/generate-recovery-codes')
                     .then(response => {
-                        this.codes = response.data.data;
+                        this.codes = response.data;
                     }).catch(error => {
                         this.notify(error.response.data.message, false);
                     });

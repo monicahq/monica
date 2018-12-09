@@ -32,7 +32,7 @@ class RecoveryCodesController extends Controller
 
         $codes = auth()->user()->recoveryCodes()->get();
 
-        return new RecoveryCodeCollection($codes);
+        return $this->response($codes);
     }
 
     /**
@@ -50,7 +50,23 @@ class RecoveryCodesController extends Controller
             $codes = auth()->user()->recoveryCodes()->get();
         }
 
-        return new RecoveryCodeCollection($codes);
+        return $this->response($codes);
+    }
+
+    /**
+     * Format codes collection for response.
+     * 
+     * @param \Illuminate\Database\Eloquent\Collection  $codes
+     * @return array
+     */
+    private function response($codes) {
+        return $codes->map(function ($code) {
+            return [
+                'id' => $code->id,
+                'recovery' => $code->recovery,
+                'used' => (bool) $code->used
+            ];
+        });
     }
 
     /**
