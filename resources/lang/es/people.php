@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Registrar una llamada',
     'modal_call_comment' => '¿De qué hablaron? (Opcional)',
-    'modal_call_date' => 'La llamada telefónica ocurrió hoy.',
-    'modal_call_change' => 'Cambiar',
     'modal_call_exact_date' => 'La llamada telefónica ocurrió el',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'La llamada telefónica ha sido guardada.',
     'call_delete_confirmation' => '¿Estás seguro que deseas eliminar esta llamada?',
     'call_delete_success' => 'La llamada telefónica ha sido eliminada exitosamente',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'No hay detalles',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Registra conversaciones que has tenido con :name por redes sociales, SMS, ...',
