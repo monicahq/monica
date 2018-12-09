@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Telefonat vermerken',
     'modal_call_comment' => 'Worüber habt ihr geredet? (optional)',
-    'modal_call_date' => 'Das Telefonat war heute.',
-    'modal_call_change' => 'Ändern',
     'modal_call_exact_date' => 'Das Telefonat war am',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'Telefonat gespeichert.',
     'call_delete_confirmation' => 'Möchtest du das Telefonat wirklich löschen?',
     'call_delete_success' => 'Das Telefonat wurde erfolgreich gelöscht',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'Keine Details',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :name auf Social Media, via SMS etc. hast...',
