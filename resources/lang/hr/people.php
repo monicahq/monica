@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Zabilježi poziv',
     'modal_call_comment' => 'O čemu ste razgovarali? (opcionalno)',
-    'modal_call_date' => 'Poziv je bio danas.',
-    'modal_call_change' => 'Promijeni',
     'modal_call_exact_date' => 'Poziv se dogodio',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'Poziv je uspješno unesen.',
     'call_delete_confirmation' => 'Jeste li sigurni da želite izbrisati ovaj poziv?',
     'call_delete_success' => 'Poziv je uspješno obrisan',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'Nema pojedinosti',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Bilježi razgovore koje ste imali vi i :name imali na socijalnim mrežama.',
