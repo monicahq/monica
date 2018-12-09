@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Zaznamenat telefonát',
     'modal_call_comment' => 'O čem byla řeč? (volitelné)',
-    'modal_call_date' => 'K telefonátu došlo dnes.',
-    'modal_call_change' => 'Upravit',
     'modal_call_exact_date' => 'Telefonovali jsme',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'Údaje o telefonátu byly uloženy.',
     'call_delete_confirmation' => 'Opravdu chcete údaje o telefonátu vymazat?',
     'call_delete_success' => 'Údaje o telefonátu byly úspěšně smazány',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'Bez detailů',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
