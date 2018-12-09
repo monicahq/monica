@@ -2,22 +2,14 @@
 
 namespace App\Models\Instance\Emotion;
 
-use Exception;
-use App\Models\User\User;
-use App\Models\Instance\Emotion\PrimaryEmotion;
-use App\Models\Instance\Emotion\SecondaryEmotion;
-use Sabre\VObject\Component\VCard;
-use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * An emotion (ex: Adoration) is defined into 3 categories:
  * - Primary: Love
  * - Secondary: Affection
- * - Tertiary: Adoration
+ * - Tertiary: Adoration.
  */
 class Emotion extends Model
 {

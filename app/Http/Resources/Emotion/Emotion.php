@@ -3,7 +3,6 @@
 namespace App\Http\Resources\Emotion;
 
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Emotion extends Resource
 {
