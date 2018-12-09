@@ -81,9 +81,8 @@ return [
     // Calls
     'modal_call_title' => 'Registreer een belgesprek',
     'modal_call_comment' => 'Waar hebben jullie het over gehad? (optioneel)',
-    'modal_call_date' => 'Dit telefoongesprek was eerder vandaag.',
-    'modal_call_change' => 'Pas aan',
     'modal_call_exact_date' => 'Het telefoongesprek gebeurde op',
+    'modal_call_who_called' => 'Who called?',
     'calls_add_success' => 'Het telefoongesprek is opgeslagen.',
     'call_delete_confirmation' => 'Weet je zeker dat je deze oproep wil wissen?',
     'call_delete_success' => 'Deze oproep is succesvol verwijdert',
@@ -91,6 +90,8 @@ return [
     'call_empty_comment' => 'Geen details',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
