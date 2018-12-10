@@ -5,7 +5,6 @@ namespace Tests\Unit\Models;
 use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
-use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
@@ -703,31 +702,6 @@ class ContactTest extends FeatureTestCase
 
         $this->assertFalse(
             $contact->hasDebt()
-        );
-    }
-
-    public function test_update_last_called_info_method()
-    {
-        $date = '2017-01-22 17:56:03';
-        $contact = factory(Contact::class)->create();
-        $call = new Call;
-        $call->called_at = $date;
-
-        $contact->updateLastCalledInfo($call);
-
-        $this->assertEquals(
-            $date,
-            $contact->last_talked_to
-        );
-
-        $otherContact = factory(Contact::class)->create();
-        $otherContact->last_talked_to = '1990-01-01 01:01:01';
-
-        $otherContact->updateLastCalledInfo($call);
-
-        $this->assertEquals(
-            $date,
-            $otherContact->last_talked_to
         );
     }
 

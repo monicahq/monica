@@ -49,8 +49,8 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::get('/contacts/{contact}/notes', 'ApiNoteController@notes');
 
     // Calls
-    Route::apiResource('calls', 'ApiCallController');
-    Route::get('/contacts/{contact}/calls', 'ApiCallController@calls');
+    Route::apiResource('calls', 'Contact\\ApiCallController');
+    Route::get('/contacts/{contact}/calls', 'Contact\\ApiCallController@calls');
 
     // Conversations & messages
     Route::apiResource('conversations', 'Contact\\ApiConversationController');
