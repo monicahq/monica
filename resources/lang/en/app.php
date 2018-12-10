@@ -257,7 +257,6 @@ return [
     'emotion_secondary_cheerfulness' => 'Cheerfulness',
     'emotion_secondary_zest' => 'Zest',
     'emotion_secondary_contentment' => 'Contentment',
-    'emotion_secondary_contentment' => 'Contentment',
     'emotion_secondary_optimism' => 'Optimism',
     'emotion_secondary_enthrallment' => 'Enthrallment',
     'emotion_secondary_relief' => 'Relief',
