@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Services\Contact\Call;
+
+use App\Models\Contact\Call;
+use App\Services\BaseService;
+use App\Models\Contact\Contact;
+
+class CreateCall extends BaseService
+{
+    /**
+     * Get the validation rules that apply to the service.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'called_at' => 'required|date',
+            'content' => 'nullable|string',
+            'contact_called' => 'nullable|boolean',
+        ];
+    }
+
+    /**
+     * Create a call.
+     *
+     * @param array $data
+     * @return Call
+     */
+    public function execute(array $data) : Call
+    {
+        $this->validate($data);
+
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $call = Call::create($data);
+
+        $this->updateLastCallInfo($contact, $call);
+
+        return $call;
+    }
+
+    /**
+     * Update last call information of the contact.
+     *
+     * @param Contact $contact
+     * @param Call $call
+     * @return void
+     */
+    private function updateLastCallInfo(Contact $contact, Call $call)
+    {
+        if (is_null($contact->last_talked_to)) {
+            $contact->last_talked_to = $call->called_at;
+        } else {
+            $contact->last_talked_to = $contact->last_talked_to->max($call->called_at);
+        }
+
+        $contact->save();
+    }
+}

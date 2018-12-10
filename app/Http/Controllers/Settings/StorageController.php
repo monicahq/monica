@@ -12,9 +12,9 @@ class StorageController extends Controller
      */
     public function index()
     {
-        $documents = Document::with(['contact' => function ($query) {
-            $query->where('account_id', auth()->user()->account->id);
-        }])->orderBy('created_at', 'desc')->get();
+        $documents = Document::where('account_id', auth()->user()->account->id)
+                                ->orderBy('created_at', 'desc')
+                                ->get();
 
         // count total account size
         // size is in bytes in the database

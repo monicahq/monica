@@ -1,6 +1,16 @@
 {
     "entries": [
         {
+            "date": "Dec 09, 2018",
+            "title": "New feature: indicate who initiated a phone call",
+            "description": "You can now indicate who has initiated a phone call. ![image](/img/changelogs/2018-12-08-who-called.png)"
+        },
+        {
+            "date": "Dec 08, 2018",
+            "title": "New feature: edit a phone call",
+            "description": "You can finally edit a phone call. Moreover, logging phone call now happens inline and not in a popup anymore."
+        },
+        {
             "date": "Nov 17, 2018",
             "title": "New feature: tasks not related to contacts",
             "description": "In the dashboard, you can now create tasks that are not linked to any contacts. ![image](/img/changelogs/2018-11-17-custom-tasks.png)"

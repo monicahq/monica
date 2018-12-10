@@ -3,6 +3,7 @@
 namespace App\Models\CardDAV;
 
 use Sabre\CardDAV\AddressBook;
+use Illuminate\Support\Facades\Auth;
 
 class MonicaAddressBook extends AddressBook
 {
@@ -53,5 +54,12 @@ class MonicaAddressBook extends AddressBook
      */
     public function getLastModified()
     {
+        $contacts = Auth::user()->account
+                        ->contacts()
+                        ->real()
+                        ->active()
+                        ->get();
+
+        return $contacts->max('updated_at');
     }
 }

@@ -1142,24 +1142,6 @@ class Contact extends Model
     }
 
     /**
-     * Update the last called info on the contact, if the call has been made
-     * in the most recent date.
-     *
-     * @param  Call   $call
-     * @return void
-     */
-    public function updateLastCalledInfo(Call $call)
-    {
-        if (is_null($this->last_talked_to)) {
-            $this->last_talked_to = $call->called_at;
-        } else {
-            $this->last_talked_to = $this->last_talked_to->max($call->called_at);
-        }
-
-        $this->save();
-    }
-
-    /**
      * Set a relationship between two contacts.
      *
      * @param Contact $otherContact

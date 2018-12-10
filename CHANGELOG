@@ -1,7 +1,16 @@
 UNRELEASED CHANGES:
 
+* Add information about who initiated a phone call
+* Add ability to edit a phone call
+* Remove limitation on the date field when creating an activity
+* Fix Set Tag api method which deleted existing tags, which it shouldn't
+* Fix editing relationship not working
+* Fix Storage page not being displayed
 * Add ability to create tasks that are not linked to any contacts
+* Fix VCard import without firstname
 * Fix avatar display in searches
+* Fix conversation add/update using contact add/update flash messages
+* Fix incompatibility of people search queries with PostgreSQL
 
 RELEASED VERSIONS:
 

@@ -39,8 +39,8 @@ class CarddavContactTest extends ApiTestCase
         $user = $this->signin();
 
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
-            ['content-type' => 'text/vcard; charset=utf-8'],
-            "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nN:Doe;John;;;\nEND:VCARD"
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doe\nN:Doe;John;;;\nEND:VCARD"
         );
 
         $response->assertStatus(201);
@@ -66,8 +66,8 @@ class CarddavContactTest extends ApiTestCase
         $filename = urlencode($contact->uuid.'.vcf');
 
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
-            ['content-type' => 'text/vcard; charset=utf-8'],
-            "BEGIN:VCARD\nVERSION:3.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
 
         $response->assertStatus(204);
@@ -96,7 +96,7 @@ class CarddavContactTest extends ApiTestCase
         $data = $response->getContent();
 
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
-            ['content-type' => 'text/vcard; charset=utf-8'],
+            ['content-type' => 'application/xml; charset=utf-8'],
             $data
         );
 
@@ -115,11 +115,12 @@ class CarddavContactTest extends ApiTestCase
         $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'HTTP_DEPTH' => '1',
+                'content-type' => 'application/xml; charset=utf-8',
             ],
             '<card:addressbook-query xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">
                <d:prop>
                  <d:getetag />
-                 <card:address-data />
+                 <card:address-data content-type="text/vcard" version="4.0" />
                </d:prop>
              </card:addressbook-query>'
         );
@@ -138,11 +139,8 @@ class CarddavContactTest extends ApiTestCase
               '<d:getetag>&quot;');
         $response->assertSee('&quot;</d:getetag>'.
               "<card:address-data>BEGIN:VCARD&#13;\n".
-        "VERSION:3.0&#13;\n".
-        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
-        "UID:{$contact->uuid}&#13;\n".
+        "VERSION:4.0&#13;\n".
         "SOURCE:{$peopleurl}&#13;\n".
-        "FN:John Doe&#13;\n".
         "N:Doe;John;;;&#13;\n".
         "GENDER:O;&#13;\n".
         "END:VCARD&#13;\n".
@@ -152,5 +150,81 @@ class CarddavContactTest extends ApiTestCase
            '</d:propstat>'.
           '</d:response>'.
         '</d:multistatus>');
+    }
+
+    public function test_carddav_contacts_report_multiget()
+    {
+        $user = $this->signin();
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'HTTP_DEPTH' => '1',
+            ],
+            "<card:addressbook-multiget xmlns:d=\"DAV:\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
+               <d:prop>
+                 <d:getetag />
+                 <card:address-data content-type=\"text/vcard\" version=\"4.0\" />
+               </d:prop>
+               <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>
+               <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>
+             </card:addressbook-multiget>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $people1url = route('people.show', $contact1);
+        $people2url = route('people.show', $contact2);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+        '<d:response>'.
+          "<d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>".
+          '<d:propstat>'.
+            '<d:prop>'.
+              '<d:getetag>&quot;');
+        $response->assertSee('&quot;</d:getetag>'.
+              "<card:address-data>BEGIN:VCARD&#13;\n".
+        "VERSION:4.0&#13;\n".
+        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
+        "UID:{$contact1->uuid}&#13;\n".
+        "SOURCE:{$people1url}&#13;\n".
+        "FN:John Doe&#13;\n".
+        "N:Doe;John;;;&#13;\n".
+        "GENDER:O;&#13;\n".
+        "END:VCARD&#13;\n".
+               '</card:address-data>'.
+             '</d:prop>'.
+             '<d:status>HTTP/1.1 200 OK</d:status>'.
+           '</d:propstat>'.
+          '</d:response>');
+        $response->assertSee(
+          '<d:response>'.
+            "<d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
+            '<d:propstat>'.
+              '<d:prop>'.
+                '<d:getetag>&quot;');
+        $response->assertSee('&quot;</d:getetag>'.
+                "<card:address-data>BEGIN:VCARD&#13;\n".
+          "VERSION:4.0&#13;\n".
+          "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
+          "UID:{$contact2->uuid}&#13;\n".
+          "SOURCE:{$people2url}&#13;\n".
+          "FN:John Doe&#13;\n".
+          "N:Doe;John;;;&#13;\n".
+          "GENDER:O;&#13;\n".
+          "END:VCARD&#13;\n".
+                 '</card:address-data>'.
+               '</d:prop>'.
+               '<d:status>HTTP/1.1 200 OK</d:status>'.
+             '</d:propstat>'.
+            '</d:response>'.
+          '</d:multistatus>');
     }
 }

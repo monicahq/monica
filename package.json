@@ -10,7 +10,7 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "e2e": "$(yarn bin)/cypress run",
     "e2e-gui": "$(yarn bin)/cypress open",
-    "inst": "yarn install --frozen-lockfile"
+    "inst": "yarn install --ignore-engines --frozen-lockfile"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",
@@ -30,6 +30,7 @@
     "laravel-mix": "^2.1.7",
     "list.js": "^1.5.0",
     "lodash": "^4.17.5",
+    "marked": "^0.5.2",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.21",
     "pretty-checkbox-vue": "^1.1.8",

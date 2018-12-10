@@ -32,13 +32,11 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function getAddressBooksForUser($principalUri)
     {
-        Log::debug(__CLASS__.' getAddressBooksForUser', func_get_args());
-
         return [
             [
-                'id' => '0',
-                'uri' => 'contacts',
-                'principaluri' => 'principals/'.Auth::user()->email,
+                'id'                => '0',
+                'uri'               => 'contacts',
+                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
                 '{DAV:}displayname' => Auth::user()->name,
             ],
         ];
@@ -62,8 +60,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
-        Log::debug(__CLASS__.' updateAddressBook', func_get_args());
-
         return false;
     }
 
@@ -80,8 +76,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function createAddressBook($principalUri, $url, array $properties)
     {
-        Log::debug(__CLASS__.' createAddressBook', func_get_args());
-
         return false;
     }
 
@@ -93,8 +87,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function deleteAddressBook($addressBookId)
     {
-        Log::debug(__CLASS__.' deleteAddressBook', func_get_args());
-
         return false;
     }
 
@@ -121,7 +113,7 @@ class MonicaCardDAVBackend extends AbstractBackend
             'uri' => $this->encodeUri($contact),
             'carddata' => $carddata,
             'etag' => '"'.md5($carddata).'"',
-            'lastmodified' => $contact->updated_at->timestamp,
+            'lastmodified' => $contact->updated_at,
         ];
     }
 
@@ -132,7 +124,7 @@ class MonicaCardDAVBackend extends AbstractBackend
 
     private function decodeUri($uri)
     {
-        return str_replace('.vcf', '', urldecode($uri));
+        return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
 
     private function getContact($uri)
@@ -168,8 +160,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function getCards($addressbookId)
     {
-        Log::debug(__CLASS__.' getCards', func_get_args());
-
         $contacts = Auth::user()->account
                         ->contacts()
                         ->real()
@@ -191,8 +181,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function getCard($addressBookId, $cardUri)
     {
-        Log::debug(__CLASS__.' getCard', func_get_args());
-
         $contact = $this->getContact($cardUri);
 
         return $this->prepareCard($contact);
@@ -225,8 +213,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function createCard($addressBookId, $cardUri, $cardData)
     {
-        Log::debug(__CLASS__.' createCard', func_get_args());
-
         return $this->importCard(null, $cardData);
     }
 
@@ -257,8 +243,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function updateCard($addressBookId, $cardUri, $cardData)
     {
-        Log::debug(__CLASS__.' updateCard', func_get_args());
-
         return $this->importCard($cardUri, $cardData);
     }
 
@@ -302,8 +286,6 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function deleteCard($addressBookId, $cardUri)
     {
-        Log::debug(__CLASS__.' deleteCard', func_get_args());
-
         return false;
     }
 }

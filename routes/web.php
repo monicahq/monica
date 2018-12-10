@@ -146,7 +146,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
         // Phone calls
-        Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->only(['store', 'destroy']);
+        Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->except(['show']);
 
         // Conversations
         Route::resource('people/{contact}/conversations', 'Contacts\\ConversationsController')->except(['show']);
