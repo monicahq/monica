@@ -4,9 +4,9 @@ namespace App\Models\Contact;
 
 use Parsedown;
 use App\Models\Account\Account;
+use App\Http\Resources\Emotion\Emotion;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Http\Resources\Emotion\Emotion;
 
 class Call extends Model
 {
