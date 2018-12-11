@@ -1462,7 +1462,7 @@ class Contact extends Model
             ->where('id', function ($query) use ($account) {
                 $query->select('of_contact')->from('relationships')->where('account_id', $account->account_id)
                     ->where('contact_is', $account->id);
-                })
+            })
             ->first();
     }
 
