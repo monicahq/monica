@@ -43,39 +43,41 @@
                     </li>
                 </ul>
 
-                <a class="pointer small-btn pa2" @click.prevent="menu = true">😐 {{ $t('people.emotion_this_made_me_feel') }}</a>
+                <div class="relative dib">
+                    <a class="pointer small-btn pa2" @click.prevent="menu = true">😐 {{ $t('people.emotion_this_made_me_feel') }}</a>
 
-                <!-- MENU OF EMOTIONS -->
-                <ul class="absolute emotion-action-menu bg-white z-max pv1" v-show="menu">
-                    <!-- PRIMARY -->
-                    <li class="pa2 pointer relative emotion-list-line" v-show="emotionsMenu == 'primary'" v-for="primaryEmotion in primaryEmotions" :key="'primary' + primaryEmotion.id" @click.prevent="showSecondary(primaryEmotion)">
-                        {{ $t('app.emotion_primary_' + primaryEmotion.name) }}
+                    <!-- MENU OF EMOTIONS -->
+                    <ul class="absolute emotion-action-menu bg-white z-max pv1" v-show="menu">
+                        <!-- PRIMARY -->
+                        <li class="pa2 pointer relative emotion-list-line" v-show="emotionsMenu == 'primary'" v-for="primaryEmotion in primaryEmotions" :key="'primary' + primaryEmotion.id" @click.prevent="showSecondary(primaryEmotion)">
+                            {{ $t('app.emotion_primary_' + primaryEmotion.name) }}
 
-                        <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
-                        </svg>
-                    </li>
+                            <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
+                            </svg>
+                        </li>
 
-                    <!-- SECONDARY -->
-                    <li class="pa2 pointer bb b--gray-monica" v-show="emotionsMenu == 'secondary'">
-                        <a @click.prevent="emotionsMenu = 'primary'" class="no-underline">← {{ $t('app.back') }}</a>
-                    </li>
-                    <li class="pa2 pointer relative emotion-list-line" v-show="emotionsMenu == 'secondary'" v-for="secondaryEmotion in secondaryEmotions" :key="'secondary' + secondaryEmotion.id" @click.prevent="showEmotion(secondaryEmotion)">
-                        {{ $t('app.emotion_secondary_' + secondaryEmotion.name) }}
+                        <!-- SECONDARY -->
+                        <li class="pa2 pointer bb b--gray-monica" v-show="emotionsMenu == 'secondary'">
+                            <a @click.prevent="emotionsMenu = 'primary'" class="no-underline">← {{ $t('app.back') }}</a>
+                        </li>
+                        <li class="pa2 pointer relative emotion-list-line" v-show="emotionsMenu == 'secondary'" v-for="secondaryEmotion in secondaryEmotions" :key="'secondary' + secondaryEmotion.id" @click.prevent="showEmotion(secondaryEmotion)">
+                            {{ $t('app.emotion_secondary_' + secondaryEmotion.name) }}
 
-                        <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
-                        </svg>
-                    </li>
+                            <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4"/>
+                            </svg>
+                        </li>
 
-                    <!-- EMOTION -->
-                    <li class="pa2 pointer bb b--gray-monica" v-show="emotionsMenu == 'emotions'">
-                        <a @click.prevent="emotionsMenu = 'secondary'" class="no-underline">← {{ $t('app.back') }}</a>
-                    </li>
-                    <li class="pa2 pointer emotion-list-line" v-show="emotionsMenu == 'emotions'" v-for="emotion in emotions" :key="emotion.id" @click.prevent="addEmotion(emotion)">
-                        {{ $t('app.emotion_' + emotion.name) }}
-                    </li>
-                </ul>
+                        <!-- EMOTION -->
+                        <li class="pa2 pointer bb b--gray-monica" v-show="emotionsMenu == 'emotions'">
+                            <a @click.prevent="emotionsMenu = 'secondary'" class="no-underline">← {{ $t('app.back') }}</a>
+                        </li>
+                        <li class="pa2 pointer emotion-list-line" v-show="emotionsMenu == 'emotions'" v-for="emotion in emotions" :key="emotion.id" @click.prevent="addEmotion(emotion)">
+                            {{ $t('app.emotion_' + emotion.name) }}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
@@ -101,9 +103,23 @@
             this.prepareComponent()
         },
 
+        created() {
+            window.addEventListener('click', this.close);
+        },
+
+        beforeDestroy() {
+            window.removeEventListener('click', this.close);
+        },
+
         methods: {
             prepareComponent() {
                 this.getPrimaryEmotions()
+            },
+
+            close(e) {
+                if (!this.$el.contains(e.target)) {
+                    this.menu = false;
+                }
             },
 
             getPrimaryEmotions() {
