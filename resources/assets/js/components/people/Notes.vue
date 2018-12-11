@@ -123,12 +123,6 @@
 
         props: ['hash'],
 
-        computed: {
-            compiledMarkdown: function (text) {
-                return marked(text, { sanitize: true })
-            }
-        },
-
         methods: {
             /**
              * Prepare the component.
