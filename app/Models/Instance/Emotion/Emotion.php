@@ -49,7 +49,7 @@ class Emotion extends Model
      */
     public function calls()
     {
-        return $this->belongsToMany(Call::class, 'emotion_call')
+        return $this->belongsToMany(Call::class, 'emotion_call', 'emotion_id', 'call_id')
             ->withPivot('account_id', 'contact_id')
             ->withTimestamps();
     }

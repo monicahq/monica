@@ -72,7 +72,7 @@
                     <!-- CONTENT -->
                     <div class="bb b--gray-monica pb3">
                         <label class="b">{{ $t('people.modal_call_emotion') }}</label>
-                        <emotion></emotion>
+                        <emotion class="pv2" @updateEmotionsList="updateEmotionsList"></emotion>
                     </div>
 
                     <!-- ACTIONS -->
@@ -139,12 +139,20 @@
 
                 <!-- ADDITIONAL INFORMATION -->
                 <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
-                    <div class="w-50" :class="[ dirltr ? 'fl' : 'fr' ]">
+                    <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
                         <span :class="[ dirltr ? 'mr3' : 'ml3' ]">{{ call.called_at | moment }}</span>
-                        <span>{{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}</span>
+                        <span :class="[ dirltr ? 'mr3' : 'ml3' ]">{{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}</span>
+                        <span v-if="call.emotions.length != 0">
+                            <span :class="[ dirltr ? 'mr2' : 'ml2' ]">Emotions:</span>
+                            <ul class="di">
+                                <li class="di" v-for="emotion in call.emotions" :key="emotion.id">
+                                    {{ $t('app.emotion_' + emotion.name) }}
+                                </li>
+                            </ul>
+                        </span>
                     </div>
 
-                    <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-50">
+                    <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-30">
                         <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(call)">
                             {{ $t('app.update') }}
                         </a>
@@ -174,14 +182,17 @@
                 todayDate: '',
                 editCallId: 0,
                 destroyCallId: 0,
+                chosenEmotions: [],
                 newCall: {
                     content: '',
                     called_at: '',
                     contact_called: false,
+                    emotions: [],
                 },
                 editCall: {
                     content: '',
                     contact_called: false,
+                    emotions: [],
                 }
             };
         },
@@ -233,6 +244,7 @@
             },
 
             store() {
+
                 axios.post('/people/' + this.hash + '/calls', this.newCall)
                         .then(response => {
                             this.getCalls()
@@ -240,6 +252,8 @@
                             this.resetFields()
 
                             this.displayLogCall = false
+
+                            this.chosenEmotions = []
 
                             this.$notify({
                                 group: 'main',
@@ -293,6 +307,15 @@
                         .then(response => {
                             this.calls.splice(this.calls.indexOf(call), 1)
                         });
+            },
+
+            updateEmotionsList: function(emotions) {
+                this.chosenEmotions = emotions
+                this.newCall.emotions = []
+
+                for (let i = 0; i < this.chosenEmotions.length; i++) {
+                    this.newCall.emotions.push(this.chosenEmotions[i].id)
+                }
             }
         }
     }

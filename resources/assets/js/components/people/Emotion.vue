@@ -159,6 +159,7 @@
                 this.menu = false
                 this.chosenEmotions.push(emotion)
                 this.emotionsMenu = 'primary'
+                this.$emit('updateEmotionsList', this.chosenEmotions);
             },
 
             removeEmotion(emotion) {
