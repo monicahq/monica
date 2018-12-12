@@ -140,7 +140,10 @@ class CarddavContactTest extends ApiTestCase
         $response->assertSee('&quot;</d:getetag>'.
               "<card:address-data>BEGIN:VCARD&#13;\n".
         "VERSION:4.0&#13;\n".
+        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
+        "UID:{$contact->uuid}&#13;\n".
         "SOURCE:{$peopleurl}&#13;\n".
+        "FN:John Doe&#13;\n".
         "N:Doe;John;;;&#13;\n".
         "GENDER:O;&#13;\n".
         "END:VCARD&#13;\n".
