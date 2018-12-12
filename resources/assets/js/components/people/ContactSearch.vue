@@ -1,17 +1,26 @@
+<style lang="scss" >
+  .v-autocomplete-list {
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+  }
+</style>
+
 <template>
     <div>
         <p class="mb2" :class="{ b: required }" v-if="title">{{ title }}</p>
-        <!--<input type="hidden" :name="name" :value="selected ? selected.id : ''">-->
-        <vAutocomplete :items="items" 
+        <v-autocomplete :items="items" 
                         v-model="item"
                         :get-label="getLabel"
-                        :component-item='template'
+                        :component-item="template"
                         @update-items="updateItems"
+                        @blur="clearSearch"
                         :wait="wait"
-                        :min-len="min-len"
-                        class="form-control header-search-input"
+                        :min-len="minLen"
+                        :keep-open="true"
+                        :input-attrs="input"
                         >
-        </vAutocomplete>
+        </v-autocomplete>
     </div>
 </template>
 
@@ -19,6 +28,7 @@
     import axios from 'axios'
     import vAutocomplete from 'v-autocomplete'
     import ContactItem from './ContactItem.vue'
+
     export default {
         props: {
             name: {
@@ -41,45 +51,68 @@
             },
             wait : {
                 type: Number,
-                default: 500
+                default: 600
             },
             minLen : {
                 type: Number,
                 default: 1
             }
         },
+
         data () {
             return {
-                src : '/people/search',
-                item: {id: 0,complete_name: ''},
+                item: null,
                 items: [],
-                template: ContactItem
+                template: ContactItem,
+                input: {
+                    class: 'form-control header-search-input',
+                    placeholder: this.placeholder
+                }
             }
         },
+
         methods: {
             getLabel (item) {
-                return item.complete_name
+                return item != null ? item.keyword : '';
             },
+
             updateItems (text) {
                 this.getContacts(text, this).then( (response) => {
                     this.items = response
                 })
             },
+
             getContacts: function (keyword, vm) {
-                return axios.post(this.src, {
+                return axios.post('/people/search', {
                     needle: keyword
                 }).then(function(response) {
                     let data = [];
-                    response.data.data.forEach(function (contact) {
-                        if (contact.id === vm.userContactId) {
-                            return;
-                        }
-                        data.push(contact);
-                    });
+                    if (response.data.noResults != null) {
+                        data.push({
+                            'item' : -1,
+                            'message': response.data.noResults,
+                            'keyword': keyword,
+                        });
+                    }
+                    else {
+                        response.data.data.forEach(function (contact) {
+                            if (contact.id === vm.userContactId) {
+                                return;
+                            }
+                            contact.keyword = keyword;
+                            data.push(contact);
+                        });
+                    }
                     return data;
                 });
+            },
+
+            clearSearch() {
+                this.item = null;
+                this.items = [];
             }
         },
+
         components: {
             vAutocomplete
         }

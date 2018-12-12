@@ -8,9 +8,7 @@
           </a>
         </div>
         <div class="dib w-60-l w-100 header-search">
-          <contact-search
-            
-            placeholder="{{ trans('people.people_search') }}">
+          <contact-search placeholder="{{ trans('people.people_search') }}">
           </contact-search>
         </div>
       </div>

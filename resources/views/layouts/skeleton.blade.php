@@ -42,6 +42,7 @@
     @endif
 
     {{-- Required only for the Upgrade account page --}}
+    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
       <script async src="https://js.stripe.com/v3/"></script>
       <script>
         var stripe = Stripe('{{config('services.stripe.key')}}');
