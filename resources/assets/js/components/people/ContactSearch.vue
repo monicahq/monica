@@ -4,6 +4,12 @@
     width: 100%;
     z-index: 10;
   }
+  .v-autocomplete-list-item {
+    background: white;
+  }
+  .v-autocomplete-item-active {
+    background: #f5f5f5;
+  }
 </style>
 
 <template>
@@ -14,11 +20,14 @@
                         :get-label="getLabel"
                         :component-item="template"
                         @update-items="updateItems"
+                        @item-selected="click"
                         @blur="clearSearch"
                         :wait="wait"
                         :min-len="minLen"
                         :keep-open="true"
                         :input-attrs="input"
+                        :autoSelectOneItem="false"
+                        :keepOpen="true"
                         >
         </v-autocomplete>
     </div>
@@ -107,9 +116,20 @@
                 });
             },
 
-            clearSearch() {
+            clearSearch(sender) {
                 this.item = null;
                 this.items = [];
+            },
+
+            click(item) {
+                if (!item) {
+                    return;
+                }
+                if (item.id > 0) {
+                    window.location = '/people/'+item.hash_id;
+                } else {
+                    window.location = '/people/add';
+                }
             }
         },
 
