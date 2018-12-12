@@ -69,7 +69,7 @@
                         <p class="f6">{{ $t('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ $t('app.markdown_link') }}</a></p>
                     </div>
 
-                    <!-- CONTENT -->
+                    <!-- EMOTIONS -->
                     <div class="bb b--gray-monica pb3">
                         <label class="b">{{ $t('people.modal_call_emotion') }}</label>
                         <emotion class="pv2" @updateEmotionsList="updateEmotionsList"></emotion>
@@ -121,6 +121,12 @@
                                 <input type="radio" class="mr1" :id="'contact' + call.id" :name="'contact_called' + call.id" :value="true" v-model="editCall.contact_called">
                                 <label :for="'contact' + call.id" class="pointer">{{ $t('people.call_he_called', { name : name }) }}</label>
                             </div>
+                        </div>
+
+                        <!-- EMOTIONS -->
+                        <div class="bb b--gray-monica pb3">
+                            <label class="b">{{ $t('people.modal_call_emotion') }}</label>
+                            <emotion class="pv2" initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList"></emotion>
                         </div>
 
                         <!-- ACTIONS -->
@@ -313,6 +319,8 @@
                 this.chosenEmotions = emotions
                 this.newCall.emotions = []
 
+                // filter the list of emotions to populate a new array
+                // containing only the emotion ids and not the entire objetcs
                 for (let i = 0; i < this.chosenEmotions.length; i++) {
                     this.newCall.emotions.push(this.chosenEmotions[i].id)
                 }

@@ -99,8 +99,12 @@
             };
         },
 
+        props: ['initialEmotions'],
+
         mounted() {
             this.prepareComponent()
+
+            this.chosenEmotions = this.initialEmotions
         },
 
         created() {
