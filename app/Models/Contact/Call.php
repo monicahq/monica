@@ -7,7 +7,7 @@ use App\Models\Account\Account;
 use App\Models\Instance\Emotion\Emotion;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Call extends Model
 {

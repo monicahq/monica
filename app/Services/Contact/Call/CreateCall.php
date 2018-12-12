@@ -44,7 +44,7 @@ class CreateCall extends BaseService
 
         $this->updateLastCallInfo($contact, $call);
 
-        if (!empty($data['emotions'])) {
+        if (! empty($data['emotions'])) {
             if ($data['emotions'] != '') {
                 $this->addEmotions($data['emotions'], $call);
             }
@@ -62,7 +62,7 @@ class CreateCall extends BaseService
      */
     private function addEmotions(array $emotions, Call $call)
     {
-        foreach($emotions as $index => $emotionId) {
+        foreach ($emotions as $index => $emotionId) {
             $emotion = Emotion::findOrFail($emotionId);
             $call->emotions()->attach($emotion->id, [
                 'account_id' => $call->account_id,
