@@ -19,6 +19,7 @@ class UpdateCall extends BaseService
             'call_id' => 'required|integer|exists:calls,id',
             'called_at' => 'required|date',
             'content' => 'nullable|string',
+            'contact_called' => 'nullable|boolean',
         ];
     }
 
@@ -38,6 +39,7 @@ class UpdateCall extends BaseService
         $call->update([
             'called_at' => $data['called_at'],
             'content' => (empty($data['content']) ? null : $data['content']),
+            'contact_called' => (empty($data['contact_called']) ? null : $data['contact_called']),
         ]);
 
         $this->updateLastCallInfo($call);

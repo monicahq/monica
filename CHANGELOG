@@ -1,6 +1,7 @@
 UNRELEASED CHANGES:
 
 * Add ability to upload photos
+* Add information about who initiated a phone call
 * Add ability to edit a phone call
 * Remove limitation on the date field when creating an activity
 * Fix Set Tag api method which deleted existing tags, which it shouldn't
