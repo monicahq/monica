@@ -30,6 +30,8 @@ return [
     'another_day' => 'un autre jour',
     'date' => 'Date',
     'type' => 'Type',
+    'zoom' => 'Zoom',
+    'upgrade' => 'Upgrade to unlock',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
