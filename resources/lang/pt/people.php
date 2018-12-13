@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'Sobre o que falaram? (opcional)',
     'modal_call_exact_date' => 'O telefonema aconteceu em',
     'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'O telefonema foi guardado.',
     'call_delete_confirmation' => 'Tem certeza que deseja eliminar esta chamada?',
     'call_delete_success' => 'A chamada foi eliminada com sucesso',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
