@@ -69,7 +69,7 @@ class UpdateCall extends BaseService
         $call->emotions()->sync([]);
 
         // saving new emotions
-        foreach ($emotions as $index => $emotionId) {
+        foreach ($emotions as $emotionId) {
             $emotion = Emotion::findOrFail($emotionId);
             $call->emotions()->syncWithoutDetaching([$emotion->id => [
                 'account_id' => $call->account_id,

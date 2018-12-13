@@ -62,7 +62,7 @@ class CreateCall extends BaseService
      */
     private function addEmotions(array $emotions, Call $call)
     {
-        foreach ($emotions as $index => $emotionId) {
+        foreach ($emotions as $emotionId) {
             $emotion = Emotion::findOrFail($emotionId);
             $call->emotions()->syncWithoutDetaching([$emotion->id => [
                 'account_id' => $call->account_id,
