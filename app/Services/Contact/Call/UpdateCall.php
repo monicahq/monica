@@ -4,6 +4,7 @@ namespace App\Services\Contact\Call;
 
 use App\Models\Contact\Call;
 use App\Services\BaseService;
+use App\Models\Instance\Emotion\Emotion;
 
 class UpdateCall extends BaseService
 {
@@ -20,6 +21,7 @@ class UpdateCall extends BaseService
             'called_at' => 'required|date',
             'content' => 'nullable|string',
             'contact_called' => 'nullable|boolean',
+            'emotions' => 'nullable|array',
         ];
     }
 
@@ -42,9 +44,38 @@ class UpdateCall extends BaseService
             'contact_called' => (empty($data['contact_called']) ? null : $data['contact_called']),
         ]);
 
+        // emotions array is left out as they are not attached during this call
+        if (! empty($data['emotions'])) {
+            if ($data['emotions'] != '') {
+                $this->addEmotions($data['emotions'], $call);
+            }
+        }
+
         $this->updateLastCallInfo($call);
 
         return $call;
+    }
+
+    /**
+     * Add emotions to the call.
+     *
+     * @param array $emotions
+     * @param Call $call
+     * @return void
+     */
+    private function addEmotions(array $emotions, Call $call)
+    {
+        // reset current emotions
+        $call->emotions()->sync([]);
+
+        // saving new emotions
+        foreach ($emotions as $emotionId) {
+            $emotion = Emotion::findOrFail($emotionId);
+            $call->emotions()->syncWithoutDetaching([$emotion->id => [
+                'account_id' => $call->account_id,
+                'contact_id' => $call->contact_id,
+            ]]);
+        }
     }
 
     /**

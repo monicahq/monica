@@ -97,6 +97,10 @@ Vue.component(
     'form-textarea',
     require('./components/partials/form/Textarea.vue')
 );
+Vue.component(
+    'emotion',
+    require('./components/people/Emotion.vue')
+);
 
 // Dashboard
 Vue.component(

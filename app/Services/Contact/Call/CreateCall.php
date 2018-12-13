@@ -5,6 +5,7 @@ namespace App\Services\Contact\Call;
 use App\Models\Contact\Call;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Models\Instance\Emotion\Emotion;
 
 class CreateCall extends BaseService
 {
@@ -21,6 +22,7 @@ class CreateCall extends BaseService
             'called_at' => 'required|date',
             'content' => 'nullable|string',
             'contact_called' => 'nullable|boolean',
+            'emotions' => 'nullable|array',
         ];
     }
 
@@ -37,11 +39,36 @@ class CreateCall extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $call = Call::create($data);
+        // emotions array is left out as they are not attached during this call
+        $call = Call::create(array_except($data, ['emotions']));
 
         $this->updateLastCallInfo($contact, $call);
 
+        if (! empty($data['emotions'])) {
+            if ($data['emotions'] != '') {
+                $this->addEmotions($data['emotions'], $call);
+            }
+        }
+
         return $call;
+    }
+
+    /**
+     * Add emotions to the call.
+     *
+     * @param array $emotions
+     * @param Call $call
+     * @return void
+     */
+    private function addEmotions(array $emotions, Call $call)
+    {
+        foreach ($emotions as $emotionId) {
+            $emotion = Emotion::findOrFail($emotionId);
+            $call->emotions()->syncWithoutDetaching([$emotion->id => [
+                'account_id' => $call->account_id,
+                'contact_id' => $call->contact_id,
+            ]]);
+        }
     }
 
     /**
