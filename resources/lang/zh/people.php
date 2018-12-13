@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => '你们说了什么？（可选）',
     'modal_call_exact_date' => '通话日期',
     'modal_call_who_called' => '谁打来的？',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => '已保存通话记录。',
     'call_delete_confirmation' => '你确定要删除此通话记录吗?',
     'call_delete_success' => '成功删除通话记录！',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => '上传文件',
     'document_upload_zone_progress' => '正在上传文档',
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
