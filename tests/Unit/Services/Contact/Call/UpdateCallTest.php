@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Support\Facades\DB;
 use App\Models\Contact\Call;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\DB;
 use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\UpdateCall;
 use App\Exceptions\MissingParameterException;

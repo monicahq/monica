@@ -45,7 +45,7 @@ class UpdateCall extends BaseService
         ]);
 
         // emotions array is left out as they are not attached during this call
-        if (!empty($data['emotions'])) {
+        if (! empty($data['emotions'])) {
             if ($data['emotions'] != '') {
                 $this->addEmotions($data['emotions'], $call);
             }
