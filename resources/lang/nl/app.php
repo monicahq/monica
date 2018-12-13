@@ -30,6 +30,8 @@ return [
     'another_day' => 'een andere dag',
     'date' => 'Datum',
     'type' => 'Soort',
+    'zoom' => 'Zoom',
+    'upgrade' => 'Upgrade to unlock',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
