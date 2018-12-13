@@ -15,7 +15,6 @@ class Photo extends Model
      * @var string
      */
     protected $table = 'photos';
-
     /**
      * The attributes that aren't mass assignable.
      *

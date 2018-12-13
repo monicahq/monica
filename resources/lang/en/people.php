@@ -81,16 +81,18 @@ return [
     // Calls
     'modal_call_title' => 'Log a call',
     'modal_call_comment' => 'What did you talk about? (optional)',
-    'modal_call_date' => 'The phone call happened earlier today.',
-    'modal_call_change' => 'Change',
     'modal_call_exact_date' => 'The phone call happened on',
+    'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'The phone call has been saved.',
     'call_delete_confirmation' => 'Are you sure you want to delete this call?',
     'call_delete_success' => 'The call has been deleted successfully',
     'call_title' => 'Phone calls',
     'call_empty_comment' => 'No details',
-    'call_blank_title' => 'Keep track of the phone calls you’ve done with :name',
-    'call_blank_desc' => 'You called :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
@@ -466,4 +468,7 @@ return [
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
     'avatar_current' => 'Keep the current avatar.',
     'avatar_photo' => 'From a photo that you upload',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];

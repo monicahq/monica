@@ -194,7 +194,6 @@ class AccountTest extends FeatureTestCase
         $photo = factory(Photo::class)->create([
             'account_id' => $account->id,
         ]);
-
         $this->assertTrue($account->photos()->exists());
     }
 

@@ -14,8 +14,8 @@ class StorageController extends Controller
     public function index()
     {
         $documents = Document::where('account_id', auth()->user()->account->id)
-                                ->orderBy('created_at', 'desc')
-                                ->get();
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $photos = Photo::where('account_id', auth()->user()->account->id)
             ->orderBy('created_at', 'desc')

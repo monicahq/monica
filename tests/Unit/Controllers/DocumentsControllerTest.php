@@ -32,7 +32,7 @@ class DocumentsControllerTest extends FeatureTestCase
             'account_id' => $user->account_id,
         ]);
 
-        factory(Document::class, 100)->create([
+        factory(Document::class, 10)->create([
             'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
@@ -48,7 +48,7 @@ class DocumentsControllerTest extends FeatureTestCase
         ]);
 
         $this->assertCount(
-            100,
+            10,
             $response->decodeResponseJson()['data']
         );
     }

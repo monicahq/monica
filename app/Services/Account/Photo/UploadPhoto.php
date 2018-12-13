@@ -29,7 +29,6 @@ class UploadPhoto extends BaseService
     public function execute(array $data) : Photo
     {
         $this->validate($data);
-
         $array = $this->populateData($data);
 
         return Photo::create($array);
@@ -43,14 +42,12 @@ class UploadPhoto extends BaseService
     private function populateData($data)
     {
         $photo = $data['photo'];
-
         $data = [
             'account_id' => $data['account_id'],
             'original_filename' => $photo->getClientOriginalName(),
             'filesize' => $photo->getClientSize(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
         ];
-
         $filename = $photo->storePublicly('photos', config('filesystems.default'));
 
         return array_merge($data, [

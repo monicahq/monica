@@ -1,14 +1,24 @@
 {
     "entries": [
         {
-            "date": "Dec 06, 2018",
-            "title": "New feature: new avatars",
-            "description": "You now have the possibility to update the avatar of a contact and choose 4 different types of avatars: . ![image](/img/changelogs/2018-11-17-custom-tasks.png)"
+            "date": "Dec 13, 2018",
+            "title": "New feature: indicate how you felt during a phone call",
+            "description": "If a call made you feel something specific, like hope, fear or fondness, you can now record it. You have now access to up to 136 different emotions to express how you felt. ![image](/img/changelogs/2018-12-13-emotions.png)"
         },
         {
-            "date": "Dec 05, 2018",
+            "date": "Dec 12, 2018",
             "title": "New feature: photos upload",
-            "description": "You can now upload photos to a contact, as many as your account allows you to. ![image](/img/changelogs/2018-11-17-custom-tasks.png)"
+            "description": "You can now add photos to a contact. Head over the profile of one of your contact and upload photos now. ![image](/img/changelogs/2018-12-04-photo-upload.png)"
+        },
+        {
+            "date": "Dec 09, 2018",
+            "title": "New feature: indicate who initiated a phone call",
+            "description": "You can now indicate who has initiated a phone call. ![image](/img/changelogs/2018-12-08-who-called.png)"
+        },
+        {
+            "date": "Dec 08, 2018",
+            "title": "New feature: edit a phone call",
+            "description": "You can finally edit a phone call. Moreover, logging phone call now happens inline and not in a popup anymore."
         },
         {
             "date": "Nov 17, 2018",
