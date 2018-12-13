@@ -30,6 +30,8 @@ return [
     'another_day' => 'יום אחר',
     'date' => 'תאריך',
     'type' => 'סוג',
+    'zoom' => 'Zoom',
+    'upgrade' => 'Upgrade to unlock',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
