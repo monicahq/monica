@@ -30,6 +30,8 @@ return [
     'another_day' => '某一天',
     'date' => '日期',
     'type' => '类型',
+    'zoom' => 'Zoom',
+    'upgrade' => 'Upgrade to unlock',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
