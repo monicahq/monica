@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'Worüber habt ihr geredet? (optional)',
     'modal_call_exact_date' => 'Das Telefonat war am',
     'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Telefonat gespeichert.',
     'call_delete_confirmation' => 'Möchtest du das Telefonat wirklich löschen?',
     'call_delete_success' => 'Das Telefonat wurde erfolgreich gelöscht',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
