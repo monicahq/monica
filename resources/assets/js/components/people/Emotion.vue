@@ -99,7 +99,14 @@
             };
         },
 
-        props: ['initialEmotions'],
+        props: {
+            initialEmotions: {
+                type: Array,
+                default: function () {
+                    return []
+                }
+            }
+        },
 
         mounted() {
             this.prepareComponent()
@@ -168,6 +175,7 @@
 
             removeEmotion(emotion) {
                 this.chosenEmotions.splice(emotion, 1)
+                this.$emit('updateEmotionsList', this.chosenEmotions);
             }
         }
     }

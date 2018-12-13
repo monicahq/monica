@@ -124,9 +124,9 @@
                         </div>
 
                         <!-- EMOTIONS -->
-                        <div class="bb b--gray-monica pb3">
+                        <div class="bb b--gray-monica pb3 mb3">
                             <label class="b">{{ $t('people.modal_call_emotion') }}</label>
-                            <emotion class="pv2" initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList"></emotion>
+                            <emotion class="pv2" v-bind:initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList"></emotion>
                         </div>
 
                         <!-- ACTIONS -->
@@ -250,15 +250,11 @@
             },
 
             store() {
-
                 axios.post('/people/' + this.hash + '/calls', this.newCall)
                         .then(response => {
                             this.getCalls()
-
                             this.resetFields()
-
                             this.displayLogCall = false
-
                             this.chosenEmotions = []
 
                             this.$notify({
@@ -275,6 +271,7 @@
                         .then(response => {
                             this.getCalls()
                             this.editCallId = 0
+                            this.chosenEmotions = []
 
                             this.$notify({
                                 group: 'main',
@@ -318,11 +315,13 @@
             updateEmotionsList: function(emotions) {
                 this.chosenEmotions = emotions
                 this.newCall.emotions = []
+                this.editCall.emotions = []
 
                 // filter the list of emotions to populate a new array
                 // containing only the emotion ids and not the entire objetcs
                 for (let i = 0; i < this.chosenEmotions.length; i++) {
                     this.newCall.emotions.push(this.chosenEmotions[i].id)
+                    this.editCall.emotions.push(this.chosenEmotions[i].id)
                 }
             }
         }

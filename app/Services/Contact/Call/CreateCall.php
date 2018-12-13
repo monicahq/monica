@@ -64,10 +64,10 @@ class CreateCall extends BaseService
     {
         foreach ($emotions as $index => $emotionId) {
             $emotion = Emotion::findOrFail($emotionId);
-            $call->emotions()->attach($emotion->id, [
+            $call->emotions()->syncWithoutDetaching([$emotion->id => [
                 'account_id' => $call->account_id,
                 'contact_id' => $call->contact_id,
-            ]);
+            ]]);
         }
     }
 
