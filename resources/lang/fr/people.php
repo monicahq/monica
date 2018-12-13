@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
     'modal_call_exact_date' => 'L’appel s’est passé le',
     'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'L’appel téléphonique a été enregistré.',
     'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L’appel a été supprimé avec succès',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => 'Télécharger un fichier',
     'document_upload_zone_progress' => 'Télécharger le document...',
     'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
