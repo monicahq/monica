@@ -30,6 +30,8 @@ return [
     'another_day' => 'drugi dan',
     'date' => 'Datum',
     'type' => 'Vrsta',
+    'zoom' => 'Zoom',
+    'upgrade' => 'Upgrade to unlock',
 
     'application_title' => 'Monica – upravljanje osobnim odnosima',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
