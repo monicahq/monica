@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Debt;
+use App\Models\Account\Photo;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -105,6 +106,19 @@ class ContactTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($contact->documents()->exists());
+    }
+
+    public function test_it_has_many_photos()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $photo = factory(Photo::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $contact->photos()->sync([$photo->id]);
+
+        $this->assertTrue($contact->photos()->exists());
     }
 
     public function test_it_has_many_life_events()

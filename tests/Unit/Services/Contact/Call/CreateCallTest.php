@@ -7,6 +7,7 @@ use Tests\TestCase;
 use App\Models\Contact\Call;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\CreateCall;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -66,6 +67,72 @@ class CreateCallTest extends TestCase
             'content' => 'this is the content',
             'contact_called' => 1,
         ]);
+    }
+
+    public function test_it_adds_emotions()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $emotion = factory(Emotion::class)->create([]);
+        $emotion2 = factory(Emotion::class)->create([]);
+
+        $emotionArray = [];
+        array_push($emotionArray, $emotion->id);
+        array_push($emotionArray, $emotion2->id);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'called_at' => Carbon::now(),
+            'content' => 'this is the content',
+            'contact_called' => true,
+            'emotions' => $emotionArray,
+        ];
+
+        $callService = new CreateCall;
+        $call = $callService->execute($request);
+
+        $this->assertDatabaseHas('calls', [
+            'id' => $call->id,
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'content' => 'this is the content',
+            'contact_called' => 1,
+        ]);
+
+        $this->assertDatabaseHas('emotion_call', [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'call_id' => $call->id,
+            'emotion_id' => $emotion->id,
+        ]);
+
+        $this->assertDatabaseHas('emotion_call', [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'call_id' => $call->id,
+            'emotion_id' => $emotion2->id,
+        ]);
+    }
+
+    public function test_it_fails_adding_emotions_when_emotion_is_unknown()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $emotionArray = [];
+        array_push($emotionArray, 1111111);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'called_at' => Carbon::now(),
+            'content' => 'this is the content',
+            'contact_called' => true,
+            'emotions' => $emotionArray,
+        ];
+
+        $this->expectException(ModelNotFoundException::class);
+
+        $callService = new CreateCall;
+        $call = $callService->execute($request);
     }
 
     public function test_it_stores_a_call_without_the_content()

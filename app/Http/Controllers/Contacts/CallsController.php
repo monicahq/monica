@@ -40,6 +40,7 @@ class CallsController extends Controller
             'content' => $request->get('content'),
             'called_at' => $request->get('called_at'),
             'contact_called' => $request->get('contact_called'),
+            'emotions' => $request->get('emotions'),
         ]);
     }
 
@@ -58,6 +59,7 @@ class CallsController extends Controller
             'content' => $request->get('content'),
             'called_at' => $request->get('called_at'),
             'contact_called' => $request->get('contact_called'),
+            'emotions' => $request->get('emotions'),
         ]);
     }
 
