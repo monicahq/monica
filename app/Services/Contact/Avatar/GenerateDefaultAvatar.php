@@ -39,6 +39,7 @@ class GenerateDefaultAvatar extends BaseService
         // delete existing default avatar
         $this->deleteExistingDefaultAvatar($contact);
 
+        // create new avatar
         $filename = $this->createNewAvatar($contact);
 
         $contact->avatar_default_url = $filename;
@@ -47,6 +48,12 @@ class GenerateDefaultAvatar extends BaseService
         return $contact;
     }
 
+    /**
+     * Create a new avatar for the contact based on the name of the contact.
+     *
+     * @param Contact $contact
+     * @return void
+     */
     private function createNewAvatar($contact)
     {
         $img = (new Avatar([
