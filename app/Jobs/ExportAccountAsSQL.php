@@ -20,6 +20,7 @@ class ExportAccountAsSQL
         'cache',
         'countries',
         'currencies',
+        'contact_photo',
         'default_activity_types',
         'default_activity_type_categories',
         'default_contact_field_types',

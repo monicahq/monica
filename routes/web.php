@@ -158,6 +158,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         // Documents
         Route::resource('people/{contact}/documents', 'Contacts\\DocumentsController')->only(['index', 'store', 'destroy']);
 
+        // Photos
+        Route::resource('people/{contact}/photos', 'Contacts\\PhotosController')->only(['index', 'store', 'destroy']);
+
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('search');
 

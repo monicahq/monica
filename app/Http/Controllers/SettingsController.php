@@ -37,6 +37,7 @@ class SettingsController
         'cache',
         'countries',
         'currencies',
+        'contact_photo',
         'default_activity_types',
         'default_activity_type_categories',
         'default_contact_field_types',
@@ -504,7 +505,7 @@ class SettingsController
      */
     public function updateDefaultProfileView(Request $request)
     {
-        $allowedValues = ['life-events', 'notes'];
+        $allowedValues = ['life-events', 'notes', 'photos'];
         $view = $request->get('name');
 
         if (! in_array($view, $allowedValues)) {

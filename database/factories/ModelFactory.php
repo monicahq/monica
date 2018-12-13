@@ -361,6 +361,16 @@ $factory->define(App\Models\Contact\Document::class, function (Faker\Generator $
     ];
 });
 
+$factory->define(App\Models\Account\Photo::class, function (Faker\Generator $faker) {
+    $account = factory(App\Models\Account\Account::class)->create();
+
+    return [
+        'account_id' => $account->id,
+        'original_filename' => 'file.jpg',
+        'new_filename' => 'file.jpg',
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
