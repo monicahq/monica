@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'על מה דיברתם? (רשות)',
     'modal_call_exact_date' => 'שיחת הטלפון התקיימה ב־',
     'modal_call_who_called' => 'מי היה בטלפון?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'שיחת הטלפון נשמרה.',
     'call_delete_confirmation' => 'למחוק את השיחה הזאת?',
     'call_delete_success' => 'שיחת הטלפון נמחקה בהצלחה',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => 'העלאת קובץ',
     'document_upload_zone_progress' => 'המסמך נשלח…',
     'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
