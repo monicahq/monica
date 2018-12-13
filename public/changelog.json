@@ -2,6 +2,11 @@
     "entries": [
         {
             "date": "Dec 13, 2018",
+            "title": "New feature: indicate how you felt during a phone call",
+            "description": "If a call made you feel something specific, like hope, fear or fondness, you can now record it. You have now access to up to 136 different emotions to express how you felt. ![image](/img/changelogs/2018-12-13-emotions.png)"
+        },
+        {
+            "date": "Dec 12, 2018",
             "title": "New feature: photos upload",
             "description": "You can now add photos to a contact. Head over the profile of one of your contact and upload photos now. ![image](/img/changelogs/2018-12-04-photo-upload.png)"
         },

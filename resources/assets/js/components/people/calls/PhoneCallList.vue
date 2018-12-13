@@ -28,7 +28,7 @@
                     <div class="dt dt--fixed pb3 mb3 mb0-ns">
                         <!-- WHEN -->
                         <div class="dtc pr2">
-                            <p class="mb2">{{ $t('people.modal_call_exact_date') }}</p>
+                            <p class="mb2 b">{{ $t('people.modal_call_exact_date') }}</p>
                             <div class="di mr3">
                                 <div class="dib">
                                     <form-date
@@ -43,7 +43,7 @@
 
                         <!-- WHO CALLED -->
                         <div class="dtc">
-                            <p class="mb2">{{ $t('people.modal_call_who_called') }}</p>
+                            <p class="mb2 b">{{ $t('people.modal_call_who_called') }}</p>
                             <div class="di mr3">
                                 <input type="radio" class="mr1" id="you" name="contact_called" :value="false" v-model="newCall.contact_called">
                                 <label for="you" class="pointer">{{ $t('people.call_you_called') }}</label>
@@ -56,8 +56,8 @@
                     </div>
 
                     <!-- CONTENT -->
-                    <div class="bb b--gray-monica">
-                        <label>{{ $t('people.modal_call_comment') }}</label>
+                    <div>
+                        <label class="b">{{ $t('people.modal_call_comment') }}</label>
                         <form-textarea
                             v-model="newCall.content"
                             :required="true"
@@ -67,6 +67,12 @@
                             @contentChange="updateContent($event)">
                         </form-textarea>
                         <p class="f6">{{ $t('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ $t('app.markdown_link') }}</a></p>
+                    </div>
+
+                    <!-- EMOTIONS -->
+                    <div class="bb b--gray-monica pb3">
+                        <label class="b">{{ $t('people.modal_call_emotion') }}</label>
+                        <emotion class="pv2" @updateEmotionsList="updateEmotionsList"></emotion>
                     </div>
 
                     <!-- ACTIONS -->
@@ -117,6 +123,12 @@
                             </div>
                         </div>
 
+                        <!-- EMOTIONS -->
+                        <div class="bb b--gray-monica pb3 mb3">
+                            <label class="b">{{ $t('people.modal_call_emotion') }}</label>
+                            <emotion class="pv2" v-bind:initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList"></emotion>
+                        </div>
+
                         <!-- ACTIONS -->
                         <div class="">
                             <div class="flex-ns justify-between">
@@ -133,12 +145,20 @@
 
                 <!-- ADDITIONAL INFORMATION -->
                 <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
-                    <div class="w-50" :class="[ dirltr ? 'fl' : 'fr' ]">
+                    <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
                         <span :class="[ dirltr ? 'mr3' : 'ml3' ]">{{ call.called_at | moment }}</span>
-                        <span>{{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}</span>
+                        <span :class="[ dirltr ? 'mr3' : 'ml3' ]">{{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}</span>
+                        <span v-if="call.emotions.length != 0">
+                            <span :class="[ dirltr ? 'mr2' : 'ml2' ]">Emotions:</span>
+                            <ul class="di">
+                                <li class="di" v-for="emotion in call.emotions" :key="emotion.id">
+                                    {{ $t('app.emotion_' + emotion.name) }}
+                                </li>
+                            </ul>
+                        </span>
                     </div>
 
-                    <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-50">
+                    <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-30">
                         <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(call)">
                             {{ $t('app.update') }}
                         </a>
@@ -168,14 +188,17 @@
                 todayDate: '',
                 editCallId: 0,
                 destroyCallId: 0,
+                chosenEmotions: [],
                 newCall: {
                     content: '',
                     called_at: '',
                     contact_called: false,
+                    emotions: [],
                 },
                 editCall: {
                     content: '',
                     contact_called: false,
+                    emotions: [],
                 }
             };
         },
@@ -230,10 +253,9 @@
                 axios.post('/people/' + this.hash + '/calls', this.newCall)
                         .then(response => {
                             this.getCalls()
-
                             this.resetFields()
-
                             this.displayLogCall = false
+                            this.chosenEmotions = []
 
                             this.$notify({
                                 group: 'main',
@@ -249,6 +271,7 @@
                         .then(response => {
                             this.getCalls()
                             this.editCallId = 0
+                            this.chosenEmotions = []
 
                             this.$notify({
                                 group: 'main',
@@ -287,6 +310,19 @@
                         .then(response => {
                             this.calls.splice(this.calls.indexOf(call), 1)
                         });
+            },
+
+            updateEmotionsList: function(emotions) {
+                this.chosenEmotions = emotions
+                this.newCall.emotions = []
+                this.editCall.emotions = []
+
+                // filter the list of emotions to populate a new array
+                // containing only the emotion ids and not the entire objetcs
+                for (let i = 0; i < this.chosenEmotions.length; i++) {
+                    this.newCall.emotions.push(this.chosenEmotions[i].id)
+                    this.editCall.emotions.push(this.chosenEmotions[i].id)
+                }
             }
         }
     }
