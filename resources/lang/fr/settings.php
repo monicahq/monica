@@ -394,6 +394,6 @@ return [
 
     'storage_title' => 'Espace de stockage',
     'storage_account_info' => 'Limite de votre compte : :accountLimit Mo / Votre utilisation actuelle : :currentAccountSize Mo (:percentUsage %)',
-    'storage_upgrade_notice' => 'Mettez à niveau votre compte pour pouvoir télécharger des documents.',
-    'storage_description' => 'Ici vous pouvez voir tous les documents téléchargés sur vos contacts.',
+    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents and photos.',
+    'storage_description' => 'Here you can see all the documents and photos uploaded about your contacts.',
 ];
