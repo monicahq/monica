@@ -30,6 +30,8 @@ return [
     'another_day' => 'يوم آخر',
     'date' => 'التاريخ',
     'type' => 'النوع',
+    'zoom' => 'Zoom',
+    'upgrade' => 'Upgrade to unlock',
 
     'application_title' => 'Monica (مونيكا) – مدير العلاقات الشخصية',
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
