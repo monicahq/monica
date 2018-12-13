@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'O čemu ste razgovarali? (opcionalno)',
     'modal_call_exact_date' => 'Poziv se dogodio',
     'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Poziv je uspješno unesen.',
     'call_delete_confirmation' => 'Jeste li sigurni da želite izbrisati ovaj poziv?',
     'call_delete_success' => 'Poziv je uspješno obrisan',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
