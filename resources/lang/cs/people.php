@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'O čem byla řeč? (volitelné)',
     'modal_call_exact_date' => 'Telefonovali jsme',
     'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Údaje o telefonátu byly uloženy.',
     'call_delete_confirmation' => 'Opravdu chcete údaje o telefonátu vymazat?',
     'call_delete_success' => 'Údaje o telefonátu byly úspěšně smazány',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
