@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'ماذا تحدثتم عنه؟ (اختياري)',
     'modal_call_exact_date' => 'تمت المكالمة الهاتفية في',
     'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'تم حفظ المكالمة الهاتفية.',
     'call_delete_confirmation' => 'هل أنت متأكد من حذف هذه المكالمة؟',
     'call_delete_success' => 'تم حذف المكالمة بنجاح',
@@ -451,4 +452,7 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
