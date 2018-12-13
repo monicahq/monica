@@ -453,6 +453,13 @@ return [
     'document_upload_zone_progress' => '正在上传文档',
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 
+    // Photos
+    'photo_list_title' => 'Related photos',
+    'photo_list_cta' => 'Upload photo',
+    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_delete' => 'Delete photo',
+
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
 ];
