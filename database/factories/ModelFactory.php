@@ -361,6 +361,16 @@ $factory->define(App\Models\Contact\Document::class, function (Faker\Generator $
     ];
 });
 
+$factory->define(App\Models\Account\Photo::class, function (Faker\Generator $faker) {
+    $account = factory(App\Models\Account\Account::class)->create();
+
+    return [
+        'account_id' => $account->id,
+        'original_filename' => 'file.jpg',
+        'new_filename' => 'file.jpg',
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
@@ -415,6 +425,31 @@ $factory->define(App\Models\Account\ImportJob::class, function (Faker\Generator 
 
 $factory->define(App\Models\Account\ImportJobReport::class, function (Faker\Generator $faker) {
     return [];
+});
+
+$factory->define(App\Models\Instance\Emotion\Emotion::class, function (Faker\Generator $faker) {
+    return [
+        'emotion_primary_id' => factory(App\Models\Instance\Emotion\PrimaryEmotion::class)->create()->id,
+        'emotion_secondary_id' => function (array $data) {
+            return factory(App\Models\Instance\Emotion\SecondaryEmotion::class)->create([
+                'emotion_primary_id' => $data['emotion_primary_id'],
+            ])->id;
+        },
+        'name' => $faker->text(5),
+    ];
+});
+
+$factory->define(App\Models\Instance\Emotion\SecondaryEmotion::class, function (Faker\Generator $faker) {
+    return [
+        'emotion_primary_id' => factory(App\Models\Instance\Emotion\PrimaryEmotion::class)->create()->id,
+        'name' => $faker->text(5),
+    ];
+});
+
+$factory->define(App\Models\Instance\Emotion\PrimaryEmotion::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->text(5),
+    ];
 });
 
 $factory->define(App\Models\Settings\Term::class, function (Faker\Generator $faker) {

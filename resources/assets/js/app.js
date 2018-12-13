@@ -97,6 +97,10 @@ Vue.component(
     'form-textarea',
     require('./components/partials/form/Textarea.vue')
 );
+Vue.component(
+    'emotion',
+    require('./components/people/Emotion.vue')
+);
 
 // Dashboard
 Vue.component(
@@ -193,6 +197,11 @@ Vue.component(
 Vue.component(
     'life-event-list',
     require('./components/people/lifeevent/LifeEventList.vue')
+);
+
+Vue.component(
+    'photo-list',
+    require('./components/people/photo/PhotoList.vue')
 );
 
 // Journal

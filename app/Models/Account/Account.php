@@ -418,6 +418,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Photos records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
@@ -613,15 +623,15 @@ class Account extends Model
             ]);
 
             $defaultActivityTypes = DB::table('default_activity_types')
-                                        ->where('default_activity_type_category_id', $defaultActivityTypeCategory->id)
-                                        ->get();
+                ->where('default_activity_type_category_id', $defaultActivityTypeCategory->id)
+                ->get();
 
             foreach ($defaultActivityTypes as $defaultActivityType) {
                 DB::table('activity_types')->insert([
-                  'account_id' => $this->id,
-                  'activity_type_category_id' => $activityTypeCategoryId,
-                  'translation_key' => $defaultActivityType->translation_key,
-              ]);
+                    'account_id' => $this->id,
+                    'activity_type_category_id' => $activityTypeCategoryId,
+                    'translation_key' => $defaultActivityType->translation_key,
+                ]);
             }
         }
     }
@@ -683,8 +693,8 @@ class Account extends Model
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
             $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
-                                    ->where('id', $defaultRelationshipType->relationship_type_group_id)
-                                    ->first();
+                ->where('id', $defaultRelationshipType->relationship_type_group_id)
+                ->first();
 
             $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
@@ -717,9 +727,9 @@ class Account extends Model
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
         return $this->reminders()
-                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
-                     ->orderBy('next_expected_date', 'asc')
-                     ->get();
+            ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
+            ->orderBy('next_expected_date', 'asc')
+            ->get();
     }
 
     /**
@@ -773,8 +783,8 @@ class Account extends Model
     public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
     {
         Contact::where('account_id', $this->id)
-                    ->where('gender_id', $genderToDelete->id)
-                    ->update(['gender_id' => $genderToReplaceWith->id]);
+            ->where('gender_id', $genderToDelete->id)
+            ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
     }
@@ -958,15 +968,35 @@ class Account extends Model
      */
     public function hasReachedAccountStorageLimit()
     {
-        $documents = Document::with(['contact' => function ($query) {
-            $query->where('account_id', $this->id);
-        }])->orderBy('created_at', 'desc')->get();
+        if (! config('monica.requires_subscription')) {
+            return false;
+        }
+
+        $currentAccountSize = $this->getStorageSize();
+
+        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
+    }
+
+    /**
+     * Get the storage size of the account, in bytes.
+     *
+     * @return int
+     */
+    public function getStorageSize()
+    {
+        $documents = Document::where('account_id', $this->id)
+            ->orderBy('created_at', 'desc')->get();
+        $photos = Photo::where('account_id', $this->id)
+            ->orderBy('created_at', 'desc')->get();
 
         $currentAccountSize = 0;
         foreach ($documents as $document) {
             $currentAccountSize += $document->filesize;
         }
+        foreach ($photos as $photo) {
+            $currentAccountSize += $photo->filesize;
+        }
 
-        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
+        return $currentAccountSize;
     }
 }

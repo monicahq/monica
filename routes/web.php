@@ -43,6 +43,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
     Route::post('/compliance/sign', 'ComplianceController@store');
     Route::get('/changelog', 'ChangelogController@index')->name('changelog.index');
 
+    Route::get('/emotions', 'EmotionController@primaries');
+    Route::get('/emotions/primaries/{emotion}/secondaries', 'EmotionController@secondaries');
+    Route::get('/emotions/primaries/{emotion}/secondaries/{secondaryEmotion}/emotions', 'EmotionController@emotions');
+
     Route::name('people.')->group(function () {
         Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
         Route::get('/people/archived', 'ContactsController@archived')->name('archived');
@@ -153,6 +157,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Documents
         Route::resource('people/{contact}/documents', 'Contacts\\DocumentsController')->only(['index', 'store', 'destroy']);
+
+        // Photos
+        Route::resource('people/{contact}/photos', 'Contacts\\PhotosController')->only(['index', 'store', 'destroy']);
 
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('search');

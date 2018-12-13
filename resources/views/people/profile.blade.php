@@ -46,7 +46,7 @@
 
             @include('people.sidebar')
 
-            <ul>
+            <ul class="mb2">
               <li>
                 <a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a>
               </li>
@@ -64,16 +64,17 @@
           </div>
 
           <div class="col-xs-12 col-sm-9">
-
+<emotion></emotion>
             <div class="flex items-center justify-center flex-column">
               <div class='cf dib'>
-                <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">
+                <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt br bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt br ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">
                   @if (auth()->user()->profile_new_life_event_badge_seen == false)
                   <span class="bg-light-green f7 mr2 ph2 pv1 br2">{{ trans('app.new') }}</span>
                   @endif
                   {{ trans('people.life_event_list_tab_life_events') }}
                 </span>
-                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view != 'life-events' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
+                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view == 'notes' ? 'f6 fl bb bt ph3 pv2 dib b br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
+                <span @click="updateDefaultProfileView('photos')" :class="[global_profile_default_view == 'photos' ? 'f6 fl bb bt ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">Photos</span>
               </div>
             </div>
 
@@ -83,7 +84,7 @@
               </div>
             </div>
 
-            <div v-if="global_profile_default_view != 'life-events'">
+            <div v-if="global_profile_default_view == 'notes'">
               @if ($modules->contains('key', 'notes'))
               <div class="row section notes">
                 <div class="col-xs-12 section-title">
@@ -140,6 +141,12 @@
               </div>
               @endif
 
+            </div>
+
+            <div v-if="global_profile_default_view == 'photos'">
+              <div class="row section">
+                @include('people.photos.index')
+              </div>
             </div>
           </div>
         </div>
