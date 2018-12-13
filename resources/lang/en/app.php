@@ -318,7 +318,6 @@ return [
     'emotion_contentment' => 'Contentment',
     'emotion_pleasure' => 'Pleasure',
     'emotion_pride' => 'Pride',
-    'emotion_pleasure' => 'Pleasure',
     'emotion_eagerness' => 'Eagerness',
     'emotion_hope' => 'Hope',
     'emotion_optimism' => 'optimism',
