@@ -19,14 +19,14 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'is_deceased' => true,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => true,
+            'account_id'      => $contact->account->id,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => true,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => true,
             'is_year_unknown' => false,
-            'age' => 30,
-            'add_reminder' => false,
+            'age'             => 30,
+            'add_reminder'    => false,
         ];
 
         $deceasedService = new UpdateDeceasedInformation;
@@ -47,13 +47,13 @@ class UpdateDeceasedInformationTest extends TestCase
 
         // now set the contact as not dead anymore (a zombie, basically)
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'is_deceased' => false,
-            'deceased_date' => '',
-            'is_age_based' => false,
+            'account_id'      => $contact->account->id,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => false,
+            'deceased_date'   => '',
+            'is_age_based'    => false,
             'is_year_unknown' => false,
-            'add_reminder' => false,
+            'add_reminder'    => false,
         ];
 
         $deceasedService = new UpdateDeceasedInformation;
@@ -72,14 +72,14 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'is_deceased' => true,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => true,
+            'account_id'      => $contact->account->id,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => true,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => true,
             'is_year_unknown' => false,
-            'age' => 30,
-            'add_reminder' => false,
+            'age'             => 30,
+            'add_reminder'    => false,
         ];
 
         $deceasedService = new UpdateDeceasedInformation;
@@ -103,13 +103,13 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'is_deceased' => true,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => false,
+            'account_id'      => $contact->account->id,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => true,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => false,
             'is_year_unknown' => true,
-            'add_reminder' => false,
+            'add_reminder'    => false,
         ];
 
         $deceasedService = new UpdateDeceasedInformation;
@@ -134,13 +134,13 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'is_deceased' => true,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => false,
+            'account_id'      => $contact->account->id,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => true,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => false,
             'is_year_unknown' => true,
-            'add_reminder' => true,
+            'add_reminder'    => true,
         ];
 
         $deceasedService = new UpdateDeceasedInformation;
@@ -154,13 +154,13 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'is_deceased' => true,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => false,
+            'account_id'      => $contact->account->id,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => true,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => false,
             'is_year_unknown' => false,
-            'add_reminder' => false,
+            'add_reminder'    => false,
         ];
 
         $deceasedService = new UpdateDeceasedInformation;
@@ -185,13 +185,13 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'is_deceased' => true,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => false,
+            'account_id'      => $contact->account->id,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => true,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => false,
             'is_year_unknown' => false,
-            'add_reminder' => true,
+            'add_reminder'    => true,
         ];
 
         $deceasedService = new UpdateDeceasedInformation;
@@ -205,11 +205,11 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => false,
+            'account_id'      => $contact->account->id,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => false,
             'is_year_unknown' => true,
-            'add_reminder' => true,
+            'add_reminder'    => true,
         ];
 
         $this->expectException(MissingParameterException::class);
@@ -223,13 +223,13 @@ class UpdateDeceasedInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => 11111111,
-            'contact_id' => $contact->id,
-            'is_deceased' => true,
-            'deceased_date' => '1990-02-02',
-            'is_age_based' => false,
+            'account_id'      => 11111111,
+            'contact_id'      => $contact->id,
+            'is_deceased'     => true,
+            'deceased_date'   => '1990-02-02',
+            'is_age_based'    => false,
             'is_year_unknown' => true,
-            'add_reminder' => true,
+            'add_reminder'    => true,
         ];
 
         $this->expectException(MissingParameterException::class);

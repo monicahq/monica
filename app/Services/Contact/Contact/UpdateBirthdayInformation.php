@@ -19,13 +19,13 @@ class UpdateBirthdayInformation extends BaseService
     public function rules()
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
-            'is_age_based' => 'nullable|boolean',
+            'account_id'      => 'required|integer|exists:accounts,id',
+            'contact_id'      => 'required|integer',
+            'is_age_based'    => 'nullable|boolean',
             'is_year_unknown' => 'nullable|boolean',
-            'age' => 'nullable|integer',
-            'birthdate' => 'nullable|date_format:Y-m-d',
-            'add_reminder' => 'required|boolean',
+            'age'             => 'nullable|integer',
+            'birthdate'       => 'nullable|date_format:Y-m-d',
+            'add_reminder'    => 'required|boolean',
         ];
     }
 

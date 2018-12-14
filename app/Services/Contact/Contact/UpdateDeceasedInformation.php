@@ -19,14 +19,14 @@ class UpdateDeceasedInformation extends BaseService
     public function rules()
     {
         return [
-            'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
-            'is_deceased' => 'required|boolean',
-            'deceased_date' => 'nullable|date_format:Y-m-d',
-            'is_age_based' => 'nullable|boolean',
+            'account_id'      => 'required|integer|exists:accounts,id',
+            'contact_id'      => 'required|integer',
+            'is_deceased'     => 'required|boolean',
+            'deceased_date'   => 'nullable|date_format:Y-m-d',
+            'is_age_based'    => 'nullable|boolean',
             'is_year_unknown' => 'nullable|boolean',
-            'age' => 'nullable|integer',
-            'add_reminder' => 'nullable|boolean',
+            'age'             => 'nullable|integer',
+            'add_reminder'    => 'nullable|boolean',
         ];
     }
 
