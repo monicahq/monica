@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Services\Contact\Contact\CreateContact;
 
 class ContactsController extends Controller
 {
@@ -138,7 +139,7 @@ class ContactsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form to add a new contact.
      *
      * @return \Illuminate\Http\Response
      */
@@ -163,39 +164,19 @@ class ContactsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store the contact.
      *
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|max:50',
-            'last_name' => 'nullable|max:100',
-            'nickname' => 'nullable|max:100',
-            'gender' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withInput()
-                ->withErrors($validator);
-        }
-
-        $contact = new Contact;
-        $contact->account_id = $request->user()->account_id;
-        $contact->gender_id = $request->input('gender');
-
-        $contact->first_name = $request->input('first_name');
-        $contact->last_name = $request->input('last_name', null);
-        $contact->nickname = $request->input('nickname', null);
-
-        $contact->setAvatarColor();
-        $contact->save();
-
-        $contact = (new GetAvatarsFromInternet)->execute([
-            'contact_id' => $contact->id,
+        $contact = (new CreateContact)->execute([
+            'account_id' => auth()->user()->account->id,
+            'first_name' => $request->get('first_name'),
+            'last_name' => $request->input('last_name', null),
+            'nickname' => $request->input('nickname', null),
+            'gender_id' => $request->get('gender'),
         ]);
 
         // Did the user press "Save" or "Submit and add another person"
@@ -361,44 +342,6 @@ class ContactsController extends Controller
         }
 
         $contact->save();
-
-        // Handling the case of the birthday
-        $contact->removeSpecialDate('birthdate');
-        switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
-            case 'approximate':
-                $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('age'));
-                break;
-            case 'almost':
-                $specialDate = $contact->setSpecialDate(
-                    'birthdate',
-                    0,
-                    $request->input('month'),
-                    $request->input('day')
-                );
-
-                if ($request->input('addReminder') != '') {
-                    $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-                }
-
-                break;
-            case 'exact':
-                $birthdate = $request->input('birthdayDate');
-                $birthdate = DateHelper::parseDate($birthdate);
-                $specialDate = $contact->setSpecialDate(
-                    'birthdate',
-                    $birthdate->year,
-                    $birthdate->month,
-                    $birthdate->day
-                );
-
-                if ($request->input('addReminder') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-                }
-
-                break;
-        }
 
         // update default avatar, which is based on the name
         (new GenerateDefaultAvatar)->execute([

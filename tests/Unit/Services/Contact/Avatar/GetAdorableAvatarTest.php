@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
 use App\Exceptions\MissingParameterException;
-use App\Services\Contact\Avatar\GetAdorableAvatar;
+use App\Services\Contact\Avatar\GetAdorableAvatarURL;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class GetAdorableAvatarTest extends TestCase
+class GetAdorableAvatarURLTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -18,7 +18,7 @@ class GetAdorableAvatarTest extends TestCase
             'size' => 400,
         ];
 
-        $gravatarService = new GetAdorableAvatar;
+        $gravatarService = new GetAdorableAvatarURL;
         $url = $gravatarService->execute($request);
 
         $this->assertEquals(
@@ -33,7 +33,7 @@ class GetAdorableAvatarTest extends TestCase
             'uuid' => 'matt@wordpress.com',
         ];
 
-        $gravatarService = new GetAdorableAvatar;
+        $gravatarService = new GetAdorableAvatarURL;
         $url = $gravatarService->execute($request);
 
         // should return an avatar of 200 px wide
@@ -51,7 +51,7 @@ class GetAdorableAvatarTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $gravatarService = new GetAdorableAvatar;
+        $gravatarService = new GetAdorableAvatarURL;
         $url = $gravatarService->execute($request);
     }
 }

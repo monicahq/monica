@@ -11,6 +11,8 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class GenerateDefaultAvatar extends BaseService
 {
+    private $contact;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -34,37 +36,36 @@ class GenerateDefaultAvatar extends BaseService
     {
         $this->validate($data);
 
-        $contact = Contact::find($data['contact_id']);
+        $this->contact = Contact::find($data['contact_id']);
 
         // delete existing default avatar
-        $this->deleteExistingDefaultAvatar($contact);
+        $this->deleteExistingDefaultAvatar();
 
         // create new avatar
-        $filename = $this->createNewAvatar($contact);
+        $filename = $this->createNewAvatar();
 
-        $contact->avatar_default_url = $filename;
-        $contact->save();
+        $this->contact->avatar_default_url = $filename;
+        $this->contact->save();
 
-        return $contact;
+        return $this->contact;
     }
 
     /**
      * Create a new avatar for the contact based on the name of the contact.
      *
-     * @param Contact $contact
      * @return void
      */
-    private function createNewAvatar($contact)
+    private function createNewAvatar()
     {
         $img = (new Avatar([
             'width' => '150',
             'height' => '150',
             'shape' => 'square',
-            'backgrounds' => [$contact->default_avatar_color],
+            'backgrounds' => [$this->contact->default_avatar_color],
             'ascii' => true,
-        ]))->create($contact->name)->getImageObject()->encode('jpg');
+        ]))->create($this->contact->name)->getImageObject()->encode('jpg');
 
-        $filename = 'avatars/'.AvatarHelper::generateAdorableUUID().'.jpg';
+        $filename = 'avatars/'.$this->contact->uuid.'.jpg';
         Storage::put($filename, $img);
 
         return $filename;
@@ -73,13 +74,14 @@ class GenerateDefaultAvatar extends BaseService
     /**
      * Delete the existing default avatar.
      *
-     * @param Contact $contact
      * @return void
      */
-    private function deleteExistingDefaultAvatar($contact)
+    private function deleteExistingDefaultAvatar()
     {
         try {
-            Storage::delete($contact->avatar_default_url);
+            Storage::delete($this->contact->avatar_default_url);
+            $this->contact->avatar_default_url = null;
+            $this->contact->save();
         } catch (FileNotFoundException $e) {
             return;
         }

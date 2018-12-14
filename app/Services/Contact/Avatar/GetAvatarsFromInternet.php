@@ -5,9 +5,12 @@ namespace App\Services\Contact\Avatar;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Helpers\AvatarHelper;
 
 class GetAvatarsFromInternet extends BaseService
 {
+    protected $contact;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -36,20 +39,46 @@ class GetAvatarsFromInternet extends BaseService
     {
         $this->validate($data);
 
-        $contact = Contact::findOrFail($data['contact_id']);
+        $this->contact = Contact::findOrFail($data['contact_id']);
 
-        $this->getGravatar($contact);
+        $this->generateUUID();
+        $this->getAdorable();
+        $this->getGravatar();
 
-        $contact->avatar_adorable_url = (new GetAdorableAvatar)->execute([
-            'uuid' => $this->generateRandomString($contact->id),
-            'size' => 200,
-        ]);
-
-        $contact->save();
-
-        return $contact;
+        return $this->contact;
     }
 
+    /**
+     * Generate the UUID used to identify the contact in the Adorable service.
+     *
+     * @return void
+     */
+    private function generateUUID()
+    {
+        $this->contact->avatar_adorable_uuid = AvatarHelper::generateAdorableUUID();
+        $this->contact->save();
+    }
+
+    /**
+     * Get the adorable avatar.
+     *
+     * @return void
+     */
+    private function getAdorable()
+    {
+        $this->contact->avatar_adorable_url = (new GetAdorableAvatarURL)->execute([
+            'uuid' => $this->contact->avatar_adorable_uuid,
+            'size' => 200,
+        ]);
+        $this->contact->save();
+    }
+
+    /**
+     * Get the email (if it exists) of the contact, based on the contact fields.
+     *
+     * @param Contact $contact
+     * @return null|string
+     */
     private function getEmail(Contact $contact)
     {
         try {
@@ -65,34 +94,29 @@ class GetAvatarsFromInternet extends BaseService
         return $contactField->data;
     }
 
-    private function getGravatar(Contact $contact)
+    /**
+     * Query Gravatar (if it exists) for the contact's email address.
+     *
+     * @return void
+     */
+    private function getGravatar()
     {
-        $email = $this->getEmail($contact);
+        $email = $this->getEmail($this->contact);
 
         if ($email) {
-            $contact->avatar_gravatar_url = (new GetGravatar)->execute([
+            $this->contact->avatar_gravatar_url = (new GetGravatarURL)->execute([
                 'email' => $email,
                 'size' => 200,
             ]);
         } else {
             // in this case we need to make sure that we reset the gravatar URL
-            $contact->avatar_gravatar_url = null;
+            $this->contact->avatar_gravatar_url = null;
 
-            if ($contact->avatar_source == 'gravatar') {
-                $contact->avatar_source = 'adorable';
+            if ($this->contact->avatar_source == 'gravatar') {
+                $this->contact->avatar_source = 'adorable';
             }
         }
-    }
 
-    /**
-     * Generate a random string to pass to Adorable.
-     *
-     * @param string $string
-     * @return string
-     */
-    private function generateRandomString($string)
-    {
-        // bcrypt can insert '/' so we need to remove them
-        return str_replace('/', '', bcrypt($string));
+        $this->contact->save();
     }
 }

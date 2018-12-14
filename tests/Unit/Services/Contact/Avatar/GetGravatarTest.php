@@ -3,11 +3,11 @@
 namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
-use App\Services\Contact\Avatar\GetGravatar;
+use App\Services\Contact\Avatar\GetGravatarURL;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class GetGravatarTest extends TestCase
+class GetGravatarURLTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -18,7 +18,7 @@ class GetGravatarTest extends TestCase
             'size' => 400,
         ];
 
-        $gravatarService = new GetGravatar;
+        $gravatarService = new GetGravatarURL;
         $url = $gravatarService->execute($request);
 
         $this->assertEquals(
@@ -34,7 +34,7 @@ class GetGravatarTest extends TestCase
             'size' => 80,
         ];
 
-        $gravatarService = new GetGravatar;
+        $gravatarService = new GetGravatarURL;
         $url = $gravatarService->execute($request);
 
         $this->assertEquals(
@@ -49,7 +49,7 @@ class GetGravatarTest extends TestCase
             'email' => 'matt@wordpress.com',
         ];
 
-        $gravatarService = new GetGravatar;
+        $gravatarService = new GetGravatarURL;
         $url = $gravatarService->execute($request);
 
         // should return an avatar of 200 px wide
@@ -65,7 +65,7 @@ class GetGravatarTest extends TestCase
             'email' => 'jlskjdfl@dskfjlsd.com',
         ];
 
-        $gravatarService = new GetGravatar;
+        $gravatarService = new GetGravatarURL;
 
         // should return an avatar of 200 px wide
         $this->assertNull(
@@ -81,7 +81,7 @@ class GetGravatarTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $gravatarService = new GetGravatar;
+        $gravatarService = new GetGravatarURL;
         $url = $gravatarService->execute($request);
     }
 }

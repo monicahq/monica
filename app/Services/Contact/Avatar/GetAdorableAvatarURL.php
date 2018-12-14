@@ -4,7 +4,7 @@ namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
 
-class GetGravatar extends BaseService
+class GetAdorableAvatarURL extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
@@ -14,13 +14,14 @@ class GetGravatar extends BaseService
     public function rules()
     {
         return [
-            'email' => 'required|email',
+            'uuid' => 'required|string',
             'size' => 'nullable|integer|between:1,2000',
         ];
     }
 
     /**
-     * Get Gravatar, if it exists.
+     * Get an url for an adorable avatar.
+     * - http://avatars.adorable.io/ gives avatars based on a random string.
      *
      * @param array $data
      * @return string|null
@@ -29,25 +30,13 @@ class GetGravatar extends BaseService
     {
         $this->validate($data);
 
-        try {
-            if (! app('gravatar')->exists($data['email'])) {
-                return;
-            }
-        } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
-            // catch invalid email
-            return;
-        }
-
         $size = $this->size($data);
 
-        return app('gravatar')->get($data['email'], [
-                'size' => $size,
-                'secure' => config('app.env') === 'production',
-            ]);
+        return 'https://api.adorable.io/avatars/'.$size.'/'.$data['uuid'].'.png';
     }
 
     /**
-     * Get the size for the gravatar, based on a given parameter. Provides a
+     * Get the size for the avatar, based on a given parameter. Provides a
      * default otherwise.
      *
      * @param  array  $data

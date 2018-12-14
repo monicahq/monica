@@ -60,11 +60,6 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
-        'has_avatar',
-        'avatar_file_name',
-        'gravatar_url',
-        'avatar_external_url',
-        'default_avatar_color',
         'gender_id',
         'account_id',
         'created_at',
@@ -90,7 +85,6 @@ class Contact extends Model
         'food_preferencies',
         'linkedin_profile_url',
         'is_dead',
-        'avatar_external_url',
         'last_consulted_at',
         'created_at',
         'first_met_additional_info',
@@ -228,7 +222,7 @@ class Contact extends Model
      */
     public function tags()
     {
-        return $this->belongsToMany(Tag::class)->withPivot('account_id')->withTimestamps()->withPivot('account_id')->withTimestamps();
+        return $this->belongsToMany(Tag::class)->withPivot('account_id')->withTimestamps();
     }
 
     /**
