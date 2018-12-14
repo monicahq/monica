@@ -7,7 +7,7 @@ use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Avatar\GetAdorableAvatarURL;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class GetAdorableAvatarURLTest extends TestCase
+class GetAdorableAvatarTest extends TestCase
 {
     use DatabaseTransactions;
 

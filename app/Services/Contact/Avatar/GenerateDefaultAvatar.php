@@ -3,7 +3,6 @@
 namespace App\Services\Contact\Avatar;
 
 use Laravolt\Avatar\Avatar;
-use App\Helpers\AvatarHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;

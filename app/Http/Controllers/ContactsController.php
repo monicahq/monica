@@ -9,14 +9,12 @@ use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Avatar\GenerateDefaultAvatar;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
 {

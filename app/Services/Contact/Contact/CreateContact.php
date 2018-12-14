@@ -2,12 +2,11 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Helpers\AvatarHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Helpers\AvatarHelper;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class CreateContact extends BaseService
 {

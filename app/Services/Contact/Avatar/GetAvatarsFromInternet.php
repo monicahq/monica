@@ -2,10 +2,10 @@
 
 namespace App\Services\Contact\Avatar;
 
+use App\Helpers\AvatarHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Helpers\AvatarHelper;
 
 class GetAvatarsFromInternet extends BaseService
 {

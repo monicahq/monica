@@ -2,15 +2,11 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
-use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
-use App\Models\Contact\Gender;
 
 class UpdateBirthdayInformationTest extends TestCase
 {

@@ -4,7 +4,7 @@ namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
 
-class GetAdorableAvatarURL extends BaseService
+class GetAdorableAvatar extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.

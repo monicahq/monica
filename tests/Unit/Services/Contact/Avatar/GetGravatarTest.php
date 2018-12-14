@@ -3,11 +3,11 @@
 namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
-use App\Services\Contact\Avatar\GetGravatarURL;
 use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Avatar\GetGravatarURL;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class GetGravatarURLTest extends TestCase
+class GetGravatarTest extends TestCase
 {
     use DatabaseTransactions;
 

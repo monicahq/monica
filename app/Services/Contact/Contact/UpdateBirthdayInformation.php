@@ -2,11 +2,10 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Helpers\DateHelper;
 use App\Services\BaseService;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
-use App\Helpers\DateHelper;
 
 class UpdateBirthdayInformation extends BaseService
 {

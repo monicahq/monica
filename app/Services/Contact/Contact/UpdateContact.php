@@ -5,7 +5,6 @@ namespace App\Services\Contact\Contact;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
 class UpdateContact extends BaseService
 {

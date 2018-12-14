@@ -2,15 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
-use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Exceptions\MissingParameterException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Contact\CreateContact;
-use App\Models\Contact\Gender;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateContactTest extends TestCase
 {
