@@ -21,6 +21,7 @@ class UpdateDeceasedInformation extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer',
+            'is_deceased' => 'required|boolean',
             'deceased_date' => 'nullable|date_format:Y-m-d',
             'is_age_based' => 'nullable|boolean',
             'is_year_unknown' => 'nullable|boolean',
@@ -33,9 +34,9 @@ class UpdateDeceasedInformation extends BaseService
      * Update the information about the deceased date.
      *
      * @param array $data
-     * @return SpecialDate
+     * @return SpecialDate|null
      */
-    public function execute(array $data) : SpecialDate
+    public function execute(array $data)
     {
         $this->validate($data);
 
@@ -51,21 +52,33 @@ class UpdateDeceasedInformation extends BaseService
      * Update deceased date information depending on the type of information.
      *
      * @param array $data
-     * @return SpecialDate
+     * @return SpecialDate|null
      */
     private function manageDeceasedDate(array $data)
     {
+        if ($data['is_deceased'] == false) {
+            // remove all information about deceased date in the DB
+            $this->contact->is_dead = false;
+            $this->contact->save();
+            return;
+        }
+
         if ($data['is_age_based'] == true) {
-            return $this->approximate($data);
+            $specialDate =  $this->approximate($data);
         }
 
         if ($data['is_age_based'] == false && $data['is_year_unknown'] == true) {
-            return $this->almost($data);
+            $specialDate =  $this->almost($data);
         }
 
         if ($data['is_age_based'] == false && $data['is_year_unknown'] == false) {
-            return $this->exact($data);
+            $specialDate =  $this->exact($data);
         }
+
+        $this->contact->is_dead = true;
+        $this->contact->save();
+
+        return $specialDate;
     }
 
     /**
