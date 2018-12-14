@@ -60,19 +60,20 @@ class UpdateDeceasedInformation extends BaseService
             // remove all information about deceased date in the DB
             $this->contact->is_dead = false;
             $this->contact->save();
+
             return;
         }
 
         if ($data['is_age_based'] == true) {
-            $specialDate =  $this->approximate($data);
+            $specialDate = $this->approximate($data);
         }
 
         if ($data['is_age_based'] == false && $data['is_year_unknown'] == true) {
-            $specialDate =  $this->almost($data);
+            $specialDate = $this->almost($data);
         }
 
         if ($data['is_age_based'] == false && $data['is_year_unknown'] == false) {
-            $specialDate =  $this->exact($data);
+            $specialDate = $this->exact($data);
         }
 
         $this->contact->is_dead = true;
