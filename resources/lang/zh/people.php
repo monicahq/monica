@@ -83,7 +83,7 @@ return [
     'modal_call_comment' => '你们说了什么？（可选）',
     'modal_call_exact_date' => '通话日期',
     'modal_call_who_called' => '谁打来的？',
-    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
+    'modal_call_emotion' => '您想记录您在此通话中的感受吗？(可选)',
     'calls_add_success' => '已保存通话记录。',
     'call_delete_confirmation' => '你确定要删除此通话记录吗?',
     'call_delete_success' => '成功删除通话记录！',
@@ -454,12 +454,12 @@ return [
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 
     // Photos
-    'photo_list_title' => 'Related photos',
-    'photo_list_cta' => 'Upload photo',
-    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
-    'photo_upload_zone_cta' => 'Upload a photo',
-    'photo_delete' => 'Delete photo',
+    'photo_list_title' => '相关照片',
+    'photo_list_cta' => '上传照片',
+    'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
+    'photo_upload_zone_cta' => '上传照片',
+    'photo_delete' => '删除照片',
 
     // emotions
-    'emotion_this_made_me_feel' => 'This made you feel…',
+    'emotion_this_made_me_feel' => '这让你觉得...',
 ];
