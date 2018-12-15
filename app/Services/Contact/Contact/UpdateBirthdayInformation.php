@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Helpers\DateHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;

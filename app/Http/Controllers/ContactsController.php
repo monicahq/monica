@@ -11,11 +11,9 @@ use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Services\Contact\Contact\UpdateContact;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -332,7 +330,7 @@ class ContactsController extends Controller
             'deceased_date_day' => $request->get('deceased_date_day'),
             'deceased_date_month' => $request->get('deceased_date_month'),
             'deceased_date_year' => $request->get('deceased_date_year'),
-            'deceased_date_add_reminder' => ($request->get('add_reminder_deceased') != '' ? true : false)
+            'deceased_date_add_reminder' => ($request->get('add_reminder_deceased') != '' ? true : false),
         ];
 
         $contact = (new UpdateContact)->execute($data);
