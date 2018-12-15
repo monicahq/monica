@@ -33,19 +33,19 @@ $('a[href^="#logCallModal"]').click(function(e) {
 });
 
 // On the contact sheet of a person, for the Deceased section
-$('#markPersonDeceased').click(function() {
+$('#is_deceased').click(function() {
   $('#datePersonDeceased').toggle(this.checked);
 
   if(! document.getElementById('markPersonDeceased').checked) {
-    $('#checkboxDatePersonDeceased').prop('checked', false);
-    $('#addReminderDeceased').prop('checked', false);
+    $('#is_deceased_date_known').prop('checked', false);
+    $('#add_reminder_deceased').prop('checked', false);
     $('#datesSelector').prop('checked', false);
     $('#datesSelector').hide();
     $('#reminderDeceased').hide();
   }
 });
 
-$('#checkboxDatePersonDeceased').click(function() {
+$('#is_deceased_date_known').click(function() {
   $('#reminderDeceased').toggle(this.checked);
   $('#datesSelector').toggle(this.checked);
 });

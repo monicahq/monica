@@ -19,13 +19,15 @@ class UpdateBirthdayInformation extends BaseService
     public function rules()
     {
         return [
-            'account_id'      => 'required|integer|exists:accounts,id',
-            'contact_id'      => 'required|integer',
-            'is_age_based'    => 'nullable|boolean',
-            'is_year_unknown' => 'nullable|boolean',
-            'age'             => 'nullable|integer',
-            'birthdate'       => 'nullable|date_format:Y-m-d',
-            'add_reminder'    => 'required|boolean',
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'is_date_known' => 'required|boolean',
+            'day' => 'nullable|integer',
+            'month' => 'nullable|integer',
+            'year' => 'nullable|integer',
+            'is_age_based' => 'nullable|boolean',
+            'age' => 'nullable|integer',
+            'add_reminder' => 'nullable|boolean',
         ];
     }
 
@@ -33,9 +35,9 @@ class UpdateBirthdayInformation extends BaseService
      * Update the information about the birthday.
      *
      * @param array $data
-     * @return SpecialDate
+     * @return SpecialDate|null
      */
-    public function execute(array $data) : SpecialDate
+    public function execute(array $data)
     {
         $this->validate($data);
 
@@ -51,21 +53,23 @@ class UpdateBirthdayInformation extends BaseService
      * Update birthday information depending on the type of information.
      *
      * @param array $data
-     * @return SpecialDate
+     * @return SpecialDate|null
      */
     private function manageBirthday(array $data)
     {
+        if ($data['is_date_known'] == false) {
+            return;
+        }
+
         if ($data['is_age_based'] == true) {
-            return $this->approximate($data);
+            $specialDate = $this->approximate($data);
         }
 
-        if ($data['is_age_based'] == false && $data['is_year_unknown'] == true) {
-            return $this->almost($data);
+        if ($data['is_age_based'] == false) {
+            $specialDate = $this->exact($data);
         }
 
-        if ($data['is_age_based'] == false && $data['is_year_unknown'] == false) {
-            return $this->exact($data);
-        }
+        return $specialDate;
     }
 
     /**
@@ -73,7 +77,6 @@ class UpdateBirthdayInformation extends BaseService
      * on the estimated age of the contact.
      *
      * @param array $data
-     * @return void
      */
     private function approximate(array $data)
     {
@@ -81,42 +84,18 @@ class UpdateBirthdayInformation extends BaseService
     }
 
     /**
-     * Case where only the month and day are known, but not the year.
-     *
-     * @param array $data
-     * @return void
-     */
-    private function almost(array $data)
-    {
-        $birthdate = $data['birthdate'];
-        $birthdate = DateHelper::parseDate($birthdate);
-        $specialDate = $this->contact->setSpecialDate(
-            'birthdate',
-            0,
-            $birthdate->month,
-            $birthdate->day
-        );
-
-        $this->setReminder($data, $specialDate);
-
-        return $specialDate;
-    }
-
-    /**
      * Case where we have a year, month and day for the birthday.
      *
      * @param  array  $data
-     * @return void
+     * @return SpecialDate
      */
     private function exact(array $data)
     {
-        $birthdate = $data['birthdate'];
-        $birthdate = DateHelper::parseDate($birthdate);
         $specialDate = $specialDate = $this->contact->setSpecialDate(
             'birthdate',
-            $birthdate->year,
-            $birthdate->month,
-            $birthdate->day
+            (is_null($data['year']) ? 0 : $data['year']),
+            $data['month'],
+            $data['day']
         );
 
         $this->setReminder($data, $specialDate);

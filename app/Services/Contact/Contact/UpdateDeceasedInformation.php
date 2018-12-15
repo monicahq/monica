@@ -21,12 +21,12 @@ class UpdateDeceasedInformation extends BaseService
         return [
             'account_id'      => 'required|integer|exists:accounts,id',
             'contact_id'      => 'required|integer',
-            'is_deceased'     => 'required|boolean',
-            'deceased_date'   => 'nullable|date_format:Y-m-d',
-            'is_age_based'    => 'nullable|boolean',
-            'is_year_unknown' => 'nullable|boolean',
-            'age'             => 'nullable|integer',
-            'add_reminder'    => 'nullable|boolean',
+            'is_deceased' => 'required|boolean',
+            'is_date_known' => 'required|boolean',
+            'day' => 'nullable|integer',
+            'month' => 'nullable|integer',
+            'year' => 'nullable|integer',
+            'add_reminder' => 'required|boolean',
         ];
     }
 
@@ -64,54 +64,14 @@ class UpdateDeceasedInformation extends BaseService
             return;
         }
 
-        if ($data['is_age_based'] == true) {
-            $specialDate = $this->approximate($data);
-        }
-
-        if ($data['is_age_based'] == false && $data['is_year_unknown'] == true) {
-            $specialDate = $this->almost($data);
-        }
-
-        if ($data['is_age_based'] == false && $data['is_year_unknown'] == false) {
-            $specialDate = $this->exact($data);
-        }
-
         $this->contact->is_dead = true;
         $this->contact->save();
 
-        return $specialDate;
-    }
+        if ($data['is_date_known'] == false) {
+            return;
+        }
 
-    /**
-     * Case where the deceased date is approximate. That means the deceased date
-     *  is based on the estimated age of the contact.
-     *
-     * @param array $data
-     * @return void
-     */
-    private function approximate(array $data)
-    {
-        return $this->contact->setSpecialDateFromAge('deceased_date', $data['age']);
-    }
-
-    /**
-     * Case where only the month and day are known, but not the year.
-     *
-     * @param array $data
-     * @return void
-     */
-    private function almost(array $data)
-    {
-        $deceasedDate = $data['deceased_date'];
-        $deceasedDate = DateHelper::parseDate($deceasedDate);
-        $specialDate = $this->contact->setSpecialDate(
-            'deceased_date',
-            0,
-            $deceasedDate->month,
-            $deceasedDate->day
-        );
-
-        $this->setReminder($data, $specialDate);
+        $specialDate = $this->exact($data);
 
         return $specialDate;
     }
@@ -124,13 +84,11 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function exact(array $data)
     {
-        $deceasedDate = $data['deceased_date'];
-        $deceasedDate = DateHelper::parseDate($deceasedDate);
         $specialDate = $specialDate = $this->contact->setSpecialDate(
             'deceased_date',
-            $deceasedDate->year,
-            $deceasedDate->month,
-            $deceasedDate->day
+            (is_null($data['year']) ? 0 : $data['year']),
+            $data['month'],
+            $data['day']
         );
 
         $this->setReminder($data, $specialDate);

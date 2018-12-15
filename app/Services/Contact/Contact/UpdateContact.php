@@ -18,26 +18,28 @@ class UpdateContact extends BaseService
     public function rules()
     {
         return [
-            'account_id'                    => 'required|integer|exists:accounts,id',
-            'contact_id'                    => 'required|integer',
-            'first_name'                    => 'required|string|max:255',
-            'middle_name'                   => 'nullable|string|max:255',
-            'last_name'                     => 'nullable|string|max:255',
-            'nickname'                      => 'nullable|string|max:255',
-            'gender_id'                     => 'required|integer|exists:genders,id',
-            'description'                   => 'nullable|string|max:255',
-            'is_partial'                    => 'nullable|boolean',
-            'birthdate'                     => 'nullable|date_format:Y-m-d',
-            'birthdate_is_age_based'        => 'nullable|boolean',
-            'birthdate_is_year_unknown'     => 'nullable|boolean',
-            'birthdate_age'                 => 'nullable|integer',
-            'birthdate_add_reminder'        => 'nullable|boolean',
-            'is_deceased'                   => 'nullable|boolean',
-            'deceased_date'                 => 'nullable|date_format:Y-m-d',
-            'deceased_date_is_age_based'    => 'nullable|boolean',
-            'deceased_date_is_year_unknown' => 'nullable|boolean',
-            'deceased_date_age'             => 'nullable|integer',
-            'deceased_date_add_reminder'    => 'nullable|boolean',
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'first_name' => 'required|string|max:255',
+            'middle_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'nickname' => 'nullable|string|max:255',
+            'gender_id' => 'required|integer|exists:genders,id',
+            'description' => 'nullable|string|max:255',
+            'is_partial' => 'nullable|boolean',
+            'is_birthdate_known' => 'nullable|boolean',
+            'birthdate_day' => 'nullable|integer',
+            'birthdate_month' => 'nullable|integer',
+            'birthdate_year' => 'nullable|integer',
+            'birthdate_is_age_based' => 'nullable|boolean',
+            'birthdate_age' => 'nullable|integer',
+            'birthdate_add_reminder' => 'nullable|boolean',
+            'is_deceased' => 'nullable|boolean',
+            'is_deceased_date_known' => 'nullable|boolean',
+            'deceased_date_day' => 'nullable|integer',
+            'deceased_date_month' => 'nullable|integer',
+            'deceased_date_year' => 'nullable|integer',
+            'deceased_date_add_reminder' => 'nullable|boolean',
         ];
     }
 
@@ -54,17 +56,13 @@ class UpdateContact extends BaseService
         // filter out the data that shall not be updated here
         $dataOnly = array_except(
             $data, [
-                'birthdate',
+                'is_birthdate_known',
+                'birthdate_day',
+                'birthdate_month',
+                'birthdate_year',
                 'birthdate_is_age_based',
-                'birthdate_is_year_unknown',
                 'birthdate_age',
                 'birthdate_add_reminder',
-                'is_dead',
-                'deceased_date',
-                'deceased_date_is_age_based',
-                'deceased_date_is_year_unknown',
-                'deceased_date_age',
-                'deceased_date_add_reminder',
             ]
         );
 
@@ -76,7 +74,7 @@ class UpdateContact extends BaseService
         $this->contact->update($dataOnly);
 
         // only update the avatar if the name has changed
-        if ($oldName != $this->contact) {
+        if ($oldName != $this->contact->name) {
             $this->updateDefaultAvatar();
         }
 
@@ -108,13 +106,15 @@ class UpdateContact extends BaseService
     private function updateBirthDayInformation(array $data)
     {
         (new UpdateBirthdayInformation)->execute([
-            'account_id'      => $data['account_id'],
-            'contact_id'      => $this->contact->id,
-            'is_age_based'    => $data['birthdate_is_age_based'],
-            'is_year_unknown' => $data['birthdate_is_year_unknown'],
-            'age'             => $data['birthdate_age'],
-            'birthdate'       => $data['birthdate'],
-            'add_reminder'    => $data['birthdate_add_reminder'],
+            'account_id' => $data['account_id'],
+            'contact_id' => $this->contact->id,
+            'is_date_known' => $data['is_birthdate_known'],
+            'day' => $data['birthdate_day'],
+            'month' => $data['birthdate_month'],
+            'year' => $data['birthdate_year'],
+            'is_age_based' => $data['birthdate_is_age_based'],
+            'age' => $data['birthdate_age'],
+            'add_reminder' => $data['birthdate_add_reminder'],
         ]);
     }
 
@@ -126,15 +126,15 @@ class UpdateContact extends BaseService
      */
     private function updateDeceasedInformation(array $data)
     {
-        (new UpdateBirthdayInformation)->execute([
-            'account_id'      => $data['account_id'],
-            'contact_id'      => $this->contact->id,
-            'is_deceased'     => $data['is_dead'],
-            'is_age_based'    => $data['birthdate_is_age_based'],
-            'is_year_unknown' => $data['birthdate_is_year_unknown'],
-            'age'             => $data['birthdate_age'],
-            'birthdate'       => $data['birthdate'],
-            'add_reminder'    => $data['birthdate_add_reminder'],
+        (new UpdateDeceasedInformation)->execute([
+            'account_id' => $data['account_id'],
+            'contact_id' => $this->contact->id,
+            'is_deceased' => $data['is_deceased'],
+            'is_date_known' => $data['is_deceased_date_known'],
+            'day' => $data['deceased_date_day'],
+            'month' => $data['deceased_date_month'],
+            'year' => $data['deceased_date_year'],
+            'add_reminder' => $data['deceased_date_add_reminder'],
         ]);
     }
 }

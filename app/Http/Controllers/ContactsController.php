@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Services\Contact\Contact\UpdateContact;
 
 class ContactsController extends Controller
 {
@@ -296,55 +297,45 @@ class ContactsController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
-        $validator = Validator::make($request->all(), [
-            'firstname' => 'required|max:50',
-            'lastname' => 'max:100',
-            'nickname' => 'max:100',
-            'description' => 'max:240',
-            'gender' => 'required',
-            'file' => 'max:10240',
-            'birthdate' => 'required|string',
-            'birthdayDate' => 'date_format:Y-m-d',
-        ]);
-
-        if ($validator->fails()) {
-            return back()
-                ->withInput()
-                ->withErrors($validator);
+        // process birthday dates
+        // TODO: remove this part entirely when we redo this whole SpecialDate
+        // thing
+        if ($request->get('birthdate') == 'exact') {
+            $birthdate = $request->input('birthdayDate');
+            $birthdate = DateHelper::parseDate($birthdate);
+            $day = $birthdate->day;
+            $month = $birthdate->month;
+            $year = $birthdate->year;
+        } else {
+            $day = $request->get('day');
+            $month = $request->get('month');
+            $year = $request->get('year');
         }
 
-        if (! $contact->setName($request->input('firstname'), $request->input('lastname'))) {
-            return back()
-                ->withInput()
-                ->withErrors('There has been a problem with saving the name.');
-        }
-
-        $contact->gender_id = $request->input('gender');
-        $contact->description = $request->input('description');
-        $contact->nickname = $request->input('nickname', null);
-
-        // Is the person deceased?
-        $contact->removeSpecialDate('deceased_date');
-        $contact->is_dead = false;
-
-        if ($request->input('markPersonDeceased') != '') {
-            $contact->is_dead = true;
-
-            if ($request->input('checkboxDatePersonDeceased') != '') {
-                $specialDate = $contact->setSpecialDate('deceased_date', $request->input('deceased_date_year'), $request->input('deceased_date_month'), $request->input('deceased_date_day'));
-
-                if ($request->input('addReminderDeceased') != '') {
-                    $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $contact->first_name]));
-                }
-            }
-        }
-
-        $contact->save();
-
-        // update default avatar, which is based on the name
-        (new GenerateDefaultAvatar)->execute([
+        $data = [
+            'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
-        ]);
+            'first_name' => $request->get('firstname'),
+            'last_name' => $request->input('lastname', null),
+            'nickname' => $request->input('nickname', null),
+            'gender_id' => $request->get('gender'),
+            'description' => $request->input('description', null),
+            'is_birthdate_known' => ($request->get('birthdate') == 'unknown' ? false : true),
+            'birthdate_day' => $day,
+            'birthdate_month' => $month,
+            'birthdate_year' => $year,
+            'birthdate_is_age_based' => ($request->get('birthdate') == 'approximate' ? true : false),
+            'birthdate_age' => $request->get('age'),
+            'birthdate_add_reminder' => ($request->get('addReminder') != '' ? true : false),
+            'is_deceased' => ($request->get('is_deceased') != '' ? true : false),
+            'is_deceased_date_known' => ($request->get('is_deceased_date_known') != '' ? true : false),
+            'deceased_date_day' => $request->get('deceased_date_day'),
+            'deceased_date_month' => $request->get('deceased_date_month'),
+            'deceased_date_year' => $request->get('deceased_date_year'),
+            'deceased_date_add_reminder' => ($request->get('add_reminder_deceased') != '' ? true : false)
+        ];
+
+        $contact = (new UpdateContact)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));

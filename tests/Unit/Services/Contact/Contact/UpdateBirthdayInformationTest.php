@@ -12,6 +12,57 @@ class UpdateBirthdayInformationTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_deletes_all_birthday_information()
+    {
+        // to delete birthday information, we need first to update the contact
+        // with its birthday info, then update it again by indicating that
+        // we don't know his birthday info
+        $contact = factory(Contact::class)->create([]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'is_date_known' => true,
+            'day' => 10,
+            'month' => 10,
+            'year' => 1980,
+            'is_age_based' => false,
+            'age' => 0,
+            'add_reminder' => false,
+        ];
+
+        $birthdayService = new UpdateBirthdayInformation;
+        $specialDate = $birthdayService->execute($request);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'birthday_special_date_id' => $specialDate->id,
+        ]);
+
+        $this->assertDatabaseHas('special_dates', [
+            'id' => $specialDate->id,
+            'account_id' => $contact->account->id,
+            'is_age_based' => false,
+        ]);
+
+        // then we update it again
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'is_date_known' => false,
+        ];
+
+        $birthdayService = new UpdateBirthdayInformation;
+        $specialDate = $birthdayService->execute($request);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'account_id' => $contact->account->id,
+            'birthday_special_date_id' => null,
+        ]);
+    }
+
     public function test_it_sets_a_date_if_age_is_provided()
     {
         $contact = factory(Contact::class)->create([]);
@@ -19,11 +70,9 @@ class UpdateBirthdayInformationTest extends TestCase
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'birthdate' => '',
+            'is_date_known' => true,
             'is_age_based' => true,
-            'is_year_unknown' => false,
-            'age' => 20,
-            'add_reminder' => false,
+            'age' => 10,
         ];
 
         $birthdayService = new UpdateBirthdayInformation;
@@ -40,55 +89,6 @@ class UpdateBirthdayInformationTest extends TestCase
             'account_id' => $contact->account->id,
             'is_age_based' => true,
         ]);
-    }
-
-    public function test_it_sets_a_date_if_month_and_day_are_provided()
-    {
-        $contact = factory(Contact::class)->create([]);
-
-        $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'birthdate' => '1990-02-02',
-            'is_age_based' => false,
-            'is_year_unknown' => true,
-            'add_reminder' => false,
-        ];
-
-        $birthdayService = new UpdateBirthdayInformation;
-        $specialDate = $birthdayService->execute($request);
-
-        $this->assertDatabaseHas('contacts', [
-            'id' => $contact->id,
-            'account_id' => $contact->account->id,
-            'birthday_special_date_id' => $specialDate->id,
-        ]);
-
-        $this->assertDatabaseHas('special_dates', [
-            'id' => $specialDate->id,
-            'account_id' => $contact->account->id,
-            'is_age_based' => false,
-            'is_year_unknown' => true,
-        ]);
-    }
-
-    public function test_it_sets_a_date_if_month_and_day_are_provided_and_sets_a_reminder()
-    {
-        $contact = factory(Contact::class)->create([]);
-
-        $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => $contact->id,
-            'birthdate' => '1990-02-02',
-            'is_age_based' => false,
-            'is_year_unknown' => true,
-            'add_reminder' => true,
-        ];
-
-        $birthdayService = new UpdateBirthdayInformation;
-        $specialDate = $birthdayService->execute($request);
-
-        $this->assertNotNull($specialDate->reminder_id);
     }
 
     public function test_it_sets_a_complete_date()
@@ -98,9 +98,11 @@ class UpdateBirthdayInformationTest extends TestCase
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'birthdate' => '1990-02-02',
+            'is_date_known' => true,
+            'day' => 10,
+            'month' => 10,
+            'year' => 1980,
             'is_age_based' => false,
-            'is_year_unknown' => false,
             'add_reminder' => false,
         ];
 
@@ -128,9 +130,11 @@ class UpdateBirthdayInformationTest extends TestCase
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'birthdate' => '1990-02-02',
+            'is_date_known' => true,
+            'day' => 10,
+            'month' => 10,
+            'year' => 1980,
             'is_age_based' => false,
-            'is_year_unknown' => false,
             'add_reminder' => true,
         ];
 
@@ -147,9 +151,11 @@ class UpdateBirthdayInformationTest extends TestCase
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'birthdate' => '1990-02-02',
+            'day' => 10,
+            'month' => 10,
+            'year' => 1980,
             'is_age_based' => false,
-            'is_year_unknown' => false,
+            'add_reminder' => false,
         ];
 
         $this->expectException(MissingParameterException::class);
@@ -165,10 +171,11 @@ class UpdateBirthdayInformationTest extends TestCase
         $request = [
             'account_id' => 11111111,
             'contact_id' => $contact->id,
-            'birthdate' => '',
-            'is_age_based' => true,
-            'is_year_unknown' => false,
-            'age' => 20,
+            'is_date_known' => true,
+            'day' => 10,
+            'month' => 10,
+            'year' => 1980,
+            'is_age_based' => false,
             'add_reminder' => false,
         ];
 

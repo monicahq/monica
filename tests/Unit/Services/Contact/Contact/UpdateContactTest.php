@@ -25,11 +25,13 @@ class UpdateContactTest extends TestCase
             'gender_id' => $contact->gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
-            'birthdate' => '1990-02-02',
+            'is_birthdate_known' => true,
+            'birthdate_day' => 10,
+            'birthdate_month' => 10,
+            'birthdate_year' => 1980,
             'birthdate_is_age_based' => false,
-            'birthdate_is_year_unknown' => false,
             'birthdate_age' => 0,
-            'birthdate_add_reminder' => true,
+            'birthdate_add_reminder' => false,
         ];
 
         $contactService = new UpdateContact;
@@ -59,11 +61,13 @@ class UpdateContactTest extends TestCase
             'gender_id' => $contact->gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
-            'birthdate' => '1990-02-02',
+            'is_birthdate_known' => true,
+            'birthdate_day' => 10,
+            'birthdate_month' => 10,
+            'birthdate_year' => 1980,
             'birthdate_is_age_based' => false,
-            'birthdate_is_year_unknown' => false,
             'birthdate_age' => 0,
-            'birthdate_add_reminder' => true,
+            'birthdate_add_reminder' => false,
         ];
 
         $this->expectException(MissingParameterException::class);
@@ -85,11 +89,13 @@ class UpdateContactTest extends TestCase
             'gender_id' => $contact->gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
-            'birthdate' => '1990-02-02',
+            'is_birthdate_known' => true,
+            'birthdate_day' => 10,
+            'birthdate_month' => 10,
+            'birthdate_year' => 1980,
             'birthdate_is_age_based' => false,
-            'birthdate_is_year_unknown' => false,
             'birthdate_age' => 0,
-            'birthdate_add_reminder' => true,
+            'birthdate_add_reminder' => false,
         ];
 
         $this->expectException(MissingParameterException::class);
