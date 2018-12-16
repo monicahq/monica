@@ -4,7 +4,6 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\User\User;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
@@ -12,15 +11,14 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Services\Contact\Contact\CreateContact;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\Conversation\AddMessageToConversation;
-use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
+use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -169,7 +167,7 @@ class FakeContentTableSeeder extends Seeder
                 'year' => (int) $birthdate->format('Y'),
                 'is_age_based' => (rand(1, 2) == 1) ? true : false,
                 'age' => rand(1, 99),
-                'add_reminder' => (rand(1, 2) == 1) ? true : false
+                'add_reminder' => (rand(1, 2) == 1) ? true : false,
             ]);
         }
     }
@@ -217,7 +215,7 @@ class FakeContentTableSeeder extends Seeder
                     'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
                     'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                     'gender_id' => $this->getRandomGender()->id,
-                    'is_partial' => (rand(1, 2) == 1) ? false : true
+                    'is_partial' => (rand(1, 2) == 1) ? false : true,
                 ]);
 
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
@@ -231,7 +229,7 @@ class FakeContentTableSeeder extends Seeder
                     'year' => (int) $relatedContactBirthDate->format('Y'),
                     'is_age_based' => (rand(1, 2) == 1) ? true : false,
                     'age' => rand(1, 99),
-                    'add_reminder' => (rand(1, 2) == 1) ? true : false
+                    'add_reminder' => (rand(1, 2) == 1) ? true : false,
                 ]);
 
                 // set relationship
