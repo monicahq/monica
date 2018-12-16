@@ -121,4 +121,13 @@ class Address extends Model
 
         return "https://www.google.com/maps/place/{$address}";
     }
+
+    /**
+     * Get the Google Maps url for the latitude/longitude.
+     * @return string
+     */
+    public function getGoogleMapsAddressWithLatitude()
+    {
+        return 'http://maps.google.com/maps?q='.$this->latitude.','.+$this->longitude;
+    }
 }

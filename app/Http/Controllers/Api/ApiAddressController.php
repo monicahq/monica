@@ -100,6 +100,8 @@ class ApiAddressController extends ApiController
             'province' => 'max:255|nullable',
             'postal_code' => 'max:255|nullable',
             'country' => 'max:3|nullable',
+            'latitude' => 'double|nullable',
+            'longitude' => 'double|nullable',
             'contact_id' => 'required|integer',
         ]);
 
