@@ -62,6 +62,8 @@ class UpdateBirthdayInformation extends BaseService
             return;
         }
 
+        $specialDate = new SpecialDate;
+
         if ($data['is_age_based'] == true) {
             $specialDate = $this->approximate($data);
         }

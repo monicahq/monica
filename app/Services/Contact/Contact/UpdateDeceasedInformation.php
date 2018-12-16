@@ -53,7 +53,7 @@ class UpdateDeceasedInformation extends BaseService
      * Update deceased date information depending on the type of information.
      *
      * @param array $data
-     * @return void|nulls
+     * @return void|null
      */
     private function manageDeceasedDate(array $data)
     {

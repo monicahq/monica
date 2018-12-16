@@ -13,6 +13,6 @@ class RandomHelper
      */
     public static function uuid()
     {
-        return (string) Str::uuid();
+        return Str::uuid()->toString();
     }
 }
