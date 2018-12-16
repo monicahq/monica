@@ -1,7 +1,7 @@
 UNRELEASED CHANGES:
 
 * Add ability to add photos to contacts
-* Change how avatars are managed
+* Add ability to change the avatar of your contacts
 * Add ability to upload photos
 * Add ability to indicate how you felt when logging a call
 * Add information about who initiated a phone call

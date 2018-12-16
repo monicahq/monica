@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Dec 20, 2018",
+            "title": "New feature: you can now change avatars",
+            "description": "You can now change the avatar of your contacts. Mouse over the profile picture and have fun. ![image](/img/changelogs/2018-12-16-avatars.png)"
+        },
+        {
             "date": "Dec 13, 2018",
             "title": "New feature: indicate how you felt during a phone call",
             "description": "If a call made you feel something specific, like hope, fear or fondness, you can now record it. You have now access to up to 136 different emotions to express how you felt. ![image](/img/changelogs/2018-12-13-emotions.png)"
