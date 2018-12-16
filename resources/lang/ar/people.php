@@ -363,6 +363,8 @@ return [
     'contact_address_form_province' => 'المنطقة (اختياري)',
     'contact_address_form_postal_code' => 'الرمز البريدي (اختياري)',
     'contact_address_form_country' => 'البلد (اختياري)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'نوع الحيوان الأليف',
