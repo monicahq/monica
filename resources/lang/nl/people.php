@@ -363,6 +363,8 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'Kind of pet',
