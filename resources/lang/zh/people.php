@@ -363,6 +363,8 @@ return [
     'contact_address_form_province' => '省 (可选)',
     'contact_address_form_postal_code' => '邮政编码 (可选)',
     'contact_address_form_country' => '国家 (可选)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => '宠物种类',
