@@ -128,6 +128,6 @@ class Address extends Model
      */
     public function getGoogleMapsAddressWithLatitude()
     {
-        return "http://maps.google.com/maps?q=".$this->latitude.",".+$this->longitude;
+        return 'http://maps.google.com/maps?q='.$this->latitude.','.+$this->longitude;
     }
 }
