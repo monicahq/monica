@@ -32,6 +32,9 @@
 
             <span class="light-silver" v-if="contactAddress.name">({{ contactAddress.name }})</span>
 
+            <span v-if="!contactAddress.address"></span>
+            <a :href="contactAddress.googleMapAddressLatitude" target="_blank" class="light-silver" v-if="contactAddress.latitude">({{ contactAddress.latitude }}, {{ contactAddress.longitude }}</span>)</a>
+
             <div class="fr" v-if="editMode">
               <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>
               <i class="fa fa-trash-o pointer" @click="trash(contactAddress)"></i>
@@ -81,6 +84,18 @@
                   {{ country.country }}
                 </option>
               </select>
+            </div>
+            <div class="mt3">
+              <label class="db fw6 lh-copy f6">
+                {{ $t('people.contact_address_form_latitude') }}
+              </label>
+              <input class="pa2 db w-100" type="text" v-model="updateForm.latitude">
+            </div>
+            <div class="mt3">
+              <label class="db fw6 lh-copy f6">
+                {{ $t('people.contact_address_form_latitude') }}
+              </label>
+              <input class="pa2 db w-100" type="text" v-model="updateForm.longitude">
             </div>
             <div class="lh-copy mt3">
               <a @click.prevent="update(contactAddress)" class="btn btn-primary">{{ $t('app.add') }}</a>
@@ -142,6 +157,18 @@
             </option>
           </select>
         </div>
+        <div class="mt3">
+            <label class="db fw6 lh-copy f6">
+              {{ $t('people.contact_address_form_latitude') }}
+            </label>
+            <input class="pa2 db w-100" type="text" v-model="createForm.latitude">
+          </div>
+          <div class="mt3">
+            <label class="db fw6 lh-copy f6">
+              {{ $t('people.contact_address_form_latitude') }}
+            </label>
+            <input class="pa2 db w-100" type="text" v-model="createForm.longitude">
+          </div>
         <div class="lh-copy mt3">
           <a @click.prevent="store" class="btn btn-primary">{{ $t('app.add') }}</a>
           <a class="btn" @click="addMode = false">{{ $t('app.cancel') }}</a>
@@ -170,7 +197,9 @@
                     street: '',
                     city: '',
                     province: '',
-                    postal_code: ''
+                    postal_code: '',
+                    latitude: 0,
+                    longitude: 0,
                 },
 
                 updateForm: {
@@ -180,23 +209,15 @@
                     street: '',
                     city: '',
                     province: '',
-                    postal_code: ''
+                    postal_code: '',
+                    latitude: 0,
+                    longitude: 0,
                 },
 
                 dirltr: true,
             };
         },
 
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
-        },
-
-        /**
-         * Prepare the component (Vue 2.x).
-         */
         mounted() {
             this.prepareComponent();
         },
@@ -204,9 +225,6 @@
         props: ['hash'],
 
         methods: {
-            /**
-             * Prepare the component.
-             */
             prepareComponent() {
                 this.dirltr = this.$root.htmldir == 'ltr';
                 this.getAddresses();
@@ -234,6 +252,8 @@
                 this.createForm.city = '';
                 this.createForm.province = '';
                 this.createForm.postal_code = '';
+                this.createForm.latitude = '';
+                this.createForm.longitude = '';
             },
 
             toggleAdd() {
@@ -250,6 +270,8 @@
                 this.updateForm.city = contactAddress.city;
                 this.updateForm.province = contactAddress.province;
                 this.updateForm.postal_code = contactAddress.postal_code;
+                this.updateForm.latitude = contactAddress.latitude;
+                this.updateForm.longitude = contactAddress.longitude;
             },
 
             store() {
