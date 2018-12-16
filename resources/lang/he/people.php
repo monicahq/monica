@@ -363,6 +363,8 @@ return [
     'contact_address_form_province' => 'מחוז (רשות)',
     'contact_address_form_postal_code' => 'מיקוד (רשות)',
     'contact_address_form_country' => 'ארץ (רשות)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'סוג חיית מחמד',
