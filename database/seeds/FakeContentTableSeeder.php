@@ -18,6 +18,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
+use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\UpdateBirthdayInformation;
+use App\Services\Contact\Contact\UpdateDeceasedInformation;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -26,6 +29,7 @@ class FakeContentTableSeeder extends Seeder
     private $numberOfContacts;
     private $contact;
     private $account;
+    private $countries = null;
 
     /**
      * Run the database seeds.
@@ -64,15 +68,14 @@ class FakeContentTableSeeder extends Seeder
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
-            $this->contact = new Contact;
-            $this->contact->account_id = $this->account->id;
-            $this->contact->gender_id = $this->getRandomGender()->id;
-            $this->contact->first_name = $this->faker->firstName($gender);
-            $this->contact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName : null;
-            $this->contact->nickname = (rand(1, 2) == 1) ? $this->faker->name : null;
-            $this->contact->is_starred = (rand(1, 5) == 1);
-            $this->contact->setAvatarColor();
-            $this->contact->save();
+            $this->contact = (new CreateContact)->execute([
+                'account_id' => $this->account->id,
+                'first_name' => $this->faker->firstName($gender),
+                'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
+                'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
+                'gender_id' => $this->getRandomGender()->id,
+                'is_partial' => false,
+            ]);
 
             $this->populateTags();
             $this->populateFoodPreferences();
@@ -92,7 +95,6 @@ class FakeContentTableSeeder extends Seeder
             $this->populateContactFields();
             $this->populatePets();
             $this->changeUpdatedAt();
-            $this->populateAvatars();
 
             $progress->advance();
         }
@@ -138,22 +140,18 @@ class FakeContentTableSeeder extends Seeder
     {
         // deceased?
         if (rand(1, 7) == 1) {
-            $this->contact->is_dead = true;
+            $birthdate = $this->faker->dateTimeThisCentury();
 
-            if (rand(1, 3) == 1) {
-                $deceasedDate = $this->faker->dateTimeThisCentury();
-
-                if (rand(1, 2) == 1) {
-                    // add a date where we don't know the year
-                    $specialDate = $this->contact->setSpecialDate('deceased_date', 0, $deceasedDate->format('m'), $deceasedDate->format('d'));
-                } else {
-                    // add a date where we know the year
-                    $specialDate = $this->contact->setSpecialDate('deceased_date', $deceasedDate->format('Y'), $deceasedDate->format('m'), $deceasedDate->format('d'));
-                }
-                $specialDate->setReminder('year', 1, trans('people.deceased_reminder_title', ['name' => $this->contact->first_name]));
-            }
-
-            $this->contact->save();
+            (new UpdateDeceasedInformation)->execute([
+                'account_id' => $this->contact->account_id,
+                'contact_id' => $this->contact->id,
+                'is_deceased' => (rand(1, 2) == 1) ? true : false,
+                'is_date_known' => (rand(1, 2) == 1) ? true : false,
+                'day' => (int) $birthdate->format('d'),
+                'month' => (int) $birthdate->format('m'),
+                'year' => (int) $birthdate->format('Y'),
+                'add_reminder' => (rand(1, 2) == 1) ? true : false,
+            ]);
         }
     }
 
@@ -162,20 +160,17 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 2) == 1) {
             $birthdate = $this->faker->dateTimeThisCentury();
 
-            if (rand(1, 2) == 1) {
-                if (rand(1, 2) == 1) {
-                    // add a date where we don't know the year
-                    $specialDate = $this->contact->setSpecialDate('birthdate', 0, $birthdate->format('m'), $birthdate->format('d'));
-                } else {
-                    // add a date where we know the year
-                    $specialDate = $this->contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                }
-
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $this->contact->first_name]));
-            } else {
-                // add a birthdate based on an approximate age
-                $specialDate = $this->contact->setSpecialDateFromAge('birthdate', rand(10, 100));
-            }
+            (new UpdateBirthdayInformation)->execute([
+                'account_id' => $this->contact->account_id,
+                'contact_id' => $this->contact->id,
+                'is_date_known' => (rand(1, 2) == 1) ? true : false,
+                'day' => (int) $birthdate->format('d'),
+                'month' => (int) $birthdate->format('m'),
+                'year' => (int) $birthdate->format('Y'),
+                'is_age_based' => (rand(1, 2) == 1) ? true : false,
+                'age' => rand(1, 99),
+                'add_reminder' => (rand(1, 2) == 1) ? true : false
+            ]);
         }
     }
 
@@ -216,31 +211,28 @@ class FakeContentTableSeeder extends Seeder
             foreach (range(1, rand(2, 6)) as $index) {
                 $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 
-                $relatedContact = new Contact;
-                $relatedContact->account_id = $this->contact->account_id;
-                $relatedContact->gender_id = $this->getRandomGender()->id;
-                $relatedContact->first_name = $this->faker->firstName($gender);
-                $relatedContact->last_name = (rand(1, 2) == 1) ? $this->faker->lastName($gender) : null;
-                $relatedContact->save();
+                $relatedContact = (new CreateContact)->execute([
+                    'account_id' => $this->contact->account_id,
+                    'first_name' => $this->faker->firstName($gender),
+                    'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
+                    'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
+                    'gender_id' => $this->getRandomGender()->id,
+                    'is_partial' => (rand(1, 2) == 1) ? false : true
+                ]);
 
-                // is real contact?
-                $relatedContact->is_partial = false;
-                if (rand(1, 2) == 1) {
-                    $relatedContact->is_partial = true;
-                }
-                $relatedContact->setAvatarColor();
-                $relatedContact->save();
-
-                // birthdate
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
-                if (rand(1, 2) == 1) {
-                    // add a date where we don't know the year
-                    $specialDate = $relatedContact->setSpecialDate('birthdate', 0, $relatedContactBirthDate->format('m'), $relatedContactBirthDate->format('d'));
-                } else {
-                    // add a date where we know the year
-                    $specialDate = $relatedContact->setSpecialDate('birthdate', $relatedContactBirthDate->format('Y'), $relatedContactBirthDate->format('m'), $relatedContactBirthDate->format('d'));
-                }
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $relatedContact->first_name]));
+
+                (new UpdateBirthdayInformation)->execute([
+                    'account_id' => $this->contact->account_id,
+                    'contact_id' => $relatedContact->id,
+                    'is_date_known' => (rand(1, 2) == 1) ? true : false,
+                    'day' => (int) $relatedContactBirthDate->format('d'),
+                    'month' => (int) $relatedContactBirthDate->format('m'),
+                    'year' => (int) $relatedContactBirthDate->format('Y'),
+                    'is_age_based' => (rand(1, 2) == 1) ? true : false,
+                    'age' => rand(1, 99),
+                    'add_reminder' => (rand(1, 2) == 1) ? true : false
+                ]);
 
                 // set relationship
                 $relationshipId = $this->contact->account->relationshipTypes->random()->id;
@@ -349,8 +341,6 @@ class FakeContentTableSeeder extends Seeder
             ]);
         }
     }
-
-    private $countries = null;
 
     private function getRandomCountry()
     {
@@ -530,13 +520,6 @@ class FakeContentTableSeeder extends Seeder
                 ]);
             }
         }
-    }
-
-    public function populateAvatars()
-    {
-        $contact = (new GetAvatarsFromInternet)->execute([
-            'contact_id' => $this->contact->id,
-        ]);
     }
 
     public function getRandomGender()

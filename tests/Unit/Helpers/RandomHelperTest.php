@@ -3,10 +3,10 @@
 namespace Tests\Unit\Helpers;
 
 use Tests\TestCase;
-use App\Helpers\AvatarHelper;
+use App\Helpers\RandomHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AvatarHelperTest extends TestCase
+class RandomHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -14,12 +14,12 @@ class AvatarHelperTest extends TestCase
     {
         $this->assertEquals(
             36,
-            strlen(AvatarHelper::generateAdorableUUID())
+            strlen(RandomHelper::uuid())
         );
 
         $this->assertInternalType(
             'string',
-            AvatarHelper::generateAdorableUUID()
+            RandomHelper::uuid()
         );
     }
 }

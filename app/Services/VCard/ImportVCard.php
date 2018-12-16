@@ -519,7 +519,7 @@ class ImportVCard extends BaseService
             if ($entry->PHOTO instanceof \Sabre\VObject\Property\Uri) {
                 if (starts_with((string) $entry->PHOTO, 'https://secure.gravatar.com') || starts_with((string) $entry->PHOTO, 'https://www.gravatar.com')) {
                     // Gravatar
-                    $contact->gravatar_url = (string) $entry->PHOTO;
+                    $contact->avatar_gravatar_url = (string) $entry->PHOTO;
                 } else {
                     // assume monica asset
                 }

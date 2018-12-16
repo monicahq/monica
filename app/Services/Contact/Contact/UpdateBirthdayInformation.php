@@ -34,7 +34,7 @@ class UpdateBirthdayInformation extends BaseService
      * Update the information about the birthday.
      *
      * @param array $data
-     * @return SpecialDate|null
+     * @return Contact
      */
     public function execute(array $data)
     {
@@ -45,7 +45,9 @@ class UpdateBirthdayInformation extends BaseService
 
         $this->contact->removeSpecialDate('birthdate');
 
-        return $this->manageBirthday($data);
+        $this->manageBirthday($data);
+
+        return $this->contact;
     }
 
     /**

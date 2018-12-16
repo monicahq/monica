@@ -52,7 +52,7 @@ class GenerateDefaultAvatar extends BaseService
     /**
      * Create a new avatar for the contact based on the name of the contact.
      *
-     * @return void
+     * @return string
      */
     private function createNewAvatar()
     {

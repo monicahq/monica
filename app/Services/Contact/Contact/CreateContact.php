@@ -2,7 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
-use App\Helpers\AvatarHelper;
+use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
@@ -10,6 +10,8 @@ use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class CreateContact extends BaseService
 {
+    private $contact;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -55,7 +57,7 @@ class CreateContact extends BaseService
      */
     private function generateUUID()
     {
-        $this->contact->uuid = AvatarHelper::generateAdorableUUID();
+        $this->contact->uuid = RandomHelper::uuid();
         $this->contact->save();
     }
 

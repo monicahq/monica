@@ -33,7 +33,7 @@ class UpdateDeceasedInformation extends BaseService
      * Update the information about the deceased date.
      *
      * @param array $data
-     * @return SpecialDate|null
+     * @return Contact
      */
     public function execute(array $data)
     {
@@ -44,14 +44,16 @@ class UpdateDeceasedInformation extends BaseService
 
         $this->contact->removeSpecialDate('deceased_date');
 
-        return $this->manageDeceasedDate($data);
+        $this->manageDeceasedDate($data);
+
+        return $this->contact;
     }
 
     /**
      * Update deceased date information depending on the type of information.
      *
      * @param array $data
-     * @return SpecialDate|null
+     * @return void|nulls
      */
     private function manageDeceasedDate(array $data)
     {
@@ -70,9 +72,7 @@ class UpdateDeceasedInformation extends BaseService
             return;
         }
 
-        $specialDate = $this->exact($data);
-
-        return $specialDate;
+        $this->exact($data);
     }
 
     /**
@@ -91,8 +91,6 @@ class UpdateDeceasedInformation extends BaseService
         );
 
         $this->setReminder($data, $specialDate);
-
-        return $specialDate;
     }
 
     /**

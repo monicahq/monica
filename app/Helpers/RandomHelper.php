@@ -4,14 +4,14 @@ namespace App\Helpers;
 
 use Illuminate\Support\Str;
 
-class AvatarHelper
+class RandomHelper
 {
     /**
      * Generate a new UUID to grab a new adorable avatar.
      *
      * @return string
      */
-    public static function generateAdorableUUID()
+    public static function uuid()
     {
         return (string) Str::uuid();
     }
