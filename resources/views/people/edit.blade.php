@@ -89,7 +89,7 @@
                 <form-input
                   value="{{ $contact->maiden_name }}"
                   :input-type="'text'"
-                  :id="'maiden_name'"
+                  :id="'maidenname'"
                   :required="false"
                   :title="'{{ trans('people.people_add_maiden_name') }}'">
                 </form-input>
