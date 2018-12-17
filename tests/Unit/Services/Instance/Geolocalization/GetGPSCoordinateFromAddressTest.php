@@ -31,6 +31,9 @@ class GetGPSCoordinateFromAddressTest extends TestCase
 
     public function test_it_gets_gps_coordinates()
     {
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('geolocalization_service_gets_gps_coordinates');
+
         config(['monica.enable_geolocation' => true]);
 
         $address = factory(Address::class)->create();
@@ -51,10 +54,16 @@ class GetGPSCoordinateFromAddressTest extends TestCase
             Address::class,
             $address
         );
+
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
     }
 
     public function test_it_returns_null_if_address_is_garbage()
     {
+        \VCR\VCR::turnOn();
+        \VCR\VCR::insertCassette('geolocalization_service_returns_null_if_address_is_garbage');
+
         config(['monica.enable_geolocation' => true]);
 
         $address = factory(Address::class)->create([
@@ -73,6 +82,9 @@ class GetGPSCoordinateFromAddressTest extends TestCase
         $address = $addressService->execute($request);
 
         $this->assertNull($address);
+
+        \VCR\VCR::eject();
+        \VCR\VCR::turnOff();
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
