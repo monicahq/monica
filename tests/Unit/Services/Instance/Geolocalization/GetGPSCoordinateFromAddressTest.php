@@ -33,7 +33,7 @@ class GetGPSCoordinateFromAddressTest extends TestCase
     {
         \VCR\VCR::turnOn();
         \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(array('method', 'url'));
+        \VCR\VCR::configure()->enableRequestMatchers(['method', 'url']);
         \VCR\VCR::insertCassette('geolocalization_service_gets_gps_coordinates.yml');
 
         config(['monica.enable_geolocation' => true]);
@@ -66,7 +66,7 @@ class GetGPSCoordinateFromAddressTest extends TestCase
     {
         \VCR\VCR::turnOn();
         \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(array('method', 'url'));
+        \VCR\VCR::configure()->enableRequestMatchers(['method', 'url']);
         \VCR\VCR::insertCassette('geolocalization_service_returns_null_if_address_is_garbage.yml');
 
         config(['monica.enable_geolocation' => true]);
