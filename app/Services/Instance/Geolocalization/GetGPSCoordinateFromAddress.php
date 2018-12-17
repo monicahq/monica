@@ -3,8 +3,8 @@
 namespace App\Services\Instance\Geolocalization;
 
 use App\Services\BaseService;
-use GuzzleHttp\Client as GuzzleClient;
 use App\Models\Contact\Address;
+use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 
 class GetGPSCoordinateFromAddress extends BaseService
@@ -21,7 +21,8 @@ class GetGPSCoordinateFromAddress extends BaseService
             'address_id' => 'required|integer|exists:addresses,id',
         ];
     }
-     /**
+
+    /**
      * Get the latitude and longitude from an address.
      * This method uses LocationIQ to process the geocoding.
      *

@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Services\Instance\Geolocalization;
 
-use App\Models\Contact\Address;
 use Tests\TestCase;
+use App\Models\Contact\Address;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Geolocalization\GetGPSCoordinateFromAddress;
