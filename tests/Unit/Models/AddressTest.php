@@ -139,4 +139,16 @@ class AddressTest extends TestCase
             $address->postal_code
         );
     }
+
+    public function test_it_returns_a_google_map_url_with_latitude_longitude()
+    {
+        $address = new Address;
+        $address->latitude = 24.197611;
+        $address->longitude = 120.780512;
+
+        $this->assertEquals(
+            'http://maps.google.com/maps?q=24.197611,120.780512',
+            $address->getGoogleMapsAddressWithLatitude()
+        );
+    }
 }

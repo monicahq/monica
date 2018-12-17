@@ -1,5 +1,8 @@
 UNRELEASED CHANGES:
 
+* Add ability to indicate latitude and longitude to addresses
+* Add ability to upload photos
+* Add ability to indicate how you felt when logging a call
 * Add information about who initiated a phone call
 * Add ability to edit a phone call
 * Remove limitation on the date field when creating an activity

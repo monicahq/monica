@@ -83,6 +83,7 @@ return [
     'modal_call_comment' => 'What did you talk about? (optional)',
     'modal_call_exact_date' => 'The phone call happened on',
     'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'The phone call has been saved.',
     'call_delete_confirmation' => 'Are you sure you want to delete this call?',
     'call_delete_success' => 'The call has been deleted successfully',
@@ -362,6 +363,8 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'Kind of pet',
@@ -451,4 +454,14 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // Photos
+    'photo_list_title' => 'Related photos',
+    'photo_list_cta' => 'Upload photo',
+    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_delete' => 'Delete photo',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];

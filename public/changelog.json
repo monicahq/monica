@@ -1,6 +1,21 @@
 {
     "entries": [
         {
+            "date": "Dec 16, 2018",
+            "title": "New feature: add latitude and longitude to addresses",
+            "description": "When you enter an address, you can now also add latitude and longitude. Note that these coordinates use the decimal degrees system (DD) and therefore should be formatted like `41.40338, 2.17403`."
+        },
+        {
+            "date": "Dec 13, 2018",
+            "title": "New feature: indicate how you felt during a phone call",
+            "description": "If a call made you feel something specific, like hope, fear or fondness, you can now record it. You have now access to up to 136 different emotions to express how you felt. ![image](/img/changelogs/2018-12-13-emotions.png)"
+        },
+        {
+            "date": "Dec 12, 2018",
+            "title": "New feature: photos upload",
+            "description": "You can now add photos to a contact. Head over the profile of one of your contact and upload photos now. ![image](/img/changelogs/2018-12-04-photo-upload.png)"
+        },
+        {
             "date": "Dec 09, 2018",
             "title": "New feature: indicate who initiated a phone call",
             "description": "You can now indicate who has initiated a phone call. ![image](/img/changelogs/2018-12-08-who-called.png)"
