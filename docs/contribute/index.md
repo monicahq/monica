@@ -1,6 +1,42 @@
 # Contribute as a developer
 
-<!-- TOC -->autoauto- [Considerations](#considerations)auto- [Design rules](#design-rules)auto- [Install Monica locally](#install-monica-locally)auto    - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)auto    - [Valet (macOS)](#valet-macos)auto    - [Instructions](#instructions)auto- [Testing environment](#testing-environment)auto    - [Setup](#setup)auto    - [Run the test suite](#run-the-test-suite)auto    - [Run browser tests](#run-browser-tests)auto    - [Mocking HTTP calls](#mocking-http-calls)auto- [Coding guidelines](#coding-guidelines)auto    - [Feature branch](#feature-branch)auto    - [Conventional commits](#conventional-commits)auto- [Backend](#backend)auto    - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)auto        - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)auto        - [Manipulating data during a migration](#manipulating-data-during-a-migration)auto    - [Email testing](#email-testing)auto    - [Email reminders](#email-reminders)auto    - [Statistics](#statistics)auto- [Database](#database)auto    - [Connecting to mySQL](#connecting-to-mysql)auto- [Front-end](#front-end)auto    - [Considerations](#considerations-1)auto    - [Mix](#mix)auto    - [Watching and compiling assets](#watching-and-compiling-assets)auto    - [CSS](#css)auto    - [JS and Vue](#js-and-vue)auto    - [Localization (i18n)](#localization-i18n)auto        - [Application](#application)auto            - [Laravel](#laravel)auto            - [VueJS](#vuejs)autoauto<!-- /TOC -->
+<!-- TOC -->
+
+- [Considerations](#considerations)
+- [Design rules](#design-rules)
+- [Install Monica locally](#install-monica-locally)
+    - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)
+    - [Valet (macOS)](#valet-macos)
+    - [Instructions](#instructions)
+- [Testing environment](#testing-environment)
+    - [Setup](#setup)
+    - [Run the test suite](#run-the-test-suite)
+    - [Run browser tests](#run-browser-tests)
+    - [Mocking HTTP calls](#mocking-http-calls)
+- [Coding guidelines](#coding-guidelines)
+    - [Feature branch](#feature-branch)
+    - [Conventional commits](#conventional-commits)
+- [Backend](#backend)
+    - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
+        - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
+        - [Manipulating data during a migration](#manipulating-data-during-a-migration)
+    - [Email testing](#email-testing)
+    - [Email reminders](#email-reminders)
+    - [Statistics](#statistics)
+- [Database](#database)
+    - [Connecting to mySQL](#connecting-to-mysql)
+- [Front-end](#front-end)
+    - [Considerations](#considerations-1)
+    - [Mix](#mix)
+    - [Watching and compiling assets](#watching-and-compiling-assets)
+    - [CSS](#css)
+    - [JS and Vue](#js-and-vue)
+    - [Localization (i18n)](#localization-i18n)
+        - [Application](#application)
+            - [Laravel](#laravel)
+            - [VueJS](#vuejs)
+
+<!-- /TOC -->
 
 Are you interested in giving a hand? We can't be more excited about it. Thanks in advance!
 
