@@ -1,41 +1,6 @@
 # Contribute as a developer
 
-<!-- TOC -->
-
-- [Considerations](#considerations)
-- [Design rules](#design-rules)
-- [Install Monica locally](#install-monica-locally)
-    - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)
-    - [Valet (macOS)](#valet-macos)
-    - [Instructions](#instructions)
-- [Testing environment](#testing-environment)
-    - [Setup](#setup)
-    - [Run the test suite](#run-the-test-suite)
-    - [Run browser tests](#run-browser-tests)
-- [Coding guidelines](#coding-guidelines)
-    - [Feature branch](#feature-branch)
-    - [Conventional commits](#conventional-commits)
-- [Backend](#backend)
-    - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)
-        - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)
-        - [Manipulating data during a migration](#manipulating-data-during-a-migration)
-    - [Email testing](#email-testing)
-    - [Email reminders](#email-reminders)
-    - [Statistics](#statistics)
-- [Database](#database)
-    - [Connecting to mySQL](#connecting-to-mysql)
-- [Front-end](#front-end)
-    - [Considerations](#considerations-1)
-    - [Mix](#mix)
-    - [Watching and compiling assets](#watching-and-compiling-assets)
-    - [CSS](#css)
-    - [JS and Vue](#js-and-vue)
-    - [Localization (i18n)](#localization-i18n)
-        - [Application](#application)
-            - [Laravel](#laravel)
-            - [VueJS](#vuejs)
-
-<!-- /TOC -->
+<!-- TOC -->autoauto- [Considerations](#considerations)auto- [Design rules](#design-rules)auto- [Install Monica locally](#install-monica-locally)auto    - [Homestead (macOS, Linux, Windows)](#homestead-macos-linux-windows)auto    - [Valet (macOS)](#valet-macos)auto    - [Instructions](#instructions)auto- [Testing environment](#testing-environment)auto    - [Setup](#setup)auto    - [Run the test suite](#run-the-test-suite)auto    - [Run browser tests](#run-browser-tests)auto    - [Mocking HTTP calls](#mocking-http-calls)auto- [Coding guidelines](#coding-guidelines)auto    - [Feature branch](#feature-branch)auto    - [Conventional commits](#conventional-commits)auto- [Backend](#backend)auto    - [Things to consider when adding new code](#things-to-consider-when-adding-new-code)auto        - [Add a new table to the database schema](#add-a-new-table-to-the-database-schema)auto        - [Manipulating data during a migration](#manipulating-data-during-a-migration)auto    - [Email testing](#email-testing)auto    - [Email reminders](#email-reminders)auto    - [Statistics](#statistics)auto- [Database](#database)auto    - [Connecting to mySQL](#connecting-to-mysql)auto- [Front-end](#front-end)auto    - [Considerations](#considerations-1)auto    - [Mix](#mix)auto    - [Watching and compiling assets](#watching-and-compiling-assets)auto    - [CSS](#css)auto    - [JS and Vue](#js-and-vue)auto    - [Localization (i18n)](#localization-i18n)auto        - [Application](#application)auto            - [Laravel](#laravel)auto            - [VueJS](#vuejs)autoauto<!-- /TOC -->
 
 Are you interested in giving a hand? We can't be more excited about it. Thanks in advance!
 
@@ -154,6 +119,42 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 ```
 * Then you can run the test suite:
 `php artisan dusk`
+
+<a id="markdown-mocking-http-calls" name="mocking-http-calls"></a>
+### Mocking HTTP calls
+
+You should never make real HTTP calls in your unit tests - like querying an external API that is not linked to Monica.
+
+You can mock http calls with PHP VCR.
+
+In your test files, the first time you access an external API, you need to add this to your test:
+
+```
+\VCR\VCR::turnOn();
+\VCR\VCR::insertCassette('name_of_your_test.yml');
+```
+
+and add this at the end of the file:
+
+```
+\VCR\VCR::eject();
+\VCR\VCR::turnOff();
+```
+
+Run the test. PHP VCR will record the call and its response into a yml file. The .yml file is stored in `tests/fixtures`.
+
+Remember to remove any API key from the yml file that what used to make the call in the first place before commiting.
+
+If you are satisfied with the call and the response, replace the code above by:
+
+```
+\VCR\VCR::turnOn();
+\VCR\VCR::configure()->setMode('none');
+\VCR\VCR::configure()->enableRequestMatchers(array('method', 'url'));
+\VCR\VCR::insertCassette('name_of_your_test.yml');
+```
+
+This will make sure that when the test run again, it will query the yml file to get the response and not make the real call.
 
 <a id="markdown-coding-guidelines" name="coding-guidelines"></a>
 ## Coding guidelines

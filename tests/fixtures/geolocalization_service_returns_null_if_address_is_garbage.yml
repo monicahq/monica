@@ -1,8 +1,7 @@
-
 -
     request:
         method: GET
-        url: 'https://us1.locationiq.com/v1/search.php?key=&q=+sieklopekznqqq+&format=json'
+        url: 'https://us1.locationiq.com/v1/search.php?key=test&q=+sieklopekznqqq+&format=json'
         headers:
             Host: us1.locationiq.com
             Accept-Encoding: null

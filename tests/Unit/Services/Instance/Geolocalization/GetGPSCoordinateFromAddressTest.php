@@ -32,9 +32,12 @@ class GetGPSCoordinateFromAddressTest extends TestCase
     public function test_it_gets_gps_coordinates()
     {
         \VCR\VCR::turnOn();
-        \VCR\VCR::insertCassette('geolocalization_service_gets_gps_coordinates');
+        \VCR\VCR::configure()->setMode('none');
+        \VCR\VCR::configure()->enableRequestMatchers(array('method', 'url'));
+        \VCR\VCR::insertCassette('geolocalization_service_gets_gps_coordinates.yml');
 
         config(['monica.enable_geolocation' => true]);
+        config(['monica.location_iq_api_key' => 'test']);
 
         $address = factory(Address::class)->create();
 
@@ -62,9 +65,12 @@ class GetGPSCoordinateFromAddressTest extends TestCase
     public function test_it_returns_null_if_address_is_garbage()
     {
         \VCR\VCR::turnOn();
-        \VCR\VCR::insertCassette('geolocalization_service_returns_null_if_address_is_garbage');
+        \VCR\VCR::configure()->setMode('none');
+        \VCR\VCR::configure()->enableRequestMatchers(array('method', 'url'));
+        \VCR\VCR::insertCassette('geolocalization_service_returns_null_if_address_is_garbage.yml');
 
         config(['monica.enable_geolocation' => true]);
+        config(['monica.location_iq_api_key' => 'test']);
 
         $address = factory(Address::class)->create([
             'country' => 'ewqr',
