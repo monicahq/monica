@@ -45,15 +45,6 @@
                   :title="'{{ trans('people.people_add_lastname') }}'">
                 </form-input>
               </div>
-              <div class="dtc-ns pb0-ns w-100">
-                <form-input
-                  value="{{ $contact->nickname }}"
-                  :input-type="'text'"
-                  :id="'nickname'"
-                  :required="false"
-                  :title="'{{ trans('people.people_add_nickname') }}'">
-                </form-input>
-              </div>
             </div>
 
             @else
@@ -77,19 +68,35 @@
                   :title="'{{ trans('people.people_add_firstname') }}'">
                 </form-input>
               </div>
-              <div class="dtc-ns pb0-ns w-100">
+            </div>
+
+            @endif
+          </div>
+
+          {{-- Optional Names --}}
+          <div class="mb3 mb0-ns">
+            <div class="dt-ns dt--fixed di">
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
                 <form-input
                   value="{{ $contact->nickname }}"
                   :input-type="'text'"
                   :id="'nickname'"
                   :required="false"
-                  :title="'{{ trans('people.information_edit_description') }}'">
+                  :title="'{{ trans('people.people_add_nickname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc-ns pr2-ns pb0-ns w-100 pb3">
+                <form-input
+                  value="{{ $contact->maiden_name }}"
+                  :input-type="'text'"
+                  :id="'maiden_name'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_maiden_name') }}'">
                 </form-input>
               </div>
             </div>
-
-            @endif
           </div>
+
         </div>
 
         {{-- Gender --}}
