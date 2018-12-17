@@ -9,6 +9,9 @@
       <h1 class="tc mb2 mt0">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
         <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
+        @if(! is_null($contact->maiden_name))
+          <span class="f6 db-ns" id="maidenName">(née {{$contact->maiden_name}})</span>
+        @endif
       </h1>
 
       <ul class="tc-ns mb3 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
