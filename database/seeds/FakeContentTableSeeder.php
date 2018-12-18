@@ -4,15 +4,14 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\User\User;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
-use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Services\Contact\Contact\CreateContact;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -157,9 +156,9 @@ class FakeContentTableSeeder extends Seeder
                 'contact_id' => $this->contact->id,
                 'is_deceased' => (rand(1, 2) == 1) ? true : false,
                 'is_date_known' => (rand(1, 2) == 1) ? true : false,
-                'day' => (int)$birthdate->format('d'),
-                'month' => (int)$birthdate->format('m'),
-                'year' => (int)$birthdate->format('Y'),
+                'day' => (int) $birthdate->format('d'),
+                'month' => (int) $birthdate->format('m'),
+                'year' => (int) $birthdate->format('Y'),
                 'add_reminder' => (rand(1, 2) == 1) ? true : false,
             ]);
         }
@@ -174,9 +173,9 @@ class FakeContentTableSeeder extends Seeder
                 'account_id' => $this->contact->account_id,
                 'contact_id' => $this->contact->id,
                 'is_date_known' => (rand(1, 2) == 1) ? true : false,
-                'day' => (int)$birthdate->format('d'),
-                'month' => (int)$birthdate->format('m'),
-                'year' => (int)$birthdate->format('Y'),
+                'day' => (int) $birthdate->format('d'),
+                'month' => (int) $birthdate->format('m'),
+                'year' => (int) $birthdate->format('Y'),
                 'is_age_based' => (rand(1, 2) == 1) ? true : false,
                 'age' => rand(1, 99),
                 'add_reminder' => (rand(1, 2) == 1) ? true : false,
@@ -239,9 +238,9 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->contact->account_id,
                     'contact_id' => $relatedContact->id,
                     'is_date_known' => (rand(1, 2) == 1) ? true : false,
-                    'day' => (int)$relatedContactBirthDate->format('d'),
-                    'month' => (int)$relatedContactBirthDate->format('m'),
-                    'year' => (int)$relatedContactBirthDate->format('Y'),
+                    'day' => (int) $relatedContactBirthDate->format('d'),
+                    'month' => (int) $relatedContactBirthDate->format('m'),
+                    'year' => (int) $relatedContactBirthDate->format('Y'),
                     'is_age_based' => (rand(1, 2) == 1) ? true : false,
                     'age' => rand(1, 99),
                     'add_reminder' => (rand(1, 2) == 1) ? true : false,

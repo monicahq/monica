@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
+use App\Models\Instance\SpecialDate;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
-use App\Models\Instance\SpecialDate;
 
 class UpdateBirthdayInformationTest extends TestCase
 {
