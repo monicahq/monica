@@ -36,9 +36,7 @@ class GetGPSCoordinateFromAddress extends BaseService
         $address = Address::where('account_id', $data['account_id'])
             ->findOrFail($data['address_id']);
 
-        $address = $this->query($address);
-
-        return $address;
+        return $this->query($address);
     }
 
     /**
@@ -49,7 +47,7 @@ class GetGPSCoordinateFromAddress extends BaseService
      */
     private function getQuery(Address $address)
     {
-        if (config('monica.enable_geolocation') == false) {
+        if (!config('monica.enable_geolocation')) {
             return;
         }
 
