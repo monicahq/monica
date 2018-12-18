@@ -32,12 +32,9 @@ function Search(form, input, resultsContainer, showResults) {
         data.forEach(function (contact) {
             let person = {};
             person.id = contact.id;
-            person.url = `/people/${contact.hash}`;
+            person.url = `/people/${contact.hash_id}`;
 
-            const middleName = contact.middle_name || '';
-            const lastName = contact.last_name || '';
-            // Unify first, middle and last name in one string (depending on availability).
-            person.name = contact.first_name + (middleName ? ' ' + middleName : '') + (lastName ? ' ' + lastName : '');
+            person.name = contact.complete_name;
 
             // Figure out which avatar to use and create the appropriate HTML.
             person.avatar = getAvatar(contact);
@@ -51,14 +48,10 @@ function Search(form, input, resultsContainer, showResults) {
     function getAvatar(contact) {
         let avatar;
 
-        if (contact.avatar_url !== null) {
-            avatar = `<img src="${contact.avatar_url}" class="avatar">`;
+        if (contact.information.avatar.has_avatar) {
+            avatar = `<img src="${contact.information.avatar.avatar_url}" class="avatar">`;
         } else {
-            let initials = contact.first_name.substring(0, 1);
-            initials += contact.middle_name ? contact.middle_name.substring(0, 1) : '';
-            initials += contact.last_name ? contact.last_name.substring(0, 1) : '';
-            initials = initials.toUpperCase();
-            avatar = `<div class="avatar avatar-initials" style="background-color: ${contact.default_avatar_color}">${initials}</div>`;
+            avatar = `<div class="avatar avatar-initials" style="background-color: ${contact.information.avatar.default_avatar_color}">${contact.initials}</div>`;
         }
 
         return avatar;

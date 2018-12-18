@@ -70,6 +70,39 @@ http {
 }
 ```
 
+Or an apache.conf file similar to:
+```virtual-site.conf
+<VirtualHost *:80>
+    ServerAdmin you@domain.com 
+    ServerName monica.yourdomain.com
+
+    RewriteEngine on
+    RewriteCond %{SERVER_NAME} =monica.yourdomain.com
+    # redirect all requests to port 80 to port 443 using 308 code
+    RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,QSA,NE,R=308]
+ </VirtualHost>
+```
+
+```virtual-site-ssl.conf
+<IfModule mod_ssl.c>
+<VirtualHost *:443>
+    ServerAdmin you@domain.com
+    ServerName monica.yourdomain.com
+
+    ProxyPreserveHost On
+    ProxyRequests Off
+    ProxyPass / http://localhost:3001/
+    ProxyPassReverse / http://localhost:3001/
+    RequestHeader add X-Forwarded-Proto https
+
+    SSLCertificateFile /etc/letsencrypt/live/monica.yourdomain.com/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/monica.yourdomain.com/privkey.pem
+    SSLCACertificateFile    /etc/letsencrypt/live/monica.yourdomain.com/chain.pem
+    Include /etc/letsencrypt/options-ssl-apache.conf
+</VirtualHost>
+</IfModule>
+```
+
 And a `docker-compose.yml` like:
 
 ``` yaml

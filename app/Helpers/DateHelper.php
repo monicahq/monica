@@ -87,7 +87,7 @@ class DateHelper
             $date = $date->date;
         }
         if (! $date instanceof Carbon) {
-            $date = Carbon::create($date, config('app.timezone'));
+            $date = Carbon::create($date);
         }
 
         return $date->format(config('api.timestamp_format'));

@@ -1,8 +1,28 @@
 UNRELEASED CHANGES:
 
-*
+* Add ability to indicate latitude and longitude to addresses
+* Add ability to upload photos
+* Add ability to indicate how you felt when logging a call
+* Add information about who initiated a phone call
+* Add ability to edit a phone call
+* Remove limitation on the date field when creating an activity
+* Fix Set Tag api method which deleted existing tags, which it shouldn't
+* Fix editing relationship not working
+* Fix Storage page not being displayed
+* Add ability to create tasks that are not linked to any contacts
+* Fix VCard import without firstname
+* Fix avatar display in searches
+* Fix conversation add/update using contact add/update flash messages
+* Fix incompatibility of people search queries with PostgreSQL
 
 RELEASED VERSIONS:
+
+v2.10.2 - 2018-11-14
+--------------------
+
+* Fix composer install problems
+* Fix editing conversations not working
+* Fix deletion of relationships not working
 
 v2.10.1 - 2018-11-13
 --------------------

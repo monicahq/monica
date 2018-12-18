@@ -43,6 +43,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
     Route::post('/compliance/sign', 'ComplianceController@store');
     Route::get('/changelog', 'ChangelogController@index')->name('changelog.index');
 
+    Route::get('/emotions', 'EmotionController@primaries');
+    Route::get('/emotions/primaries/{emotion}/secondaries', 'EmotionController@secondaries');
+    Route::get('/emotions/primaries/{emotion}/secondaries/{secondaryEmotion}/emotions', 'EmotionController@emotions');
+
     Route::name('people.')->group(function () {
         Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
         Route::get('/people/archived', 'ContactsController@archived')->name('archived');
@@ -132,9 +136,11 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Tasks
         Route::resource('people/{contact}/tasks', 'Contacts\\TasksController')->only([
+            'index',
+        ]);
+        Route::resource('tasks', 'TasksController')->only([
             'index', 'store', 'update', 'destroy',
         ]);
-        Route::post('/people/{contact}/tasks/{task}/toggle', 'Contacts\\TasksController@toggle');
 
         // Gifts
         Route::resource('people/{contact}/gifts', 'Contacts\\GiftsController')->except(['show']);
@@ -144,13 +150,16 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
         // Phone calls
-        Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->only(['store', 'destroy']);
+        Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->except(['show']);
 
         // Conversations
         Route::resource('people/{contact}/conversations', 'Contacts\\ConversationsController')->except(['show']);
 
         // Documents
         Route::resource('people/{contact}/documents', 'Contacts\\DocumentsController')->only(['index', 'store', 'destroy']);
+
+        // Photos
+        Route::resource('people/{contact}/photos', 'Contacts\\PhotosController')->only(['index', 'store', 'destroy']);
 
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('search');

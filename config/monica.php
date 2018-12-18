@@ -12,7 +12,7 @@ return [
     | bad things will happen.
     |
     */
-    'app_version' => '2.10.1',
+    'app_version' => '2.10.2',
 
    /*
     |--------------------------------------------------------------------------
@@ -211,20 +211,52 @@ return [
     | This the default limit for each new account. Default value: 512Mb.
     |
      */
-    'max_storage_size' => env('DEFAULT_MAX_STORAGE_SIZE', 512000),
+    'max_storage_size' => env('DEFAULT_MAX_STORAGE_SIZE', 512),
 
     /*
     |--------------------------------------------------------------------------
-    | Enable weather.
+    | Enable geolocation service.
     |--------------------------------------------------------------------------
     |
-    | Weather needs two things to work TBD
-    | Darksky provides an api with 1000 free API calls per day.
-    | https://darksky.net/dev/register
-    | If you enable weather, don't forget to add your Darksky API key through the
-    | `DARKSKY_API_KEY` env variable.
+    | For some features, we need to translate addresses to latitude/longitude
+    | coordinates. Like getting weather, for instance.
+    | If you do enable geolocation, you also need to provide a geolocation
+    | api key as shown below.
     |
      */
-    'weather_enabled' => env('WEATHER_ENABLED', false),
+    'enable_geolocation' => env('ENABLE_GEOLOCATION', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | API key for geolocation service.
+    |--------------------------------------------------------------------------
+    |
+    | We use LocationIQ (https://locationiq.com/) to translate addresses to
+    | latitude/longitude coordinates. We could use Google instead but we don't
+    | want to give anything to Google, ever.
+    | LocationIQ offers 10,000 free requests per day.
+    |
+     */
     'location_iq_api_key' => env('LOCATION_IQ_API_KEY', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable weather to be displayed on the contact profile page.
+    |--------------------------------------------------------------------------
+    |
+    | Geolocation needs to be enabled for this feature to work. We need to it
+    | to translate addresses to long/latitude coordinates.
+     */
+    'enable_weather' => env('ENABLE_WEATHER', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | API key for weather data.
+    |--------------------------------------------------------------------------
+    |
+    | To provide weather information, we use Darksky.
+    | Darksky provides an api with 1000 free API calls per day.
+    | https://darksky.net/dev/register
+     */
+    'darksky_api_key' => env('DARKSKY_API_KEY', false),
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Services\VCard;
 
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
@@ -50,11 +51,17 @@ class ExportVCard extends BaseService
     private function export(Contact $contact) : VCard
     {
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
+        if (! $contact->uuid) {
+            $contact->forceFill([
+                'uuid' => Str::uuid(),
+            ])->save();
+        }
 
         // Basic information
         $vcard = new VCard([
-            'UID' => $contact->hashid(),
+            'UID' => $contact->uuid,
             'SOURCE' => route('people.show', $contact),
+            'VERSION' => '4.0',
         ]);
 
         $this->exportNames($contact, $vcard);

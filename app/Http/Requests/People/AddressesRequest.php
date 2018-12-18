@@ -30,6 +30,8 @@ class AddressesRequest extends FormRequest
             'city' => 'max:255|nullable',
             'province' => 'max:255|nullable',
             'postal_code' => 'max:255|nullable',
+            'latitude' => 'max:255|nullable',
+            'longitude' => 'max:255|nullable',
         ];
     }
 }

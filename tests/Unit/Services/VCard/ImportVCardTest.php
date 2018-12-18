@@ -292,6 +292,40 @@ class ImportVCardTest extends TestCase
         $this->assertEquals('Doe', $contact->last_name);
     }
 
+    public function test_it_imports_name_FN()
+    {
+        $contact = new Contact;
+
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard($account->id);
+
+        $vcard = new VCard([
+            'FN' => 'John',
+            'N' => 'Mike;;;;',
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importNames', [$contact, $vcard]);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('', $contact->last_name);
+    }
+
+    public function test_it_imports_names_FN_multiple()
+    {
+        $contact = new Contact;
+
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard($account->id);
+
+        $vcard = new VCard([
+            'FN' => 'John Doe Marco',
+            'N' => 'Mike;;;;',
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importNames', [$contact, $vcard]);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe Marco', $contact->last_name);
+    }
+
     public function test_it_imports_work_information()
     {
         $account = factory(Account::class)->create([]);

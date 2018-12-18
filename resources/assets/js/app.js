@@ -97,6 +97,10 @@ Vue.component(
     'form-textarea',
     require('./components/partials/form/Textarea.vue')
 );
+Vue.component(
+    'emotion',
+    require('./components/people/Emotion.vue')
+);
 
 // Dashboard
 Vue.component(
@@ -156,6 +160,11 @@ Vue.component(
 );
 
 Vue.component(
+    'phone-call-list',
+    require('./components/people/calls/PhoneCallList.vue')
+);
+
+Vue.component(
     'conversation-list',
     require('./components/people/conversation/ConversationList.vue')
 );
@@ -188,6 +197,11 @@ Vue.component(
 Vue.component(
     'life-event-list',
     require('./components/people/lifeevent/LifeEventList.vue')
+);
+
+Vue.component(
+    'photo-list',
+    require('./components/people/photo/PhotoList.vue')
 );
 
 // Journal
@@ -266,6 +280,9 @@ Vue.filter('formatDate', function(value) {
         return moment(String(value)).format('LL')
     }
 });
+
+// Markdown
+window.marked = require('marked');
 
 import messages from '../../../public/js/langs/en.json';
 

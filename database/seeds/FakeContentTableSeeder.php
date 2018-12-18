@@ -2,6 +2,7 @@
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Seeder;
@@ -33,11 +34,18 @@ class FakeContentTableSeeder extends Seeder
     public function run()
     {
         $this->setUpFaker();
-        $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
 
-        // set default admin account to confirmed
-        $adminUser = $this->account->users()->first();
-        $this->confirmUser($adminUser);
+        // Get or create the first account
+        if (User::where('email', 'admin@admin.com')->exists()) {
+            $userId = User::where('email', 'admin@admin.com')->value('id');
+            $this->account = Account::where('id', $userId)->first();
+        } else {
+            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+
+            // set default admin account to confirmed
+            $adminUser = $this->account->users()->first();
+            $this->confirmUser($adminUser);
+        }
 
         // create a random number of contacts
         $this->numberOfContacts = rand(60, 100);
@@ -102,9 +110,11 @@ class FakeContentTableSeeder extends Seeder
         $progress->finish();
 
         // create the second test, blank account
-        $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
-        $blankUser = $blankAccount->users()->first();
-        $this->confirmUser($blankUser);
+        if (! User::where('email', 'blank@blank.com')->exists()) {
+            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+            $blankUser = $blankAccount->users()->first();
+            $this->confirmUser($blankUser);
+        }
     }
 
     public function populateTags()
@@ -363,11 +373,11 @@ class FakeContentTableSeeder extends Seeder
         if (rand(1, 3) == 1) {
 
             // Fetch number of types
-            $numberOfTypes = ContactFieldType::count();
+            $numberOfTypes = ContactFieldType::where('account_id', $this->account->id)->count();
 
             for ($j = 0; $j < rand(1, $numberOfTypes); $j++) {
                 // Retrieve random ContactFieldType
-                $contactFieldType = ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+                $contactFieldType = ContactFieldType::where('account_id', $this->account->id)->orderBy(DB::raw('RAND()'))->firstOrFail();
 
                 // Fake data according to type
                 $data = null;
@@ -485,7 +495,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 1) == 1) {
             for ($j = 0; $j < rand(1, 20); $j++) {
-                $contactFieldType = ContactFieldType::orderBy(DB::raw('RAND()'))->firstOrFail();
+                $contactFieldType = ContactFieldType::where('account_id', $this->account->id)->orderBy(DB::raw('RAND()'))->firstOrFail();
 
                 $conversation = (new CreateConversation)->execute([
                     'happened_at' => $this->faker->dateTimeThisCentury(),
@@ -512,7 +522,7 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 1) == 1) {
             for ($j = 0; $j < rand(1, 20); $j++) {
-                $lifeEventType = LifeEventType::orderBy(DB::raw('RAND()'))->firstOrFail();
+                $lifeEventType = LifeEventType::where('account_id', $this->account->id)->orderBy(DB::raw('RAND()'))->firstOrFail();
 
                 (new CreateLifeEvent)->execute([
                     'account_id' => $this->contact->account->id,
