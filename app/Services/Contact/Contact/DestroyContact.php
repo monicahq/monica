@@ -63,7 +63,7 @@ class DestroyContact extends BaseService
      * Delete specific relationships.
      *
      * @param array $data
-     * @param Collection $relationships
+     * @param $relationships
      * @return void
      */
     private function destroySpecificRelationships(array $data, $relationships)
