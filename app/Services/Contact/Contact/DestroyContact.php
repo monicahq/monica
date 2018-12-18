@@ -41,8 +41,6 @@ class DestroyContact extends BaseService
 
         $this->contact->deleteEverything();
 
-        $this->contact->delete();
-
         return true;
     }
 
