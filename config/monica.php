@@ -212,4 +212,30 @@ return [
     |
      */
     'max_storage_size' => env('DEFAULT_MAX_STORAGE_SIZE', 512),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable geolocation service.
+    |--------------------------------------------------------------------------
+    |
+    | For some features, we need to translate addresses to latitude/longitude
+    | coordinates. Like getting weather, for instance.
+    | If you do enable geolocation, you also need to provide a geolocation
+    | api key as shown below.
+    |
+     */
+    'enable_geolocation' => env('ENABLE_GEOLOCATION', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | API key for geolocation service.
+    |--------------------------------------------------------------------------
+    |
+    | We use LocationIQ (https://locationiq.com/) to translate addresses to
+    | latitude/longitude coordinates. We could use Google instead but we don't
+    | want to give anything to Google, ever.
+    | LocationIQ offers 10,000 free requests per day.
+    |
+     */
+    'location_iq_api_key' => env('LOCATION_IQ_API_KEY', null),
 ];
