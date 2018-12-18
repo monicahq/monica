@@ -43,6 +43,10 @@ class CreateContact extends BaseService
 
         $this->generateUUID();
 
+        $this->contact->setAvatarColor();
+
+        $this->contact->save();
+
         return $this->contact;
     }
 

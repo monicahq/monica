@@ -81,6 +81,8 @@ class UpdateContact extends BaseService
 
         $this->updateDeceasedInformation($data);
 
+        $this->contact->updateGravatar();
+
         return $this->contact;
     }
 
