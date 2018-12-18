@@ -12,6 +12,8 @@ use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\UpdateContact;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
