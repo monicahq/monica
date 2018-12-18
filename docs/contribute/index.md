@@ -12,6 +12,7 @@
     - [Setup](#setup)
     - [Run the test suite](#run-the-test-suite)
     - [Run browser tests](#run-browser-tests)
+    - [Mocking HTTP calls](#mocking-http-calls)
 - [Coding guidelines](#coding-guidelines)
     - [Feature branch](#feature-branch)
     - [Conventional commits](#conventional-commits)
@@ -154,6 +155,42 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 ```
 * Then you can run the test suite:
 `php artisan dusk`
+
+<a id="markdown-mocking-http-calls" name="mocking-http-calls"></a>
+### Mocking HTTP calls
+
+You should never make real HTTP calls in your unit tests - like querying an external API that is not linked to Monica.
+
+You can mock http calls with PHP VCR.
+
+In your test files, the first time you access an external API, you need to add this to your test:
+
+```
+\VCR\VCR::turnOn();
+\VCR\VCR::insertCassette('name_of_your_test.yml');
+```
+
+and add this at the end of the file:
+
+```
+\VCR\VCR::eject();
+\VCR\VCR::turnOff();
+```
+
+Run the test. PHP VCR will record the call and its response into a yml file. The .yml file is stored in `tests/fixtures`.
+
+Remember to remove any API key from the yml file that what used to make the call in the first place before commiting.
+
+If you are satisfied with the call and the response, replace the code above by:
+
+```
+\VCR\VCR::turnOn();
+\VCR\VCR::configure()->setMode('none');
+\VCR\VCR::configure()->enableRequestMatchers(array('method', 'url'));
+\VCR\VCR::insertCassette('name_of_your_test.yml');
+```
+
+This will make sure that when the test run again, it will query the yml file to get the response and not make the real call.
 
 <a id="markdown-coding-guidelines" name="coding-guidelines"></a>
 ## Coding guidelines

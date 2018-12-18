@@ -207,6 +207,17 @@ $factory->define(App\Models\Account\Invitation::class, function (Faker\Generator
 $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'country' => 'US',
+        'name' => 'default',
+        'street' => '12',
+        'city' => 'beverly hills',
+        'province' => null,
+        'postal_code' => '90210',
     ];
 });
 
