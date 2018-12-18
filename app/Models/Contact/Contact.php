@@ -1467,14 +1467,14 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $relatedContact = Relationship::where('account_id', $this->account_id)
-            ->where('contact_is', $this->id)
-            ->first();
+        $account = $this;
 
-        if ($relatedContact) {
-            return self::where('account_id', $this->account_id)
-                ->find($relatedContact->of_contact);
-        }
+        return self::setEagerLoads([])->where('account_id', $this->account_id)
+            ->where('id', function ($query) use ($account) {
+                $query->select('of_contact')->from('relationships')->where('account_id', $account->account_id)
+                    ->where('contact_is', $account->id);
+            })
+            ->first();
     }
 
     /**
