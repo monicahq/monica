@@ -4,12 +4,11 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Contact\Message;
 use App\Models\Contact\Contact;
 use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Contact\Contact\DestroyContact;
 
 class DestroyContactTest extends TestCase
 {

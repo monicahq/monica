@@ -14,8 +14,8 @@ use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
 use App\Services\Contact\Contact\DestroyContact;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
 {

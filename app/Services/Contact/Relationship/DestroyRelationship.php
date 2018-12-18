@@ -3,7 +3,6 @@
 namespace App\Services\Contact\Relationship;
 
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 
 class DestroyRelationship extends BaseService
