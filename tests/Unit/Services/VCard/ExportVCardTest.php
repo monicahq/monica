@@ -239,6 +239,8 @@ class ExportVCardTest extends TestCase
             'street' => '123 st',
             'city' => 'Montreal',
             'province' => 'Quebec',
+            'postal_code' => '',
+            'country' => '',
             'account_id' => $account->id,
         ]);
 
@@ -248,6 +250,8 @@ class ExportVCardTest extends TestCase
             'street' => '823 st',
             'city' => 'Montreal',
             'province' => 'Quebec',
+            'postal_code' => '',
+            'country' => '',
             'account_id' => $account->id,
         ]);
 
@@ -300,6 +304,8 @@ END:VCARD", $vCard);
             'street' => '123 st',
             'city' => 'Montreal',
             'province' => 'Quebec',
+            'postal_code' => '',
+            'country' => '',
             'account_id' => $account->id,
         ]);
 
@@ -309,6 +315,8 @@ END:VCARD", $vCard);
             'street' => '823 st',
             'city' => 'Montreal',
             'province' => 'Quebec',
+            'postal_code' => '',
+            'country' => '',
             'account_id' => $account->id,
         ]);
 
