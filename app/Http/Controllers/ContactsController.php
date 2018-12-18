@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
@@ -11,10 +10,8 @@ use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
