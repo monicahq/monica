@@ -7,7 +7,6 @@ use App\Models\Contact\Address;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Geolocalization\GetGPSCoordinateFromAddress;
-use Illuminate\Support\Facades\Log;
 
 class GetGPSCoordinateFromAddressTest extends TestCase
 {
