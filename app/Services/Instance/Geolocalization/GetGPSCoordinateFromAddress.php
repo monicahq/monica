@@ -47,7 +47,7 @@ class GetGPSCoordinateFromAddress extends BaseService
      */
     private function getQuery(Address $address)
     {
-        if (!config('monica.enable_geolocation')) {
+        if (! config('monica.enable_geolocation')) {
             return;
         }
 
