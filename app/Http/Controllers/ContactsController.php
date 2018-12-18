@@ -15,6 +15,7 @@ use Barryvdh\Debugbar\Facade as Debugbar;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Services\Contact\Contact\DestroyContact;
 
 class ContactsController extends Controller
 {
@@ -342,7 +343,7 @@ class ContactsController extends Controller
     }
 
     /**
-     * Delete the specified resource.
+     * Delete the contact.
      *
      * @param Request $request
      * @param Contact $contact
@@ -354,14 +355,12 @@ class ContactsController extends Controller
             return redirect()->route('people.index');
         }
 
-        Relationship::where('account_id', auth()->user()->account_id)
-            ->where('contact_is', $contact->id)
-            ->delete();
-        Relationship::where('account_id', auth()->user()->account_id)
-            ->where('of_contact', $contact->id)
-            ->delete();
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+        ];
 
-        $contact->deleteEverything();
+        (new DestroyContact)->execute($data);
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));
