@@ -98,6 +98,7 @@ class UpdateDeceasedInformation extends BaseService
      *
      * @param array  $data
      * @param SpecialDate $specialDate
+     * @return void
      */
     private function setReminder(array $data, SpecialDate $specialDate)
     {

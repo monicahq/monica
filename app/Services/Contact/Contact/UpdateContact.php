@@ -63,13 +63,17 @@ class UpdateContact extends BaseService
                 'birthdate_is_age_based',
                 'birthdate_age',
                 'birthdate_add_reminder',
+                'is_deceased',
+                'is_deceased_date_known',
+                'deceased_date_day',
+                'deceased_date_month',
+                'deceased_date_year',
+                'deceased_date_add_reminder',
             ]
         );
 
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
-
-        $oldName = $this->contact->name;
 
         $this->contact->update($dataOnly);
 

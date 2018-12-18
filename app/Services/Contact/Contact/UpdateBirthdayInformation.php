@@ -54,7 +54,7 @@ class UpdateBirthdayInformation extends BaseService
      * Update birthday information depending on the type of information.
      *
      * @param array $data
-     * @return SpecialDate|null
+     * @return void|null
      */
     private function manageBirthday(array $data)
     {
@@ -62,17 +62,13 @@ class UpdateBirthdayInformation extends BaseService
             return;
         }
 
-        $specialDate = new SpecialDate;
-
         if ($data['is_age_based'] == true) {
-            $specialDate = $this->approximate($data);
+            $this->approximate($data);
         }
 
         if ($data['is_age_based'] == false) {
-            $specialDate = $this->exact($data);
+            $this->exact($data);
         }
-
-        return $specialDate;
     }
 
     /**
@@ -80,17 +76,18 @@ class UpdateBirthdayInformation extends BaseService
      * on the estimated age of the contact.
      *
      * @param array $data
+     * @return void
      */
     private function approximate(array $data)
     {
-        return $this->contact->setSpecialDateFromAge('birthdate', $data['age']);
+        $this->contact->setSpecialDateFromAge('birthdate', $data['age']);
     }
 
     /**
      * Case where we have a year, month and day for the birthday.
      *
      * @param  array  $data
-     * @return SpecialDate
+     * @return void
      */
     private function exact(array $data)
     {
@@ -102,8 +99,6 @@ class UpdateBirthdayInformation extends BaseService
         );
 
         $this->setReminder($data, $specialDate);
-
-        return $specialDate;
     }
 
     /**
@@ -111,6 +106,7 @@ class UpdateBirthdayInformation extends BaseService
      *
      * @param array  $data
      * @param SpecialDate $specialDate
+     * @return void
      */
     private function setReminder(array $data, SpecialDate $specialDate)
     {
