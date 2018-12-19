@@ -363,8 +363,8 @@ return [
     'contact_address_form_province' => 'מחוז (רשות)',
     'contact_address_form_postal_code' => 'מיקוד (רשות)',
     'contact_address_form_country' => 'ארץ (רשות)',
-    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
-    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
+    'contact_address_form_latitude' => 'רוחב (מספרים בלבד) (רשות)',
+    'contact_address_form_longitude' => 'אורך (מספרים בלבד) (רשות)',
 
     // Pets
     'pets_kind' => 'סוג חיית מחמד',
@@ -456,12 +456,12 @@ return [
     'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
 
     // Photos
-    'photo_list_title' => 'Related photos',
-    'photo_list_cta' => 'Upload photo',
-    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
-    'photo_upload_zone_cta' => 'Upload a photo',
-    'photo_delete' => 'Delete photo',
+    'photo_list_title' => 'תמונות קשורות',
+    'photo_list_cta' => 'העלאת תמונה',
+    'photo_list_blank_desc' => 'ניתן לאחסן תמונות של איש הקשר הזה. אפילו ממש ברגע זה!',
+    'photo_upload_zone_cta' => 'העלאת תמונה',
+    'photo_delete' => 'מחיקת תמונה',
 
     // emotions
-    'emotion_this_made_me_feel' => 'This made you feel…',
+    'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
 ];
