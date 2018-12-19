@@ -3,15 +3,12 @@
 namespace Tests\Unit\Services\Account\Place;
 
 use Tests\TestCase;
-
 use App\Models\Account\Place;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
-use App\Models\Instance\Emotion\Emotion;
 use App\Services\Account\Place\DestroyPlace;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyPlaceTest extends TestCase
 {

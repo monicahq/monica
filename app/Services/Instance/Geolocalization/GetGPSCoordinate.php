@@ -2,8 +2,8 @@
 
 namespace App\Services\Instance\Geolocalization;
 
-use App\Services\BaseService;
 use App\Models\Account\Place;
+use App\Services\BaseService;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 

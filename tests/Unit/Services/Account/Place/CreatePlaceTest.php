@@ -2,17 +2,12 @@
 
 namespace Tests\Unit\Services\Account\Place;
 
-use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Call;
 use App\Models\Account\Place;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Instance\Emotion\Emotion;
 use App\Services\Account\Place\CreatePlace;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreatePlaceTest extends TestCase
 {

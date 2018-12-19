@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\Account;
 
-use App\Models\Account\Place;
 use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
+use App\Models\Account\Place;
 use Illuminate\Database\QueryException;
+use App\Http\Controllers\Api\ApiController;
 use App\Services\Account\Place\CreatePlace;
 use App\Services\Account\Place\UpdatePlace;
 use App\Services\Account\Place\DestroyPlace;
-use App\Http\Controllers\Api\ApiController;
 use App\Exceptions\MissingParameterException;
 use App\Http\Resources\Place\Place as PlaceResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -130,6 +129,6 @@ class ApiPlaceController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$placeId);
+        return $this->respondObjectDeleted((int) $placeId);
     }
 }

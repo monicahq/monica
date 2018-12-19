@@ -2,12 +2,9 @@
 
 namespace Tests\Unit\Services\Account\Place;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Place;
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
-use App\Models\Instance\Emotion\Emotion;
 use App\Services\Account\Place\UpdatePlace;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

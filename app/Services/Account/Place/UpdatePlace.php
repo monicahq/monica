@@ -3,7 +3,6 @@
 namespace App\Services\Account\Place;
 
 use App\Models\Account\Place;
-use App\Models\Account\Account;
 use App\Services\BaseService;
 
 class UpdatePlace extends BaseService

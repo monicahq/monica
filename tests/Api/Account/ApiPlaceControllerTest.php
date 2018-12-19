@@ -3,10 +3,8 @@
 namespace Tests\Api\Account;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\Call;
-use App\Models\Account\Account;
 use App\Models\Account\Place;
-use App\Models\Contact\Contact;
+use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiPlaceControllerTest extends ApiTestCase
@@ -81,7 +79,7 @@ class ApiPlaceControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('get', '/api/places/' . $place->id);
+        $response = $this->json('get', '/api/places/'.$place->id);
 
         $response->assertstatus(200);
         $response->assertjsonstructure([
@@ -138,7 +136,7 @@ class ApiPlaceControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('put', '/api/places/' . $place->id, [
+        $response = $this->json('put', '/api/places/'.$place->id, [
             'city' => 'New York',
         ]);
 
@@ -174,7 +172,7 @@ class ApiPlaceControllerTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('put', '/api/places/' . $place->id, [
+        $response = $this->json('put', '/api/places/'.$place->id, [
             'city' => 'New York',
         ]);
 
@@ -189,7 +187,7 @@ class ApiPlaceControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('delete', '/api/places/' . $place->id);
+        $response = $this->json('delete', '/api/places/'.$place->id);
 
         $response->assertstatus(200);
 

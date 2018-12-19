@@ -3,9 +3,8 @@
 namespace App\Models\Account;
 
 use App\Models\Contact\Contact;
-use App\Models\ModelBinding as Model;
-use Illuminate\Support\Facades\Storage;
 use App\Helpers\CountriesHelper;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -48,24 +47,24 @@ class Place extends Model
     {
         $address = '';
 
-        if (!is_null($this->street)) {
+        if (! is_null($this->street)) {
             $address = $this->street;
         }
 
-        if (!is_null($this->city)) {
-            $address .= ' ' . $this->city;
+        if (! is_null($this->city)) {
+            $address .= ' '.$this->city;
         }
 
-        if (!is_null($this->province)) {
-            $address .= ' ' . $this->province;
+        if (! is_null($this->province)) {
+            $address .= ' '.$this->province;
         }
 
-        if (!is_null($this->postal_code)) {
-            $address .= ' ' . $this->postal_code;
+        if (! is_null($this->postal_code)) {
+            $address .= ' '.$this->postal_code;
         }
 
-        if (!is_null($this->country)) {
-            $address .= ' ' . $this->getCountryName();
+        if (! is_null($this->country)) {
+            $address .= ' '.$this->getCountryName();
         }
 
         if (is_null($address)) {
@@ -110,6 +109,6 @@ class Place extends Model
      */
     public function getGoogleMapsAddressWithLatitude()
     {
-        return 'http://maps.google.com/maps?q=' . $this->latitude . ',' . +$this->longitude;
+        return 'http://maps.google.com/maps?q='.$this->latitude.','.+$this->longitude;
     }
 }

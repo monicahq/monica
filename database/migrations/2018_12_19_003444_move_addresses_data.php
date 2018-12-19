@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\Account\Place;
+use App\Models\Contact\Address;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Contact\Address;
-use App\Models\Account\Place;
 
 class MoveAddressesData extends Migration
 {

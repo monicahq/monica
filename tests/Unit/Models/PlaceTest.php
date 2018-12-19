@@ -4,8 +4,6 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Account\Place;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PlaceTest extends TestCase
@@ -41,7 +39,7 @@ class PlaceTest extends TestCase
         $place = factory(Place::class)->create([]);
 
         $this->assertEquals(
-            'https://www.google.com/maps/place/' . urlencode($place->getAddressAsString()),
+            'https://www.google.com/maps/place/'.urlencode($place->getAddressAsString()),
             $place->getGoogleMapAddress()
         );
     }
