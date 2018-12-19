@@ -10,6 +10,9 @@ module.exports = {
         "ecmaVersion": 2017,
         "sourceType": "module"
     },
+    "plugins": [
+        "vue",
+    ],
     "rules": {
         "indent": [
             "error",
@@ -49,6 +52,21 @@ module.exports = {
               "skipBlankLines": true
           }
         ],
-        "vue/no-unused-components" : "off"
+        "vue/no-unused-components" : "off",
+        "vue/html-end-tags" : "error",
+        "vue/max-attributes-per-line": [
+            "error",
+            {
+                "singleline": 5,
+                "multiline": {
+                    "max": 5,
+                    "allowFirstLine": true
+                }
+            }
+        ],
+        "vue/component-name-in-template-casing": [
+            "error",
+            "kebab-case"
+        ]
     }
 };
