@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Weather;
+namespace Tests\Unit\Services\Instance\Weather;
 
 use Tests\TestCase;
 use App\Models\Account\Weather;

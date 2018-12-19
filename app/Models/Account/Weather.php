@@ -3,6 +3,8 @@
 namespace App\Models\Account;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Contact\Contact;
+use App\Models\Account\Account;
 
 class Weather extends Model
 {
@@ -25,6 +27,33 @@ class Weather extends Model
     protected $casts = [
         'weather_json' => 'array',
     ];
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = ['id'];
+
+    /**
+     * Get the account record associated with the weather data.
+     *
+     * @return BelongsTo
+     */
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the contact record associated with the weather data.
+     *
+     * @return Contact
+     */
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
+    }
 
     /**
      * Get the temperature attribute.

@@ -27,6 +27,7 @@ use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use App\Models\Account\Weather;
 
 class ContactTest extends FeatureTestCase
 {
@@ -130,6 +131,17 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->lifeEvents()->exists());
+    }
+
+    public function test_it_has_many_weathers()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $weather = factory(Weather::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($contact->weathers()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()

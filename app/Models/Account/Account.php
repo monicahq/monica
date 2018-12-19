@@ -19,6 +19,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
+use App\Models\Account\Weather;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\DB;
@@ -425,6 +426,16 @@ class Account extends Model
     public function photos()
     {
         return $this->hasMany(Photo::class);
+    }
+
+    /**
+     * Get the Weather records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function weathers()
+    {
+        return $this->hasMany(Weather::class);
     }
 
     /**

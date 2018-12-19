@@ -27,6 +27,7 @@ use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Account\Weather;
 
 class AccountTest extends FeatureTestCase
 {
@@ -195,6 +196,16 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->photos()->exists());
+    }
+
+    public function test_it_has_many_weathers()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $weather = factory(Weather::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($contact->account->weathers()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()

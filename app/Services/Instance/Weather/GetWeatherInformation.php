@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Weather;
+namespace App\Services\Instance\Weather;
 
 use App\Services\BaseService;
 use App\Models\Account\Weather;
@@ -16,6 +16,8 @@ class GetWeatherInformation extends BaseService
     public function rules()
     {
         return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer|exists:contacts,id',
             'latitude' => 'required|string',
             'longitude' => 'required|string',
         ];
