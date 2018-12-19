@@ -153,7 +153,7 @@ class ApiPlaceControllerTest extends ApiTestCase
         $this->assertequals($place->id, $placeId);
 
         $response->assertjsonfragment([
-            'object' => 'call',
+            'object' => 'place',
             'id' => $placeId,
         ]);
 
@@ -165,86 +165,48 @@ class ApiPlaceControllerTest extends ApiTestCase
         ]);
     }
 
-    // public function test_updating_call_generates_an_error()
-    // {
-    //     $user = $this->signin();
-    //     $place = factory(Place::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
+    public function test_it_cant_update_a_place_if_account_is_not_linked_to_place()
+    {
+        $user = $this->signin();
 
-    //     $response = $this->json('put', '/api/places/' . $place->id, [
-    //         'contact_id' => $place->contact_id,
-    //     ]);
+        $account = factory(Account::class)->create([]);
+        $place = factory(Place::class)->create([
+            'account_id' => $account->id,
+        ]);
 
-    //     $this->expectinvalidparameter($response, [
-    //         'the called at field is required.',
-    //     ]);
-    // }
+        $response = $this->json('put', '/api/places/' . $place->id, [
+            'city' => 'New York',
+        ]);
 
-    // public function test_it_cant_update_a_call_if_account_is_not_linked_to_call()
-    // {
-    //     $user = $this->signin();
+        $this->expectnotfound($response);
+    }
 
-    //     $contact = factory(contact::class)->create([]);
-    //     $place = factory(Place::class)->create([
-    //         'account_id' => $contact->account->id,
-    //
-    //     ]);
+    public function test_it_deletes_a_place()
+    {
+        $user = $this->signin();
 
-    //     $response = $this->json('put', '/api/places/' . $place->id, [
-    //         'city' => 'New York',
-    //         'called_at' => '2018-05-01',
-    //     ]);
+        $place = factory(Place::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-    //     $this->expectnotfound($response);
-    // }
+        $response = $this->json('delete', '/api/places/' . $place->id);
 
-    // public function test_it_deletes_a_call()
-    // {
-    //     $user = $this->signin();
-    //     $contact = factory(contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $place = factory(Place::class)->create([
-    //         'account_id' => $user->account->id,
-    //
-    //     ]);
-    //     $this->assertdatabasehas('places', [
-    //         'account_id' => $user->account->id,
-    //
-    //         'id' => $place->id,
-    //     ]);
+        $response->assertstatus(200);
 
-    //     $response = $this->json('delete', '/api/places/' . $place->id);
+        $this->assertdatabasemissing('places', [
+            'account_id' => $user->account->id,
+            'id' => $place->id,
+        ]);
+    }
 
-    //     $response->assertstatus(200);
-    //     $this->assertdatabasemissing('places', [
-    //         'account_id' => $user->account->id,
-    //
-    //         'id' => $place->id,
-    //     ]);
-    // }
+    public function test_it_cant_delete_a_place_if_place_doesnt_exist()
+    {
+        $user = $this->signin();
 
-    // public function test_it_cant_delete_a_call_if_call_doesnt_exist()
-    // {
-    //     $user = $this->signin();
+        $response = $this->json('delete', '/api/places/0');
 
-    //     $response = $this->json('delete', '/api/places/0');
-
-    //     $this->expectnotfound($response);
-    // }
-
-    // public function test_it_cant_delete_a_call_if_account_is_not_linked()
-    // {
-    //     $user = $this->signin();
-    //     $contact = factory(contact::class)->create([]);
-    //     $place = factory(Place::class)->create([
-    //         'account_id' => $contact->account->id,
-    //
-    //     ]);
-
-    //     $response = $this->json('delete', '/api/places/' . $place->id);
-
-    //     $this->expectnotfound($response);
-    // }
+        $this->expectInvalidParameter($response, [
+            'The selected place id is invalid.',
+        ]);
+    }
 }
