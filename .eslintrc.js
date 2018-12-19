@@ -14,6 +14,10 @@ module.exports = {
         "vue",
     ],
     "rules": {
+        "array-bracket-spacing": [
+            "error",
+            "never"
+        ],
         "indent": [
             "error",
             4
@@ -21,6 +25,13 @@ module.exports = {
         "linebreak-style": [
             "error",
             "unix"
+        ],
+        "no-trailing-spaces": [
+            "error",
+            {
+                "ignoreComments": true,
+                "skipBlankLines": true
+            }
         ],
         "quotes": [
             "error",
@@ -31,30 +42,37 @@ module.exports = {
             "always"
         ],
         "semi-spacing": [
-          "error",
-          {
-              "after": true,
-              "before": false
-          }
+            "error",
+            {
+                "after": true,
+                "before": false
+            }
         ],
         "semi-style": [
-          "error",
-          "last"
+            "error",
+            "last"
         ],
-        "array-bracket-spacing": [
-          "error",
-          "never"
-        ],
-        "no-trailing-spaces": [
-          "error",
-          {
-              "ignoreComments": true,
-              "skipBlankLines": true
-          }
-        ],
+
+        // essential
         "vue/no-unused-components" : "off",
+
+        // recommended
+        "vue/component-name-in-template-casing": [
+            "error",
+            "kebab-case"
+        ],
         "vue/html-end-tags" : "error",
+        "vue/html-self-closing": [
+            "error",
+            {
+                "html": {
+                    "normal": "never",
+                    "void": "always"
+                }
+            }
+        ],
         "vue/max-attributes-per-line": [
+            // https://vuejs.org/v2/style-guide/#Multi-attribute-elements-strongly-recommended
             "error",
             {
                 "singleline": 5,
@@ -64,9 +82,5 @@ module.exports = {
                 }
             }
         ],
-        "vue/component-name-in-template-casing": [
-            "error",
-            "kebab-case"
-        ]
     }
 };
