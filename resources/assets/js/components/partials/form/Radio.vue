@@ -4,54 +4,54 @@
 <template>
   <div>
     <p-radio :name="name" class="p-default p-round p-thick" color="primary-o">
-        {{ label }}
+      {{ label }}
     </p-radio>
   </div>
 </template>
 
 <script>
-    export default {
-        /*
+export default {
+
+    props: {
+        name: {
+            type: String,
+        },
+        label: {
+            type: String,
+        }
+    },
+    /*
          * The component's data.
          */
-        data() {
-            return {
-            };
-        },
+    data() {
+        return {
+        };
+    },
 
-        /**
+    /**
          * Prepare the component (Vue 1.x).
          */
-        ready() {
-            this.prepareComponent();
-        },
+    ready() {
+        this.prepareComponent();
+    },
 
-        /**
+    /**
          * Prepare the component (Vue 2.x).
          */
-        mounted() {
-            this.prepareComponent();
-        },
+    mounted() {
+        this.prepareComponent();
+    },
 
-        props: {
-            name: {
-                type: String,
-            },
-            label: {
-                type: String,
-            }
-        },
-
-        methods: {
-            /**
+    methods: {
+        /**
              * Prepare the component.
              */
-            prepareComponent() {
-            },
+        prepareComponent() {
+        },
 
-            updateInput(text) {
-                //this.$emit('input', text)
-            }
+        updateInput(text) {
+            //this.$emit('input', text)
         }
     }
+};
 </script>

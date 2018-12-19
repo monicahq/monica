@@ -12,63 +12,79 @@ select:focus {
 
 <template>
   <div>
-    <label :for="id" class="mb2" :class="{ b: required }" v-if="title">{{ title }}</label>
+    <label v-if="title" :for="id" class="mb2" :class="{ b: required }">
+      {{ title }}
+    </label>
     <select
-        :value="selectedOption"
-        @input="event => { $emit('input', event.target.value) }"
-        :id="id"
-        :name="id"
-        required
-        :class="formClass != null ? formClass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'">
-        <option v-for="option in options" :key="option.id" :value="option.id" v-if="option.id != excludedId">{{ option.name }}</option>
+      :id="id"
+      :value="selectedOption"
+      :name="id"
+      required
+      :class="formClass != null ? formClass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'"
+      @input="event => { $emit('input', event.target.value) }"
+    >
+      <option v-for="option in filterExclude(options)" :key="option.id" :value="option.id">
+        {{ option.name }}
+      </option>
     </select>
   </div>
 </template>
 
 <script>
-    export default {
-        /*
+export default {
+
+    props: {
+        value: null,
+        options: {
+            type: Array,
+        },
+        title: {
+            type: String,
+        },
+        id: {
+            type: String,
+        },
+        excludedId: {
+            type: String,
+        },
+        required: {
+            type: Boolean,
+        },
+        formClass: {
+            type: String,
+        },
+    },
+    /*
          * The component's data.
          */
-        data() {
-            return {
-                selectedOption: null,
-            };
-        },
+    data() {
+        return {
+            selectedOption: null,
+        };
+    },
 
-        /**
-         * Prepare the component (Vue 2.x).
-         */
-        mounted() {
-             this.selectedOption = this.value
-        },
-
-        props: {
-            value: null,
-            options: {
-                type: Array,
-            },
-            title: {
-                type: String,
-            },
-            id: {
-                type: String,
-            },
-            excludedId: {
-                type: String,
-            },
-            required: {
-              type: Boolean,
-            },
-            formClass: {
-                type: String,
-            },
-        },
-
-        watch: {
-            value: function (newValue) {
-                this.selectedOption = newValue
-            }
+    watch: {
+        value: function (newValue) {
+            this.selectedOption = newValue;
         }
-    }
+    },
+
+    /**
+     * Prepare the component (Vue 2.x).
+     */
+    mounted() {
+        this.selectedOption = this.value;
+    },
+
+    methods: {
+        /**
+         * Filter options
+         */
+        filterExclude: function (options) {
+            return options.filter(function (option) {
+                return option.id != excludedId;
+            });
+        },
+    },
+};
 </script>

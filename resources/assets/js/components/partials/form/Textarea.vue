@@ -11,78 +11,81 @@ textarea:focus {
 
 <template>
   <div>
-    <p class="mb2" :class="{ b: required }" v-if="! noLabel">{{ label }}</p>
+    <p v-if="! noLabel" class="mb2" :class="{ b: required }">
+      {{ label }}
+    </p>
     <textarea
-            v-model="buffer"
-            @input="$emit('contentChange', buffer)"
-            autofocus
-            :required="required"
-            :name="id"
-            :placeholder="placeholder"
-            :id="id"
-            :rows="rows"
-            class="br2 f5 w-100 ba b--black-40 pa2 outline-0" :style="'width:' + width + 'px'">{{ buffer }}</textarea>
+      :id="id"
+      v-model="buffer"
+      autofocus
+      :required="required"
+      :name="id"
+      :placeholder="placeholder"
+      :rows="rows"
+      class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
+      :style="'width:' + width + 'px'" @input="$emit('contentChange', buffer)"
+    ></textarea>
   </div>
 </template>
 
 <script>
-    export default {
-        /*
+export default {
+
+    props: {
+        value: {
+            type: String,
+        },
+        label: {
+            type: String,
+        },
+        id: {
+            type: String,
+        },
+        placeholder: {
+            type: String,
+        },
+        required: {
+            type: Boolean,
+        },
+        noLabel: {
+            type: Boolean,
+        },
+        width: {
+            type: Number,
+        },
+        rows: {
+            type: Number,
+        }
+    },
+    /*
          * The component's data.
          */
-        data() {
-            return {
-                buffer: this.value
-            };
-        },
+    data() {
+        return {
+            buffer: this.value
+        };
+    },
 
-        /**
+    /**
          * Prepare the component (Vue 1.x).
          */
-        ready() {
-            this.prepareComponent();
-        },
+    ready() {
+        this.prepareComponent();
+    },
 
-        /**
+    /**
          * Prepare the component (Vue 2.x).
          */
-        mounted() {
-            this.prepareComponent();
-        },
+    mounted() {
+        this.prepareComponent();
+    },
 
-        props: {
-            value: {
-                type: String,
-            },
-            label: {
-                type: String,
-            },
-            id: {
-                type: String,
-            },
-            placeholder: {
-                type: String,
-            },
-            required: {
-                type: Boolean,
-            },
-            noLabel: {
-                type: Boolean,
-            },
-            width: {
-              type: Number,
-            },
-            rows: {
-              type: Number,
-            }
-        },
-
-        methods: {
-            /**
+    methods: {
+        /**
              * Prepare the component.
              */
-            prepareComponent() {
-            }
+        prepareComponent() {
         }
     }
+};
 </script>
