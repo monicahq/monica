@@ -4,7 +4,7 @@ namespace App\Http\Resources\Address;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Country\Country as CountryResource;
+use App\Http\Resources\Place\Place as PlaceResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Address extends Resource
@@ -21,13 +21,7 @@ class Address extends Resource
             'id' => $this->id,
             'object' => 'address',
             'name' => $this->name,
-            'street' => $this->street,
-            'city' => $this->city,
-            'province' => $this->province,
-            'postal_code' => $this->postal_code,
-            'latitude' => $this->latitude,
-            'longitude' => $this->longitude,
-            'country' => new CountryResource($this->country),
+            'place' => new PlaceResource($this->place),
             'account' => [
                 'id' => $this->account_id,
             ],

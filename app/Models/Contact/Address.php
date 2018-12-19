@@ -7,6 +7,10 @@ use App\Models\Account\Account;
 use App\Models\ModelBindingWithContact as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/**
+ * An Address is where the contact lives (or lived).
+ * The actual address (street name etc…) is represented with a Place object.
+ */
 class Address extends Model
 {
     /**
