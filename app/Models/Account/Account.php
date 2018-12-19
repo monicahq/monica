@@ -428,6 +428,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Places records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
