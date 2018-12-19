@@ -1,12 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Contact;
 
 use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Call\CreateCall;
+use App\Services\Contact\Call\UpdateCall;
+use App\Services\Contact\Call\DestroyCall;
+use App\Http\Controllers\Api\ApiController;
+use App\Exceptions\MissingParameterException;
 use App\Http\Resources\Call\Call as CallResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -57,25 +61,28 @@ class ApiCallController extends ApiController
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
         try {
-            $call = Call::create(
+            $call = (new CreateCall)->execute(
                 $request->all()
-                + ['account_id' => auth()->user()->account_id]
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                ]
             );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new CallResource($call);
     }
 
     /**
-     * Update the call.
+     * Update a call.
+     *
      * @param  Request $request
      * @param  int $callId
      * @return \Illuminate\Http\Response
@@ -83,79 +90,51 @@ class ApiCallController extends ApiController
     public function update(Request $request, $callId)
     {
         try {
-            $call = Call::where('account_id', auth()->user()->account_id)
-                ->where('id', $callId)
-                ->firstOrFail();
+            $call = (new UpdateCall)->execute(
+                $request->all()
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                    'call_id' => $callId,
+                ]
+            );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        }
-
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
-        try {
-            $call->update($request->all());
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new CallResource($call);
     }
 
     /**
-     * Validate the request for update.
+     * Delete a call.
      *
-     * @param  Request $request
-     * @return mixed
-     */
-    private function validateUpdate(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'content' => 'required|max:100000',
-            'called_at' => 'required|date',
-            'contact_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return true;
-    }
-
-    /**
-     * Delete a note.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $callId)
     {
         try {
-            $call = Call::where('account_id', auth()->user()->account_id)
-                ->where('id', $callId)
-                ->firstOrFail();
+            (new DestroyCall)->execute([
+                'account_id' => auth()->user()->account->id,
+                'call_id' => $callId,
+            ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
         }
 
-        $call->delete();
-
-        return $this->respondObjectDeleted($call->id);
+        return $this->respondObjectDeleted((int) $callId);
     }
 
     /**
-     * Get the list of calls for the given contact.
+     * Get the list of calls for a given contact.
      *
      * @return \Illuminate\Http\Response
      */

@@ -37,6 +37,7 @@ class SettingsController
         'cache',
         'countries',
         'currencies',
+        'contact_photo',
         'default_activity_types',
         'default_activity_type_categories',
         'default_contact_field_types',
@@ -45,6 +46,9 @@ class SettingsController
         'default_life_event_types',
         'default_relationship_type_groups',
         'default_relationship_types',
+        'emotions',
+        'emotions_primary',
+        'emotions_secondary',
         'failed_jobs',
         'instances',
         'jobs',
@@ -501,7 +505,7 @@ class SettingsController
      */
     public function updateDefaultProfileView(Request $request)
     {
-        $allowedValues = ['life-events', 'notes'];
+        $allowedValues = ['life-events', 'notes', 'photos'];
         $view = $request->get('name');
 
         if (! in_array($view, $allowedValues)) {

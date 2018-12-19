@@ -4,6 +4,7 @@ namespace App\Http\Resources\Call;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Call extends Resource
@@ -21,6 +22,8 @@ class Call extends Resource
             'object' => 'call',
             'called_at' => DateHelper::getTimestamp($this->called_at),
             'content' => $this->content,
+            'contact_called' => $this->contact_called,
+            'emotions' => EmotionResource::collection($this->emotions),
             'account' => [
                 'id' => $this->account->id,
             ],

@@ -6,6 +6,7 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
+use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
@@ -367,6 +368,16 @@ class Contact extends Model
     public function documents()
     {
         return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Get the Photo records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function photos()
+    {
+        return $this->belongsToMany(Photo::class)->withTimestamps();
     }
 
     /**
@@ -1142,24 +1153,6 @@ class Contact extends Model
     }
 
     /**
-     * Update the last called info on the contact, if the call has been made
-     * in the most recent date.
-     *
-     * @param  Call   $call
-     * @return void
-     */
-    public function updateLastCalledInfo(Call $call)
-    {
-        if (is_null($this->last_talked_to)) {
-            $this->last_talked_to = $call->called_at;
-        } else {
-            $this->last_talked_to = $this->last_talked_to->max($call->called_at);
-        }
-
-        $this->save();
-    }
-
-    /**
      * Set a relationship between two contacts.
      *
      * @param Contact $otherContact
@@ -1474,14 +1467,14 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $relatedContact = Relationship::where('account_id', $this->account_id)
-            ->where('contact_is', $this->id)
-            ->first();
+        $account = $this;
 
-        if ($relatedContact) {
-            return self::where('account_id', $this->account_id)
-                ->find($relatedContact->of_contact);
-        }
+        return self::setEagerLoads([])->where('account_id', $this->account_id)
+            ->where('id', function ($query) use ($account) {
+                $query->select('of_contact')->from('relationships')->where('account_id', $account->account_id)
+                    ->where('contact_is', $account->id);
+            })
+            ->first();
     }
 
     /**

@@ -25,6 +25,7 @@ class AddressesController extends Controller
                 'id' => $address->id,
                 'name' => $address->name,
                 'googleMapAddress' => $address->getGoogleMapAddress(),
+                'googleMapAddressLatitude' => $address->getGoogleMapsAddressWithLatitude(),
                 'address' => $address->getFullAddress(),
                 'country' => $address->country,
                 'country_name' => $address->country_name,
@@ -32,6 +33,8 @@ class AddressesController extends Controller
                 'city' => $address->city,
                 'province' => $address->province,
                 'postal_code' => $address->postal_code,
+                'latitude' => $address->latitude,
+                'longitude' => $address->longitude,
                 'edit' => false,
             ];
             $contactAddresses->push($data);
@@ -67,6 +70,8 @@ class AddressesController extends Controller
             'city' => ($request->get('city') == '' ? null : $request->get('city')),
             'province' => ($request->get('province') == '' ? null : $request->get('province')),
             'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
+            'latitude' => ($request->get('latitude') == '' ? null : str_replace(',', '.', $request->get('latitude'))),
+            'longitude' => ($request->get('longitude') == '' ? null : str_replace(',', '.', $request->get('longitude'))),
         ]);
     }
 
@@ -82,6 +87,8 @@ class AddressesController extends Controller
             'city' => ($request->get('city') == '' ? null : $request->get('city')),
             'province' => ($request->get('province') == '' ? null : $request->get('province')),
             'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
+            'latitude' => ($request->get('latitude') == '' ? null : str_replace(',', '.', $request->get('latitude'))),
+            'longitude' => ($request->get('longitude') == '' ? null : str_replace(',', '.', $request->get('longitude'))),
         ]);
 
         return $address;
