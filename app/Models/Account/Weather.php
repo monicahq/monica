@@ -2,9 +2,8 @@
 
 namespace App\Models\Account;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\Contact;
-use App\Models\Account\Account;
+use Illuminate\Database\Eloquent\Model;
 
 class Weather extends Model
 {

@@ -9,6 +9,7 @@ use App\Models\Contact\Debt;
 use App\Models\Account\Photo;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Account\Weather;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
@@ -27,7 +28,6 @@ use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
-use App\Models\Account\Weather;
 
 class ContactTest extends FeatureTestCase
 {

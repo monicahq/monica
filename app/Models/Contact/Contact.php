@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
+use App\Models\Account\Weather;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
@@ -29,7 +30,6 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
-use App\Models\Account\Weather;
 
 class Contact extends Model
 {
