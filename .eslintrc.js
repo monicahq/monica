@@ -56,7 +56,7 @@ module.exports = {
         // essential
         "vue/no-unused-components" : "off",
 
-        // recommended
+        // strongly recommended
         "vue/component-name-in-template-casing": [
             "error",
             "kebab-case"
