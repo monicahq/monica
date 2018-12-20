@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Address;
 
 use App\Services\BaseService;
+use App\Models\Account\Place;
 use App\Models\Contact\Address;
 use App\Services\Account\Place\UpdatePlace;
 

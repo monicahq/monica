@@ -4,6 +4,7 @@ namespace App\Http\Resources\Address;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Country\Country as CountryResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Address extends Resource

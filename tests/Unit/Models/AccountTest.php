@@ -200,7 +200,7 @@ class AccountTest extends FeatureTestCase
     public function test_it_has_many_places()
     {
         $account = factory(Account::class)->create([]);
-        $places = factory(Places::class)->create([
+        $places = factory(Place::class)->create([
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->places()->exists());
