@@ -27,7 +27,7 @@ class Address extends Resource
             'postal_code' => $this->place->postal_code,
             'latitude' => $this->place->latitude,
             'longitude' => $this->place->longitude,
-            'country' => new CountryResource($this->country),
+            'country' => new CountryResource($this->place->country),
             'account' => [
                 'id' => $this->account_id,
             ],

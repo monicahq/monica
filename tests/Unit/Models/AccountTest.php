@@ -8,6 +8,8 @@ use Tests\FeatureTestCase;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Account\Photo;
+use App\Models\Contact\Address;
+use App\Models\Account\Place;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -204,6 +206,15 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->places()->exists());
+    }
+
+    public function test_it_has_many_addresses()
+    {
+        $account = factory(Account::class)->create([]);
+        $addresses = factory(Address::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->addresses()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()

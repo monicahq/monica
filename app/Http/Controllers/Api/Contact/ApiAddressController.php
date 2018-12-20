@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
@@ -15,6 +16,24 @@ use App\Http\Resources\Address\Address as AddressResource;
 
 class ApiAddressController extends ApiController
 {
+    /**
+     * Get the list of addresses.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        try {
+            $addresses = auth()->user()->account->addresses()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return AddressResource::collection($addresses);
+    }
+
     /**
      * Get the detail of a given address.
      * @param  Request $request

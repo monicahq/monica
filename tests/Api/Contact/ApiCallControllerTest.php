@@ -144,7 +144,7 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_create_a_call()
+    public function test_it_creates_a_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([

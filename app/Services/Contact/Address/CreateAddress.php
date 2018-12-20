@@ -4,6 +4,7 @@ namespace App\Services\Contact\Address;
 
 use App\Services\BaseService;
 use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
 use App\Models\Account\Place;
 use App\Services\Account\Place\CreatePlace;
 
@@ -39,6 +40,9 @@ class CreateAddress extends BaseService
     public function execute(array $data) : Address
     {
         $this->validate($data);
+
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
 
         $place = $this->createPlace($data);
 

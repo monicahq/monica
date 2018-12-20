@@ -9,6 +9,7 @@ use App\Models\Contact\Contact;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Address\CreateAddress;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateAddressTest extends TestCase
 {
@@ -60,6 +61,28 @@ class CreateAddressTest extends TestCase
         ];
 
         $this->expectException(MissingParameterException::class);
+        (new CreateAddress)->execute($request);
+    }
+
+    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create();
+
+        $request = [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'name' => 'work address',
+            'street' => '199 Lafayette Street',
+            'city' => 'New York City',
+            'province' => '',
+            'postal_code' => '',
+            'country' => 'USA',
+            'latitude' => '',
+            'longitude' => '',
+        ];
+
+        $this->expectException(ModelNotFoundException::class);
         (new CreateAddress)->execute($request);
     }
 }
