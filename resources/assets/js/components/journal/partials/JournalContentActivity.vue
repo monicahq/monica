@@ -112,6 +112,7 @@ export default {
     props: {
         journalEntry: {
             type: Object,
+            default: null,
         },
     },
 

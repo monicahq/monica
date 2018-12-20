@@ -38,11 +38,10 @@ export default {
     props: {
         hash: {
             type: String,
+            default: '',
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             conversations: [],
@@ -76,9 +75,6 @@ export default {
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent(hash) {
             axios.get('/people/' + hash + '/conversations')
                 .then(response => {

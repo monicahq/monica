@@ -33,52 +33,31 @@ export default {
     props: {
         value: {
             type: String,
+            default: '',
         },
         title: {
             type: String,
+            default: '',
         },
         id: {
             type: String,
+            default: '',
         },
         required: {
             type: Boolean,
+            default: true,
         },
         inputType: {
             type: String,
+            default: '',
         },
         width: {
             type: Number,
+            default: 0,
         }
-    },
-    /*
-         * The component's data.
-         */
-    data() {
-        return {
-        };
-    },
-
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
-    mounted() {
-        this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
-        prepareComponent() {
-        },
-
         updateInput(text) {
             this.$emit('input', text);
         }

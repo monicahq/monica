@@ -58,12 +58,18 @@
 export default {
 
     props: {
-        participantName: String,
-        existingMessages: Array,
+        participantName: {
+            type: String,
+            default: '',
+        },
+        existingMessages: {
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             messages: [],
@@ -72,24 +78,11 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             if (this.existingMessages) {
                 this.messages = this.existingMessages;

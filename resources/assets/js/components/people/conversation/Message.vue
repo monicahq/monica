@@ -1,18 +1,18 @@
 <style scoped>
-.delete-message-l {
-  top: 9px;
-  right: 16px;
-}
+  .delete-message-l {
+    top: 9px;
+    right: 16px;
+  }
 
-.delete-message-r {
-  top: 9px;
-  left: 16px;
-}
+  .delete-message-r {
+    top: 9px;
+    left: 16px;
+  }
 
-.btn-secondary {
-  font-size: 12px;
-  padding: 4px 10px;
-}
+  .btn-secondary {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
 </style>
 
 <template>
@@ -69,18 +69,40 @@
 export default {
 
     props: {
-        uid: Number,
-        id: String,
-        participantName: String,
-        author: String,
-        placeholder: String,
-        required: Boolean,
-        content: String,
-        displayTrash: Boolean,
+        uid: {
+            type: Number,
+            default: 0,
+        },
+        id: {
+            type: String,
+            default: '',
+        },
+        participantName: {
+            type: String,
+            default: '',
+        },
+        author: {
+            type: String,
+            default: '',
+        },
+        placeholder: {
+            type: String,
+            default: '',
+        },
+        required: {
+            type: Boolean,
+            default: true,
+        },
+        content: {
+            type: String,
+            default: '',
+        },
+        displayTrash: {
+            type: Boolean,
+            default: true,
+        },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             buffer: this.content,
@@ -89,24 +111,11 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.dirltr = this.$root.htmldir == 'ltr';
         },

@@ -25,38 +25,25 @@ export default {
     props: {
         hash: {
             type: String,
+            default: '',
         },
         starred: {
             type: Boolean,
+            default: false,
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             isFavorite: false,
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.isFavorite = this.starred;
         },

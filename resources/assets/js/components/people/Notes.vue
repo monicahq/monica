@@ -28,7 +28,7 @@
         <li v-for="xnote in notes" :key="xnote.id" class="note">
           <div v-show="!xnote.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + xnote.id">
             <div class="pa2 markdown">
-              <span>{{ xnote.parsed_body }}</span>
+              <span v-html="xnote.parsed_body"></span>
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">

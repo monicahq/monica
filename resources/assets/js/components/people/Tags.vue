@@ -83,6 +83,7 @@ export default {
     props: {
         hash: {
             type: String,
+            default: '',
         },
     },
     data() {

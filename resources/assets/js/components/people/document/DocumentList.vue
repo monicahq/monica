@@ -236,9 +236,11 @@ export default {
     props: {
         hash: {
             type: String,
+            default: '',
         },
         reachLimit: {
             type: String,
+            default: '',
         },
     },
 

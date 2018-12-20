@@ -91,34 +91,24 @@
 <script>
 export default {
 
-    props: ['journalEntry'],
-    /*
-         * The component's data.
-         */
+    props: {
+        journalEntry: {
+            type: Object,
+            default: null,
+        },
+    },
+
     data() {
         return {
             dirltr: true,
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.dirltr = this.$root.htmldir == 'ltr';
         },

@@ -15,40 +15,15 @@ export default {
     props: {
         name: {
             type: String,
+            default: '',
         },
         label: {
             type: String,
+            default: '',
         }
-    },
-    /*
-         * The component's data.
-         */
-    data() {
-        return {
-        };
-    },
-
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
-    mounted() {
-        this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
-        prepareComponent() {
-        },
-
         updateInput(text) {
             //this.$emit('input', text)
         }

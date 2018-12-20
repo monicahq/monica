@@ -99,6 +99,7 @@ export default {
     props: {
         value: {
             type: String,
+            default: '',
         },
         days: {
             type: Array,
@@ -114,21 +115,27 @@ export default {
         },
         day: {
             type: Number,
+            default: 0,
         },
         month: {
             type: Number,
+            default: 0,
         },
         defaultDate: {
             type: String,
+            default: '',
         },
         age: {
             type: String,
+            default: '',
         },
         locale: {
             type: String,
+            default: 'en',
         },
         reminder: {
             type: Number,
+            default: 0,
         },
     },
     /*

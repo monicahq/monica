@@ -27,9 +27,7 @@
         :form-class="'form-control'"
         @input="reminderUpdate"
       />
-      <small class="form-text text-muted">
-        {{ message }}
-      </small>
+      <small class="form-text text-muted" v-html="message"></small>
     </div>
   </div>
 </template>
@@ -40,6 +38,7 @@ export default {
     props: {
         timezone: {
             type: String,
+            default: 'UTC',
         },
         timezones: {
             type: Array,
@@ -49,6 +48,7 @@ export default {
         },
         reminder: {
             type: String,
+            default: '',
         },
         hours: {
             type: Array,
@@ -57,9 +57,7 @@ export default {
             }
         }
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             message: '',
@@ -68,24 +66,11 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.updatedReminder = this.reminder;
             this.updatedTimezone = this.timezone;

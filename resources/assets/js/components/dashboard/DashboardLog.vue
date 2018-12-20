@@ -244,7 +244,7 @@
                 {{ task.title }}
               </label>
               <a v-show="showTaskAction == task.id" class="pointer mr1" @click.prevent="confirmDestroyTask = task.id">
-                Delete
+                {{ $t('app.delete') }}
               </a>
               <ul v-show="confirmDestroyTask == task.id" class="di">
                 <li class="di">
@@ -269,10 +269,13 @@
 <script>
 export default {
 
-    props: ['defaultActiveTab'],
-    /*
-         * The component's data.
-         */
+    props: {
+        defaultActiveTab: {
+            type: String,
+            default: 'calls',
+        },
+    },
+
     data() {
         return {
             activeTab: '',
@@ -313,32 +316,34 @@ export default {
 
             this.saveTab(view);
 
-            if (view == 'calls') {
+            switch (view) {
+            case 'calls':
                 if (! this.callsAlreadyLoaded) {
                     this.getCalls();
                     this.callsAlreadyLoaded = true;
                 }
-            }
+                break;
 
-            if (view == 'notes') {
+            case 'notes':
                 if (! this.notesAlreadyLoaded) {
                     this.getNotes();
                     this.notesAlreadyLoaded = true;
                 }
-            }
+                break;
 
-            if (view == 'debts') {
+            case 'debts':
                 if (! this.debtsAlreadyLoaded) {
                     this.getDebts();
                     this.debtsAlreadyLoaded = true;
                 }
-            }
+                break;
 
-            if (view == 'tasks') {
+            case 'tasks':
                 if (! this.tasksAlreadyLoaded) {
                     this.getTasks();
                     this.tasksAlreadyLoaded = true;
                 }
+                break;
             }
         },
 

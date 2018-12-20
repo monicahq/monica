@@ -25,9 +25,11 @@ export default {
     props: {
         hash: {
             type: String,
+            default: '',
         },
         active: {
             type: Boolean,
+            default: true,
         },
     },
     /*

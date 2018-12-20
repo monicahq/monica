@@ -31,9 +31,7 @@
               {{ entry.title }}
             </h3>
 
-            <div class="markdown">
-              {{ entry.post }}
-            </div>
+            <div class="markdown" v-html="entry.post"></div>
 
             <ul class="f7">
               <li class="di">
@@ -55,6 +53,7 @@ export default {
     props: {
         journalEntry: {
             type: Object,
+            default: null,
         },
     },
 

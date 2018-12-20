@@ -41,7 +41,7 @@
             {{ $t('settings.u2f_noButtonAdvise') }}
           </p>
           <p>
-            <span>{{ otpextension }}</span>
+            <span v-html="otpextension"></span>
           </p>
         </div>
         <div class="relative">
@@ -83,7 +83,7 @@
           {{ $t('settings.u2f_noButtonAdvise') }}
         </p>
         <p>
-          <span>{{ otpextension }}</span>
+          <span v-html="otpextension"></span>
         </p>
       </div>
     </div>
@@ -109,6 +109,7 @@ export default {
         },
         registerdata: {
             type: Object,
+            default: null,
         },
         authdatas: {
             type: Array,
@@ -118,14 +119,14 @@ export default {
         },
         method: {
             type: String,
+            default: '',
         },
         callbackurl: {
             type: String,
+            default: '',
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             errorMessage: '',
@@ -135,24 +136,11 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.otpextension = this.$t('auth.u2f_otp_extension', {
                 urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',

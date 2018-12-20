@@ -11,7 +11,7 @@ textarea:focus {
 
 <template>
   <div>
-    <p v-if="! noLabel" class="mb2" :class="{ b: required }">
+    <p v-if="label != ''" class="mb2" :class="{ b: required }">
       {{ label }}
     </p>
     <textarea
@@ -34,58 +34,38 @@ export default {
     props: {
         value: {
             type: String,
+            default: '',
         },
         label: {
             type: String,
+            default: '',
         },
         id: {
             type: String,
+            default: '',
         },
         placeholder: {
             type: String,
+            default: '',
         },
         required: {
             type: Boolean,
-        },
-        noLabel: {
-            type: Boolean,
+            default: true,
         },
         width: {
             type: Number,
+            default: 0,
         },
         rows: {
             type: Number,
+            default: 0,
         }
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             buffer: this.value
         };
     },
-
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        /**
-             * Prepare the component.
-             */
-        prepareComponent() {
-        }
-    }
 };
 </script>

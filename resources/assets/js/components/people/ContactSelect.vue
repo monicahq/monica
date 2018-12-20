@@ -11,33 +11,40 @@
 <script>
 import vSelect from 'vue-select';
 import axios from 'axios';
+
 export default {
     components: {
         vSelect
     },
     props: {
         name: {
-            type: String
+            type: String,
+            default: '',
         },
         title: {
-            type: String
+            type: String,
+            default: '',
         },
         required: {
-            type: Boolean
+            type: Boolean,
+            default: true,
         },
         userContactId: {
-            type: String
+            type: String,
+            default: '',
         },
-        defaultOptions : {
+        defaultOptions: {
             type: Array,
             default: function () {
                 return [];
             }
         },
-        placeholder : {
-            type: String
+        placeholder: {
+            type: String,
+            default: '',
         }
     },
+
     data () {
         return {
             src : '/people/search',
@@ -46,15 +53,18 @@ export default {
             newOptions: [],
         };
     },
+
     computed: {
         computedOption : function() {
             return this.newOptions.length > 0 ? this.newOptions : this.defaultOptions;
         }
     },
+
     methods: {
         search(keyword, loading) {
             this.getContacts(keyword, loading, this);
         },
+
         getContacts: function (keyword, loading, vm) {
             axios.post(this.src, {
                 needle: keyword,

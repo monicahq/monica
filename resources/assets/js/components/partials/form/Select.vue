@@ -34,7 +34,10 @@ select:focus {
 export default {
 
     props: {
-        value: null,
+        value: {
+            type: String,
+            default: '',
+        },
         options: {
             type: Array,
             default: function () {
@@ -43,23 +46,26 @@ export default {
         },
         title: {
             type: String,
+            default: '',
         },
         id: {
             type: String,
+            default: '',
         },
         excludedId: {
             type: String,
+            default: '',
         },
         required: {
             type: Boolean,
+            default: true,
         },
         formClass: {
             type: String,
+            default: '',
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             selectedOption: null,
@@ -72,9 +78,6 @@ export default {
         }
     },
 
-    /**
-     * Prepare the component (Vue 2.x).
-     */
     mounted() {
         this.selectedOption = this.value;
     },

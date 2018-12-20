@@ -25,6 +25,7 @@ export default {
     props: {
         contact: {
             type: Object,
+            default: null,
         },
         clickable: {
             type: Boolean,

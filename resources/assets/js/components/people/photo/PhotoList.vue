@@ -142,19 +142,25 @@
     </transition>
   </div>
 </template>
+
 <script>
 export default {
+
     props: {
         hash: {
             type: String,
+            default: '',
         },
         reachLimit: {
             type: String,
+            default: '',
         },
         currentPhotoIdAsAvatar: {
             type: String,
+            default: '',
         },
     },
+    
     data() {
         return {
             photos: [],
@@ -168,26 +174,33 @@ export default {
             url: '',
         };
     },
+
     mounted() {
         this.prepareComponent();
     },
+
     methods: {
+
         prepareComponent() {
             this.getPhotos();
         },
+
         getPhotos() {
             axios.get('/people/' + this.hash + '/photos')
                 .then(response => {
                     this.photos = response.data.data;
                 });
         },
+
         showUploadZone() {
             this.displayUploadZone = true;
         },
+
         handleFileUpload(){
             this.file = this.$refs.file.files[0];
             this.submitFile();
         },
+
         submitFile(){
             this.displayUploadZone = false;
             this.displayUploadProgress = true;
@@ -219,6 +232,7 @@ export default {
                     this.displayUploadError = true;
                 });
         },
+
         deletePhoto(photo) {
             axios.delete( '/people/' + this.hash + '/photos/' + photo.id)
                 .then(response => {
@@ -233,12 +247,14 @@ export default {
                 .catch(error => {
                 });
         },
+
         makeProfilePicture(photo) {
             axios.post( '/people/' + this.hash + '/makeProfilePicture/' + photo.id)
                 .then(response => {
                     window.location.href = '/people/' + this.hash;
                 });
         },
+
         modalPhoto(photo) {
             this.url = photo.link;
             this.showModal = true;

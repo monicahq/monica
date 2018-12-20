@@ -29,12 +29,15 @@ export default {
     props: {
         id: {
             type: String,
+            default: '',
         },
         defaultDate: {
             type: String,
+            default: '',
         },
         locale: {
             type: String,
+            default: '',
         },
     },
     /*

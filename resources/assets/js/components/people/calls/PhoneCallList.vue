@@ -125,9 +125,7 @@
         <span v-if="!call.content">
           {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
         </span>
-        <span v-if="call.content">
-          {{ compiledMarkdown(call.content) }}
-        </span>
+        <span v-if="call.content" v-html="compiledMarkdown(call.content)"></span>
       </div>
 
       <!-- INLINE UPDATE DIV -->
@@ -256,9 +254,11 @@ export default {
     props: {
         hash: {
             type: String,
+            default: '',
         },
         name: {
             type: String,
+            default: '',
         },
     },
     data() {
@@ -289,9 +289,6 @@ export default {
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent(hash) {
             this.dirltr = this.$root.htmldir == 'ltr';
             this.getCalls();
