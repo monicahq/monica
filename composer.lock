@@ -8196,16 +8196,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v4.0.3",
+            "version": "v4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "94a2497d4a7ff3b4fc75acb55f9faeb50dcb4585"
+                "reference": "3b2df334d92b6215400ddd183253eb4bcc07debb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/94a2497d4a7ff3b4fc75acb55f9faeb50dcb4585",
-                "reference": "94a2497d4a7ff3b4fc75acb55f9faeb50dcb4585",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/3b2df334d92b6215400ddd183253eb4bcc07debb",
+                "reference": "3b2df334d92b6215400ddd183253eb4bcc07debb",
                 "shasum": ""
             },
             "require": {
@@ -8253,7 +8253,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2018-11-25T14:35:43+00:00"
+            "time": "2018-12-19T13:55:39+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
