@@ -59,11 +59,11 @@ function installSonar {
     echo "== Downloading sonarscanner $sonarversion"
     java_path=$(which java || true)
     if [ -x "$java_path" ]; then
-      wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion.zip
+      wget --quiet --continue https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion.zip
       unzip -q sonar-scanner-cli-$sonarversion.zip
       rm sonar-scanner-cli-$sonarversion.zip
     else    
-      wget --quiet --continue https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion-linux.zip
+      wget --quiet --continue https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$sonarversion-linux.zip
       unzip -q sonar-scanner-cli-$sonarversion-linux.zip
       rm sonar-scanner-cli-$sonarversion-linux.zip
       mv sonar-scanner-$sonarversion-linux sonar-scanner-$sonarversion
