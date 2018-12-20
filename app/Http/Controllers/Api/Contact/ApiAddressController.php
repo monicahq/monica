@@ -7,10 +7,10 @@ use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\QueryException;
+use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
-use App\Exceptions\MissingParameterException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\Address as AddressResource;
 
