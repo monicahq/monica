@@ -6,12 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Address\Address as AddressResource;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Address\Address as AddressResource;
 
 class ApiAddressController extends ApiController
 {
@@ -108,7 +107,7 @@ class ApiAddressController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$addressId);
+        return $this->respondObjectDeleted((int) $addressId);
     }
 
     /**
