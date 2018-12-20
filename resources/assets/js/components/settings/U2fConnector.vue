@@ -41,7 +41,7 @@
             {{ $t('settings.u2f_noButtonAdvise') }}
           </p>
           <p>
-            <span v-html="otpextension"></span>
+            <span>{{ otpextension }}</span>
           </p>
         </div>
         <div class="relative">
@@ -83,7 +83,7 @@
           {{ $t('settings.u2f_noButtonAdvise') }}
         </p>
         <p>
-          <span v-html="otpextension"></span>
+          <span>{{ otpextension }}</span>
         </p>
       </div>
     </div>

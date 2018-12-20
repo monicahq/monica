@@ -32,36 +32,36 @@
 
       <!-- LIST OF IN PROGRESS TASKS -->
       <ul>
-        <li v-for="task in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
-          <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
-          {{ task.title }} <span v-if="task.description" class="silver ml3">
-            {{ task.description }}
+        <li v-for="xtask in inProgress(tasks)" :key="xtask.id" :cy-name="'task-item-' + xtask.id">
+          <input id="checkbox" v-model="xtask.completed" type="checkbox" class="mr1" @click="toggleComplete(xtask)" />
+          {{ xtask.title }} <span v-if="xtask.description" class="silver ml3">
+            {{ xtask.description }}
           </span>
 
           <div v-if="editMode" class="di">
-            <i class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(task)"></i>
-            <i class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + task.id" @click="trash(task)"></i>
+            <i class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(xtask)"></i>
+            <i class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + xtask.id" @click="trash(xtask)"></i>
           </div>
 
           <!-- EDIT BOX -->
-          <form v-show="task.edit" class="bg-near-white pa2 br2 mt3 mb3">
+          <form v-show="xtask.edit" class="bg-near-white pa2 br2 mt3 mb3">
             <div>
               <label class="db fw6 lh-copy f6">
                 {{ $t('people.tasks_form_title') }}
               </label>
-              <input v-model="task.title" class="pa2 db w-100" type="text" @keyup.esc="editMode = false" />
+              <input v-model="xtask.title" class="pa2 db w-100" type="text" @keyup.esc="editMode = false" />
             </div>
             <div class="mt3">
               <label class="db fw6 lh-copy f6">
                 {{ $t('people.tasks_form_description') }}
               </label>
-              <textarea v-model="task.description" class="pa2 db w-100" type="text" @keyup.esc="editMode = false"></textarea>
+              <textarea v-model="xtask.description" class="pa2 db w-100" type="text" @keyup.esc="editMode = false"></textarea>
             </div>
             <div class="lh-copy mt3">
-              <a class="btn btn-primary" @click.prevent="update(task)">
+              <a class="btn btn-primary" @click.prevent="update(xtask)">
                 {{ $t('app.update') }}
               </a>
-              <a class="btn" @click="toggleEditMode(task)">
+              <a class="btn" @click="toggleEditMode(xtask)">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -104,18 +104,18 @@
 
       <!-- LIST OF COMPLETED TASKS -->
       <ul>
-        <li v-for="task in completed(tasks)" :key="task.id" class="f6" :cy-name="'task-item-completed-' + task.id">
-          <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
+        <li v-for="xtask in completed(tasks)" :key="xtask.id" class="f6" :cy-name="'task-item-completed-' + xtask.id">
+          <input id="checkbox" v-model="xtask.completed" type="checkbox" class="mr1" @click="toggleComplete(xtask)" />
           <span class="light-silver mr1">
-            {{ task.completed_at }}
+            {{ xtask.completed_at }}
           </span> <span class="moon-gray">
-            {{ task.title }}
-          </span> <span v-if="task.description" class="silver ml3">
-            {{ task.description }}
+            {{ xtask.title }}
+          </span> <span v-if="xtask.description" class="silver ml3">
+            {{ xtask.description }}
           </span>
 
           <div v-if="editMode" class="di">
-            <i class="fa fa-trash-o pointer pr2 ml3 dark-blue" @click="trash(task)"></i>
+            <i class="fa fa-trash-o pointer pr2 ml3 dark-blue" @click="trash(xtask)"></i>
           </div>
         </li>
       </ul>

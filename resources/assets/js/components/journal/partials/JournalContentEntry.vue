@@ -31,7 +31,9 @@
               {{ entry.title }}
             </h3>
 
-            <div class="markdown" v-html="entry.post"></div>
+            <div class="markdown">
+              {{ entry.post }}
+            </div>
 
             <ul class="f7">
               <li class="di">

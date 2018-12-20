@@ -14,12 +14,12 @@
           </a>
         </li>
         <li v-if="view == 'types'" class="di">
-          > {{ this.activeCategory.name }}
+          > {{ activeCategory.name }}
         </li>
         <template v-else-if="view == 'add'">
           <li class="di">
             > <a class="pointer" @click="view = 'types'">
-              {{ this.activeCategory.name }}
+              {{ activeCategory.name }}
             </a>
           </li>
           <li class="di">
@@ -70,7 +70,7 @@
         </div>
 
         <h3 class="pt3 ph4 f3 fw5 tc">
-          {{ $t('people.life_event_sentence_' + this.activeType.default_life_event_type_key) }}
+          {{ $t('people.life_event_sentence_' + activeType.default_life_event_type_key) }}
         </h3>
 
         <!-- This field will be the same for every life event type no matter what, as the date is the only required field -->

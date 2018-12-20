@@ -25,24 +25,24 @@
 
       <!-- LIST OF NORMAL NOTES -->
       <ul>
-        <li v-for="note in notes" :key="note.id" class="note">
-          <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + note.id">
+        <li v-for="xnote in notes" :key="xnote.id" class="note">
+          <div v-show="!xnote.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + xnote.id">
             <div class="pa2 markdown">
-              <span v-html="note.parsed_body"></span>
+              <span>{{ xnote.parsed_body }}</span>
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
                 <div class="f5 di mr1">
-                  <i v-tooltip.top="$t('people.notes_favorite')" class="pointer" :class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" @click="toggleFavorite(note)"></i>
+                  <i v-tooltip.top="$t('people.notes_favorite')" class="pointer" :class="[xnote.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" @click="toggleFavorite(xnote)"></i>
                 </div>
-                {{ note.created_at_short }}
+                {{ xnote.created_at_short }}
               </div>
               <div class="fl w-50 tr">
-                <a class="pointer" :cy-name="'edit-note-button-' + note.id" @click="toggleEditMode(note)">
+                <a class="pointer" :cy-name="'edit-note-button-' + xnote.id" @click="toggleEditMode(xnote)">
                   {{ $t('app.edit') }}
                 </a>
                 |
-                <a class="pointer" :cy-name="'delete-note-button-' + note.id" @click.prevent="showDelete(note)">
+                <a class="pointer" :cy-name="'delete-note-button-' + xnote.id" @click.prevent="showDelete(xnote)">
                   {{ $t('app.delete') }}
                 </a>
               </div>
@@ -50,9 +50,9 @@
           </div>
 
           <!-- EDIT MODE -->
-          <form v-show="note.edit" class="bg-near-white pa2 br2 mt3 mb3">
-            <textarea v-model="note.body" class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + note.id" @keyup.esc="note.edit = false"></textarea>
-            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + note.id" @click.prevent="update(note)">
+          <form v-show="xnote.edit" class="bg-near-white pa2 br2 mt3 mb3">
+            <textarea v-model="xnote.body" class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + xnote.id" @keyup.esc="xnote.edit = false"></textarea>
+            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + xnote.id" @click.prevent="update(xnote)">
               {{ $t('app.update') }}
             </a>
           </form>

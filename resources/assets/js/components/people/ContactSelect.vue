@@ -4,7 +4,7 @@
       {{ title }}
     </p>
     <input type="hidden" :name="name" :value="selected ? selected.id : ''" />
-    <v-select v-model="selected" :placeholder="this.placeholder" :label="'complete_name'" :options="computedOption" @search="search" />
+    <v-select v-model="selected" :placeholder="placeholder" :label="'complete_name'" :options="computedOption" @search="search" />
   </div>
 </template>
 

@@ -27,7 +27,9 @@
         :form-class="'form-control'"
         @input="reminderUpdate"
       />
-      <small class="form-text text-muted" v-html="message"></small>
+      <small class="form-text text-muted">
+        {{ message }}
+      </small>
     </div>
   </div>
 </template>
