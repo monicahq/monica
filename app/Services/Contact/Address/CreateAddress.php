@@ -24,8 +24,8 @@ class CreateAddress extends BaseService
             'province' => 'nullable|string|max:255',
             'postal_code' => 'nullable|string|max:255',
             'country' => 'nullable|string|max:3',
-            'latitude' => 'nullable|double',
-            'longitude' => 'nullable|double',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
         ];
     }
 
