@@ -3,13 +3,12 @@
 namespace Tests\Unit\Services\Contact\Address;
 
 use Tests\TestCase;
-use App\Models\Account\Place;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
-use App\Services\Contact\Address\CreateAddress;
-use App\Exceptions\MissingParameterException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Contact\Contact;
+use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Address\CreateAddress;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateAddressTest extends TestCase
 {

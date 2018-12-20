@@ -5,9 +5,8 @@ namespace Tests\Unit\Services\Contact\Address;
 use Tests\TestCase;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use App\Models\Account\Account;
-use App\Services\Contact\Address\DestroyAddress;
 use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Address\DestroyAddress;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
