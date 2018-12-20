@@ -3,10 +3,10 @@
 namespace App\Services\Contact\Address;
 
 use App\Models\Account\Place;
+use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use App\Models\Account\Place;
 use App\Services\Account\Place\CreatePlace;
 
 class CreateAddress extends BaseService
