@@ -2,8 +2,8 @@
 
 namespace App\Services\Contact\Address;
 
-use App\Models\Contact\Address;
 use App\Services\BaseService;
+use App\Models\Contact\Address;
 use App\Services\Account\Place\UpdatePlace;
 
 class UpdateAddress extends BaseService
