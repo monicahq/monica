@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Cache;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
-use App\Http\Requests\People\AddressesRequest;
 
 class AddressesController extends Controller
 {
@@ -106,7 +105,7 @@ class AddressesController extends Controller
     }
 
     /**
-     * Destroy the address
+     * Destroy the address.
      *
      * @param Request $request
      * @param Contact $contact
