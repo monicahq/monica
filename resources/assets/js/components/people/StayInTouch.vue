@@ -160,10 +160,21 @@ export default {
         SweetModal
     },
 
-    props: ['contact', 'hash', 'limited'],
-    /*
-         * The component's data.
-         */
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
+        contact: {
+            type: Object,
+            default: null,
+        },
+        limited: {
+            type: Boolean,
+            default: false,
+        },
+    },
+
     data() {
         return {
             frequency: '0',
@@ -175,26 +186,13 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
-        this.dirltr = this.$root.htmldir == 'ltr';
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
+            this.dirltr = this.$root.htmldir == 'ltr';
             if (this.contact.stay_in_touch_frequency == null) {
                 this.frequency = '0';
             } else {

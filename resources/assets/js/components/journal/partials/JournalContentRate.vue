@@ -131,10 +131,15 @@
 <script>
 export default {
 
-    props: ['journalEntry'],
+    props: {
+        journalEntry: {
+            type: Object,
+        },
+    },
+
     /*
-         * The component's data.
-         */
+     * The component's data.
+     */
     data() {
         return {
             day: [],
@@ -144,23 +149,23 @@ export default {
     },
 
     /**
-         * Prepare the component (Vue 1.x).
-         */
+     * Prepare the component (Vue 1.x).
+     */
     ready() {
         this.prepareComponent();
     },
 
     /**
-         * Prepare the component (Vue 2.x).
-         */
+     * Prepare the component (Vue 2.x).
+     */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
         /**
-             * Prepare the component.
-             */
+         * Prepare the component.
+         */
         prepareComponent() {
             this.dirltr = this.$root.htmldir == 'ltr';
             this.day = this.journalEntry.object;

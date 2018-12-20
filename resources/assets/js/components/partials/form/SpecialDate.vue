@@ -102,9 +102,15 @@ export default {
         },
         days: {
             type: Array,
+            default: function () {
+                return [];
+            }
         },
         months: {
             type: Array,
+            default: function () {
+                return [];
+            }
         },
         day: {
             type: Number,

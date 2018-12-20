@@ -103,12 +103,18 @@ export default {
     props: {
         currentkeys: {
             type: Array,
+            default: function () {
+                return [];
+            }
         },
         registerdata: {
             type: Object,
         },
         authdatas: {
             type: Array,
+            default: function () {
+                return [];
+            }
         },
         method: {
             type: String,

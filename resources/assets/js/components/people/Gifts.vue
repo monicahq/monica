@@ -206,7 +206,17 @@ export default {
         SweetModalTab
     },
 
-    props: ['hash', 'giftsActiveTab'],
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
+        giftsActiveTab: {
+            type: String,
+            default: 'ideas',
+        },
+    },
+
     /*
          * The component's data.
          */

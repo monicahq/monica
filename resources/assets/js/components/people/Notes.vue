@@ -95,14 +95,13 @@
 
 export default {
 
-    components: {
-        //     VueMarkdown
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
     },
 
-    props: ['hash'],
-    /*
-         * The component's data.
-         */
     data() {
         return {
             notes: [],
@@ -126,24 +125,11 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.dirltr = this.$root.htmldir == 'ltr';
             this.getNotes();

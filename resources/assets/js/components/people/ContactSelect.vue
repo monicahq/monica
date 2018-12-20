@@ -29,7 +29,10 @@ export default {
             type: String
         },
         defaultOptions : {
-            type: Array
+            type: Array,
+            default: function () {
+                return [];
+            }
         },
         placeholder : {
             type: String

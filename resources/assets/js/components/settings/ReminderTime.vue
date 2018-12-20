@@ -43,12 +43,18 @@ export default {
         },
         timezones: {
             type: Array,
+            default: function () {
+                return [];
+            }
         },
         reminder: {
             type: String,
         },
         hours: {
             type: Array,
+            default: function () {
+                return [];
+            }
         }
     },
     /*

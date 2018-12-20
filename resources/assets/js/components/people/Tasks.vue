@@ -127,7 +127,17 @@
 
 export default {
 
-    props: ['hash', 'contactId'],
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
+        contactId: {
+            type: Number,
+            default: -1,
+        },
+    },
+
     data() {
         return {
             tasks: [],

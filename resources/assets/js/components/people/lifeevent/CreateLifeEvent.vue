@@ -147,7 +147,31 @@ import moment from 'moment';
 
 export default {
 
-    props: ['hash', 'years', 'months', 'days'],
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
+        years: {
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
+        months: {
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
+        days: {
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
+    },
+
     data() {
         return {
             selectedDay: 0,

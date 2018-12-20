@@ -37,6 +37,9 @@ export default {
         value: null,
         options: {
             type: Array,
+            default: function () {
+                return [];
+            }
         },
         title: {
             type: String,

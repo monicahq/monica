@@ -556,7 +556,35 @@ export default {
         SweetModalTab
     },
 
-    props: ['hash', 'years', 'months', 'days', 'contactName'],
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
+        years: {
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
+        months: {
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
+        days: {
+            type: Array,
+            default: function () {
+                return [];
+            }
+        },
+        contactName: {
+            type: String,
+            default: '',
+        },
+    },
+
     data() {
         return {
             lifeEvents: [],

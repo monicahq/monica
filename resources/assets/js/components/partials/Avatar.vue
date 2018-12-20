@@ -22,9 +22,14 @@
 
 <script>
 export default {
-    props: [
-        'contact',
-        'clickable'
-    ],
+    props: {
+        contact: {
+            type: Object,
+        },
+        clickable: {
+            type: Boolean,
+            default: true,
+        },
+    },
 };
 </script>
