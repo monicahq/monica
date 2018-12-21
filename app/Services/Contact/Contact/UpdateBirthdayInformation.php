@@ -58,15 +58,15 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function manageBirthday(array $data)
     {
-        if ($data['is_date_known'] == false) {
+        if (!$data['is_date_known']) {
             return;
         }
 
-        if ($data['is_age_based'] == true) {
+        if ($data['is_age_based']) {
             $this->approximate($data);
         }
 
-        if ($data['is_age_based'] == false) {
+        if (!$data['is_age_based']) {
             $this->exact($data);
         }
     }
