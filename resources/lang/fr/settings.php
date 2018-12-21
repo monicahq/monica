@@ -101,6 +101,16 @@ return [
     'u2f_error_device_ineligible' => 'Le dispositif présenté n’est pas admissible pour cette demande. Pour une demande d’enregistrement, cela peut signifier que le jeton est déjà enregistré, et pour une demande d\'authentification, cela peut signifier que le jeton ne connaît pas les clés présentées.',
     'u2f_error_timeout' => 'Délai d’attente atteint avant que la demande ne soit satisfaite.',
 
+    'recovery_title' => 'Recovery codes',
+    'recovery_show' => 'Get recovery codes',
+    'recovery_copy_help' => 'Copy codes in your clipboard',
+    'recovery_help_intro' => 'These are your recovery codes:',
+    'recovery_help_information' => 'You can use each recovery code once.',
+    'recovery_clipboard' => 'Codes copied in the clipboard',
+    'recovery_generate' => 'Generate new codes...',
+    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previoulsy generated codes',
+    'recovery_already_used_help' => 'This code has already been used',
+
     'users_list_title' => 'Utilisateurs avec accès à votre compte',
     'users_list_add_user' => 'Inviter un nouvel utilisateur',
     'users_list_you' => 'C’est vous',
