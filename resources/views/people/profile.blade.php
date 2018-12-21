@@ -64,7 +64,7 @@
           </div>
 
           <div class="col-xs-12 col-sm-9">
-<emotion></emotion>
+
             <div class="flex items-center justify-center flex-column">
               <div class='cf dib'>
                 <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt br bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt br ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">
