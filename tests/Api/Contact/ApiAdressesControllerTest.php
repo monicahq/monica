@@ -321,7 +321,7 @@ class ApiAdressesControllerTest extends ApiTestCase
         $response = $this->json('DELETE', '/api/addresses/0');
 
         $this->expectInvalidParameter($response, [
-            'The selected address id is invalid.'
+            'The selected address id is invalid.',
         ]);
     }
 }

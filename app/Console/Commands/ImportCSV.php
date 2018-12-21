@@ -7,9 +7,9 @@ use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
-use App\Services\Contact\Address\CreateAddress;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Address\CreateAddress;
 
 class ImportCSV extends Command
 {

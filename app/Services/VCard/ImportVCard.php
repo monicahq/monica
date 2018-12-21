@@ -578,7 +578,6 @@ class ImportVCard extends BaseService
         }
 
         foreach ($entry->ADR as $adr) {
-
             $request = [
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
