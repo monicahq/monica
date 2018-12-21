@@ -101,6 +101,16 @@ return [
     'u2f_error_device_ineligible' => 'ההתקן שהוצג אינו מתאים לבקשה זו. עבור בקשת רישום יתכן שהאסימון כבר רשום ולבקשת כניסה יכול להיות שהאסימון לא מכיר את מנגנון המפתח שהוצג.',
     'u2f_error_timeout' => 'המתנת זמן רב מדי והמענה לבקשה לא הגיע.',
 
+    'recovery_title' => 'Recovery codes',
+    'recovery_show' => 'Get recovery codes',
+    'recovery_copy_help' => 'Copy codes in your clipboard',
+    'recovery_help_intro' => 'These are your recovery codes:',
+    'recovery_help_information' => 'You can use each recovery code once.',
+    'recovery_clipboard' => 'Codes copied in the clipboard',
+    'recovery_generate' => 'Generate new codes...',
+    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previoulsy generated codes',
+    'recovery_already_used_help' => 'This code has already been used',
+
     'users_list_title' => 'משתמשים עם גישה לחשבון שלך',
     'users_list_add_user' => 'הזמנת משתמש חדש',
     'users_list_you' => 'מדובר בך',
