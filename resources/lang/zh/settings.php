@@ -101,6 +101,16 @@ return [
     'u2f_error_device_ineligible' => '当前设备不支持此请求。',
     'u2f_error_timeout' => '请求超时',
 
+    'recovery_title' => 'Recovery codes',
+    'recovery_show' => 'Get recovery codes',
+    'recovery_copy_help' => 'Copy codes in your clipboard',
+    'recovery_help_intro' => 'These are your recovery codes:',
+    'recovery_help_information' => 'You can use each recovery code once.',
+    'recovery_clipboard' => 'Codes copied in the clipboard',
+    'recovery_generate' => 'Generate new codes...',
+    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previoulsy generated codes',
+    'recovery_already_used_help' => 'This code has already been used',
+
     'users_list_title' => '可以访问您的帐户的用户',
     'users_list_add_user' => '邀请新用户',
     'users_list_you' => '这是你',
