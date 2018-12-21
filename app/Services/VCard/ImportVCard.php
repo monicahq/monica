@@ -16,6 +16,7 @@ use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Address\CreateAddress;
 
 class ImportVCard extends BaseService
 {
@@ -577,7 +578,7 @@ class ImportVCard extends BaseService
         }
 
         foreach ($entry->ADR as $adr) {
-            Address::firstOrCreate([
+            $request = [
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'street' => $this->formatValue($adr->getParts()[2]),
@@ -585,7 +586,9 @@ class ImportVCard extends BaseService
                 'province' => $this->formatValue($adr->getParts()[4]),
                 'postal_code' => $this->formatValue($adr->getParts()[5]),
                 'country' => CountriesHelper::find($adr->getParts()[6]),
-            ]);
+            ];
+
+            (new CreateAddress)->execute($request);
         }
     }
 

@@ -2,12 +2,12 @@
 
 namespace App\Services\Instance\Geolocalization;
 
+use App\Models\Account\Place;
 use App\Services\BaseService;
-use App\Models\Contact\Address;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 
-class GetGPSCoordinateFromAddress extends BaseService
+class GetGPSCoordinate extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
@@ -18,34 +18,34 @@ class GetGPSCoordinateFromAddress extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'address_id' => 'required|integer|exists:addresses,id',
+            'place_id' => 'required|integer|exists:places,id',
         ];
     }
 
     /**
-     * Get the latitude and longitude from an address.
+     * Get the latitude and longitude from a place.
      * This method uses LocationIQ to process the geocoding.
      *
      * @param array $data
-     * @return Address|null
+     * @return Place|null
      */
     public function execute(array $data)
     {
         $this->validate($data);
 
-        $address = Address::where('account_id', $data['account_id'])
-            ->findOrFail($data['address_id']);
+        $place = Place::where('account_id', $data['account_id'])
+            ->findOrFail($data['place_id']);
 
-        return $this->query($address);
+        return $this->query($place);
     }
 
     /**
      * Build the query to send with the API call.
      *
-     * @param Address $address
+     * @param Place $place
      * @return string|null
      */
-    private function getQuery(Address $address)
+    private function getQuery(Place $place)
     {
         if (! config('monica.enable_geolocation')) {
             return;
@@ -58,21 +58,21 @@ class GetGPSCoordinateFromAddress extends BaseService
         $query = 'https://us1.locationiq.com/v1/search.php?key=';
         $query .= config('monica.location_iq_api_key');
         $query .= '&q=';
-        $query .= urlencode($address->getFullAddress());
+        $query .= urlencode($place->getAddressAsString());
         $query .= '&format=json';
 
         return $query;
     }
 
     /**
-     * Actually make th call the reverse geocoding API.
+     * Actually make the call to the reverse geocoding API.
      *
-     * @param Address $address
-     * @return Address|null
+     * @param Place $place
+     * @return Place|null
      */
-    private function query(Address $address)
+    private function query(Place $place)
     {
-        $query = $this->getQuery($address);
+        $query = $this->getQuery($place);
 
         if (is_null($query)) {
             return;
@@ -88,10 +88,10 @@ class GetGPSCoordinateFromAddress extends BaseService
 
         $response = json_decode($response->getBody());
 
-        $address->latitude = $response[0]->lat;
-        $address->longitude = $response[0]->lon;
-        $address->save();
+        $place->latitude = $response[0]->lat;
+        $place->longitude = $response[0]->lon;
+        $place->save();
 
-        return $address;
+        return $place;
     }
 }
