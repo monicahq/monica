@@ -163,11 +163,11 @@ class ExportVCard extends BaseService
             $vcard->add('ADR', [
                 '',
                 '',
-                $address->street,
-                $address->city,
-                $address->province,
-                $address->postal_code,
-                $address->country,
+                $address->place->street,
+                $address->place->city,
+                $address->place->province,
+                $address->place->postal_code,
+                $address->place->country,
             ]);
         }
     }

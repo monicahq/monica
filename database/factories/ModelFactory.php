@@ -212,12 +212,11 @@ $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $f
                 'account_id' => $data['account_id'],
             ])->id;
         },
-        'country' => 'US',
-        'name' => 'default',
-        'street' => '12',
-        'city' => 'beverly hills',
-        'province' => null,
-        'postal_code' => '90210',
+        'place_id' => function (array $data) {
+            return factory(App\Models\Account\Place::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
@@ -379,6 +378,17 @@ $factory->define(App\Models\Account\Photo::class, function (Faker\Generator $fak
         'account_id' => $account->id,
         'original_filename' => 'file.jpg',
         'new_filename' => 'file.jpg',
+    ];
+});
+
+$factory->define(App\Models\Account\Place::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'country' => 'US',
+        'street' => '12',
+        'city' => 'beverly hills',
+        'province' => null,
+        'postal_code' => '90210',
     ];
 });
 

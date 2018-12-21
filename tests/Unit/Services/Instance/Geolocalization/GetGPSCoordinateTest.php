@@ -3,12 +3,12 @@
 namespace Tests\Unit\Services\Instance\Geolocalization;
 
 use Tests\TestCase;
-use App\Models\Contact\Address;
+use App\Models\Account\Place;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Services\Instance\Geolocalization\GetGPSCoordinateFromAddress;
+use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
-class GetGPSCoordinateFromAddressTest extends TestCase
+class GetGPSCoordinateTest extends TestCase
 {
     use DatabaseTransactions;
 
@@ -16,17 +16,17 @@ class GetGPSCoordinateFromAddressTest extends TestCase
     {
         config(['monica.enable_geolocation' => false]);
 
-        $address = factory(Address::class)->create();
+        $place = factory(Place::class)->create();
 
         $request = [
-            'account_id' => $address->account_id,
-            'address_id' => $address->id,
+            'account_id' => $place->account_id,
+            'place_id' => $place->id,
         ];
 
-        $addressService = new GetGPSCoordinateFromAddress;
-        $address = $addressService->execute($request);
+        $placeService = new GetGPSCoordinate;
+        $place = $placeService->execute($request);
 
-        $this->assertNull($address);
+        $this->assertNull($place);
     }
 
     public function test_it_gets_gps_coordinates()
@@ -39,23 +39,23 @@ class GetGPSCoordinateFromAddressTest extends TestCase
         \VCR\VCR::configure()->enableRequestMatchers(['url']);
         \VCR\VCR::insertCassette('geolocalization_service_gets_gps_coordinates.yml');
 
-        $address = factory(Address::class)->create();
+        $place = factory(Place::class)->create();
 
         $request = [
-            'account_id' => $address->account_id,
-            'address_id' => $address->id,
+            'account_id' => $place->account_id,
+            'place_id' => $place->id,
         ];
 
-        $addressService = new GetGPSCoordinateFromAddress;
-        $address = $addressService->execute($request);
+        $placeService = new GetGPSCoordinate;
+        $place = $placeService->execute($request);
 
-        $this->assertDatabaseHas('addresses', [
-            'id' => $address->id,
+        $this->assertDatabaseHas('places', [
+            'id' => $place->id,
         ]);
 
         $this->assertInstanceOf(
-            Address::class,
-            $address
+            Place::class,
+            $place
         );
 
         \VCR\VCR::eject();
@@ -72,7 +72,7 @@ class GetGPSCoordinateFromAddressTest extends TestCase
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
 
-        $address = factory(Address::class)->create([
+        $place = factory(Place::class)->create([
             'country' => 'ewqr',
             'street' => '',
             'city' => 'sieklopekznqqq',
@@ -80,14 +80,14 @@ class GetGPSCoordinateFromAddressTest extends TestCase
         ]);
 
         $request = [
-            'account_id' => $address->account_id,
-            'address_id' => $address->id,
+            'account_id' => $place->account_id,
+            'place_id' => $place->id,
         ];
 
-        $addressService = new GetGPSCoordinateFromAddress;
-        $address = $addressService->execute($request);
+        $placeService = new GetGPSCoordinate;
+        $place = $placeService->execute($request);
 
-        $this->assertNull($address);
+        $this->assertNull($place);
 
         \VCR\VCR::eject();
         \VCR\VCR::turnOff();
@@ -101,7 +101,7 @@ class GetGPSCoordinateFromAddressTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $addressService = new GetGPSCoordinateFromAddress;
-        $address = $addressService->execute($request);
+        $placeService = new GetGPSCoordinate;
+        $place = $placeService->execute($request);
     }
 }

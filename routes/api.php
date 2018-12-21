@@ -29,9 +29,12 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/contacts/{contact}/unsetTags', 'ApiContactTagController@unsetTags');
     Route::post('/contacts/{contact}/unsetTag', 'ApiContactTagController@unsetTag');
 
+    // Places
+    Route::apiResource('places', 'Account\\ApiPlaceController');
+
     // Addresses
-    Route::apiResource('addresses', 'ApiAddressController');
-    Route::get('/contacts/{contact}/addresses', 'ApiAddressController@addresses');
+    Route::apiResource('addresses', 'Contact\\ApiAddressController');
+    Route::get('/contacts/{contact}/addresses', 'Contact\\ApiAddressController@addresses');
 
     // Contact Fields
     Route::apiResource('contactfields', 'ApiContactFieldController', ['except' => ['index']]);
