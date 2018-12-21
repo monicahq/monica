@@ -12,6 +12,7 @@ use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Address\CreateAddress;
 
 trait VCardImporter
 {
@@ -101,15 +102,18 @@ trait VCardImporter
         }
 
         if ($vcard->ADR) {
-            $address = new Address();
-            $address->street = $this->formatValue($vcard->ADR->getParts()[2]);
-            $address->city = $this->formatValue($vcard->ADR->getParts()[3]);
-            $address->province = $this->formatValue($vcard->ADR->getParts()[4]);
-            $address->postal_code = $this->formatValue($vcard->ADR->getParts()[5]);
-            $address->country = CountriesHelper::find($vcard->ADR->getParts()[6]);
-            $address->contact_id = $contact->id;
-            $address->account_id = $contact->account_id;
-            $address->save();
+
+            $request = [
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'street' => $this->formatValue($vcard->ADR->getParts()[2]),
+                'city' => $this->formatValue($vcard->ADR->getParts()[3]),
+                'province' => $this->formatValue($vcard->ADR->getParts()[4]),
+                'postal_code' => $this->formatValue($vcard->ADR->getParts()[5]),
+                'country' => CountriesHelper::find($vcard->ADR->getParts()[6]),
+            ];
+
+            (new CreateAddress)->execute($request);
         }
 
         if (! is_null($this->formatValue($vcard->EMAIL))) {
