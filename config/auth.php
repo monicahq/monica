@@ -111,7 +111,7 @@ return [
     |
     | Recovery codes can be used to access your account in the event you lost
     | access to the device used to generate or receive two-factor
-    | authentication codes. 
+    | authentication codes.
     |
     | * count: number of recovery codes to generate
     | * blocks: number of blocks in one code
