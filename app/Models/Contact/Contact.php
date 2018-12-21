@@ -1409,7 +1409,7 @@ class Contact extends Model
     }
 
     /**
-     * Delete the contact and all the related object.
+     * Delete all related objects.
      *
      * @return bool
      */
