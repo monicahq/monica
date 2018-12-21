@@ -57,7 +57,7 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function manageDeceasedDate(array $data)
     {
-        if (!$data['is_deceased']) {
+        if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB
             $this->contact->is_dead = false;
             $this->contact->save();
@@ -68,7 +68,7 @@ class UpdateDeceasedInformation extends BaseService
         $this->contact->is_dead = true;
         $this->contact->save();
 
-        if (!$data['is_date_known']) {
+        if (! $data['is_date_known']) {
             return;
         }
 
