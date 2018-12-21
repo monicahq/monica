@@ -110,6 +110,10 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function setReminder(array $data, SpecialDate $specialDate)
     {
+        if (empty($data['add_reminder'])) {
+            return;
+        }
+
         if ($data['add_reminder'] == true) {
             $specialDate->setReminder(
                 'year',

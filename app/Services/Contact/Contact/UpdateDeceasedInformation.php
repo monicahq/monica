@@ -57,7 +57,7 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function manageDeceasedDate(array $data)
     {
-        if ($data['is_deceased'] == false) {
+        if (!$data['is_deceased']) {
             // remove all information about deceased date in the DB
             $this->contact->is_dead = false;
             $this->contact->save();
@@ -68,7 +68,7 @@ class UpdateDeceasedInformation extends BaseService
         $this->contact->is_dead = true;
         $this->contact->save();
 
-        if ($data['is_date_known'] == false) {
+        if (!$data['is_date_known']) {
             return;
         }
 
@@ -102,7 +102,11 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function setReminder(array $data, SpecialDate $specialDate)
     {
-        if ($data['add_reminder'] == true) {
+        if (empty($data['add_reminder'])) {
+            return;
+        }
+
+        if ($data['add_reminder']) {
             $specialDate->setReminder(
                 'year',
                 1,
