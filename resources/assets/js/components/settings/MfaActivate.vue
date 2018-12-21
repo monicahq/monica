@@ -104,9 +104,7 @@ export default {
             default: false
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             errorMessage: '',
@@ -118,27 +116,7 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
-    mounted() {
-        this.prepareComponent();
-    },
-
     methods: {
-        /**
-             * Prepare the component.
-             */
-        prepareComponent() {
-        },
-
         register() {
             axios.post('/settings/security/2fa-enable', { one_time_password: this.one_time_password })
                 .then(response => {

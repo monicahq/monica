@@ -32,26 +32,18 @@ export default {
             default: true,
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             isActive: false,
         };
     },
 
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.isActive = this.active;
         },

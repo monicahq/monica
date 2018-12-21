@@ -41,8 +41,8 @@
             {{ $t('app.copy') }}
           </a>
           <!--
-                    <a @click="download" class="btn">{{ $t('app.download') }}</a>
-                    -->
+            <a @click="download" class="btn">{{ $t('app.download') }}</a>
+            -->
           <a class="btn" @click="closeRecoveryModal">
             {{ $t('app.close') }}
           </a>
@@ -54,15 +54,14 @@
 
 <script>
 import { SweetModal, SweetModalTab } from 'sweet-modal-vue';
+
 export default {
 
     components: {
         SweetModal,
         SweetModalTab
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             codes: [],
@@ -74,16 +73,6 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },

@@ -13,7 +13,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-//Vue.component('example', require('./components/people/dashboard/kids.vue'));
 const Vue = require('vue');
 
 // Notifications

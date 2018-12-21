@@ -251,9 +251,7 @@
 
 <script>
 export default {
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             contactFieldTypes: [],
@@ -281,24 +279,11 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 1.x).
-         */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-             * Prepare the component.
-             */
         prepareComponent() {
             this.dirltr = this.$root.htmldir == 'ltr';
             this.getContactFieldTypes();

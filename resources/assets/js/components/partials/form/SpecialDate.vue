@@ -138,9 +138,7 @@ export default {
             default: 0,
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             selectedDate: null,
@@ -152,9 +150,6 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.dirltr = this.$root.htmldir == 'ltr';
         this.selectedOption = this.value;
