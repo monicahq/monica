@@ -6,7 +6,6 @@ use Sabre\VObject\Reader;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
 use App\Models\Contact\Gender;
-use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use Sabre\VObject\Component\VCard;
@@ -102,7 +101,6 @@ trait VCardImporter
         }
 
         if ($vcard->ADR) {
-
             $request = [
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
