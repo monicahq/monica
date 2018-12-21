@@ -116,7 +116,6 @@ class AddressesController extends Controller
     {
         $request = [
             'account_id' => auth()->user()->account->id,
-            'contact_id' => $contact->id,
             'address_id' => $address->id,
         ];
 

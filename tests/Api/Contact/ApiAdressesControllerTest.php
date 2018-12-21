@@ -219,111 +219,109 @@ class ApiAdressesControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    // public function test_address_put()
-    // {
-    //     $user = $this->signin();
-    //     $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-    //     $address = factory(Address::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'name' => 'address name',
-    //         'street' => 'street',
-    //         'postal_code' => '12345',
-    //         'country' => 'FR',
-    //     ]);
+    public function test_it_updates_an_address()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $address = factory(Address::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'name' => 'address name',
+        ]);
 
-    //     $response = $this->json('PUT', '/api/addresses/'.$address->id, [
-    //         'contact_id' => $contact->id,
-    //         'name' => 'address name up',
-    //         'country' => 'US',
-    //     ]);
+        $response = $this->json('PUT', '/api/addresses/'.$address->id, [
+            'contact_id' => $contact->id,
+            'name' => 'address name up',
+            'country' => 'US',
+        ]);
 
-    //     $response->assertStatus(200);
+        $response->assertStatus(200);
 
-    //     $response->assertJsonFragment([
-    //         'object' => 'address',
-    //         'id' => $address->id,
-    //         'name' => 'address name up',
-    //         'country' => [
-    //             'object' => 'country',
-    //             'id' => 'US',
-    //             'name' => 'United States',
-    //             'iso' => 'US',
-    //         ],
-    //         'street' => 'street',
-    //         'postal_code' => '12345',
-    //     ]);
+        $response->assertJsonFragment([
+            'object' => 'address',
+            'id' => $address->id,
+            'name' => 'address name up',
+            'country' => [
+                'object' => 'country',
+                'id' => 'US',
+                'name' => 'United States',
+                'iso' => 'US',
+            ],
+            'postal_code' => $address->place->postal_code,
+        ]);
 
-    //     $this->assertDatabaseHas('addresses', [
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'id' => $address->id,
-    //         'name' => 'address name up',
-    //         'street' => 'street',
-    //         'postal_code' => '12345',
-    //         'country' => 'US',
-    //     ]);
-    // }
+        $this->assertDatabaseHas('addresses', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'place_id' => $address->place->id,
+            'id' => $address->id,
+            'name' => 'address name up',
+        ]);
+    }
 
-    // public function test_address_put_bad_account()
-    // {
-    //     $user = $this->signin();
+    public function test_updating_address_generates_an_error()
+    {
+        $user = $this->signin();
+        $address = factory(Address::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-    //     $account = factory(Account::class)->create();
-    //     $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-    //     $address = factory(Address::class)->create([
-    //         'account_id' => $account->id,
-    //         'contact_id' => $contact->id,
-    //         'name' => 'address name',
-    //         'street' => 'street',
-    //         'postal_code' => '12345',
-    //         'country' => 'FR',
-    //     ]);
+        $response = $this->json('PUT', '/api/addresses/'.$address->id, []);
 
-    //     $response = $this->json('PUT', '/api/addresses/'.$address->id, [
-    //         'contact_id' => $contact->id,
-    //         'name' => 'address name up',
-    //         'country' => 'US',
-    //     ]);
+        $this->expectInvalidParameter($response, [
+            'The contact id field is required.',
+        ]);
+    }
 
-    //     $this->expectNotFound($response);
-    // }
+    public function test_it_cant_update_an_address_if_account_is_not_linked_to_address()
+    {
+        $user = $this->signin();
 
-    // public function test_address_delete()
-    // {
-    //     $user = $this->signin();
-    //     $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-    //     $address = factory(Address::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'name' => 'address name',
-    //         'street' => 'street',
-    //         'postal_code' => '12345',
-    //         'country' => 'FR',
-    //     ]);
+        $contact = factory(Contact::class)->create([]);
+        $address = factory(Address::class)->create([
+            'account_id' => $user->account->id,
+        ]);
 
-    //     $response = $this->json('DELETE', '/api/addresses/'.$address->id);
+        $response = $this->json('PUT', '/api/addresses/'.$address->id, [
+            'contact_id' => $contact->id,
+        ]);
 
-    //     $response->assertStatus(200);
+        $this->expectNotFound($response);
+    }
 
-    //     $response->assertJsonFragment([
-    //         'id' => $address->id,
-    //         'deleted' => true,
-    //     ]);
+    public function test_it_deletes_an_address()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
+        $address = factory(Address::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+        ]);
 
-    //     $this->assertDatabaseMissing('addresses', [
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact->id,
-    //         'id' => $address->id,
-    //     ]);
-    // }
+        $response = $this->json('DELETE', '/api/addresses/'.$address->id);
 
-    // public function test_address_delete_error()
-    // {
-    //     $user = $this->signin();
+        $response->assertStatus(200);
 
-    //     $response = $this->json('DELETE', '/api/addresses/0');
+        $response->assertJsonFragment([
+            'id' => $address->id,
+            'deleted' => true,
+        ]);
 
-    //     $this->expectNotFound($response);
-    // }
+        $this->assertDatabaseMissing('addresses', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'id' => $address->id,
+        ]);
+    }
+
+    public function test_address_delete_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('DELETE', '/api/addresses/0');
+
+        $this->expectInvalidParameter($response, [
+            'The selected address id is invalid.'
+        ]);
+    }
 }

@@ -20,7 +20,6 @@ class DestroyAddressTest extends TestCase
 
         $request = [
             'account_id' => $address->account_id,
-            'contact_id' => $address->contact_id,
             'address_id' => $address->id,
         ];
 
@@ -38,7 +37,6 @@ class DestroyAddressTest extends TestCase
 
         $request = [
             'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
             'address_id' => $address->id,
         ];
 
@@ -50,7 +48,6 @@ class DestroyAddressTest extends TestCase
     {
         $request = [
             'account_id' => 11111111,
-            'contact_id' => 11111111,
             'address_id' => 11111111,
         ];
 
