@@ -114,7 +114,7 @@ class UpdateBirthdayInformation extends BaseService
             return;
         }
 
-        if ($data['add_reminder'] == true) {
+        if ($data['add_reminder']) {
             $specialDate->setReminder(
                 'year',
                 1,
