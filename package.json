@@ -40,6 +40,7 @@
     "v-selectmenu": "^1.0.5",
     "vue": "^2.5.16",
     "vue-checkbox-radio": "^0.6.0",
+    "vue-clipboard2": "^0.2.1",
     "vue-directive-tooltip": "^1.4.2",
     "vue-good-table": "^2.13.0",
     "vue-i18n": "^8.0.0",

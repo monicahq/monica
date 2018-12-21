@@ -34,7 +34,7 @@
         "pragmarx/countries-laravel": "^0.6.1",
         "pragmarx/google2fa": "^3.0",
         "pragmarx/google2fa-laravel": "^0.2",
-        "pragmarx/recovery": "^0.1",
+        "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1.1",
         "ralouphie/mimey": "^2.0",
         "sabre/dav": "^3.2",

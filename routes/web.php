@@ -23,6 +23,8 @@ Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvita
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
+    Route::get('/auth/login-recovery', 'Auth\RecoveryLoginController@get')->name('recovery.login');
+    Route::post('/auth/login-recovery', 'Auth\RecoveryLoginController@store');
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
@@ -275,6 +277,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('2fa-disable');
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
             Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('u2f-register');
+
+            Route::post('/settings/security/generate-recovery-codes', 'Settings\\RecoveryCodesController@store');
+            Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');
         });
     });
 });

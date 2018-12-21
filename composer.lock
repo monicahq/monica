@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f25db007a56d15e264971ec72221e9f7",
+    "content-hash": "a8211d953d18fad45debb466840f13dd",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2387,7 +2387,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "developer"
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",

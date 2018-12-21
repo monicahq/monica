@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Add ability to generate recovery codes in order to bypass 2FA/U2F
 * Add ability to indicate latitude and longitude to addresses
 * Add ability to upload photos
 * Add ability to indicate how you felt when logging a call

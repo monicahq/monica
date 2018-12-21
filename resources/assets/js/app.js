@@ -44,6 +44,10 @@ import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css'
 Vue.use(VueGoodTablePlugin);
 
+import VueClipboard from 'vue-clipboard2';
+VueClipboard.config.autoSetContainer = true;
+Vue.use(VueClipboard);
+
 // Custom components
 Vue.component(
     'passport-clients',
@@ -254,6 +258,10 @@ Vue.component(
 Vue.component(
     'u2f-connector',
     require('./components/settings/U2fConnector.vue')
+);
+Vue.component(
+    'recovery-codes',
+    require('./components/settings/RecoveryCodes.vue')
 );
 
 Vue.component(
