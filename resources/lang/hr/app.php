@@ -12,6 +12,7 @@ return [
     'download' => 'Preuzmi',
     'save_close' => 'Spremi i zatvori',
     'close' => 'Zatvori',
+    'copy' => 'Copy',
     'create' => 'Dodaj',
     'remove' => 'Izbriši',
     'revoke' => 'Opozovi',
