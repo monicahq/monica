@@ -12,6 +12,7 @@ return [
     'download' => 'Download',
     'save_close' => 'Save and close',
     'close' => 'Cerrar',
+    'copy' => 'Copy',
     'create' => 'Crear',
     'remove' => 'Remover',
     'revoke' => 'Revocar',
