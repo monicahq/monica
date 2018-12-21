@@ -212,9 +212,7 @@ class CreateCallTest extends TestCase
         ];
 
         $this->expectException(MissingParameterException::class);
-
-        $createConversation = new CreateCall;
-        $call = $createConversation->execute($request);
+        (new CreateCall)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -230,7 +228,6 @@ class CreateCallTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-
-        $createConversation = (new CreateCall)->execute($request);
+        (new CreateCall)->execute($request);
     }
 }

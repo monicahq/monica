@@ -29,122 +29,122 @@ class ApiTaskControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    // public function test_tasks_get_all()
-    // {
-    //     $user = $this->signin();
-    //     $contact1 = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $task1 = factory(Task::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact1->id,
-    //     ]);
-    //     $contact2 = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $task2 = factory(Task::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact2->id,
-    //     ]);
+    public function test_tasks_get_all()
+    {
+        $user = $this->signin();
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $task1 = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $task2 = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+        ]);
 
-    //     $response = $this->json('GET', '/api/tasks');
+        $response = $this->json('GET', '/api/tasks');
 
-    //     $response->assertStatus(200);
-    //     $response->assertJsonStructure([
-    //         'data' => ['*' => $this->jsonTask],
-    //     ]);
-    //     $response->assertJsonFragment([
-    //         'object' => 'task',
-    //         'id' => $task1->id,
-    //     ]);
-    //     $response->assertJsonFragment([
-    //         'object' => 'task',
-    //         'id' => $task2->id,
-    //     ]);
-    // }
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonTask],
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'task',
+            'id' => $task1->id,
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'task',
+            'id' => $task2->id,
+        ]);
+    }
 
-    // public function test_tasks_get_contact_all()
-    // {
-    //     $user = $this->signin();
-    //     $contact1 = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $task1 = factory(Task::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact1->id,
-    //     ]);
-    //     $contact2 = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $task2 = factory(Task::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact2->id,
-    //     ]);
+    public function test_tasks_get_contact_all()
+    {
+        $user = $this->signin();
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $task1 = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+        ]);
+        $contact2 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $task2 = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact2->id,
+        ]);
 
-    //     $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/tasks');
+        $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/tasks');
 
-    //     $response->assertStatus(200);
-    //     $response->assertJsonStructure([
-    //         'data' => ['*' => $this->jsonTask],
-    //     ]);
-    //     $response->assertJsonFragment([
-    //         'object' => 'task',
-    //         'id' => $task1->id,
-    //     ]);
-    //     $response->assertJsonMissingExact([
-    //         'object' => 'task',
-    //         'id' => $task2->id,
-    //     ]);
-    // }
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonTask],
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'task',
+            'id' => $task1->id,
+        ]);
+        $response->assertJsonMissingExact([
+            'object' => 'task',
+            'id' => $task2->id,
+        ]);
+    }
 
-    // public function test_tasks_get_contact_all_error()
-    // {
-    //     $user = $this->signin();
+    public function test_tasks_get_contact_all_error()
+    {
+        $user = $this->signin();
 
-    //     $response = $this->json('GET', '/api/contacts/0/tasks');
+        $response = $this->json('GET', '/api/contacts/0/tasks');
 
-    //     $this->expectNotFound($response);
-    // }
+        $this->expectNotFound($response);
+    }
 
-    // public function test_tasks_get_one()
-    // {
-    //     $user = $this->signin();
-    //     $contact1 = factory(Contact::class)->create([
-    //         'account_id' => $user->account->id,
-    //     ]);
-    //     $task1 = factory(Task::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact1->id,
-    //     ]);
-    //     $task2 = factory(Task::class)->create([
-    //         'account_id' => $user->account->id,
-    //         'contact_id' => $contact1->id,
-    //     ]);
+    public function test_tasks_get_one()
+    {
+        $user = $this->signin();
+        $contact1 = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $task1 = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+        ]);
+        $task2 = factory(Task::class)->create([
+            'account_id' => $user->account->id,
+            'contact_id' => $contact1->id,
+        ]);
 
-    //     $response = $this->json('GET', '/api/tasks/'.$task1->id);
+        $response = $this->json('GET', '/api/tasks/'.$task1->id);
 
-    //     $response->assertStatus(200);
-    //     $response->assertJsonStructure([
-    //         'data' => $this->jsonTask,
-    //     ]);
-    //     $response->assertJsonFragment([
-    //         'object' => 'task',
-    //         'id' => $task1->id,
-    //     ]);
-    //     $response->assertJsonMissingExact([
-    //         'object' => 'task',
-    //         'id' => $task2->id,
-    //     ]);
-    // }
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => $this->jsonTask,
+        ]);
+        $response->assertJsonFragment([
+            'object' => 'task',
+            'id' => $task1->id,
+        ]);
+        $response->assertJsonMissingExact([
+            'object' => 'task',
+            'id' => $task2->id,
+        ]);
+    }
 
-    // public function test_tasks_get_one_error()
-    // {
-    //     $user = $this->signin();
+    public function test_tasks_get_one_error()
+    {
+        $user = $this->signin();
 
-    //     $response = $this->json('GET', '/api/tasks/0');
+        $response = $this->json('GET', '/api/tasks/0');
 
-    //     $this->expectNotFound($response);
-    // }
+        $this->expectNotFound($response);
+    }
 
     public function test_it_create_a_task_associated_to_a_contact()
     {

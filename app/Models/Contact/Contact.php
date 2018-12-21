@@ -25,8 +25,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
@@ -1141,7 +1141,7 @@ class Contact extends Model
      */
     public function getAddressesForAPI()
     {
-        return AddressShortResource::collection($this->addresses);
+        return AddressResource::collection($this->addresses);
     }
 
     /**
@@ -1409,7 +1409,7 @@ class Contact extends Model
     }
 
     /**
-     * Delete the contact and all the related object.
+     * Delete all related objects.
      *
      * @return bool
      */
@@ -1467,14 +1467,14 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $relatedContact = Relationship::where('account_id', $this->account_id)
-            ->where('contact_is', $this->id)
-            ->first();
+        $account = $this;
 
-        if ($relatedContact) {
-            return self::where('account_id', $this->account_id)
-                ->find($relatedContact->of_contact);
-        }
+        return self::setEagerLoads([])->where('account_id', $this->account_id)
+            ->where('id', function ($query) use ($account) {
+                $query->select('of_contact')->from('relationships')->where('account_id', $account->account_id)
+                    ->where('contact_is', $account->id);
+            })
+            ->first();
     }
 
     /**

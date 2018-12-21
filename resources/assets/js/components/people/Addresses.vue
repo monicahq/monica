@@ -44,6 +44,11 @@
               ({{ contactAddress.name }})
             </span>
 
+            <span v-if="!contactAddress.address"></span>
+            <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank" class="light-silver">
+              ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
+            </a>
+
             <div v-if="editMode" class="fr">
               <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>
               <i class="fa fa-trash-o pointer" @click="trash(contactAddress)"></i>
@@ -93,6 +98,18 @@
                   {{ country.country }}
                 </option>
               </select>
+            </div>
+            <div class="mt3">
+              <label class="db fw6 lh-copy f6">
+                {{ $t('people.contact_address_form_latitude') }}
+              </label>
+              <input v-model="updateForm.latitude" class="pa2 db w-100" type="text" />
+            </div>
+            <div class="mt3">
+              <label class="db fw6 lh-copy f6">
+                {{ $t('people.contact_address_form_latitude') }}
+              </label>
+              <input v-model="updateForm.longitude" class="pa2 db w-100" type="text" />
             </div>
             <div class="lh-copy mt3">
               <a class="btn btn-primary" @click.prevent="update(contactAddress)">
@@ -159,6 +176,18 @@
             </option>
           </select>
         </div>
+        <div class="mt3">
+          <label class="db fw6 lh-copy f6">
+            {{ $t('people.contact_address_form_latitude') }}
+          </label>
+          <input v-model="createForm.latitude" class="pa2 db w-100" type="text" />
+        </div>
+        <div class="mt3">
+          <label class="db fw6 lh-copy f6">
+            {{ $t('people.contact_address_form_latitude') }}
+          </label>
+          <input v-model="createForm.longitude" class="pa2 db w-100" type="text" />
+        </div>
         <div class="lh-copy mt3">
           <a class="btn btn-primary" @click.prevent="store">
             {{ $t('app.add') }}
@@ -175,16 +204,10 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-    },
-
+    props: ['hash'],
     /*
-     * The component's data.
-     */
+         * The component's data.
+         */
     data() {
         return {
             contactAddresses: [],
@@ -199,7 +222,9 @@ export default {
                 street: '',
                 city: '',
                 province: '',
-                postal_code: ''
+                postal_code: '',
+                latitude: 0,
+                longitude: 0,
             },
 
             updateForm: {
@@ -209,31 +234,20 @@ export default {
                 street: '',
                 city: '',
                 province: '',
-                postal_code: ''
+                postal_code: '',
+                latitude: 0,
+                longitude: 0,
             },
 
             dirltr: true,
         };
     },
 
-    /**
-     * Prepare the component (Vue 1.x).
-     */
-    ready() {
-        this.prepareComponent();
-    },
-
-    /**
-     * Prepare the component (Vue 2.x).
-     */
     mounted() {
         this.prepareComponent();
     },
 
     methods: {
-        /**
-         * Prepare the component.
-         */
         prepareComponent() {
             this.dirltr = this.$root.htmldir == 'ltr';
             this.getAddresses();
@@ -261,6 +275,8 @@ export default {
             this.createForm.city = '';
             this.createForm.province = '';
             this.createForm.postal_code = '';
+            this.createForm.latitude = '';
+            this.createForm.longitude = '';
         },
 
         toggleAdd() {
@@ -277,6 +293,8 @@ export default {
             this.updateForm.city = contactAddress.city;
             this.updateForm.province = contactAddress.province;
             this.updateForm.postal_code = contactAddress.postal_code;
+            this.updateForm.latitude = contactAddress.latitude;
+            this.updateForm.longitude = contactAddress.longitude;
         },
 
         store() {
