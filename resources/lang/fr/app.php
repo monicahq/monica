@@ -12,6 +12,7 @@ return [
     'download' => 'Télécharger',
     'save_close' => 'Enregistrer et fermer',
     'close' => 'Fermer',
+    'copy' => 'Copy',
     'create' => 'Créer',
     'remove' => 'Enlever',
     'revoke' => 'Révoquer',
