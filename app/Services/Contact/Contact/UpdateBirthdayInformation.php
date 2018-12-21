@@ -58,7 +58,7 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function manageBirthday(array $data)
     {
-        if (!$data['is_date_known']) {
+        if (! $data['is_date_known']) {
             return;
         }
 
@@ -66,7 +66,7 @@ class UpdateBirthdayInformation extends BaseService
             $this->approximate($data);
         }
 
-        if (!$data['is_age_based']) {
+        if (! $data['is_age_based']) {
             $this->exact($data);
         }
     }
