@@ -109,9 +109,13 @@ return [
     | Recovery codes generation
     |--------------------------------------------------------------------------
     |
-    | count: number of recovery codes to generate
-    | blocks: number of blocks in one code
-    | chars: number of characters per block
+    | Recovery codes can be used to access your account in the event you lost
+    | access to the device used to generate or receive two-factor
+    | authentication codes. 
+    |
+    | * count: number of recovery codes to generate
+    | * blocks: number of blocks in one code
+    | * chars: number of characters per block
     |
     */
 
