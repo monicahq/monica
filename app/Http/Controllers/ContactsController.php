@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
+use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
@@ -337,6 +338,24 @@ class ContactsController extends Controller
         ];
 
         $contact = (new UpdateContact)->execute($data);
+
+        if ($request->file('avatar') != '') {
+            if ($contact->has_avatar) {
+                try {
+                    $contact->deleteAvatars();
+                } catch (\Exception $e) {
+                    return back()
+                        ->withInput()
+                        ->withErrors(trans('app.error_save'));
+                }
+            }
+            $contact->has_avatar = true;
+            $contact->avatar_location = config('filesystems.default');
+            $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
+            $contact->save();
+        }
+
+        dispatch(new ResizeAvatars($contact));
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));

@@ -39,6 +39,7 @@ class DestroyContact extends BaseService
 
         $this->destroyRelationships($data);
 
+        $this->contact->deleteAvatars();
         $this->contact->deleteEverything();
 
         return true;
