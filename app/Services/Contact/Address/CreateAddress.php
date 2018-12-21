@@ -41,19 +41,17 @@ class CreateAddress extends BaseService
     {
         $this->validate($data);
 
-        $contact = Contact::where('account_id', $data['account_id'])
+        Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
         $place = $this->createPlace($data);
 
-        $address = Address::create([
+        return Address::create([
             'account_id' => $data['account_id'],
             'contact_id' => $data['contact_id'],
             'place_id' => $place->id,
             'name' => $this->nullOrValue($data, 'name'),
         ]);
-
-        return $address;
     }
 
     /**

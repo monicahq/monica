@@ -45,7 +45,7 @@ class UpdateAddress extends BaseService
             ->where('contact_id', $data['contact_id'])
             ->findOrFail($data['address_id']);
 
-        $place = $this->updatePlace($data, $address);
+        $this->updatePlace($data, $address);
 
         $address->update([
             'name' => $this->nullOrValue($data, 'name'),

@@ -36,7 +36,7 @@ class CreatePlace extends BaseService
     {
         $this->validate($data);
 
-        $place = Place::create([
+        return Place::create([
             'account_id' => $data['account_id'],
             'street' => $this->nullOrValue($data, 'street'),
             'city' => $this->nullOrValue($data, 'city'),
@@ -46,7 +46,5 @@ class CreatePlace extends BaseService
             'latitude' => $this->nullOrValue($data, 'latitude'),
             'longitude' => $this->nullOrValue($data, 'longitude'),
         ]);
-
-        return $place;
     }
 }
