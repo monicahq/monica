@@ -12,6 +12,7 @@ return [
     'download' => 'Download',
     'save_close' => 'Save and close',
     'close' => 'Kapat',
+    'copy' => 'Copy',
     'create' => 'Oluştur',
     'remove' => 'Kaldır',
     'revoke' => 'Geri al',
