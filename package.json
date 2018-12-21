@@ -22,7 +22,7 @@
   "dependencies": {
     "animate.css": "^3.6.1",
     "axios": "^0.18.0",
-    "bootstrap": "4.0.0-alpha.2",
+    "bootstrap": "4.2.1",
     "font-awesome": "^4.7.0",
     "gulp": "^3.9.1",
     "hint.css": "^2.3.2",
