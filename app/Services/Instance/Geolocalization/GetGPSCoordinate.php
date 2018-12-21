@@ -45,7 +45,7 @@ class GetGPSCoordinate extends BaseService
      * @param Place $place
      * @return string|null
      */
-    private function getQuery(Place $place)
+    private function buildQuery(Place $place)
     {
         if (! config('monica.enable_geolocation')) {
             return;
@@ -72,7 +72,7 @@ class GetGPSCoordinate extends BaseService
      */
     private function query(Place $place)
     {
-        $query = $this->getQuery($place);
+        $query = $this->buildQuery($place);
 
         if (is_null($query)) {
             return;

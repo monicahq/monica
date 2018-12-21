@@ -29,7 +29,6 @@
         "matriphe/iso-639": "^1.0",
         "moneyphp/money": "^3.1",
         "monicahq/laravel-cloudflare": "^1.0",
-        "naughtonium/laravel-dark-sky": "^1.2",
         "ok/ipstack-client": "^1.2",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/countries-laravel": "^0.6.1",

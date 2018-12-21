@@ -202,12 +202,8 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_has_many_weathers()
     {
-        $contact = factory(Contact::class)->create([]);
-        $weather = factory(Weather::class)->create([
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-        ]);
-        $this->assertTrue($contact->account->weathers()->exists());
+        $weather = factory(Weather::class)->create([]);
+        $this->assertTrue($weather->account->weathers()->exists());
     }
 
     public function test_it_has_many_places()

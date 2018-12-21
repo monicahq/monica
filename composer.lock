@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b184fa633e4049f95e6632dc6dec86f",
+    "content-hash": "f25db007a56d15e264971ec72221e9f7",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3269,59 +3269,6 @@
             "time": "2016-12-03T22:08:25+00:00"
         },
         {
-            "name": "naughtonium/laravel-dark-sky",
-            "version": "1.2.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/naughtonium/laravel-dark-sky.git",
-                "reference": "259edd5edc38016819a90debe302f1eed5d0b8af"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/naughtonium/laravel-dark-sky/zipball/259edd5edc38016819a90debe302f1eed5d0b8af",
-                "reference": "259edd5edc38016819a90debe302f1eed5d0b8af",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "~5.3|~6.0",
-                "illuminate/support": "~5.3",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Naughtonium\\LaravelDarkSky\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jack Naughton",
-                    "email": "jack.naughton18@gmail.com",
-                    "homepage": "http://naughton.io",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Provides a Wrapper for the DarkSky API",
-            "homepage": "https://github.com/naughtonium/laravel-dark-sky",
-            "keywords": [
-                "laravel-dark-sky",
-                "naughtonium"
-            ],
-            "time": "2018-03-22T21:59:06+00:00"
-        },
-        {
             "name": "nesbot/carbon",
             "version": "1.36.1",
             "source": {
@@ -6067,16 +6014,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.26.0",
+            "version": "v6.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "ba85ad7c1618462083a7e9a542ded929232e8bff"
+                "reference": "e6be31eb114a0dbcbf50686d106464ab90926c85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/ba85ad7c1618462083a7e9a542ded929232e8bff",
-                "reference": "ba85ad7c1618462083a7e9a542ded929232e8bff",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/e6be31eb114a0dbcbf50686d106464ab90926c85",
+                "reference": "e6be31eb114a0dbcbf50686d106464ab90926c85",
                 "shasum": ""
             },
             "require": {
@@ -6118,7 +6065,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2018-12-11T21:33:24+00:00"
+            "time": "2018-12-21T08:38:55+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

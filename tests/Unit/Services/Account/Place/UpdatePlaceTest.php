@@ -36,7 +36,7 @@ class UpdatePlaceTest extends TestCase
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
             'account_id' => $place->account_id,
-            'latitude' => null,
+            'latitude' => 10,
             'city' => 'New York City',
         ]);
 
@@ -75,7 +75,7 @@ class UpdatePlaceTest extends TestCase
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
-            'account_id' => $account->id,
+            'account_id' => $place->account_id,
             'street' => '12',
             'latitude' => 34.0736204,
             'longitude' => -118.4003563,

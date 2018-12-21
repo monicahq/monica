@@ -4,8 +4,10 @@ namespace App\Services\Instance\Weather;
 
 use App\Services\BaseService;
 use App\Models\Account\Weather;
+use App\Models\Account\Place;
 use App\Exceptions\MissingEnvVariableException;
-use Naughtonium\LaravelDarkSky\Facades\DarkSky;
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 
 class GetWeatherInformation extends BaseService
 {
@@ -25,12 +27,13 @@ class GetWeatherInformation extends BaseService
      * Get the weather information.
      *
      * @param array $data
-     * @return Weather
+     * @return Weather|null
      * @throws App\Exceptions\MissingParameterException if the array that is given in parameter is not valid
      * @throws App\Exceptions\MissingEnvVariableException if the weather services are not enabled
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException if the Place object is not found
+     * @throws GuzzleHttp\Exception\ClientException if the request to Darksky crashed
      */
-    public function execute(array $data) : Weather
+    public function execute(array $data)
     {
         $this->validateWeatherEnvVariables();
 
@@ -38,26 +41,14 @@ class GetWeatherInformation extends BaseService
 
         $place = Place::findOrFail($data['place_id']);
 
+        // If the latitude is null, it means that geocoding information is
+        // missing. Lat/longitude are fetched when the place is actually
+        // created - so in this case, there is nothing to do.
         if (is_null($place->latitude)) {
             return;
         }
 
-        // is the weather service enable in the instance
-        // is darskhy api key provided
-        // does the place have long/lat
-        // can we fetch long/lat with the service (from ENV file)?
-        // fetch long/lat
-        // then request weather
-
-        $weather = new Weather();
-
-        $weather->weather_json = DarkSky::location($place->latitude, $place->longitude)
-                    ->excludes(['alerts', 'minutely', 'hourly', 'daily', 'flags'])
-                    ->get();
-
-        $weather->save();
-
-        return $weather;
+        return $this->query($place);
     }
 
     /**
@@ -71,8 +62,49 @@ class GetWeatherInformation extends BaseService
             throw new MissingEnvVariableException();
         }
 
-        if (is_null(config('monica.enable_weather'))) {
+        if (is_null(config('monica.darksky_api_key'))) {
             throw new MissingEnvVariableException();
         }
+    }
+
+    /**
+     * Actually make the call to Darksky.
+     *
+     * @param Place $place
+     * @return Weather
+     * @throws Exception
+     */
+    private function query(Place $place) : Weather
+    {
+        $query = $this->buildQuery($place);
+
+        $client = new GuzzleClient();
+        $response = $client->request('GET', $query);
+        $response = json_decode($response->getBody());
+
+        $weather = new Weather();
+        $weather->weather_json = $response;
+        $weather->account_id = $place->account_id;
+        $weather->place_id = $place->id;
+        $weather->save();
+
+        return $weather;
+    }
+
+    /**
+     * Prepare the query that will be send to Darksky.
+     *
+     * @param Place $place
+     * @return string
+     */
+    private function buildQuery(Place $place)
+    {
+        $query = 'https://api.darksky.net/forecast/';
+        $query .= config('monica.darksky_api_key');
+        $query .= '/';
+        $query .= $place->latitude.','.$place->longitude;
+        $query .= '?exclude=alerts,minutely,hourly,daily,flags';
+
+        return $query;
     }
 }
