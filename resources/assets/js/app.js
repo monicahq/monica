@@ -13,7 +13,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-//Vue.component('example', require('./components/people/dashboard/kids.vue'));
 const Vue = require('vue');
 
 // Notifications
@@ -43,6 +42,10 @@ Vue.use(vSelectMenu);
 import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 Vue.use(VueGoodTablePlugin);
+
+import VueClipboard from 'vue-clipboard2';
+VueClipboard.config.autoSetContainer = true;
+Vue.use(VueClipboard);
 
 // Custom components
 Vue.component(
@@ -254,6 +257,10 @@ Vue.component(
 Vue.component(
     'u2f-connector',
     require('./components/settings/U2fConnector.vue')
+);
+Vue.component(
+    'recovery-codes',
+    require('./components/settings/RecoveryCodes.vue')
 );
 
 Vue.component(

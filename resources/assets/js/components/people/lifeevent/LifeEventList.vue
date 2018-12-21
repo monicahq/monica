@@ -611,9 +611,9 @@ export default {
         },
 
         /**
-             * @TODO: do not refresh the list from the server, simply add
-             * the new object to the collection
-             */
+          * @TODO: do not refresh the list from the server, simply add
+          * the new object to the collection
+          */
         updateLifeEventsList(updatedLifeEvent) {
             this.getLifeEvents();
             window.location.href='/people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id;

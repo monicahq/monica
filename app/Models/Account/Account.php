@@ -15,6 +15,7 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
@@ -428,6 +429,26 @@ class Account extends Model
     }
 
     /**
+     * Get the Places records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
+
+    /**
+     * Get the Addresses records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
@@ -727,9 +748,10 @@ class Account extends Model
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
         return $this->reminders()
-            ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
-            ->orderBy('next_expected_date', 'asc')
-            ->get();
+                     ->with('contact')
+                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
+                     ->orderBy('next_expected_date', 'asc')
+                     ->get();
     }
 
     /**

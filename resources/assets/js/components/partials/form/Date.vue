@@ -40,9 +40,7 @@ export default {
             default: '',
         },
     },
-    /*
-         * The component's data.
-         */
+
     data() {
         return {
             value: '',
@@ -52,9 +50,6 @@ export default {
         };
     },
 
-    /**
-         * Prepare the component (Vue 2.x).
-         */
     mounted() {
         this.language = Languages[this.locale];
         this.selectedDate = moment(this.defaultDate, this.exchangeFormat()).toDate();
@@ -72,8 +67,8 @@ export default {
         },
 
         /**
-             * Update the value of hidden input, in exchange format value
-             */
+          * Update the value of hidden input, in exchange format value
+          */
         update(date) {
             var mdate = moment(date);
             if (! mdate.isValid()) {
@@ -83,8 +78,8 @@ export default {
         },
 
         /**
-             * Exchange format with controller (moment format type)
-             */
+          * Exchange format with controller (moment format type)
+          */
         exchangeFormat() {
             return 'YYYY-MM-DD';
         }

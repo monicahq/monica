@@ -35,6 +35,11 @@
               </div>
               @endif
 
+              <div class="form-group links">
+                <ul>
+                  <li>{!! trans('auth.use_recovery', ['url' => route('recovery.login')]) !!}</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
