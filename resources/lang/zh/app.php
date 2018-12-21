@@ -12,6 +12,7 @@ return [
     'download' => '下载',
     'save_close' => '保存并关闭',
     'close' => '关闭',
+    'copy' => 'Copy',
     'create' => '创建',
     'remove' => '删除',
     'revoke' => '撤销',
