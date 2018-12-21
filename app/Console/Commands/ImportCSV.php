@@ -9,6 +9,7 @@ use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Address\CreateAddress;
 
 class ImportCSV extends Command
 {
@@ -167,14 +168,16 @@ class ImportCSV extends Command
         }
 
         if ($postalCode || $province || $street || $city) {
-            Address::firstOrCreate([
+            $request = [
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'street' => $street,
                 'city' => $city,
                 'province' => $province,
                 'postal_code' => $postalCode,
-            ]);
+            ];
+
+            (new CreateAddress)->execute($request);
         }
 
         if (! empty($data[42])) {

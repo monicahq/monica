@@ -15,6 +15,7 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
@@ -425,6 +426,26 @@ class Account extends Model
     public function photos()
     {
         return $this->hasMany(Photo::class);
+    }
+
+    /**
+     * Get the Places records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
+
+    /**
+     * Get the Addresses records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
     }
 
     /**

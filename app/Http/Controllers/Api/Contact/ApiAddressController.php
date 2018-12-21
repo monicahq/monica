@@ -1,17 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\Api\ApiController;
+use App\Exceptions\MissingParameterException;
+use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Address\UpdateAddress;
+use App\Services\Contact\Address\DestroyAddress;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\Address as AddressResource;
 
 class ApiAddressController extends ApiController
 {
+    /**
+     * Get the list of addresses.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        try {
+            $addresses = auth()->user()->account->addresses()
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return AddressResource::collection($addresses);
+    }
+
     /**
      * Get the detail of a given address.
      * @param  Request $request
@@ -32,23 +54,26 @@ class ApiAddressController extends ApiController
 
     /**
      * Store the address.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
         try {
-            $address = Address::create(
+            $address = (new CreateAddress)->execute(
                 $request->all()
-                + ['account_id' => auth()->user()->account_id]
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                    ]
             );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new AddressResource($address);
@@ -63,81 +88,46 @@ class ApiAddressController extends ApiController
     public function update(Request $request, $addressId)
     {
         try {
-            $address = Address::where('account_id', auth()->user()->account_id)
-                ->where('id', $addressId)
-                ->firstOrFail();
+            $address = (new UpdateAddress)->execute(
+                $request->all()
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                    'address_id' => $addressId,
+                ]
+            );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        }
-
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
-        try {
-            $address->update($request->all());
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new AddressResource($address);
     }
 
     /**
-     * Validate the request for update.
-     *
-     * @param  Request $request
-     * @return mixed
-     */
-    private function validateUpdate(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'name' => 'max:255|required',
-            'street' => 'max:255|nullable',
-            'city' => 'max:255|nullable',
-            'province' => 'max:255|nullable',
-            'postal_code' => 'max:255|nullable',
-            'country' => 'max:3|nullable',
-            'latitude' => 'double|nullable',
-            'longitude' => 'double|nullable',
-            'contact_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return true;
-    }
-
-    /**
-     * Delete a address.
+     * Delete an address.
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $addressId)
     {
         try {
-            $address = Address::where('account_id', auth()->user()->account_id)
-                ->where('id', $addressId)
-                ->firstOrFail();
+            (new DestroyAddress)->execute([
+                'account_id' => auth()->user()->account->id,
+                'address_id' => $addressId,
+            ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
         }
 
-        $address->delete();
-
-        return $this->respondObjectDeleted($address->id);
+        return $this->respondObjectDeleted((int) $addressId);
     }
 
     /**
