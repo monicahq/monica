@@ -2,8 +2,10 @@
 
 namespace App\Models\Account;
 
-use App\Models\Contact\Contact;
+use App\Models\Account\Place;
+use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Weather extends Model
 {
@@ -45,13 +47,13 @@ class Weather extends Model
     }
 
     /**
-     * Get the contact record associated with the weather data.
+     * Get the place record associated with the weather data.
      *
-     * @return Contact
+     * @return Place
      */
-    public function contact()
+    public function place()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->belongsTo(Place::class);
     }
 
     /**

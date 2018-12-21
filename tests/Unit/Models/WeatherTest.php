@@ -4,6 +4,8 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Account\Weather;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class WeatherTest extends TestCase
@@ -19,13 +21,10 @@ class WeatherTest extends TestCase
         $this->assertTrue($weather->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    public function test_it_belongs_to_a_place()
     {
-        $contact = factory(Account::class)->create([]);
-        $weather = factory(Weather::class)->create([
-            'contact_id' => $contact->id,
-        ]);
-        $this->assertTrue($weather->contact()->exists());
+        $weather = factory(Weather::class)->create([]);
+        $this->assertTrue($weather->place()->exists());
     }
 
     public function test_it_gets_current_temperature()

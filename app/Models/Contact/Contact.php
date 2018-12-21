@@ -9,7 +9,6 @@ use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Models\Account\Account;
-use App\Models\Account\Weather;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
@@ -389,16 +388,6 @@ class Contact extends Model
     public function lifeEvents()
     {
         return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');
-    }
-
-    /**
-     * Get the Weather records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function weathers()
-    {
-        return $this->hasMany(Weather::class);
     }
 
     /**

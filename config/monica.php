@@ -258,5 +258,5 @@ return [
     | Darksky provides an api with 1000 free API calls per day.
     | https://darksky.net/dev/register
      */
-    'darksky_api_key' => env('DARKSKY_API_KEY', false),
+    'darksky_api_key' => env('DARKSKY_API_KEY', null),
 ];

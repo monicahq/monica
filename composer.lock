@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f25db007a56d15e264971ec72221e9f7",
+    "content-hash": "5b184fa633e4049f95e6632dc6dec86f",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.81.7",
+            "version": "3.82.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "73fdee34e6db72954a6110ff71ea5e9bf6e95e48"
+                "reference": "015d5f3a24054f773df1d3fc16bba49f8c05987e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/73fdee34e6db72954a6110ff71ea5e9bf6e95e48",
-                "reference": "73fdee34e6db72954a6110ff71ea5e9bf6e95e48",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/015d5f3a24054f773df1d3fc16bba49f8c05987e",
+                "reference": "015d5f3a24054f773df1d3fc16bba49f8c05987e",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-12-17T22:58:13+00:00"
+            "time": "2018-12-20T23:01:17+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2391,7 +2391,7 @@
                 {
                     "name": "Luís Otávio Cobucci Oblonczyk",
                     "email": "lcobucci@gmail.com",
-                    "role": "developer"
+                    "role": "Developer"
                 }
             ],
             "description": "A simple library to work with JSON Web Token and JSON Web Signature",
@@ -3594,16 +3594,16 @@
         },
         {
             "name": "nexmo/client",
-            "version": "1.5.2",
+            "version": "1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Nexmo/nexmo-php.git",
-                "reference": "f192c84ec3cc3e2657fc754e0da1a17e39ac5542"
+                "reference": "01809cc1e17a5af275913c49bb5d444eb6cc06d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/f192c84ec3cc3e2657fc754e0da1a17e39ac5542",
-                "reference": "f192c84ec3cc3e2657fc754e0da1a17e39ac5542",
+                "url": "https://api.github.com/repos/Nexmo/nexmo-php/zipball/01809cc1e17a5af275913c49bb5d444eb6cc06d4",
+                "reference": "01809cc1e17a5af275913c49bb5d444eb6cc06d4",
                 "shasum": ""
             },
             "require": {
@@ -3638,7 +3638,7 @@
                 }
             ],
             "description": "PHP Client for using Nexmo's API.",
-            "time": "2018-11-14T14:12:22+00:00"
+            "time": "2018-12-17T10:47:50+00:00"
         },
         {
             "name": "nikic/php-parser",

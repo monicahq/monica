@@ -437,7 +437,8 @@ class Account extends Model
     {
         return $this->hasMany(Weather::class);
     }
-  
+
+    /**
      * Get the Places records associated with the account.
      *
      * @return HasMany

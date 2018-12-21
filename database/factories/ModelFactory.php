@@ -508,6 +508,12 @@ $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator
 
 $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $faker) {
     return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'place_id' => function (array $data) {
+            return factory(App\Models\Account\Place::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'weather_json' => json_decode('
 {
   "latitude": 45.487685,

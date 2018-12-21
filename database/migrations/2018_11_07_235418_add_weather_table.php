@@ -16,11 +16,11 @@ class AddWeatherTable extends Migration
         Schema::create('weather', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('account_id');
-            $table->unsignedInteger('contact_id');
+            $table->unsignedInteger('place_id');
             $table->string('weather_json', 2000);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('place_id')->references('id')->on('places')->onDelete('cascade');
         });
     }
 }

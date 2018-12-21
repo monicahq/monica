@@ -9,7 +9,6 @@ use App\Models\Contact\Debt;
 use App\Models\Account\Photo;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
-use App\Models\Account\Weather;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
@@ -131,17 +130,6 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->lifeEvents()->exists());
-    }
-
-    public function test_it_has_many_weathers()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $weather = factory(Weather::class, 2)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-        $this->assertTrue($contact->weathers()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()
