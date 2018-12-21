@@ -4,7 +4,6 @@ namespace App\Services\Account\Place;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
-use App\Exceptions\MissingEnvVariableException;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class CreatePlace extends BaseService

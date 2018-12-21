@@ -3,9 +3,8 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use App\Models\Account\Weather;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
+use App\Models\Account\Weather;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class WeatherTest extends TestCase

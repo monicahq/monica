@@ -2,8 +2,6 @@
 
 namespace App\Models\Account;
 
-use App\Models\Account\Place;
-use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 

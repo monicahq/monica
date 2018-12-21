@@ -67,7 +67,7 @@ class GetWeatherInformation extends BaseService
      */
     private function validateWeatherEnvVariables()
     {
-        if (!config('monica.enable_weather')) {
+        if (! config('monica.enable_weather')) {
             throw new MissingEnvVariableException();
         }
 
