@@ -463,5 +463,5 @@ return [
     'photo_delete' => 'Supprimer la photo',
 
     // emotions
-    'emotion_this_made_me_feel' => 'This made you feel…',
+    'emotion_this_made_me_feel' => 'Cela vous fait sentir …',
 ];
