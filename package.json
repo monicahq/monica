@@ -17,7 +17,10 @@
     "cypress": "3.1.2",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.17.0",
-    "mocha-multi-reporters": "^1.1.7"
+    "mocha-multi-reporters": "^1.1.7",
+    "resolve-url-loader": "2.3.1",
+    "sass-loader": "7.*",
+    "vue-template-compiler": "^2.5.21"
   },
   "dependencies": {
     "animate.css": "^3.6.1",
@@ -27,7 +30,7 @@
     "gulp": "^3.9.1",
     "hint.css": "^2.3.2",
     "jquery": "^3.3.1",
-    "laravel-mix": "^2.1.7",
+    "laravel-mix": "^4.0.12",
     "list.js": "^1.5.0",
     "lodash": "^4.17.5",
     "marked": "^0.5.2",
@@ -37,8 +40,9 @@
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
     "typeahead.js": "^0.11.1",
+    "sass": "^1.15.2",
     "v-selectmenu": "^1.0.5",
-    "vue": "^2.5.16",
+    "vue": "^2.5.21",
     "vue-checkbox-radio": "^0.6.0",
     "vue-clipboard2": "^0.2.1",
     "vue-directive-tooltip": "^1.4.2",
