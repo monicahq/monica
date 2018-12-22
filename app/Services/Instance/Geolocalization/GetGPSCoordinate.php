@@ -55,13 +55,13 @@ class GetGPSCoordinate extends BaseService
             return;
         }
 
-        $query = 'https://us1.locationiq.com/v1/search.php?key=';
-        $query .= config('monica.location_iq_api_key');
-        $query .= '&q=';
-        $query .= urlencode($place->getAddressAsString());
-        $query .= '&format=json';
+        $query = http_build_query([
+            'format' => 'json',
+            'key' => config('monica.location_iq_api_key'),
+            'q' => urlencode($place->getAddressAsString()),
+        ]);
 
-        return $query;
+        return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;
     }
 
     /**
