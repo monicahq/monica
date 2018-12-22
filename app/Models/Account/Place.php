@@ -3,8 +3,10 @@
 namespace App\Models\Account;
 
 use App\Models\Contact\Contact;
+use App\Models\Account\Weather;
 use App\Helpers\CountriesHelper;
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -29,13 +31,23 @@ class Place extends Model
     protected $guarded = ['id'];
 
     /**
-     * Get the account record associated with the photo.
+     * Get the account record associated with the place.
      *
      * @return BelongsTo
      */
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the Weather record associated with the place.
+     *
+     * @return HasMany
+     */
+    public function weathers()
+    {
+        return $this->hasMany(Weather::class);
     }
 
     /**

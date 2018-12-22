@@ -8,6 +8,7 @@ use App\Models\Account\Place;
 use App\Exceptions\MissingEnvVariableException;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
+use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class GetWeatherInformation extends BaseService
 {
@@ -41,11 +42,12 @@ class GetWeatherInformation extends BaseService
 
         $place = Place::findOrFail($data['place_id']);
 
-        // If the latitude is null, it means that geocoding information is
-        // missing. Lat/longitude are fetched when the place is actually
-        // created - so in this case, there is nothing to do.
         if (is_null($place->latitude)) {
-            return;
+            $place = $this->fetchGPS($place);
+
+            if (is_null($place)) {
+                return;
+            }
         }
 
         return $this->query($place);
@@ -106,5 +108,19 @@ class GetWeatherInformation extends BaseService
         $query .= '?exclude=alerts,minutely,hourly,daily,flags';
 
         return $query;
+    }
+
+    /**
+     * Fetch missing longitude/latitude.
+     *
+     * @param Place $place
+     * @return Place|null
+     */
+    private function fetchGPS(Place $place)
+    {
+        return (new GetGPSCoordinate)->execute([
+            'account_id' => $place->account_id,
+            'place_id' => $place->id,
+        ]);
     }
 }

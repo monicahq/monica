@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
+use App\Models\User\User;
 use App\Models\Account\Weather;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -31,8 +32,18 @@ class WeatherTest extends TestCase
         $weather = factory(Weather::class)->create();
 
         $this->assertEquals(
-            7.57,
-            $weather->temperature
+            8,
+            $weather->temperature()
+        );
+    }
+
+    public function test_it_gets_current_temperature_in_celsius()
+    {
+        $weather = factory(Weather::class)->create();
+
+        $this->assertEquals(
+            -14,
+            $weather->temperature('celsius')
         );
     }
 
@@ -53,6 +64,16 @@ class WeatherTest extends TestCase
         $this->assertEquals(
             'partly-cloudy-night',
             $weather->summaryIcon
+        );
+    }
+
+    public function test_it_gets_weather_emoji()
+    {
+        $weather = factory(Weather::class)->create();
+
+        $this->assertEquals(
+            '🎑',
+            $weather->getEmoji()
         );
     }
 }

@@ -55,18 +55,6 @@ class Weather extends Model
     }
 
     /**
-     * Get the temperature attribute.
-     *
-     * @return string
-     */
-    public function getTemperatureAttribute($value)
-    {
-        $json = $this->weather_json;
-
-        return $json['currently']['temperature'];
-    }
-
-    /**
      * Get the weather summary.
      *
      * @return string
@@ -88,5 +76,70 @@ class Weather extends Model
         $json = $this->weather_json;
 
         return $json['currently']['icon'];
+    }
+
+    /**
+     * Get the emoji representing the weather.
+     *
+     * @return string
+     */
+    public function getEmoji()
+    {
+        switch ($this->summary_icon) {
+            case 'clear-day':
+                $string = '☀️';
+                break;
+            case 'clear-night':
+                $string = '🌌';
+                break;
+            case 'rain':
+                $string = '🌧️';
+                break;
+            case 'snow':
+                $string = '❄️';
+                break;
+            case 'sleet':
+                $string = '🌨️';
+                break;
+            case 'wind':
+                $string = '💨';
+                break;
+            case 'fog':
+                $string = '🌫️';
+                break;
+            case 'cloudy':
+                $string = '☁️';
+                break;
+            case 'partly-cloudy-day':
+                $string = '⛅';
+                break;
+            case 'partly-cloudy-night':
+                $string = '🎑';
+                break;
+            default:
+                $string = '🌈';
+                break;
+        }
+
+        return $string;
+    }
+
+    /**
+     * Get the temperature attribute.
+     * Temperature is fetched in Fahenrheit by default. It needs to be
+     * converted to Celsius depending on the user.
+     *
+     * @return string
+     */
+    public function temperature($scale = 'fahrenheit')
+    {
+        $json = $this->weather_json;
+        $temperature = $json['currently']['temperature'];
+
+        if ($scale != 'fahrenheit') {
+            $temperature = ($temperature - 32) * .5556;
+        }
+
+        return round($temperature, 0);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Models\Contact;
 
+use Carbon\Carbon;
+use App\Services\Instance\Weather\GetWeatherInformation;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
@@ -1563,5 +1565,38 @@ class Contact extends Model
         }
 
         $this->save();
+    }
+
+    /**
+     * Get the weather information for this contact, based on the first address
+     * on the profile.
+     *
+     * @return void
+     */
+    public function getWeather()
+    {
+        $address = $this->addresses()->first();
+
+        if (is_null($address)) {
+            return;
+        }
+
+        // get the most recent weather data
+        $weather = $address->place->weathers()->orderBy('created_at', 'desc')->first();
+
+        // only refresh weather data if data is more than 6h old
+        if (is_null($weather)) {
+            $weather = (new GetWeatherInformation)->execute([
+                'place_id' => $address->place->id,
+            ]);
+        } else {
+            if (!$weather->created_at->between(Carbon::now()->subHour(6), Carbon::now())) {
+                $weather = (new GetWeatherInformation)->execute([
+                    'place_id' => $address->place->id,
+                ]);
+            }
+        }
+
+        return $weather;
     }
 }
