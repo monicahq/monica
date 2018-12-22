@@ -3,8 +3,8 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
-use App\Services\Instance\Weather\GetWeatherInformation;
 use App\Models\Contact\Address;
+use App\Services\Instance\Weather\GetWeatherInformation;
 
 class WeatherHelper
 {
@@ -27,7 +27,7 @@ class WeatherHelper
         if (is_null($weather)) {
             $weather = self::callWeatherAPI($address);
         } else {
-            if (!$weather->created_at->between(Carbon::now()->subHour(6), Carbon::now())) {
+            if (! $weather->created_at->between(Carbon::now()->subHour(6), Carbon::now())) {
                 $weather = self::callWeatherAPI($address);
             }
         }

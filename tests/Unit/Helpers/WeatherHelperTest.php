@@ -4,9 +4,8 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\WeatherHelper;
-use App\Models\Contact\Address;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Models\Contact\Contact;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class WeatherHelperTest extends FeatureTestCase
 {

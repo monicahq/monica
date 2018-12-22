@@ -2,13 +2,13 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
+use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +30,6 @@ use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
-use App\Helpers\WeatherHelper;
 
 class Contact extends Model
 {
