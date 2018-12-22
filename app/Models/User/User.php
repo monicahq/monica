@@ -40,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'locale',
         'currency_id',
         'fluid_container',
+        'temperature_scale',
         'name_order',
         'google2fa_secret',
     ];

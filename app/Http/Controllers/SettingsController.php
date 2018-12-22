@@ -116,6 +116,7 @@ class SettingsController
                 'name_order',
             ]) + [
                 'fluid_container' => $request->get('layout'),
+                'temperature_scale' => $request->get('temperature_scale'),
             ]
         );
 
