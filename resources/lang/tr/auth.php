@@ -42,7 +42,7 @@ return [
     'signup' => 'Kayıt ol',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
     'change_language_title' => 'Dili değiştir:',
-    'change_language' => 'Change language to :lang',
+    'change_language' => 'Dili :lang ile değiştir',
 
     'password_reset_title' => 'Şifreyi Yenile',
     'password_reset_email' => 'E-posta Adresi',
@@ -52,8 +52,8 @@ return [
     'password_reset_action' => 'Şifreyi Sıfırla',
     'password_reset_email_content' => 'Şifrenizi sıfırlamak için buraya tıklayın:',
 
-    'register_title_welcome' => 'Welcome to your newly installed Monica instance',
-    'register_create_account' => 'You need to create an account to use Monica',
+    'register_title_welcome' => 'Yeni yüklenen Monica örneğinize hoş geldiniz',
+    'register_create_account' => 'Monica\'yı kullanmak için bir hesap oluşturmanız gerekir',
     'register_title_create' => 'Monica hesabınızı oluşturun',
     'register_login' => 'Zaten bir hesabınız varsa <a href=":url">Giriş Yapın</a>.',
     'register_email' => 'Geçerli bir e-posta adresi girin',
