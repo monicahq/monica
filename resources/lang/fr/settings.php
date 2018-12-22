@@ -101,15 +101,15 @@ return [
     'u2f_error_device_ineligible' => 'Le dispositif présenté n’est pas admissible pour cette demande. Pour une demande d’enregistrement, cela peut signifier que le jeton est déjà enregistré, et pour une demande d\'authentification, cela peut signifier que le jeton ne connaît pas les clés présentées.',
     'u2f_error_timeout' => 'Délai d’attente atteint avant que la demande ne soit satisfaite.',
 
-    'recovery_title' => 'Recovery codes',
-    'recovery_show' => 'Get recovery codes',
-    'recovery_copy_help' => 'Copy codes in your clipboard',
-    'recovery_help_intro' => 'These are your recovery codes:',
-    'recovery_help_information' => 'You can use each recovery code once.',
-    'recovery_clipboard' => 'Codes copied in the clipboard',
-    'recovery_generate' => 'Generate new codes...',
-    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previoulsy generated codes',
-    'recovery_already_used_help' => 'This code has already been used',
+    'recovery_title' => 'Codes de récupération',
+    'recovery_show' => 'Obtenez des codes de récupération',
+    'recovery_copy_help' => 'Copier les codes dans votre presse-papiers',
+    'recovery_help_intro' => 'Voici vos codes de récupération :',
+    'recovery_help_information' => 'Vous pouvez utiliser chaque code de récupération une fois.',
+    'recovery_clipboard' => 'Codes copiés dans le presse-papiers',
+    'recovery_generate' => 'Générer de nouveaux codes ...',
+    'recovery_generate_help' => 'Sachez que la génération de nouveaux codes invalidera les codes générés précédemment',
+    'recovery_already_used_help' => 'Ce code a déjà été utilisé',
 
     'users_list_title' => 'Utilisateurs avec accès à votre compte',
     'users_list_add_user' => 'Inviter un nouvel utilisateur',
@@ -404,6 +404,6 @@ return [
 
     'storage_title' => 'Espace de stockage',
     'storage_account_info' => 'Limite de votre compte : :accountLimit Mo / Votre utilisation actuelle : :currentAccountSize Mo (:percentUsage %)',
-    'storage_upgrade_notice' => 'Upgrade your account to be able to upload documents and photos.',
-    'storage_description' => 'Here you can see all the documents and photos uploaded about your contacts.',
+    'storage_upgrade_notice' => 'Mettez à niveau votre compte pour pouvoir télécharger des documents et des photos.',
+    'storage_description' => 'Ici vous pouvez voir tous les documents et photos téléchargés sur vos contacts.',
 ];
