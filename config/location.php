@@ -81,4 +81,15 @@ return [
         'enabled' => true,
         'ip' => '66.102.0.0',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Locationiq Url
+    |--------------------------------------------------------------------------
+    |
+    | Url to call Locationiq api. See https://locationiq.com/docs
+    |
+    */
+    'location_iq_url' => env('LOCATIONIQ_URL', 'https://us1.locationiq.com/v1/'),
+
 ];
