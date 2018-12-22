@@ -25,12 +25,12 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Services\Instance\Weather\GetWeatherInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use App\Helpers\WeatherHelper;
 
 class Contact extends Model
 {
@@ -1575,28 +1575,6 @@ class Contact extends Model
      */
     public function getWeather()
     {
-        $address = $this->addresses()->first();
-
-        if (is_null($address)) {
-            return;
-        }
-
-        // get the most recent weather data
-        $weather = $address->place->weathers()->orderBy('created_at', 'desc')->first();
-
-        // only refresh weather data if data is more than 6h old
-        if (is_null($weather)) {
-            $weather = (new GetWeatherInformation)->execute([
-                'place_id' => $address->place->id,
-            ]);
-        } else {
-            if (! $weather->created_at->between(Carbon::now()->subHour(6), Carbon::now())) {
-                $weather = (new GetWeatherInformation)->execute([
-                    'place_id' => $address->place->id,
-                ]);
-            }
-        }
-
-        return $weather;
+        return WeatherHelper::getWeatherForAddress($this->addresses()->first());
     }
 }
