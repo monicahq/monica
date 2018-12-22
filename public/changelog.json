@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Dec 19, 2018",
+            "title": "Security: recovery codes",
+            "description": "In the [security tab of settings](/settings/security), you can now generate recovery codes. Recovery codes are useful if you have activated Two Factor Authentication but can not login with it for some reasons. With a recovery code you can bypass Two Factor Authentication using this one time code. Be careful though, those codes should be stored in a secure place as they may allow someone to gain access to your account. ![image](/img/changelogs/2018-12-02-recovery-codes.png)"
+        },
+        {
             "date": "Dec 16, 2018",
             "title": "New feature: add latitude and longitude to addresses",
             "description": "When you enter an address, you can now also add latitude and longitude. Note that these coordinates use the decimal degrees system (DD) and therefore should be formatted like `41.40338, 2.17403`."

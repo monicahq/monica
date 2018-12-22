@@ -34,7 +34,7 @@
               </div>
             @endif
 
-            <form action="/login" method="post">
+            <form action="{{ route('login') }}" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">
@@ -57,9 +57,17 @@
                 </label>
               </div>
 
+              @if (isset($errors))
+                @if (count($errors) > 0)
+                  <div class="form-group links">
+                    <ul>
+                      <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
+                    </ul>
+                  </div>
+                @endif
+              @endif
               <div class="form-group links">
                 <ul>
-                  <li>{{ trans('auth.password_forget') }}&nbsp;<a href="{{ route('password.request') }}">{{ trans('auth.password_reset') }}</a></li>
                   @if(! config('monica.disable_signup'))
                     <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="/register">{{ trans('auth.signup') }}</a></li>
                   @elseif(! \App\Models\Account\Account::hasAny())

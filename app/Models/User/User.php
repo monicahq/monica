@@ -168,6 +168,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the recovery codes associated with the user.
+     */
+    public function recoveryCodes()
+    {
+        return $this->hasMany(RecoveryCode::class);
+    }
+
+    /**
      * Assigns a default value just in case the sort order is empty.
      *
      * @param string $value
