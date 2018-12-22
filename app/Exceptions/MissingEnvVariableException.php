@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use RuntimeException;
 
 /**
- * Exception thrown if the given value is not in the list of authorized values.
+ * Exception thrown if the env variable is not set or does not exist.
  */
 class MissingEnvVariableException extends RuntimeException
 {
