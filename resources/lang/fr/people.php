@@ -82,17 +82,17 @@ return [
     'modal_call_title' => 'Enregistrer un appel téléphonique',
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
     'modal_call_exact_date' => 'L’appel s’est passé le',
-    'modal_call_who_called' => 'Who called?',
-    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
+    'modal_call_who_called' => 'Qui a appelé ?',
+    'modal_call_emotion' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cet appel ? (facultatif)',
     'calls_add_success' => 'L’appel téléphonique a été enregistré.',
     'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L’appel a été supprimé avec succès',
     'call_title' => 'Appels téléphoniques',
     'call_empty_comment' => 'Aucun details',
-    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
-    'call_blank_desc' => 'You called {name}',
-    'call_you_called' => 'You called',
-    'call_he_called' => '{name} called',
+    'call_blank_title' => 'Gardez la trace des appels téléphoniques que vous avez fait avec {name}',
+    'call_blank_desc' => 'Vous avez appelé {name}',
+    'call_you_called' => 'Vous avez appelé',
+    'call_he_called' => '{name} a appelé',
 
     // Conversation
     'conversation_blank' => 'Enregistrer les discussions que vous avez avec :name sur les réseaux sociaux, par SMS, etc.',
@@ -363,8 +363,8 @@ return [
     'contact_address_form_province' => 'Province (optionnel)',
     'contact_address_form_postal_code' => 'Code postal (optionnel)',
     'contact_address_form_country' => 'Pays (optionnel)',
-    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
-    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
+    'contact_address_form_latitude' => 'Latitude (chiffres uniquement) (facultatif)',
+    'contact_address_form_longitude' => 'Longitude (chiffres uniquement) (facultatif)',
 
     // Pets
     'pets_kind' => 'Sorte d’animal',
@@ -456,11 +456,11 @@ return [
     'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
 
     // Photos
-    'photo_list_title' => 'Related photos',
-    'photo_list_cta' => 'Upload photo',
-    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
-    'photo_upload_zone_cta' => 'Upload a photo',
-    'photo_delete' => 'Delete photo',
+    'photo_list_title' => 'Photos associées',
+    'photo_list_cta' => 'Télécharger une photo',
+    'photo_list_blank_desc' => 'Vous pouvez enregistrer des images sur ce contact. Téléchargez-en une maintenant !',
+    'photo_upload_zone_cta' => 'Télécharger une photo',
+    'photo_delete' => 'Supprimer la photo',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
