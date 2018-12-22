@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use App\Models\Contact\Address;
+use App\Models\Account\Weather;
 use App\Services\Instance\Weather\GetWeatherInformation;
 
 class WeatherHelper
