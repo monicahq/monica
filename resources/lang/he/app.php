@@ -261,6 +261,7 @@ return [
     'emotion_secondary_cheerfulness' => 'Cheerfulness',
     'emotion_secondary_zest' => 'Zest',
     'emotion_secondary_contentment' => 'סיפוק',
+    'emotion_secondary_pride' => 'Pride',
     'emotion_secondary_optimism' => 'אופטימיות',
     'emotion_secondary_enthrallment' => 'Enthrallment',
     'emotion_secondary_relief' => 'רגיעה',
