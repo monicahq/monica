@@ -3,7 +3,6 @@
 namespace App\Models\Account;
 
 use App\Models\Contact\Contact;
-use App\Models\Account\Weather;
 use App\Helpers\CountriesHelper;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

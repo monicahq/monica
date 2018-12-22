@@ -2,12 +2,11 @@
 
 namespace App\Services\Instance\Weather;
 
+use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Account\Weather;
-use App\Models\Account\Place;
-use App\Exceptions\MissingEnvVariableException;
 use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\Exception\ClientException;
+use App\Exceptions\MissingEnvVariableException;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class GetWeatherInformation extends BaseService

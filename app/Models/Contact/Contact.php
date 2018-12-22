@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use Carbon\Carbon;
-use App\Services\Instance\Weather\GetWeatherInformation;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
@@ -26,6 +25,7 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Services\Instance\Weather\GetWeatherInformation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -1590,7 +1590,7 @@ class Contact extends Model
                 'place_id' => $address->place->id,
             ]);
         } else {
-            if (!$weather->created_at->between(Carbon::now()->subHour(6), Carbon::now())) {
+            if (! $weather->created_at->between(Carbon::now()->subHour(6), Carbon::now())) {
                 $weather = (new GetWeatherInformation)->execute([
                     'place_id' => $address->place->id,
                 ]);

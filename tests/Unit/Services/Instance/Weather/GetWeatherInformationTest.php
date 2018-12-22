@@ -3,12 +3,12 @@
 namespace Tests\Unit\Services\Instance\Weather;
 
 use Tests\TestCase;
-use App\Models\Account\Weather;
 use App\Models\Account\Place;
+use App\Models\Account\Weather;
 use App\Exceptions\MissingParameterException;
-use App\Services\Instance\Weather\GetWeatherInformation;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Exceptions\MissingEnvVariableException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Instance\Weather\GetWeatherInformation;
 
 class GetWeatherInformationTest extends TestCase
 {
