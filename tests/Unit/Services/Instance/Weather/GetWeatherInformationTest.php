@@ -96,6 +96,7 @@ class GetWeatherInformationTest extends TestCase
 
         config(['monica.enable_weather' => true]);
         config(['monica.darksky_api_key' => 'test']);
+        config(['monica.enable_geolocation' => false]);
 
         $request = [
             'place_id' => $place->id,
@@ -106,6 +107,9 @@ class GetWeatherInformationTest extends TestCase
 
     public function test_it_fails_if_wrong_parameters_are_given()
     {
+        config(['monica.enable_weather' => true]);
+        config(['monica.darksky_api_key' => 'test']);
+
         $request = [];
 
         $this->expectException(MissingParameterException::class);
