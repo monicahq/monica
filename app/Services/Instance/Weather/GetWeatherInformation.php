@@ -87,7 +87,8 @@ class GetWeatherInformation extends BaseService
             $response = $client->request('GET', $query);
             $response = json_decode($response->getBody());
         } catch (ClientException $e) {
-            Log::error('Error making the call: ' . $e);
+            Log::error('Error making the call: '.$e);
+
             return null;
         }
 
