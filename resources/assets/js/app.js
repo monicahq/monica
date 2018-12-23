@@ -13,7 +13,7 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-//Vue.component('example', require('./components/people/dashboard/kids.vue'));
+//Vue.component('example', require('./components/people/dashboard/kids.vue').default);
 const Vue = require('vue');
 
 // Notifications
@@ -51,227 +51,227 @@ Vue.use(VueClipboard);
 // Custom components
 Vue.component(
     'passport-clients',
-    require('./components/passport/Clients.vue')
+    require('./components/passport/Clients.vue').default
 );
 
 Vue.component(
     'passport-authorized-clients',
-    require('./components/passport/AuthorizedClients.vue')
+    require('./components/passport/AuthorizedClients.vue').default
 );
 
 Vue.component(
     'passport-personal-access-tokens',
-    require('./components/passport/PersonalAccessTokens.vue')
+    require('./components/passport/PersonalAccessTokens.vue').default
 );
 
 // Vue select
 Vue.component(
     'contact-select',
-    require('./components/people/ContactSelect.vue')
+    require('./components/people/ContactSelect.vue').default
 );
 
 // Partials
 Vue.component(
     'avatar',
-    require('./components/partials/Avatar.vue')
+    require('./components/partials/Avatar.vue').default
 );
 
 // Form elements
 Vue.component(
     'form-input',
-    require('./components/partials/form/Input.vue')
+    require('./components/partials/form/Input.vue').default
 );
 Vue.component(
     'form-select',
-    require('./components/partials/form/Select.vue')
+    require('./components/partials/form/Select.vue').default
 );
 Vue.component(
     'form-specialdate',
-    require('./components/partials/form/SpecialDate.vue')
+    require('./components/partials/form/SpecialDate.vue').default
 );
 Vue.component(
     'form-date',
-    require('./components/partials/form/Date.vue')
+    require('./components/partials/form/Date.vue').default
 );
 Vue.component(
     'form-radio',
-    require('./components/partials/form/Radio.vue')
+    require('./components/partials/form/Radio.vue').default
 );
 Vue.component(
     'form-textarea',
-    require('./components/partials/form/Textarea.vue')
+    require('./components/partials/form/Textarea.vue').default
 );
 Vue.component(
     'emotion',
-    require('./components/people/Emotion.vue')
+    require('./components/people/Emotion.vue').default
 );
 
 // Dashboard
 Vue.component(
     'dashboard-log',
-    require('./components/dashboard/DashboardLog.vue')
+    require('./components/dashboard/DashboardLog.vue').default
 );
 
 // Contacts
 Vue.component(
     'tags',
-    require('./components/people/Tags.vue')
+    require('./components/people/Tags.vue').default
 );
 
 Vue.component(
     'contact-favorite',
-    require('./components/people/SetFavorite.vue')
+    require('./components/people/SetFavorite.vue').default
 );
 
 Vue.component(
     'contact-archive',
-    require('./components/people/Archive.vue')
+    require('./components/people/Archive.vue').default
 );
 
 Vue.component(
     'contact-address',
-    require('./components/people/Addresses.vue')
+    require('./components/people/Addresses.vue').default
 );
 
 Vue.component(
     'contact-information',
-    require('./components/people/ContactInformation.vue')
+    require('./components/people/ContactInformation.vue').default
 );
 
 Vue.component(
     'contact-task',
-    require('./components/people/Tasks.vue')
+    require('./components/people/Tasks.vue').default
 );
 
 Vue.component(
     'contact-note',
-    require('./components/people/Notes.vue')
+    require('./components/people/Notes.vue').default
 );
 
 Vue.component(
     'contact-gift',
-    require('./components/people/Gifts.vue')
+    require('./components/people/Gifts.vue').default
 );
 
 Vue.component(
     'pet',
-    require('./components/people/Pets.vue')
+    require('./components/people/Pets.vue').default
 );
 
 Vue.component(
     'stay-in-touch',
-    require('./components/people/StayInTouch.vue')
+    require('./components/people/StayInTouch.vue').default
 );
 
 Vue.component(
     'phone-call-list',
-    require('./components/people/calls/PhoneCallList.vue')
+    require('./components/people/calls/PhoneCallList.vue').default
 );
 
 Vue.component(
     'conversation-list',
-    require('./components/people/conversation/ConversationList.vue')
+    require('./components/people/conversation/ConversationList.vue').default
 );
 
 Vue.component(
     'conversation',
-    require('./components/people/conversation/Conversation.vue')
+    require('./components/people/conversation/Conversation.vue').default
 );
 
 Vue.component(
     'message',
-    require('./components/people/conversation/Message.vue')
+    require('./components/people/conversation/Message.vue').default
 );
 
 Vue.component(
     'document-list',
-    require('./components/people/document/DocumentList.vue')
+    require('./components/people/document/DocumentList.vue').default
 );
 
 Vue.component(
     'create-life-event',
-    require('./components/people/lifeevent/CreateLifeEvent.vue')
+    require('./components/people/lifeevent/CreateLifeEvent.vue').default
 );
 
 Vue.component(
     'create-default-life-event',
-    require('./components/people/lifeevent/content/CreateDefaultLifeEvent.vue')
+    require('./components/people/lifeevent/content/CreateDefaultLifeEvent.vue').default
 );
 
 Vue.component(
     'life-event-list',
-    require('./components/people/lifeevent/LifeEventList.vue')
+    require('./components/people/lifeevent/LifeEventList.vue').default
 );
 
 Vue.component(
     'photo-list',
-    require('./components/people/photo/PhotoList.vue')
+    require('./components/people/photo/PhotoList.vue').default
 );
 
 // Journal
 Vue.component(
     'journal-list',
-    require('./components/journal/JournalList.vue')
+    require('./components/journal/JournalList.vue').default
 );
 
 Vue.component(
     'journal-calendar',
-    require('./components/journal/partials/JournalCalendar.vue')
+    require('./components/journal/partials/JournalCalendar.vue').default
 );
 
 Vue.component(
     'journal-content-rate',
-    require('./components/journal/partials/JournalContentRate.vue')
+    require('./components/journal/partials/JournalContentRate.vue').default
 );
 
 Vue.component(
     'journal-content-activity',
-    require('./components/journal/partials/JournalContentActivity.vue')
+    require('./components/journal/partials/JournalContentActivity.vue').default
 );
 
 Vue.component(
     'journal-content-entry',
-    require('./components/journal/partials/JournalContentEntry.vue')
+    require('./components/journal/partials/JournalContentEntry.vue').default
 );
 
 // Settings
 Vue.component(
     'contact-field-types',
-    require('./components/settings/ContactFieldTypes.vue')
+    require('./components/settings/ContactFieldTypes.vue').default
 );
 Vue.component(
     'genders',
-    require('./components/settings/Genders.vue')
+    require('./components/settings/Genders.vue').default
 );
 Vue.component(
     'reminder-rules',
-    require('./components/settings/ReminderRules.vue')
+    require('./components/settings/ReminderRules.vue').default
 );
 Vue.component(
     'reminder-time',
-    require('./components/settings/ReminderTime.vue')
+    require('./components/settings/ReminderTime.vue').default
 );
 Vue.component(
     'mfa-activate',
-    require('./components/settings/MfaActivate.vue')
+    require('./components/settings/MfaActivate.vue').default
 );
 Vue.component(
     'u2f-connector',
-    require('./components/settings/U2fConnector.vue')
+    require('./components/settings/U2fConnector.vue').default
 );
 Vue.component(
     'recovery-codes',
-    require('./components/settings/RecoveryCodes.vue')
+    require('./components/settings/RecoveryCodes.vue').default
 );
 
 Vue.component(
     'modules',
-    require('./components/settings/Modules.vue')
+    require('./components/settings/Modules.vue').default
 );
 
 Vue.component(
     'activity-types',
-    require('./components/settings/ActivityTypes.vue')
+    require('./components/settings/ActivityTypes.vue').default
 );
 
 // axios
