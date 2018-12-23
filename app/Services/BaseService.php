@@ -33,4 +33,20 @@ abstract class BaseService
 
         return true;
     }
+
+    /**
+     * Checks if the value is empty or null.
+     *
+     * @param mixed $data
+     * @param mixed $index
+     * @return mixed
+     */
+    protected function nullOrValue($data, $index)
+    {
+        if (empty($data[$index])) {
+            return;
+        }
+
+        return $data[$index] == '' ? null : $data[$index];
+    }
 }

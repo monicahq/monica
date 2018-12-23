@@ -5,6 +5,8 @@ namespace Tests\Unit\Services\Contact\Call;
 use Tests\TestCase;
 use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\DB;
+use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\DestroyCall;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -34,6 +36,38 @@ class DestroyCallTest extends TestCase
 
         $this->assertDatabaseMissing('calls', [
             'id' => $call->id,
+        ]);
+    }
+
+    public function test_it_removes_emotions()
+    {
+        $contact = factory(Contact::class)->create([]);
+        $call = factory(Call::class)->create([
+            'contact_id' => $contact->id,
+        ]);
+
+        $emotion = factory(Emotion::class)->create([]);
+
+        DB::table('emotion_call')->insert([
+            'account_id' => $call->account_id,
+            'contact_id' => $call->contact_id,
+            'call_id' => $call->id,
+            'emotion_id' => $emotion->id,
+        ]);
+
+        $request = [
+            'account_id' => $call->account->id,
+            'call_id' => $call->id,
+        ];
+
+        $callService = new DestroyCall;
+        $bool = $callService->execute($request);
+
+        $this->assertDatabaseMissing('emotion_call', [
+            'contact_id' => $call->contact_id,
+            'account_id' => $call->account_id,
+            'call_id' => $call->id,
+            'emotion_id' => $emotion->id,
         ]);
     }
 
