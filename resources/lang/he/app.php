@@ -413,4 +413,19 @@ return [
     'emotion_worry' => 'דאגה',
     'emotion_distress' => 'מצוקה',
     'emotion_dread' => 'Dread',
+
+    // weather
+    'weather_clear-day' => 'Clear day',
+    'weather_clear-night' => 'Clear night',
+    'weather_rain' => 'Rain',
+    'weather_snow' => 'Snow',
+    'weather_sleet' => 'Sleet',
+    'weather_wind' => 'Wind',
+    'weather_fog' => 'Fog',
+    'weather_cloudy' => 'Cloudy',
+    'weather_partly-cloudy-day' => 'Partly cloudy day',
+    'weather_partly-cloudy-night' => 'Partly cloudy night',
+    'weather_current_temperature_celsius' => ':temperature °C',
+    'weather_current_temperature_fahrenheit' => ':temperature °F',
+    'weather_current_title' => 'Current weather',
 ];
