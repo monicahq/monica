@@ -135,8 +135,7 @@ class User extends Authenticatable implements MustVerifyEmail
         }
 
         // Temperature scale
-        switch ($country->cca2)
-        {
+        switch ($country->cca2) {
             case 'US':
             case 'BZ':
             case 'KY':
