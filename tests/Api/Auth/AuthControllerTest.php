@@ -12,11 +12,26 @@ class AuthControllerTest extends ApiTestCase
     public function setUp()
     {
         parent::setUp();
-        $connection = DB::connection();
 
-        if ($connection->getName() != 'testing') {
+        if ($this->getActualConnection() != 'testing') {
             $this->markTestSkipped("Set DB_CONNECTION on 'testing' to run this test.");
         }
+    }
+
+    private function getActualConnection()
+    {
+        $handle = fopen(".env", "r");
+        if (! $handle) {
+            return;
+        }
+        while (($line = fgets($handle)) !== false) {
+            if (preg_match('/DB_CONNECTION=(.{1,})/', $line, $matches)) {
+                fclose($handle);
+                return $matches[1];
+            }
+        }
+
+        fclose($handle);
     }
 
     protected $jsonStructureOAuthLogin = [
