@@ -113,7 +113,7 @@ class ConversationsController extends Controller
         }
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.relationship_form_add_success'));
+            ->with('success', trans('people.conversation_add_success'));
     }
 
     /**
@@ -210,7 +210,7 @@ class ConversationsController extends Controller
         }
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.relationship_form_add_success'));
+            ->with('success', trans('people.conversation_edit_success'));
     }
 
     /**

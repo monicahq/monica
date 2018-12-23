@@ -19,7 +19,7 @@ class ContactWithContactFields extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->hashId(),
+            'hash_id' => $this->is_partial ? $this->getRelatedRealContact()->hashID() : $this->hashID(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,

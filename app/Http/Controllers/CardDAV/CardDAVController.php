@@ -14,9 +14,9 @@ use Barryvdh\Debugbar\Facade as Debugbar;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use App\Models\CardDAV\MonicaAddressBookRoot;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
-use App\Models\CardDAV\Backends\MonicaSabreBackend;
+use App\Models\CardDAV\Backends\MonicaAuthBackend;
 use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
-use App\Models\CardDAV\Backends\MonicaPrincipleBackend;
+use App\Models\CardDAV\Backends\MonicaPrincipalBackend;
 
 class CardDAVController extends Controller
 {
@@ -42,7 +42,7 @@ class CardDAVController extends Controller
     private function getNodes() : array
     {
         // Initiate custom backends for link between Sabre and Monica
-        $principalBackend = new MonicaPrincipleBackend();   // User rights
+        $principalBackend = new MonicaPrincipalBackend();   // User rights
         $carddavBackend = new MonicaCardDAVBackend();       // Contacts
 
         return [
@@ -97,7 +97,7 @@ class CardDAVController extends Controller
     private function addPlugins(SabreServer $server)
     {
         // Authentication backend
-        $authBackend = new MonicaSabreBackend();
+        $authBackend = new MonicaAuthBackend();
         $server->addPlugin(new AuthPlugin($authBackend, 'SabreDAV'));
 
         // CardDAV plugin
@@ -112,7 +112,7 @@ class CardDAVController extends Controller
         // VCFExport
         $server->addPlugin(new VCFExportPlugin());
 
-        // In debug mode add browser plugin
+        // In local environment add browser plugin
         if (App::environment('local')) {
             $server->addPlugin(new BrowserPlugin());
         }

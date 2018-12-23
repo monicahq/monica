@@ -98,6 +98,15 @@
                 </select>
               </div>
 
+              {{-- Temperature scale --}}
+              <div class="form-group">
+                <label for="temperature_scale">{{ trans('settings.temperature_scale') }}</label>
+                <select class="form-control" name="temperature_scale" id="temperature_scale">
+                  <option value="fahrenheit" {{ (auth()->user()->temperature_scale == 'fahrenheit')?'selected':'' }}>{{ trans('settings.temperature_scale_fahrenheit') }}</option>
+                  <option value="celsius" {{ (auth()->user()->temperature_scale == 'celsius')?'selected':'' }}>{{ trans('settings.temperature_scale_celsius') }}</option>
+                </select>
+              </div>
+
               {{-- Reminder --}}
               <div class="form-group">
                 <reminder-time
