@@ -4,6 +4,7 @@ namespace App\Services\Instance\Geolocalization;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 
@@ -83,6 +84,8 @@ class GetGPSCoordinate extends BaseService
         try {
             $response = $client->request('GET', $query);
         } catch (ClientException $e) {
+            Log::error('Error making the call: '.$e);
+
             return;
         }
 
