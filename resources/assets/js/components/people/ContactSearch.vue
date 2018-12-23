@@ -41,30 +41,38 @@
     export default {
         props: {
             name: {
-                type: String
+                type: String,
+                default: '',
             },
             title: {
-                type: String
+                type: String,
+                default: null,
             },
             required: {
-                type: Boolean
+                type: Boolean,
+                default: true,
             },
             userContactId: {
-                type: String
+                type: String,
+                default: '0',
             },
             defaultOptions : {
-                type: Array
+                type: Array,
+                default: function () {
+                    return []
+                }
             },
             placeholder : {
-                type: String
+                type: String,
+                default: '',
             },
             wait : {
                 type: Number,
-                default: 600
+                default: 600,
             },
             minLen : {
                 type: Number,
-                default: 1
+                default: 1,
             }
         },
 

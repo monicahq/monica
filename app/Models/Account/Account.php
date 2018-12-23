@@ -429,6 +429,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Weather records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function weathers()
+    {
+        return $this->hasMany(Weather::class);
+    }
+
+    /**
      * Get the Places records associated with the account.
      *
      * @return HasMany

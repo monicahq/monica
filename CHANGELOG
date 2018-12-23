@@ -1,16 +1,18 @@
 UNRELEASED CHANGES:
 
+* Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
+* Add ability to see the current weather on the contact profile page
 * Add ability to generate recovery codes in order to bypass 2FA/U2F
 * Add ability to indicate latitude and longitude to addresses
 * Add ability to upload photos
 * Add ability to indicate how you felt when logging a call
 * Add information about who initiated a phone call
 * Add ability to edit a phone call
+* Add ability to create tasks that are not linked to any contacts
 * Remove limitation on the date field when creating an activity
 * Fix Set Tag api method which deleted existing tags, which it shouldn't
 * Fix editing relationship not working
 * Fix Storage page not being displayed
-* Add ability to create tasks that are not linked to any contacts
 * Fix VCard import without firstname
 * Fix avatar display in searches
 * Fix conversation add/update using contact add/update flash messages

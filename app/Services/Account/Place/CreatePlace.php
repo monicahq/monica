@@ -4,6 +4,7 @@ namespace App\Services\Account\Place;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class CreatePlace extends BaseService
 {
@@ -36,7 +37,7 @@ class CreatePlace extends BaseService
     {
         $this->validate($data);
 
-        return Place::create([
+        $place = Place::create([
             'account_id' => $data['account_id'],
             'street' => $this->nullOrValue($data, 'street'),
             'city' => $this->nullOrValue($data, 'city'),
@@ -45,6 +46,26 @@ class CreatePlace extends BaseService
             'country' => $this->nullOrValue($data, 'country'),
             'latitude' => $this->nullOrValue($data, 'latitude'),
             'longitude' => $this->nullOrValue($data, 'longitude'),
+        ]);
+
+        if (is_null($place->latitude)) {
+            $this->getGeocodingInfo($place);
+        }
+
+        return $place;
+    }
+
+    /**
+     * Get geocoding information about the place (lat/longitude).
+     *
+     * @param Place $place
+     * @return void|null
+     */
+    private function getGeocodingInfo(Place $place)
+    {
+        (new GetGPSCoordinate)->execute([
+            'account_id' => $place->account_id,
+            'place_id' => $place->id,
         ]);
     }
 }

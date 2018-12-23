@@ -71,7 +71,7 @@ Vue.component(
 );
 Vue.component(
     'contact-search',
-    require('./components/people/ContactSearch.vue')
+    require('./components/people/ContactSearch.vue').default
 );
 
 // Partials
@@ -326,13 +326,11 @@ export function loadLanguageAsync (lang, set) {
     return Promise.resolve(set ? setI18nLanguage(lang) : lang);
 }
 
-const app = null;
-const me = this;
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     moment.locale(lang);
 
     // the Vue appplication
-    me.app = new Vue({
+    const app = new Vue({
       i18n,
       data: {
         reminders_frequency: 'once',

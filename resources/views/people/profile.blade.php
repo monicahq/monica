@@ -42,6 +42,20 @@
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
 
+            @if (! is_null($weather))
+            <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
+              <div class="w-100 dt">
+                <div class="dtc">
+                  <h3 class="f6 ttu normal">{{ trans('app.weather_current_title') }}</h3>
+                </div>
+              </div>
+
+              <p class="mb0">
+                {{ $weather->getEmoji() }} {{ trans('app.weather_'.$weather->summary_icon) }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
+              </p>
+            </div>
+            @endif
+
             @include('people.relationship.index')
 
             @include('people.sidebar')

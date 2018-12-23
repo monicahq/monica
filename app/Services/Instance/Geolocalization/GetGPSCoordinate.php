@@ -45,7 +45,7 @@ class GetGPSCoordinate extends BaseService
      * @param Place $place
      * @return string|null
      */
-    private function getQuery(Place $place)
+    private function buildQuery(Place $place)
     {
         if (! config('monica.enable_geolocation')) {
             return;
@@ -58,7 +58,7 @@ class GetGPSCoordinate extends BaseService
         $query = http_build_query([
             'format' => 'json',
             'key' => config('monica.location_iq_api_key'),
-            'q' => urlencode($place->getAddressAsString()),
+            'q' => $place->getAddressAsString(),
         ]);
 
         return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;
@@ -72,7 +72,7 @@ class GetGPSCoordinate extends BaseService
      */
     private function query(Place $place)
     {
-        $query = $this->getQuery($place);
+        $query = $this->buildQuery($place);
 
         if (is_null($query)) {
             return;

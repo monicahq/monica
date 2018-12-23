@@ -238,4 +238,25 @@ return [
     |
      */
     'location_iq_api_key' => env('LOCATION_IQ_API_KEY', null),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable weather to be displayed on the contact profile page.
+    |--------------------------------------------------------------------------
+    |
+    | Geolocation needs to be enabled for this feature to work. We need to it
+    | to translate addresses to long/latitude coordinates.
+     */
+    'enable_weather' => env('ENABLE_WEATHER', false),
+
+    /*
+    |--------------------------------------------------------------------------
+    | API key for weather data.
+    |--------------------------------------------------------------------------
+    |
+    | To provide weather information, we use Darksky.
+    | Darksky provides an api with 1000 free API calls per day.
+    | https://darksky.net/dev/register
+     */
+    'darksky_api_key' => env('DARKSKY_API_KEY', null),
 ];
