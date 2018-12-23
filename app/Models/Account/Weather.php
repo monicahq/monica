@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -79,6 +80,30 @@ class Weather extends Model
     }
 
     /**
+     * Get the temperature attribute.
+     * Temperature is fetched in Celsius. It needs to be
+     * converted to Fahrenheit depending on the user.
+     *
+     * @return string
+     */
+    public function getTemperatureAttribute($value)
+    {
+        $json = $this->weather_json;
+
+        $temperature = $json['currently']['temperature'];
+
+        if (auth()->user()->temperature_scale == 'fahrenheit') {
+            $temperature = 9 / 5 * $temperature + 32;
+        }
+
+        $temperature = round($temperature, 1);
+
+        $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
+
+        return $numberFormatter->format($temperature);
+}
+
+    /**
      * Get the emoji representing the weather.
      *
      * @return string
@@ -122,24 +147,5 @@ class Weather extends Model
         }
 
         return $string;
-    }
-
-    /**
-     * Get the temperature attribute.
-     * Temperature is fetched in Fahenrheit by default. It needs to be
-     * converted to Celsius depending on the user.
-     *
-     * @return string
-     */
-    public function temperature($scale = 'fahrenheit')
-    {
-        $json = $this->weather_json;
-        $temperature = $json['currently']['temperature'];
-
-        if ($scale != 'fahrenheit') {
-            $temperature = ($temperature - 32) * .5556;
-        }
-
-        return round($temperature, 0);
     }
 }
