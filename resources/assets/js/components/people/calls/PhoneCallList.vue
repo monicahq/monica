@@ -141,7 +141,7 @@
               @contentChange="updateEditCallContent($event)"
             ></textarea>
             <p class="f6">
-              Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more. Read documentation
+              {{ $t('app.markdown_description') }}
             </p>
           </div>
 
@@ -205,7 +205,7 @@
           </span>
           <span v-if="call.emotions.length != 0">
             <span :class="[ dirltr ? 'mr2' : 'ml2' ]">
-              Emotions:
+              {{ $t('people.call_emotions') }}
             </span>
             <ul class="di">
               <li v-for="emotion in call.emotions" :key="emotion.id" class="di">

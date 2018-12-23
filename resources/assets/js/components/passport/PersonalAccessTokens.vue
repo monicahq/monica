@@ -85,15 +85,7 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div v-if="form.errors.length > 0" class="alert alert-danger">
-              <p><strong>Whoops!</strong> Something went wrong!</p>
-              <br />
-              <ul>
-                <li v-for="error in form.errors" :key="error.id">
-                  {{ error }}
-                </li>
-              </ul>
-            </div>
+            <div :is="errorTemplate" :errors="form.errors" />
 
             <!-- Create Token Form -->
             <form class="form-horizontal" role="form" @submit.prevent="store">
@@ -181,6 +173,8 @@
 </template>
 
 <script>
+import Error from '../partials/Error.vue';
+
 export default {
 
     data() {
@@ -195,6 +189,8 @@ export default {
                 scopes: [],
                 errors: []
             },
+
+            errorTemplate: Error,
 
             dirltr: true,
         };

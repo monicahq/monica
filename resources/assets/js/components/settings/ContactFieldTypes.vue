@@ -82,16 +82,7 @@
           </div>
           <div class="modal-body">
             <!-- Form Errors -->
-            <div v-if="createForm.errors.length > 0" class="alert alert-danger">
-              <p>{{ $t('app.error_title') }}</p>
-              <br />
-              <p>{{ createForm.errors[0] }}</p>
-              <ul v-for="errors in createForm.errors[1]" :key="errors.id">
-                <li v-for="error in errors" :key="error.id">
-                  {{ error }}
-                </li>
-              </ul>
-            </div>
+            <div :is="errorTemplate" :errors="createForm.errors" />
 
             <form class="form-horizontal" role="form" @submit.prevent="store">
               <div class="form-group">
@@ -158,16 +149,7 @@
           </div>
           <div class="modal-body">
             <!-- Form Errors -->
-            <div v-if="editForm.errors.length > 0" class="alert alert-danger">
-              <p>{{ $t('app.error_title') }}</p>
-              <br />
-              <p>{{ createForm.errors[0] }}</p>
-              <ul v-for="errors in createForm.errors[1]" :key="errors.id">
-                <li v-for="error in errors" :key="error.id">
-                  {{ error }}
-                </li>
-              </ul>
-            </div>
+            <div :is="errorTemplate" :errors="editForm.errors" />
 
             <form class="form-horizontal" role="form" @submit.prevent="update">
               <div class="form-group">
@@ -250,6 +232,8 @@
 </template>
 
 <script>
+import Error from '../partials/Error.vue';
+
 export default {
 
     data() {
@@ -274,6 +258,8 @@ export default {
                 icon: '',
                 errors: []
             },
+
+            errorTemplate: Error,
 
             dirltr: true,
         };

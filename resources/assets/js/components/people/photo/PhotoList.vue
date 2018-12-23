@@ -75,7 +75,7 @@
         <progress max="100" :value.prop="uploadPercentage"></progress>
       </div>
       <p class="tc f6 mb0">
-        {{ uploadPercentage }}% uploaded
+        {{ $t('app.percent_uploaded', {percent: uploadPercentage}) }}
       </p>
     </div>
     <!-- ERROR STEP WHEN UPLOADING A PHOTO -->

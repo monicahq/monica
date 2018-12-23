@@ -91,15 +91,7 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div v-if="createForm.errors.length > 0" class="alert alert-danger">
-              <p><strong>Whoops!</strong> Something went wrong!</p>
-              <br />
-              <ul>
-                <li v-for="error in createForm.errors" :key="error.id">
-                  {{ error }}
-                </li>
-              </ul>
-            </div>
+            <div :is="errorTemplate" :errors="createForm.errors" />
 
             <!-- Create Client Form -->
             <form class="form-horizontal" role="form">
@@ -163,21 +155,13 @@
             </button>
 
             <h4 class="modal-title">
-              Edit Client
+              {{ $t('settings.api_oauth_edit') }}
             </h4>
           </div>
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div v-if="editForm.errors.length > 0" class="alert alert-danger">
-              <p><strong>Whoops!</strong> Something went wrong!</p>
-              <br />
-              <ul>
-                <li v-for="error in editForm.errors" :key="error.id">
-                  {{ error }}
-                </li>
-              </ul>
-            </div>
+            <div :is="errorTemplate" :errors="editForm.errors" />
 
             <!-- Edit Client Form -->
             <form class="form-horizontal" role="form">
@@ -234,6 +218,8 @@
 </template>
 
 <script>
+import Error from '../partials/Error.vue';
+
 export default {
 
     data() {
@@ -251,6 +237,8 @@ export default {
                 name: '',
                 redirect: ''
             },
+
+            errorTemplate: Error,
 
             dirltr: true,
         };
