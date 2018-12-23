@@ -207,6 +207,16 @@ $factory->define(App\Models\Account\Invitation::class, function (Faker\Generator
 $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'place_id' => function (array $data) {
+            return factory(App\Models\Account\Place::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
@@ -361,6 +371,27 @@ $factory->define(App\Models\Contact\Document::class, function (Faker\Generator $
     ];
 });
 
+$factory->define(App\Models\Account\Photo::class, function (Faker\Generator $faker) {
+    $account = factory(App\Models\Account\Account::class)->create();
+
+    return [
+        'account_id' => $account->id,
+        'original_filename' => 'file.jpg',
+        'new_filename' => 'file.jpg',
+    ];
+});
+
+$factory->define(App\Models\Account\Place::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'country' => 'US',
+        'street' => '12',
+        'city' => 'beverly hills',
+        'province' => null,
+        'postal_code' => '90210',
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
@@ -417,6 +448,31 @@ $factory->define(App\Models\Account\ImportJobReport::class, function (Faker\Gene
     return [];
 });
 
+$factory->define(App\Models\Instance\Emotion\Emotion::class, function (Faker\Generator $faker) {
+    return [
+        'emotion_primary_id' => factory(App\Models\Instance\Emotion\PrimaryEmotion::class)->create()->id,
+        'emotion_secondary_id' => function (array $data) {
+            return factory(App\Models\Instance\Emotion\SecondaryEmotion::class)->create([
+                'emotion_primary_id' => $data['emotion_primary_id'],
+            ])->id;
+        },
+        'name' => $faker->text(5),
+    ];
+});
+
+$factory->define(App\Models\Instance\Emotion\SecondaryEmotion::class, function (Faker\Generator $faker) {
+    return [
+        'emotion_primary_id' => factory(App\Models\Instance\Emotion\PrimaryEmotion::class)->create()->id,
+        'name' => $faker->text(5),
+    ];
+});
+
+$factory->define(App\Models\Instance\Emotion\PrimaryEmotion::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->text(5),
+    ];
+});
+
 $factory->define(App\Models\Settings\Term::class, function (Faker\Generator $faker) {
     return [
         'term_version' => $faker->realText(50),
@@ -446,6 +502,46 @@ $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator
         'stripe_id' => $stripe_id,
         'stripe_plan' => $stripe_plan ?: $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
         'quantity' => 1,
+        'created_at' => now(),
+    ];
+});
+
+$factory->define(App\Models\Account\Weather::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'place_id' => function (array $data) {
+            return factory(App\Models\Account\Place::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'weather_json' => json_decode('
+{
+  "latitude": 45.487685,
+  "longitude": -73.590259,
+  "timezone": "America\/Toronto",
+  "currently": {
+    "time": 1541637005,
+    "summary": "Mostly Cloudy",
+    "icon": "partly-cloudy-night",
+    "nearestStormDistance": 39,
+    "nearestStormBearing": 307,
+    "precipIntensity": 0,
+    "precipProbability": 0,
+    "temperature": 7.57,
+    "apparentTemperature": 3.82,
+    "dewPoint": 1.24,
+    "humidity": 0.64,
+    "pressure": 1009.91,
+    "windSpeed": 6.98,
+    "windGust": 12.99,
+    "windBearing": 249,
+    "cloudCover": 0.73,
+    "uvIndex": 0,
+    "visibility": 16.09,
+    "ozone": 304.17
+  },
+  "offset": -5
+}'),
         'created_at' => now(),
     ];
 });
