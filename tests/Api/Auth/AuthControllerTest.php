@@ -47,7 +47,7 @@ class AuthControllerTest extends ApiTestCase
 
         config([
             'monica.mobile_client_id' => $client->id,
-            'monica.mobile_client_secret' => $client->secret
+            'monica.mobile_client_secret' => $client->secret,
         ]);
 
         $userPassword = 'password';
