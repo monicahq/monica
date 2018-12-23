@@ -101,7 +101,7 @@ class Weather extends Model
         $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
 
         return $numberFormatter->format($temperature);
-}
+    }
 
     /**
      * Get the emoji representing the weather.
