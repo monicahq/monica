@@ -46,7 +46,6 @@ class WeatherTest extends TestCase
         );
     }
 
-
     public function test_it_gets_current_temperature_in_fahrenheit()
     {
         $weather = factory(Weather::class)->create();

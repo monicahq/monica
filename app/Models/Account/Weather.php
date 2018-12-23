@@ -125,27 +125,27 @@ class Weather extends Model
         return $string;
     }
 
-    /**	
+    /**
      * Get the temperature attribute.
      * Temperature is fetched in Celsius. It needs to be
      * converted to Fahrenheit depending on the user.
-     *	
-     * @return string	
-     */	
-    public function temperature($scale = 'celsius')	
-    {	
+     *
+     * @return string
+     */
+    public function temperature($scale = 'celsius')
+    {
         $json = $this->weather_json;
-  
+
         $temperature = $json['currently']['temperature'];
-        
+
         if ($scale == 'fahrenheit') {
             $temperature = 9 / 5 * $temperature + 32;
         }
-  
+
         $temperature = round($temperature, 1);
-  
+
         $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
-  
+
         return $numberFormatter->format($temperature);
     }
 }
