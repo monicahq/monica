@@ -19,6 +19,7 @@ use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
+use App\Services\Contact\Address\CreateAddress;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -342,15 +343,18 @@ class FakeContentTableSeeder extends Seeder
     public function populateAddresses()
     {
         if (rand(1, 3) == 1) {
-            $this->contact->addresses()->create([
+            $request = [
                 'account_id' => $this->contact->account_id,
+                'contact_id' => $this->contact->id,
                 'country' => $this->getRandomCountry(),
                 'name' => $this->faker->word,
                 'street' => (rand(1, 3) == 1) ? $this->faker->streetAddress : null,
                 'city' => (rand(1, 3) == 1) ? $this->faker->city : null,
                 'province' => (rand(1, 3) == 1) ? $this->faker->state : null,
                 'postal_code' => (rand(1, 3) == 1) ? $this->faker->postcode : null,
-            ]);
+            ];
+
+            (new CreateAddress)->execute($request);
         }
     }
 
