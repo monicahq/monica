@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Models\Instance\SpecialDate;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

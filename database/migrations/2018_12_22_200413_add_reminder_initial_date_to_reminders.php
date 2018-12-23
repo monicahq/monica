@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Contact\Reminder;
+use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Instance\SpecialDate;
 
 class AddReminderInitialDateToReminders extends Migration
 {

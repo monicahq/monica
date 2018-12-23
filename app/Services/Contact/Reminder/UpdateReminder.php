@@ -2,12 +2,9 @@
 
 namespace App\Services\Contact\Reminder;
 
-use App\Helpers\DateHelper;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
-use App\Models\Instance\SpecialDate;
 
 class UpdateReminder extends BaseService
 {

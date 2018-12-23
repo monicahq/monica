@@ -2,12 +2,8 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Contact\ReminderOutbox;
-use App\Models\Contact\ReminderRule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderOutboxTest extends TestCase

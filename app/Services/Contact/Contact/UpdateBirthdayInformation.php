@@ -4,9 +4,9 @@ namespace App\Services\Contact\Contact;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
-use App\Models\Contact\Reminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 
 class UpdateBirthdayInformation extends BaseService

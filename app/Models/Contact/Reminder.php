@@ -2,11 +2,9 @@
 
 namespace App\Models\Contact;
 
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
-use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
