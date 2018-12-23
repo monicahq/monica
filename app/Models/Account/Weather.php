@@ -80,30 +80,6 @@ class Weather extends Model
     }
 
     /**
-     * Get the temperature attribute.
-     * Temperature is fetched in Celsius. It needs to be
-     * converted to Fahrenheit depending on the user.
-     *
-     * @return string
-     */
-    public function getTemperatureAttribute($value)
-    {
-        $json = $this->weather_json;
-
-        $temperature = $json['currently']['temperature'];
-
-        if (auth()->user()->temperature_scale == 'fahrenheit') {
-            $temperature = 9 / 5 * $temperature + 32;
-        }
-
-        $temperature = round($temperature, 1);
-
-        $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
-
-        return $numberFormatter->format($temperature);
-    }
-
-    /**
      * Get the emoji representing the weather.
      *
      * @return string
@@ -147,5 +123,29 @@ class Weather extends Model
         }
 
         return $string;
+    }
+
+    /**	
+     * Get the temperature attribute.
+     * Temperature is fetched in Celsius. It needs to be
+     * converted to Fahrenheit depending on the user.
+     *	
+     * @return string	
+     */	
+    public function temperature($scale = 'celsius')	
+    {	
+        $json = $this->weather_json;
+  
+        $temperature = $json['currently']['temperature'];
+        
+        if ($scale == 'fahrenheit') {
+            $temperature = 9 / 5 * $temperature + 32;
+        }
+  
+        $temperature = round($temperature, 1);
+  
+        $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
+  
+        return $numberFormatter->format($temperature);
     }
 }
