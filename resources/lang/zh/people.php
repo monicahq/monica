@@ -81,22 +81,26 @@ return [
     // Calls
     'modal_call_title' => '记录通话',
     'modal_call_comment' => '你们说了什么？（可选）',
-    'modal_call_date' => '通话是今天早些时候发生的。',
-    'modal_call_change' => '更改',
     'modal_call_exact_date' => '通话日期',
+    'modal_call_who_called' => '谁打来的？',
+    'modal_call_emotion' => '您想记录您在此通话中的感受吗？(可选)',
     'calls_add_success' => '已保存通话记录。',
     'call_delete_confirmation' => '你确定要删除此通话记录吗?',
     'call_delete_success' => '成功删除通话记录！',
     'call_title' => '通话记录',
     'call_empty_comment' => '无详细信息',
-    'call_blank_title' => '记录您与:name的通话记录',
-    'call_blank_desc' => '你打给:name',
+    'call_blank_title' => '追踪您与{name} 的通话记录',
+    'call_blank_desc' => '你打给{name}',
+    'call_you_called' => '您拨出的',
+    'call_he_called' => '{name} 拨出的',
 
     // Conversation
     'conversation_blank' => '记录您与:name通过短信或社交媒体的信息记录',
     'conversation_delete_link' => '删除对话',
     'conversation_edit_title' => '编辑对话',
     'conversation_edit_delete' => '您是否要删除这个对话？操作无法撤销。',
+    'conversation_add_success' => '对话成功添加',
+    'conversation_edit_success' => '对话成功更新',
     'conversation_delete_success' => '对话成功删除',
     'conversation_add_title' => '记录一个新对话',
     'conversation_add_when' => '你们何时进行的对话？',
@@ -359,6 +363,8 @@ return [
     'contact_address_form_province' => '省 (可选)',
     'contact_address_form_postal_code' => '邮政编码 (可选)',
     'contact_address_form_country' => '国家 (可选)',
+    'contact_address_form_latitude' => '纬度 (仅限数字) (可选)',
+    'contact_address_form_longitude' => '经度 (仅限数字) (可选)',
 
     // Pets
     'pets_kind' => '宠物种类',
@@ -448,4 +454,14 @@ return [
     'document_upload_zone_cta' => '上传文件',
     'document_upload_zone_progress' => '正在上传文档',
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
+
+    // Photos
+    'photo_list_title' => '相关照片',
+    'photo_list_cta' => '上传照片',
+    'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
+    'photo_upload_zone_cta' => '上传照片',
+    'photo_delete' => '删除照片',
+
+    // emotions
+    'emotion_this_made_me_feel' => '这让你觉得...',
 ];

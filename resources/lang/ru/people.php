@@ -81,22 +81,26 @@ return [
     // Calls
     'modal_call_title' => 'Log a call',
     'modal_call_comment' => 'О чём вы разговаривали? (не обяз.)',
-    'modal_call_date' => 'Звонок был ранее сегодня.',
-    'modal_call_change' => 'Изменить',
     'modal_call_exact_date' => 'Дата звонка',
+    'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Звонок сохранён.',
     'call_delete_confirmation' => 'Вы уверены что хотите удалить звонок?',
     'call_delete_success' => 'Звонок был удалён',
     'call_title' => 'Телефонные звонки',
     'call_empty_comment' => 'Нет деталей',
-    'call_blank_title' => 'Keep track of the phone calls you’ve done with :name',
-    'call_blank_desc' => 'Вы звонили :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
     'conversation_delete_link' => 'Delete the conversation',
     'conversation_edit_title' => 'Edit conversation',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'The conversation has been successfully deleted.',
     'conversation_add_title' => 'Record a new conversation',
     'conversation_add_when' => 'When did you have this conversation?',
@@ -359,6 +363,8 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'Kind of pet',
@@ -448,4 +454,14 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // Photos
+    'photo_list_title' => 'Related photos',
+    'photo_list_cta' => 'Upload photo',
+    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_delete' => 'Delete photo',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
