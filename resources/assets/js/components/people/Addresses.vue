@@ -205,10 +205,13 @@
 <script>
 export default {
 
-    props: ['hash'],
-    /*
-         * The component's data.
-         */
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
+    },
+
     data() {
         return {
             contactAddresses: [],
