@@ -261,7 +261,7 @@ return [
     'emotion_secondary_cheerfulness' => '兴高采烈',
     'emotion_secondary_zest' => '热情',
     'emotion_secondary_contentment' => '满足',
-    'emotion_secondary_pride' => 'Pride',
+    'emotion_secondary_pride' => '骄傲',
     'emotion_secondary_optimism' => '乐观',
     'emotion_secondary_enthrallment' => '沉迷',
     'emotion_secondary_relief' => '如释重负',
