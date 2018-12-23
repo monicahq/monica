@@ -6,6 +6,7 @@ use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Account\Weather;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\ClientException;
 use App\Exceptions\MissingEnvVariableException;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
@@ -80,8 +81,13 @@ class GetWeatherInformation extends BaseService
         $query = $this->buildQuery($place);
 
         $client = new GuzzleClient();
-        $response = $client->request('GET', $query);
-        $response = json_decode($response->getBody());
+
+        try {
+            $response = $client->request('GET', $query);
+            $response = json_decode($response->getBody());
+        } catch (ClientException $e) {
+            return null;
+        }
 
         $weather = new Weather();
         $weather->weather_json = $response;
@@ -100,13 +106,16 @@ class GetWeatherInformation extends BaseService
      */
     private function buildQuery(Place $place)
     {
-        $query = 'https://api.darksky.net/forecast/';
-        $query .= config('monica.darksky_api_key');
-        $query .= '/';
-        $query .= $place->latitude.','.$place->longitude;
-        $query .= '?exclude=alerts,minutely,hourly,daily,flags';
+        $url = str_finish(config('location.darksky_url'), '/');
+        $key = config('monica.darksky_api_key');
+        $coords = $place->latitude.','.$place->longitude;
 
-        return $query;
+        $query = http_build_query([
+            'exclude' => 'alerts,minutely,hourly,daily,flags',
+            'units' => 'si',
+        ]);
+
+        return $url.$key.'/'.$coords.'?'.$query;
     }
 
     /**

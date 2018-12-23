@@ -58,7 +58,7 @@ class GetGPSCoordinate extends BaseService
         $query = http_build_query([
             'format' => 'json',
             'key' => config('monica.location_iq_api_key'),
-            'q' => urlencode($place->getAddressAsString()),
+            'q' => $place->getAddressAsString(),
         ]);
 
         return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;

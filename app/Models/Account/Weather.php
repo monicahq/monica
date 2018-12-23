@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -126,20 +127,25 @@ class Weather extends Model
 
     /**
      * Get the temperature attribute.
-     * Temperature is fetched in Fahenrheit by default. It needs to be
-     * converted to Celsius depending on the user.
+     * Temperature is fetched in Celsius. It needs to be
+     * converted to Fahrenheit depending on the user.
      *
      * @return string
      */
-    public function temperature($scale = 'fahrenheit')
+    public function temperature($scale = 'celsius')
     {
         $json = $this->weather_json;
+
         $temperature = $json['currently']['temperature'];
 
-        if ($scale != 'fahrenheit') {
-            $temperature = ($temperature - 32) * .5556;
+        if ($scale == 'fahrenheit') {
+            $temperature = 9 / 5 * $temperature + 32;
         }
 
-        return round($temperature, 0);
+        $temperature = round($temperature, 1);
+
+        $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::DECIMAL);
+
+        return $numberFormatter->format($temperature);
     }
 }
