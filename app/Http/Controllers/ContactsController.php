@@ -256,6 +256,7 @@ class ContactsController extends Controller
             ->withModules($modules)
             ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
+            ->withWeather($contact->getWeather())
             ->withDays($days)
             ->withMonths($months)
             ->withYears(DateHelper::getListOfYears());
