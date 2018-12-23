@@ -101,7 +101,7 @@ class AddEmotionsTable extends Migration
         DB::table('emotions')->insert(['name' => 'contentment', 'emotion_primary_id' => $emotionPrimaryId, 'emotion_secondary_id' => $emotionSecondaryId]);
         DB::table('emotions')->insert(['name' => 'pleasure', 'emotion_primary_id' => $emotionPrimaryId, 'emotion_secondary_id' => $emotionSecondaryId]);
 
-        $emotionSecondaryId = DB::table('emotions_secondary')->insertGetId(['emotion_primary_id' => $emotionPrimaryId, 'name' => 'contentment']);
+        $emotionSecondaryId = DB::table('emotions_secondary')->insertGetId(['emotion_primary_id' => $emotionPrimaryId, 'name' => 'pride']);
 
         DB::table('emotions')->insert(['name' => 'pride', 'emotion_primary_id' => $emotionPrimaryId, 'emotion_secondary_id' => $emotionSecondaryId]);
         DB::table('emotions')->insert(['name' => 'pleasure', 'emotion_primary_id' => $emotionPrimaryId, 'emotion_secondary_id' => $emotionSecondaryId]);
@@ -109,7 +109,6 @@ class AddEmotionsTable extends Migration
         $emotionSecondaryId = DB::table('emotions_secondary')->insertGetId(['emotion_primary_id' => $emotionPrimaryId, 'name' => 'optimism']);
 
         DB::table('emotions')->insert(['name' => 'eagerness', 'emotion_primary_id' => $emotionPrimaryId, 'emotion_secondary_id' => $emotionSecondaryId]);
-        DB::table('emotions')->insert(['name' => 'hope', 'emotion_primary_id' => $emotionPrimaryId, 'emotion_secondary_id' => $emotionSecondaryId]);
         DB::table('emotions')->insert(['name' => 'hope', 'emotion_primary_id' => $emotionPrimaryId, 'emotion_secondary_id' => $emotionSecondaryId]);
 
         $emotionSecondaryId = DB::table('emotions_secondary')->insertGetId(['emotion_primary_id' => $emotionPrimaryId, 'name' => 'enthrallment']);
