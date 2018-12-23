@@ -11,6 +11,7 @@ use App\Models\Account\Photo;
 use App\Models\Account\Place;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Account\Weather;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
@@ -197,6 +198,12 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->photos()->exists());
+    }
+
+    public function test_it_has_many_weathers()
+    {
+        $weather = factory(Weather::class)->create([]);
+        $this->assertTrue($weather->account->weathers()->exists());
     }
 
     public function test_it_has_many_places()
