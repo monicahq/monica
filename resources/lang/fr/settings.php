@@ -35,7 +35,7 @@ return [
     'email_placeholder' => 'Entrez l\'adresse courriel',
     'email_help' => 'Cette adresse courriel est utilisée pour vous connecter à votre compte, et c’est aussi l’adresse que nous utiliserons pour vous envoyer les rappels par courriel.',
     'timezone' => 'Fuseau horaire',
-    'temperature_scale' => 'Temperature scale',
+    'temperature_scale' => 'Échelle de température',
     'temperature_scale_fahrenheit' => 'Fahrenheit',
     'temperature_scale_celsius' => 'Celsius',
     'layout' => 'Disposition',
