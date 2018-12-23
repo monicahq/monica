@@ -25,24 +25,24 @@
 
       <!-- LIST OF NORMAL NOTES -->
       <ul>
-        <li v-for="xnote in notes" :key="xnote.id" class="note">
-          <div v-show="!xnote.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + xnote.id">
+        <li v-for="note in notes" :key="note.id" class="note">
+          <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">
-              <span v-html="xnote.parsed_body"></span>
+              <span v-html="note.parsed_body"></span>
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">
                 <div class="f5 di mr1">
-                  <i v-tooltip.top="$t('people.notes_favorite')" class="pointer" :class="[xnote.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" @click="toggleFavorite(xnote)"></i>
+                  <i v-tooltip.top="$t('people.notes_favorite')" class="pointer" :class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" @click="toggleFavorite(note)"></i>
                 </div>
-                {{ xnote.created_at_short }}
+                {{ note.created_at_short }}
               </div>
               <div class="fl w-50 tr">
-                <a class="pointer" :cy-name="'edit-note-button-' + xnote.id" @click="toggleEditMode(xnote)">
+                <a class="pointer" :cy-name="'edit-note-button-' + note.id" @click="toggleEditMode(note)">
                   {{ $t('app.edit') }}
                 </a>
                 |
-                <a class="pointer" :cy-name="'delete-note-button-' + xnote.id" @click.prevent="showDelete(xnote)">
+                <a class="pointer" :cy-name="'delete-note-button-' + note.id" @click.prevent="showDelete(note)">
                   {{ $t('app.delete') }}
                 </a>
               </div>
@@ -50,9 +50,9 @@
           </div>
 
           <!-- EDIT MODE -->
-          <form v-show="xnote.edit" class="bg-near-white pa2 br2 mt3 mb3">
-            <textarea v-model="xnote.body" class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + xnote.id" @keyup.esc="xnote.edit = false"></textarea>
-            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + xnote.id" @click.prevent="update(xnote)">
+          <form v-show="note.edit" class="bg-near-white pa2 br2 mt3 mb3">
+            <textarea v-model="note.body" class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + note.id" @keyup.esc="note.edit = false"></textarea>
+            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + note.id" @click.prevent="update(note)">
               {{ $t('app.update') }}
             </a>
           </form>
@@ -81,7 +81,7 @@
             <button type="button" class="btn btn-secondary" data-dismiss="modal">
               {{ $t('app.cancel') }}
             </button>
-            <button type="button" class="btn btn-danger" :cy-name="'delete-mode-note-button-' + note.id" @click.prevent="trash(note)">
+            <button type="button" class="btn btn-danger" :cy-name="'delete-mode-note-button-' + deleteNote.id" @click.prevent="trash(deleteNote)">
               {{ $t('app.delete') }}
             </button>
           </div>
@@ -115,10 +115,8 @@ export default {
                 is_favorited: 0
             },
 
-            note: {
+            deleteNote: {
                 id: 0,
-                body: '',
-                is_favorited: 0
             },
 
             dirltr: true,
@@ -152,9 +150,6 @@ export default {
         },
 
         toggleEditMode(note) {
-            this.note.id = note.id;
-            this.note.body = note.body;
-            this.note.is_favorited = note.is_favorited;
             Vue.set(note, 'edit', !note.edit);
         },
 
@@ -204,7 +199,7 @@ export default {
         },
 
         showDelete(note) {
-            this.note.id = note.id;
+            this.deleteNote.id = note.id;
 
             $('#modal-delete-note').modal('show');
         },
