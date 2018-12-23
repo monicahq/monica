@@ -140,7 +140,7 @@ Vue.component(
 
 Vue.component(
     'contact-list',
-    require('./components/people/ContactList.vue')
+    require('./components/people/ContactList.vue').default
 );
 
 Vue.component(
