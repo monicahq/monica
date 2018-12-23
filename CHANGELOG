@@ -1,5 +1,12 @@
 UNRELEASED CHANGES:
 
+*
+
+RELEASED VERSIONS:
+
+v2.11.0 - 2018-12-23
+--------------------
+
 * Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
 * Add ability to see the current weather on the contact profile page
 * Add ability to generate recovery codes in order to bypass 2FA/U2F
@@ -19,8 +26,6 @@ UNRELEASED CHANGES:
 * Fix incompatibility of people search queries with PostgreSQL
 * Refactor how contacts are managed
 * Add the notion of places
-
-RELEASED VERSIONS:
 
 v2.10.2 - 2018-11-14
 --------------------
