@@ -23,8 +23,8 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $placeService = new GetGPSCoordinate;
-        $place = $placeService->execute($request);
+        $geocodingService = new GetGPSCoordinate;
+        $place = $geocodingService->execute($request);
 
         $this->assertNull($place);
     }
@@ -46,8 +46,8 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $placeService = new GetGPSCoordinate;
-        $place = $placeService->execute($request);
+        $geocodingService = new GetGPSCoordinate;
+        $place = $geocodingService->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -84,8 +84,8 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $placeService = new GetGPSCoordinate;
-        $place = $placeService->execute($request);
+        $geocodingService = new GetGPSCoordinate;
+        $place = $geocodingService->execute($request);
 
         $this->assertNull($place);
 
@@ -101,7 +101,7 @@ class GetGPSCoordinateTest extends TestCase
 
         $this->expectException(MissingParameterException::class);
 
-        $placeService = new GetGPSCoordinate;
-        $place = $placeService->execute($request);
+        $geocodingService = new GetGPSCoordinate;
+        $place = $geocodingService->execute($request);
     }
 }

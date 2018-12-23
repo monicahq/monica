@@ -44,10 +44,11 @@
               ({{ contactAddress.name }})
             </span>
 
-            <span v-if="!contactAddress.address"></span>
-            <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank" class="light-silver">
-              ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
-            </a>
+            <span v-if="!contactAddress.address">
+              <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank">
+                ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
+              </a>
+            </span>
 
             <div v-if="editMode" class="fr">
               <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>

@@ -59,7 +59,7 @@ curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example >
 
 Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
 
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of the MySQL container).
+Edit `.env` to set `DB_HOST=mysql` (as `mysql` is the creative name of the MySQL container).
 
 Start by downloading all the images and setup your new instance.
 

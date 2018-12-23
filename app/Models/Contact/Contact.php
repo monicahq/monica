@@ -8,6 +8,7 @@ use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
+use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -1563,5 +1564,16 @@ class Contact extends Model
         }
 
         $this->save();
+    }
+
+    /**
+     * Get the weather information for this contact, based on the first address
+     * on the profile.
+     *
+     * @return void
+     */
+    public function getWeather()
+    {
+        return WeatherHelper::getWeatherForAddress($this->addresses()->first());
     }
 }
