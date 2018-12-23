@@ -106,12 +106,12 @@ class CountriesHelper
 
         if (is_null($countryCode)) {
             $lang = LocaleHelper::getLocaleAlpha($locale);
-            $country = Countries::whereLanguage($lang);
+            $country = Countries::whereISO639_3($lang);
             if ($country->count() === 0) {
                 return;
             }
         } else {
-            $country = Countries::where('cca3', $countryCode);
+            $country = Countries::where('cca2', $countryCode);
         }
 
         return $country->first();
@@ -121,43 +121,33 @@ class CountriesHelper
      * Get default country for a language.
      *
      * @param string $locale   language code (iso)
-     * @return string  cca3 code
+     * @return string  cca2 code
      */
     private static function getDefaultCountryFromLocale($locale)
     {
         switch (mb_strtolower($locale)) {
             case 'cs':
-                $country = 'CZE';
-                break;
-            case 'de':
-                $country = 'DEU';
+                $country = 'CZ';
                 break;
             case 'en':
-                $country = 'USA';
-                break;
-            case 'es':
-                $country = 'ESP';
-                break;
-            case 'fr':
-                $country = 'FRA';
+                $country = 'US';
                 break;
             case 'he':
-                $country = 'ISR';
-                break;
-            case 'it':
-                $country = 'ITA';
-                break;
-            case 'nl':
-                $country = 'NLD';
-                break;
-            case 'pt':
-                $country = 'PRT';
-                break;
-            case 'ru':
-                $country = 'RUS';
+                $country = 'IL';
                 break;
             case 'zh':
-                $country = 'CHN';
+                $country = 'CN';
+                break;
+            case 'de':
+            case 'es':
+            case 'fr':
+            case 'hr':
+            case 'it':
+            case 'nl':
+            case 'pt':
+            case 'ru':
+            case 'tr':
+                $country = mb_strtoupper($locale);
                 break;
             default:
                 $country = null;

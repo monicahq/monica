@@ -40,6 +40,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'locale',
         'currency_id',
         'fluid_container',
+        'temperature_scale',
         'name_order',
         'google2fa_secret',
     ];
@@ -107,13 +108,10 @@ class User extends Authenticatable implements MustVerifyEmail
         // Associate timezone and currency
         $currencyCode = $infos['currency'];
         $timezone = $infos['timezone'];
-        $country = null;
-        if (is_null($currencyCode) || is_null($timezone)) {
-            if ($infos['country']) {
-                $country = CountriesHelper::getCountry($infos['country']);
-            } else {
-                $country = CountriesHelper::getCountryFromLocale($locale);
-            }
+        if ($infos['country']) {
+            $country = CountriesHelper::getCountry($infos['country']);
+        } else {
+            $country = CountriesHelper::getCountryFromLocale($locale);
         }
 
         // Timezone
@@ -134,6 +132,18 @@ class User extends Authenticatable implements MustVerifyEmail
                     break;
                 }
             }
+        }
+
+        // Temperature scale
+        switch ($country->cca2) {
+            case 'US':
+            case 'BZ':
+            case 'KY':
+                $this->temperature_scale = 'fahrenheit';
+                break;
+            default:
+                $this->temperature_scale = 'celsius';
+                break;
         }
     }
 
@@ -165,6 +175,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function terms()
     {
         return $this->belongsToMany(Term::class)->withPivot('ip_address')->withTimestamps();
+    }
+
+    /**
+     * Get the recovery codes associated with the user.
+     */
+    public function recoveryCodes()
+    {
+        return $this->hasMany(RecoveryCode::class);
     }
 
     /**

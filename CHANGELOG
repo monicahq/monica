@@ -1,11 +1,42 @@
 UNRELEASED CHANGES:
 
-*
+* Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
+* Add ability to see the current weather on the contact profile page
+* Add ability to generate recovery codes in order to bypass 2FA/U2F
+* Add ability to indicate latitude and longitude to addresses
+* Add ability to upload photos
+* Add ability to indicate how you felt when logging a call
+* Add information about who initiated a phone call
+* Add ability to edit a phone call
+* Add ability to create tasks that are not linked to any contacts
+* Remove limitation on the date field when creating an activity
+* Fix Set Tag api method which deleted existing tags, which it shouldn't
+* Fix editing relationship not working
+* Fix Storage page not being displayed
+* Fix VCard import without firstname
+* Fix avatar display in searches
+* Fix conversation add/update using contact add/update flash messages
+* Fix incompatibility of people search queries with PostgreSQL
+* Refactor how contacts are managed
+* Add the notion of places
 
 RELEASED VERSIONS:
 
+v2.10.2 - 2018-11-14
+--------------------
+
+* Fix composer install problems
+* Fix editing conversations not working
+* Fix deletion of relationships not working
+
+v2.10.1 - 2018-11-13
+--------------------
+
+* Fix work information not being able to be edited
+* Display contacts for each tag in the Tags view on the Settings page
+
 v2.10.0 - 2018-11-11
--------------------
+--------------------
 
 * Add ability to upload documents
 * Add ability to archive a contact

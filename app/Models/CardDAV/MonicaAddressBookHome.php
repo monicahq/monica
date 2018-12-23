@@ -14,11 +14,9 @@ class MonicaAddressBookHome extends AddressBookHome
     public function getChildren()
     {
         $addressbooks = $this->carddavBackend->getAddressBooksForUser($this->principalUri);
-        $objs = [];
-        foreach ($addressbooks as $addressbook) {
-            $objs[] = new MonicaAddressBook($this->carddavBackend, $addressbook);
-        }
 
-        return $objs;
+        return collect($addressbooks)->map(function ($addressbook) {
+            return new MonicaAddressBook($this->carddavBackend, $addressbook);
+        });
     }
 }

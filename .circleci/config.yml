@@ -40,7 +40,7 @@ aliases:
   - &yarn-install
     run:
       name: yarn install
-      command: yarn install --frozen-lockfile
+      command: yarn inst
   - &prepare-db
     run:
       name: Prepare database

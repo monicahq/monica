@@ -27,6 +27,6 @@ return [
 
     'linkedin_profile' => '领英®',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => '更新日志',
+    'product_view_details' => '查看详情',
 ];
