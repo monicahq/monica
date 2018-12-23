@@ -4,7 +4,6 @@ namespace Tests\Api\Auth;
 
 use Tests\ApiTestCase;
 use App\Models\User\User;
-use Illuminate\Support\Facades\DB;
 use Laravel\Passport\ClientRepository;
 
 class AuthControllerTest extends ApiTestCase
@@ -20,13 +19,14 @@ class AuthControllerTest extends ApiTestCase
 
     private function getActualConnection()
     {
-        $handle = fopen(".env", "r");
+        $handle = fopen('.env', 'r');
         if (! $handle) {
             return;
         }
         while (($line = fgets($handle)) !== false) {
             if (preg_match('/DB_CONNECTION=(.{1,})/', $line, $matches)) {
                 fclose($handle);
+
                 return $matches[1];
             }
         }
@@ -49,7 +49,7 @@ class AuthControllerTest extends ApiTestCase
         config(['monica.mobile_client_secret' => $client->secret]);
 
         $user = factory(User::class)->create([
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
         ]);
 
         $response = $this->json('POST', '/oauth/login', [
