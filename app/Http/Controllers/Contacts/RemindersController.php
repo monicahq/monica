@@ -6,12 +6,12 @@ use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\People\RemindersRequest;
+use Illuminate\Support\Facades\Request;
 
 class RemindersController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new reminder.
      *
      * @param Contact $contact
      * @return \Illuminate\Http\Response
@@ -25,26 +25,23 @@ class RemindersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a reminder.
      *
-     * @param RemindersRequest $request
+     * @param Request $request
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function store(RemindersRequest $request, Contact $contact)
+    public function store(Request $request, Contact $contact)
     {
-        $reminder = $contact->reminders()->create(
-            $request->only([
-                'title',
-                'description',
-                'frequency_type',
-                'next_expected_date',
-                'frequency_number',
-            ])
-            + ['account_id' => $contact->account_id]
-        );
-
-        $reminder->scheduleNotifications();
+        return (new CreateReminder)->execute([
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'initial_date' => $request->get('next_expected_date'),
+            'frequency_type' => $request->get('frequency_type'),
+            'frequency_number' => $request->get('frequency_number'),
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));

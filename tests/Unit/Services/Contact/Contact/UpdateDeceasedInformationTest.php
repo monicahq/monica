@@ -53,6 +53,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'account_id' => $contact->account->id,
             'is_dead' => 0,
             'deceased_special_date_id' => null,
+            'deceased_reminder_id' => null,
         ]);
     }
 

@@ -2,8 +2,11 @@
 
 namespace App\Models\Contact;
 
+use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
@@ -26,7 +29,11 @@ class Reminder extends Model
      *
      * @var array
      */
-    protected $dates = ['last_triggered', 'next_expected_date'];
+    protected $dates = [
+        'last_triggered',
+        'next_expected_date',
+        'initial_date',
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -67,24 +74,13 @@ class Reminder extends Model
     }
 
     /**
-     * Get the Notifications records associated with the account.
+     * Get the Reminder Outbox records associated with the account.
      *
      * @return HasMany
      */
-    public function notifications()
+    public function reminderOutboxes()
     {
-        return $this->hasMany(Notification::class);
-    }
-
-    /**
-     * Get the next_expected_date field according to user's timezone.
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getNextExpectedDateAttribute($value)
-    {
-        return DateHelper::parseDate($value);
+        return $this->hasMany(ReminderOutbox::class);
     }
 
     /**
@@ -99,6 +95,7 @@ class Reminder extends Model
 
     /**
      * Get the title of a reminder.
+     *
      * @return string
      */
     public function getTitleAttribute($value)
@@ -108,6 +105,7 @@ class Reminder extends Model
 
     /**
      * Set the title of a reminder.
+     *
      * @return string
      */
     public function setTitleAttribute($title)
@@ -117,6 +115,7 @@ class Reminder extends Model
 
     /**
      * Get the description of a reminder.
+     *
      * @return string
      */
     public function getDescriptionAttribute($value)
@@ -125,23 +124,13 @@ class Reminder extends Model
     }
 
     /**
-     * Return the next expected date.
-     *
-     * @return string
-     */
-    public function getNextExpectedDate()
-    {
-        return $this->next_expected_date->toDateString();
-    }
-
-    /**
      * Calculate the next expected date for this reminder.
      *
-     * @return static
+     * @return Carbon
      */
     public function calculateNextExpectedDate()
     {
-        $date = $this->next_expected_date;
+        $date = $this->initial_date;
 
         while ($date->isPast()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
@@ -151,62 +140,63 @@ class Reminder extends Model
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
         }
 
-        $this->next_expected_date = $date;
-
-        return $this;
+        return $date;
     }
 
     /**
-     * Schedules the notifications for the given reminder.
+     * Schedule the reminder to be sent.
      *
      * @return void
      */
-    public function scheduleNotifications()
+    public function schedule()
     {
-        if ($this->frequency_type == 'week') {
-            return;
-        }
+        // when should we send this reminder?
+        $triggerDate = $this->calculateNextExpectedDate();
 
-        // Only schedule notifications for active reminder rules
+        $this->next_expected_date = $triggerDate;
+        $this->save();
+
+        // remove any existing scheduled reminders
+        $this->reminderOutboxes->each->delete();
+
+        // schedule the reminder in the outbox
+        ReminderOutbox::create([
+            'account_id' => $this->account_id,
+            'reminder_id' => $this->id,
+            'planned_date' => $triggerDate,
+            'nature' => 'reminder',
+        ]);
+
+        $this->scheduleNotifications($triggerDate);
+    }
+
+    /**
+     * Create all the notifications that are supposed to be sent
+     * 30 and 7 days prior to the actual reminder.
+     *
+     * @param Carbon $triggerDate
+     * @return void
+     */
+    public function scheduleNotifications(Carbon $triggerDate)
+    {
+        $date = $triggerDate->toDateString();
         $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
 
         foreach ($reminderRules as $reminderRule) {
-            $this->scheduleSingleNotification($reminderRule->number_of_days_before);
+            $datePrior = Carbon::createFromFormat('Y-m-d', $date);
+            $datePrior->subDays($reminderRule->number_of_days_before);
+
+            if ($datePrior->lessThanOrEqualTo(now())) {
+                continue;
+            }
+
+            ReminderOutbox::create([
+                'account_id' => $this->account_id,
+                'reminder_id' => $this->id,
+                'planned_date' => $datePrior->toDateString(),
+                'nature' => 'notification',
+                'notification_number_days_before' => $reminderRule->number_of_days_before,
+            ]);
         }
-    }
-
-    /**
-     * Schedules a notification for the given reminder.
-     *
-     * @param  int  $numberOfDaysBefore
-     * @return Notification
-     */
-    public function scheduleSingleNotification(int $numberOfDaysBefore)
-    {
-        $date = DateHelper::getDateMinusGivenNumberOfDays($this->next_expected_date, $numberOfDaysBefore);
-
-        if ($date->lte(now())) {
-            return;
-        }
-
-        $notification = new Notification;
-        $notification->account_id = $this->account_id;
-        $notification->contact_id = $this->contact_id;
-        $notification->reminder_id = $this->id;
-        $notification->trigger_date = $date;
-        $notification->scheduled_number_days_before = $numberOfDaysBefore;
-        $notification->save();
-
-        return $notification;
-    }
-
-    /**
-     * Purge all the existing notifications for a reminder.
-     *
-     * @return void
-     */
-    public function purgeNotifications()
-    {
-        $this->notifications->each->delete();
     }
 }

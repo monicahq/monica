@@ -107,14 +107,20 @@ class UpdateDeceasedInformation extends BaseService
         }
 
         if ($data['add_reminder']) {
-            $specialDate->setReminder(
-                'year',
-                1,
-                trans(
+            $reminder = (new CreateReminder)->execute([
+                'account_id' => $data['account_id'],
+                'contact_id' => $data['contact_id'],
+                'initial_date' => $specialDate->date,
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'title' => trans(
                     'people.deceased_reminder_title',
                     ['name' => $this->contact->first_name]
-                )
-            );
+                ),
+            ]);
+
+            $this->contact->deceased_reminder_id = $reminder->id;
+            $this->contact->save();
         }
     }
 }

@@ -22,7 +22,6 @@ use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Contact\ActivityTypeCategory;
@@ -47,22 +46,6 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->genders()->exists());
-    }
-
-    public function test_it_has_many_notifications()
-    {
-        $contact = factory(Contact::class)->create();
-        $account = $contact->account;
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertTrue($account->notifications()->exists());
     }
 
     public function test_it_has_many_relationship_types()

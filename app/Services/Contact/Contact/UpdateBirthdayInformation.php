@@ -5,6 +5,9 @@ namespace App\Services\Contact\Contact;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
+use App\Services\Contact\Reminder\CreateReminder;
+use App\Models\Contact\Reminder;
+use App\Services\Contact\Reminder\DestroyReminder;
 
 class UpdateBirthdayInformation extends BaseService
 {
@@ -43,11 +46,51 @@ class UpdateBirthdayInformation extends BaseService
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->contact->removeSpecialDate('birthdate');
+        $this->clearRelatedReminder();
+        $this->clearRelatedSpecialDate();
 
         $this->manageBirthday($data);
 
         return $this->contact;
+    }
+
+    /**
+     * Delete related reminder.
+     *
+     * @return void
+     */
+    private function clearRelatedReminder()
+    {
+        if (is_null($this->contact->birthday_reminder_id)) {
+            return;
+        }
+
+        $reminder = Reminder::find($this->contact->birthday_reminder_id);
+        (new DestroyReminder)->execute([
+            'account_id' => $this->contact->account_id,
+            'reminder_id' => $reminder->id,
+        ]);
+
+        $this->contact->birthday_reminder_id = null;
+        $this->contact->save;
+    }
+
+    /**
+     * Delete related special date.
+     *
+     * @return void
+     */
+    private function clearRelatedSpecialDate()
+    {
+        if (is_null($this->contact->birthday_special_date_id)) {
+            return;
+        }
+
+        $specialDate = SpecialDate::find($this->contact->birthday_special_date_id);
+        $specialDate->delete();
+
+        $this->contact->birthday_special_date_id = null;
+        $this->contact->save;
     }
 
     /**
@@ -115,14 +158,20 @@ class UpdateBirthdayInformation extends BaseService
         }
 
         if ($data['add_reminder']) {
-            $specialDate->setReminder(
-                'year',
-                1,
-                trans(
+            $reminder = (new CreateReminder)->execute([
+                'account_id' => $data['account_id'],
+                'contact_id' => $data['contact_id'],
+                'initial_date' => $specialDate->date->toDateString(),
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'title' => trans(
                     'people.people_add_birthday_reminder',
                     ['name' => $this->contact->first_name]
-                )
-            );
+                ),
+            ]);
+
+            $this->contact->birthday_reminder_id = $reminder->id;
+            $this->contact->save();
         }
     }
 }

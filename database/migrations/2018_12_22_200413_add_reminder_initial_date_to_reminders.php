@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use App\Models\Contact\Reminder;
+use App\Models\Instance\SpecialDate;
 
 class AddReminderInitialDateToReminders extends Migration
 {
@@ -15,9 +16,7 @@ class AddReminderInitialDateToReminders extends Migration
     public function up()
     {
         Schema::table('reminders', function (Blueprint $table) {
-            $table->date('reminder_intial_date')->after('description');
-            $table->boolean('enable_notification_seven_days_prior')->default(true)->after('frequency_number');
-            $table->boolean('enable_notification_thirty_days_prior')->default(true)->after('frequency_number');
+            $table->date('initial_date')->after('contact_id');
         });
 
         // we need to migrate old data. Since we don't know what was the initial
@@ -25,22 +24,41 @@ class AddReminderInitialDateToReminders extends Migration
         // triggered column information.
         Reminder::chunk(200, function ($reminders) {
             foreach ($reminders as $reminder) {
-                $reminder->reminder_initial_date = $reminder->last_triggered;
+                if (! is_null($reminder->special_date_id)) {
+                    $reminder->initial_date = SpecialDate::find($reminder->special_date_id)->date;
+                } else {
+                    $reminder->initial_date = $reminder->last_triggered;
+                }
                 $reminder->save();
             }
+        });
+
+        Schema::table('reminders', function (Blueprint $table) {
+            $table->dropColumn('special_date_id');
+            $table->dropColumn('last_triggered');
         });
 
         Schema::create('reminder_outbox', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('reminder_id');
-            $table->datetime('trigger_date');
-            $table->string('city')->nullable();
-            $table->string('province')->nullable();
-            $table->string('postal_code')->nullable();
-            $table->char('country', 3)->nullable();
-            $table->double('latitude')->nullable();
-            $table->double('longitude')->nullable();
+            $table->date('planned_date');
+            $table->string('nature')->default('reminder');
+            $table->integer('notification_number_days_before')->nullable();
+            $table->timestamps();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('cascade');
+        });
+
+        Schema::create('reminder_sent', function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('account_id');
+            $table->unsignedInteger('reminder_id');
+            $table->date('planned_date');
+            $table->datetime('sent_date');
+            $table->string('nature')->default('reminder');
+            $table->longText('html_content')->nullable();
+            $table->longText('text_content')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('cascade');

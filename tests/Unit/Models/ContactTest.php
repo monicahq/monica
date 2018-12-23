@@ -16,7 +16,6 @@ use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
@@ -42,22 +41,6 @@ class ContactTest extends FeatureTestCase
         $contact = factory(Contact::class)->create(['gender_id' => $gender->id]);
 
         $this->assertTrue($contact->gender()->exists());
-    }
-
-    public function test_it_has_many_notifications()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertTrue($contact->notifications()->exists());
     }
 
     public function test_it_has_many_relationships()

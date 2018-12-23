@@ -8,7 +8,6 @@ use Tests\FeatureTestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -89,21 +88,6 @@ class SpecialDateTest extends FeatureTestCase
         $this->assertNull(Reminder::find($reminder->id));
     }
 
-    public function test_delete_reminder_also_deletes_notifications()
-    {
-        $account = factory(Account::class)->create();
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $specialDate = factory(SpecialDate::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-
-        $this->assertDatabaseHas('notifications', ['reminder_id' => $reminder->id]);
-
-        $specialDate->deleteReminder();
-
-        $this->assertDatabaseMissing('notifications', ['reminder_id' => $reminder->id]);
-    }
-
     public function test_delete_reminder_returns_0_if_reminder_not_found()
     {
         $specialDate = factory(SpecialDate::class)->create(['reminder_id' => null]);
@@ -147,37 +131,6 @@ class SpecialDateTest extends FeatureTestCase
         $specialDate->setReminder('year', 1, '');
 
         $this->assertNotNull($specialDate->reminder_id);
-    }
-
-    public function test_set_reminder_creates_notifications()
-    {
-        $user = factory(User::class)->create([]);
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $reminderRule = factory(ReminderRule::class)->create([
-            'account_id' => $user->account->id,
-            'number_of_days_before' => 7,
-            'active' => 1,
-        ]);
-        $reminderRule = factory(ReminderRule::class)->create([
-            'account_id' => $user->account->id,
-            'number_of_days_before' => 30,
-            'active' => 1,
-        ]);
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->create([
-            'account_id' => $user->account->id,
-            'date' => '2018-03-02',
-            'contact_id' => $contact->id,
-        ]);
-
-        $reminder = $specialDate->setReminder('year', 1, '');
-
-        $this->assertEquals(
-            2,
-            $reminder->notifications()->count()
-        );
     }
 
     public function test_get_age_returns_null_if_no_date_is_set()

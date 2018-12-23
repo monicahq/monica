@@ -26,7 +26,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
@@ -346,16 +345,6 @@ class Account extends Model
     public function modules()
     {
         return $this->hasMany(Module::class);
-    }
-
-    /**
-     * Get the Notifications records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
     }
 
     /**

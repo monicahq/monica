@@ -148,9 +148,7 @@ class UpdateBirthdayInformationTest extends TestCase
         $birthdayService = new UpdateBirthdayInformation;
         $contact = $birthdayService->execute($request);
 
-        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
-
-        $this->assertNotNull($specialDate->reminder_id);
+        $this->assertNotNull($contact->birthday_reminder_id);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
