@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'You called {name}',
     'call_you_called' => 'You called',
     'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'سجل المكالمات التي لديك مع :name على وسائل التواصل الإجتماعي',
