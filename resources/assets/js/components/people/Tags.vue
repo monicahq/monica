@@ -67,7 +67,8 @@
       <li v-show="contactTags.length == 0" class="di">
         <span class="i mr2">
           {{ $t('people.tag_no_tags') }}
-        </span><a v-show="!editMode" class="pointer" @click="editMode = true">
+        </span>
+        <a v-show="!editMode" class="pointer" @click="editMode = true">
           {{ $t('people.tag_add') }}
         </a>
       </li>

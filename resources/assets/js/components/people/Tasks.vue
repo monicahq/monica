@@ -34,7 +34,8 @@
       <ul>
         <li v-for="task in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
           <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
-          {{ task.title }} <span v-if="task.description" class="silver ml3">
+          {{ task.title }}
+          <span v-if="task.description" class="silver ml3">
             {{ task.description }}
           </span>
 
@@ -113,12 +114,13 @@
           <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
           <span class="light-silver mr1">
             {{ task.completed_at }}
-          </span> <span class="moon-gray">
+          </span>
+          <span class="moon-gray">
             {{ task.title }}
-          </span> <span v-if="task.description" class="silver ml3">
+          </span>
+          <span v-if="task.description" class="silver ml3">
             {{ task.description }}
           </span>
-
           <div v-if="editMode" class="di">
             <i class="fa fa-trash-o pointer pr2 ml3 dark-blue" @click="trash(task)"></i>
           </div>

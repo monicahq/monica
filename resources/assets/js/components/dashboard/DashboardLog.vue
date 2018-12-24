@@ -40,7 +40,8 @@
             </svg>
             <span class="black-50 mr1 f6">
               {{ call.called_at }}
-            </span> <span class="mr1 black-50">
+            </span>
+            <span class="mr1 black-50">
               •
             </span>
             <a :href="'/people/' + call.contact_id">
@@ -134,7 +135,8 @@
             <span v-if="debt.in_debt == 'yes'" class="black-50 f6">
               <span class="mr1 black-50">
                 •
-              </span>{{ $t('dashboard.debts_you_owe') }}
+              </span>
+              {{ $t('dashboard.debts_you_owe') }}
             </span>
           </li>
         </ul>

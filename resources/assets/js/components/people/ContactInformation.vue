@@ -213,7 +213,7 @@ export default {
         },
 
         persistClient(method, uri, form) {
-            form.errors = {};
+            form.errors = [];
 
             axios[method](uri, form)
                 .then(response => {
