@@ -272,6 +272,7 @@ return [
     'api_oauth_clients_desc' => '您可以注册自己的 OAuth 客户端。',
     'api_oauth_title' => 'Oauth客户端',
     'api_oauth_create_new' => '创建新的客户端',
+    'api_oauth_edit' => 'Edit Client',
     'api_oauth_not_created' => '您尚未创建Oauth客户端',
     'api_oauth_clientid' => '客户端 ID',
     'api_oauth_name' => '名称',
