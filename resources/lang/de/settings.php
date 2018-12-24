@@ -64,6 +64,7 @@ return [
     'locale_it' => 'Italienisch',
     'locale_nl' => 'Niederländisch',
     'locale_pt' => 'Portugiesisch',
+    'locale_pt-BR' => 'Brazilian',
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Vereinfachtes Chinesisch',
     'locale_tr' => 'Turkish',
