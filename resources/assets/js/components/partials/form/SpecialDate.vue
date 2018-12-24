@@ -47,13 +47,15 @@
                   :id="'month'"
                   v-model="selectedMonth"
                   :options="months"
-                  :title="''" :class="[ dirltr ? 'mr3' : '' ]"
+                  :title="''"
+                  :class="[ dirltr ? 'mr3' : '' ]"
                 />
                 <form-select
                   :id="'day'"
                   v-model="selectedDay"
                   :options="days"
-                  :title="''" :class="[ dirltr ? '' : 'mr3' ]"
+                  :title="''"
+                  :class="[ dirltr ? '' : 'mr3' ]"
                 />
               </div>
             </div>

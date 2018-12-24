@@ -23,7 +23,8 @@ textarea:focus {
       :placeholder="placeholder"
       :rows="rows"
       class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
-      :style="'width:' + width + 'px'" @input="$emit('contentChange', buffer)"
+      :style="[width >= 0 ? 'width:' + width + 'px' : '']"
+      @input="$emit('contentChange', buffer)"
     ></textarea>
   </div>
 </template>
@@ -54,7 +55,7 @@ export default {
         },
         width: {
             type: Number,
-            default: 0,
+            default: -1,
         },
         rows: {
             type: Number,

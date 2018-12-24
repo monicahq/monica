@@ -3,7 +3,7 @@
 
 <template>
   <div>
-    <notifications group="u2f" position="top middle" duration="5000" width="400" />
+    <notifications group="u2f" position="top middle" :duration="5000" width="400" />
 
     <div v-if="method == 'register-modal'">
       <h3>{{ $t('settings.u2f_title') }}</h3>
@@ -133,6 +133,8 @@ export default {
             infoMessage: '',
             success: false,
             otpextension: '',
+            keys: [],
+            data: null
         };
     },
 
@@ -146,14 +148,17 @@ export default {
                 urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',
                 urlext: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'
             });
+            this.keys = this.currentkeys;
+            this.data = this.registerdata;
+
             var self = this;
             switch(this.method) {
             case 'register':
                 setTimeout(function () {
                     u2f.register(
                         null,
-                        [self.registerdata],
-                        self.currentkeys,
+                        [self.data],
+                        self.keys,
                         function (data) { self.u2fRegisterCallback(data, true); }
                     );
                 }, 1000);
@@ -179,13 +184,13 @@ export default {
             var self = this;
             axios.get('/settings/security/u2f-register')
                 .then(response => {
-                    this.currentkeys = response.data.currentKeys;
-                    this.registerdata = response.data.registerData;
+                    this.keys = response.data.currentKeys;
+                    this.data = response.data.registerData;
                     setTimeout(function () {
                         u2f.register(
                             null,
-                            [self.registerdata],
-                            self.currentkeys,
+                            [self.data],
+                            self.keys,
                             function (data) { self.u2fRegisterCallback(data, false); }
                         );
                     }, 1000);

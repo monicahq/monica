@@ -17,7 +17,7 @@
     </div>
 
     <sweet-modal id="recoveryModal" ref="recoveryModal" overlay-theme="dark" :title="$t('settings.recovery_title')">
-      <notifications group="recovery" position="top middle" duration="5000" width="400" />
+      <notifications group="recovery" position="top middle" :duration="5000" width="400" />
 
       <p>{{ $t('settings.recovery_help_intro') }}</p>
       <p :class="[ dirltr ? 'ml3' : 'mr3' ]">

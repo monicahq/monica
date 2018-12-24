@@ -3,7 +3,7 @@
 
 <template>
   <div>
-    <notifications group="mfa" position="bottom right" duration="5000" width="400" />
+    <notifications group="mfa" position="bottom right" :duration="5000" width="400" />
 
     <h3>{{ $t('settings.2fa_otp_title') }}</h3>
 
