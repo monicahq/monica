@@ -47,6 +47,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Tags
     Route::apiResource('tags', 'ApiTagController');
 
+    // Companies
+    Route::apiResource('companies', 'Account\\ApiCompanyController');
+
     // Notes
     Route::apiResource('notes', 'ApiNoteController');
     Route::get('/contacts/{contact}/notes', 'ApiNoteController@notes');

@@ -392,6 +392,15 @@ $factory->define(App\Models\Account\Place::class, function (Faker\Generator $fak
     ];
 });
 
+$factory->define(App\Models\Account\Company::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => 'Central Perk',
+        'website' => 'https://centralperk.com',
+        'number_of_employees' => 4,
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,

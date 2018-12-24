@@ -459,6 +459,16 @@ class Account extends Model
     }
 
     /**
+     * Get the Company records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
