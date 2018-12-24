@@ -65,7 +65,7 @@ return [
     'footer_modal_version_release_away' => '您有一个最新发布版本可更新。您应该更新实例. |您已经有:number个版本没有更新，应该更新了。',
 
     'breadcrumb_dashboard' => '仪表盘',
-    'breadcrumb_list_contacts' => '人名单',
+    'breadcrumb_list_contacts' => '联系人',
     'breadcrumb_archived_contacts' => '存档的联系人',
     'breadcrumb_journal' => '日记',
     'breadcrumb_settings' => '设置',
