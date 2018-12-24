@@ -3,10 +3,10 @@
 namespace Tests\Unit\Services\Account\Place;
 
 use Tests\TestCase;
-use App\Models\Account\Company;
 use App\Models\Account\Account;
-use App\Services\Account\Company\UpdateCompany;
+use App\Models\Account\Company;
 use App\Exceptions\MissingParameterException;
+use App\Services\Account\Company\UpdateCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
