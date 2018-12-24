@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'התקשרת אל {name}',
     'call_you_called' => 'התקשרת',
     'call_he_called' => 'קיבלת שיחה מאת {name}',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'תיעוד דיונים שערכת עם :name ברשתות חברתיות, מסרונים וכו׳…',
