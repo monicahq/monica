@@ -272,6 +272,7 @@ return [
     'api_oauth_clients_desc' => 'This section lets you register your own OAuth clients.',
     'api_oauth_title' => 'Oauth Clients',
     'api_oauth_create_new' => 'Create New Client',
+    'api_oauth_edit' => 'Edit Client',
     'api_oauth_not_created' => 'You have not created any OAuth clients.',
     'api_oauth_clientid' => 'Client ID',
     'api_oauth_name' => 'Name',
