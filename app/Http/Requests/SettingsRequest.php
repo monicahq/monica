@@ -29,6 +29,7 @@ class SettingsRequest extends FormRequest
             'email' => 'required|email|max:255|unique:users,email,'.$this->id,
             'timezone' => '',
             'layout' => '',
+            'temperature_scale' => '',
             'locale' => '',
             'currency_id' => '',
         ];

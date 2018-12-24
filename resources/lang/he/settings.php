@@ -35,6 +35,9 @@ return [
     'email_placeholder' => 'נא להקליד כתובת דוא״ל',
     'email_help' => 'זו היא כתובת הדוא״ל המשמשת לכניסה ולשם גם תישלחנה התזכורות שלך.',
     'timezone' => 'אזור זמן',
+    'temperature_scale' => 'Temperature scale',
+    'temperature_scale_fahrenheit' => 'Fahrenheit',
+    'temperature_scale_celsius' => 'Celsius',
     'layout' => 'פריסה',
     'layout_small' => 'רוחב של 1200 פיקסלים לכל היותר',
     'layout_big' => 'הרוחב המלא של הדפדפן',
@@ -100,6 +103,16 @@ return [
     'u2f_error_configuration_unsupported' => 'אין תמיכה בתצורת לקוח.',
     'u2f_error_device_ineligible' => 'ההתקן שהוצג אינו מתאים לבקשה זו. עבור בקשת רישום יתכן שהאסימון כבר רשום ולבקשת כניסה יכול להיות שהאסימון לא מכיר את מנגנון המפתח שהוצג.',
     'u2f_error_timeout' => 'המתנת זמן רב מדי והמענה לבקשה לא הגיע.',
+
+    'recovery_title' => 'Recovery codes',
+    'recovery_show' => 'Get recovery codes',
+    'recovery_copy_help' => 'Copy codes in your clipboard',
+    'recovery_help_intro' => 'These are your recovery codes:',
+    'recovery_help_information' => 'You can use each recovery code once.',
+    'recovery_clipboard' => 'Codes copied in the clipboard',
+    'recovery_generate' => 'Generate new codes...',
+    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previoulsy generated codes',
+    'recovery_already_used_help' => 'This code has already been used',
 
     'users_list_title' => 'משתמשים עם גישה לחשבון שלך',
     'users_list_add_user' => 'הזמנת משתמש חדש',
@@ -394,6 +407,6 @@ return [
 
     'storage_title' => 'אחסון',
     'storage_account_info' => 'מגבלת החשבון שלך: :accountLimit מ״ב /  הניצולת הנוכחית שלך: :currentAccountSize מ״ב (:percentUsage%)',
-    'storage_upgrade_notice' => 'ניתן לשדרג את החשבון שלך כדי לאפשר העלאת מסמכים.',
-    'storage_description' => 'כאן ניתן לצפות בכל המסמכים שהועלו על אנשי הקשר שלך.',
+    'storage_upgrade_notice' => 'עליך לשדרג את החשבון שלך כדי שתהיה לך אפשרות להעלות מסמכים ותמונות.',
+    'storage_description' => 'כאן ניתן לצפות בכל המסמכים והתמונות שהועלו לטובת אנשי הקשר שלך.',
 ];

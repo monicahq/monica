@@ -9,9 +9,9 @@ use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Sabre\CardDAV\Backend\BackendInterface as SabreBackendInterface;
+use Sabre\CardDAV\Backend\AbstractBackend;
 
-class MonicaCardDAVBackend implements SabreBackendInterface
+class MonicaCardDAVBackend extends AbstractBackend
 {
     /**
      * Returns the list of addressbooks for a specific user.
@@ -32,13 +32,12 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function getAddressBooksForUser($principalUri)
     {
-        Log::debug(__CLASS__.' getAddressBooksForUser', func_get_args());
-
         return [
             [
-                'id' => '0',
-                'uri' => 'contacts',
-                'principaluri' => 'principals/'.Auth::user()->email,
+                'id'                => '0',
+                'uri'               => 'contacts',
+                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
+                '{DAV:}displayname' => Auth::user()->name,
             ],
         ];
     }
@@ -61,8 +60,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
-        Log::debug(__CLASS__.' updateAddressBook', func_get_args());
-
         return false;
     }
 
@@ -79,8 +76,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function createAddressBook($principalUri, $url, array $properties)
     {
-        Log::debug(__CLASS__.' createAddressBook', func_get_args());
-
         return false;
     }
 
@@ -92,8 +87,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function deleteAddressBook($addressBookId)
     {
-        Log::debug(__CLASS__.' deleteAddressBook', func_get_args());
-
         return false;
     }
 
@@ -113,45 +106,37 @@ class MonicaCardDAVBackend implements SabreBackendInterface
             Log::debug(__CLASS__.' prepareCard: '.(string) $e);
         }
 
+        $carddata = $vcard->serialize();
+
         return [
-            'id' => $contact->hashid(),
-            'etag' => md5($vcard->serialize()),
+            'id' => $contact->hashID(),
             'uri' => $this->encodeUri($contact),
-            'lastmodified' => $contact->updated_at->timestamp,
-            'carddata' => $vcard->serialize(),
+            'carddata' => $carddata,
+            'etag' => '"'.md5($carddata).'"',
+            'lastmodified' => $contact->updated_at,
         ];
     }
 
     private function encodeUri($contact)
     {
-        return urlencode($contact->hashid().'.vcf');
+        return urlencode($contact->uuid.'.vcf');
     }
 
     private function decodeUri($uri)
     {
-        return str_replace('.vcf', '', urldecode($uri));
+        return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
 
     private function getContact($uri)
     {
         try {
-            return (new Contact)->resolveRouteBinding($this->decodeUri($uri));
+            return Contact::where([
+                'account_id' => Auth::user()->account_id,
+                'uuid' => $this->decodeUri($uri),
+            ])->first();
         } catch (\Exception $e) {
             return;
         }
-    }
-
-    private function prepareCards($contacts)
-    {
-        $results = [];
-
-        foreach ($contacts as $contact) {
-            $results[] = $this->prepareCard($contact);
-        }
-
-        Log::debug(__CLASS__.' prepareCards', ['count' => count($results)]);
-
-        return $results;
     }
 
     /**
@@ -175,19 +160,19 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function getCards($addressbookId)
     {
-        Log::debug(__CLASS__.' getCards', func_get_args());
-
         $contacts = Auth::user()->account
                         ->contacts()
                         ->real()
                         ->active()
                         ->get();
 
-        return $this->prepareCards($contacts);
+        return $contacts->map(function ($contact) {
+            return $this->prepareCard($contact);
+        });
     }
 
     /**
-     * Returns a specfic card.
+     * Returns a specific card.
      *
      * The same set of prope
      * @param mixed $addressBookId
@@ -196,34 +181,9 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function getCard($addressBookId, $cardUri)
     {
-        Log::debug(__CLASS__.' getCard', func_get_args());
-
         $contact = $this->getContact($cardUri);
 
         return $this->prepareCard($contact);
-    }
-
-    /**
-     * Returns a list of cards.
-     *
-     * This method should work identical to getCard, but instead return all the
-     * cards in the list as an array.
-     *
-     * If the backend supports this, it may allow for some speed-ups.
-     *
-     * @param mixed $addressBookId
-     * @param array $uris
-     * @return array
-     */
-    public function getMultipleCards($addressBookId, array $uris)
-    {
-        Log::debug(__CLASS__.' getMultipleCards', func_get_args());
-
-        $contacts = array_map(function ($uri) {
-            return $this->getContact($uri);
-        }, $uris);
-
-        return $this->prepareCards($contacts);
     }
 
     /**
@@ -253,8 +213,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function createCard($addressBookId, $cardUri, $cardData)
     {
-        Log::debug(__CLASS__.' createCard', func_get_args());
-
         return $this->importCard(null, $cardData);
     }
 
@@ -285,8 +243,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function updateCard($addressBookId, $cardUri, $cardData)
     {
-        Log::debug(__CLASS__.' updateCard', func_get_args());
-
         return $this->importCard($cardUri, $cardData);
     }
 
@@ -330,8 +286,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function deleteCard($addressBookId, $cardUri)
     {
-        Log::debug(__CLASS__.' deleteCard', func_get_args());
-
         return false;
     }
 }

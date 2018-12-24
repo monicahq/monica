@@ -42,11 +42,25 @@
         <div class="row">
           <div class="col-xs-12 col-sm-3 profile-sidebar">
 
+            @if (! is_null($weather))
+            <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
+              <div class="w-100 dt">
+                <div class="dtc">
+                  <h3 class="f6 ttu normal">{{ trans('app.weather_current_title') }}</h3>
+                </div>
+              </div>
+
+              <p class="mb0">
+                {{ $weather->getEmoji() }} {{ trans('app.weather_'.$weather->summary_icon) }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
+              </p>
+            </div>
+            @endif
+
             @include('people.relationship.index')
 
             @include('people.sidebar')
 
-            <ul>
+            <ul class="mb2">
               <li>
                 <a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a>
               </li>
@@ -67,13 +81,14 @@
 
             <div class="flex items-center justify-center flex-column">
               <div class='cf dib'>
-                <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">
+                <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt br bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt br ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">
                   @if (auth()->user()->profile_new_life_event_badge_seen == false)
                   <span class="bg-light-green f7 mr2 ph2 pv1 br2">{{ trans('app.new') }}</span>
                   @endif
                   {{ trans('people.life_event_list_tab_life_events') }}
                 </span>
-                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view != 'life-events' ? 'f6 fl bb bt bl ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
+                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view == 'notes' ? 'f6 fl bb bt ph3 pv2 dib b br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
+                <span @click="updateDefaultProfileView('photos')" :class="[global_profile_default_view == 'photos' ? 'f6 fl bb bt ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">Photos</span>
               </div>
             </div>
 
@@ -83,7 +98,7 @@
               </div>
             </div>
 
-            <div v-if="global_profile_default_view != 'life-events'">
+            <div v-if="global_profile_default_view == 'notes'">
               @if ($modules->contains('key', 'notes'))
               <div class="row section notes">
                 <div class="col-xs-12 section-title">
@@ -141,6 +156,12 @@
               @endif
 
             </div>
+
+            <div v-if="global_profile_default_view == 'photos'">
+              <div class="row section">
+                @include('people.photos.index')
+              </div>
+            </div>
           </div>
         </div>
 
@@ -148,7 +169,5 @@
 
     </div>
   </div>
-
-  @include('people.modal.log_call')
 
 @endsection

@@ -7,14 +7,13 @@
     <title>{{ trans('app.application_title') }}</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
-    <link rel="stylesheet" href="{{ mix('css/app-'.htmldir().'.css') }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
     <meta name="description" content="{{ trans('app.application_description') }}">
     <link rel="author" href="@djaiss">
     <meta property="og:title" content="{{ trans('app.application_og_title') }}" />
-    <link rel="shortcut icon" href="/img/favicon.png">
-  
+    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
   </head>
 
   @yield('content')
-  
+
 </html>

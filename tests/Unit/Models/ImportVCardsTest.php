@@ -83,7 +83,7 @@ class ImportVCardsTest extends TestCase
         ]);
 
         // Allows checking addresses are correctly saved
-        $this->assertDatabaseHas('addresses', [
+        $this->assertDatabaseHas('places', [
             'street' => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
             'city' => 'Southampton',

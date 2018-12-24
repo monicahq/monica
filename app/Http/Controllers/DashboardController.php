@@ -70,6 +70,13 @@ class DashboardController extends Controller
         // get last 3 changelog entries
         $changelogs = InstanceHelper::getChangelogEntries(3);
 
+        // Load the reminder for the upcoming three months
+        $reminders = [
+            0 => auth()->user()->account->getRemindersForMonth(0),
+            1 => auth()->user()->account->getRemindersForMonth(1),
+            2 => auth()->user()->account->getRemindersForMonth(2),
+        ];
+
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
             'number_of_contacts' => $account->contacts()->real()->active()->count(),
@@ -83,6 +90,7 @@ class DashboardController extends Controller
             'debts' => $debt,
             'user' => auth()->user(),
             'changelogs' => $changelogs,
+            'reminders' => $reminders,
         ];
 
         return view('dashboard.index', $data);

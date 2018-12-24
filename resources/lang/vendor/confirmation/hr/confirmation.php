@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Hvala za prijavu! Molimo vas provjerite e-mail kako biste potvrdili vašu e-mail adresu.',
+    'success' => 'Uspješno ste potvrdili vaš račun! Možete se ulogirati.',
+    'again' => 'Potrebno je potvrditi e-mail prije pristupa ovoj webstranici.
+                <br/>ako niste primili e-mail provjetite spam folder.
+                <br/>ako želite poslati novi e-mail za verifikaciju <a href=":url" class="alert-link">kliknite ovdje</a>.',
+    'resend' => 'Poslan vam je e-mail za verifikaciju. Molimo provjerite Vaš e-mail sandučić.'
 ];

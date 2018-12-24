@@ -40,7 +40,7 @@ aliases:
   - &yarn-install
     run:
       name: yarn install
-      command: yarn install --frozen-lockfile
+      command: yarn inst
   - &prepare-db
     run:
       name: Prepare database
@@ -179,6 +179,9 @@ jobs:
             rm -f gk-lockfile-git-push.err || true
 
       # Update js and css assets eventually
+      - run:
+          name: Check js and vue lint
+          command: yarn lint
       - run:
           name: Update assets
           command: scripts/ci/update-assets.sh

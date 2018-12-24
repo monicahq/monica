@@ -13,7 +13,6 @@
     </p>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
-
       <div class="dt-row">
         <div class="dtc">
           <div class="pa2 b">
@@ -27,7 +26,7 @@
         </div>
       </div>
 
-      <div class="dt-row bb b--light-gray" v-for="reminderRule in reminderRules" :key="reminderRule.id">
+      <div v-for="reminderRule in reminderRules" :key="reminderRule.id" class="dt-row bb b--light-gray">
         <div class="dtc">
           <div class="pa2">
             {{ $tc('settings.personalization_reminder_rule_line', reminderRule.number_of_days_before, {count: reminderRule.number_of_days_before}) }}
@@ -39,71 +38,48 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-    import { SweetModal, SweetModalTab } from 'sweet-modal-vue';
+export default {
 
-    export default {
-        /*
-         * The component's data.
-         */
-        data() {
-            return {
-                reminderRules: [],
-                dirltr: true,
-            };
+    data() {
+        return {
+            reminderRules: [],
+            dirltr: true,
+        };
+    },
+
+    mounted() {
+        this.prepareComponent();
+    },
+
+    methods: {
+        prepareComponent() {
+            this.dirltr = this.$root.htmldir == 'ltr';
+            this.getReminderRules();
         },
 
-        components: {
-            SweetModal,
-            SweetModalTab
+        getReminderRules() {
+            axios.get('/settings/personalization/reminderrules')
+                .then(response => {
+                    this.reminderRules = response.data;
+                });
         },
 
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
-        },
-
-        /**
-         * Prepare the component (Vue 2.x).
-         */
-        mounted() {
-            this.prepareComponent();
-        },
-
-        methods: {
-            /**
-             * Prepare the component.
-             */
-            prepareComponent() {
-                this.dirltr = this.$root.htmldir == 'ltr';
-                this.getReminderRules();
-            },
-
-            getReminderRules() {
-                axios.get('/settings/personalization/reminderrules')
-                        .then(response => {
-                            this.reminderRules = response.data;
-                        });
-            },
-
-            toggle(reminderRule) {
-                axios.post('/settings/personalization/reminderrules/' + reminderRule.id)
-                        .then(response => {
-                            this.$notify({
-                                  group: 'main',
-                                  title: response.data,
-                                  text: '',
-                                  type: 'success'
-                              });
-                        });
-            }
+        toggle(reminderRule) {
+            axios.post('/settings/personalization/reminderrules/' + reminderRule.id)
+                .then(response => {
+                    this.$notify({
+                        group: 'main',
+                        title: response.data,
+                        text: '',
+                        type: 'success'
+                    });
+                });
         }
     }
+};
 </script>

@@ -4,7 +4,7 @@ function Search(form, input, resultsContainer, showResults) {
         input: input,
         resultsContainer: resultsContainer,
         timeoutId: undefined,
-        accountId: $('body').attr("data-account-id")
+        accountId: $('body').attr('data-account-id')
     };
 
     search.init = function () {
@@ -73,7 +73,7 @@ function Search(form, input, resultsContainer, showResults) {
         }
 
         $.post({
-            url: "/people/search",
+            url: '/people/search',
             data: {
                 needle: needle,
                 accountId: search.accountId
@@ -184,7 +184,7 @@ if (multiUserInput.length > 0) {
     );
 }
 
-$('.user-input-search-results').on( "click", ".header-search-result", function() {
+$('.user-input-search-results').on( 'click', '.header-search-result', function() {
     let t = $(this);
 
     // Make sure this isn't a duplicate or a not found message 

@@ -6,15 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <title>@yield('title', trans('app.application_title'))</title>
-    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="manifest" href="{{ asset('/manifest.webmanifest') }}">
 
-    <link rel="stylesheet" href="{{ mix('css/app-'.htmldir().'.css') }}">
+    <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
     {{-- Required only for the Upgrade account page --}}
     @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
-      <link rel="stylesheet" href="{{ mix('css/stripe.css') }}">
+      <link rel="stylesheet" href="{{ asset(mix('css/stripe.css')) }}">
     @endif
 
-    <link rel="shortcut icon" href="/img/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
     <script>
       window.Laravel = {!! json_encode([
           'csrfToken' => csrf_token(),
@@ -37,9 +37,9 @@
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
-      <script src="{{ mix('js/manifest.js') }}"></script>
-      <script src="{{ mix('js/vendor.js') }}"></script>
-      <script src="{{ mix('js/app.js') }}"></script>
+      <script src="{{ asset(mix('js/manifest.js')) }}"></script>
+      <script src="{{ asset(mix('js/vendor.js')) }}"></script>
+      <script src="{{ asset(mix('js/app.js')) }}"></script>
     @endif
 
     {{-- Required only for the Upgrade account page --}}
@@ -48,8 +48,8 @@
       <script>
         var stripe = Stripe('{{config('services.stripe.key')}}');
       </script>
-      <script src="{{ mix('js/manifest.js') }}"></script>
-      <script src="{{ mix('js/stripe.js') }}"></script>
+      <script src="{{ asset(mix('js/manifest.js')) }}"></script>
+      <script src="{{ asset(mix('js/stripe.js')) }}"></script>
     @endif
 
     @stack('scripts')
