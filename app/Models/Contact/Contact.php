@@ -10,7 +10,6 @@ use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
-use App\Models\Contact\Occupation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;

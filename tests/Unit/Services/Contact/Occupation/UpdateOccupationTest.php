@@ -4,8 +4,6 @@ namespace Tests\Unit\Services\Account\Place;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Account\Company;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Occupation;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Occupation\UpdateOccupation;
