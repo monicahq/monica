@@ -12,6 +12,7 @@ use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
+use App\Models\Account\Company;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
@@ -456,6 +457,16 @@ class Account extends Model
     public function addresses()
     {
         return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Get the Company records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
     }
 
     /**
