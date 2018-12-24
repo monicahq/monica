@@ -35,6 +35,9 @@ return [
     'email_placeholder' => 'Entrez l\'adresse courriel',
     'email_help' => 'Cette adresse courriel est utilisée pour vous connecter à votre compte, et c’est aussi l’adresse que nous utiliserons pour vous envoyer les rappels par courriel.',
     'timezone' => 'Fuseau horaire',
+    'temperature_scale' => 'Temperature scale',
+    'temperature_scale_fahrenheit' => 'Fahrenheit',
+    'temperature_scale_celsius' => 'Celsius',
     'layout' => 'Disposition',
     'layout_small' => 'Maximum de 1200 pixels de large',
     'layout_big' => 'Largeur maximale du navigateur',
@@ -100,6 +103,16 @@ return [
     'u2f_error_configuration_unsupported' => 'La configuration client n’est pas supportée.',
     'u2f_error_device_ineligible' => 'Le dispositif présenté n’est pas admissible pour cette demande. Pour une demande d’enregistrement, cela peut signifier que le jeton est déjà enregistré, et pour une demande d\'authentification, cela peut signifier que le jeton ne connaît pas les clés présentées.',
     'u2f_error_timeout' => 'Délai d’attente atteint avant que la demande ne soit satisfaite.',
+
+    'recovery_title' => 'Codes de récupération',
+    'recovery_show' => 'Obtenez des codes de récupération',
+    'recovery_copy_help' => 'Copier les codes dans votre presse-papiers',
+    'recovery_help_intro' => 'Voici vos codes de récupération :',
+    'recovery_help_information' => 'Vous pouvez utiliser chaque code de récupération une fois.',
+    'recovery_clipboard' => 'Codes copiés dans le presse-papiers',
+    'recovery_generate' => 'Générer de nouveaux codes ...',
+    'recovery_generate_help' => 'Sachez que la génération de nouveaux codes invalidera les codes générés précédemment',
+    'recovery_already_used_help' => 'Ce code a déjà été utilisé',
 
     'users_list_title' => 'Utilisateurs avec accès à votre compte',
     'users_list_add_user' => 'Inviter un nouvel utilisateur',
@@ -394,6 +407,6 @@ return [
 
     'storage_title' => 'Espace de stockage',
     'storage_account_info' => 'Limite de votre compte : :accountLimit Mo / Votre utilisation actuelle : :currentAccountSize Mo (:percentUsage %)',
-    'storage_upgrade_notice' => 'Mettez à niveau votre compte pour pouvoir télécharger des documents.',
-    'storage_description' => 'Ici vous pouvez voir tous les documents téléchargés sur vos contacts.',
+    'storage_upgrade_notice' => 'Mettez à niveau votre compte pour pouvoir télécharger des documents et des photos.',
+    'storage_description' => 'Ici vous pouvez voir tous les documents et photos téléchargés sur vos contacts.',
 ];

@@ -5,6 +5,7 @@ namespace App\Services\Instance\Weather;
 use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Account\Weather;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use App\Exceptions\MissingEnvVariableException;
@@ -86,6 +87,8 @@ class GetWeatherInformation extends BaseService
             $response = $client->request('GET', $query);
             $response = json_decode($response->getBody());
         } catch (ClientException $e) {
+            Log::error('Error making the call: '.$e);
+
             return null;
         }
 
