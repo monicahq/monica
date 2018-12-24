@@ -32,13 +32,11 @@ class CreateCompany extends BaseService
     {
         $this->validate($data);
 
-        $company = Company::create([
+        return Company::create([
             'account_id' => $data['account_id'],
             'name' => $data['name'],
             'website' => $this->nullOrValue($data, 'website'),
             'number_of_employees' => $this->nullOrValue($data, 'number_of_employees'),
         ]);
-
-        return $company;
     }
 }
