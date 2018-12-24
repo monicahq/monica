@@ -15,6 +15,7 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
+use App\Models\Contact\Occupation;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
@@ -466,6 +467,16 @@ class Account extends Model
     public function companies()
     {
         return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Get the Occupation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**

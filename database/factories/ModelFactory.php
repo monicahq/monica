@@ -401,6 +401,25 @@ $factory->define(App\Models\Account\Company::class, function (Faker\Generator $f
     ];
 });
 
+$factory->define(App\Models\Contact\Occupation::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'company_id' => function (array $data) {
+            return factory(App\Models\Account\Company::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'title' => 'Waiter',
+        'salary' => '10000',
+        'salary_unit' => 'year',
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,

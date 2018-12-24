@@ -2,7 +2,9 @@
 
 namespace App\Models\Account;
 
+use App\Models\Contact\Occupation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Company extends Model
@@ -37,5 +39,15 @@ class Company extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the Occupation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 }

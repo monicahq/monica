@@ -10,6 +10,7 @@ use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
@@ -389,6 +390,16 @@ class Contact extends Model
     public function lifeEvents()
     {
         return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');
+    }
+
+    /**
+     * Get the Occupation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**

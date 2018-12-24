@@ -12,6 +12,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Occupation;
 use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\ContactField;
@@ -130,6 +131,17 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->lifeEvents()->exists());
+    }
+
+    public function test_it_has_many_occupations()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $occupations = factory(Occupation::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($contact->occupations()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()
