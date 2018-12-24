@@ -33,7 +33,7 @@ return [
     'type' => 'סוג',
     'zoom' => 'תקריב',
     'upgrade' => 'יש לשדרג כדי לשחרר',
-    'percent_uploaded' => ':percent% uploaded',
+    'percent_uploaded' => '{percent}% uploaded',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
