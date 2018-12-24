@@ -12,6 +12,7 @@ use App\Models\Account\Place;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
+use App\Models\Account\Company;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
