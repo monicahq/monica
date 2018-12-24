@@ -3,8 +3,8 @@
 namespace Tests\Api\Account;
 
 use Tests\ApiTestCase;
-use App\Models\Account\Company;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiCompanyControllerTest extends ApiTestCase
@@ -75,7 +75,7 @@ class ApiCompanyControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('get', '/api/companies/' . $company->id);
+        $response = $this->json('get', '/api/companies/'.$company->id);
 
         $response->assertstatus(200);
         $response->assertjsonstructure([
@@ -132,7 +132,7 @@ class ApiCompanyControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('put', '/api/companies/' . $company->id, [
+        $response = $this->json('put', '/api/companies/'.$company->id, [
             'name' => 'Central Perk Central',
             'number_of_employees' => 30,
         ]);
@@ -169,7 +169,7 @@ class ApiCompanyControllerTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('put', '/api/companies/' . $company->id, [
+        $response = $this->json('put', '/api/companies/'.$company->id, [
             'name' => 'Central Perk',
         ]);
 
@@ -184,7 +184,7 @@ class ApiCompanyControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('delete', '/api/companies/' . $company->id);
+        $response = $this->json('delete', '/api/companies/'.$company->id);
 
         $response->assertstatus(200);
 

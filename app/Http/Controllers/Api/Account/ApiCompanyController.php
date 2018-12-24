@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Account\Company;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
+use App\Exceptions\MissingParameterException;
 use App\Services\Account\Company\CreateCompany;
 use App\Services\Account\Company\UpdateCompany;
 use App\Services\Account\Company\DestroyCompany;
-use App\Exceptions\MissingParameterException;
-use App\Http\Resources\Company\Company as CompanyResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Company\Company as CompanyResource;
 
 class ApiCompanyController extends ApiController
 {
@@ -70,12 +70,15 @@ class ApiCompanyController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             dd($e);
+
             return $this->respondNotFound();
         } catch (MissingParameterException $e) {
             dd($e);
+
             return $this->respondInvalidParameters($e->errors);
         } catch (QueryException $e) {
             dd($e);
+
             return $this->respondInvalidQuery();
         }
 
@@ -132,6 +135,6 @@ class ApiCompanyController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$companyId);
+        return $this->respondObjectDeleted((int) $companyId);
     }
 }
