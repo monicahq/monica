@@ -13,7 +13,6 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-//Vue.component('example', require('./components/people/dashboard/kids.vue').default);
 const Vue = require('vue');
 
 // Notifications
@@ -41,7 +40,7 @@ Vue.use(vSelectMenu);
 
 // Tables
 import VueGoodTablePlugin from 'vue-good-table';
-import 'vue-good-table/dist/vue-good-table.css'
+import 'vue-good-table/dist/vue-good-table.css';
 Vue.use(VueGoodTablePlugin);
 
 import VueClipboard from 'vue-clipboard2';
@@ -285,7 +284,7 @@ Vue.use(VueI18n);
 import moment from 'moment';
 Vue.filter('formatDate', function(value) {
     if (value) {
-        return moment(String(value)).format('LL')
+        return moment(String(value)).format('LL');
     }
 });
 
@@ -311,13 +310,13 @@ function setI18nLanguage (lang) {
 
 export function loadLanguageAsync (lang, set) {
     if (i18n.locale !== lang) {
-      if (!loadedLanguages.includes(lang)) {
-        return axios.get(`/js/langs/${lang}.json`).then(msgs => {
-          i18n.setLocaleMessage(lang, msgs.data);
-          loadedLanguages.push(lang);
-          return set ? setI18nLanguage(lang) : lang;
-        });
-      }
+        if (!loadedLanguages.includes(lang)) {
+            return axios.get(`/js/langs/${lang}.json`).then(msgs => {
+                i18n.setLocaleMessage(lang, msgs.data);
+                loadedLanguages.push(lang);
+                return set ? setI18nLanguage(lang) : lang;
+            });
+        }
     }
     return Promise.resolve(set ? setI18nLanguage(lang) : lang);
 }
@@ -327,30 +326,30 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
 
     // the Vue appplication
     const app = new Vue({
-      i18n,
-      data: {
-        reminders_frequency: 'once',
-        accept_invite_user: false,
-        date_met_the_contact: 'known',
-        global_relationship_form_new_contact: true,
-        htmldir: window.Laravel.htmldir,
-        global_profile_default_view: window.Laravel.profileDefaultView
-      },
-      methods: {
-        updateDefaultProfileView(view) {
-            axios.post('/settings/updateDefaultProfileView', { 'name': view })
-                        .then(response => {
-                            this.global_profile_default_view = view
-                      });
+        i18n,
+        data: {
+            reminders_frequency: 'once',
+            accept_invite_user: false,
+            date_met_the_contact: 'known',
+            global_relationship_form_new_contact: true,
+            htmldir: window.Laravel.htmldir,
+            global_profile_default_view: window.Laravel.profileDefaultView
+        },
+        mounted: function() {
+
+            // required modules
+            require('./search');
+            require('./contacts');
+
+        },
+        methods: {
+            updateDefaultProfileView(view) {
+                axios.post('/settings/updateDefaultProfileView', { 'name': view })
+                    .then(response => {
+                        this.global_profile_default_view = view;
+                    });
+            }
         }
-      },
-      mounted: function() {
-
-        // required modules
-        require('./search');
-        require('./contacts');
-
-      }
     }).$mount('#app');
 
     return app;

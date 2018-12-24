@@ -12,10 +12,14 @@
       {{ $t('settings.personalization_module_desc') }}
     </p>
 
-    <div class="mt3 mb3 form-information-message br2" v-if="limited">
+    <div v-if="limited" class="mt3 mb3 form-information-message br2">
       <div class="pa3 flex">
         <div class="mr3">
-          <svg viewBox="0 0 20 20"><g fill-rule="evenodd"><circle cx="10" cy="10" r="9" fill="currentColor"></circle><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0m0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8m1-5v-3a1 1 0 0 0-1-1H9a1 1 0 1 0 0 2v3a1 1 0 0 0 1 1h1a1 1 0 1 0 0-2m-1-5.9a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2"></path></g></svg>
+          <svg viewBox="0 0 20 20">
+            <g fill-rule="evenodd">
+              <circle cx="10" cy="10" r="9" fill="currentColor" /><path d="M10 0C4.486 0 0 4.486 0 10s4.486 10 10 10 10-4.486 10-10S15.514 0 10 0m0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8m1-5v-3a1 1 0 0 0-1-1H9a1 1 0 1 0 0 2v3a1 1 0 0 0 1 1h1a1 1 0 1 0 0-2m-1-5.9a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2" />
+            </g>
+          </svg>
         </div>
         <div>
           {{ $t('settings.personalisation_paid_upgrade') }}
@@ -24,7 +28,6 @@
     </div>
 
     <div class="dt dt--fixed w-100 collapse br--top br--bottom">
-
       <div class="dt-row">
         <div class="dtc">
           <div class="pa2 b">
@@ -38,7 +41,7 @@
         </div>
       </div>
 
-      <div class="dt-row hover bb b--light-gray" v-for="module in modules" :key="module.id">
+      <div v-for="module in modules" :key="module.id" class="dt-row hover bb b--light-gray">
         <div class="dtc">
           <div class="pa2">
             {{ module.name }}
@@ -46,73 +49,64 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <toggle-button :class="'module-'" :value="module.active" :disabled="limited" :sync="true" :labels="true" @change="toggle(module)" />
+            <toggle-button :class="'module-'" :value="module.active" :disabled="limited" :sync="true" :labels="true"
+                           @change="toggle(module)"
+            />
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script>
-    export default {
-        /*
-         * The component's data.
-         */
-        data() {
-            return {
-                modules: [],
-                dirltr: true,
-            };
+export default {
+
+    props: {
+        limited: {
+            type: Boolean,
+            default: false,
         },
+    },
 
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
-        },
+    data() {
+        return {
+            modules: [],
+            dirltr: true,
+        };
+    },
 
-        /**
-         * Prepare the component (Vue 2.x).
-         */
-        mounted() {
-            this.prepareComponent();
-        },
+    mounted() {
+        this.prepareComponent();
+    },
 
-        props: ['limited'],
-
-        methods: {
-            /**
-             * Prepare the component.
-             */
-            prepareComponent() {
-                this.dirltr = this.$root.htmldir == 'ltr';
-                this.getModules();
-                if (!this.limited) {
-                  this.limited = 0
-                }
-            },
-
-            getModules() {
-                axios.get('/settings/personalization/modules')
-                        .then(response => {
-                            this.modules = response.data;
-                        });
-            },
-
-            toggle(module) {
-                axios.post('/settings/personalization/modules/' + module.id)
-                        .then(response => {
-                            this.$notify({
-                                  group: 'main',
-                                  title: response.data,
-                                  text: '',
-                                  type: 'success'
-                              });
-                        });
+    methods: {
+        prepareComponent() {
+            this.dirltr = this.$root.htmldir == 'ltr';
+            this.getModules();
+            if (!this.limited) {
+                this.limited = 0;
             }
+        },
+
+        getModules() {
+            axios.get('/settings/personalization/modules')
+                .then(response => {
+                    this.modules = response.data;
+                });
+        },
+
+        toggle(module) {
+            axios.post('/settings/personalization/modules/' + module.id)
+                .then(response => {
+                    this.$notify({
+                        group: 'main',
+                        title: response.data,
+                        text: '',
+                        type: 'success'
+                    });
+                });
         }
     }
+};
 </script>
