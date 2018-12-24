@@ -93,7 +93,7 @@ return [
     'call_blank_desc' => 'Vous avez appelé {name}',
     'call_you_called' => 'Vous avez appelé',
     'call_he_called' => '{name} a appelé',
-    'call_emotions' => 'Emotions:',
+    'call_emotions' => 'Émotions :',
 
     // Conversation
     'conversation_blank' => 'Enregistrer les discussions que vous avez avec :name sur les réseaux sociaux, par SMS, etc.',
