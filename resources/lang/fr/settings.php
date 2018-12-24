@@ -272,6 +272,7 @@ return [
     'api_oauth_clients_desc' => 'Cette section vous permet d’enregistrer votre propre client OAuth.',
     'api_oauth_title' => 'Clients OAuth',
     'api_oauth_create_new' => 'Créer de nouveaux clients',
+    'api_oauth_edit' => 'Edit Client',
     'api_oauth_not_created' => 'Vous n’avez pas encore créé de client OAuth.',
     'api_oauth_clientid' => 'Identifiant du client',
     'api_oauth_name' => 'Nom',
