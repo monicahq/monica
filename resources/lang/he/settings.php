@@ -272,6 +272,7 @@ return [
     'api_oauth_clients_desc' => 'אגף זה מסייע לך לרשום לקוחות OAuth משלך.',
     'api_oauth_title' => 'לקוחות Oauth',
     'api_oauth_create_new' => 'יצירת לקוח חדש',
+    'api_oauth_edit' => 'Edit Client',
     'api_oauth_not_created' => 'לא יצרת לקוחות OAuth כלשהם.',
     'api_oauth_clientid' => 'מזהה לקוח',
     'api_oauth_name' => 'שם',
