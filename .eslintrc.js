@@ -53,9 +53,6 @@ module.exports = {
             "last"
         ],
 
-        // essential
-        "vue/no-unused-components" : "off",
-
         // strongly recommended
         "vue/component-name-in-template-casing": [
             "error",

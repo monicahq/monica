@@ -25,7 +25,8 @@
           <p>
             <img id="barcode" alt="Image of QR barcode" :src="image" />
             <br />
-            {{ $t('settings.2fa_enable_otp_help') }} <code id="secretkey">
+            {{ $t('settings.2fa_enable_otp_help') }}
+            <code id="secretkey">
               {{ secret }}
             </code>
           </p>
@@ -89,13 +90,12 @@
 </template>
 
 <script>
-import { SweetModal, SweetModalTab } from 'sweet-modal-vue';
+import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
     components: {
-        SweetModal,
-        SweetModalTab
+        SweetModal
     },
 
     props: {

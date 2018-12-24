@@ -547,13 +547,12 @@
 </template>
 
 <script>
-import { SweetModal, SweetModalTab } from 'sweet-modal-vue';
+import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
     components: {
-        SweetModal,
-        SweetModalTab
+        SweetModal
     },
 
     props: {
