@@ -6,6 +6,7 @@ UNRELEASED CHANGES:
 * Fix error handling in vue components
 * Fix exception when user is logged out
 * Fix subscription plan display
+* Fix dashboard calls display
 
 RELEASED VERSIONS:
 
