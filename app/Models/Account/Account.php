@@ -44,6 +44,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
+use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class Account extends Model
 {
@@ -639,28 +640,6 @@ class Account extends Model
     }
 
     /**
-     * Populates the Contact Field Types table right after an account is
-     * created.
-     */
-    public function populateContactFieldTypeTable($ignoreTableAlreadyMigrated = false)
-    {
-        $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
-
-        foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
-                ContactFieldType::create([
-                    'account_id' => $this->id,
-                    'name' => $defaultContactFieldType->name,
-                    'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                    'delible' => $defaultContactFieldType->delible,
-                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
-                ]);
-            }
-        }
-    }
-
-    /**
      * Populates the Activity Type table right after an account is
      * created.
      */
@@ -884,7 +863,11 @@ class Account extends Model
      */
     public function populateDefaultFields()
     {
-        $this->populateContactFieldTypeTable();
+        (new PopulateContactFieldTypesTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
+
         $this->populateDefaultGendersTable();
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();

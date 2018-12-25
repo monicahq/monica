@@ -1,5 +1,6 @@
 UNRELEASED CHANGES:
 
+* Migrate LinkedIn url from the Contact object to a ContactFieldType object
 * Activate eslint to check vue and javascript formatting
 * Fix tasks store and update
 * Fix error handling in vue components
