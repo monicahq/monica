@@ -268,7 +268,7 @@ return [
     'emotion_secondary_relief' => 'רגיעה',
     'emotion_secondary_surprise' => 'הפתעה',
     'emotion_secondary_irritation' => 'Irritation',
-    'emotion_secondary_exasperation' => 'Exasperation',
+    'emotion_secondary_exasperation' => 'מרמור',
     'emotion_secondary_rage' => 'זעם',
     'emotion_secondary_disgust' => 'Disgust',
     'emotion_secondary_envy' => 'קנאה',
