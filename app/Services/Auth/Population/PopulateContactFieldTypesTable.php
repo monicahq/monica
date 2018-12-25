@@ -5,12 +5,9 @@ namespace App\Services\Auth\Population;
 use App\Services\BaseService;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
-use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\App;
-use App\Models\Contact\LifeEventType;
 use Illuminate\Database\QueryException;
-use App\Models\Contact\LifeEventCategory;
+use App\Models\Contact\ContactFieldType;
 
 /**
  * Populate the contact field types table for a given account.
