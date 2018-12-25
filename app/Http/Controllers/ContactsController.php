@@ -82,18 +82,19 @@ class ContactsController extends Controller
 
             while ($request->get('tag'.$count)) {
                 $tag = Tag::where('account_id', auth()->user()->account_id)
-                            ->where('name_slug', $request->get('tag'.$count))
-                            ->get();
+                            ->where('name_slug', $request->get('tag'.$count));
+                if ($tag->count() > 0) {
+                    $tag = $tag->get();
 
-                if (! ($tags->contains($tag[0]))) {
-                    $tags = $tags->concat($tag);
+                    if (! ($tags->contains($tag[0]))) {
+                        $tags = $tags->concat($tag);
+                    }
+
+                    $url .= 'tag'.$count.'='.$tag[0]->name_slug.'&';
                 }
-
-                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
-
                 $count++;
             }
-            if (is_null($tags)) {
+            if ($tags->count() == 0) {
                 return redirect()->route('people.index');
             }
 
