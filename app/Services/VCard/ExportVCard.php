@@ -204,7 +204,7 @@ class ExportVCard extends BaseService
                     $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactField->data), ['type' => 'telegram']);
                     break;
                 case 'LinkedIn':
-                    $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/' . $contact->data), ['type' => 'linkedin']);
+                    $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->data), ['type' => 'linkedin']);
                     break;
                 default:
                     break;

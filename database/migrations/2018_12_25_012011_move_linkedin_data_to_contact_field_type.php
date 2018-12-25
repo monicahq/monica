@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Schema;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -26,7 +26,7 @@ class MoveLinkedinDataToContactFieldType extends Migration
                     $contact->contactFields()->create([
                         'account_id' => $contact->account_id,
                         'contact_field_type_id' => $contactFieldType->id,
-                        'data' => $contact->linkedin_profile_url
+                        'data' => $contact->linkedin_profile_url,
                     ]);
                 }
             });
