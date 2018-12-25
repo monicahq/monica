@@ -88,7 +88,6 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
-        'linkedin_profile_url',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',

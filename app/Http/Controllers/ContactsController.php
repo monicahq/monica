@@ -414,7 +414,6 @@ class ContactsController extends Controller
 
         $contact->job = ! empty($job) ? $job : null;
         $contact->company = ! empty($company) ? $company : null;
-        $contact->linkedin_profile_url = ! empty($linkedin) ? $linkedin : null;
 
         $contact->save();
 

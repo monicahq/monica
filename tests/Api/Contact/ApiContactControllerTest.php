@@ -125,7 +125,6 @@ class ApiContactControllerTest extends ApiTestCase
             'career' => [
                 'job',
                 'company',
-                'linkedin_profile_url',
             ],
             'avatar' => [
                 'url',

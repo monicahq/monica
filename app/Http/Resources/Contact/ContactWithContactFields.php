@@ -66,7 +66,6 @@ class ContactWithContactFields extends Resource
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
-                    'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(110),
