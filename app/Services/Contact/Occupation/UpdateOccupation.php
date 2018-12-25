@@ -3,10 +3,7 @@
 namespace App\Services\Contact\Occupation;
 
 use App\Services\BaseService;
-use App\Models\Account\Company;
 use App\Models\Contact\Occupation;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 
 class UpdateOccupation extends BaseService
 {

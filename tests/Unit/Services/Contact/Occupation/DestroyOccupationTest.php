@@ -3,11 +3,7 @@
 namespace Tests\Unit\Services\Contact\Call;
 
 use Tests\TestCase;
-use App\Models\Contact\Call;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Occupation;
-use Illuminate\Support\Facades\DB;
-use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Occupation\DestroyOccupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
