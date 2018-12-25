@@ -5,8 +5,8 @@ namespace Tests\Api\Contact;
 use Tests\ApiTestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use App\Models\Contact\Occupation;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Occupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiOccupationControllerTest extends ApiTestCase
@@ -84,7 +84,7 @@ class ApiOccupationControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('get', '/api/occupations/' . $occupation->id);
+        $response = $this->json('get', '/api/occupations/'.$occupation->id);
 
         $response->assertstatus(200);
         $response->assertjsonstructure([
@@ -148,7 +148,7 @@ class ApiOccupationControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('put', '/api/occupations/' . $occupation->id, [
+        $response = $this->json('put', '/api/occupations/'.$occupation->id, [
             'contact_id' => $occupation->contact_id,
             'company_id' => $occupation->company_id,
             'title' => 'Commissaire',
@@ -187,7 +187,7 @@ class ApiOccupationControllerTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('put', '/api/occupations/' . $occupation->id, [
+        $response = $this->json('put', '/api/occupations/'.$occupation->id, [
             'contact_id' => $occupation->contact_id,
             'company_id' => $occupation->company_id,
             'title' => 'Commissaire',
@@ -205,7 +205,7 @@ class ApiOccupationControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('delete', '/api/occupations/' . $occupation->id);
+        $response = $this->json('delete', '/api/occupations/'.$occupation->id);
 
         $response->assertstatus(200);
 

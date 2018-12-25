@@ -129,6 +129,6 @@ class ApiOccupationController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$occupationId);
+        return $this->respondObjectDeleted((int) $occupationId);
     }
 }
