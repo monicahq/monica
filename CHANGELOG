@@ -5,6 +5,7 @@ UNRELEASED CHANGES:
 * Fix tasks store and update
 * Fix error handling in vue components
 * Fix exception when user is logged out
+* Fix subscription plan display
 
 RELEASED VERSIONS:
 
