@@ -4,7 +4,7 @@ namespace App\Http\Resources\Occupation;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Account\Company as CompanyResource;
+use App\Http\Resources\Company\Company as CompanyResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Occupation extends Resource
