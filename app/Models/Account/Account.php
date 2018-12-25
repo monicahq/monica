@@ -868,7 +868,6 @@ class Account extends Model
             'migrate_existing_data' => true,
         ]);
 
-        $this->populateContactFieldTypeTable();
         $this->populateDefaultGendersTable();
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();
