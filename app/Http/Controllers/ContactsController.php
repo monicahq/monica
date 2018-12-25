@@ -58,10 +58,6 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $tags = null;
-        $url = '';
-        $count = 1;
-
         $contacts = $user->account->contacts()->real();
         if ($active) {
             $nbArchived = $contacts->count();
@@ -72,12 +68,16 @@ class ContactsController extends Controller
             $nbArchived = $contacts->count();
         }
 
+        $tags = null;
+        $url = '';
+        $count = 1;
+
         if ($request->get('no_tag')) {
-            //get tag less contacts
+            // get tag less contacts
             $contacts = $contacts->tags('NONE');
         } elseif ($request->get('tag1')) {
-            // get contacts with selected tags
 
+            // get contacts with selected tags
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
@@ -86,7 +86,7 @@ class ContactsController extends Controller
                 if ($tag->count() > 0) {
                     $tag = $tag->get();
 
-                    if (! ($tags->contains($tag[0]))) {
+                    if (! $tags->contains($tag[0])) {
                         $tags = $tags->concat($tag);
                     }
 
