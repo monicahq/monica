@@ -1,59 +1,59 @@
 <?php
 
-namespace App\Http\Controllers\Api\Account;
+namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
-use App\Models\Account\Company;
+use App\Models\Contact\Occupation;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
 use App\Exceptions\MissingParameterException;
-use App\Services\Account\Company\CreateCompany;
-use App\Services\Account\Company\UpdateCompany;
-use App\Services\Account\Company\DestroyCompany;
+use App\Services\Contact\Occupation\CreateOccupation;
+use App\Services\Contact\Occupation\UpdateOccupation;
+use App\Services\Contact\Occupation\DestroyOccupation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Company\Company as CompanyResource;
+use App\Http\Resources\Occupation\Occupation as OccupationResource;
 
-class ApiCompanyController extends ApiController
+class ApiOccupationController extends ApiController
 {
     /**
-     * Get the list of companies.
+     * Get the list of occupations.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         try {
-            $companies = auth()->user()->account->companies()
+            $occupations = auth()->user()->account->occupations()
                 ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        return CompanyResource::collection($companies);
+        return OccupationResource::collection($occupations);
     }
 
     /**
-     * Get the detail of a given company.
+     * Get the detail of a given occupation.
      *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, $companyId)
+    public function show(Request $request, $occupationId)
     {
         try {
-            $company = Company::where('account_id', auth()->user()->account_id)
-                ->where('id', $companyId)
+            $occupation = Occupation::where('account_id', auth()->user()->account_id)
+                ->where('id', $occupationId)
                 ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new CompanyResource($company);
+        return new OccupationResource($occupation);
     }
 
     /**
-     * Store the company.
+     * Store the occupation.
      *
      * @param  Request $request
      * @return \Illuminate\Http\Response
@@ -61,7 +61,7 @@ class ApiCompanyController extends ApiController
     public function store(Request $request)
     {
         try {
-            $company = (new CreateCompany)->execute(
+            $occupation = (new CreateOccupation)->execute(
                 $request->all()
                     +
                     [
@@ -76,25 +76,25 @@ class ApiCompanyController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return new CompanyResource($company);
+        return new OccupationResource($occupation);
     }
 
     /**
-     * Update a company.
+     * Update an occupation.
      *
      * @param  Request $request
-     * @param  int $companyId
+     * @param  int $occupationId
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $companyId)
+    public function update(Request $request, $occupationId)
     {
         try {
-            $company = (new UpdateCompany)->execute(
+            $occupation = (new UpdateOccupation)->execute(
                 $request->all()
                     +
                     [
                     'account_id' => auth()->user()->account->id,
-                    'company_id' => $companyId,
+                    'occupation_id' => $occupationId,
                 ]
             );
         } catch (ModelNotFoundException $e) {
@@ -105,21 +105,21 @@ class ApiCompanyController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return new CompanyResource($company);
+        return new OccupationResource($occupation);
     }
 
     /**
-     * Delete a company.
+     * Delete an occupation.
      *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $companyId)
+    public function destroy(Request $request, $occupationId)
     {
         try {
-            (new DestroyCompany)->execute([
+            (new DestroyOccupation)->execute([
                 'account_id' => auth()->user()->account->id,
-                'company_id' => $companyId,
+                'occupation_id' => $occupationId,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -129,6 +129,6 @@ class ApiCompanyController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $companyId);
+        return $this->respondObjectDeleted((int) $occupationId);
     }
 }

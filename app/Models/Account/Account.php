@@ -22,6 +22,7 @@ use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
@@ -466,6 +467,16 @@ class Account extends Model
     public function companies()
     {
         return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Get the Occupation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**

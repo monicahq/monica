@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
+use App\Models\Contact\Occupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CompanyTest extends TestCase
@@ -19,5 +20,14 @@ class CompanyTest extends TestCase
         ]);
 
         $this->assertTrue($company->account()->exists());
+    }
+
+    public function test_it_has_many_occupations()
+    {
+        $company = factory(Company::class)->create([]);
+        $occupations = factory(Occupation::class)->create([
+            'company_id' => $company->id,
+        ]);
+        $this->assertTrue($company->occupations()->exists());
     }
 }
