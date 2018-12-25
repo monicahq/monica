@@ -776,6 +776,8 @@ class Account extends Model
         if (! is_null($plan)) {
             return $plan->stripe_plan;
         }
+
+        return '';
     }
 
     /**
