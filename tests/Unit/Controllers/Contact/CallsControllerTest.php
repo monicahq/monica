@@ -28,7 +28,6 @@ class CallsControllerTest extends FeatureTestCase
         'contact_id',
     ];
 
-
     public function test_it_gets_the_list_of_calls()
     {
         $user = $this->signin();
@@ -65,7 +64,7 @@ class CallsControllerTest extends FeatureTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
             'first_name' => 'Éric',
-            'last_name' => 'Çezt'
+            'last_name' => 'Çezt',
         ]);
 
         factory(Call::class, 10)->create([
