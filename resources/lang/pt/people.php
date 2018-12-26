@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'You called {name}',
     'call_you_called' => 'You called',
     'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
@@ -136,15 +137,12 @@ return [
     'information_edit_lastname' => 'Sobrenome (Opcional)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'Perfil do LinkedIn (opcional)',
     'information_edit_unknown' => 'Eu não sei a idade desta pessoa',
     'information_edit_probably' => 'Esta pessoa é provavelmente',
     'information_edit_not_year' => 'Eu sei o dia e o mês da data de nascimento desta pessoa, mas não o ano…',
     'information_edit_exact' => 'Conheço a data de nascimento exata dessa pessoa, que é',
-    'information_no_linkedin_defined' => 'Nenhum LinkedIn definido',
     'information_no_work_defined' => 'Nenhuma informação profissional definida',
     'information_work_at' => 'em :company',
-    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Atualizar informação de trabalho',
     'work_edit_success' => 'Informações profissionais foram atualizadas com sucesso',
     'work_edit_title' => 'Atualizar a informação profissional de :name',

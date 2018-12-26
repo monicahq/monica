@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'You called {name}',
     'call_you_called' => 'You called',
     'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'سجل المكالمات التي لديك مع :name على وسائل التواصل الإجتماعي',
@@ -136,15 +137,12 @@ return [
     'information_edit_lastname' => 'اسم العائلة (اختياري)',
     'information_edit_description' => 'الوصف (اختياري)',
     'information_edit_description_help' => 'تستخدم في قائمة جهات الاتصال لإضافة بعض المعلومات، إذا لزم الأمر.',
-    'information_edit_linkedin' => 'ملف LinkedIn (اختياري)',
     'information_edit_unknown' => 'أنا لا أعرف عمر هذا الشخص',
     'information_edit_probably' => 'هذا الشخص قد يكون...',
     'information_edit_not_year' => 'أعرف اليوم والشهر لتاريخ الميلاد لهذا الشخص، ولكن ليس العام...',
     'information_edit_exact' => 'أنا أعرف تاريخ ميلاد هذا الشخص بدقة...',
-    'information_no_linkedin_defined' => 'لا يوجد حساب LinkedIn',
     'information_no_work_defined' => 'لا توجد معلومات العمل',
     'information_work_at' => 'لدى :company',
-    'linkedin_profile' => 'حساب LinkedIn',
     'work_add_cta' => 'تحديث معلومات العمل',
     'work_edit_success' => 'تم تحديث معلومات العمل بنجاح',
     'work_edit_title' => 'تحيث معلومات العمل الخاصة بـ :name',
