@@ -710,7 +710,7 @@ class Contact extends Model
         $incompleteName = $this->first_name;
 
         if (! is_null($this->last_name)) {
-            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+            $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
         }
 
         if ($this->is_dead) {
