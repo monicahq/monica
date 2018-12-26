@@ -1,3 +1,4 @@
+require('./bootstrap');
 const Vue = require('vue');
 
 // Notifications
@@ -88,6 +89,12 @@ Vue.component(
 Vue.component(
     'emotion',
     require('./components/people/Emotion.vue').default
+);
+
+// Header
+Vue.component(
+  'header-menu',
+  require('./components/partials/HeaderMenu.vue').default
 );
 
 // Dashboard
@@ -321,11 +328,6 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
             global_profile_default_view: window.Laravel.profileDefaultView
         },
         mounted: function() {
-
-            // required modules
-            require('./search');
-            require('./contacts');
-
         },
         methods: {
             updateDefaultProfileView(view) {

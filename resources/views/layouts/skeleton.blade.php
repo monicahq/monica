@@ -26,13 +26,11 @@
   </head>
   <body data-account-id={{ auth()->user()->account_id }}>
 
-    @include('partials.header')
-
     <div id="app">
+      @include('partials.header')
       @yield('content')
+      @include('partials.footer')
     </div>
-
-    @include('partials.footer')
 
     {{-- THE JS FILE OF THE APP --}}
     {{-- Load everywhere except on the Upgrade account page --}}

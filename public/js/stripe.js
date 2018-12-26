@@ -11,7 +11,7 @@ eval("var elements = stripe.elements(); // Custom styling can be passed to optio
 
 /***/ }),
 
-/***/ 1:
+/***/ 2:
 /*!*********************************************!*\
   !*** multi ./resources/assets/js/stripe.js ***!
   \*********************************************/
@@ -23,4 +23,4 @@ module.exports = __webpack_require__(/*! /Users/regis/htdocs/monica/resources/as
 
 /***/ })
 
-},[[1,"/js/manifest"]]]);
+},[[2,"/js/manifest"]]]);
