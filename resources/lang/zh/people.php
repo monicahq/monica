@@ -93,7 +93,7 @@ return [
     'call_blank_desc' => '你打给{name}',
     'call_you_called' => '您拨出的',
     'call_he_called' => '{name} 拨出的',
-    'call_emotions' => 'Emotions:',
+    'call_emotions' => '情绪：',
 
     // Conversation
     'conversation_blank' => '记录您与:name通过短信或社交媒体的信息记录',
