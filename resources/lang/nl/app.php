@@ -33,6 +33,7 @@ return [
     'type' => 'Soort',
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
+    'percent_uploaded' => '{percent}% uploaded',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',

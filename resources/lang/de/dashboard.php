@@ -31,8 +31,6 @@ return [
     'reminders_next_months' => 'Ereignisse der nächsten 3 Monate',
     'reminders_none' => 'Keine Erinnerungen für diesen Monat',
 
-    'linkedin_profile' => 'LinkedIn',
-
     'product_changes' => 'Product changes',
     'product_view_details' => 'View details',
 ];

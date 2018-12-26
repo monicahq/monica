@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'You called {name}',
     'call_you_called' => 'You called',
     'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
@@ -136,15 +137,12 @@ return [
     'information_edit_lastname' => 'Soyad (isteğe bağlı)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'LinkedIn profili (isteğe bağlı)',
     'information_edit_unknown' => 'Bu kişinin yaşını bilmiyorum',
     'information_edit_probably' => 'This person is probably...',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'I know the exact birthdate of this person...',
-    'information_no_linkedin_defined' => 'No LinkedIn defined',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => ':company',
-    'linkedin_profile' => 'LinkedIn Profili',
     'work_add_cta' => 'İş Bilgilerini Güncelle',
     'work_edit_success' => 'İş bilgileri başarılı bir şekilde güncellendi',
     'work_edit_title' => 'Update :name’s job information',

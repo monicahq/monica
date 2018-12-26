@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'You called {name}',
     'call_you_called' => 'You called',
     'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
@@ -136,15 +137,12 @@ return [
     'information_edit_lastname' => 'Příjmení (volitelné)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'LinkedIn profil (volitelné)',
     'information_edit_unknown' => 'Neznám věk této osoby',
     'information_edit_probably' => 'Tato osoba je přibližně',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Vím přesné datum narození této osoby, které je',
-    'information_no_linkedin_defined' => 'LinkedIn nebyl zadán',
     'information_no_work_defined' => 'Žádné informace o práci',
     'information_work_at' => 'v :company',
-    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Aktualizovat informace o práci',
     'work_edit_success' => 'Informace o práci úspěšně aktualizovány',
     'work_edit_title' => 'Aktualizovat informace o práci pro :name',

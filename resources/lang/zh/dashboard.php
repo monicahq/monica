@@ -31,8 +31,6 @@ return [
     'reminders_next_months' => '近三个月的活动',
     'reminders_none' => '本月尚无提醒事项',
 
-    'linkedin_profile' => '领英®',
-
     'product_changes' => '更新日志',
     'product_view_details' => '查看详情',
 ];
