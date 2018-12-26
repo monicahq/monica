@@ -37,6 +37,7 @@ class RouteServiceProvider extends ServiceProvider
             // In case the user is logged out
             if (! Auth::check()) {
                 redirect()->route('login')->send();
+                return;
             }
 
             try {
