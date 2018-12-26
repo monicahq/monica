@@ -1,0 +1,6 @@
+.breadcrumb {
+  li:not(:last-child):after {
+    content: '>';
+    margin-left: 3px;
+  }
+}

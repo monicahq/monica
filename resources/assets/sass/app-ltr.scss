@@ -2,7 +2,11 @@ $htmldir: ltr !default;
 
 @import "~hint.css/hint.min";
 @import "~tachyons/css/tachyons.min";
+@import "~animate.css/animate.min";
 @import "header";
+@import "breadcrumb";
+@import "buttons";
+@import "people";
 
 $body-color: #4a4a4a;
 
@@ -10,6 +14,7 @@ body {
   background-color: #f8f2ef;
   color: $body-color;
   font-family: 'Nunito', sans-serif;
+  font-size: 14px;
 }
 
 a {
@@ -24,4 +29,14 @@ a {
   height: 0;
   vertical-align: middle;
   width: 0;
+}
+
+.box-monica {
+  border: 1px solid #E7E7E7;
+  box-shadow: 1px 1px 2px rgba(122, 122, 122, 0.17);
+  border-radius: 11px;
+}
+
+.br-50 {
+  border-radius: 50%;
 }

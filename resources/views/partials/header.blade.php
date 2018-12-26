@@ -1,13 +1,13 @@
-<header class="bg-white dn db-m db-l">
-  <div class="ph3 pv2 w-100">
+<header class="bg-white dn db-m db-l mb3">
+  <div class="ph3 pt1 w-100">
 		<div class="cf">
 			<div class="fl w-10 pa2">
 				<a class="relative header-logo" href="{{ route('dashboard.index') }}">
-          <img src="/img/logo/logo.svg" width="39" height="35" />
+          <img src="/img/logo/logo.svg" height="30" />
         </a>
 			</div>
 			<div class="fl w-80 tc">
-				<ul>
+				<ul class="mv2">
 					<li class="di {{ htmldir() == 'rtl' ? 'ml3' : 'mr3' }} header-menu-item pa2">
 						<a class="b no-underline no-color" href="{{ route('dashboard.index') }}">
 							<img class="relative {{ htmldir() == 'rtl' ? 'pl1' : 'pr1' }}" src="/img/header/icon-home.svg" />
@@ -42,9 +42,9 @@
 </header>
 
 {{-- MOBILE MENU --}}
-<header class="bg-white mobile dn-ns">
-  <div class="ph3 pv2 w-100 relative">
-		<div class="pa2 relative menu-toggle">
+<header class="bg-white mobile dn-ns mb3">
+  <div class="ph2 pv2 w-100 relative">
+		<div class="pv2 relative menu-toggle">
       <label for="menu-toggle" class="dib b relative">Menu</label>
       <input type="checkbox" id="menu-toggle">
       <ul class="list pa0 mt4 mb0" id="mobile-menu">

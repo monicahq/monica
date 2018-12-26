@@ -34,7 +34,7 @@
     <a class="no-color no-underline relative pointer" @click.prevent="menu = !menu">
       {{ $t('app.main_nav_settings') }} <span class="dropdown-caret"></span>
     </a>
-    <div class="absolute br2 bg-white z-max tl pv2 ph3" v-if="menu == true">
+    <div class="absolute br2 bg-white z-max tl pv2 ph3 bounceIn faster" v-if="menu == true">
       <ul class="list ma0 pa0">
         <li class="pv2">
           <a class="no-color no-underline" href="">
