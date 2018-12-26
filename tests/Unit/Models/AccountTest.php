@@ -11,6 +11,7 @@ use App\Models\Account\Photo;
 use App\Models\Account\Place;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
 use App\Models\Account\Weather;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -20,6 +21,7 @@ use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Account\Invitation;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\Conversation;
@@ -222,6 +224,24 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->addresses()->exists());
+    }
+
+    public function test_it_has_many_companies()
+    {
+        $account = factory(Account::class)->create([]);
+        $companies = factory(Company::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->companies()->exists());
+    }
+
+    public function test_it_has_many_occupations()
+    {
+        $account = factory(Account::class)->create([]);
+        $occupations = factory(Occupation::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->occupations()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()

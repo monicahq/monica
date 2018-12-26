@@ -88,7 +88,6 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
-        'linkedin_profile_url',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',
@@ -389,6 +388,16 @@ class Contact extends Model
     public function lifeEvents()
     {
         return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');
+    }
+
+    /**
+     * Get the Occupation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**
@@ -701,7 +710,7 @@ class Contact extends Model
         $incompleteName = $this->first_name;
 
         if (! is_null($this->last_name)) {
-            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+            $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
         }
 
         if ($this->is_dead) {

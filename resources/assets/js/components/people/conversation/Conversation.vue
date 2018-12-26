@@ -25,103 +25,102 @@
 </style>
 
 <template>
-    <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-      <p class="mb2 b">{{ $t('people.conversation_add_what_was_said') }}</p>
-        <div class="pa3 ba b--gray-monica br3 conversation-block">
-            <div v-for="message in messages" class="relative" :key="message.uid">
-                <div :class="message.author + ' absolute'"></div>
-                <message
-                    :class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
-                    :author="message.author"
-                    :content="message.content"
-                    :uid="message.uid"
-                    :participant-name="participantName"
-                    @updateAuthor="updateAuthor($event, message)"
-                    @contentChange="updateContent($event, message)"
-                    @deleteMessage="deleteMessage($event, message)"
-                    :display-trash="displayTrash">
-                </message>
-            </div>
-            <p class="tc mb0"><a @click="addMessage" class="btn btn-secondary pointer">{{ $t('people.conversation_add_another') }}</a></p>
-            <input type="hidden" name="messages" :value="messages.map(a => a.uid)" />
-        </div>
+  <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+    <p class="mb2 b">
+      {{ $t('people.conversation_add_what_was_said') }}
+    </p>
+    <div class="pa3 ba b--gray-monica br3 conversation-block">
+      <div v-for="message in messages" :key="message.uid" class="relative">
+        <div :class="message.author + ' absolute'"></div>
+        <message
+          :class="{ 'mb3 ml5': message.author == 'me', 'mb3 mr5': message.author == 'other' }"
+          :author="message.author"
+          :content="message.content"
+          :uid="message.uid"
+          :participant-name="participantName"
+          :display-trash="displayTrash"
+          @updateAuthor="updateAuthor($event, message)"
+          @contentChange="updateContent($event, message)"
+          @deleteMessage="deleteMessage($event, message)"
+        />
+      </div>
+      <p class="tc mb0">
+        <a class="btn btn-secondary pointer" @click="addMessage">
+          {{ $t('people.conversation_add_another') }}
+        </a>
+      </p>
+      <input type="hidden" name="messages" :value="messages.map(a => a.uid)" />
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        /*
-         * The component's data.
-         */
-        data() {
-            return {
-                messages: [],
-                uid: 1,
-                displayTrash: false,
-            };
+export default {
+
+    props: {
+        participantName: {
+            type: String,
+            default: '',
         },
-
-        props: {
-            participantName: String,
-            existingMessages: Array,
+        existingMessages: {
+            type: Array,
+            default: function () {
+                return [];
+            }
         },
+    },
 
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent()
-        },
+    data() {
+        return {
+            messages: [],
+            uid: 1,
+            displayTrash: false,
+        };
+    },
 
-        /**
-         * Prepare the component (Vue 2.x).
-         */
-        mounted() {
-            this.prepareComponent()
-        },
+    mounted() {
+        this.prepareComponent();
+    },
 
-        methods: {
-            /**
-             * Prepare the component.
-             */
-            prepareComponent() {
-                if (this.existingMessages) {
-                    this.messages = this.existingMessages
-                    this.uid = this.messages[this.messages.length - 1].uid + 1
-                } else {
-                    this.messages.push({
-                        uid: this.uid++,
-                        content: '',
-                        author: 'me'
-                    })
-                }
-            },
-
-            addMessage() {
+    methods: {
+        prepareComponent() {
+            if (this.existingMessages) {
+                this.messages = this.existingMessages;
+                this.uid = this.messages[this.messages.length - 1].uid + 1;
+            } else {
                 this.messages.push({
                     uid: this.uid++,
                     content: '',
                     author: 'me'
-                })
-                if (this.messages.length > 1) {
-                    this.displayTrash = true
-                }
-            },
+                });
+            }
+        },
 
-            updateContent(updatedContent, message) {
-              message.content = updatedContent
-            },
+        addMessage() {
+            this.messages.push({
+                uid: this.uid++,
+                content: '',
+                author: 'me'
+            });
+            if (this.messages.length > 1) {
+                this.displayTrash = true;
+            }
+        },
 
-            updateAuthor(updatedAuthor, message) {
-              message.author = updatedAuthor
-            },
+        updateContent(updatedContent, message) {
+            message.content = updatedContent;
+        },
 
-            deleteMessage(uid, message) {
-              this.messages.splice(this.messages.indexOf(this.messages.find(item => item.uid === uid)), 1)
-              if (this.messages.length <= 1) {
-                this.displayTrash = false
-              }
-            },
-        }
+        updateAuthor(updatedAuthor, message) {
+            message.author = updatedAuthor;
+        },
+
+        deleteMessage(uid, message) {
+            this.messages.splice(this.messages.indexOf(this.messages.find(item => item.uid === uid)), 1);
+            if (this.messages.length <= 1) {
+                this.displayTrash = false;
+            }
+        },
     }
+};
 </script>

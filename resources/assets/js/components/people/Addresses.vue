@@ -45,9 +45,9 @@
             </span>
 
             <span v-if="!contactAddress.address">
-            <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank">
-              ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
-            </a>
+              <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank">
+                ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
+              </a>
             </span>
 
             <div v-if="editMode" class="fr">
@@ -205,10 +205,13 @@
 <script>
 export default {
 
-    props: ['hash'],
-    /*
-         * The component's data.
-         */
+    props: {
+        hash: {
+            type: String,
+            default: '',
+        },
+    },
+
     data() {
         return {
             contactAddresses: [],
