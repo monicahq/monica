@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'You called {name}',
     'call_you_called' => 'You called',
     'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'Bilježi razgovore koje ste imali vi i :name imali na socijalnim mrežama.',
@@ -136,15 +137,12 @@ return [
     'information_edit_lastname' => 'Prezime (opcionalno)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'LinkedIn profil (opcionalno)',
     'information_edit_unknown' => 'Ne znam starost ove osobe',
     'information_edit_probably' => 'Ova osoba je otprilike...',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'I know the exact birthdate of this person...',
-    'information_no_linkedin_defined' => 'No LinkedIn defined',
     'information_no_work_defined' => 'No work information defined',
     'information_work_at' => 'at :company',
-    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Update work information',
     'work_edit_success' => 'Work information have been updated with success',
     'work_edit_title' => 'Update :name’s job information',

@@ -103,7 +103,12 @@ class DashboardController extends Controller
     public function calls()
     {
         $callsCollection = collect([]);
-        $calls = auth()->user()->account->calls()->limit(15)->get();
+        $calls = auth()->user()->account->calls()
+            ->get()
+            ->reject(function ($call) {
+                return is_null($call->contact);
+            })
+            ->take(15);
 
         foreach ($calls as $call) {
             $data = [

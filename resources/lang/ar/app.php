@@ -33,6 +33,7 @@ return [
     'type' => 'النوع',
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
+    'percent_uploaded' => '{percent}% uploaded',
 
     'application_title' => 'Monica (مونيكا) – مدير العلاقات الشخصية',
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',

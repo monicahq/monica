@@ -93,6 +93,7 @@ return [
     'call_blank_desc' => 'You called {name}',
     'call_you_called' => 'You called',
     'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
@@ -136,15 +137,12 @@ return [
     'information_edit_lastname' => 'Фамилия (не обяз.)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'LinkedIn (не обяз.)',
     'information_edit_unknown' => 'Я не знаю возраст',
     'information_edit_probably' => 'Этому человеку примерно',
     'information_edit_not_year' => 'I know the day and month of the birthdate of this person, but not the year…',
     'information_edit_exact' => 'Я знаю точную дату рождения этого человека, которая',
-    'information_no_linkedin_defined' => 'LinkedIn не указан',
     'information_no_work_defined' => 'Рабочая информация не указана',
     'information_work_at' => 'работает в :company',
-    'linkedin_profile' => 'LinkedIn profile',
     'work_add_cta' => 'Обновите информацию о работе',
     'work_edit_success' => 'Информация о работе была обновлена',
     'work_edit_title' => 'Обновление информации о работе: :name',

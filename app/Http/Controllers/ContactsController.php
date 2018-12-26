@@ -58,10 +58,6 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $tags = null;
-        $url = '';
-        $count = 1;
-
         $contacts = $user->account->contacts()->real();
         if ($active) {
             $nbArchived = $contacts->count();
@@ -72,28 +68,33 @@ class ContactsController extends Controller
             $nbArchived = $contacts->count();
         }
 
+        $tags = null;
+        $url = '';
+        $count = 1;
+
         if ($request->get('no_tag')) {
-            //get tag less contacts
+            // get tag less contacts
             $contacts = $contacts->tags('NONE');
         } elseif ($request->get('tag1')) {
-            // get contacts with selected tags
 
+            // get contacts with selected tags
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
                 $tag = Tag::where('account_id', auth()->user()->account_id)
-                            ->where('name_slug', $request->get('tag'.$count))
-                            ->get();
+                            ->where('name_slug', $request->get('tag'.$count));
+                if ($tag->count() > 0) {
+                    $tag = $tag->get();
 
-                if (! ($tags->contains($tag[0]))) {
-                    $tags = $tags->concat($tag);
+                    if (! $tags->contains($tag[0])) {
+                        $tags = $tags->concat($tag);
+                    }
+
+                    $url .= 'tag'.$count.'='.$tag[0]->name_slug.'&';
                 }
-
-                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
-
                 $count++;
             }
-            if (is_null($tags)) {
+            if ($tags->count() == 0) {
                 return redirect()->route('people.index');
             }
 

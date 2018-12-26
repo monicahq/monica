@@ -33,6 +33,7 @@ return [
     'type' => 'Type',
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
+    'percent_uploaded' => '{percent}% uploaded',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
