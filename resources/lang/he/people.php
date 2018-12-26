@@ -83,7 +83,7 @@ return [
     'modal_call_comment' => 'על מה דיברתם? (רשות)',
     'modal_call_exact_date' => 'שיחת הטלפון התקיימה ב־',
     'modal_call_who_called' => 'מי היה בטלפון?',
-    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
+    'modal_call_emotion' => 'מעניין אותך לתעד איך הרגשת במהלך השיחה? (רשות)',
     'calls_add_success' => 'שיחת הטלפון נשמרה.',
     'call_delete_confirmation' => 'למחוק את השיחה הזאת?',
     'call_delete_success' => 'שיחת הטלפון נמחקה בהצלחה',
