@@ -47,11 +47,13 @@ return [
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Add people',
-    'main_nav_dashboard' => 'Dashboard',
-    'main_nav_family' => 'Contacts',
+    'main_nav_home' => 'Home',
+    'main_nav_people' => 'People',
     'main_nav_journal' => 'Journal',
-    'main_nav_activities' => 'Activities',
-    'main_nav_tasks' => 'Tasks',
+    'main_nav_find' => 'Find',
+    'main_nav_settings' => 'Settings',
+    'main_nav_changelog' => 'Changelog',
+    'main_nav_signout' => 'Sign out',
 
     'footer_remarks' => 'Any remarks?',
     'footer_send_email' => 'Send me an email',

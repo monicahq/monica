@@ -24,7 +24,7 @@
       ]); !!}
     </script>
   </head>
-  <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
+  <body data-account-id={{ auth()->user()->account_id }}>
 
     @include('partials.header')
 
