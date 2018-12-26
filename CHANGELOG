@@ -7,7 +7,7 @@ Enhancements:
 *
 
 Fixes:
-*
+* Fix exception when user is logged out (again)
 
 RELEASED VERSIONS:
 
