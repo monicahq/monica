@@ -3,171 +3,139 @@
 @section('title', $contact->name )
 
 @section('content')
-  <div class="people-show" >
-    {{ csrf_field() }}
 
-    {{-- Breadcrumb --}}
-    <div class="breadcrumb">
-      <div class="{{ Auth::user()->getFluidLayout() }}">
-        <div class="row">
-          <div class="col-xs-12">
-            <ul class="horizontal">
-              <li>
-                <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
-              </li>
-              <li>
-                @if ($contact->is_active)
-                <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
-                @else
-                <a href="{{ route('people.archived') }}">{{ trans('app.breadcrumb_archived_contacts') }}</a>
-                @endif
-              </li>
-              <li>
-                {{ $contact->name }}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
+{{-- BREADCRUMB --}}
+<div class="ph5 cf w-100 mb3 dn db-m db-l">
+  <div class="mw9 center dt w-100">
+    <ul class="list ma0 pa0 breadcrumb">
+      <li class="di">
+        <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
+      </li>
+      <li class="di">
+        @if ($contact->is_active)
+        <a href="{{ route('people.index') }}">{{ trans('app.breadcrumb_list_contacts') }}</a>
+        @else
+        <a href="{{ route('people.archived') }}">{{ trans('app.breadcrumb_archived_contacts') }}</a>
+        @endif
+      </li>
+      <li class="di">
+        {{ $contact->name }}
+      </li>
+    </ul>
+  </div>
+</div>
 
-    {{-- Page header --}}
-    @include('people._header')
+{{-- BREADCRUMB MOBILE --}}
+<div class="ph2 ph5-ns cf w-100 mb3 dn-ns">
+  <div class="mw9 center dt w-100">
+    <ul class="list ma0 pa0 breadcrumb">
+      <li class="di">
+        <a href="{{ route('people.index') }}">Back to the list of contacts</a>
+      </li>
+    </ul>
+  </div>
+</div>
 
-    {{-- Page content --}}
-    <div class="main-content profile">
+@include('people._header')
 
-      <div class="{{ Auth::user()->getFluidLayout() }}">
+<div class="ph5 cf w-100 mb3 dn db-m db-l">
+  <div class="mw9 center dt w-100">
+    <div class="cf">
 
-        <div class="row">
-          <div class="col-xs-12 col-sm-3 profile-sidebar">
+      {{-- LEFT SIDEBAR --}}
+      <div class="fl w-20 pl3 pr2">
+        <ul class="list pa0 mt0">
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_summary.svg">
+              Summary
+            </a>
+          </li>
+        </ul>
 
-            @if (! is_null($weather))
-            <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
-              <div class="w-100 dt">
-                <div class="dtc">
-                  <h3 class="f6 ttu normal">{{ trans('app.weather_current_title') }}</h3>
-                </div>
-              </div>
+        <p class="ttu normal">Information</h3>
+        <ul class="list pa0 mt0">
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_relationships.svg">
+              Relationships
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_activities.svg">
+              Activities
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_reminders.svg">
+              Reminders
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_gifts.svg">
+              Gifts & debts
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_documents.svg">
+              Documents & photos
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+            <img class="mr1" src="/img/people/sidebar/menu_calendar.svg">
+              Calendar
+            </a>
+          </li>
+        </ul>
 
-              <p class="mb0">
-                {{ $weather->getEmoji() }} {{ trans('app.weather_'.$weather->summary_icon) }} / {{ trans('app.weather_current_temperature_'.auth()->user()->temperature_scale, ['temperature' => $weather->temperature(auth()->user()->temperature_scale)]) }}
-              </p>
-            </div>
-            @endif
-
-            @include('people.relationship.index')
-
-            @include('people.sidebar')
-
-            <ul class="mb2">
-              <li>
-                <a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a>
-              </li>
-              <li>
-                <contact-archive hash="{{ $contact->hashID() }}" :active="{{ json_encode($contact->is_active) }}"></contact-archive>
-              </li>
-              <li>
-                <a id="link-delete-contact" class="pointer" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_message') }}</a>
-                <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
-                  {{ method_field('DELETE') }}
-                  {{ csrf_field() }}
-                </form>
-              </li>
-            </ul>
-          </div>
-
-          <div class="col-xs-12 col-sm-9">
-
-            <div class="flex items-center justify-center flex-column">
-              <div class='cf dib'>
-                <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt br bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt br ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">
-                  @if (auth()->user()->profile_new_life_event_badge_seen == false)
-                  <span class="bg-light-green f7 mr2 ph2 pv1 br2">{{ trans('app.new') }}</span>
-                  @endif
-                  {{ trans('people.life_event_list_tab_life_events') }}
-                </span>
-                <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view == 'notes' ? 'f6 fl bb bt ph3 pv2 dib b br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
-                <span @click="updateDefaultProfileView('photos')" :class="[global_profile_default_view == 'photos' ? 'f6 fl bb bt ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">Photos</span>
-              </div>
-            </div>
-
-            <div v-if="global_profile_default_view == 'life-events'">
-              <div class="row section">
-                @include('people.life-events.index')
-              </div>
-            </div>
-
-            <div v-if="global_profile_default_view == 'notes'">
-              @if ($modules->contains('key', 'notes'))
-              <div class="row section notes">
-                <div class="col-xs-12 section-title">
-                  <contact-note hash={{ $contact->hashID() }}></contact-note>
-                </div>
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'conversations'))
-              <div class="row section">
-                @include('people.conversations.index')
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'phone_calls'))
-              <div class="row section calls">
-                @include('people.calls.index')
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'activities'))
-              <div class="row section activities">
-                @include('activities.index')
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'reminders'))
-              <div class="row section reminders">
-                @include('people.reminders.index')
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'tasks'))
-              <div class="row section">
-                @include('people.tasks.index')
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'gifts'))
-              <div class="row section">
-                @include('people.gifts.index')
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'debts'))
-              <div class="row section debts">
-                @include('people.debt.index')
-              </div>
-              @endif
-
-              @if ($modules->contains('key', 'documents'))
-              <div class="row section">
-                @include('people.documents.index')
-              </div>
-              @endif
-
-            </div>
-
-            <div v-if="global_profile_default_view == 'photos'">
-              <div class="row section">
-                @include('people.photos.index')
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <p class="ttu normal">Profile actions</p>
+        <ul class="list pa0 mt0">
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_edit.svg">
+              Edit information
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+            <img class="mr1" src="/img/people/sidebar/menu_archive.svg">
+              Archive
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+            <img class="mr1" src="/img/people/sidebar/menu_export.svg">
+              Export
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_public.svg">
+              Public link
+            </a>
+          </li>
+          <li class="mb2">
+            <a class="no-underline no-color" href="">
+              <img class="mr1" src="/img/people/sidebar/menu_delete.svg">
+              Delete contact
+            </a>
+          </li>
+        </ul>
       </div>
 
+      {{-- RIGHT CONTENT --}}
+      <div class="fl w-80 pl2 pr0">
+        <div class="box-monica bg-white">
+          asdfsd
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
 @endsection
