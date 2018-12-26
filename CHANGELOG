@@ -1,6 +1,20 @@
 UNRELEASED CHANGES:
 
-* Migrate 0LinkedIn url from the Contact object to a ContactFieldType object
+New features:
+*
+
+Enhancements:
+*
+
+Fixes:
+*
+
+RELEASED VERSIONS:
+
+v2.11.1 - 2018-12-26
+--------------------
+
+* Migrate LinkedIn url from the Contact object to a ContactFieldType object
 * Activate eslint to check vue and javascript formatting
 * Fix tasks store and update
 * Fix error handling in vue components
@@ -10,8 +24,6 @@ UNRELEASED CHANGES:
 * Fix tags getting error
 * Fix contact getIncompleteName to work with UTF-8 last_name characters
 * Fix associate null tags
-
-RELEASED VERSIONS:
 
 v2.11.0 - 2018-12-23
 --------------------
