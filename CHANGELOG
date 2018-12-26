@@ -9,6 +9,7 @@ UNRELEASED CHANGES:
 * Fix dashboard calls display
 * Fix tags getting error
 * Fix contact getIncompleteName to work with UTF-8 last_name characters
+* Fix associate null tags
 
 RELEASED VERSIONS:
 
