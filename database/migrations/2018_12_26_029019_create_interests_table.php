@@ -1,5 +1,6 @@
 <?php
 
+use DB;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;

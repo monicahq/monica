@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
@@ -142,7 +143,7 @@ class Contact extends Model
     /**
      * Get the gender of the contact.
      *
-     * @return HasOne
+     * @return BelongsTo
      */
     public function gender()
     {
@@ -152,7 +153,7 @@ class Contact extends Model
     /**
      * Get the activity records associated with the contact.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function activities()
     {
@@ -222,7 +223,7 @@ class Contact extends Model
     /**
      * Get the tags records associated with the contact.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function tags()
     {
@@ -1220,7 +1221,8 @@ class Contact extends Model
     /**
      * Delete a relationship between two contacts.
      *
-     * @param  self   $otherContact
+     * @param self $otherContact
+     * @param int $relationshipTypeId
      */
     public function deleteRelationship(self $otherContact, int $relationshipTypeId)
     {
@@ -1369,6 +1371,7 @@ class Contact extends Model
     /**
      * Removes the date that is set for a specific occasion (like a birthdate,
      * the deceased date,...).
+     *
      * @param string $occasion
      */
     public function removeSpecialDate($occasion)
@@ -1499,6 +1502,7 @@ class Contact extends Model
     /**
      * Get the contacts that have all the provided $tags
      * or if $tags is NONE get contacts that have no tags.
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @param mixed $tags string or Tag
      * @return \Illuminate\Database\Eloquent\Builder $query
@@ -1588,7 +1592,7 @@ class Contact extends Model
      * Get the weather information for this contact, based on the first address
      * on the profile.
      *
-     * @return void
+     * @return \App\Models\Account\Weather|null
      */
     public function getWeather()
     {
