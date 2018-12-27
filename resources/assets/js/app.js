@@ -151,10 +151,12 @@ Vue.component(
     'contact-gift',
     require('./components/people/Gifts.vue').default
 );
+
 Vue.component(
     'interest',
-    require('./components/people/Interests.vue')
+    require('./components/people/Interests.vue').default
 );
+
 Vue.component(
     'pet',
     require('./components/people/Pets.vue').default

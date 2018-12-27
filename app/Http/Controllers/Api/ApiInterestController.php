@@ -20,9 +20,8 @@ class ApiInterestController extends ApiController
     ];
 
     /**
-     * Get the list of interest.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -38,9 +37,9 @@ class ApiInterestController extends ApiController
     }
 
     /**
-     * Get the detail of a given interest.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return InterestResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -56,9 +55,8 @@ class ApiInterestController extends ApiController
     }
 
     /**
-     * Store the interest.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return InterestResource|bool
      */
     public function store(Request $request)
     {
@@ -79,10 +77,9 @@ class ApiInterestController extends ApiController
     }
 
     /**
-     * Update the interest.
-     * @param  Request $request
-     * @param  int $interestId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $interestId
+     * @return InterestResource|bool|\Illuminate\Http\JsonResponse
      */
     public function update(
         Request $request,
@@ -111,10 +108,9 @@ class ApiInterestController extends ApiController
     }
 
     /**
-     * Delete a interest.
-     * @param  Request $request
-     * @param  int $interestId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $interestId
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $interestId)
     {
@@ -132,10 +128,9 @@ class ApiInterestController extends ApiController
     }
 
     /**
-     * Get the list of interests for the given contact.
-     * @param  Request $request
-     * @param  int $contactId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $contactId
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function interests(Request $request, $contactId)
     {

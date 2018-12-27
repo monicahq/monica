@@ -4,8 +4,8 @@ namespace App\Traits;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 trait ValidateContactRequests
 {
