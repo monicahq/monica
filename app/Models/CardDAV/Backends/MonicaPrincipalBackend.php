@@ -129,6 +129,28 @@ class MonicaPrincipalBackend extends AbstractBackend
      */
     public function searchPrincipals($prefixPath, array $searchProperties, $test = 'allof')
     {
+        $result = [];
+        $principals = $this->getPrincipalsByPrefix($prefixPath);
+        if (! $principals) {
+            return $result;
+        }
+
+        foreach ($principals as $principal) {
+            $ok = false;
+            foreach ($searchProperties as $key => $value) {
+                if ($principal[$key] == $value) {
+                    $ok = true;
+                } elseif ($test == 'allof') {
+                    $ok = false;
+                    break;
+                }
+            }
+            if ($ok) {
+                $result[] = $principal['uri'];
+            }
+        }
+
+        return $result;
     }
 
     /**
@@ -141,10 +163,10 @@ class MonicaPrincipalBackend extends AbstractBackend
     {
         $principal = $this->getPrincipalByPath($principal);
         if (! $principal) {
-            throw new \Sabre\DAV\Exception('Principal not found');
+            return [];
         }
 
-        return $principal['uri'];
+        return [$principal['uri']];
     }
 
     /**
