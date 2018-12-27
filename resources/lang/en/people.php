@@ -369,7 +369,7 @@ return [
     // Pets
     'pets_kind' => 'Kind of pet',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
     'pets_title' => 'Pets',
@@ -384,6 +384,13 @@ return [
     'pets_rat' => 'Rat',
     'pets_small_animal' => 'Small animal',
     'pets_other' => 'Other',
+
+    // Interests
+    'interests_name' => 'Name',
+    'interests_create_success' => 'The Interest has been successfully added',
+    'interests_update_success' => 'The Interest has been updated',
+    'interests_delete_success' => 'The Interest has been deleted',
+    'interests_title' => 'Interests',
 
     // life events
     'life_event_list_tab_life_events' => 'Life events',

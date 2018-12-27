@@ -130,6 +130,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             'index', 'store', 'update', 'destroy',
         ]);
         Route::get('/petcategories', 'Contacts\\PetsController@getPetCategories');
+        // Interests
+        Route::resource('people/{contact}/interests', 'Contacts\\InterestsController')->only([
+            'index', 'store', 'update', 'destroy',
+        ]);
 
         // Reminders
         Route::resource('people/{contact}/reminders', 'Contacts\\RemindersController')->except(['index', 'show']);

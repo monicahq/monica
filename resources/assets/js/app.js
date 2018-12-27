@@ -148,7 +148,10 @@ Vue.component(
     'contact-gift',
     require('./components/people/Gifts.vue')
 );
-
+Vue.component(
+    'interest',
+    require('./components/people/Interests.vue')
+);
 Vue.component(
     'pet',
     require('./components/people/Pets.vue')

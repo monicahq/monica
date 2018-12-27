@@ -279,6 +279,18 @@ $factory->define(App\Models\Contact\PetCategory::class, function (Faker\Generato
     return [];
 });
 
+$factory->define(App\Models\Contact\Interest::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'name' => $faker->word,
+    ];
+});
+
 $factory->define(App\Models\Contact\ContactFieldType::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,

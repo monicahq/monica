@@ -44,6 +44,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('pets', 'ApiPetController');
     Route::get('/contacts/{contact}/pets', 'ApiPetController@pets');
 
+    // Interests
+    Route::apiResource('interests', 'ApiInterestController');
+    Route::get('/contacts/{contact}/interests', 'ApiInterestController@interests');
+
     // Tags
     Route::apiResource('tags', 'ApiTagController');
 

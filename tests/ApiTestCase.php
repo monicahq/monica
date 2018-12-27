@@ -27,7 +27,7 @@ class ApiTestCase extends TestCase
     }
 
     /**
-     * Test that the response contains a not found notification.
+     * Test that the response contains a data error.
      *
      * @param TestResponse $response
      * @param string|array $message
@@ -45,7 +45,7 @@ class ApiTestCase extends TestCase
     }
 
     /**
-     * Test that the response contains a not found notification.
+     * Test that the response contains an invalid parameter.
      *
      * @param TestResponse $response
      * @param string|array $message

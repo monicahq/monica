@@ -16,6 +16,7 @@ UNRELEASED CHANGES:
 * Fix incompatibility of people search queries with PostgreSQL
 * Refactor how contacts are managed
 * Add the notion of places
+* Add contact interest management
 
 RELEASED VERSIONS:
 

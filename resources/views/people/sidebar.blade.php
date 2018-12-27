@@ -1,3 +1,8 @@
+{{-- Interests --}}
+@if ($modules->contains('key', 'interests'))
+    <interest hash="{{ $contact->hashID() }}"></interest>
+@endif
+
 {{-- Pets --}}
 @if ($modules->contains('key', 'pets'))
 <pet hash="{{ $contact->hashID() }}"></pet>

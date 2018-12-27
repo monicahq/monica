@@ -3,7 +3,6 @@
 namespace App\Models\Contact;
 
 use App\Helpers\DBHelper;
-use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
@@ -288,6 +287,16 @@ class Contact extends Model
     public function pets()
     {
         return $this->hasMany(Pet::class);
+    }
+
+    /**
+     * Get the Interest records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function interests()
+    {
+        return $this->hasMany(Interest::class);
     }
 
     /**
