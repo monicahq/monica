@@ -8,6 +8,7 @@ Enhancements:
 
 Fixes:
 * Fix exception when user is logged out (again)
+* Fix carddav group-member-set propfind call
 
 RELEASED VERSIONS:
 
