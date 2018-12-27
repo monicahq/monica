@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Interest;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Interest\Interest as InterestResource;
 
 class ApiInterestController extends ApiController
@@ -37,7 +35,7 @@ class ApiInterestController extends ApiController
             ->where('id', $id)
             ->first();
 
-        if (!$interest) {
+        if (! $interest) {
             return $this->respondNotFound();
         }
 
@@ -81,7 +79,7 @@ class ApiInterestController extends ApiController
             ->where('id', $interestId)
             ->first();
 
-        if (!$interest) {
+        if (! $interest) {
             return $this->respondNotFound();
         }
 
@@ -132,7 +130,7 @@ class ApiInterestController extends ApiController
             ->where('id', $interestId)
             ->first();
 
-        if (!$interest) {
+        if (! $interest) {
             return $this->respondNotFound();
         }
 
@@ -153,7 +151,7 @@ class ApiInterestController extends ApiController
             ->where('id', $contactId)
             ->first();
 
-        if (!$contact) {
+        if (! $contact) {
             return $this->respondNotFound();
         }
 
