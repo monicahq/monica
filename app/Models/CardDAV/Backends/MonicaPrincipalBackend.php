@@ -135,16 +135,12 @@ class MonicaPrincipalBackend extends AbstractBackend
             return $result;
         }
 
-        foreach ($principals as $principal)
-        {
+        foreach ($principals as $principal) {
             $ok = false;
-            foreach ($searchProperties as $key => $value)
-            {
+            foreach ($searchProperties as $key => $value) {
                 if ($principal[$key] == $value) {
                     $ok = true;
-                }
-                else if ($test == 'allof')
-                {
+                } elseif ($test == 'allof') {
                     $ok = false;
                     break;
                 }
