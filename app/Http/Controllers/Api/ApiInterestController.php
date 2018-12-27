@@ -44,6 +44,7 @@ class ApiInterestController extends ApiController
 
     /**
      * Store the interest.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -67,6 +68,7 @@ class ApiInterestController extends ApiController
 
     /**
      * Update the interest.
+     *
      * @param  Request $request
      * @param  int $interestId
      * @return \Illuminate\Http\Response
@@ -113,13 +115,14 @@ class ApiInterestController extends ApiController
 
         Contact::where('account_id', auth()->user()->account_id)
             ->where('id', $request->input('contact_id'))
-            ->firstOrFail();
+            ->first();
 
         return true;
     }
 
     /**
-     * Delete a interest.
+     * Delete an interest.
+     *
      * @param  Request $request
      * @param  int $interestId
      * @return \Illuminate\Http\Response
