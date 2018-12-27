@@ -5,13 +5,20 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Interest;
+use App\Traits\ValidateContactRequests;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Interest\Interest as InterestResource;
 
 class ApiInterestController extends ApiController
 {
+    use ValidateContactRequests;
+
+    protected $rules = [
+        'contact_id' => 'required|integer',
+        'name' => 'required|max:255',
+    ];
+
     /**
      * Get the list of interest.
      *
@@ -55,7 +62,7 @@ class ApiInterestController extends ApiController
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
+        $isvalid = $this->validateUpdate($request, $this->rules);
         if ($isvalid !== true) {
             return $isvalid;
         }
@@ -89,7 +96,7 @@ class ApiInterestController extends ApiController
             return $this->respondNotFound();
         }
 
-        $isvalid = $this->validateUpdate($request);
+        $isvalid = $this->validateUpdate($request, $this->rules);
         if ($isvalid !== true) {
             return $isvalid;
         }
@@ -101,35 +108,6 @@ class ApiInterestController extends ApiController
         }
 
         return new InterestResource($interest);
-    }
-
-    /**
-     * Validate the request for update.
-     *
-     * @param  Request $request
-     * @return mixed
-     */
-    private function validateUpdate(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'contact_id' => 'required|integer',
-            'name' => 'required|max:255',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('contact_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return true;
     }
 
     /**
