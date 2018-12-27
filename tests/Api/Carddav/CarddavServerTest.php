@@ -176,4 +176,93 @@ class CarddavServerTest extends ApiTestCase
 
         $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}</d:href>");
     }
+
+    /**
+     * @group carddav
+     */
+    public function test_carddav_propfind_groupmemberset()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('PROPFIND', "/carddav/principals/{$user->email}/", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            '<propfind xmlns="DAV:"
+                xmlns:CAL="urn:ietf:params:xml:ns:caldav"
+                xmlns:CARD="urn:ietf:params:xml:ns:carddav">
+                <prop>
+                    <CARD:addressbook-home-set />
+                    <group-member-set />
+                </prop>
+            </propfind>'
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+            '<d:response>'.
+                "<d:href>/carddav/principals/{$user->email}/</d:href>".
+                '<d:propstat>'.
+                    '<d:prop>'.
+                        '<card:addressbook-home-set>'.
+                            "<d:href>/carddav/addressbooks/{$user->email}/</d:href>".
+                        '</card:addressbook-home-set>'.
+                        '<d:group-member-set>'.
+                            "<d:href>/carddav/principals/{$user->email}/</d:href>".
+                        '</d:group-member-set>'.
+                    '</d:prop>'.
+                    '<d:status>HTTP/1.1 200 OK</d:status>'.
+                '</d:propstat>'.
+            '</d:response>'.
+        '</d:multistatus>');
+    }
+
+    /**
+     * @group carddav
+     */
+    public function test_carddav_report_propertysearch()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('REPORT', '/carddav/principals/', [], [], [],
+            [
+                'HTTP_DEPTH' => '0',
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<principal-property-search xmlns=\"DAV:\">
+                <property-search>
+                    <match>{$user->name}</match>
+                    <prop>
+                        <displayname/>
+                    </prop>
+                </property-search>
+                <prop>
+                    <displayname/>
+                </prop>
+            </principal-property-search>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+            '<d:response>'.
+                "<d:href>/carddav/principals/{$user->email}/</d:href>".
+                '<d:propstat>'.
+                    '<d:prop>'.
+                        "<d:displayname>{$user->name}</d:displayname>".
+                    '</d:prop>'.
+                    '<d:status>HTTP/1.1 200 OK</d:status>'.
+                '</d:propstat>'.
+            '</d:response>'.
+        '</d:multistatus>');
+    }
 }
