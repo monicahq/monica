@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Interest;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Interest\Interest as InterestResource;
 
 class ApiInterestController extends ApiController
@@ -17,9 +19,13 @@ class ApiInterestController extends ApiController
      */
     public function index(Request $request)
     {
-        $interests = Interest::where('account_id', auth()->user()->account_id)
-            ->orderBy($this->sort, $this->sortDirection)
-            ->paginate($this->getLimitPerPage());
+        try {
+            $interests = Interest::where('account_id', auth()->user()->account_id)
+                ->orderBy($this->sort, $this->sortDirection)
+                ->paginate($this->getLimitPerPage());
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return InterestResource::collection($interests);
     }
@@ -31,11 +37,11 @@ class ApiInterestController extends ApiController
      */
     public function show(Request $request, $id)
     {
-        $interest = Interest::where('account_id', auth()->user()->account_id)
-            ->where('id', $id)
-            ->first();
-
-        if (! $interest) {
+        try {
+            $interest = Interest::where('account_id', auth()->user()->account_id)
+                ->where('id', $id)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
@@ -44,7 +50,6 @@ class ApiInterestController extends ApiController
 
     /**
      * Store the interest.
-     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
@@ -68,7 +73,6 @@ class ApiInterestController extends ApiController
 
     /**
      * Update the interest.
-     *
      * @param  Request $request
      * @param  int $interestId
      * @return \Illuminate\Http\Response
@@ -77,11 +81,11 @@ class ApiInterestController extends ApiController
         Request $request,
         $interestId
     ) {
-        $interest = Interest::where('account_id', auth()->user()->account_id)
-            ->where('id', $interestId)
-            ->first();
-
-        if (! $interest) {
+        try {
+            $interest = Interest::where('account_id', auth()->user()->account_id)
+                ->where('id', $interestId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
@@ -90,7 +94,11 @@ class ApiInterestController extends ApiController
             return $isvalid;
         }
 
-        $interest->update($request->all());
+        try {
+            $interest->update($request->all());
+        } catch (QueryException $e) {
+            return $this->respondNotTheRightParameters();
+        }
 
         return new InterestResource($interest);
     }
@@ -113,27 +121,30 @@ class ApiInterestController extends ApiController
             return $this->respondValidatorFailed($validator);
         }
 
-        Contact::where('account_id', auth()->user()->account_id)
-            ->where('id', $request->input('contact_id'))
-            ->first();
+        try {
+            Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $request->input('contact_id'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
 
         return true;
     }
 
     /**
-     * Delete an interest.
-     *
+     * Delete a interest.
      * @param  Request $request
      * @param  int $interestId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $interestId)
     {
-        $interest = Interest::where('account_id', auth()->user()->account_id)
-            ->where('id', $interestId)
-            ->first();
-
-        if (! $interest) {
+        try {
+            $interest = Interest::where('account_id', auth()->user()->account_id)
+                ->where('id', $interestId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
@@ -150,11 +161,11 @@ class ApiInterestController extends ApiController
      */
     public function interests(Request $request, $contactId)
     {
-        $contact = Contact::where('account_id', auth()->user()->account_id)
-            ->where('id', $contactId)
-            ->first();
-
-        if (! $contact) {
+        try {
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->where('id', $contactId)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
