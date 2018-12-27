@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-use App\Http\Requests\Request;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
