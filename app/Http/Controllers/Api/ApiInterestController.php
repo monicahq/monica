@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\People\InterestsRequest;
-use App\Models\Contact\Interest;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Interest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\Interest\Interest as InterestResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Interest\Interest as InterestResource;
 
 class ApiInterestController extends ApiController
 {

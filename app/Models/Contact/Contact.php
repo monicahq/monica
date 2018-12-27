@@ -7,6 +7,7 @@ use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
+use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -86,7 +87,6 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
-        'linkedin_profile_url',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',
@@ -400,6 +400,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Occupation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
@@ -709,7 +719,7 @@ class Contact extends Model
         $incompleteName = $this->first_name;
 
         if (! is_null($this->last_name)) {
-            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+            $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
         }
 
         if ($this->is_dead) {
@@ -1572,5 +1582,16 @@ class Contact extends Model
         }
 
         $this->save();
+    }
+
+    /**
+     * Get the weather information for this contact, based on the first address
+     * on the profile.
+     *
+     * @return void
+     */
+    public function getWeather()
+    {
+        return WeatherHelper::getWeatherForAddress($this->addresses()->first());
     }
 }

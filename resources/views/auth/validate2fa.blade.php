@@ -23,6 +23,11 @@
               <h3>{{ trans('auth.mfa_auth_otp') }}</h3>
               @include ('partials.auth.validate2fa')
 
+              <div class="form-group links">
+                <ul>
+                  <li>{!! trans('auth.use_recovery', ['url' => route('recovery.login')]) !!}</li>
+                </ul>
+              </div>
             </div>
           </div>
         </form>

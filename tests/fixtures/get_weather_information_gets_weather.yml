@@ -1,0 +1,27 @@
+-
+    request:
+        method: GET
+        url: 'https://api.darksky.net/forecast/test/34.112456,-118.4270732?exclude=alerts,minutely,hourly,daily,flags'
+        headers:
+            Host: api.darksky.net
+            Accept-Encoding: null
+            User-Agent: 'GuzzleHttp/6.3.3 curl/7.54.0 PHP/7.1.17'
+            Accept: null
+    response:
+        status:
+            http_version: '1.1'
+            code: '200'
+            message: OK
+        headers:
+            Date: 'Fri, 21 Dec 2018 21:05:11 GMT'
+            Content-Type: 'application/json; charset=utf-8'
+            Content-Length: '483'
+            Connection: keep-alive
+            X-Authentication-Time: 2ms
+            Cache-Control: max-age=3600
+            Expires: 'Fri, 21 Dec 2018 22:05:11 +0000'
+            X-Forecast-API-Calls: '3'
+            X-Content-Type-Options: nosniff
+            X-Response-Time: 8.247ms
+            Vary: Accept-Encoding
+        body: '{"latitude":34.112456,"longitude":-118.4270732,"timezone":"America/Los_Angeles","currently":{"time":1545426311,"summary":"Partly Cloudy","icon":"partly-cloudy-day","nearestStormDistance":10,"nearestStormBearing":296,"precipIntensity":0,"precipProbability":0,"temperature":67.94,"apparentTemperature":67.94,"dewPoint":41.87,"humidity":0.39,"pressure":1014.57,"windSpeed":3.35,"windGust":6.12,"windBearing":232,"cloudCover":0.28,"uvIndex":2,"visibility":10,"ozone":277.93},"offset":-8}'

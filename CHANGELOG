@@ -1,15 +1,46 @@
 UNRELEASED CHANGES:
 
+New features:
+*
+
+Enhancements:
+*
+
+Fixes:
+* Fix exception when user is logged out (again)
+
+RELEASED VERSIONS:
+
+v2.11.1 - 2018-12-26
+--------------------
+
+* Migrate LinkedIn url from the Contact object to a ContactFieldType object
+* Activate eslint to check vue and javascript formatting
+* Fix tasks store and update
+* Fix error handling in vue components
+* Fix exception when user is logged out
+* Fix subscription plan display
+* Fix dashboard calls display
+* Fix tags getting error
+* Fix contact getIncompleteName to work with UTF-8 last_name characters
+* Fix associate null tags
+
+v2.11.0 - 2018-12-23
+--------------------
+
+* Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
+* Add ability to see the current weather on the contact profile page
+* Add ability to generate recovery codes in order to bypass 2FA/U2F
 * Add ability to indicate latitude and longitude to addresses
 * Add ability to upload photos
 * Add ability to indicate how you felt when logging a call
 * Add information about who initiated a phone call
 * Add ability to edit a phone call
+* Add ability to create tasks that are not linked to any contacts
 * Remove limitation on the date field when creating an activity
 * Fix Set Tag api method which deleted existing tags, which it shouldn't
 * Fix editing relationship not working
 * Fix Storage page not being displayed
-* Add ability to create tasks that are not linked to any contacts
 * Fix VCard import without firstname
 * Fix avatar display in searches
 * Fix conversation add/update using contact add/update flash messages
@@ -17,8 +48,6 @@ UNRELEASED CHANGES:
 * Refactor how contacts are managed
 * Add the notion of places
 * Add contact interest management
-
-RELEASED VERSIONS:
 
 v2.10.2 - 2018-11-14
 --------------------

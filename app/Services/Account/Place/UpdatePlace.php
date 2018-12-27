@@ -4,6 +4,7 @@ namespace App\Services\Account\Place;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class UpdatePlace extends BaseService
 {
@@ -50,6 +51,24 @@ class UpdatePlace extends BaseService
             'longitude' => $this->nullOrValue($data, 'longitude'),
         ]);
 
+        if (is_null($place->latitude)) {
+            $this->getGeocodingInfo($place);
+        }
+
         return $place;
+    }
+
+    /**
+     * Get geocoding information about the place (lat/longitude).
+     *
+     * @param Place $place
+     * @return void|null
+     */
+    private function getGeocodingInfo(Place $place)
+    {
+        (new GetGPSCoordinate)->execute([
+            'account_id' => $place->account_id,
+            'place_id' => $place->id,
+        ]);
     }
 }

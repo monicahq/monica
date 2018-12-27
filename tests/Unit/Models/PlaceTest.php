@@ -4,6 +4,7 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Account\Place;
+use App\Models\Account\Weather;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PlaceTest extends TestCase
@@ -14,6 +15,12 @@ class PlaceTest extends TestCase
     {
         $place = factory(Place::class)->create([]);
         $this->assertTrue($place->account()->exists());
+    }
+
+    public function test_it_has_many_weathers()
+    {
+        $weather = factory(Weather::class)->create([]);
+        $this->assertTrue($weather->place->weathers()->exists());
     }
 
     public function test_it_returns_the_full_address_as_a_string()

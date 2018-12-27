@@ -675,9 +675,8 @@ class ImportVCard extends BaseService
                     $data = str_replace('http://t.me/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'linkedin':
+                    $contactFieldTypeId = $this->getContactFieldTypeId('LinkedIn');
                     $data = str_replace('http://www.linkedin.com/in/', '', $this->formatValue((string) $socialProfile));
-                    $contact->linkedin_profile_url = $data;
-                    continue;
                     break;
                 default:
                     // Not supported

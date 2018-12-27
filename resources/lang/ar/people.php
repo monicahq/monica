@@ -81,22 +81,27 @@ return [
     // Calls
     'modal_call_title' => 'تسجيل مكالمة',
     'modal_call_comment' => 'ماذا تحدثتم عنه؟ (اختياري)',
-    'modal_call_date' => 'حدثت المكالمة الهاتفية في وقت سابق من اليوم.',
-    'modal_call_change' => 'تغيير',
     'modal_call_exact_date' => 'تمت المكالمة الهاتفية في',
+    'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'تم حفظ المكالمة الهاتفية.',
     'call_delete_confirmation' => 'هل أنت متأكد من حذف هذه المكالمة؟',
     'call_delete_success' => 'تم حذف المكالمة بنجاح',
     'call_title' => 'المكالمات الهاتفية',
     'call_empty_comment' => 'لا تفاصيل',
-    'call_blank_title' => 'تابع مكالماتك الهاتفية التي قمت بها مع :name',
-    'call_blank_desc' => 'اتصلت بـ:name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'سجل المكالمات التي لديك مع :name على وسائل التواصل الإجتماعي',
     'conversation_delete_link' => 'حذف المحادثة',
     'conversation_edit_title' => 'تحرير المحادثة',
     'conversation_edit_delete' => 'هل أنت متأكد من حذف هذه المحادثة؟ الحذف دائم.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'لقد تم حذف المحادثة بنجاح.',
     'conversation_add_title' => 'سَجل محادثة جديدة',
     'conversation_add_when' => 'متى تمت هذه المحادثة؟',
@@ -132,15 +137,12 @@ return [
     'information_edit_lastname' => 'اسم العائلة (اختياري)',
     'information_edit_description' => 'الوصف (اختياري)',
     'information_edit_description_help' => 'تستخدم في قائمة جهات الاتصال لإضافة بعض المعلومات، إذا لزم الأمر.',
-    'information_edit_linkedin' => 'ملف LinkedIn (اختياري)',
     'information_edit_unknown' => 'أنا لا أعرف عمر هذا الشخص',
     'information_edit_probably' => 'هذا الشخص قد يكون...',
     'information_edit_not_year' => 'أعرف اليوم والشهر لتاريخ الميلاد لهذا الشخص، ولكن ليس العام...',
     'information_edit_exact' => 'أنا أعرف تاريخ ميلاد هذا الشخص بدقة...',
-    'information_no_linkedin_defined' => 'لا يوجد حساب LinkedIn',
     'information_no_work_defined' => 'لا توجد معلومات العمل',
     'information_work_at' => 'لدى :company',
-    'linkedin_profile' => 'حساب LinkedIn',
     'work_add_cta' => 'تحديث معلومات العمل',
     'work_edit_success' => 'تم تحديث معلومات العمل بنجاح',
     'work_edit_title' => 'تحيث معلومات العمل الخاصة بـ :name',
@@ -359,6 +361,8 @@ return [
     'contact_address_form_province' => 'المنطقة (اختياري)',
     'contact_address_form_postal_code' => 'الرمز البريدي (اختياري)',
     'contact_address_form_country' => 'البلد (اختياري)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'نوع الحيوان الأليف',
@@ -448,4 +452,14 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // Photos
+    'photo_list_title' => 'Related photos',
+    'photo_list_cta' => 'Upload photo',
+    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_delete' => 'Delete photo',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];
