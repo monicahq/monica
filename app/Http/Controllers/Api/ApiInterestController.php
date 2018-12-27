@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Interest;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Interest\Interest as InterestResource;
 
 class ApiInterestController extends ApiController
@@ -33,7 +35,11 @@ class ApiInterestController extends ApiController
     {
         $interest = Interest::where('account_id', auth()->user()->account_id)
             ->where('id', $id)
-            ->firstOrFail();
+            ->first();
+
+        if (!$interest) {
+            return $this->respondNotFound();
+        }
 
         return new InterestResource($interest);
     }
@@ -73,7 +79,11 @@ class ApiInterestController extends ApiController
     ) {
         $interest = Interest::where('account_id', auth()->user()->account_id)
             ->where('id', $interestId)
-            ->firstOrFail();
+            ->first();
+
+        if (!$interest) {
+            return $this->respondNotFound();
+        }
 
         $isvalid = $this->validateUpdate($request);
         if ($isvalid !== true) {
@@ -120,7 +130,11 @@ class ApiInterestController extends ApiController
     {
         $interest = Interest::where('account_id', auth()->user()->account_id)
             ->where('id', $interestId)
-            ->firstOrFail();
+            ->first();
+
+        if (!$interest) {
+            return $this->respondNotFound();
+        }
 
         $interest->delete();
 
@@ -137,7 +151,11 @@ class ApiInterestController extends ApiController
     {
         $contact = Contact::where('account_id', auth()->user()->account_id)
             ->where('id', $contactId)
-            ->firstOrFail();
+            ->first();
+
+        if (!$contact) {
+            return $this->respondNotFound();
+        }
 
         $interests = $contact->interests()
                 ->paginate($this->getLimitPerPage());
