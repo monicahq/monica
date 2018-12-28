@@ -19,8 +19,8 @@ return [
     'people_list_filter_tag' => 'Es werden alle Kontakte mit den folgenden Tags angezeigt',
     'people_list_clear_filter' => 'Filter löschen',
     'people_list_contacts_per_tags' => '1 Kontakt|:count Kontakte',
-    'people_list_show_dead' => 'Show deceased people (:count)',
-    'people_list_hide_dead' => 'Hide deceased people (:count)',
+    'people_list_show_dead' => 'Verstorbene Kontakte anzeigen (:count)',
+    'people_list_hide_dead' => 'Verstorbene Kontakte ausblenden (:count)',
     'people_search' => 'Suche in deinen Kontakten...',
     'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
@@ -41,7 +41,7 @@ return [
     'people_add_success' => ':name wurde erfolgreich angelegt.',
     'people_add_gender' => 'Geschlecht',
     'people_delete_success' => 'Der Kontakt wurde gelöscht',
-    'people_delete_message' => 'Delete contact',
+    'people_delete_message' => 'Kontakt löschen',
     'people_delete_confirmation' => 'Möchtest du den Kontakt wirklich löschen? Es gibt kein Zurück.',
     'people_add_birthday_reminder' => 'Gratuliere :name zum Geburtstag',
     'people_add_import' => 'Möchtest du Kontakte <a href=":url">importieren</a>?',
@@ -59,11 +59,11 @@ return [
 
     // archived contacts
     'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_archived_contacts' => 'Liste der archivierten Kontakte',
 
     // Header
     'edit_contact_information' => 'Kontaktinformationen bearbeiten',
-    'contact_archive' => 'Archive contact',
+    'contact_archive' => 'Kontakt archivieren',
     'contact_unarchive' => 'Unarchive contact',
     'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
     'call_button' => 'Telefonat vermerken',
@@ -81,22 +81,27 @@ return [
     // Calls
     'modal_call_title' => 'Telefonat vermerken',
     'modal_call_comment' => 'Worüber habt ihr geredet? (optional)',
-    'modal_call_date' => 'Das Telefonat war heute.',
-    'modal_call_change' => 'Ändern',
     'modal_call_exact_date' => 'Das Telefonat war am',
+    'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Telefonat gespeichert.',
     'call_delete_confirmation' => 'Möchtest du das Telefonat wirklich löschen?',
     'call_delete_success' => 'Das Telefonat wurde erfolgreich gelöscht',
     'call_title' => 'Telefonate',
     'call_empty_comment' => 'Keine Details',
-    'call_blank_title' => 'Behalte deine Telefonate mit :name im Auge',
-    'call_blank_desc' => 'Du hast :name angerufen',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
-    'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :Henning auf Social Media, via SMS etc. hast',
+    'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :name auf Social Media, via SMS etc. hast...',
     'conversation_delete_link' => 'Unterhaltung löschen',
     'conversation_edit_title' => 'Unterhaltung bearbeiten',
     'conversation_edit_delete' => 'Bist du sicher, dass du diese Unterhaltung löschen willst? Dies kann nicht rückgängig gemacht werden.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'Die Unterhaltung wurde gelöscht.',
     'conversation_add_title' => 'Eine neue Unterhaltung ins Logbuch protokollieren',
     'conversation_add_when' => 'Wann hattet ihr diese Unterhaltung?',
@@ -132,15 +137,12 @@ return [
     'information_edit_lastname' => 'Nachname (Optional)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'LinkedIn-Profile (optional)',
     'information_edit_unknown' => 'Ich kenne das Alter dieser Person nicht',
     'information_edit_probably' => 'Diese Person ist wahrscheinlich',
     'information_edit_not_year' => 'Ich weiß den Tag und Monat des Geburtsdatums dieser Person, aber nicht das Jahr…',
     'information_edit_exact' => 'Ich kenne den Geburtstag der Person...',
-    'information_no_linkedin_defined' => 'LinkedIn nicht angegeben',
     'information_no_work_defined' => 'keine Arbeitsplatz-Informationen angegeben',
     'information_work_at' => 'bei :company',
-    'linkedin_profile' => 'LinkedIn-Profil',
     'work_add_cta' => 'Ändere Arbeitsplatz-Informationen',
     'work_edit_success' => 'Arbeitsplatz-Informationen wurden erfolgreich aktualisiert',
     'work_edit_title' => 'Ändere :name\'s Beruf-Informationen',
@@ -359,6 +361,8 @@ return [
     'contact_address_form_province' => 'Bundesland (optional)',
     'contact_address_form_postal_code' => 'Postleitzahl (optional)',
     'contact_address_form_country' => 'Land (optional)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'Tierart',
@@ -448,4 +452,14 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // Photos
+    'photo_list_title' => 'Related photos',
+    'photo_list_cta' => 'Upload photo',
+    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_delete' => 'Delete photo',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];

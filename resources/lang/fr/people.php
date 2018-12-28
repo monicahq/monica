@@ -81,22 +81,27 @@ return [
     // Calls
     'modal_call_title' => 'Enregistrer un appel téléphonique',
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
-    'modal_call_date' => 'Cet appel téléphonique s’est passé plus tôt dans la journée.',
-    'modal_call_change' => 'Changer',
     'modal_call_exact_date' => 'L’appel s’est passé le',
+    'modal_call_who_called' => 'Qui a appelé ?',
+    'modal_call_emotion' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cet appel ? (facultatif)',
     'calls_add_success' => 'L’appel téléphonique a été enregistré.',
     'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L’appel a été supprimé avec succès',
     'call_title' => 'Appels téléphoniques',
     'call_empty_comment' => 'Aucun details',
-    'call_blank_title' => 'Gardez la trace des appels téléphoniques que vous faites avec :name',
-    'call_blank_desc' => 'Vous avez appelé :name',
+    'call_blank_title' => 'Gardez la trace des appels téléphoniques que vous avez fait avec {name}',
+    'call_blank_desc' => 'Vous avez appelé {name}',
+    'call_you_called' => 'Vous avez appelé',
+    'call_he_called' => '{name} a appelé',
+    'call_emotions' => 'Émotions :',
 
     // Conversation
     'conversation_blank' => 'Enregistrer les discussions que vous avez avec :name sur les réseaux sociaux, par SMS, etc.',
     'conversation_delete_link' => 'Supprimer la discussion',
     'conversation_edit_title' => 'Éditer la discussion',
     'conversation_edit_delete' => 'Êtes-vous sûr de vouloir supprimer la discussion ? La suppression est permanente.',
+    'conversation_add_success' => 'La discussion a été ajoutée avec succès.',
+    'conversation_edit_success' => 'La discussion a été mise à jour avec succès.',
     'conversation_delete_success' => 'La discussion a été supprimée avec succès.',
     'conversation_add_title' => 'Enregistrer une discussion',
     'conversation_add_when' => 'Quand avez-vous eu cette discussion ?',
@@ -132,15 +137,12 @@ return [
     'information_edit_lastname' => 'Nom de famille (optionnel)',
     'information_edit_description' => 'Description (facultatif)',
     'information_edit_description_help' => 'Utilisé sur la liste de contacts pour ajouter un contexte, si nécessaire.',
-    'information_edit_linkedin' => 'Profil LinkedIn (optionnel)',
     'information_edit_unknown' => 'Je ne connais pas son âge',
     'information_edit_probably' => 'Cette personne a probablement …',
     'information_edit_not_year' => 'Je connais le jour et le mois de sa naissance, mais pas l’année…',
     'information_edit_exact' => 'Je connais la date de naissance précise, qui est …',
-    'information_no_linkedin_defined' => 'Aucun LinkedIn défini',
     'information_no_work_defined' => 'Aucune information professionnelle définie',
     'information_work_at' => 'chez :company',
-    'linkedin_profile' => 'Profil LinkedIn',
     'work_add_cta' => 'Mettre à jour les informations professionnelles',
     'work_edit_success' => 'Les informations professionnelles ont été mises à jour avec succès',
     'work_edit_title' => 'Mettre à jour les informations professionnelles de :name',
@@ -359,6 +361,8 @@ return [
     'contact_address_form_province' => 'Province (optionnel)',
     'contact_address_form_postal_code' => 'Code postal (optionnel)',
     'contact_address_form_country' => 'Pays (optionnel)',
+    'contact_address_form_latitude' => 'Latitude (chiffres uniquement) (facultatif)',
+    'contact_address_form_longitude' => 'Longitude (chiffres uniquement) (facultatif)',
 
     // Pets
     'pets_kind' => 'Sorte d’animal',
@@ -448,4 +452,14 @@ return [
     'document_upload_zone_cta' => 'Télécharger un fichier',
     'document_upload_zone_progress' => 'Télécharger le document...',
     'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
+
+    // Photos
+    'photo_list_title' => 'Photos associées',
+    'photo_list_cta' => 'Télécharger une photo',
+    'photo_list_blank_desc' => 'Vous pouvez enregistrer des images sur ce contact. Téléchargez-en une maintenant !',
+    'photo_upload_zone_cta' => 'Télécharger une photo',
+    'photo_delete' => 'Supprimer la photo',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'Cela vous fait sentir …',
 ];

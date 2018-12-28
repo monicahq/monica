@@ -11,74 +11,57 @@ input:focus {
 
 <template>
   <div>
-    <p class="mb2" :class="{ b: required }">{{ title }}</p>
-    <input :type="inputType"
-            :value="value"
-            @input="updateInput($event.target.value)"
-            ref="input"
-            autofocus
-            :required="required"
-            :name="id"
-            :id="id"
-            class="br2 f5 w-100 ba b--black-40 pa2 outline-0" :style="'width:' + width + 'px'">
+    <p class="mb2" :class="{ b: required }">
+      {{ title }}
+    </p>
+    <input :id="id"
+           ref="input"
+           :type="inputType"
+           :value="value"
+           autofocus
+           :required="required"
+           :name="id"
+           class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
+           :style="[width >= 0 ? 'width:' + width + 'px' : '']"
+           @input="updateInput($event.target.value)"
+    />
   </div>
 </template>
 
 <script>
-    export default {
-        /*
-         * The component's data.
-         */
-        data() {
-            return {
-            };
+export default {
+
+    props: {
+        value: {
+            type: String,
+            default: '',
         },
-
-        /**
-         * Prepare the component (Vue 1.x).
-         */
-        ready() {
-            this.prepareComponent();
+        title: {
+            type: String,
+            default: '',
         },
-
-        /**
-         * Prepare the component (Vue 2.x).
-         */
-        mounted() {
-            this.prepareComponent();
+        id: {
+            type: String,
+            default: '',
         },
-
-        props: {
-            value: {
-                type: String,
-            },
-            title: {
-                type: String,
-            },
-            id: {
-                type: String,
-            },
-            required: {
-                type: Boolean,
-            },
-            inputType: {
-                type: String,
-            },
-            width: {
-              type: Number,
-            }
+        required: {
+            type: Boolean,
+            default: true,
         },
+        inputType: {
+            type: String,
+            default: '',
+        },
+        width: {
+            type: Number,
+            default: -1,
+        }
+    },
 
-        methods: {
-            /**
-             * Prepare the component.
-             */
-            prepareComponent() {
-            },
-
-            updateInput(text) {
-                this.$emit('input', text)
-            }
+    methods: {
+        updateInput(text) {
+            this.$emit('input', text);
         }
     }
+};
 </script>

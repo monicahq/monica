@@ -81,22 +81,27 @@ return [
     // Calls
     'modal_call_title' => 'Registreer een belgesprek',
     'modal_call_comment' => 'Waar hebben jullie het over gehad? (optioneel)',
-    'modal_call_date' => 'Dit telefoongesprek was eerder vandaag.',
-    'modal_call_change' => 'Pas aan',
     'modal_call_exact_date' => 'Het telefoongesprek gebeurde op',
+    'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Het telefoongesprek is opgeslagen.',
     'call_delete_confirmation' => 'Weet je zeker dat je deze oproep wil wissen?',
     'call_delete_success' => 'Deze oproep is succesvol verwijdert',
     'call_title' => 'Telefoon gesprekken',
     'call_empty_comment' => 'Geen details',
-    'call_blank_title' => 'Hou je telefoongesprekken bij met :name',
-    'call_blank_desc' => 'Je hebt gebeld met :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
     'conversation_delete_link' => 'Delete the conversation',
     'conversation_edit_title' => 'Edit conversation',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'The conversation has been successfully deleted.',
     'conversation_add_title' => 'Record a new conversation',
     'conversation_add_when' => 'When did you have this conversation?',
@@ -132,15 +137,12 @@ return [
     'information_edit_lastname' => 'Achternaam (optioneel)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'LinkedIn profiel (optioneel)',
     'information_edit_unknown' => 'Ik weet de leeftijd van deze persoon niet',
     'information_edit_probably' => 'Deze persoon is waarschijnlijk...',
     'information_edit_not_year' => 'Ik weet de dag en de maand van de geboortedatum van deze persoon, maar niet het jaar…',
     'information_edit_exact' => 'Ik weet de exacte geboortedatum van deze persoon...',
-    'information_no_linkedin_defined' => 'Geen LinkedIn gedefinieerd',
     'information_no_work_defined' => 'Geen werkgegevens gedefinieerd',
     'information_work_at' => 'bij :company',
-    'linkedin_profile' => 'LinkedIn profiel',
     'work_add_cta' => 'Werk informatie bijwerken',
     'work_edit_success' => 'Werkgegevens zijn met succes bijgewerkt',
     'work_edit_title' => 'Update :name\'s baan',
@@ -359,6 +361,8 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'Kind of pet',
@@ -448,4 +452,14 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // Photos
+    'photo_list_title' => 'Related photos',
+    'photo_list_cta' => 'Upload photo',
+    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_delete' => 'Delete photo',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];

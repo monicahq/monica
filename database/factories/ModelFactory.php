@@ -404,6 +404,34 @@ $factory->define(App\Models\Account\Place::class, function (Faker\Generator $fak
     ];
 });
 
+$factory->define(App\Models\Account\Company::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => 'Central Perk',
+        'website' => 'https://centralperk.com',
+        'number_of_employees' => 4,
+    ];
+});
+
+$factory->define(App\Models\Contact\Occupation::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'company_id' => function (array $data) {
+            return factory(App\Models\Account\Company::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'title' => 'Waiter',
+        'salary' => '10000',
+        'salary_unit' => 'year',
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
@@ -514,6 +542,46 @@ $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator
         'stripe_id' => $stripe_id,
         'stripe_plan' => $stripe_plan ?: $faker->randomElement(['plan-1', 'plan-2', 'plan-3']),
         'quantity' => 1,
+        'created_at' => now(),
+    ];
+});
+
+$factory->define(App\Models\Account\Weather::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'place_id' => function (array $data) {
+            return factory(App\Models\Account\Place::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'weather_json' => json_decode('
+{
+  "latitude": 45.487685,
+  "longitude": -73.590259,
+  "timezone": "America\/Toronto",
+  "currently": {
+    "time": 1541637005,
+    "summary": "Mostly Cloudy",
+    "icon": "partly-cloudy-night",
+    "nearestStormDistance": 39,
+    "nearestStormBearing": 307,
+    "precipIntensity": 0,
+    "precipProbability": 0,
+    "temperature": 7.57,
+    "apparentTemperature": 3.82,
+    "dewPoint": 1.24,
+    "humidity": 0.64,
+    "pressure": 1009.91,
+    "windSpeed": 6.98,
+    "windGust": 12.99,
+    "windBearing": 249,
+    "cloudCover": 0.73,
+    "uvIndex": 0,
+    "visibility": 16.09,
+    "ozone": 304.17
+  },
+  "offset": -5
+}'),
         'created_at' => now(),
     ];
 });

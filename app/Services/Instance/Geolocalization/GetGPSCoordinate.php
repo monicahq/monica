@@ -4,6 +4,7 @@ namespace App\Services\Instance\Geolocalization;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 
@@ -45,7 +46,7 @@ class GetGPSCoordinate extends BaseService
      * @param Place $place
      * @return string|null
      */
-    private function getQuery(Place $place)
+    private function buildQuery(Place $place)
     {
         if (! config('monica.enable_geolocation')) {
             return;
@@ -55,13 +56,13 @@ class GetGPSCoordinate extends BaseService
             return;
         }
 
-        $query = 'https://us1.locationiq.com/v1/search.php?key=';
-        $query .= config('monica.location_iq_api_key');
-        $query .= '&q=';
-        $query .= urlencode($place->getAddressAsString());
-        $query .= '&format=json';
+        $query = http_build_query([
+            'format' => 'json',
+            'key' => config('monica.location_iq_api_key'),
+            'q' => $place->getAddressAsString(),
+        ]);
 
-        return $query;
+        return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;
     }
 
     /**
@@ -72,7 +73,7 @@ class GetGPSCoordinate extends BaseService
      */
     private function query(Place $place)
     {
-        $query = $this->getQuery($place);
+        $query = $this->buildQuery($place);
 
         if (is_null($query)) {
             return;
@@ -83,6 +84,8 @@ class GetGPSCoordinate extends BaseService
         try {
             $response = $client->request('GET', $query);
         } catch (ClientException $e) {
+            Log::error('Error making the call: '.$e);
+
             return;
         }
 
