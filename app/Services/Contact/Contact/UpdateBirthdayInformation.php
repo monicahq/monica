@@ -51,6 +51,7 @@ class UpdateBirthdayInformation extends BaseService
         $this->clearRelatedSpecialDate();
 
         $this->manageBirthday($data);
+
         return $this->contact;
     }
 
