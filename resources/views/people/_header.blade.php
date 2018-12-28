@@ -1,4 +1,4 @@
-<div class="ph2 ph5-ns cf w-100 mb3">
+<div class="ph2 ph5-ns cf w-100 mb4">
   <div class="mw9 center dt w-100 bg-white box-monica">
 
     {{-- COVER IMAGE --}}

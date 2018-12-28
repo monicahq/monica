@@ -29,7 +29,8 @@
     <div id="app">
       @include('partials.header')
       @yield('content')
-      @include('partials.footer')
+
+
     </div>
 
     {{-- THE JS FILE OF THE APP --}}

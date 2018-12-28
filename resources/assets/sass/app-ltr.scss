@@ -9,17 +9,28 @@ $htmldir: ltr !default;
 @import "people";
 
 $body-color: #4a4a4a;
+$border-color: #dde2e9;
 
 body {
-  background-color: #f8f2ef;
+  background-color: #F5F6F8;
   color: $body-color;
   font-family: 'Nunito', sans-serif;
   font-size: 14px;
 }
 
 a {
+  color: #0366d6;
+
   &.no-color { color: $body-color; }
+
+  &.delete { color: #ff0029; }
 }
+
+p {
+  margin-top: 0;
+}
+
+.border-bottom { border-bottom: 1px solid $border-color; }
 
 .dropdown-caret {
   border: 4px solid transparent;

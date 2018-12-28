@@ -12954,9 +12954,57 @@ header.mobile .header-logo {
 
 .btn {
   background: #fff;
+  border-radius: 11px;
+  box-shadow: 1px 0px 1px rgba(43, 45, 80, 0.16), -1px 1px 1px rgba(43, 45, 80, 0.16), 0px 1px 4px rgba(43, 45, 80, 0.18);
+  font-weight: 600;
+}
+
+.btn:hover {
+  background-color: #d7e0e9;
+}
+
+.btn.add {
+  background-color: #31a84b;
+  color: #fff;
+}
+
+.btn-group {
   box-shadow: 1px 0px 1px rgba(43, 45, 80, 0.16), -1px 1px 1px rgba(43, 45, 80, 0.16), 0px 1px 4px rgba(43, 45, 80, 0.18);
   border-radius: 11px;
+}
+
+.btn-group span {
+  background: #fff;
+  border-right: 1px solid #e3e3e7;
+}
+
+.btn-group span:hover {
+  background-color: #d7e0e9;
+}
+
+.btn-group span.selected {
+  background: #d7e0e9;
   font-weight: 600;
+}
+
+.btn-group span:first-child {
+  border-bottom-left-radius: 11px;
+  border-top-left-radius: 11px;
+}
+
+.btn-group span:last-child {
+  border-bottom-right-radius: 11px;
+  border-top-right-radius: 11px;
+  border-right: 0;
+}
+
+.btn-group-internal li {
+  padding-bottom: 6px;
+}
+
+.btn-group-internal li.selected,
+.btn-group-internal li:hover {
+  border-bottom: 2px solid #ff1a46;
 }
 
 .contact-header-avatar {
@@ -12981,15 +13029,39 @@ header.mobile .header-logo {
   }
 }
 
+.contact-left-sidebar ul li {
+  margin-bottom: 12px;
+}
+
+.contact-left-sidebar ul li:last-child {
+  margin-bottom: 30px;
+}
+
 body {
-  background-color: #f8f2ef;
+  background-color: #F5F6F8;
   color: #4a4a4a;
   font-family: "Nunito", sans-serif;
   font-size: 14px;
 }
 
+a {
+  color: #0366d6;
+}
+
 a.no-color {
   color: #4a4a4a;
+}
+
+a.delete {
+  color: #ff0029;
+}
+
+p {
+  margin-top: 0;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #dde2e9;
 }
 
 .dropdown-caret {

@@ -19,3 +19,11 @@
     padding-left: 0;
   }
 }
+
+.contact-left-sidebar {
+  ul li {
+    margin-bottom: 12px;
+
+    &:last-child { margin-bottom: 30px; }
+  }
+}

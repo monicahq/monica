@@ -38,14 +38,14 @@
 
 @include('people._header')
 
-<div class="ph5 cf w-100 mb3 dn db-m db-l">
+<div class="ph2 ph5-ns cf w-100 mb3">
   <div class="mw9 center dt w-100">
     <div class="cf">
 
       {{-- LEFT SIDEBAR --}}
-      <div class="fl w-20 pl3 pr2">
+      <div class="fl w-20 pl3 pr2 dn db-m db-l contact-left-sidebar">
         <ul class="list pa0 mt0">
-          <li class="mb2">
+          <li class="mb4">
             <a class="no-underline no-color" href="">
               <img class="mr1" src="/img/people/sidebar/menu_summary.svg">
               Summary
@@ -53,12 +53,12 @@
           </li>
         </ul>
 
-        <p class="ttu normal">Information</h3>
+        <p class="ttu normal f7 mb3">Information</h3>
         <ul class="list pa0 mt0">
           <li class="mb2">
             <a class="no-underline no-color" href="">
               <img class="mr1" src="/img/people/sidebar/menu_relationships.svg">
-              Relationships
+              General
             </a>
           </li>
           <li class="mb2">
@@ -85,7 +85,7 @@
               Documents & photos
             </a>
           </li>
-          <li class="mb2">
+          <li class="mb4">
             <a class="no-underline no-color" href="">
             <img class="mr1" src="/img/people/sidebar/menu_calendar.svg">
               Calendar
@@ -93,7 +93,7 @@
           </li>
         </ul>
 
-        <p class="ttu normal">Profile actions</p>
+        <p class="ttu normal f7 mb3">Profile actions</p>
         <ul class="list pa0 mt0">
           <li class="mb2">
             <a class="no-underline no-color" href="">
@@ -122,17 +122,32 @@
           <li class="mb2">
             <a class="no-underline no-color" href="">
               <img class="mr1" src="/img/people/sidebar/menu_delete.svg">
-              Delete contact
+              Delete
             </a>
           </li>
         </ul>
       </div>
 
       {{-- RIGHT CONTENT --}}
-      <div class="fl w-80 pl2 pr0">
-        <div class="box-monica bg-white">
-          asdfsd
+      <div class="fl w-80-ns w-100 pl2-ns pr0">
+
+        {{-- GROUP TABS --}}
+        <div class="flex items-center justify-center flex-column mb4">
+          <div class="cf dib btn-group">
+            <span class="f6 fl ph3 pv2 dib pointer">
+              Summary
+            </span>
+            <span class="f6 fl ph3 pv2 pointer dib">
+              Life events
+            </span>
+            <span class="f6 fl ph3 pv2 dib selected">
+              Notes
+            </span>
+          </div>
         </div>
+
+        <contact-note hash={{ $contact->hashID() }}></contact-note>
+
       </div>
     </div>
   </div>

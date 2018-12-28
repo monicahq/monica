@@ -1,91 +1,73 @@
 <style scoped>
-  .note:hover {
-      background-color: #f6fbff;
+  .note-information {
+    color: #8F9295;
+  }
+
+  .absolute {
+    border: 1px solid rgba(27,31,35,.15);
+    box-shadow: 0 3px 12px rgba(27,31,35,.15);
+    right: -7px;
+    top: 25px;
+  }
+
+  .absolute:after,
+  .absolute:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+  }
+
+  .absolute:after {
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+    left: auto;
+    right: 10px;
+    top: -14px;
+  }
+
+  .absolute:before {
+    border: 8px solid transparent;
+    border-bottom-color: rgba(27,31,35,.15);
+    left: auto;
+    right: 9px;
+    top: -16px;
   }
 </style>
 
 <template>
   <div>
-    <notifications group="main" position="bottom right" />
-
-    <div>
-      <div>
-        <form class="bg-near-white pa2 br2 mb3">
-          <textarea v-model="newNote.body" class="w-100 br2 pa2 b--light-gray" cy-name="add-note-textarea" :placeholder="$t('people.notes_add_cta')" @focus="addMode = true"
-                    @keyup.esc="addMode = false"
-          ></textarea>
-          <a v-if="addMode" class="pointer btn btn-primary" cy-name="add-note-button" @click.prevent="store">
-            {{ $t('app.add') }}
-          </a>
-          <a v-if="addMode" class="pointer btn btn-secondary" cy-name="cancel-note-button" @click="addMode = false">
-            {{ $t('app.cancel') }}
-          </a>
-        </form>
+    <div class="pa3 box-monica bg-white mb3">
+      <form-textarea class="mb3" v-model="newNote.body" placeholder="test" v-on:content-change="newNote.body = $event"></form-textarea>
+      <div class="tr">
+        <a class="btn dib no-color no-underline pv2 ph3 mr2" href="">Cancel</a>
+        <a class="btn dib add no-color no-underline pv2 ph3" @click.prevent="store">Add</a>
       </div>
-
-      <!-- LIST OF NORMAL NOTES -->
-      <ul>
-        <li v-for="note in notes" :key="note.id" class="note">
-          <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + note.id">
-            <div class="pa2 markdown">
-              <span v-html="note.parsed_body"></span>
-            </div>
-            <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
-              <div class="fl w-50">
-                <div class="f5 di mr1">
-                  <i v-tooltip.top="$t('people.notes_favorite')" class="pointer" :class="[note.is_favorited ? 'fa fa-star' : 'fa fa-star-o']" @click="toggleFavorite(note)"></i>
-                </div>
-                {{ note.created_at_short }}
-              </div>
-              <div class="fl w-50 tr">
-                <a class="pointer" :cy-name="'edit-note-button-' + note.id" @click="toggleEditMode(note)">
-                  {{ $t('app.edit') }}
-                </a>
-                |
-                <a class="pointer" :cy-name="'delete-note-button-' + note.id" @click.prevent="showDelete(note)">
-                  {{ $t('app.delete') }}
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- EDIT MODE -->
-          <form v-show="note.edit" class="bg-near-white pa2 br2 mt3 mb3">
-            <textarea v-model="note.body" class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + note.id" @keyup.esc="note.edit = false"></textarea>
-            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + note.id" @click.prevent="update(note)">
-              {{ $t('app.update') }}
-            </a>
-          </form>
-        </li>
-      </ul>
     </div>
 
-    <!-- Delete Note modal -->
-    <div id="modal-delete-note" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ $t('people.notes_delete_title') }}
-            </h5>
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
-              <span aria-hidden="true">
-                &times;
-              </span>
-            </button>
+    <div class="box-monica bg-white mb3" v-for="note in notes" :key="note.id">
+      <div class="pa3 border-bottom" v-html="note.parsed_body"></div>
+      <div class="ph3 pv2 note-information">
+        <svg class="mr1" style="fill: #888282;" height="11" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M1 4c0-1.1.9-2 2-2h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4zm2 2v12h14V6H3zm2-6h2v2H5V0zm8 0h2v2h-2V0zM5 9h2v2H5V9zm0 4h2v2H5v-2zm4-4h2v2H9V9zm0 4h2v2H9v-2zm4-4h2v2h-2V9zm0 4h2v2h-2v-2z"/></svg>
+        {{ note.created_at_short }}
+        <span class="fr relative">
+          <a class="no-color no-underline relative pointer" @click.prevent="menuId = note.id">
+            <img src="/img/box/ellipsis.svg" alt="">
+          </a>
+          <div class="absolute br2 bg-white z-max tl pv2 ph3 bounceIn faster note-information-menu" v-if="menuId == note.id">
+            <ul class="list ma0 pa0">
+              <li class="pv2">
+                <a class="no-color no-underline" href="">
+                  {{ $t('app.edit') }}
+                </a>
+              </li>
+              <li class="pv2">
+                <a class="delete no-underline" @click.prevent="trash(note)">
+                  {{ $t('app.delete') }}
+                </a>
+              </li>
+            </ul>
           </div>
-          <div class="modal-body">
-            <p>{{ $t('people.notes_delete_confirmation') }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              {{ $t('app.cancel') }}
-            </button>
-            <button type="button" class="btn btn-danger" :cy-name="'delete-mode-note-button-' + deleteNote.id" @click.prevent="trash(deleteNote)">
-              {{ $t('app.delete') }}
-            </button>
-          </div>
-        </div>
+        </span>
       </div>
     </div>
   </div>
@@ -105,18 +87,12 @@ export default {
     data() {
         return {
             notes: [],
+            menuId: 0,
 
-            addMode: false,
             editMode: false,
 
             newNote: {
-                id: 0,
                 body: '',
-                is_favorited: 0
-            },
-
-            deleteNote: {
-                id: 0,
             },
 
             dirltr: true,
@@ -127,14 +103,24 @@ export default {
         this.prepareComponent();
     },
 
+    created() {
+      window.addEventListener('click', this.closeMenu);
+    },
+
+    beforeDestroy() {
+      window.removeEventListener('click', this.closeMenu);
+    },
+
     methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getNotes();
+        closeMenu(e) {
+          if (!this.$el.contains(e.target)) {
+            this.menuId = 0;
+          }
         },
 
-        reinitialize() {
-            this.createForm.body = '';
+        prepareComponent() {
+            this.dirltr = this.$root.htmldir == 'ltr';
+            this.get();
         },
 
         favorited: function (notes) {
@@ -153,7 +139,7 @@ export default {
             Vue.set(note, 'edit', !note.edit);
         },
 
-        getNotes() {
+        get() {
             axios.get('/people/' + this.hash + '/notes')
                 .then(response => {
                     this.notes = response.data;
@@ -164,22 +150,14 @@ export default {
             axios.post('/people/' + this.hash + '/notes', this.newNote)
                 .then(response => {
                     this.newNote.body = '';
-                    this.getNotes();
-                    this.addMode = false;
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.notes_create_success'),
-                        text: '',
-                        type: 'success'
-                    });
+                    this.notes.push(response.data);
                 });
         },
 
         toggleFavorite(note) {
             axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
                 .then(response => {
-                    this.getNotes();
+                    this.get();
                 });
         },
 
@@ -187,37 +165,15 @@ export default {
             axios.put('/people/' + this.hash + '/notes/' + note.id, note)
                 .then(response => {
                     Vue.set(note, 'edit', note.edit);
-                    this.getNotes();
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.notes_update_success'),
-                        text: '',
-                        type: 'success'
-                    });
+                    this.get();
                 });
-        },
-
-        showDelete(note) {
-            this.deleteNote.id = note.id;
-
-            $('#modal-delete-note').modal('show');
         },
 
         trash(note) {
-            axios.delete('/people/' + this.hash + '/notes/' + note.id)
-                .then(response => {
-                    this.getNotes();
-
-                    $('#modal-delete-note').modal('hide');
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.notes_delete_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
+          axios.delete('/people/' + this.hash + '/notes/' + note.id)
+            .then(response => {
+              this.notes.splice(this.notes.indexOf(note), 1);
+            });
         },
     }
 };
