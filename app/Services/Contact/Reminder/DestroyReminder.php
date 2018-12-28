@@ -21,7 +21,8 @@ class DestroyReminder extends BaseService
     }
 
     /**
-     * Destroy a reminder.
+     * Destroy a reminder and all scheduled reminders that are associated with
+     * it (in ReminderOutbox table) thanks to foreign keys.
      *
      * @param array $data
      * @return bool
@@ -32,9 +33,6 @@ class DestroyReminder extends BaseService
 
         $reminder = Reminder::where('account_id', $data['account_id'])
             ->findOrFail($data['reminder_id']);
-
-        // remove any existing scheduled reminders
-        $reminder->reminderOutboxes->each->delete();
 
         $reminder->delete();
 

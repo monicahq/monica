@@ -108,64 +108,6 @@ class SpecialDate extends Model
     }
 
     /**
-     * Sets a reminder for this date. If a reminder is already defined for this
-     * date, it will delete it first and recreate one.
-     *
-     * @param string $frequency The frequency the reminder will be set. Can be 'year', 'month', 'day'.
-     * @param int $frequencyNumber
-     * @return Reminder
-     */
-    public function setReminder(string $frequency, int $frequencyNumber, string $title)
-    {
-        $this->deleteReminder();
-
-        $request = [
-            'contact_id' => $this->contact_id,
-            'account_id'  => $this->account_id,
-            'date' => $this->date,
-            'frequency_type' => $frequency,
-            'frequency_number' => $frequencyNumber,
-            'title' => $title,
-            'description' => null,
-            'special_date_id' => $this->id,
-        ];
-
-        $reminder = (new CreateReminder)->execute($request);
-
-        $this->reminder_id = $reminder->id;
-        $this->save();
-
-        return $reminder;
-    }
-
-    /**
-     * Deletes the reminder for this date, if it exists.
-     * @return int
-     */
-    public function deleteReminder()
-    {
-        if (! $this->reminder_id) {
-            return;
-        }
-
-        if (! $this->reminder) {
-            return;
-        }
-
-        $reminder = $this->reminder;
-
-        // Unlink the reminder so we can delete it
-        // (otherwise we still depend on it, thus the delete will fail
-        // due to a foreign key constraint)
-        $this->reminder_id = null;
-        $this->save();
-
-        $reminder->purgeNotifications();
-
-        return $reminder->delete();
-    }
-
-    /**
      * Returns the age that the date represents, if the date is set and if it's
      * not based on a year we don't know.
      * @return int

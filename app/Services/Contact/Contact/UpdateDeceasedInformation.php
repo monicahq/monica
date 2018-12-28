@@ -5,6 +5,7 @@ namespace App\Services\Contact\Contact;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class UpdateDeceasedInformation extends BaseService
 {
@@ -110,7 +111,7 @@ class UpdateDeceasedInformation extends BaseService
             $reminder = (new CreateReminder)->execute([
                 'account_id' => $data['account_id'],
                 'contact_id' => $data['contact_id'],
-                'initial_date' => $specialDate->date,
+                'initial_date' => $specialDate->date->toDateString(),
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
                 'title' => trans(

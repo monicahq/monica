@@ -140,8 +140,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        (new UpdateDeceasedInformation)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -155,6 +154,7 @@ class UpdateDeceasedInformationTest extends TestCase
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
+            'is_deceased' => true,
             'is_date_known' => true,
             'day' => 10,
             'month' => 10,
