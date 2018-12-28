@@ -1,12 +1,11 @@
 <?php
 
-use App\Models\Contact\Reminder;
+use App\Models\Contact\Contact;
+use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\Instance\SpecialDate;
 
 class AddForeignKeyToContacts extends Migration
 {

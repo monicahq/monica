@@ -1,11 +1,8 @@
 <?php
 
-use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Contact\Contact;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddBirthdayReminderToContacts extends Migration
 {

@@ -277,7 +277,7 @@ class ContactsController extends Controller
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
-        $hasBirthdayReminder = is_null($contact->birthday_reminder_id) ?  0 : 1;
+        $hasBirthdayReminder = is_null($contact->birthday_reminder_id) ? 0 : 1;
 
         return view('people.edit')
             ->withContact($contact)

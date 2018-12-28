@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Instance\SpecialDate;
-use App\Models\Contact\Contact;
-use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddForeignKeysToSpecialDate extends Migration
