@@ -69,9 +69,6 @@ class UpdateBirthdayInformation extends BaseService
             'account_id' => $this->contact->account_id,
             'reminder_id' => $this->contact->birthday_reminder_id,
         ]);
-
-        $this->contact->birthday_reminder_id = null;
-        $this->contact->save;
     }
 
     /**
@@ -87,9 +84,6 @@ class UpdateBirthdayInformation extends BaseService
 
         $specialDate = SpecialDate::find($this->contact->birthday_special_date_id);
         $specialDate->delete();
-
-        $this->contact->birthday_special_date_id = null;
-        $this->contact->save;
     }
 
     /**

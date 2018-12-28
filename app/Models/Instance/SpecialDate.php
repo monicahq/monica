@@ -45,6 +45,16 @@ class SpecialDate extends Model
     protected $dates = ['date'];
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'contact_id',
+        'account_id',
+    ];
+
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array

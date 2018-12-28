@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use App\Exceptions\MissingParameterException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -143,8 +144,14 @@ class UpdateDeceasedInformationTest extends TestCase
         (new UpdateDeceasedInformation)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
+        $reminder = Reminder::where('contact_id', $contact->id)->first();
 
-        $this->assertNotNull($specialDate->reminder_id);
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'deceased_special_date_id' => $specialDate->id,
+            'deceased_reminder_id' => $reminder->id,
+        ]);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -154,7 +161,6 @@ class UpdateDeceasedInformationTest extends TestCase
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
-            'is_deceased' => true,
             'is_date_known' => true,
             'day' => 10,
             'month' => 10,
@@ -163,9 +169,7 @@ class UpdateDeceasedInformationTest extends TestCase
         ];
 
         $this->expectException(MissingParameterException::class);
-
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        (new UpdateDeceasedInformation)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
@@ -184,7 +188,6 @@ class UpdateDeceasedInformationTest extends TestCase
         ];
 
         $this->expectException(MissingParameterException::class);
-
         (new UpdateDeceasedInformation)->execute($request);
     }
 }
