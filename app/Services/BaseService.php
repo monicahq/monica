@@ -28,7 +28,6 @@ abstract class BaseService
         $validator = Validator::make($data, $this->rules());
 
         if ($validator->fails()) {
-            //dd($validator->errors()->all());
             throw new MissingParameterException('Missing parameters', $validator->errors()->all());
         }
 

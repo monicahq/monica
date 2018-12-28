@@ -19,7 +19,7 @@ class AddForeignKeysToReminder extends Migration
         // we need to parse the reminders table to make sure that we don't have
         // "ghost" reminders that are not associated with any contact (as it's
         // the case in production)
-        Reminder::chunk(200, function ($reminders) use ($count) {
+        Reminder::chunk(200, function ($reminders) {
             foreach ($reminders as $reminder) {
                 try {
                     Contact::findOrFail($reminder->contact_id);

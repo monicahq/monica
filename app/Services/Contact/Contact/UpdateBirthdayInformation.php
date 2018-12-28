@@ -22,7 +22,7 @@ class UpdateBirthdayInformation extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
+            'contact_id' => 'required|integer|exists:contacts,id',
             'is_date_known' => 'required|boolean',
             'day' => 'nullable|integer',
             'month' => 'nullable|integer',
@@ -47,10 +47,10 @@ class UpdateBirthdayInformation extends BaseService
             ->findOrFail($data['contact_id']);
 
         $this->clearRelatedReminder();
+
         $this->clearRelatedSpecialDate();
 
         $this->manageBirthday($data);
-        //\Log::info('contact: '. $this->contact);
         return $this->contact;
     }
 
@@ -61,21 +61,17 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function clearRelatedReminder()
     {
-        //\Log::info('going to related reminder: ');
         if (is_null($this->contact->birthday_reminder_id)) {
             return;
         }
-        //\Log::info('going to related reminder2: ');
-        $reminder = Reminder::find($this->contact->birthday_reminder_id);
+
         (new DestroyReminder)->execute([
             'account_id' => $this->contact->account_id,
-            'reminder_id' => $reminder->id,
+            'reminder_id' => $this->contact->birthday_reminder_id,
         ]);
 
         $this->contact->birthday_reminder_id = null;
         $this->contact->save;
-
-        //\Log::info('reminder id: '. $this->contact->birthday_reminder_id);
     }
 
     /**
@@ -85,18 +81,15 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function clearRelatedSpecialDate()
     {
-        //\Log::info('going to clearRelatedSpecialDate: ');
         if (is_null($this->contact->birthday_special_date_id)) {
             return;
         }
 
-        //\Log::info('going to clearRelatedSpecialDate 2: ');
         $specialDate = SpecialDate::find($this->contact->birthday_special_date_id);
         $specialDate->delete();
-        //\Log::info('special date id: ' . $this->contact->birthday_special_date_id);
+
         $this->contact->birthday_special_date_id = null;
         $this->contact->save;
-        //\Log::info('special date id: ' . $this->contact->birthday_special_date_id);
     }
 
     /**

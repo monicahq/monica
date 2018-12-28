@@ -88,6 +88,8 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
+        'birthday_reminder_id',
+        'birthday_special_date_id',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',

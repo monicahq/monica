@@ -21,7 +21,7 @@ class UpdateBirthdayInformationTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_date_known' => true,
             'day' => 10,
@@ -39,28 +39,29 @@ class UpdateBirthdayInformationTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'birthday_special_date_id' => $specialDate->id,
         ]);
 
         $this->assertDatabaseHas('special_dates', [
             'id' => $specialDate->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'is_age_based' => false,
         ]);
 
         // then we update it again
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'is_date_known' => false,
         ];
 
-        (new UpdateBirthdayInformation)->execute($request);
+        $contact = (new UpdateBirthdayInformation)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
+            'birthday_reminder_id' => null,
             'birthday_special_date_id' => null,
         ]);
     }
@@ -70,7 +71,7 @@ class UpdateBirthdayInformationTest extends TestCase
     //     $contact = factory(Contact::class)->create([]);
 
     //     $request = [
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'contact_id' => $contact->id,
     //         'is_date_known' => true,
     //         'is_age_based' => true,
@@ -84,13 +85,13 @@ class UpdateBirthdayInformationTest extends TestCase
 
     //     $this->assertDatabaseHas('contacts', [
     //         'id' => $contact->id,
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'birthday_special_date_id' => $specialDate->id,
     //     ]);
 
     //     $this->assertDatabaseHas('special_dates', [
     //         'id' => $specialDate->id,
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'is_age_based' => true,
     //     ]);
     // }
@@ -100,7 +101,7 @@ class UpdateBirthdayInformationTest extends TestCase
     //     $contact = factory(Contact::class)->create([]);
 
     //     $request = [
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'contact_id' => $contact->id,
     //         'is_date_known' => true,
     //         'day' => 10,
@@ -117,13 +118,13 @@ class UpdateBirthdayInformationTest extends TestCase
 
     //     $this->assertDatabaseHas('contacts', [
     //         'id' => $contact->id,
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'birthday_special_date_id' => $specialDate->id,
     //     ]);
 
     //     $this->assertDatabaseHas('special_dates', [
     //         'id' => $specialDate->id,
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'is_age_based' => false,
     //         'is_year_unknown' => false,
     //     ]);
@@ -134,7 +135,7 @@ class UpdateBirthdayInformationTest extends TestCase
     //     $contact = factory(Contact::class)->create([]);
 
     //     $request = [
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'contact_id' => $contact->id,
     //         'is_date_known' => true,
     //         'day' => 10,
@@ -155,7 +156,7 @@ class UpdateBirthdayInformationTest extends TestCase
     //     $contact = factory(Contact::class)->create([]);
 
     //     $request = [
-    //         'account_id' => $contact->account->id,
+    //         'account_id' => $contact->account_id,
     //         'contact_id' => $contact->id,
     //         'day' => 10,
     //         'month' => 10,

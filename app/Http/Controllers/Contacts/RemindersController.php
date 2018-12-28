@@ -65,12 +65,11 @@ class RemindersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param RemindersRequest $request
      * @param Contact $contact
      * @param Reminder $reminder
      * @return \Illuminate\Http\Response
      */
-    public function update(RemindersRequest $request, Contact $contact, Reminder $reminder)
+    public function update(Request $request, Contact $contact, Reminder $reminder)
     {
         $reminder->update(
             $request->only([
