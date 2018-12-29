@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use Illuminate\Database\QueryException;
 use App\Exceptions\MissingParameterException;
-use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\UpdateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
@@ -128,7 +125,7 @@ class ApiReminderController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$reminderId);
+        return $this->respondObjectDeleted((int) $reminderId);
     }
 
     /**
