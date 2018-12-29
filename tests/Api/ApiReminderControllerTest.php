@@ -9,7 +9,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiRemindersTest extends ApiTestCase
+class ApiReminderControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
@@ -149,7 +149,7 @@ class ApiRemindersTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_reminders_create()
+    public function test_it_creates_a_reminder()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
@@ -161,7 +161,7 @@ class ApiRemindersTest extends ApiTestCase
         $response = $this->json('POST', '/api/reminders', [
             'contact_id' => $contact->id,
             'title' => 'the title',
-            'next_expected_date' => '2018-05-01',
+            'initial_date' => '2018-05-01',
             'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
@@ -170,29 +170,26 @@ class ApiRemindersTest extends ApiTestCase
         $response->assertJsonStructure([
             'data' => $this->jsonReminder,
         ]);
-        $reminder_id = $response->json('data.id');
+        $reminderId = $response->json('data.id');
         $response->assertJsonFragment([
             'object' => 'reminder',
-            'id' => $reminder_id,
-            'title' => 'the title',
-            'next_expected_date' => '2018-05-01T00:00:00Z',
-            'frequency_type' => 'one_time',
-            'description' => 'the description',
+            'id' => $reminderId,
         ]);
 
-        $this->assertGreaterThan(0, $reminder_id);
+        $this->assertGreaterThan(0, $reminderId);
         $this->assertDatabaseHas('reminders', [
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-            'id' => $reminder_id,
+            'id' => $reminderId,
             'title' => 'the title',
+            'initial_date' => '2018-05-01',
             'next_expected_date' => '2018-05-01 00:00:00',
             'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
     }
 
-    public function test_reminders_create_error()
+    public function test_create_reminders_gets_an_error_if_fields_are_missing()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -203,11 +200,10 @@ class ApiRemindersTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $this->expectDataError($response, [
-            'The title field is required.',
-            'The description field is required.',
-            'The next expected date field is required.',
+        $this->expectInvalidParameter($response, [
+            'The initial date field is required.',
             'The frequency type field is required.',
+            'The title field is required.',
         ]);
     }
 
@@ -225,7 +221,7 @@ class ApiRemindersTest extends ApiTestCase
         $response = $this->json('POST', '/api/reminders', [
             'contact_id' => $contact->id,
             'title' => 'the title',
-            'next_expected_date' => '2018-05-01',
+            'initial_date' => '2018-05-01',
             'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
@@ -233,7 +229,7 @@ class ApiRemindersTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_reminders_update()
+    public function test_it_updates_a_reminder()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
@@ -249,8 +245,8 @@ class ApiRemindersTest extends ApiTestCase
         $response = $this->json('PUT', '/api/reminders/'.$reminder->id, [
             'contact_id' => $contact->id,
             'title' => 'the title',
-            'next_expected_date' => '2018-05-01',
-            'frequency_type' => 'day',
+            'initial_date' => '2018-05-01',
+            'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
 
@@ -265,7 +261,7 @@ class ApiRemindersTest extends ApiTestCase
             'id' => $reminder_id,
             'title' => 'the title',
             'next_expected_date' => '2018-05-01T00:00:00Z',
-            'frequency_type' => 'day',
+            'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
 
@@ -276,12 +272,12 @@ class ApiRemindersTest extends ApiTestCase
             'id' => $reminder_id,
             'title' => 'the title',
             'next_expected_date' => '2018-05-01 00:00:00',
-            'frequency_type' => 'day',
+            'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
     }
 
-    public function test_reminders_update_error()
+    public function test_updating_reminder_generates_an_error()
     {
         $user = $this->signin();
         $reminder = factory(Reminder::class)->create([
@@ -292,11 +288,10 @@ class ApiRemindersTest extends ApiTestCase
             'contact_id' => $reminder->contact_id,
         ]);
 
-        $this->expectDataError($response, [
-            'The title field is required.',
-            'The description field is required.',
-            'The next expected date field is required.',
+        $this->expectInvalidParameter($response, [
+            'The initial date field is required.',
             'The frequency type field is required.',
+            'The title field is required.',
         ]);
     }
 
@@ -306,27 +301,24 @@ class ApiRemindersTest extends ApiTestCase
 
         $user = $this->signin();
 
-        $account = factory(Account::class)->create();
-        $contact = factory(Contact::class)->create([
-            'account_id' => $account->id,
-        ]);
+        $contact = factory(Contact::class)->create([]);
         $reminder = factory(Reminder::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
         ]);
 
         $response = $this->json('PUT', '/api/reminders/'.$reminder->id, [
             'contact_id' => $contact->id,
             'title' => 'the title',
-            'next_expected_date' => '2018-05-01',
-            'frequency_type' => 'day',
+            'initial_date' => '2018-05-01',
+            'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
 
         $this->expectNotFound($response);
     }
 
-    public function test_reminders_delete()
+    public function test_it_deletes_a_reminder()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -335,11 +327,6 @@ class ApiRemindersTest extends ApiTestCase
         $reminder = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
-        ]);
-        $this->assertDatabaseHas('reminders', [
-            'account_id' => $user->account->id,
-            'contact_id' => $contact->id,
-            'id' => $reminder->id,
         ]);
 
         $response = $this->json('DELETE', '/api/reminders/'.$reminder->id);
@@ -358,6 +345,8 @@ class ApiRemindersTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/reminders/0');
 
-        $this->expectNotFound($response);
+        $this->expectInvalidParameter($response, [
+            'The selected reminder id is invalid.',
+        ]);
     }
 }

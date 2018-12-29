@@ -68,7 +68,7 @@ class RemindersController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the reminder.
      *
      * @param Request $request
      * @param Contact $contact
