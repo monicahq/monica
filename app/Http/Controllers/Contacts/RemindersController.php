@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\UpdateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
@@ -77,7 +77,6 @@ class RemindersController extends Controller
      */
     public function update(Request $request, Contact $contact, Reminder $reminder)
     {
-
         $data = [
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
