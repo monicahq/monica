@@ -78,7 +78,6 @@ class LocaleHelper
         }
     }
 
-
     /**
      * Get the list of avalaible languages.
      *

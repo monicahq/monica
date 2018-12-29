@@ -95,7 +95,7 @@ class LocaleHelperTest extends FeatureTestCase
             ['en-us', 'en'],
             ['en_US', 'en'],
             ['pt-BR', 'pt'],
-            ['xx-YY', 'xx']
+            ['xx-YY', 'xx'],
         ];
     }
 
@@ -120,7 +120,7 @@ class LocaleHelperTest extends FeatureTestCase
             ['en-US', 'US'],
             ['en_US', 'US'],
             ['pt-BR', 'BR'],
-            ['xx-YY', 'YY']
+            ['xx-YY', 'YY'],
         ];
     }
 
@@ -144,7 +144,7 @@ class LocaleHelperTest extends FeatureTestCase
             ['fr', null],
             ['en-US', 'US'],
             ['pt-BR', 'BR'],
-            ['xx-YY', 'YY']
+            ['xx-YY', 'YY'],
         ];
     }
 }

@@ -4,9 +4,8 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\CountriesHelper;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CountriesHelperTest extends FeatureTestCase
+class CountryHelperTest extends FeatureTestCase
 {
     /**
      * @dataProvider countryDefaultCountryFromLocaleProvider
@@ -85,5 +84,4 @@ class CountriesHelperTest extends FeatureTestCase
             ['fr-BE', 'BE'],
         ];
     }
-
 }

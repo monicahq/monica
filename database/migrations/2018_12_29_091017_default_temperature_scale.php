@@ -23,7 +23,6 @@ class DefaultTemperatureScale extends Migration
         $currentLocale = null;
         User::orderBy('locale')->chunkById(200, function ($users) use ($country, $currentLocale) {
             foreach ($users as $user) {
-
                 if ($user->locale != $currentLocale || $country == null) {
                     $country = CountriesHelper::getCountryFromLocale($user->locale);
                     $currentLocale = $user->locale;
@@ -39,7 +38,7 @@ class DefaultTemperatureScale extends Migration
                         $user->temperature_scale = 'celsius';
                         break;
                 }
-        
+
                 $user->save();
             }
         });
