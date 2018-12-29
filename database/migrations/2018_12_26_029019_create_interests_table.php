@@ -21,7 +21,6 @@ class CreateInterestsTable extends Migration
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('contact_id');
             $table->string('name');
-            $table->unique(['contact_id', 'name']);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');

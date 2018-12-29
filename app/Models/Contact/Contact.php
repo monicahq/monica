@@ -143,7 +143,7 @@ class Contact extends Model
     /**
      * Get the gender of the contact.
      *
-     * @return BelongsTo
+     * @return HasOne
      */
     public function gender()
     {
@@ -153,7 +153,7 @@ class Contact extends Model
     /**
      * Get the activity records associated with the contact.
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
     public function activities()
     {
@@ -223,7 +223,7 @@ class Contact extends Model
     /**
      * Get the tags records associated with the contact.
      *
-     * @return BelongsToMany
+     * @return HasMany
      */
     public function tags()
     {
