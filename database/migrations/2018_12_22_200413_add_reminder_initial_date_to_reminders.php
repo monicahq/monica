@@ -17,6 +17,7 @@ class AddReminderInitialDateToReminders extends Migration
     {
         Schema::table('reminders', function (Blueprint $table) {
             $table->date('initial_date')->after('contact_id');
+            $table->boolean('delible')->default(true)->after('next_expected_date');
         });
 
         // we need to migrate old data. Since we don't know what was the initial
@@ -26,6 +27,11 @@ class AddReminderInitialDateToReminders extends Migration
             foreach ($reminders as $reminder) {
                 if (! is_null($reminder->special_date_id)) {
                     $reminder->initial_date = SpecialDate::find($reminder->special_date_id)->date;
+
+                    // if the reminder had a special date, that meant it was a
+                    // birthday. Reminder about birthdates can't be deleted, so
+                    // we need to flag them as such.
+                    $reminder->delible = false;
                 } else {
                     $reminder->initial_date = $reminder->last_triggered;
                 }

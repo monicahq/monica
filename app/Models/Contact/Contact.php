@@ -1453,7 +1453,7 @@ class Contact extends Model
 
         foreach ($relationships as $relationship) {
             $reminder = Reminder::where('account_id', $this->account_id)
-                ->find($relationship->ofContact->birthdate->reminder_id);
+                ->find($relationship->ofContact->birthday_reminder_id);
 
             if ($reminder) {
                 $reminders->push($reminder);

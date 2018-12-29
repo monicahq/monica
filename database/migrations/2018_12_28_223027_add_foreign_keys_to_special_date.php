@@ -19,20 +19,20 @@ class AddForeignKeysToSpecialDate extends Migration
     {
         SpecialDate::chunk(200, function ($specialDates) {
             foreach ($specialDates as $specialDate) {
+                $notFound = false;
                 try {
                     Contact::findOrFail($specialDate->contact_id);
                 } catch (ModelNotFoundException $e) {
-                    $specialDate->delete();
-                    continue;
+                    $notFound = true;
                 }
-            }
-        });
 
-        SpecialDate::chunk(200, function ($specialDates) {
-            foreach ($specialDates as $specialDate) {
                 try {
                     Account::findOrFail($specialDate->account_id);
                 } catch (ModelNotFoundException $e) {
+                    $notFound = true;
+                }
+
+                if ($notFound) {
                     $specialDate->delete();
                     continue;
                 }
@@ -40,10 +40,16 @@ class AddForeignKeysToSpecialDate extends Migration
         });
 
         Schema::table('special_dates', function (Blueprint $table) {
+            $table->dropColumn('reminder_id');
+        });
+
+        Schema::disableForeignKeyConstraints();
+        Schema::table('special_dates', function (Blueprint $table) {
             $table->unsignedInteger('contact_id')->change();
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->unsignedInteger('account_id')->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
+        Schema::enableForeignKeyConstraints();
     }
 }

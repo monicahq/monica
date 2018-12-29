@@ -23,8 +23,9 @@ class Reminder extends Resource
             'description' => $this->description,
             'frequency_type' => $this->frequency_type,
             'frequency_number' => $this->frequency_number,
-            'last_triggered_date' => DateHelper::getTimestamp($this->last_triggered),
+            'initial_date' => DateHelper::getTimestamp($this->initial_date),
             'next_expected_date' => DateHelper::getTimestamp($this->next_expected_date),
+            'delible' => DateHelper::getTimestamp($this->delible),
             'account' => [
                 'id' => $this->account_id,
             ],

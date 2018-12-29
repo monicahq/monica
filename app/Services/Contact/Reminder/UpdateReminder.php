@@ -27,6 +27,7 @@ class UpdateReminder extends BaseService
             'frequency_number' => 'nullable|integer',
             'title' => 'required|string|max:100000',
             'description' => 'nullable|max:1000000',
+            'delible' => 'nullable|boolean',
         ];
     }
 
@@ -50,6 +51,7 @@ class UpdateReminder extends BaseService
             'initial_date' => $data['initial_date'],
             'frequency_type' => $data['frequency_type'],
             'frequency_number' => $this->nullOrValue($data, 'frequency_number'),
+            'delible' => (isset($data['delible']) ? $data['delible'] : true),
         ]);
 
         $reminder->schedule();

@@ -57,7 +57,7 @@
 
         <div class="table-cell list-actions">
           {{-- Only display this if the reminder can be deleted - ie if it's not a reminder added automatically for birthdates --}}
-          @if (! $reminder->special_date_id)
+          @if ($reminder->delible)
               <a href="{{ route('people.reminders.edit', [$contact, $reminder]) }}" class="edit">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
               </a>

@@ -162,6 +162,7 @@ class UpdateBirthdayInformation extends BaseService
                     'people.people_add_birthday_reminder',
                     ['name' => $this->contact->first_name]
                 ),
+                'delible' => false,
             ]);
 
             $this->contact->birthday_reminder_id = $reminder->id;
