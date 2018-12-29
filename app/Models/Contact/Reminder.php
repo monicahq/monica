@@ -48,7 +48,7 @@ class Reminder extends Model
      * @var array
      */
     public static $frequencyTypes = [
-        'one_time', 'day', 'month', 'year',
+        'one_time', 'week', 'month', 'year',
     ];
 
     /**

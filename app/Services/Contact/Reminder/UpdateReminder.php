@@ -24,7 +24,7 @@ class UpdateReminder extends BaseService
                 'required',
                 Rule::in(Reminder::$frequencyTypes),
             ],
-            'frequency_number' => 'required|integer',
+            'frequency_number' => 'nullable|integer',
             'title' => 'required|string|max:100000',
             'description' => 'nullable|max:1000000',
         ];
@@ -49,7 +49,7 @@ class UpdateReminder extends BaseService
             'description' => $this->nullOrValue($data, 'description'),
             'initial_date' => $data['initial_date'],
             'frequency_type' => $data['frequency_type'],
-            'frequency_number' => $data['frequency_number'],
+            'frequency_number' => $this->nullOrValue($data, 'frequency_number'),
         ]);
 
         $reminder->schedule();

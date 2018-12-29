@@ -32,8 +32,7 @@ class DestroyReminderTest extends TestCase
             'id' => $reminder->id,
         ]);
 
-        $reminderService = new DestroyReminder;
-        $bool = $reminderService->execute($request);
+        (new DestroyReminder)->execute($request);
 
         $this->assertDatabaseMissing('reminders', [
             'id' => $reminder->id,
@@ -72,8 +71,7 @@ class DestroyReminderTest extends TestCase
             'id' => $reminder->id,
         ]);
 
-        $reminderService = new DestroyReminder;
-        $bool = $reminderService->execute($request);
+        (new DestroyReminder)->execute($request);
 
         $this->assertDatabaseMissing('reminders', [
             'id' => $reminder->id,
