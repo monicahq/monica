@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\Contact\Reminder;
 use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
+use App\Models\User\User;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Exceptions\MissingParameterException;
@@ -19,7 +20,10 @@ class CreateReminderTest extends TestCase
     public function test_it_stores_a_reminder()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
-        $contact = factory(Contact::class)->create([]);
+        $user = factory(User::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
 
         $request = [
             'contact_id' => $contact->id,
