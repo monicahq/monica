@@ -4,8 +4,8 @@ namespace Tests\Unit\Services\Contact\Call;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Reminder;
 use App\Models\User\User;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\ReminderRule;
 use App\Services\Contact\Reminder\DestroyReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

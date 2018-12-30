@@ -21,7 +21,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
-use App\Models\Contact\ReminderOutbox;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

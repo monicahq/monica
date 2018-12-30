@@ -156,7 +156,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
-            'initial_date' => '2018-02-01'
+            'initial_date' => '2018-02-01',
         ]);
 
         $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
@@ -169,7 +169,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
-            'initial_date' => '2017-01-01'
+            'initial_date' => '2017-01-01',
             ]);
 
         $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
@@ -182,7 +182,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
-            'initial_date' => '2017-01-01'
+            'initial_date' => '2017-01-01',
         ]);
 
         $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
@@ -195,7 +195,7 @@ class UserTest extends TestCase
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
-            'initial_date' => '2017-01-01'
+            'initial_date' => '2017-01-01',
         ]);
 
         $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->initial_date));

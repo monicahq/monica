@@ -4,8 +4,8 @@ namespace Tests\Unit\Services\Contact\Reminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Account\Account;
 use App\Models\User\User;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Exceptions\MissingParameterException;
