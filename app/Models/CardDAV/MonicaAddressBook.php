@@ -50,16 +50,10 @@ class MonicaAddressBook extends AddressBook
     /**
      * Returns the last modification date as a unix timestamp.
      *
-     * @return void
+     * @return string
      */
     public function getLastModified()
     {
-        $contacts = Auth::user()->account
-                        ->contacts()
-                        ->real()
-                        ->active()
-                        ->get();
-
-        return $contacts->max('updated_at');
+        return $this->carddavBackend->getLastModified();
     }
 }

@@ -4,7 +4,7 @@ New features:
 *
 
 Enhancements:
-*
+* Carddav: support sync-token (rfc6578)
 
 Fixes:
 * Fix exception when user is logged out (again)
