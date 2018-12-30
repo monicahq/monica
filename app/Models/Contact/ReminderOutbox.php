@@ -5,6 +5,7 @@ namespace App\Models\Contact;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
+use App\Models\User\User;
 
 /**
  * @property Account $account
@@ -48,5 +49,15 @@ class ReminderOutbox extends Model
     public function reminder()
     {
         return $this->belongsTo(Reminder::class);
+    }
+
+    /**
+     * Get the user record associated with the reminder.
+     *
+     * @return BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
