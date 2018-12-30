@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class CreateLifeEvent extends BaseService
 {
@@ -72,15 +73,17 @@ class CreateLifeEvent extends BaseService
     private function addYearlyReminder($data, $lifeEvent)
     {
         if ($data['has_reminder']) {
-            $array = [
+            $data = [
+                'contact_id' => $data['contact_id'],
                 'account_id' => $data['account_id'],
-                'life_event_id' => $lifeEvent->id,
-                'date' => $data['happened_at'],
+                'initial_date' => $data['happened_at'],
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
+                'title' => $lifeEvent->lifeEventType->name,
+                'description' => null,
             ];
 
-            $reminder = (new AddReminderToLifeEvent)->execute($array);
+            $reminder = (new CreateReminder)->execute($data);
 
             $lifeEvent->reminder_id = $reminder->id;
             $lifeEvent->save();
