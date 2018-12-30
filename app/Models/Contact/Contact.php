@@ -209,7 +209,7 @@ class Contact extends Model
      */
     public function reminders()
     {
-        return $this->hasMany(Reminder::class)->orderBy('next_expected_date', 'asc');
+        return $this->hasMany(Reminder::class);
     }
 
     /**

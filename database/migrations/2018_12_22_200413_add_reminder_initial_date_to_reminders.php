@@ -42,18 +42,21 @@ class AddReminderInitialDateToReminders extends Migration
         Schema::table('reminders', function (Blueprint $table) {
             $table->dropColumn('special_date_id');
             $table->dropColumn('last_triggered');
+            $table->dropColumn('next_expected_date');
         });
 
         Schema::create('reminder_outbox', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('reminder_id');
+            $table->unsignedInteger('user_id');
             $table->date('planned_date');
             $table->string('nature')->default('reminder');
             $table->integer('notification_number_days_before')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('reminder_sent', function (Blueprint $table) {

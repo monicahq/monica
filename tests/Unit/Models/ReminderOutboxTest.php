@@ -21,4 +21,10 @@ class ReminderOutboxTest extends TestCase
         $reminderOutbox = factory(ReminderOutbox::class)->create([]);
         $this->assertTrue($reminderOutbox->reminder()->exists());
     }
+
+    public function test_it_belongs_to_a_user()
+    {
+        $reminderOutbox = factory(ReminderOutbox::class)->create([]);
+        $this->assertTrue($reminderOutbox->user()->exists());
+    }
 }

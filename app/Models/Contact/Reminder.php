@@ -28,8 +28,6 @@ class Reminder extends Model
      * @var array
      */
     protected $dates = [
-        'last_triggered',
-        'next_expected_date',
         'initial_date',
     ];
 
@@ -152,19 +150,19 @@ class Reminder extends Model
         // when should we send this reminder?
         $triggerDate = $this->calculateNextExpectedDate();
 
-        $this->next_expected_date = $triggerDate;
-        $this->save();
-
         // remove any existing scheduled reminders
         $this->reminderOutboxes->each->delete();
 
-        // schedule the reminder in the outbox
-        ReminderOutbox::create([
-            'account_id' => $this->account_id,
-            'reminder_id' => $this->id,
-            'planned_date' => $triggerDate,
-            'nature' => 'reminder',
-        ]);
+        // schedule the reminder in the outbox, one for each user of the account
+        foreach ($this->account->users as $user) {
+            ReminderOutbox::create([
+                'account_id' => $this->account_id,
+                'reminder_id' => $this->id,
+                'user_id' => $user->id,
+                'planned_date' => $triggerDate,
+                'nature' => 'reminder',
+            ]);
+        }
 
         $this->scheduleNotifications($triggerDate);
     }
@@ -189,13 +187,16 @@ class Reminder extends Model
                 continue;
             }
 
-            ReminderOutbox::create([
-                'account_id' => $this->account_id,
-                'reminder_id' => $this->id,
-                'planned_date' => $datePrior->toDateString(),
-                'nature' => 'notification',
-                'notification_number_days_before' => $reminderRule->number_of_days_before,
-            ]);
+            foreach ($this->account->users as $user) {
+                ReminderOutbox::create([
+                    'account_id' => $this->account_id,
+                    'reminder_id' => $this->id,
+                    'user_id' => $user->id,
+                    'planned_date' => $datePrior->toDateString(),
+                    'nature' => 'notification',
+                    'notification_number_days_before' => $reminderRule->number_of_days_before,
+                ]);
+            }
         }
     }
 }

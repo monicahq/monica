@@ -10,6 +10,7 @@ use App\Models\Contact\Reminder;
 use App\Models\Contact\ReminderRule;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\User\User;
 
 class ReminderTest extends TestCase
 {
@@ -37,11 +38,12 @@ class ReminderTest extends TestCase
 
     public function test_it_has_many_reminder_outbox()
     {
-        $account = factory(Account::class)->create([]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
+        $user = factory(User::class)->create([]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $user->account_id]);
         factory(ReminderOutbox::class, 3)->create([
-            'account_id' => $account->id,
+            'account_id' => $user->account_id,
             'reminder_id' => $reminder->id,
+            'user_id' => $user->id,
         ]);
 
         $this->assertTrue($reminder->reminderOutboxes()->exists());
@@ -124,10 +126,12 @@ class ReminderTest extends TestCase
         );
     }
 
-    public function test_it_schedules_a_reminder()
+    public function test_it_schedules_a_reminder_for_one_user()
     {
         Carbon::setTestNow(Carbon::create(2017, 2, 1));
+        $user = factory(User::class)->create([]);
         $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
             'initial_date' => '2017-01-01',
             'frequency_type' => 'year',
             'frequency_number' => 1,
@@ -142,10 +146,33 @@ class ReminderTest extends TestCase
         ]);
     }
 
-    public function test_scheduling_a_reminder_also_schedules_notifications()
+    public function test_it_schedules_a_reminder_for_all_users()
     {
         Carbon::setTestNow(Carbon::create(2017, 2, 1));
         $reminder = factory(Reminder::class)->create([
+            'initial_date' => '2017-01-01',
+            'frequency_type' => 'year',
+            'frequency_number' => 1,
+        ]);
+
+        factory(User::class, 2)->create([
+            'account_id' => $reminder->account_id,
+        ]);
+
+        $reminder->schedule();
+
+        $this->assertEquals(
+            2,
+            $reminder->reminderOutboxes()->count()
+        );
+    }
+
+    public function test_scheduling_a_reminder_also_schedules_notifications_for_one_user()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 2, 1));
+        $user = factory(User::class)->create([]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
             'initial_date' => '2017-01-01',
             'frequency_type' => 'year',
             'frequency_number' => 1,
@@ -186,7 +213,9 @@ class ReminderTest extends TestCase
     public function test_it_doesnt_schedule_a_notification_if_date_is_too_close_to_present_date()
     {
         Carbon::setTestNow(Carbon::create(2017, 2, 1));
+        $user = factory(User::class)->create([]);
         $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
             'initial_date' => '2017-01-01',
             'frequency_type' => 'week',
             'frequency_number' => 1,
