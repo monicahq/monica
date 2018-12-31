@@ -355,7 +355,7 @@ class CarddavServerTest extends ApiTestCase
         );
     }
 
-    public function test_carddav_sync_collection()
+    public function test_carddav_sync_collection_with_token()
     {
         $user = $this->signin();
         $token = factory(SyncToken::class)->create([
@@ -382,6 +382,52 @@ class CarddavServerTest extends ApiTestCase
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
+
+        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
+ <d:response>
+  <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
+  <d:propstat>
+   <d:prop>
+    <d:getetag>&quot;");
+        $response->assertSee("&quot;</d:getetag>
+   </d:prop>
+   <d:status>HTTP/1.1 200 OK</d:status>
+  </d:propstat>
+ </d:response>
+ <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
+</d:multistatus>");
+    }
+
+    public function test_carddav_sync_collection_init()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<sync-collection xmlns='DAV:'>
+                <sync-token />
+                <sync-level>1</sync-level>
+                <prop>
+                    <getetag/>
+                </prop>
+            </sync-collection>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $tokens = SyncToken::where([
+            ['account_id', $user->account_id],
+            ['user_id', $user->id],
+        ])->orderBy('created_at')->get();
+
+        $this->assertGreaterThan(0, $tokens->count());
+        $token = $tokens->last();
 
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
  <d:response>

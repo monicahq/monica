@@ -99,27 +99,14 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
     }
 
     /**
-     * Returns the collection of all active contacts.
+     * Returns the last modification date.
      *
-     * @return \Illuminate\Support\Collection
-     */
-    private function getContacts()
-    {
-        return Auth::user()->account
-                    ->contacts()
-                    ->real()
-                    ->active()
-                    ->get();
-    }
-
-    /**
-     * Returns the last modification date as a unix timestamp.
-     *
-     * @return string
+     * @return \Carbon\Carbon
      */
     public function getLastModified()
     {
-        return $this->getContacts()->max('updated_at');
+        return $this->getContacts()
+                    ->max('updated_at');
     }
 
     /**
@@ -197,17 +184,19 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
             $token = $this->getSyncToken();
         } else {
             $token = $this->createSyncToken();
-            $timestamp = DateHelper::parseDateTime('0001-01-01 00:00:00');
+            $timestamp = null;
         }
 
         $contacts = $this->getContacts();
 
         $modified = $contacts->filter(function ($contact) use ($timestamp) {
-            return $contact->updated_at > $timestamp &&
+            return ! is_null($timestamp) &&
+                   $contact->updated_at > $timestamp &&
                    $contact->created_at < $timestamp;
         });
         $added = $contacts->filter(function ($contact) use ($timestamp) {
-            return $contact->created_at >= $timestamp;
+            return is_null($timestamp) ||
+                   $contact->created_at >= $timestamp;
         });
 
         return [
@@ -293,7 +282,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
             'uri' => $this->encodeUri($contact),
             'carddata' => $carddata,
             'etag' => '"'.md5($carddata).'"',
-            'lastmodified' => $contact->updated_at,
+            'lastmodified' => $contact->updated_at->timestamp,
         ];
     }
 
@@ -307,6 +296,12 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
         return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
 
+    /**
+     * Returns the contact for the specific uri.
+     * 
+     * @param string  $uri
+     * @return Contact
+     */
     private function getContact($uri)
     {
         try {
@@ -317,6 +312,20 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
         } catch (\Exception $e) {
             return;
         }
+    }
+
+    /**
+     * Returns the collection of all active contacts.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private function getContacts()
+    {
+        return Auth::user()->account
+                    ->contacts()
+                    ->real()
+                    ->active()
+                    ->get();
     }
 
     /**
@@ -340,11 +349,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getCards($addressbookId)
     {
-        $contacts = Auth::user()->account
-                        ->contacts()
-                        ->real()
-                        ->active()
-                        ->get();
+        $contacts = $this->getContacts();
 
         return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);

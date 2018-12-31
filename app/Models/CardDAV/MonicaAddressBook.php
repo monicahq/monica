@@ -48,9 +48,9 @@ class MonicaAddressBook extends AddressBook
     }
 
     /**
-     * Returns the last modification date as a unix timestamp.
+     * Returns the last modification date.
      *
-     * @return string
+     * @return \Carbon\Carbon
      */
     public function getLastModified()
     {
