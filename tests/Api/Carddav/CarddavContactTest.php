@@ -3,7 +3,6 @@
 namespace Tests\Api\Carddav;
 
 use Tests\ApiTestCase;
-use App\Helpers\DateHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -96,7 +95,7 @@ class CarddavContactTest extends ApiTestCase
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Modified-Since' => $contact->updated_at->addDays(-1)->toRfc7231String(),
-                'content-type' => 'application/xml; charset=utf-8'
+                'content-type' => 'application/xml; charset=utf-8',
             ],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
@@ -126,7 +125,7 @@ class CarddavContactTest extends ApiTestCase
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Modified-Since' => $contact->updated_at->addDays(1)->toRfc7231String(),
-                'content-type' => 'application/xml; charset=utf-8'
+                'content-type' => 'application/xml; charset=utf-8',
             ],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
@@ -135,7 +134,7 @@ class CarddavContactTest extends ApiTestCase
         $response->assertStatus(304);
 
         $response->assertHeader('X-Sabre-Version');
-        
+
         // see http://tools.ietf.org/html/rfc2616#section-10.3.5
         $response->assertHeaderMissing('Last-Modified');
 
@@ -156,7 +155,7 @@ class CarddavContactTest extends ApiTestCase
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Unmodified-Since' => $contact->updated_at->addDays(1)->toRfc7231String(),
-                'content-type' => 'application/xml; charset=utf-8'
+                'content-type' => 'application/xml; charset=utf-8',
             ],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
@@ -186,7 +185,7 @@ class CarddavContactTest extends ApiTestCase
         $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Unmodified-Since' => $contact->updated_at->addDays(-1)->toRfc7231String(),
-                'content-type' => 'application/xml; charset=utf-8'
+                'content-type' => 'application/xml; charset=utf-8',
             ],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );

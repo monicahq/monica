@@ -3,7 +3,6 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use App\Helpers\DateHelper;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
@@ -298,7 +297,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 
     /**
      * Returns the contact for the specific uri.
-     * 
+     *
      * @param string  $uri
      * @return Contact
      */
