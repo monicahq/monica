@@ -35,7 +35,7 @@ class SendRemindersTest extends TestCase
             'initial_date' => '2017-01-01',
         ]);
         factory(ReminderOutbox::class)->create([
-            'account_id' => $user->account_id,
+            'account_id' => $account->id,
             'reminder_id' => $reminder->id,
             'user_id' => $user->id,
             'planned_date' => '2017-01-01',
@@ -54,15 +54,18 @@ class SendRemindersTest extends TestCase
         $account = factory(Account::class)->create([
             'default_time_reminder_is_sent' => '08:00',
         ]);
+
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $user = factory(User::class)->create(['account_id' => $account->id]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id
+        ]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'initial_date' => '2017-01-01',
         ]);
-        factory(ReminderOutbox::class)->create([
-            'account_id' => $user->account_id,
+        $reminderOutbox = factory(ReminderOutbox::class)->create([
+            'account_id' => $account->id,
             'reminder_id' => $reminder->id,
             'user_id' => $user->id,
             'planned_date' => '2017-01-01',

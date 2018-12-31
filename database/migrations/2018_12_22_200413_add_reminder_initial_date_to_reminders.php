@@ -66,11 +66,13 @@ class AddReminderInitialDateToReminders extends Migration
             $table->date('planned_date');
             $table->datetime('sent_date');
             $table->string('nature')->default('reminder');
+            $table->string('frequency_type')->nullable();
+            $table->integer('frequency_number')->nullable();
             $table->longText('html_content')->nullable();
             $table->longText('text_content')->nullable();
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('cascade');
+            $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('set null');
         });
     }
 }
