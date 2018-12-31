@@ -8,14 +8,11 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Notifications\UserReminded;
 use App\Notifications\UserNotified;
+use App\Notifications\UserReminded;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Support\Facades\Notification;
 use App\Jobs\Reminder\NotifyUserAboutReminder;
-use Illuminate\Notifications\AnonymousNotifiable;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class NotifyUserAboutReminderTest extends TestCase
 {
@@ -54,7 +51,6 @@ class NotifyUserAboutReminderTest extends TestCase
             $user,
             UserReminded::class,
             function ($notification, $channels) use ($reminderOutbox, $user, $contact) {
-
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
@@ -103,7 +99,7 @@ class NotifyUserAboutReminderTest extends TestCase
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
-                $this->assertContains("In  days (on Jan 01, 2018), the following event will happen:", $mailData['introLines']);
+                $this->assertContains('In  days (on Jan 01, 2018), the following event will happen:', $mailData['introLines']);
 
                 return $notification->reminderOutbox->id === $reminderOutbox->id;
             }

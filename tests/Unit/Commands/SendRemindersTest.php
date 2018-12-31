@@ -57,7 +57,7 @@ class SendRemindersTest extends TestCase
 
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $user = factory(User::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,

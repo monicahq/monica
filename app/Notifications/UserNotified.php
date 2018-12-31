@@ -3,11 +3,11 @@
 namespace App\Notifications;
 
 use App\Models\User\User;
+use App\Helpers\DateHelper;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use App\Helpers\DateHelper;
-use App\Models\Contact\ReminderOutbox;
 use Illuminate\Support\Facades\App;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -68,7 +68,7 @@ class UserNotified extends LaravelNotification implements ShouldQueue
             ->line(trans('mail.for', ['name' => $contact->name]))
             ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
 
-        if (!is_null($this->reminderOutbox->reminder->description)) {
+        if (! is_null($this->reminderOutbox->reminder->description)) {
             $message = $message
                 ->line(trans('mail.comment', ['comment' => $this->reminderOutbox->reminder->description]));
         }

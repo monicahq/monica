@@ -3,14 +3,14 @@
 namespace App\Jobs\Reminder;
 
 use Illuminate\Bus\Queueable;
+use App\Notifications\UserNotified;
+use App\Notifications\UserReminded;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use App\Notifications\UserReminded;
-use App\Notifications\UserNotified;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
-use App\Models\Contact\ReminderOutbox;
 
 class NotifyUserAboutReminder implements ShouldQueue
 {
@@ -45,7 +45,7 @@ class NotifyUserAboutReminder implements ShouldQueue
         }
 
         // send the notification to this user
-        if (!$this->reminderOutbox->user->account->hasLimitations()) {
+        if (! $this->reminderOutbox->user->account->hasLimitations()) {
             NotificationFacade::send($this->reminderOutbox->user, $message);
         }
 
