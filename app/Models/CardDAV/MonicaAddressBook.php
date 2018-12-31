@@ -3,7 +3,6 @@
 namespace App\Models\CardDAV;
 
 use Sabre\CardDAV\AddressBook;
-use Illuminate\Support\Facades\Auth;
 use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
 
 class MonicaAddressBook extends AddressBook

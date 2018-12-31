@@ -12,8 +12,8 @@ use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\CardDAV\Backend\SyncSupport;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
 class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 {
@@ -38,6 +38,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
     {
         $name = Auth::user()->name;
         $token = $this->getSyncToken();
+
         return [
             [
                 'id'                                 => '0',
@@ -46,7 +47,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
                 '{DAV:}displayname'                  => $name,
                 '{http://sabredav.org/ns}sync-token' => $token->id,
                 '{DAV:}sync-token'                   => $token->id,
-                '{' . CardDAVPlugin::NS_CARDDAV . '}addressbook-description' => $name,
+                '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
             ],
         ];
     }
@@ -63,11 +64,11 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
     {
         $tokens = SyncToken::where([
             ['account_id', Auth::user()->account_id],
-            ['user_id', Auth::user()->id]
+            ['user_id', Auth::user()->id],
         ])
             ->orderBy('created_at')
             ->get();
-        
+
         if ($tokens->count() <= 0) {
             $token = $this->createSyncToken();
         } else {
@@ -82,17 +83,18 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
     }
 
     /**
-     * Create a token
-     * 
+     * Create a token.
+     *
      * @return SyncToken
      */
     private function createSyncToken()
     {
         $max = $this->getLastModified();
+
         return SyncToken::create([
             'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
-            'timestamp' => $max
+            'timestamp' => $max,
         ]);
     }
 
@@ -180,15 +182,15 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
     {
         $token = null;
         $timestamp = null;
-        if (!empty($syncToken)) {
+        if (! empty($syncToken)) {
             $token = SyncToken::where([
                 'account_id' => Auth::user()->account_id,
-                'user_id' => Auth::user()->id
+                'user_id' => Auth::user()->id,
             ])->find($syncToken);
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return null;
+                return;
             }
 
             $timestamp = $token->timestamp;
@@ -210,13 +212,13 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 
         return [
             'syncToken' => $token->id,
-            'added' => $added->map(function($contact) {
+            'added' => $added->map(function ($contact) {
                 return $this->encodeUri($contact);
             })->toArray(),
-            'modified' => $modified->map(function($contact) {
+            'modified' => $modified->map(function ($contact) {
                 return $this->encodeUri($contact);
             })->toArray(),
-            'deleted' => []
+            'deleted' => [],
         ];
     }
 

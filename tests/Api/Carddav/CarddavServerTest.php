@@ -292,12 +292,12 @@ class CarddavServerTest extends ApiTestCase
 
         $tokens = SyncToken::where([
             ['account_id', $user->account_id],
-            ['user_id', $user->id]
+            ['user_id', $user->id],
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
-        
+
         $response->assertSee('<d:response>'.
             "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
@@ -336,12 +336,12 @@ class CarddavServerTest extends ApiTestCase
 
         $tokens = SyncToken::where([
             ['account_id', $user->account_id],
-            ['user_id', $user->id]
+            ['user_id', $user->id],
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
-        
+
         $response->assertSee('<d:response>'.
             "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
