@@ -44,8 +44,8 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
                 'uri'                                => 'contacts',
                 'principaluri'                       => MonicaPrincipalBackend::getPrincipalUser(),
                 '{DAV:}displayname'                  => $name,
-                '{http://sabredav.org/ns}sync-token' => $token,
-                '{DAV:}sync-token'                   => $token,
+                '{http://sabredav.org/ns}sync-token' => $token->id,
+                '{DAV:}sync-token'                   => $token->id,
                 '{' . CardDAVPlugin::NS_CARDDAV . '}addressbook-description' => $name,
             ],
         ];
@@ -57,7 +57,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
      *
-     * @return string|null
+     * @return SyncToken
      */
     public function getSyncToken()
     {
@@ -72,9 +72,13 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
             $token = $this->createSyncToken();
         } else {
             $token = $tokens->last();
+
+            if ($token->timestamp < $this->getLastModified()) {
+                $token = $this->createSyncToken();
+            }
         }
 
-        return $token->id;
+        return $token;
     }
 
     /**
@@ -188,6 +192,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
             }
 
             $timestamp = $token->timestamp;
+            $token = $this->getSyncToken();
         } else {
             $token = $this->createSyncToken();
             $timestamp = DateHelper::parseDateTime('0001-01-01 00:00:00');
