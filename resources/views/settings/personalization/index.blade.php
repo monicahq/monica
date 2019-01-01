@@ -57,13 +57,13 @@
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
-            <activity-types {{ auth()->user()->account->hasLimitations() ? 'limited=true' : ''}}></activity-types>
+            <activity-types :limited="{{ json_encode(auth()->user()->account->hasLimitations()) }}"></activity-types>
           </div>
         </div>
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
-            <modules {{ auth()->user()->account->hasLimitations() ? 'limited=true' : ''}}></modules>
+            <modules :limited="{{ json_encode(auth()->user()->account->hasLimitations()) }}"></modules>
           </div>
         </div>
 
