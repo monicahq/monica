@@ -41,7 +41,7 @@
     "laravel-mix": "^4.0.12",
     "list.js": "^1.5.0",
     "lodash": "^4.17.5",
-    "marked": "^0.5.2",
+    "marked": "^0.6.0",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.21",
     "pretty-checkbox-vue": "^1.1.8",
