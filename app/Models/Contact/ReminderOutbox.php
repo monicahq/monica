@@ -90,6 +90,4 @@ class ReminderOutbox extends Model
         }
         $reminderSent->save();
     }
-
-
 }

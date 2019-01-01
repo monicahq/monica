@@ -19,6 +19,7 @@ class MailHelper
     {
         $message = $notification->toMail($user);
         $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
+
         return $markdown->render($message->markdown, $message->toArray($user));
     }
 }
