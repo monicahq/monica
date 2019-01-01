@@ -573,3 +573,11 @@ $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $f
         'created_at' => now(),
     ];
 });
+
+$factory->define(App\Models\User\SyncToken::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'user_id' => factory(App\Models\User\User::class)->create()->id,
+        'timestamp' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+    ];
+});
