@@ -63,7 +63,7 @@
         {{-- STAY IN TOUCH --}}
         <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @include('partials.icons.header_stayintouch')
-          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() }}"></stay-in-touch>
+          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" limited="{{ auth()->user()->account->hasLimitations() ? 'limited=true' : ''}}"></stay-in-touch>
         </li>
       </ul>
 
