@@ -3,10 +3,9 @@
 namespace App\Listeners;
 
 use Carbon\Carbon;
-use App\Models\Contact\ReminderSent;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
-use App\Notifications\NotificationEmail;
+use App\Models\Contact\ReminderSent;
 use Illuminate\Notifications\Events\NotificationSent as NotificationSentEvent;
 
 class NotificationSent

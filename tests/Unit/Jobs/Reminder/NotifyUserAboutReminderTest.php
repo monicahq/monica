@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Event;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Support\Facades\Notification;
 use App\Jobs\Reminder\NotifyUserAboutReminder;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Notifications\Events\NotificationSent;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class NotifyUserAboutReminderTest extends TestCase
 {

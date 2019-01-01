@@ -5,7 +5,6 @@ namespace App\Models\Contact;
 use Carbon\Carbon;
 use App\Models\User\User;
 use App\Models\Account\Account;
-use App\Models\Contact\ReminderSent;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
@@ -74,7 +73,7 @@ class ReminderOutbox extends Model
         $reminderSent->frequency_type = is_null($this->reminder) ? null : $this->reminder->frequency_type;
         $reminderSent->frequency_number = is_null($this->reminder) ? null : $this->reminder->frequency_number;
         $reminderSent->html_content = $message;
-dd($message);
+        dd($message);
         if ($event->notification instanceof UserNotified) {
             $reminderSent->nature = 'notification';
         }
