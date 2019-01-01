@@ -85,7 +85,7 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="form.errors" />
+            <error :errors="form.errors" />
 
             <!-- Create Token Form -->
             <form class="form-horizontal" role="form" @submit.prevent="store">
@@ -176,6 +176,10 @@
 import Error from '../partials/Error.vue';
 
 export default {
+
+    components: {
+        Error
+    },
 
     data() {
         return {

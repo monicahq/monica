@@ -91,7 +91,7 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="createForm.errors" />
+            <error :errors="createForm.errors" />
 
             <!-- Create Client Form -->
             <form class="form-horizontal" role="form">
@@ -161,7 +161,7 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="editForm.errors" />
+            <error :errors="editForm.errors" />
 
             <!-- Edit Client Form -->
             <form class="form-horizontal" role="form">
@@ -222,6 +222,10 @@ import Error from '../partials/Error.vue';
 
 export default {
 
+    components: {
+        Error
+    },
+
     data() {
         return {
             clients: [],
@@ -237,8 +241,6 @@ export default {
                 name: '',
                 redirect: ''
             },
-
-            errorTemplate: Error,
 
             dirltr: true,
         };

@@ -82,7 +82,7 @@
           </div>
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="createForm.errors" />
+            <error :errors="createForm.errors" />
 
             <form class="form-horizontal" role="form" @submit.prevent="store">
               <div class="form-group">
@@ -149,7 +149,7 @@
           </div>
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="editForm.errors" />
+            <error :errors="editForm.errors" />
 
             <form class="form-horizontal" role="form" @submit.prevent="update">
               <div class="form-group">
@@ -235,6 +235,10 @@
 import Error from '../partials/Error.vue';
 
 export default {
+
+    components: {
+        Error
+    },
 
     data() {
         return {
