@@ -3,15 +3,18 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
+use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Backend\AbstractBackend;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
-class MonicaCardDAVBackend extends AbstractBackend
+class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 {
     /**
      * Returns the list of addressbooks for a specific user.
@@ -32,13 +35,178 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function getAddressBooksForUser($principalUri)
     {
+        $name = Auth::user()->name;
+        $token = $this->getSyncToken();
+
         return [
             [
-                'id'                => '0',
-                'uri'               => 'contacts',
-                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
-                '{DAV:}displayname' => Auth::user()->name,
+                'id'                                 => '0',
+                'uri'                                => 'contacts',
+                'principaluri'                       => MonicaPrincipalBackend::getPrincipalUser(),
+                '{DAV:}displayname'                  => $name,
+                '{http://sabredav.org/ns}sync-token' => $token->id,
+                '{DAV:}sync-token'                   => $token->id,
+                '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
             ],
+        ];
+    }
+
+    /**
+     * This method returns a sync-token for this collection.
+     *
+     * If null is returned from this function, the plugin assumes there's no
+     * sync information available.
+     *
+     * @return SyncToken
+     */
+    public function getSyncToken()
+    {
+        $tokens = SyncToken::where([
+            ['account_id', Auth::user()->account_id],
+            ['user_id', Auth::user()->id],
+        ])
+            ->orderBy('created_at')
+            ->get();
+
+        if ($tokens->count() <= 0) {
+            $token = $this->createSyncToken();
+        } else {
+            $token = $tokens->last();
+
+            if ($token->timestamp < $this->getLastModified()) {
+                $token = $this->createSyncToken();
+            }
+        }
+
+        return $token;
+    }
+
+    /**
+     * Create a token.
+     *
+     * @return SyncToken
+     */
+    private function createSyncToken()
+    {
+        $max = $this->getLastModified();
+
+        return SyncToken::create([
+            'account_id' => Auth::user()->account_id,
+            'user_id' => Auth::user()->id,
+            'timestamp' => $max,
+        ]);
+    }
+
+    /**
+     * Returns the last modification date.
+     *
+     * @return \Carbon\Carbon
+     */
+    public function getLastModified()
+    {
+        return $this->getContacts()
+                    ->max('updated_at');
+    }
+
+    /**
+     * The getChanges method returns all the changes that have happened, since
+     * the specified syncToken in the specified address book.
+     *
+     * This function should return an array, such as the following:
+     *
+     * [
+     *   'syncToken' => 'The current synctoken',
+     *   'added'   => [
+     *      'new.txt',
+     *   ],
+     *   'modified'   => [
+     *      'modified.txt',
+     *   ],
+     *   'deleted' => [
+     *      'foo.php.bak',
+     *      'old.txt'
+     *   ]
+     * ];
+     *
+     * The returned syncToken property should reflect the *current* syncToken
+     * of the calendar, as reported in the {http://sabredav.org/ns}sync-token
+     * property. This is needed here too, to ensure the operation is atomic.
+     *
+     * If the $syncToken argument is specified as null, this is an initial
+     * sync, and all members should be reported.
+     *
+     * The modified property is an array of nodenames that have changed since
+     * the last token.
+     *
+     * The deleted property is an array with nodenames, that have been deleted
+     * from collection.
+     *
+     * The $syncLevel argument is basically the 'depth' of the report. If it's
+     * 1, you only have to report changes that happened only directly in
+     * immediate descendants. If it's 2, it should also include changes from
+     * the nodes below the child collections. (grandchildren)
+     *
+     * The $limit argument allows a client to specify how many results should
+     * be returned at most. If the limit is not specified, it should be treated
+     * as infinite.
+     *
+     * If the limit (infinite or not) is higher than you're willing to return,
+     * you should throw a Sabre\DAV\Exception\TooMuchMatches() exception.
+     *
+     * If the syncToken is expired (due to data cleanup) or unknown, you must
+     * return null.
+     *
+     * The limit is 'suggestive'. You are free to ignore it.
+     *
+     * @param string $addressBookId
+     * @param string $syncToken
+     * @param int $syncLevel
+     * @param int $limit
+     * @return array
+     */
+    public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
+    {
+        $token = null;
+        $timestamp = null;
+        if (! empty($syncToken)) {
+            $token = SyncToken::where([
+                'account_id' => Auth::user()->account_id,
+                'user_id' => Auth::user()->id,
+            ])->find($syncToken);
+
+            if (is_null($token)) {
+                // syncToken is not recognized
+                return;
+            }
+
+            $timestamp = $token->timestamp;
+            $token = $this->getSyncToken();
+        } else {
+            $token = $this->createSyncToken();
+            $timestamp = null;
+        }
+
+        $contacts = $this->getContacts();
+
+        $modified = $contacts->filter(function ($contact) use ($timestamp) {
+            return ! is_null($timestamp) &&
+                   $contact->updated_at > $timestamp &&
+                   $contact->created_at < $timestamp;
+        });
+        $added = $contacts->filter(function ($contact) use ($timestamp) {
+            return is_null($timestamp) ||
+                   $contact->created_at >= $timestamp;
+        });
+
+        return [
+            'syncToken' => $token->id,
+            'added' => $added->map(function ($contact) {
+                return $this->encodeUri($contact);
+            })->toArray(),
+            'modified' => $modified->map(function ($contact) {
+                return $this->encodeUri($contact);
+            })->toArray(),
+            'deleted' => [],
         ];
     }
 
@@ -113,7 +281,7 @@ class MonicaCardDAVBackend extends AbstractBackend
             'uri' => $this->encodeUri($contact),
             'carddata' => $carddata,
             'etag' => '"'.md5($carddata).'"',
-            'lastmodified' => $contact->updated_at,
+            'lastmodified' => $contact->updated_at->timestamp,
         ];
     }
 
@@ -127,6 +295,12 @@ class MonicaCardDAVBackend extends AbstractBackend
         return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
 
+    /**
+     * Returns the contact for the specific uri.
+     *
+     * @param string  $uri
+     * @return Contact
+     */
     private function getContact($uri)
     {
         try {
@@ -137,6 +311,20 @@ class MonicaCardDAVBackend extends AbstractBackend
         } catch (\Exception $e) {
             return;
         }
+    }
+
+    /**
+     * Returns the collection of all active contacts.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private function getContacts()
+    {
+        return Auth::user()->account
+                    ->contacts()
+                    ->real()
+                    ->active()
+                    ->get();
     }
 
     /**
@@ -160,11 +348,7 @@ class MonicaCardDAVBackend extends AbstractBackend
      */
     public function getCards($addressbookId)
     {
-        $contacts = Auth::user()->account
-                        ->contacts()
-                        ->real()
-                        ->active()
-                        ->get();
+        $contacts = $this->getContacts();
 
         return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);
