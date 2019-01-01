@@ -15,7 +15,7 @@
 
         {{-- AGE --}}
         <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
-          @if ($contact->birthday_special_date_id && !($contact->is_dead))
+          @if ($contact->birthdate && !($contact->is_dead))
             @if ($contact->birthdate->getAge())
               <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_birthday')</span>
               <span>{{ $contact->birthdate->getAge() }}</span>

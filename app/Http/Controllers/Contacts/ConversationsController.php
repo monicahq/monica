@@ -41,12 +41,13 @@ class ConversationsController extends Controller
         $conversations = $contact->conversations()->get();
 
         foreach ($conversations as $conversation) {
+            $message = $conversation->messages->last();
             $data = [
                 'id' => $conversation->id,
                 'message_count' => $conversation->messages->count(),
                 'contact_field_type' => $conversation->contactFieldType->name,
                 'icon' => $conversation->contactFieldType->fontawesome_icon,
-                'content' => str_limit($conversation->messages->last()->content, 50),
+                'content' => ! is_null($message) ? mb_strimwidth($message->content, 0, 50, '…') : '',
                 'happened_at' => DateHelper::getShortDate($conversation->happened_at),
                 'route' => route('people.conversations.edit', [$contact, $conversation]),
             ];

@@ -9,6 +9,8 @@ Enhancements:
 Fixes:
 * Fix exception when user is logged out (again)
 * Fix carddav group-member-set propfind call
+* Fix contacts view in case birthdate returns null
+* Fix conversation without message 
 
 RELEASED VERSIONS:
 
