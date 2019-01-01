@@ -62,7 +62,8 @@ class AddReminderInitialDateToReminders extends Migration
         Schema::create('reminder_sent', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('account_id');
-            $table->unsignedInteger('reminder_id');
+            $table->unsignedInteger('reminder_id')->nullable();
+            $table->unsignedInteger('user_id');
             $table->date('planned_date');
             $table->datetime('sent_date');
             $table->string('nature')->default('reminder');
@@ -73,6 +74,7 @@ class AddReminderInitialDateToReminders extends Migration
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('reminder_id')->references('id')->on('reminders')->onDelete('set null');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 }

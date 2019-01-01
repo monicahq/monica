@@ -49,6 +49,8 @@ class NotifyUserAboutReminder implements ShouldQueue
             NotificationFacade::send($this->reminderOutbox->user, $message);
         }
 
+        $this->reminderOutbox->logSent($message);
+
         // schedule the next reminder for this user
         if ($this->reminderOutbox->reminder->frequency_type == 'one_time') {
             $this->reminderOutbox->reminder->delete();

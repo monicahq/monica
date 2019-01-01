@@ -458,7 +458,7 @@ class AccountTest extends FeatureTestCase
         for ($i = 0; $i < 3; $i++) {
             $reminder = factory(Reminder::class)->create([
                 'account_id' => $account->id,
-                'next_expected_date' => '2017-03-03 00:00:00',
+                'initial_date' => '2017-03-03 00:00:00',
             ]);
         }
 
