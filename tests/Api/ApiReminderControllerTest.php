@@ -16,12 +16,12 @@ class ApiReminderControllerTest extends ApiTestCase
     protected $jsonReminder = [
         'id',
         'object',
+        'initial_date',
         'title',
         'description',
         'frequency_type',
         'frequency_number',
-        'last_triggered_date',
-        'next_expected_date',
+        'delible',
         'account' => [
             'id',
         ],
@@ -183,7 +183,7 @@ class ApiReminderControllerTest extends ApiTestCase
             'id' => $reminderId,
             'title' => 'the title',
             'initial_date' => '2018-05-01',
-            'next_expected_date' => '2018-05-01 00:00:00',
+            'initial_date' => '2018-05-01 00:00:00',
             'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
@@ -260,7 +260,7 @@ class ApiReminderControllerTest extends ApiTestCase
             'object' => 'reminder',
             'id' => $reminder_id,
             'title' => 'the title',
-            'next_expected_date' => '2018-05-01T00:00:00Z',
+            'initial_date' => '2018-05-01T00:00:00Z',
             'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
@@ -271,7 +271,7 @@ class ApiReminderControllerTest extends ApiTestCase
             'contact_id' => $contact->id,
             'id' => $reminder_id,
             'title' => 'the title',
-            'next_expected_date' => '2018-05-01 00:00:00',
+            'initial_date' => '2018-05-01 00:00:00',
             'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);
