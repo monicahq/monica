@@ -4,6 +4,7 @@ namespace App\Models\Contact;
 
 use Carbon\Carbon;
 use App\Models\User\User;
+use App\Helpers\MailHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
@@ -62,6 +63,12 @@ class ReminderOutbox extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Log the message that has been sent to the user.
+     *
+     * @param [type] $message
+     * @return void
+     */
     public function logSent($message)
     {
         $reminderSent = new ReminderSent;
@@ -72,15 +79,17 @@ class ReminderOutbox extends Model
         $reminderSent->sent_date = Carbon::now();
         $reminderSent->frequency_type = is_null($this->reminder) ? null : $this->reminder->frequency_type;
         $reminderSent->frequency_number = is_null($this->reminder) ? null : $this->reminder->frequency_number;
-        $reminderSent->html_content = $message;
-        dd($message);
-        if ($event->notification instanceof UserNotified) {
+        $reminderSent->html_content = MailHelper::emailView($message, $this->user);
+
+        if ($message instanceof UserNotified) {
             $reminderSent->nature = 'notification';
         }
 
-        if ($event->notification instanceof UserReminded) {
+        if ($message instanceof UserReminded) {
             $reminderSent->nature = 'reminder';
         }
         $reminderSent->save();
     }
+
+
 }

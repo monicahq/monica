@@ -49,6 +49,7 @@ class NotifyUserAboutReminder implements ShouldQueue
             NotificationFacade::send($this->reminderOutbox->user, $message);
         }
 
+        // create the Reminder Sent object
         $this->reminderOutbox->logSent($message);
 
         // schedule the next reminder for this user
