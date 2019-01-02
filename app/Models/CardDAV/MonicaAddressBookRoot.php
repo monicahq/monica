@@ -32,7 +32,7 @@ class MonicaAddressBookRoot extends AddressBookRoot implements IACL
             ],
         ];
     }
- 
+
     /**
      * This method returns a node for a principal.
      *

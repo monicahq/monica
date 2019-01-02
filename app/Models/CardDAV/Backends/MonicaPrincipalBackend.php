@@ -3,8 +3,8 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
-use Sabre\DAV\Server as SabreServer;
 use Illuminate\Support\Facades\Auth;
+use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 
 class MonicaPrincipalBackend extends AbstractBackend

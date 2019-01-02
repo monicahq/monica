@@ -9,12 +9,11 @@ use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
-use Sabre\DAV\Server as SabreServer;
 use Illuminate\Support\Facades\Auth;
+use Sabre\DAV\Server as SabreServer;
 use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
 
 class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 {
