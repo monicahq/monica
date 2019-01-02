@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\MissingParameterException;
 
@@ -48,5 +49,21 @@ abstract class BaseService
         }
 
         return $data[$index] == '' ? null : $data[$index];
+    }
+
+    /**
+     * Checks if the value is empty or null and returns a date from a string.
+     *
+     * @param mixed $data
+     * @param mixed $index
+     * @return mixed
+     */
+    protected function nullOrDate($data, $index)
+    {
+        if (empty($data[$index])) {
+            return;
+        }
+
+        return $data[$index] == '' ? null : Carbon::parse($data[$index]);
     }
 }

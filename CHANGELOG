@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix API methods for Occupation object
 * Fix activity date viewed as one day before the event happened
 * Fix settags api call with an empty tag
 
