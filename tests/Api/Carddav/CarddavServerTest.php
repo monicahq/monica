@@ -3,6 +3,7 @@
 namespace Tests\Api\Carddav;
 
 use Tests\ApiTestCase;
+use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -264,5 +265,182 @@ class CarddavServerTest extends ApiTestCase
                 '</d:propstat>'.
             '</d:response>'.
         '</d:multistatus>');
+    }
+
+    public function test_carddav_getctag()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/", [], [], [],
+            [
+                'HTTP_DEPTH' => '1',
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<propfind xmlns='DAV:' xmlns:cs='http://calendarserver.org/ns/'>
+                <prop>
+                    <cs:getctag  />
+                    <sync-token />
+                </prop>
+            </propfind>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $tokens = SyncToken::where([
+            ['account_id', $user->account_id],
+            ['user_id', $user->id],
+        ])->orderBy('created_at')->get();
+
+        $this->assertGreaterThan(0, $tokens->count());
+        $token = $tokens->last();
+
+        $response->assertSee('<d:response>'.
+            "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<x1:getctag xmlns:x1=\"http://calendarserver.org/ns/\">http://sabre.io/ns/sync/{$token->id}</x1:getctag>".
+                    "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'
+        );
+    }
+
+    public function test_carddav_getctag_contacts()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'HTTP_DEPTH' => '0',
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<propfind xmlns='DAV:' xmlns:cs='http://calendarserver.org/ns/'>
+                <prop>
+                    <cs:getctag  />
+                    <sync-token />
+                </prop>
+            </propfind>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $tokens = SyncToken::where([
+            ['account_id', $user->account_id],
+            ['user_id', $user->id],
+        ])->orderBy('created_at')->get();
+
+        $this->assertGreaterThan(0, $tokens->count());
+        $token = $tokens->last();
+
+        $response->assertSee('<d:response>'.
+            "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<x1:getctag xmlns:x1=\"http://calendarserver.org/ns/\">http://sabre.io/ns/sync/{$token->id}</x1:getctag>".
+                    "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'
+        );
+    }
+
+    public function test_carddav_sync_collection_with_token()
+    {
+        $user = $this->signin();
+        $token = factory(SyncToken::class)->create([
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'timestamp' => \App\Helpers\DateHelper::parseDateTime(now()),
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<sync-collection xmlns='DAV:'>
+                <sync-token>http://sabre.io/ns/sync/{$token->id}</sync-token>
+                <sync-level>1</sync-level>
+                <prop>
+                    <getetag/>
+                </prop>
+            </sync-collection>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
+ <d:response>
+  <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
+  <d:propstat>
+   <d:prop>
+    <d:getetag>&quot;");
+        $response->assertSee("&quot;</d:getetag>
+   </d:prop>
+   <d:status>HTTP/1.1 200 OK</d:status>
+  </d:propstat>
+ </d:response>
+ <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
+</d:multistatus>");
+    }
+
+    public function test_carddav_sync_collection_init()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<sync-collection xmlns='DAV:'>
+                <sync-token />
+                <sync-level>1</sync-level>
+                <prop>
+                    <getetag/>
+                </prop>
+            </sync-collection>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $tokens = SyncToken::where([
+            ['account_id', $user->account_id],
+            ['user_id', $user->id],
+        ])->orderBy('created_at')->get();
+
+        $this->assertGreaterThan(0, $tokens->count());
+        $token = $tokens->last();
+
+        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
+ <d:response>
+  <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
+  <d:propstat>
+   <d:prop>
+    <d:getetag>&quot;");
+        $response->assertSee("&quot;</d:getetag>
+   </d:prop>
+   <d:status>HTTP/1.1 200 OK</d:status>
+  </d:propstat>
+ </d:response>
+ <d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>
+</d:multistatus>");
     }
 }
