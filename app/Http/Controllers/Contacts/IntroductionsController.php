@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Contacts;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\People\IntroductionsRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Reminder\CreateReminder;
+use App\Http\Requests\People\IntroductionsRequest;
 use App\Services\Contact\Reminder\DestroyReminder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class IntroductionsController extends Controller
 {

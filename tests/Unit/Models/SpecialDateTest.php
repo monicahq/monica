@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Tests\FeatureTestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

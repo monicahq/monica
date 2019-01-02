@@ -13,6 +13,7 @@ use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Reminder\CreateReminder;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -20,7 +21,6 @@ use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
-use App\Services\Contact\Reminder\CreateReminder;
 
 class FakeContentTableSeeder extends Seeder
 {
