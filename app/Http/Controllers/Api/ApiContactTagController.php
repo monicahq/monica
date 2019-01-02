@@ -25,7 +25,11 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = $request->get('tags');
+        $tags = collect($request->get('tags'))
+            ->filter(function ($tag) {
+                return ! empty($tag);
+            });
+
         foreach ($tags as $tag) {
             (new AssociateTag)->execute([
                 'account_id' => auth()->user()->account->id,
@@ -79,7 +83,11 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = $request->get('tags');
+        $tags = collect($request->get('tags'))
+            ->filter(function ($tag) {
+                return ! empty($tag);
+            });
+
         foreach ($tags as $tag) {
             (new DetachTag)->execute([
                 'account_id' => auth()->user()->account->id,
@@ -102,8 +110,7 @@ class ApiContactTagController extends ApiController
     {
         try {
             $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactId)
-                ->firstOrFail();
+                ->findOrFail($contactId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
