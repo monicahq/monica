@@ -183,7 +183,6 @@ class ApiReminderControllerTest extends ApiTestCase
             'id' => $reminderId,
             'title' => 'the title',
             'initial_date' => '2018-05-01',
-            'initial_date' => '2018-05-01 00:00:00',
             'frequency_type' => 'one_time',
             'description' => 'the description',
         ]);

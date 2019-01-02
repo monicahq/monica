@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\User\User;
+use Illuminate\Notifications\Notification;
 
 class MailHelper
 {

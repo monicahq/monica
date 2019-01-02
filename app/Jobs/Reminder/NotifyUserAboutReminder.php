@@ -36,6 +36,7 @@ class NotifyUserAboutReminder implements ShouldQueue
     public function handle()
     {
         // prepare the notification to be sent
+        $message = '';
         if ($this->reminderOutbox->nature == 'reminder') {
             $message = new UserReminded($this->reminderOutbox);
         }

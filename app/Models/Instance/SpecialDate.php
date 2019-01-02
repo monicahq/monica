@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Reminder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -82,25 +81,6 @@ class SpecialDate extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class);
-    }
-
-    /**
-     * Get the reminder record associated with the special date.
-     *
-     * @return BelongsTo
-     */
-    public function reminder()
-    {
-        return $this->belongsTo(Reminder::class);
-    }
-
-    /**
-     * Mutator for the reminder id attribute.
-     * @return int
-     */
-    public function getReminderIdAttribute($value)
-    {
-        return $value;
     }
 
     /**

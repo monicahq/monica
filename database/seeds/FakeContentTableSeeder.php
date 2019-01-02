@@ -20,6 +20,7 @@ use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -201,7 +202,17 @@ class FakeContentTableSeeder extends Seeder
                 // add a date where we know the year
                 $specialDate = $this->contact->setSpecialDate('first_met', $firstMetDate->format('Y'), $firstMetDate->format('m'), $firstMetDate->format('d'));
             }
-            $specialDate->setReminder('year', 1, trans('people.introductions_reminder_title', ['name' => $this->contact->first_name]));
+            (new CreateReminder)->execute([
+                'account_id' => $this->contact->account_id,
+                'contact_id' => $this->contact->id,
+                'initial_date' => $specialDate->date->toDateString(),
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'title' => trans(
+                    'people.introductions_reminder_title',
+                    ['name' => $this->contact->first_name]
+                ),
+            ]);
         }
 
         if (rand(1, 2) == 1) {

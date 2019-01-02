@@ -36,34 +36,6 @@ class SpecialDateTest extends FeatureTestCase
         $this->assertTrue($specialDate->contact()->exists());
     }
 
-    public function test_it_belongs_to_a_reminder()
-    {
-        $account = factory(Account::class)->create([]);
-        $reminder = factory(Reminder::class)->create([]);
-        $specialDate = factory(SpecialDate::class)->create([
-            'account_id' => $account->id,
-            'reminder_id' => $reminder->id,
-        ]);
-
-        $this->assertTrue($specialDate->reminder()->exists());
-    }
-
-    public function test_reminder_id_getter_returns_null_if_undefined()
-    {
-        $reminder = new Reminder;
-
-        $this->assertNull($reminder->reminder_id);
-    }
-
-    public function test_reminder_id_getter_returns_correct_string()
-    {
-        $reminder = new Reminder;
-        $reminder->reminder_id = 3;
-
-        $this->assertInternalType('integer', $reminder->reminder_id);
-        $this->assertEquals(3, $reminder->reminder_id);
-    }
-
     public function test_get_age_returns_null_if_no_date_is_set()
     {
         $specialDate = new SpecialDate;

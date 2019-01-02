@@ -43,8 +43,6 @@ class UpdateDeceasedInformation extends BaseService
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->contact->removeSpecialDate('deceased_date');
-
         $this->manageDeceasedDate($data);
 
         return $this->contact;
@@ -61,6 +59,7 @@ class UpdateDeceasedInformation extends BaseService
         if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB
             $this->contact->is_dead = false;
+            $this->contact->deceased_special_date_id = null;
             $this->contact->save();
 
             return;

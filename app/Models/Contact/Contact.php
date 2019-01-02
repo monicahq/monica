@@ -1350,53 +1350,6 @@ class Contact extends Model
     }
 
     /**
-     * Removes the date that is set for a specific occasion (like a birthdate,
-     * the deceased date,...).
-     * @param string $occasion
-     */
-    public function removeSpecialDate($occasion)
-    {
-        if (null === $occasion) {
-            return;
-        }
-
-        switch ($occasion) {
-            case 'birthdate':
-                if ($this->birthday_special_date_id) {
-                    $birthdate = $this->birthdate;
-                    $this->birthday_special_date_id = null;
-                    $this->save();
-
-                    $birthdate->deleteReminder();
-                    $birthdate->delete();
-                }
-                break;
-            case 'deceased_date':
-                if ($this->deceased_special_date_id) {
-                    $deceasedDate = $this->deceasedDate;
-                    $this->deceased_special_date_id = null;
-                    $this->save();
-
-                    $deceasedDate->deleteReminder();
-                    $deceasedDate->delete();
-                }
-                break;
-            case 'first_met':
-                if ($this->first_met_special_date_id) {
-                    $firstMetDate = $this->firstMetDate;
-                    $this->first_met_special_date_id = null;
-                    $this->save();
-
-                    $firstMetDate->deleteReminder();
-                    $firstMetDate->delete();
-                }
-            break;
-            default:
-                break;
-        }
-    }
-
-    /**
      * Get the Relationship object representing the relation between two contacts.
      *
      * @param  Contact $otherContact

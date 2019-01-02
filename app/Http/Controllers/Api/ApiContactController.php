@@ -187,6 +187,7 @@ class ApiContactController extends ApiController
 
     /**
      * Update the contact from the request.
+     * @TODO: REWRITE
      *
      * @param  Request $request
      * @param  Contact $contact

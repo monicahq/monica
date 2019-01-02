@@ -43,7 +43,6 @@ class SendReminders extends Command
     /**
      * Send the reminder to the user and schedule the future.
      *
-     * @param Collection $reminderOutboxes
      * @return void
      */
     private function send($reminderOutboxes)

@@ -7,6 +7,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
 use App\Services\Contact\Reminder\CreateReminder;
+use Carbon\Carbon;
 
 class CreateLifeEvent extends BaseService
 {
@@ -73,10 +74,12 @@ class CreateLifeEvent extends BaseService
     private function addYearlyReminder($data, $lifeEvent)
     {
         if ($data['has_reminder']) {
+            $date = Carbon::parse($data['happened_at']);
+
             $data = [
                 'contact_id' => $data['contact_id'],
                 'account_id' => $data['account_id'],
-                'initial_date' => $data['happened_at'],
+                'initial_date' => $date->toDateString(),
                 'frequency_type' => 'year',
                 'frequency_number' => 1,
                 'title' => $lifeEvent->lifeEventType->name,
