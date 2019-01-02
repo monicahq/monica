@@ -77,7 +77,7 @@ class ApiContactTagControllerTest extends ApiTestCase
                             'tags' => [
                                 'very-specific-tag-name',
                                 null,
-                                'very-specific-tag-name-2'
+                                'very-specific-tag-name-2',
                             ],
                         ]);
 
