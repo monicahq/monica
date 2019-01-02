@@ -3,6 +3,7 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
+use Sabre\DAV\Server as SabreServer;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 
@@ -29,9 +30,9 @@ class MonicaPrincipalBackend extends AbstractBackend
     {
         return [
             [
-                'uri'                                   => static::getPrincipalUser(),
-                '{http://sabredav.org/ns}email-address' => Auth::user()->email,
-                '{DAV:}displayname'                     => Auth::user()->name,
+                'uri'               => static::getPrincipalUser(),
+                '{DAV:}displayname' => Auth::user()->name,
+                '{'.SabreServer::NS_SABREDAV.'}email-address' => Auth::user()->email,
             ],
         ];
     }

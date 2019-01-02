@@ -9,10 +9,12 @@ use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
+use Sabre\DAV\Server as SabreServer;
 use Illuminate\Support\Facades\Auth;
 use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 
 class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 {
@@ -40,12 +42,12 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 
         return [
             [
-                'id'                                 => '0',
-                'uri'                                => 'contacts',
-                'principaluri'                       => MonicaPrincipalBackend::getPrincipalUser(),
-                '{DAV:}displayname'                  => $name,
-                '{http://sabredav.org/ns}sync-token' => $token->id,
-                '{DAV:}sync-token'                   => $token->id,
+                'id'                => '0',
+                'uri'               => 'contacts',
+                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
+                '{DAV:}sync-token'  => $token->id,
+                '{DAV:}displayname' => $name,
+                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
                 '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
             ],
         ];
@@ -59,7 +61,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
      *
      * @return SyncToken
      */
-    public function getSyncToken()
+    private function getSyncToken()
     {
         $tokens = SyncToken::where([
             ['account_id', Auth::user()->account_id],
