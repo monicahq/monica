@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Occupation;
 
 use App\Services\BaseService;
+use Illuminate\Validation\Rule;
 use App\Models\Contact\Occupation;
 
 class CreateOccupation extends BaseService
@@ -21,7 +22,10 @@ class CreateOccupation extends BaseService
             'title' => 'required|string|max:255',
             'description' => 'nullable|string|max:1000',
             'salary' => 'nullable|integer',
-            'salary_unit' => 'nullable|integer',
+            'salary_unit' => [
+                'nullable',
+                Rule::in(Occupation::$salaryUnits),
+            ],
             'currently_works_here' => 'nullable|boolean',
             'start_date' => 'nullable|date_format:Y-m-d',
             'end_date' => 'nullable|date_format:Y-m-d',
@@ -47,8 +51,8 @@ class CreateOccupation extends BaseService
             'salary' => $this->nullOrValue($data, 'salary'),
             'salary_unit' => $this->nullOrValue($data, 'salary_unit'),
             'currently_works_here' => $this->nullOrValue($data, 'currently_works_here'),
-            'start_date' => $this->nullOrValue($data, 'start_date'),
-            'end_date' => $this->nullOrValue($data, 'end_date'),
+            'start_date' => $this->nullOrDate($data, 'start_date'),
+            'end_date' => $this->nullOrDate($data, 'end_date'),
         ]);
     }
 }

@@ -25,8 +25,8 @@ class Occupation extends Resource
             'salary' => $this->salary,
             'salary_unit' => $this->salary_unit,
             'currently_works_here' => (bool) $this->currently_works_here,
-            'start_date' => DateHelper::getTimestamp($this->start_date),
-            'end_date' => DateHelper::getTimestamp($this->end_date),
+            'start_date' => is_null($this->start_date) ? null : $this->start_date->format('Y-m-d'),
+            'end_date' => is_null($this->end_date) ? null : $this->end_date->format('Y-m-d'),
             'company' => new CompanyResource($this->company),
             'account' => [
                 'id' => $this->account_id,

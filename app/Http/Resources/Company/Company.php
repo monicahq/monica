@@ -4,7 +4,6 @@ namespace App\Http\Resources\Company;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Company extends Resource
 {
@@ -25,7 +24,6 @@ class Company extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
