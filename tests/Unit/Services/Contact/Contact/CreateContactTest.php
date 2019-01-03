@@ -29,6 +29,9 @@ class CreateContactTest extends TestCase
             'gender_id' => $gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
         ];
 
         $contactService = new CreateContact;
@@ -60,6 +63,9 @@ class CreateContactTest extends TestCase
             'gender_id' => $gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
         ];
 
         $this->expectException(MissingParameterException::class);
@@ -77,6 +83,9 @@ class CreateContactTest extends TestCase
             'gender_id' => $gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
         ];
 
         $this->expectException(MissingParameterException::class);

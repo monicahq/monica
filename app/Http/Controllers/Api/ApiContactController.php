@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
+use App\Services\Contact\Contact\CreateContact;
 
 class ApiContactController extends ApiController
 {
@@ -85,16 +86,12 @@ class ApiContactController extends ApiController
 
     /**
      * Store the contact.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
         // Create the contact
         try {
             $contact = Contact::create(
@@ -128,6 +125,26 @@ class ApiContactController extends ApiController
         $contact->setAvatarColor();
 
         $this->updateContact($request, $contact);
+
+
+
+
+
+        try {
+            $call = (new CreateContact)->execute(
+                $request->all()
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (MissingParameterException $e) {
+            return $this->respondInvalidParameters($e->errors);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return new ContactResource($contact);
     }
