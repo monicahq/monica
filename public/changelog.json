@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Jan 02, 2019",
+            "title": "Enhancement: number of life events",
+            "description": "You can now see the number of life events when loading the contact profile page. This lets you know if there is something important that needs to be seen when looking at a contact."
+        },
+        {
             "date": "Dec 26, 2018",
             "title": "Enhancement: LinkedIn address",
             "description": "The LinkedIn address, which was under Work Information, has been moved to the Contact Information box."
