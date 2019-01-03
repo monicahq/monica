@@ -30,6 +30,25 @@ class Occupation extends Model
     ];
 
     /**
+     * Valid value for salary unit.
+     *
+     * @var array
+     */
+    public static $salaryUnits = [
+        'year', 'month', 'week', 'day', 'hour',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_date' => 'datetime:Y-m-d',
+        'end_date' => 'datetime:Y-m-d',
+    ];
+
+    /**
      * The attributes that aren't mass assignable.
      *
      * @var array

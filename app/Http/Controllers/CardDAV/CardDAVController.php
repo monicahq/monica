@@ -10,6 +10,7 @@ use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\Plugin as AclPlugin;
 use Sabre\DAVACL\PrincipalCollection;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
+use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use App\Models\CardDAV\MonicaAddressBookRoot;
@@ -102,6 +103,9 @@ class CardDAVController extends Controller
 
         // CardDAV plugin
         $server->addPlugin(new CardDAVPlugin());
+
+        // Sync Plugin - rfc6578
+        $server->addPlugin(new SyncPlugin());
 
         // ACL plugnin
         $aclPlugin = new AclPlugin();
