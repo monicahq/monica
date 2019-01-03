@@ -11,10 +11,10 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
-use App\Services\Contact\Contact\CreateContact;
 
 class ApiContactController extends ApiController
 {
@@ -125,10 +125,6 @@ class ApiContactController extends ApiController
         $contact->setAvatarColor();
 
         $this->updateContact($request, $contact);
-
-
-
-
 
         try {
             $call = (new CreateContact)->execute(

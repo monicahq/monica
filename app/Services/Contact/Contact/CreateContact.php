@@ -5,8 +5,6 @@ namespace App\Services\Contact\Contact;
 use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Contact\UpdateBirthdayInformation;
-use App\Services\Contact\Contact\UpdateDeceasedInformation;
 
 class CreateContact extends BaseService
 {
