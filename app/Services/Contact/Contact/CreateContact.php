@@ -84,7 +84,8 @@ class CreateContact extends BaseService
 
         $this->contact->save();
 
-        return $this->contact;
+        // we query the DB again to fill the object with all the new properties
+        return Contact::find($this->contact->id);
     }
 
     /**

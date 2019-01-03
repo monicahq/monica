@@ -83,7 +83,8 @@ class UpdateContact extends BaseService
 
         $this->contact->updateGravatar();
 
-        return $this->contact;
+        // we query the DB again to fill the object with all the new properties
+        return Contact::find($this->contact->id);
     }
 
     /**
@@ -98,12 +99,12 @@ class UpdateContact extends BaseService
             'account_id' => $data['account_id'],
             'contact_id' => $this->contact->id,
             'is_date_known' => $data['is_birthdate_known'],
-            'day' => $data['birthdate_day'],
-            'month' => $data['birthdate_month'],
-            'year' => $data['birthdate_year'],
-            'is_age_based' => $data['birthdate_is_age_based'],
-            'age' => $data['birthdate_age'],
-            'add_reminder' => $data['birthdate_add_reminder'],
+            'day' => $this->nullOrvalue($data, 'birthdate_day'),
+            'month' => $this->nullOrvalue($data, 'birthdate_month'),
+            'year' => $this->nullOrvalue($data, 'birthdate_year'),
+            'is_age_based' => $this->nullOrvalue($data, 'birthdate_is_age_based'),
+            'age' => $this->nullOrvalue($data, 'birthdate_age'),
+            'add_reminder' => $this->nullOrvalue($data, 'birthdate_add_reminder'),
         ]);
     }
 
@@ -120,10 +121,10 @@ class UpdateContact extends BaseService
             'contact_id' => $this->contact->id,
             'is_deceased' => $data['is_deceased'],
             'is_date_known' => $data['is_deceased_date_known'],
-            'day' => $data['deceased_date_day'],
-            'month' => $data['deceased_date_month'],
-            'year' => $data['deceased_date_year'],
-            'add_reminder' => $data['deceased_date_add_reminder'],
+            'day' => $this->nullOrvalue($data, 'deceased_date_day'),
+            'month' => $this->nullOrvalue($data, 'deceased_date_month'),
+            'year' => $this->nullOrvalue($data, 'deceased_date_year'),
+            'add_reminder' => $this->nullOrvalue($data, 'deceased_date_add_reminder'),
         ]);
     }
 }
