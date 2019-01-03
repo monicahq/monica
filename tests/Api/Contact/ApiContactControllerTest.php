@@ -4,7 +4,6 @@ namespace Tests\Api\Contact;
 
 use Carbon\Carbon;
 use Tests\ApiTestCase;
-use App\Helpers\DateHelper;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -1131,7 +1130,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/' . $contact->id, [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id, [
             'first_name' => 'John',
             'middle_name' => 'Freaking',
             'last_name' => 'Doe',
@@ -1180,7 +1179,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/' . $contact->id, [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id, [
             'first_name' => 'John',
             'middle_name' => 'Freaking',
             'last_name' => 'Doe',
@@ -1229,7 +1228,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/' . $contact->id, [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id, [
             'first_name' => 'John',
             'middle_name' => 'Freaking',
             'last_name' => 'Doe',
@@ -1279,7 +1278,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/' . $contact->id, [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id, [
             'first_name' => 'John',
             'middle_name' => 'Freaking',
             'last_name' => 'Doe',
@@ -1323,7 +1322,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('DELETE', '/api/contacts/' . $contact->id);
+        $response = $this->json('DELETE', '/api/contacts/'.$contact->id);
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('contacts', [

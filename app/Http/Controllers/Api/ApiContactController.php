@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\DBHelper;
-use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Exceptions\MissingParameterException;
 use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\UpdateContact;
+use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
-use App\Services\Contact\Contact\UpdateContact;
-use App\Services\Contact\Contact\DestroyContact;
 
 class ApiContactController extends ApiController
 {
