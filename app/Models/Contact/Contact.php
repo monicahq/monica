@@ -1488,7 +1488,7 @@ class Contact extends Model
                         ->from('relationships')
                         ->where([
                             'account_id' => $contact->account_id,
-                            'contact_is' => $contact->id
+                            'contact_is' => $contact->id,
                         ]);
             })
             ->first();
