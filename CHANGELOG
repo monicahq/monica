@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix api contacts get when introducer empty
 * Fix getting birthday reminders about related contacts
 * Fix default temperature scale setting
 * Fix API methods for Occupation object

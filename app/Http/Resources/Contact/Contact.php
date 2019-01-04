@@ -16,6 +16,7 @@ class Contact extends Resource
      */
     public function toArray($request)
     {
+        $introducer = $this->getIntroducer();
         return [
             'id' => $this->id,
             'object' => 'contact',
@@ -81,7 +82,7 @@ class Contact extends Resource
                         'is_year_unknown' => (is_null($this->firstMetDate) ? null : (bool) $this->firstMetDate->is_year_unknown),
                         'date' => DateHelper::getTimestamp($this->firstMetDate),
                     ],
-                    'first_met_through_contact' => new ContactShortResource($this->getIntroducer()),
+                    'first_met_through_contact' => (is_null($introducer)) ? null : new ContactShortResource($introducer),
                 ]),
             ],
             'addresses' => $this->when(! $this->is_partial, $this->getAddressesForAPI()),
