@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix getting birthday reminders about related contacts
 * Fix default temperature scale setting
 * Fix API methods for Occupation object
 * Fix activity date viewed as one day before the event happened
