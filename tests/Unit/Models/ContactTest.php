@@ -7,6 +7,7 @@ use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Debt;
 use App\Models\Account\Photo;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -1129,8 +1130,12 @@ class ContactTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
-        $specialDate->setReminder('year', 1, '');
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+        ]);
         $contact->birthday_special_date_id = $specialDate->id;
+        $contact->birthday_reminder_id = $reminder->id;
         $contact->save();
 
         $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
@@ -1138,8 +1143,12 @@ class ContactTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contactB->id,
         ]);
-        $specialDate->setReminder('year', 1, '');
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactB->id,
+        ]);
         $contactB->birthday_special_date_id = $specialDate->id;
+        $contactB->birthday_reminder_id = $reminder->id;
         $contactB->save();
 
         $contactC = factory(Contact::class)->create(['account_id' => $user->account_id]);
@@ -1147,8 +1156,12 @@ class ContactTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contactC->id,
         ]);
-        $specialDate->setReminder('year', 1, '');
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactC->id,
+        ]);
         $contactC->birthday_special_date_id = $specialDate->id;
+        $contactC->birthday_reminder_id = $reminder->id;
         $contactC->save();
 
         $relationshipType = factory(RelationshipType::class)->create([
