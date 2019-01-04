@@ -31,6 +31,7 @@ use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
 use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ActivityStatistic;
@@ -44,7 +45,6 @@ use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 use App\Services\Auth\Population\PopulateContactFieldTypesTable;
-use App\Models\Contact\ReminderOutbox;
 
 class Account extends Model
 {
