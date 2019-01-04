@@ -25,7 +25,7 @@ v2.11.2 - 2019-01-01
 * Fix exception when user is logged out (again)
 * Fix carddav group-member-set propfind call
 * Fix contacts view in case birthdate returns null
-* Fix conversation without message 
+* Fix conversation without message
 
 v2.11.1 - 2018-12-26
 --------------------
