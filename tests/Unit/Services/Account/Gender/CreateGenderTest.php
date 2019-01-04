@@ -3,8 +3,8 @@
 namespace Tests\Unit\Services\Account\Gender;
 
 use Tests\TestCase;
-use App\Models\Account\Account;
 use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use App\Exceptions\MissingParameterException;
 use App\Services\Account\Gender\CreateGender;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

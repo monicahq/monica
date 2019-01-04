@@ -10,8 +10,8 @@ use App\Exceptions\MissingParameterException;
 use App\Services\Account\Gender\CreateGender;
 use App\Services\Account\Gender\UpdateGender;
 use App\Services\Account\Gender\DestroyGender;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Gender\Gender as GenderResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiGenderController extends ApiController
 {
@@ -129,6 +129,6 @@ class ApiGenderController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$genderId);
+        return $this->respondObjectDeleted((int) $genderId);
     }
 }
