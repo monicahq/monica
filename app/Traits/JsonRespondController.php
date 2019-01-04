@@ -137,7 +137,7 @@ trait JsonRespondController
      */
     public function respondInvalidParameters($message = null)
     {
-        return $this->setHTTPStatusCode(400)
+        return $this->setHTTPStatusCode(422)
                     ->setErrorCode(41)
                     ->respondWithError($message);
     }
@@ -150,7 +150,7 @@ trait JsonRespondController
      */
     public function respondValidatorFailed(Validator $validator)
     {
-        return $this->setHTTPStatusCode(400)
+        return $this->setHTTPStatusCode(422)
                     ->setErrorCode(32)
                     ->respondWithError($validator->errors()->all());
     }

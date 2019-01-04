@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Account\Place;
 use App\Models\Account\Account;
 use App\Services\Account\Place\CreatePlace;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreatePlaceTest extends TestCase
@@ -90,7 +90,7 @@ class CreatePlaceTest extends TestCase
             'street' => '199 Lafayette Street',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new CreatePlace)->execute($request);
     }
 }

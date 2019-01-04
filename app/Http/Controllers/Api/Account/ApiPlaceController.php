@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\ApiController;
 use App\Services\Account\Place\CreatePlace;
 use App\Services\Account\Place\UpdatePlace;
 use App\Services\Account\Place\DestroyPlace;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Place\Place as PlaceResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -70,8 +70,8 @@ class ApiPlaceController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -99,8 +99,8 @@ class ApiPlaceController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -123,8 +123,8 @@ class ApiPlaceController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }

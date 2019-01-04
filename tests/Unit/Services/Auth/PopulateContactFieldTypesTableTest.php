@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
@@ -27,7 +27,7 @@ class PopulateContactFieldTypesTableTest extends TestCase
             'migrate_existing_data' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new PopulateContactFieldTypesTable)->execute($request);
     }
 

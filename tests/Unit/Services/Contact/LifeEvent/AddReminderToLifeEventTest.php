@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Contact\LifeEvent;
 use Tests\TestCase;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\LifeEvent\AddReminderToLifeEvent;
@@ -51,7 +51,7 @@ class AddReminderToLifeEventTest extends TestCase
             'frequency_number' => 1,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $reminderService = new AddReminderToLifeEvent;
         $reminder = $reminderService->execute($request);

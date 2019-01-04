@@ -7,7 +7,7 @@ use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Database\QueryException;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
@@ -101,8 +101,8 @@ class ApiContactController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -128,8 +128,8 @@ class ApiContactController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }

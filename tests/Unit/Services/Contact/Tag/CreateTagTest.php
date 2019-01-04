@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Contact\Conversation;
 use Tests\TestCase;
 use App\Models\Contact\Tag;
 use App\Services\Contact\Tag\CreateTag;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateTagTest extends TestCase
@@ -43,7 +43,7 @@ class CreateTagTest extends TestCase
             'tag_id' => 2,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $createTagService = new CreateTag;
         $tag = $createTagService->execute($request);

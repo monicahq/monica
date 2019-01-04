@@ -7,7 +7,7 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Services\User\EmailChange;
 use App\Notifications\ConfirmEmail;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -55,7 +55,7 @@ class EmailChangeTest extends TestCase
             'email' => 'email@email.com',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $emailChangeService = new EmailChange;
         $user = $emailChangeService->execute($request);

@@ -7,7 +7,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Account\DestroyAllDocuments;
 use App\Services\Contact\Document\UploadDocument;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -43,7 +43,7 @@ class DestroyAllDocumentsTest extends TestCase
         $request = [
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $destroyAllDocumentsService = new DestroyAllDocuments;
         $result = $destroyAllDocumentsService->execute($request);
