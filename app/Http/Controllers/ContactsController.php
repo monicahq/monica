@@ -178,6 +178,9 @@ class ContactsController extends Controller
             'last_name' => $request->input('last_name', null),
             'nickname' => $request->input('nickname', null),
             'gender_id' => $request->get('gender'),
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
         ]);
 
         // Did the user press "Save" or "Submit and add another person"

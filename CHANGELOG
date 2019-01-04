@@ -2,7 +2,7 @@ UNRELEASED CHANGES:
 
 New features:
 
-*
+* Breaking change: rewrite API methods to manage contacts
 
 Enhancements:
 
