@@ -3,8 +3,8 @@
 namespace Tests\Api\Account;
 
 use Tests\ApiTestCase;
-use App\Models\Account\Account;
 use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiGenderControllerTest extends ApiTestCase
@@ -73,7 +73,7 @@ class ApiGenderControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('get', '/api/genders/' . $gender->id);
+        $response = $this->json('get', '/api/genders/'.$gender->id);
 
         $response->assertstatus(200);
         $response->assertjsonstructure([
@@ -129,7 +129,7 @@ class ApiGenderControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('put', '/api/genders/' . $gender->id, [
+        $response = $this->json('put', '/api/genders/'.$gender->id, [
             'name' => 'man',
         ]);
 
@@ -164,7 +164,7 @@ class ApiGenderControllerTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
 
-        $response = $this->json('put', '/api/genders/' . $gender->id, [
+        $response = $this->json('put', '/api/genders/'.$gender->id, [
             'name' => 'man',
         ]);
 
@@ -179,7 +179,7 @@ class ApiGenderControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('delete', '/api/genders/' . $gender->id);
+        $response = $this->json('delete', '/api/genders/'.$gender->id);
 
         $response->assertstatus(200);
 
