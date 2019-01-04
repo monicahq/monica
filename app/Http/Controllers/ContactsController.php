@@ -185,8 +185,8 @@ class ContactsController extends Controller
                 'is_deceased_date_known' => false,
             ]);
         } catch (ValidationException $e) {
-            return back()	
-                ->withInput()	
+            return back()
+                ->withInput()
                 ->withErrors($e->validator);
         }
 

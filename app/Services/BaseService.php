@@ -4,7 +4,6 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
-use App\Exceptions\ValidationFailedException;
 
 abstract class BaseService
 {

@@ -7,8 +7,8 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 use App\Services\Account\DestroyAllDocuments;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Document\UploadDocument;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
