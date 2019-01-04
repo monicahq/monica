@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\User\User;
-use Illuminate\Notifications\Notification;
+use App\Notifications\UserReminded;
 
 class MailHelper
 {
@@ -12,7 +12,7 @@ class MailHelper
      * notification class.
      * Yes, this is weird, but it's the only way to do it (as of Laravel 5.7).
      *
-     * @param Notification $notification
+     * @param UserReminded $notification
      * @param User $user
      * @return string
      */
