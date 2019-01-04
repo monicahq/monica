@@ -17,6 +17,7 @@ class Contact extends Resource
     public function toArray($request)
     {
         $introducer = $this->getIntroducer();
+
         return [
             'id' => $this->id,
             'object' => 'contact',
