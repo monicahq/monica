@@ -38,7 +38,7 @@ class Reminder extends Model
     ];
 
     /**
-     * Valids value for frequency type.
+     * Valid value for frequency type.
      *
      * @var array
      */

@@ -71,4 +71,80 @@ class LocaleHelperTest extends FeatureTestCase
             $tel
         );
     }
+
+    /**
+     * @dataProvider localeHelperGetLangProvider
+     */
+    public function test_locale_get_lang($locale, $expect)
+    {
+        $lang = LocaleHelper::getLang($locale);
+
+        $this->assertEquals(
+            $expect,
+            $lang
+        );
+    }
+
+    public function localeHelperGetLangProvider()
+    {
+        return [
+            ['en', 'en'],
+            ['En', 'en'],
+            ['EN', 'en'],
+            ['en-US', 'en'],
+            ['en-us', 'en'],
+            ['en_US', 'en'],
+            ['pt-BR', 'pt'],
+            ['xx-YY', 'xx'],
+        ];
+    }
+
+    /**
+     * @dataProvider localeHelperGetCountryProvider
+     */
+    public function test_locale_get_country($locale, $expect)
+    {
+        $country = LocaleHelper::getCountry($locale);
+
+        $this->assertEquals(
+            $expect,
+            $country
+        );
+    }
+
+    public function localeHelperGetCountryProvider()
+    {
+        return [
+            ['en', 'US'],
+            ['en-us', 'US'],
+            ['en-US', 'US'],
+            ['en_US', 'US'],
+            ['pt-BR', 'BR'],
+            ['xx-YY', 'YY'],
+        ];
+    }
+
+    /**
+     * @dataProvider localeHelperExtractCountryProvider
+     */
+    public function test_locale_extract_country($locale, $expect)
+    {
+        $country = LocaleHelper::extractCountry($locale);
+
+        $this->assertEquals(
+            $expect,
+            $country
+        );
+    }
+
+    public function localeHelperExtractCountryProvider()
+    {
+        return [
+            ['en', null],
+            ['fr', null],
+            ['en-US', 'US'],
+            ['pt-BR', 'BR'],
+            ['xx-YY', 'YY'],
+        ];
+    }
 }

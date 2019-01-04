@@ -102,7 +102,10 @@ class CountriesHelper
      */
     public static function getCountryFromLocale($locale)
     {
-        $countryCode = self::getDefaultCountryFromLocale($locale);
+        $countryCode = LocaleHelper::extractCountry($locale);
+        if (empty($countryCode)) {
+            $countryCode = self::getDefaultCountryFromLocale($locale);
+        }
 
         if (is_null($countryCode)) {
             $lang = LocaleHelper::getLocaleAlpha($locale);

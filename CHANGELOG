@@ -2,15 +2,19 @@ UNRELEASED CHANGES:
 
 New features:
 
-*
+* Breaking change: rewrite API methods to manage contacts
 
 Enhancements:
 
-*
+* Add number of life events on the contact profile page
 
 Fixes:
 
+* Fix getting birthday reminders about related contacts
+* Fix default temperature scale setting
+* Fix API methods for Occupation object
 * Fix activity date viewed as one day before the event happened
+* Fix settags api call with an empty tag
 
 RELEASED VERSIONS:
 
