@@ -1,19 +1,31 @@
 UNRELEASED CHANGES:
 
 New features:
-*
+
+* Breaking change: rewrite API methods to manage contacts
 
 Enhancements:
-*
+
+* Add number of life events on the contact profile page
 
 Fixes:
+
+* Fix default temperature scale setting
+* Fix API methods for Occupation object
+* Fix activity date viewed as one day before the event happened
+* Fix settags api call with an empty tag
+
+RELEASED VERSIONS:
+
+v2.11.2 - 2019-01-01
+--------------------
+
+* Carddav: support sync-token (rfc6578)
+* Fix premium feature flag appearing on self-hosted version
 * Fix exception when user is logged out (again)
 * Fix carddav group-member-set propfind call
 * Fix contacts view in case birthdate returns null
 * Fix conversation without message 
-* Fix default temperature scale setting
-
-RELEASED VERSIONS:
 
 v2.11.1 - 2018-12-26
 --------------------

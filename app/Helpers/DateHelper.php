@@ -106,15 +106,14 @@ class DateHelper
     }
 
     /**
-     * Return a date according to the timezone of the user, in a short format
-     * like "Oct 29, 1981".
+     * Return a date in a short format like "Oct 29, 1981".
      *
      * @param Carbon $date
      * @return string
      */
     public static function getShortDate($date)
     {
-        $date = new Date($date, static::getTimezone());
+        $date = new Date($date);
         $format = trans('format.short_date_year', [], Date::getLocale());
 
         return $date->format($format) ?: '';

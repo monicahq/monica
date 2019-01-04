@@ -25,7 +25,7 @@ class UpdateDeceasedInformation extends BaseService
             'day' => 'nullable|integer',
             'month' => 'nullable|integer',
             'year' => 'nullable|integer',
-            'add_reminder' => 'required|boolean',
+            'add_reminder' => 'nullable|boolean',
         ];
     }
 
