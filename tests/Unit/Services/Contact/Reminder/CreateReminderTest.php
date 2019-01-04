@@ -17,7 +17,7 @@ class CreateReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_reminder()
+    public function test_it_stores_a_recurring_reminder()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $user = factory(User::class)->create([]);
@@ -30,6 +30,45 @@ class CreateReminderTest extends TestCase
             'account_id' => $contact->account_id,
             'initial_date' => '2017-02-01',
             'frequency_type' => 'year',
+            'frequency_number' => 1,
+            'title' => 'title',
+            'description' => 'description',
+        ];
+
+        $reminder = (new CreateReminder)->execute($request);
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+        ]);
+
+        $this->assertInstanceOf(
+            Reminder::class,
+            $reminder
+        );
+
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'account_id' => $contact->account_id,
+            'planned_date' => '2017-02-01',
+            'nature' => 'reminder',
+        ]);
+    }
+
+    public function test_it_stores_a_one_time_reminder()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $user = factory(User::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'initial_date' => '2017-02-01',
+            'frequency_type' => 'one_time',
             'frequency_number' => 1,
             'title' => 'title',
             'description' => 'description',

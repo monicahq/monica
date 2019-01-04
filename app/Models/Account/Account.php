@@ -44,6 +44,7 @@ use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 use App\Services\Auth\Population\PopulateContactFieldTypesTable;
+use App\Models\Contact\ReminderOutbox;
 
 class Account extends Model
 {
@@ -137,6 +138,16 @@ class Account extends Model
     public function reminders()
     {
         return $this->hasMany(Reminder::class);
+    }
+
+    /**
+     * Get the reminder outboxes records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function reminderOutboxes()
+    {
+        return $this->hasMany(ReminderOutbox::class);
     }
 
     /**
@@ -746,10 +757,11 @@ class Account extends Model
         }
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
-        return $this->reminders()
-                     ->with('contact')
-                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
-                     ->orderBy('next_expected_date', 'asc')
+        return $this->reminderOutboxes()
+                     ->with(['reminder', 'reminder.contact'])
+                     ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
+                     ->where('nature', 'reminder')
+                     ->orderBy('planned_date', 'asc')
                      ->get();
     }
 

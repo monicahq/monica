@@ -12,6 +12,7 @@ use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Reminder\CreateReminder;
 
 trait VCardImporter
 {

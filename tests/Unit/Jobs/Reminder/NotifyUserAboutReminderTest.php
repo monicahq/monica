@@ -230,6 +230,7 @@ class NotifyUserAboutReminderTest extends TestCase
 
     public function test_it_creates_a_reminder_sent_object()
     {
+        Notification::fake();
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
 
         $account = factory(Account::class)->create([

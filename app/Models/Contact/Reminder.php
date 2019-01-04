@@ -23,15 +23,6 @@ class Reminder extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-        'initial_date',
-    ];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -39,6 +30,7 @@ class Reminder extends Model
     protected $casts = [
         'is_birthday' => 'boolean',
         'delible' => 'boolean',
+        'initial_date' => 'date:Y-m-d',
     ];
 
     /**
@@ -78,16 +70,6 @@ class Reminder extends Model
     public function reminderOutboxes()
     {
         return $this->hasMany(ReminderOutbox::class);
-    }
-
-    /**
-     * Correctly set the frequency type.
-     *
-     * @param string $value
-     */
-    public function setFrequencyTypeAttribute($value)
-    {
-        $this->attributes['frequency_type'] = $value === 'once' ? 'one_time' : $value;
     }
 
     /**

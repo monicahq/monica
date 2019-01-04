@@ -163,6 +163,7 @@ class ApiReminderControllerTest extends ApiTestCase
             'title' => 'the title',
             'initial_date' => '2018-05-01',
             'frequency_type' => 'one_time',
+            'frequency_number' => 1,
             'description' => 'the description',
         ]);
 
@@ -202,6 +203,7 @@ class ApiReminderControllerTest extends ApiTestCase
         $this->expectInvalidParameter($response, [
             'The initial date field is required.',
             'The frequency type field is required.',
+            'The frequency number field is required.',
             'The title field is required.',
         ]);
     }
@@ -222,6 +224,7 @@ class ApiReminderControllerTest extends ApiTestCase
             'title' => 'the title',
             'initial_date' => '2018-05-01',
             'frequency_type' => 'one_time',
+            'frequency_number' => 1,
             'description' => 'the description',
         ]);
 

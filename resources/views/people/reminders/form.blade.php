@@ -17,17 +17,17 @@
 
     {{-- Date --}}
     <div class="form-group">
-        <label for="next_expected_date">{{ trans('people.reminders_add_next_time') }}</label>
+        <label for="initial_date">{{ trans('people.reminders_add_next_time') }}</label>
 
-        @if (is_null($reminder->next_expected_date))
-        <input type="date" id="next_expected_date" name="next_expected_date" class="form-control"
-               value="{{ old('next_expected_date') ?? now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
+        @if (is_null($reminder->initial_date))
+        <input type="date" id="initial_date" name="initial_date" class="form-control"
+               value="{{ old('initial_date') ?? now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
                min="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
                max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}"
         >
         @else
-        <input type="date" id="next_expected_date" name="next_expected_date" class="form-control"
-               value="{{ old('next_expected_date') ?? $reminder->next_expected_date->toDateString() }}"
+        <input type="date" id="initial_date" name="initial_date" class="form-control"
+               value="{{ old('initial_date') ?? $reminder->initial_date->toDateString() }}"
                min="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
                max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}"
         >

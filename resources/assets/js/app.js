@@ -328,7 +328,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     const app = new Vue({
         i18n,
         data: {
-            reminders_frequency: 'once',
+            reminders_frequency: 'one_time',
             accept_invite_user: false,
             date_met_the_contact: 'known',
             global_relationship_form_new_contact: true,

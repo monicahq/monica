@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
@@ -144,6 +145,12 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->lifeEventCategories()->exists());
+    }
+
+    public function test_it_has_many_reminder_outboxes()
+    {
+        $reminderOutbox = factory(ReminderOutbox::class)->create([]);
+        $this->assertTrue($reminderOutbox->account->reminderOutboxes()->exists());
     }
 
     public function test_it_has_many_life_event_types()
@@ -434,12 +441,9 @@ class AccountTest extends FeatureTestCase
         $account = $user->account;
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        factory(Reminder::class, 3)->create(['account_id' => $account->id]);
 
-        // add 3 reminders for the month of March
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-
+        // check if there are reminders for the month of March
         $this->assertEquals(
             0,
             $account->getRemindersForMonth(3)->count()
@@ -460,6 +464,8 @@ class AccountTest extends FeatureTestCase
                 'account_id' => $account->id,
                 'initial_date' => '2017-03-03 00:00:00',
             ]);
+
+            $reminder->schedule();
         }
 
         $this->assertEquals(

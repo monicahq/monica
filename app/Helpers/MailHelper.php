@@ -10,9 +10,9 @@ class MailHelper
     /**
      * Get the HTML view that is rendered by the default markdown Laravel
      * notification class.
-     * Yes, this is weird, but it's the only way to do it.
+     * Yes, this is weird, but it's the only way to do it (as of Laravel 5.7).
      *
-     * @param Illuminate\Notifications\Notification $notification
+     * @param Notification $notification
      * @param User $user
      * @return string
      */

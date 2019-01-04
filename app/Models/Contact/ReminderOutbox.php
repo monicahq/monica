@@ -8,6 +8,7 @@ use App\Helpers\MailHelper;
 use App\Models\Account\Account;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
+use Illuminate\Notifications\Notification;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
@@ -68,7 +69,7 @@ class ReminderOutbox extends Model
     /**
      * Log the message that has been sent to the user.
      *
-     * @param Illuminate\Notifications\Notification $message
+     * @param Notification $message
      * @return void
      */
     public function logSent($message)
