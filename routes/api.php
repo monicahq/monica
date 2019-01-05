@@ -20,6 +20,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Contacts
     Route::apiResource('contacts', 'ApiContactController');
 
+    // Genders
+    Route::apiResource('genders', 'Account\\ApiGenderController');
+
     // Relationships
     Route::apiResource('relationships', 'ApiRelationshipController', ['except' => ['index']]);
     Route::get('/contacts/{contact}/relationships', 'ApiRelationshipController@index');
