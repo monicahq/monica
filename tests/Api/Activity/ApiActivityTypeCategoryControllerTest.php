@@ -148,7 +148,7 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
                         ]);
 
         $this->expectDataError($response, [
-            'The name field is required.'
+            'The name field is required.',
         ]);
     }
 

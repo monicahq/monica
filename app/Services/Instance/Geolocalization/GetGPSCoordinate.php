@@ -7,7 +7,6 @@ use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\Exception\RequestException;
 
 class GetGPSCoordinate extends BaseService
 {
