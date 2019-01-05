@@ -3,8 +3,6 @@
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -31,13 +29,12 @@ class MigratePreviousRemiders extends Migration
                             $reminder = Reminder::findOrFail($specialDate->reminder_id);
                             $contact->birthday_reminder_id = $reminder->id;
                             $contact->save();
-                            \Log::info('contact: ' . $contact->id . ' birthday reminder: ' . $specialDate->reminder_id);
+                            \Log::info('contact: '.$contact->id.' birthday reminder: '.$specialDate->reminder_id);
                         } catch (ModelNotFoundException $e) {
                             $contact->birthday_special_date_id = null;
                             $contact->birthday_reminder_id = null;
                             $contact->save();
                         }
-
                     } catch (ModelNotFoundException $e) {
                         $contact->birthday_special_date_id = null;
                         $contact->birthday_reminder_id = null;

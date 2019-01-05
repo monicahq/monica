@@ -19,16 +19,16 @@ class AddForeignKeyForReminderInLifeEventsTable extends Migration
         LifeEvent::select('reminder_id')
             ->whereNotNull('reminder_id')
             ->chunk(50, function ($lifeEvents) {
-            foreach ($lifeEvents as $lifeEvent) {
-                try {
-                    Reminder::findOrFail($lifeEvent->reminder_id);
-                } catch (ModelNotFoundException $e) {
-                    $lifeEvent->reminder_id = null;
-                    $lifeEvent->save();
-                    continue;
+                foreach ($lifeEvents as $lifeEvent) {
+                    try {
+                        Reminder::findOrFail($lifeEvent->reminder_id);
+                    } catch (ModelNotFoundException $e) {
+                        $lifeEvent->reminder_id = null;
+                        $lifeEvent->save();
+                        continue;
+                    }
                 }
-            }
-        });
+            });
 
         Schema::disableForeignKeyConstraints();
         Schema::table('life_events', function (Blueprint $table) {
