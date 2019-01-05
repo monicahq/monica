@@ -233,8 +233,11 @@ class ContactsController extends Controller
         // reminders
         $reminders = $contact->reminders;
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
+
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
-                                ->sortBy('next_expected_date');
+                                ->sortBy('initial_date');
+                                dd($reminders);
+                                TODO: les reminders sont triés par initial date alors qu 'ils doivent être triés par next expected date
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 

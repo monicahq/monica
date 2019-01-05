@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddReminderInitialDateToReminders extends Migration
 {
@@ -27,22 +29,15 @@ class AddReminderInitialDateToReminders extends Migration
             foreach ($reminders as $reminder) {
                 if (! is_null($reminder->special_date_id)) {
                     $reminder->initial_date = SpecialDate::find($reminder->special_date_id)->date;
-
                     // if the reminder had a special date, that meant it was a
                     // birthday. Reminder about birthdates can't be deleted, so
                     // we need to flag them as such.
                     $reminder->delible = false;
                 } else {
-                    $reminder->initial_date = $reminder->last_triggered;
+                    $reminder->initial_date = $reminder->next_expected_date;
                 }
                 $reminder->save();
             }
-        });
-
-        Schema::table('reminders', function (Blueprint $table) {
-            $table->dropColumn('special_date_id');
-            $table->dropColumn('last_triggered');
-            $table->dropColumn('next_expected_date');
         });
 
         Schema::create('reminder_outbox', function (Blueprint $table) {

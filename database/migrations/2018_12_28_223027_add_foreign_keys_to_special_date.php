@@ -39,10 +39,6 @@ class AddForeignKeysToSpecialDate extends Migration
             }
         });
 
-        Schema::table('special_dates', function (Blueprint $table) {
-            $table->dropColumn('reminder_id');
-        });
-
         Schema::disableForeignKeyConstraints();
         Schema::table('special_dates', function (Blueprint $table) {
             $table->unsignedInteger('contact_id')->change();
