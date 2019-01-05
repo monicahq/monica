@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 New features:
 
+* Add API methods to manage genders
 * Breaking change: rewrite API methods to manage contacts
 
 Enhancements:
