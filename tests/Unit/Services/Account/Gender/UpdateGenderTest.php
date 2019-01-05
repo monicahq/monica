@@ -5,8 +5,8 @@ namespace Tests\Unit\Services\Account\Gender;
 use Tests\TestCase;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
-use App\Exceptions\MissingParameterException;
 use App\Services\Account\Gender\UpdateGender;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -47,7 +47,7 @@ class UpdateGenderTest extends TestCase
             'name' => 'man',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new UpdateGender)->execute($request);
     }
 
