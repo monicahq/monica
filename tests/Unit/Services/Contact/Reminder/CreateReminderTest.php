@@ -8,7 +8,6 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Models\Instance\SpecialDate;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
