@@ -188,7 +188,7 @@ class ApiCallControllerTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The called at field is required.',
         ]);
     }
@@ -260,7 +260,7 @@ class ApiCallControllerTest extends ApiTestCase
             'contact_id' => $call->contact_id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The called at field is required.',
         ]);
     }

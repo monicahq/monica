@@ -9,6 +9,7 @@ use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
@@ -16,6 +17,8 @@ use App\Services\Contact\Address\DestroyAddress;
 
 class AddressesController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get all the addresses for this contact.
      */
@@ -121,6 +124,8 @@ class AddressesController extends Controller
             'address_id' => $address->id,
         ];
 
-        return (new DestroyAddress)->execute($datas);
+        if ((new DestroyAddress)->execute($datas)) {
+            return $this->respondObjectDeleted($address->id);
+        }
     }
 }

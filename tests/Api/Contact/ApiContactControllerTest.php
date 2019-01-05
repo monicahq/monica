@@ -731,7 +731,7 @@ class ApiContactControllerTest extends ApiTestCase
             'last_name' => 'Doe',
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The gender id field is required.',
             'The is birthdate known field is required.',
             'The is deceased field is required.',
@@ -1112,7 +1112,7 @@ class ApiContactControllerTest extends ApiTestCase
             'last_name' => 'Doe',
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The gender id field is required.',
             'The is birthdate known field is required.',
             'The is deceased date known field is required.',
