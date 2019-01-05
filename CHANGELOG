@@ -7,6 +7,7 @@ New features:
 
 Enhancements:
 
+* Add foreign keys to reminders, reminder rules, contacts and life events tables
 * Add number of life events on the contact profile page
 
 Fixes:
