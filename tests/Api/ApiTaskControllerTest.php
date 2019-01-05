@@ -225,7 +225,7 @@ class ApiTaskControllerTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The title field is required.',
         ]);
     }
@@ -297,7 +297,7 @@ class ApiTaskControllerTest extends ApiTestCase
             'contact_id' => $task->contact_id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The title field is required.',
             'The completed field is required.',
         ]);

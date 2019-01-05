@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Account\Place;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Account\Company\CreateCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -49,7 +49,7 @@ class CreateCompanyTest extends TestCase
             'street' => '199 Lafayette Street',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new CreateCompany)->execute($request);
     }
 }

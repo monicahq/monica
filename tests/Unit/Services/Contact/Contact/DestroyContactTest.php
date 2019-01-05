@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Contact\Contact;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -39,7 +39,7 @@ class DestroyContactTest extends TestCase
             'account_id' => $contact->account_id,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         (new DestroyContact)->execute($request);
     }

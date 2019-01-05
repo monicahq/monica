@@ -5,8 +5,8 @@ namespace Tests\Unit\Services\Account\Gender;
 use Tests\TestCase;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
-use App\Exceptions\MissingParameterException;
 use App\Services\Account\Gender\CreateGender;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateGenderTest extends TestCase
@@ -45,7 +45,7 @@ class CreateGenderTest extends TestCase
             'name' => 'man',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new CreateGender)->execute($request);
     }
 }

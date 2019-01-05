@@ -5,8 +5,8 @@ namespace Tests\Unit\Services\Account\gender;
 use Tests\TestCase;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
-use App\Exceptions\MissingParameterException;
 use App\Services\Account\Gender\DestroyGender;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -52,7 +52,7 @@ class DestroyGenderTest extends TestCase
             'gender_id' => 11111111,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new DestroyGender)->execute($request);
     }
 }

@@ -6,10 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Gender;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use App\Exceptions\MissingParameterException;
 use App\Services\Account\Gender\CreateGender;
 use App\Services\Account\Gender\UpdateGender;
 use App\Services\Account\Gender\DestroyGender;
+use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Gender\Gender as GenderResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -70,8 +70,8 @@ class ApiGenderController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -99,8 +99,8 @@ class ApiGenderController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -123,8 +123,8 @@ class ApiGenderController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }

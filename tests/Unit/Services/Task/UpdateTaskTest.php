@@ -7,7 +7,7 @@ use App\Models\Contact\Task;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Services\Task\UpdateTask;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -87,7 +87,7 @@ class UpdateTaskTest extends TestCase
             'description' => 'description',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $updateTask = new UpdateTask;
         $task = $updateTask->execute($request);

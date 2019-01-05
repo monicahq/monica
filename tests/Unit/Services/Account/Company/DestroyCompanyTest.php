@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Account\Company;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Account\Company\DestroyCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -52,7 +52,7 @@ class DestroyCompanyTest extends TestCase
             'company_id' => 11111111,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new DestroyCompany)->execute($request);
     }
 }
