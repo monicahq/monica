@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
 
@@ -29,7 +29,7 @@ class PopulateLifeEventsTableTest extends TestCase
             'migrate_existing_data' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $populateLifeEventService = new PopulateLifeEventsTable;
         $populateLifeEventService->execute($request);

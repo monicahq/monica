@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\Instance\Geolocalization;
 
 use Tests\TestCase;
 use App\Models\Account\Place;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
@@ -99,7 +99,7 @@ class GetGPSCoordinateTest extends TestCase
             'account_id' => 111,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $geocodingService = new GetGPSCoordinate;
         $place = $geocodingService->execute($request);

@@ -195,7 +195,7 @@ class ApiGenderControllerTest extends ApiTestCase
 
         $response = $this->json('delete', '/api/genders/0');
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The selected gender id is invalid.',
         ]);
     }

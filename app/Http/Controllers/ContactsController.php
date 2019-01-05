@@ -13,6 +13,7 @@ use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
@@ -172,16 +173,22 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = (new CreateContact)->execute([
-            'account_id' => auth()->user()->account->id,
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->input('last_name', null),
-            'nickname' => $request->input('nickname', null),
-            'gender_id' => $request->get('gender'),
-            'is_birthdate_known' => false,
-            'is_deceased' => false,
-            'is_deceased_date_known' => false,
-        ]);
+        try {
+            $contact = (new CreateContact)->execute([
+                'account_id' => auth()->user()->account->id,
+                'first_name' => $request->get('first_name'),
+                'last_name' => $request->input('last_name', null),
+                'nickname' => $request->input('nickname', null),
+                'gender_id' => $request->get('gender'),
+                'is_birthdate_known' => false,
+                'is_deceased' => false,
+                'is_deceased_date_known' => false,
+            ]);
+        } catch (ValidationException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->validator);
+        }
 
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
