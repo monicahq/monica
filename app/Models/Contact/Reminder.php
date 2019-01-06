@@ -3,6 +3,7 @@
 namespace App\Models\Contact;
 
 use Carbon\Carbon;
+use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -137,28 +138,27 @@ class Reminder extends Model
     /**
      * Schedule the reminder to be sent.
      *
+     * @param User $user
      * @return void
      */
-    public function schedule()
+    public function schedule(User $user)
     {
-        // when should we send this reminder?
-        $triggerDate = $this->calculateNextExpectedDate();
-
         // remove any existing scheduled reminders
         $this->reminderOutboxes->each->delete();
 
-        // schedule the reminder in the outbox, one for each user of the account
-        foreach ($this->account->users as $user) {
-            ReminderOutbox::create([
-                'account_id' => $this->account_id,
-                'reminder_id' => $this->id,
-                'user_id' => $user->id,
-                'planned_date' => $triggerDate,
-                'nature' => 'reminder',
-            ]);
-        }
+        // when should we send this reminder?
+        $triggerDate = $this->calculateNextExpectedDate();
 
-        $this->scheduleNotifications($triggerDate);
+        // schedule the reminder in the outbox, one for each user of the account
+        ReminderOutbox::create([
+            'account_id' => $this->account_id,
+            'reminder_id' => $this->id,
+            'user_id' => $user->id,
+            'planned_date' => $triggerDate,
+            'nature' => 'reminder',
+        ]);
+
+        $this->scheduleNotifications($triggerDate, $user);
     }
 
     /**
@@ -166,9 +166,10 @@ class Reminder extends Model
      * 30 and 7 days prior to the actual reminder.
      *
      * @param Carbon $triggerDate
+     * @param User $user
      * @return void
      */
-    public function scheduleNotifications(Carbon $triggerDate)
+    public function scheduleNotifications(Carbon $triggerDate, User $user)
     {
         $date = $triggerDate->toDateString();
         $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
@@ -181,16 +182,14 @@ class Reminder extends Model
                 continue;
             }
 
-            foreach ($this->account->users as $user) {
-                ReminderOutbox::create([
-                    'account_id' => $this->account_id,
-                    'reminder_id' => $this->id,
-                    'user_id' => $user->id,
-                    'planned_date' => $datePrior->toDateString(),
-                    'nature' => 'notification',
-                    'notification_number_days_before' => $reminderRule->number_of_days_before,
-                ]);
-            }
+            ReminderOutbox::create([
+                'account_id' => $this->account_id,
+                'reminder_id' => $this->id,
+                'user_id' => $user->id,
+                'planned_date' => $datePrior->toDateString(),
+                'nature' => 'notification',
+                'notification_number_days_before' => $reminderRule->number_of_days_before,
+            ]);
         }
     }
 }

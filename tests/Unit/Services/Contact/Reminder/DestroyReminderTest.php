@@ -59,7 +59,7 @@ class DestroyReminderTest extends TestCase
             'active' => 1,
         ]);
 
-        $reminder->schedule();
+        $reminder->schedule($user);
 
         $this->assertDatabaseHas('reminder_outbox', [
             'reminder_id' => $reminder->id,

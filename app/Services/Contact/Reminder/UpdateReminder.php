@@ -54,7 +54,9 @@ class UpdateReminder extends BaseService
             'delible' => (isset($data['delible']) ? $data['delible'] : true),
         ]);
 
-        $reminder->schedule();
+        foreach ($reminder->account->users as $user) {
+            $reminder->schedule($user);
+        }
 
         return $reminder;
     }

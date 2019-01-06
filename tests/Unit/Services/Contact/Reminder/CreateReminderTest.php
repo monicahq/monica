@@ -95,6 +95,59 @@ class CreateReminderTest extends TestCase
         ]);
     }
 
+    public function test_it_stores_a_reminder_for_each_user_of_an_account()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $account = factory(Account::class)->create([]);
+        $userA = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $userB = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'initial_date' => '2017-02-01',
+            'frequency_type' => 'one_time',
+            'frequency_number' => 1,
+            'title' => 'title',
+            'description' => 'description',
+        ];
+
+        $reminder = (new CreateReminder)->execute($request);
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+        ]);
+
+        $this->assertInstanceOf(
+            Reminder::class,
+            $reminder
+        );
+
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'account_id' => $contact->account_id,
+            'planned_date' => '2017-02-01',
+            'nature' => 'reminder',
+            'user_id' => $userA->id,
+        ]);
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'account_id' => $contact->account_id,
+            'planned_date' => '2017-02-01',
+            'nature' => 'reminder',
+            'user_id' => $userB->id,
+        ]);
+    }
+
     public function test_it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);

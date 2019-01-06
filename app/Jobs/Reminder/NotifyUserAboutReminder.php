@@ -58,7 +58,7 @@ class NotifyUserAboutReminder implements ShouldQueue
             $this->reminderOutbox->reminder->inactive = true;
             $this->reminderOutbox->reminder->save();
         } else {
-            $this->reminderOutbox->reminder->schedule();
+            $this->reminderOutbox->reminder->schedule($this->reminderOutbox->user);
         }
 
         // delete the reminder outbox

@@ -41,7 +41,7 @@ class CreateReminder extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
         $reminder = Reminder::create([
@@ -55,7 +55,9 @@ class CreateReminder extends BaseService
             'delible' => (isset($data['delible']) ? $data['delible'] : true),
         ]);
 
-        $reminder->schedule();
+        foreach ($contact->account->users as $user) {
+            $reminder->schedule($user);
+        }
 
         return $reminder;
     }

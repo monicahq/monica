@@ -465,7 +465,7 @@ class AccountTest extends FeatureTestCase
                 'initial_date' => '2017-03-03 00:00:00',
             ]);
 
-            $reminder->schedule();
+            $reminder->schedule($user);
         }
 
         $this->assertEquals(

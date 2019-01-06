@@ -137,34 +137,14 @@ class ReminderTest extends TestCase
             'frequency_number' => 1,
         ]);
 
-        $reminder->schedule();
+        $reminder->schedule($user);
 
         $this->assertDatabaseHas('reminder_outbox', [
             'reminder_id' => $reminder->id,
             'planned_date' => '2018-01-01',
             'nature' => 'reminder',
+            'user_id' => $user->id,
         ]);
-    }
-
-    public function test_it_schedules_a_reminder_for_all_users()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 2, 1));
-        $reminder = factory(Reminder::class)->create([
-            'initial_date' => '2017-01-01',
-            'frequency_type' => 'year',
-            'frequency_number' => 1,
-        ]);
-
-        factory(User::class, 2)->create([
-            'account_id' => $reminder->account_id,
-        ]);
-
-        $reminder->schedule();
-
-        $this->assertEquals(
-            2,
-            $reminder->reminderOutboxes()->count()
-        );
     }
 
     public function test_scheduling_a_reminder_also_schedules_notifications_for_one_user()
@@ -188,7 +168,7 @@ class ReminderTest extends TestCase
             'active' => 1,
         ]);
 
-        $reminder->schedule();
+        $reminder->schedule($user);
 
         $this->assertDatabaseHas('reminder_outbox', [
             'reminder_id' => $reminder->id,
@@ -202,6 +182,7 @@ class ReminderTest extends TestCase
             'planned_date' => '2017-12-25',
             'nature' => 'notification',
             'notification_number_days_before' => 7,
+            'user_id' => $user->id,
         ]);
 
         $this->assertEquals(
@@ -226,7 +207,7 @@ class ReminderTest extends TestCase
             'active' => 1,
         ]);
 
-        $reminder->schedule();
+        $reminder->schedule($user);
 
         $this->assertDatabaseMissing('reminder_outbox', [
             'reminder_id' => $reminder->id,

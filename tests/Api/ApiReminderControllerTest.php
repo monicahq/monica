@@ -200,7 +200,7 @@ class ApiReminderControllerTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The initial date field is required.',
             'The frequency type field is required.',
             'The frequency number field is required.',
@@ -290,7 +290,7 @@ class ApiReminderControllerTest extends ApiTestCase
             'contact_id' => $reminder->contact_id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The initial date field is required.',
             'The frequency type field is required.',
             'The title field is required.',
@@ -347,7 +347,7 @@ class ApiReminderControllerTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/reminders/0');
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The selected reminder id is invalid.',
         ]);
     }
