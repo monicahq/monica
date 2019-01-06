@@ -10,8 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
- * @property Account $account
- * @property Contact $contact
+ * A reminder has two states: active and inactive.
+ * An inactive reminder is basically a one_time reminder that has already be
+ * sent once and has been marked inactive so we don't schedule it again.
  */
 class Reminder extends Model
 {
@@ -70,6 +71,17 @@ class Reminder extends Model
     public function reminderOutboxes()
     {
         return $this->hasMany(ReminderOutbox::class);
+    }
+
+    /**
+     * Scope a query to only include active reminders.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('inactive', false);
     }
 
     /**

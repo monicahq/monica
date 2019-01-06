@@ -146,7 +146,7 @@ class NotifyUserAboutReminderTest extends TestCase
         );
     }
 
-    public function test_it_deletes_the_one_time_reminder_once_it_is_sent()
+    public function test_it_marks_the_one_time_reminder_has_inactive_once_it_is_sent()
     {
         Notification::fake();
 
@@ -178,9 +178,10 @@ class NotifyUserAboutReminderTest extends TestCase
             'id' => $reminderOutbox->id,
         ]);
 
-        $this->assertDatabaseMissing('reminders', [
+        $this->assertDatabaseHas('reminders', [
             'account_id' => $user->account->id,
             'id' => $reminder->id,
+            'inactive' => true,
         ]);
     }
 
@@ -220,6 +221,7 @@ class NotifyUserAboutReminderTest extends TestCase
         $this->assertDatabaseHas('reminders', [
             'account_id' => $user->account->id,
             'id' => $reminder->id,
+            'inactive' => false,
         ]);
 
         $this->assertDatabaseHas('reminder_outbox', [

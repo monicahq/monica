@@ -238,7 +238,7 @@ class ContactsController extends Controller
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });
         // reminders
-        $reminders = $contact->reminders;
+        $reminders = $contact->activeReminders;
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts);
         // now we need to sort the reminders by next date they will be triggered

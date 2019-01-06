@@ -55,9 +55,13 @@ class NotifyUserAboutReminder implements ShouldQueue
 
         // schedule the next reminder for this user
         if ($this->reminderOutbox->reminder->frequency_type == 'one_time') {
-            $this->reminderOutbox->reminder->delete();
+            $this->reminderOutbox->reminder->inactive = true;
+            $this->reminderOutbox->reminder->save();
         } else {
             $this->reminderOutbox->reminder->schedule();
         }
+
+        // delete the reminder outbox
+        $this->reminderOutbox->delete();
     }
 }

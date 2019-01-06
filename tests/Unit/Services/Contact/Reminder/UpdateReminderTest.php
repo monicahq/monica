@@ -100,7 +100,7 @@ class UpdateReminderTest extends TestCase
         try {
             $reminderService = (new UpdateReminder)->execute($request);
         } catch (ValidationException $e) {
-            $this->assertEquals(['The selected frequency type is invalid.'], $e->errors);
+            $this->assertEquals(['The selected frequency type is invalid.'], $e->validator->errors()->all());
             throw $e;
         }
     }
