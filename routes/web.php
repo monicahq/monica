@@ -277,6 +277,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('2fa-disable');
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
             Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('u2f-register');
+            Route::delete('/settings/security/u2f-remove/{u2fKeyId}', 'Settings\\MultiFAController@u2fRemove');
 
             Route::post('/settings/security/generate-recovery-codes', 'Settings\\RecoveryCodesController@store');
             Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');

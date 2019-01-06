@@ -492,7 +492,9 @@ class SettingsController
 
     public function security()
     {
-        return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
+        return view('settings.security.index')
+            ->with('is2FAActivated', app('pragmarx.google2fa')->isActivated())
+            ->with('currentkeys', auth()->user()->u2fkeys()->get());
     }
 
     /**

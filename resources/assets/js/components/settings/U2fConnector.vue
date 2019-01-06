@@ -1,12 +1,50 @@
 <style scoped>
+.time {
+    color: gray;
+    size: small;
+    
+}
+.time-dirltr {
+    padding-left: 10px;
+}
+.time-dirrtl {
+    padding-right: 10px;
+}
 </style>
 
 <template>
-  <div>
+  <div class="form-group">
     <notifications group="u2f" position="top middle" :duration="5000" width="400" />
 
     <div v-if="method == 'register-modal'">
       <h3>{{ $t('settings.u2f_title') }}</h3>
+
+      <div v-if="keys != null">
+        <ul>
+          <li v-for="key in keys"
+              :key="key.id"
+              class="cb"
+          >
+            <span :class="[dirltr ? 'fl' : 'fr']">
+              ▶️ <strong>{{ key.name }}</strong>
+              <span v-if="key.counter > 0"
+                    class="time"
+                    :class="[dirltr ? 'time-dirltr' : 'time-dirrtl']"
+              >
+                {{ $t('settings.u2f_last_use') }} {{ formatTime(key.updated_at) }}
+              </span>
+            </span>
+            <a class="pointer"
+               :class="[dirltr ? 'fr' : 'fl']"
+               :cy-name="'u2fkey-delete-button-' + key.id"
+               @click.prevent="showDeleteModal(key.id)"
+            >
+              {{ $t('app.delete') }}
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="cb form-group"></div>
       <a class="btn btn-primary" @click="showRegisterModal">
         {{ $t('settings.u2f_enable_description') }}
       </a>
@@ -87,10 +125,32 @@
         </p>
       </div>
     </div>
+
+    <sweet-modal ref="delete" overlay-theme="dark" title="Remove a key">
+      <form>
+        <div class="mb4">
+          {{ $t('settings.u2f_delete_confirmation') }}
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+          <a class="btn" @click="closeDeleteModal()">
+            {{ $t('app.cancel') }}
+          </a>
+          <a class="btn"
+             :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
+             @click.prevent="u2fRemove(keyToTrash)"
+          >
+            {{ $t('app.delete') }}
+          </a>
+        </span>
+      </div>
+    </sweet-modal>
   </div>
 </template>
 
 <script>
+import moment from 'moment';
 import { SweetModal } from 'sweet-modal-vue';
 
 export default {
@@ -133,6 +193,8 @@ export default {
             success: false,
             otpextension: '',
             keys: [],
+            keyToTrash: '',
+            dirltr: true,
             data: null
         };
     },
@@ -143,6 +205,7 @@ export default {
 
     methods: {
         prepareComponent() {
+            this.dirltr = this.$root.htmldir == 'ltr';
             this.otpextension = this.$t('auth.u2f_otp_extension', {
                 urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',
                 urlext: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'
@@ -247,6 +310,35 @@ export default {
                 .then(response => {
                     window.location = self.callbackurl;
                 });
+        },
+
+        u2fRemove(id) {
+            var self = this;
+            axios.delete('/settings/security/u2f-remove/'+id)
+                .catch(error => {
+                    self.errorMessage = error.response.data.message;
+                })
+                .then(response => {
+                    if (response.data.deleted === true) {
+                        self.keys.splice(self.keys.indexOf(self.keys.find(item => item.id === response.data.id)), 1);
+                        self.success = true;
+                        self.notify(self.$t('settings.u2f_delete_success'), true);
+                    }
+                    self.closeDeleteModal();
+                });
+        },
+
+        showDeleteModal(id) {
+            this.keyToTrash = id;
+            this.$refs.delete.open();
+        },
+
+        closeDeleteModal() {
+            this.$refs.delete.close();
+        },
+
+        formatTime(value) {
+            return moment(value).format('LLLL');
         },
 
         getErrorText(errorcode) {
