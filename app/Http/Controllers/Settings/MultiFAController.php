@@ -161,7 +161,7 @@ class MultiFAController extends Controller
 
     /**
      * Remove an existing security key.
-     * 
+     *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -169,7 +169,7 @@ class MultiFAController extends Controller
     {
         $u2fKey = U2fKey::where('user_id', auth()->user()->id)
             ->findOrFail($u2fKeyId);
-        
+
         $u2fKey->delete();
 
         return $this->respondObjectDeleted($u2fKeyId);
