@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Reminder\UpdateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -69,7 +69,7 @@ class UpdateReminderTest extends TestCase
             'initial_date' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $reminderService = (new UpdateReminder)->execute($request);
     }
@@ -95,11 +95,11 @@ class UpdateReminderTest extends TestCase
             'description' => 'description',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         try {
             $reminderService = (new UpdateReminder)->execute($request);
-        } catch (MissingParameterException $e) {
+        } catch (ValidationException $e) {
             $this->assertEquals(['The selected frequency type is invalid.'], $e->errors);
             throw $e;
         }

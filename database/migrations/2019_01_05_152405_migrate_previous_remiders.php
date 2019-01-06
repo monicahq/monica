@@ -29,7 +29,6 @@ class MigratePreviousRemiders extends Migration
                             $reminder = Reminder::findOrFail($specialDate->reminder_id);
                             $contact->birthday_reminder_id = $reminder->id;
                             $contact->save();
-                            \Log::info('contact: '.$contact->id.' birthday reminder: '.$specialDate->reminder_id);
                         } catch (ModelNotFoundException $e) {
                             $contact->birthday_special_date_id = null;
                             $contact->birthday_reminder_id = null;
