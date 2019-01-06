@@ -12,6 +12,7 @@ Enhancements:
 
 Fixes:
 
+* Fix ability to delete a user with a u2f key activated
 * Fix validation fails with Services
 * Fix getting birthday reminders about related contacts
 * Fix default temperature scale setting

@@ -171,7 +171,7 @@ class SettingsController
 
         DB::table('accounts')->where('id', $account->id)->delete();
         auth()->logout();
-        $user->forceDelete();
+        $user->delete();
 
         return redirect()->route('login');
     }
