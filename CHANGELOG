@@ -7,6 +7,7 @@ New features:
 
 Enhancements:
 
+* Refactor reminders by removing Notifications table and creating two new tables: reminder outbox and reminder sent
 * Add foreign keys to reminders, reminder rules, contacts and life events tables
 * Add number of life events on the contact profile page
 
