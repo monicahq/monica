@@ -34,7 +34,7 @@
       <li class="table-row">
 
         <div class="table-cell date">
-          {{ \App\Helpers\DateHelper::getShortDate($reminder->calculateNextExpectedDate()) }}
+          {{ $reminder->next_expected_date_human_readable }}
         </div>
 
         <div class="table-cell frequency-type">
