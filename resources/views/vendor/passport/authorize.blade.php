@@ -9,7 +9,7 @@
           <div class="signup-box">
             <div class="dt w-100">
               <div class="dtc tc">
-                <img src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="{{ asset('/img/monica.svg') }}" width="97" height="88" alt="">
               </div>
             </div>
             <h2>Authorization Request</h2>
@@ -27,7 +27,7 @@
             @endif
 
             <!-- Authorize Button -->
-            <form method="post" action="/oauth/authorize">
+            <form method="post" action="{{ url('/oauth/authorize') }}">
               {{ csrf_field() }}
 
               <input type="hidden" name="state" value="{{ $request->state }}">

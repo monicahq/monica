@@ -51,7 +51,7 @@
                         {{ $document->original_filename }} ({{ round($document->filesize / 1000) }} Kb)
                     </div>
                     <div class="table-cell">
-                        <a href="/people/{{ $document->contact->hashID() }}">{{ $document->contact->name }}</a>
+                        <a href="{{ url('/people/'.$document->contact->hashID()) }}">{{ $document->contact->name }}</a>
                     </div>
                   </li>
                 @endforeach

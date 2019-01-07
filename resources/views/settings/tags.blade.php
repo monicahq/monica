@@ -37,7 +37,7 @@
 
               <div class="col-xs-12 col-sm-9 blank-screen">
 
-              <img src="/img/settings/tags/tags.png">
+              <img src="{{ asset('/img/settings/tags/tags.png') }}">
 
               <h2>{{ trans('settings.tags_blank_title') }}</h2>
 
