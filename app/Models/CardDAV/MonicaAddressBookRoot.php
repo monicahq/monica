@@ -2,10 +2,37 @@
 
 namespace App\Models\CardDAV;
 
+use Sabre\DAVACL\IACL;
+use Sabre\DAVACL\ACLTrait;
 use Sabre\CardDAV\AddressBookRoot;
 
-class MonicaAddressBookRoot extends AddressBookRoot
+class MonicaAddressBookRoot extends AddressBookRoot implements IACL
 {
+    use ACLTrait;
+
+    /**
+     * Returns a list of ACE's for this node.
+     *
+     * Each ACE has the following properties:
+     *   * 'privilege', a string such as {DAV:}read or {DAV:}write. These are
+     *     currently the only supported privileges
+     *   * 'principal', a url to the principal who owns the node
+     *   * 'protected' (optional), indicating that this ACE is not allowed to
+     *      be updated.
+     *
+     * @return array
+     */
+    public function getACL()
+    {
+        return [
+            [
+                'privilege' => '{DAV:}read',
+                'principal' => '{DAV:}authenticated',
+                'protected' => true,
+            ],
+        ];
+    }
+
     /**
      * This method returns a node for a principal.
      *
