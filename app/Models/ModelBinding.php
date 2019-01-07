@@ -15,6 +15,6 @@ abstract class ModelBinding extends Model
 
         return $this->where('account_id', Auth::user()->account_id)
             ->where($this->getRouteKeyName(), $value)
-            ->firstOrFail();        
+            ->firstOrFail();
     }
 }
