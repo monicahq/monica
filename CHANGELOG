@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 New features:
 
+* Add ability to add a comment when rating your day in the journal
 * Add API methods to manage genders
 * Breaking change: rewrite API methods to manage contacts
 
