@@ -45,41 +45,41 @@
 <script>
 export default {
 
-    data() {
-        return {
-            reminderRules: [],
-            dirltr: true,
-        };
+  data() {
+    return {
+      reminderRules: [],
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getReminderRules();
     },
 
-    mounted() {
-        this.prepareComponent();
+    getReminderRules() {
+      axios.get('/settings/personalization/reminderrules')
+        .then(response => {
+          this.reminderRules = response.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getReminderRules();
-        },
-
-        getReminderRules() {
-            axios.get('/settings/personalization/reminderrules')
-                .then(response => {
-                    this.reminderRules = response.data;
-                });
-        },
-
-        toggle(reminderRule) {
-            axios.post('/settings/personalization/reminderrules/' + reminderRule.id)
-                .then(response => {
-                    this.$notify({
-                        group: 'main',
-                        title: response.data,
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        }
+    toggle(reminderRule) {
+      axios.post('/settings/personalization/reminderrules/' + reminderRule.id)
+        .then(response => {
+          this.$notify({
+            group: 'main',
+            title: response.data,
+            text: '',
+            type: 'success'
+          });
+        });
     }
+  }
 };
 </script>

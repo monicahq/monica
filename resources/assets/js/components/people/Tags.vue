@@ -81,132 +81,132 @@ import moment from 'moment';
 
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
     },
-    data() {
-        return {
-            allTags: [],
-            availableTags: [],
-            contactTags: [],
-            editMode: false,
-            search: '',
-            results: [],
-            isOpen: false,
-            arrowCounter: 0,
-            dirltr: true,
-        };
+  },
+  data() {
+    return {
+      allTags: [],
+      availableTags: [],
+      contactTags: [],
+      editMode: false,
+      search: '',
+      results: [],
+      isOpen: false,
+      arrowCounter: 0,
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.dirltr = this.$root.htmldir == 'ltr';
+    this.prepareComponent();
+    document.addEventListener('click', this.handleClickOutside);
+  },
+
+  destroyed() {
+    document.removeEventListener('click', this.handleClickOutside);
+  },
+
+  methods: {
+    prepareComponent() {
+      this.getExistingTags();
+      this.getContactTags();
     },
 
-    mounted() {
-        this.dirltr = this.$root.htmldir == 'ltr';
-        this.prepareComponent();
-        document.addEventListener('click', this.handleClickOutside);
+    getExistingTags() {
+      axios.get('/tags')
+        .then(response => {
+          this.allTags = response.data.data;
+        });
     },
 
-    destroyed() {
-        document.removeEventListener('click', this.handleClickOutside);
+    getContactTags() {
+      axios.get('/people/' + this.hash + '/tags')
+        .then(response => {
+          this.contactTags = response.data.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.getExistingTags();
-            this.getContactTags();
-        },
+    removeTag(tag) {
+      this.contactTags.splice(this.contactTags.indexOf(tag), 1);
+    },
 
-        getExistingTags() {
-            axios.get('/tags')
-                .then(response => {
-                    this.allTags = response.data.data;
-                });
-        },
+    onChange() {
+      this.isOpen = true;
+      this.filterResults();
+    },
 
-        getContactTags() {
-            axios.get('/people/' + this.hash + '/tags')
-                .then(response => {
-                    this.contactTags = response.data.data;
-                });
-        },
+    onEnter() {
+      if (this.search != '') {
+        this.contactTags.push({
+          id: moment().format(), // we just need a random ID here
+          name: this.search
+        });
+        this.arrowCounter = -1;
+        this.isOpen = false;
+        this.search = null;
+      }
+    },
 
-        removeTag(tag) {
-            this.contactTags.splice(this.contactTags.indexOf(tag), 1);
-        },
+    onArrowDown() {
+      if (this.arrowCounter < this.results.length) {
+        this.arrowCounter = this.arrowCounter + 1;
+        this.search = this.results[this.arrowCounter].name;
+      }
+    },
 
-        onChange() {
-            this.isOpen = true;
-            this.filterResults();
-        },
+    onArrowUp() {
+      if (this.arrowCounter > 0) {
+        this.arrowCounter = this.arrowCounter - 1;
+        this.search = this.results[this.arrowCounter].name;
+      }
+    },
 
-        onEnter() {
-            if (this.search != '') {
-                this.contactTags.push({
-                    id: moment().format(), // we just need a random ID here
-                    name: this.search
-                });
-                this.arrowCounter = -1;
-                this.isOpen = false;
-                this.search = null;
-            }
-        },
+    onEscape() {
+      this.arrowCounter = -1;
+      this.isOpen = false;
+      this.search = null;
+    },
 
-        onArrowDown() {
-            if (this.arrowCounter < this.results.length) {
-                this.arrowCounter = this.arrowCounter + 1;
-                this.search = this.results[this.arrowCounter].name;
-            }
-        },
+    setResult(result) {
+      this.search = null;
+      this.isOpen = false;
+      this.contactTags.push(result);
+    },
 
-        onArrowUp() {
-            if (this.arrowCounter > 0) {
-                this.arrowCounter = this.arrowCounter - 1;
-                this.search = this.results[this.arrowCounter].name;
-            }
-        },
+    filterResults() {
+      this.results = this.allTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
+    },
 
-        onEscape() {
-            this.arrowCounter = -1;
-            this.isOpen = false;
-            this.search = null;
-        },
+    filterAllTags() {
+      var me = this.contactTags;
+      this.availableTags = this.allTags.filter((item) => {
+        return !me.includes(item);
+      });
+    },
 
-        setResult(result) {
-            this.search = null;
-            this.isOpen = false;
-            this.contactTags.push(result);
-        },
+    store() {
+      this.editMode = false;
+      axios.post('/people/' + this.hash + '/tags/update', this.contactTags)
+        .then(response => {
+          this.getExistingTags();
+        });
+    },
 
-        filterResults() {
-            this.results = this.allTags.filter(item => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
-        },
+    navigateTo(tag) {
+      window.location.href = '/people?tag1=' + tag.name_slug;
+    },
 
-        filterAllTags() {
-            var me = this.contactTags;
-            this.availableTags = this.allTags.filter((item) => {
-                return !me.includes(item);
-            });
-        },
-
-        store() {
-            this.editMode = false;
-            axios.post('/people/' + this.hash + '/tags/update', this.contactTags)
-                .then(response => {
-                    this.getExistingTags();
-                });
-        },
-
-        navigateTo(tag) {
-            window.location.href = '/people?tag1=' + tag.name_slug;
-        },
-
-        handleClickOutside(evt) {
-            if (!this.$el.contains(evt.target)) {
-                this.isOpen = false;
-                this.arrowCounter = -1;
-            }
-        }
+    handleClickOutside(evt) {
+      if (!this.$el.contains(evt.target)) {
+        this.isOpen = false;
+        this.arrowCounter = -1;
+      }
     }
+  }
 };
 </script>

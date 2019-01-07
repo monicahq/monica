@@ -99,96 +99,96 @@
 <script>
 export default {
 
-    props: {
-        initialEmotions: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        }
-    },
-    data() {
-        return {
-            emotions: [],
-            primaryEmotions: [],
-            secondaryEmotions: [],
-            selectedPrimaryEmotionId: 0,
-            selectedSecondaryEmotionId: 0,
-            chosenEmotions: [],
-            menu: false,
-            emotionsMenu: 'primary',
-        };
-    },
-
-    mounted() {
-        this.prepareComponent();
-
-        this.chosenEmotions = this.initialEmotions;
-    },
-
-    created() {
-        window.addEventListener('click', this.close);
-    },
-
-    beforeDestroy() {
-        window.removeEventListener('click', this.close);
-    },
-
-    methods: {
-        prepareComponent() {
-            this.getPrimaryEmotions();
-        },
-
-        close(e) {
-            if (!this.$el.contains(e.target)) {
-                this.menu = false;
-            }
-        },
-
-        getPrimaryEmotions() {
-            axios.get('/emotions')
-                .then(response => {
-                    this.primaryEmotions = response.data.data;
-                });
-        },
-
-        getSecondaryEmotions() {
-            axios.get('/emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries')
-                .then(response => {
-                    this.secondaryEmotions = response.data.data;
-                });
-        },
-
-        getEmotions(id) {
-            axios.get('/emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries/' + this.selectedSecondaryEmotionId + '/emotions')
-                .then(response => {
-                    this.emotions = response.data.data;
-                });
-        },
-
-        showSecondary(primaryEmotion) {
-            this.selectedPrimaryEmotionId = primaryEmotion.id;
-            this.getSecondaryEmotions();
-            this.emotionsMenu = 'secondary';
-        },
-
-        showEmotion(secondaryEmotion) {
-            this.selectedSecondaryEmotionId = secondaryEmotion.id;
-            this.getEmotions();
-            this.emotionsMenu = 'emotions';
-        },
-
-        addEmotion(emotion) {
-            this.menu = false;
-            this.chosenEmotions.push(emotion);
-            this.emotionsMenu = 'primary';
-            this.$emit('updateEmotionsList', this.chosenEmotions);
-        },
-
-        removeEmotion(emotion) {
-            this.chosenEmotions.splice(emotion, 1);
-            this.$emit('updateEmotionsList', this.chosenEmotions);
-        }
+  props: {
+    initialEmotions: {
+      type: Array,
+      default: function () {
+        return [];
+      }
     }
+  },
+  data() {
+    return {
+      emotions: [],
+      primaryEmotions: [],
+      secondaryEmotions: [],
+      selectedPrimaryEmotionId: 0,
+      selectedSecondaryEmotionId: 0,
+      chosenEmotions: [],
+      menu: false,
+      emotionsMenu: 'primary',
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+
+    this.chosenEmotions = this.initialEmotions;
+  },
+
+  created() {
+    window.addEventListener('click', this.close);
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('click', this.close);
+  },
+
+  methods: {
+    prepareComponent() {
+      this.getPrimaryEmotions();
+    },
+
+    close(e) {
+      if (!this.$el.contains(e.target)) {
+        this.menu = false;
+      }
+    },
+
+    getPrimaryEmotions() {
+      axios.get('/emotions')
+        .then(response => {
+          this.primaryEmotions = response.data.data;
+        });
+    },
+
+    getSecondaryEmotions() {
+      axios.get('/emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries')
+        .then(response => {
+          this.secondaryEmotions = response.data.data;
+        });
+    },
+
+    getEmotions(id) {
+      axios.get('/emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries/' + this.selectedSecondaryEmotionId + '/emotions')
+        .then(response => {
+          this.emotions = response.data.data;
+        });
+    },
+
+    showSecondary(primaryEmotion) {
+      this.selectedPrimaryEmotionId = primaryEmotion.id;
+      this.getSecondaryEmotions();
+      this.emotionsMenu = 'secondary';
+    },
+
+    showEmotion(secondaryEmotion) {
+      this.selectedSecondaryEmotionId = secondaryEmotion.id;
+      this.getEmotions();
+      this.emotionsMenu = 'emotions';
+    },
+
+    addEmotion(emotion) {
+      this.menu = false;
+      this.chosenEmotions.push(emotion);
+      this.emotionsMenu = 'primary';
+      this.$emit('updateEmotionsList', this.chosenEmotions);
+    },
+
+    removeEmotion(emotion) {
+      this.chosenEmotions.splice(emotion, 1);
+      this.$emit('updateEmotionsList', this.chosenEmotions);
+    }
+  }
 };
 </script>

@@ -153,64 +153,64 @@
 
 <script>
 export default {
-    data() {
-        return {
-            day: {
-                rate: '',
-                comment: ''
-            },
+  data() {
+    return {
+      day: {
+        rate: '',
+        comment: ''
+      },
 
-            hasRated: 'notYet',
+      hasRated: 'notYet',
 
-            showSadSmileyColor: false,
-            showHappySmileyColor: false,
+      showSadSmileyColor: false,
+      showHappySmileyColor: false,
 
-            dirltr: true,
-        };
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.hasAlreadyRatedToday();
     },
 
-    mounted() {
-        this.prepareComponent();
+    hasAlreadyRatedToday() {
+      axios.get('/journal/hasRated')
+        .then(response => {
+          this.hasRated = response.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.hasAlreadyRatedToday();
-        },
+    showComment(rate) {
+      this.day.rate = rate;
+      this.hasRated = 'addComment';
+    },
 
-        hasAlreadyRatedToday() {
-            axios.get('/journal/hasRated')
-                .then(response => {
-                    this.hasRated = response.data;
-                });
-        },
+    updateComment(comment) {
+      this.day.comment = comment;
+    },
 
-        showComment(rate) {
-            this.day.rate = rate;
-            this.hasRated = 'addComment';
-        },
+    dismiss() {
+      this.hasRated = 'notYet';
+      this.day.rate = 0;
+      this.day.comment = '';
+    },
 
-        updateComment(comment) {
-            this.day.comment = comment;
-        },
+    rate() {
+      this.hasRated = 'justNow';
 
-        dismiss() {
-            this.hasRated = 'notYet';
-            this.day.rate = 0;
-            this.day.comment = '';
-        },
-
-        rate() {
-            this.hasRated = 'justNow';
-
-            axios.post('/journal/day', this.day)
-                .then(response => {
-                    this.showSadSmileyColor = false;
-                    this.showHappySmileyColor = false;
-                    this.$emit('hasRated', response.data);
-                });
-        },
-    }
+      axios.post('/journal/day', this.day)
+        .then(response => {
+          this.showSadSmileyColor = false;
+          this.showHappySmileyColor = false;
+          this.$emit('hasRated', response.data);
+        });
+    },
+  }
 };
 </script>

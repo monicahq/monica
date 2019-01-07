@@ -50,38 +50,38 @@
 <script>
 export default {
 
-    props: {
-        journalEntry: {
-            type: Object,
-            default: null,
-        },
+  props: {
+    journalEntry: {
+      type: Object,
+      default: null,
+    },
+  },
+
+  data() {
+    return {
+      entry: [],
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      // not necessary, just a way to add more clarity to the code
+      this.entry = this.journalEntry.object;
     },
 
-    data() {
-        return {
-            entry: [],
-
-            dirltr: true,
-        };
-    },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            // not necessary, just a way to add more clarity to the code
-            this.entry = this.journalEntry.object;
-        },
-
-        trash() {
-            axios.delete('/journal/' + this.entry.id)
-                .then(response => {
-                    this.$emit('deleteJournalEntry', this.journalEntry.id);
-                });
-        }
+    trash() {
+      axios.delete('/journal/' + this.entry.id)
+        .then(response => {
+          this.$emit('deleteJournalEntry', this.journalEntry.id);
+        });
     }
+  }
 };
 </script>

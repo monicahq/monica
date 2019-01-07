@@ -158,106 +158,106 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
+  components: {
+    SweetModal
+  },
+
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    contact: {
+      type: Object,
+      default: null,
+    },
+    limited: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      frequency: '0',
+      isActive: false,
+      errorMessage: '',
+      initialFrequency: 0,
+      initialState: false,
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      if (this.contact.stay_in_touch_frequency == null) {
+        this.frequency = '0';
+      } else {
+        this.frequency = this.contact.stay_in_touch_frequency.toString();
+      }
+      this.isActive = (this.frequency > 0);
+
+      // record initial values when the component loads so we can
+      // put those values back if user puts wrong values when updating
+      // the counter
+      this.initialState = this.isActive;
+      this.initialFrequency = this.frequency;
     },
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        contact: {
-            type: Object,
-            default: null,
-        },
-        limited: {
-            type: Boolean,
-            default: false,
-        },
+    showUpdate() {
+      this.errorMessage = '';
+      this.$refs.updateModal.open();
     },
 
-    data() {
-        return {
-            frequency: '0',
-            isActive: false,
-            errorMessage: '',
-            initialFrequency: 0,
-            initialState: false,
-            dirltr: true,
-        };
+    closeModal() {
+      this.frequency = this.initialFrequency;
+      this.isActive = this.initialState;
+      this.$refs.updateModal.close();
     },
 
-    mounted() {
-        this.prepareComponent();
+    update() {
+      this.errorMessage = '';
+
+      // check if you need a subscription to access this feature
+      if (this.limited) {
+        this.errorMessage = this.$t('people.stay_in_touch_premium');
+        this.frequency = this.initialFrequency;
+        this.isActive = this.initialState;
+        return;
+      }
+
+      // make sure we can't press update if the frequency is invalid
+      // and if the feature is activated
+      if ((this.frequency == '' || this.frequency < 1) && this.isActive) {
+        this.errorMessage = this.$t('people.stay_in_touch_invalid');
+        this.frequency = this.initialFrequency;
+        this.isActive = this.initialState;
+        return;
+      }
+
+      axios.post('/people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.isActive})
+        .then(response => {
+          this.$refs.updateModal.close();
+          this.initialState = this.isActive;
+          this.initialFrequency = this.frequency;
+
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            width: '500px',
+            type: 'success'
+          });
+        })
+        .catch(error => {
+          this.errorMessage = this.$t('app.error_save');
+        });
     },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            if (this.contact.stay_in_touch_frequency == null) {
-                this.frequency = '0';
-            } else {
-                this.frequency = this.contact.stay_in_touch_frequency.toString();
-            }
-            this.isActive = (this.frequency > 0);
-
-            // record initial values when the component loads so we can
-            // put those values back if user puts wrong values when updating
-            // the counter
-            this.initialState = this.isActive;
-            this.initialFrequency = this.frequency;
-        },
-
-        showUpdate() {
-            this.errorMessage = '';
-            this.$refs.updateModal.open();
-        },
-
-        closeModal() {
-            this.frequency = this.initialFrequency;
-            this.isActive = this.initialState;
-            this.$refs.updateModal.close();
-        },
-
-        update() {
-            this.errorMessage = '';
-
-            // check if you need a subscription to access this feature
-            if (this.limited) {
-                this.errorMessage = this.$t('people.stay_in_touch_premium');
-                this.frequency = this.initialFrequency;
-                this.isActive = this.initialState;
-                return;
-            }
-
-            // make sure we can't press update if the frequency is invalid
-            // and if the feature is activated
-            if ((this.frequency == '' || this.frequency < 1) && this.isActive) {
-                this.errorMessage = this.$t('people.stay_in_touch_invalid');
-                this.frequency = this.initialFrequency;
-                this.isActive = this.initialState;
-                return;
-            }
-
-            axios.post('/people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.isActive})
-                .then(response => {
-                    this.$refs.updateModal.close();
-                    this.initialState = this.isActive;
-                    this.initialFrequency = this.frequency;
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        width: '500px',
-                        type: 'success'
-                    });
-                })
-                .catch(error => {
-                    this.errorMessage = this.$t('app.error_save');
-                });
-        },
-    }
+  }
 };
 </script>

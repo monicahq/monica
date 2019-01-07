@@ -551,96 +551,96 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
+  components: {
+    SweetModal
+  },
+
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    years: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    months: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    days: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    contactName: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      lifeEvents: [],
+      lifeEventToDelete: null,
+      showAdd: false,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.getLifeEvents();
     },
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        years: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        months: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        days: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        contactName: {
-            type: String,
-            default: '',
-        },
+    getLifeEvents() {
+      axios.get('/people/' + this.hash + '/lifeevents')
+        .then(response => {
+          this.showAdd = false;
+          this.lifeEvents = response.data;
+        });
     },
 
-    data() {
-        return {
-            lifeEvents: [],
-            lifeEventToDelete: null,
-            showAdd: false,
-        };
-    },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.getLifeEvents();
-        },
-
-        getLifeEvents() {
-            axios.get('/people/' + this.hash + '/lifeevents')
-                .then(response => {
-                    this.showAdd = false;
-                    this.lifeEvents = response.data;
-                });
-        },
-
-        /**
+    /**
           * @TODO: do not refresh the list from the server, simply add
           * the new object to the collection
           */
-        updateLifeEventsList(updatedLifeEvent) {
-            this.getLifeEvents();
-            window.location.href='/people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id;
-        },
+    updateLifeEventsList(updatedLifeEvent) {
+      this.getLifeEvents();
+      window.location.href='/people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id;
+    },
 
-        destroy(lifeEvent) {
-            axios.delete('/lifeevents/' + lifeEvent.id)
-                .then(response => {
-                    this.closeDeleteModal();
-                    this.getLifeEvents();
+    destroy(lifeEvent) {
+      axios.delete('/lifeevents/' + lifeEvent.id)
+        .then(response => {
+          this.closeDeleteModal();
+          this.getLifeEvents();
 
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.life_event_delete_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.life_event_delete_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
 
-        showDeleteModal(lifeEvent) {
-            this.$refs.deleteLifeEventModal.open();
-            this.lifeEventToDelete = lifeEvent;
-        },
+    showDeleteModal(lifeEvent) {
+      this.$refs.deleteLifeEventModal.open();
+      this.lifeEventToDelete = lifeEvent;
+    },
 
-        closeDeleteModal() {
-            this.$refs.deleteLifeEventModal.close();
-        },
-    }
+    closeDeleteModal() {
+      this.$refs.deleteLifeEventModal.close();
+    },
+  }
 };
 </script>

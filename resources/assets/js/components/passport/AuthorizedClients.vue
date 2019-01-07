@@ -59,36 +59,36 @@
 <script>
 export default {
   
-    data() {
-        return {
-            tokens: []
-        };
-    },
+  data() {
+    return {
+      tokens: []
+    };
+  },
 
-    mounted() {
-        this.getTokens();
-    },
+  mounted() {
+    this.getTokens();
+  },
 
-    methods: {
-        /**
+  methods: {
+    /**
           * Get all of the authorized tokens for the user.
           */
-        getTokens() {
-            axios.get('/oauth/tokens')
-                .then(response => {
-                    this.tokens = response.data;
-                });
-        },
+    getTokens() {
+      axios.get('/oauth/tokens')
+        .then(response => {
+          this.tokens = response.data;
+        });
+    },
 
-        /**
+    /**
           * Revoke the given token.
           */
-        revoke(token) {
-            axios.delete('/oauth/tokens/' + token.id)
-                .then(response => {
-                    this.getTokens();
-                });
-        }
+    revoke(token) {
+      axios.delete('/oauth/tokens/' + token.id)
+        .then(response => {
+          this.getTokens();
+        });
     }
+  }
 };
 </script>
