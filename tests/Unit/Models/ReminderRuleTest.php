@@ -42,7 +42,7 @@ class ReminderRuleTest extends TestCase
 
     public function test_it_toggles_the_status()
     {
-        $reminderRule = new ReminderRule;
+        $reminderRule = factory(ReminderRule::class)->create();
         $reminderRule->active = true;
         $reminderRule->save();
 

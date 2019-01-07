@@ -6,6 +6,7 @@ use Money\Money;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\App;
 use Money\Currencies\ISOCurrencies;
+use Illuminate\Support\Facades\Auth;
 use Money\Currency as MoneyCurrency;
 use Money\Formatter\IntlMoneyFormatter;
 
@@ -28,8 +29,8 @@ class MoneyHelper
             $amount = 0;
         }
 
-        if (! $currency && auth()->user()) {
-            $currency = auth()->user()->currency;
+        if (! $currency && Auth::check()) {
+            $currency = Auth::user()->currency;
         }
 
         if (! $currency) {

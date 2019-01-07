@@ -31,37 +31,37 @@ input:focus {
 <script>
 export default {
 
-    props: {
-        value: {
-            type: String,
-            default: '',
-        },
-        title: {
-            type: String,
-            default: '',
-        },
-        id: {
-            type: String,
-            default: '',
-        },
-        required: {
-            type: Boolean,
-            default: true,
-        },
-        inputType: {
-            type: String,
-            default: '',
-        },
-        width: {
-            type: Number,
-            default: -1,
-        }
+  props: {
+    value: {
+      type: String,
+      default: '',
     },
-
-    methods: {
-        updateInput(text) {
-            this.$emit('input', text);
-        }
+    title: {
+      type: String,
+      default: '',
+    },
+    id: {
+      type: String,
+      default: '',
+    },
+    required: {
+      type: Boolean,
+      default: true,
+    },
+    inputType: {
+      type: String,
+      default: '',
+    },
+    width: {
+      type: Number,
+      default: -1,
     }
+  },
+
+  methods: {
+    updateInput(text) {
+      this.$emit('input', text);
+    }
+  }
 };
 </script>

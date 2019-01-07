@@ -22,45 +22,45 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        active: {
-            type: Boolean,
-            default: true,
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    active: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
+  data() {
+    return {
+      isActive: false,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.isActive = this.active;
     },
 
-    data() {
-        return {
-            isActive: false,
-        };
+    toggle() {
+      axios.put('/people/' + this.hash + '/archive')
+        .then(response => {
+          this.isActive = response.data.is_active;
+
+          this.$notify({
+            group: 'archive',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        });
     },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.isActive = this.active;
-        },
-
-        toggle() {
-            axios.put('/people/' + this.hash + '/archive')
-                .then(response => {
-                    this.isActive = response.data.is_active;
-
-                    this.$notify({
-                        group: 'archive',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-    }
+  }
 };
 </script>

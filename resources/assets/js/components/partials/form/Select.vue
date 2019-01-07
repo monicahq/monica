@@ -33,65 +33,64 @@ select:focus {
 <script>
 export default {
 
-    props: {
-        value: {
-            type: String,
-            default: '',
-        },
-        options: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        title: {
-            type: String,
-            default: '',
-        },
-        id: {
-            type: String,
-            default: '',
-        },
-        excludedId: {
-            type: String,
-            default: '',
-        },
-        required: {
-            type: Boolean,
-            default: true,
-        },
-        formClass: {
-            type: String,
-            default: '',
-        },
+  props: {
+    value: {
+      type: null,
     },
-
-    data() {
-        return {
-            selectedOption: null,
-        };
+    options: {
+      type: Array,
+      default: function () {
+        return [];
+      }
     },
-
-    watch: {
-        value: function (newValue) {
-            this.selectedOption = newValue;
-        }
+    title: {
+      type: String,
+      default: '',
     },
-
-    mounted() {
-        this.selectedOption = this.value;
+    id: {
+      type: String,
+      default: '',
     },
+    excludedId: {
+      type: Number,
+      default: -1,
+    },
+    required: {
+      type: Boolean,
+      default: true,
+    },
+    formClass: {
+      type: String,
+      default: '',
+    },
+  },
 
-    methods: {
-        /**
+  data() {
+    return {
+      selectedOption: null,
+    };
+  },
+
+  watch: {
+    value: function (newValue) {
+      this.selectedOption = newValue;
+    }
+  },
+
+  mounted() {
+    this.selectedOption = this.value;
+  },
+
+  methods: {
+    /**
          * Filter options
          */
-        filterExclude: function (options) {
-            var me = this;
-            return options.filter(function (option) {
-                return option.id != me.excludedId;
-            });
-        },
+    filterExclude: function (options) {
+      var me = this;
+      return options.filter(function (option) {
+        return option.id != me.excludedId;
+      });
     },
+  },
 };
 </script>

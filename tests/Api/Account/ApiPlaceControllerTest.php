@@ -203,7 +203,7 @@ class ApiPlaceControllerTest extends ApiTestCase
 
         $response = $this->json('delete', '/api/places/0');
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The selected place id is invalid.',
         ]);
     }

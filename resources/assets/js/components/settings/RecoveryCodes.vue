@@ -57,86 +57,86 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
-    },
+  components: {
+    SweetModal
+  },
 
-    data() {
-        return {
-            codes: [],
+  data() {
+    return {
+      codes: [],
                 
-            usedHelp: '',
-            copyHelp: '',
+      usedHelp: '',
+      copyHelp: '',
 
-            dirltr: true,
-        };
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.usedHelp = this.$t('settings.recovery_already_used_help');
+      this.copyHelp = this.$t('settings.recovery_copy_help');
     },
 
-    mounted() {
-        this.prepareComponent();
+    showRecoveryModal() {
+      this.codes = [];
+      axios.post('/settings/security/recovery-codes')
+        .then(response => {
+          this.codes = response.data;
+          this.$refs.recoveryModal.open();
+        }).catch(error => {
+          this.notify(error.response.data.message, false);
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.usedHelp = this.$t('settings.recovery_already_used_help');
-            this.copyHelp = this.$t('settings.recovery_copy_help');
-        },
+    generateNewCodes() {
+      this.codes = [];
+      axios.post('/settings/security/generate-recovery-codes')
+        .then(response => {
+          this.codes = response.data;
+        }).catch(error => {
+          this.notify(error.response.data.message, false);
+        });
+    },
 
-        showRecoveryModal() {
-            this.codes = [];
-            axios.post('/settings/security/recovery-codes')
-                .then(response => {
-                    this.codes = response.data;
-                    this.$refs.recoveryModal.open();
-                }).catch(error => {
-                    this.notify(error.response.data.message, false);
-                });
-        },
+    closeRecoveryModal() {
+      this.$refs.recoveryModal.close();
+    },
 
-        generateNewCodes() {
-            this.codes = [];
-            axios.post('/settings/security/generate-recovery-codes')
-                .then(response => {
-                    this.codes = response.data;
-                }).catch(error => {
-                    this.notify(error.response.data.message, false);
-                });
-        },
+    copyIntoClipboard() {
+      this.$copyText(this.getDataStream())
+        .then(response => {
+          this.notify(this.$t('settings.recovery_clipboard'), true);
+        });
+    },
 
-        closeRecoveryModal() {
-            this.$refs.recoveryModal.close();
-        },
-
-        copyIntoClipboard() {
-            this.$copyText(this.getDataStream())
-                .then(response => {
-                    this.notify(this.$t('settings.recovery_clipboard'), true);
-                });
-        },
-
-        getDataStream() {
-            var text = this.$t('settings.recovery_help_intro')+'\n';
-            var i = 1;
-            this.codes.forEach(code => {
-                if (code.used) {
-                    text += i + '. ---------\n';
-                } else {
-                    text += i + '. ' + code.recovery + '\n';
-                }
-                i++;
-            });
-            return text;
-        },
-
-        notify(text, success) {
-            this.$notify({
-                group: 'recovery',
-                title: text,
-                text: '',
-                type: success ? 'success' : 'error'
-            });
+    getDataStream() {
+      var text = this.$t('settings.recovery_help_intro')+'\n';
+      var i = 1;
+      this.codes.forEach(code => {
+        if (code.used) {
+          text += i + '. ---------\n';
+        } else {
+          text += i + '. ' + code.recovery + '\n';
         }
+        i++;
+      });
+      return text;
+    },
+
+    notify(text, success) {
+      this.$notify({
+        group: 'recovery',
+        title: text,
+        text: '',
+        type: success ? 'success' : 'error'
+      });
     }
+  }
 };
 </script>

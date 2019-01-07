@@ -94,94 +94,94 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
+  components: {
+    SweetModal
+  },
+
+  props: {
+    activated: {
+      type: Boolean,
+      default: false
+    },
+  },
+
+  data() {
+    return {
+      errorMessage: '',
+      infoMessage: '',
+      success: false,
+      one_time_password: '',
+      image: '',
+      secret: '',
+    };
+  },
+
+  methods: {
+    register() {
+      axios.post('/settings/security/2fa-enable', { one_time_password: this.one_time_password })
+        .then(response => {
+          this.closeEnableModal();
+          this.activated = response.data.success;
+          if (response.data.success) {
+            this.notify(this.$t('settings.2fa_enable_success'), true);
+          } else {
+            this.notify(this.$t('settings.2fa_enable_error'), false);
+          }
+        }).catch(error => {
+          this.closeEnableModal();
+          this.notify(error.response.data.message, false);
+        });
     },
 
-    props: {
-        activated: {
-            type: Boolean,
-            default: false
-        },
+    unregister() {
+      axios.post('/settings/security/2fa-disable', { one_time_password: this.one_time_password })
+        .then(response => {
+          this.closeDisableModal();
+          this.activated = ! response.data.success;
+          if (response.data.success) {
+            this.notify(this.$t('settings.2fa_disable_success'), true);
+          } else {
+            this.notify(this.$t('settings.2fa_disable_error'), false);
+          }
+        }).catch(error => {
+          this.closeDisableModal();
+          this.notify(error.response.data.message, false);
+        });
     },
 
-    data() {
-        return {
-            errorMessage: '',
-            infoMessage: '',
-            success: false,
-            one_time_password: '',
-            image: '',
-            secret: '',
-        };
+    showEnableModal() {
+      this.one_time_password = '';
+      axios.get('/settings/security/2fa-enable')
+        .then(response => {
+          this.image = response.data.image;
+          this.secret = response.data.secret;
+          this.$refs.enableModal.open();
+        }).catch(error => {
+          this.notify(error.response.data.message, false);
+        });
     },
 
-    methods: {
-        register() {
-            axios.post('/settings/security/2fa-enable', { one_time_password: this.one_time_password })
-                .then(response => {
-                    this.closeEnableModal();
-                    this.activated = response.data.success;
-                    if (response.data.success) {
-                        this.notify(this.$t('settings.2fa_enable_success'), true);
-                    } else {
-                        this.notify(this.$t('settings.2fa_enable_error'), false);
-                    }
-                }).catch(error => {
-                    this.closeEnableModal();
-                    this.notify(error.response.data.message, false);
-                });
-        },
+    showDisableModal() {
+      this.one_time_password = '';
+      this.$refs.disableModal.open();
+    },
 
-        unregister() {
-            axios.post('/settings/security/2fa-disable', { one_time_password: this.one_time_password })
-                .then(response => {
-                    this.closeDisableModal();
-                    this.activated = ! response.data.success;
-                    if (response.data.success) {
-                        this.notify(this.$t('settings.2fa_disable_success'), true);
-                    } else {
-                        this.notify(this.$t('settings.2fa_disable_error'), false);
-                    }
-                }).catch(error => {
-                    this.closeDisableModal();
-                    this.notify(error.response.data.message, false);
-                });
-        },
+    closeEnableModal() {
+      this.$refs.enableModal.close();
+    },
 
-        showEnableModal() {
-            this.one_time_password = '';
-            axios.get('/settings/security/2fa-enable')
-                .then(response => {
-                    this.image = response.data.image;
-                    this.secret = response.data.secret;
-                    this.$refs.enableModal.open();
-                }).catch(error => {
-                    this.notify(error.response.data.message, false);
-                });
-        },
+    closeDisableModal() {
+      this.$refs.disableModal.close();
+    },
 
-        showDisableModal() {
-            this.one_time_password = '';
-            this.$refs.disableModal.open();
-        },
-
-        closeEnableModal() {
-            this.$refs.enableModal.close();
-        },
-
-        closeDisableModal() {
-            this.$refs.disableModal.close();
-        },
-
-        notify(text, success) {
-            this.$notify({
-                group: 'mfa',
-                title: text,
-                text: '',
-                type: success ? 'success' : 'error'
-            });
-        }
+    notify(text, success) {
+      this.$notify({
+        group: 'mfa',
+        title: text,
+        text: '',
+        type: success ? 'success' : 'error'
+      });
     }
+  }
 };
 </script>

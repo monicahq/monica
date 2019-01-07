@@ -22,67 +22,67 @@ import moment from 'moment';
 
 export default {
 
-    components: {
-        Datepicker
+  components: {
+    Datepicker
+  },
+
+  props: {
+    id: {
+      type: String,
+      default: '',
+    },
+    defaultDate: {
+      type: String,
+      default: '',
+    },
+    locale: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      value: '',
+      selectedDate: '',
+      language: Languages.en,
+      mondayFirst: false
+    };
+  },
+
+  mounted() {
+    this.language = Languages[this.locale];
+    this.selectedDate = moment(this.defaultDate, this.exchangeFormat()).toDate();
+    this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
+    this.update(this.selectedDate);
+  },
+
+  methods: {
+    customFormatter(date) {
+      return moment(date).format('L');
     },
 
-    props: {
-        id: {
-            type: String,
-            default: '',
-        },
-        defaultDate: {
-            type: String,
-            default: '',
-        },
-        locale: {
-            type: String,
-            default: '',
-        },
+    getDateInEloquentFormat(date) {
+      return moment(date).format(this.exchangeFormat());
     },
 
-    data() {
-        return {
-            value: '',
-            selectedDate: '',
-            language: Languages.en,
-            mondayFirst: false
-        };
-    },
-
-    mounted() {
-        this.language = Languages[this.locale];
-        this.selectedDate = moment(this.defaultDate, this.exchangeFormat()).toDate();
-        this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
-        this.update(this.selectedDate);
-    },
-
-    methods: {
-        customFormatter(date) {
-            return moment(date).format('L');
-        },
-
-        getDateInEloquentFormat(date) {
-            return moment(date).format(this.exchangeFormat());
-        },
-
-        /**
+    /**
           * Update the value of hidden input, in exchange format value
           */
-        update(date) {
-            var mdate = moment(date);
-            if (! mdate.isValid()) {
-                mdate = moment();
-            }
-            this.value = mdate.format(this.exchangeFormat());
-        },
+    update(date) {
+      var mdate = moment(date);
+      if (! mdate.isValid()) {
+        mdate = moment();
+      }
+      this.value = mdate.format(this.exchangeFormat());
+    },
 
-        /**
+    /**
           * Exchange format with controller (moment format type)
           */
-        exchangeFormat() {
-            return 'YYYY-MM-DD';
-        }
+    exchangeFormat() {
+      return 'YYYY-MM-DD';
     }
+  }
 };
 </script>

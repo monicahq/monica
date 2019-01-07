@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -68,7 +68,7 @@ class CreateContactTest extends TestCase
             'is_deceased_date_known' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new CreateContact)->execute($request);
     }
 
@@ -88,7 +88,7 @@ class CreateContactTest extends TestCase
             'is_deceased_date_known' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         (new CreateContact)->execute($request);
     }

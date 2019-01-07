@@ -194,7 +194,7 @@ class ApiAdressesControllerTest extends ApiTestCase
         $response = $this->json('POST', '/api/addresses', [
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The contact id field is required.',
         ]);
     }
@@ -268,7 +268,7 @@ class ApiAdressesControllerTest extends ApiTestCase
 
         $response = $this->json('PUT', '/api/addresses/'.$address->id, []);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The contact id field is required.',
         ]);
     }
@@ -320,7 +320,7 @@ class ApiAdressesControllerTest extends ApiTestCase
 
         $response = $this->json('DELETE', '/api/addresses/0');
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The selected address id is invalid.',
         ]);
     }

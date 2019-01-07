@@ -7,7 +7,7 @@ use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -61,7 +61,7 @@ class DestroyTagTest extends TestCase
             'account_id' => 1,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $destroyTagService = new DestroyTag;
         $tag = $destroyTagService->execute($request);

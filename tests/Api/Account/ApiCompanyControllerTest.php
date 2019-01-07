@@ -200,7 +200,7 @@ class ApiCompanyControllerTest extends ApiTestCase
 
         $response = $this->json('delete', '/api/companies/0');
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The selected company id is invalid.',
         ]);
     }

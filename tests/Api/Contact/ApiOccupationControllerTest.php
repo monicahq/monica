@@ -221,7 +221,7 @@ class ApiOccupationControllerTest extends ApiTestCase
 
         $response = $this->json('delete', '/api/occupations/0');
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The selected occupation id is invalid.',
         ]);
     }

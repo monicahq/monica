@@ -147,134 +147,134 @@ import moment from 'moment';
 
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        years: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        months: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        days: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    years: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    months: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    days: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+  },
+
+  data() {
+    return {
+      selectedDay: 0,
+      selectedMonth: 0,
+      selectedYear: 0,
+      newLifeEvent: {
+        name: '',
+        note: '',
+        happened_at: '',
+        life_event_type_id: 0,
+        happened_at_month_unknown: false,
+        happened_at_day_unknown: false,
+        specific_information: '',
+        has_reminder: false,
+      },
+      categories: [],
+      activeCategory: '',
+      activeType: '',
+      types: [],
+      view: 'categories',
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.getCategories();
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD');
+      this.selectedYear = moment().year();
+      this.selectedMonth = moment().month() + 1; // month is zero indexed (O_o) in moments.js
+      this.selectedDay = moment().date();
     },
 
-    data() {
-        return {
-            selectedDay: 0,
-            selectedMonth: 0,
-            selectedYear: 0,
-            newLifeEvent: {
-                name: '',
-                note: '',
-                happened_at: '',
-                life_event_type_id: 0,
-                happened_at_month_unknown: false,
-                happened_at_day_unknown: false,
-                specific_information: '',
-                has_reminder: false,
-            },
-            categories: [],
-            activeCategory: '',
-            activeType: '',
-            types: [],
-            view: 'categories',
-            dirltr: true,
-        };
+    displayAddScreen(type) {
+      this.view = 'add';
+      this.activeType = type;
+      this.newLifeEvent.life_event_type_id = type.id;
     },
 
-    mounted() {
-        this.prepareComponent();
+    getCategories() {
+      axios.get('/lifeevents/categories')
+        .then(response => {
+          this.categories = response.data.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.getCategories();
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD');
-            this.selectedYear = moment().year();
-            this.selectedMonth = moment().month() + 1; // month is zero indexed (O_o) in moments.js
-            this.selectedDay = moment().date();
-        },
+    getType(category) {
+      axios.get('/lifeevents/categories/' + category.id + '/types')
+        .then(response => {
+          this.types = response.data.data;
+        });
 
-        displayAddScreen(type) {
-            this.view = 'add';
-            this.activeType = type;
-            this.newLifeEvent.life_event_type_id = type.id;
-        },
+      this.view = 'types';
+      this.activeCategory = category;
+    },
 
-        getCategories() {
-            axios.get('/lifeevents/categories')
-                .then(response => {
-                    this.categories = response.data.data;
-                });
-        },
+    updateLifeEventContent(lifeEvent) {
+      this.newLifeEvent.note = lifeEvent.note;
+      this.newLifeEvent.name = lifeEvent.name;
+      this.newLifeEvent.specific_information = lifeEvent.specific_information;
+    },
 
-        getType(category) {
-            axios.get('/lifeevents/categories/' + category.id + '/types')
-                .then(response => {
-                    this.types = response.data.data;
-                });
-
-            this.view = 'types';
-            this.activeCategory = category;
-        },
-
-        updateLifeEventContent(lifeEvent) {
-            this.newLifeEvent.note = lifeEvent.note;
-            this.newLifeEvent.name = lifeEvent.name;
-            this.newLifeEvent.specific_information = lifeEvent.specific_information;
-        },
-
-        /**
+    /**
           * Sets the date when the user chooses either an empty month
           * or an empty day of the month.
           * If the user chooses an empty day, the day is set to 1 and we use
           * a boolean to indicate that the day is unknown.
           * Same for the month.
           */
-        updateDate() {
-            if (this.selectedDay == 0) {
-                this.newLifeEvent.happened_at_day_unknown = true;
-                this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-01';
-            } else if (this.selectedMonth == 0) {
-                this.newLifeEvent.happened_at_month_unknown = true;
-                this.newLifeEvent.happened_at_day_unknown = true;
-                this.newLifeEvent.happened_at = this.selectedYear + '-01-01';
-                this.selectedDay = 0;
-            } else {
-                this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-' + this.selectedDay;
-                this.newLifeEvent.happened_at_month_unknown = false;
-                this.newLifeEvent.happened_at_day_unknown = false;
-            }
-        },
+    updateDate() {
+      if (this.selectedDay == 0) {
+        this.newLifeEvent.happened_at_day_unknown = true;
+        this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-01';
+      } else if (this.selectedMonth == 0) {
+        this.newLifeEvent.happened_at_month_unknown = true;
+        this.newLifeEvent.happened_at_day_unknown = true;
+        this.newLifeEvent.happened_at = this.selectedYear + '-01-01';
+        this.selectedDay = 0;
+      } else {
+        this.newLifeEvent.happened_at = this.selectedYear + '-' + this.selectedMonth + '-' + this.selectedDay;
+        this.newLifeEvent.happened_at_month_unknown = false;
+        this.newLifeEvent.happened_at_day_unknown = false;
+      }
+    },
 
-        store() {
-            axios.post('/people/' + this.hash + '/lifeevents', this.newLifeEvent)
-                .then(response => {
-                    this.$emit('updateLifeEventTimeline', response.data);
+    store() {
+      axios.post('/people/' + this.hash + '/lifeevents', this.newLifeEvent)
+        .then(response => {
+          this.$emit('updateLifeEventTimeline', response.data);
 
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.life_event_create_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-    }
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.life_event_create_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+  }
 };
 </script>

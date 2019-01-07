@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Account\Place;
 use App\Models\Account\Account;
 use App\Services\Account\Place\UpdatePlace;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -93,7 +93,7 @@ class UpdatePlaceTest extends TestCase
             'street' => '199 Lafayette Street',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new UpdatePlace)->execute($request);
     }
 

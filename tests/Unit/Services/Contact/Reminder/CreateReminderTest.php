@@ -8,7 +8,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -88,7 +88,7 @@ class CreateReminderTest extends TestCase
             'date' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $reminderService = (new CreateReminder)->execute($request);
     }
@@ -144,12 +144,12 @@ class CreateReminderTest extends TestCase
             'special_date_id' => null,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         try {
             $reminderService = (new CreateReminder)->execute($request);
-        } catch (MissingParameterException $e) {
-            $this->assertEquals(['The selected frequency type is invalid.'], $e->errors);
+        } catch (ValidationException $e) {
+            $this->assertEquals(['The selected frequency type is invalid.'], $e->validator->errors()->all());
             throw $e;
         }
     }

@@ -9,7 +9,7 @@ use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Services\Account\Photo\UploadPhoto;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UploadPhotoTest extends TestCase
@@ -50,7 +50,7 @@ class UploadPhotoTest extends TestCase
             'account_id' => 1,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $uploadService = new UploadPhoto;
         $photo = $uploadService->execute($request);
@@ -65,7 +65,7 @@ class UploadPhotoTest extends TestCase
             'photo' => UploadedFile::fake()->image('document.pdf'),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $uploadService = (new UploadPhoto)->execute($request);
     }

@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\DestroyConversation;
@@ -79,7 +79,7 @@ class DestroyConversationTest extends TestCase
             'account_id' => $conversation->account->id,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $conversationService = (new DestroyConversation)->execute($request);
     }

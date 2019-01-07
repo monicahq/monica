@@ -35,56 +35,56 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      conversations: [],
+
+      columns: [
+        {
+          label: this.$t('app.date'),
+          field: 'happened_at',
+          tdClass: 'vgt-table-date',
         },
-    },
-
-    data() {
-        return {
-            conversations: [],
-
-            columns: [
-                {
-                    label: this.$t('app.date'),
-                    field: 'happened_at',
-                    tdClass: 'vgt-table-date',
-                },
-                {
-                    label: this.$t('app.type'),
-                    field: 'contact_field_type',
-                    width: '110px',
-                },
-                {
-                    label: this.$t('people.conversation_list_table_messages'),
-                    field: 'message_count',
-                    width: '110px',
-                },
-                {
-                    label: this.$t('people.conversation_list_table_content'),
-                    field: 'content',
-                }
-            ],
-        };
-    },
-
-    mounted() {
-        this.prepareComponent(this.hash);
-    },
-
-    methods: {
-        prepareComponent(hash) {
-            axios.get('/people/' + hash + '/conversations')
-                .then(response => {
-                    this.conversations = response.data;
-                });
+        {
+          label: this.$t('app.type'),
+          field: 'contact_field_type',
+          width: '110px',
         },
-
-        onRowClick(params) {
-            window.location.href = params.row.route;
+        {
+          label: this.$t('people.conversation_list_table_messages'),
+          field: 'message_count',
+          width: '110px',
+        },
+        {
+          label: this.$t('people.conversation_list_table_content'),
+          field: 'content',
         }
+      ],
+    };
+  },
+
+  mounted() {
+    this.prepareComponent(this.hash);
+  },
+
+  methods: {
+    prepareComponent(hash) {
+      axios.get('/people/' + hash + '/conversations')
+        .then(response => {
+          this.conversations = response.data;
+        });
+    },
+
+    onRowClick(params) {
+      window.location.href = params.row.route;
     }
+  }
 };
 </script>
