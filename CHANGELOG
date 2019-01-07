@@ -12,6 +12,7 @@ Enhancements:
 
 Fixes:
 
+* Fix model binding when it is a guest request (not logged in)
 * Fix bug preventing to create life event without day and month
 * Fix ability to delete a user with a u2f key activated
 * Fix validation fails with Services
