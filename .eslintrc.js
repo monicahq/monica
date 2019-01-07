@@ -20,7 +20,7 @@ module.exports = {
         ],
         "indent": [
             "error",
-            2
+            4
         ],
         "linebreak-style": [
             "error",
@@ -68,7 +68,7 @@ module.exports = {
                 }
             }
         ],
-        "vue/no-v-html" : "error",
+        "vue/no-v-html" : "never",
         "vue/max-attributes-per-line": [
             // https://vuejs.org/v2/style-guide/#Multi-attribute-elements-strongly-recommended
             "error",
