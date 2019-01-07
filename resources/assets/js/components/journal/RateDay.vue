@@ -1,14 +1,14 @@
 <style scoped>
-    .fade-enter-active,
-    .fade-leave-active {
-        transition: opacity .4s
-    }
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity .4s
+}
 
-    .selected {
-        border: 2px solid #0981e8;
-        border-radius: 50%;
-        padding: 2px;
-    }
+.selected {
+    border: 2px solid #0981e8;
+    border-radius: 50%;
+    padding: 2px;
+}
 </style>
 
 <template>
@@ -119,7 +119,7 @@
                         <div class="flex-ns justify-between">
                             <div>
                                 <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click="dismiss()">
-                                {{ $t('app.cancel') }}
+                                    {{ $t('app.cancel') }}
                                 </a>
                             </div>
                             <div>
@@ -172,9 +172,9 @@
 
             hasAlreadyRatedToday() {
                 axios.get('/journal/hasRated')
-                    .then(response => {
-                        this.hasRated = response.data;
-                    });
+                .then(response => {
+                    this.hasRated = response.data;
+                });
             },
 
             showComment(rate) {
@@ -196,11 +196,11 @@
                 this.hasRated = 'justNow';
 
                 axios.post('/journal/day', this.day)
-                    .then(response => {
-                        this.showSadSmileyColor = false;
-                        this.showHappySmileyColor = false;
-                        this.$emit('hasRated', response.data);
-                    });
+                .then(response => {
+                    this.showSadSmileyColor = false;
+                    this.showHappySmileyColor = false;
+                    this.$emit('hasRated', response.data);
+                });
             },
         }
     };
