@@ -35,8 +35,7 @@ export default {
 
     props: {
         value: {
-            type: String,
-            default: '',
+            type: null,
         },
         options: {
             type: Array,
@@ -53,8 +52,8 @@ export default {
             default: '',
         },
         excludedId: {
-            type: String,
-            default: '',
+            type: Number,
+            default: -1,
         },
         required: {
             type: Boolean,
