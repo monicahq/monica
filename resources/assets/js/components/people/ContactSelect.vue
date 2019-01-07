@@ -13,74 +13,74 @@ import vSelect from 'vue-select';
 import axios from 'axios';
 
 export default {
-    components: {
-        vSelect
+  components: {
+    vSelect
+  },
+  props: {
+    name: {
+      type: String,
+      default: '',
     },
-    props: {
-        name: {
-            type: String,
-            default: '',
-        },
-        title: {
-            type: String,
-            default: '',
-        },
-        required: {
-            type: Boolean,
-            default: true,
-        },
-        userContactId: {
-            type: String,
-            default: '',
-        },
-        defaultOptions: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        placeholder: {
-            type: String,
-            default: '',
-        }
+    title: {
+      type: String,
+      default: '',
     },
-
-    data () {
-        return {
-            src : '/people/search',
-            filterable : false,
-            selected: null,
-            newOptions: [],
-        };
+    required: {
+      type: Boolean,
+      default: true,
     },
-
-    computed: {
-        computedOption : function() {
-            return this.newOptions.length > 0 ? this.newOptions : this.defaultOptions;
-        }
+    userContactId: {
+      type: String,
+      default: '',
     },
-
-    methods: {
-        search(keyword, loading) {
-            this.getContacts(keyword, loading, this);
-        },
-
-        getContacts: function (keyword, loading, vm) {
-            axios.post(this.src, {
-                needle: keyword,
-                accountId: $('body').attr('data-account-id')
-            }).then(function(response) {
-                let data = [];
-                response.data.data.forEach(function (contact) {
-                    if (contact.id === vm.userContactId) {
-                        return;
-                    }
-                    data.push(contact);
-                });
-
-                vm.newOptions = data;
-            });
-        }
+    defaultOptions: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    placeholder: {
+      type: String,
+      default: '',
     }
+  },
+
+  data () {
+    return {
+      src : '/people/search',
+      filterable : false,
+      selected: null,
+      newOptions: [],
+    };
+  },
+
+  computed: {
+    computedOption : function() {
+      return this.newOptions.length > 0 ? this.newOptions : this.defaultOptions;
+    }
+  },
+
+  methods: {
+    search(keyword, loading) {
+      this.getContacts(keyword, loading, this);
+    },
+
+    getContacts: function (keyword, loading, vm) {
+      axios.post(this.src, {
+        needle: keyword,
+        accountId: $('body').attr('data-account-id')
+      }).then(function(response) {
+        let data = [];
+        response.data.data.forEach(function (contact) {
+          if (contact.id === vm.userContactId) {
+            return;
+          }
+          data.push(contact);
+        });
+
+        vm.newOptions = data;
+      });
+    }
+  }
 };
 </script>

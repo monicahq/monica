@@ -134,126 +134,126 @@
 
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        contactId: {
-            type: Number,
-            default: -1,
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    contactId: {
+      type: Number,
+      default: -1,
+    },
+  },
+
+  data() {
+    return {
+      tasks: [],
+
+      updateMode: false,
+      addMode: false,
+      editMode: false,
+
+      newTask: {
+        contact_id: 0,
+        title: '',
+        description: '',
+        completed: 0
+      },
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.newTask.contact_id = this.contactId;
+      this.index();
     },
 
-    data() {
-        return {
-            tasks: [],
-
-            updateMode: false,
-            addMode: false,
-            editMode: false,
-
-            newTask: {
-                contact_id: 0,
-                title: '',
-                description: '',
-                completed: 0
-            },
-
-            dirltr: true,
-        };
+    reinitialize() {
+      this.newTask.title = '';
+      this.newTask.description = '';
     },
 
-    mounted() {
-        this.prepareComponent();
+    completed: function (tasks) {
+      return tasks.filter(function (task) {
+        return task.completed === true;
+      });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.newTask.contact_id = this.contactId;
-            this.index();
-        },
+    inProgress: function (tasks) {
+      return tasks.filter(function (task) {
+        return task.completed === false;
+      });
+    },
 
-        reinitialize() {
-            this.newTask.title = '';
-            this.newTask.description = '';
-        },
+    toggleAddMode() {
+      this.addMode = true;
+      this.reinitialize();
+    },
 
-        completed: function (tasks) {
-            return tasks.filter(function (task) {
-                return task.completed === true;
-            });
-        },
+    toggleEditMode(task) {
+      Vue.set(task, 'edit', !task.edit);
+    },
 
-        inProgress: function (tasks) {
-            return tasks.filter(function (task) {
-                return task.completed === false;
-            });
-        },
+    index() {
+      axios.get('/people/' + this.hash + '/tasks')
+        .then(response => {
+          this.tasks = response.data;
+        });
+    },
 
-        toggleAddMode() {
-            this.addMode = true;
-            this.reinitialize();
-        },
+    store() {
+      axios.post('/tasks', this.newTask)
+        .then(response => {
+          this.addMode = false;
+          this.reinitialize();
+          this.tasks.push(response.data);
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
 
-        toggleEditMode(task) {
-            Vue.set(task, 'edit', !task.edit);
-        },
+    toggleComplete(task) {
+      task.completed = !task.completed;
+      this.update(task, false);
+    },
 
-        index() {
-            axios.get('/people/' + this.hash + '/tasks')
-                .then(response => {
-                    this.tasks = response.data;
-                });
-        },
+    update(task, toggleEdit) {
+      axios.put('/tasks/' + task.id, task)
+        .then(response => {
+          this.updateMode = false;
+          if (toggleEdit) {
+            this.toggleEditMode(task);
+          }
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
 
-        store() {
-            axios.post('/tasks', this.newTask)
-                .then(response => {
-                    this.addMode = false;
-                    this.reinitialize();
-                    this.tasks.push(response.data);
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
+    trash(task) {
+      axios.delete('/tasks/' + task.id)
+        .then(response => {
+          this.tasks.splice(this.tasks.indexOf(task), 1);
+        });
 
-        toggleComplete(task) {
-            task.completed = !task.completed;
-            this.update(task, false);
-        },
-
-        update(task, toggleEdit) {
-            axios.put('/tasks/' + task.id, task)
-                .then(response => {
-                    this.updateMode = false;
-                    if (toggleEdit) {
-                        this.toggleEditMode(task);
-                    }
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        trash(task) {
-            axios.delete('/tasks/' + task.id)
-                .then(response => {
-                    this.tasks.splice(this.tasks.indexOf(task), 1);
-                });
-
-            if (this.tasks.length <= 1) {
-                this.editMode = false;
-            }
-        },
-    }
+      if (this.tasks.length <= 1) {
+        this.editMode = false;
+      }
+    },
+  }
 };
 </script>

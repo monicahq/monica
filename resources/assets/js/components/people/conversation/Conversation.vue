@@ -57,70 +57,70 @@
 <script>
 export default {
 
-    props: {
-        participantName: {
-            type: String,
-            default: '',
-        },
-        existingMessages: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
+  props: {
+    participantName: {
+      type: String,
+      default: '',
+    },
+    existingMessages: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+  },
+
+  data() {
+    return {
+      messages: [],
+      uid: 1,
+      displayTrash: false,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      if (this.existingMessages) {
+        this.messages = this.existingMessages;
+        this.uid = this.messages[this.messages.length - 1].uid + 1;
+      } else {
+        this.messages.push({
+          uid: this.uid++,
+          content: '',
+          author: 'me'
+        });
+      }
     },
 
-    data() {
-        return {
-            messages: [],
-            uid: 1,
-            displayTrash: false,
-        };
+    addMessage() {
+      this.messages.push({
+        uid: this.uid++,
+        content: '',
+        author: 'me'
+      });
+      if (this.messages.length > 1) {
+        this.displayTrash = true;
+      }
     },
 
-    mounted() {
-        this.prepareComponent();
+    updateContent(updatedContent, message) {
+      message.content = updatedContent;
     },
 
-    methods: {
-        prepareComponent() {
-            if (this.existingMessages) {
-                this.messages = this.existingMessages;
-                this.uid = this.messages[this.messages.length - 1].uid + 1;
-            } else {
-                this.messages.push({
-                    uid: this.uid++,
-                    content: '',
-                    author: 'me'
-                });
-            }
-        },
+    updateAuthor(updatedAuthor, message) {
+      message.author = updatedAuthor;
+    },
 
-        addMessage() {
-            this.messages.push({
-                uid: this.uid++,
-                content: '',
-                author: 'me'
-            });
-            if (this.messages.length > 1) {
-                this.displayTrash = true;
-            }
-        },
-
-        updateContent(updatedContent, message) {
-            message.content = updatedContent;
-        },
-
-        updateAuthor(updatedAuthor, message) {
-            message.author = updatedAuthor;
-        },
-
-        deleteMessage(uid, message) {
-            this.messages.splice(this.messages.indexOf(this.messages.find(item => item.uid === uid)), 1);
-            if (this.messages.length <= 1) {
-                this.displayTrash = false;
-            }
-        },
-    }
+    deleteMessage(uid, message) {
+      this.messages.splice(this.messages.indexOf(this.messages.find(item => item.uid === uid)), 1);
+      if (this.messages.length <= 1) {
+        this.displayTrash = false;
+      }
+    },
+  }
 };
 </script>

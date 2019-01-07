@@ -22,45 +22,45 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        starred: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    starred: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      isFavorite: false,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.isFavorite = this.starred;
     },
 
-    data() {
-        return {
-            isFavorite: false,
-        };
+    store(toggle) {
+      axios.post('/people/' + this.hash + '/favorite', {'toggle': toggle})
+        .then(response => {
+          this.isFavorite = response.data.is_starred;
+
+          this.$notify({
+            group: 'favorite',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        });
     },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.isFavorite = this.starred;
-        },
-
-        store(toggle) {
-            axios.post('/people/' + this.hash + '/favorite', {'toggle': toggle})
-                .then(response => {
-                    this.isFavorite = response.data.is_starred;
-
-                    this.$notify({
-                        group: 'favorite',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-    }
+  }
 };
 </script>

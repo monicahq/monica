@@ -116,128 +116,128 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      petCategories: [],
+      pets: [],
+
+      editMode: false,
+      addMode: false,
+      updateMode: false,
+
+      createForm: {
+        pet_category_id: '',
+        name: '',
+        errors: []
+      },
+
+      updateForm: {
+        id: '',
+        pet_category_id: '',
+        name: '',
+        edit: false,
+        errors: []
+      },
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getPetCategories();
+      this.getPets();
     },
 
-    data() {
-        return {
-            petCategories: [],
-            pets: [],
-
-            editMode: false,
-            addMode: false,
-            updateMode: false,
-
-            createForm: {
-                pet_category_id: '',
-                name: '',
-                errors: []
-            },
-
-            updateForm: {
-                id: '',
-                pet_category_id: '',
-                name: '',
-                edit: false,
-                errors: []
-            },
-
-            dirltr: true,
-        };
+    getPetCategories() {
+      axios.get('/petcategories')
+        .then(response => {
+          this.petCategories = response.data;
+        });
     },
 
-    mounted() {
-        this.prepareComponent();
+    getPets() {
+      axios.get('/people/' + this.hash + '/pets')
+        .then(response => {
+          this.pets = response.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getPetCategories();
-            this.getPets();
-        },
+    store() {
+      axios.post('/people/' + this.hash + '/pets', this.createForm)
+        .then(response => {
+          this.addMode = false;
+          this.pets.push(response.data);
+          this.createForm.name = '';
 
-        getPetCategories() {
-            axios.get('/petcategories')
-                .then(response => {
-                    this.petCategories = response.data;
-                });
-        },
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.pets_create_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
 
-        getPets() {
-            axios.get('/people/' + this.hash + '/pets')
-                .then(response => {
-                    this.pets = response.data;
-                });
-        },
+    toggleAdd() {
+      this.addMode = true;
+      this.createForm.data = '';
+      this.createForm.pet_category_id = '';
+    },
 
-        store() {
-            axios.post('/people/' + this.hash + '/pets', this.createForm)
-                .then(response => {
-                    this.addMode = false;
-                    this.pets.push(response.data);
-                    this.createForm.name = '';
+    toggleEdit(pet) {
+      Vue.set(pet, 'edit', !pet.edit);
+      this.updateForm.id = pet.id;
+      this.updateForm.name = pet.name;
+      this.updateForm.pet_category_id = pet.pet_category_id;
+    },
 
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.pets_create_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
+    update(pet) {
+      axios.put('/people/' + this.hash + '/pets/' + pet.id, this.updateForm)
+        .then(response => {
+          Vue.set(pet, 'edit', !pet.edit);
+          Vue.set(pet, 'name', response.data.name);
+          Vue.set(pet, 'pet_category_id', response.data.pet_category_id);
+          Vue.set(pet, 'category_name', response.data.category_name);
 
-        toggleAdd() {
-            this.addMode = true;
-            this.createForm.data = '';
-            this.createForm.pet_category_id = '';
-        },
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.pets_update_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
 
-        toggleEdit(pet) {
-            Vue.set(pet, 'edit', !pet.edit);
-            this.updateForm.id = pet.id;
-            this.updateForm.name = pet.name;
-            this.updateForm.pet_category_id = pet.pet_category_id;
-        },
+    trash(pet) {
+      axios.delete('/people/' + this.hash + '/pets/' + pet.id)
+        .then(response => {
+          this.getPets();
 
-        update(pet) {
-            axios.put('/people/' + this.hash + '/pets/' + pet.id, this.updateForm)
-                .then(response => {
-                    Vue.set(pet, 'edit', !pet.edit);
-                    Vue.set(pet, 'name', response.data.name);
-                    Vue.set(pet, 'pet_category_id', response.data.pet_category_id);
-                    Vue.set(pet, 'category_name', response.data.category_name);
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.pets_delete_success'),
+            text: '',
+            type: 'success'
+          });
+        });
 
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.pets_update_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        trash(pet) {
-            axios.delete('/people/' + this.hash + '/pets/' + pet.id)
-                .then(response => {
-                    this.getPets();
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.pets_delete_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-
-            if (this.pets.length <= 1) {
-                this.editMode = false;
-            }
-        },
-    }
+      if (this.pets.length <= 1) {
+        this.editMode = false;
+      }
+    },
+  }
 };
 </script>

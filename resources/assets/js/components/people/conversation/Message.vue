@@ -68,71 +68,71 @@
 <script>
 export default {
 
-    props: {
-        uid: {
-            type: Number,
-            default: 0,
-        },
-        id: {
-            type: String,
-            default: '',
-        },
-        participantName: {
-            type: String,
-            default: '',
-        },
-        author: {
-            type: String,
-            default: '',
-        },
-        placeholder: {
-            type: String,
-            default: '',
-        },
-        required: {
-            type: Boolean,
-            default: true,
-        },
-        content: {
-            type: String,
-            default: '',
-        },
-        displayTrash: {
-            type: Boolean,
-            default: true,
-        },
+  props: {
+    uid: {
+      type: Number,
+      default: 0,
+    },
+    id: {
+      type: String,
+      default: '',
+    },
+    participantName: {
+      type: String,
+      default: '',
+    },
+    author: {
+      type: String,
+      default: '',
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    required: {
+      type: Boolean,
+      default: true,
+    },
+    content: {
+      type: String,
+      default: '',
+    },
+    displayTrash: {
+      type: Boolean,
+      default: true,
+    },
+  },
+
+  data() {
+    return {
+      buffer: this.content,
+      updatedAuthor: this.author,
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
     },
 
-    data() {
-        return {
-            buffer: this.content,
-            updatedAuthor: this.author,
-            dirltr: true,
-        };
+    updateContent(updatedContent) {
+      this.buffer = updatedContent;
+      this.$emit('contentChange', this.buffer);
     },
 
-    mounted() {
-        this.prepareComponent();
+    deleteMessage() {
+      this.$emit('deleteMessage', this.uid);
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-        },
-
-        updateContent(updatedContent) {
-            this.buffer = updatedContent;
-            this.$emit('contentChange', this.buffer);
-        },
-
-        deleteMessage() {
-            this.$emit('deleteMessage', this.uid);
-        },
-
-        updateAuthor(newAuthor) {
-            this.updatedOther = newAuthor;
-            this.$emit('updateAuthor', newAuthor);
-        },
-    }
+    updateAuthor(newAuthor) {
+      this.updatedOther = newAuthor;
+      this.$emit('updateAuthor', newAuthor);
+    },
+  }
 };
 </script>

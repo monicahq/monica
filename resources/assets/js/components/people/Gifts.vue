@@ -201,100 +201,100 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
+  components: {
+    SweetModal
+  },
+
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    giftsActiveTab: {
+      type: String,
+      default: 'ideas',
+    },
+  },
+
+  data() {
+    return {
+      gifts: [],
+      activeTab: '',
+      giftToTrash: '',
+      dirltr: true,
+    };
+  },
+
+  computed: {
+    ideas: function () {
+      return this.gifts.filter(function (gift) {
+        return gift.is_an_idea === true;
+      });
     },
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        giftsActiveTab: {
-            type: String,
-            default: 'ideas',
-        },
+    offered: function () {
+      return this.gifts.filter(function (gift) {
+        return gift.has_been_offered === true;
+      });
     },
 
-    data() {
-        return {
-            gifts: [],
-            activeTab: '',
-            giftToTrash: '',
-            dirltr: true,
-        };
+    received: function () {
+      return this.gifts.filter(function (gift) {
+        return gift.has_been_received === true;
+      });
+    },
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getGifts();
+      this.setActiveTab(this.giftsActiveTab);
     },
 
-    computed: {
-        ideas: function () {
-            return this.gifts.filter(function (gift) {
-                return gift.is_an_idea === true;
-            });
-        },
-
-        offered: function () {
-            return this.gifts.filter(function (gift) {
-                return gift.has_been_offered === true;
-            });
-        },
-
-        received: function () {
-            return this.gifts.filter(function (gift) {
-                return gift.has_been_received === true;
-            });
-        },
+    toggleComment(gift) {
+      Vue.set(gift, 'show_comment', !gift.show_comment);
     },
 
-    mounted() {
-        this.prepareComponent();
+    setActiveTab(view) {
+      this.activeTab = view;
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getGifts();
-            this.setActiveTab(this.giftsActiveTab);
-        },
+    getGifts() {
+      axios.get('/people/' + this.hash + '/gifts')
+        .then(response => {
+          this.gifts = response.data;
+        });
+    },
 
-        toggleComment(gift) {
-            Vue.set(gift, 'show_comment', !gift.show_comment);
-        },
+    toggle(gift) {
+      axios.post('/people/' + this.hash + '/gifts/' + gift.id + '/toggle')
+        .then(response => {
+          Vue.set(gift, 'is_an_idea', response.data.is_an_idea);
+          Vue.set(gift, 'has_been_offered', response.data.has_been_offered);
+        });
+    },
 
-        setActiveTab(view) {
-            this.activeTab = view;
-        },
+    showDeleteModal(gift) {
+      this.$refs.modal.open();
+      this.giftToTrash = gift;
+    },
 
-        getGifts() {
-            axios.get('/people/' + this.hash + '/gifts')
-                .then(response => {
-                    this.gifts = response.data;
-                });
-        },
+    trash(gift) {
+      axios.delete('/people/' + this.hash + '/gifts/' + gift.id)
+        .then(response => {
+          this.gifts.splice(this.gifts.indexOf(gift), 1);
+          this.$refs.modal.close();
+        });
+    },
 
-        toggle(gift) {
-            axios.post('/people/' + this.hash + '/gifts/' + gift.id + '/toggle')
-                .then(response => {
-                    Vue.set(gift, 'is_an_idea', response.data.is_an_idea);
-                    Vue.set(gift, 'has_been_offered', response.data.has_been_offered);
-                });
-        },
-
-        showDeleteModal(gift) {
-            this.$refs.modal.open();
-            this.giftToTrash = gift;
-        },
-
-        trash(gift) {
-            axios.delete('/people/' + this.hash + '/gifts/' + gift.id)
-                .then(response => {
-                    this.gifts.splice(this.gifts.indexOf(gift), 1);
-                    this.$refs.modal.close();
-                });
-        },
-
-        closeDeleteModal() {
-            this.$refs.modal.close();
-        }
+    closeDeleteModal() {
+      this.$refs.modal.close();
     }
+  }
 };
 </script>

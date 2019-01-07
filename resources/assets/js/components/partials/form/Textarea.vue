@@ -32,41 +32,41 @@ textarea:focus {
 <script>
 export default {
 
-    props: {
-        value: {
-            type: String,
-            default: '',
-        },
-        label: {
-            type: String,
-            default: '',
-        },
-        id: {
-            type: String,
-            default: '',
-        },
-        placeholder: {
-            type: String,
-            default: '',
-        },
-        required: {
-            type: Boolean,
-            default: true,
-        },
-        width: {
-            type: Number,
-            default: -1,
-        },
-        rows: {
-            type: Number,
-            default: 0,
-        }
+  props: {
+    value: {
+      type: String,
+      default: '',
     },
+    label: {
+      type: String,
+      default: '',
+    },
+    id: {
+      type: String,
+      default: '',
+    },
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    required: {
+      type: Boolean,
+      default: true,
+    },
+    width: {
+      type: Number,
+      default: -1,
+    },
+    rows: {
+      type: Number,
+      default: 0,
+    }
+  },
 
-    data() {
-        return {
-            buffer: this.value
-        };
-    },
+  data() {
+    return {
+      buffer: this.value
+    };
+  },
 };
 </script>
