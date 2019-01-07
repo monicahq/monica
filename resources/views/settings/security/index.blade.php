@@ -79,7 +79,8 @@
               @if (config('u2f.enable')===true)
                 <u2f-connector
                   :method="'register-modal'"
-                  :currentkeys="{{ json_encode($currentkeys) }}">
+                  :currentkeys="{{ json_encode($currentkeys) }}"
+                  :timezone="{{ json_encode(auth()->user()->timezone) }}">
                 </u2f-connector>
                 <script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
               @endif

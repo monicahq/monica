@@ -1,14 +1,6 @@
 <style scoped>
 .time {
     color: gray;
-    size: small;
-    
-}
-.time-dirltr {
-    padding-left: 10px;
-}
-.time-dirrtl {
-    padding-right: 10px;
 }
 </style>
 
@@ -20,31 +12,30 @@
       <h3>{{ $t('settings.u2f_title') }}</h3>
 
       <div v-if="keys != null">
-        <ul>
+        <ul class="table">
           <li v-for="key in keys"
               :key="key.id"
-              class="cb"
+              class="table-row"
           >
-            <span :class="[dirltr ? 'fl' : 'fr']">
-              ▶️ <strong>{{ key.name }}</strong>
-              <span v-if="key.counter > 0"
-                    class="time"
-                    :class="[dirltr ? 'time-dirltr' : 'time-dirrtl']"
-              >
+            <div class="table-cell">
+              <strong>{{ key.name }}</strong>
+            </div>
+            <div class="table-cell time">
+              <span v-if="key.counter > 0">
                 {{ $t('settings.u2f_last_use') }} {{ formatTime(key.updated_at) }}
               </span>
-            </span>
-            <a class="pointer"
-               :class="[dirltr ? 'fr' : 'fl']"
-               :cy-name="'u2fkey-delete-button-' + key.id"
-               @click.prevent="showDeleteModal(key.id)"
-            >
-              {{ $t('app.delete') }}
-            </a>
+            </div>
+            <div class="table-cell actions">
+              <a class="pointer"
+                 :cy-name="'u2fkey-delete-button-' + key.id"
+                 @click.prevent="showDeleteModal(key.id)"
+              >
+                {{ $t('app.delete') }}
+              </a>
+            </div>
           </li>
         </ul>
       </div>
-      <div class="cb form-group"></div>
       <a class="btn btn-primary" @click="showRegisterModal">
         {{ $t('settings.u2f_enable_description') }}
       </a>
@@ -150,7 +141,6 @@
 </template>
 
 <script>
-import moment from 'moment';
 import { SweetModal } from 'sweet-modal-vue';
 
 export default {
@@ -181,6 +171,10 @@ export default {
             default: '',
         },
         callbackurl: {
+            type: String,
+            default: '',
+        },
+        timezone: {
             type: String,
             default: '',
         },
@@ -287,6 +281,7 @@ export default {
                             window.location = self.callbackurl;
                         }, 3000);
                     } else {
+                        
                         self.closeRegisterModal();
                     }
                 });
@@ -338,7 +333,14 @@ export default {
         },
 
         formatTime(value) {
-            return moment(value).format('LLLL');
+            var moment = require('moment-timezone');
+            moment.locale(this._i18n.locale);
+            moment.tz.setDefault('UTC');
+
+            var t = moment(value);
+            var date = moment.tz(t, this.timezone);
+            
+            return date.format('LLLL');
         },
 
         getErrorText(errorcode) {
