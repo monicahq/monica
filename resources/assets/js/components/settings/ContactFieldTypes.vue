@@ -236,149 +236,149 @@ import Error from '../partials/Error.vue';
 
 export default {
 
-    data() {
-        return {
-            contactFieldTypes: [],
+  data() {
+    return {
+      contactFieldTypes: [],
 
-            submitted: false,
-            edited: false,
-            deleted: false,
+      submitted: false,
+      edited: false,
+      deleted: false,
 
-            createForm: {
-                name: '',
-                protocol: '',
-                icon: '',
-                errors: []
-            },
+      createForm: {
+        name: '',
+        protocol: '',
+        icon: '',
+        errors: []
+      },
 
-            editForm: {
-                id: '',
-                name: '',
-                protocol: '',
-                icon: '',
-                errors: []
-            },
+      editForm: {
+        id: '',
+        name: '',
+        protocol: '',
+        icon: '',
+        errors: []
+      },
 
-            errorTemplate: Error,
+      errorTemplate: Error,
 
-            dirltr: true,
-        };
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getContactFieldTypes();
+
+      $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
+        $('#name').focus();
+      });
+
+      $('#modal-edit-contact-field-type').on('shown.bs.modal', () => {
+        $('#name').focus();
+      });
     },
 
-    mounted() {
-        this.prepareComponent();
+    getContactFieldTypes() {
+      axios.get('/settings/personalization/contactfieldtypes')
+        .then(response => {
+          this.contactFieldTypes = response.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getContactFieldTypes();
+    add() {
+      $('#modal-create-contact-field-type').modal('show');
+    },
 
-            $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
-                $('#name').focus();
-            });
+    store() {
+      this.persistClient(
+        'post', '/settings/personalization/contactfieldtypes',
+        this.createForm, '#modal-create-contact-field-type', this.submitted
+      );
 
-            $('#modal-edit-contact-field-type').on('shown.bs.modal', () => {
-                $('#name').focus();
-            });
-        },
+      this.$notify({
+        group: 'main',
+        title: this.$t('settings.personalization_contact_field_type_add_success'),
+        text: '',
+        width: '500px',
+        type: 'success'
+      });
+    },
 
-        getContactFieldTypes() {
-            axios.get('/settings/personalization/contactfieldtypes')
-                .then(response => {
-                    this.contactFieldTypes = response.data;
-                });
-        },
+    edit(contactFieldType) {
+      this.editForm.id = contactFieldType.id;
+      this.editForm.name = contactFieldType.name;
+      this.editForm.protocol = contactFieldType.protocol;
+      this.editForm.icon = contactFieldType.fontawesome_icon;
 
-        add() {
-            $('#modal-create-contact-field-type').modal('show');
-        },
+      $('#modal-edit-contact-field-type').modal('show');
+    },
 
-        store() {
-            this.persistClient(
-                'post', '/settings/personalization/contactfieldtypes',
-                this.createForm, '#modal-create-contact-field-type', this.submitted
-            );
+    update() {
+      this.persistClient(
+        'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+        this.editForm, '#modal-edit-contact-field-type', this.edited
+      );
 
-            this.$notify({
-                group: 'main',
-                title: this.$t('settings.personalization_contact_field_type_add_success'),
-                text: '',
-                width: '500px',
-                type: 'success'
-            });
-        },
+      this.$notify({
+        group: 'main',
+        title: this.$t('settings.personalization_contact_field_type_edit_success'),
+        text: '',
+        width: '500px',
+        type: 'success'
+      });
+    },
 
-        edit(contactFieldType) {
-            this.editForm.id = contactFieldType.id;
-            this.editForm.name = contactFieldType.name;
-            this.editForm.protocol = contactFieldType.protocol;
-            this.editForm.icon = contactFieldType.fontawesome_icon;
+    showDelete(contactFieldType) {
+      this.editForm.id = contactFieldType.id;
 
-            $('#modal-edit-contact-field-type').modal('show');
-        },
+      $('#modal-delete-contact-field-type').modal('show');
+    },
 
-        update() {
-            this.persistClient(
-                'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
-                this.editForm, '#modal-edit-contact-field-type', this.edited
-            );
+    trash() {
+      this.persistClient(
+        'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+        this.editForm, '#modal-delete-contact-field-type', this.deleted
+      );
 
-            this.$notify({
-                group: 'main',
-                title: this.$t('settings.personalization_contact_field_type_edit_success'),
-                text: '',
-                width: '500px',
-                type: 'success'
-            });
-        },
+      this.$notify({
+        group: 'main',
+        title: this.$t('settings.personalization_contact_field_type_delete_success'),
+        text: '',
+        width: '500px',
+        type: 'success'
+      });
+    },
 
-        showDelete(contactFieldType) {
-            this.editForm.id = contactFieldType.id;
+    persistClient(method, uri, form, modal, success) {
+      form.errors = {};
 
-            $('#modal-delete-contact-field-type').modal('show');
-        },
+      axios[method](uri, form)
+        .then(response => {
+          this.getContactFieldTypes();
 
-        trash() {
-            this.persistClient(
-                'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
-                this.editForm, '#modal-delete-contact-field-type', this.deleted
-            );
+          form.id = '';
+          form.name = '';
+          form.protocol = '';
+          form.icon = '';
+          form.errors = [];
 
-            this.$notify({
-                group: 'main',
-                title: this.$t('settings.personalization_contact_field_type_delete_success'),
-                text: '',
-                width: '500px',
-                type: 'success'
-            });
-        },
+          $(modal).modal('hide');
 
-        persistClient(method, uri, form, modal, success) {
-            form.errors = {};
-
-            axios[method](uri, form)
-                .then(response => {
-                    this.getContactFieldTypes();
-
-                    form.id = '';
-                    form.name = '';
-                    form.protocol = '';
-                    form.icon = '';
-                    form.errors = [];
-
-                    $(modal).modal('hide');
-
-                    success = true;
-                })
-                .catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        form.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        form.errors = [this.$t('app.error_try_again')];
-                    }
-                });
-        },
-    }
+          success = true;
+        })
+        .catch(error => {
+          if (typeof error.response.data === 'object') {
+            form.errors = _.flatten(_.toArray(error.response.data));
+          } else {
+            form.errors = [this.$t('app.error_try_again')];
+          }
+        });
+    },
+  }
 };
 </script>

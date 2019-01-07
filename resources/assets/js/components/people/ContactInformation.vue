@@ -107,126 +107,126 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        contactId: {
-            type: Number,
-            default: -1,
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    contactId: {
+      type: Number,
+      default: -1,
+    },
+  },
+
+  data() {
+    return {
+      contactInformationData: [],
+      contactFieldTypes: [],
+
+      editMode: false,
+      addMode: false,
+      updateMode: false,
+
+      createForm: {
+        contact_field_type_id: '',
+        data: '',
+        errors: []
+      },
+
+      updateForm: {
+        id: '',
+        contact_field_type_id: '',
+        data: '',
+        edit: false,
+        errors: []
+      },
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getContactInformationData();
+      this.getContactFieldTypes();
     },
 
-    data() {
-        return {
-            contactInformationData: [],
-            contactFieldTypes: [],
-
-            editMode: false,
-            addMode: false,
-            updateMode: false,
-
-            createForm: {
-                contact_field_type_id: '',
-                data: '',
-                errors: []
-            },
-
-            updateForm: {
-                id: '',
-                contact_field_type_id: '',
-                data: '',
-                edit: false,
-                errors: []
-            },
-
-            dirltr: true,
-        };
+    getContactInformationData() {
+      axios.get('/people/' + this.hash + '/contactfield')
+        .then(response => {
+          this.contactInformationData = response.data;
+        });
     },
 
-    mounted() {
-        this.prepareComponent();
+    getContactFieldTypes() {
+      axios.get('/people/' + this.hash + '/contactfieldtypes')
+        .then(response => {
+          this.contactFieldTypes = response.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getContactInformationData();
-            this.getContactFieldTypes();
-        },
+    store() {
+      this.persistClient(
+        'post', '/people/' + this.hash + '/contactfield',
+        this.createForm
+      );
 
-        getContactInformationData() {
-            axios.get('/people/' + this.hash + '/contactfield')
-                .then(response => {
-                    this.contactInformationData = response.data;
-                });
-        },
+      this.addMode = false;
+    },
 
-        getContactFieldTypes() {
-            axios.get('/people/' + this.hash + '/contactfieldtypes')
-                .then(response => {
-                    this.contactFieldTypes = response.data;
-                });
-        },
+    toggleAdd() {
+      this.addMode = true;
+      this.createForm.data = '';
+      this.createForm.contact_field_type_id = '';
+    },
 
-        store() {
-            this.persistClient(
-                'post', '/people/' + this.hash + '/contactfield',
-                this.createForm
-            );
+    toggleEdit(contactField) {
+      Vue.set(contactField, 'edit', !contactField.edit);
+      this.updateForm.id = contactField.id;
+      this.updateForm.data = contactField.data;
+      this.updateForm.contact_field_type_id = contactField.contact_field_type_id;
+    },
 
-            this.addMode = false;
-        },
+    update(contactField) {
+      this.persistClient(
+        'put', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        this.updateForm
+      );
+    },
 
-        toggleAdd() {
-            this.addMode = true;
-            this.createForm.data = '';
-            this.createForm.contact_field_type_id = '';
-        },
+    trash(contactField) {
+      this.updateForm.id = contactField.id;
 
-        toggleEdit(contactField) {
-            Vue.set(contactField, 'edit', !contactField.edit);
-            this.updateForm.id = contactField.id;
-            this.updateForm.data = contactField.data;
-            this.updateForm.contact_field_type_id = contactField.contact_field_type_id;
-        },
+      this.persistClient(
+        'delete', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        this.updateForm
+      );
 
-        update(contactField) {
-            this.persistClient(
-                'put', '/people/' + this.hash + '/contactfield/' + contactField.id,
-                this.updateForm
-            );
-        },
+      if (this.contactInformationData.length <= 1) {
+        this.editMode = false;
+      }
+    },
 
-        trash(contactField) {
-            this.updateForm.id = contactField.id;
+    persistClient(method, uri, form) {
+      form.errors = [];
 
-            this.persistClient(
-                'delete', '/people/' + this.hash + '/contactfield/' + contactField.id,
-                this.updateForm
-            );
-
-            if (this.contactInformationData.length <= 1) {
-                this.editMode = false;
-            }
-        },
-
-        persistClient(method, uri, form) {
-            form.errors = [];
-
-            axios[method](uri, form)
-                .then(response => {
-                    this.getContactInformationData();
-                })
-                .catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        form.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        form.errors = [this.$t('app.error_try_again')];
-                    }
-                });
-        },
-    }
+      axios[method](uri, form)
+        .then(response => {
+          this.getContactInformationData();
+        })
+        .catch(error => {
+          if (typeof error.response.data === 'object') {
+            form.errors = _.flatten(_.toArray(error.response.data));
+          } else {
+            form.errors = [this.$t('app.error_try_again')];
+          }
+        });
+    },
+  }
 };
 </script>

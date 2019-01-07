@@ -145,132 +145,132 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
+  components: {
+    SweetModal
+  },
+
+  data() {
+    return {
+      genders: [],
+      updatedGender: {
+        id: '',
+        name: ''
+      },
+
+      numberOfContacts: 0,
+      errorMessage: '',
+
+      createForm: {
+        name: '',
+        errors: []
+      },
+
+      updateForm: {
+        id: '',
+        name: '',
+        errors: []
+      },
+
+      deleteForm: {
+        id: '',
+        name: '',
+        newId: 0
+      },
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getGenders();
     },
 
-    data() {
-        return {
-            genders: [],
-            updatedGender: {
-                id: '',
-                name: ''
-            },
-
-            numberOfContacts: 0,
-            errorMessage: '',
-
-            createForm: {
-                name: '',
-                errors: []
-            },
-
-            updateForm: {
-                id: '',
-                name: '',
-                errors: []
-            },
-
-            deleteForm: {
-                id: '',
-                name: '',
-                newId: 0
-            },
-
-            dirltr: true,
-        };
+    getGenders() {
+      axios.get('/settings/personalization/genders')
+        .then(response => {
+          this.genders = response.data;
+        });
     },
 
-    mounted() {
-        this.prepareComponent();
+    closeModal() {
+      this.$refs.createModal.close();
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getGenders();
-        },
+    closeUpdateModal() {
+      this.$refs.updateModal.close();
+    },
 
-        getGenders() {
-            axios.get('/settings/personalization/genders')
-                .then(response => {
-                    this.genders = response.data;
-                });
-        },
+    closeDeleteModal() {
+      this.$refs.deleteModal.close();
+    },
 
-        closeModal() {
-            this.$refs.createModal.close();
-        },
+    showCreateModal() {
+      this.$refs.createModal.open();
+    },
 
-        closeUpdateModal() {
-            this.$refs.updateModal.close();
-        },
+    store() {
+      axios.post('/settings/personalization/genders', this.createForm)
+        .then(response => {
+          this.$refs.createModal.close();
+          this.genders.push(response.data);
+          this.createForm.name = '';
+        });
+    },
 
-        closeDeleteModal() {
-            this.$refs.deleteModal.close();
-        },
+    showEdit(gender) {
+      this.updateForm.id = gender.id.toString();
+      this.updateForm.name = gender.name;
+      this.updatedGender = gender;
 
-        showCreateModal() {
-            this.$refs.createModal.open();
-        },
+      this.$refs.updateModal.open();
+    },
 
-        store() {
-            axios.post('/settings/personalization/genders', this.createForm)
-                .then(response => {
-                    this.$refs.createModal.close();
-                    this.genders.push(response.data);
-                    this.createForm.name = '';
-                });
-        },
+    update() {
+      axios.put('/settings/personalization/genders/' + this.updateForm.id, this.updateForm)
+        .then(response => {
+          this.$refs.updateModal.close();
+          this.updatedGender.name = this.updateForm.name;
+          this.updateForm.name = '';
+        });
+    },
 
-        showEdit(gender) {
-            this.updateForm.id = gender.id.toString();
-            this.updateForm.name = gender.name;
-            this.updatedGender = gender;
+    showDelete(gender) {
+      this.errorMessage = '';
+      this.deleteForm.name = gender.name;
+      this.deleteForm.id = gender.id.toString();
+      this.numberOfContacts = gender.numberOfContacts;
 
-            this.$refs.updateModal.open();
-        },
+      this.$refs.deleteModal.open();
+    },
 
-        update() {
-            axios.put('/settings/personalization/genders/' + this.updateForm.id, this.updateForm)
-                .then(response => {
-                    this.$refs.updateModal.close();
-                    this.updatedGender.name = this.updateForm.name;
-                    this.updateForm.name = '';
-                });
-        },
+    trash() {
+      axios.delete('/settings/personalization/genders/' + this.deleteForm.id)
+        .then(response => {
+          this.closeDeleteModal();
+          this.getGenders();
+        });
+    },
 
-        showDelete(gender) {
-            this.errorMessage = '';
-            this.deleteForm.name = gender.name;
-            this.deleteForm.id = gender.id.toString();
-            this.numberOfContacts = gender.numberOfContacts;
-
-            this.$refs.deleteModal.open();
-        },
-
-        trash() {
-            axios.delete('/settings/personalization/genders/' + this.deleteForm.id)
-                .then(response => {
-                    this.closeDeleteModal();
-                    this.getGenders();
-                });
-        },
-
-        trashAndReplace() {
-            axios.delete('/settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
-                .then(response => {
-                    this.closeDeleteModal();
-                    this.getGenders();
-                })
-                .catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        this.errorMessage = error.response.data.message;
-                    } else {
-                        this.errorMessage = this.$t('app.error_try_again');
-                    }
-                });
-        },
-    }
+    trashAndReplace() {
+      axios.delete('/settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
+        .then(response => {
+          this.closeDeleteModal();
+          this.getGenders();
+        })
+        .catch(error => {
+          if (typeof error.response.data === 'object') {
+            this.errorMessage = error.response.data.message;
+          } else {
+            this.errorMessage = this.$t('app.error_try_again');
+          }
+        });
+    },
+  }
 };
 </script>

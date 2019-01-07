@@ -131,38 +131,38 @@
 <script>
 export default {
 
-    props: {
-        journalEntry: {
-            type: Object,
-            default: null,
-        },
+  props: {
+    journalEntry: {
+      type: Object,
+      default: null,
+    },
+  },
+
+  data() {
+    return {
+      day: [],
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.day = this.journalEntry.object;
     },
 
-    data() {
-        return {
-            day: [],
-
-            dirltr: true,
-        };
+    destroy() {
+      axios.delete('/journal/day/' + this.day.id)
+        .then(response => {
+          this.$emit('deleteJournalEntry', this.journalEntry.id);
+        });
     },
 
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.day = this.journalEntry.object;
-        },
-
-        destroy() {
-            axios.delete('/journal/day/' + this.day.id)
-                .then(response => {
-                    this.$emit('deleteJournalEntry', this.journalEntry.id);
-                });
-        },
-
-    }
+  }
 };
 </script>

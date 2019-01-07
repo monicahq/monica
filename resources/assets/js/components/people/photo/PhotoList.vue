@@ -146,119 +146,119 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        reachLimit: {
-            type: String,
-            default: '',
-        },
-        currentPhotoIdAsAvatar: {
-            type: String,
-            default: '',
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
     },
+    reachLimit: {
+      type: String,
+      default: '',
+    },
+    currentPhotoIdAsAvatar: {
+      type: String,
+      default: '',
+    },
+  },
     
-    data() {
-        return {
-            photos: [],
-            displayUploadZone: false,
-            displayUploadProgress: false,
-            displayUploadError: false,
-            file: '',
-            uploadPercentage: 0,
-            confirmDestroyPhotoId: 0,
-            showModal: false,
-            url: '',
-        };
+  data() {
+    return {
+      photos: [],
+      displayUploadZone: false,
+      displayUploadProgress: false,
+      displayUploadError: false,
+      file: '',
+      uploadPercentage: 0,
+      confirmDestroyPhotoId: 0,
+      showModal: false,
+      url: '',
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+
+    prepareComponent() {
+      this.getPhotos();
     },
 
-    mounted() {
-        this.prepareComponent();
+    getPhotos() {
+      axios.get('/people/' + this.hash + '/photos')
+        .then(response => {
+          this.photos = response.data.data;
+        });
     },
 
-    methods: {
+    showUploadZone() {
+      this.displayUploadZone = true;
+    },
 
-        prepareComponent() {
-            this.getPhotos();
-        },
+    handleFileUpload(){
+      this.file = this.$refs.file.files[0];
+      this.submitFile();
+    },
 
-        getPhotos() {
-            axios.get('/people/' + this.hash + '/photos')
-                .then(response => {
-                    this.photos = response.data.data;
-                });
-        },
-
-        showUploadZone() {
-            this.displayUploadZone = true;
-        },
-
-        handleFileUpload(){
-            this.file = this.$refs.file.files[0];
-            this.submitFile();
-        },
-
-        submitFile(){
-            this.displayUploadZone = false;
-            this.displayUploadProgress = true;
-            let formData = new FormData();
-            formData.append('photo', this.file);
-            axios.post( '/people/' + this.hash + '/photos',
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    },
-                    onUploadProgress: function( progressEvent ) {
-                        this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded * 100 ) / progressEvent.total ) );
-                    }.bind(this)
-                }
-            ).then(response => {
-                this.displayUploadProgress = false;
-                this.photos.push(response.data.data);
-                this.$notify({
-                    group: 'main',
-                    title: this.$t('app.default_save_success'),
-                    text: '',
-                    type: 'success'
-                });
-            })
-                .catch(error => {
-                    this.displayUploadProgress = false;
-                    this.file = null;
-                    this.displayUploadError = true;
-                });
-        },
-
-        deletePhoto(photo) {
-            axios.delete( '/people/' + this.hash + '/photos/' + photo.id)
-                .then(response => {
-                    this.photos.splice(this.photos.indexOf(photo), 1);
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                })
-                .catch(error => {
-                });
-        },
-
-        makeProfilePicture(photo) {
-            axios.post( '/people/' + this.hash + '/makeProfilePicture/' + photo.id)
-                .then(response => {
-                    window.location.href = '/people/' + this.hash;
-                });
-        },
-
-        modalPhoto(photo) {
-            this.url = photo.link;
-            this.showModal = true;
+    submitFile(){
+      this.displayUploadZone = false;
+      this.displayUploadProgress = true;
+      let formData = new FormData();
+      formData.append('photo', this.file);
+      axios.post( '/people/' + this.hash + '/photos',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          onUploadProgress: function( progressEvent ) {
+            this.uploadPercentage = parseInt( Math.round( ( progressEvent.loaded * 100 ) / progressEvent.total ) );
+          }.bind(this)
         }
+      ).then(response => {
+        this.displayUploadProgress = false;
+        this.photos.push(response.data.data);
+        this.$notify({
+          group: 'main',
+          title: this.$t('app.default_save_success'),
+          text: '',
+          type: 'success'
+        });
+      })
+        .catch(error => {
+          this.displayUploadProgress = false;
+          this.file = null;
+          this.displayUploadError = true;
+        });
+    },
+
+    deletePhoto(photo) {
+      axios.delete( '/people/' + this.hash + '/photos/' + photo.id)
+        .then(response => {
+          this.photos.splice(this.photos.indexOf(photo), 1);
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        })
+        .catch(error => {
+        });
+    },
+
+    makeProfilePicture(photo) {
+      axios.post( '/people/' + this.hash + '/makeProfilePicture/' + photo.id)
+        .then(response => {
+          window.location.href = '/people/' + this.hash;
+        });
+    },
+
+    modalPhoto(photo) {
+      this.url = photo.link;
+      this.showModal = true;
     }
+  }
 };
 </script>

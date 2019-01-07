@@ -62,51 +62,51 @@
 <script>
 export default {
 
-    props: {
-        limited: {
-            type: Boolean,
-            default: false,
-        },
+  props: {
+    limited: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      modules: [],
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getModules();
+      if (!this.limited) {
+        this.limited = 0;
+      }
     },
 
-    data() {
-        return {
-            modules: [],
-            dirltr: true,
-        };
+    getModules() {
+      axios.get('/settings/personalization/modules')
+        .then(response => {
+          this.modules = response.data;
+        });
     },
 
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getModules();
-            if (!this.limited) {
-                this.limited = 0;
-            }
-        },
-
-        getModules() {
-            axios.get('/settings/personalization/modules')
-                .then(response => {
-                    this.modules = response.data;
-                });
-        },
-
-        toggle(module) {
-            axios.post('/settings/personalization/modules/' + module.id)
-                .then(response => {
-                    this.$notify({
-                        group: 'main',
-                        title: response.data,
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        }
+    toggle(module) {
+      axios.post('/settings/personalization/modules/' + module.id)
+        .then(response => {
+          this.$notify({
+            group: 'main',
+            title: response.data,
+            text: '',
+            type: 'success'
+          });
+        });
     }
+  }
 };
 </script>
