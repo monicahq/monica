@@ -23,10 +23,10 @@
 
           <!-- Log content -->
           <div class="flex-auto flex items-center">
-            <p class="mb2" v-if="day.comment">
+            <p v-if="day.comment" class="mb2">
               {{ day.comment }}
             </p>
-            <p class="mb2" v-if="!day.comment">
+            <p v-if="!day.comment" class="mb2">
               {{ $t('journal.journal_entry_rate') }}
             </p>
           </div>

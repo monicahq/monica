@@ -9,7 +9,7 @@
     <!-- Left sidebar -->
     <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-70-ns w-100 pa2">
       <!-- How was your day -->
-      <journal-rate-day @hasRated="hasRated"></journal-rate-day>
+      <journal-rate-day @hasRated="hasRated" />
 
       <!-- Logs -->
       <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" class="cf" :cy-name="'entry-body-' + journalEntry.id">
@@ -53,95 +53,94 @@
 </template>
 
 <script>
-export default {
-
+  export default {
     data() {
-        return {
-            journalEntries: [],
+      return {
+        journalEntries: [],
 
-            day: {
-                rate: ''
-            },
+        day: {
+          rate: ''
+        },
 
-            showSadSmileyColor: false,
-            showHappySmileyColor: false,
-            loadingMore: false,
+        showSadSmileyColor: false,
+        showHappySmileyColor: false,
+        loadingMore: false,
 
-            dirltr: true,
-        };
+        dirltr: true,
+      };
     },
 
     computed: {
-        hasMorePage: function() {
-            var total = this.journalEntries.per_page * this.journalEntries.current_page;
+      hasMorePage: function() {
+        var total = this.journalEntries.per_page * this.journalEntries.current_page;
 
-            if (total >= this.journalEntries.total) {
-                return true;
-            }
-
-            return false;
+        if (total >= this.journalEntries.total) {
+          return true;
         }
+
+        return false;
+      }
     },
 
     mounted() {
-        this.prepareComponent();
+      this.prepareComponent();
     },
 
     methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getEntries();
-        },
+      prepareComponent() {
+        this.dirltr = this.$root.htmldir == 'ltr';
+        this.getEntries();
+      },
 
-        getEntries() {
-            axios.get('/journal/entries')
-                .then(response => {
-                    this.journalEntries = response.data;
-                    this.journalEntries.current_page = response.data.current_page;
-                    this.journalEntries.next_page_url = response.data.next_page_url;
-                    this.journalEntries.per_page = response.data.per_page;
-                    this.journalEntries.prev_page_url = response.data.prev_page_url;
-                    this.journalEntries.total = response.data.total;
-                });
-        },
+      getEntries() {
+        axios.get('/journal/entries')
+          .then(response => {
+            this.journalEntries = response.data;
+            this.journalEntries.current_page = response.data.current_page;
+            this.journalEntries.next_page_url = response.data.next_page_url;
+            this.journalEntries.per_page = response.data.per_page;
+            this.journalEntries.prev_page_url = response.data.prev_page_url;
+            this.journalEntries.total = response.data.total;
+          });
+      },
 
-        // This event is omited from the child component
-        deleteJournalEntry: function($journalEntryId) {
-            // check if the deleted entry date is today. If that's the case
-            // we need to put back the Rate box. This is only necessary if
-            // the user does all his actions on the same page without ever
-            // reloading the page.
-            var deletedObject = this.journalEntries.data.filter(function( obj ) {
-                return obj.id == $journalEntryId;
-            });
+      // This event is omited from the child component
+      deleteJournalEntry: function($journalEntryId) {
+        // check if the deleted entry date is today. If that's the case
+        // we need to put back the Rate box. This is only necessary if
+        // the user does all his actions on the same page without ever
+        // reloading the page.
+        var deletedObject = this.journalEntries.data.filter(function( obj ) {
+          return obj.id == $journalEntryId;
+        });
 
-            // Filter out the array without the deleted Journal Entry
-            this.journalEntries.data = this.journalEntries.data.filter(function (element) {
-                return element.id !== $journalEntryId;
-            });
-        },
+        // Filter out the array without the deleted Journal Entry
+        this.journalEntries.data = this.journalEntries.data.filter(function (element) {
+          return element.id !== $journalEntryId;
+        });
+      },
 
-        hasRated: function (journalObject) {
-          this.journalEntries.data.unshift(journalObject);
-        },
+      hasRated: function (journalObject) {
+        this.journalEntries.data.unshift(journalObject);
+      },
 
-        loadMore() {
-            this.loadingMore = true;
-            axios.get('/journal/entries?page=' + (this.journalEntries.current_page + 1))
-                .then(response => {
-                    this.journalEntries.current_page = response.data.current_page;
-                    this.journalEntries.next_page_url = response.data.next_page_url;
-                    this.journalEntries.per_page = response.data.per_page;
-                    this.journalEntries.prev_page_url = response.data.prev_page_url;
-                    this.journalEntries.total = response.data.total;
+      loadMore() {
+        this.loadingMore = true;
+        axios.get('/journal/entries?page=' + (this.journalEntries.current_page + 1))
+          .then(response => {
+            this.journalEntries.current_page = response.data.current_page;
+            this.journalEntries.next_page_url = response.data.next_page_url;
+            this.journalEntries.per_page = response.data.per_page;
+            this.journalEntries.prev_page_url = response.data.prev_page_url;
+            this.journalEntries.total = response.data.total;
 
-                    for (var j of response.data.data) {
-                        this.journalEntries.data.push(j);
-                    }
+            for (var j of response.data.data) {
+                this.journalEntries.data.push(j);
+            }
 
-                    this.loadingMore = false;
-                });
-        },
+            this.loadingMore = false;
+          });
+      },
     }
-};
+  };
 </script>
