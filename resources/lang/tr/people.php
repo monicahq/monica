@@ -58,20 +58,20 @@ return [
     'section_personal_notes' => 'Notlar',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_active_contacts' => 'Arşivlenmiş kişileri görüntülüyorsunuz. Bunun yerine <a href=":url">aktif kişilerin listesine</a> bakın.',
+    'list_link_to_archived_contacts' => 'Arşivlenmiş kişilerin listesi',
 
     // Header
     'edit_contact_information' => 'İletişim bilgilerini düzenle',
-    'contact_archive' => 'Archive contact',
-    'contact_unarchive' => 'Unarchive contact',
+    'contact_archive' => 'Kişiyi arşivle',
+    'contact_unarchive' => 'Kişiyi arşivden kaldır',
     'contact_archive_help' => 'Arşivlenmiş kişiler kişi listesinde gösterilmez, ancak arama sonuçlarında görünmeye devam eder.',
     'call_button' => 'Çağrıyı logla',
-    'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
+    'set_favorite' => 'Favori kişiler, kişi listesinin en üstüne yerleştirilir',
 
     // Stay in touch
     'stay_in_touch' => 'İrtibatta kal',
-    'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
+    'stay_in_touch_frequency' => 'Her gün iletişimde kalın|Her {count} gün iletişimde kalın',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'İrtibatta kal',
