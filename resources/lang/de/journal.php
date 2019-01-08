@@ -9,6 +9,7 @@ return [
     'journal_entry_type_journal' => 'Tagebucheintrag',
     'journal_entry_type_activity' => 'Aktivität',
     'journal_entry_rate' => 'Du hast deinen Tag bewertet',
+    'journal_add_comment' => 'Care to add a comment (optional)?',
     'entry_delete_success' => 'Der Tagebucheintrag wurde erfolgreich gelöscht.',
     'journal_add_title' => 'Titel (optional)',
     'journal_add_date' => 'Datum',
