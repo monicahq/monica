@@ -175,11 +175,11 @@ class MultiFAController extends Controller
             Event::fire('u2f.register', ['u2fKey' => $key, 'user' => Auth::user()]);
             session()->forget('u2f.registerData');
 
-            session([$this->config->get('u2f.sessionU2fName') => true]);
+            session([config('u2f.sessionU2fName') => true]);
 
             return new U2fKeyResource($key);
         } catch (\Exception $e) {
-            return $this->respondWithError($e->toString());
+            return $this->respondWithError($e->getMessage());
         }
     }
 
@@ -191,7 +191,7 @@ class MultiFAController extends Controller
      */
     public function u2fRemove(Request $request, int $u2fKeyId)
     {
-        $u2fKey = U2fKey::where('user_id', auth()->user()->id)
+        $u2fKey = U2fKey::where('user_id', auth()->id())
             ->findOrFail($u2fKeyId);
 
         $u2fKey->delete();

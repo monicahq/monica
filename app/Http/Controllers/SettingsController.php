@@ -18,6 +18,7 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
+use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
@@ -493,9 +494,12 @@ class SettingsController
 
     public function security()
     {
+        $u2fKeys = U2fKey::where('user_id', auth()->id())
+                        ->get();
+
         return view('settings.security.index')
             ->with('is2FAActivated', app('pragmarx.google2fa')->isActivated())
-            ->with('currentkeys', U2fKeyResource::collection(auth()->user()->u2fkeys()->get()));
+            ->with('currentkeys', U2fKeyResource::collection($u2fKeys));
     }
 
     /**

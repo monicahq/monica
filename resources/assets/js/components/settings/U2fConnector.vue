@@ -235,7 +235,6 @@ export default {
       keyToTrash: '',
       keyName: '',
       registerTab: '',
-      dirltr: true,
       data: null
     };
   },
@@ -247,7 +246,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.otpextension = this.$t('auth.u2f_otp_extension', {
         urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',
         urlext: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'

@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
-use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -190,16 +189,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function recoveryCodes()
     {
         return $this->hasMany(RecoveryCode::class);
-    }
-
-    /**
-     * Get the U2fKey records associated with the user.
-     *
-     * @return HasMany
-     */
-    public function u2fkeys()
-    {
-        return $this->hasMany(U2fKey::class);
     }
 
     /**
