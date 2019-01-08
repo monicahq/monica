@@ -111,7 +111,7 @@ export default {
       // we need to put back the Rate box. This is only necessary if
       // the user does all his actions on the same page without ever
       // reloading the page.
-      var deletedObject = this.journalEntries.data.filter(function(obj) {
+      this.journalEntries.data.filter(function(obj) {
         return obj.id == $journalEntryId;
       });
 
