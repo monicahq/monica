@@ -446,19 +446,19 @@ return [
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
 
     // documents
-    'document_list_title' => 'Documents',
-    'document_list_cta' => 'Upload document',
-    'document_list_blank_desc' => 'Here you can store documents related to this person.',
-    'document_upload_zone_cta' => 'Upload a file',
-    'document_upload_zone_progress' => 'Uploading the document...',
-    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+    'document_list_title' => 'Belgeler',
+    'document_list_cta' => 'Belge yükleyin',
+    'document_list_blank_desc' => 'Burada, bu kişiyle ilgili belgeleri saklayabilirsiniz.',
+    'document_upload_zone_cta' => 'Dosya Yükle',
+    'document_upload_zone_progress' => 'Belge karşıya yükleniyor...',
+    'document_upload_zone_error' => 'Dosya karşıya yüklenirken bir hata oluştu. Lütfen aşağıdan tekrar deneyin.',
 
     // Photos
-    'photo_list_title' => 'Related photos',
-    'photo_list_cta' => 'Upload photo',
-    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
-    'photo_upload_zone_cta' => 'Upload a photo',
-    'photo_delete' => 'Delete photo',
+    'photo_list_title' => 'İlgili fotoğraflar',
+    'photo_list_cta' => 'Fotoğraf yükle',
+    'photo_list_blank_desc' => 'Bu kişiyle ilgili görüntüleri saklayabilirsiniz. Şimdi bir tane yükle!',
+    'photo_upload_zone_cta' => 'Bir fotoğraf yükle',
+    'photo_delete' => 'Fotoğrafı sil',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',
