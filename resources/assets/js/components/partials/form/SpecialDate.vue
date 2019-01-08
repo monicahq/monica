@@ -98,66 +98,66 @@
 <script>
 export default {
 
-    props: {
-        value: {
-            type: String,
-            default: '',
-        },
-        days: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        months: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        day: {
-            type: Number,
-            default: 0,
-        },
-        month: {
-            type: Number,
-            default: 0,
-        },
-        defaultDate: {
-            type: String,
-            default: '',
-        },
-        age: {
-            type: String,
-            default: '',
-        },
-        locale: {
-            type: String,
-            default: 'en',
-        },
-        reminder: {
-            type: Number,
-            default: 0,
-        },
+  props: {
+    value: {
+      type: String,
+      default: '',
     },
+    days: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    months: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    day: {
+      type: Number,
+      default: 0,
+    },
+    month: {
+      type: Number,
+      default: 0,
+    },
+    defaultDate: {
+      type: String,
+      default: '',
+    },
+    age: {
+      type: String,
+      default: '',
+    },
+    locale: {
+      type: String,
+      default: 'en',
+    },
+    reminder: {
+      type: Number,
+      default: 0,
+    },
+  },
 
-    data() {
-        return {
-            selectedDate: null,
-            selectedOption: 'unknown',
-            selectedMonth: 0,
-            selectedDay: 0,
-            dirltr: true,
-            hasBirthdayReminder: 0
-        };
-    },
+  data() {
+    return {
+      selectedDate: null,
+      selectedOption: 'unknown',
+      selectedMonth: 0,
+      selectedDay: 0,
+      dirltr: true,
+      hasBirthdayReminder: 0
+    };
+  },
 
-    mounted() {
-        this.dirltr = this.$root.htmldir == 'ltr';
-        this.selectedOption = this.value;
-        this.selectedMonth = this.month;
-        this.selectedDay = this.day;
-        this.hasBirthdayReminder = this.reminder;
-    },
+  mounted() {
+    this.dirltr = this.$root.htmldir == 'ltr';
+    this.selectedOption = this.value;
+    this.selectedMonth = this.month;
+    this.selectedDay = this.day;
+    this.hasBirthdayReminder = this.reminder;
+  },
 };
 </script>

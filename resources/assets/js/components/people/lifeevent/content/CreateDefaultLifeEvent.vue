@@ -29,35 +29,35 @@
 import moment from 'moment';
 
 export default {
-    data() {
-        return {
-            defaultEvent: {
-                name: '',
-                note: '',
-                specific_information: '',
-            },
-            dirltr: true,
-        };
+  data() {
+    return {
+      defaultEvent: {
+        name: '',
+        note: '',
+        specific_information: '',
+      },
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+    this.dirltr = this.$root.htmldir == 'ltr';
+  },
+
+  methods: {
+    prepareComponent() {
+      this.defaultEvent.happened_at = moment().format('YYYY-MM-DD');
     },
 
-    mounted() {
-        this.prepareComponent();
-        this.dirltr = this.$root.htmldir == 'ltr';
+    updateNote(event) {
+      this.defaultEvent.note = event;
+      this.broadcastContentChange();
     },
 
-    methods: {
-        prepareComponent() {
-            this.defaultEvent.happened_at = moment().format('YYYY-MM-DD');
-        },
-
-        updateNote(event) {
-            this.defaultEvent.note = event;
-            this.broadcastContentChange();
-        },
-
-        broadcastContentChange() {
-            this.$emit('contentChange', this.defaultEvent);
-        },
-    }
+    broadcastContentChange() {
+      this.$emit('contentChange', this.defaultEvent);
+    },
+  }
 };
 </script>

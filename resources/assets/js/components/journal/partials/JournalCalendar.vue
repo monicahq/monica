@@ -91,27 +91,27 @@
 <script>
 export default {
 
-    props: {
-        journalEntry: {
-            type: Object,
-            default: null,
-        },
+  props: {
+    journalEntry: {
+      type: Object,
+      default: null,
     },
+  },
 
-    data() {
-        return {
-            dirltr: true,
-        };
+  data() {
+    return {
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
     },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-        },
-    }
+  }
 };
 </script>

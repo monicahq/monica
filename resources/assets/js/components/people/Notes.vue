@@ -95,130 +95,130 @@
 
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      notes: [],
+
+      addMode: false,
+      editMode: false,
+
+      newNote: {
+        id: 0,
+        body: '',
+        is_favorited: 0
+      },
+
+      deleteNote: {
+        id: 0,
+      },
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getNotes();
     },
 
-    data() {
-        return {
-            notes: [],
-
-            addMode: false,
-            editMode: false,
-
-            newNote: {
-                id: 0,
-                body: '',
-                is_favorited: 0
-            },
-
-            deleteNote: {
-                id: 0,
-            },
-
-            dirltr: true,
-        };
+    reinitialize() {
+      this.createForm.body = '';
     },
 
-    mounted() {
-        this.prepareComponent();
+    favorited: function (notes) {
+      return notes.filter(function (note) {
+        return note.is_favorited === true;
+      });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getNotes();
-        },
+    normal: function (notes) {
+      return notes.filter(function (note) {
+        return note.is_favorited === false;
+      });
+    },
 
-        reinitialize() {
-            this.createForm.body = '';
-        },
+    toggleEditMode(note) {
+      Vue.set(note, 'edit', !note.edit);
+    },
 
-        favorited: function (notes) {
-            return notes.filter(function (note) {
-                return note.is_favorited === true;
-            });
-        },
+    getNotes() {
+      axios.get('/people/' + this.hash + '/notes')
+        .then(response => {
+          this.notes = response.data;
+        });
+    },
 
-        normal: function (notes) {
-            return notes.filter(function (note) {
-                return note.is_favorited === false;
-            });
-        },
+    store() {
+      axios.post('/people/' + this.hash + '/notes', this.newNote)
+        .then(response => {
+          this.newNote.body = '';
+          this.getNotes();
+          this.addMode = false;
 
-        toggleEditMode(note) {
-            Vue.set(note, 'edit', !note.edit);
-        },
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.notes_create_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
 
-        getNotes() {
-            axios.get('/people/' + this.hash + '/notes')
-                .then(response => {
-                    this.notes = response.data;
-                });
-        },
+    toggleFavorite(note) {
+      axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
+        .then(response => {
+          this.getNotes();
+        });
+    },
 
-        store() {
-            axios.post('/people/' + this.hash + '/notes', this.newNote)
-                .then(response => {
-                    this.newNote.body = '';
-                    this.getNotes();
-                    this.addMode = false;
+    update(note) {
+      axios.put('/people/' + this.hash + '/notes/' + note.id, note)
+        .then(response => {
+          Vue.set(note, 'edit', note.edit);
+          this.getNotes();
 
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.notes_create_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.notes_update_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
 
-        toggleFavorite(note) {
-            axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
-                .then(response => {
-                    this.getNotes();
-                });
-        },
+    showDelete(note) {
+      this.deleteNote.id = note.id;
 
-        update(note) {
-            axios.put('/people/' + this.hash + '/notes/' + note.id, note)
-                .then(response => {
-                    Vue.set(note, 'edit', note.edit);
-                    this.getNotes();
+      $('#modal-delete-note').modal('show');
+    },
 
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.notes_update_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
+    trash(note) {
+      axios.delete('/people/' + this.hash + '/notes/' + note.id)
+        .then(response => {
+          this.getNotes();
 
-        showDelete(note) {
-            this.deleteNote.id = note.id;
+          $('#modal-delete-note').modal('hide');
 
-            $('#modal-delete-note').modal('show');
-        },
-
-        trash(note) {
-            axios.delete('/people/' + this.hash + '/notes/' + note.id)
-                .then(response => {
-                    this.getNotes();
-
-                    $('#modal-delete-note').modal('hide');
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.notes_delete_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-    }
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.notes_delete_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+  }
 };
 </script>

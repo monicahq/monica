@@ -271,173 +271,173 @@
 <script>
 export default {
 
-    props: {
-        defaultActiveTab: {
-            type: String,
-            default: 'calls',
-        },
+  props: {
+    defaultActiveTab: {
+      type: String,
+      default: 'calls',
+    },
+  },
+
+  data() {
+    return {
+      activeTab: '',
+
+      callsAlreadyLoaded: false,
+      notesAlreadyLoaded: false,
+      debtsAlreadyLoaded: false,
+      tasksAlreadyLoaded: false,
+
+      calls: [],
+      notes: [],
+      debts: [],
+      tasks: [],
+
+      taskAddMode: false,
+      contactRelatedTasksView: true,
+      confirmDestroyTask: 0,
+      showTaskAction: 0,
+      newTask: {
+        id: 0,
+        title: '',
+        description: ''
+      },
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.setActiveTab(this.defaultActiveTab);
     },
 
-    data() {
-        return {
-            activeTab: '',
+    setActiveTab(view) {
+      this.activeTab = view;
 
-            callsAlreadyLoaded: false,
-            notesAlreadyLoaded: false,
-            debtsAlreadyLoaded: false,
-            tasksAlreadyLoaded: false,
+      this.saveTab(view);
 
-            calls: [],
-            notes: [],
-            debts: [],
-            tasks: [],
-
-            taskAddMode: false,
-            contactRelatedTasksView: true,
-            confirmDestroyTask: 0,
-            showTaskAction: 0,
-            newTask: {
-                id: 0,
-                title: '',
-                description: ''
-            },
-        };
-    },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.setActiveTab(this.defaultActiveTab);
-        },
-
-        setActiveTab(view) {
-            this.activeTab = view;
-
-            this.saveTab(view);
-
-            switch (view) {
-            case 'calls':
-                if (! this.callsAlreadyLoaded) {
-                    this.getCalls();
-                    this.callsAlreadyLoaded = true;
-                }
-                break;
-
-            case 'notes':
-                if (! this.notesAlreadyLoaded) {
-                    this.getNotes();
-                    this.notesAlreadyLoaded = true;
-                }
-                break;
-
-            case 'debts':
-                if (! this.debtsAlreadyLoaded) {
-                    this.getDebts();
-                    this.debtsAlreadyLoaded = true;
-                }
-                break;
-
-            case 'tasks':
-                if (! this.tasksAlreadyLoaded) {
-                    this.getTasks();
-                    this.tasksAlreadyLoaded = true;
-                }
-                break;
-            }
-        },
-
-        saveTab(view) {
-            axios.post('/dashboard/setTab', {'tab':view})
-                .then(response => {
-                });
-        },
-
-        getCalls() {
-            axios.get('/dashboard/calls')
-                .then(response => {
-                    this.calls = response.data;
-                });
-        },
-
-        getNotes() {
-            axios.get('/dashboard/notes')
-                .then(response => {
-                    this.notes = response.data;
-                });
-        },
-
-        getDebts() {
-            axios.get('/dashboard/debts')
-                .then(response => {
-                    this.debts = response.data;
-                });
-        },
-
-        getTasks() {
-            axios.get('/tasks')
-                .then(response => {
-                    this.tasks = response.data.data;
-                });
-        },
-
-        // All the custom tasks not yet completed
-        customNotCompleted: function (tasks) {
-            return tasks.filter(function (task) {
-                return task.contact === null && task.completed === false;
-            });
-        },
-
-        // All the custom completed tasks
-        customCompleted: function (tasks) {
-            return tasks.filter(function (task) {
-                return task.contact === null && task.completed === true;
-            });
-        },
-
-        // All the contact related tasks
-        contactRelated: function (tasks) {
-            return tasks.filter(function (task) {
-                return task.contact != null;
-            });
-        },
-
-        updateTask(task) {
-            task.completed = !task.completed;
-            axios.put('/tasks/' + task.id, task)
-                .then(response => {
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        saveTask() {
-            axios.post('/tasks', this.newTask)
-                .then(response => {
-                    this.newTask.title = '';
-                    this.taskAddMode = false;
-                    this.getTasks();
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        destroyTask(task) {
-            axios.delete('/tasks/' + task.id)
-                .then(response => {
-                    this.tasks.splice(this.tasks.indexOf(task), 1);
-                });
+      switch (view) {
+      case 'calls':
+        if (! this.callsAlreadyLoaded) {
+          this.getCalls();
+          this.callsAlreadyLoaded = true;
         }
+        break;
+
+      case 'notes':
+        if (! this.notesAlreadyLoaded) {
+          this.getNotes();
+          this.notesAlreadyLoaded = true;
+        }
+        break;
+
+      case 'debts':
+        if (! this.debtsAlreadyLoaded) {
+          this.getDebts();
+          this.debtsAlreadyLoaded = true;
+        }
+        break;
+
+      case 'tasks':
+        if (! this.tasksAlreadyLoaded) {
+          this.getTasks();
+          this.tasksAlreadyLoaded = true;
+        }
+        break;
+      }
+    },
+
+    saveTab(view) {
+      axios.post('/dashboard/setTab', {'tab':view})
+        .then(response => {
+        });
+    },
+
+    getCalls() {
+      axios.get('/dashboard/calls')
+        .then(response => {
+          this.calls = response.data;
+        });
+    },
+
+    getNotes() {
+      axios.get('/dashboard/notes')
+        .then(response => {
+          this.notes = response.data;
+        });
+    },
+
+    getDebts() {
+      axios.get('/dashboard/debts')
+        .then(response => {
+          this.debts = response.data;
+        });
+    },
+
+    getTasks() {
+      axios.get('/tasks')
+        .then(response => {
+          this.tasks = response.data.data;
+        });
+    },
+
+    // All the custom tasks not yet completed
+    customNotCompleted: function (tasks) {
+      return tasks.filter(function (task) {
+        return task.contact === null && task.completed === false;
+      });
+    },
+
+    // All the custom completed tasks
+    customCompleted: function (tasks) {
+      return tasks.filter(function (task) {
+        return task.contact === null && task.completed === true;
+      });
+    },
+
+    // All the contact related tasks
+    contactRelated: function (tasks) {
+      return tasks.filter(function (task) {
+        return task.contact != null;
+      });
+    },
+
+    updateTask(task) {
+      task.completed = !task.completed;
+      axios.put('/tasks/' + task.id, task)
+        .then(response => {
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+
+    saveTask() {
+      axios.post('/tasks', this.newTask)
+        .then(response => {
+          this.newTask.title = '';
+          this.taskAddMode = false;
+          this.getTasks();
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+
+    destroyTask(task) {
+      axios.delete('/tasks/' + task.id)
+        .then(response => {
+          this.tasks.splice(this.tasks.indexOf(task), 1);
+        });
     }
+  }
 };
 </script>

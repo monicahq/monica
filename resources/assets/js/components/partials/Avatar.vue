@@ -22,15 +22,15 @@
 
 <script>
 export default {
-    props: {
-        contact: {
-            type: Object,
-            default: null,
-        },
-        clickable: {
-            type: Boolean,
-            default: true,
-        },
+  props: {
+    contact: {
+      type: Object,
+      default: null,
     },
+    clickable: {
+      type: Boolean,
+      default: true,
+    },
+  },
 };
 </script>
