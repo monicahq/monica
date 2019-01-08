@@ -5,10 +5,14 @@ namespace App\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use PragmaRX\Google2FA\Google2FA;
 use Lahaxearnaud\U2f\Models\U2fKey;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Event;
 use App\Traits\JsonRespondController;
+use Lahaxearnaud\U2f\U2fFacade as U2f;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
+use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 
 class MultiFAController extends Controller
 {
@@ -148,15 +152,37 @@ class MultiFAController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function u2fRegister(Request $request)
+    public function u2fRegisterData(Request $request)
     {
         list($req, $sigs) = app('u2f')->getRegisterData($request->user());
         session(['u2f.registerData' => $req]);
 
-        return response()->json([
+        return $this->respond([
             'currentKeys' => $sigs,
             'registerData' => $req,
         ]);
+    }
+
+    public function u2fRegister(Request $request)
+    {
+        try {
+            $key = U2f::doRegister(Auth::user(), session('u2f.registerData'), json_decode($request->input('register')));
+            if ($request->filled('name')) {
+                $key->name = $request->input('name');
+                $key->save();
+            }
+
+            Event::fire('u2f.register', [ 'u2fKey' => $key, 'user' => Auth::user() ]);
+            session()->forget('u2f.registerData');
+            
+            session([$this->config->get('u2f.sessionU2fName') => true]);
+
+            return new U2fKeyResource($key);
+    
+        } catch (\Exception $e) {
+
+            return $this->respondWithError($e->toString());
+        }
     }
 
     /**

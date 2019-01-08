@@ -40,11 +40,41 @@
         {{ $t('settings.u2f_enable_description') }}
       </a>
 
-      <sweet-modal id="registerModal" ref="registerModal" overlay-theme="dark" :title="$t('settings.u2f_title')">
-        <div v-if="errorMessage != ''" class="form-error-message mb3">
-          <div class="pa2">
+      <sweet-modal
+        id="registerModal"
+        ref="registerModal"
+        overlay-theme="dark" 
+        :title="$t('settings.u2f_title')"
+      >
+        <div v-if="registerTab == '1'">
+          <p>
+            {{ $t('settings.u2f_key_name_help') }}
+          </p>
+          <form-input
+            :title="$t('settings.u2f_key_name')"
+            :id="'keyName'"
+            v-model="keyName"
+            :value="keyName"
+            :input-type="'string'"
+            :width="50"
+            :required="true"
+          />
+          <div class="relative">
+            <span class="fr">
+              <a class="btn" @click.prevent="showRegisterModalTab('2');startRegister();">
+                {{ $t('app.next') }}
+              </a>
+            </span>
+          </div>
+        </div>
+        <div  v-if="registerTab == '2'">
+          <div v-if="errorMessage != ''" class="form-error-message mb3">
+            <div class="pa2">
             <p class="mb0">
               {{ errorMessage }}
+            </p>
+            <p>
+              <a @click.prevent="startRegister()">{{ $t('app.retry') }}</a>
             </p>
           </div>
         </div>
@@ -73,6 +103,14 @@
             <span v-html="otpextension"></span>
           </p>
         </div>
+          <div class="relative">
+            <span class="fr">
+              <a class="btn" @click.prevent="showRegisterModalTab('1')">
+                {{ $t('app.previous') }}
+              </a>
+            </span>
+          </div>
+        </div>
         <div class="relative">
           <span class="fr">
             <a class="btn" @click="closeRegisterModal()">
@@ -88,6 +126,9 @@
           <p class="mb0">
             {{ errorMessage }}
           </p>
+          <p>
+            <a @click.prevent="start()">{{ $t('app.retry') }}</a>
+          </p>
         </div>
       </div>
       <div v-if="infoMessage != ''" class="form-information-message mb3">
@@ -98,11 +139,11 @@
         </div>
       </div>
 
-      <div v-if="errorMessage == ''" align="center">
+      <div align="center">
         <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt="" />
       </div>
 
-      <div v-if="errorMessage == ''" class="pa2">
+      <div class="pa2">
         <p>
           {{ $t('settings.u2f_insertKey') }}
         </p>
@@ -188,6 +229,8 @@ export default {
             otpextension: '',
             keys: [],
             keyToTrash: '',
+            keyName: '',
+            registerTab: '',
             dirltr: true,
             data: null
         };
@@ -195,6 +238,7 @@ export default {
 
     mounted() {
         this.prepareComponent();
+        this.start();
     },
 
     methods: {
@@ -206,7 +250,9 @@ export default {
             });
             this.keys = this.currentkeys;
             this.data = this.registerdata;
+        },
 
+        start() {
             var self = this;
             switch(this.method) {
             case 'register':
@@ -236,21 +282,32 @@ export default {
         showRegisterModal() {
             this.errorMessage = '';
             this.infoMessage = '';
+            this.keyName = '';
             this.success = false;
+            this.showRegisterModalTab('1');
+            this.$refs.registerModal.open('registerModalName');
+        },
+
+        showRegisterModalTab(tab) {
+            this.registerTab = tab;
+        },
+
+        startRegister() {
             var self = this;
-            axios.get('/settings/security/u2f-register')
+            axios.get('/settings/security/u2f/register')
                 .then(response => {
-                    this.keys = response.data.currentKeys;
-                    this.data = response.data.registerData;
+                    if (self.registerTab == '2') {
+                    var keys = response.data.currentKeys;
+                    var data = response.data.registerData;
                     setTimeout(function () {
                         u2f.register(
                             null,
-                            [self.data],
-                            self.keys,
-                            function (data) { self.u2fRegisterCallback(data, false); }
+                            [data],
+                            keys,
+                            function (datas) { self.u2fRegisterCallback(datas, false); }
                         );
                     }, 1000);
-                    this.$refs.registerModal.open();
+                    }
                 }).catch(error => {
                     this.notify(error.response.data.message, false);
                 });
@@ -258,6 +315,7 @@ export default {
 
         closeRegisterModal() {
             this.$refs.registerModal.close();
+            this.showRegisterModalTab('');
         },
 
         u2fRegisterCallback(data, redirect) {
@@ -267,9 +325,12 @@ export default {
             }
 
             var self = this;
-            axios.post('/u2f/register', { register: JSON.stringify(data) })
+            axios.post('/settings/security/u2f/register', {
+                    register: JSON.stringify(data),
+                    name: self.keyName,
+                })
                 .catch(error => {
-                    self.errorMessage = error.response.data.message;
+                    self.errorMessage = error.response.data.error.message;
                 })
                 .then(response => {
                     self.success = true;
@@ -281,7 +342,6 @@ export default {
                             window.location = self.callbackurl;
                         }, 3000);
                     } else {
-                        
                         self.closeRegisterModal();
                     }
                 });
@@ -309,7 +369,7 @@ export default {
 
         u2fRemove(id) {
             var self = this;
-            axios.delete('/settings/security/u2f-remove/'+id)
+            axios.delete('/settings/security/u2f/remove/'+id)
                 .catch(error => {
                     self.errorMessage = error.response.data.message;
                 })

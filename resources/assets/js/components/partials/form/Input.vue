@@ -11,9 +11,9 @@ input:focus {
 
 <template>
   <div>
-    <p class="mb2" :class="{ b: required }">
+    <label v-if="title" :for="id" class="mb2" :class="{ b: required }">
       {{ title }}
-    </p>
+    </label>
     <input :id="id"
            ref="input"
            :type="inputType"

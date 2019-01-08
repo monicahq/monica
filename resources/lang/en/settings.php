@@ -95,6 +95,8 @@ return [
     '2fa_disable_error' => 'Error when trying to disable Two Factor Authentication',
     'u2f_title' => 'U2F security key',
     'u2f_enable_description' => 'Add a new U2F security key',
+    'u2f_key_name_help' => 'Give your key a name.',
+    'u2f_key_name' => 'Key name:',
     'u2f_buttonAdvise' => 'If your security key has a button, press it.',
     'u2f_noButtonAdvise' => 'If it does not, remove it and insert it again.',
     'u2f_success' => 'Your key is detected and validated.',
