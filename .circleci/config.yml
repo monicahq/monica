@@ -180,6 +180,9 @@ jobs:
 
       # Update js and css assets eventually
       - run:
+          name: Check js and vue lint
+          command: yarn lint
+      - run:
           name: Update assets
           command: scripts/ci/update-assets.sh
 

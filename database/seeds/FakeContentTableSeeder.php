@@ -74,6 +74,9 @@ class FakeContentTableSeeder extends Seeder
                 'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                 'gender_id' => $this->getRandomGender()->id,
                 'is_partial' => false,
+                'is_birthdate_known' => false,
+                'is_deceased' => false,
+                'is_deceased_date_known' => false,
             ]);
 
             $this->contact->setAvatarColor();
@@ -228,6 +231,9 @@ class FakeContentTableSeeder extends Seeder
                     'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                     'gender_id' => $this->getRandomGender()->id,
                     'is_partial' => (rand(1, 2) == 1) ? false : true,
+                    'is_birthdate_known' => false,
+                    'is_deceased' => false,
+                    'is_deceased_date_known' => false,
                 ]);
 
                 $relatedContact->setAvatarColor();

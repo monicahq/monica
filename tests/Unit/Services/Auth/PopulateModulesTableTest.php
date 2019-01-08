@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -29,7 +29,7 @@ class PopulateModulesTableTest extends TestCase
             'migrate_existing_data' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $populateModulesService = new PopulateModulesTable;
         $populateModulesService->execute($request);

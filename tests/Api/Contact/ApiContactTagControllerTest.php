@@ -65,6 +65,51 @@ class ApiContactTagControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_tags_ignore_empty_tags()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', "/api/contacts/{$contact->id}/setTags", [
+                            'tags' => [
+                                'very-specific-tag-name',
+                                null,
+                                'very-specific-tag-name-2',
+                            ],
+                        ]);
+
+        $response->assertStatus(200);
+        $tagId1 = $response->json('data.tags.0.id');
+        $tagId2 = $response->json('data.tags.1.id');
+
+        $response->assertJsonFragment([
+            'object' => 'tag',
+            'id' => $tagId1,
+            'name' => 'very-specific-tag-name',
+        ]);
+
+        $response->assertJsonFragment([
+            'object' => 'tag',
+            'id' => $tagId2,
+            'name' => 'very-specific-tag-name-2',
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tagId1,
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tagId2,
+        ]);
+    }
+
     public function test_a_list_of_tags_are_required_to_remove_a_tag_from_a_contact()
     {
         $user = $this->signin();

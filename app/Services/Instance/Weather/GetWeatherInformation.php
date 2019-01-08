@@ -5,6 +5,7 @@ namespace App\Services\Instance\Weather;
 use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Account\Weather;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 use App\Exceptions\MissingEnvVariableException;
@@ -29,7 +30,7 @@ class GetWeatherInformation extends BaseService
      *
      * @param array $data
      * @return Weather|null
-     * @throws App\Exceptions\MissingParameterException if the array that is given in parameter is not valid
+     * @throws Illuminate\Validation\ValidationException if the array that is given in parameter is not valid
      * @throws App\Exceptions\MissingEnvVariableException if the weather services are not enabled
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException if the Place object is not found
      * @throws GuzzleHttp\Exception\ClientException if the request to Darksky crashed
@@ -86,6 +87,8 @@ class GetWeatherInformation extends BaseService
             $response = $client->request('GET', $query);
             $response = json_decode($response->getBody());
         } catch (ClientException $e) {
+            Log::error('Error making the call: '.$e);
+
             return null;
         }
 

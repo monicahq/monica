@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Instance\Weather;
 use Tests\TestCase;
 use App\Models\Account\Place;
 use App\Models\Account\Weather;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Exceptions\MissingEnvVariableException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Weather\GetWeatherInformation;
@@ -112,7 +112,7 @@ class GetWeatherInformationTest extends TestCase
 
         $request = [];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new GetWeatherInformation)->execute($request);
     }
 }

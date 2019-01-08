@@ -45,9 +45,9 @@
             </span>
 
             <span v-if="!contactAddress.address">
-            <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank">
-              ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
-            </a>
+              <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank">
+                ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
+              </a>
             </span>
 
             <div v-if="editMode" class="fr">
@@ -205,143 +205,146 @@
 <script>
 export default {
 
-    props: ['hash'],
-    /*
-         * The component's data.
-         */
-    data() {
-        return {
-            contactAddresses: [],
-            countries: [],
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+  },
 
-            editMode: false,
-            addMode: false,
+  data() {
+    return {
+      contactAddresses: [],
+      countries: [],
 
-            createForm: {
-                country: 0,
-                name: '',
-                street: '',
-                city: '',
-                province: '',
-                postal_code: '',
-                latitude: 0,
-                longitude: 0,
-            },
+      editMode: false,
+      addMode: false,
 
-            updateForm: {
-                id: '',
-                country: 0,
-                name: '',
-                street: '',
-                city: '',
-                province: '',
-                postal_code: '',
-                latitude: 0,
-                longitude: 0,
-            },
+      createForm: {
+        country: 0,
+        name: '',
+        street: '',
+        city: '',
+        province: '',
+        postal_code: '',
+        latitude: 0,
+        longitude: 0,
+      },
 
-            dirltr: true,
-        };
+      updateForm: {
+        id: '',
+        country: 0,
+        name: '',
+        street: '',
+        city: '',
+        province: '',
+        postal_code: '',
+        latitude: 0,
+        longitude: 0,
+      },
+
+      dirltr: true,
+    };
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.dirltr = this.$root.htmldir == 'ltr';
+      this.getAddresses();
+      this.getCountries();
     },
 
-    mounted() {
-        this.prepareComponent();
+    getAddresses() {
+      axios.get('/people/' + this.hash + '/addresses')
+        .then(response => {
+          this.contactAddresses = response.data;
+        });
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getAddresses();
-            this.getCountries();
-        },
+    getCountries() {
+      axios.get('/countries')
+        .then(response => {
+          this.countries = response.data;
+        });
+    },
 
-        getAddresses() {
-            axios.get('/people/' + this.hash + '/addresses')
-                .then(response => {
-                    this.contactAddresses = response.data;
-                });
-        },
+    reinitialize() {
+      this.createForm.country = '';
+      this.createForm.name = '';
+      this.createForm.street = '';
+      this.createForm.city = '';
+      this.createForm.province = '';
+      this.createForm.postal_code = '';
+      this.createForm.latitude = '';
+      this.createForm.longitude = '';
+    },
 
-        getCountries() {
-            axios.get('/countries')
-                .then(response => {
-                    this.countries = response.data;
-                });
-        },
+    toggleAdd() {
+      this.addMode = true;
+      this.reinitialize();
+    },
 
-        reinitialize() {
-            this.createForm.country = '';
-            this.createForm.name = '';
-            this.createForm.street = '';
-            this.createForm.city = '';
-            this.createForm.province = '';
-            this.createForm.postal_code = '';
-            this.createForm.latitude = '';
-            this.createForm.longitude = '';
-        },
+    toggleEdit(contactAddress) {
+      Vue.set(contactAddress, 'edit', !contactAddress.edit);
+      this.updateForm.id = contactAddress.id;
+      this.updateForm.country = contactAddress.country;
+      this.updateForm.name = contactAddress.name;
+      this.updateForm.street = contactAddress.street;
+      this.updateForm.city = contactAddress.city;
+      this.updateForm.province = contactAddress.province;
+      this.updateForm.postal_code = contactAddress.postal_code;
+      this.updateForm.latitude = contactAddress.latitude;
+      this.updateForm.longitude = contactAddress.longitude;
+    },
 
-        toggleAdd() {
-            this.addMode = true;
-            this.reinitialize();
-        },
+    store() {
+      this.persistClient(
+        'post', '/people/' + this.hash + '/addresses',
+        this.createForm
+      );
 
-        toggleEdit(contactAddress) {
-            Vue.set(contactAddress, 'edit', !contactAddress.edit);
-            this.updateForm.id = contactAddress.id;
-            this.updateForm.country = contactAddress.country;
-            this.updateForm.name = contactAddress.name;
-            this.updateForm.street = contactAddress.street;
-            this.updateForm.city = contactAddress.city;
-            this.updateForm.province = contactAddress.province;
-            this.updateForm.postal_code = contactAddress.postal_code;
-            this.updateForm.latitude = contactAddress.latitude;
-            this.updateForm.longitude = contactAddress.longitude;
-        },
+      this.addMode = false;
+    },
 
-        store() {
-            this.persistClient(
-                'post', '/people/' + this.hash + '/addresses',
-                this.createForm
-            );
+    update(contactAddress) {
+      this.persistClient(
+        'put', '/people/' + this.hash + '/addresses/' + contactAddress.id,
+        this.updateForm
+      );
+    },
 
-            this.addMode = false;
-        },
+    trash(contactAddress) {
+      this.updateForm.id = contactAddress.id;
 
-        update(contactAddress) {
-            this.persistClient(
-                'put', '/people/' + this.hash + '/addresses/' + contactAddress.id,
-                this.updateForm
-            );
-        },
+      this.persistClient(
+        'delete', '/people/' + this.hash + '/addresses/' + contactAddress.id,
+        this.updateForm
+      );
 
-        trash(contactAddress) {
-            this.updateForm.id = contactAddress.id;
+      if (this.contactAddresses.length <= 1) {
+        this.editMode = false;
+      }
+    },
 
-            this.persistClient(
-                'delete', '/people/' + this.hash + '/addresses/' + contactAddress.id,
-                this.updateForm
-            );
+    persistClient(method, uri, form) {
+      form.errors = {};
 
-            if (this.contactAddresses.length <= 1) {
-                this.editMode = false;
-            }
-        },
-
-        persistClient(method, uri, form) {
-            form.errors = {};
-
-            axios[method](uri, form)
-                .then(response => {
-                    this.getAddresses();
-                })
-                .catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        form.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        form.errors = [this.$t('app.error_try_again')];
-                    }
-                });
-        },
-    }
+      axios[method](uri, form)
+        .then(response => {
+          this.getAddresses();
+        })
+        .catch(error => {
+          if (typeof error.response.data === 'object') {
+            form.errors = _.flatten(_.toArray(error.response.data));
+          } else {
+            form.errors = [this.$t('app.error_try_again')];
+          }
+        });
+    },
+  }
 };
 </script>

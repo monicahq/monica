@@ -88,7 +88,6 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
-        'linkedin_profile_url',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',
@@ -389,6 +388,16 @@ class Contact extends Model
     public function lifeEvents()
     {
         return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');
+    }
+
+    /**
+     * Get the Occupation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**
@@ -701,7 +710,7 @@ class Contact extends Model
         $incompleteName = $this->first_name;
 
         if (! is_null($this->last_name)) {
-            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+            $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
         }
 
         if ($this->is_dead) {
@@ -1403,10 +1412,12 @@ class Contact extends Model
      */
     public function getRelationshipNatureWith(self $otherContact)
     {
-        return Relationship::where('account_id', $this->account_id)
-                                    ->where('contact_is', $this->id)
-                                    ->where('of_contact', $otherContact->id)
-                                    ->first();
+        return Relationship::where([
+            'account_id' => $this->account_id,
+            'contact_is' => $this->id,
+            'of_contact' => $otherContact->id,
+        ])
+            ->first();
     }
 
     /**
@@ -1445,11 +1456,12 @@ class Contact extends Model
      */
     public function getBirthdayRemindersAboutRelatedContacts()
     {
-        $reminders = collect();
         $relationships = $this->relationships->filter(function ($item) {
-            return ! is_null($item->ofContact->birthday_special_date_id);
+            return ! is_null($item->ofContact) &&
+                   ! is_null($item->ofContact->birthday_special_date_id);
         });
 
+        $reminders = collect();
         foreach ($relationships as $relationship) {
             $reminder = Reminder::where('account_id', $this->account_id)
                 ->find($relationship->ofContact->birthdate->reminder_id);
@@ -1468,12 +1480,16 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $account = $this;
+        $contact = $this;
 
         return self::setEagerLoads([])->where('account_id', $this->account_id)
-            ->where('id', function ($query) use ($account) {
-                $query->select('of_contact')->from('relationships')->where('account_id', $account->account_id)
-                    ->where('contact_is', $account->id);
+            ->where('id', function ($query) use ($contact) {
+                $query->select('of_contact')
+                        ->from('relationships')
+                        ->where([
+                            'account_id' => $contact->account_id,
+                            'contact_is' => $contact->id,
+                        ]);
             })
             ->first();
     }
