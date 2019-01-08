@@ -214,6 +214,11 @@ Vue.component(
 );
 
 Vue.component(
+  'journal-rate-day',
+  require('./components/journal/RateDay.vue').default
+);
+
+Vue.component(
   'journal-calendar',
   require('./components/journal/partials/JournalCalendar.vue').default
 );

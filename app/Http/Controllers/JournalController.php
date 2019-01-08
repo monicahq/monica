@@ -88,6 +88,7 @@ class JournalController extends Controller
         $day = auth()->user()->account->days()->create([
             'date' => now(DateHelper::getTimezone()),
             'rate' => $request->get('rate'),
+            'comment' => $request->get('comment'),
         ]);
 
         // Log a journal entry
