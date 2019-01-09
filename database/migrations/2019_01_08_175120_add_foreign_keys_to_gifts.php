@@ -1,8 +1,8 @@
 <?php
 
+use App\Models\Contact\Gift;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Gift;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

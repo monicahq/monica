@@ -1,10 +1,10 @@
 <?php
 
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddForeignKeysToGenders extends Migration
