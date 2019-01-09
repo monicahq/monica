@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Journal\Day;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;

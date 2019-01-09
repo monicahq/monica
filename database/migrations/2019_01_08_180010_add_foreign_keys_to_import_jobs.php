@@ -1,14 +1,12 @@
 <?php
 
+use App\Models\User\User;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Gift;
+use App\Models\Account\ImportJob;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\Account\ImportJob;
-use App\Models\User\User;
 
 class AddForeignKeysToImportJobs extends Migration
 {

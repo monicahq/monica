@@ -1,11 +1,8 @@
 <?php
 
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddForeignKeysToActivityContact extends Migration
 {
