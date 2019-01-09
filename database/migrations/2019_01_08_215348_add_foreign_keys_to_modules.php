@@ -12,8 +12,9 @@ use App\Models\Account\ImportJobReport;
 use App\Models\User\User;
 use App\Models\Account\Invitation;
 use App\Models\Journal\JournalEntry;
+use App\Models\User\Module;
 
-class AddForeignKeysToJournalEntries extends Migration
+class AddForeignKeysToModules extends Migration
 {
     /**
      * Run the migrations.
@@ -22,20 +23,20 @@ class AddForeignKeysToJournalEntries extends Migration
      */
     public function up()
     {
-        // we need to parse the journal entries table to make sure that we don't have
-        // "ghost" journal entries that are not associated with any account
-        JournalEntry::chunk(200, function ($journalEntries) {
-            foreach ($journalEntries as $journalEntry) {
+        // we need to parse the modules table to make sure that we don't have
+        // "ghost" modules that are not associated with any account
+        Module::chunk(200, function ($modules) {
+            foreach ($modules as $module) {
                 try {
-                    Account::findOrFail($journalEntry->account_id);
+                    Account::findOrFail($module->account_id);
                 } catch (ModelNotFoundException $e) {
-                    $journalEntry->delete();
+                    $module->delete();
                     continue;
                 }
             }
         });
 
-        Schema::table('journal_entries', function (Blueprint $table) {
+        Schema::table('modules', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
