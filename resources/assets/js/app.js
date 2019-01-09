@@ -238,6 +238,11 @@ Vue.component(
   require('./components/journal/partials/JournalContentEntry.vue').default
 );
 
+Vue.component(
+  'mood-calendar',
+  require('./components/journal/MoodCalendar.vue').default
+);
+
 // Settings
 Vue.component(
   'contact-field-types',

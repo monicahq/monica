@@ -49,6 +49,7 @@
         {{ $t('journal.journal_add') }}
       </a>
       <p>{{ $t('journal.journal_description') }}</p>
+      <mood-calendar />
     </div>
   </div>
 </template>
