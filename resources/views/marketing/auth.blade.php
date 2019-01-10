@@ -9,7 +9,7 @@
     <link rel="manifest" href="{{ asset('/manifest.webmanifest') }}">
 
     <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
-    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
+    <link rel="shortcut icon" href="img/favicon.png">
     <script>
       window.Laravel = {!! json_encode([
           'csrfToken' => csrf_token(),
@@ -17,6 +17,7 @@
           'htmldir' => htmldir(),
       ]); !!}
     </script>
+    <base href="{{ url('/') }}/" />
   </head>
 
   <body data-account-id={{ auth()->user()->account_id }} class="marketing register bg-gray-monica">

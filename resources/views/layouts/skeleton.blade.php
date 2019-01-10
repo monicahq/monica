@@ -14,7 +14,7 @@
       <link rel="stylesheet" href="{{ asset(mix('css/stripe.css')) }}">
     @endif
 
-    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
+    <link rel="shortcut icon" href="img/favicon.png">
     <script>
       window.Laravel = {!! json_encode([
           'csrfToken' => csrf_token(),
@@ -23,6 +23,7 @@
           'profileDefaultView' => auth()->user()->profile_active_tab,
       ]); !!}
     </script>
+    <base href="{{ url('/') }}/" />
   </head>
   <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
 
