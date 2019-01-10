@@ -69,7 +69,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    class: {
+    iclass: {
       type: String,
       default: '',
     },
