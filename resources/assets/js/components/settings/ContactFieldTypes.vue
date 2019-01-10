@@ -289,7 +289,7 @@ export default {
     },
 
     getContactFieldTypes() {
-      axios.get('/settings/personalization/contactfieldtypes')
+      axios.get('settings/personalization/contactfieldtypes')
         .then(response => {
           this.contactFieldTypes = response.data;
         });
@@ -301,7 +301,7 @@ export default {
 
     store() {
       this.persistClient(
-        'post', '/settings/personalization/contactfieldtypes',
+        'post', 'settings/personalization/contactfieldtypes',
         this.createForm, '#modal-create-contact-field-type', this.submitted
       );
 
@@ -325,7 +325,7 @@ export default {
 
     update() {
       this.persistClient(
-        'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+        'put', 'settings/personalization/contactfieldtypes/' + this.editForm.id,
         this.editForm, '#modal-edit-contact-field-type', this.edited
       );
 
@@ -346,7 +346,7 @@ export default {
 
     trash() {
       this.persistClient(
-        'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+        'delete', 'settings/personalization/contactfieldtypes/' + this.editForm.id,
         this.editForm, '#modal-delete-contact-field-type', this.deleted
       );
 

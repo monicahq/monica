@@ -195,7 +195,7 @@ export default {
     },
 
     getGenders() {
-      axios.get('/settings/personalization/genders')
+      axios.get('settings/personalization/genders')
         .then(response => {
           this.genders = response.data;
         });
@@ -218,7 +218,7 @@ export default {
     },
 
     store() {
-      axios.post('/settings/personalization/genders', this.createForm)
+      axios.post('settings/personalization/genders', this.createForm)
         .then(response => {
           this.$refs.createModal.close();
           this.genders.push(response.data);
@@ -235,7 +235,7 @@ export default {
     },
 
     update() {
-      axios.put('/settings/personalization/genders/' + this.updateForm.id, this.updateForm)
+      axios.put('settings/personalization/genders/' + this.updateForm.id, this.updateForm)
         .then(response => {
           this.$refs.updateModal.close();
           this.updatedGender.name = this.updateForm.name;
@@ -253,7 +253,7 @@ export default {
     },
 
     trash() {
-      axios.delete('/settings/personalization/genders/' + this.deleteForm.id)
+      axios.delete('settings/personalization/genders/' + this.deleteForm.id)
         .then(response => {
           this.closeDeleteModal();
           this.getGenders();
@@ -261,7 +261,7 @@ export default {
     },
 
     trashAndReplace() {
-      axios.delete('/settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
+      axios.delete('settings/personalization/genders/' + this.deleteForm.id + '/replaceby/' + this.deleteForm.newId)
         .then(response => {
           this.closeDeleteModal();
           this.getGenders();

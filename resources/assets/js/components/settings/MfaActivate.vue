@@ -116,7 +116,7 @@ export default {
 
   methods: {
     register() {
-      axios.post('/settings/security/2fa-enable', { one_time_password: this.one_time_password })
+      axios.post('settings/security/2fa-enable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeEnableModal();
           this.activated = response.data.success;
@@ -132,7 +132,7 @@ export default {
     },
 
     unregister() {
-      axios.post('/settings/security/2fa-disable', { one_time_password: this.one_time_password })
+      axios.post('settings/security/2fa-disable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeDisableModal();
           this.activated = ! response.data.success;
@@ -149,7 +149,7 @@ export default {
 
     showEnableModal() {
       this.one_time_password = '';
-      axios.get('/settings/security/2fa-enable')
+      axios.get('settings/security/2fa-enable')
         .then(response => {
           this.image = response.data.image;
           this.secret = response.data.secret;

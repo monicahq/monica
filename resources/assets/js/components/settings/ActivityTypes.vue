@@ -323,7 +323,7 @@ export default {
     },
 
     getActivityTypeCategories() {
-      axios.get('/settings/personalization/activitytypecategories')
+      axios.get('settings/personalization/activitytypecategories')
         .then(response => {
           this.activityTypeCategories = response.data;
         });
@@ -342,7 +342,7 @@ export default {
     },
 
     storeCategory() {
-      axios.post('/settings/personalization/activitytypecategories', this.createCategoryForm)
+      axios.post('settings/personalization/activitytypecategories', this.createCategoryForm)
         .then(response => {
           this.$refs.createCategoryModal.close();
           this.activityTypeCategories.push(response.data);
@@ -396,7 +396,7 @@ export default {
     },
 
     updateCategory() {
-      axios.put('/settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
+      axios.put('settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
         .then(response => {
           this.$refs.updateCategoryModal.close();
           this.updatedCategory.name = this.updateCategoryForm.name;
@@ -412,7 +412,7 @@ export default {
     },
 
     storeType() {
-      axios.post('/settings/personalization/activitytypes', this.createTypeForm)
+      axios.post('settings/personalization/activitytypes', this.createTypeForm)
         .then(response => {
           this.$refs.createTypeModal.close();
           this.activityTypes.push(response.data);
@@ -424,7 +424,7 @@ export default {
     },
 
     destroyCategory() {
-      axios.delete('/settings/personalization/activitytypecategories/' + this.destroyCategoryForm.id)
+      axios.delete('settings/personalization/activitytypecategories/' + this.destroyCategoryForm.id)
         .then(response => {
           this.$refs.deleteCategoryModal.close();
           this.destroyCategoryForm.id = '';
@@ -438,7 +438,7 @@ export default {
     },
 
     updateType() {
-      axios.put('/settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
+      axios.put('settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
         .then(response => {
           this.$refs.updateTypeModal.close();
           this.updatedCategory.name = this.updateTypeForm.name;
@@ -450,7 +450,7 @@ export default {
     },
 
     destroyType() {
-      axios.delete('/settings/personalization/activitytypes/' + this.destroyTypeForm.id)
+      axios.delete('settings/personalization/activitytypes/' + this.destroyTypeForm.id)
         .then(response => {
           this.$refs.deleteTypeModal.close();
           this.destroyTypeForm.id = '';

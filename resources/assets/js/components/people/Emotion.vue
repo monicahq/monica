@@ -146,21 +146,21 @@ export default {
     },
 
     getPrimaryEmotions() {
-      axios.get('/emotions')
+      axios.get('emotions')
         .then(response => {
           this.primaryEmotions = response.data.data;
         });
     },
 
     getSecondaryEmotions() {
-      axios.get('/emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries')
+      axios.get('emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries')
         .then(response => {
           this.secondaryEmotions = response.data.data;
         });
     },
 
     getEmotions(id) {
-      axios.get('/emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries/' + this.selectedSecondaryEmotionId + '/emotions')
+      axios.get('emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries/' + this.selectedSecondaryEmotionId + '/emotions')
         .then(response => {
           this.emotions = response.data.data;
         });

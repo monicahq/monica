@@ -143,7 +143,7 @@ export default {
     },
 
     destroy() {
-      axios.delete('/journal/day/' + this.day.id)
+      axios.delete('journal/day/' + this.day.id)
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });

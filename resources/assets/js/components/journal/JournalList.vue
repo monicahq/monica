@@ -34,7 +34,7 @@
 
       <div v-if="journalEntries.total === 0" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" cy-name="journal-blank-state">
         <div class="tc mb4">
-          <img src="/img/journal/blank.svg" />
+          <img src="img/journal/blank.svg" />
         </div>
         <h3>
           {{ $t('journal.journal_blank_cta') }}
@@ -45,7 +45,7 @@
 
     <!-- Right sidebar -->
     <div :class="[ dirltr ? 'fl' : 'fr' ]" class="w-30 pa2">
-      <a href="/journal/add" class="btn btn-primary w-100 mb4" cy-name="add-entry-button">
+      <a href="journal/add" class="btn btn-primary w-100 mb4" cy-name="add-entry-button">
         {{ $t('journal.journal_add') }}
       </a>
       <p>{{ $t('journal.journal_description') }}</p>
@@ -95,7 +95,7 @@ export default {
     },
 
     getEntries() {
-      axios.get('/journal/entries')
+      axios.get('journal/entries')
         .then(response => {
           this.journalEntries = response.data;
           this.journalEntries.current_page = response.data.current_page;
@@ -128,7 +128,7 @@ export default {
 
     loadMore() {
       this.loadingMore = true;
-      axios.get('/journal/entries?page=' + (this.journalEntries.current_page + 1))
+      axios.get('journal/entries?page=' + (this.journalEntries.current_page + 1))
         .then(response => {
           this.journalEntries.current_page = response.data.current_page;
           this.journalEntries.next_page_url = response.data.next_page_url;

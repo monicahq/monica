@@ -501,7 +501,7 @@
         <div v-for="lifeEvent in lifeEvents" :key="lifeEvent.id">
           <div :id="'lifeEvent' + lifeEvent.id" class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
             <div class="absolute life-event-list-icon">
-              <img class="relative" :src="'/img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'" />
+              <img class="relative" :src="'img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'" />
             </div>
             <div class="absolute life-event-list-actions f7">
               <span>{{ lifeEvent.happened_at }}</span>
@@ -602,7 +602,7 @@ export default {
     },
 
     getLifeEvents() {
-      axios.get('/people/' + this.hash + '/lifeevents')
+      axios.get('people/' + this.hash + '/lifeevents')
         .then(response => {
           this.showAdd = false;
           this.lifeEvents = response.data;
@@ -615,11 +615,11 @@ export default {
           */
     updateLifeEventsList(updatedLifeEvent) {
       this.getLifeEvents();
-      window.location.href='/people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id;
+      window.location.href='people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id;
     },
 
     destroy(lifeEvent) {
-      axios.delete('/lifeevents/' + lifeEvent.id)
+      axios.delete('lifeevents/' + lifeEvent.id)
         .then(response => {
           this.closeDeleteModal();
           this.getLifeEvents();
