@@ -1,18 +1,11 @@
 <?php
 
+use App\Models\User\Module;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Gift;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\Account\ImportJob;
-use App\Models\Account\ImportJobReport;
-use App\Models\User\User;
-use App\Models\Account\Invitation;
-use App\Models\Journal\JournalEntry;
-use App\Models\User\Module;
 
 class AddForeignKeysToModules extends Migration
 {
