@@ -66,7 +66,11 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return $this->addressObject((new CreateAddress)->execute($datas));
+        
+        $address = $this->addressObject((new CreateAddress)->execute($datas));
+
+        return $this->setHTTPStatusCode(201)
+                    ->respond($address);
     }
 
     /**
@@ -89,7 +93,9 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return $this->addressObject((new UpdateAddress)->execute($datas));
+        $address = $this->addressObject((new UpdateAddress)->execute($datas));
+
+        return $this->respond($address);
     }
 
     /**
