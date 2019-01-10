@@ -66,7 +66,6 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        
         $address = $this->addressObject((new CreateAddress)->execute($datas));
 
         return $this->setHTTPStatusCode(201)
