@@ -11,11 +11,16 @@ textarea:focus {
 
 <template>
   <div>
-    <p v-if="label != ''" class="mb2" :class="{ b: required }">
+    <label
+      v-if="label"
+      :for="realid"
+      class="mb2"
+      :class="{ b: required }"
+    >
       {{ label }}
-    </p>
+    </label>
     <textarea
-      :id="id"
+      :id="realid"
       v-model="buffer"
       autofocus
       :required="required"
@@ -67,6 +72,12 @@ export default {
     return {
       buffer: this.value
     };
+  },
+
+  computed: {
+    realid() {
+      return this.id + this._uid;
+    }
   },
 };
 </script>

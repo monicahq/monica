@@ -12,18 +12,27 @@ select:focus {
 
 <template>
   <div>
-    <label v-if="title" :for="id" class="mb2" :class="{ b: required }">
+    <label
+      v-if="title"
+      :for="realid"
+      class="mb2"
+      :class="{ b: required }"
+    >
       {{ title }}
     </label>
     <select
-      :id="id"
+      :id="realid"
       :value="selectedOption"
       :name="id"
       required
-      :class="formClass != null ? formClass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'"
+      :class="[iclass != '' ? iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0']"
       @input="event => { $emit('input', event.target.value) }"
     >
-      <option v-for="option in filterExclude(options)" :key="option.id" :value="option.id">
+      <option
+        v-for="option in filterExclude(options)"
+        :key="option.id"
+        :value="option.id"
+      >
         {{ option.name }}
       </option>
     </select>
@@ -35,7 +44,8 @@ export default {
 
   props: {
     value: {
-      type: null,
+      type: String,
+      default: '',
     },
     options: {
       type: Array,
@@ -59,7 +69,7 @@ export default {
       type: Boolean,
       default: true,
     },
-    formClass: {
+    class: {
       type: String,
       default: '',
     },
@@ -69,6 +79,12 @@ export default {
     return {
       selectedOption: null,
     };
+  },
+
+  computed: {
+    realid() {
+      return this.id + this._uid;
+    }
   },
 
   watch: {
@@ -83,8 +99,8 @@ export default {
 
   methods: {
     /**
-         * Filter options
-         */
+     * Filter options
+     */
     filterExclude: function (options) {
       var me = this;
       return options.filter(function (option) {

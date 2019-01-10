@@ -75,7 +75,7 @@
 
         <!-- This field will be the same for every life event type no matter what, as the date is the only required field -->
         <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-          <label for="another" class="mr2">
+          <label for="year" class="mr2">
             {{ $t('people.life_event_date_it_happened') }}
           </label>
           <div class="flex mb3">

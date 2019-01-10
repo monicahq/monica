@@ -24,30 +24,13 @@ class AddressesController extends Controller
      */
     public function index(Contact $contact)
     {
-        $contactAddresses = collect([]);
+        $addresses = collect([]);
 
         foreach ($contact->addresses as $address) {
-            $place = $address->place;
-            $data = [
-                'id' => $address->id,
-                'name' => $address->name,
-                'googleMapAddress' => $place->getGoogleMapAddress(),
-                'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
-                'address' => $place->getAddressAsString(),
-                'country' => $place->country,
-                'country_name' => $place->country_name,
-                'street' => $place->street,
-                'city' => $place->city,
-                'province' => $place->province,
-                'postal_code' => $place->postal_code,
-                'latitude' => $place->latitude,
-                'longitude' => $place->longitude,
-                'edit' => false,
-            ];
-            $contactAddresses->push($data);
+            $addresses->push($this->addressObject($address));
         }
 
-        return $contactAddresses;
+        return $addresses;
     }
 
     /**
@@ -83,7 +66,7 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return (new CreateAddress)->execute($datas);
+        return $this->addressObject((new CreateAddress)->execute($datas));
     }
 
     /**
@@ -106,7 +89,7 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return (new UpdateAddress)->execute($datas);
+        return $this->addressObject((new UpdateAddress)->execute($datas));
     }
 
     /**
@@ -127,5 +110,24 @@ class AddressesController extends Controller
         if ((new DestroyAddress)->execute($datas)) {
             return $this->respondObjectDeleted($address->id);
         }
+    }
+
+    private function addressObject($address) {
+        return [
+            'id' => $address->id,
+            'name' => $address->name,
+            'googleMapAddress' => $address->place->getGoogleMapAddress(),
+            'googleMapAddressLatitude' => $address->place->getGoogleMapsAddressWithLatitude(),
+            'address' => $address->place->getAddressAsString(),
+            'country' => $address->place->country,
+            'country_name' => $address->place->country_name,
+            'street' => $address->place->street,
+            'city' => $address->place->city,
+            'province' => $address->place->province,
+            'postal_code' => $address->place->postal_code,
+            'latitude' => $address->place->latitude,
+            'longitude' => $address->place->longitude,
+            'edit' => false,
+        ];
     }
 }

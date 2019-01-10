@@ -48,10 +48,13 @@
         <div v-show="contactInformation.edit" class="w-100">
           <form class="measure center" @submit.prevent="update(contactInformation)">
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_info_form_content') }}
-              </label>
-              <input v-model="updateForm.data" class="pa2 db w-100" type="text" />
+              <form-input
+                id="contact-content"
+                v-model="updateForm.data"
+                :title="$t('people.contact_info_form_content')"
+                iclass="pa2 db w-100"
+                :input-type="'text'"
+              />
             </div>
             <div class="lh-copy mt3">
               <a class="btn btn-primary" @click.prevent="update(contactInformation)">
@@ -74,12 +77,12 @@
     <div v-if="addMode">
       <form class="measure center" @submit.prevent="store">
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
+          <label for="add-contact-type" class="db fw6 lh-copy f6">
             {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">
               {{ $t('people.contact_info_form_personalize') }}
             </a>
           </label>
-          <select v-model="createForm.contact_field_type_id" class="db w-100 h2">
+          <select id="add-contact-type" v-model="createForm.contact_field_type_id" class="db w-100 h2">
             <option v-for="contactFieldType in contactFieldTypes" :key="contactFieldType.id" :value="contactFieldType.id">
               {{ contactFieldType.name }}
             </option>

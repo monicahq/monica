@@ -85,13 +85,13 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="form.errors" />
+            <error :errors="form.errors" />
 
             <!-- Create Token Form -->
             <form class="form-horizontal" role="form" @submit.prevent="store">
               <!-- Name -->
               <div class="form-group">
-                <label class="col-md-4 control-label">
+                <label for="create-token-name" class="col-md-4 control-label">
                   {{ $t('settings.api_token_name') }}
                 </label>
 
@@ -177,6 +177,10 @@ import Error from '../partials/Error.vue';
 
 export default {
 
+  components: {
+    Error
+  },
+
   data() {
     return {
       accessToken: null,
@@ -189,8 +193,6 @@ export default {
         scopes: [],
         errors: []
       },
-
-      errorTemplate: Error,
 
       dirltr: true,
     };
