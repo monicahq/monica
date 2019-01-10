@@ -6,7 +6,9 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
+use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
+use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -24,8 +26,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
@@ -86,7 +88,6 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
-        'linkedin_profile_url',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',
@@ -370,6 +371,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Photo records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function photos()
+    {
+        return $this->belongsToMany(Photo::class)->withTimestamps();
+    }
+
+    /**
      * Get the Life event records associated with the contact.
      *
      * @return HasMany
@@ -377,6 +388,16 @@ class Contact extends Model
     public function lifeEvents()
     {
         return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');
+    }
+
+    /**
+     * Get the Occupation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**
@@ -689,7 +710,7 @@ class Contact extends Model
         $incompleteName = $this->first_name;
 
         if (! is_null($this->last_name)) {
-            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+            $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
         }
 
         if ($this->is_dead) {
@@ -1130,7 +1151,7 @@ class Contact extends Model
      */
     public function getAddressesForAPI()
     {
-        return AddressShortResource::collection($this->addresses);
+        return AddressResource::collection($this->addresses);
     }
 
     /**
@@ -1139,24 +1160,6 @@ class Contact extends Model
     public function getContactFieldsForAPI()
     {
         return ContactFieldResource::collection($this->contactFields);
-    }
-
-    /**
-     * Update the last called info on the contact, if the call has been made
-     * in the most recent date.
-     *
-     * @param  Call   $call
-     * @return void
-     */
-    public function updateLastCalledInfo(Call $call)
-    {
-        if (is_null($this->last_talked_to)) {
-            $this->last_talked_to = $call->called_at;
-        } else {
-            $this->last_talked_to = $this->last_talked_to->max($call->called_at);
-        }
-
-        $this->save();
     }
 
     /**
@@ -1409,14 +1412,16 @@ class Contact extends Model
      */
     public function getRelationshipNatureWith(self $otherContact)
     {
-        return Relationship::where('account_id', $this->account_id)
-                                    ->where('contact_is', $this->id)
-                                    ->where('of_contact', $otherContact->id)
-                                    ->first();
+        return Relationship::where([
+            'account_id' => $this->account_id,
+            'contact_is' => $this->id,
+            'of_contact' => $otherContact->id,
+        ])
+            ->first();
     }
 
     /**
-     * Delete the contact and all the related object.
+     * Delete all related objects.
      *
      * @return bool
      */
@@ -1451,11 +1456,12 @@ class Contact extends Model
      */
     public function getBirthdayRemindersAboutRelatedContacts()
     {
-        $reminders = collect();
         $relationships = $this->relationships->filter(function ($item) {
-            return ! is_null($item->ofContact->birthday_special_date_id);
+            return ! is_null($item->ofContact) &&
+                   ! is_null($item->ofContact->birthday_special_date_id);
         });
 
+        $reminders = collect();
         foreach ($relationships as $relationship) {
             $reminder = Reminder::where('account_id', $this->account_id)
                 ->find($relationship->ofContact->birthdate->reminder_id);
@@ -1474,14 +1480,18 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $relatedContact = Relationship::where('account_id', $this->account_id)
-            ->where('contact_is', $this->id)
-            ->first();
+        $contact = $this;
 
-        if ($relatedContact) {
-            return self::where('account_id', $this->account_id)
-                ->find($relatedContact->of_contact);
-        }
+        return self::setEagerLoads([])->where('account_id', $this->account_id)
+            ->where('id', function ($query) use ($contact) {
+                $query->select('of_contact')
+                        ->from('relationships')
+                        ->where([
+                            'account_id' => $contact->account_id,
+                            'contact_is' => $contact->id,
+                        ]);
+            })
+            ->first();
     }
 
     /**
@@ -1570,5 +1580,16 @@ class Contact extends Model
         }
 
         $this->save();
+    }
+
+    /**
+     * Get the weather information for this contact, based on the first address
+     * on the profile.
+     *
+     * @return void
+     */
+    public function getWeather()
+    {
+        return WeatherHelper::getWeatherForAddress($this->addresses()->first());
     }
 }

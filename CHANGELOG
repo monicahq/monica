@@ -1,12 +1,73 @@
 UNRELEASED CHANGES:
 
-* Fix Storage page not being displayed
-* Add ability to create tasks that are not linked to any contacts
-* Fix VCard import without firstname
-* Fix avatar display in searches
+New features:
+
+* Add ability to add a comment when rating your day in the journal
+* Add API methods to manage genders
+* Breaking change: rewrite API methods to manage contacts
+
+Enhancements:
+
+* Add foreign keys to reminders, reminder rules, contacts and life events tables
+* Add number of life events on the contact profile page
 * Added base HTML tag, and tweaked some assets and urls to use relative paths
 
+Fixes:
+
+* Fix model binding when it is a guest request (not logged in)
+* Fix bug preventing to create life event without day and month
+* Fix ability to delete a user with a u2f key activated
+* Fix validation fails with Services
+* Fix getting birthday reminders about related contacts
+* Fix default temperature scale setting
+* Fix API methods for Occupation object
+* Fix activity date viewed as one day before the event happened
+* Fix settags api call with an empty tag
+
 RELEASED VERSIONS:
+
+v2.11.2 - 2019-01-01
+--------------------
+
+* Carddav: support sync-token (rfc6578)
+* Fix premium feature flag appearing on self-hosted version
+* Fix exception when user is logged out (again)
+* Fix carddav group-member-set propfind call
+* Fix contacts view in case birthdate returns null
+* Fix conversation without message
+
+v2.11.1 - 2018-12-26
+--------------------
+
+* Migrate LinkedIn url from the Contact object to a ContactFieldType object
+* Activate eslint to check vue and javascript formatting
+* Fix tasks store and update
+* Fix error handling in vue components
+* Fix exception when user is logged out
+* Fix subscription plan display
+* Fix dashboard calls display
+* Fix tags getting error
+* Fix contact getIncompleteName to work with UTF-8 last_name characters
+* Fix associate null tags
+
+v2.11.0 - 2018-12-23
+--------------------
+
+* Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
+* Add ability to see the current weather on the contact profile page
+* Add ability to generate recovery codes in order to bypass 2FA/U2F
+* Add ability to indicate latitude and longitude to addresses
+* Add ability to upload photos
+* Add ability to indicate how you felt when logging a call
+* Add information about who initiated a phone call
+* Add ability to edit a phone call
+* Add ability to create tasks that are not linked to any contacts
+* Remove limitation on the date field when creating an activity
+* Fix Set Tag api method which deleted existing tags, which it shouldn't
+* Fix editing relationship not working
+* Fix Storage page not being displayed
+* Fix VCard import without firstname
+* Fix avatar display in searches
 
 v2.10.2 - 2018-11-14
 --------------------

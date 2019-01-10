@@ -233,21 +233,15 @@ class ExportVCardTest extends TestCase
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
-        $contactFieldType = factory(Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
-            'street' => '123 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
             'account_id' => $account->id,
         ]);
 
-        $contactFieldType = factory(Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
-            'street' => '823 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
             'account_id' => $account->id,
         ]);
 
@@ -258,8 +252,8 @@ class ExportVCardTest extends TestCase
             self::defaultPropsCount + 2,
             $vCard->children()
         );
-        $this->assertContains('ADR:;;123 st;Montreal;Quebec;;', $vCard->serialize());
-        $this->assertContains('ADR:;;823 st;Montreal;Quebec;;', $vCard->serialize());
+        $this->assertContains('ADR:;;12;beverly hills;;90210;US', $vCard->serialize());
+        $this->assertContains('ADR:;;12;beverly hills;;90210;US', $vCard->serialize());
     }
 
     public function test_vcard_prepares_an_almost_empty_vcard()
@@ -274,13 +268,15 @@ class ExportVCardTest extends TestCase
             self::defaultPropsCount + 4,
             $vCard->children()
         );
-        $hash = $contact->hashid();
-        $url = config('app.url');
+
+        $url = route('people.show', $contact);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
         $this->assertVObjectEqualsVObject("BEGIN:VCARD
 VERSION:4.0
-PRODID:-//Sabre//Sabre VObject 4.1.6//EN
-UID:{$hash}
-SOURCE:{$url}/people/{$hash}
+PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
+UID:{$contact->uuid}
+SOURCE:{$url}
 FN:John Doe
 N:Doe;John;;;
 GENDER:O;
@@ -292,21 +288,15 @@ END:VCARD", $vCard);
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
 
-        $contactFieldType = factory(Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
-            'street' => '123 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
             'account_id' => $account->id,
         ]);
 
-        $contactFieldType = factory(Address::class)->create([
+        $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
             'name' => 'Home',
-            'street' => '823 st',
-            'city' => 'Montreal',
-            'province' => 'Quebec',
             'account_id' => $account->id,
         ]);
 
@@ -324,18 +314,20 @@ END:VCARD", $vCard);
             self::defaultPropsCount + 7,
             $vCard->children()
         );
-        $hash = $contact->hashid();
-        $url = config('app.url');
+
+        $url = route('people.show', $contact);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
         $this->assertVObjectEqualsVObject("BEGIN:VCARD
 VERSION:4.0
-PRODID:-//Sabre//Sabre VObject 4.1.6//EN
-UID:{$hash}
-SOURCE:{$url}/people/{$hash}
+PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
+UID:{$contact->uuid}
+SOURCE:{$url}
 FN:John Doe
 N:Doe;John;;;
 GENDER:O;
-ADR:;;123 st;Montreal;Quebec;;
-ADR:;;823 st;Montreal;Quebec;;
+ADR:;;12;beverly hills;;90210;US\r\n
+ADR:;;12;beverly hills;;90210;US\r\n
 EMAIL:john@doe.com
 END:VCARD", $vCard);
     }

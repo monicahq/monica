@@ -7,8 +7,13 @@ use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
+use App\Models\Account\Photo;
+use App\Models\Account\Place;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
+use App\Models\Account\Weather;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
@@ -16,6 +21,7 @@ use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Account\Invitation;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\Conversation;
@@ -185,6 +191,57 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->documents()->exists());
+    }
+
+    public function test_it_has_many_photos()
+    {
+        $account = factory(Account::class)->create([]);
+        $photo = factory(Photo::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->photos()->exists());
+    }
+
+    public function test_it_has_many_weathers()
+    {
+        $weather = factory(Weather::class)->create([]);
+        $this->assertTrue($weather->account->weathers()->exists());
+    }
+
+    public function test_it_has_many_places()
+    {
+        $account = factory(Account::class)->create([]);
+        $places = factory(Place::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->places()->exists());
+    }
+
+    public function test_it_has_many_addresses()
+    {
+        $account = factory(Account::class)->create([]);
+        $addresses = factory(Address::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->addresses()->exists());
+    }
+
+    public function test_it_has_many_companies()
+    {
+        $account = factory(Account::class)->create([]);
+        $companies = factory(Company::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->companies()->exists());
+    }
+
+    public function test_it_has_many_occupations()
+    {
+        $account = factory(Account::class)->create([]);
+        $occupations = factory(Occupation::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->occupations()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
@@ -805,6 +862,7 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_tests_account_storage_limit()
     {
+        config(['monica.requires_subscription' => true]);
         $account = factory(Account::class)->create([]);
 
         $document = factory(Document::class)->create([
@@ -817,5 +875,39 @@ class AccountTest extends FeatureTestCase
 
         config(['monica.max_storage_size' => 1]);
         $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.max_storage_size' => 2]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        config(['monica.max_storage_size' => 1]);
+        $this->assertTrue($account->hasReachedAccountStorageLimit());
+
+        config(['monica.requires_subscription' => false]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+    }
+
+    public function test_it_calculates_storage_size()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $document = factory(Document::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertEquals(
+            2000000,
+            $account->getStorageSize()
+        );
     }
 }

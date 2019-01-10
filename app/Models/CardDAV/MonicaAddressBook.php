@@ -3,6 +3,7 @@
 namespace App\Models\CardDAV;
 
 use Sabre\CardDAV\AddressBook;
+use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
 
 class MonicaAddressBook extends AddressBook
 {
@@ -23,12 +24,22 @@ class MonicaAddressBook extends AddressBook
         return [
             [
                 'privilege' => '{DAV:}read',
-                'principal' => $this->getOwner(),
+                'principal' => '{DAV:}owner',
                 'protected' => true,
             ],
             [
-                'privilege' => '{DAV:}write',
-                'principal' => $this->getOwner(),
+                'privilege' => '{DAV:}write-content',
+                'principal' => '{DAV:}owner',
+                'protected' => true,
+            ],
+            [
+                'privilege' => '{DAV:}bind',
+                'principal' => '{DAV:}owner',
+                'protected' => true,
+            ],
+            [
+                'privilege' => '{DAV:}unbind',
+                'principal' => '{DAV:}owner',
                 'protected' => true,
             ],
         ];
@@ -44,5 +55,17 @@ class MonicaAddressBook extends AddressBook
     public function getChildACL()
     {
         return $this->getACL();
+    }
+
+    /**
+     * Returns the last modification date.
+     *
+     * @return \Carbon\Carbon
+     */
+    public function getLastModified()
+    {
+        if ($this->carddavBackend instanceof MonicaCardDAVBackend) {
+            return $this->carddavBackend->getLastModified();
+        }
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -33,6 +34,13 @@ class RouteServiceProvider extends ServiceProvider
         parent::boot();
 
         Route::bind('contact', function ($value) {
+            // In case the user is logged out
+            if (! Auth::check()) {
+                redirect()->route('login')->send();
+
+                return;
+            }
+
             try {
                 $id = app('idhasher')->decodeId($value);
 

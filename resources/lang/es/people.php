@@ -81,22 +81,27 @@ return [
     // Calls
     'modal_call_title' => 'Registrar una llamada',
     'modal_call_comment' => '¿De qué hablaron? (Opcional)',
-    'modal_call_date' => 'La llamada telefónica ocurrió hoy.',
-    'modal_call_change' => 'Cambiar',
     'modal_call_exact_date' => 'La llamada telefónica ocurrió el',
+    'modal_call_who_called' => 'Who called?',
+    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'La llamada telefónica ha sido guardada.',
     'call_delete_confirmation' => '¿Estás seguro que deseas eliminar esta llamada?',
     'call_delete_success' => 'La llamada telefónica ha sido eliminada exitosamente',
     'call_title' => 'Llamadas telefónicas',
     'call_empty_comment' => 'No hay detalles',
-    'call_blank_title' => 'Dale seguimiento a la llamadas telefónicas que has tenido con :name',
-    'call_blank_desc' => 'Llamaste a :name',
+    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
+    'call_blank_desc' => 'You called {name}',
+    'call_you_called' => 'You called',
+    'call_he_called' => '{name} called',
+    'call_emotions' => 'Emotions:',
 
     // Conversation
     'conversation_blank' => 'Registra conversaciones que has tenido con :name por redes sociales, SMS, ...',
     'conversation_delete_link' => 'Borrar conversación',
     'conversation_edit_title' => 'Editar conversación',
     'conversation_edit_delete' => '¿Estás seguro que quieres eliminar esta conversación? Esta acción es permanente.',
+    'conversation_add_success' => 'The conversation has been successfully added.',
+    'conversation_edit_success' => 'The conversation has been successfully updated.',
     'conversation_delete_success' => 'La conversación ha sido eliminada exitosamente.',
     'conversation_add_title' => 'Registrar una nueva conversación',
     'conversation_add_when' => '¿Cuándo tuviste esta conversación?',
@@ -132,15 +137,12 @@ return [
     'information_edit_lastname' => 'Apellido (Opcional)',
     'information_edit_description' => 'Description (Optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
-    'information_edit_linkedin' => 'Perfil de LinkedIn (opcional)',
     'information_edit_unknown' => 'No sé la edad de esta persona',
     'information_edit_probably' => 'Esta persona probablemente tiene...',
     'information_edit_not_year' => 'Sé el día y mes de la fecha de nacimiento de esta persona, pero no el año…',
     'information_edit_exact' => 'Sé la fecha exacta de nacimiento de esta persona...',
-    'information_no_linkedin_defined' => 'Perfil de LinkedIn no definido',
     'information_no_work_defined' => 'Información de trabajo no definida',
     'information_work_at' => 'en: company',
-    'linkedin_profile' => 'Perfil de LinkedIn',
     'work_add_cta' => 'Actualizar la información de trabajo',
     'work_edit_success' => 'La información de trabajo ha sido actualizada con éxito',
     'work_edit_title' => 'Actualizar la información de trabajo de :name',
@@ -359,6 +361,8 @@ return [
     'contact_address_form_province' => 'Provincia (opcional)',
     'contact_address_form_postal_code' => 'Código postal (opcional)',
     'contact_address_form_country' => 'País (opcional)',
+    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
+    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
 
     // Pets
     'pets_kind' => 'Tipo de mascota',
@@ -448,4 +452,14 @@ return [
     'document_upload_zone_cta' => 'Upload a file',
     'document_upload_zone_progress' => 'Uploading the document...',
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+
+    // Photos
+    'photo_list_title' => 'Related photos',
+    'photo_list_cta' => 'Upload photo',
+    'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
+    'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_delete' => 'Delete photo',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'This made you feel…',
 ];

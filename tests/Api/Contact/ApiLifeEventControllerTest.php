@@ -220,7 +220,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'note' => 'This is a text',
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The happened at field is required.',
             'The has reminder field is required.',
             'The happened at month unknown field is required.',
@@ -294,7 +294,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'note' => 'This is a text',
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The happened at field is required.',
         ]);
     }
