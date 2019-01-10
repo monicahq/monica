@@ -4,6 +4,7 @@ UNRELEASED CHANGES:
 * Add ability to create tasks that are not linked to any contacts
 * Fix VCard import without firstname
 * Fix avatar display in searches
+* Added base HTML tag, and tweaked some assets and urls to use relative paths
 
 RELEASED VERSIONS:
 
