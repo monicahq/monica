@@ -33,7 +33,7 @@ class AddForeignKeysToImportJobReports extends Migration
             }
         });
 
-        Schema::table('import_jobs', function (Blueprint $table) {
+        Schema::table('import_job_reports', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
             $table->unsignedInteger('user_id')->change();
             $table->unsignedInteger('import_job_id')->change();
