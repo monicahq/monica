@@ -112,7 +112,8 @@ class AddressesController extends Controller
         }
     }
 
-    private function addressObject($address) {
+    private function addressObject($address)
+    {
         return [
             'id' => $address->id,
             'name' => $address->name,
