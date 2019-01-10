@@ -25,7 +25,7 @@ select:focus {
       :value="selectedOption"
       :name="id"
       required
-      :class="[iclass != '' ? iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0']"
+      :class="selectClass"
       @input="event => { $emit('input', event.target.value) }"
     >
       <option
@@ -84,6 +84,9 @@ export default {
   computed: {
     realid() {
       return this.id + this._uid;
+    },
+    selectClass() {
+      return this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0';
     }
   },
 

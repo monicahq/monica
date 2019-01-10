@@ -26,8 +26,8 @@ input:focus {
       autofocus
       :required="required"
       :name="id"
-      :class="[iclass != '' ? iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0']"
-      :style="[width >= 0 ? 'width:' + width + 'px' : '']"
+      :class="inputClass"
+      :style="inputStyle"
       :value="value"
       @input="event => { $emit('input', event.target.value) }"
     />
@@ -71,6 +71,12 @@ export default {
   computed: {
     realid() {
       return this.id + this._uid;
+    },
+    inputClass() {
+      return this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0';
+    },
+    inputStyle() {
+      return this.width >= 0 ? 'width:' + this.width + 'px' : '';
     }
   }
 
