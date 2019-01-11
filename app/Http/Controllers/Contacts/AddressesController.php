@@ -115,6 +115,7 @@ class AddressesController extends Controller
         if ((new DestroyAddress)->execute($datas)) {
             return $this->respondObjectDeleted($address->id);
         }
+
         return $this->setHTTPStatusCode(400)
                     ->setErrorCode(32)
                     ->respondWithError();
@@ -123,6 +124,7 @@ class AddressesController extends Controller
     private function addressObject($address)
     {
         $place = $address->place;
+
         return [
             'id' => $address->id,
             'name' => $address->name,
