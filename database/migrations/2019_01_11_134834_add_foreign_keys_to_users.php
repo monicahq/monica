@@ -1,11 +1,13 @@
 <?php
 
-use App\Models\Contact\ReminderRule;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use App\Models\User\User;
+use App\Models\Account\Account;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AddForeignKeysToReminderRules extends Migration
+class AddForeignKeysToUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -14,20 +16,20 @@ class AddForeignKeysToReminderRules extends Migration
      */
     public function up()
     {
-        // we need to parse the rules table to make sure that we don't have
-        // "ghost" rules that are not associated with any account
-        ReminderRule::chunk(200, function ($reminderRules) {
-            foreach ($reminderRules as $reminderRule) {
+        // we need to parse the users table to make sure that we don't have
+        // "ghost" users that are not associated with any account
+        User::chunk(200, function ($users) {
+            foreach ($users as $user) {
                 try {
-                    Account::findOrFail($reminderRule->account_id);
+                    Account::findOrFail($user->account_id);
                 } catch (ModelNotFoundException $e) {
-                    $reminderRule->delete();
+                    $user->delete();
                     continue;
                 }
             }
         });
 
-        Schema::table('reminder_rules', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
