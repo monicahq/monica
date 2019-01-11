@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\Contact\Tag;
 
 class AddForeignKeysToTags extends Migration
 {
