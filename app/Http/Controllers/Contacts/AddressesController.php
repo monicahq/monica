@@ -66,10 +66,10 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        $address = $this->addressObject((new CreateAddress)->execute($datas));
+        $address = (new CreateAddress)->execute($datas);
 
         return $this->setHTTPStatusCode(201)
-                    ->respond($address);
+                    ->respond($this->addressObject($address));
     }
 
     /**
@@ -92,9 +92,9 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        $address = $this->addressObject((new UpdateAddress)->execute($datas));
+        $address = (new UpdateAddress)->execute($datas);
 
-        return $this->respond($address);
+        return $this->respond($this->addressObject($address));
     }
 
     /**
@@ -115,24 +115,28 @@ class AddressesController extends Controller
         if ((new DestroyAddress)->execute($datas)) {
             return $this->respondObjectDeleted($address->id);
         }
+        return $this->setHTTPStatusCode(400)
+                    ->setErrorCode(32)
+                    ->respondWithError();
     }
 
     private function addressObject($address)
     {
+        $place = $address->place;
         return [
             'id' => $address->id,
             'name' => $address->name,
-            'googleMapAddress' => $address->place->getGoogleMapAddress(),
-            'googleMapAddressLatitude' => $address->place->getGoogleMapsAddressWithLatitude(),
-            'address' => $address->place->getAddressAsString(),
-            'country' => $address->place->country,
-            'country_name' => $address->place->country_name,
-            'street' => $address->place->street,
-            'city' => $address->place->city,
-            'province' => $address->place->province,
-            'postal_code' => $address->place->postal_code,
-            'latitude' => $address->place->latitude,
-            'longitude' => $address->place->longitude,
+            'googleMapAddress' => $place->getGoogleMapAddress(),
+            'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
+            'address' => $place->getAddressAsString(),
+            'country' => $place->country,
+            'country_name' => $place->country_name,
+            'street' => $place->street,
+            'city' => $place->city,
+            'province' => $place->province,
+            'postal_code' => $place->postal_code,
+            'latitude' => $place->latitude,
+            'longitude' => $place->longitude,
             'edit' => false,
         ];
     }
