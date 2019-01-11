@@ -383,18 +383,21 @@ class ContactTest extends FeatureTestCase
 
         $activity1 = factory(Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity1);
+        $contact->activities()->attach($activity1, ['account_id' => $contact->account_id]);
 
         $activity2 = factory(Activity::class)->create([
             'date_it_happened' => '2010-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity2);
+        $contact->activities()->attach($activity2, ['account_id' => $contact->account_id]);
 
         $activity3 = factory(Activity::class)->create([
             'date_it_happened' => '1981-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity3);
+        $contact->activities()->attach($activity3, ['account_id' => $contact->account_id]);
 
         $this->assertEquals(
             '2015-10-29 10:10:10',
@@ -408,8 +411,9 @@ class ContactTest extends FeatureTestCase
 
         $activity1 = factory(Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity1);
+        $contact->activities()->attach($activity1, ['account_id' => $contact->account_id]);
 
         $this->assertEquals(
             '2015-10-29 10:10:10',
