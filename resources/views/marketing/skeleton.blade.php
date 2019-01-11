@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ \App::getLocale() }}" dir="{{ htmldir() }}">
   <head>
+    <base href="{{ url('/') }}/" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
