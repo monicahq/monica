@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class UpdateTaskTest extends TestCase
+class UpdateActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
