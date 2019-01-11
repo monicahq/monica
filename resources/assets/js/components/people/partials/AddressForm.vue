@@ -3,7 +3,10 @@
 
 <template>
   <div>
-    <form class="measure center">
+    <form
+      class="measure center"
+      @keyup.enter="event => { $emit('submit', event) }"
+    >
       <div class="mt3">
         <form-input
           id="name"
@@ -44,7 +47,7 @@
       <div class="mt3">
         <form-input
           id="postal_code"
-          v-model="postal_code"
+          v-model="postalCode"
           :title="$t('people.contact_address_form_postal_code')"
           input-type="text"
           :required="false"
@@ -64,7 +67,7 @@
           id="latitude"
           v-model="latitude"
           :title="$t('people.contact_address_form_latitude')"
-          input-type="text"
+          input-type="number"
           :required="false"
         />
       </div>
@@ -73,7 +76,7 @@
           id="longitude"
           v-model="longitude"
           :title="$t('people.contact_address_form_latitude')"
-          input-type="text"
+          input-type="number"
           :required="false"
         />
       </div>
@@ -104,14 +107,6 @@
 export default {
 
   props: {
-    id: {
-      type: String,
-      default: '',
-    },
-    country: {
-      type: Number,
-      default: 0,
-    },
     name: {
       type: String,
       default: '',
@@ -129,6 +124,10 @@ export default {
       default: '',
     },
     postalCode: {
+      type: String,
+      default: '',
+    },
+    country: {
       type: String,
       default: '',
     },
@@ -165,8 +164,8 @@ export default {
     province: function(value) {
       this.$emit('update:province', value);
     },
-    postal_code: function(value) {
-      this.$emit('update:postal_code', value);
+    postalCode: function(value) {
+      this.$emit('update:postalCode', value);
     },
     country: function(value) {
       this.$emit('update:country', value);

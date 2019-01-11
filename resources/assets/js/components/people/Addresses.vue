@@ -13,7 +13,7 @@
         <a v-if="!editMode" class="pointer" @click="editMode = true">
           {{ $t('app.edit') }}
         </a>
-        <a v-else class="pointer" @click="[editMode = false, addMode = false]">
+        <a v-else class="pointer" @click="toggleEditExcept(-1); editMode = false; addMode = false">
           {{ $t('app.done') }}
         </a>
       </div>
@@ -63,6 +63,7 @@
             :countries="countries"
             :mode="'edit'"
             v-bind.sync="updateForm"
+            :postal-code.sync="updateForm.postal_code"
             @cancel="toggleEdit(contactAddress)"
             @submit="update(contactAddress)"
           />
@@ -83,6 +84,7 @@
       <address-form
         :countries="countries"
         v-bind.sync="createForm"
+        :postal-code.sync="createForm.postal_code"
         @cancel="addMode = false"
         @submit="store"
       />
@@ -115,24 +117,24 @@ export default {
       addMode: false,
 
       createForm: {
-        country: 0,
         name: '',
         street: '',
         city: '',
         province: '',
         postal_code: '',
+        country: '',
         latitude: 0,
         longitude: 0,
       },
 
       updateForm: {
         id: '',
-        country: 0,
         name: '',
         street: '',
         city: '',
         province: '',
         postal_code: '',
+        country: '',
         latitude: 0,
         longitude: 0,
       },
@@ -172,12 +174,12 @@ export default {
     },
 
     reinitialize() {
-      this.createForm.country = '';
       this.createForm.name = '';
       this.createForm.street = '';
       this.createForm.city = '';
       this.createForm.province = '';
       this.createForm.postal_code = '';
+      this.createForm.country = '';
       this.createForm.latitude = '';
       this.createForm.longitude = '';
     },
@@ -189,21 +191,25 @@ export default {
 
     toggleEdit(contactAddress) {
       this.addMode = false;
-      _.forEach(_.filter(this.contactAddresses, function (a) {
-        return a.id != contactAddress.id;}
-      ), function (a) {
-        Vue.set(a, 'edit', false);
-      });
+      this.toggleEditExcept(contactAddress.id);
       Vue.set(contactAddress, 'edit', !contactAddress.edit);
       this.updateForm.id = contactAddress.id;
-      this.updateForm.country = contactAddress.country;
       this.updateForm.name = contactAddress.name;
       this.updateForm.street = contactAddress.street;
       this.updateForm.city = contactAddress.city;
       this.updateForm.province = contactAddress.province;
       this.updateForm.postal_code = contactAddress.postal_code;
+      this.updateForm.country = contactAddress.country;
       this.updateForm.latitude = contactAddress.latitude;
       this.updateForm.longitude = contactAddress.longitude;
+    },
+
+    toggleEditExcept(contactAddressId) {
+      _.forEach(_.filter(this.contactAddresses, function (a) {
+        return a.id != contactAddressId;}
+      ), function (a) {
+        Vue.set(a, 'edit', false);
+      });
     },
 
     store() {
