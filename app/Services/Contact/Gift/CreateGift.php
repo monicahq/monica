@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\Gift;
 
-use App\Models\Contact\Gift;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 
@@ -49,7 +48,7 @@ class CreateGift extends BaseService
 
         $this->updateLastCallInfo($contact, $call);
 
-        if (!empty($data['emotions'])) {
+        if (! empty($data['emotions'])) {
             if ($data['emotions'] != '') {
                 $this->addEmotions($data['emotions'], $call);
             }
