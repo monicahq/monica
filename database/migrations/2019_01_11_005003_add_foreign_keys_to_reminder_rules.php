@@ -1,9 +1,9 @@
 <?php
 
+use App\Models\Contact\ReminderRule;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Contact\ReminderRule;
 
 class AddForeignKeysToReminderRules extends Migration
 {

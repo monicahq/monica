@@ -1,14 +1,13 @@
 <?php
 
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\Contact\Contact;
 
 class AddForeignKeysToRelationships extends Migration
 {
