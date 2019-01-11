@@ -1,9 +1,9 @@
 <?php
 
+use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use App\Models\Contact\Contact;
 
 class AddForeignKeysToContacts extends Migration
 {
