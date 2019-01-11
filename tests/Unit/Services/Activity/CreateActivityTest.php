@@ -3,14 +3,13 @@
 namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
-use App\Models\Contact\Activity;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Services\Activity\Activity\CreateActivity;
+use App\Models\Contact\Activity;
+use App\Models\Contact\ActivityType;
 use Illuminate\Validation\ValidationException;
+use App\Services\Activity\Activity\CreateActivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\Contact\ActivityType;
 
 class CreateActivityTest extends TestCase
 {

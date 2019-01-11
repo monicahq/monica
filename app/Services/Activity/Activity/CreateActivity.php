@@ -2,9 +2,8 @@
 
 namespace App\Services\Activity\Activity;
 
-use App\Models\Contact\Activity;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
+use App\Models\Contact\Activity;
 use App\Models\Contact\ActivityType;
 
 class CreateActivity extends BaseService

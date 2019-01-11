@@ -2,7 +2,6 @@
 
 namespace App\Services\Activity\Activity;
 
-use Carbon\Carbon;
 use App\Services\BaseService;
 use App\Models\Contact\Activity;
 
