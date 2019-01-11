@@ -33,7 +33,7 @@ class AddForeignKeysToInvitations extends Migration
 
         Schema::table('invitations', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
-            $table->unsignedInteger('user_id')->change();
+            $table->unsignedInteger('invited_by_user_id')->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->foreign('invited_by_user_id')->references('id')->on('users')->onDelete('cascade');
         });
