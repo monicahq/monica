@@ -28,7 +28,7 @@
 
     <!-- LIST OF ADDRESSES  -->
     <ul v-if="contactAddresses.length > 0">
-      <li v-for="contactAddress in contactAddresses" :key="contactAddress.id" class="mb2">
+      <li v-for="(contactAddress, i) in contactAddresses" :key="contactAddress.id" class="mb2">
         <div v-show="!contactAddress.edit" class="w-100 dt">
           <div class="dtc">
             <i class="f6 light-silver fa fa-globe pr2"></i>
@@ -59,14 +59,89 @@
 
         <!-- EDIT BOX -->
         <div v-show="contactAddress.edit" class="w-100">
-          <address-form
-            :countries="countries"
-            :mode="'edit'"
-            v-bind.sync="updateForm"
-            :postal-code.sync="updateForm.postal_code"
-            @cancel="toggleEdit(contactAddress)"
-            @submit="update(contactAddress)"
-          />
+          <form class="measure center" @keyup.enter="update(contactAddress)">
+            <div class="mt3">
+              <form-input
+                :id="'name' + i"
+                v-model="updateForm.name"
+                :title="$t('people.contact_address_form_name')"
+                input-type="text"
+                :required="false"
+                :iclass="'pa2 db w-100'"
+              />
+            </div>
+            <div class="mt3">
+              <form-input
+                :id="'street' + i"
+                v-model="updateForm.street"
+                :title="$t('people.contact_address_form_street')"
+                input-type="text"
+                :required="false"
+              />
+            </div>
+            <div class="mt3">
+              <form-input
+                :id="'city' + i"
+                v-model="updateForm.city"
+                :title="$t('people.contact_address_form_city')"
+                input-type="text"
+                :required="false"
+              />
+            </div>
+            <div class="mt3">
+              <form-input
+                :id="'province' + i"
+                v-model="updateForm.province"
+                :title="$t('people.contact_address_form_province')"
+                input-type="text"
+                :required="false"
+              />
+            </div>
+            <div class="mt3">
+              <form-input
+                :id="'postal_code' + i"
+                v-model="updateForm.postal_code"
+                :title="$t('people.contact_address_form_postal_code')"
+                input-type="text"
+                :required="false"
+              />
+            </div>
+            <div class="mt3">
+              <form-select
+                :id="'name' + i"
+                v-model="updateForm.country"
+                :title="$t('people.contact_address_form_country')"
+                :options="countries"
+                :required="false"
+              />
+            </div>
+            <div class="mt3">
+              <form-input
+                :id="'latitude' + i"
+                v-model="updateForm.latitude"
+                :title="$t('people.contact_address_form_latitude')"
+                input-type="number"
+                :required="false"
+              />
+            </div>
+            <div class="mt3">
+              <form-input
+                :id="'longitude' + i"
+                v-model="updateForm.longitude"
+                :title="$t('people.contact_address_form_latitude')"
+                input-type="number"
+                :required="false"
+              />
+            </div>
+            <div class="lh-copy mt3">
+              <a class="btn btn-primary" @click.prevent="update(contactAddress)">
+                {{ $t('app.save') }}
+              </a>
+              <a class="btn" @click.prevent="toggleEdit(contactAddress)">
+                {{ $t('app.cancel') }}
+              </a>
+            </div>
+          </form>
         </div>
       </li>
 
@@ -81,25 +156,95 @@
 
     <!-- ADD NEW ADDRESS  -->
     <div v-if="addMode">
-      <address-form
-        :countries="countries"
-        v-bind.sync="createForm"
-        :postal-code.sync="createForm.postal_code"
-        @cancel="addMode = false"
-        @submit="store"
-      />
+      <form class="measure center" @keyup.enter="store">
+        <div class="mt3">
+          <form-input
+            id="name"
+            v-model="createForm.name"
+            :title="$t('people.contact_address_form_name')"
+            input-type="text"
+            :required="false"
+            :iclass="'pa2 db w-100'"
+          />
+        </div>
+        <div class="mt3">
+          <form-input
+            id="street"
+            v-model="createForm.street"
+            :title="$t('people.contact_address_form_street')"
+            input-type="text"
+            :required="false"
+          />
+        </div>
+        <div class="mt3">
+          <form-input
+            id="city"
+            v-model="createForm.city"
+            :title="$t('people.contact_address_form_city')"
+            input-type="text"
+            :required="false"
+          />
+        </div>
+        <div class="mt3">
+          <form-input
+            id="province"
+            v-model="createForm.province"
+            :title="$t('people.contact_address_form_province')"
+            input-type="text"
+            :required="false"
+          />
+        </div>
+        <div class="mt3">
+          <form-input
+            id="postal_code"
+            v-model="createForm.postal_code"
+            :title="$t('people.contact_address_form_postal_code')"
+            input-type="text"
+            :required="false"
+          />
+        </div>
+        <div class="mt3">
+          <form-select
+            id="name"
+            v-model="createForm.country"
+            :title="$t('people.contact_address_form_country')"
+            :options="countries"
+            :required="false"
+          />
+        </div>
+        <div class="mt3">
+          <form-input
+            id="latitude"
+            v-model="createForm.latitude"
+            :title="$t('people.contact_address_form_latitude')"
+            input-type="number"
+            :required="false"
+          />
+        </div>
+        <div class="mt3">
+          <form-input
+            id="longitude"
+            v-model="createForm.longitude"
+            :title="$t('people.contact_address_form_latitude')"
+            input-type="number"
+            :required="false"
+          />
+        </div>
+        <div class="lh-copy mt3">
+          <a class="btn btn-primary" @click.prevent="store">
+            {{ $t('app.add') }}
+          </a>
+          <a class="btn" @click.prevent="addMode = false">
+            {{ $t('app.cancel') }}
+          </a>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-import AddressForm from './partials/AddressForm.vue';
-
 export default {
-
-  components: {
-    AddressForm
-  },
 
   props: {
     hash: {
@@ -138,9 +283,13 @@ export default {
         latitude: 0,
         longitude: 0,
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -149,7 +298,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getAddresses();
       this.getCountries();
     },
