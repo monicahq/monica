@@ -16,6 +16,7 @@ use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Address\CreateAddress;
 
 class ImportVCard extends BaseService
 {
@@ -372,6 +373,7 @@ class ImportVCard extends BaseService
         }
 
         $this->importNames($contact, $entry);
+        $this->importUid($contact, $entry);
         $this->importGender($contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
@@ -480,6 +482,18 @@ class ImportVCard extends BaseService
     }
 
     /**
+     * Import uid of the contact.
+     *
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importUid(Contact $contact, VCard $entry): void
+    {
+        $contact->uuid = (string) $entry->UID;
+    }
+
+    /**
      * Import gender of the contact.
      *
      * @param Contact $contact
@@ -564,7 +578,7 @@ class ImportVCard extends BaseService
         }
 
         foreach ($entry->ADR as $adr) {
-            Address::firstOrCreate([
+            $request = [
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'street' => $this->formatValue($adr->getParts()[2]),
@@ -572,7 +586,9 @@ class ImportVCard extends BaseService
                 'province' => $this->formatValue($adr->getParts()[4]),
                 'postal_code' => $this->formatValue($adr->getParts()[5]),
                 'country' => CountriesHelper::find($adr->getParts()[6]),
-            ]);
+            ];
+
+            (new CreateAddress)->execute($request);
         }
     }
 
@@ -659,9 +675,8 @@ class ImportVCard extends BaseService
                     $data = str_replace('http://t.me/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'linkedin':
+                    $contactFieldTypeId = $this->getContactFieldTypeId('LinkedIn');
                     $data = str_replace('http://www.linkedin.com/in/', '', $this->formatValue((string) $socialProfile));
-                    $contact->linkedin_profile_url = $data;
-                    continue;
                     break;
                 default:
                     // Not supported

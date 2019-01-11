@@ -23,6 +23,8 @@ Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvita
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
+    Route::get('/auth/login-recovery', 'Auth\RecoveryLoginController@get')->name('recovery.login');
+    Route::post('/auth/login-recovery', 'Auth\RecoveryLoginController@store');
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
@@ -42,6 +44,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
     Route::get('/compliance', 'ComplianceController@index')->name('compliance');
     Route::post('/compliance/sign', 'ComplianceController@store');
     Route::get('/changelog', 'ChangelogController@index')->name('changelog.index');
+
+    Route::get('/emotions', 'EmotionController@primaries');
+    Route::get('/emotions/primaries/{emotion}/secondaries', 'EmotionController@secondaries');
+    Route::get('/emotions/primaries/{emotion}/secondaries/{secondaryEmotion}/emotions', 'EmotionController@emotions');
 
     Route::name('people.')->group(function () {
         Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
@@ -146,13 +152,16 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::resource('people/{contact}/debts', 'Contacts\\DebtController')->except(['index', 'show']);
 
         // Phone calls
-        Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->only(['store', 'destroy']);
+        Route::resource('people/{contact}/calls', 'Contacts\\CallsController')->except(['show']);
 
         // Conversations
         Route::resource('people/{contact}/conversations', 'Contacts\\ConversationsController')->except(['show']);
 
         // Documents
         Route::resource('people/{contact}/documents', 'Contacts\\DocumentsController')->only(['index', 'store', 'destroy']);
+
+        // Photos
+        Route::resource('people/{contact}/photos', 'Contacts\\PhotosController')->only(['index', 'store', 'destroy']);
 
         // Search
         Route::post('/people/search', 'ContactsController@search')->name('search');
@@ -268,6 +277,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('2fa-disable');
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
             Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('u2f-register');
+
+            Route::post('/settings/security/generate-recovery-codes', 'Settings\\RecoveryCodesController@store');
+            Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');
         });
     });
 });

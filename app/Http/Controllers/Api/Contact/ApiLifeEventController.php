@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Contact;
 use Illuminate\Http\Request;
 use App\Models\Contact\LifeEvent;
 use App\Http\Controllers\Api\ApiController;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
@@ -64,8 +64,8 @@ class ApiLifeEventController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new LifeEventResource($lifeEvent);
@@ -91,8 +91,8 @@ class ApiLifeEventController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new LifeEventResource($lifeEvent);

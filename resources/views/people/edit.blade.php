@@ -146,14 +146,14 @@
           <div class="mb3 mb0-ns">
             <div class="form-check">
               <label class="pointer">
-                <input class="pointer" id="markPersonDeceased" name="markPersonDeceased" type="checkbox" value="markPersonDeceased"
+                <input class="pointer" id="is_deceased" name="is_deceased" type="checkbox" value="is_deceased"
                 {{ $contact->is_dead ? 'checked' : '' }}>
                 {{ trans('people.deceased_mark_person_deceased') }}
               </label>
             </div>
             <div class="form-check {{ $contact->is_dead ? '' : 'hidden' }}" id="datePersonDeceased">
             <label class="pointer">
-              <input class="pointer" id="checkboxDatePersonDeceased" name="checkboxDatePersonDeceased" type="checkbox" value="checkboxDatePersonDeceased" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
+              <input class="pointer" id="is_deceased_date_known" name="is_deceased_date_known" type="checkbox" value="is_deceased_date_known" {{ ($contact->deceasedDate != null) ? 'checked' : '' }}>
               {{ trans('people.deceased_know_date') }}
 
               @include('partials.components.date-select', ['contact' => $contact, 'specialDate' => $contact->deceasedDate, 'class' => 'deceased_date'])
@@ -161,7 +161,7 @@
             </div>
             <div class="form-check {{ $contact->deceasedDate == null ? 'hidden' : '' }}" id="reminderDeceased">
               <label class="pointer">
-                <input class="pointer" id="addReminderDeceased" name="addReminderDeceased" type="checkbox" value="addReminderDeceased" {{ ($contact->deceasedDate != null) ? (($contact->deceasedDate->reminder_id != null) ? 'checked' : '') : '' }}>
+                <input class="pointer" id="add_reminder_deceased" name="add_reminder_deceased" type="checkbox" value="add_reminder_deceased" {{ ($contact->deceasedDate != null) ? (($contact->deceasedDate->reminder_id != null) ? 'checked' : '') : '' }}>
                 {{ trans('people.deceased_add_reminder') }}
               </label>
             </div>

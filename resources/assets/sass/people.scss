@@ -441,16 +441,12 @@
   .reminders,
   .tasks,
   .debts,
-  .gifts,
-  .calls {
+  .gifts {
     .date {
       color: #777;
       font-size: 12px;
       margin-right: 10px;
       width: 100px;
-    }
-    .pa2 li {
-      list-style: inside disc;
     }
 
     .frequency-type,

@@ -102,17 +102,6 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the date_it_happened field.
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getDateItHappenedAttribute($value)
-    {
-        return DateHelper::parseDateTime($value, DateHelper::getTimezone());
-    }
-
-    /**
      * Get the summary for this activity.
      *
      * @return string or null
