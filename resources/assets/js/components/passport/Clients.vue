@@ -268,8 +268,8 @@ export default {
     },
 
     /**
-          * Get all of the OAuth clients for the user.
-          */
+      * Get all of the OAuth clients for the user.
+      */
     getClients() {
       axios.get('/oauth/clients')
         .then(response => {
@@ -278,15 +278,15 @@ export default {
     },
 
     /**
-          * Show the form for creating new clients.
-          */
+      * Show the form for creating new clients.
+      */
     showCreateClientForm() {
       $('#modal-create-client').modal('show');
     },
 
     /**
-          * Create a new OAuth client for the user.
-          */
+      * Create a new OAuth client for the user.
+      */
     store() {
       this.persistClient(
         'post', '/oauth/clients',
@@ -295,8 +295,8 @@ export default {
     },
 
     /**
-          * Edit the given client.
-          */
+      * Edit the given client.
+      */
     edit(client) {
       this.editForm.id = client.id;
       this.editForm.name = client.name;
@@ -306,8 +306,8 @@ export default {
     },
 
     /**
-          * Update the client being edited.
-          */
+      * Update the client being edited.
+      */
     update() {
       this.persistClient(
         'put', '/oauth/clients/' + this.editForm.id,
@@ -316,8 +316,8 @@ export default {
     },
 
     /**
-          * Persist the client to storage using the given form.
-          */
+      * Persist the client to storage using the given form.
+      */
     persistClient(method, uri, form, modal) {
       form.errors = [];
 
@@ -341,8 +341,8 @@ export default {
     },
 
     /**
-          * Destroy the given client.
-          */
+      * Destroy the given client.
+      */
     destroy(client) {
       axios.delete('/oauth/clients/' + client.id)
         .then(response => {

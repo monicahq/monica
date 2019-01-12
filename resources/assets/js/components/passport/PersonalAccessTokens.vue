@@ -217,8 +217,8 @@ export default {
     },
 
     /**
-          * Get all of the personal access tokens for the user.
-          */
+      * Get all of the personal access tokens for the user.
+      */
     getTokens() {
       axios.get('/oauth/personal-access-tokens')
         .then(response => {
@@ -227,8 +227,8 @@ export default {
     },
 
     /**
-          * Get all of the available scopes.
-          */
+      * Get all of the available scopes.
+      */
     getScopes() {
       axios.get('/oauth/scopes')
         .then(response => {
@@ -237,15 +237,15 @@ export default {
     },
 
     /**
-          * Show the form for creating new tokens.
-          */
+      * Show the form for creating new tokens.
+      */
     showCreateTokenForm() {
       $('#modal-create-token').modal('show');
     },
 
     /**
-          * Create a new personal access token.
-          */
+      * Create a new personal access token.
+      */
     store() {
       this.accessToken = null;
 
@@ -271,8 +271,8 @@ export default {
     },
 
     /**
-          * Toggle the given scope in the list of assigned scopes.
-          */
+      * Toggle the given scope in the list of assigned scopes.
+      */
     toggleScope(scope) {
       if (this.scopeIsAssigned(scope)) {
         this.form.scopes = _.reject(this.form.scopes, s => s == scope);
@@ -282,15 +282,15 @@ export default {
     },
 
     /**
-          * Determine if the given scope has been assigned to the token.
-          */
+      * Determine if the given scope has been assigned to the token.
+      */
     scopeIsAssigned(scope) {
       return _.indexOf(this.form.scopes, scope) >= 0;
     },
 
     /**
-          * Show the given access token to the user.
-          */
+      * Show the given access token to the user.
+      */
     showAccessToken(accessToken) {
       $('#modal-create-token').modal('hide');
 
@@ -300,8 +300,8 @@ export default {
     },
 
     /**
-          * Revoke the given token.
-          */
+      * Revoke the given token.
+      */
     revoke(token) {
       axios.delete('/oauth/personal-access-tokens/' + token.id)
         .then(response => {
