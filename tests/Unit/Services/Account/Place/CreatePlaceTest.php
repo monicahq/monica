@@ -8,6 +8,10 @@ use App\Models\Account\Account;
 use App\Services\Account\Place\CreatePlace;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
 
 class CreatePlaceTest extends TestCase
 {
@@ -28,8 +32,7 @@ class CreatePlaceTest extends TestCase
             'longitude' => '10',
         ];
 
-        $placeService = new CreatePlace;
-        $place = $placeService->execute($request);
+        $place = (new CreatePlace)->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -49,10 +52,10 @@ class CreatePlaceTest extends TestCase
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
 
-        \VCR\VCR::turnOn();
-        \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(['url']);
-        \VCR\VCR::insertCassette('create_place_service_gets_gps_coordinates.yml');
+        $body = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/CreatePlaceSampleResponse.json'));
+        $mock = new MockHandler([new Response(200, [], $body)]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
 
         $account = factory(Account::class)->create([]);
 
@@ -67,8 +70,7 @@ class CreatePlaceTest extends TestCase
             'longitude' => '',
         ];
 
-        $placeService = new CreatePlace;
-        $place = $placeService->execute($request);
+        $place = (new CreatePlace)->execute($request, $client);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -77,9 +79,6 @@ class CreatePlaceTest extends TestCase
             'latitude' => 34.0736204,
             'longitude' => -118.4003563,
         ]);
-
-        \VCR\VCR::eject();
-        \VCR\VCR::turnOff();
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()

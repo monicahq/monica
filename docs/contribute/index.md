@@ -161,36 +161,11 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 
 You should never make real HTTP calls in your unit tests - like querying an external API that is not linked to Monica.
 
-You can mock http calls with PHP VCR.
+You can mock http calls by mocking calls made by Guzzl.
 
-In your test files, the first time you access an external API, you need to add this to your test:
+You can find an example of how mocking is done in the `GetWeatherInformationTest.php` file.
 
-```
-\VCR\VCR::turnOn();
-\VCR\VCR::insertCassette('name_of_your_test.yml');
-```
-
-and add this at the end of the file:
-
-```
-\VCR\VCR::eject();
-\VCR\VCR::turnOff();
-```
-
-Run the test. PHP VCR will record the call and its response into a yml file. The .yml file is stored in `tests/fixtures`.
-
-Remember to remove any API key from the yml file that what used to make the call in the first place before commiting.
-
-If you are satisfied with the call and the response, replace the code above by:
-
-```
-\VCR\VCR::turnOn();
-\VCR\VCR::configure()->setMode('none');
-\VCR\VCR::configure()->enableRequestMatchers(array('method', 'url'));
-\VCR\VCR::insertCassette('name_of_your_test.yml');
-```
-
-This will make sure that when the test run again, it will query the yml file to get the response and not make the real call.
+You need to provide a sample response of the external call that you are mocking in the Fixtures folder.
 
 <a id="markdown-coding-guidelines" name="coding-guidelines"></a>
 ## Coding guidelines
