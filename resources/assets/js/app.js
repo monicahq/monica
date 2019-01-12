@@ -183,6 +183,11 @@ Vue.component(
 );
 
 Vue.component(
+  'activity-list',
+  require('./components/people/activity/ActivityList.vue').default
+);
+
+Vue.component(
   'document-list',
   require('./components/people/document/DocumentList.vue').default
 );
