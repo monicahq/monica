@@ -33,10 +33,10 @@
             <i v-else class="pr2 fa fa-address-card-o f6 gray"></i>
 
             <a v-if="contactInformation.protocol" :href="contactInformation.protocol + contactInformation.data">
-              {{ contactInformation.data }}
+              {{ contactInformation.name }}
             </a>
             <a v-else :href="contactInformation.data">
-              {{ contactInformation.data }}
+              {{ contactInformation.name }}
             </a>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
