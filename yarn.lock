@@ -687,9 +687,10 @@
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-5.0.0.tgz#e5d49a422f64b2c658bbeb8529679c9a6a0b5a3a"
 
-"@types/sinon@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-4.0.0.tgz#9a93ffa4ee1329e85166278a5ed99f81dc4c8362"
+"@types/sinon@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-7.0.0.tgz#84e707e157ec17d3e4c2a137f41fc3f416c0551e"
+  integrity sha512-kcYoPw0uKioFVC/oOqafk2yizSceIQXCYnkYts9vJIwQklFRsMubTObTDrjQamUyBRd47332s85074cd/hCwxg==
 
 "@vue/component-compiler-utils@^2.0.0":
   version "2.3.1"
@@ -1884,10 +1885,6 @@ commondir@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
 
-compare-versions@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/compare-versions/-/compare-versions-3.4.0.tgz#e0747df5c9cb7f054d6d3dc3e1dbc444f9e92b26"
-
 component-emitter@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/component-emitter/-/component-emitter-1.2.1.tgz#137918d6d78283f7df7a6b7c5a63e140e69425e6"
@@ -2293,9 +2290,10 @@ cyclist@~0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-0.2.2.tgz#1b33792e11e914a2fd6d6ed6447464444e5fa640"
 
-cypress@3.1.2:
-  version "3.1.2"
-  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.1.2.tgz#d1adbb48afecad54a84adf25f30536b400aa0f18"
+cypress@3.1.4:
+  version "3.1.4"
+  resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.1.4.tgz#2af04da05e09f9d3871d05713b364472744c4216"
+  integrity sha512-8VJYtCAFqHXMnRDo4vdomR2CqfmhtReoplmbkXVspeKhKxU8WsZl0Nh5yeil8txxhq+YQwDrInItUqIm35Vw+g==
   dependencies:
     "@cypress/listr-verbose-renderer" "0.4.1"
     "@cypress/xvfb" "1.2.3"
@@ -2307,7 +2305,7 @@ cypress@3.1.2:
     "@types/lodash" "4.14.87"
     "@types/minimatch" "3.0.3"
     "@types/mocha" "2.2.44"
-    "@types/sinon" "4.0.0"
+    "@types/sinon" "7.0.0"
     "@types/sinon-chai" "2.7.29"
     bluebird "3.5.0"
     cachedir "1.3.0"
@@ -2315,7 +2313,6 @@ cypress@3.1.2:
     check-more-types "2.24.0"
     commander "2.11.0"
     common-tags "1.4.0"
-    compare-versions "3.4.0"
     debug "3.1.0"
     execa "0.10.0"
     executable "4.1.1"
@@ -2327,7 +2324,7 @@ cypress@3.1.2:
     is-installed-globally "0.1.0"
     lazy-ass "1.6.0"
     listr "0.12.0"
-    lodash "4.17.10"
+    lodash "4.17.11"
     log-symbols "2.2.0"
     minimist "1.2.0"
     moment "2.22.2"
@@ -5090,18 +5087,18 @@ lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
 
-lodash@4.17.10, lodash@^4.16.4:
-  version "4.17.10"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
+lodash@4.17.11, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4:
+  version "4.17.11"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
+  integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
 
 lodash@^4.14.0, lodash@^4.17.5:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.4:
-  version "4.17.11"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.11.tgz#b39ea6229ef607ecd89e2c8df12536891cac9b8d"
-  integrity sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg==
+lodash@^4.16.4:
+  version "4.17.10"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
 
 lodash@~1.0.1:
   version "1.0.2"
@@ -5203,10 +5200,10 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-marked@^0.5.2:
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.5.2.tgz#3efdb27b1fd0ecec4f5aba362bddcd18120e5ba9"
-  integrity sha512-fdZvBa7/vSQIZCi4uuwo2N3q+7jJURpMVCcbaX0S1Mg65WZ5ilXvC67MviJAsdjqqgD+CEq4RKo5AYGgINkVAA==
+marked@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.0.tgz#a18d01cfdcf8d15c3c455b71c8329e5e0f01faa1"
+  integrity sha512-HduzIW2xApSXKXJSpCipSxKyvMbwRRa/TwMbepmlZziKdH8548WSoDP4SxzulEKjlo8BE39l+2fwJZuRKOln6g==
 
 md5.js@^1.3.4:
   version "1.3.4"
