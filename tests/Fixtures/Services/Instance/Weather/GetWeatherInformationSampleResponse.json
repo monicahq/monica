@@ -1,0 +1,27 @@
+{
+    "latitude":34.112456,
+    "longitude":-118.4270732,
+    "timezone":"America/Los_Angeles",
+    "currently":{
+        "time":1545426311,
+        "summary":"Partly Cloudy",
+        "icon":"partly-cloudy-day",
+        "nearestStormDistance":10,
+        "nearestStormBearing":296,
+        "precipIntensity":0,
+        "precipProbability":0,
+        "temperature":67.94,
+        "apparentTemperature":67.94,
+        "dewPoint":41.87,
+        "humidity":0.39,
+        "pressure":1014.57,
+        "windSpeed":3.35,
+        "windGust":6.12,
+        "windBearing":232,
+        "cloudCover":0.28,
+        "uvIndex":2,
+        "visibility":10,
+        "ozone":277.93
+    },
+    "offset":-8
+}
