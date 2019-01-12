@@ -106,7 +106,7 @@ return [
     'u2f_error_configuration_unsupported' => 'تهيئة العميل ليس مدعوماً.',
     'u2f_error_device_ineligible' => 'The presented device is not eligible for this request. For a registration request this may mean that the token is already registered, and for a sign request it may mean that the token does not know the presented key handle.',
     'u2f_error_timeout' => 'نفذ الوقت قبل تلبية الطلب.',
-    'u2f_last_use' => 'Last use:',
+    'u2f_last_use' => 'Last use: {timestamp}',
     'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
     'u2f_delete_success' => 'Key deleted',
 
