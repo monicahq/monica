@@ -221,11 +221,14 @@ export default {
       gifts: [],
       activeTab: '',
       giftToTrash: '',
-      dirltr: true,
     };
   },
 
   computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
+
     ideas: function () {
       return this.gifts.filter(function (gift) {
         return gift.is_an_idea === true;
@@ -251,7 +254,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getGifts();
       this.setActiveTab(this.giftsActiveTab);
     },
@@ -288,7 +290,7 @@ export default {
       axios.delete('/people/' + this.hash + '/gifts/' + gift.id)
         .then(response => {
           this.gifts.splice(this.gifts.indexOf(gift), 1);
-          this.$refs.modal.close();
+          this.closeDeleteModal();
         });
     },
 

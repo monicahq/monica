@@ -98,20 +98,10 @@ export default {
     },
   },
 
-  data() {
-    return {
-      dirltr: true,
-    };
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
-
-  mounted() {
-    this.prepareComponent();
-  },
-
-  methods: {
-    prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
-    },
-  }
 };
 </script>

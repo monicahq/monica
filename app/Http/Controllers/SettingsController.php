@@ -18,6 +18,7 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
+use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
@@ -26,6 +27,7 @@ use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
 use PragmaRX\Google2FALaravel\Google2FA;
 use App\Services\Account\DestroyAllDocuments;
+use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 
 class SettingsController
 {
@@ -492,7 +494,12 @@ class SettingsController
 
     public function security()
     {
-        return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
+        $u2fKeys = U2fKey::where('user_id', auth()->id())
+                        ->get();
+
+        return view('settings.security.index')
+            ->with('is2FAActivated', app('pragmarx.google2fa')->isActivated())
+            ->with('currentkeys', U2fKeyResource::collection($u2fKeys));
     }
 
     /**

@@ -11,11 +11,16 @@ textarea:focus {
 
 <template>
   <div>
-    <p v-if="label != ''" class="mb2" :class="{ b: required }">
+    <label
+      v-if="label"
+      :for="realid"
+      class="mb2"
+      :class="{ b: required }"
+    >
       {{ label }}
-    </p>
+    </label>
     <textarea
-      :id="id"
+      :id="realid"
       v-model="buffer"
       autofocus
       :required="required"
@@ -23,7 +28,7 @@ textarea:focus {
       :placeholder="placeholder"
       :rows="rows"
       class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
-      :style="[width >= 0 ? 'width:' + width + 'px' : '']"
+      :style="textareaStyle"
       @input="$emit('contentChange', buffer)"
     ></textarea>
   </div>
@@ -67,6 +72,15 @@ export default {
     return {
       buffer: this.value
     };
+  },
+
+  computed: {
+    realid() {
+      return this.id + this._uid;
+    },
+    textareaStyle() {
+      return this.width >= 0 ? 'width:' + this.width + 'px' : '';
+    }
   },
 };
 </script>

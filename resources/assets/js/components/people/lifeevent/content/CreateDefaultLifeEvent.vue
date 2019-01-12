@@ -4,17 +4,18 @@
 <template>
   <div>
     <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-      <label for="another" class="mr2">
+      <label for="event-name" class="mr2">
         {{ $t('people.life_event_create_default_title') }}
       </label>
-      <input v-model="defaultEvent.name" autofocus class="br2 f5 w-100 ba b--black-40 pa2 outline-0" @input="broadcastContentChange" />
+      <input id="event-name" v-model="defaultEvent.name" autofocus class="br2 f5 w-100 ba b--black-40 pa2 outline-0" @input="broadcastContentChange" />
     </div>
 
     <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-      <label for="another" class="mr2">
+      <label for="description" class="mr2">
         {{ $t('people.life_event_create_default_story') }}
       </label>
       <form-textarea
+        id="description"
         :required="false"
         :no-label="true"
         :rows="4"
@@ -36,13 +37,17 @@ export default {
         note: '',
         specific_information: '',
       },
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
     this.prepareComponent();
-    this.dirltr = this.$root.htmldir == 'ltr';
   },
 
   methods: {

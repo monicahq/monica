@@ -120,10 +120,14 @@
 
         <!-- COMMENT BOX -->
         <div v-if="hasRated == 'addComment'" :key="'comment'" class="pt2">
-          <label for="another" class="mr2">
-            {{ $t('journal.journal_add_comment') }}
-          </label>
-          <form-textarea :required="false" :no-label="true" :rows="4" :placeholder="$t('people.life_event_create_default_description')" @contentChange="updateComment($event)" />
+          <form-textarea
+            :id="'comment'"
+            :required="false"
+            :label="$t('journal.journal_add_comment')"
+            :rows="4"
+            :placeholder="$t('people.life_event_create_default_description')"
+            @contentChange="updateComment($event)"
+          />
           <div class="pv3">
             <div class="flex-ns justify-between">
               <div>
@@ -164,9 +168,13 @@ export default {
 
       showSadSmileyColor: false,
       showHappySmileyColor: false,
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -175,7 +183,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.hasAlreadyRatedToday();
     },
 
