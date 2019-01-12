@@ -37,7 +37,7 @@ class GetGPSCoordinate extends BaseService
     {
         $this->validate($data);
 
-        if (!is_null($client)) {
+        if (! is_null($client)) {
             $this->client = $client;
         } else {
             $this->client = new GuzzleClient();

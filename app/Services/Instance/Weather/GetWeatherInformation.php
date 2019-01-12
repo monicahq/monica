@@ -54,7 +54,7 @@ class GetWeatherInformation extends BaseService
             }
         }
 
-        if (!is_null($client)) {
+        if (! is_null($client)) {
             $this->client = $client;
         } else {
             $this->client = new GuzzleClient();
