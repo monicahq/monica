@@ -3,12 +3,10 @@
 namespace Tests\Unit\Services\Activity;
 
 use Tests\TestCase;
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Services\Activity\Activity\UpdateActivity;
+use App\Models\Contact\Activity;
 use Illuminate\Validation\ValidationException;
+use App\Services\Activity\Activity\UpdateActivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
