@@ -31,7 +31,6 @@
 
 <template>
   <div>
-
     <div class="">
       <h3>
         📄 {{ $t('people.photo_list_title') }}
