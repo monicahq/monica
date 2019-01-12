@@ -19,7 +19,7 @@
     </div>
 
     <!-- BLANK STATE -->
-    <div v-if="!displayLogCall && calls.length == 0" class="w-100">
+    <div v-if="!displayLogCall && activities.length == 0" class="w-100">
       <div class="bg-near-white tc pa3 br2 ba b--light-gray">
         <p>{{ $t('people.call_blank_title', { name: name }) }}</p>
         <a class="pointer" @click.prevent="displayLogCall = true">
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <!-- LOG A CALL -->
+    <!-- LOG AN ACTIVITY -->
     <transition name="fade">
       <div v-if="displayLogCall" class="ba br3 mb3 pa3 b--black-40">
         <div class="dt dt--fixed pb3 mb3 mb0-ns">
@@ -119,8 +119,8 @@
       </div>
     </transition>
 
-    <!-- LIST OF CALLS -->
-    <div v-for="call in calls" :key="call.id" class="ba br2 b--black-10 br--top w-100 mb2">
+    <!-- LIST OF ACTIVITIES -->
+    <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
       <div v-show="editCallId != call.id" class="pa2">
         <span v-if="!call.content">
           {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
@@ -263,7 +263,7 @@ export default {
   },
   data() {
     return {
-      calls: [],
+      activities: [],
       dirltr: true,
       displayLogCall: false,
       todayDate: '',
@@ -291,7 +291,7 @@ export default {
   methods: {
     prepareComponent(hash) {
       this.dirltr = this.$root.htmldir == 'ltr';
-      this.getCalls();
+      this.getactivities();
       this.todayDate = moment().format('YYYY-MM-DD');
       this.newCall.called_at = this.todayDate;
     },
@@ -305,24 +305,24 @@ export default {
       this.newCall.called_at = this.todayDate;
     },
 
-    getCalls() {
-      axios.get('/people/' + this.hash + '/calls')
+    getactivities() {
+      axios.get('/people/' + this.hash + '/activities')
         .then(response => {
-          this.calls = response.data.data;
+          this.activities = response.data.data;
         });
     },
 
     store() {
-      axios.post('/people/' + this.hash + '/calls', this.newCall)
+      axios.post('/people/' + this.hash + '/activities', this.newCall)
         .then(response => {
-          this.getCalls();
+          this.getactivities();
           this.resetFields();
           this.displayLogCall = false;
           this.chosenEmotions = [];
 
           this.$notify({
             group: 'main',
-            title: this.$t('people.calls_add_success'),
+            title: this.$t('people.activities_add_success'),
             text: '',
             type: 'success'
           });
@@ -330,9 +330,9 @@ export default {
     },
 
     update() {
-      axios.put('/people/' + this.hash + '/calls/' + this.editCallId, this.editCall)
+      axios.put('/people/' + this.hash + '/activities/' + this.editCallId, this.editCall)
         .then(response => {
-          this.getCalls();
+          this.getactivities();
           this.editCallId = 0;
           this.chosenEmotions = [];
 
@@ -369,9 +369,9 @@ export default {
     },
 
     destroyCall(call) {
-      axios.delete('/people/' + this.hash + '/calls/' + this.destroyCallId)
+      axios.delete('/people/' + this.hash + '/activities/' + this.destroyCallId)
         .then(response => {
-          this.calls.splice(this.calls.indexOf(call), 1);
+          this.activities.splice(this.activities.indexOf(call), 1);
         });
     },
 
