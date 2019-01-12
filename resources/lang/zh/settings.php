@@ -106,7 +106,7 @@ return [
     'u2f_error_configuration_unsupported' => '客户端配置不支持',
     'u2f_error_device_ineligible' => '当前设备不支持此请求。',
     'u2f_error_timeout' => '请求超时',
-    'u2f_last_use' => 'Last use:',
+    'u2f_last_use' => 'Last use: {timestamp}',
     'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
     'u2f_delete_success' => 'Key deleted',
 
