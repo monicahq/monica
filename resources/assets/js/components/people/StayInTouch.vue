@@ -184,8 +184,13 @@ export default {
       errorMessage: '',
       initialFrequency: 0,
       initialState: false,
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -194,7 +199,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       if (this.contact.stay_in_touch_frequency == null) {
         this.frequency = '0';
       } else {

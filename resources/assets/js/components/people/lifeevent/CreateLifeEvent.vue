@@ -192,8 +192,13 @@ export default {
       activeType: '',
       types: [],
       view: 'categories',
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -203,7 +208,6 @@ export default {
   methods: {
     prepareComponent() {
       this.getCategories();
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD');
       this.selectedYear = moment().year();
       this.selectedMonth = moment().month() + 1; // month is zero indexed (O_o) in moments.js
