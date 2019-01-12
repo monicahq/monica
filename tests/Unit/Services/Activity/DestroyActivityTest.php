@@ -4,13 +4,8 @@ namespace Tests\Unit\Services\Activity;
 
 use Tests\TestCase;
 use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Services\Activity\Activity\DestroyActivity;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyActivityTest extends TestCase
 {
@@ -24,7 +19,6 @@ class DestroyActivityTest extends TestCase
             'account_id' => $activity->account_id,
             'activity_id' => $activity->id,
         ];
-
 
         $this->assertDatabaseHas('activities', [
             'id' => $activity->id,

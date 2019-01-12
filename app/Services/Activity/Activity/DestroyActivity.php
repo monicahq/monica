@@ -2,9 +2,7 @@
 
 namespace App\Services\Activity\Activity;
 
-use App\Models\Contact\Call;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 
 class DestroyActivity extends BaseService
