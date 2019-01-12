@@ -97,12 +97,16 @@ export default {
       results: [],
       isOpen: false,
       arrowCounter: 0,
-      dirltr: true,
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   mounted() {
-    this.dirltr = this.$root.htmldir == 'ltr';
     this.prepareComponent();
     document.addEventListener('click', this.handleClickOutside);
   },
