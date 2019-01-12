@@ -3,16 +3,16 @@
 namespace Tests\Unit\Services\Account\Place;
 
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
+use GuzzleHttp\Psr7\Response;
 use App\Models\Account\Account;
+use GuzzleHttp\Handler\MockHandler;
 use App\Services\Account\Place\UpdatePlace;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
 
 class UpdatePlaceTest extends TestCase
 {
