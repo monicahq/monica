@@ -257,10 +257,10 @@ export default {
       default: '',
     },
   },
+
   data() {
     return {
       calls: [],
-      dirltr: true,
       displayLogCall: false,
       todayDate: '',
       editCallId: 0,
@@ -280,13 +280,18 @@ export default {
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   mounted() {
     this.prepareComponent(this.hash);
   },
 
   methods: {
     prepareComponent(hash) {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getCalls();
       this.todayDate = moment().format('YYYY-MM-DD');
       this.newCall.called_at = this.todayDate;

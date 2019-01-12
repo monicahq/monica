@@ -37,13 +37,17 @@ export default {
         note: '',
         specific_information: '',
       },
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
     this.prepareComponent();
-    this.dirltr = this.$root.htmldir == 'ltr';
   },
 
   methods: {

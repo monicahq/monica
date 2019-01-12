@@ -162,9 +162,13 @@ export default {
         description: '',
         completed: 0
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -173,7 +177,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.newTask.contact_id = this.contactId;
       this.index();
     },

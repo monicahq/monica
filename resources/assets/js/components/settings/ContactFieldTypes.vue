@@ -262,9 +262,13 @@ export default {
         icon: '',
         errors: []
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -273,7 +277,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getContactFieldTypes();
 
       $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
