@@ -1,48 +1,117 @@
 <style scoped>
+.time {
+    color: gray;
+}
 </style>
 
 <template>
-  <div>
+  <div class="form-group">
     <notifications group="u2f" position="top middle" :duration="5000" width="400" />
 
     <div v-if="method == 'register-modal'">
       <h3>{{ $t('settings.u2f_title') }}</h3>
+
+      <div v-if="keys != null">
+        <ul class="table">
+          <li v-for="key in keys"
+              :key="key.id"
+              class="table-row"
+          >
+            <div class="table-cell">
+              <strong>{{ key.name }}</strong>
+            </div>
+            <div class="table-cell time">
+              <span v-if="key.counter > 0">
+                {{ $t('settings.u2f_last_use') }} {{ formatTime(key.updated_at) }}
+              </span>
+            </div>
+            <div class="table-cell actions">
+              <a class="pointer"
+                 :cy-name="'u2fkey-delete-button-' + key.id"
+                 @click.prevent="showDeleteModal(key.id)"
+              >
+                {{ $t('app.delete') }}
+              </a>
+            </div>
+          </li>
+        </ul>
+      </div>
       <a class="btn btn-primary" @click="showRegisterModal">
         {{ $t('settings.u2f_enable_description') }}
       </a>
 
-      <sweet-modal id="registerModal" ref="registerModal" overlay-theme="dark" :title="$t('settings.u2f_title')">
-        <div v-if="errorMessage != ''" class="form-error-message mb3">
-          <div class="pa2">
-            <p class="mb0">
-              {{ errorMessage }}
-            </p>
+      <sweet-modal
+        id="registerModal"
+        ref="registerModal"
+        overlay-theme="dark"
+        :title="$t('settings.u2f_title')"
+      >
+        <div v-if="registerTab == '1'">
+          <p>
+            {{ $t('settings.u2f_key_name_help') }}
+          </p>
+          <form-input
+            :id="'keyName'"
+            v-model="keyName"
+            :title="$t('settings.u2f_key_name')"
+            :value="keyName"
+            :input-type="'string'"
+            :width="50"
+            :required="true"
+          />
+          <div class="relative">
+            <span class="fr">
+              <a class="btn" @click.prevent="showRegisterModalTab('2');startRegister();">
+                {{ $t('app.next') }}
+              </a>
+            </span>
           </div>
         </div>
-        <div v-if="infoMessage != ''" class="form-information-message mb3">
-          <div class="pa2">
-            <p class="mb0">
-              {{ infoMessage }}
+        <div v-if="registerTab == '2'">
+          <div v-if="errorMessage != ''" class="form-error-message mb3">
+            <div class="pa2">
+              <p class="mb0">
+                {{ errorMessage }}
+              </p>
+              <p>
+                <a @click.prevent="startRegister()">
+                  {{ $t('app.retry') }}
+                </a>
+              </p>
+            </div>
+          </div>
+          <div v-if="infoMessage != ''" class="form-information-message mb3">
+            <div class="pa2">
+              <p class="mb0">
+                {{ infoMessage }}
+              </p>
+            </div>
+          </div>
+
+          <div v-if="errorMessage == ''" align="center">
+            <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt="" />
+          </div>
+
+          <div v-if="errorMessage == ''" class="pa2">
+            <p>
+              {{ $t('settings.u2f_insertKey') }}
+            </p>
+            <p>
+              {{ $t('settings.u2f_buttonAdvise') }}
+              <br />
+              {{ $t('settings.u2f_noButtonAdvise') }}
+            </p>
+            <p>
+              <span v-html="otpextension"></span>
             </p>
           </div>
-        </div>
-
-        <div v-if="errorMessage == ''" align="center">
-          <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt="" />
-        </div>
-
-        <div v-if="errorMessage == ''" class="pa2">
-          <p>
-            {{ $t('settings.u2f_insertKey') }}
-          </p>
-          <p>
-            {{ $t('settings.u2f_buttonAdvise') }}
-            <br />
-            {{ $t('settings.u2f_noButtonAdvise') }}
-          </p>
-          <p>
-            <span v-html="otpextension"></span>
-          </p>
+          <div class="relative">
+            <span class="fr">
+              <a class="btn" @click.prevent="showRegisterModalTab('1')">
+                {{ $t('app.previous') }}
+              </a>
+            </span>
+          </div>
         </div>
         <div class="relative">
           <span class="fr">
@@ -59,6 +128,11 @@
           <p class="mb0">
             {{ errorMessage }}
           </p>
+          <p>
+            <a @click.prevent="start()">
+              {{ $t('app.retry') }}
+            </a>
+          </p>
         </div>
       </div>
       <div v-if="infoMessage != ''" class="form-information-message mb3">
@@ -69,11 +143,11 @@
         </div>
       </div>
 
-      <div v-if="errorMessage == ''" align="center">
+      <div align="center">
         <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt="" />
       </div>
 
-      <div v-if="errorMessage == ''" class="pa2">
+      <div class="pa2">
         <p>
           {{ $t('settings.u2f_insertKey') }}
         </p>
@@ -87,6 +161,27 @@
         </p>
       </div>
     </div>
+
+    <sweet-modal ref="delete" overlay-theme="dark" title="Remove a key">
+      <form>
+        <div class="mb4">
+          {{ $t('settings.u2f_delete_confirmation') }}
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+          <a class="btn" @click="closeDeleteModal()">
+            {{ $t('app.cancel') }}
+          </a>
+          <a class="btn"
+             :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
+             @click.prevent="u2fRemove(keyToTrash)"
+          >
+            {{ $t('app.delete') }}
+          </a>
+        </span>
+      </div>
+    </sweet-modal>
   </div>
 </template>
 
@@ -124,6 +219,10 @@ export default {
       type: String,
       default: '',
     },
+    timezone: {
+      type: String,
+      default: '',
+    },
   },
 
   data() {
@@ -132,6 +231,9 @@ export default {
       infoMessage: '',
       success: false,
       keys: [],
+      keyToTrash: '',
+      keyName: '',
+      registerTab: '',
       data: null
     };
   },
@@ -147,13 +249,16 @@ export default {
 
   mounted() {
     this.prepareComponent();
+    this.start();
   },
 
   methods: {
     prepareComponent() {
       this.keys = this.currentkeys;
       this.data = this.registerdata;
+    },
 
+    start() {
       var self = this;
       switch(this.method) {
       case 'register':
@@ -183,21 +288,32 @@ export default {
     showRegisterModal() {
       this.errorMessage = '';
       this.infoMessage = '';
+      this.keyName = '';
       this.success = false;
+      this.showRegisterModalTab('1');
+      this.$refs.registerModal.open();
+    },
+
+    showRegisterModalTab(tab) {
+      this.registerTab = tab;
+    },
+
+    startRegister() {
       var self = this;
-      axios.get('/settings/security/u2f-register')
+      axios.get('/settings/security/u2f/register')
         .then(response => {
-          this.keys = response.data.currentKeys;
-          this.data = response.data.registerData;
-          setTimeout(function () {
-            u2f.register(
-              null,
-              [self.data],
-              self.keys,
-              function (data) { self.u2fRegisterCallback(data, false); }
-            );
-          }, 1000);
-          this.$refs.registerModal.open();
+          if (self.registerTab == '2') {
+            var keys = response.data.currentKeys;
+            var data = response.data.registerData;
+            setTimeout(function () {
+              u2f.register(
+                null,
+                [data],
+                keys,
+                function (datas) { self.u2fRegisterCallback(datas, false); }
+              );
+            }, 1000);
+          }
         }).catch(error => {
           this.notify(error.response.data.message, false);
         });
@@ -205,32 +321,7 @@ export default {
 
     closeRegisterModal() {
       this.$refs.registerModal.close();
-    },
-
-    u2fRegisterCallback(data, redirect) {
-      if (data.errorCode) {
-        this.errorMessage = this.getErrorText(data.errorCode);
-        return;
-      }
-
-      var self = this;
-      axios.post('/u2f/register', { register: JSON.stringify(data) })
-        .catch(error => {
-          self.errorMessage = error.response.data.message;
-        })
-        .then(response => {
-          self.success = true;
-          self.notify(self.$t('settings.u2f_success'), true);
-        })
-        .then(response => {
-          if (redirect) {
-            setTimeout(function () {
-              window.location = self.callbackurl;
-            }, 3000);
-          } else {
-            self.closeRegisterModal();
-          }
-        });
+      this.showRegisterModalTab('');
     },
 
     u2fLoginCallback(data) {
@@ -251,6 +342,42 @@ export default {
         .then(response => {
           window.location = self.callbackurl;
         });
+    },
+
+    u2fRemove(id) {
+      var self = this;
+      axios.delete('/settings/security/u2f/remove/'+id)
+        .catch(error => {
+          self.errorMessage = error.response.data.message;
+        })
+        .then(response => {
+          if (response.data.deleted === true) {
+            self.keys.splice(self.keys.indexOf(self.keys.find(item => item.id === response.data.id)), 1);
+            self.success = true;
+            self.notify(self.$t('settings.u2f_delete_success'), true);
+          }
+          self.closeDeleteModal();
+        });
+    },
+
+    showDeleteModal(id) {
+      this.keyToTrash = id;
+      this.$refs.delete.open();
+    },
+
+    closeDeleteModal() {
+      this.$refs.delete.close();
+    },
+
+    formatTime(value) {
+      var moment = require('moment-timezone');
+      moment.locale(this._i18n.locale);
+      moment.tz.setDefault('UTC');
+
+      var t = moment(value);
+      var date = moment.tz(t, this.timezone);
+            
+      return date.format('LLLL');
     },
 
     getErrorText(errorcode) {

@@ -290,7 +290,7 @@ export default {
       axios.delete('/people/' + this.hash + '/gifts/' + gift.id)
         .then(response => {
           this.gifts.splice(this.gifts.indexOf(gift), 1);
-          this.$refs.modal.close();
+          this.closeDeleteModal();
         });
     },
 
