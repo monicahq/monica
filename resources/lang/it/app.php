@@ -34,6 +34,9 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
+    'next' => 'Next ❯',
+    'previous' => '❮ Previous',
+    'retry' => 'Retry',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica è uno strumento per gestire le interazioni con i vostri cari, amici e familiari.',
