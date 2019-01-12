@@ -4,6 +4,7 @@ namespace App\Services\Activity\Activity;
 
 use App\Services\BaseService;
 use App\Models\Contact\Activity;
+use App\Models\Contact\ActivityType;
 
 class UpdateActivity extends BaseService
 {
@@ -40,13 +41,13 @@ class UpdateActivity extends BaseService
         ActivityType::where('account_id', $data['account_id'])
             ->findOrFail($data['activity_type_id']);
 
-        $task->update([
+        $activity->update([
             'activity_type_id' => $data['activity_type_id'],
             'summary' => $data['summary'],
             'description' => $this->nullOrValue($data, 'description'),
             'happened_at' => $data['date'],
         ]);
 
-        return $task;
+        return $activity;
     }
 }

@@ -44,7 +44,7 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
         },
         'description' => $faker->sentence,
         'summary' => $faker->sentence,
-        'date_it_happened' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+        'happened_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 

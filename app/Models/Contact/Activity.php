@@ -40,7 +40,7 @@ class Activity extends Model implements IsJournalableInterface
      *
      * @var array
      */
-    protected $dates = ['date_it_happened'];
+    protected $dates = ['happened_at'];
 
     /**
      * The relations to eager load on every query.
@@ -161,11 +161,11 @@ class Activity extends Model implements IsJournalableInterface
             'activity_type' => (! is_null($this->type) ? $this->type->name : null),
             'summary' => $this->summary,
             'description' => $this->description,
-            'day' => $this->date_it_happened->day,
-            'day_name' => ucfirst(DateHelper::getShortDay($this->date_it_happened)),
-            'month' => $this->date_it_happened->month,
-            'month_name' => strtoupper(DateHelper::getShortMonth($this->date_it_happened)),
-            'year' => $this->date_it_happened->year,
+            'day' => $this->happened_at->day,
+            'day_name' => ucfirst(DateHelper::getShortDay($this->happened_at)),
+            'month' => $this->happened_at->month,
+            'month_name' => strtoupper(DateHelper::getShortMonth($this->happened_at)),
+            'year' => $this->happened_at->year,
             'attendees' => $this->getContactsForAPI(),
         ];
     }
