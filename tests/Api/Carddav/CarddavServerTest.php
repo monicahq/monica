@@ -358,13 +358,13 @@ class CarddavServerTest extends ApiTestCase
     public function test_carddav_sync_collection_with_token()
     {
         $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+          'account_id' => $user->account->id,
+        ]);
         $token = factory(SyncToken::class)->create([
             'account_id' => $user->account->id,
             'user_id' => $user->id,
             'timestamp' => \App\Helpers\DateHelper::parseDateTime(now()),
-        ]);
-        $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
         ]);
 
         $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
