@@ -106,7 +106,7 @@ return [
     'u2f_error_configuration_unsupported' => 'אין תמיכה בתצורת לקוח.',
     'u2f_error_device_ineligible' => 'ההתקן שהוצג אינו מתאים לבקשה זו. עבור בקשת רישום יתכן שהאסימון כבר רשום ולבקשת כניסה יכול להיות שהאסימון לא מכיר את מנגנון המפתח שהוצג.',
     'u2f_error_timeout' => 'המתנת זמן רב מדי והמענה לבקשה לא הגיע.',
-    'u2f_last_use' => 'Last use:',
+    'u2f_last_use' => 'Last use: {timestamp}',
     'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
     'u2f_delete_success' => 'Key deleted',
 
