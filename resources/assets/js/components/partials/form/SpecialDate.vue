@@ -147,13 +147,17 @@ export default {
       selectedOption: 'unknown',
       selectedMonth: 0,
       selectedDay: 0,
-      dirltr: true,
       hasBirthdayReminder: 0
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   mounted() {
-    this.dirltr = this.$root.htmldir == 'ltr';
     this.selectedOption = this.value;
     this.selectedMonth = this.month;
     this.selectedDay = this.day;

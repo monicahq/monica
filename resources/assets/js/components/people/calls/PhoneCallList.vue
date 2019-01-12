@@ -75,13 +75,10 @@
 
         <!-- CONTENT -->
         <div>
-          <label class="b">
-            {{ $t('people.modal_call_comment') }}
-          </label>
           <form-textarea
             v-model="newCall.content"
             :required="true"
-            :no-label="true"
+            :label="$t('people.modal_call_comment')"
             :rows="4"
             :placeholder="$t('people.conversation_add_content')"
             @contentChange="updateContent($event)"
@@ -132,14 +129,13 @@
       <div v-show="editCallId == call.id" class="pa2">
         <div>
           <div>
-            <label>{{ $t('people.modal_call_comment') }}</label>
-            <textarea
+            <form-textarea
               v-model="editCall.content"
-              autofocus
+              :label="$t('people.modal_call_comment')"
               rows="4"
-              class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
+              iclass="br2 f5 w-100 ba b--black-40 pa2 outline-0"
               @contentChange="updateEditCallContent($event)"
-            ></textarea>
+            />
             <p class="f6">
               {{ $t('app.markdown_description') }}
             </p>
@@ -261,10 +257,10 @@ export default {
       default: '',
     },
   },
+
   data() {
     return {
       calls: [],
-      dirltr: true,
       displayLogCall: false,
       todayDate: '',
       editCallId: 0,
@@ -284,13 +280,18 @@ export default {
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   mounted() {
     this.prepareComponent(this.hash);
   },
 
   methods: {
     prepareComponent(hash) {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getCalls();
       this.todayDate = moment().format('YYYY-MM-DD');
       this.newCall.called_at = this.todayDate;

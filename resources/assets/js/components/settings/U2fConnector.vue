@@ -230,13 +230,21 @@ export default {
       errorMessage: '',
       infoMessage: '',
       success: false,
-      otpextension: '',
       keys: [],
       keyToTrash: '',
       keyName: '',
       registerTab: '',
       data: null
     };
+  },
+
+  computed: {
+    otpextension() {
+      return this.$t('auth.u2f_otp_extension', {
+        urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',
+        urlext: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'
+      });
+    },
   },
 
   mounted() {
@@ -246,10 +254,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.otpextension = this.$t('auth.u2f_otp_extension', {
-        urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',
-        urlext: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'
-      });
       this.keys = this.currentkeys;
       this.data = this.registerdata;
     },
