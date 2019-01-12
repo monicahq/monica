@@ -95,6 +95,8 @@ return [
     '2fa_disable_error' => '尝试禁用双重身份验证时出错',
     'u2f_title' => 'U2F 安全密钥',
     'u2f_enable_description' => '添加新的 U2F 安全密钥',
+    'u2f_key_name_help' => 'Give your key a name.',
+    'u2f_key_name' => 'Key name:',
     'u2f_buttonAdvise' => '如果您的安全密钥有一个按钮, 请按下它。',
     'u2f_noButtonAdvise' => '如果没有, 请将其拔出并再次插入。',
     'u2f_success' => '您的密钥已被检测到并验证完毕。',
@@ -104,6 +106,9 @@ return [
     'u2f_error_configuration_unsupported' => '客户端配置不支持',
     'u2f_error_device_ineligible' => '当前设备不支持此请求。',
     'u2f_error_timeout' => '请求超时',
+    'u2f_last_use' => 'Last use:',
+    'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
+    'u2f_delete_success' => 'Key deleted',
 
     'recovery_title' => '恢复代码',
     'recovery_show' => '获取恢复代码',
