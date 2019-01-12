@@ -95,6 +95,8 @@ return [
     '2fa_disable_error' => 'حدث خطأ عند محاولة تعطيل المصادقة الثنائية',
     'u2f_title' => 'مفتاح أمن U2F',
     'u2f_enable_description' => 'إضافة مفتاح U2F أمن جديد',
+    'u2f_key_name_help' => 'Give your key a name.',
+    'u2f_key_name' => 'Key name:',
     'u2f_buttonAdvise' => 'إذا كان مفتاح الأمان الخاص بك يحتوي على زر، اضغط عليه.',
     'u2f_noButtonAdvise' => 'إذا لم يكن كذلك، قم بإزالته و أدرجه مرة أخرى.',
     'u2f_success' => 'تم الكشف عن مفتاحك و تم التحقق منه.',
@@ -104,6 +106,9 @@ return [
     'u2f_error_configuration_unsupported' => 'تهيئة العميل ليس مدعوماً.',
     'u2f_error_device_ineligible' => 'The presented device is not eligible for this request. For a registration request this may mean that the token is already registered, and for a sign request it may mean that the token does not know the presented key handle.',
     'u2f_error_timeout' => 'نفذ الوقت قبل تلبية الطلب.',
+    'u2f_last_use' => 'Last use:',
+    'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
+    'u2f_delete_success' => 'Key deleted',
 
     'recovery_title' => 'Recovery codes',
     'recovery_show' => 'Get recovery codes',
