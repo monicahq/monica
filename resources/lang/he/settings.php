@@ -95,6 +95,8 @@ return [
     '2fa_disable_error' => 'אירעה שגיאה בעת הניסיון להשבית את האימות הדו־שלבי',
     'u2f_title' => 'מפתח אבטחה U2F',
     'u2f_enable_description' => 'הוספת מפתח אבטחה חדש מסוג U2F',
+    'u2f_key_name_help' => 'Give your key a name.',
+    'u2f_key_name' => 'Key name:',
     'u2f_buttonAdvise' => 'אם למפתח האבטחה שלך יש כפתור, יש ללחוץ עליו.',
     'u2f_noButtonAdvise' => 'אם אין לו, יש להסיר אותו ולהכניס שוב.',
     'u2f_success' => 'המפתח שלך מזוהה ומאומת.',
@@ -104,6 +106,9 @@ return [
     'u2f_error_configuration_unsupported' => 'אין תמיכה בתצורת לקוח.',
     'u2f_error_device_ineligible' => 'ההתקן שהוצג אינו מתאים לבקשה זו. עבור בקשת רישום יתכן שהאסימון כבר רשום ולבקשת כניסה יכול להיות שהאסימון לא מכיר את מנגנון המפתח שהוצג.',
     'u2f_error_timeout' => 'המתנת זמן רב מדי והמענה לבקשה לא הגיע.',
+    'u2f_last_use' => 'Last use:',
+    'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
+    'u2f_delete_success' => 'Key deleted',
 
     'recovery_title' => 'קודים לשחזור',
     'recovery_show' => 'קבלת קודים לשחזור',
