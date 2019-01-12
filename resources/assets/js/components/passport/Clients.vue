@@ -222,6 +222,10 @@ import Error from '../partials/Error.vue';
 
 export default {
 
+  components: {
+    Error
+  },
+
   data() {
     return {
       clients: [],
