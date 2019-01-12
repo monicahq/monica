@@ -97,7 +97,7 @@
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="create-client-name" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -114,12 +114,12 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="create-redirect-url" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 
                 <div class="col-md-7">
-                  <input v-model="createForm.redirect" type="text" class="form-control"
+                  <input id="create-redirect-url" v-model="createForm.redirect" type="text" class="form-control"
                          name="redirect" @keyup.enter="store"
                   />
 
@@ -167,7 +167,7 @@
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="edit-client-name" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -184,12 +184,12 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="edit-redirect-url" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 
                 <div class="col-md-7">
-                  <input v-model="editForm.redirect" type="text" class="form-control"
+                  <input id="edit-redirect-url" v-model="editForm.redirect" type="text" class="form-control"
                          name="redirect" @keyup.enter="update"
                   />
 

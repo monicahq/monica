@@ -11,7 +11,7 @@
         :options="timezones"
         :title="$t('settings.timezone')"
         :required="true"
-        :form-class="'form-control'"
+        :iclass="'form-control'"
         @input="timezoneUpdate"
       />
     </div>
@@ -24,7 +24,7 @@
         :options="hours"
         :title="$t('settings.reminder_time_to_send')"
         :required="true"
-        :form-class="'form-control'"
+        :iclass="'form-control'"
         @input="reminderUpdate"
       />
       <small class="form-text text-muted" v-html="message"></small>

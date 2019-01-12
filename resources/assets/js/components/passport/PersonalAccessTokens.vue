@@ -91,7 +91,7 @@
             <form class="form-horizontal" role="form" @submit.prevent="store">
               <!-- Name -->
               <div class="form-group">
-                <label class="col-md-4 control-label">
+                <label for="create-token-name" class="col-md-4 control-label">
                   {{ $t('settings.api_token_name') }}
                 </label>
 

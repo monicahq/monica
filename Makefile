@@ -104,21 +104,21 @@ docker_push_bintray: .deploy.json
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
 	php artisan lang:generate
-	yarn install
+	yarn inst
 	yarn lint --fix
 	yarn run production
 
 build-prod:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
 	php artisan lang:generate
-	yarn install
+	yarn inst
 	yarn lint --fix
 	yarn run production
 
 build-dev:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
 	php artisan lang:generate
-	yarn install
+	yarn inst
 	yarn lint --fix
 	yarn run dev
 
