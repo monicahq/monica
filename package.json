@@ -35,7 +35,6 @@
     "axios": "^0.18.0",
     "bootstrap": "4.0.0-alpha.2",
     "font-awesome": "^4.7.0",
-    "gulp": "^3.9.1",
     "hint.css": "^2.3.2",
     "jquery": "^3.3.1",
     "laravel-mix": "^4.0.12",
