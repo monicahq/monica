@@ -15,7 +15,6 @@ use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Occupation;
-use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
 use App\Models\Instance\SpecialDate;
