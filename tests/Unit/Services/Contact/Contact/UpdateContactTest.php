@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\UpdateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -32,6 +32,12 @@ class UpdateContactTest extends TestCase
             'birthdate_is_age_based' => false,
             'birthdate_age' => 0,
             'birthdate_add_reminder' => false,
+            'is_deceased' => true,
+            'is_deceased_date_known' => true,
+            'deceased_date_day' => 10,
+            'deceased_date_month' => 10,
+            'deceased_date_year' => 1980,
+            'deceased_date_add_reminder' => true,
         ];
 
         $contactService = new UpdateContact;
@@ -68,12 +74,16 @@ class UpdateContactTest extends TestCase
             'birthdate_is_age_based' => false,
             'birthdate_age' => 0,
             'birthdate_add_reminder' => false,
+            'is_deceased' => true,
+            'is_deceased_date_known' => true,
+            'deceased_date_day' => 10,
+            'deceased_date_month' => 10,
+            'deceased_date_year' => 1980,
+            'deceased_date_add_reminder' => true,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $updateContact = new UpdateContact;
-        $contact = $updateContact->execute($request);
+        $this->expectException(ValidationException::class);
+        (new UpdateContact)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_account_doesnt_exist()
@@ -96,10 +106,15 @@ class UpdateContactTest extends TestCase
             'birthdate_is_age_based' => false,
             'birthdate_age' => 0,
             'birthdate_add_reminder' => false,
+            'is_deceased' => true,
+            'is_deceased_date_known' => true,
+            'deceased_date_day' => 10,
+            'deceased_date_month' => 10,
+            'deceased_date_year' => 1980,
+            'deceased_date_add_reminder' => true,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $updateContact = (new UpdateContact)->execute($request);
+        $this->expectException(ValidationException::class);
+        (new UpdateContact)->execute($request);
     }
 }

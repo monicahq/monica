@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -31,8 +31,7 @@ class GetAvatarsFromInternetTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $avatarService = new GetAvatarsFromInternet;
-        $contact = $avatarService->execute($request);
+        $contact = (new GetAvatarsFromInternet)->execute($request);
 
         $this->assertInstanceOf(
             Contact::class,
@@ -56,8 +55,7 @@ class GetAvatarsFromInternetTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $avatarService = new GetAvatarsFromInternet;
-        $contact = $avatarService->execute($request);
+        $contact = (new GetAvatarsFromInternet)->execute($request);
 
         $this->assertNull(
             $contact->avatar_gravatar_url
@@ -83,12 +81,11 @@ class GetAvatarsFromInternetTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $avatarService = new GetAvatarsFromInternet;
-        $contact = $avatarService->execute($request);
+        $contact = (new GetAvatarsFromInternet)->execute($request);
 
         // now we call the service again to reset the gravatar url
         $contactField->delete();
-        $contact = $avatarService->execute($request);
+        $contact = (new GetAvatarsFromInternet)->execute($request);
 
         $this->assertNull(
             $contact->avatar_gravatar_url
@@ -106,9 +103,7 @@ class GetAvatarsFromInternetTest extends TestCase
             'size' => 200,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $avatarService = new GetAvatarsFromInternet;
-        $contact = $avatarService->execute($request);
+        $this->expectException(ValidationException::class);
+        (new GetAvatarsFromInternet)->execute($request);
     }
 }

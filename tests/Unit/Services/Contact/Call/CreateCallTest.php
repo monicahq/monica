@@ -9,7 +9,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\CreateCall;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -211,10 +211,8 @@ class CreateCallTest extends TestCase
             'called_at' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $createConversation = new CreateCall;
-        $call = $createConversation->execute($request);
+        $this->expectException(ValidationException::class);
+        (new CreateCall)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -230,7 +228,6 @@ class CreateCallTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-
-        $createConversation = (new CreateCall)->execute($request);
+        (new CreateCall)->execute($request);
     }
 }

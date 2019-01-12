@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Contact\Avatar;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -23,8 +23,7 @@ class GenerateDefaultAvatarTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $avatarService = new GenerateDefaultAvatar;
-        $contact = $avatarService->execute($request);
+        $contact = (new GenerateDefaultAvatar)->execute($request);
 
         $this->assertContains(
             'avatars/',
@@ -36,10 +35,8 @@ class GenerateDefaultAvatarTest extends TestCase
     {
         $request = [];
 
-        $this->expectException(MissingParameterException::class);
-
-        $avatarService = new GenerateDefaultAvatar;
-        $url = $avatarService->execute($request);
+        $this->expectException(ValidationException::class);
+        (new GenerateDefaultAvatar)->execute($request);
     }
 
     public function test_it_replaces_existing_default_avatar()
@@ -57,8 +54,7 @@ class GenerateDefaultAvatarTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $avatarService = new GenerateDefaultAvatar;
-        $contact = $avatarService->execute($request);
+        $contact = (new GenerateDefaultAvatar)->execute($request);
 
         $this->assertContains(
             'avatars/',

@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -29,10 +29,12 @@ class CreateContactTest extends TestCase
             'gender_id' => $gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
         ];
 
-        $contactService = new CreateContact;
-        $contact = $contactService->execute($request);
+        $contact = (new CreateContact)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -47,7 +49,6 @@ class CreateContactTest extends TestCase
         $this->assertNotNull($contact->avatar_adorable_uuid);
         $this->assertNotNull($contact->avatar_adorable_url);
         $this->assertNotNull($contact->avatar_default_url);
-
         $this->assertInstanceOf(
             Contact::class,
             $contact
@@ -68,12 +69,13 @@ class CreateContactTest extends TestCase
             'gender_id' => $gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $createContact = new CreateContact;
-        $contact = $createContact->execute($request);
+        $this->expectException(ValidationException::class);
+        (new CreateContact)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_account_doesnt_exist()
@@ -87,10 +89,13 @@ class CreateContactTest extends TestCase
             'gender_id' => $gender->id,
             'description' => 'this is a test',
             'is_partial' => false,
+            'is_birthdate_known' => false,
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $createContact = (new CreateContact)->execute($request);
+        (new CreateContact)->execute($request);
     }
 }

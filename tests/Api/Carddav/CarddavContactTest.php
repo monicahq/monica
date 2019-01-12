@@ -84,6 +84,127 @@ class CarddavContactTest extends ApiTestCase
     /**
      * @group carddav
      */
+    public function test_carddav_update_existing_contact_if_modified()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $filename = urlencode($contact->uuid.'.vcf');
+
+        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+            [
+                'HTTP_If-Modified-Since' => $contact->updated_at->addDays(-1)->toRfc7231String(),
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
+        );
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doex',
+        ]);
+    }
+
+    /**
+     * @group carddav
+     */
+    public function test_carddav_update_existing_contact_if_modified_not_modified()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $filename = urlencode($contact->uuid.'.vcf');
+
+        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+            [
+                'HTTP_If-Modified-Since' => $contact->updated_at->addDays(1)->toRfc7231String(),
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
+        );
+
+        // Not modified
+        $response->assertStatus(304);
+
+        $response->assertHeader('X-Sabre-Version');
+
+        // see http://tools.ietf.org/html/rfc2616#section-10.3.5
+        $response->assertHeaderMissing('Last-Modified');
+
+        $response->assertHeaderMissing('ETag');
+    }
+
+    /**
+     * @group carddav
+     */
+    public function test_carddav_update_existing_contact_if_unmodified()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $filename = urlencode($contact->uuid.'.vcf');
+
+        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+            [
+                'HTTP_If-Unmodified-Since' => $contact->updated_at->addDays(1)->toRfc7231String(),
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
+        );
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doex',
+        ]);
+    }
+
+    /**
+     * @group carddav
+     */
+    public function test_carddav_update_existing_contact_if_unmodified_error()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $filename = urlencode($contact->uuid.'.vcf');
+
+        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+            [
+                'HTTP_If-Unmodified-Since' => $contact->updated_at->addDays(-1)->toRfc7231String(),
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
+        );
+
+        // PRECONDITION FAILED
+        $response->assertStatus(412);
+
+        $response->assertHeader('X-Sabre-Version');
+
+        $sabreversion = \Sabre\DAV\Version::VERSION;
+        $response->assertSee("<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">
+  <s:sabredav-version>{$sabreversion}</s:sabredav-version>
+  <s:exception>Sabre\DAV\Exception\PreconditionFailed</s:exception>
+  <s:message>An If-Unmodified-Since header was specified, but the entity has been changed since the specified date.</s:message>");
+    }
+
+    /**
+     * @group carddav
+     */
     public function test_carddav_update_existing_contact_no_modify()
     {
         $user = $this->signin();

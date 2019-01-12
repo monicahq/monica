@@ -11,6 +11,7 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
+use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Contact\CreateContact;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
@@ -73,6 +74,9 @@ class FakeContentTableSeeder extends Seeder
                 'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                 'gender_id' => $this->getRandomGender()->id,
                 'is_partial' => false,
+                'is_birthdate_known' => false,
+                'is_deceased' => false,
+                'is_deceased_date_known' => false,
             ]);
 
             $this->populateTags();
@@ -216,6 +220,9 @@ class FakeContentTableSeeder extends Seeder
                     'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                     'gender_id' => $this->getRandomGender()->id,
                     'is_partial' => (rand(1, 2) == 1) ? false : true,
+                    'is_birthdate_known' => false,
+                    'is_deceased' => false,
+                    'is_deceased_date_known' => false,
                 ]);
 
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
@@ -328,15 +335,18 @@ class FakeContentTableSeeder extends Seeder
     public function populateAddresses()
     {
         if (rand(1, 3) == 1) {
-            $this->contact->addresses()->create([
+            $request = [
                 'account_id' => $this->contact->account_id,
+                'contact_id' => $this->contact->id,
                 'country' => $this->getRandomCountry(),
                 'name' => $this->faker->word,
                 'street' => (rand(1, 3) == 1) ? $this->faker->streetAddress : null,
                 'city' => (rand(1, 3) == 1) ? $this->faker->city : null,
                 'province' => (rand(1, 3) == 1) ? $this->faker->state : null,
                 'postal_code' => (rand(1, 3) == 1) ? $this->faker->postcode : null,
-            ]);
+            ];
+
+            (new CreateAddress)->execute($request);
         }
     }
 

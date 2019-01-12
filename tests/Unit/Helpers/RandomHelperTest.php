@@ -10,7 +10,7 @@ class RandomHelperTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_returns_a_unique_uuid_for_adorable_url()
+    public function test_it_returns_a_unique_uuid()
     {
         $this->assertEquals(
             36,

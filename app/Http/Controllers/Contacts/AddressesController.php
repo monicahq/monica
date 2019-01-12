@@ -2,42 +2,35 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Cache;
-use App\Http\Requests\People\AddressesRequest;
+use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Address\UpdateAddress;
+use App\Services\Contact\Address\DestroyAddress;
 
 class AddressesController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get all the addresses for this contact.
      */
     public function index(Contact $contact)
     {
-        $contactAddresses = collect([]);
+        $addresses = collect([]);
 
         foreach ($contact->addresses as $address) {
-            $data = [
-                'id' => $address->id,
-                'name' => $address->name,
-                'googleMapAddress' => $address->getGoogleMapAddress(),
-                'address' => $address->getFullAddress(),
-                'country' => $address->country,
-                'country_name' => $address->country_name,
-                'street' => $address->street,
-                'city' => $address->city,
-                'province' => $address->province,
-                'postal_code' => $address->postal_code,
-                'edit' => false,
-            ];
-            $contactAddresses->push($data);
+            $addresses->push($this->addressObject($address));
         }
 
-        return $contactAddresses;
+        return $addresses;
     }
 
     /**
@@ -57,38 +50,96 @@ class AddressesController extends Controller
     /**
      * Store the address.
      */
-    public function store(AddressesRequest $request, Contact $contact)
+    public function store(Request $request, Contact $contact)
     {
-        return $contact->addresses()->create([
+        $datas = [
             'account_id' => auth()->user()->account_id,
-            'country' => ($request->get('country') == '0' ? null : $request->get('country')),
-            'name' => ($request->get('name') == '' ? null : $request->get('name')),
-            'street' => ($request->get('street') == '' ? null : $request->get('street')),
-            'city' => ($request->get('city') == '' ? null : $request->get('city')),
-            'province' => ($request->get('province') == '' ? null : $request->get('province')),
-            'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
+            'contact_id' => $contact->id,
+        ] + $request->only([
+            'name',
+            'country',
+            'street',
+            'city',
+            'province',
+            'postal_code',
+            'latitude',
+            'longitude',
         ]);
+
+        $address = (new CreateAddress)->execute($datas);
+
+        return $this->setHTTPStatusCode(201)
+                    ->respond($this->addressObject($address));
     }
 
     /**
      * Edit the contact field.
      */
-    public function edit(AddressesRequest $request, Contact $contact, Address $address)
+    public function edit(Request $request, Contact $contact, Address $address)
     {
-        $address->update([
-            'country' => ($request->get('country') == '' ? null : $request->get('country')),
-            'name' => ($request->get('name') == '' ? null : $request->get('name')),
-            'street' => ($request->get('street') == '' ? null : $request->get('street')),
-            'city' => ($request->get('city') == '' ? null : $request->get('city')),
-            'province' => ($request->get('province') == '' ? null : $request->get('province')),
-            'postal_code' => ($request->get('postal_code') == '' ? null : $request->get('postal_code')),
+        $datas = [
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $contact->id,
+            'address_id' => $address->id,
+        ] + $request->only([
+            'name',
+            'country',
+            'street',
+            'city',
+            'province',
+            'postal_code',
+            'latitude',
+            'longitude',
         ]);
 
-        return $address;
+        $address = (new UpdateAddress)->execute($datas);
+
+        return $this->respond($this->addressObject($address));
     }
 
-    public function destroy(Contact $contact, Address $address)
+    /**
+     * Destroy the address.
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @param Address $address
+     * @return void
+     */
+    public function destroy(Request $request, Contact $contact, Address $address)
     {
-        $address->delete();
+        $datas = [
+            'account_id' => auth()->user()->account_id,
+            'address_id' => $address->id,
+        ];
+
+        if ((new DestroyAddress)->execute($datas)) {
+            return $this->respondObjectDeleted($address->id);
+        }
+
+        return $this->setHTTPStatusCode(400)
+                    ->setErrorCode(32)
+                    ->respondWithError();
+    }
+
+    private function addressObject($address)
+    {
+        $place = $address->place;
+
+        return [
+            'id' => $address->id,
+            'name' => $address->name,
+            'googleMapAddress' => $place->getGoogleMapAddress(),
+            'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
+            'address' => $place->getAddressAsString(),
+            'country' => $place->country,
+            'country_name' => $place->country_name,
+            'street' => $place->street,
+            'city' => $place->city,
+            'province' => $place->province,
+            'postal_code' => $place->postal_code,
+            'latitude' => $place->latitude,
+            'longitude' => $place->longitude,
+            'edit' => false,
+        ];
     }
 }

@@ -16,10 +16,12 @@ use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -40,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'locale',
         'currency_id',
         'fluid_container',
+        'temperature_scale',
         'name_order',
         'google2fa_secret',
     ];
@@ -107,13 +110,10 @@ class User extends Authenticatable implements MustVerifyEmail
         // Associate timezone and currency
         $currencyCode = $infos['currency'];
         $timezone = $infos['timezone'];
-        $country = null;
-        if (is_null($currencyCode) || is_null($timezone)) {
-            if ($infos['country']) {
-                $country = CountriesHelper::getCountry($infos['country']);
-            } else {
-                $country = CountriesHelper::getCountryFromLocale($locale);
-            }
+        if ($infos['country']) {
+            $country = CountriesHelper::getCountry($infos['country']);
+        } else {
+            $country = CountriesHelper::getCountryFromLocale($locale);
         }
 
         // Timezone
@@ -134,6 +134,18 @@ class User extends Authenticatable implements MustVerifyEmail
                     break;
                 }
             }
+        }
+
+        // Temperature scale
+        switch ($country->cca2) {
+            case 'US':
+            case 'BZ':
+            case 'KY':
+                $this->temperature_scale = 'fahrenheit';
+                break;
+            default:
+                $this->temperature_scale = 'celsius';
+                break;
         }
     }
 
@@ -161,10 +173,22 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the term records associated with the user.
+     *
+     * @return BelongsToMany
      */
     public function terms()
     {
         return $this->belongsToMany(Term::class)->withPivot('ip_address')->withTimestamps();
+    }
+
+    /**
+     * Get the recovery codes associated with the user.
+     *
+     * @return HasMany
+     */
+    public function recoveryCodes()
+    {
+        return $this->hasMany(RecoveryCode::class);
     }
 
     /**

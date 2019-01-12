@@ -23,6 +23,8 @@ Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvita
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
+    Route::get('/auth/login-recovery', 'Auth\RecoveryLoginController@get')->name('recovery.login');
+    Route::post('/auth/login-recovery', 'Auth\RecoveryLoginController@store');
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
@@ -279,7 +281,12 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
             Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('2fa-disable');
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
-            Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('u2f-register');
+            Route::get('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegisterData');
+            Route::post('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegister');
+            Route::delete('/settings/security/u2f/remove/{u2fKeyId}', 'Settings\\MultiFAController@u2fRemove');
+
+            Route::post('/settings/security/generate-recovery-codes', 'Settings\\RecoveryCodesController@store');
+            Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');
         });
     });
 });

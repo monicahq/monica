@@ -54,25 +54,21 @@ class UpdateBirthdayInformation extends BaseService
      * Update birthday information depending on the type of information.
      *
      * @param array $data
-     * @return SpecialDate|null
+     * @return void|null
      */
     private function manageBirthday(array $data)
     {
-        if ($data['is_date_known'] == false) {
+        if (! $data['is_date_known']) {
             return;
         }
 
-        $specialDate = new SpecialDate;
-
-        if ($data['is_age_based'] == true) {
-            $specialDate = $this->approximate($data);
+        if ($data['is_age_based']) {
+            $this->approximate($data);
         }
 
-        if ($data['is_age_based'] == false) {
-            $specialDate = $this->exact($data);
+        if (! $data['is_age_based']) {
+            $this->exact($data);
         }
-
-        return $specialDate;
     }
 
     /**
@@ -80,17 +76,18 @@ class UpdateBirthdayInformation extends BaseService
      * on the estimated age of the contact.
      *
      * @param array $data
+     * @return void
      */
     private function approximate(array $data)
     {
-        return $this->contact->setSpecialDateFromAge('birthdate', $data['age']);
+        $this->contact->setSpecialDateFromAge('birthdate', $data['age']);
     }
 
     /**
      * Case where we have a year, month and day for the birthday.
      *
      * @param  array  $data
-     * @return SpecialDate
+     * @return void
      */
     private function exact(array $data)
     {
@@ -102,8 +99,6 @@ class UpdateBirthdayInformation extends BaseService
         );
 
         $this->setReminder($data, $specialDate);
-
-        return $specialDate;
     }
 
     /**
@@ -111,15 +106,22 @@ class UpdateBirthdayInformation extends BaseService
      *
      * @param array  $data
      * @param SpecialDate $specialDate
+     * @return void
      */
     private function setReminder(array $data, SpecialDate $specialDate)
     {
-        if ($data['add_reminder'] == true) {
+        if (empty($data['add_reminder'])) {
+            return;
+        }
+
+        if ($data['add_reminder']) {
             $specialDate->setReminder(
                 'year',
                 1,
-                trans('people.people_add_birthday_reminder',
-                ['name' => $this->contact->first_name])
+                trans(
+                    'people.people_add_birthday_reminder',
+                    ['name' => $this->contact->first_name]
+                )
             );
         }
     }

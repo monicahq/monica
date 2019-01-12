@@ -144,7 +144,7 @@ class ApiCallControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_create_a_call()
+    public function test_it_creates_a_call()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -188,7 +188,7 @@ class ApiCallControllerTest extends ApiTestCase
             'contact_id' => $contact->id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The called at field is required.',
         ]);
     }
@@ -260,7 +260,7 @@ class ApiCallControllerTest extends ApiTestCase
             'contact_id' => $call->contact_id,
         ]);
 
-        $this->expectInvalidParameter($response, [
+        $this->expectDataError($response, [
             'The called at field is required.',
         ]);
     }

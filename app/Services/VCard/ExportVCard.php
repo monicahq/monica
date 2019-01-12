@@ -164,11 +164,11 @@ class ExportVCard extends BaseService
             $vcard->add('ADR', [
                 '',
                 '',
-                $address->street,
-                $address->city,
-                $address->province,
-                $address->postal_code,
-                $address->country,
+                $address->place->street,
+                $address->place->city,
+                $address->place->province,
+                $address->place->postal_code,
+                $address->place->country,
             ]);
         }
     }
@@ -204,13 +204,12 @@ class ExportVCard extends BaseService
                 case 'Telegram':
                     $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactField->data), ['type' => 'telegram']);
                     break;
+                case 'LinkedIn':
+                    $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->data), ['type' => 'linkedin']);
+                    break;
                 default:
                     break;
             }
-        }
-
-        if (! is_null($contact->linkedin_profile_url)) {
-            $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->linkedin_profile_url), ['type' => 'linkedin']);
         }
     }
 }

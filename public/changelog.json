@@ -1,9 +1,39 @@
 {
     "entries": [
         {
-            "date": "Dec 20, 2018",
+            "date": "Jan 14, 2019",
             "title": "New feature: you can now change avatars",
             "description": "You can now change the avatar of your contacts. Mouse over the profile picture and have fun. ![image](/img/changelogs/2018-12-16-avatars.png)"
+        },
+        {
+            "date": "Jan 06, 2019",
+            "title": "Enhancement: comment when rating your day",
+            "description": "In the Journal, you can now add a comment after you rate your day. ![image](/img/changelogs/2019-01-06-rate-day-comment.png)"
+        },
+        {
+            "date": "Jan 02, 2019",
+            "title": "Enhancement: number of life events",
+            "description": "You can now see the number of life events when loading the contact profile page. This lets you know if there is something important that needs to be seen when looking at a contact."
+        },
+        {
+            "date": "Dec 26, 2018",
+            "title": "Enhancement: LinkedIn address",
+            "description": "The LinkedIn address, which was under Work Information, has been moved to the Contact Information box."
+        },
+        {
+            "date": "Dec 22, 2018",
+            "title": "New feature: weather and temperature",
+            "description": "You can now see the current weather on the profile page of a contact. This information is displayed if there is at least one address set on the contact. ![image](/img/changelogs/2018_12_22_weather.png)"
+        },
+        {
+            "date": "Dec 19, 2018",
+            "title": "Security: recovery codes",
+            "description": "In the [security tab of settings](/settings/security), you can now generate recovery codes. Recovery codes are useful if you have activated Two Factor Authentication but can not login with it for some reasons. With a recovery code you can bypass Two Factor Authentication using this one time code. Be careful though, those codes should be stored in a secure place as they may allow someone to gain access to your account. ![image](/img/changelogs/2018-12-02-recovery-codes.png)"
+        },
+        {
+            "date": "Dec 16, 2018",
+            "title": "New feature: add latitude and longitude to addresses",
+            "description": "When you enter an address, you can now also add latitude and longitude. Note that these coordinates use the decimal degrees system (DD) and therefore should be formatted like `41.40338, 2.17403`."
         },
         {
             "date": "Dec 13, 2018",

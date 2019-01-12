@@ -15,12 +15,14 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
@@ -42,6 +44,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
+use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class Account extends Model
 {
@@ -428,6 +431,56 @@ class Account extends Model
     }
 
     /**
+     * Get the Weather records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function weathers()
+    {
+        return $this->hasMany(Weather::class);
+    }
+
+    /**
+     * Get the Places records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
+
+    /**
+     * Get the Addresses records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Get the Company records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Get the Occupation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
@@ -587,28 +640,6 @@ class Account extends Model
     }
 
     /**
-     * Populates the Contact Field Types table right after an account is
-     * created.
-     */
-    public function populateContactFieldTypeTable($ignoreTableAlreadyMigrated = false)
-    {
-        $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
-
-        foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
-                ContactFieldType::create([
-                    'account_id' => $this->id,
-                    'name' => $defaultContactFieldType->name,
-                    'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                    'delible' => $defaultContactFieldType->delible,
-                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
-                ]);
-            }
-        }
-    }
-
-    /**
      * Populates the Activity Type table right after an account is
      * created.
      */
@@ -727,9 +758,10 @@ class Account extends Model
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
         return $this->reminders()
-            ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
-            ->orderBy('next_expected_date', 'asc')
-            ->get();
+                     ->with('contact')
+                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
+                     ->orderBy('next_expected_date', 'asc')
+                     ->get();
     }
 
     /**
@@ -744,6 +776,8 @@ class Account extends Model
         if (! is_null($plan)) {
             return $plan->stripe_plan;
         }
+
+        return '';
     }
 
     /**
@@ -831,7 +865,11 @@ class Account extends Model
      */
     public function populateDefaultFields()
     {
-        $this->populateContactFieldTypeTable();
+        (new PopulateContactFieldTypesTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
+
         $this->populateDefaultGendersTable();
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();

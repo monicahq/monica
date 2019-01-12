@@ -61,11 +61,13 @@ class TagsController extends Controller
 
         // attach all the new/updated tags
         foreach ($tags as $tag) {
-            (new AssociateTag)->execute([
-                'account_id' => auth()->user()->account->id,
-                'contact_id' => $contact->id,
-                'name' => $tag['name'],
-            ]);
+            if (! empty($tag['name'])) {
+                (new AssociateTag)->execute([
+                    'account_id' => auth()->user()->account->id,
+                    'contact_id' => $contact->id,
+                    'name' => $tag['name'],
+                ]);
+            }
         }
     }
 }

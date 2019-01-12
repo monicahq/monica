@@ -8,7 +8,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\AddMessageToConversation;
@@ -24,7 +24,7 @@ class AddMessageToConversationTest extends TestCase
             'happened_at' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $addMessageToConversation = new AddMessageToConversation;
         $conversation = $addMessageToConversation->execute($request);

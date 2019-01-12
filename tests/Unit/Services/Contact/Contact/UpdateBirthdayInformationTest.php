@@ -4,7 +4,8 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use App\Models\Instance\SpecialDate;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
@@ -32,7 +33,9 @@ class UpdateBirthdayInformationTest extends TestCase
         ];
 
         $birthdayService = new UpdateBirthdayInformation;
-        $specialDate = $birthdayService->execute($request);
+        $contact = $birthdayService->execute($request);
+
+        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -53,8 +56,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'is_date_known' => false,
         ];
 
-        $birthdayService = new UpdateBirthdayInformation;
-        $specialDate = $birthdayService->execute($request);
+        $contact = (new UpdateBirthdayInformation)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -75,8 +77,9 @@ class UpdateBirthdayInformationTest extends TestCase
             'age' => 10,
         ];
 
-        $birthdayService = new UpdateBirthdayInformation;
-        $specialDate = $birthdayService->execute($request);
+        $contact = (new UpdateBirthdayInformation)->execute($request);
+
+        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -106,8 +109,9 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $birthdayService = new UpdateBirthdayInformation;
-        $specialDate = $birthdayService->execute($request);
+        $contact = (new UpdateBirthdayInformation)->execute($request);
+
+        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -138,8 +142,9 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        $birthdayService = new UpdateBirthdayInformation;
-        $specialDate = $birthdayService->execute($request);
+        $contact = (new UpdateBirthdayInformation)->execute($request);
+
+        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
         $this->assertNotNull($specialDate->reminder_id);
     }
@@ -158,10 +163,8 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $updateContact = new UpdateBirthdayInformation;
-        $contact = $updateContact->execute($request);
+        $this->expectException(ValidationException::class);
+        (new UpdateBirthdayInformation)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
@@ -179,8 +182,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $updateContact = (new UpdateBirthdayInformation)->execute($request);
+        $this->expectException(ValidationException::class);
+        (new UpdateBirthdayInformation)->execute($request);
     }
 }

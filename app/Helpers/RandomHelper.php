@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 class RandomHelper
 {
     /**
-     * Generate a new UUID to grab a new adorable avatar.
+     * Generate a UUID.
      *
      * @return string
      */

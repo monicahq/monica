@@ -7,7 +7,7 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Conversation\UpdateMessage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -68,7 +68,7 @@ class UpdateMessageTest extends TestCase
             'content' => 'lorem',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $updateMessage = (new UpdateMessage)->execute($request);
     }

@@ -18,14 +18,14 @@ class UpdateDeceasedInformation extends BaseService
     public function rules()
     {
         return [
-            'account_id'      => 'required|integer|exists:accounts,id',
-            'contact_id'      => 'required|integer',
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
             'is_deceased' => 'required|boolean',
             'is_date_known' => 'required|boolean',
             'day' => 'nullable|integer',
             'month' => 'nullable|integer',
             'year' => 'nullable|integer',
-            'add_reminder' => 'required|boolean',
+            'add_reminder' => 'nullable|boolean',
         ];
     }
 
@@ -57,7 +57,7 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function manageDeceasedDate(array $data)
     {
-        if ($data['is_deceased'] == false) {
+        if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB
             $this->contact->is_dead = false;
             $this->contact->save();
@@ -68,7 +68,7 @@ class UpdateDeceasedInformation extends BaseService
         $this->contact->is_dead = true;
         $this->contact->save();
 
-        if ($data['is_date_known'] == false) {
+        if (! $data['is_date_known']) {
             return;
         }
 
@@ -98,10 +98,15 @@ class UpdateDeceasedInformation extends BaseService
      *
      * @param array  $data
      * @param SpecialDate $specialDate
+     * @return void
      */
     private function setReminder(array $data, SpecialDate $specialDate)
     {
-        if ($data['add_reminder'] == true) {
+        if (empty($data['add_reminder'])) {
+            return;
+        }
+
+        if ($data['add_reminder']) {
             $specialDate->setReminder(
                 'year',
                 1,

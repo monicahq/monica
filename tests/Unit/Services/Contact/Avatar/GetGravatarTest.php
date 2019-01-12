@@ -3,7 +3,7 @@
 namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Avatar\GetGravatarURL;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -18,8 +18,7 @@ class GetGravatarTest extends TestCase
             'size' => 400,
         ];
 
-        $gravatarService = new GetGravatarURL;
-        $url = $gravatarService->execute($request);
+        $url = (new GetGravatarURL)->execute($request);
 
         $this->assertEquals(
             'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=400&d=mm&r=g',
@@ -34,8 +33,7 @@ class GetGravatarTest extends TestCase
             'size' => 80,
         ];
 
-        $gravatarService = new GetGravatarURL;
-        $url = $gravatarService->execute($request);
+        $url = (new GetGravatarURL)->execute($request);
 
         $this->assertEquals(
             'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=80&d=mm&r=g',
@@ -49,8 +47,7 @@ class GetGravatarTest extends TestCase
             'email' => 'matt@wordpress.com',
         ];
 
-        $gravatarService = new GetGravatarURL;
-        $url = $gravatarService->execute($request);
+        $url = (new GetGravatarURL)->execute($request);
 
         // should return an avatar of 200 px wide
         $this->assertEquals(
@@ -65,11 +62,9 @@ class GetGravatarTest extends TestCase
             'email' => 'jlskjdfl@dskfjlsd.com',
         ];
 
-        $gravatarService = new GetGravatarURL;
-
         // should return an avatar of 200 px wide
         $this->assertNull(
-            $gravatarService->execute($request)
+            (new GetGravatarURL)->execute($request)
         );
     }
 
@@ -79,9 +74,7 @@ class GetGravatarTest extends TestCase
             'size' => 200,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $gravatarService = new GetGravatarURL;
-        $url = $gravatarService->execute($request);
+        $this->expectException(ValidationException::class);
+        $url = (new GetGravatarURL)->execute($request);
     }
 }

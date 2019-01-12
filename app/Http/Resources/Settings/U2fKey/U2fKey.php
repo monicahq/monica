@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Address;
+namespace App\Http\Resources\Settings\U2fKey;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Country\Country as CountryResource;
 
-class AddressShort extends Resource
+class U2fKey extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -18,13 +17,9 @@ class AddressShort extends Resource
     {
         return [
             'id' => $this->id,
-            'object' => 'address',
+            'object' => 'u2fkey',
             'name' => $this->name,
-            'street' => $this->street,
-            'city' => $this->city,
-            'province' => $this->province,
-            'postal_code' => $this->postal_code,
-            'country' => new CountryResource($this->country),
+            'counter' => $this->counter,
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];

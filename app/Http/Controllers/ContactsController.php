@@ -11,8 +11,10 @@ use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
+use App\Services\Contact\Contact\DestroyContact;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class ContactsController extends Controller
@@ -55,10 +57,6 @@ class ContactsController extends Controller
             $user->updateContactViewPreference($sort);
         }
 
-        $tags = null;
-        $url = '';
-        $count = 1;
-
         $contacts = $user->account->contacts()->real();
         if ($active) {
             $nbArchived = $contacts->count();
@@ -69,28 +67,33 @@ class ContactsController extends Controller
             $nbArchived = $contacts->count();
         }
 
+        $tags = null;
+        $url = '';
+        $count = 1;
+
         if ($request->get('no_tag')) {
-            //get tag less contacts
+            // get tag less contacts
             $contacts = $contacts->tags('NONE');
         } elseif ($request->get('tag1')) {
-            // get contacts with selected tags
 
+            // get contacts with selected tags
             $tags = collect();
 
             while ($request->get('tag'.$count)) {
                 $tag = Tag::where('account_id', auth()->user()->account_id)
-                            ->where('name_slug', $request->get('tag'.$count))
-                            ->get();
+                            ->where('name_slug', $request->get('tag'.$count));
+                if ($tag->count() > 0) {
+                    $tag = $tag->get();
 
-                if (! ($tags->contains($tag[0]))) {
-                    $tags = $tags->concat($tag);
+                    if (! $tags->contains($tag[0])) {
+                        $tags = $tags->concat($tag);
+                    }
+
+                    $url .= 'tag'.$count.'='.$tag[0]->name_slug.'&';
                 }
-
-                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
-
                 $count++;
             }
-            if (is_null($tags)) {
+            if ($tags->count() == 0) {
                 return redirect()->route('people.index');
             }
 
@@ -168,13 +171,22 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = (new CreateContact)->execute([
-            'account_id' => auth()->user()->account->id,
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->input('last_name', null),
-            'nickname' => $request->input('nickname', null),
-            'gender_id' => $request->get('gender'),
-        ]);
+        try {
+            $contact = (new CreateContact)->execute([
+                'account_id' => auth()->user()->account->id,
+                'first_name' => $request->get('first_name'),
+                'last_name' => $request->input('last_name', null),
+                'nickname' => $request->input('nickname', null),
+                'gender_id' => $request->get('gender'),
+                'is_birthdate_known' => false,
+                'is_deceased' => false,
+                'is_deceased_date_known' => false,
+            ]);
+        } catch (ValidationException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->validator);
+        }
 
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
@@ -186,7 +198,7 @@ class ContactsController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the contact profile.
      *
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
@@ -252,6 +264,7 @@ class ContactsController extends Controller
             ->withReminders($reminders)
             ->withModules($modules)
             ->withContact($contact)
+            ->withWeather($contact->getWeather())
             ->withDays($days)
             ->withMonths($months)
             ->withYears(DateHelper::getListOfYears());
@@ -287,7 +300,7 @@ class ContactsController extends Controller
     }
 
     /**
-     * Update the identity and address of the People object.
+     * Update the contact.
      *
      * @param  Request $request
      * @param Contact $contact
@@ -335,12 +348,53 @@ class ContactsController extends Controller
 
         $contact = (new UpdateContact)->execute($data);
 
+        if ($request->file('avatar') != '') {
+            if ($contact->has_avatar) {
+                try {
+                    $contact->deleteAvatars();
+                } catch (\Exception $e) {
+                    return back()
+                        ->withInput()
+                        ->withErrors(trans('app.error_save'));
+                }
+            }
+            $contact->has_avatar = true;
+            $contact->avatar_location = config('filesystems.default');
+            $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
+            $contact->save();
+        }
+
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'first_name' => $request->get('firstname'),
+            'last_name' => $request->input('lastname', null),
+            'nickname' => $request->input('nickname', null),
+            'gender_id' => $request->get('gender'),
+            'description' => $request->input('description', null),
+            'is_birthdate_known' => ($request->get('birthdate') == 'unknown' ? false : true),
+            'birthdate_day' => $day,
+            'birthdate_month' => $month,
+            'birthdate_year' => $year,
+            'birthdate_is_age_based' => ($request->get('birthdate') == 'approximate' ? true : false),
+            'birthdate_age' => $request->get('age'),
+            'birthdate_add_reminder' => ($request->get('addReminder') != '' ? true : false),
+            'is_deceased' => ($request->get('is_deceased') != '' ? true : false),
+            'is_deceased_date_known' => ($request->get('is_deceased_date_known') != '' ? true : false),
+            'deceased_date_day' => $request->get('deceased_date_day'),
+            'deceased_date_month' => $request->get('deceased_date_month'),
+            'deceased_date_year' => $request->get('deceased_date_year'),
+            'deceased_date_add_reminder' => ($request->get('add_reminder_deceased') != '' ? true : false),
+        ];
+
+        $contact = (new UpdateContact)->execute($data);
+
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
     }
 
     /**
-     * Delete the specified resource.
+     * Delete the contact.
      *
      * @param Request $request
      * @param Contact $contact
@@ -352,14 +406,12 @@ class ContactsController extends Controller
             return redirect()->route('people.index');
         }
 
-        Relationship::where('account_id', auth()->user()->account_id)
-            ->where('contact_is', $contact->id)
-            ->delete();
-        Relationship::where('account_id', auth()->user()->account_id)
-            ->where('of_contact', $contact->id)
-            ->delete();
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+        ];
 
-        $contact->deleteEverything();
+        (new DestroyContact)->execute($data);
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));
@@ -389,11 +441,9 @@ class ContactsController extends Controller
     {
         $job = $request->input('job');
         $company = $request->input('company');
-        $linkedin = $request->input('linkedin');
 
         $contact->job = ! empty($job) ? $job : null;
         $contact->company = ! empty($company) ? $company : null;
-        $contact->linkedin_profile_url = ! empty($linkedin) ? $linkedin : null;
 
         $contact->save();
 
