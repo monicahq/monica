@@ -17,18 +17,19 @@
               :key="key.id"
               class="table-row"
           >
-            <div class="table-cell">
+            <div class="table-cell w-30">
               <strong>{{ key.name }}</strong>
             </div>
-            <div class="table-cell time">
-              <span v-if="key.counter > 0">
-                {{ $t('settings.u2f_last_use') }} {{ formatTime(key.updated_at) }}
-              </span>
+            <div class="table-cell time w-50">
+              <template v-if="key.counter > 0">
+                {{ $t('settings.u2f_last_use', {timestamp: formatTime(key.updated_at)}) }}
+              </template>
             </div>
             <div class="table-cell actions">
-              <a class="pointer"
-                 :cy-name="'u2fkey-delete-button-' + key.id"
-                 @click.prevent="showDeleteModal(key.id)"
+              <a
+                class="pointer"
+                :cy-name="'u2fkey-delete-button-' + key.id"
+                @click.prevent="showDeleteModal(key.id)"
               >
                 {{ $t('app.delete') }}
               </a>
@@ -55,9 +56,10 @@
             v-model="keyName"
             :title="$t('settings.u2f_key_name')"
             :value="keyName"
-            :input-type="'string'"
-            :width="50"
+            :input-type="'text'"
+            :width="150"
             :required="true"
+            @keyup.enter="showRegisterModalTab('2');startRegister();"
           />
           <div class="relative">
             <span class="fr">
@@ -89,7 +91,10 @@
           </div>
 
           <div v-if="errorMessage == ''" align="center">
-            <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt="" />
+            <img
+              src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
+              :alt="$t('settings.u2f_insertKey')"
+            />
           </div>
 
           <div v-if="errorMessage == ''" class="pa2">
@@ -144,7 +149,10 @@
       </div>
 
       <div align="center">
-        <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png" alt="" />
+        <img
+          src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
+          :alt="$t('settings.u2f_insertKey')"
+        />
       </div>
 
       <div class="pa2">
@@ -324,6 +332,34 @@ export default {
       this.showRegisterModalTab('');
     },
 
+    u2fRegisterCallback(data, redirect) {
+      if (data.errorCode) {
+        this.errorMessage = this.getErrorText(data.errorCode);
+        return;
+      }
+      var self = this;
+      axios.post('/settings/security/u2f/register', {
+        register: JSON.stringify(data),
+        name: self.keyName,
+      })
+        .catch(error => {
+          self.errorMessage = error.response.data.error.message;
+        })
+        .then(response => {
+          self.success = true;
+          self.notify(self.$t('settings.u2f_success'), true);
+        })
+        .then(response => {
+          if (redirect) {
+            setTimeout(function () {
+              window.location = self.callbackurl;
+            }, 3000);
+          } else {
+            self.closeRegisterModal();
+          }
+        });
+    },
+
     u2fLoginCallback(data) {
       if (data.errorCode) {
         this.errorMessage = this.getErrorText(data.errorCode);
@@ -376,7 +412,7 @@ export default {
 
       var t = moment(value);
       var date = moment.tz(t, this.timezone);
-            
+
       return date.format('LLLL');
     },
 
