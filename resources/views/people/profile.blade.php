@@ -121,7 +121,7 @@
 
               @if ($modules->contains('key', 'activities'))
               <div class="row section activities">
-                @include('activities.index')
+                @include('people.activities.index')
               </div>
               @endif
 

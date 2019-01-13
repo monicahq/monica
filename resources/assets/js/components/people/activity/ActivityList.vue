@@ -5,7 +5,7 @@
   <div>
     <div class="">
       <h3 class="mb2">
-        ☎️ {{ $t('people.call_title') }}
+        🍿 {{ $t('people.activity_title') }}
 
         <span class="fr relative" style="top: -7px;">
           <a v-if="displayLogCall == false" class="btn edit-information" @click="displayLogCall = true">
@@ -21,9 +21,9 @@
     <!-- BLANK STATE -->
     <div v-if="!displayLogCall && activities.length == 0" class="w-100">
       <div class="bg-near-white tc pa3 br2 ba b--light-gray">
-        <p>{{ $t('people.call_blank_title', { name: name }) }}</p>
+        <p>{{ $t('people.activities_blank_title', { name: name }) }}</p>
         <a class="pointer" @click.prevent="displayLogCall = true">
-          {{ $t('people.modal_call_title') }}
+          {{ $t('people.activities_blank_add_activity') }}
         </a>
       </div>
     </div>
@@ -121,121 +121,17 @@
 
     <!-- LIST OF ACTIVITIES -->
     <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
-      <div v-show="editCallId != call.id" class="pa2">
-        <span v-if="!call.content">
-          {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
-        </span>
-        <span v-if="call.content" v-html="compiledMarkdown(call.content)"></span>
-      </div>
-
-      <!-- INLINE UPDATE DIV -->
-      <div v-show="editCallId == call.id" class="pa2">
-        <div>
-          <div>
-            <label>{{ $t('people.modal_call_comment') }}</label>
-            <textarea
-              v-model="editCall.content"
-              autofocus
-              rows="4"
-              class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
-              @contentChange="updateEditCallContent($event)"
-            ></textarea>
-            <p class="f6">
-              {{ $t('app.markdown_description') }}
-            </p>
-          </div>
-
-          <!-- WHO CALLED -->
-          <div class="pb3 mb3 mb0-ns">
-            <p class="mb2">
-              {{ $t('people.modal_call_who_called') }}
-            </p>
-            <div class="di mr3">
-              <input :id="'you' + call.id" v-model="editCall.contact_called" type="radio" class="mr1" :name="'contact_called' + call.id"
-                     :value="false"
-              />
-              <label :for="'you' + call.id" class="pointer">
-                {{ $t('people.call_you_called') }}
-              </label>
-            </div>
-            <div class="di mr3">
-              <input :id="'contact' + call.id" v-model="editCall.contact_called" type="radio" class="mr1" :name="'contact_called' + call.id"
-                     :value="true"
-              />
-              <label :for="'contact' + call.id" class="pointer">
-                {{ $t('people.call_he_called', { name : name }) }}
-              </label>
-            </div>
-          </div>
-
-          <!-- EMOTIONS -->
-          <div class="bb b--gray-monica pb3 mb3">
-            <label class="b">
-              {{ $t('people.modal_call_emotion') }}
-            </label>
-            <emotion class="pv2" :initial-emotions="call.emotions" @updateEmotionsList="updateEmotionsList" />
-          </div>
-
-          <!-- ACTIONS -->
-          <div class="">
-            <div class="flex-ns justify-between">
-              <div class="">
-                <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="editCallId = 0">
-                  {{ $t('app.cancel') }}
-                </a>
-              </div>
-              <div class="">
-                <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="update()">
-                  {{ $t('app.update') }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {{ activity.summary }} {{ activity.description }}
 
       <!-- ADDITIONAL INFORMATION -->
       <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
         <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
           <span :class="[ dirltr ? 'mr3' : 'ml3' ]">
-            {{ call.called_at | moment }}
+            {{ activity.happened_at | moment }}
           </span>
-          <span :class="[ dirltr ? 'mr3' : 'ml3' ]">
-            {{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}
-          </span>
-          <span v-if="call.emotions.length != 0">
-            <span :class="[ dirltr ? 'mr2' : 'ml2' ]">
-              {{ $t('people.call_emotions') }}
-            </span>
-            <ul class="di">
-              <li v-for="emotion in call.emotions" :key="emotion.id" class="di">
-                {{ $t('app.emotion_' + emotion.name) }}
-              </li>
-            </ul>
-          </span>
-        </div>
-
-        <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-30">
-          <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(call)">
-            {{ $t('app.update') }}
-          </a>
-          <a v-show="destroyCallId != call.id" class="pointer" @click.prevent="showDestroyCall(call)">
-            {{ $t('app.delete') }}
-          </a>
-          <ul v-show="destroyCallId == call.id" class="di">
-            <li class="di">
-              <a class="pointer mr1" @click.prevent="destroyCallId = 0">
-                {{ $t('app.cancel') }}
-              </a>
-            </li>
-            <li class="di">
-              <a class="pointer red" @click.prevent="destroyCall(call)">
-                {{ $t('app.delete_confirm') }}
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -265,22 +161,6 @@ export default {
     return {
       activities: [],
       dirltr: true,
-      displayLogCall: false,
-      todayDate: '',
-      editCallId: 0,
-      destroyCallId: 0,
-      chosenEmotions: [],
-      newCall: {
-        content: '',
-        called_at: '',
-        contact_called: false,
-        emotions: [],
-      },
-      editCall: {
-        content: '',
-        contact_called: false,
-        emotions: [],
-      }
     };
   },
 
@@ -291,21 +171,15 @@ export default {
   methods: {
     prepareComponent(hash) {
       this.dirltr = this.$root.htmldir == 'ltr';
-      this.getactivities();
+      this.getActivities();
       this.todayDate = moment().format('YYYY-MM-DD');
-      this.newCall.called_at = this.todayDate;
     },
 
     compiledMarkdown (text) {
       return marked(text, { sanitize: true });
     },
 
-    resetFields() {
-      this.newCall.content = '';
-      this.newCall.called_at = this.todayDate;
-    },
-
-    getactivities() {
+    getActivities() {
       axios.get('/people/' + this.hash + '/activities')
         .then(response => {
           this.activities = response.data.data;
@@ -350,18 +224,6 @@ export default {
       this.editCall.content = call.content;
       this.editCall.contact_called = call.contact_called;
       this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD');
-    },
-
-    updateContent(updatedContent) {
-      this.newCall.content = updatedContent;
-    },
-
-    updateEditCallContent(updatedContent) {
-      this.editCall.content = updatedContent;
-    },
-
-    updateDate(updatedContent) {
-      this.newCall.called_at = updatedContent;
     },
 
     showDestroyCall(call) {

@@ -2,39 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Journal\JournalEntry;
-use App\Http\Requests\People\ActivitiesRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Activity\Activity as ActivityResource;
 
 class ActivitiesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get the list of activities.
      *
+     * @param Request $request
      * @param Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function index(Contact $contact)
+    public function index(Request $request, Contact $contact)
     {
-        return view('activities.index')
-            ->withContact($contact);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @param Contact $contact
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Contact $contact)
-    {
-        return view('activities.add')
-            ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
-            ->withActivity(new Activity);
+        $activities = $contact->activities()->get();
+        return ActivityResource::collection($activities);
     }
 
     /**
