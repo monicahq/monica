@@ -2,17 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
-use App\Models\Contact\Call;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Instance\Emotion\Emotion;
-use App\Services\Activity\Activity\AttachContactToActivity;
+use App\Models\Contact\Activity;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Models\Contact\Activity;
+use App\Services\Activity\Activity\AttachContactToActivity;
 
 class AttachContactToActivityTest extends TestCase
 {

@@ -18,10 +18,10 @@ use App\Services\Activity\Activity\CreateActivity;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Activity\Activity\AttachContactToActivity;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
-use App\Services\Activity\Activity\AttachContactToActivity;
 
 class FakeContentTableSeeder extends Seeder
 {
