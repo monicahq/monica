@@ -30,8 +30,7 @@ class CreateActivityTest extends TestCase
             'date' => '2009-09-09',
         ];
 
-        $activityService = new CreateActivity;
-        $activity = $activityService->execute($request);
+        $activity = (new CreateActivity)->execute($request);
 
         $this->assertDatabaseHas('activities', [
             'id' => $activity->id,
