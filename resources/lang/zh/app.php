@@ -34,9 +34,9 @@ return [
     'zoom' => '放大',
     'upgrade' => '升级解锁',
     'percent_uploaded' => '已上传 {percent}% ',
-    'next' => 'Next ❯',
-    'previous' => '❮ Previous',
-    'retry' => 'Retry',
+    'next' => '下一页 ❯',
+    'previous' => '❮ 上一页',
+    'retry' => '重试',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
