@@ -36,14 +36,13 @@
           <p>
             {{ $t('settings.2fa_enable_otp_validate') }}
           </p>
-          <label for="one_time_password1">
-            {{ $t('auth.2fa_one_time_password') }}
-          </label>
-          <form-input :id="'one_time_password1'"
-                      v-model="one_time_password"
-                      :input-type="'number'"
-                      :width="100"
-                      :required="true"
+          <form-input
+            :id="'one_time_password1'"
+            v-model="one_time_password"
+            :title="$t('auth.2fa_one_time_password')"
+            :input-type="'number'"
+            :width="100"
+            :required="true"
           />
         </div>
       </form>
@@ -64,14 +63,13 @@
         <p>{{ $t('settings.2fa_disable_description') }}</p>
 
         <div class="form-group">
-          <label for="one_time_password2">
-            {{ $t('auth.2fa_one_time_password') }}
-          </label>
-          <form-input :id="'one_time_password2'"
-                      v-model="one_time_password"
-                      :input-type="'number'"
-                      :width="100"
-                      :required="true"
+          <form-input
+            :id="'one_time_password2'"
+            v-model="one_time_password"
+            :title="$t('auth.2fa_one_time_password')"
+            :input-type="'number'"
+            :width="100"
+            :required="true"
           />
         </div>
       </form>

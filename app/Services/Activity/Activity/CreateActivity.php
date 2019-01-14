@@ -17,7 +17,7 @@ class CreateActivity extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'activity_type_id' => 'required|integer|exists:activity_types,id',
+            'activity_type_id' => 'nullable|integer',
             'summary' => 'required|string:255',
             'description' => 'nullable|string:400000000',
             'date' => 'required|date_format:Y-m-d',
@@ -34,12 +34,14 @@ class CreateActivity extends BaseService
     {
         $this->validate($data);
 
-        ActivityType::where('account_id', $data['account_id'])
-            ->findOrFail($data['activity_type_id']);
+        if ($data['activity_type_id']) {
+            ActivityType::where('account_id', $data['account_id'])
+                ->findOrFail($data['activity_type_id']);
+        }
 
         $activity = Activity::create([
             'account_id' => $data['account_id'],
-            'activity_type_id' => $data['activity_type_id'],
+            'activity_type_id' => $this->nullOrValue($data, 'activity_type_id'),
             'summary' => $data['summary'],
             'description' => $this->nullOrValue($data, 'description'),
             'happened_at' => $data['date'],

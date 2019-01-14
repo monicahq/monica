@@ -188,6 +188,11 @@ Vue.component(
 );
 
 Vue.component(
+  'activity-type-list',
+  require('./components/people/activity/ActivityTypeList.vue').default
+);
+
+Vue.component(
   'document-list',
   require('./components/people/document/DocumentList.vue').default
 );
@@ -301,6 +306,7 @@ Vue.filter('formatDate', function(value) {
 // Markdown
 window.marked = require('marked');
 
+// i18n
 import messages from '../../../public/js/langs/en.json';
 
 export const i18n = new VueI18n({
@@ -343,7 +349,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       date_met_the_contact: 'known',
       global_relationship_form_new_contact: true,
       htmldir: window.Laravel.htmldir,
-      global_profile_default_view: window.Laravel.profileDefaultView
+      global_profile_default_view: window.Laravel.profileDefaultView,
     },
     mounted: function() {
 

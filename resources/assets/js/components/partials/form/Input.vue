@@ -11,19 +11,25 @@ input:focus {
 
 <template>
   <div>
-    <p class="mb2" :class="{ b: required }">
+    <label
+      v-if="title"
+      :for="realid"
+      class="mb2"
+      :class="{ b: required }"
+    >
       {{ title }}
-    </p>
-    <input :id="id"
-           ref="input"
-           :type="inputType"
-           :value="value"
-           autofocus
-           :required="required"
-           :name="id"
-           class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
-           :style="[width >= 0 ? 'width:' + width + 'px' : '']"
-           @input="updateInput($event.target.value)"
+    </label>
+    <input
+      :id="realid"
+      ref="input"
+      :type="inputType"
+      autofocus
+      :required="required"
+      :name="id"
+      :class="inputClass"
+      :style="inputStyle"
+      :value="value"
+      @input="event => { $emit('input', event.target.value) }"
     />
   </div>
 </template>
@@ -55,13 +61,24 @@ export default {
     width: {
       type: Number,
       default: -1,
-    }
+    },
+    iclass: {
+      type: String,
+      default: ''
+    },
   },
 
-  methods: {
-    updateInput(text) {
-      this.$emit('input', text);
+  computed: {
+    realid() {
+      return this.id + this._uid;
+    },
+    inputClass() {
+      return this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0';
+    },
+    inputStyle() {
+      return this.width >= 0 ? 'width:' + this.width + 'px' : '';
     }
   }
+
 };
 </script>

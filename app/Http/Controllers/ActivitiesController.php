@@ -21,6 +21,7 @@ class ActivitiesController extends Controller
      */
     public function index(Request $request, Contact $contact)
     {
+        dd('test');
         $activities = $contact->activities()->get();
 
         return ActivityResource::collection($activities);

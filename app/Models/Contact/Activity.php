@@ -7,16 +7,11 @@ use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
 use App\Models\Journal\JournalEntry;
+use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
-use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-/**
- * @property Account $account
- * @property Contact $contact
- * @property ActivityType $type
- */
 class Activity extends Model implements IsJournalableInterface
 {
     use Journalable;

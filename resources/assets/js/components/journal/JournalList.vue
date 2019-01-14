@@ -67,11 +67,13 @@ export default {
       showHappySmileyColor: false,
       loadingMore: false,
 
-      dirltr: true,
     };
   },
 
   computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
     hasMorePage: function() {
       var total = this.journalEntries.per_page * this.journalEntries.current_page;
 
@@ -89,7 +91,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getEntries();
     },
 

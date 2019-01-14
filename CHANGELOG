@@ -2,18 +2,21 @@ UNRELEASED CHANGES:
 
 New features:
 
+* Add ability to name u2f security keys and to delete register ones
 * Add ability to add a comment when rating your day in the journal
 * Add API methods to manage genders
 * Breaking change: rewrite API methods to manage contacts
 
 Enhancements:
 
+* Display the name of the contact field instead of the URL (Facebook instead of https:/facebook.com/johndoe)
 * Add foreign keys to activities table
 * Add foreign keys to reminders, reminder rules, contacts and life events tables
 * Add number of life events on the contact profile page
 
 Fixes:
 
+* Fix using 'label' tag without 'for' attribute
 * Fix model binding when it is a guest request (not logged in)
 * Fix bug preventing to create life event without day and month
 * Fix ability to delete a user with a u2f key activated

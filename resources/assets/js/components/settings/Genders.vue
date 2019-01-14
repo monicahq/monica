@@ -176,9 +176,13 @@ export default {
         name: '',
         newId: 0
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -187,7 +191,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getGenders();
     },
 

@@ -24,30 +24,13 @@ class AddressesController extends Controller
      */
     public function index(Contact $contact)
     {
-        $contactAddresses = collect([]);
+        $addresses = collect([]);
 
         foreach ($contact->addresses as $address) {
-            $place = $address->place;
-            $data = [
-                'id' => $address->id,
-                'name' => $address->name,
-                'googleMapAddress' => $place->getGoogleMapAddress(),
-                'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
-                'address' => $place->getAddressAsString(),
-                'country' => $place->country,
-                'country_name' => $place->country_name,
-                'street' => $place->street,
-                'city' => $place->city,
-                'province' => $place->province,
-                'postal_code' => $place->postal_code,
-                'latitude' => $place->latitude,
-                'longitude' => $place->longitude,
-                'edit' => false,
-            ];
-            $contactAddresses->push($data);
+            $addresses->push($this->addressObject($address));
         }
 
-        return $contactAddresses;
+        return $addresses;
     }
 
     /**
@@ -83,7 +66,10 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return (new CreateAddress)->execute($datas);
+        $address = (new CreateAddress)->execute($datas);
+
+        return $this->setHTTPStatusCode(201)
+                    ->respond($this->addressObject($address));
     }
 
     /**
@@ -106,7 +92,9 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return (new UpdateAddress)->execute($datas);
+        $address = (new UpdateAddress)->execute($datas);
+
+        return $this->respond($this->addressObject($address));
     }
 
     /**
@@ -127,5 +115,31 @@ class AddressesController extends Controller
         if ((new DestroyAddress)->execute($datas)) {
             return $this->respondObjectDeleted($address->id);
         }
+
+        return $this->setHTTPStatusCode(400)
+                    ->setErrorCode(32)
+                    ->respondWithError();
+    }
+
+    private function addressObject($address)
+    {
+        $place = $address->place;
+
+        return [
+            'id' => $address->id,
+            'name' => $address->name,
+            'googleMapAddress' => $place->getGoogleMapAddress(),
+            'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
+            'address' => $place->getAddressAsString(),
+            'country' => $place->country,
+            'country_name' => $place->country_name,
+            'street' => $place->street,
+            'city' => $place->city,
+            'province' => $place->province,
+            'postal_code' => $place->postal_code,
+            'latitude' => $place->latitude,
+            'longitude' => $place->longitude,
+            'edit' => false,
+        ];
     }
 }
