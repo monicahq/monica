@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Contact;
+namespace Tests\Api\ContactField;
 
 use Tests\ApiTestCase;
 use App\Models\Account\Account;

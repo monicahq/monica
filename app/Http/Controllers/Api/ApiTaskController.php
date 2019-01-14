@@ -9,7 +9,7 @@ use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
 use App\Services\Task\DestroyTask;
 use Illuminate\Database\QueryException;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -67,8 +67,8 @@ class ApiTaskController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new TaskResource($task);
@@ -93,8 +93,8 @@ class ApiTaskController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new TaskResource($task);
@@ -114,8 +114,8 @@ class ApiTaskController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return $this->respondObjectDeleted($taskId);

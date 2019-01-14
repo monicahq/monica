@@ -14,6 +14,7 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\LifeEvent;
+use App\Models\Contact\Occupation;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\Notification;
@@ -130,6 +131,17 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->lifeEvents()->exists());
+    }
+
+    public function test_it_has_many_occupations()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $occupations = factory(Occupation::class, 2)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertTrue($contact->occupations()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()
@@ -371,18 +383,21 @@ class ContactTest extends FeatureTestCase
 
         $activity1 = factory(Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity1);
+        $contact->activities()->attach($activity1, ['account_id' => $contact->account_id]);
 
         $activity2 = factory(Activity::class)->create([
             'date_it_happened' => '2010-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity2);
+        $contact->activities()->attach($activity2, ['account_id' => $contact->account_id]);
 
         $activity3 = factory(Activity::class)->create([
             'date_it_happened' => '1981-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity3);
+        $contact->activities()->attach($activity3, ['account_id' => $contact->account_id]);
 
         $this->assertEquals(
             '2015-10-29 10:10:10',
@@ -396,8 +411,9 @@ class ContactTest extends FeatureTestCase
 
         $activity1 = factory(Activity::class)->create([
             'date_it_happened' => '2015-10-29 10:10:10',
+            'account_id' => $contact->account_id,
         ]);
-        $contact->activities()->attach($activity1);
+        $contact->activities()->attach($activity1, ['account_id' => $contact->account_id]);
 
         $this->assertEquals(
             '2015-10-29 10:10:10',

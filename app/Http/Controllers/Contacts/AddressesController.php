@@ -9,6 +9,7 @@ use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Cache;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
@@ -16,35 +17,20 @@ use App\Services\Contact\Address\DestroyAddress;
 
 class AddressesController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get all the addresses for this contact.
      */
     public function index(Contact $contact)
     {
-        $contactAddresses = collect([]);
+        $addresses = collect([]);
 
         foreach ($contact->addresses as $address) {
-            $place = $address->place;
-            $data = [
-                'id' => $address->id,
-                'name' => $address->name,
-                'googleMapAddress' => $place->getGoogleMapAddress(),
-                'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
-                'address' => $place->getAddressAsString(),
-                'country' => $place->country,
-                'country_name' => $place->country_name,
-                'street' => $place->street,
-                'city' => $place->city,
-                'province' => $place->province,
-                'postal_code' => $place->postal_code,
-                'latitude' => $place->latitude,
-                'longitude' => $place->longitude,
-                'edit' => false,
-            ];
-            $contactAddresses->push($data);
+            $addresses->push($this->addressObject($address));
         }
 
-        return $contactAddresses;
+        return $addresses;
     }
 
     /**
@@ -66,20 +52,24 @@ class AddressesController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        $request = [
-            'account_id' => auth()->user()->account->id,
+        $datas = [
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
-            'name' => $request->get('name'),
-            'country' => $request->get('country'),
-            'street' => $request->get('street'),
-            'city' => $request->get('city'),
-            'province' => $request->get('province'),
-            'postal_code' => $request->get('postal_code'),
-            'latitude' => $request->get('latitude'),
-            'longitude' => $request->get('longitude'),
-        ];
+        ] + $request->only([
+            'name',
+            'country',
+            'street',
+            'city',
+            'province',
+            'postal_code',
+            'latitude',
+            'longitude',
+        ]);
 
-        return (new CreateAddress)->execute($request);
+        $address = (new CreateAddress)->execute($datas);
+
+        return $this->setHTTPStatusCode(201)
+                    ->respond($this->addressObject($address));
     }
 
     /**
@@ -87,21 +77,24 @@ class AddressesController extends Controller
      */
     public function edit(Request $request, Contact $contact, Address $address)
     {
-        $request = [
-            'account_id' => auth()->user()->account->id,
+        $datas = [
+            'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'address_id' => $address->id,
-            'name' => $request->get('name'),
-            'country' => $request->get('country'),
-            'street' => $request->get('street'),
-            'city' => $request->get('city'),
-            'province' => $request->get('province'),
-            'postal_code' => $request->get('postal_code'),
-            'latitude' => $request->get('latitude'),
-            'longitude' => $request->get('longitude'),
-        ];
+        ] + $request->only([
+            'name',
+            'country',
+            'street',
+            'city',
+            'province',
+            'postal_code',
+            'latitude',
+            'longitude',
+        ]);
 
-        return (new UpdateAddress)->execute($request);
+        $address = (new UpdateAddress)->execute($datas);
+
+        return $this->respond($this->addressObject($address));
     }
 
     /**
@@ -114,11 +107,39 @@ class AddressesController extends Controller
      */
     public function destroy(Request $request, Contact $contact, Address $address)
     {
-        $request = [
-            'account_id' => auth()->user()->account->id,
+        $datas = [
+            'account_id' => auth()->user()->account_id,
             'address_id' => $address->id,
         ];
 
-        (new DestroyAddress)->execute($request);
+        if ((new DestroyAddress)->execute($datas)) {
+            return $this->respondObjectDeleted($address->id);
+        }
+
+        return $this->setHTTPStatusCode(400)
+                    ->setErrorCode(32)
+                    ->respondWithError();
+    }
+
+    private function addressObject($address)
+    {
+        $place = $address->place;
+
+        return [
+            'id' => $address->id,
+            'name' => $address->name,
+            'googleMapAddress' => $place->getGoogleMapAddress(),
+            'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
+            'address' => $place->getAddressAsString(),
+            'country' => $place->country,
+            'country_name' => $place->country_name,
+            'street' => $place->street,
+            'city' => $place->city,
+            'province' => $place->province,
+            'postal_code' => $place->postal_code,
+            'latitude' => $place->latitude,
+            'longitude' => $place->longitude,
+            'edit' => false,
+        ];
     }
 }

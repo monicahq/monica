@@ -3,9 +3,13 @@
 namespace Tests\Unit\Services\Instance\Weather;
 
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
+use GuzzleHttp\Psr7\Response;
 use App\Models\Account\Weather;
-use App\Exceptions\MissingParameterException;
+use GuzzleHttp\Handler\MockHandler;
+use Illuminate\Validation\ValidationException;
 use App\Exceptions\MissingEnvVariableException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Weather\GetWeatherInformation;
@@ -24,16 +28,16 @@ class GetWeatherInformationTest extends TestCase
         config(['monica.enable_weather' => true]);
         config(['monica.darksky_api_key' => 'test']);
 
-        \VCR\VCR::turnOn();
-        \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(['url']);
-        \VCR\VCR::insertCassette('get_weather_information_gets_weather.yml');
+        $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Weather/GetWeatherInformationSampleResponse.json'));
+        $mock = new MockHandler([new Response(200, [], $body)]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
 
         $request = [
             'place_id' => $place->id,
         ];
 
-        $weather = (new GetWeatherInformation)->execute($request);
+        $weather = (new GetWeatherInformation)->execute($request, $client);
 
         $this->assertDatabaseHas('weather', [
             'id' => $weather->id,
@@ -50,9 +54,6 @@ class GetWeatherInformationTest extends TestCase
             Weather::class,
             $weather
         );
-
-        \VCR\VCR::eject();
-        \VCR\VCR::turnOff();
     }
 
     public function test_it_cant_get_weather_info_if_weather_not_enabled()
@@ -112,7 +113,7 @@ class GetWeatherInformationTest extends TestCase
 
         $request = [];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new GetWeatherInformation)->execute($request);
     }
 }

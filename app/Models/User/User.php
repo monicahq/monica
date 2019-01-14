@@ -16,10 +16,12 @@ use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -171,6 +173,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the term records associated with the user.
+     *
+     * @return BelongsToMany
      */
     public function terms()
     {
@@ -179,6 +183,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the recovery codes associated with the user.
+     *
+     * @return HasMany
      */
     public function recoveryCodes()
     {

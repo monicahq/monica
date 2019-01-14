@@ -392,6 +392,34 @@ $factory->define(App\Models\Account\Place::class, function (Faker\Generator $fak
     ];
 });
 
+$factory->define(App\Models\Account\Company::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => 'Central Perk',
+        'website' => 'https://centralperk.com',
+        'number_of_employees' => 4,
+    ];
+});
+
+$factory->define(App\Models\Contact\Occupation::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'contact_id' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'company_id' => function (array $data) {
+            return factory(App\Models\Account\Company::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'title' => 'Waiter',
+        'salary' => '10000',
+        'salary_unit' => 'year',
+    ];
+});
+
 $factory->define(App\Models\Contact\LifeEventCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
@@ -543,5 +571,13 @@ $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $f
   "offset": -5
 }'),
         'created_at' => now(),
+    ];
+});
+
+$factory->define(App\Models\User\SyncToken::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'user_id' => factory(App\Models\User\User::class)->create()->id,
+        'timestamp' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
