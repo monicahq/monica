@@ -18,6 +18,13 @@ use Sabre\CardDAV\Plugin as CardDAVPlugin;
 class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 {
     /**
+     * Extension for Card objects.
+     * 
+     * @var string
+     */
+    const EXTENSION = '.vcf';
+
+    /**
      * Returns the list of addressbooks for a specific user.
      *
      * Every addressbook should have the following properties:
@@ -288,7 +295,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 
     private function encodeUri($contact)
     {
-        return urlencode($contact->uuid.'.vcf');
+        return urlencode($contact->uuid . self::EXTENSION);
     }
 
     private function decodeUri($uri)

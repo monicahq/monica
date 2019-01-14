@@ -24,7 +24,7 @@ class ExportVCard extends BaseService
     }
 
     /**
-     * Import one VCard.
+     * Export one VCard.
      *
      * @param array $data
      * @return VCard

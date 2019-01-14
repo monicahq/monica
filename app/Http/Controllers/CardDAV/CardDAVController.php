@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\CardDAV;
 
 use Illuminate\Http\Request;
+use Sabre\CalDAV\CalendarRoot;
 use Sabre\CardDAV\VCFExportPlugin;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
@@ -13,9 +14,11 @@ use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Models\CardDAV\MonicaAddressBookRoot;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
 use App\Models\CardDAV\Backends\MonicaAuthBackend;
+use App\Models\CardDAV\Backends\MonicaCalDAVBackend;
 use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
 use App\Models\CardDAV\Backends\MonicaPrincipalBackend;
 
@@ -45,10 +48,12 @@ class CardDAVController extends Controller
         // Initiate custom backends for link between Sabre and Monica
         $principalBackend = new MonicaPrincipalBackend();   // User rights
         $carddavBackend = new MonicaCardDAVBackend();       // Contacts
+        $caldavBackend = new MonicaCalDAVBackend();       // Calendar
 
         return [
             new PrincipalCollection($principalBackend),
             new MonicaAddressBookRoot($principalBackend, $carddavBackend),
+            new CalendarRoot($principalBackend, $caldavBackend),
         ];
     }
 
@@ -103,6 +108,9 @@ class CardDAVController extends Controller
 
         // CardDAV plugin
         $server->addPlugin(new CardDAVPlugin());
+
+        // CalDAV plugin
+        $server->addPlugin(new CalDAVPlugin());
 
         // Sync Plugin - rfc6578
         $server->addPlugin(new SyncPlugin());
