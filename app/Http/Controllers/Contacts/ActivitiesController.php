@@ -5,15 +5,14 @@ namespace App\Http\Controllers\Contacts;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Http\Controllers\Controller;
-use App\Services\ActivityStatisticService;
-use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Http\Resources\Activity\ActivityTypeCategory as ActivityTypeCategoryResource;
-use App\Models\Contact\ActivityType;
 use App\Models\Contact\Activity;
+use App\Http\Controllers\Controller;
+use App\Models\Contact\ActivityType;
+use App\Services\ActivityStatisticService;
 use App\Services\Activity\Activity\CreateActivity;
 use App\Services\Activity\Activity\DestroyActivity;
 use App\Services\Activity\Activity\AttachContactToActivity;
+use App\Http\Resources\Activity\Activity as ActivityResource;
 
 class ActivitiesController extends Controller
 {
@@ -39,6 +38,7 @@ class ActivitiesController extends Controller
     public function index(Request $request, Contact $contact)
     {
         $activities = $contact->activities()->orderBy('happened_at', 'desc')->get();
+
         return ActivityResource::collection($activities);
     }
 
