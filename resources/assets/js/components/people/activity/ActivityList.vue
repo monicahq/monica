@@ -11,7 +11,7 @@
           <a v-if="displayLogActivity == false" class="btn edit-information" @click="displayLogActivity = true">
             {{ $t('people.activities_add_activity') }}
           </a>
-          <a v-if="displayLogActivity" class="btn edit-information" @click="displayLogActivity = false">
+          <a v-if="displayLogActivity" class="btn edit-information" @click="resetFields()">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -112,7 +112,7 @@
         <div class="pt3">
           <div class="flex-ns justify-between">
             <div class="">
-              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="displayLogActivity = false">
+              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="resetFields()">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -221,6 +221,18 @@ export default {
       this.newActivity.happened_at = this.todayDate;
     },
 
+    resetFields() {
+      this.displayDescription = false;
+      this.displayEmotions = false;
+      this.displayCategory = false;
+      this.newActivity.summary = '';
+      this.description = '';
+      this.happened_at = '';
+      this.emotions = [];
+      this.activity_type_id = 0;
+      this.displayLogActivity = false;
+    },
+
     compiledMarkdown (text) {
       return marked(text, { sanitize: true });
     },
@@ -250,6 +262,7 @@ export default {
           this.displayLogActivity = false;
           this.getActivities();
           this.chosenEmotions = [];
+          this.resetFields();
 
           this.$notify({
             group: 'main',
@@ -296,13 +309,13 @@ export default {
 
     updateEmotionsList: function(emotions) {
       this.chosenEmotions = emotions;
-      this.newCall.emotions = [];
+      this.newActivity.emotions = [];
       this.editCall.emotions = [];
 
       // filter the list of emotions to populate a new array
       // containing only the emotion ids and not the entire objetcs
       for (let i = 0; i < this.chosenEmotions.length; i++) {
-        this.newCall.emotions.push(this.chosenEmotions[i].id);
+        this.newActivity.emotions.push(this.chosenEmotions[i].id);
         this.editCall.emotions.push(this.chosenEmotions[i].id);
       }
     }
