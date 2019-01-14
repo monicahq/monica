@@ -166,7 +166,7 @@ jobs:
       - *restore_node
       - run:
           name: Update yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" GK_LOCK_YARN_OPTS="--ignore-engines" $(yarn global bin)/greenkeeper-lockfile-update
       - *yarn-install
       - save_cache:
           key: *node_key
