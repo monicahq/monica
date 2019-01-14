@@ -19,7 +19,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 {
     /**
      * Extension for Card objects.
-     * 
+     *
      * @var string
      */
     const EXTENSION = '.vcf';
@@ -295,7 +295,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 
     private function encodeUri($contact)
     {
-        return urlencode($contact->uuid . self::EXTENSION);
+        return urlencode($contact->uuid.self::EXTENSION);
     }
 
     private function decodeUri($uri)
