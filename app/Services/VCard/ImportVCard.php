@@ -418,9 +418,17 @@ class ImportVCard extends BaseService
     private function name($entry): string
     {
         if ($this->hasFirstnameInN($entry)) {
-            $name = $this->formatValue($entry->N->getParts()[1]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            $count = count($entry->N->getParts());
+            $name = '';
+            if ($count >= 2) {
+                $name .= $this->formatValue($entry->N->getParts()[1]);
+            }
+            if ($count >= 3 && ! empty($entry->N->getParts()[2])) {
+                $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
+            }
+            if ($count >= 1 && ! empty($entry->N->getParts()[0])) {
+                $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            }
             $name .= ' '.$this->formatValue($entry->EMAIL);
         } elseif ($this->hasNICKNAME($entry)) {
             $name = $this->formatValue($entry->NICKNAME);
@@ -442,9 +450,17 @@ class ImportVCard extends BaseService
      */
     private function importFromN(Contact $contact, VCard $entry): void
     {
-        $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
-        $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
-        $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
+        $count = count($entry->N->getParts());
+
+        if ($count >= 1) {
+            $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
+        }
+        if ($count >= 2) {
+            $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
+        }
+        if ($count >= 3) {
+            $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
+        }
         // prefix [3]
         // suffix [4]
 
