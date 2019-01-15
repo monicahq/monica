@@ -3,10 +3,11 @@
 namespace App\Notifications;
 
 use App\Models\User\User;
+use App\Helpers\DateHelper;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -14,23 +15,23 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as LaravelNotification;
 
-class UserRemindedMail extends LaravelNotification implements ShouldQueue
+class UserNotified extends LaravelNotification implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var Reminder
+     * @var ReminderOutbox
      */
-    protected $reminder;
+    public $reminderOutbox;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Reminder $reminder)
+    public function __construct(ReminderOutbox $reminderOutbox)
     {
-        $this->reminder = $reminder;
+        $this->reminderOutbox = $reminderOutbox;
     }
 
     /**
@@ -47,37 +48,31 @@ class UserRemindedMail extends LaravelNotification implements ShouldQueue
      * Get the mail representation of the notification.
      *
      * @param  User $user
-     * @return MailMessage
+     * @return \Illuminate\Notifications\Messages\MailMessage
      */
     public function toMail(User $user) : MailMessage
     {
         App::setLocale($user->locale);
 
         $contact = Contact::where('account_id', $user->account_id)
-            ->findOrFail($this->reminder->contact_id);
+            ->findOrFail($this->reminderOutbox->reminder->contact_id);
 
         $message = (new MailMessage)
             ->subject(trans('mail.subject_line', ['contact' => $contact->name]))
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
-            ->line(trans('mail.want_reminded_of', ['reason' => $this->reminder->title]))
-            ->line(trans('mail.for', ['name' => $contact->name]));
-        if (! is_null($this->reminder->description)) {
+            ->line(trans_choice('mail.notification_description', $this->reminderOutbox->notification_number_days_before, [
+                'count' => $this->reminderOutbox->notification_number_days_before,
+                'date' => DateHelper::getShortDate($this->reminderOutbox->reminder->calculateNextExpectedDate()),
+            ]))
+            ->line($this->reminderOutbox->reminder->title)
+            ->line(trans('mail.for', ['name' => $contact->name]))
+            ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
+
+        if (! is_null($this->reminderOutbox->reminder->description)) {
             $message = $message
-                ->line(trans('mail.comment', ['comment' => $this->reminder->description]));
+                ->line(trans('mail.comment', ['comment' => $this->reminderOutbox->reminder->description]));
         }
 
-        return $message
-            ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
-    }
-
-    /**
-     * Use in test to check the parameter notification.
-     *
-     * @param Reminder $reminder
-     * @return bool
-     */
-    public function assertSentFor(Reminder $reminder) : bool
-    {
-        return $reminder->id == $this->reminder->id;
+        return $message;
     }
 }

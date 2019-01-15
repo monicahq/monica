@@ -4,11 +4,12 @@ namespace Tests\Unit\Models;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderTest extends TestCase
@@ -35,77 +36,55 @@ class ReminderTest extends TestCase
         $this->assertTrue($reminder->contact()->exists());
     }
 
-    public function test_it_has_many_notifications()
+    public function test_it_has_many_reminder_outbox()
     {
-        $account = factory(Account::class)->create([]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
+        $user = factory(User::class)->create([]);
+        $reminder = factory(Reminder::class)->create(['account_id' => $user->account_id]);
+        factory(ReminderOutbox::class, 3)->create([
+            'account_id' => $user->account_id,
             'reminder_id' => $reminder->id,
-        ]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'reminder_id' => $reminder->id,
+            'user_id' => $user->id,
         ]);
 
-        $this->assertTrue($reminder->notifications()->exists());
+        $this->assertTrue($reminder->reminderOutboxes()->exists());
     }
 
-    public function test_title_getter_returns_null_if_undefined()
+    public function test_it_gets_the_title_attribute()
     {
-        $reminder = new Reminder;
-
-        $this->assertNull($reminder->title);
-    }
-
-    public function test_title_getter_returns_correct_string()
-    {
-        $reminder = new Reminder;
-        $reminder->title = 'this is a test';
-
-        $this->assertInternalType('string', $reminder->title);
-        $this->assertEquals('this is a test', $reminder->title);
-    }
-
-    public function test_description_getter_returns_null_if_undefined()
-    {
-        $reminder = new Reminder;
-
-        $this->assertNull($reminder->description);
-    }
-
-    public function test_description_getter_returns_correct_string()
-    {
-        $reminder = new Reminder;
-        $reminder->description = 'this is a test';
-
-        $this->assertInternalType('string', $reminder->description);
-        $this->assertEquals('this is a test', $reminder->description);
-    }
-
-    public function testGetNextExpectedDateReturnsString()
-    {
-        $reminder = new Reminder;
-        $reminder->next_expected_date = '2017-01-01 10:10:10';
+        $reminder = factory(Reminder::class)->create([
+            'title' => 'Fake name',
+        ]);
 
         $this->assertEquals(
-            '2017-01-01',
-            $reminder->getNextExpectedDate()
+            'Fake name',
+            $reminder->title
         );
     }
 
-    public function test_calculate_next_expected_date()
+    public function test_it_gets_the_description_attribute()
+    {
+        $reminder = factory(Reminder::class)->create([
+            'description' => 'Fake name',
+        ]);
+
+        $this->assertEquals(
+            'Fake name',
+            $reminder->description
+        );
+    }
+
+    public function test_it_calculates_next_expected_date()
     {
         $timezone = 'UTC';
         $reminder = new Reminder;
-        $reminder->next_expected_date = '1980-01-01 10:10:10';
+        $reminder->initial_date = '1980-01-01 10:10:10';
         $reminder->frequency_number = 1;
 
         Carbon::setTestNow(Carbon::create(1980, 1, 1));
         $reminder->frequency_type = 'week';
         $this->assertEquals(
             '1980-01-08',
-            $reminder->calculateNextExpectedDate()->next_expected_date->toDateString()
+            $reminder->calculateNextExpectedDate()->toDateString()
         );
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
@@ -113,125 +92,131 @@ class ReminderTest extends TestCase
         $reminder->frequency_type = 'week';
         $this->assertEquals(
             '2017-01-03',
-            $reminder->calculateNextExpectedDate()->next_expected_date->toDateString()
+            $reminder->calculateNextExpectedDate()->toDateString()
         );
 
         $reminder->frequency_type = 'month';
-        $reminder->next_expected_date = '1980-01-01 10:10:10';
+        $reminder->initial_date = '1980-01-01 10:10:10';
         $this->assertEquals(
             '2017-02-01',
-            $reminder->calculateNextExpectedDate()->next_expected_date->toDateString()
+            $reminder->calculateNextExpectedDate()->toDateString()
         );
 
         $reminder->frequency_type = 'year';
-        $reminder->next_expected_date = '1980-01-01 10:10:10';
+        $reminder->initial_date = '1980-01-01 10:10:10';
         $this->assertEquals(
             '2018-01-01',
-            $reminder->calculateNextExpectedDate()->next_expected_date->toDateString()
+            $reminder->calculateNextExpectedDate()->toDateString()
         );
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
-        $reminder->next_expected_date = '2016-12-25 10:10:10';
+        $reminder->initial_date = '2016-12-25 10:10:10';
         $reminder->frequency_type = 'week';
         $this->assertEquals(
             '2017-01-08',
-            $reminder->calculateNextExpectedDate()->next_expected_date->toDateString()
+            $reminder->calculateNextExpectedDate()->toDateString()
         );
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
-        $reminder->next_expected_date = '2017-02-02 10:10:10';
+        $reminder->initial_date = '2017-02-02 10:10:10';
         $reminder->frequency_type = 'week';
         $this->assertEquals(
             '2017-02-02',
-            $reminder->calculateNextExpectedDate()->next_expected_date->toDateString()
+            $reminder->calculateNextExpectedDate()->toDateString()
         );
     }
 
-    public function test_scheduling_a_notification_returns_a_notification_object()
+    public function test_it_schedules_a_reminder_for_one_user()
     {
-        $reminder = factory(Reminder::class)->create(['next_expected_date' => '2017-07-01']);
+        Carbon::setTestNow(Carbon::create(2017, 2, 1));
+        $user = factory(User::class)->create([]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'initial_date' => '2017-01-01',
+            'frequency_type' => 'year',
+            'frequency_number' => 1,
+        ]);
 
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $reminder->schedule($user);
 
-        $this->assertInstanceOf(Notification::class, $reminder->scheduleSingleNotification(30));
-    }
-
-    public function test_scheduling_a_notification_creates_a_notification_in_db()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $reminder = factory(Reminder::class)->create(['next_expected_date' => '2017-02-01']);
-
-        $notification = $reminder->scheduleSingleNotification(3);
-
-        $this->assertDatabaseHas('notifications', [
-            'account_id' => $reminder->account_id,
-            'contact_id' => $reminder->contact_id,
+        $this->assertDatabaseHas('reminder_outbox', [
             'reminder_id' => $reminder->id,
-            'trigger_date' => '2017-01-29 00:00:00',
+            'planned_date' => '2018-01-01',
+            'nature' => 'reminder',
+            'user_id' => $user->id,
         ]);
     }
 
-    public function test_it_doesnt_schedule_a_notification_if_planned_date_is_prior_current_date()
+    public function test_scheduling_a_reminder_also_schedules_notifications_for_one_user()
     {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $reminder = factory(Reminder::class)->create(['next_expected_date' => '2017-01-25']);
-
-        $this->assertNull($reminder->scheduleSingleNotification(30));
-    }
-
-    public function test_it_cant_schedule_a_notification_for_a_weekly_reminder()
-    {
-        $reminder = new Reminder;
-        $reminder->frequency_type = 'week';
-
-        $this->assertNull($reminder->scheduleNotifications());
-    }
-
-    public function test_it_schedules_notifications_based_on_active_reminder_rules()
-    {
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $account = factory(Account::class)->create();
-        $reminderRule = factory(ReminderRule::class)->create([
-            'account_id' => $account->id,
-            'number_of_days_before' => 3,
-            'active' => 0,
+        Carbon::setTestNow(Carbon::create(2017, 2, 1));
+        $user = factory(User::class)->create([]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'initial_date' => '2017-01-01',
+            'frequency_type' => 'year',
+            'frequency_number' => 1,
         ]);
         $reminderRule = factory(ReminderRule::class)->create([
-            'account_id' => $account->id,
-            'number_of_days_before' => 7,
-            'active' => 1,
-        ]);
-        $reminderRule = factory(ReminderRule::class)->create([
-            'account_id' => $account->id,
+            'account_id' => $reminder->account_id,
             'number_of_days_before' => 30,
             'active' => 1,
         ]);
+        $reminderRule = factory(ReminderRule::class)->create([
+            'account_id' => $reminder->account_id,
+            'number_of_days_before' => 7,
+            'active' => 1,
+        ]);
 
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
+        $reminder->schedule($user);
 
-        $reminder->scheduleNotifications();
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'planned_date' => '2017-12-02',
+            'nature' => 'notification',
+            'notification_number_days_before' => 30,
+        ]);
+
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'planned_date' => '2017-12-25',
+            'nature' => 'notification',
+            'notification_number_days_before' => 7,
+            'user_id' => $user->id,
+        ]);
 
         $this->assertEquals(
-            2,
-            $reminder->notifications()->count()
+            3,
+            $reminder->reminderOutboxes()->count()
         );
     }
 
-    public function test_it_purge_existing_notifications()
+    public function test_it_doesnt_schedule_a_notification_if_date_is_too_close_to_present_date()
     {
-        $account = factory(Account::class)->create();
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
+        Carbon::setTestNow(Carbon::create(2017, 2, 1));
+        $user = factory(User::class)->create([]);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'initial_date' => '2017-01-01',
+            'frequency_type' => 'week',
+            'frequency_number' => 1,
+        ]);
+        $reminderRule = factory(ReminderRule::class)->create([
+            'account_id' => $reminder->account_id,
+            'number_of_days_before' => 7,
+            'active' => 1,
+        ]);
 
-        $reminder->purgeNotifications();
+        $reminder->schedule($user);
+
+        $this->assertDatabaseMissing('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'nature' => 'notification',
+        ]);
 
         $this->assertEquals(
-            0,
-            $reminder->notifications()->count()
+            1,
+            $reminder->reminderOutboxes()->count()
         );
     }
 }

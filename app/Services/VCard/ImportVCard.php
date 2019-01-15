@@ -17,6 +17,7 @@ use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class ImportVCard extends BaseService
 {
@@ -577,7 +578,19 @@ class ImportVCard extends BaseService
             $birthdate = DateHelper::parseDate((string) $entry->BDAY);
             if (! is_null($birthdate)) {
                 $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                (new CreateReminder)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'initial_date' => $specialDate->date->toDateString(),
+                    'frequency_type' => 'year',
+                    'frequency_number' => 1,
+                    'title' => trans(
+                        'people.people_add_birthday_reminder',
+                        ['name' => $contact->first_name]
+                    ),
+                    'delible' => false,
+                ]);
             }
         }
     }

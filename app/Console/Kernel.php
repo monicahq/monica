@@ -21,7 +21,6 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\ImportVCards',
         'App\Console\Commands\LangGenerate',
         'App\Console\Commands\PingVersionServer',
-        'App\Console\Commands\SendNotifications',
         'App\Console\Commands\SendReminders',
         'App\Console\Commands\SendStayInTouch',
         'App\Console\Commands\SentryRelease',
@@ -32,7 +31,6 @@ class Kernel extends ConsoleKernel
         'App\Console\Commands\Update',
         'App\Console\Commands\MigrateDatabaseCollation',
         'App\Console\Commands\OneTime\MoveAvatars',
-        'App\Console\Commands\Reminder\ProcessOldReminders',
     ];
 
     /**
@@ -43,11 +41,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:notifications')->hourly();
         $schedule->command('send:reminders')->hourly();
         $schedule->command('send:stay_in_touch')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
-        $schedule->command('process:old_reminders')->daily();
         $schedule->command('monica:ping')->daily();
         if (config('trustedproxy.cloudflare')) {
             $schedule->command('cloudflare:reload')->daily();

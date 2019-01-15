@@ -10,6 +10,7 @@ use Illuminate\Console\Command;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class ImportCSV extends Command
 {
@@ -194,7 +195,19 @@ class ImportCSV extends Command
             $birthdate = new \DateTime(strtotime($data[14]));
 
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-            $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+            (new CreateReminder)->execute([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'initial_date' => $specialDate->date->toDateString(),
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'title' => trans(
+                    'people.people_add_birthday_reminder',
+                    ['name' => $contact->first_name]
+                ),
+                'delible' => false,
+            ]);
         }
 
         $contact->updateGravatar();

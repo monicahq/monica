@@ -9,6 +9,7 @@ New features:
 
 Enhancements:
 
+* Refactor reminders by removing Notifications table and creating two new tables: reminder outbox and reminder sent
 * Display the name of the contact field instead of the URL (Facebook instead of https:/facebook.com/johndoe)
 * Add foreign keys to activities table
 * Add foreign keys to reminders, reminder rules, contacts and life events tables
