@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Jan 06, 2019",
+            "title": "Enhancement: comment when rating your day",
+            "description": "In the Journal, you can now add a comment after you rate your day. ![image](/img/changelogs/2019-01-06-rate-day-comment.png)"
+        },
+        {
             "date": "Jan 02, 2019",
             "title": "Enhancement: number of life events",
             "description": "You can now see the number of life events when loading the contact profile page. This lets you know if there is something important that needs to be seen when looking at a contact."

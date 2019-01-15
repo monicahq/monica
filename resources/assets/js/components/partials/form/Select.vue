@@ -12,18 +12,27 @@ select:focus {
 
 <template>
   <div>
-    <label v-if="title" :for="id" class="mb2" :class="{ b: required }">
+    <label
+      v-if="title"
+      :for="realid"
+      class="mb2"
+      :class="{ b: required }"
+    >
       {{ title }}
     </label>
     <select
-      :id="id"
+      :id="realid"
       :value="selectedOption"
       :name="id"
       required
-      :class="formClass != null ? formClass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0'"
+      :class="selectClass"
       @input="event => { $emit('input', event.target.value) }"
     >
-      <option v-for="option in filterExclude(options)" :key="option.id" :value="option.id">
+      <option
+        v-for="option in filterExclude(options)"
+        :key="option.id"
+        :value="option.id"
+      >
         {{ option.name }}
       </option>
     </select>
@@ -33,65 +42,74 @@ select:focus {
 <script>
 export default {
 
-    props: {
-        value: {
-            type: String,
-            default: '',
-        },
-        options: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
-        title: {
-            type: String,
-            default: '',
-        },
-        id: {
-            type: String,
-            default: '',
-        },
-        excludedId: {
-            type: String,
-            default: '',
-        },
-        required: {
-            type: Boolean,
-            default: true,
-        },
-        formClass: {
-            type: String,
-            default: '',
-        },
+  props: {
+    value: {
+      type: String,
+      default: '',
     },
+    options: {
+      type: Array,
+      default: function () {
+        return [];
+      }
+    },
+    title: {
+      type: String,
+      default: '',
+    },
+    id: {
+      type: String,
+      default: '',
+    },
+    excludedId: {
+      type: Number,
+      default: -1,
+    },
+    required: {
+      type: Boolean,
+      default: true,
+    },
+    iclass: {
+      type: String,
+      default: '',
+    },
+  },
 
-    data() {
-        return {
-            selectedOption: null,
-        };
-    },
+  data() {
+    return {
+      selectedOption: null,
+    };
+  },
 
-    watch: {
-        value: function (newValue) {
-            this.selectedOption = newValue;
-        }
+  computed: {
+    realid() {
+      return this.id + this._uid;
     },
+    selectClass() {
+      return this.iclass != '' ? this.iclass : 'br2 f5 w-100 ba b--black-40 pa2 outline-0';
+    }
+  },
 
-    mounted() {
-        this.selectedOption = this.value;
-    },
+  watch: {
+    value: function (newValue) {
+      this.selectedOption = newValue;
+    }
+  },
 
-    methods: {
-        /**
-         * Filter options
-         */
-        filterExclude: function (options) {
-            var me = this;
-            return options.filter(function (option) {
-                return option.id != me.excludedId;
-            });
-        },
+  mounted() {
+    this.selectedOption = this.value;
+  },
+
+  methods: {
+    /**
+     * Filter options
+     */
+    filterExclude: function (options) {
+      var me = this;
+      return options.filter(function (option) {
+        return option.id != me.excludedId;
+      });
     },
+  },
 };
 </script>

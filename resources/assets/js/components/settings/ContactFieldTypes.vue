@@ -82,24 +82,24 @@
           </div>
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="createForm.errors" />
+            <error :errors="createForm.errors" />
 
             <form class="form-horizontal" role="form" @submit.prevent="store">
               <div class="form-group">
                 <div class="form-group">
-                  <label for="name">
+                  <label for="add-name">
                     {{ $t('settings.personalization_contact_field_type_modal_name') }}
                   </label>
-                  <input id="name" v-model="createForm.name" type="text" class="form-control" name="name"
+                  <input id="add-name" v-model="createForm.name" type="text" class="form-control" name="name"
                          required @keyup.enter="store"
                   />
                 </div>
 
                 <div class="form-group">
-                  <label for="protocol">
+                  <label for="add-protocol">
                     {{ $t('settings.personalization_contact_field_type_modal_protocol') }}
                   </label>
-                  <input id="protocol" v-model="createForm.protocol" type="text" class="form-control" name="protocol"
+                  <input id="add-protocol" v-model="createForm.protocol" type="text" class="form-control" name="protocol"
                          placeholder="mailto:" @keyup.enter="store"
                   />
                   <small class="form-text text-muted">
@@ -108,10 +108,10 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="icon">
+                  <label for="add-icon">
                     {{ $t('settings.personalization_contact_field_type_modal_icon') }}
                   </label>
-                  <input id="icon" v-model="createForm.icon" type="text" class="form-control" name="icon"
+                  <input id="add-icon" v-model="createForm.icon" type="text" class="form-control" name="icon"
                          placeholder="fa fa-address-book-o" @keyup.enter="store"
                   />
                   <small class="form-text text-muted">
@@ -149,24 +149,24 @@
           </div>
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="editForm.errors" />
+            <error :errors="editForm.errors" />
 
             <form class="form-horizontal" role="form" @submit.prevent="update">
               <div class="form-group">
                 <div class="form-group">
-                  <label for="name">
+                  <label for="edit-name">
                     {{ $t('settings.personalization_contact_field_type_modal_name') }}
                   </label>
-                  <input id="name" v-model="editForm.name" type="text" class="form-control" name="name"
+                  <input id="edit-name" v-model="editForm.name" type="text" class="form-control" name="name"
                          required @keyup.enter="update"
                   />
                 </div>
 
                 <div class="form-group">
-                  <label for="protocol">
+                  <label for="edit-protocol">
                     {{ $t('settings.personalization_contact_field_type_modal_protocol') }}
                   </label>
-                  <input id="protocol" v-model="editForm.protocol" type="text" class="form-control" name="protocol"
+                  <input id="edit-protocol" v-model="editForm.protocol" type="text" class="form-control" name="protocol"
                          placeholder="mailto:" @keyup.enter="update"
                   />
                   <small class="form-text text-muted">
@@ -175,10 +175,10 @@
                 </div>
 
                 <div class="form-group">
-                  <label for="icon">
+                  <label for="edit-icon">
                     {{ $t('settings.personalization_contact_field_type_modal_icon') }}
                   </label>
-                  <input id="icon" v-model="editForm.icon" type="text" class="form-control" name="icon"
+                  <input id="edit-icon" v-model="editForm.icon" type="text" class="form-control" name="icon"
                          placeholder="fa fa-address-book-o" @keyup.enter="update"
                   />
                   <small class="form-text text-muted">
@@ -236,149 +236,154 @@ import Error from '../partials/Error.vue';
 
 export default {
 
-    data() {
-        return {
-            contactFieldTypes: [],
+  components: {
+    Error
+  },
 
-            submitted: false,
-            edited: false,
-            deleted: false,
+  data() {
+    return {
+      contactFieldTypes: [],
 
-            createForm: {
-                name: '',
-                protocol: '',
-                icon: '',
-                errors: []
-            },
+      submitted: false,
+      edited: false,
+      deleted: false,
 
-            editForm: {
-                id: '',
-                name: '',
-                protocol: '',
-                icon: '',
-                errors: []
-            },
+      createForm: {
+        name: '',
+        protocol: '',
+        icon: '',
+        errors: []
+      },
 
-            errorTemplate: Error,
+      editForm: {
+        id: '',
+        name: '',
+        protocol: '',
+        icon: '',
+        errors: []
+      },
+    };
+  },
 
-            dirltr: true,
-        };
-    },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getContactFieldTypes();
-
-            $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
-                $('#name').focus();
-            });
-
-            $('#modal-edit-contact-field-type').on('shown.bs.modal', () => {
-                $('#name').focus();
-            });
-        },
-
-        getContactFieldTypes() {
-            axios.get('/settings/personalization/contactfieldtypes')
-                .then(response => {
-                    this.contactFieldTypes = response.data;
-                });
-        },
-
-        add() {
-            $('#modal-create-contact-field-type').modal('show');
-        },
-
-        store() {
-            this.persistClient(
-                'post', '/settings/personalization/contactfieldtypes',
-                this.createForm, '#modal-create-contact-field-type', this.submitted
-            );
-
-            this.$notify({
-                group: 'main',
-                title: this.$t('settings.personalization_contact_field_type_add_success'),
-                text: '',
-                width: '500px',
-                type: 'success'
-            });
-        },
-
-        edit(contactFieldType) {
-            this.editForm.id = contactFieldType.id;
-            this.editForm.name = contactFieldType.name;
-            this.editForm.protocol = contactFieldType.protocol;
-            this.editForm.icon = contactFieldType.fontawesome_icon;
-
-            $('#modal-edit-contact-field-type').modal('show');
-        },
-
-        update() {
-            this.persistClient(
-                'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
-                this.editForm, '#modal-edit-contact-field-type', this.edited
-            );
-
-            this.$notify({
-                group: 'main',
-                title: this.$t('settings.personalization_contact_field_type_edit_success'),
-                text: '',
-                width: '500px',
-                type: 'success'
-            });
-        },
-
-        showDelete(contactFieldType) {
-            this.editForm.id = contactFieldType.id;
-
-            $('#modal-delete-contact-field-type').modal('show');
-        },
-
-        trash() {
-            this.persistClient(
-                'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
-                this.editForm, '#modal-delete-contact-field-type', this.deleted
-            );
-
-            this.$notify({
-                group: 'main',
-                title: this.$t('settings.personalization_contact_field_type_delete_success'),
-                text: '',
-                width: '500px',
-                type: 'success'
-            });
-        },
-
-        persistClient(method, uri, form, modal, success) {
-            form.errors = {};
-
-            axios[method](uri, form)
-                .then(response => {
-                    this.getContactFieldTypes();
-
-                    form.id = '';
-                    form.name = '';
-                    form.protocol = '';
-                    form.icon = '';
-                    form.errors = [];
-
-                    $(modal).modal('hide');
-
-                    success = true;
-                })
-                .catch(error => {
-                    if (typeof error.response.data === 'object') {
-                        form.errors = _.flatten(_.toArray(error.response.data));
-                    } else {
-                        form.errors = [this.$t('app.error_try_again')];
-                    }
-                });
-        },
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
     }
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.getContactFieldTypes();
+
+      $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
+        $('#name').focus();
+      });
+
+      $('#modal-edit-contact-field-type').on('shown.bs.modal', () => {
+        $('#name').focus();
+      });
+    },
+
+    getContactFieldTypes() {
+      axios.get('/settings/personalization/contactfieldtypes')
+        .then(response => {
+          this.contactFieldTypes = response.data;
+        });
+    },
+
+    add() {
+      $('#modal-create-contact-field-type').modal('show');
+    },
+
+    store() {
+      this.persistClient(
+        'post', '/settings/personalization/contactfieldtypes',
+        this.createForm, '#modal-create-contact-field-type', this.submitted
+      );
+
+      this.$notify({
+        group: 'main',
+        title: this.$t('settings.personalization_contact_field_type_add_success'),
+        text: '',
+        width: '500px',
+        type: 'success'
+      });
+    },
+
+    edit(contactFieldType) {
+      this.editForm.id = contactFieldType.id;
+      this.editForm.name = contactFieldType.name;
+      this.editForm.protocol = contactFieldType.protocol;
+      this.editForm.icon = contactFieldType.fontawesome_icon;
+
+      $('#modal-edit-contact-field-type').modal('show');
+    },
+
+    update() {
+      this.persistClient(
+        'put', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+        this.editForm, '#modal-edit-contact-field-type', this.edited
+      );
+
+      this.$notify({
+        group: 'main',
+        title: this.$t('settings.personalization_contact_field_type_edit_success'),
+        text: '',
+        width: '500px',
+        type: 'success'
+      });
+    },
+
+    showDelete(contactFieldType) {
+      this.editForm.id = contactFieldType.id;
+
+      $('#modal-delete-contact-field-type').modal('show');
+    },
+
+    trash() {
+      this.persistClient(
+        'delete', '/settings/personalization/contactfieldtypes/' + this.editForm.id,
+        this.editForm, '#modal-delete-contact-field-type', this.deleted
+      );
+
+      this.$notify({
+        group: 'main',
+        title: this.$t('settings.personalization_contact_field_type_delete_success'),
+        text: '',
+        width: '500px',
+        type: 'success'
+      });
+    },
+
+    persistClient(method, uri, form, modal, success) {
+      form.errors = {};
+
+      axios[method](uri, form)
+        .then(response => {
+          this.getContactFieldTypes();
+
+          form.id = '';
+          form.name = '';
+          form.protocol = '';
+          form.icon = '';
+          form.errors = [];
+
+          $(modal).modal('hide');
+
+          success = true;
+        })
+        .catch(error => {
+          if (typeof error.response.data === 'object') {
+            form.errors = _.flatten(_.toArray(error.response.data));
+          } else {
+            form.errors = [this.$t('app.error_try_again')];
+          }
+        });
+    },
+  }
 };
 </script>

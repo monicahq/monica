@@ -101,7 +101,7 @@ class DateHelper
     public static function getTimezone()
     {
         if (Auth::check()) {
-            return auth()->user()->timezone;
+            return Auth::user()->timezone;
         }
     }
 

@@ -12,21 +12,21 @@
 <script>
 export default {
 
-    props: {
-        name: {
-            type: String,
-            default: '',
-        },
-        label: {
-            type: String,
-            default: '',
-        }
+  props: {
+    name: {
+      type: String,
+      default: '',
     },
-
-    methods: {
-        updateInput(text) {
-            //this.$emit('input', text)
-        }
+    label: {
+      type: String,
+      default: '',
     }
+  },
+
+  methods: {
+    updateInput(text) {
+      //this.$emit('input', text)
+    }
+  }
 };
 </script>
