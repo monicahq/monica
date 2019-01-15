@@ -79,7 +79,7 @@ class ReminderOutbox extends Model
         $reminderSent->reminder_id = $this->reminder_id;
         $reminderSent->user_id = $this->user_id;
         $reminderSent->planned_date = $this->planned_date;
-        $reminderSent->sent_date = Carbon::now();
+        $reminderSent->sent_date = now();
         $reminderSent->frequency_type = is_null($this->reminder) ? null : $this->reminder->frequency_type;
         $reminderSent->frequency_number = is_null($this->reminder) ? null : $this->reminder->frequency_number;
         $reminderSent->html_content = MailHelper::emailView($message, $this->user);

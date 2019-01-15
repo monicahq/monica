@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Illuminate\Support\Facades\Notification;
 
 class NotifyUserAboutReminder implements ShouldQueue
 {
@@ -47,7 +47,7 @@ class NotifyUserAboutReminder implements ShouldQueue
 
         // send the notification to this user
         if (! $this->reminderOutbox->user->account->hasLimitations()) {
-            NotificationFacade::send($this->reminderOutbox->user, $message);
+            Notification::send($this->reminderOutbox->user, $message);
         }
 
         // create the Reminder Sent object

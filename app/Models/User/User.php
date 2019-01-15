@@ -340,7 +340,7 @@ class User extends Authenticatable implements MustVerifyEmail
             $isTheRightTime = false;
         }
 
-        // compare current hour for the user with the hour (s)he wants to be
+        // compare current hour for the user with the hour they want to be
         // reminded as per the hour set on the profile
         $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
         $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;

@@ -18,7 +18,10 @@ class ScheduleNewReminders extends Migration
                     $reminder->frequency_number = 1;
                     $reminder->save();
                 }
-                $reminder->schedule();
+
+                foreach ($reminder->account->users as $user) {
+                    $reminder->schedule($user);
+                }
             }
         });
     }
