@@ -2,7 +2,6 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
 use App\Models\User\User;
 use App\Helpers\MailHelper;
 use App\Models\Account\Account;
