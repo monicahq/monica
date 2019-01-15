@@ -16,6 +16,7 @@ Enhancements:
 
 Fixes:
 
+* Fix VCard import with partial N entry
 * Fix using 'label' tag without 'for' attribute
 * Fix model binding when it is a guest request (not logged in)
 * Fix bug preventing to create life event without day and month
