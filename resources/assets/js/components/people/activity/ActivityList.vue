@@ -69,6 +69,7 @@
             <li class="di pointer mr3" v-show="!displayDescription"><a @click="displayDescription = true">Add more details</a></li>
             <li class="di pointer mr3" v-show="!displayEmotions"><a @click="displayEmotions = true">Add emotions</a></li>
             <li class="di pointer" v-show="!displayCategory"><a @click="displayCategory = true">Indicate a category</a></li>
+            <li class="di pointer" v-show="!displayParticipants"><a @click="displayParticipants = true">Add participants</a></li>
           </ul>
         </div>
 
@@ -108,6 +109,14 @@
           <activity-type-list v-on:change="updateCategory($event)" />
         </div>
 
+        <!-- PARTICPANTS -->
+        <div class="bb b--gray-monica pb3" v-show="displayParticipants">
+          <label>
+            Who participated in this activity?
+          </label>
+          <participant-list v-on:change="updateParticipant($event)" />
+        </div>
+
         <!-- ACTIONS -->
         <div class="pt3">
           <div class="flex-ns justify-between">
@@ -130,7 +139,7 @@
     <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
       {{ activity.summary }} {{ activity.description }}
 
-      <!-- ADDITIONAL INFORMATION -->
+      <!-- DETAILS -->
       <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
         <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
           <ul class="list">
@@ -198,6 +207,7 @@ export default {
       displayDescription: false,
       displayEmotions: false,
       displayCategory: false,
+      displayParticipants: false,
       newActivity: {
         summary: '',
         description: '',
@@ -225,6 +235,7 @@ export default {
       this.displayDescription = false;
       this.displayEmotions = false;
       this.displayCategory = false;
+      this.displayParticipants = false;
       this.newActivity.summary = '';
       this.description = '';
       this.happened_at = '';
