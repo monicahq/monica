@@ -282,7 +282,7 @@ return [
     'emotion_secondary_neglect' => 'Neglect',
     'emotion_secondary_sympathy' => 'אהדה',
     'emotion_secondary_horror' => 'אימה',
-    'emotion_secondary_nervousness' => 'Nervousness',
+    'emotion_secondary_nervousness' => 'עצבנות',
 
     'emotion_adoration' => 'Adoration',
     'emotion_affection' => 'אהדה',
@@ -320,7 +320,7 @@ return [
     'emotion_enthusiasm' => 'התלהבות',
     'emotion_zeal' => 'Zeal',
     'emotion_zest' => 'Zest',
-    'emotion_excitement' => 'Excitement',
+    'emotion_excitement' => 'התרגשות',
     'emotion_thrill' => 'Thrill',
     'emotion_exhilaration' => 'Exhilaration',
     'emotion_contentment' => 'Contentment',
