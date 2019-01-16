@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Contacts;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Services\Contact\Reminder\CreateReminder;
 use App\Http\Requests\People\IntroductionsRequest;
+use App\Services\Contact\Reminder\DestroyReminder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class IntroductionsController extends Controller
@@ -47,14 +49,32 @@ class IntroductionsController extends Controller
             $contact->first_met_through_contact_id = null;
         }
 
-        $contact->removeSpecialDate('first_met');
+        try {
+            (new DestroyReminder)->execute([
+                'account_id' => $contact->account_id,
+                'reminder_id' => $contact->first_met_reminder_id,
+            ]);
+        } catch (\Exception $e) {
+        }
 
         if ($request->is_first_met_date_known == 'known') {
             $specialDate = $contact->setSpecialDate('first_met', $request->input('first_met_year'), $request->input('first_met_month'), $request->input('first_met_day'));
 
             if ($request->addReminder == 'on') {
-                $specialDate->setReminder('year', 1, trans('people.introductions_reminder_title', ['name' => $contact->first_name]));
+                (new CreateReminder)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'initial_date' => $specialDate->date->toDateString(),
+                    'frequency_type' => 'year',
+                    'frequency_number' => 1,
+                    'title' => trans(
+                        'people.introductions_reminder_title',
+                        ['name' => $contact->first_name]
+                    ),
+                ]);
             }
+        } else {
+            $contact->first_met_special_date_id = null;
         }
 
         if ($request->first_met_additional_info != '') {
@@ -67,20 +87,5 @@ class IntroductionsController extends Controller
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.introductions_update_success'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Contact $contact
-     * @param Gift $gift
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Contact $contact, Gift $gift)
-    {
-        $gift->delete();
-
-        return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.gifts_delete_success'));
     }
 }

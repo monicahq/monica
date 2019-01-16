@@ -37,7 +37,7 @@
               </p>
             </div>
             <div class="pt3 pr3 pl3 mb4">
-              @include('dashboard._monthReminder', ['remindersList' => $reminders])
+              @include('dashboard._monthReminder', ['reminderOutboxesList' => $reminderOutboxes])
             </div>
           </div>
         </div>

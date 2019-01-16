@@ -3,11 +3,10 @@
 namespace App\Services\Contact\Reminder;
 
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 
-class CreateReminder extends BaseService
+class UpdateReminder extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
@@ -19,12 +18,13 @@ class CreateReminder extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
+            'reminder_id' => 'required|integer|exists:reminders,id',
             'initial_date' => 'required|date|date_format:Y-m-d',
             'frequency_type' => [
                 'required',
                 Rule::in(Reminder::$frequencyTypes),
             ],
-            'frequency_number' => 'required|integer',
+            'frequency_number' => 'nullable|integer',
             'title' => 'required|string|max:100000',
             'description' => 'nullable|max:1000000',
             'delible' => 'nullable|boolean',
@@ -32,7 +32,7 @@ class CreateReminder extends BaseService
     }
 
     /**
-     * Create a reminder.
+     * Update a reminder.
      *
      * @param array $data
      * @return Reminder
@@ -41,21 +41,20 @@ class CreateReminder extends BaseService
     {
         $this->validate($data);
 
-        $contact = Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_id']);
+        $reminder = Reminder::where('account_id', $data['account_id'])
+            ->where('contact_id', $data['contact_id'])
+            ->findOrFail($data['reminder_id']);
 
-        $reminder = Reminder::create([
-            'account_id' => $data['account_id'],
-            'contact_id' => $data['contact_id'],
+        $reminder->update([
             'title' => $data['title'],
             'description' => $this->nullOrValue($data, 'description'),
             'initial_date' => $data['initial_date'],
             'frequency_type' => $data['frequency_type'],
-            'frequency_number' => $data['frequency_number'],
+            'frequency_number' => $this->nullOrValue($data, 'frequency_number'),
             'delible' => (isset($data['delible']) ? $data['delible'] : true),
         ]);
 
-        foreach ($contact->account->users as $user) {
+        foreach ($reminder->account->users as $user) {
             $reminder->schedule($user);
         }
 

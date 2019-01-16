@@ -26,9 +26,6 @@ class EventServiceProvider extends ServiceProvider
         \Illuminate\Foundation\Events\LocaleUpdated::class => [
             \App\Listeners\LocaleUpdated::class,
         ],
-        \Illuminate\Notifications\Events\NotificationSent::class => [
-            \App\Listeners\NotificationSent::class,
-        ],
         \Illuminate\Auth\Events\Registered::class => [
             \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
         ],

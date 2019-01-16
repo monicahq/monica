@@ -165,7 +165,20 @@ class ImportVCardTest extends TestCase
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $this->assertEquals('Doe  John john@doe.com', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
+        $this->assertEquals('Doe John john@doe.com', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
+    }
+
+    public function test_it_returns_a_name_for_N_incomplete()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard($account->id);
+
+        $vcard = new VCard([
+            'N' => ['John', 'Doe'],
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $this->assertEquals('Doe John john@doe.com', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
     }
 
     public function test_it_returns_a_name_for_NICKNAME()

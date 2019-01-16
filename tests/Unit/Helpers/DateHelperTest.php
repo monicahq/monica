@@ -447,23 +447,6 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
-    public function test_it_returns_a_date_minus_a_number_of_days()
-    {
-        $date = Carbon::create(2017, 1, 1);
-
-        $this->assertEquals(
-            '2016-12-25',
-            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->toDateString()
-        );
-    }
-
-    public function test_it_returns_a_carbon_instance()
-    {
-        $date = Carbon::create(2017, 1, 1);
-
-        $this->assertInstanceOf(Carbon::class, DateHelper::getDateMinusGivenNumberOfDays($date, 7));
-    }
-
     public function test_old_timezones_exists()
     {
         // These are all currently used timezone in monica
