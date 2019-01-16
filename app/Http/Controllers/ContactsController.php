@@ -572,8 +572,7 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        $contacts = $user->account->contacts()->real();
-        $contacts = $contacts->active();
+        $contacts = $user->account->contacts()->real()->active();
 
         if ($request->get('no_tag')) {
             // get tag less contacts
@@ -620,7 +619,7 @@ class ContactsController extends Controller
         }
 
         // get the number of contacts per page
-        $perPage = $request->has('perPage') ? $request->get('perPage') : 30;
+        $perPage = $request->has('perPage') ? $request->get('perPage') : config('monica.number_of_contacts_pagination');
 
         $totalRecords = $contacts->count();
         $contacts = $contacts->orderBy('is_starred', 'desc')->sortedBy($sort);
