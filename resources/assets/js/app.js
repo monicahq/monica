@@ -350,7 +350,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     },
     methods: {
       updateDefaultProfileView(view) {
-        axios.post('/settings/updateDefaultProfileView', { 'name': view })
+        axios.post('settings/updateDefaultProfileView', { 'name': view })
           .then(response => {
             this.global_profile_default_view = view;
           });

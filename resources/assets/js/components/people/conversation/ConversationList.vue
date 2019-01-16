@@ -76,7 +76,7 @@ export default {
 
   methods: {
     prepareComponent(hash) {
-      axios.get('/people/' + hash + '/conversations')
+      axios.get('people/' + hash + '/conversations')
         .then(response => {
           this.conversations = response.data;
         });

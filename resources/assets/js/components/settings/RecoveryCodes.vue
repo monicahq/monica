@@ -82,7 +82,7 @@ export default {
   methods: {
     showRecoveryModal() {
       this.codes = [];
-      axios.post('/settings/security/recovery-codes')
+      axios.post('settings/security/recovery-codes')
         .then(response => {
           this.codes = response.data;
           this.$refs.recoveryModal.open();
@@ -93,7 +93,7 @@ export default {
 
     generateNewCodes() {
       this.codes = [];
-      axios.post('/settings/security/generate-recovery-codes')
+      axios.post('settings/security/generate-recovery-codes')
         .then(response => {
           this.codes = response.data;
         }).catch(error => {

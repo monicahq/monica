@@ -27,10 +27,10 @@
             @endif
             @if (session('confirmation-danger'))
               <div class="alert alert-danger">
-                {!! __(session('confirmation-danger'), ['url' => url('confirmation/resend')]) !!}
+                {!! __(session('confirmation-danger'), ['url' => 'confirmation/resend']) !!}
               </div>
               <div class="alert alert-danger">
-                {!! trans('auth.confirmation_again', ['url' => url('settings/emailchange1')]) !!}
+                {!! trans('auth.confirmation_again', ['url' => 'settings/emailchange1']) !!}
               </div>
             @endif
 

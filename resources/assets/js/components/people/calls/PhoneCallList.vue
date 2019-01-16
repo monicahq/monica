@@ -307,14 +307,14 @@ export default {
     },
 
     getCalls() {
-      axios.get('/people/' + this.hash + '/calls')
+      axios.get('people/' + this.hash + '/calls')
         .then(response => {
           this.calls = response.data.data;
         });
     },
 
     store() {
-      axios.post('/people/' + this.hash + '/calls', this.newCall)
+      axios.post('people/' + this.hash + '/calls', this.newCall)
         .then(response => {
           this.getCalls();
           this.resetFields();
@@ -331,7 +331,7 @@ export default {
     },
 
     update() {
-      axios.put('/people/' + this.hash + '/calls/' + this.editCallId, this.editCall)
+      axios.put('people/' + this.hash + '/calls/' + this.editCallId, this.editCall)
         .then(response => {
           this.getCalls();
           this.editCallId = 0;
@@ -370,7 +370,7 @@ export default {
     },
 
     destroyCall(call) {
-      axios.delete('/people/' + this.hash + '/calls/' + this.destroyCallId)
+      axios.delete('people/' + this.hash + '/calls/' + this.destroyCallId)
         .then(response => {
           this.calls.splice(this.calls.indexOf(call), 1);
         });

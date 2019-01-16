@@ -303,14 +303,14 @@ export default {
     },
 
     getAddresses() {
-      axios.get('/people/' + this.hash + '/addresses')
+      axios.get('people/' + this.hash + '/addresses')
         .then(response => {
           this.contactAddresses = response.data;
         });
     },
 
     getCountries() {
-      axios.get('/countries')
+      axios.get('countries')
         .then(response => {
           this.countries = _.map(response.data, function(country) {
             return {
@@ -363,7 +363,7 @@ export default {
     store() {
       var vm = this;
       this.persistClient(
-        'post', '/people/' + this.hash + '/addresses',
+        'post', 'people/' + this.hash + '/addresses',
         this.createForm
       ).then(response => {
         vm.contactAddresses.push(response.data);
@@ -376,7 +376,7 @@ export default {
       var vm = this;
       Vue.set(contactAddress, 'edit', !contactAddress.edit);
       this.persistClient(
-        'put', '/people/' + this.hash + '/addresses/' + contactAddress.id,
+        'put', 'people/' + this.hash + '/addresses/' + contactAddress.id,
         this.updateForm
       ).then(response => {
         Vue.set(vm.contactAddresses, vm.contactAddresses.indexOf(vm.contactAddresses.find(item => item.id === response.data.id)), response.data);
@@ -388,7 +388,7 @@ export default {
       this.updateForm.id = contactAddress.id;
 
       this.persistClient(
-        'delete', '/people/' + this.hash + '/addresses/' + contactAddress.id,
+        'delete', 'people/' + this.hash + '/addresses/' + contactAddress.id,
         this.updateForm
       ).then(response => {
         if (response.data.deleted === true) {
