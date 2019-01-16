@@ -4,10 +4,10 @@ namespace Tests\Unit\Services\Contact\Reminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Models\Instance\SpecialDate;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -17,19 +17,22 @@ class CreateReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_reminder_without_special_date_id()
+    public function test_it_stores_a_recurring_reminder()
     {
-        $contact = factory(Contact::class)->create([]);
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $user = factory(User::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
-            'date' => '2017-02-02',
+            'account_id' => $contact->account_id,
+            'initial_date' => '2017-02-01',
             'frequency_type' => 'year',
             'frequency_number' => 1,
             'title' => 'title',
             'description' => 'description',
-            'special_date_id' => null,
         ];
 
         $reminder = (new CreateReminder)->execute($request);
@@ -37,31 +40,38 @@ class CreateReminderTest extends TestCase
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $this->assertInstanceOf(
             Reminder::class,
             $reminder
         );
+
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'account_id' => $contact->account_id,
+            'planned_date' => '2017-02-01',
+            'nature' => 'reminder',
+        ]);
     }
 
-    public function test_it_stores_a_reminder_with_special_date_id()
+    public function test_it_stores_a_one_time_reminder()
     {
-        $contact = factory(Contact::class)->create([]);
-        $specialDate = factory(SpecialDate::class)->create([
-            'account_id' => $contact->account->id,
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $user = factory(User::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
         ]);
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
-            'date' => '2017-02-02',
-            'frequency_type' => 'year',
+            'account_id' => $contact->account_id,
+            'initial_date' => '2017-02-01',
+            'frequency_type' => 'one_time',
             'frequency_number' => 1,
             'title' => 'title',
             'description' => 'description',
-            'special_date_id' => $specialDate->id,
         ];
 
         $reminder = (new CreateReminder)->execute($request);
@@ -69,14 +79,73 @@ class CreateReminderTest extends TestCase
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
-            'special_date_id' => $specialDate->id,
+            'account_id' => $contact->account_id,
         ]);
 
         $this->assertInstanceOf(
             Reminder::class,
             $reminder
         );
+
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'account_id' => $contact->account_id,
+            'planned_date' => '2017-02-01',
+            'nature' => 'reminder',
+        ]);
+    }
+
+    public function test_it_stores_a_reminder_for_each_user_of_an_account()
+    {
+        Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        $account = factory(Account::class)->create([]);
+        $userA = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $userB = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $request = [
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'initial_date' => '2017-02-01',
+            'frequency_type' => 'one_time',
+            'frequency_number' => 1,
+            'title' => 'title',
+            'description' => 'description',
+        ];
+
+        $reminder = (new CreateReminder)->execute($request);
+
+        $this->assertDatabaseHas('reminders', [
+            'id' => $reminder->id,
+            'contact_id' => $contact->id,
+            'account_id' => $contact->account_id,
+        ]);
+
+        $this->assertInstanceOf(
+            Reminder::class,
+            $reminder
+        );
+
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'account_id' => $contact->account_id,
+            'planned_date' => '2017-02-01',
+            'nature' => 'reminder',
+            'user_id' => $userA->id,
+        ]);
+        $this->assertDatabaseHas('reminder_outbox', [
+            'reminder_id' => $reminder->id,
+            'account_id' => $contact->account_id,
+            'planned_date' => '2017-02-01',
+            'nature' => 'reminder',
+            'user_id' => $userB->id,
+        ]);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -85,7 +154,7 @@ class CreateReminderTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'date' => Carbon::now(),
+            'initial_date' => Carbon::now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -101,12 +170,11 @@ class CreateReminderTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $account->id,
-            'date' => '2017-02-02',
+            'initial_date' => '2017-02-02',
             'frequency_type' => 'year',
             'frequency_number' => 1,
             'title' => 'title',
             'description' => 'description',
-            'special_date_id' => null,
         ];
 
         $this->expectException(ModelNotFoundException::class);
@@ -115,13 +183,12 @@ class CreateReminderTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
-            'date' => '2017-02-02',
+            'account_id' => $contact->account_id,
+            'initial_date' => '2017-02-02',
             'frequency_type' => 'year',
             'frequency_number' => 1,
             'title' => 'title',
             'description' => 'description',
-            'special_date_id' => 3,
         ];
 
         $this->expectException(ModelNotFoundException::class);
@@ -135,13 +202,12 @@ class CreateReminderTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
-            'date' => '2017-02-02',
+            'account_id' => $contact->account_id,
+            'initial_date' => '2017-02-02',
             'frequency_type' => 'blabla',
             'frequency_number' => 1,
             'title' => 'title',
             'description' => 'description',
-            'special_date_id' => null,
         ];
 
         $this->expectException(ValidationException::class);

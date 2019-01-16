@@ -5,6 +5,7 @@ namespace App\Services\Contact\Contact;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class UpdateDeceasedInformation extends BaseService
 {
@@ -42,8 +43,6 @@ class UpdateDeceasedInformation extends BaseService
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->contact->removeSpecialDate('deceased_date');
-
         $this->manageDeceasedDate($data);
 
         return $this->contact;
@@ -60,6 +59,7 @@ class UpdateDeceasedInformation extends BaseService
         if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB
             $this->contact->is_dead = false;
+            $this->contact->deceased_special_date_id = null;
             $this->contact->save();
 
             return;
@@ -107,14 +107,20 @@ class UpdateDeceasedInformation extends BaseService
         }
 
         if ($data['add_reminder']) {
-            $specialDate->setReminder(
-                'year',
-                1,
-                trans(
+            $reminder = (new CreateReminder)->execute([
+                'account_id' => $data['account_id'],
+                'contact_id' => $data['contact_id'],
+                'initial_date' => $specialDate->date->toDateString(),
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'title' => trans(
                     'people.deceased_reminder_title',
                     ['name' => $this->contact->first_name]
-                )
-            );
+                ),
+            ]);
+
+            $this->contact->deceased_reminder_id = $reminder->id;
+            $this->contact->save();
         }
     }
 }
