@@ -14,6 +14,7 @@ Enhancements:
 * Add foreign keys to activities table
 * Add foreign keys to reminders, reminder rules, contacts and life events tables
 * Add number of life events on the contact profile page
+* Added base HTML tag, and tweaked some assets and urls to use relative paths
 
 Fixes:
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ \App::getLocale() }}" dir="{{ htmldir() }}">
   <head>
+    <base href="{{ url('/') }}/" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1">
@@ -11,7 +12,7 @@
     <meta name="description" content="{{ trans('app.application_description') }}">
     <link rel="author" href="@djaiss">
     <meta property="og:title" content="{{ trans('app.application_og_title') }}" />
-    <link rel="shortcut icon" href="{{ asset('/img/favicon.png') }}">
+    <link rel="shortcut icon" href="img/favicon.png">
   </head>
 
   @yield('content')
