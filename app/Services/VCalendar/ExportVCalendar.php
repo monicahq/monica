@@ -62,7 +62,6 @@ class ExportVCalendar extends BaseService
         // Basic information
         $vcal = new VCalendar([
             'UID' => $contact->uuid,
-            'SOURCE' => route('people.show', $contact),
         ]);
 
         $this->exportTimezone($vcal);
@@ -88,12 +87,17 @@ class ExportVCalendar extends BaseService
     private function exportBirthday(Contact $contact, VCalendar $vcal)
     {
         $birthdate = $contact->birthdate;
+        $name = $contact->name;
         $vcal->add('VEVENT', [
-            'SUMMARY' => trans('people.reminders_birthday', ['name' => $contact->name]),
+            'SUMMARY' => trans('people.reminders_birthday', ['name' => $name]),
             'DTSTART' => $birthdate->date->format('Ymd'),
             'DTEND' => $birthdate->date->addDays(1)->format('Ymd'),
             'RRULE' => 'FREQ=YEARLY',
             'CREATED' => DateHelper::parseDateTime($birthdate->created_at, Auth::user()->timezone),
+            'DESCRIPTION' => trans('mail.footer_contact_info2_link', [
+                    'name' => $name,
+                    'url' => route('people.show', $contact)
+                ]),
         ]);
     }
 }
