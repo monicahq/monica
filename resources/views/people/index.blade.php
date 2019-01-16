@@ -104,7 +104,7 @@
                   </div>
                 </li>
 
-                <div class="{{ \App\Helpers\LocaleHelper::getDirection() == 'ltr' ? 'fl' : 'fr' }} w-100">
+                <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-100">
                     <div class="br2 bg-white mb4">
                         <contact-list></contact-list>
                     </div>
