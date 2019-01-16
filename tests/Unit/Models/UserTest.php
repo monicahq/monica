@@ -154,9 +154,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2018-02-01',
+        ]);
 
-        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_user_should_not_be_reminded_because_hours_are_different()
@@ -164,9 +167,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '08:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2017-01-01',
+            ]);
 
-        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_user_should_not_be_reminded_because_timezone_is_different()
@@ -174,9 +180,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'Europe/Berlin'));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2017-01-01',
+        ]);
 
-        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_user_should_be_reminded()
@@ -184,9 +193,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 32, 12));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2017-01-01',
+        ]);
 
-        $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_it_indicates_user_is_compliant()

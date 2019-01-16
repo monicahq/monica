@@ -17,6 +17,7 @@ use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class ImportVCard extends BaseService
 {
@@ -418,9 +419,17 @@ class ImportVCard extends BaseService
     private function name($entry): string
     {
         if ($this->hasFirstnameInN($entry)) {
-            $name = $this->formatValue($entry->N->getParts()[1]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            $count = count($entry->N->getParts());
+            $name = '';
+            if ($count >= 2) {
+                $name .= $this->formatValue($entry->N->getParts()[1]);
+            }
+            if ($count >= 3 && ! empty($entry->N->getParts()[2])) {
+                $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
+            }
+            if ($count >= 1 && ! empty($entry->N->getParts()[0])) {
+                $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            }
             $name .= ' '.$this->formatValue($entry->EMAIL);
         } elseif ($this->hasNICKNAME($entry)) {
             $name = $this->formatValue($entry->NICKNAME);
@@ -442,9 +451,17 @@ class ImportVCard extends BaseService
      */
     private function importFromN(Contact $contact, VCard $entry): void
     {
-        $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
-        $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
-        $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
+        $count = count($entry->N->getParts());
+
+        if ($count >= 1) {
+            $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
+        }
+        if ($count >= 2) {
+            $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
+        }
+        if ($count >= 3) {
+            $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
+        }
         // prefix [3]
         // suffix [4]
 
@@ -561,7 +578,19 @@ class ImportVCard extends BaseService
             $birthdate = DateHelper::parseDate((string) $entry->BDAY);
             if (! is_null($birthdate)) {
                 $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                (new CreateReminder)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'initial_date' => $specialDate->date->toDateString(),
+                    'frequency_type' => 'year',
+                    'frequency_number' => 1,
+                    'title' => trans(
+                        'people.people_add_birthday_reminder',
+                        ['name' => $contact->first_name]
+                    ),
+                    'delible' => false,
+                ]);
             }
         }
     }
