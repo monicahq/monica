@@ -7,7 +7,6 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Services\VCalendar\ExportVCalendar;
 
@@ -15,7 +14,7 @@ class MonicaCalDAVBackend extends AbstractBackend
 {
     /**
      * Extension for Calendar objects.
-     * 
+     *
      * @var string
      */
     const EXTENSION = '.ics';
@@ -45,7 +44,7 @@ class MonicaCalDAVBackend extends AbstractBackend
      * @param string $principalUri
      * @return array
      */
-    function getCalendarsForUser($principalUri)
+    public function getCalendarsForUser($principalUri)
     {
         $name = Auth::user()->name;
 
@@ -93,7 +92,7 @@ class MonicaCalDAVBackend extends AbstractBackend
      * @param mixed $calendarId
      * @return array
      */
-    function getCalendarObjects($calendarId)
+    public function getCalendarObjects($calendarId)
     {
         $contacts = $this->getContacts();
 
@@ -103,7 +102,6 @@ class MonicaCalDAVBackend extends AbstractBackend
         ->filter(function ($event) {
             return ! is_null($event);
         });
-
     }
 
     /**
@@ -122,7 +120,7 @@ class MonicaCalDAVBackend extends AbstractBackend
      * @param string $objectUri
      * @return array|null
      */
-    function getCalendarObject($calendarId, $objectUri)
+    public function getCalendarObject($calendarId, $objectUri)
     {
         $contact = $this->getContact($objectUri);
 
@@ -143,7 +141,8 @@ class MonicaCalDAVBackend extends AbstractBackend
                 ]);
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' prepareCal: '.(string) $e);
-            return null;
+
+            return;
         }
 
         $calendardata = $vcal->serialize();
@@ -166,12 +165,13 @@ class MonicaCalDAVBackend extends AbstractBackend
         if ($birthdayState != 'almost' && $birthdayState != 'exact') {
             return false;
         }
+
         return true;
     }
 
     private function encodeUri($contact)
     {
-        return urlencode($contact->uuid . self::EXTENSION);
+        return urlencode($contact->uuid.self::EXTENSION);
     }
 
     private function decodeUri($uri)
@@ -211,7 +211,6 @@ class MonicaCalDAVBackend extends AbstractBackend
                     ->get();
     }
 
-
     /**
      * Creates a new calendar for a principal.
      *
@@ -225,20 +224,18 @@ class MonicaCalDAVBackend extends AbstractBackend
      * @param array $properties
      * @return mixed
      */
-    function createCalendar($principalUri, $calendarUri, array $properties)
+    public function createCalendar($principalUri, $calendarUri, array $properties)
     {
-
     }
 
     /**
-     * Delete a calendar and all its objects
+     * Delete a calendar and all its objects.
      *
      * @param mixed $calendarId
      * @return void
      */
-    function deleteCalendar($calendarId)
+    public function deleteCalendar($calendarId)
     {
-
     }
 
     /**
@@ -259,9 +256,8 @@ class MonicaCalDAVBackend extends AbstractBackend
      * @param string $calendarData
      * @return string|null
      */
-    function createCalendarObject($calendarId, $objectUri, $calendarData)
+    public function createCalendarObject($calendarId, $objectUri, $calendarData)
     {
-
     }
 
     /**
@@ -282,9 +278,8 @@ class MonicaCalDAVBackend extends AbstractBackend
      * @param string $calendarData
      * @return string|null
      */
-    function updateCalendarObject($calendarId, $objectUri, $calendarData)
+    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
-
     }
 
     /**
@@ -296,8 +291,7 @@ class MonicaCalDAVBackend extends AbstractBackend
      * @param string $objectUri
      * @return void
      */
-    function deleteCalendarObject($calendarId, $objectUri)
+    public function deleteCalendarObject($calendarId, $objectUri)
     {
-
     }
 }

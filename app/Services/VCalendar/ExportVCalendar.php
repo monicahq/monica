@@ -5,7 +5,6 @@ namespace App\Services\VCalendar;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
-use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VEvent;
 use Illuminate\Support\Facades\Auth;
