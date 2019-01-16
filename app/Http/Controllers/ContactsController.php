@@ -602,7 +602,7 @@ class ContactsController extends Controller
 
         // filter out deceased if necessary
         if ($showDeceased != 'true') {
-            $contacts = $contacts->where('is_dead', 0);
+            $contacts = $contacts->alive();
         }
 
         // search contacts
