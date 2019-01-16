@@ -95,7 +95,7 @@ class ExportVCalendar extends BaseService
             'CREATED' => DateHelper::parseDateTime($birthdate->created_at, Auth::user()->timezone),
             'DESCRIPTION' => trans('mail.footer_contact_info2_link', [
                     'name' => $name,
-                    'url' => route('people.show', $contact)
+                    'url' => route('people.show', $contact),
                 ]),
         ]);
     }
