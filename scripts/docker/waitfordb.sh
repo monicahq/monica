@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -xe
-
 echo "Connecting to ${DB_HOST}:${DB_PORT}"
 
 attempts=0
