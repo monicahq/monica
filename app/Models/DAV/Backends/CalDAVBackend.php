@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\CardDAV\Backends;
+namespace App\Models\DAV\Backends;
 
 use Sabre\DAV;
 use App\Models\Contact\Contact;
@@ -10,7 +10,7 @@ use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Services\VCalendar\ExportVCalendar;
 
-class MonicaCalDAVBackend extends AbstractBackend
+class CalDAVBackend extends AbstractBackend
 {
     /**
      * Extension for Calendar objects.
@@ -52,7 +52,7 @@ class MonicaCalDAVBackend extends AbstractBackend
             [
                 'id'                => '0',
                 'uri'               => 'calendar',
-                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
+                'principaluri'      => PrincipalBackend::getPrincipalUser(),
                 '{DAV:}displayname' => $name,
                 '{'.SabreServer::NS_SABREDAV.'}read-only' => 1,
                 '{urn:ietf:params:xml:ns:caldav}calendar-description' => 'Birthdays',

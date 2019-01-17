@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Carddav;
+namespace Tests\Api\DAV;
 
 use Tests\ApiTestCase;
 use App\Models\Contact\Contact;
@@ -20,7 +20,7 @@ class CarddavContactTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->get("/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf");
+        $response = $this->get("/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf");
 
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
@@ -38,7 +38,7 @@ class CarddavContactTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
             ['content-type' => 'application/xml; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doe\nN:Doe;John;;;\nEND:VCARD"
         );
@@ -65,7 +65,7 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             ['content-type' => 'application/xml; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
@@ -92,7 +92,7 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Modified-Since' => $contact->updated_at->addDays(-1)->toRfc7231String(),
                 'content-type' => 'application/xml; charset=utf-8',
@@ -122,7 +122,7 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Modified-Since' => $contact->updated_at->addDays(1)->toRfc7231String(),
                 'content-type' => 'application/xml; charset=utf-8',
@@ -152,7 +152,7 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Unmodified-Since' => $contact->updated_at->addDays(1)->toRfc7231String(),
                 'content-type' => 'application/xml; charset=utf-8',
@@ -182,7 +182,7 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             [
                 'HTTP_If-Unmodified-Since' => $contact->updated_at->addDays(-1)->toRfc7231String(),
                 'content-type' => 'application/xml; charset=utf-8',
@@ -213,10 +213,10 @@ class CarddavContactTest extends ApiTestCase
         ]);
         $filename = urlencode($contact->uuid.'.vcf');
 
-        $response = $this->get("/carddav/addressbooks/{$user->email}/contacts/{$filename}");
+        $response = $this->get("/dav/addressbooks/{$user->email}/contacts/{$filename}");
         $data = $response->getContent();
 
-        $response = $this->call('PUT', "/carddav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
             ['content-type' => 'application/xml; charset=utf-8'],
             $data
         );
@@ -233,7 +233,7 @@ class CarddavContactTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+        $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'HTTP_DEPTH' => '1',
                 'content-type' => 'application/xml; charset=utf-8',
@@ -252,9 +252,9 @@ class CarddavContactTest extends ApiTestCase
         $peopleurl = route('people.show', $contact);
         $sabreversion = \Sabre\VObject\Version::VERSION;
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
         '<d:response>'.
-          "<d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>".
+          "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
               '<d:getetag>&quot;');
@@ -286,7 +286,7 @@ class CarddavContactTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+        $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'HTTP_DEPTH' => '1',
             ],
@@ -295,8 +295,8 @@ class CarddavContactTest extends ApiTestCase
                  <d:getetag />
                  <card:address-data content-type=\"text/vcard\" version=\"4.0\" />
                </d:prop>
-               <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>
-               <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>
+               <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>
+               <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>
              </card:addressbook-multiget>"
         );
 
@@ -307,9 +307,9 @@ class CarddavContactTest extends ApiTestCase
         $people2url = route('people.show', $contact2);
         $sabreversion = \Sabre\VObject\Version::VERSION;
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
         '<d:response>'.
-          "<d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>".
+          "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
               '<d:getetag>&quot;');
@@ -330,7 +330,7 @@ class CarddavContactTest extends ApiTestCase
           '</d:response>');
         $response->assertSee(
           '<d:response>'.
-            "<d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
+            "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
                 '<d:getetag>&quot;');

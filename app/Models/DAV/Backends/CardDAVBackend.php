@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\CardDAV\Backends;
+namespace App\Models\DAV\Backends;
 
 use Sabre\DAV;
 use App\Models\User\SyncToken;
@@ -15,7 +15,7 @@ use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
-class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
+class CardDAVBackend extends AbstractBackend implements SyncSupport
 {
     /**
      * Extension for Card objects.
@@ -50,7 +50,7 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
             [
                 'id'                => '0',
                 'uri'               => 'contacts',
-                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
+                'principaluri'      => PrincipalBackend::getPrincipalUser(),
                 '{DAV:}sync-token'  => $token->id,
                 '{DAV:}displayname' => $name,
                 '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\CardDAV;
+namespace App\Http\Controllers\DAV;
 
 use Illuminate\Http\Request;
 use Sabre\CalDAV\CalendarRoot;
@@ -15,17 +15,15 @@ use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use App\Models\CardDAV\MonicaAddressBookRoot;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
-use App\Models\CardDAV\Backends\MonicaAuthBackend;
-use App\Models\CardDAV\Backends\MonicaCalDAVBackend;
-use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
-use App\Models\CardDAV\Backends\MonicaPrincipalBackend;
+use App\Models\DAV\AddressBookRoot;
+use App\Models\DAV\Backends\AuthBackend;
+use App\Models\DAV\Backends\CalDAVBackend;
+use App\Models\DAV\Backends\CardDAVBackend;
+use App\Models\DAV\Backends\PrincipalBackend;
 
-class CardDAVController extends Controller
+class DAVController extends Controller
 {
-    private const BASE_URI = '/carddav/';
-
     /**
      * Display the specified resource.
      */
@@ -46,13 +44,13 @@ class CardDAVController extends Controller
     private function getNodes() : array
     {
         // Initiate custom backends for link between Sabre and Monica
-        $principalBackend = new MonicaPrincipalBackend();   // User rights
-        $carddavBackend = new MonicaCardDAVBackend();       // Contacts
-        $caldavBackend = new MonicaCalDAVBackend();       // Calendar
+        $principalBackend = new PrincipalBackend();   // User rights
+        $carddavBackend = new CardDAVBackend();       // Contacts
+        $caldavBackend = new CalDAVBackend();         // Calendar
 
         return [
             new PrincipalCollection($principalBackend),
-            new MonicaAddressBookRoot($principalBackend, $carddavBackend),
+            new AddressBookRoot($principalBackend, $carddavBackend),
             new CalendarRoot($principalBackend, $caldavBackend),
         ];
     }
@@ -66,7 +64,7 @@ class CardDAVController extends Controller
         $server->sapi = new SapiServerMock();
 
         // Base Uri of carddav
-        $server->setBaseUri(self::BASE_URI);
+        $server->setBaseUri($this->getBaseUri());
         // Set Url with trailing slash
         $server->httpRequest->setUrl($this->fullUrl($request));
 
@@ -103,7 +101,7 @@ class CardDAVController extends Controller
     private function addPlugins(SabreServer $server)
     {
         // Authentication backend
-        $authBackend = new MonicaAuthBackend();
+        $authBackend = new AuthBackend();
         $server->addPlugin(new AuthPlugin($authBackend, 'SabreDAV'));
 
         // CardDAV plugin
@@ -142,5 +140,10 @@ class CardDAVController extends Controller
 
         return response($content, $status)
             ->withHeaders($headers);
+    }
+
+    private function getBaseUri()
+    {
+        return str_start(str_finish(config('dav.path'), '/'), '/');
     }
 }

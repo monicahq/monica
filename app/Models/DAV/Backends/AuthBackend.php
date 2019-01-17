@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\CardDAV\Backends;
+namespace App\Models\DAV\Backends;
 
 use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Auth\Backend\BackendInterface;
 
-class MonicaAuthBackend implements BackendInterface
+class AuthBackend implements BackendInterface
 {
     /**
      * Authentication Realm.
@@ -43,7 +43,7 @@ class MonicaAuthBackend implements BackendInterface
             return [false, 'User is not authenticated'];
         }
 
-        return [true, MonicaPrincipalBackend::getPrincipalUser()];
+        return [true, PrincipalBackend::getPrincipalUser()];
     }
 
     /**

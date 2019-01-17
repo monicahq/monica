@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\CardDAV;
+namespace App\Models\DAV;
 
-use Sabre\CardDAV\AddressBook;
-use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
+use Sabre\CardDAV\AddressBook as BaseAddressBook;
+use App\Models\DAV\Backends\CardDAVBackend;
 
-class MonicaAddressBook extends AddressBook
+class AddressBook extends BaseAddressBook
 {
     /**
      * Returns a list of ACE's for this node.
@@ -64,7 +64,7 @@ class MonicaAddressBook extends AddressBook
      */
     public function getLastModified()
     {
-        if ($this->carddavBackend instanceof MonicaCardDAVBackend) {
+        if ($this->carddavBackend instanceof CardDAVBackend) {
             return $this->carddavBackend->getLastModified();
         }
     }

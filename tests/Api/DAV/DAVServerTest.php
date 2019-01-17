@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Carddav;
+namespace Tests\Api\DAV;
 
 use Tests\ApiTestCase;
 use App\Models\User\SyncToken;
@@ -18,14 +18,14 @@ class CarddavServerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PROPFIND', '/carddav');
+        $response = $this->call('PROPFIND', '/dav');
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:response><d:href>/carddav/</d:href>');
-        $response->assertSee('<d:response><d:href>/carddav/principals/</d:href>');
-        $response->assertSee('<d:response><d:href>/carddav/addressbooks/</d:href>');
+        $response->assertSee('<d:response><d:href>/dav/</d:href>');
+        $response->assertSee('<d:response><d:href>/dav/principals/</d:href>');
+        $response->assertSee('<d:response><d:href>/dav/addressbooks/</d:href>');
     }
 
     /**
@@ -35,13 +35,13 @@ class CarddavServerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PROPFIND', '/carddav/principals');
+        $response = $this->call('PROPFIND', '/dav/principals');
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:response><d:href>/carddav/principals/</d:href>');
-        $response->assertSee("<d:response><d:href>/carddav/principals/{$user->email}/</d:href>");
+        $response->assertSee('<d:response><d:href>/dav/principals/</d:href>');
+        $response->assertSee("<d:response><d:href>/dav/principals/{$user->email}/</d:href>");
     }
 
     /**
@@ -51,12 +51,12 @@ class CarddavServerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PROPFIND', "/carddav/principals/{$user->email}");
+        $response = $this->call('PROPFIND', "/dav/principals/{$user->email}");
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/principals/{$user->email}/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/principals/{$user->email}/</d:href>");
     }
 
     /**
@@ -66,7 +66,7 @@ class CarddavServerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('GET', '/carddav');
+        $response = $this->call('GET', '/dav');
 
         $response->assertStatus(501);
         $response->assertHeader('X-Sabre-Version');
@@ -81,13 +81,13 @@ class CarddavServerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PROPFIND', '/carddav/addressbooks');
+        $response = $this->call('PROPFIND', '/dav/addressbooks');
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:response><d:href>/carddav/addressbooks/</d:href>');
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/</d:href>");
+        $response->assertSee('<d:response><d:href>/dav/addressbooks/</d:href>');
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/</d:href>");
     }
 
     /**
@@ -97,13 +97,13 @@ class CarddavServerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}");
+        $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}");
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/</d:href>");
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>");
     }
 
     /**
@@ -116,14 +116,14 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts");
+        $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts");
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>");
         $contactId = urlencode($contact->uuid);
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contactId}.vcf</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contactId}.vcf</d:href>");
     }
 
     public function test_carddav_propfind_contacts_with_props()
@@ -133,7 +133,7 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+        $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'HTTP_DEPTH' => 0,
             ],
@@ -147,9 +147,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
           '<d:response>'.
-            "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
+            "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
                 "<d:displayname>{$user->name}</d:displayname>".
@@ -170,12 +170,12 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}");
+        $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}");
 
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:response><d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}</d:href>");
+        $response->assertSee("<d:response><d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}</d:href>");
     }
 
     /**
@@ -188,7 +188,7 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/principals/{$user->email}/", [], [], [],
+        $response = $this->call('PROPFIND', "/dav/principals/{$user->email}/", [], [], [],
             [
                 'content-type' => 'application/xml; charset=utf-8',
             ],
@@ -205,16 +205,16 @@ class CarddavServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
             '<d:response>'.
-                "<d:href>/carddav/principals/{$user->email}/</d:href>".
+                "<d:href>/dav/principals/{$user->email}/</d:href>".
                 '<d:propstat>'.
                     '<d:prop>'.
                         '<card:addressbook-home-set>'.
-                            "<d:href>/carddav/addressbooks/{$user->email}/</d:href>".
+                            "<d:href>/dav/addressbooks/{$user->email}/</d:href>".
                         '</card:addressbook-home-set>'.
                         '<d:group-member-set>'.
-                            "<d:href>/carddav/principals/{$user->email}/</d:href>".
+                            "<d:href>/dav/principals/{$user->email}/</d:href>".
                         '</d:group-member-set>'.
                     '</d:prop>'.
                     '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -233,7 +233,7 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('REPORT', '/carddav/principals/', [], [], [],
+        $response = $this->call('REPORT', '/dav/principals/', [], [], [],
             [
                 'HTTP_DEPTH' => '0',
                 'content-type' => 'application/xml; charset=utf-8',
@@ -254,9 +254,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav">'.
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
             '<d:response>'.
-                "<d:href>/carddav/principals/{$user->email}/</d:href>".
+                "<d:href>/dav/principals/{$user->email}/</d:href>".
                 '<d:propstat>'.
                     '<d:prop>'.
                         "<d:displayname>{$user->name}</d:displayname>".
@@ -274,7 +274,7 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/", [], [], [],
+        $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/", [], [], [],
             [
                 'HTTP_DEPTH' => '1',
                 'content-type' => 'application/xml; charset=utf-8',
@@ -298,11 +298,12 @@ class CarddavServerTest extends ApiTestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
         $response->assertSee('<d:response>'.
-            "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
+            "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<x1:getctag xmlns:x1=\"http://calendarserver.org/ns/\">http://sabre.io/ns/sync/{$token->id}</x1:getctag>".
+                    "<cs:getctag>http://sabre.io/ns/sync/{$token->id}</cs:getctag>".
                     "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -318,7 +319,7 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('PROPFIND', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+        $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'HTTP_DEPTH' => '0',
                 'content-type' => 'application/xml; charset=utf-8',
@@ -342,11 +343,12 @@ class CarddavServerTest extends ApiTestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
         $response->assertSee('<d:response>'.
-            "<d:href>/carddav/addressbooks/{$user->email}/contacts/</d:href>".
+            "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
             '<d:propstat>'.
                 '<d:prop>'.
-                    "<x1:getctag xmlns:x1=\"http://calendarserver.org/ns/\">http://sabre.io/ns/sync/{$token->id}</x1:getctag>".
+                    "<cs:getctag>http://sabre.io/ns/sync/{$token->id}</cs:getctag>".
                     "<d:sync-token>http://sabre.io/ns/sync/{$token->id}</d:sync-token>".
                 '</d:prop>'.
                 '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -367,7 +369,7 @@ class CarddavServerTest extends ApiTestCase
             'timestamp' => \App\Helpers\DateHelper::parseDateTime(now()),
         ]);
 
-        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+        $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'content-type' => 'application/xml; charset=utf-8',
             ],
@@ -383,9 +385,9 @@ class CarddavServerTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
+        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
-  <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
+  <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
   <d:propstat>
    <d:prop>
     <d:getetag>&quot;");
@@ -405,7 +407,7 @@ class CarddavServerTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->call('REPORT', "/carddav/addressbooks/{$user->email}/contacts/", [], [], [],
+        $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'content-type' => 'application/xml; charset=utf-8',
             ],
@@ -429,9 +431,9 @@ class CarddavServerTest extends ApiTestCase
         $this->assertGreaterThan(0, $tokens->count());
         $token = $tokens->last();
 
-        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\">
+        $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
-  <d:href>/carddav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
+  <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
   <d:propstat>
    <d:prop>
     <d:getetag>&quot;");
