@@ -5,22 +5,22 @@ namespace App\Http\Controllers\DAV;
 use Illuminate\Http\Request;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CardDAV\VCFExportPlugin;
+use App\Models\DAV\AddressBookRoot;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\Plugin as AclPlugin;
 use Sabre\DAVACL\PrincipalCollection;
+use App\Models\DAV\Backends\AuthBackend;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Barryvdh\Debugbar\Facade as Debugbar;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use Sabre\DAV\Browser\Plugin as BrowserPlugin;
-use App\Models\DAV\AddressBookRoot;
-use App\Models\DAV\Backends\AuthBackend;
 use App\Models\DAV\Backends\CalDAVBackend;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use App\Models\DAV\Backends\CardDAVBackend;
 use App\Models\DAV\Backends\PrincipalBackend;
+use Sabre\DAV\Browser\Plugin as BrowserPlugin;
 
 class DAVController extends Controller
 {

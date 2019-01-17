@@ -7,7 +7,7 @@ use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CarddavServerTest extends ApiTestCase
+class DAVServerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 

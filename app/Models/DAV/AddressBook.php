@@ -2,8 +2,8 @@
 
 namespace App\Models\DAV;
 
-use Sabre\CardDAV\AddressBook as BaseAddressBook;
 use App\Models\DAV\Backends\CardDAVBackend;
+use Sabre\CardDAV\AddressBook as BaseAddressBook;
 
 class AddressBook extends BaseAddressBook
 {
