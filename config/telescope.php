@@ -54,7 +54,7 @@ return [
         'web',
         Authorize::class,
         'u2f',
-        '2fa'
+        '2fa',
     ],
 
     /*
