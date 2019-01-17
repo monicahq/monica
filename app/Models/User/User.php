@@ -68,6 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'profile_new_life_event_badge_seen' => 'boolean',
+        'admin' => 'boolean',
     ];
 
     /**

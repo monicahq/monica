@@ -2,6 +2,8 @@ UNRELEASED CHANGES:
 
 New features:
 
+* Add Larvel Telescope (deactivated by default)
+* Add notion of administrator for a user
 * Add ability to name u2f security keys and to delete register ones
 * Add ability to add a comment when rating your day in the journal
 * Add API methods to manage genders
