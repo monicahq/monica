@@ -105,6 +105,11 @@ Vue.component(
   require('./components/people/Emotion.vue').default
 );
 
+Vue.component(
+  'participant-list',
+  require('./components/people/Participant.vue').default
+);
+
 // Dashboard
 Vue.component(
   'dashboard-log',
