@@ -94,10 +94,10 @@ class CalDAVBackend extends AbstractBackend
      */
     public function getCalendarObjects($calendarId)
     {
-        $contacts = $this->getContacts();
+        $dates = $this->getSpecialDates();
 
-        return $contacts->map(function ($contact) {
-            return $this->prepareCal($contact);
+        return $dates->map(function ($date) {
+            return $this->prepareCal($date);
         })
         ->filter(function ($event) {
             return ! is_null($event);
@@ -122,22 +122,18 @@ class CalDAVBackend extends AbstractBackend
      */
     public function getCalendarObject($calendarId, $objectUri)
     {
-        $contact = $this->getContact($objectUri);
+        $date = $this->getSpecialDate($objectUri);
 
-        return $this->prepareCal($contact);
+        return $this->prepareCal($date);
     }
 
-    private function prepareCal($contact)
+    private function prepareCal($date)
     {
-        if (! $this->hasBirthday($contact)) {
-            return;
-        }
-
         try {
             $vcal = (new ExportVCalendar())
                 ->execute([
                     'account_id' => Auth::user()->account_id,
-                    'contact_id' => $contact->id,
+                    'special_date_id' => $date->id,
                 ]);
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' prepareCal: '.(string) $e);
@@ -148,11 +144,11 @@ class CalDAVBackend extends AbstractBackend
         $calendardata = $vcal->serialize();
 
         return [
-            'id' => $contact->hashID(),
-            'uri' => $this->encodeUri($contact),
+            'id' => $date->id,
+            'uri' => $this->encodeUri($date),
             'calendardata' => $calendardata,
             'etag' => '"'.md5($calendardata).'"',
-            'lastmodified' => $contact->birthdate->updated_at->timestamp,
+            'lastmodified' => $date->updated_at->timestamp,
         ];
     }
 
@@ -169,9 +165,9 @@ class CalDAVBackend extends AbstractBackend
         return true;
     }
 
-    private function encodeUri($contact)
+    private function encodeUri($date)
     {
-        return urlencode($contact->uuid.self::EXTENSION);
+        return urlencode($date->uuid.self::EXTENSION);
     }
 
     private function decodeUri($uri)
@@ -183,12 +179,12 @@ class CalDAVBackend extends AbstractBackend
      * Returns the contact for the specific uri.
      *
      * @param string  $uri
-     * @return Contact
+     * @return SpecialDate
      */
-    private function getContact($uri)
+    private function getSpecialDate($uri)
     {
         try {
-            return Contact::where([
+            return SpecialDate::where([
                 'account_id' => Auth::user()->account_id,
                 'uuid' => $this->decodeUri($uri),
             ])->first();
@@ -202,13 +198,20 @@ class CalDAVBackend extends AbstractBackend
      *
      * @return \Illuminate\Support\Collection
      */
-    private function getContacts()
+    private function getSpecialDates()
     {
-        return Auth::user()->account
+        $contacts = Auth::user()->account
                     ->contacts()
                     ->real()
                     ->active()
                     ->get();
+        
+        return $contacts->filter(function($contact) {
+            return $this->hasBirthday($contact);
+        })
+        ->map(function ($contact) {
+            return $contact->birthdate;
+        });
     }
 
     /**

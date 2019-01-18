@@ -5,9 +5,9 @@ namespace App\Services\VCalendar;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VEvent;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Instance\SpecialDate;
 use Sabre\VObject\Component\VCalendar;
 
 class ExportVCalendar extends BaseService
@@ -21,7 +21,7 @@ class ExportVCalendar extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'nullable|integer',
+            'special_date_id' => 'nullable|integer|exists:special_dates,id',
         ];
     }
 
@@ -35,36 +35,32 @@ class ExportVCalendar extends BaseService
     {
         $this->validate($data);
 
-        $contact = Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_id']);
+        $date = SpecialDate::where('account_id', $data['account_id'])
+            ->findOrFail($data['special_date_id']);
 
-        if (is_null($contact->birthdate)) {
-            return null;
-        }
-
-        return $this->export($contact);
+        return $this->export($date);
     }
 
     /**
-     * @param Contact $contact
+     * @param SpecialDate $date
      * @return VCalendar
      */
-    private function export(Contact $contact) : VCalendar
+    private function export(SpecialDate $date) : VCalendar
     {
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc5545
-        if (! $contact->uuid) {
-            $contact->forceFill([
+        if (! $date->uuid) {
+            $date->forceFill([
                 'uuid' => Str::uuid(),
             ])->save();
         }
 
         // Basic information
         $vcal = new VCalendar([
-            'UID' => $contact->uuid,
+            'UID' => $date->uuid,
         ]);
 
         $this->exportTimezone($vcal);
-        $this->exportBirthday($contact, $vcal);
+        $this->exportBirthday($date, $vcal);
 
         return $vcal;
     }
@@ -83,16 +79,16 @@ class ExportVCalendar extends BaseService
      * @param Contact $contact
      * @param VCalendar $vcard
      */
-    private function exportBirthday(Contact $contact, VCalendar $vcal)
+    private function exportBirthday(SpecialDate $date, VCalendar $vcal)
     {
-        $birthdate = $contact->birthdate;
+        $contact = $date->contact();
         $name = $contact->name;
         $vcal->add('VEVENT', [
             'SUMMARY' => trans('people.reminders_birthday', ['name' => $name]),
-            'DTSTART' => $birthdate->date->format('Ymd'),
-            'DTEND' => $birthdate->date->addDays(1)->format('Ymd'),
+            'DTSTART' => $date->date->format('Ymd'),
+            'DTEND' => $date->date->addDays(1)->format('Ymd'),
             'RRULE' => 'FREQ=YEARLY',
-            'CREATED' => DateHelper::parseDateTime($birthdate->created_at, Auth::user()->timezone),
+            'CREATED' => DateHelper::parseDateTime($date->created_at, Auth::user()->timezone),
             'DESCRIPTION' => trans('mail.footer_contact_info2_link', [
                     'name' => $name,
                     'url' => route('people.show', $contact),
