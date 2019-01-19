@@ -61,7 +61,7 @@ class ImportTask extends BaseService
 
         if (! $entry) {
             return [
-                'error' => '0'
+                'error' => '0',
             ];
         }
 

@@ -4,15 +4,8 @@ namespace App\Models\DAV\Backends;
 
 use Sabre\DAV;
 use App\Models\User\SyncToken;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Log;
-use App\Models\Instance\SpecialDate;
-use Illuminate\Support\Facades\Auth;
-use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Backend\SyncSupport;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Backend\AbstractBackend;
-use App\Services\VCalendar\ExportVCalendar;
 use App\Models\DAV\Backends\CalDAV\CalDAVTasks;
 use App\Models\DAV\Backends\CalDAV\CalDAVBirthdays;
 
@@ -22,7 +15,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         return [
             new CalDAVBirthdays(),
-            new CalDAVTasks()
+            new CalDAVTasks(),
         ];
     }
 
@@ -124,8 +117,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit);
         }
     }
@@ -164,8 +156,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getCalendarObjects($calendarId)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->getCalendarObjects($calendarId);
         }
     }
@@ -189,8 +180,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getCalendarObject($calendarId, $objectUri)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->getCalendarObject($calendarId, $objectUri);
         }
     }
@@ -216,8 +206,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function createCalendarObject($calendarId, $objectUri, $calendarData)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->createCalendarObject($calendarId, $objectUri, $calendarData);
         }
     }
@@ -243,8 +232,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->updateCalendarObject($calendarId, $objectUri, $calendarData);
         }
     }
@@ -261,8 +249,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function deleteCalendarObject($calendarId, $objectUri)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->deleteCalendarObject($calendarId, $objectUri);
         }
     }
