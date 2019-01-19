@@ -34,6 +34,4 @@ class ReminderTest extends FeatureTestCase
             $reminder->calculateNextExpectedDate()->toDateString()
         );
     }
-
-
 }
