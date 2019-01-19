@@ -1,0 +1,158 @@
+<?php
+
+namespace App\Services\VCalendar;
+
+use Ramsey\Uuid\Uuid;
+use App\Traits\DAVFormat;
+use Sabre\VObject\Reader;
+use App\Helpers\DateHelper;
+use App\Models\Contact\Task;
+use App\Services\BaseService;
+use Sabre\VObject\Component\VCalendar;
+
+class ImportTask extends BaseService
+{
+    use DAVFormat;
+
+    /**
+     * Get the validation rules that apply to the service.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'task_id' => 'nullable|integer|exists:tasks,id',
+            'entry' => 'required|string',
+        ];
+    }
+
+    /**
+     * Export one VCalendar.
+     *
+     * @param array $data
+     * @return array
+     */
+    public function execute(array $data) : array
+    {
+        $this->validate($data);
+
+        if (array_has($data, 'task_id') && ! is_null($data['task_id'])) {
+            $task = Task::where('account_id', $data['account_id'])
+                ->findOrFail($data['task_id']);
+        } else {
+            $task = new Task(['account_id' => $data['account_id']]);
+        }
+
+        return $this->process($data, $task);
+    }
+
+    /**
+     * Import one VCalendar.
+     *
+     * @param array $data
+     * @param Task $task
+     * @return array
+     */
+    private function process(array $data, Task $task) : array
+    {
+        $entry = $this->getEntry($data);
+
+        if (! $entry) {
+            return [
+                'error' => '0'
+            ];
+        }
+
+        if (! $this->canImportCurrentEntry($entry)) {
+            return [
+                'error' => '1',
+            ];
+        }
+
+        $task = $this->importEntry($task, $entry);
+
+        return [
+            'task_id' => $task->id,
+        ];
+    }
+
+    /**
+     * Check whether this entry contains a VTODO. If not, it
+     * can not be imported.
+     *
+     * @param VCalendar $entry
+     * @return bool
+     */
+    private function canImportCurrentEntry(VCalendar $entry) : bool
+    {
+        return ! is_null($entry->VTODO);
+    }
+
+    /**
+     * Create the Task object matching the current entry.
+     *
+     * @param  Task $task
+     * @param  VCalendar $entry
+     * @return Task
+     */
+    private function importEntry($task, VCalendar $entry): Task
+    {
+        $this->importUid($task, $entry);
+        $this->importSummary($task, $entry);
+        $this->importCompleted($task, $entry);
+
+        $task->save();
+
+        return $task;
+    }
+
+    /**
+     * @param array $data
+     * @return VCalendar
+     */
+    private function getEntry($data)
+    {
+        try {
+            $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+        } catch (ParseException $e) {
+            return;
+        }
+
+        return $entry;
+    }
+
+    /**
+     * Import uid.
+     *
+     * @param Task $contact
+     * @param  VCalendar $entry
+     * @return void
+     */
+    private function importUid(Task $task, VCalendar $entry): void
+    {
+        if (empty($task->uuid) && Uuid::isValid((string) $entry->VTODO->UID)) {
+            $task->uuid = (string) $entry->VTODO->UID;
+        }
+    }
+
+    /**
+     * @param Task $task
+     * @param VCalendar $vcard
+     */
+    private function importSummary(Task $task, VCalendar $entry)
+    {
+        $task->title = $this->formatValue($entry->VTODO->SUMMARY);
+    }
+
+    /**
+     * @param Task $task
+     * @param VCalendar $vcard
+     */
+    private function importCompleted(Task $task, VCalendar $entry)
+    {
+        $task->completed_at = DateHelper::parseDate((string) $entry->VTODO->COMPLETED);
+        $task->completed = ((string) $entry->VTODO->STATUS) == 'COMPLETED';
+    }
+}

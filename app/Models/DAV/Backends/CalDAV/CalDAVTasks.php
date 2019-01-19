@@ -3,12 +3,13 @@
 namespace App\Models\DAV\Backends\CalDAV;
 
 use Sabre\DAV;
-use App\Models\User\SyncToken;
 use App\Models\Contact\Task;
+use App\Models\User\SyncToken;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Backend\SyncSupport;
+use App\Services\VCalendar\ImportTask;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Services\VCalendar\ExportTask;
@@ -22,12 +23,7 @@ class CalDAVTasks
     /**
      * @var int
      */
-    public $id;
-
-    public function __construct($id)
-    {
-        $this->id = $id;
-    }
+    public $id = 2;
 
     public function getDescription($principalUri)
     {
@@ -263,6 +259,7 @@ class CalDAVTasks
      */
     public function createCalendarObject($calendarId, $objectUri, $calendarData)
     {
+        return $this->updateCalendarObject($calendarId, $objectUri, $calendarData);
     }
 
     /**
@@ -285,6 +282,33 @@ class CalDAVTasks
      */
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
+        $task_id = null;
+        if ($objectUri) {
+            $task = $this->getObject($objectUri);
+
+            if ($task) {
+                $task_id = $task->id;
+            }
+        }
+
+        try {
+            $result = (new ImportTask())
+                ->execute([
+                    'account_id' => Auth::user()->account_id,
+                    'task_id' => $task_id,
+                    'entry' => $calendarData,
+                ]);
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' importCard: '.(string) $e);
+        }
+
+        if (! array_has($result, 'error')) {
+            $task = Task::where('account_id', Auth::user()->account_id)
+                ->find($result['task_id']);
+            $calendar = $this->prepareCal($task);
+
+            return $calendar['etag'];
+        }
     }
 
     /**

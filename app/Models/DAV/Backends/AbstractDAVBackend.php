@@ -169,6 +169,17 @@ trait AbstractDAVBackend
 
     private function encodeUri($obj)
     {
+        if (empty($obj->uuid)) {
+            // refresh model from database
+            $obj->refresh();
+
+            if (empty($obj->uuid)) {
+                // in case uuid is still not set, do it
+                $obj->forceFill([
+                    'uuid' => Str::uuid(),
+                ])->save();
+            }
+        }
         return urlencode($obj->uuid.$this->getExtension());
     }
 

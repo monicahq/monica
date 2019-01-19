@@ -21,7 +21,7 @@ class ExportTask extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'task_id' => 'nullable|integer|exists:tasks,id',
+            'task_id' => 'required|integer|exists:tasks,id',
         ];
     }
 
@@ -84,9 +84,12 @@ class ExportTask extends BaseService
         $contact = $task->contact;
 
         $vcal->add('VTODO', [
+            'UID' => $task->uuid,
             'SUMMARY' => $task->title,
-            'COMPLETED' => $task->completed,
+            'COMPLETED' => $task->completed_at,
+            'STATUS' => $task->completed ? 'COMPLETED' : 'NEEDS-ACTION',
             'CREATED' => DateHelper::parseDateTime($task->created_at, Auth::user()->timezone),
+            'DTSTAMP' => DateHelper::parseDateTime($task->created_at),
             'DESCRIPTION' => $contact ? trans('mail.footer_contact_info2_link', [
                     'name' => $contact->name,
                     'url' => route('people.show', $contact),

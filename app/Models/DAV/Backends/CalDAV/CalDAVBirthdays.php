@@ -23,12 +23,7 @@ class CalDAVBirthdays
     /**
      * @var int
      */
-    public $id;
-
-    public function __construct($id)
-    {
-        $this->id = $id;
-    }
+    public $id = 1;
 
     public function getDescription($principalUri)
     {

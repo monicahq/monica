@@ -43,7 +43,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
 
         return [
             [
-                'id'                => '0',
+                'id'                => 0,
                 'uri'               => 'contacts',
                 'principaluri'      => PrincipalBackend::getPrincipalUser(),
                 '{DAV:}sync-token'  => $token->id,

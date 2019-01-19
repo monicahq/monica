@@ -21,7 +21,7 @@ class ExportVCalendar extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'special_date_id' => 'nullable|integer|exists:special_dates,id',
+            'special_date_id' => 'required|integer|exists:special_dates,id',
         ];
     }
 
@@ -86,11 +86,13 @@ class ExportVCalendar extends BaseService
         $contact = $date->contact;
         $name = $contact->name;
         $vcal->add('VEVENT', [
+            'UID' => $date->uuid,
             'SUMMARY' => trans('people.reminders_birthday', ['name' => $name]),
             'DTSTART' => $date->date->format('Ymd'),
             'DTEND' => $date->date->addDays(1)->format('Ymd'),
             'RRULE' => 'FREQ=YEARLY',
             'CREATED' => DateHelper::parseDateTime($date->created_at, Auth::user()->timezone),
+            'DTSTAMP' => DateHelper::parseDateTime($date->created_at),
             'DESCRIPTION' => trans('mail.footer_contact_info2_link', [
                     'name' => $name,
                     'url' => route('people.show', $contact),
