@@ -17,12 +17,7 @@ use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport
 {
-    /**
-     * Extension for Card objects.
-     *
-     * @var string
-     */
-    const EXTENSION = '.vcf';
+    use AbstractDAVBackend;
 
     /**
      * Returns the list of addressbooks for a specific user.
@@ -60,60 +55,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
     }
 
     /**
-     * This method returns a sync-token for this collection.
+     * Extension for Calendar objects.
      *
-     * If null is returned from this function, the plugin assumes there's no
-     * sync information available.
-     *
-     * @return SyncToken
+     * @var string
      */
-    private function getSyncToken()
+    public function getExtension()
     {
-        $tokens = SyncToken::where([
-            ['account_id', Auth::user()->account_id],
-            ['user_id', Auth::user()->id],
-        ])
-            ->orderBy('created_at')
-            ->get();
-
-        if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken();
-        } else {
-            $token = $tokens->last();
-
-            if ($token->timestamp < $this->getLastModified()) {
-                $token = $this->createSyncToken();
-            }
-        }
-
-        return $token;
-    }
-
-    /**
-     * Create a token.
-     *
-     * @return SyncToken
-     */
-    private function createSyncToken()
-    {
-        $max = $this->getLastModified();
-
-        return SyncToken::create([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
-            'timestamp' => $max,
-        ]);
-    }
-
-    /**
-     * Returns the last modification date.
-     *
-     * @return \Carbon\Carbon
-     */
-    public function getLastModified()
-    {
-        return $this->getContacts()
-                    ->max('updated_at');
+        return '.vcf';
     }
 
     /**
@@ -174,96 +122,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
     {
-        $token = null;
-        $timestamp = null;
-        if (! empty($syncToken)) {
-            $token = SyncToken::where([
-                'account_id' => Auth::user()->account_id,
-                'user_id' => Auth::user()->id,
-            ])->find($syncToken);
-
-            if (is_null($token)) {
-                // syncToken is not recognized
-                return;
-            }
-
-            $timestamp = $token->timestamp;
-            $token = $this->getSyncToken();
-        } else {
-            $token = $this->createSyncToken();
-            $timestamp = null;
-        }
-
-        $contacts = $this->getContacts();
-
-        $modified = $contacts->filter(function ($contact) use ($timestamp) {
-            return ! is_null($timestamp) &&
-                   $contact->updated_at > $timestamp &&
-                   $contact->created_at < $timestamp;
-        });
-        $added = $contacts->filter(function ($contact) use ($timestamp) {
-            return is_null($timestamp) ||
-                   $contact->created_at >= $timestamp;
-        });
-
-        return [
-            'syncToken' => $token->id,
-            'added' => $added->map(function ($contact) {
-                return $this->encodeUri($contact);
-            })->toArray(),
-            'modified' => $modified->map(function ($contact) {
-                return $this->encodeUri($contact);
-            })->toArray(),
-            'deleted' => [],
-        ];
-    }
-
-    /**
-     * Updates properties for an address book.
-     *
-     * The list of mutations is stored in a Sabre\DAV\PropPatch object.
-     * To do the actual updates, you must tell this object which properties
-     * you're going to process with the handle() method.
-     *
-     * Calling the handle method is like telling the PropPatch object "I
-     * promise I can handle updating this property".
-     *
-     * Read the PropPatch documentation for more info and examples.
-     *
-     * @param string $addressBookId
-     * @param \Sabre\DAV\PropPatch $propPatch
-     * @return void|bool
-     */
-    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
-    {
-        return false;
-    }
-
-    /**
-     * Creates a new address book.
-     *
-     * This method should return the id of the new address book. The id can be
-     * in any format, including ints, strings, arrays or objects.
-     *
-     * @param string $principalUri
-     * @param string $url Just the 'basename' of the url.
-     * @param array $properties
-     * @return int|bool
-     */
-    public function createAddressBook($principalUri, $url, array $properties)
-    {
-        return false;
-    }
-
-    /**
-     * Deletes an entire addressbook and all its contents.
-     *
-     * @param mixed $addressBookId
-     * @return void|bool
-     */
-    public function deleteAddressBook($addressBookId)
-    {
-        return false;
+        return $this->getChanges($addressBookId, $syncToken, $syncLevel, $limit);
     }
 
     private function prepareCard($contact)
@@ -293,28 +152,18 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
         ];
     }
 
-    private function encodeUri($contact)
-    {
-        return urlencode($contact->uuid.self::EXTENSION);
-    }
-
-    private function decodeUri($uri)
-    {
-        return pathinfo(urldecode($uri), PATHINFO_FILENAME);
-    }
-
     /**
      * Returns the contact for the specific uri.
      *
      * @param string  $uri
      * @return Contact
      */
-    private function getContact($uri)
+    public function getObjectUuid($uuid)
     {
         try {
             return Contact::where([
                 'account_id' => Auth::user()->account_id,
-                'uuid' => $this->decodeUri($uri),
+                'uuid' => $uuid,
             ])->first();
         } catch (\Exception $e) {
             return;
@@ -326,7 +175,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      *
      * @return \Illuminate\Support\Collection
      */
-    private function getContacts()
+    private function getObjects()
     {
         return Auth::user()->account
                     ->contacts()
@@ -356,7 +205,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getCards($addressbookId)
     {
-        $contacts = $this->getContacts();
+        $contacts = $this->getObjects();
 
         return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);
@@ -373,7 +222,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getCard($addressBookId, $cardUri)
     {
-        $contact = $this->getContact($cardUri);
+        $contact = $this->getObject($cardUri);
 
         return $this->prepareCard($contact);
     }
@@ -442,7 +291,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
     {
         $contact_id = null;
         if ($cardUri) {
-            $contact = $this->getContact($cardUri);
+            $contact = $this->getObject($cardUri);
 
             if ($contact) {
                 $contact_id = $contact->id;
@@ -477,6 +326,54 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      * @return bool
      */
     public function deleteCard($addressBookId, $cardUri)
+    {
+        return false;
+    }
+
+    /**
+     * Updates properties for an address book.
+     *
+     * The list of mutations is stored in a Sabre\DAV\PropPatch object.
+     * To do the actual updates, you must tell this object which properties
+     * you're going to process with the handle() method.
+     *
+     * Calling the handle method is like telling the PropPatch object "I
+     * promise I can handle updating this property".
+     *
+     * Read the PropPatch documentation for more info and examples.
+     *
+     * @param string $addressBookId
+     * @param \Sabre\DAV\PropPatch $propPatch
+     * @return void|bool
+     */
+    public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
+    {
+        return false;
+    }
+
+    /**
+     * Creates a new address book.
+     *
+     * This method should return the id of the new address book. The id can be
+     * in any format, including ints, strings, arrays or objects.
+     *
+     * @param string $principalUri
+     * @param string $url Just the 'basename' of the url.
+     * @param array $properties
+     * @return int|bool
+     */
+    public function createAddressBook($principalUri, $url, array $properties)
+    {
+        return false;
+    }
+
+    /**
+     * Deletes an entire addressbook and all its contents.
+     *
+     * @param mixed $addressBookId
+     * @return void|bool
+     */
+    public function deleteAddressBook($addressBookId)
     {
         return false;
     }

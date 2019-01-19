@@ -81,7 +81,7 @@ class ExportVCalendar extends BaseService
      */
     private function exportBirthday(SpecialDate $date, VCalendar $vcal)
     {
-        $contact = $date->contact();
+        $contact = $date->contact;
         $name = $contact->name;
         $vcal->add('VEVENT', [
             'SUMMARY' => trans('people.reminders_birthday', ['name' => $name]),

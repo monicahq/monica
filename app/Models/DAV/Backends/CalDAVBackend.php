@@ -3,21 +3,20 @@
 namespace App\Models\DAV\Backends;
 
 use Sabre\DAV;
+use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
+use App\Models\Instance\SpecialDate;
+use Sabre\CalDAV\Backend\SyncSupport;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Services\VCalendar\ExportVCalendar;
 
-class CalDAVBackend extends AbstractBackend
+class CalDAVBackend extends AbstractBackend implements SyncSupport
 {
-    /**
-     * Extension for Calendar objects.
-     *
-     * @var string
-     */
-    const EXTENSION = '.ics';
+    use AbstractDAVBackend;
 
     /**
      * Returns a list of calendars for a principal.
@@ -47,18 +46,92 @@ class CalDAVBackend extends AbstractBackend
     public function getCalendarsForUser($principalUri)
     {
         $name = Auth::user()->name;
+        $token = $this->getSyncToken();
 
         return [
             [
                 'id'                => '0',
                 'uri'               => 'calendar',
                 'principaluri'      => PrincipalBackend::getPrincipalUser(),
+                '{DAV:}sync-token'  => $token->id,
                 '{DAV:}displayname' => $name,
+                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
                 '{'.SabreServer::NS_SABREDAV.'}read-only' => 1,
-                '{urn:ietf:params:xml:ns:caldav}calendar-description' => 'Birthdays',
-                '{urn:ietf:params:xml:ns:caldav}calendar-timezone'    => Auth::user()->timezone,
+                '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Birthdays',
+                '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
             ],
         ];
+    }
+
+    /**
+     * Extension for Calendar objects.
+     *
+     * @var string
+     */
+    public function getExtension()
+    {
+        return '.ics';
+    }
+
+    /**
+     * The getChanges method returns all the changes that have happened, since
+     * the specified syncToken in the specified calendar.
+     *
+     * This function should return an array, such as the following:
+     *
+     * [
+     *   'syncToken' => 'The current synctoken',
+     *   'added'   => [
+     *      'new.txt',
+     *   ],
+     *   'modified'   => [
+     *      'modified.txt',
+     *   ],
+     *   'deleted' => [
+     *      'foo.php.bak',
+     *      'old.txt'
+     *   ]
+     * );
+     *
+     * The returned syncToken property should reflect the *current* syncToken
+     * of the calendar, as reported in the {http://sabredav.org/ns}sync-token
+     * property This is * needed here too, to ensure the operation is atomic.
+     *
+     * If the $syncToken argument is specified as null, this is an initial
+     * sync, and all members should be reported.
+     *
+     * The modified property is an array of nodenames that have changed since
+     * the last token.
+     *
+     * The deleted property is an array with nodenames, that have been deleted
+     * from collection.
+     *
+     * The $syncLevel argument is basically the 'depth' of the report. If it's
+     * 1, you only have to report changes that happened only directly in
+     * immediate descendants. If it's 2, it should also include changes from
+     * the nodes below the child collections. (grandchildren)
+     *
+     * The $limit argument allows a client to specify how many results should
+     * be returned at most. If the limit is not specified, it should be treated
+     * as infinite.
+     *
+     * If the limit (infinite or not) is higher than you're willing to return,
+     * you should throw a Sabre\DAV\Exception\TooMuchMatches() exception.
+     *
+     * If the syncToken is expired (due to data cleanup) or unknown, you must
+     * return null.
+     *
+     * The limit is 'suggestive'. You are free to ignore it.
+     *
+     * @param string $calendarId
+     * @param string $syncToken
+     * @param int $syncLevel
+     * @param int $limit
+     * @return array
+     */
+    function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
+    {
+        return $this->getChanges($calendarId, $syncToken, $syncLevel, $limit);
     }
 
     /**
@@ -94,7 +167,7 @@ class CalDAVBackend extends AbstractBackend
      */
     public function getCalendarObjects($calendarId)
     {
-        $dates = $this->getSpecialDates();
+        $dates = $this->getObjects();
 
         return $dates->map(function ($date) {
             return $this->prepareCal($date);
@@ -122,11 +195,14 @@ class CalDAVBackend extends AbstractBackend
      */
     public function getCalendarObject($calendarId, $objectUri)
     {
-        $date = $this->getSpecialDate($objectUri);
+        $date = $this->getObject($objectUri);
 
         return $this->prepareCal($date);
     }
 
+    /**
+     * @param SpecialDate  $date 
+     */
     private function prepareCal($date)
     {
         try {
@@ -165,28 +241,19 @@ class CalDAVBackend extends AbstractBackend
         return true;
     }
 
-    private function encodeUri($date)
-    {
-        return urlencode($date->uuid.self::EXTENSION);
-    }
-
-    private function decodeUri($uri)
-    {
-        return pathinfo(urldecode($uri), PATHINFO_FILENAME);
-    }
 
     /**
      * Returns the contact for the specific uri.
      *
      * @param string  $uri
-     * @return SpecialDate
+     * @return mixed
      */
-    private function getSpecialDate($uri)
+    public function getObjectUuid($uuid)
     {
         try {
             return SpecialDate::where([
                 'account_id' => Auth::user()->account_id,
-                'uuid' => $this->decodeUri($uri),
+                'uuid' => $uuid,
             ])->first();
         } catch (\Exception $e) {
             return;
@@ -197,8 +264,9 @@ class CalDAVBackend extends AbstractBackend
      * Returns the collection of all active contacts.
      *
      * @return \Illuminate\Support\Collection
+     * @return mixed
      */
-    private function getSpecialDates()
+    public function getObjects()
     {
         $contacts = Auth::user()->account
                     ->contacts()
