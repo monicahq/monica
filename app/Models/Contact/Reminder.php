@@ -123,6 +123,7 @@ class Reminder extends Model
     public function calculateNextExpectedDate()
     {
         $date = $this->initial_date;
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, DateHelper::getTimezone() ?? config('app.timezone'));
 
         while ($date->isPast()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
