@@ -205,8 +205,8 @@ class CalDAVBackend extends AbstractBackend
                     ->real()
                     ->active()
                     ->get();
-        
-        return $contacts->filter(function($contact) {
+
+        return $contacts->filter(function ($contact) {
             return $this->hasBirthday($contact);
         })
         ->map(function ($contact) {

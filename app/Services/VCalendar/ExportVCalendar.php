@@ -6,8 +6,8 @@ use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use Sabre\VObject\Component\VEvent;
-use Illuminate\Support\Facades\Auth;
 use App\Models\Instance\SpecialDate;
+use Illuminate\Support\Facades\Auth;
 use Sabre\VObject\Component\VCalendar;
 
 class ExportVCalendar extends BaseService
