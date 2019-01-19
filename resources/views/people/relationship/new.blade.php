@@ -126,7 +126,7 @@
         <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
           @if ($existingContacts->count() == 0)
             <div class="mb1 mt2 tc">
-              <img src="/img/people/no_record_found.svg">
+              <img src="img/people/no_record_found.svg">
               <p>{{ trans('people.relationship_form_add_no_existing_contact', ['name' => $contact->first_name]) }}</p>
             </div>
           @else
@@ -136,8 +136,7 @@
               :name="'existing_contact_id'"
               :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
               :default-options="{{ $existingContacts }}"
-              :user-contact-id="'{{ $contact->hashID() }}'"
-              :inputId="'{{ $contact->hashID() }}'">
+              :user-contact-id="'{{ $contact->id }}'">
             </contact-select>
           @endif
         </div>

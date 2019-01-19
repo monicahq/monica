@@ -23,7 +23,7 @@
     @include('partials.errors')
 
     <form action="{{ route('people.relationships.update', [$contact, $partner]) }}" method="POST">
-      {{ method_field('DELETE') }}
+      {{ method_field('PUT') }}
       {{ csrf_field() }}
       <input type="hidden" name="type" value="{{ $type }}">
 

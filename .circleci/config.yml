@@ -40,7 +40,7 @@ aliases:
   - &yarn-install
     run:
       name: yarn install
-      command: yarn install --frozen-lockfile
+      command: yarn inst
   - &prepare-db
     run:
       name: Prepare database
@@ -166,7 +166,7 @@ jobs:
       - *restore_node
       - run:
           name: Update yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" GK_LOCK_YARN_OPTS="--ignore-engines" $(yarn global bin)/greenkeeper-lockfile-update
       - *yarn-install
       - save_cache:
           key: *node_key
@@ -179,6 +179,9 @@ jobs:
             rm -f gk-lockfile-git-push.err || true
 
       # Update js and css assets eventually
+      - run:
+          name: Check js and vue lint
+          command: yarn lint
       - run:
           name: Update assets
           command: scripts/ci/update-assets.sh

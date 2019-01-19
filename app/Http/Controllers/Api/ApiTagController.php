@@ -8,8 +8,8 @@ use App\Services\Contact\Tag\CreateTag;
 use App\Services\Contact\Tag\UpdateTag;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Exceptions\MissingParameterException;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiTagController extends ApiController
@@ -69,8 +69,8 @@ class ApiTagController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new TagResource($tag);
@@ -94,8 +94,8 @@ class ApiTagController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new TagResource($tag);
@@ -115,8 +115,8 @@ class ApiTagController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return $this->respondObjectDeleted($id);

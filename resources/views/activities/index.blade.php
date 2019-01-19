@@ -1,5 +1,5 @@
 <div class="col-xs-12 section-title">
-  <img src="/img/people/activities.svg" class="icon-section icon-activities">
+  <img src="img/people/activities.svg" class="icon-section icon-activities">
   <h3>
     {{ trans('people.section_personal_activities') }}
 
@@ -26,7 +26,7 @@
       @foreach($contact->activities as $activity)
       <li class="table-row" cy-name="activity-body-{{ $activity->id }}">
         <div class="table-cell date">
-          {{ \App\Helpers\DateHelper::getShortDate($activity->date_it_happened) }}
+          {{ App\Helpers\DateHelper::getShortDate($activity->date_it_happened) }}
         </div>
         <div class="table-cell">
           {{ $activity->getSummary() }}

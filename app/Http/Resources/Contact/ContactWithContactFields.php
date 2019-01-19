@@ -19,7 +19,7 @@ class ContactWithContactFields extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->hashId(),
+            'hash_id' => $this->is_partial ? $this->getRelatedRealContact()->hashID() : $this->hashID(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
@@ -66,7 +66,6 @@ class ContactWithContactFields extends Resource
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
-                    'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(110),

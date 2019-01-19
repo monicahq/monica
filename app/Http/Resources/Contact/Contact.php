@@ -19,7 +19,7 @@ class Contact extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->hashID(),
+            'hash_id' => $this->getHashId(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
@@ -67,7 +67,6 @@ class Contact extends Resource
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
-                    'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(110),
@@ -102,5 +101,20 @@ class Contact extends Resource
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
+    }
+
+    private function getHashId()
+    {
+        $hashid = '';
+        if ($this->is_partial) {
+            $realContact = $this->getRelatedRealContact();
+            if ($realContact) {
+                $hashid = $realContact->hashID();
+            }
+        } else {
+            $hashid = $this->hashID();
+        }
+
+        return $hashid;
     }
 }

@@ -8,7 +8,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\CreateConversation;
@@ -56,7 +56,7 @@ class CreateConversationTest extends TestCase
             'happened_at' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $createConversation = new CreateConversation;
         $conversation = $createConversation->execute($request);

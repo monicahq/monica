@@ -20,11 +20,11 @@ class EventServiceProvider extends ServiceProvider
         \Illuminate\Auth\Events\Login::class => [
             \App\Listeners\LoginListener::class,
         ],
+        \App\Events\RecoveryLogin::class => [
+            \App\Listeners\RecoveryLoginListener::class,
+        ],
         \Illuminate\Foundation\Events\LocaleUpdated::class => [
             \App\Listeners\LocaleUpdated::class,
-        ],
-        \Illuminate\Notifications\Events\NotificationSent::class => [
-            \App\Listeners\NotificationSent::class,
         ],
         \Illuminate\Auth\Events\Registered::class => [
             \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,

@@ -51,7 +51,20 @@
                         {{ $document->original_filename }} ({{ round($document->filesize / 1000) }} Kb)
                     </div>
                     <div class="table-cell">
-                        <a href="/people/{{ $document->contact->hashID() }}">{{ $document->contact->name }}</a>
+                        <a href="people/{{ $document->contact->hashID() }}">{{ $document->contact->name }}</a>
+                    </div>
+                  </li>
+                @endforeach
+                @foreach($photos as $photo)
+                  <li class="table-row">
+                    <div class="table-cell">
+                        {{ $photo->created_at }}
+                    </div>
+                    <div class="table-cell">
+                        {{ $photo->original_filename }} ({{ round($photo->filesize / 1000) }} Kb)
+                    </div>
+                    <div class="table-cell">
+                        <a href="people/{{ $photo->contact()->hashID() }}">{{ $photo->contact()->name }}</a>
                     </div>
                   </li>
                 @endforeach

@@ -11,7 +11,6 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;
-use App\Http\Resources\Task\Task as TaskResource;
 
 class DashboardController extends Controller
 {
@@ -71,6 +70,13 @@ class DashboardController extends Controller
         // get last 3 changelog entries
         $changelogs = InstanceHelper::getChangelogEntries(3);
 
+        // Load the reminderOutboxes for the upcoming three months
+        $reminderOutboxes = [
+            0 => auth()->user()->account->getRemindersForMonth(0),
+            1 => auth()->user()->account->getRemindersForMonth(1),
+            2 => auth()->user()->account->getRemindersForMonth(2),
+        ];
+
         $data = [
             'lastUpdatedContacts' => $lastUpdatedContactsCollection,
             'number_of_contacts' => $account->contacts()->real()->active()->count(),
@@ -84,6 +90,7 @@ class DashboardController extends Controller
             'debts' => $debt,
             'user' => auth()->user(),
             'changelogs' => $changelogs,
+            'reminderOutboxes' => $reminderOutboxes,
         ];
 
         return view('dashboard.index', $data);
@@ -96,7 +103,12 @@ class DashboardController extends Controller
     public function calls()
     {
         $callsCollection = collect([]);
-        $calls = auth()->user()->account->calls()->limit(15)->get();
+        $calls = auth()->user()->account->calls()
+            ->get()
+            ->reject(function ($call) {
+                return is_null($call->contact);
+            })
+            ->take(15);
 
         foreach ($calls as $call) {
             $data = [
@@ -155,23 +167,6 @@ class DashboardController extends Controller
         }
 
         return $debtsCollection;
-    }
-
-    /**
-     * Get tasks for the dashboard.
-     *
-     * @return Collection
-     */
-    public function tasks()
-    {
-        $tasksCollection = collect([]);
-        $tasks = auth()->user()->account->tasks()->where('completed', 0)->get();
-
-        foreach ($tasks as $task) {
-            $tasksCollection->push(new TaskResource($task));
-        }
-
-        return $tasksCollection;
     }
 
     /**

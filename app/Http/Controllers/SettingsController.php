@@ -18,6 +18,7 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
+use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
@@ -26,6 +27,7 @@ use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
 use PragmaRX\Google2FALaravel\Google2FA;
 use App\Services\Account\DestroyAllDocuments;
+use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 
 class SettingsController
 {
@@ -37,6 +39,7 @@ class SettingsController
         'cache',
         'countries',
         'currencies',
+        'contact_photo',
         'default_activity_types',
         'default_activity_type_categories',
         'default_contact_field_types',
@@ -45,6 +48,9 @@ class SettingsController
         'default_life_event_types',
         'default_relationship_type_groups',
         'default_relationship_types',
+        'emotions',
+        'emotions_primary',
+        'emotions_secondary',
         'failed_jobs',
         'instances',
         'jobs',
@@ -59,6 +65,9 @@ class SettingsController
         'sessions',
         'statistics',
         'subscriptions',
+        'telescope_entries',
+        'telescope_entries_tags',
+        'telescope_monitoring',
         'terms',
         'u2f_key',
         'users',
@@ -112,6 +121,7 @@ class SettingsController
                 'name_order',
             ]) + [
                 'fluid_container' => $request->get('layout'),
+                'temperature_scale' => $request->get('temperature_scale'),
             ]
         );
 
@@ -166,7 +176,7 @@ class SettingsController
 
         DB::table('accounts')->where('id', $account->id)->delete();
         auth()->logout();
-        $user->forceDelete();
+        $user->delete();
 
         return redirect()->route('login');
     }
@@ -487,7 +497,12 @@ class SettingsController
 
     public function security()
     {
-        return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
+        $u2fKeys = U2fKey::where('user_id', auth()->id())
+                        ->get();
+
+        return view('settings.security.index')
+            ->with('is2FAActivated', app('pragmarx.google2fa')->isActivated())
+            ->with('currentkeys', U2fKeyResource::collection($u2fKeys));
     }
 
     /**
@@ -501,7 +516,7 @@ class SettingsController
      */
     public function updateDefaultProfileView(Request $request)
     {
-        $allowedValues = ['life-events', 'notes'];
+        $allowedValues = ['life-events', 'notes', 'photos'];
         $view = $request->get('name');
 
         if (! in_array($view, $allowedValues)) {

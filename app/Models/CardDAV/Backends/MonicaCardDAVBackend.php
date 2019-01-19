@@ -3,15 +3,19 @@
 namespace App\Models\CardDAV\Backends;
 
 use Sabre\DAV;
+use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ExportVCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Sabre\CardDAV\Backend\BackendInterface as SabreBackendInterface;
+use Sabre\DAV\Server as SabreServer;
+use Sabre\CardDAV\Backend\SyncSupport;
+use Sabre\CardDAV\Backend\AbstractBackend;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
-class MonicaCardDAVBackend implements SabreBackendInterface
+class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
 {
     /**
      * Returns the list of addressbooks for a specific user.
@@ -32,14 +36,178 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function getAddressBooksForUser($principalUri)
     {
-        Log::debug(__CLASS__.' getAddressBooksForUser', func_get_args());
+        $name = Auth::user()->name;
+        $token = $this->getSyncToken();
 
         return [
             [
-                'id' => '0',
-                'uri' => 'contacts',
-                'principaluri' => 'principals/'.Auth::user()->email,
+                'id'                => '0',
+                'uri'               => 'contacts',
+                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
+                '{DAV:}sync-token'  => $token->id,
+                '{DAV:}displayname' => $name,
+                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
+                '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
             ],
+        ];
+    }
+
+    /**
+     * This method returns a sync-token for this collection.
+     *
+     * If null is returned from this function, the plugin assumes there's no
+     * sync information available.
+     *
+     * @return SyncToken
+     */
+    private function getSyncToken()
+    {
+        $tokens = SyncToken::where([
+            ['account_id', Auth::user()->account_id],
+            ['user_id', Auth::user()->id],
+        ])
+            ->orderBy('created_at')
+            ->get();
+
+        if ($tokens->count() <= 0) {
+            $token = $this->createSyncToken();
+        } else {
+            $token = $tokens->last();
+
+            if ($token->timestamp < $this->getLastModified()) {
+                $token = $this->createSyncToken();
+            }
+        }
+
+        return $token;
+    }
+
+    /**
+     * Create a token.
+     *
+     * @return SyncToken
+     */
+    private function createSyncToken()
+    {
+        $max = $this->getLastModified();
+
+        return SyncToken::create([
+            'account_id' => Auth::user()->account_id,
+            'user_id' => Auth::user()->id,
+            'timestamp' => $max,
+        ]);
+    }
+
+    /**
+     * Returns the last modification date.
+     *
+     * @return \Carbon\Carbon
+     */
+    public function getLastModified()
+    {
+        return $this->getContacts()
+                    ->max('updated_at');
+    }
+
+    /**
+     * The getChanges method returns all the changes that have happened, since
+     * the specified syncToken in the specified address book.
+     *
+     * This function should return an array, such as the following:
+     *
+     * [
+     *   'syncToken' => 'The current synctoken',
+     *   'added'   => [
+     *      'new.txt',
+     *   ],
+     *   'modified'   => [
+     *      'modified.txt',
+     *   ],
+     *   'deleted' => [
+     *      'foo.php.bak',
+     *      'old.txt'
+     *   ]
+     * ];
+     *
+     * The returned syncToken property should reflect the *current* syncToken
+     * of the calendar, as reported in the {http://sabredav.org/ns}sync-token
+     * property. This is needed here too, to ensure the operation is atomic.
+     *
+     * If the $syncToken argument is specified as null, this is an initial
+     * sync, and all members should be reported.
+     *
+     * The modified property is an array of nodenames that have changed since
+     * the last token.
+     *
+     * The deleted property is an array with nodenames, that have been deleted
+     * from collection.
+     *
+     * The $syncLevel argument is basically the 'depth' of the report. If it's
+     * 1, you only have to report changes that happened only directly in
+     * immediate descendants. If it's 2, it should also include changes from
+     * the nodes below the child collections. (grandchildren)
+     *
+     * The $limit argument allows a client to specify how many results should
+     * be returned at most. If the limit is not specified, it should be treated
+     * as infinite.
+     *
+     * If the limit (infinite or not) is higher than you're willing to return,
+     * you should throw a Sabre\DAV\Exception\TooMuchMatches() exception.
+     *
+     * If the syncToken is expired (due to data cleanup) or unknown, you must
+     * return null.
+     *
+     * The limit is 'suggestive'. You are free to ignore it.
+     *
+     * @param string $addressBookId
+     * @param string $syncToken
+     * @param int $syncLevel
+     * @param int $limit
+     * @return array
+     */
+    public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
+    {
+        $token = null;
+        $timestamp = null;
+        if (! empty($syncToken)) {
+            $token = SyncToken::where([
+                'account_id' => Auth::user()->account_id,
+                'user_id' => Auth::user()->id,
+            ])->find($syncToken);
+
+            if (is_null($token)) {
+                // syncToken is not recognized
+                return;
+            }
+
+            $timestamp = $token->timestamp;
+            $token = $this->getSyncToken();
+        } else {
+            $token = $this->createSyncToken();
+            $timestamp = null;
+        }
+
+        $contacts = $this->getContacts();
+
+        $modified = $contacts->filter(function ($contact) use ($timestamp) {
+            return ! is_null($timestamp) &&
+                   $contact->updated_at > $timestamp &&
+                   $contact->created_at < $timestamp;
+        });
+        $added = $contacts->filter(function ($contact) use ($timestamp) {
+            return is_null($timestamp) ||
+                   $contact->created_at >= $timestamp;
+        });
+
+        return [
+            'syncToken' => $token->id,
+            'added' => $added->map(function ($contact) {
+                return $this->encodeUri($contact);
+            })->toArray(),
+            'modified' => $modified->map(function ($contact) {
+                return $this->encodeUri($contact);
+            })->toArray(),
+            'deleted' => [],
         ];
     }
 
@@ -61,8 +229,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
-        Log::debug(__CLASS__.' updateAddressBook', func_get_args());
-
         return false;
     }
 
@@ -79,8 +245,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function createAddressBook($principalUri, $url, array $properties)
     {
-        Log::debug(__CLASS__.' createAddressBook', func_get_args());
-
         return false;
     }
 
@@ -92,8 +256,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function deleteAddressBook($addressBookId)
     {
-        Log::debug(__CLASS__.' deleteAddressBook', func_get_args());
-
         return false;
     }
 
@@ -113,45 +275,57 @@ class MonicaCardDAVBackend implements SabreBackendInterface
             Log::debug(__CLASS__.' prepareCard: '.(string) $e);
         }
 
+        $carddata = $vcard->serialize();
+
         return [
-            'id' => $contact->hashid(),
-            'etag' => md5($vcard->serialize()),
+            'id' => $contact->hashID(),
             'uri' => $this->encodeUri($contact),
+            'carddata' => $carddata,
+            'etag' => '"'.md5($carddata).'"',
             'lastmodified' => $contact->updated_at->timestamp,
-            'carddata' => $vcard->serialize(),
         ];
     }
 
     private function encodeUri($contact)
     {
-        return urlencode($contact->hashid().'.vcf');
+        return urlencode($contact->uuid.'.vcf');
     }
 
     private function decodeUri($uri)
     {
-        return str_replace('.vcf', '', urldecode($uri));
+        return pathinfo(urldecode($uri), PATHINFO_FILENAME);
     }
 
+    /**
+     * Returns the contact for the specific uri.
+     *
+     * @param string  $uri
+     * @return Contact
+     */
     private function getContact($uri)
     {
         try {
-            return (new Contact)->resolveRouteBinding($this->decodeUri($uri));
+            return Contact::where([
+                'account_id' => Auth::user()->account_id,
+                'uuid' => $this->decodeUri($uri),
+            ])->first();
         } catch (\Exception $e) {
             return;
         }
     }
 
-    private function prepareCards($contacts)
+    /**
+     * Returns the collection of all active contacts.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    private function getContacts()
     {
-        $results = [];
-
-        foreach ($contacts as $contact) {
-            $results[] = $this->prepareCard($contact);
-        }
-
-        Log::debug(__CLASS__.' prepareCards', ['count' => count($results)]);
-
-        return $results;
+        return Auth::user()->account
+                    ->contacts()
+                    ->real()
+                    ->active()
+                    ->get();
     }
 
     /**
@@ -175,19 +349,15 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function getCards($addressbookId)
     {
-        Log::debug(__CLASS__.' getCards', func_get_args());
+        $contacts = $this->getContacts();
 
-        $contacts = Auth::user()->account
-                        ->contacts()
-                        ->real()
-                        ->active()
-                        ->get();
-
-        return $this->prepareCards($contacts);
+        return $contacts->map(function ($contact) {
+            return $this->prepareCard($contact);
+        });
     }
 
     /**
-     * Returns a specfic card.
+     * Returns a specific card.
      *
      * The same set of prope
      * @param mixed $addressBookId
@@ -196,34 +366,9 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function getCard($addressBookId, $cardUri)
     {
-        Log::debug(__CLASS__.' getCard', func_get_args());
-
         $contact = $this->getContact($cardUri);
 
         return $this->prepareCard($contact);
-    }
-
-    /**
-     * Returns a list of cards.
-     *
-     * This method should work identical to getCard, but instead return all the
-     * cards in the list as an array.
-     *
-     * If the backend supports this, it may allow for some speed-ups.
-     *
-     * @param mixed $addressBookId
-     * @param array $uris
-     * @return array
-     */
-    public function getMultipleCards($addressBookId, array $uris)
-    {
-        Log::debug(__CLASS__.' getMultipleCards', func_get_args());
-
-        $contacts = array_map(function ($uri) {
-            return $this->getContact($uri);
-        }, $uris);
-
-        return $this->prepareCards($contacts);
     }
 
     /**
@@ -253,8 +398,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function createCard($addressBookId, $cardUri, $cardData)
     {
-        Log::debug(__CLASS__.' createCard', func_get_args());
-
         return $this->importCard(null, $cardData);
     }
 
@@ -285,8 +428,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function updateCard($addressBookId, $cardUri, $cardData)
     {
-        Log::debug(__CLASS__.' updateCard', func_get_args());
-
         return $this->importCard($cardUri, $cardData);
     }
 
@@ -330,8 +471,6 @@ class MonicaCardDAVBackend implements SabreBackendInterface
      */
     public function deleteCard($addressBookId, $cardUri)
     {
-        Log::debug(__CLASS__.' deleteCard', func_get_args());
-
         return false;
     }
 }

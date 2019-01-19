@@ -45,8 +45,8 @@ class ContactTest extends FeatureTestCase
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
-            'next_expected_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d H:i:s'),
-            'frequency_type' => 'once',
+            'initial_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
+            'frequency_type' => 'one_time',
             'description' => $this->faker->sentence(),
         ];
 
@@ -73,10 +73,11 @@ class ContactTest extends FeatureTestCase
             'title' => $this->faker->sentence(),
             'description' => $this->faker->sentence(3),
             'completed' => 0,
+            'contact_id' => $contact->id,
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/tasks',
+            '/tasks',
             $task
         );
 

@@ -2,6 +2,7 @@
 
 namespace App\Services\VCard;
 
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
@@ -50,11 +51,17 @@ class ExportVCard extends BaseService
     private function export(Contact $contact) : VCard
     {
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
+        if (! $contact->uuid) {
+            $contact->forceFill([
+                'uuid' => Str::uuid(),
+            ])->save();
+        }
 
         // Basic information
         $vcard = new VCard([
-            'UID' => $contact->hashid(),
+            'UID' => $contact->uuid,
             'SOURCE' => route('people.show', $contact),
+            'VERSION' => '4.0',
         ]);
 
         $this->exportNames($contact, $vcard);
@@ -156,11 +163,11 @@ class ExportVCard extends BaseService
             $vcard->add('ADR', [
                 '',
                 '',
-                $address->street,
-                $address->city,
-                $address->province,
-                $address->postal_code,
-                $address->country,
+                $address->place->street,
+                $address->place->city,
+                $address->place->province,
+                $address->place->postal_code,
+                $address->place->country,
             ]);
         }
     }
@@ -196,13 +203,12 @@ class ExportVCard extends BaseService
                 case 'Telegram':
                     $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactField->data), ['type' => 'telegram']);
                     break;
+                case 'LinkedIn':
+                    $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->data), ['type' => 'linkedin']);
+                    break;
                 default:
                     break;
             }
-        }
-
-        if (! is_null($contact->linkedin_profile_url)) {
-            $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->linkedin_profile_url), ['type' => 'linkedin']);
         }
     }
 }

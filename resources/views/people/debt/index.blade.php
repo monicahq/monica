@@ -1,5 +1,5 @@
 <div class="col-xs-12 section-title">
-  <img src="/img/people/debt/bill.svg" class="icon-section icon-money">
+  <img src="img/people/debt/bill.svg" class="icon-section icon-money">
   <h3>
     {{ trans('people.debt_title') }}
 

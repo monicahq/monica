@@ -16,6 +16,8 @@ use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class ImportVCard extends BaseService
 {
@@ -372,6 +374,7 @@ class ImportVCard extends BaseService
         }
 
         $this->importNames($contact, $entry);
+        $this->importUid($contact, $entry);
         $this->importGender($contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
@@ -416,9 +419,17 @@ class ImportVCard extends BaseService
     private function name($entry): string
     {
         if ($this->hasFirstnameInN($entry)) {
-            $name = $this->formatValue($entry->N->getParts()[1]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
-            $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            $count = count($entry->N->getParts());
+            $name = '';
+            if ($count >= 2) {
+                $name .= $this->formatValue($entry->N->getParts()[1]);
+            }
+            if ($count >= 3 && ! empty($entry->N->getParts()[2])) {
+                $name .= ' '.$this->formatValue($entry->N->getParts()[2]);
+            }
+            if ($count >= 1 && ! empty($entry->N->getParts()[0])) {
+                $name .= ' '.$this->formatValue($entry->N->getParts()[0]);
+            }
             $name .= ' '.$this->formatValue($entry->EMAIL);
         } elseif ($this->hasNICKNAME($entry)) {
             $name = $this->formatValue($entry->NICKNAME);
@@ -440,9 +451,17 @@ class ImportVCard extends BaseService
      */
     private function importFromN(Contact $contact, VCard $entry): void
     {
-        $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
-        $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
-        $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
+        $count = count($entry->N->getParts());
+
+        if ($count >= 1) {
+            $contact->last_name = $this->formatValue($entry->N->getParts()[0]);
+        }
+        if ($count >= 2) {
+            $contact->first_name = $this->formatValue($entry->N->getParts()[1]);
+        }
+        if ($count >= 3) {
+            $contact->middle_name = $this->formatValue($entry->N->getParts()[2]);
+        }
         // prefix [3]
         // suffix [4]
 
@@ -468,13 +487,27 @@ class ImportVCard extends BaseService
      */
     private function importFromFN(Contact $contact, VCard $entry): void
     {
-        $fullnameParts = preg_split('/ +/', $entry->FN);
+        $fullnameParts = preg_split('/\s+/', $entry->FN, 2);
         $contact->first_name = $this->formatValue($fullnameParts[0]);
-        $contact->last_name = $this->formatValue($fullnameParts[1]);
+        if (count($fullnameParts) > 1) {
+            $contact->last_name = $this->formatValue($fullnameParts[1]);
+        }
 
         if (! empty($entry->NICKNAME)) {
             $contact->nickname = $this->formatValue($entry->NICKNAME);
         }
+    }
+
+    /**
+     * Import uid of the contact.
+     *
+     * @param Contact $contact
+     * @param  VCard $entry
+     * @return void
+     */
+    private function importUid(Contact $contact, VCard $entry): void
+    {
+        $contact->uuid = (string) $entry->UID;
     }
 
     /**
@@ -545,7 +578,19 @@ class ImportVCard extends BaseService
             $birthdate = DateHelper::parseDate((string) $entry->BDAY);
             if (! is_null($birthdate)) {
                 $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                (new CreateReminder)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'initial_date' => $specialDate->date->toDateString(),
+                    'frequency_type' => 'year',
+                    'frequency_number' => 1,
+                    'title' => trans(
+                        'people.people_add_birthday_reminder',
+                        ['name' => $contact->first_name]
+                    ),
+                    'delible' => false,
+                ]);
             }
         }
     }
@@ -562,7 +607,7 @@ class ImportVCard extends BaseService
         }
 
         foreach ($entry->ADR as $adr) {
-            Address::firstOrCreate([
+            $request = [
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'street' => $this->formatValue($adr->getParts()[2]),
@@ -570,7 +615,9 @@ class ImportVCard extends BaseService
                 'province' => $this->formatValue($adr->getParts()[4]),
                 'postal_code' => $this->formatValue($adr->getParts()[5]),
                 'country' => CountriesHelper::find($adr->getParts()[6]),
-            ]);
+            ];
+
+            (new CreateAddress)->execute($request);
         }
     }
 
@@ -657,9 +704,8 @@ class ImportVCard extends BaseService
                     $data = str_replace('http://t.me/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'linkedin':
+                    $contactFieldTypeId = $this->getContactFieldTypeId('LinkedIn');
                     $data = str_replace('http://www.linkedin.com/in/', '', $this->formatValue((string) $socialProfile));
-                    $contact->linkedin_profile_url = $data;
-                    continue;
                     break;
                 default:
                     // Not supported

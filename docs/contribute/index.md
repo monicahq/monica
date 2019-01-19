@@ -12,6 +12,7 @@
     - [Setup](#setup)
     - [Run the test suite](#run-the-test-suite)
     - [Run browser tests](#run-browser-tests)
+    - [Mocking HTTP calls](#mocking-http-calls)
 - [Coding guidelines](#coding-guidelines)
     - [Feature branch](#feature-branch)
     - [Conventional commits](#conventional-commits)
@@ -154,6 +155,17 @@ sudo apt -y -f install google-chrome-stable fonts-liberation libappindicator1
 ```
 * Then you can run the test suite:
 `php artisan dusk`
+
+<a id="markdown-mocking-http-calls" name="mocking-http-calls"></a>
+### Mocking HTTP calls
+
+You should never make real HTTP calls in your unit tests - like querying an external API that is not linked to Monica.
+
+You can mock http calls by mocking calls made by Guzzl.
+
+You can find an example of how mocking is done in the `GetWeatherInformationTest.php` file.
+
+You need to provide a sample response of the external call that you are mocking in the Fixtures folder.
 
 <a id="markdown-coding-guidelines" name="coding-guidelines"></a>
 ## Coding guidelines

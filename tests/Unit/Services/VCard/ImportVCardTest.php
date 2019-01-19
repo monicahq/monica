@@ -165,7 +165,20 @@ class ImportVCardTest extends TestCase
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $this->assertEquals('Doe  John john@doe.com', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
+        $this->assertEquals('Doe John john@doe.com', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
+    }
+
+    public function test_it_returns_a_name_for_N_incomplete()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard($account->id);
+
+        $vcard = new VCard([
+            'N' => ['John', 'Doe'],
+            'EMAIL' => 'john@doe.com',
+        ]);
+
+        $this->assertEquals('Doe John john@doe.com', $this->invokePrivateMethod($importVCard, 'name', [$vcard]));
     }
 
     public function test_it_returns_a_name_for_NICKNAME()
@@ -290,6 +303,40 @@ class ImportVCardTest extends TestCase
 
         $this->assertEquals('John', $contact->first_name);
         $this->assertEquals('Doe', $contact->last_name);
+    }
+
+    public function test_it_imports_name_FN()
+    {
+        $contact = new Contact;
+
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard($account->id);
+
+        $vcard = new VCard([
+            'FN' => 'John',
+            'N' => 'Mike;;;;',
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importNames', [$contact, $vcard]);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('', $contact->last_name);
+    }
+
+    public function test_it_imports_names_FN_multiple()
+    {
+        $contact = new Contact;
+
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard($account->id);
+
+        $vcard = new VCard([
+            'FN' => 'John Doe Marco',
+            'N' => 'Mike;;;;',
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importNames', [$contact, $vcard]);
+
+        $this->assertEquals('John', $contact->first_name);
+        $this->assertEquals('Doe Marco', $contact->last_name);
     }
 
     public function test_it_imports_work_information()

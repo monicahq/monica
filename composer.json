@@ -21,7 +21,8 @@
         "laravel/cashier": "~8.0",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.0",
-        "laravel/socialite": "^3.0",
+        "laravel/socialite": "^4.0",
+        "laravel/telescope": "^1.0",
         "laravel/tinker": "^1.0",
         "league/flysystem-aws-s3-v3": "~1.0",
         "league/flysystem-cached-adapter": "^1.0",
@@ -34,7 +35,7 @@
         "pragmarx/countries-laravel": "^0.6.1",
         "pragmarx/google2fa": "^3.0",
         "pragmarx/google2fa-laravel": "^0.2",
-        "pragmarx/recovery": "^0.1",
+        "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1.1",
         "ralouphie/mimey": "^2.0",
         "sabre/dav": "^3.2",
@@ -94,6 +95,12 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate"
+        ],
+        "pre-install-cmd": [
+            "App\\Helpers\\ComposerScripts::preInstall"
+        ],
+        "pre-update-cmd": [
+            "App\\Helpers\\ComposerScripts::preUpdate"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",

@@ -81,4 +81,25 @@ return [
         'enabled' => true,
         'ip' => '66.102.0.0',
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Locationiq API Url
+    |--------------------------------------------------------------------------
+    |
+    | Url to call Locationiq api. See https://locationiq.com/docs
+    |
+    */
+    'location_iq_url' => env('LOCATIONIQ_URL', 'https://us1.locationiq.com/v1/'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Darksky API Url
+    |--------------------------------------------------------------------------
+    |
+    | Url to call Darksy api. See https://darksky.net/dev/docs
+    |
+    */
+    'darksky_url' => env('DARKSKY_URL', 'https://api.darksky.net/forecast/'),
+
 ];
