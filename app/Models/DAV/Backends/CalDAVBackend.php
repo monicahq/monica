@@ -6,9 +6,9 @@ use Sabre\DAV;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
+use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
-use App\Models\Instance\SpecialDate;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Backend\AbstractBackend;
@@ -129,7 +129,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * @param int $limit
      * @return array
      */
-    function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
+    public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
     {
         return $this->getChanges($calendarId, $syncToken, $syncLevel, $limit);
     }
@@ -201,7 +201,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     }
 
     /**
-     * @param SpecialDate  $date 
+     * @param SpecialDate  $date
      */
     private function prepareCal($date)
     {
@@ -240,7 +240,6 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
 
         return true;
     }
-
 
     /**
      * Returns the contact for the specific uri.

@@ -2,17 +2,9 @@
 
 namespace App\Models\DAV\Backends;
 
-use Sabre\DAV;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Sabre\DAV\Server as SabreServer;
-use App\Models\Instance\SpecialDate;
-use Sabre\CalDAV\Backend\SyncSupport;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\CalDAV\Backend\AbstractBackend;
-use App\Services\VCalendar\ExportVCalendar;
 
 trait AbstractDAVBackend
 {
@@ -129,7 +121,7 @@ trait AbstractDAVBackend
      * @param int $limit
      * @return array
      */
-    function getChanges($id, $syncToken, $syncLevel, $limit = null)
+    public function getChanges($id, $syncToken, $syncLevel, $limit = null)
     {
         $token = null;
         $timestamp = null;
@@ -172,7 +164,7 @@ trait AbstractDAVBackend
                 return $this->encodeUri($obj);
             })->toArray(),
             'deleted' => [],
-        ];        
+        ];
     }
 
     private function encodeUri($date)
