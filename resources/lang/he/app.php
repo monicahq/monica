@@ -328,7 +328,7 @@ return [
     'emotion_pride' => 'גאווה',
     'emotion_eagerness' => 'Eagerness',
     'emotion_hope' => 'תקווה',
-    'emotion_optimism' => 'אופטימיות',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => 'Enthrallment',
     'emotion_rapture' => 'Rapture',
     'emotion_relief' => 'רגיעה',
