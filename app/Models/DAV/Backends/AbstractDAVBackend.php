@@ -180,6 +180,7 @@ trait AbstractDAVBackend
                 ])->save();
             }
         }
+
         return urlencode($obj->uuid.$this->getExtension());
     }
 
