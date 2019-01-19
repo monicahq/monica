@@ -4,7 +4,7 @@
 <template>
   <div>
     <div>
-      <img src="/img/people/tasks.svg" class="icon-section icon-tasks" />
+      <img src="img/people/tasks.svg" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
@@ -208,14 +208,14 @@ export default {
     },
 
     index() {
-      axios.get('/people/' + this.hash + '/tasks')
+      axios.get('people/' + this.hash + '/tasks')
         .then(response => {
           this.tasks = response.data;
         });
     },
 
     store() {
-      axios.post('/tasks', this.newTask)
+      axios.post('tasks', this.newTask)
         .then(response => {
           this.addMode = false;
           this.reinitialize();
@@ -235,7 +235,7 @@ export default {
     },
 
     update(task, toggleEdit) {
-      axios.put('/tasks/' + task.id, task)
+      axios.put('tasks/' + task.id, task)
         .then(response => {
           this.updateMode = false;
           if (toggleEdit) {
@@ -251,7 +251,7 @@ export default {
     },
 
     trash(task) {
-      axios.delete('/tasks/' + task.id)
+      axios.delete('tasks/' + task.id)
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1);
         });

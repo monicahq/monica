@@ -68,6 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'profile_new_life_event_badge_seen' => 'boolean',
+        'admin' => 'boolean',
     ];
 
     /**
@@ -341,14 +342,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $isTheRightTime = true;
 
-        $dateToCompareTo = $date->hour(0)->minute(0)->second(0)->toDateString();
-        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
-        $currentDateOnUserTimezone = now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
-        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
-
-        if ($dateToCompareTo != $currentDateOnUserTimezone) {
+        // compare date with current date for the user
+        if (! $date->isSameDay(now($this->timezone))) {
             $isTheRightTime = false;
         }
+
+        // compare current hour for the user with the hour they want to be
+        // reminded as per the hour set on the profile
+        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
+        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
 
         if ($defaultHourReminderShouldBeSent != $currentHourOnUserTimezone) {
             $isTheRightTime = false;

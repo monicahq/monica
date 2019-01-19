@@ -3,7 +3,7 @@
 @section('content')
   <body class="marketing register">
     <div class="container">
-      <form action="/validate2fa" method="post">
+      <form action="validate2fa" method="post">
         <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
       
         <div class="row">
@@ -12,7 +12,7 @@
       
               <div class="dt w-100">
                 <div class="dtc tc">
-                  <img src="/img/monica.svg" width="97" height="88" alt="">
+                  <img src="img/monica.svg" width="97" height="88" alt="">
                 </div>
               </div>
               <h2>{{ trans('auth.2fa_title') }}</h2>
@@ -48,5 +48,5 @@
     </div>
 
   </body>
-  <script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
+  <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
 @endsection

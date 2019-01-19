@@ -80,7 +80,7 @@ export default {
     },
 
     trash() {
-      axios.delete('/journal/' + this.entry.id)
+      axios.delete('journal/' + this.entry.id)
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });

@@ -13,11 +13,11 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Occupation;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
@@ -43,22 +43,6 @@ class ContactTest extends FeatureTestCase
         $contact = factory(Contact::class)->create(['gender_id' => $gender->id]);
 
         $this->assertTrue($contact->gender()->exists());
-    }
-
-    public function test_it_has_many_notifications()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertTrue($contact->notifications()->exists());
     }
 
     public function test_it_has_many_relationships()
@@ -1150,8 +1134,12 @@ class ContactTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contact->id,
         ]);
-        $specialDate->setReminder('year', 1, '');
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+        ]);
         $contact->birthday_special_date_id = $specialDate->id;
+        $contact->birthday_reminder_id = $reminder->id;
         $contact->save();
 
         $contactB = factory(Contact::class)->create(['account_id' => $user->account_id]);
@@ -1159,8 +1147,12 @@ class ContactTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contactB->id,
         ]);
-        $specialDate->setReminder('year', 1, '');
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactB->id,
+        ]);
         $contactB->birthday_special_date_id = $specialDate->id;
+        $contactB->birthday_reminder_id = $reminder->id;
         $contactB->save();
 
         $contactC = factory(Contact::class)->create(['account_id' => $user->account_id]);
@@ -1168,8 +1160,12 @@ class ContactTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contactC->id,
         ]);
-        $specialDate->setReminder('year', 1, '');
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $user->account_id,
+            'contact_id' => $contactC->id,
+        ]);
         $contactC->birthday_special_date_id = $specialDate->id;
+        $contactC->birthday_reminder_id = $reminder->id;
         $contactC->save();
 
         $relationshipType = factory(RelationshipType::class)->create([

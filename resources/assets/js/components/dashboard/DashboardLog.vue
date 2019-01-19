@@ -44,7 +44,7 @@
             <span class="mr1 black-50">
               •
             </span>
-            <a :href="'/people/' + call.contact_id">
+            <a :href="'people/' + call.contact_id">
               {{ call.name }}
             </a>
           </li>
@@ -99,7 +99,7 @@
               <span class="mr1 black-50">
                 •
               </span>
-              <a :href="'/people/' + note.contact.id">
+              <a :href="'people/' + note.contact.id">
                 {{ note.name }}
               </a>
               <p>
@@ -125,7 +125,7 @@
             <span class="mr1 black-50">
               •
             </span>
-            <a :href="'/people/' + debt.contact.hash_id">
+            <a :href="'people/' + debt.contact.hash_id">
               {{ debt.contact.first_name }}
             </a>
             <span class="mr1 black-50">
@@ -187,7 +187,7 @@
                 {{ task.title }}
               </label>
               <span class="black-50 mr1 f7">
-                <a :href="'/people/' + task.contact.hash_id">
+                <a :href="'people/' + task.contact.hash_id">
                   {{ task.contact.first_name }}
                 </a>
               </span>
@@ -204,7 +204,7 @@
                 {{ $t('dashboard.task_add_cta') }}
               </a>
             </p>
-            <img src="/img/dashboard/blank_your_tasks.svg" />
+            <img src="img/dashboard/blank_your_tasks.svg" />
           </div>
 
           <!-- Add a task -->
@@ -350,34 +350,34 @@ export default {
     },
 
     saveTab(view) {
-      axios.post('/dashboard/setTab', {'tab':view})
+      axios.post('dashboard/setTab', {'tab':view})
         .then(response => {
         });
     },
 
     getCalls() {
-      axios.get('/dashboard/calls')
+      axios.get('dashboard/calls')
         .then(response => {
           this.calls = response.data;
         });
     },
 
     getNotes() {
-      axios.get('/dashboard/notes')
+      axios.get('dashboard/notes')
         .then(response => {
           this.notes = response.data;
         });
     },
 
     getDebts() {
-      axios.get('/dashboard/debts')
+      axios.get('dashboard/debts')
         .then(response => {
           this.debts = response.data;
         });
     },
 
     getTasks() {
-      axios.get('/tasks')
+      axios.get('tasks')
         .then(response => {
           this.tasks = response.data.data;
         });
@@ -406,7 +406,7 @@ export default {
 
     updateTask(task) {
       task.completed = !task.completed;
-      axios.put('/tasks/' + task.id, task)
+      axios.put('tasks/' + task.id, task)
         .then(response => {
           this.$notify({
             group: 'main',
@@ -418,7 +418,7 @@ export default {
     },
 
     saveTask() {
-      axios.post('/tasks', this.newTask)
+      axios.post('tasks', this.newTask)
         .then(response => {
           this.newTask.title = '';
           this.taskAddMode = false;
@@ -433,7 +433,7 @@ export default {
     },
 
     destroyTask(task) {
-      axios.delete('/tasks/' + task.id)
+      axios.delete('tasks/' + task.id)
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1);
         });
