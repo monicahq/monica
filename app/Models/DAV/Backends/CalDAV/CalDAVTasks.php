@@ -3,15 +3,13 @@
 namespace App\Models\DAV\Backends\CalDAV;
 
 use Sabre\DAV;
-use App\Models\User\SyncToken;
 use App\Models\Contact\Task;
+use App\Models\User\SyncToken;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
-use Sabre\CalDAV\Backend\SyncSupport;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Services\VCalendar\ExportTask;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Models\DAV\Backends\PrincipalBackend;
 use App\Models\DAV\Backends\AbstractDAVBackend;
 
@@ -241,7 +239,6 @@ class CalDAVTasks
                     ->tasks()
                     ->get();
     }
-
 
     /**
      * Creates a new calendar object.

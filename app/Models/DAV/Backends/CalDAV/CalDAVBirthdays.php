@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
-use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Services\VCalendar\ExportVCalendar;
 use App\Models\DAV\Backends\PrincipalBackend;
 use App\Models\DAV\Backends\AbstractDAVBackend;
@@ -265,7 +263,6 @@ class CalDAVBirthdays
             return $contact->birthdate;
         });
     }
-
 
     /**
      * Creates a new calendar object.

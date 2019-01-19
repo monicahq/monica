@@ -4,9 +4,8 @@ namespace App\Services\VCalendar;
 
 use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
-use App\Services\BaseService;
-use Sabre\VObject\Component\VEvent;
 use App\Models\Contact\Task;
+use App\Services\BaseService;
 use Illuminate\Support\Facades\Auth;
 use Sabre\VObject\Component\VCalendar;
 
