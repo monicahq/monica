@@ -328,7 +328,7 @@ return [
     'emotion_pride' => 'Fierté',
     'emotion_eagerness' => 'Ardeur',
     'emotion_hope' => 'Espoir',
-    'emotion_optimism' => 'optimism',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => 'Captivation',
     'emotion_rapture' => 'Ravissement',
     'emotion_relief' => 'Soulagement',
