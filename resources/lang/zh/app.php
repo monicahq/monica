@@ -328,7 +328,7 @@ return [
     'emotion_pride' => '骄傲',
     'emotion_eagerness' => '渴望',
     'emotion_hope' => '希望',
-    'emotion_optimism' => '乐观',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => '沉迷',
     'emotion_rapture' => '狂喜',
     'emotion_relief' => '如释重负',
