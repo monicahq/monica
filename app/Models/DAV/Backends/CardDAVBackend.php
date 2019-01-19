@@ -122,7 +122,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
     {
-        return $this->getChanges($addressBookId, $syncToken, $syncLevel, $limit);
+        return $this->getChanges('contacts', $syncToken, $syncLevel, $limit);
     }
 
     private function prepareCard($contact)
@@ -223,6 +223,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
     public function getCard($addressBookId, $cardUri)
     {
         $contact = $this->getObject($cardUri);
+
+        if (! $contact) {
+            return;
+        }
 
         return $this->prepareCard($contact);
     }

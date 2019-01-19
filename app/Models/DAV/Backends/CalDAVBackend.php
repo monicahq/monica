@@ -60,8 +60,8 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getCalendarsForUser($principalUri)
     {
-        return array_map(function ($backend) use ($principalUri) {
-            return $backend->getDescription($principalUri);
+        return array_map(function ($backend) {
+            return $backend->getDescription();
         }, $this->getBackends());
     }
 
@@ -126,7 +126,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
         $backend = $this->getBackend($calendarId);
         if ($backend)
         {
-            return $backend->getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit);
+            return $backend->getChangesForCalendar($syncToken, $syncLevel, $limit);
         }
     }
 
@@ -166,7 +166,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
         $backend = $this->getBackend($calendarId);
         if ($backend)
         {
-            return $backend->getCalendarObjects($calendarId);
+            return $backend->getCalendarObjects();
         }
     }
 
@@ -191,7 +191,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
         $backend = $this->getBackend($calendarId);
         if ($backend)
         {
-            return $backend->getCalendarObject($calendarId, $objectUri);
+            return $backend->getCalendarObject($objectUri);
         }
     }
 
@@ -215,11 +215,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function createCalendarObject($calendarId, $objectUri, $calendarData)
     {
-        $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
-            return $backend->createCalendarObject($calendarId, $objectUri, $calendarData);
-        }
+        return $this->updateCalendarObject($calendarId, $objectUri, $calendarData);
     }
 
     /**
@@ -245,7 +241,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
         $backend = $this->getBackend($calendarId);
         if ($backend)
         {
-            return $backend->updateCalendarObject($calendarId, $objectUri, $calendarData);
+            return $backend->updateOrCreateCalendarObject($objectUri, $calendarData);
         }
     }
 
@@ -263,7 +259,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
         $backend = $this->getBackend($calendarId);
         if ($backend)
         {
-            return $backend->deleteCalendarObject($calendarId, $objectUri);
+            return $backend->deleteCalendarObject($objectUri);
         }
     }
 

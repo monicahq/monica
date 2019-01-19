@@ -23,7 +23,7 @@ class CalDAVBirthdays
      */
     public $id = 1;
 
-    public function getDescription($principalUri)
+    public function getDescription()
     {
         $name = Auth::user()->name;
         $token = $this->getSyncToken();
@@ -101,15 +101,14 @@ class CalDAVBirthdays
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $calendarId
      * @param string $syncToken
      * @param int $syncLevel
      * @param int $limit
      * @return array
      */
-    public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
+    public function getChangesForCalendar($syncToken, $syncLevel, $limit = null)
     {
-        return $this->getChanges($calendarId, $syncToken, $syncLevel, $limit);
+        return $this->getChanges('birthdays', $syncToken, $syncLevel, $limit);
     }
 
     /**
@@ -140,10 +139,9 @@ class CalDAVBirthdays
      * used/fetched to determine these numbers. If both are specified the
      * amount of times this is needed is reduced by a great degree.
      *
-     * @param mixed $calendarId
      * @return array
      */
-    public function getCalendarObjects($calendarId)
+    public function getCalendarObjects()
     {
         $dates = $this->getObjects();
 
@@ -167,13 +165,16 @@ class CalDAVBirthdays
      *
      * This method must return null if the object did not exist.
      *
-     * @param mixed $calendarId
      * @param string $objectUri
      * @return array|null
      */
-    public function getCalendarObject($calendarId, $objectUri)
+    public function getCalendarObject($objectUri)
     {
         $date = $this->getObject($objectUri);
+
+        if (! $date) {
+            return;
+        }
 
         return $this->prepareCal($date);
     }
@@ -241,7 +242,6 @@ class CalDAVBirthdays
      * Returns the collection of contact's birthdays.
      *
      * @return \Illuminate\Support\Collection
-     * @return mixed
      */
     public function getObjects()
     {
@@ -277,7 +277,7 @@ class CalDAVBirthdays
      * @param string $calendarData
      * @return string|null
      */
-    public function createCalendarObject($calendarId, $objectUri, $calendarData)
+    public function createCalendarObject($objectUri, $calendarData)
     {
     }
 
@@ -299,7 +299,7 @@ class CalDAVBirthdays
      * @param string $calendarData
      * @return string|null
      */
-    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
+    public function updateOrCreateCalendarObject($objectUri, $calendarData)
     {
     }
 
@@ -312,7 +312,7 @@ class CalDAVBirthdays
      * @param string $objectUri
      * @return void
      */
-    public function deleteCalendarObject($calendarId, $objectUri)
+    public function deleteCalendarObject($objectUri)
     {
     }
 }

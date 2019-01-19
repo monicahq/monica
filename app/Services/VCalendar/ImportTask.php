@@ -152,7 +152,11 @@ class ImportTask extends BaseService
      */
     private function importCompleted(Task $task, VCalendar $entry)
     {
-        $task->completed_at = DateHelper::parseDate((string) $entry->VTODO->COMPLETED);
         $task->completed = ((string) $entry->VTODO->STATUS) == 'COMPLETED';
+        if (! $task->completed) {
+            $task->completed_at = null;
+        } else if ($entry->VTODO->COMPLETED) {
+            $task->completed_at = DateHelper::parseDate((string) $entry->VTODO->COMPLETED);
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Models\DAV\Backends\CalDAV;
 use Sabre\DAV;
 use App\Models\Contact\Task;
 use App\Models\User\SyncToken;
+use App\Services\Task\DestroyTask;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
@@ -23,7 +24,7 @@ class CalDAVTasks
      */
     public $id = 2;
 
-    public function getDescription($principalUri)
+    public function getDescription()
     {
         $name = Auth::user()->name;
         $token = $this->getSyncToken();
@@ -100,15 +101,14 @@ class CalDAVTasks
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $calendarId
      * @param string $syncToken
      * @param int $syncLevel
      * @param int $limit
      * @return array
      */
-    public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
+    public function getChangesForCalendar($syncToken, $syncLevel, $limit = null)
     {
-        return $this->getChanges($calendarId, $syncToken, $syncLevel, $limit);
+        return $this->getChanges('tasks', $syncToken, $syncLevel, $limit);
     }
 
     /**
@@ -139,10 +139,9 @@ class CalDAVTasks
      * used/fetched to determine these numbers. If both are specified the
      * amount of times this is needed is reduced by a great degree.
      *
-     * @param mixed $calendarId
      * @return array
      */
-    public function getCalendarObjects($calendarId)
+    public function getCalendarObjects()
     {
         $dates = $this->getObjects();
 
@@ -166,15 +165,18 @@ class CalDAVTasks
      *
      * This method must return null if the object did not exist.
      *
-     * @param mixed $calendarId
      * @param string $objectUri
      * @return array|null
      */
-    public function getCalendarObject($calendarId, $objectUri)
+    public function getCalendarObject($objectUri)
     {
-        $date = $this->getObject($objectUri);
+        $task = $this->getObject($objectUri);
 
-        return $this->prepareCal($date);
+        if (! $task) {
+            return;
+        }
+
+        return $this->prepareCal($task);
     }
 
     /**
@@ -227,36 +229,12 @@ class CalDAVTasks
      * Returns the collection of all tasks.
      *
      * @return \Illuminate\Support\Collection
-     * @return mixed
      */
     public function getObjects()
     {
         return Auth::user()->account
                     ->tasks()
                     ->get();
-    }
-
-    /**
-     * Creates a new calendar object.
-     *
-     * The object uri is only the basename, or filename and not a full path.
-     *
-     * It is possible to return an etag from this function, which will be used
-     * in the response to this PUT request. Note that the ETag must be
-     * surrounded by double-quotes.
-     *
-     * However, you should only really return this ETag if you don't mangle the
-     * calendar-data. If the result of a subsequent GET to this object is not
-     * the exact same as this request body, you should omit the ETag.
-     *
-     * @param mixed $calendarId
-     * @param string $objectUri
-     * @param string $calendarData
-     * @return string|null
-     */
-    public function createCalendarObject($calendarId, $objectUri, $calendarData)
-    {
-        return $this->updateCalendarObject($calendarId, $objectUri, $calendarData);
     }
 
     /**
@@ -272,12 +250,11 @@ class CalDAVTasks
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param mixed $calendarId
      * @param string $objectUri
      * @param string $calendarData
      * @return string|null
      */
-    public function updateCalendarObject($calendarId, $objectUri, $calendarData)
+    public function updateOrCreateCalendarObject($objectUri, $calendarData)
     {
         $task_id = null;
         if ($objectUri) {
@@ -313,11 +290,25 @@ class CalDAVTasks
      *
      * The object uri is only the basename, or filename and not a full path.
      *
-     * @param mixed $calendarId
      * @param string $objectUri
      * @return void
      */
-    public function deleteCalendarObject($calendarId, $objectUri)
+    public function deleteCalendarObject($objectUri)
     {
+        $task = $this->getObject($objectUri);
+
+        if (!$task) {
+            return;
+        }
+
+        try {
+            (new DestroyTask)
+                ->execute([
+                    'account_id' => Auth::user()->account_id,
+                    'task_id' => $task->id,
+                ]);
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' importCard: '.(string) $e);
+        }
     }
 }
