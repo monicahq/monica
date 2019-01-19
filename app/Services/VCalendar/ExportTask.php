@@ -6,11 +6,11 @@ use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use Sabre\VObject\Component\VEvent;
-use App\Models\Instance\SpecialDate;
+use App\Models\Contact\Task;
 use Illuminate\Support\Facades\Auth;
 use Sabre\VObject\Component\VCalendar;
 
-class ExportVCalendar extends BaseService
+class ExportTask extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
@@ -21,7 +21,7 @@ class ExportVCalendar extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'special_date_id' => 'nullable|integer|exists:special_dates,id',
+            'task_id' => 'nullable|integer|exists:tasks,id',
         ];
     }
 
@@ -35,39 +35,38 @@ class ExportVCalendar extends BaseService
     {
         $this->validate($data);
 
-        $date = SpecialDate::where('account_id', $data['account_id'])
-            ->findOrFail($data['special_date_id']);
+        $task = Task::where('account_id', $data['account_id'])
+            ->findOrFail($data['task_id']);
 
-        return $this->export($date);
+        return $this->export($task);
     }
 
     /**
-     * @param SpecialDate $date
+     * @param Task $task
      * @return VCalendar
      */
-    private function export(SpecialDate $date) : VCalendar
+    private function export(Task $task) : VCalendar
     {
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc5545
-        if (! $date->uuid) {
-            $date->forceFill([
+        if (! $task->uuid) {
+            $task->forceFill([
                 'uuid' => Str::uuid(),
             ])->save();
         }
 
         // Basic information
         $vcal = new VCalendar([
-            'UID' => $date->uuid,
+            'UID' => $task->uuid,
         ]);
 
         $this->exportTimezone($vcal);
-        $this->exportBirthday($date, $vcal);
+        $this->exportTask($task, $vcal);
 
         return $vcal;
     }
 
     /**
      * @param VCalendar $vcard
-     * @return void
      */
     private function exportTimezone(VCalendar $vcal)
     {
@@ -77,24 +76,21 @@ class ExportVCalendar extends BaseService
     }
 
     /**
-     * @param SpecialDate $date
+     * @param Task $task
      * @param VCalendar $vcard
-     * @return void
      */
-    private function exportBirthday(SpecialDate $date, VCalendar $vcal)
+    private function exportTask(Task $task, VCalendar $vcal)
     {
-        $contact = $date->contact;
-        $name = $contact->name;
-        $vcal->add('VEVENT', [
-            'SUMMARY' => trans('people.reminders_birthday', ['name' => $name]),
-            'DTSTART' => $date->date->format('Ymd'),
-            'DTEND' => $date->date->addDays(1)->format('Ymd'),
-            'RRULE' => 'FREQ=YEARLY',
-            'CREATED' => DateHelper::parseDateTime($date->created_at, Auth::user()->timezone),
-            'DESCRIPTION' => trans('mail.footer_contact_info2_link', [
-                    'name' => $name,
+        $contact = $task->contact;
+
+        $vcal->add('VTODO', [
+            'SUMMARY' => $task->title,
+            'COMPLETED' => $task->completed,
+            'CREATED' => DateHelper::parseDateTime($task->created_at, Auth::user()->timezone),
+            'DESCRIPTION' => $contact ? trans('mail.footer_contact_info2_link', [
+                    'name' => $contact->name,
                     'url' => route('people.show', $contact),
-                ]),
+                ]) : '',
         ]);
     }
 }

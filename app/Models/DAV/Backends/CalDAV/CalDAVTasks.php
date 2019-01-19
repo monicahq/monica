@@ -1,75 +1,59 @@
 <?php
 
-namespace App\Models\DAV\Backends;
+namespace App\Models\DAV\Backends\CalDAV;
 
 use Sabre\DAV;
 use App\Models\User\SyncToken;
-use App\Models\Contact\Contact;
+use App\Models\Contact\Task;
 use Illuminate\Support\Facades\Log;
-use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Backend\AbstractBackend;
-use App\Services\VCalendar\ExportVCalendar;
-use App\Models\DAV\Backends\CalDAV\CalDAVTasks;
-use App\Models\DAV\Backends\CalDAV\CalDAVBirthdays;
+use App\Services\VCalendar\ExportTask;
+use App\Models\DAV\Backends\PrincipalBackend;
+use App\Models\DAV\Backends\AbstractDAVBackend;
 
-class CalDAVBackend extends AbstractBackend implements SyncSupport
+class CalDAVTasks
 {
-    private function getBackends()
+    use AbstractDAVBackend;
+
+    /**
+     * @var int
+     */
+    public $id;
+
+    public function __construct($id)
     {
+        $this->id = $id;
+    }
+
+    public function getDescription($principalUri)
+    {
+        $name = Auth::user()->name;
+        $token = $this->getSyncToken();
+
         return [
-            [
-                'id' => 0,
-                'backend' => new CalDAVBirthdays(0)
-            ],
-            [
-                'id' => 1,
-                'backend' => new CalDAVTasks(1)
-            ]
+            'id' => $this->id,
+            'uri'               => 'tasks',
+            'principaluri'      => PrincipalBackend::getPrincipalUser(),
+            '{DAV:}sync-token'  => $token->id,
+            '{DAV:}displayname' => $name,
+            '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Tasks',
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
         ];
     }
 
-    private function getBackend($id)
-    {
-        $backend = collect($this->getBackends())->firstWhere('id', $id);
-        if ($backend) {
-            return $backend['backend'];
-        }
-    }
-
     /**
-     * Returns a list of calendars for a principal.
+     * Extension for Calendar objects.
      *
-     * Every project is an array with the following keys:
-     *  * id, a unique id that will be used by other functions to modify the
-     *    calendar. This can be the same as the uri or a database key.
-     *  * uri, which is the basename of the uri with which the calendar is
-     *    accessed.
-     *  * principaluri. The owner of the calendar. Almost always the same as
-     *    principalUri passed to this method.
-     *
-     * Furthermore it can contain webdav properties in clark notation. A very
-     * common one is '{DAV:}displayname'.
-     *
-     * Many clients also require:
-     * {urn:ietf:params:xml:ns:caldav}supported-calendar-component-set
-     * For this property, you can just return an instance of
-     * Sabre\CalDAV\Property\SupportedCalendarComponentSet.
-     *
-     * If you return {http://sabredav.org/ns}read-only and set the value to 1,
-     * ACL will automatically be put in read-only mode.
-     *
-     * @param string $principalUri
-     * @return array
+     * @var string
      */
-    public function getCalendarsForUser($principalUri)
+    public function getExtension()
     {
-        return array_map(function ($backend) use ($principalUri) {
-            return $backend['backend']->getDescription($principalUri);
-        }, $this->getBackends());
+        return '.ics';
     }
 
     /**
@@ -130,11 +114,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
     {
-        $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
-            return $backend->getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit);
-        }
+        return $this->getChanges($calendarId, $syncToken, $syncLevel, $limit);
     }
 
     /**
@@ -170,11 +150,14 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getCalendarObjects($calendarId)
     {
-        $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
-            return $backend->getCalendarObjects($calendarId);
-        }
+        $dates = $this->getObjects();
+
+        return $dates->map(function ($date) {
+            return $this->prepareCal($date);
+        })
+        ->filter(function ($event) {
+            return ! is_null($event);
+        });
     }
 
     /**
@@ -195,12 +178,70 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getCalendarObject($calendarId, $objectUri)
     {
-        $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
-            return $backend->getCalendarObject($calendarId, $objectUri);
+        $date = $this->getObject($objectUri);
+
+        return $this->prepareCal($date);
+    }
+
+    /**
+     * @param Task  $task
+     */
+    private function prepareCal($task)
+    {
+        try {
+            $vcal = (new ExportTask())
+                ->execute([
+                    'account_id' => Auth::user()->account_id,
+                    'task_id' => $task->id,
+                ]);
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' prepareCal: '.(string) $e);
+
+            return;
+        }
+
+        $calendardata = $vcal->serialize();
+
+        return [
+            'id' => $task->id,
+            'uri' => $this->encodeUri($task),
+            'calendardata' => $calendardata,
+            'etag' => '"'.md5($calendardata).'"',
+            'lastmodified' => $task->updated_at->timestamp,
+        ];
+    }
+
+    /**
+     * Returns the contact for the specific uri.
+     *
+     * @param string  $uri
+     * @return mixed
+     */
+    public function getObjectUuid($uuid)
+    {
+        try {
+            return Task::where([
+                'account_id' => Auth::user()->account_id,
+                'uuid' => $uuid,
+            ])->first();
+        } catch (\Exception $e) {
+            return;
         }
     }
+
+    /**
+     * Returns the collection of all tasks.
+     *
+     * @return \Illuminate\Support\Collection
+     * @return mixed
+     */
+    public function getObjects()
+    {
+        return Auth::user()->account
+                    ->tasks()
+                    ->get();
+    }
+
 
     /**
      * Creates a new calendar object.
@@ -222,11 +263,6 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function createCalendarObject($calendarId, $objectUri, $calendarData)
     {
-        $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
-            return $backend->createCalendarObject($calendarId, $objectUri, $calendarData)
-        }
     }
 
     /**
@@ -249,11 +285,6 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
-        $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
-            return $backend->updateCalendarObject($calendarId, $objectUri, $calendarData);
-        }
     }
 
     /**
@@ -266,38 +297,6 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * @return void
      */
     public function deleteCalendarObject($calendarId, $objectUri)
-    {
-        $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
-            return $backend->deleteCalendarObject($calendarId, $objectUri);
-        }
-    }
-
-    /**
-     * Creates a new calendar for a principal.
-     *
-     * If the creation was a success, an id must be returned that can be used to
-     * reference this calendar in other methods, such as updateCalendar.
-     *
-     * The id can be any type, including ints, strings, objects or array.
-     *
-     * @param string $principalUri
-     * @param string $calendarUri
-     * @param array $properties
-     * @return mixed
-     */
-    public function createCalendar($principalUri, $calendarUri, array $properties)
-    {
-    }
-
-    /**
-     * Delete a calendar and all its objects.
-     *
-     * @param mixed $calendarId
-     * @return void
-     */
-    public function deleteCalendar($calendarId)
     {
     }
 }

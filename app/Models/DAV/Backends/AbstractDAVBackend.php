@@ -167,9 +167,9 @@ trait AbstractDAVBackend
         ];
     }
 
-    private function encodeUri($date)
+    private function encodeUri($obj)
     {
-        return urlencode($date->uuid.$this->getExtension());
+        return urlencode($obj->uuid.$this->getExtension());
     }
 
     private function decodeUri($uri)
