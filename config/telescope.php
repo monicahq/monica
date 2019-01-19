@@ -52,9 +52,9 @@ return [
 
     'middleware' => [
         'web',
-        Authorize::class,
         'u2f',
         '2fa',
+        Authorize::class,
     ],
 
     /*
