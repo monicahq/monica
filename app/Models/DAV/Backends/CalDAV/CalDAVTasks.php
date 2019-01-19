@@ -297,7 +297,7 @@ class CalDAVTasks
     {
         $task = $this->getObject($objectUri);
 
-        if (!$task) {
+        if (! $task) {
             return;
         }
 

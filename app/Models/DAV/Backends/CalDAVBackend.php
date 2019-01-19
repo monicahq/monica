@@ -117,8 +117,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getChangesForCalendar($calendarId, $syncToken, $syncLevel, $limit = null)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->getChangesForCalendar($syncToken, $syncLevel, $limit);
         }
     }
@@ -157,8 +156,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getCalendarObjects($calendarId)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->getCalendarObjects();
         }
     }
@@ -182,8 +180,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getCalendarObject($calendarId, $objectUri)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->getCalendarObject($objectUri);
         }
     }
@@ -232,8 +229,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function updateCalendarObject($calendarId, $objectUri, $calendarData)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->updateOrCreateCalendarObject($objectUri, $calendarData);
         }
     }
@@ -250,8 +246,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function deleteCalendarObject($calendarId, $objectUri)
     {
         $backend = $this->getBackend($calendarId);
-        if ($backend)
-        {
+        if ($backend) {
             return $backend->deleteCalendarObject($objectUri);
         }
     }

@@ -155,7 +155,7 @@ class ImportTask extends BaseService
         $task->completed = ((string) $entry->VTODO->STATUS) == 'COMPLETED';
         if (! $task->completed) {
             $task->completed_at = null;
-        } else if ($entry->VTODO->COMPLETED) {
+        } elseif ($entry->VTODO->COMPLETED) {
             $task->completed_at = DateHelper::parseDate((string) $entry->VTODO->COMPLETED);
         }
     }
