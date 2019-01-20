@@ -4,7 +4,41 @@ namespace App\Models\DAV\Backends\CalDAV;
 
 interface ICalDAVBackend
 {
+    /**
+     * Returns a list of calendars for a principal.
+     *
+     * Every project is an array with the following keys:
+     *  * id, a unique id that will be used by other functions to modify the
+     *    calendar. This can be the same as the uri or a database key.
+     *  * uri, which is the basename of the uri with which the calendar is
+     *    accessed.
+     *  * principaluri. The owner of the calendar. Almost always the same as
+     *    principalUri passed to this method.
+     *
+     * Furthermore it can contain webdav properties in clark notation. A very
+     * common one is '{DAV:}displayname'.
+     *
+     * Many clients also require:
+     * {urn:ietf:params:xml:ns:caldav}supported-calendar-component-set
+     * For this property, you can just return an instance of
+     * Sabre\CalDAV\Property\SupportedCalendarComponentSet.
+     *
+     * If you return {http://sabredav.org/ns}read-only and set the value to 1,
+     * ACL will automatically be put in read-only mode.
+     *
+     * @param string $principalUri
+     * @return array
+     */
     public function getDescription();
+
+    /**
+     * The getChanges method returns all the changes that have happened, since
+     * the specified syncToken in the specified calendar.
+     * 
+     * @param string $syncToken
+     * @return array
+     */
+    public function getChanges($syncToken);
 
     /**
      * Returns all calendar objects within a calendar.
