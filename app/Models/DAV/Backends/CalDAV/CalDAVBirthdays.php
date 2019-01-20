@@ -56,14 +56,13 @@ class CalDAVBirthdays implements ICalDAVBackend, IDAVBackend
 
     /**
      * Datas for this date.
-     * 
+     *
      * @param mixed $date
      * @return array
      */
     public function prepareData($date)
     {
-        if ($date instanceof SpecialDate)
-        {
+        if ($date instanceof SpecialDate) {
             try {
                 $vcal = (new ExportVCalendar())
                     ->execute([

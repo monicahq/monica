@@ -172,7 +172,6 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         $backend = $this->getBackend($calendarId);
         if ($backend) {
-
             $objs = $backend->getObjects();
 
             return $objs
@@ -206,7 +205,6 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         $backend = $this->getBackend($calendarId);
         if ($backend) {
-
             $obj = $backend->getObject($objectUri);
 
             if ($obj) {

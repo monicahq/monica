@@ -82,14 +82,13 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
 
     /**
      * Datas for this task.
-     * 
+     *
      * @param mixed $task
      * @return array
      */
     public function prepareData($task)
     {
-        if ($task instanceof Task)
-        {
+        if ($task instanceof Task) {
             try {
                 $vcal = (new ExportTask())
                     ->execute([

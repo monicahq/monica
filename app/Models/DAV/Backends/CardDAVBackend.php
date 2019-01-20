@@ -137,7 +137,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
     /**
      * Prepare datas for this contact.
-     * 
+     *
      * @param Contact $contact
      * @return array|null
      */
@@ -230,7 +230,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * @param mixed $addressBookId
      * @param string $cardUri
-     * @return array|boolean
+     * @return array|bool
      */
     public function getCard($addressBookId, $cardUri)
     {
