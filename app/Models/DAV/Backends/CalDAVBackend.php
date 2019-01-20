@@ -14,7 +14,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
 {
     /**
      * Set the Calendar backends.
-     * 
+     *
      * @return array
      */
     private function getBackends()
@@ -27,7 +27,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
 
     /**
      * Get the backend for this id.
-     * 
+     *
      * @return ICalDAVBackend
      */
     private function getBackend($id)

@@ -21,7 +21,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
     /**
      * Returns the uri for this backend.
-     * 
+     *
      * @return string
      */
     public function backendUri()

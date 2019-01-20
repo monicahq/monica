@@ -4,15 +4,14 @@ namespace App\Models\DAV\Backends\CalDAV;
 
 use Sabre\DAV;
 use App\Models\Contact\Task;
-use App\Models\User\SyncToken;
 use App\Services\Task\DestroyTask;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Models\DAV\Backends\IDAVBackend;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Models\DAV\Backends\PrincipalBackend;
 use App\Models\DAV\Backends\AbstractDAVBackend;
 
@@ -22,7 +21,7 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
 
     /**
      * Returns the uri for this backend.
-     * 
+     *
      * @return string
      */
     public function backendUri()

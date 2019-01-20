@@ -3,15 +3,14 @@
 namespace App\Models\DAV\Backends\CalDAV;
 
 use Sabre\DAV;
-use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Log;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
+use App\Models\DAV\Backends\IDAVBackend;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Services\VCalendar\ExportVCalendar;
-use App\Models\DAV\Backends\IDAVBackend;
 use App\Models\DAV\Backends\PrincipalBackend;
 use App\Models\DAV\Backends\AbstractDAVBackend;
 
@@ -21,7 +20,7 @@ class CalDAVBirthdays implements ICalDAVBackend, IDAVBackend
 
     /**
      * Returns the uri for this backend.
-     * 
+     *
      * @return string
      */
     public function backendUri()

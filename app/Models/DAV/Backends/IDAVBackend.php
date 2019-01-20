@@ -2,15 +2,11 @@
 
 namespace App\Models\DAV\Backends;
 
-use App\Models\User\SyncToken;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Auth;
-
 interface IDAVBackend
 {
     /**
      * Returns the uri for this backend.
-     * 
+     *
      * @return string
      */
     public function backendUri();
@@ -32,7 +28,7 @@ interface IDAVBackend
 
     /**
      * Returns the extension for this backend.
-     * 
+     *
      * @return string
      */
     public function getExtension();
