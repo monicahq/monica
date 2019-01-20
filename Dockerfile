@@ -83,6 +83,7 @@ COPY resources ./resources
 COPY routes ./routes
 COPY scripts ./scripts
 
+RUN echo $VCS_REF > .sentry-release
 RUN mkdir -p bootstrap/cache
 RUN mkdir -p storage
 COPY .env.example .env
