@@ -136,7 +136,7 @@ trait AbstractDAVBackend
      * @param string $syncToken
      * @return array
      */
-    public function getChanges($syncToken): array
+    public function getChanges($syncToken)
     {
         $token = null;
         $timestamp = null;
