@@ -27,7 +27,7 @@ class CalDAVTasks
     public function getDescription()
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken();
+        $token = $this->getSyncToken('tasks');
 
         return [
             'id' => $this->id,

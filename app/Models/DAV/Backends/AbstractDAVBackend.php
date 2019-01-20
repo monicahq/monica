@@ -16,22 +16,23 @@ trait AbstractDAVBackend
      *
      * @return SyncToken
      */
-    protected function getSyncToken()
+    protected function getSyncToken($name)
     {
         $tokens = SyncToken::where([
-            ['account_id', Auth::user()->account_id],
-            ['user_id', Auth::user()->id],
+            'account_id' => Auth::user()->account_id,
+            'user_id' => Auth::user()->id,
+            'name' => $name
         ])
             ->orderBy('created_at')
             ->get();
 
         if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken();
+            $token = $this->createSyncToken($name);
         } else {
             $token = $tokens->last();
 
             if ($token->timestamp < $this->getLastModified()) {
-                $token = $this->createSyncToken();
+                $token = $this->createSyncToken($name);
             }
         }
 
@@ -43,13 +44,14 @@ trait AbstractDAVBackend
      *
      * @return SyncToken
      */
-    private function createSyncToken()
+    private function createSyncToken($name)
     {
         $max = $this->getLastModified();
 
         return SyncToken::create([
             'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
+            'name' => $name,
             'timestamp' => $max,
         ]);
     }
@@ -115,13 +117,13 @@ trait AbstractDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $id
+     * @param string $name
      * @param string $syncToken
      * @param int $syncLevel
      * @param int $limit
      * @return array
      */
-    public function getChanges($id, $syncToken, $syncLevel, $limit = null)
+    public function getChanges($name, $syncToken, $syncLevel, $limit = null)
     {
         $token = null;
         $timestamp = null;
@@ -129,6 +131,7 @@ trait AbstractDAVBackend
             $token = SyncToken::where([
                 'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
+                'name' => $name
             ])->find($syncToken);
 
             if (is_null($token)) {
@@ -137,9 +140,8 @@ trait AbstractDAVBackend
             }
 
             $timestamp = $token->timestamp;
-            $token = $this->getSyncToken();
         } else {
-            $token = $this->createSyncToken();
+            $token = $this->createSyncToken($name);
             $timestamp = null;
         }
 

@@ -39,7 +39,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
     public function getAddressBooksForUser($principalUri)
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken();
+        $token = $this->getSyncToken('contacts');
 
         return [
             [

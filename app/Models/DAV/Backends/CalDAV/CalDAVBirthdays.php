@@ -26,7 +26,7 @@ class CalDAVBirthdays
     public function getDescription()
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken();
+        $token = $this->getSyncToken('birthdays');
 
         return [
             'id' => $this->id,
