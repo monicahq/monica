@@ -81,96 +81,34 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
     }
 
     /**
-     * Returns all calendar objects within a calendar.
-     *
-     * Every item contains an array with the following keys:
-     *   * calendardata - The iCalendar-compatible calendar data
-     *   * uri - a unique key which will be used to construct the uri. This can
-     *     be any arbitrary string, but making sure it ends with '.ics' is a
-     *     good idea. This is only the basename, or filename, not the full
-     *     path.
-     *   * lastmodified - a timestamp of the last modification time
-     *   * etag - An arbitrary string, surrounded by double-quotes. (e.g.:
-     *   '"abcdef"')
-     *   * size - The size of the calendar objects, in bytes.
-     *   * component - optional, a string containing the type of object, such
-     *     as 'vevent' or 'vtodo'. If specified, this will be used to populate
-     *     the Content-Type header.
-     *
-     * Note that the etag is optional, but it's highly encouraged to return for
-     * speed reasons.
-     *
-     * The calendardata is also optional. If it's not returned
-     * 'getCalendarObject' will be called later, which *is* expected to return
-     * calendardata.
-     *
-     * If neither etag or size are specified, the calendardata will be
-     * used/fetched to determine these numbers. If both are specified the
-     * amount of times this is needed is reduced by a great degree.
-     *
+     * Datas for this task.
+     * 
+     * @param mixed $task
      * @return array
      */
-    public function getCalendarObjects()
+    public function prepareData($task)
     {
-        $dates = $this->getObjects();
+        if ($task instanceof Task)
+        {
+            try {
+                $vcal = (new ExportTask())
+                    ->execute([
+                        'account_id' => Auth::user()->account_id,
+                        'task_id' => $task->id,
+                    ]);
 
-        return $dates->map(function ($date) {
-            return $this->prepareCal($date);
-        })
-        ->filter(function ($event) {
-            return ! is_null($event);
-        })
-        ->toArray();
-    }
+                $calendardata = $vcal->serialize();
 
-    /**
-     * Returns information from a single calendar object, based on it's object
-     * uri.
-     *
-     * The object uri is only the basename, or filename and not a full path.
-     *
-     * The returned array must have the same keys as getCalendarObjects. The
-     * 'calendardata' object is required here though, while it's not required
-     * for getCalendarObjects.
-     *
-     * This method must return null if the object did not exist.
-     *
-     * @param string $objectUri
-     * @return array|null
-     */
-    public function getCalendarObject($objectUri)
-    {
-        $task = $this->getObject($objectUri);
-
-        if ($task) {
-            return $this->prepareCal($task);
-        }
-    }
-
-    /**
-     * @param Task  $task
-     * @return array
-     */
-    private function prepareCal($task)
-    {
-        try {
-            $vcal = (new ExportTask())
-                ->execute([
-                    'account_id' => Auth::user()->account_id,
-                    'task_id' => $task->id,
-                ]);
-
-            $calendardata = $vcal->serialize();
-
-            return [
-                'id' => $task->id,
-                'uri' => $this->encodeUri($task),
-                'calendardata' => $calendardata,
-                'etag' => '"'.md5($calendardata).'"',
-                'lastmodified' => $task->updated_at->timestamp,
-            ];
-        } catch (\Exception $e) {
-            Log::debug(__CLASS__.' prepareCal: '.(string) $e);
+                return [
+                    'id' => $task->id,
+                    'uri' => $this->encodeUri($task),
+                    'calendardata' => $calendardata,
+                    'etag' => '"'.md5($calendardata).'"',
+                    'lastmodified' => $task->updated_at->timestamp,
+                ];
+            } catch (\Exception $e) {
+                Log::debug(__CLASS__.' prepareData: '.(string) $e);
+            }
         }
     }
 
@@ -216,6 +154,7 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
         if (! array_has($result, 'error')) {
             $task = Task::where('account_id', Auth::user()->account_id)
                 ->find($result['task_id']);
+
             $calendar = $this->prepareCal($task);
 
             return $calendar['etag'];
@@ -234,18 +173,16 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
     {
         $task = $this->getObject($objectUri);
 
-        if (! $task) {
-            return;
-        }
-
-        try {
-            (new DestroyTask)
-                ->execute([
-                    'account_id' => Auth::user()->account_id,
-                    'task_id' => $task->id,
-                ]);
-        } catch (\Exception $e) {
-            Log::debug(__CLASS__.' importCard: '.(string) $e);
+        if ($task) {
+            try {
+                (new DestroyTask)
+                    ->execute([
+                        'account_id' => Auth::user()->account_id,
+                        'task_id' => $task->id,
+                    ]);
+            } catch (\Exception $e) {
+                Log::debug(__CLASS__.' deleteCalendarObject: '.(string) $e);
+            }
         }
     }
 }

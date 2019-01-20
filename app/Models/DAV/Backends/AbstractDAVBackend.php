@@ -206,7 +206,7 @@ trait AbstractDAVBackend
      * @param string  $uri
      * @return mixed
      */
-    private function getObject($uri)
+    public function getObject($uri)
     {
         try {
             return $this->getObjectUuid($this->decodeUri($uri));

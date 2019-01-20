@@ -17,7 +17,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * @return array
      */
-    private function getBackends()
+    private function getBackends(): array
     {
         return [
             new CalDAVBirthdays(),
@@ -30,7 +30,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * @return ICalDAVBackend
      */
-    private function getBackend($id)
+    private function getBackend($id): ICalDAVBackend
     {
         return collect($this->getBackends())->first(function ($backend) use ($id) {
             return $backend->backendUri() === $id;
@@ -172,7 +172,17 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         $backend = $this->getBackend($calendarId);
         if ($backend) {
-            return $backend->getCalendarObjects();
+
+            $objs = $backend->getObjects();
+
+            return $objs
+                ->map(function ($date) use ($backend) {
+                    return $backend->prepareData($date);
+                })
+                ->filter(function ($event) {
+                    return ! is_null($event);
+                })
+                ->toArray();
         }
     }
 
@@ -196,7 +206,12 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         $backend = $this->getBackend($calendarId);
         if ($backend) {
-            return $backend->getCalendarObject($objectUri);
+
+            $obj = $backend->getObject($objectUri);
+
+            if ($obj) {
+                return $backend->prepareData($obj);
+            }
         }
     }
 

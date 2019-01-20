@@ -41,9 +41,9 @@ interface ICalDAVBackend
     public function getChanges($syncToken);
 
     /**
-     * Returns all calendar objects within a calendar.
+     * Returns calendar object.
      *
-     * Every item contains an array with the following keys:
+     * It returns an array with the following keys:
      *   * calendardata - The iCalendar-compatible calendar data
      *   * uri - a unique key which will be used to construct the uri. This can
      *     be any arbitrary string, but making sure it ends with '.ics' is a
@@ -60,34 +60,10 @@ interface ICalDAVBackend
      * Note that the etag is optional, but it's highly encouraged to return for
      * speed reasons.
      *
-     * The calendardata is also optional. If it's not returned
-     * 'getCalendarObject' will be called later, which *is* expected to return
-     * calendardata.
-     *
-     * If neither etag or size are specified, the calendardata will be
-     * used/fetched to determine these numbers. If both are specified the
-     * amount of times this is needed is reduced by a great degree.
-     *
+     * @param mixed $obj
      * @return array
      */
-    public function getCalendarObjects();
-
-    /**
-     * Returns information from a single calendar object, based on it's object
-     * uri.
-     *
-     * The object uri is only the basename, or filename and not a full path.
-     *
-     * The returned array must have the same keys as getCalendarObjects. The
-     * 'calendardata' object is required here though, while it's not required
-     * for getCalendarObjects.
-     *
-     * This method must return null if the object did not exist.
-     *
-     * @param string $objectUri
-     * @return array|null
-     */
-    public function getCalendarObject($objectUri);
+    public function prepareData($obj);
 
     /**
      * Updates an existing calendarobject, based on it's uri.

@@ -135,6 +135,12 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         return $this->getChanges($syncToken);
     }
 
+    /**
+     * Prepare datas for this contact.
+     * 
+     * @param Contact $contact
+     * @return array|null
+     */
     private function prepareCard($contact)
     {
         try {
@@ -166,14 +172,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function getObjectUuid($uuid)
     {
-        try {
-            return Contact::where([
-                'account_id' => Auth::user()->account_id,
-                'uuid' => $uuid,
-            ])->first();
-        } catch (\Exception $e) {
-            // Object not found
-        }
+        return Contact::where([
+            'account_id' => Auth::user()->account_id,
+            'uuid' => $uuid,
+        ])->first();
     }
 
     /**
@@ -221,10 +223,14 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     /**
      * Returns a specific card.
      *
-     * The same set of prope
+     * The same set of properties must be returned as with getCards. The only
+     * exception is that 'carddata' is absolutely required.
+     *
+     * If the card does not exist, you must return false.
+     *
      * @param mixed $addressBookId
      * @param string $cardUri
-     * @return array
+     * @return array|boolean
      */
     public function getCard($addressBookId, $cardUri)
     {
@@ -233,6 +239,8 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         if ($contact) {
             return $this->prepareCard($contact);
         }
+
+        return false;
     }
 
     /**
