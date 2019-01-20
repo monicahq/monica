@@ -178,7 +178,7 @@ trait AbstractDAVBackend
         ];
     }
 
-    private function encodeUri($obj)
+    protected function encodeUri($obj)
     {
         if (empty($obj->uuid)) {
             // refresh model from database

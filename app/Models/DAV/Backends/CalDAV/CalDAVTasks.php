@@ -15,10 +15,8 @@ use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Models\DAV\Backends\PrincipalBackend;
 use App\Models\DAV\Backends\AbstractDAVBackend;
 
-class CalDAVTasks implements ICalDAVBackend, IDAVBackend
+class CalDAVTasks extends AbstractCalDAVBackend
 {
-    use AbstractDAVBackend;
-
     /**
      * Returns the uri for this backend.
      *
@@ -154,7 +152,7 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
             $task = Task::where('account_id', Auth::user()->account_id)
                 ->find($result['task_id']);
 
-            $calendar = $this->prepareCal($task);
+            $calendar = $this->prepareData($task);
 
             return $calendar['etag'];
         }

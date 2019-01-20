@@ -7,8 +7,8 @@ use App\Models\User\SyncToken;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Models\DAV\Backends\CalDAV\CalDAVTasks;
-use App\Models\DAV\Backends\CalDAV\ICalDAVBackend;
 use App\Models\DAV\Backends\CalDAV\CalDAVBirthdays;
+use App\Models\DAV\Backends\CalDAV\AbstractCalDAVBackend;
 
 class CalDAVBackend extends AbstractBackend implements SyncSupport
 {
@@ -28,9 +28,9 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     /**
      * Get the backend for this id.
      *
-     * @return ICalDAVBackend
+     * @return AbstractCalDAVBackend
      */
-    private function getBackend($id): ICalDAVBackend
+    private function getBackend($id): AbstractCalDAVBackend
     {
         return collect($this->getBackends())->first(function ($backend) use ($id) {
             return $backend->backendUri() === $id;
