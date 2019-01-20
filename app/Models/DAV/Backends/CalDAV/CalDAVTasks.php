@@ -32,7 +32,7 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
     public function getDescription()
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken();
+        $token = $this->getCurrentSyncToken();
 
         return [
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
@@ -64,14 +64,10 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
      */
     public function getObjectUuid($uuid)
     {
-        try {
-            return Task::where([
-                'account_id' => Auth::user()->account_id,
-                'uuid' => $uuid,
-            ])->first();
-        } catch (\Exception $e) {
-            return;
-        }
+        return Task::where([
+            'account_id' => Auth::user()->account_id,
+            'uuid' => $uuid,
+        ])->first();
     }
 
     /**
@@ -146,15 +142,14 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
     {
         $task = $this->getObject($objectUri);
 
-        if (! $task) {
-            return;
+        if ($task) {
+            return $this->prepareCal($task);
         }
-
-        return $this->prepareCal($task);
     }
 
     /**
      * @param Task  $task
+     * @return array
      */
     private function prepareCal($task)
     {
@@ -164,21 +159,19 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
                     'account_id' => Auth::user()->account_id,
                     'task_id' => $task->id,
                 ]);
+
+            $calendardata = $vcal->serialize();
+
+            return [
+                'id' => $task->id,
+                'uri' => $this->encodeUri($task),
+                'calendardata' => $calendardata,
+                'etag' => '"'.md5($calendardata).'"',
+                'lastmodified' => $task->updated_at->timestamp,
+            ];
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' prepareCal: '.(string) $e);
-
-            return;
         }
-
-        $calendardata = $vcal->serialize();
-
-        return [
-            'id' => $task->id,
-            'uri' => $this->encodeUri($task),
-            'calendardata' => $calendardata,
-            'etag' => '"'.md5($calendardata).'"',
-            'lastmodified' => $task->updated_at->timestamp,
-        ];
     }
 
     /**
@@ -217,7 +210,7 @@ class CalDAVTasks implements ICalDAVBackend, IDAVBackend
                     'entry' => $calendarData,
                 ]);
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' importCard: '.(string) $e);
+            Log::debug(__CLASS__.' updateOrCreateCalendarObject: '.(string) $e);
         }
 
         if (! array_has($result, 'error')) {

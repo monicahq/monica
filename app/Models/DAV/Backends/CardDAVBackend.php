@@ -49,7 +49,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     public function getAddressBooksForUser($principalUri)
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken();
+        $token = $this->getCurrentSyncToken();
 
         return [
             [
@@ -137,29 +137,25 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
     private function prepareCard($contact)
     {
-        if (! $contact) {
-            return;
-        }
-
         try {
             $vcard = (new ExportVCard())
                 ->execute([
                     'account_id' => Auth::user()->account_id,
                     'contact_id' => $contact->id,
                 ]);
+
+            $carddata = $vcard->serialize();
+
+            return [
+                'id' => $contact->hashID(),
+                'uri' => $this->encodeUri($contact),
+                'carddata' => $carddata,
+                'etag' => '"'.md5($carddata).'"',
+                'lastmodified' => $contact->updated_at->timestamp,
+            ];
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' prepareCard: '.(string) $e);
         }
-
-        $carddata = $vcard->serialize();
-
-        return [
-            'id' => $contact->hashID(),
-            'uri' => $this->encodeUri($contact),
-            'carddata' => $carddata,
-            'etag' => '"'.md5($carddata).'"',
-            'lastmodified' => $contact->updated_at->timestamp,
-        ];
     }
 
     /**
@@ -176,7 +172,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 'uuid' => $uuid,
             ])->first();
         } catch (\Exception $e) {
-            return;
+            // Object not found
         }
     }
 
@@ -234,11 +230,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     {
         $contact = $this->getObject($cardUri);
 
-        if (! $contact) {
-            return;
+        if ($contact) {
+            return $this->prepareCard($contact);
         }
-
-        return $this->prepareCard($contact);
     }
 
     /**
@@ -315,7 +309,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
                 ]);
         } catch (\Exception $e) {
-            Log::debug(__CLASS__.' importCard: '.(string) $e);
+            Log::debug(__CLASS__.' updateCard: '.(string) $e);
         }
 
         if (! array_has($result, 'error')) {

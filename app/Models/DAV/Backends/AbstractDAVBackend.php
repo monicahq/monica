@@ -17,7 +17,7 @@ trait AbstractDAVBackend
      *
      * @return SyncToken
      */
-    protected function getSyncToken()
+    protected function getCurrentSyncToken()
     {
         $tokens = SyncToken::where([
             'account_id' => Auth::user()->account_id,
@@ -38,6 +38,21 @@ trait AbstractDAVBackend
         }
 
         return $token;
+    }
+
+    /**
+     * Get SyncToken by token id.
+     *
+     * @return SyncToken
+     */
+    protected function getSyncToken($syncToken)
+    {
+        return SyncToken::where([
+            'account_id' => Auth::user()->account_id,
+            'user_id' => Auth::user()->id,
+            'name' => $this->backendUri(),
+        ])
+            ->find($syncToken);
     }
 
     /**
@@ -121,20 +136,16 @@ trait AbstractDAVBackend
      * @param string $syncToken
      * @return array
      */
-    public function getChanges($syncToken)
+    public function getChanges($syncToken): array
     {
         $token = null;
         $timestamp = null;
         if (! empty($syncToken)) {
-            $token = SyncToken::where([
-                'account_id' => Auth::user()->account_id,
-                'user_id' => Auth::user()->id,
-                'name' => $this->backendUri(),
-            ])->find($syncToken);
+            $token = $this->getSyncToken($syncToken);
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return;
+                return null;
             }
 
             $timestamp = $token->timestamp;
@@ -197,7 +208,11 @@ trait AbstractDAVBackend
      */
     private function getObject($uri)
     {
-        return $this->getObjectUuid($this->decodeUri($uri));
+        try {
+            return $this->getObjectUuid($this->decodeUri($uri));
+        } catch (\Exception $e) {
+            // Object not found
+        }
     }
 
     /**

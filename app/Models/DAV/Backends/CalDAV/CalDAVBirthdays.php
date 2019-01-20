@@ -31,7 +31,7 @@ class CalDAVBirthdays implements ICalDAVBackend, IDAVBackend
     public function getDescription()
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken();
+        $token = $this->getCurrentSyncToken();
 
         return [
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
@@ -115,15 +115,14 @@ class CalDAVBirthdays implements ICalDAVBackend, IDAVBackend
     {
         $date = $this->getObject($objectUri);
 
-        if (! $date) {
-            return;
+        if ($date) {
+            return $this->prepareCal($date);
         }
-
-        return $this->prepareCal($date);
     }
 
     /**
      * @param SpecialDate  $date
+     * @return array
      */
     private function prepareCal($date)
     {
@@ -133,21 +132,19 @@ class CalDAVBirthdays implements ICalDAVBackend, IDAVBackend
                     'account_id' => Auth::user()->account_id,
                     'special_date_id' => $date->id,
                 ]);
+
+            $calendardata = $vcal->serialize();
+
+            return [
+                'id' => $date->id,
+                'uri' => $this->encodeUri($date),
+                'calendardata' => $calendardata,
+                'etag' => '"'.md5($calendardata).'"',
+                'lastmodified' => $date->updated_at->timestamp,
+            ];
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' prepareCal: '.(string) $e);
-
-            return;
         }
-
-        $calendardata = $vcal->serialize();
-
-        return [
-            'id' => $date->id,
-            'uri' => $this->encodeUri($date),
-            'calendardata' => $calendardata,
-            'etag' => '"'.md5($calendardata).'"',
-            'lastmodified' => $date->updated_at->timestamp,
-        ];
     }
 
     private function hasBirthday($contact)
@@ -171,14 +168,10 @@ class CalDAVBirthdays implements ICalDAVBackend, IDAVBackend
      */
     public function getObjectUuid($uuid)
     {
-        try {
-            return SpecialDate::where([
-                'account_id' => Auth::user()->account_id,
-                'uuid' => $uuid,
-            ])->first();
-        } catch (\Exception $e) {
-            return;
-        }
+        return SpecialDate::where([
+            'account_id' => Auth::user()->account_id,
+            'uuid' => $uuid,
+        ])->first();
     }
 
     /**
