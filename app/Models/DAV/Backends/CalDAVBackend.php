@@ -7,10 +7,16 @@ use App\Models\User\SyncToken;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
 use App\Models\DAV\Backends\CalDAV\CalDAVTasks;
+use App\Models\DAV\Backends\CalDAV\ICalDAVBackend;
 use App\Models\DAV\Backends\CalDAV\CalDAVBirthdays;
 
 class CalDAVBackend extends AbstractBackend implements SyncSupport
 {
+    /**
+     * Set the Calendar backends.
+     * 
+     * @return array
+     */
     private function getBackends()
     {
         return [
@@ -19,10 +25,15 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
         ];
     }
 
+    /**
+     * Get the backend for this id.
+     * 
+     * @return ICalDAVBackend
+     */
     private function getBackend($id)
     {
         return collect($this->getBackends())->first(function ($backend) use ($id) {
-            return $backend->id === $id;
+            return $backend->backendUri() === $id;
         });
     }
 
@@ -54,7 +65,11 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getCalendarsForUser($principalUri)
     {
         return array_map(function ($backend) {
-            return $backend->getDescription();
+            return $backend->getDescription()
+            + [
+                'id' => $backend->backendUri(),
+                'uri' => $backend->backendUri(),
+            ];
         }, $this->getBackends());
     }
 
@@ -118,7 +133,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     {
         $backend = $this->getBackend($calendarId);
         if ($backend) {
-            return $backend->getChangesForCalendar($syncToken, $syncLevel, $limit);
+            return $backend->getChanges($syncToken);
         }
     }
 

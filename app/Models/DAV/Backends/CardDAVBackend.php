@@ -15,9 +15,19 @@ use Sabre\CardDAV\Backend\SyncSupport;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 
-class CardDAVBackend extends AbstractBackend implements SyncSupport
+class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
     use AbstractDAVBackend;
+
+    /**
+     * Returns the uri for this backend.
+     * 
+     * @return string
+     */
+    public function backendUri()
+    {
+        return 'contacts';
+    }
 
     /**
      * Returns the list of addressbooks for a specific user.
@@ -39,12 +49,12 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
     public function getAddressBooksForUser($principalUri)
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken('contacts');
+        $token = $this->getSyncToken();
 
         return [
             [
-                'id'                => 0,
-                'uri'               => 'contacts',
+                'id'                => $this->backendUri(),
+                'uri'               => $this->backendUri(),
                 'principaluri'      => PrincipalBackend::getPrincipalUser(),
                 '{DAV:}sync-token'  => $token->id,
                 '{DAV:}displayname' => $name,
@@ -122,7 +132,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
     {
-        return $this->getChanges('contacts', $syncToken, $syncLevel, $limit);
+        return $this->getChanges($syncToken);
     }
 
     private function prepareCard($contact)
@@ -175,7 +185,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      *
      * @return \Illuminate\Support\Collection
      */
-    private function getObjects()
+    public function getObjects()
     {
         return Auth::user()->account
                     ->contacts()
@@ -258,7 +268,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function createCard($addressBookId, $cardUri, $cardData)
     {
-        return $this->importCard(null, $cardData);
+        return $this->updateCard($addressBookId, $cardUri, $cardData);
     }
 
     /**
@@ -287,11 +297,6 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport
      * @return string|null
      */
     public function updateCard($addressBookId, $cardUri, $cardData)
-    {
-        return $this->importCard($cardUri, $cardData);
-    }
-
-    private function importCard($cardUri, $cardData)
     {
         $contact_id = null;
         if ($cardUri) {

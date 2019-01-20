@@ -55,11 +55,11 @@ class ExportTask extends BaseService
 
         // Basic information
         $vcal = new VCalendar([
-            'UID' => $task->uuid,
+            //'UID' => $task->uuid,
         ]);
 
         $this->exportTimezone($vcal);
-        $this->exportTask($task, $vcal);
+        $this->exportVTodo($task, $vcal);
 
         return $vcal;
     }
@@ -78,21 +78,25 @@ class ExportTask extends BaseService
      * @param Task $task
      * @param VCalendar $vcard
      */
-    private function exportTask(Task $task, VCalendar $vcal)
+    private function exportVTodo(Task $task, VCalendar $vcal)
     {
         $contact = $task->contact;
 
         $vcal->add('VTODO', [
             'UID' => $task->uuid,
             'SUMMARY' => $task->title,
-            'COMPLETED' => $task->completed_at,
-            'STATUS' => $task->completed ? 'COMPLETED' : 'NEEDS-ACTION',
             'CREATED' => DateHelper::parseDateTime($task->created_at, Auth::user()->timezone),
             'DTSTAMP' => DateHelper::parseDateTime($task->created_at),
-            'DESCRIPTION' => $contact ? trans('mail.footer_contact_info2_link', [
-                    'name' => $contact->name,
-                    'url' => route('people.show', $contact),
-                ]) : '',
         ]);
+        if (! empty($task->description)) {
+            $vcal->VTODO->add('DESCRIPTION', $task->description);
+        }
+        if ($contact) {
+            $vcal->VTODO->add('ATTACH', route('people.show', $contact));
+        }
+        if ($task->completed) {
+            $vcal->VTODO->add('COMPLETED', $task->completed_at);
+            $vcal->VTODO->add('STATUS', 'COMPLETED');
+        }
     }
 }

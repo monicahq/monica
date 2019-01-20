@@ -8,6 +8,7 @@ use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Task;
 use App\Services\BaseService;
+use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCalendar;
 
 class ImportTask extends BaseService
@@ -112,12 +113,12 @@ class ImportTask extends BaseService
      * @param array $data
      * @return VCalendar
      */
-    private function getEntry($data)
+    private function getEntry($data) : VCalendar
     {
         try {
             $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
         } catch (ParseException $e) {
-            return;
+            return null;
         }
 
         return $entry;
@@ -144,6 +145,9 @@ class ImportTask extends BaseService
     private function importSummary(Task $task, VCalendar $entry)
     {
         $task->title = $this->formatValue($entry->VTODO->SUMMARY);
+        if ($entry->VTODO->DESCRIPTION) {
+            $task->description = $this->formatValue($entry->VTODO->DESCRIPTION);
+        }
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models\DAV\Backends;
 
+use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
@@ -16,23 +17,23 @@ trait AbstractDAVBackend
      *
      * @return SyncToken
      */
-    protected function getSyncToken($name)
+    protected function getSyncToken()
     {
         $tokens = SyncToken::where([
             'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
-            'name' => $name,
+            'name' => $this->backendUri(),
         ])
             ->orderBy('created_at')
             ->get();
 
         if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken($name);
+            $token = $this->createSyncToken();
         } else {
             $token = $tokens->last();
 
             if ($token->timestamp < $this->getLastModified()) {
-                $token = $this->createSyncToken($name);
+                $token = $this->createSyncToken();
             }
         }
 
@@ -44,14 +45,14 @@ trait AbstractDAVBackend
      *
      * @return SyncToken
      */
-    private function createSyncToken($name)
+    private function createSyncToken()
     {
         $max = $this->getLastModified();
 
         return SyncToken::create([
             'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
-            'name' => $name,
+            'name' => $this->backendUri(),
             'timestamp' => $max,
         ]);
     }
@@ -117,13 +118,10 @@ trait AbstractDAVBackend
      *
      * The limit is 'suggestive'. You are free to ignore it.
      *
-     * @param string $name
      * @param string $syncToken
-     * @param int $syncLevel
-     * @param int $limit
      * @return array
      */
-    public function getChanges($name, $syncToken, $syncLevel, $limit = null)
+    public function getChanges($syncToken)
     {
         $token = null;
         $timestamp = null;
@@ -131,7 +129,7 @@ trait AbstractDAVBackend
             $token = SyncToken::where([
                 'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
-                'name' => $name,
+                'name' => $this->backendUri(),
             ])->find($syncToken);
 
             if (is_null($token)) {
@@ -141,7 +139,7 @@ trait AbstractDAVBackend
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncToken($name);
+            $token = $this->createSyncToken();
             $timestamp = null;
         }
 
