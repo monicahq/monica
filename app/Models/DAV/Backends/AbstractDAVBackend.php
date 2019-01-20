@@ -21,7 +21,7 @@ trait AbstractDAVBackend
         $tokens = SyncToken::where([
             'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
-            'name' => $name
+            'name' => $name,
         ])
             ->orderBy('created_at')
             ->get();
@@ -131,7 +131,7 @@ trait AbstractDAVBackend
             $token = SyncToken::where([
                 'account_id' => Auth::user()->account_id,
                 'user_id' => Auth::user()->id,
-                'name' => $name
+                'name' => $name,
             ])->find($syncToken);
 
             if (is_null($token)) {
