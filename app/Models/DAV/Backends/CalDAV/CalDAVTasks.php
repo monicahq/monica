@@ -10,10 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
-use App\Models\DAV\Backends\IDAVBackend;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Models\DAV\Backends\PrincipalBackend;
-use App\Models\DAV\Backends\AbstractDAVBackend;
 
 class CalDAVTasks extends AbstractCalDAVBackend
 {
