@@ -145,7 +145,7 @@ trait AbstractDAVBackend
 
             if (is_null($token)) {
                 // syncToken is not recognized
-                return null;
+                return;
             }
 
             $timestamp = $token->timestamp;
