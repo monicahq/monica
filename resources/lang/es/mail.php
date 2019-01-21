@@ -23,6 +23,6 @@ return [
     'notifications_rights' => 'All rights reserved',
 
     'confirmation_email_title' => 'Monica – Email verification',
-    'confirmation_email_intro'=> 'To validate your email click on the button below',
-    'confirmation_email_button' => 'Verify email address',
+    'confirmation_email_intro'=> 'Para validar tu email haz click en el botón de abajo',
+    'confirmation_email_button' => 'Verificar la dirección de correo electrónico',
 ];
