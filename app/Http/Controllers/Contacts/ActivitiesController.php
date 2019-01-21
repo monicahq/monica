@@ -13,6 +13,7 @@ use App\Services\Activity\Activity\CreateActivity;
 use App\Services\Activity\Activity\DestroyActivity;
 use App\Services\Activity\Activity\AttachContactToActivity;
 use App\Http\Resources\Activity\Activity as ActivityResource;
+use App\Http\Resources\Contact\Contact as ContactResource;
 
 class ActivitiesController extends Controller
 {
@@ -40,6 +41,28 @@ class ActivitiesController extends Controller
         $activities = $contact->activities()->orderBy('happened_at', 'desc')->get();
 
         return ActivityResource::collection($activities);
+    }
+
+    /**
+     * Get the list of contacts.
+     * For performance purposes we have to create our own collection instead of
+     * returning a JSON resource.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function contacts(Request $request)
+    {
+        $contactsCollection = collect([]);
+        $contacts = auth()->user()->account->contacts;
+
+        foreach ($contacts as $contact) {
+            $contactsCollection->push([
+                'id' => $contact->id,
+                'name' => $contact->name,
+            ]);
+        }
+        return $contactsCollection;
     }
 
     /**

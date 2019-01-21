@@ -114,7 +114,7 @@
           <label>
             Who participated in this activity?
           </label>
-          <participant-list v-on:change="updateParticipant($event)" />
+          <participant-list :hash="hash" v-on:update="updateParticipant($event)" />
         </div>
 
         <!-- ACTIONS -->
@@ -203,6 +203,8 @@ export default {
     return {
       displayLogActivity: false,
       activities: [],
+      emotions: [],
+      participants: [],
       dirltr: true,
       displayDescription: false,
       displayEmotions: false,
@@ -220,11 +222,11 @@ export default {
   },
 
   mounted() {
-    this.prepareComponent(this.hash);
+    this.prepareComponent();
   },
 
   methods: {
-    prepareComponent(hash) {
+    prepareComponent() {
       this.dirltr = this.$root.htmldir == 'ltr';
       this.getActivities();
       this.todayDate = moment().format('YYYY-MM-DD');
@@ -240,6 +242,7 @@ export default {
       this.description = '';
       this.happened_at = '';
       this.emotions = [];
+      this.participants = [];
       this.activity_type_id = 0;
       this.displayLogActivity = false;
     },
@@ -272,7 +275,8 @@ export default {
         .then(response => {
           this.displayLogActivity = false;
           this.getActivities();
-          this.chosenEmotions = [];
+          this.emotions = [];
+          this.participants = [];
           this.resetFields();
 
           this.$notify({
@@ -289,7 +293,7 @@ export default {
         .then(response => {
           this.getactivities();
           this.editCallId = 0;
-          this.chosenEmotions = [];
+          this.emotions = [];
 
           this.$notify({
             group: 'main',
@@ -318,16 +322,20 @@ export default {
         });
     },
 
+    updateParticipant: function (participants) {
+      this.participants = participants;
+    },
+
     updateEmotionsList: function(emotions) {
-      this.chosenEmotions = emotions;
+      this.emotions = emotions;
       this.newActivity.emotions = [];
       this.editCall.emotions = [];
 
       // filter the list of emotions to populate a new array
       // containing only the emotion ids and not the entire objetcs
-      for (let i = 0; i < this.chosenEmotions.length; i++) {
-        this.newActivity.emotions.push(this.chosenEmotions[i].id);
-        this.editCall.emotions.push(this.chosenEmotions[i].id);
+      for (let i = 0; i < this.emotions.length; i++) {
+        this.newActivity.emotions.push(this.emotions[i].id);
+        this.editCall.emotions.push(this.emotions[i].id);
       }
     }
   }

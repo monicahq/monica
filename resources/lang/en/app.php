@@ -37,6 +37,7 @@ return [
     'next' => 'Next ❯',
     'previous' => '❮ Previous',
     'retry' => 'Retry',
+    'filter' => 'Filter the list',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',

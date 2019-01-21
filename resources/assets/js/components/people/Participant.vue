@@ -1,29 +1,52 @@
 <style scoped>
+.participant {
+  background: #E5F3F9;
+  border-radius: 7px;
+}
+input[type=text] {
+  background-color: #f5f5f5;
+}
+input[type=text]:focus {
+  background-color: #fff;
+}
+.potential-participant:hover {
+  background-color: #f1f5fd;
+}
 </style>
 
 <template>
   <div>
     <div class="relative">
-      <v-autocomplete :items="participants"
-        v-model="participant"
-        :get-label="getLabel"
-        @update-items="updateItems"
-        @item-selected="click"
-        @blur="clearSearch"
-        :wait="wait"
-        :min-len="minLen"
-        :keep-open="true"
-        :input-attrs="input"
-        :autoSelectOneItem="false"
-        :keepOpen="true"
-        >
-      </v-autocomplete>
+      <ul v-show="chosenParticipants.length != 0" class="mr2 mb3">
+        <li v-for="chosenParticipant in chosenParticipants"
+            :key="chosenParticipant.id"
+            class="dib participant br5 mr2">
+          <span class="ph2 pv1 dib">
+            {{ chosenParticipant.name }}
+          </span>
+          <span class="bl ph2 pv1 f6 pointer" @click.prevent="remove(chosenParticipant)">
+            ❌
+          </span>
+        </li>
+      </ul>
+      <div class="ba b--gray-monica" v-show="participants.length != 0">
+        <span class="db bb b--gray-monica pa2">
+          <input type="text" v-model="search" :placeholder="$t('app.filter')" class="br2 f5 w-100 ba b--black-20 pa2 outline-0" />
+        </span>
+        <ul class="overflow-auto" style="height: 150px;">
+          <li v-for="participant in filteredList"
+            :key="participant.id"
+            @click.prevent="select(participant)"
+            class="bb b--gray-monica pa2 pointer potential-participant">
+            {{ participant.name }}
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import vAutocomplete from 'v-autocomplete';
 
 export default {
 
@@ -33,23 +56,19 @@ export default {
       default: function () {
         return [];
       }
-    }
-  },
-
-  components: {
-    vAutocomplete
+    },
+    hash: {
+      type: String,
+      default: '',
+    },
   },
 
   data() {
     return {
+      search: '',
       participants: [],
       chosenParticipants: [],
-      menu: false,
       participant: null,
-      input: {
-          class: 'form-control header-search-input',
-          placeholder: this.placeholder
-      }
     };
   },
 
@@ -58,82 +77,48 @@ export default {
     this.chosenParticipants = this.initialParticipants;
   },
 
-  created() {
-    window.addEventListener('click', this.close);
-  },
+  computed: {
+    filteredList() {
+      // filter the list when searching
+      // also, sort the list by name
+      var list;
+      list = this.participants.filter(participant => {
+        return participant.name.toLowerCase().includes(this.search.toLowerCase())
+      });
 
-  beforeDestroy() {
-    window.removeEventListener('click', this.close);
+      function compare(a, b) {
+        if (a.name < b.name)
+          return -1;
+        if (a.name > b.name)
+          return 1;
+        return 0;
+      }
+
+      return list.sort(compare);
+    }
   },
 
   methods: {
     prepareComponent() {
+      this.getParticipants();
     },
 
-    close(e) {
-      if (!this.$el.contains(e.target)) {
-        this.menu = false;
-      }
-    },
-
-    getLabel (item) {
-      return item != null ? item.keyword : '';
-    },
-
-    updateParticipants (text) {
-      this.getParticipants(text, this).then( (response) => {
-        this.participants = response
-      })
-    },
-
-    getParticipants: function (keyword, vm) {
-      return axios.post('/people/search', {
-          needle: keyword
-      }).then(function(response) {
-          let data = [];
-          if (response.data.noResults != null) {
-              data.push({
-                  'item' : -1,
-                  'message': response.data.noResults,
-                  'keyword': keyword,
-              });
-          }
-          else {
-              response.data.data.forEach(function (contact) {
-                  if (contact.id === vm.userContactId) {
-                      return;
-                  }
-                  contact.keyword = keyword;
-                  data.push(contact);
-              });
-          }
-          return data;
-      });
-    },
-
-    getEmotions(id) {
-      axios.get('/emotions/primaries/' + this.selectedPrimaryEmotionId + '/secondaries/' + this.selectedSecondaryEmotionId + '/emotions')
+    getParticipants: function () {
+      axios.get('/people/' + this.hash + '/activities/contacts')
         .then(response => {
-          this.emotions = response.data.data;
+          this.participants = response.data;
         });
     },
 
-    showEmotion(secondaryEmotion) {
-      this.selectedSecondaryEmotionId = secondaryEmotion.id;
-      this.getEmotions();
-      this.emotionsMenu = 'emotions';
+    select(participant) {
+      this.chosenParticipants.push(participant);
+      this.participants.splice(this.participants.indexOf(participant), 1);
+      this.$emit('update', this.chosenParticipants);
     },
 
-    addEmotion(emotion) {
-      this.menu = false;
-      this.chosenParticipants.push(emotion);
-      this.emotionsMenu = 'primary';
-      this.$emit('updateEmotionsList', this.chosenParticipants);
-    },
-
-    removeEmotion(emotion) {
-      this.chosenParticipants.splice(emotion, 1);
-      this.$emit('updateEmotionsList', this.chosenParticipants);
+    remove(participant) {
+      this.participants.push(participant);
+      this.chosenParticipants.splice(this.chosenParticipants.indexOf(participant), 1);
     }
   }
 };
