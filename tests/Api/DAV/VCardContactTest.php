@@ -6,12 +6,12 @@ use Tests\ApiTestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class CarddavContactTest extends ApiTestCase
+class VCardContactTest extends ApiTestCase
 {
-    use DatabaseTransactions;
+    use DatabaseTransactions, CardEtag;
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_get_one_contact()
     {
@@ -20,19 +20,18 @@ class CarddavContactTest extends ApiTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->get("/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf");
+        $response = $this->get("/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [
+            'HTTP_ACCEPT' => 'text/vcard; version=4.0'
+        ]);
 
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
 
-        $response->assertSee('PRODID:-//Sabre//Sabre VObject');
-        $response->assertSee('FN:John Doe');
-        $response->assertSee('N:Doe;John;;;');
-        $response->assertSee('GENDER:O;');
+        $this->assertEquals($this->getCard($contact, true), $response->getContent());
     }
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_put_one_contact()
     {
@@ -55,7 +54,7 @@ class CarddavContactTest extends ApiTestCase
     }
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_update_existing_contact()
     {
@@ -63,9 +62,8 @@ class CarddavContactTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
         ]);
-        $filename = urlencode($contact->uuid.'.vcf');
 
-        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$filename}", [], [], [],
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [], [], [],
             ['content-type' => 'application/xml; charset=utf-8'],
             "BEGIN:VCARD\nVERSION:4.0\nFN:John Doex\nN:Doex;John;;;\nEND:VCARD"
         );
@@ -82,7 +80,7 @@ class CarddavContactTest extends ApiTestCase
     }
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_update_existing_contact_if_modified()
     {
@@ -112,7 +110,7 @@ class CarddavContactTest extends ApiTestCase
     }
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_update_existing_contact_if_modified_not_modified()
     {
@@ -142,7 +140,7 @@ class CarddavContactTest extends ApiTestCase
     }
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_update_existing_contact_if_unmodified()
     {
@@ -172,7 +170,7 @@ class CarddavContactTest extends ApiTestCase
     }
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_update_existing_contact_if_unmodified_error()
     {
@@ -203,7 +201,7 @@ class CarddavContactTest extends ApiTestCase
     }
 
     /**
-     * @group carddav
+     * @group dav
      */
     public function test_carddav_update_existing_contact_no_modify()
     {
@@ -226,7 +224,7 @@ class CarddavContactTest extends ApiTestCase
         $response->assertHeader('ETag');
     }
 
-    public function test_carddav_contacts_report()
+    public function test_carddav_contacts_report_version4()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -257,10 +255,58 @@ class CarddavContactTest extends ApiTestCase
           "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              '<d:getetag>&quot;');
-        $response->assertSee('&quot;</d:getetag>'.
+              "<d:getetag>&quot;{$this->getEtag($user, $contact)}&quot;</d:getetag>".
               "<card:address-data>BEGIN:VCARD&#13;\n".
         "VERSION:4.0&#13;\n".
+        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
+        "UID:{$contact->uuid}&#13;\n".
+        "SOURCE:{$peopleurl}&#13;\n".
+        "FN:John Doe&#13;\n".
+        "N:Doe;John;;;&#13;\n".
+        "GENDER:O;&#13;\n".
+        "END:VCARD&#13;\n".
+               '</card:address-data>'.
+             '</d:prop>'.
+             '<d:status>HTTP/1.1 200 OK</d:status>'.
+           '</d:propstat>'.
+          '</d:response>'.
+        '</d:multistatus>');
+    }
+
+    public function test_carddav_contacts_report_version3()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('REPORT', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
+            [
+                'HTTP_DEPTH' => '1',
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            '<card:addressbook-query xmlns:d="DAV:" xmlns:card="urn:ietf:params:xml:ns:carddav">
+               <d:prop>
+                 <d:getetag />
+                 <card:address-data content-type="text/vcard" version="3.0" />
+               </d:prop>
+             </card:addressbook-query>'
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $peopleurl = route('people.show', $contact);
+        $sabreversion = \Sabre\VObject\Version::VERSION;
+
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
+        '<d:response>'.
+          "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>".
+          '<d:propstat>'.
+            '<d:prop>'.
+              "<d:getetag>&quot;{$this->getEtag($user, $contact)}&quot;</d:getetag>".
+              "<card:address-data>BEGIN:VCARD&#13;\n".
+        "VERSION:3.0&#13;\n".
         "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
         "UID:{$contact->uuid}&#13;\n".
         "SOURCE:{$peopleurl}&#13;\n".
@@ -312,8 +358,7 @@ class CarddavContactTest extends ApiTestCase
           "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              '<d:getetag>&quot;');
-        $response->assertSee('&quot;</d:getetag>'.
+              "<d:getetag>&quot;{$this->getEtag($user, $contact1)}&quot;</d:getetag>".
               "<card:address-data>BEGIN:VCARD&#13;\n".
         "VERSION:4.0&#13;\n".
         "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
@@ -333,8 +378,7 @@ class CarddavContactTest extends ApiTestCase
             "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
-                '<d:getetag>&quot;');
-        $response->assertSee('&quot;</d:getetag>'.
+                "<d:getetag>&quot;{$this->getEtag($user, $contact2)}&quot;</d:getetag>".
                 "<card:address-data>BEGIN:VCARD&#13;\n".
           "VERSION:4.0&#13;\n".
           "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\DAV;
 
 use Illuminate\Http\Request;
 use Sabre\CalDAV\CalendarRoot;
+use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
 use App\Models\DAV\AddressBookRoot;
 use Illuminate\Support\Facades\App;
@@ -106,9 +107,11 @@ class DAVController extends Controller
 
         // CardDAV plugin
         $server->addPlugin(new CardDAVPlugin());
+        $server->addPlugin(new VCFExportPlugin());
 
         // CalDAV plugin
         $server->addPlugin(new CalDAVPlugin());
+        $server->addPlugin(new ICSExportPlugin());
 
         // Sync Plugin - rfc6578
         $server->addPlugin(new SyncPlugin());
@@ -118,9 +121,6 @@ class DAVController extends Controller
         $aclPlugin->allowUnauthenticatedAccess = false;
         $aclPlugin->hideNodesFromListings = true;
         $server->addPlugin($aclPlugin);
-
-        // VCFExport
-        $server->addPlugin(new VCFExportPlugin());
 
         // In local environment add browser plugin
         if (App::environment('local')) {

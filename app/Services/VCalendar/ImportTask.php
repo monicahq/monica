@@ -103,6 +103,7 @@ class ImportTask extends BaseService
         $this->importUid($task, $entry);
         $this->importSummary($task, $entry);
         $this->importCompleted($task, $entry);
+        $this->importTimestamp($task, $entry);
 
         $task->save();
 
@@ -139,6 +140,20 @@ class ImportTask extends BaseService
     }
 
     /**
+     * Import uid.
+     *
+     * @param Task $contact
+     * @param  VCalendar $entry
+     * @return void
+     */
+    private function importTimestamp(Task $task, VCalendar $entry): void
+    {
+        if (empty($task->created_at) && $entry->VTODO->CREATED) {
+            $task->created_at = DateHelper::parseDateTime((string) $entry->VTODO->CREATED);
+        }
+    }
+
+    /**
      * @param Task $task
      * @param VCalendar $vcard
      */
@@ -160,7 +175,7 @@ class ImportTask extends BaseService
         if (! $task->completed) {
             $task->completed_at = null;
         } elseif ($entry->VTODO->COMPLETED) {
-            $task->completed_at = DateHelper::parseDate((string) $entry->VTODO->COMPLETED);
+            $task->completed_at = DateHelper::parseDateTime((string) $entry->VTODO->COMPLETED);
         }
     }
 }

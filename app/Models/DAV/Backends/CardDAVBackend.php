@@ -12,8 +12,10 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CardDAV\Backend\SyncSupport;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
@@ -51,16 +53,22 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         $name = Auth::user()->name;
         $token = $this->getCurrentSyncToken();
 
-        return [
-            [
-                'id'                => $this->backendUri(),
-                'uri'               => $this->backendUri(),
-                'principaluri'      => PrincipalBackend::getPrincipalUser(),
+        $des = [
+            'id'                => $this->backendUri(),
+            'uri'               => $this->backendUri(),
+            'principaluri'      => PrincipalBackend::getPrincipalUser(),
+            '{DAV:}displayname' => $name,
+            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
+        ];
+        if ($token) {
+            $des += [
                 '{DAV:}sync-token'  => $token->id,
-                '{DAV:}displayname' => $name,
                 '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
-                '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
-            ],
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id,
+            ];
+        }
+        return [
+            $des
         ];
     }
 

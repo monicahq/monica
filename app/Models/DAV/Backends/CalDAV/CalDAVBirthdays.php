@@ -9,6 +9,7 @@ use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
+use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use App\Services\VCalendar\ExportVCalendar;
 use App\Models\DAV\Backends\PrincipalBackend;
 
@@ -29,15 +30,22 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
         $name = Auth::user()->name;
         $token = $this->getCurrentSyncToken();
 
-        return [
+        $des = [
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
-            '{DAV:}sync-token'  => $token->id,
             '{DAV:}displayname' => $name,
-            '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
             '{'.SabreServer::NS_SABREDAV.'}read-only' => 1,
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Birthdays',
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
         ];
+        if ($token) {
+            $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id;
+            $des += [
+                '{DAV:}sync-token'  => $token,
+                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token,
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
+            ];
+        }
+        return $des;
     }
 
     /**

@@ -11,6 +11,7 @@ use Sabre\DAV\Server as SabreServer;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
+use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use App\Models\DAV\Backends\PrincipalBackend;
 
 class CalDAVTasks extends AbstractCalDAVBackend
@@ -30,14 +31,21 @@ class CalDAVTasks extends AbstractCalDAVBackend
         $name = Auth::user()->name;
         $token = $this->getCurrentSyncToken();
 
-        return [
+        $des = [
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
-            '{DAV:}sync-token'  => $token->id,
             '{DAV:}displayname' => $name,
-            '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Tasks',
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
         ];
+        if ($token) {
+            $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id;
+            $des += [
+                '{DAV:}sync-token'  => $token,
+                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token,
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
+            ];
+        }
+        return $des;
     }
 
     /**

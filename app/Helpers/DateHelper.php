@@ -36,11 +36,17 @@ class DateHelper
         }
         if ($date instanceof \DateTime) {
             $date = Carbon::instance($date);
-        }
-        if ($date instanceof Carbon) {
+        } else if ($date instanceof Carbon) {
             $date = $date->toDateTimeString();
+        } else {
+            try {
+                $date = Carbon::parse($date);
+            } catch (\Exception $e) {
+                // Parse error
+                return;
+            }
         }
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date, config('app.timezone'));
+        $date = Carbon::create($date->year, $date->month, $date->day, $date->hour, $date->minute, $date->second, config('app.timezone'));
         if ($timezone !== null) {
             $date->setTimezone($timezone);
         }

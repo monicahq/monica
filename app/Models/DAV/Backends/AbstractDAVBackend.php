@@ -58,17 +58,34 @@ trait AbstractDAVBackend
     /**
      * Create a token.
      *
-     * @return SyncToken
+     * @return SyncToken|null
      */
     private function createSyncToken()
     {
         $max = $this->getLastModified();
 
+        if ($max) {
+            return SyncToken::create([
+                'account_id' => Auth::user()->account_id,
+                'user_id' => Auth::user()->id,
+                'name' => $this->backendUri(),
+                'timestamp' => $max,
+            ]);
+        }
+    }
+
+    /**
+     * Create a token with now timestamp.
+     *
+     * @return SyncToken
+     */
+    private function createSyncTokenNow()
+    {
         return SyncToken::create([
             'account_id' => Auth::user()->account_id,
             'user_id' => Auth::user()->id,
             'name' => $this->backendUri(),
-            'timestamp' => $max,
+            'timestamp' => now(),
         ]);
     }
 
@@ -150,7 +167,7 @@ trait AbstractDAVBackend
 
             $timestamp = $token->timestamp;
         } else {
-            $token = $this->createSyncToken();
+            $token = $this->createSyncTokenNow();
             $timestamp = null;
         }
 

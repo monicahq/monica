@@ -168,6 +168,7 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
         'description' => $faker->word,
         'completed' => 0,
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+        'uuid' => Str::uuid(),
     ];
 });
 

@@ -85,9 +85,10 @@ class ExportTask extends BaseService
         $vcal->add('VTODO', [
             'UID' => $task->uuid,
             'SUMMARY' => $task->title,
-            'CREATED' => DateHelper::parseDateTime($task->created_at, Auth::user()->timezone),
-            'DTSTAMP' => DateHelper::parseDateTime($task->created_at),
         ]);
+        if ($task->created_at) {
+            $vcal->VTODO->add('CREATED', $task->created_at);
+        }
         if (! empty($task->description)) {
             $vcal->VTODO->add('DESCRIPTION', $task->description);
         }
@@ -95,8 +96,10 @@ class ExportTask extends BaseService
             $vcal->VTODO->add('ATTACH', route('people.show', $contact));
         }
         if ($task->completed) {
-            $vcal->VTODO->add('COMPLETED', $task->completed_at);
             $vcal->VTODO->add('STATUS', 'COMPLETED');
+        }
+        if ($task->completed_at) {
+            $vcal->VTODO->add('COMPLETED', $task->completed_at);
         }
     }
 }

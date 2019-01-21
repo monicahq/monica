@@ -26,7 +26,9 @@ class SpecialDateTest extends FeatureTestCase
     public function test_it_belongs_to_a_contact()
     {
         $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
         $specialDate = factory(SpecialDate::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
