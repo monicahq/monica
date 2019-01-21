@@ -13,7 +13,6 @@ use App\Services\Activity\Activity\CreateActivity;
 use App\Services\Activity\Activity\DestroyActivity;
 use App\Services\Activity\Activity\AttachContactToActivity;
 use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Http\Resources\Contact\Contact as ContactResource;
 
 class ActivitiesController extends Controller
 {
@@ -62,6 +61,7 @@ class ActivitiesController extends Controller
                 'name' => $contact->name,
             ]);
         }
+
         return $contactsCollection;
     }
 
