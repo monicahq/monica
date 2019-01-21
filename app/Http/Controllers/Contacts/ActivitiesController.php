@@ -81,10 +81,17 @@ class ActivitiesController extends Controller
             'date' => $request->get('happened_at'),
         ]);
 
+        $arrayParticipants = [];
+        foreach ($request->get('participants') as $participant) {
+            array_push($arrayParticipants, $participant['id']);
+        }
+        // also push the current contact
+        array_push($arrayParticipants, $contact->id);
+
         return (new AttachContactToActivity)->execute([
             'account_id' => auth()->user()->account->id,
             'activity_id' => $activity->id,
-            'contacts' => [$contact->id],
+            'contacts' => $arrayParticipants,
         ]);
     }
 

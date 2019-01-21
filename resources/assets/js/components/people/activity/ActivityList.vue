@@ -68,7 +68,7 @@
           <ul class="list">
             <li class="di pointer mr3" v-show="!displayDescription"><a @click="displayDescription = true">Add more details</a></li>
             <li class="di pointer mr3" v-show="!displayEmotions"><a @click="displayEmotions = true">Add emotions</a></li>
-            <li class="di pointer" v-show="!displayCategory"><a @click="displayCategory = true">Indicate a category</a></li>
+            <li class="di pointer mr3" v-show="!displayCategory"><a @click="displayCategory = true">Indicate a category</a></li>
             <li class="di pointer" v-show="!displayParticipants"><a @click="displayParticipants = true">Add participants</a></li>
           </ul>
         </div>
@@ -204,7 +204,6 @@ export default {
       displayLogActivity: false,
       activities: [],
       emotions: [],
-      participants: [],
       dirltr: true,
       displayDescription: false,
       displayEmotions: false,
@@ -216,6 +215,7 @@ export default {
         happened_at: '',
         emotions: [],
         activity_type_id: 0,
+        participants: [],
       },
       destroyActivityId: 0,
     };
@@ -239,10 +239,10 @@ export default {
       this.displayCategory = false;
       this.displayParticipants = false;
       this.newActivity.summary = '';
+      this.newActivity.participants = [];
       this.description = '';
       this.happened_at = '';
       this.emotions = [];
-      this.participants = [];
       this.activity_type_id = 0;
       this.displayLogActivity = false;
     },
@@ -275,8 +275,6 @@ export default {
         .then(response => {
           this.displayLogActivity = false;
           this.getActivities();
-          this.emotions = [];
-          this.participants = [];
           this.resetFields();
 
           this.$notify({
@@ -323,7 +321,7 @@ export default {
     },
 
     updateParticipant: function (participants) {
-      this.participants = participants;
+      this.newActivity.participants = participants;
     },
 
     updateEmotionsList: function(emotions) {
