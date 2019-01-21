@@ -12,11 +12,12 @@ trait CardEtag
     {
         if ($obj instanceof Contact) {
             $data = $this->getCard($obj, true);
-        } else if ($obj instanceof SpecialDate) {
+        } elseif ($obj instanceof SpecialDate) {
             $data = $this->getCal($obj, true);
-        } else if ($obj instanceof Task) {
+        } elseif ($obj instanceof Task) {
             $data = $this->getVTodo($obj, true);
         }
+
         return md5($data);
     }
 
@@ -111,9 +112,9 @@ DESCRIPTION:{$task->description}
             $data .= "ATTACH:{$url}
 ";
         }
-        $data .= "END:VTODO
+        $data .= 'END:VTODO
 END:VCALENDAR
-";
+';
 
         if ($realFormat) {
             $data = mb_ereg_replace("\n", "\r\n", $data);

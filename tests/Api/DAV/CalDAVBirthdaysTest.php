@@ -115,7 +115,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'birthdays'
+            'name' => 'birthdays',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
@@ -166,7 +166,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'birthdays'
+            'name' => 'birthdays',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
@@ -217,7 +217,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
         );
 
         $response->assertStatus(207);
-        
+
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate->uuid}.ics</d:href>
@@ -261,7 +261,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'birthdays'
+            'name' => 'birthdays',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());

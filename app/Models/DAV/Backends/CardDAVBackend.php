@@ -67,8 +67,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id,
             ];
         }
+
         return [
-            $des
+            $des,
         ];
     }
 

@@ -156,7 +156,7 @@ class CardDAVTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'contacts'
+            'name' => 'contacts',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
@@ -182,7 +182,7 @@ class CardDAVTest extends ApiTestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
           ]);
-  
+
         $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
                 'HTTP_DEPTH' => '0',
@@ -202,7 +202,7 @@ class CardDAVTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'contacts'
+            'name' => 'contacts',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
@@ -249,7 +249,7 @@ class CardDAVTest extends ApiTestCase
         );
 
         $response->assertStatus(207);
-        
+
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
@@ -290,7 +290,7 @@ class CardDAVTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'contacts'
+            'name' => 'contacts',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());

@@ -9,8 +9,8 @@ use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use App\Services\VCalendar\ExportVCalendar;
+use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
 use App\Models\DAV\Backends\PrincipalBackend;
 
 class CalDAVBirthdays extends AbstractCalDAVBackend
@@ -45,6 +45,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
                 '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
             ];
         }
+
         return $des;
     }
 

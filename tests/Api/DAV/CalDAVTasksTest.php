@@ -3,7 +3,6 @@
 namespace Tests\Api\DAV;
 
 use Tests\ApiTestCase;
-use Illuminate\Support\Str;
 use App\Models\Contact\Task;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
@@ -117,7 +116,7 @@ class CalDAVTasksTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'tasks'
+            'name' => 'tasks',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
@@ -171,7 +170,7 @@ class CalDAVTasksTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'tasks'
+            'name' => 'tasks',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());
@@ -224,7 +223,7 @@ class CalDAVTasksTest extends ApiTestCase
             </sync-collection>"
         );
         $response->assertStatus(207);
-        
+
         $response->assertSee("<d:multistatus xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:card=\"urn:ietf:params:xml:ns:carddav\" xmlns:cal=\"urn:ietf:params:xml:ns:caldav\" xmlns:cs=\"http://calendarserver.org/ns/\">
  <d:response>
   <d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>
@@ -271,7 +270,7 @@ class CalDAVTasksTest extends ApiTestCase
         $tokens = SyncToken::where([
             'account_id' => $user->account_id,
             'user_id' => $user->id,
-            'name' => 'tasks'
+            'name' => 'tasks',
         ])->orderBy('created_at')->get();
 
         $this->assertGreaterThan(0, $tokens->count());

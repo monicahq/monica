@@ -36,7 +36,7 @@ class DateHelper
         }
         if ($date instanceof \DateTime) {
             $date = Carbon::instance($date);
-        } else if ($date instanceof Carbon) {
+        } elseif ($date instanceof Carbon) {
             $date = $date->toDateTimeString();
         } else {
             try {

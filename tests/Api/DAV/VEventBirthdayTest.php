@@ -3,7 +3,6 @@
 namespace Tests\Api\DAV;
 
 use Tests\ApiTestCase;
-use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -64,7 +63,7 @@ class VEventBirthdayTest extends ApiTestCase
 
         $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
         '<d:response>'.
-          "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate    ->uuid}.ics</d:href>".
+          "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate->uuid}.ics</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
               "<d:getetag>&quot;{$this->getEtag($user, $specialDate)}&quot;</d:getetag>".

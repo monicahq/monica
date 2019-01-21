@@ -21,7 +21,7 @@ class VCardContactTest extends ApiTestCase
         ]);
 
         $response = $this->get("/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [
-            'HTTP_ACCEPT' => 'text/vcard; version=4.0'
+            'HTTP_ACCEPT' => 'text/vcard; version=4.0',
         ]);
 
         $response->assertStatus(200);

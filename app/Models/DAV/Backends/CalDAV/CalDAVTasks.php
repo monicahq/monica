@@ -45,6 +45,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
                 '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
             ];
         }
+
         return $des;
     }
 

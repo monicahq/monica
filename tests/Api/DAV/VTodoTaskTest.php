@@ -136,7 +136,7 @@ END:VCALENDAR
             'account_id' => $user->account->id,
             'uuid' => $task->uuid,
             'completed' => true,
-            'completed_at' => Carbon::create(2019, 01, 21, 18, 28, 00)            
+            'completed_at' => Carbon::create(2019, 01, 21, 18, 28, 00),
         ]);
     }
 
@@ -239,6 +239,5 @@ END:VCALENDAR
              '</d:propstat>'.
             '</d:response>'.
           '</d:multistatus>');
-
     }
 }
