@@ -20,7 +20,7 @@ return [
     'tasks_tab_your_contacts' => 'Aufgaben im Zusammenhang mit Ihren Kontakten',
     'tasks_tab_your_tasks' => 'Ihre Aufgaben',
     'tasks_add_note' => 'Drücken Sie <kbd>Eingabe</kbd> um die Aufgabe hinzuzufügen.',
-    'task_add_cta' => 'Add a task',
+    'task_add_cta' => 'Aufgabe hinzufügen',
 
     'debts_you_owe' => 'Du schuldest',
 
@@ -31,6 +31,6 @@ return [
     'reminders_next_months' => 'Ereignisse der nächsten 3 Monate',
     'reminders_none' => 'Keine Erinnerungen für diesen Monat',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Produktänderungen',
+    'product_view_details' => 'Details anzeigen',
 ];
