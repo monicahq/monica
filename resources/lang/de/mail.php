@@ -4,11 +4,11 @@ return [
 
     'subject_line' => 'Erinnerung für :contact',
     'greetings' => 'Hallo :username',
-    'want_reminded_of' => 'You wanted to be reminded of :reason',
-    'for' => 'For: :name',
-    'comment' => 'Comment: :comment',
+    'want_reminded_of' => 'Sie wollten erinnert werden :reason',
+    'for' => 'Für: :name',
+    'comment' => 'Kommentar: :comment',
     'footer_contact_info' => 'Ergänze, betrachte, vervollständige und ändere Informationen zu diesem Kontakt:',
-    'footer_contact_info2' => 'See :name’s profile',
+    'footer_contact_info2' => 'Siehe :name’s profile',
 
     'notification_subject_line' => 'Du hast ein bevorstehendes Ereignis',
     'notification_description' => 'In :count Tagen (am :date), findet folgendes Ereignis statt:',
