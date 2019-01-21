@@ -112,7 +112,7 @@
         <!-- PARTICPANTS -->
         <div class="bb b--gray-monica pb3" v-show="displayParticipants">
           <label>
-            Who participated in this activity?
+            Who, apart from X, participated in this activity?
           </label>
           <participant-list :hash="hash" v-on:update="updateParticipant($event)" />
         </div>
@@ -143,6 +143,14 @@
       <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
         <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
           <ul class="list">
+            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
+              Was also present:
+              <ul class="list">
+                <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di">
+                  <span v-show="attendee.id != contactId">{{ attendee.complete_name }}</span>
+                </li>
+              </ul>
+            </li>
             <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
               {{ activity.happened_at | moment }}
             </li>
@@ -197,6 +205,10 @@ export default {
       type: String,
       default: '',
     },
+    contactId: {
+      type: Number,
+      default: 0,
+    }
   },
 
   data() {
