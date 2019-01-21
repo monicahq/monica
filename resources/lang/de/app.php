@@ -274,7 +274,7 @@ return [
     'emotion_secondary_exasperation' => 'Exasperation',
     'emotion_secondary_rage' => 'Wut',
     'emotion_secondary_disgust' => 'Ekel',
-    'emotion_secondary_envy' => 'Envy',
+    'emotion_secondary_envy' => 'Neid',
     'emotion_secondary_suffering' => 'Leiden',
     'emotion_secondary_sadness' => 'Traurigkeit',
     'emotion_secondary_disappointment' => 'Enttäuscht',
