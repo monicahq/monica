@@ -58,14 +58,14 @@ return [
     'section_personal_notes' => 'Notizen',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_active_contacts' => 'Dies sind archivierte Kontakte. Hier gelangen Sie zur <a href=":url">Liste aktiver Kontakte</a>.',
     'list_link_to_archived_contacts' => 'Liste der archivierten Kontakte',
 
     // Header
     'edit_contact_information' => 'Kontaktinformationen bearbeiten',
     'contact_archive' => 'Kontakt archivieren',
-    'contact_unarchive' => 'Unarchive contact',
-    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
+    'contact_unarchive' => 'Nicht gespeicherter Kontakt',
+    'contact_archive_help' => 'Archivierte Kontakte werden nicht in der Kontaktliste angezeigt, erscheinen aber weiterhin in den Suchergebnissen.',
     'call_button' => 'Telefonat vermerken',
     'set_favorite' => 'Favoriten werden in der Kontaktliste ganz oben angezeigt',
 
@@ -111,7 +111,7 @@ return [
     'conversation_add_content' => 'Schreibe hier, was gesagt wurde',
     'conversation_add_what_was_said' => 'Was war der Gesprächsinhalt?',
     'conversation_add_another' => 'Eine weitere Nachricht hinzufügen',
-    'conversation_list_table_messages' => 'Messages',
+    'conversation_list_table_messages' => 'Nachrichten',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Unterhaltungen',
     'conversation_list_cta' => 'Unterhaltung protokollieren',
@@ -132,10 +132,10 @@ return [
     'information_edit_success' => 'Das Profil wurde erfolgreich aktualisiert',
     'information_edit_title' => 'Ändere :name\'s persönliche Daten',
     'information_edit_avatar' => 'Foto/Avatar des Kontakts',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => 'Maximal :size Kb.',
     'information_edit_firstname' => 'Vorname',
     'information_edit_lastname' => 'Nachname (Optional)',
-    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description' => 'Beschreibung (optional)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_unknown' => 'Ich kenne das Alter dieser Person nicht',
     'information_edit_probably' => 'Diese Person ist wahrscheinlich',
