@@ -83,7 +83,7 @@ return [
     'modal_call_comment' => 'Worüber habt ihr geredet? (optional)',
     'modal_call_exact_date' => 'Das Telefonat war am',
     'modal_call_who_called' => 'Who called?',
-    'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
+    'modal_call_emotion' => 'Möchten sie speichern wie Sie sich während das Anrufs fühlten? (optional)',
     'calls_add_success' => 'Telefonat gespeichert.',
     'call_delete_confirmation' => 'Möchtest du das Telefonat wirklich löschen?',
     'call_delete_success' => 'Das Telefonat wurde erfolgreich gelöscht',
