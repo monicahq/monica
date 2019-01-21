@@ -101,17 +101,17 @@ return [
     'error_save' => 'Tuvimos un error tratando de guardar los datos.',
     'error_try_again' => 'Se ha producido un error. Por favor, inténtelo de nuevo.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service Unavailable',
-    'error_maintenance' => 'Maintenance in progress. Be right back.',
-    'error_help' => 'We’ll be right back.',
-    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_unavailable' => 'Servicio no disponible',
+    'error_maintenance' => 'Mantenimiento en curso. Enseguida regresamos.',
+    'error_help' => 'Enseguida regresamos.',
+    'error_twitter' => 'Siguenos <a href="https://twitter.com/:twitter">en nuestra cuenta de Twitter</a> para saber cuando estamos de vuelta.',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => 'Los datos han sido guardados.',
 
-    'compliance_title' => 'Sorry for the interruption.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_title' => 'Lamentamos la interrupción.',
+    'compliance_desc' => 'Hemos cambiado nuestros <a href=":urlterm" hreflang=":hreflang">Terminos de Uso</a> y <a href=":url" hreflang=":hreflang">Política de Privacidad</a>. Por ley tenemos que pedirte que los revises y los aceptes para que puedas seguir usando tu cuenta.',
+    'compliance_desc_end' => 'No hacemos nada "sucio" con tus datos y nunca lo haremos.',
+    'compliance_terms' => 'Aceptar nuevos términos y política de privacidad',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -121,7 +121,7 @@ return [
     // in the UI, we need to include the name of the person we add the relationship
     // to.
     'relationship_type_group_love' => 'Relaciones amorosas',
-    'relationship_type_group_family' => 'Family relationships',
+    'relationship_type_group_family' => 'Relaciones familiares',
     'relationship_type_group_friend' => 'Friend relationships',
     'relationship_type_group_work' => 'Work relationships',
     'relationship_type_group_other' => 'Other kind of relationships',
