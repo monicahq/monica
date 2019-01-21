@@ -255,7 +255,7 @@ class CardDAVTest extends ApiTestCase
   <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
   <d:propstat>
    <d:prop>
-    <d:getetag>&quot;{$this->getEtag($user, $contact)}&quot;</d:getetag>
+    <d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>
    </d:prop>
    <d:status>HTTP/1.1 200 OK</d:status>
   </d:propstat>
@@ -301,7 +301,7 @@ class CardDAVTest extends ApiTestCase
   <d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>
   <d:propstat>
    <d:prop>
-    <d:getetag>&quot;{$this->getEtag($user, $contact)}&quot;</d:getetag>
+    <d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>
    </d:prop>
    <d:status>HTTP/1.1 200 OK</d:status>
   </d:propstat>

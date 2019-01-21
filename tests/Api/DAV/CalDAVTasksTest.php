@@ -229,7 +229,7 @@ class CalDAVTasksTest extends ApiTestCase
   <d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>
   <d:propstat>
    <d:prop>
-    <d:getetag>&quot;{$this->getEtag($user, $task)}&quot;</d:getetag>
+    <d:getetag>&quot;{$this->getEtag($task)}&quot;</d:getetag>
    </d:prop>
    <d:status>HTTP/1.1 200 OK</d:status>
   </d:propstat>
@@ -281,7 +281,7 @@ class CalDAVTasksTest extends ApiTestCase
   <d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>
   <d:propstat>
    <d:prop>
-    <d:getetag>&quot;{$this->getEtag($user, $task)}&quot;</d:getetag>
+    <d:getetag>&quot;{$this->getEtag($task)}&quot;</d:getetag>
    </d:prop>
    <d:status>HTTP/1.1 200 OK</d:status>
   </d:propstat>

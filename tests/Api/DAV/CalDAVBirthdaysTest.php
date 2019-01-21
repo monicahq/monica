@@ -223,7 +223,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
   <d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate->uuid}.ics</d:href>
   <d:propstat>
    <d:prop>
-    <d:getetag>&quot;{$this->getEtag($user, $specialDate)}&quot;</d:getetag>
+    <d:getetag>&quot;{$this->getEtag($specialDate)}&quot;</d:getetag>
    </d:prop>
    <d:status>HTTP/1.1 200 OK</d:status>
   </d:propstat>
@@ -272,7 +272,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
   <d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate->uuid}.ics</d:href>
   <d:propstat>
    <d:prop>
-    <d:getetag>&quot;{$this->getEtag($user, $specialDate)}&quot;</d:getetag>
+    <d:getetag>&quot;{$this->getEtag($specialDate)}&quot;</d:getetag>
    </d:prop>
    <d:status>HTTP/1.1 200 OK</d:status>
   </d:propstat>

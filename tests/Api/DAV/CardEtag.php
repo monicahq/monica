@@ -8,8 +8,9 @@ use App\Models\Instance\SpecialDate;
 
 trait CardEtag
 {
-    protected function getEtag($user, $obj)
+    protected function getEtag($obj)
     {
+        $data = '';
         if ($obj instanceof Contact) {
             $data = $this->getCard($obj, true);
         } elseif ($obj instanceof SpecialDate) {

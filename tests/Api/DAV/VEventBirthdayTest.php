@@ -66,7 +66,7 @@ class VEventBirthdayTest extends ApiTestCase
           "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate->uuid}.ics</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              "<d:getetag>&quot;{$this->getEtag($user, $specialDate)}&quot;</d:getetag>".
+              "<d:getetag>&quot;{$this->getEtag($specialDate)}&quot;</d:getetag>".
               "<cal:calendar-data>{$this->getCal($specialDate)}</cal:calendar-data>".
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -115,7 +115,7 @@ class VEventBirthdayTest extends ApiTestCase
           "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate1->uuid}.ics</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              "<d:getetag>&quot;{$this->getEtag($user, $specialDate1)}&quot;</d:getetag>".
+              "<d:getetag>&quot;{$this->getEtag($specialDate1)}&quot;</d:getetag>".
               "<cal:calendar-data>{$this->getCal($specialDate1)}</cal:calendar-data>".
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -126,7 +126,7 @@ class VEventBirthdayTest extends ApiTestCase
             "<d:href>/dav/calendars/{$user->email}/birthdays/{$specialDate2->uuid}.ics</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
-                "<d:getetag>&quot;{$this->getEtag($user, $specialDate2)}&quot;</d:getetag>".
+                "<d:getetag>&quot;{$this->getEtag($specialDate2)}&quot;</d:getetag>".
                 "<cal:calendar-data>{$this->getCal($specialDate2)}</cal:calendar-data>".
                '</d:prop>'.
                '<d:status>HTTP/1.1 200 OK</d:status>'.

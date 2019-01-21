@@ -178,7 +178,7 @@ END:VCALENDAR
           "<d:href>/dav/calendars/{$user->email}/tasks/{$task->uuid}.ics</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              "<d:getetag>&quot;{$this->getEtag($user, $task)}&quot;</d:getetag>".
+              "<d:getetag>&quot;{$this->getEtag($task)}&quot;</d:getetag>".
               "<cal:calendar-data>{$this->getVTodo($task)}</cal:calendar-data>".
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -221,7 +221,7 @@ END:VCALENDAR
           "<d:href>/dav/calendars/{$user->email}/tasks/{$task1->uuid}.ics</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              "<d:getetag>&quot;{$this->getEtag($user, $task1)}&quot;</d:getetag>".
+              "<d:getetag>&quot;{$this->getEtag($task1)}&quot;</d:getetag>".
               "<cal:calendar-data>{$this->getVTodo($task1)}</cal:calendar-data>".
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
@@ -232,7 +232,7 @@ END:VCALENDAR
             "<d:href>/dav/calendars/{$user->email}/tasks/{$task2->uuid}.ics</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
-                "<d:getetag>&quot;{$this->getEtag($user, $task2)}&quot;</d:getetag>".
+                "<d:getetag>&quot;{$this->getEtag($task2)}&quot;</d:getetag>".
                 "<cal:calendar-data>{$this->getVTodo($task2)}</cal:calendar-data>".
                '</d:prop>'.
                '<d:status>HTTP/1.1 200 OK</d:status>'.

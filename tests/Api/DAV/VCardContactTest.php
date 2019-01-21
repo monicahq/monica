@@ -255,7 +255,7 @@ class VCardContactTest extends ApiTestCase
           "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              "<d:getetag>&quot;{$this->getEtag($user, $contact)}&quot;</d:getetag>".
+              "<d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>".
               "<card:address-data>BEGIN:VCARD&#13;\n".
         "VERSION:4.0&#13;\n".
         "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
@@ -304,7 +304,7 @@ class VCardContactTest extends ApiTestCase
           "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              "<d:getetag>&quot;{$this->getEtag($user, $contact)}&quot;</d:getetag>".
+              "<d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>".
               "<card:address-data>BEGIN:VCARD&#13;\n".
         "VERSION:3.0&#13;\n".
         "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
@@ -358,7 +358,7 @@ class VCardContactTest extends ApiTestCase
           "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact1->uuid}.vcf</d:href>".
           '<d:propstat>'.
             '<d:prop>'.
-              "<d:getetag>&quot;{$this->getEtag($user, $contact1)}&quot;</d:getetag>".
+              "<d:getetag>&quot;{$this->getEtag($contact1)}&quot;</d:getetag>".
               "<card:address-data>BEGIN:VCARD&#13;\n".
         "VERSION:4.0&#13;\n".
         "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
@@ -378,7 +378,7 @@ class VCardContactTest extends ApiTestCase
             "<d:href>/dav/addressbooks/{$user->email}/contacts/{$contact2->uuid}.vcf</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
-                "<d:getetag>&quot;{$this->getEtag($user, $contact2)}&quot;</d:getetag>".
+                "<d:getetag>&quot;{$this->getEtag($contact2)}&quot;</d:getetag>".
                 "<card:address-data>BEGIN:VCARD&#13;\n".
           "VERSION:4.0&#13;\n".
           "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
