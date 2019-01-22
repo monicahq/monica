@@ -37,6 +37,7 @@ aliases:
       command: |
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
+        touch .sentry-release
   - &yarn-install
     run:
       name: yarn install
