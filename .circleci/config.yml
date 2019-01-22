@@ -67,8 +67,6 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        ulimit -n $(ulimit -H -n)
-        ulimit -a
         phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
   - &psalm
     run:
@@ -77,9 +75,7 @@ aliases:
   - &browser-tests
     run:
       name: Run browser tests
-      command: |
-        php artisan route:cache
-        php artisan dusk --log-junit results/junit/dusk/results.xml
+      command: php artisan dusk --log-junit results/junit/dusk/results.xml
   - &browser-cypress
     run:
       name: Run browser tests (cypress)
