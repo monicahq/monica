@@ -30,7 +30,7 @@ class DAVController extends Controller
      */
     public function init(Request $request)
     {
-        if (config('dav.enabled')) {
+        if (! config('dav.enabled')) {
             abort(404);
         }
 
