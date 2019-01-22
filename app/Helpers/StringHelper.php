@@ -18,12 +18,10 @@ class StringHelper
         $queryString = '';
         $searchTerms = explode(' ', $searchTerm);
 
-        foreach($searchTerms as $searchTerm)
-        {
+        foreach ($searchTerms as $searchTerm) {
             $searchTerm = DB::connection()->getPdo()->quote('%'.$searchTerm.'%');
 
             foreach ($array as $column) {
-
                 if ($first) {
                     $first = false;
                 } else {
