@@ -69,15 +69,9 @@ class RouteServiceProvider extends ServiceProvider
         }
 
         $this->mapApiRoutes($router);
-
         $this->mapWebRoutes($router);
-
         $this->mapOAuthRoutes($router);
-
-        if (config('dav.enabled')) {
-            $this->mapDAVRoutes($router);
-        }
-
+        $this->mapDAVRoutes($router);
         $this->mapSpecialRoutes($router);
     }
 
@@ -94,7 +88,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'middleware' => 'web',
             'namespace' => $this->namespace,
-        ], function ($router) {
+        ], function () {
             require base_path('routes/web.php');
         });
     }

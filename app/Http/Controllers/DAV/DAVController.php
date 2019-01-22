@@ -30,6 +30,10 @@ class DAVController extends Controller
      */
     public function init(Request $request)
     {
+        if (config('dav.enabled')) {
+            abort(404);
+        }
+
         // Disable debugger for caldav output
         if (config('app.debug')) {
             Debugbar::disable();
