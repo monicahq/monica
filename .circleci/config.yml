@@ -65,7 +65,9 @@ aliases:
   - &unit-tests
     run:
       name: Run unit tests
-      command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
+      command: |
+        php artisan route:cache
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
   - &psalm
     run:
       name: Run psalm
