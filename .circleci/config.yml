@@ -38,6 +38,7 @@ aliases:
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
         touch .sentry-release
+        php artisan route:cache
   - &yarn-install
     run:
       name: yarn install
@@ -67,6 +68,7 @@ aliases:
       name: Run unit tests
       command: |
         ulimit -n $(ulimit -H -n)
+        ulimit -a
         phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
   - &psalm
     run:
