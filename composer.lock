@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "62080afea9e01fe7f542b357995245b0",
@@ -2218,16 +2218,16 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v4.0.1",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "ad71c2691b04d843e24608ca13d9e004a34907d0"
+                "reference": "25eea36010c4e714c58a4792ef52b0a8e8a9c21c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/ad71c2691b04d843e24608ca13d9e004a34907d0",
-                "reference": "ad71c2691b04d843e24608ca13d9e004a34907d0",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/25eea36010c4e714c58a4792ef52b0a8e8a9c21c",
+                "reference": "25eea36010c4e714c58a4792ef52b0a8e8a9c21c",
                 "shasum": ""
             },
             "require": {
@@ -2278,7 +2278,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2018-12-20T11:14:43+00:00"
+            "time": "2019-01-21T12:35:13+00:00"
         },
         {
             "name": "laravel/telescope",
@@ -6785,7 +6785,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
