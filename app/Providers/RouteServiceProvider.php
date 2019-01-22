@@ -69,15 +69,9 @@ class RouteServiceProvider extends ServiceProvider
         }
 
         $this->mapApiRoutes($router);
-
         $this->mapWebRoutes($router);
-
         $this->mapOAuthRoutes($router);
-
-        if (config('carddav.enabled')) {
-            $this->mapCardDAVRoutes($router);
-        }
-
+        $this->mapCardDAVRoutes($router);
         $this->mapSpecialRoutes($router);
     }
 
