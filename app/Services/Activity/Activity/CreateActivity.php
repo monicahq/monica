@@ -49,7 +49,7 @@ class CreateActivity extends BaseService
             'happened_at' => $data['date'],
         ]);
 
-        if (!empty($data['emotions'])) {
+        if (! empty($data['emotions'])) {
             if ($data['emotions'] != '') {
                 $this->addEmotions($data['emotions'], $activity);
             }

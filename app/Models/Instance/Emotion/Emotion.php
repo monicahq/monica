@@ -3,10 +3,10 @@
 namespace App\Models\Instance\Emotion;
 
 use App\Models\Contact\Call;
+use App\Models\Contact\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Models\Contact\Activity;
 
 /**
  * An emotion (ex: Adoration) is defined into 3 categories:
