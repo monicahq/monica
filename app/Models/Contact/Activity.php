@@ -6,6 +6,7 @@ use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Account\Account;
+use App\Models\Instance\Emotion\Emotion;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\Model;
 use App\Interfaces\IsJournalableInterface;
@@ -80,6 +81,18 @@ class Activity extends Model implements IsJournalableInterface
     public function journalEntries()
     {
         return $this->morphMany(JournalEntry::class, 'journalable');
+    }
+
+    /**
+     * Get the emotion records associated with the activity.
+     *
+     * @return BelongsToMany
+     */
+    public function emotions()
+    {
+        return $this->belongsToMany(Emotion::class, 'emotion_activity', 'activity_id', 'emotion_id')
+            ->withPivot('account_id')
+            ->withTimestamps();
     }
 
     /**

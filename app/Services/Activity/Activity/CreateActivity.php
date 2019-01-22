@@ -5,6 +5,7 @@ namespace App\Services\Activity\Activity;
 use App\Services\BaseService;
 use App\Models\Contact\Activity;
 use App\Models\Contact\ActivityType;
+use App\Models\Instance\Emotion\Emotion;
 
 class CreateActivity extends BaseService
 {
@@ -21,6 +22,7 @@ class CreateActivity extends BaseService
             'summary' => 'required|string:255',
             'description' => 'nullable|string:400000000',
             'date' => 'required|date_format:Y-m-d',
+            'emotions' => 'nullable|array',
         ];
     }
 
@@ -47,6 +49,29 @@ class CreateActivity extends BaseService
             'happened_at' => $data['date'],
         ]);
 
+        if (!empty($data['emotions'])) {
+            if ($data['emotions'] != '') {
+                $this->addEmotions($data['emotions'], $activity);
+            }
+        }
+
         return Activity::find($activity->id);
+    }
+
+    /**
+     * Add emotions to the activity.
+     *
+     * @param array $emotions
+     * @param Activity $activity
+     * @return void
+     */
+    private function addEmotions(array $emotions, Activity $activity)
+    {
+        foreach ($emotions as $emotionId) {
+            $emotion = Emotion::findOrFail($emotionId);
+            $activity->emotions()->syncWithoutDetaching([$emotion->id => [
+                'account_id' => $activity->account_id,
+            ]]);
+        }
     }
 }
