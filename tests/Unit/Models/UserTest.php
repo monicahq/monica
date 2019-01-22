@@ -9,6 +9,7 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
+use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -319,6 +320,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'USD')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -328,7 +330,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'en',
             'timezone' => 'America/Chicago',
-            'currency_id' => 2,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'fahrenheit',
         ]);
     }
 
@@ -338,6 +341,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -347,7 +351,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'fr',
             'timezone' => 'Europe/Paris',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -357,6 +362,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'CZK')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -366,7 +372,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'cs',
             'timezone' => 'Europe/Prague',
-            'currency_id' => 43,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -376,6 +383,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -385,7 +393,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'de',
             'timezone' => 'Europe/Berlin',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -395,6 +404,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -404,7 +414,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'es',
             'timezone' => 'Europe/Madrid',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -414,6 +425,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'ILS')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -423,7 +435,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'he',
             'timezone' => 'Asia/Jerusalem',
-            'currency_id' => 66,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -433,6 +446,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -442,7 +456,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'it',
             'timezone' => 'Europe/Rome',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -452,6 +467,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -461,7 +477,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'nl',
             'timezone' => 'Europe/Amsterdam',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -471,6 +488,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -480,7 +498,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'pt',
             'timezone' => 'Europe/Lisbon',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -490,6 +509,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'RUB')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -499,7 +519,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'ru',
             'timezone' => 'Europe/Moscow',
-            'currency_id' => 5,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -509,6 +530,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'CNY')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -518,7 +540,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'zh',
             'timezone' => 'Asia/Shanghai',
-            'currency_id' => 37,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 }

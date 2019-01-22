@@ -15,6 +15,37 @@ class AssociateTagTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_it_sets_a_non_english_tag_to_a_contact_when_tag_doesnt_exist_yet()
+    {
+        $contact = factory(Contact::class)->create([]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'name' => '朋友',
+        ];
+
+        $associateTagService = new AssociateTag;
+        $tag = $associateTagService->execute($request);
+
+        $this->assertDatabaseHas('tags', [
+            'account_id' => $contact->account->id,
+            'name' => '朋友',
+            'name_slug' => '朋友',
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag->id,
+        ]);
+
+        $this->assertInstanceOf(
+            Tag::class,
+            $tag
+        );
+    }
+
     public function test_it_sets_a_tag_to_a_contact_when_tag_doesnt_exist_yet()
     {
         $contact = factory(Contact::class)->create([]);
