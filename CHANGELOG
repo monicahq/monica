@@ -20,6 +20,7 @@ Enhancements:
 
 Fixes:
 
+* Fix DateTime parse when compact format is used
 * Fix contact and relationship edit with reminder enabled
 * Fix broken migration for the activities table
 * Fix VCard import with partial N entry
