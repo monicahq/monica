@@ -31,20 +31,16 @@ class ContactTest extends FeatureTestCase
     public function test_user_can_search_contacts()
     {
         $user = $this->signIn();
-        $fakeContact = factory(Contact::class)->create([
-            'first_name' => $this->faker->firstName,
-            'middle_name' => $this->faker->firstName,
-            'last_name' => $this->faker->lastName,
-            'nickname' => $this->faker->name
-        ]);
-
+        $contact = new Contact;
+        $firtContact = $contact->all()->first();
+       
         $response = $this->call('POST', 'people/search', array(
             '_token' => csrf_token(),
-            'accountId' => $user->account_id,
-            'needle' => $fakeContact->nickname
+            'accountId' => $firtContact->account_id,
+            'needle' => $firtContact->first_name . ' ' .$firtContact->last_name
         ));
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertGreaterThanOrEqual(1, count($response->getData()->data));
     }
 
     public function test_user_can_see_contacts()
