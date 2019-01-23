@@ -24,6 +24,8 @@ class DateHelper
 
     /**
      * Creates a Carbon object from DateTime format.
+     * If timezone is given, it parse the date with this timezone.
+     * Always return a date with default timezone (UTC).
      *
      * @param \DateTime|Carbon|string date
      * @param string timezone
@@ -34,10 +36,10 @@ class DateHelper
         if (is_null($date)) {
             return;
         }
-        if ($date instanceof \DateTime) {
+        if ($date instanceof Carbon) {
+            // ok
+        } elseif ($date instanceof \DateTime) {
             $date = Carbon::instance($date);
-        } elseif ($date instanceof Carbon) {
-            $date = $date->toDateTimeString();
         } else {
             try {
                 $date = Carbon::parse($date);
@@ -46,9 +48,12 @@ class DateHelper
                 return;
             }
         }
-        $date = Carbon::create($date->year, $date->month, $date->day, $date->hour, $date->minute, $date->second, config('app.timezone'));
-        if ($timezone !== null) {
-            $date->setTimezone($timezone);
+
+        $date = Carbon::create($date->year, $date->month, $date->day, $date->hour, $date->minute, $date->second, $timezone ?? $date->timezone);
+
+        $appTimezone = config('app.timezone');
+        if ($date->timezone !== $appTimezone) {
+            $date->setTimezone($appTimezone);
         }
 
         return $date;
@@ -56,8 +61,11 @@ class DateHelper
 
     /**
      * Creates a Carbon object from Date format.
+     * If timezone is given, it parse the date with this timezone.
+     * Always return a date with default timezone (UTC).
      *
-     * @param string date
+     * @param Carbon|string date
+     * @param string timezone
      * @return Carbon
      */
     public static function parseDate($date, $timezone = null)
@@ -70,9 +78,12 @@ class DateHelper
                 return;
             }
         }
-        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, config('app.timezone'));
-        if ($timezone !== null) {
-            $date->setTimezone($timezone);
+
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, $timezone ?? $date->timezone);
+
+        $appTimezone = config('app.timezone');
+        if ($date->timezone !== $appTimezone) {
+            $date->setTimezone($appTimezone);
         }
 
         return $date;
