@@ -35,7 +35,6 @@ class ContactTest extends FeatureTestCase
         $firtContact = $contact->all()->first();
         $response = $this->call('POST', 'people/search', [
             '_token' => csrf_token(),
-            'accountId' => $firtContact->account_id,
             'needle' => $firtContact->first_name.' '.$firtContact->last_name,
         ]);
 
