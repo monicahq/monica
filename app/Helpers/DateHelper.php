@@ -38,8 +38,7 @@ class DateHelper
         }
         if ($date instanceof Carbon) {
             // ok
-        }
-        else if ($date instanceof \DateTime) {
+        } elseif ($date instanceof \DateTime) {
             $date = Carbon::instance($date);
         } else {
             try {
@@ -59,6 +58,7 @@ class DateHelper
 
         return $date;
     }
+
     /**
      * Creates a Carbon object from Date format.
      * If timezone is given, it parse the date with this timezone.
