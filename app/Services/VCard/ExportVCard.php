@@ -19,12 +19,12 @@ class ExportVCard extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'nullable|integer',
+            'contact_id' => 'required|integer|exists:contacts,id',
         ];
     }
 
     /**
-     * Import one VCard.
+     * Export one VCard.
      *
      * @param array $data
      * @return VCard

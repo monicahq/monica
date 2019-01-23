@@ -2,6 +2,8 @@
 
 namespace App\Services\VCard;
 
+use Ramsey\Uuid\Uuid;
+use App\Traits\DAVFormat;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
@@ -21,6 +23,8 @@ use App\Services\Contact\Reminder\CreateReminder;
 
 class ImportVCard extends BaseService
 {
+    use DAVFormat;
+
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
@@ -346,17 +350,6 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * Formats and returns a string for the contact.
-     *
-     * @param null|string $value
-     * @return null|string
-     */
-    private function formatValue($value)
-    {
-        return ! empty($value) ? str_replace('\;', ';', trim((string) $value)) : null;
-    }
-
-    /**
      * Create the Contact object matching the current entry.
      *
      * @param  Contact $contact
@@ -507,7 +500,9 @@ class ImportVCard extends BaseService
      */
     private function importUid(Contact $contact, VCard $entry): void
     {
-        $contact->uuid = (string) $entry->UID;
+        if (empty($contact->uuid) && Uuid::isValid((string) $entry->UID)) {
+            $contact->uuid = (string) $entry->UID;
+        }
     }
 
     /**
