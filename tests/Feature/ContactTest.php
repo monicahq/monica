@@ -33,11 +33,10 @@ class ContactTest extends FeatureTestCase
         $user = $this->signIn();
         $contact = new Contact;
         $firtContact = $contact->all()->first();
-       
         $response = $this->call('POST', 'people/search', array(
             '_token' => csrf_token(),
             'accountId' => $firtContact->account_id,
-            'needle' => $firtContact->first_name . ' ' .$firtContact->last_name
+            'needle' => $firtContact->first_name.' '.$firtContact->last_name,
         ));
 
         $this->assertGreaterThanOrEqual(1, count($response->getData()->data));
