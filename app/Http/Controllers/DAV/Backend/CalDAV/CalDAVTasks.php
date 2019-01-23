@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DAV\Backends\CalDAV;
+namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 use Sabre\DAV;
 use App\Models\Contact\Task;
@@ -12,7 +12,7 @@ use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
-use App\Models\DAV\Backends\PrincipalBackend;
+use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 
 class CalDAVTasks extends AbstractCalDAVBackend
 {

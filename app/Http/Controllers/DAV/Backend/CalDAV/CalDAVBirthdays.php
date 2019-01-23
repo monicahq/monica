@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DAV\Backends\CalDAV;
+namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 use Sabre\DAV;
 use App\Models\Contact\Contact;
@@ -11,7 +11,7 @@ use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Services\VCalendar\ExportVCalendar;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
-use App\Models\DAV\Backends\PrincipalBackend;
+use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 
 class CalDAVBirthdays extends AbstractCalDAVBackend
 {

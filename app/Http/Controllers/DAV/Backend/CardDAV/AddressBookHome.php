@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DAV;
+namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\CardDAV\AddressBookHome as BaseAddressBookHome;
 

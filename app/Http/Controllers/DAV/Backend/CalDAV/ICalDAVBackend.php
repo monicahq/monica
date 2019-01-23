@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DAV\Backends\CalDAV;
+namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 interface ICalDAVBackend
 {

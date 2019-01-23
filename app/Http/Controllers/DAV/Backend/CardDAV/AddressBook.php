@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models\DAV;
+namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
-use App\Models\DAV\Backends\CardDAVBackend;
 use Sabre\CardDAV\AddressBook as BaseAddressBook;
 
 class AddressBook extends BaseAddressBook

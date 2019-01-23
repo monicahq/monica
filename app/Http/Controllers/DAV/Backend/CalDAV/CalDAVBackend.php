@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Models\DAV\Backends;
+namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
 use Sabre\DAV;
 use App\Models\User\SyncToken;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
-use App\Models\DAV\Backends\CalDAV\CalDAVTasks;
-use App\Models\DAV\Backends\CalDAV\CalDAVBirthdays;
-use App\Models\DAV\Backends\CalDAV\AbstractCalDAVBackend;
 
 class CalDAVBackend extends AbstractBackend implements SyncSupport
 {

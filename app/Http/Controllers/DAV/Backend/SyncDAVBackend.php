@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\DAV\Backends;
+namespace App\Http\Controllers\DAV\Backend;
 
 use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 
-trait AbstractDAVBackend
+trait SyncDAVBackend
 {
     /**
      * This method returns a sync-token for this collection.

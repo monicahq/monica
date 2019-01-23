@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DAV\Backends;
+namespace App\Http\Controllers\DAV\DAVACL;
 
 use Sabre\DAV;
 use Illuminate\Support\Facades\Auth;

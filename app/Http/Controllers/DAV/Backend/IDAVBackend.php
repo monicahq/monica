@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DAV\Backends;
+namespace App\Http\Controllers\DAV\Backend;
 
 interface IDAVBackend
 {

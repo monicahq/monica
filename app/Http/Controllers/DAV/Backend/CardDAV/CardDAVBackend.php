@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DAV\Backends;
+namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
 use App\Models\User\SyncToken;
@@ -16,10 +16,13 @@ use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
+use App\Http\Controllers\DAV\Backend\IDAVBackend;
+use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
+use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
-    use AbstractDAVBackend;
+    use SyncDAVBackend;
 
     /**
      * Returns the uri for this backend.
