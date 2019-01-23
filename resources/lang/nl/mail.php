@@ -9,6 +9,7 @@ return [
     'comment' => 'Comment: :comment',
     'footer_contact_info' => 'Toevoegen, bekijken, afmaken en aanpassen van information over dit contact:',
     'footer_contact_info2' => 'See :name’s profile',
+    'footer_contact_info2_link' => 'See :name’s profile: :url',
 
     'notification_subject_line' => 'Je hebt een aankomende gebeurtenis',
     'notification_description' => 'Over :count dagen (op :date), zal de volgende gebeurtenis plaatsvinden:',
