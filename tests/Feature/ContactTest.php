@@ -28,6 +28,25 @@ class ContactTest extends FeatureTestCase
         return [$user, $contact];
     }
 
+    public function test_user_can_search_contacts()
+    {
+        $user = $this->signIn();
+        $fakeContact = factory(Contact::class)->create([
+            'first_name' => $this->faker->firstName,
+            'middle_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'nickname' => $this->faker->name
+        ]);
+
+        $response = $this->call('POST', 'people/search', array(
+            '_token' => csrf_token(),
+            'accountId' => $user->account_id,
+            'needle' => $fakeContact->nickname
+        ));
+
+        $this->assertEquals(200, $response->getStatusCode());
+    }
+
     public function test_user_can_see_contacts()
     {
         list($user, $contact) = $this->fetchUser();
