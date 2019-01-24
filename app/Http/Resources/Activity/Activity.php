@@ -4,6 +4,7 @@ namespace App\Http\Resources\Activity;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class Activity extends Resource
@@ -27,6 +28,7 @@ class Activity extends Resource
                 'total' => $this->contacts()->count(),
                 'contacts' => $this->getContactsForAPI(),
             ],
+            'emotions' => EmotionResource::collection($this->emotions),
             'account' => [
                 'id' => $this->account->id,
             ],

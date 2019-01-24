@@ -79,6 +79,7 @@ class ActivitiesController extends Controller
             'summary' => $request->get('summary'),
             'description' => $request->get('description'),
             'date' => $request->get('happened_at'),
+            'emotions' => $request->get('emotions'),
         ]);
 
         $arrayParticipants = [];

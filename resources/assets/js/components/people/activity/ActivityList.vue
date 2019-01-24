@@ -35,7 +35,7 @@
           <!-- SUMMARY -->
           <div class="dtc pr2">
             <p class="mb2 b">
-              What did you do?
+              {{ $t('people.activities_add_title', { name: name }) }}
             </p>
             <form-input
               v-model="newActivity.summary"
@@ -48,7 +48,7 @@
           <!-- WHEN -->
           <div class="dtc">
             <p class="mb2 b">
-              The activity happened on
+              {{ $t('people.activities_add_date_occured') }}
             </p>
             <div class="di">
               <div class="dib">
@@ -76,7 +76,7 @@
         <!-- DESCRIPTION -->
         <div class="bb b--gray-monica pv3 mb3" v-show="displayDescription">
           <label>
-            {{ $t('people.modal_call_comment') }}
+            {{ $t('people.activities_summary') }}
           </label>
           <form-textarea
             v-model="newActivity.description"
@@ -96,13 +96,13 @@
         <!-- EMOTIONS -->
         <div class="bb b--gray-monica pb3 mb3" v-show="displayEmotions">
           <label>
-            Do you want to log how you felt during this activity? (optional)
+            {{ $t('people.activities_add_emotions') }}
           </label>
           <emotion class="pv2" @updateEmotionsList="updateEmotionsList" />
         </div>
 
         <!-- ACTIVITY CATEGORIES -->
-        <div class="bb b--gray-monica pb3" v-show="displayCategory">
+        <div class="bb b--gray-monica pb3 mb3" v-show="displayCategory">
           <label>
             {{ $t('people.activities_add_pick_activity') }}
           </label>
@@ -110,12 +110,14 @@
         </div>
 
         <!-- PARTICPANTS -->
-        <div class="bb b--gray-monica pb3" v-show="displayParticipants">
+        <div class="bb b--gray-monica pb3 mb3" v-show="displayParticipants">
           <label>
-            Who, apart from X, participated in this activity?
+            {{ $t('people.activities_add_participants', {name: name}) }}
           </label>
           <participant-list :hash="hash" v-on:update="updateParticipant($event)" />
         </div>
+
+        <error :errors="errors" />
 
         <!-- ACTIONS -->
         <div class="pt3">
@@ -143,6 +145,8 @@
       <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
         <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
           <ul class="list">
+
+            <!-- PARTICIPANT LIST -->
             <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
               Was also present:
               <ul class="list">
@@ -151,19 +155,30 @@
                 </li>
               </ul>
             </li>
+
+            <!-- EMOTIONS LIST -->
+            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]" v-if="activity.emotions.length != 0">
+              <ul class="list">
+                <li v-for="emotion in activity.emotions" :key="emotion.id" class="di">
+                  {{ $t('app.emotion_' + emotion.name) }}
+                </li>
+              </ul>
+            </li>
+
+            <!-- HAPPENED AT -->
             <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
               {{ activity.happened_at | moment }}
             </li>
+
+            <!-- ACTIVITY TYPE -->
             <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]" v-if="activity.activity_type">
               {{ activity.activity_type.name }}
             </li>
+
+            <!-- ACTIONS -->
             <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
-              <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(activity)">
-                {{ $t('app.update') }}
-              </a>
-              <a v-show="destroyActivityId != activity.id" class="pointer" @click.prevent="showDestroyActivity(activity)">
-                {{ $t('app.delete') }}
-              </a>
+              <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(activity)">{{ $t('app.update') }}</a>
+              <a v-show="destroyActivityId != activity.id" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
               <ul v-show="destroyActivityId == activity.id" class="di">
                 <li class="di">
                   <a class="pointer mr1" @click.prevent="destroyActivityId = 0">
@@ -187,8 +202,12 @@
 
 <script>
 import moment from 'moment';
+import Error from '../../partials/Error.vue';
 
 export default {
+  components: {
+    Error
+  },
 
   filters: {
     moment: function (date) {
@@ -230,6 +249,7 @@ export default {
         participants: [],
       },
       destroyActivityId: 0,
+      errors: [],
     };
   },
 
@@ -257,6 +277,7 @@ export default {
       this.emotions = [];
       this.activity_type_id = 0;
       this.displayLogActivity = false;
+      this.errors = [];
     },
 
     compiledMarkdown (text) {
@@ -295,30 +316,10 @@ export default {
             text: '',
             type: 'success'
           });
+        })
+        .catch(error => {
+          this.errors = _.flatten(_.toArray(error.response.data));
         });
-    },
-
-    update() {
-      axios.put('/people/' + this.hash + '/activities/' + this.editCallId, this.editCall)
-        .then(response => {
-          this.getactivities();
-          this.editCallId = 0;
-          this.emotions = [];
-
-          this.$notify({
-            group: 'main',
-            title: this.$t('app.default_save_success'),
-            text: '',
-            type: 'success'
-          });
-        });
-    },
-
-    showEditBox(activity) {
-      this.editCallId = call.id;
-      this.editCall.content = call.content;
-      this.editCall.contact_called = call.contact_called;
-      this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD');
     },
 
     showDestroyActivity(activity) {
@@ -339,13 +340,11 @@ export default {
     updateEmotionsList: function(emotions) {
       this.emotions = emotions;
       this.newActivity.emotions = [];
-      this.editCall.emotions = [];
 
       // filter the list of emotions to populate a new array
       // containing only the emotion ids and not the entire objetcs
       for (let i = 0; i < this.emotions.length; i++) {
         this.newActivity.emotions.push(this.emotions[i].id);
-        this.editCall.emotions.push(this.emotions[i].id);
       }
     }
   }
