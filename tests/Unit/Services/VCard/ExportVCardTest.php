@@ -307,23 +307,5 @@ class ExportVCardTest extends TestCase
         );
 
         $this->assertVObjectEqualsVObject($this->getCard($contact), $vCard);
-
-        /*
-        $url = route('people.show', $contact);
-        $sabreversion = \Sabre\VObject\Version::VERSION;
-
-        $this->assertVObjectEqualsVObject("BEGIN:VCARD
-VERSION:4.0
-PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
-UID:{$contact->uuid}
-SOURCE:{$url}
-FN:John Doe
-N:Doe;John;;;
-GENDER:O;
-ADR:;;12;beverly hills;;90210;US\r\n
-ADR:;;12;beverly hills;;90210;US\r\n
-EMAIL:john@doe.com
-END:VCARD", $vCard);
-*/
     }
 }
