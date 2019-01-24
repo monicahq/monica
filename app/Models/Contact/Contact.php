@@ -134,7 +134,7 @@ class Contact extends Model
 
     /**
      * Get Searchable Fields.
-     * 
+     *
      * @return array
      */
     public function getSearchableFields()
