@@ -131,10 +131,6 @@ export default {
       type: String,
       default: '',
     },
-    locale: {
-      type: String,
-      default: 'en',
-    },
     reminder: {
       type: Number,
       default: 0,
@@ -154,6 +150,9 @@ export default {
   computed: {
     dirltr() {
       return this.$root.htmldir == 'ltr';
+    },
+    locale() {
+      return this.$root.locale;
     }
   },
 

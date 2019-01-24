@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\CardDAV\Backends;
+namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
 use App\Models\User\SyncToken;
@@ -12,11 +12,28 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CardDAV\Backend\SyncSupport;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
+use App\Http\Controllers\DAV\Backend\IDAVBackend;
+use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
+use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 
-class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
+class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {
+    use SyncDAVBackend;
+
+    /**
+     * Returns the uri for this backend.
+     *
+     * @return string
+     */
+    public function backendUri()
+    {
+        return 'contacts';
+    }
+
     /**
      * Returns the list of addressbooks for a specific user.
      *
@@ -37,76 +54,36 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
     public function getAddressBooksForUser($principalUri)
     {
         $name = Auth::user()->name;
-        $token = $this->getSyncToken();
+        $token = $this->getCurrentSyncToken();
+
+        $des = [
+            'id'                => $this->backendUri(),
+            'uri'               => $this->backendUri(),
+            'principaluri'      => PrincipalBackend::getPrincipalUser(),
+            '{DAV:}displayname' => $name,
+            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
+        ];
+        if ($token) {
+            $des += [
+                '{DAV:}sync-token'  => $token->id,
+                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id,
+            ];
+        }
 
         return [
-            [
-                'id'                => '0',
-                'uri'               => 'contacts',
-                'principaluri'      => MonicaPrincipalBackend::getPrincipalUser(),
-                '{DAV:}sync-token'  => $token->id,
-                '{DAV:}displayname' => $name,
-                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
-                '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
-            ],
+            $des,
         ];
     }
 
     /**
-     * This method returns a sync-token for this collection.
+     * Extension for Calendar objects.
      *
-     * If null is returned from this function, the plugin assumes there's no
-     * sync information available.
-     *
-     * @return SyncToken
+     * @var string
      */
-    private function getSyncToken()
+    public function getExtension()
     {
-        $tokens = SyncToken::where([
-            ['account_id', Auth::user()->account_id],
-            ['user_id', Auth::user()->id],
-        ])
-            ->orderBy('created_at')
-            ->get();
-
-        if ($tokens->count() <= 0) {
-            $token = $this->createSyncToken();
-        } else {
-            $token = $tokens->last();
-
-            if ($token->timestamp < $this->getLastModified()) {
-                $token = $this->createSyncToken();
-            }
-        }
-
-        return $token;
-    }
-
-    /**
-     * Create a token.
-     *
-     * @return SyncToken
-     */
-    private function createSyncToken()
-    {
-        $max = $this->getLastModified();
-
-        return SyncToken::create([
-            'account_id' => Auth::user()->account_id,
-            'user_id' => Auth::user()->id,
-            'timestamp' => $max,
-        ]);
-    }
-
-    /**
-     * Returns the last modification date.
-     *
-     * @return \Carbon\Carbon
-     */
-    public function getLastModified()
-    {
-        return $this->getContacts()
-                    ->max('updated_at');
+        return '.vcf';
     }
 
     /**
@@ -167,48 +144,213 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
      */
     public function getChangesForAddressBook($addressBookId, $syncToken, $syncLevel, $limit = null)
     {
-        $token = null;
-        $timestamp = null;
-        if (! empty($syncToken)) {
-            $token = SyncToken::where([
-                'account_id' => Auth::user()->account_id,
-                'user_id' => Auth::user()->id,
-            ])->find($syncToken);
+        return $this->getChanges($syncToken);
+    }
 
-            if (is_null($token)) {
-                // syncToken is not recognized
-                return;
-            }
+    /**
+     * Prepare datas for this contact.
+     *
+     * @param Contact $contact
+     * @return array|null
+     */
+    private function prepareCard($contact)
+    {
+        try {
+            $vcard = (new ExportVCard())
+                ->execute([
+                    'account_id' => Auth::user()->account_id,
+                    'contact_id' => $contact->id,
+                ]);
 
-            $timestamp = $token->timestamp;
-            $token = $this->getSyncToken();
-        } else {
-            $token = $this->createSyncToken();
-            $timestamp = null;
+            $carddata = $vcard->serialize();
+
+            return [
+                'id' => $contact->hashID(),
+                'uri' => $this->encodeUri($contact),
+                'carddata' => $carddata,
+                'etag' => '"'.md5($carddata).'"',
+                'lastmodified' => $contact->updated_at->timestamp,
+            ];
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' prepareCard: '.(string) $e);
+        }
+    }
+
+    /**
+     * Returns the contact for the specific uri.
+     *
+     * @param string  $uri
+     * @return Contact
+     */
+    public function getObjectUuid($uuid)
+    {
+        return Contact::where([
+            'account_id' => Auth::user()->account_id,
+            'uuid' => $uuid,
+        ])->first();
+    }
+
+    /**
+     * Returns the collection of all active contacts.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function getObjects()
+    {
+        return Auth::user()->account
+                    ->contacts()
+                    ->real()
+                    ->active()
+                    ->get();
+    }
+
+    /**
+     * Returns all cards for a specific addressbook id.
+     *
+     * This method should return the following properties for each card:
+     *   * carddata - raw vcard data
+     *   * uri - Some unique url
+     *   * lastmodified - A unix timestamp
+     *
+     * It's recommended to also return the following properties:
+     *   * etag - A unique etag. This must change every time the card changes.
+     *   * size - The size of the card in bytes.
+     *
+     * If these last two properties are provided, less time will be spent
+     * calculating them. If they are specified, you can also ommit carddata.
+     * This may speed up certain requests, especially with large cards.
+     *
+     * @param mixed $addressbookId
+     * @return array
+     */
+    public function getCards($addressbookId)
+    {
+        $contacts = $this->getObjects();
+
+        return $contacts->map(function ($contact) {
+            return $this->prepareCard($contact);
+        });
+    }
+
+    /**
+     * Returns a specific card.
+     *
+     * The same set of properties must be returned as with getCards. The only
+     * exception is that 'carddata' is absolutely required.
+     *
+     * If the card does not exist, you must return false.
+     *
+     * @param mixed $addressBookId
+     * @param string $cardUri
+     * @return array|bool
+     */
+    public function getCard($addressBookId, $cardUri)
+    {
+        $contact = $this->getObject($cardUri);
+
+        if ($contact) {
+            return $this->prepareCard($contact);
         }
 
-        $contacts = $this->getContacts();
+        return false;
+    }
 
-        $modified = $contacts->filter(function ($contact) use ($timestamp) {
-            return ! is_null($timestamp) &&
-                   $contact->updated_at > $timestamp &&
-                   $contact->created_at < $timestamp;
-        });
-        $added = $contacts->filter(function ($contact) use ($timestamp) {
-            return is_null($timestamp) ||
-                   $contact->created_at >= $timestamp;
-        });
+    /**
+     * Creates a new card.
+     *
+     * The addressbook id will be passed as the first argument. This is the
+     * same id as it is returned from the getAddressBooksForUser method.
+     *
+     * The cardUri is a base uri, and doesn't include the full path. The
+     * cardData argument is the vcard body, and is passed as a string.
+     *
+     * It is possible to return an ETag from this method. This ETag is for the
+     * newly created resource, and must be enclosed with double quotes (that
+     * is, the string itself must contain the double quotes).
+     *
+     * You should only return the ETag if you store the carddata as-is. If a
+     * subsequent GET request on the same card does not have the same body,
+     * byte-by-byte and you did return an ETag here, clients tend to get
+     * confused.
+     *
+     * If you don't return an ETag, you can just return null.
+     *
+     * @param mixed $addressBookId
+     * @param string $cardUri
+     * @param string $cardData
+     * @return string|null
+     */
+    public function createCard($addressBookId, $cardUri, $cardData)
+    {
+        return $this->updateCard($addressBookId, $cardUri, $cardData);
+    }
 
-        return [
-            'syncToken' => $token->id,
-            'added' => $added->map(function ($contact) {
-                return $this->encodeUri($contact);
-            })->toArray(),
-            'modified' => $modified->map(function ($contact) {
-                return $this->encodeUri($contact);
-            })->toArray(),
-            'deleted' => [],
-        ];
+    /**
+     * Updates a card.
+     *
+     * The addressbook id will be passed as the first argument. This is the
+     * same id as it is returned from the getAddressBooksForUser method.
+     *
+     * The cardUri is a base uri, and doesn't include the full path. The
+     * cardData argument is the vcard body, and is passed as a string.
+     *
+     * It is possible to return an ETag from this method. This ETag should
+     * match that of the updated resource, and must be enclosed with double
+     * quotes (that is: the string itself must contain the actual quotes).
+     *
+     * You should only return the ETag if you store the carddata as-is. If a
+     * subsequent GET request on the same card does not have the same body,
+     * byte-by-byte and you did return an ETag here, clients tend to get
+     * confused.
+     *
+     * If you don't return an ETag, you can just return null.
+     *
+     * @param mixed $addressBookId
+     * @param string $cardUri
+     * @param string $cardData
+     * @return string|null
+     */
+    public function updateCard($addressBookId, $cardUri, $cardData)
+    {
+        $contact_id = null;
+        if ($cardUri) {
+            $contact = $this->getObject($cardUri);
+
+            if ($contact) {
+                $contact_id = $contact->id;
+            }
+        }
+
+        try {
+            $result = (new ImportVCard(Auth::user()->account_id))
+                ->execute([
+                    'contact_id' => $contact_id,
+                    'entry' => $cardData,
+                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
+                ]);
+        } catch (\Exception $e) {
+            Log::debug(__CLASS__.' updateCard: '.(string) $e);
+        }
+
+        if (! array_has($result, 'error')) {
+            $contact = Contact::where('account_id', Auth::user()->account_id)
+                ->find($result['contact_id']);
+            $card = $this->prepareCard($contact);
+
+            return $card['etag'];
+        }
+    }
+
+    /**
+     * Deletes a card.
+     *
+     * @param mixed $addressBookId
+     * @param string $cardUri
+     * @return bool
+     */
+    public function deleteCard($addressBookId, $cardUri)
+    {
+        return false;
     }
 
     /**
@@ -255,221 +397,6 @@ class MonicaCardDAVBackend extends AbstractBackend implements SyncSupport
      * @return void|bool
      */
     public function deleteAddressBook($addressBookId)
-    {
-        return false;
-    }
-
-    private function prepareCard($contact)
-    {
-        if (! $contact) {
-            return;
-        }
-
-        try {
-            $vcard = (new ExportVCard())
-                ->execute([
-                    'account_id' => Auth::user()->account_id,
-                    'contact_id' => $contact->id,
-                ]);
-        } catch (\Exception $e) {
-            Log::debug(__CLASS__.' prepareCard: '.(string) $e);
-        }
-
-        $carddata = $vcard->serialize();
-
-        return [
-            'id' => $contact->hashID(),
-            'uri' => $this->encodeUri($contact),
-            'carddata' => $carddata,
-            'etag' => '"'.md5($carddata).'"',
-            'lastmodified' => $contact->updated_at->timestamp,
-        ];
-    }
-
-    private function encodeUri($contact)
-    {
-        return urlencode($contact->uuid.'.vcf');
-    }
-
-    private function decodeUri($uri)
-    {
-        return pathinfo(urldecode($uri), PATHINFO_FILENAME);
-    }
-
-    /**
-     * Returns the contact for the specific uri.
-     *
-     * @param string  $uri
-     * @return Contact
-     */
-    private function getContact($uri)
-    {
-        try {
-            return Contact::where([
-                'account_id' => Auth::user()->account_id,
-                'uuid' => $this->decodeUri($uri),
-            ])->first();
-        } catch (\Exception $e) {
-            return;
-        }
-    }
-
-    /**
-     * Returns the collection of all active contacts.
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    private function getContacts()
-    {
-        return Auth::user()->account
-                    ->contacts()
-                    ->real()
-                    ->active()
-                    ->get();
-    }
-
-    /**
-     * Returns all cards for a specific addressbook id.
-     *
-     * This method should return the following properties for each card:
-     *   * carddata - raw vcard data
-     *   * uri - Some unique url
-     *   * lastmodified - A unix timestamp
-     *
-     * It's recommended to also return the following properties:
-     *   * etag - A unique etag. This must change every time the card changes.
-     *   * size - The size of the card in bytes.
-     *
-     * If these last two properties are provided, less time will be spent
-     * calculating them. If they are specified, you can also ommit carddata.
-     * This may speed up certain requests, especially with large cards.
-     *
-     * @param mixed $addressbookId
-     * @return array
-     */
-    public function getCards($addressbookId)
-    {
-        $contacts = $this->getContacts();
-
-        return $contacts->map(function ($contact) {
-            return $this->prepareCard($contact);
-        });
-    }
-
-    /**
-     * Returns a specific card.
-     *
-     * The same set of prope
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @return array
-     */
-    public function getCard($addressBookId, $cardUri)
-    {
-        $contact = $this->getContact($cardUri);
-
-        return $this->prepareCard($contact);
-    }
-
-    /**
-     * Creates a new card.
-     *
-     * The addressbook id will be passed as the first argument. This is the
-     * same id as it is returned from the getAddressBooksForUser method.
-     *
-     * The cardUri is a base uri, and doesn't include the full path. The
-     * cardData argument is the vcard body, and is passed as a string.
-     *
-     * It is possible to return an ETag from this method. This ETag is for the
-     * newly created resource, and must be enclosed with double quotes (that
-     * is, the string itself must contain the double quotes).
-     *
-     * You should only return the ETag if you store the carddata as-is. If a
-     * subsequent GET request on the same card does not have the same body,
-     * byte-by-byte and you did return an ETag here, clients tend to get
-     * confused.
-     *
-     * If you don't return an ETag, you can just return null.
-     *
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @param string $cardData
-     * @return string|null
-     */
-    public function createCard($addressBookId, $cardUri, $cardData)
-    {
-        return $this->importCard(null, $cardData);
-    }
-
-    /**
-     * Updates a card.
-     *
-     * The addressbook id will be passed as the first argument. This is the
-     * same id as it is returned from the getAddressBooksForUser method.
-     *
-     * The cardUri is a base uri, and doesn't include the full path. The
-     * cardData argument is the vcard body, and is passed as a string.
-     *
-     * It is possible to return an ETag from this method. This ETag should
-     * match that of the updated resource, and must be enclosed with double
-     * quotes (that is: the string itself must contain the actual quotes).
-     *
-     * You should only return the ETag if you store the carddata as-is. If a
-     * subsequent GET request on the same card does not have the same body,
-     * byte-by-byte and you did return an ETag here, clients tend to get
-     * confused.
-     *
-     * If you don't return an ETag, you can just return null.
-     *
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @param string $cardData
-     * @return string|null
-     */
-    public function updateCard($addressBookId, $cardUri, $cardData)
-    {
-        return $this->importCard($cardUri, $cardData);
-    }
-
-    private function importCard($cardUri, $cardData)
-    {
-        $contact_id = null;
-        if ($cardUri) {
-            $contact = $this->getContact($cardUri);
-
-            if ($contact) {
-                $contact_id = $contact->id;
-            }
-        }
-
-        try {
-            $result = (new ImportVCard(Auth::user()->account_id))
-                ->execute([
-                    'contact_id' => $contact_id,
-                    'entry' => $cardData,
-                    'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
-                ]);
-        } catch (\Exception $e) {
-            Log::debug(__CLASS__.' importCard: '.(string) $e);
-        }
-
-        if (! array_has($result, 'error')) {
-            $contact = Contact::where('account_id', Auth::user()->account_id)
-                ->find($result['contact_id']);
-            $card = $this->prepareCard($contact);
-
-            return $card['etag'];
-        }
-    }
-
-    /**
-     * Deletes a card.
-     *
-     * @param mixed $addressBookId
-     * @param string $cardUri
-     * @return bool
-     */
-    public function deleteCard($addressBookId, $cardUri)
     {
         return false;
     }

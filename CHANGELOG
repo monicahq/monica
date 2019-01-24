@@ -2,6 +2,9 @@ UNRELEASED CHANGES:
 
 New features:
 
+* Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
+* Add Laravel Telescope (deactivated by default)
+* Add notion of instance administrator for a user
 * Add ability to name u2f security keys and to delete register ones
 * Add ability to add a comment when rating your day in the journal
 * Add API methods to manage genders
@@ -18,6 +21,9 @@ Enhancements:
 
 Fixes:
 
+* Fix vue.js DateTime picker to type a date in other format than en-us one
+* Fix DateTime parse when compact format is used
+* Fix contact and relationship edit with reminder enabled
 * Fix broken migration for the activities table
 * Fix VCard import with partial N entry
 * Fix using 'label' tag without 'for' attribute
