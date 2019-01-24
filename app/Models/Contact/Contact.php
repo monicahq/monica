@@ -133,7 +133,7 @@ class Contact extends Model
     protected $nameOrder = 'firstname_lastname';
 
     /**
-     * Get Searchable Fields
+     * Get Searchable Fields.
      * 
      * @return array
      */
