@@ -36,7 +36,29 @@ SOURCE:{$url}
 FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
 GENDER:O;
-REV:{$timestamp}
+";
+        foreach ($contact->addresses as $address) {
+            $data .= "ADR:;;";
+            $data .= $address->place->street.";";
+            $data .= $address->place->city.";";
+            $data .= $address->place->province.";";
+            $data .= $address->place->postal_code.";";
+            $data .= $address->place->country;
+            $data .= "\n";
+        }
+        foreach ($contact->contactFields as $contactField) {
+            switch ($contactField->contactFieldType->type) {
+                case 'phone':
+                    $data .= "TEL:{$contactField->data}\n";
+                    break;
+                case 'email':
+                    $data .= "EMAIL:{$contactField->data}\n";
+                    break;
+                default:
+                    break;
+            }
+        }
+        $data .= "REV:{$timestamp}
 END:VCARD
 ";
 
