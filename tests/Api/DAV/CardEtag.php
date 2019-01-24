@@ -26,6 +26,7 @@ trait CardEtag
     {
         $url = route('people.show', $contact);
         $sabreversion = \Sabre\VObject\Version::VERSION;
+        $timestamp = $contact->updated_at->format('Ymd\THis\Z');
 
         $data = "BEGIN:VCARD
 VERSION:4.0
@@ -35,6 +36,7 @@ SOURCE:{$url}
 FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
 GENDER:O;
+REV:{$timestamp}
 END:VCARD
 ";
 
