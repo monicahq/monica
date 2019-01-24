@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Activity;
+namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
@@ -9,9 +9,9 @@ use App\Models\Contact\Activity;
 use App\Models\Contact\ActivityType;
 use App\Models\Instance\Emotion\Emotion;
 use Illuminate\Validation\ValidationException;
-use App\Services\Activity\Activity\CreateActivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Account\Activity\Activity\CreateActivity;
 
 class CreateActivityTest extends TestCase
 {

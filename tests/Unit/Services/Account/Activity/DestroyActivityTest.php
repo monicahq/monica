@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit\Services\Activity;
+namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Contact\Activity;
-use App\Services\Activity\Activity\DestroyActivity;
+use App\Services\Account\Activity\Activity\DestroyActivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DestroyActivityTest extends TestCase

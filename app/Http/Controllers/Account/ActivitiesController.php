@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Contacts;
+namespace App\Http\Controllers\Account;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -9,10 +9,10 @@ use App\Models\Contact\Activity;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\ActivityType;
 use App\Services\ActivityStatisticService;
-use App\Services\Activity\Activity\CreateActivity;
-use App\Services\Activity\Activity\DestroyActivity;
-use App\Services\Activity\Activity\AttachContactToActivity;
+use App\Services\Account\Activity\Activity\CreateActivity;
+use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Http\Resources\Activity\Activity as ActivityResource;
+use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
 class ActivitiesController extends Controller
 {

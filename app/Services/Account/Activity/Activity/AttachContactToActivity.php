@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Activity\Activity;
+namespace App\Services\Account\Activity\Activity;
 
 use App\Services\BaseService;
 use App\Models\Contact\Contact;

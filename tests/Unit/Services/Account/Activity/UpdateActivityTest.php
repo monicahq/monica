@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\Services\Activity;
+namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Activity;
 use Illuminate\Validation\ValidationException;
-use App\Services\Activity\Activity\UpdateActivity;
+use App\Services\Account\Activity\Activity\UpdateActivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
