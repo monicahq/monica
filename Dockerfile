@@ -18,7 +18,7 @@ EXPOSE 80:80
 
 RUN apk update && apk upgrade
 RUN apk add --virtual .build-deps \
-        curl openssl
+        curl openssl bash
 RUN apk add apache2 make netcat-openbsd \
         #- base
         php7 php7-apache2 php7-intl php7-openssl php7-ctype \
@@ -90,6 +90,10 @@ COPY .env.example .env
 RUN chown -R monica:monica .
 RUN chgrp -R apache bootstrap/cache storage
 RUN chmod -R g+w bootstrap/cache storage
+
+# Sentry
+RUN mkdir -p /root/.local/bin
+RUN curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=/root/.local/bin bash
 
 # Apache2 conf
 COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
