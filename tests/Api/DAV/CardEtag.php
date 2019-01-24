@@ -26,6 +26,7 @@ trait CardEtag
     {
         $url = route('people.show', $contact);
         $sabreversion = \Sabre\VObject\Version::VERSION;
+        $timestamp = $contact->updated_at->format('Ymd\THis\Z');
 
         $data = "BEGIN:VCARD
 VERSION:4.0
@@ -35,6 +36,29 @@ SOURCE:{$url}
 FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
 GENDER:O;
+";
+        foreach ($contact->addresses as $address) {
+            $data .= 'ADR:;;';
+            $data .= $address->place->street.';';
+            $data .= $address->place->city.';';
+            $data .= $address->place->province.';';
+            $data .= $address->place->postal_code.';';
+            $data .= $address->place->country;
+            $data .= "\n";
+        }
+        foreach ($contact->contactFields as $contactField) {
+            switch ($contactField->contactFieldType->type) {
+                case 'phone':
+                    $data .= "TEL:{$contactField->data}\n";
+                    break;
+                case 'email':
+                    $data .= "EMAIL:{$contactField->data}\n";
+                    break;
+                default:
+                    break;
+            }
+        }
+        $data .= "REV:{$timestamp}
 END:VCARD
 ";
 
@@ -63,18 +87,18 @@ END:VCARD
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
 CALSCALE:GREGORIAN
-UID:{$specialDate->uuid}
 BEGIN:VTIMEZONE
 TZID:UTC
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:{$specialDate->uuid}
-DTSTAMP:{$timestamp}
-SUMMARY:Birthday of {$contact->name}
 DTSTART:{$start}
 DTEND:{$end}
 RRULE:FREQ=YEARLY
+DTSTAMP:{$timestamp}
 CREATED:{$timestamp}
+SUMMARY:Birthday of {$contact->name}
+ATTACH:{$url}
 DESCRIPTION:{$description1}
  {$description2}
 END:VEVENT
@@ -103,8 +127,8 @@ TZID:UTC
 END:VTIMEZONE
 BEGIN:VTODO
 UID:{$task->uuid}
-DTSTAMP:{$timestamp}
 SUMMARY:{$task->title}
+DTSTAMP:{$timestamp}
 CREATED:{$timestamp}
 DESCRIPTION:{$task->description}
 ";
