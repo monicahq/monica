@@ -151,7 +151,7 @@ class ImportTask extends BaseService
         if (empty($task->created_at)) {
             if ($entry->VTODO->DTSTAMP) {
                 $task->created_at = DateHelper::parseDateTime($entry->VTODO->DTSTAMP->getDateTime());
-            } else if ($entry->VTODO->CREATED) {
+            } elseif ($entry->VTODO->CREATED) {
                 $task->created_at = DateHelper::parseDateTime($entry->VTODO->CREATED->getDateTime());
             }
         }

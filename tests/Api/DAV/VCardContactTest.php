@@ -286,7 +286,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $vcard = mb_ereg_replace("VERSION:4.0", "VERSION:3.0", $this->getCard($contact));
+        $vcard = mb_ereg_replace('VERSION:4.0', 'VERSION:3.0', $this->getCard($contact));
         $vcard = mb_ereg_replace("\n", "&#13;\n", $vcard);
 
         $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.

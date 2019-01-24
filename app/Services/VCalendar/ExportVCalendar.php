@@ -2,7 +2,6 @@
 
 namespace App\Services\VCalendar;
 
-use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
 use Sabre\VObject\Component\VEvent;

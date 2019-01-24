@@ -219,6 +219,6 @@ class ExportVCard extends BaseService
      */
     private function exportTimestamp(Contact $contact, VCard $vcard)
     {
-       $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
+        $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
     }
 }
