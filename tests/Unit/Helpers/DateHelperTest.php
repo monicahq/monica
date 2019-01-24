@@ -12,16 +12,6 @@ class DateHelperTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function testParseDateTime()
-    {
-        $date = '2017-01-22 17:56:03';
-        $timezone = 'America/New_York';
-
-        $testDate = DateHelper::parseDateTime($date, $timezone);
-
-        $this->assertInstanceOf(Carbon::class, $testDate);
-    }
-
     public function testGetShortDateWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';
@@ -127,68 +117,178 @@ class DateHelperTest extends FeatureTestCase
     public function test_add_time_according_to_frequency_type_returns_the_right_value()
     {
         $date = '2017-01-22 17:56:03';
-        $timezone = 'America/New_York';
 
-        $testDate = DateHelper::parseDateTime($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2017-01-29',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'week', 1)->toDateString()
         );
 
-        $testDate = DateHelper::parseDateTime($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2017-02-22',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'month', 1)->toDateString()
         );
 
-        $testDate = DateHelper::parseDateTime($date, $timezone);
+        $testDate = DateHelper::parseDateTime($date);
         $this->assertEquals(
             '2018-01-22',
             DateHelper::addTimeAccordingToFrequencyType($testDate, 'year', 1)->toDateString()
         );
     }
 
-    public function test_datetime_parse_timezone()
+    public function test_parse_dateTime()
     {
-        $date = '2018-01-01 00:01:00';
-        $timezone = 'America/New_York';
+        $date = '2017-01-22 17:56:03';
 
         $testDate = DateHelper::parseDateTime($date);
+
+        $this->assertInstanceOf(Carbon::class, $testDate);
+    }
+
+    public function test_parse_dateTime_format()
+    {
+        $date = '20190120T232144Z';
+
+        $testDate = DateHelper::parseDateTime($date);
+
+        $this->assertEquals(2019, $testDate->year);
+        $this->assertEquals(1, $testDate->month);
+        $this->assertEquals(20, $testDate->day);
+        $this->assertEquals(23, $testDate->hour);
+        $this->assertEquals(21, $testDate->minute);
+        $this->assertEquals(44, $testDate->second);
+        $this->assertEquals('UTC', $testDate->timezone->getName());
+
         $this->assertEquals(
-            '2018-01-01',
+            '2019-01-20',
             $testDate->toDateString()
         );
         $this->assertEquals(
-            '2018-01-01T00:01:00Z',
+            '2019-01-20T23:21:44Z',
             DateHelper::getTimestamp($testDate)
-        );
-
-        $testDate2 = DateHelper::parseDateTime($testDate, $timezone);
-        $this->assertEquals(
-            '2017-12-31',
-            $testDate2->toDateString()
-        );
-        $this->assertEquals(
-            '2017-12-31T19:01:00Z',
-            DateHelper::getTimestamp($testDate2)
         );
     }
 
-    public function test_date_parse_timezone()
+    public function test_parse_dateTime_utc()
     {
-        $date = '2018-01-01 00:01:00';
-        $timezone = 'America/New_York';
+        $date = '2017-01-22 17:56:03';
 
-        $testDate = DateHelper::parseDate($date);
+        $testDate = DateHelper::parseDateTime($date);
+
+        $this->assertEquals(2017, $testDate->year);
+        $this->assertEquals(1, $testDate->month);
+        $this->assertEquals(22, $testDate->day);
+        $this->assertEquals(17, $testDate->hour);
+        $this->assertEquals(56, $testDate->minute);
+        $this->assertEquals(03, $testDate->second);
+        $this->assertEquals('UTC', $testDate->timezone->getName());
+
         $this->assertEquals(
-            '2018-01-01',
+            '2017-01-22',
             $testDate->toDateString()
         );
-
-        $testDate2 = DateHelper::parseDate($testDate, $timezone);
         $this->assertEquals(
-            '2017-12-31',
-            $testDate2->toDateString()
+            '2017-01-22T17:56:03Z',
+            DateHelper::getTimestamp($testDate)
+        );
+    }
+
+    public function test_parse_dateTime_new_york()
+    {
+        $date = '2017-01-22 17:56:03';
+        $timezone = 'America/New_York';
+
+        $testDate = DateHelper::parseDateTime($date, $timezone);
+
+        $this->assertEquals(2017, $testDate->year);
+        $this->assertEquals(1, $testDate->month);
+        $this->assertEquals(22, $testDate->day);
+        $this->assertEquals(22, $testDate->hour);
+        $this->assertEquals(56, $testDate->minute);
+        $this->assertEquals(03, $testDate->second);
+        $this->assertEquals('UTC', $testDate->timezone->getName());
+
+        $this->assertEquals(
+            '2017-01-22',
+            $testDate->toDateString()
+        );
+        $this->assertEquals(
+            '2017-01-22T22:56:03Z',
+            DateHelper::getTimestamp($testDate)
+        );
+    }
+
+    public function test_parse_dateTime_paris()
+    {
+        $date = '2019-01-01 00:56:03';
+        $timezone = 'Europe/Paris';
+
+        $testDate = DateHelper::parseDateTime($date, $timezone);
+
+        $this->assertEquals(2018, $testDate->year);
+        $this->assertEquals(12, $testDate->month);
+        $this->assertEquals(31, $testDate->day);
+        $this->assertEquals(23, $testDate->hour);
+        $this->assertEquals(56, $testDate->minute);
+        $this->assertEquals(03, $testDate->second);
+        $this->assertEquals('UTC', $testDate->timezone->getName());
+
+        $this->assertEquals(
+            '2018-12-31',
+            $testDate->toDateString()
+        );
+        $this->assertEquals(
+            '2018-12-31T23:56:03Z',
+            DateHelper::getTimestamp($testDate)
+        );
+    }
+
+    public function test_parse_dateTime_carbon()
+    {
+        $date = new Carbon('2019-01-01 00:56:03', 'Europe/Paris');
+
+        $testDate = DateHelper::parseDateTime($date);
+
+        $this->assertEquals(2018, $testDate->year);
+        $this->assertEquals(12, $testDate->month);
+        $this->assertEquals(31, $testDate->day);
+        $this->assertEquals(23, $testDate->hour);
+        $this->assertEquals(56, $testDate->minute);
+        $this->assertEquals(03, $testDate->second);
+        $this->assertEquals('UTC', $testDate->timezone->getName());
+
+        $this->assertEquals(
+            '2018-12-31',
+            $testDate->toDateString()
+        );
+        $this->assertEquals(
+            '2018-12-31T23:56:03Z',
+            DateHelper::getTimestamp($testDate)
+        );
+    }
+
+    public function test_parse_dateTime_dateTimeObject()
+    {
+        $date = new \DateTime('2019-01-01 00:56:03', new \DateTimeZone('Europe/Paris'));
+
+        $testDate = DateHelper::parseDateTime($date);
+
+        $this->assertEquals(2018, $testDate->year);
+        $this->assertEquals(12, $testDate->month);
+        $this->assertEquals(31, $testDate->day);
+        $this->assertEquals(23, $testDate->hour);
+        $this->assertEquals(56, $testDate->minute);
+        $this->assertEquals(03, $testDate->second);
+        $this->assertEquals('UTC', $testDate->timezone->getName());
+
+        $this->assertEquals(
+            '2018-12-31',
+            $testDate->toDateString()
+        );
+        $this->assertEquals(
+            '2018-12-31T23:56:03Z',
+            DateHelper::getTimestamp($testDate)
         );
     }
 
@@ -445,23 +545,6 @@ class DateHelperTest extends FeatureTestCase
             '14:00',
             $hours[13]['id']
         );
-    }
-
-    public function test_it_returns_a_date_minus_a_number_of_days()
-    {
-        $date = Carbon::create(2017, 1, 1);
-
-        $this->assertEquals(
-            '2016-12-25',
-            DateHelper::getDateMinusGivenNumberOfDays($date, 7)->toDateString()
-        );
-    }
-
-    public function test_it_returns_a_carbon_instance()
-    {
-        $date = Carbon::create(2017, 1, 1);
-
-        $this->assertInstanceOf(Carbon::class, DateHelper::getDateMinusGivenNumberOfDays($date, 7));
     }
 
     public function test_old_timezones_exists()

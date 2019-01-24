@@ -2,6 +2,8 @@
 
 namespace App\Services\VCard;
 
+use Ramsey\Uuid\Uuid;
+use App\Traits\DAVFormat;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
@@ -17,9 +19,12 @@ use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class ImportVCard extends BaseService
 {
+    use DAVFormat;
+
     public const BEHAVIOUR_ADD = 'behaviour_add';
     public const BEHAVIOUR_REPLACE = 'behaviour_replace';
 
@@ -345,17 +350,6 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * Formats and returns a string for the contact.
-     *
-     * @param null|string $value
-     * @return null|string
-     */
-    private function formatValue($value)
-    {
-        return ! empty($value) ? str_replace('\;', ';', trim((string) $value)) : null;
-    }
-
-    /**
      * Create the Contact object matching the current entry.
      *
      * @param  Contact $contact
@@ -506,7 +500,9 @@ class ImportVCard extends BaseService
      */
     private function importUid(Contact $contact, VCard $entry): void
     {
-        $contact->uuid = (string) $entry->UID;
+        if (empty($contact->uuid) && Uuid::isValid((string) $entry->UID)) {
+            $contact->uuid = (string) $entry->UID;
+        }
     }
 
     /**
@@ -577,7 +573,19 @@ class ImportVCard extends BaseService
             $birthdate = DateHelper::parseDate((string) $entry->BDAY);
             if (! is_null($birthdate)) {
                 $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+                (new CreateReminder)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'initial_date' => $specialDate->date->toDateString(),
+                    'frequency_type' => 'year',
+                    'frequency_number' => 1,
+                    'title' => trans(
+                        'people.people_add_birthday_reminder',
+                        ['name' => $contact->first_name]
+                    ),
+                    'delible' => false,
+                ]);
             }
         }
     }

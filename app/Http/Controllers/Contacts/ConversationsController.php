@@ -25,7 +25,6 @@ class ConversationsController extends Controller
     {
         return view('people.conversations.new')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
     }
 
@@ -137,7 +136,6 @@ class ConversationsController extends Controller
 
         return view('people.conversations.edit')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withConversation($conversation)
             ->withMessages($messages)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);

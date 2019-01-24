@@ -37,7 +37,7 @@
 
               <div class="col-xs-12 col-sm-9 blank-screen">
 
-              <img src="/img/settings/tags/tags.png">
+              <img src="img/settings/tags/tags.png">
 
               <h2>{{ trans('settings.tags_blank_title') }}</h2>
 
@@ -67,7 +67,7 @@
                     <span class="tags-list-contact-number">({{ trans_choice('settings.tags_list_contact_number', $tag->contacts()->count(), ['count' => $tag->contacts()->count()]) }})</span>
                     <ul>
                       @foreach($tag->contacts as $contact)
-                      <li class="di mr1"><a href="/people/{{ $contact->hashID() }}">{{ $contact->name }}</a></li>
+                      <li class="di mr1"><a href="people/{{ $contact->hashID() }}">{{ $contact->name }}</a></li>
                       @endforeach
                     </ul>
                   </div>

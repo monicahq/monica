@@ -27,11 +27,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
 use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ActivityStatistic;
@@ -138,6 +138,16 @@ class Account extends Model
     public function reminders()
     {
         return $this->hasMany(Reminder::class);
+    }
+
+    /**
+     * Get the reminder outboxes records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function reminderOutboxes()
+    {
+        return $this->hasMany(ReminderOutbox::class);
     }
 
     /**
@@ -348,16 +358,6 @@ class Account extends Model
     public function modules()
     {
         return $this->hasMany(Module::class);
-    }
-
-    /**
-     * Get the Notifications records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
     }
 
     /**
@@ -757,10 +757,11 @@ class Account extends Model
         }
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
-        return $this->reminders()
-                     ->with('contact')
-                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
-                     ->orderBy('next_expected_date', 'asc')
+        return $this->reminderOutboxes()
+                     ->with(['reminder', 'reminder.contact'])
+                     ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
+                     ->where('nature', 'reminder')
+                     ->orderBy('planned_date', 'asc')
                      ->get();
     }
 

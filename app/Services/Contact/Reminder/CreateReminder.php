@@ -2,12 +2,10 @@
 
 namespace App\Services\Contact\Reminder;
 
-use App\Helpers\DateHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
-use App\Models\Instance\SpecialDate;
 
 class CreateReminder extends BaseService
 {
@@ -20,16 +18,16 @@ class CreateReminder extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
-            'date' => 'required|date',
+            'contact_id' => 'required|integer|exists:contacts,id',
+            'initial_date' => 'required|date|date_format:Y-m-d',
             'frequency_type' => [
                 'required',
                 Rule::in(Reminder::$frequencyTypes),
             ],
             'frequency_number' => 'required|integer',
-            'title' => 'string|max:100000',
+            'title' => 'required|string|max:100000',
             'description' => 'nullable|max:1000000',
-            'special_date_id' => 'nullable|integer',
+            'delible' => 'nullable|boolean',
         ];
     }
 
@@ -43,39 +41,23 @@ class CreateReminder extends BaseService
     {
         $this->validate($data);
 
-        Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        if ($data['special_date_id']) {
-            SpecialDate::where('account_id', $data['account_id'])
-                ->findOrFail($data['special_date_id']);
+        $reminder = Reminder::create([
+            'account_id' => $data['account_id'],
+            'contact_id' => $data['contact_id'],
+            'title' => $data['title'],
+            'description' => $this->nullOrValue($data, 'description'),
+            'initial_date' => $data['initial_date'],
+            'frequency_type' => $data['frequency_type'],
+            'frequency_number' => $data['frequency_number'],
+            'delible' => (isset($data['delible']) ? $data['delible'] : true),
+        ]);
+
+        foreach ($contact->account->users as $user) {
+            $reminder->schedule($user);
         }
-
-        $reminder = $this->attachReminderToLifeEvent($data);
-
-        $reminder->calculateNextExpectedDate()->save();
-        $reminder->scheduleNotifications();
-
-        return $reminder;
-    }
-
-    /**
-     * Actually create the reminder.
-     *
-     * @return Reminder
-     */
-    private function attachReminderToLifeEvent(array $data) : Reminder
-    {
-        $reminder = new Reminder;
-        $reminder->frequency_type = $data['frequency_type'];
-        $reminder->frequency_number = $data['frequency_number'];
-        $reminder->next_expected_date = DateHelper::parseDate($data['date']);
-        $reminder->special_date_id = $data['special_date_id'];
-        $reminder->account_id = $data['account_id'];
-        $reminder->contact_id = $data['contact_id'];
-        $reminder->title = $data['title'];
-        $reminder->description = $data['description'];
-        $reminder->save();
 
         return $reminder;
     }

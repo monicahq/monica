@@ -308,7 +308,7 @@ export default {
 
     startRegister() {
       var self = this;
-      axios.get('/settings/security/u2f/register')
+      axios.get('settings/security/u2f/register')
         .then(response => {
           if (self.registerTab == '2') {
             var keys = response.data.currentKeys;
@@ -338,7 +338,7 @@ export default {
         return;
       }
       var self = this;
-      axios.post('/settings/security/u2f/register', {
+      axios.post('settings/security/u2f/register', {
         register: JSON.stringify(data),
         name: self.keyName,
       })
@@ -367,7 +367,7 @@ export default {
       }
 
       var self = this;
-      axios.post('/u2f/auth', { authentication: JSON.stringify(data) })
+      axios.post('u2f/auth', { authentication: JSON.stringify(data) })
         .catch(error => {
           self.errorMessage = error.response.data.message;
         })
@@ -382,7 +382,7 @@ export default {
 
     u2fRemove(id) {
       var self = this;
-      axios.delete('/settings/security/u2f/remove/'+id)
+      axios.delete('settings/security/u2f/remove/'+id)
         .catch(error => {
           self.errorMessage = error.response.data.message;
         })

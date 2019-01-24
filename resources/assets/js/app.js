@@ -354,6 +354,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       date_met_the_contact: 'known',
       global_relationship_form_new_contact: true,
       htmldir: window.Laravel.htmldir,
+      locale: lang,
       global_profile_default_view: window.Laravel.profileDefaultView,
     },
     mounted: function() {
@@ -365,7 +366,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     },
     methods: {
       updateDefaultProfileView(view) {
-        axios.post('/settings/updateDefaultProfileView', { 'name': view })
+        axios.post('settings/updateDefaultProfileView', { 'name': view })
           .then(response => {
             this.global_profile_default_view = view;
           });

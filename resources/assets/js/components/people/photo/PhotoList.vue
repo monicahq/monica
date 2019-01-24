@@ -48,7 +48,7 @@
         <h3 class="mb4 mt3">
           {{ $t('people.photo_list_blank_desc') }}
         </h3>
-        <img src="/img/people/photos/photos_empty.svg" class="w-50 center" />
+        <img src="img/people/photos/photos_empty.svg" class="w-50 center" />
       </div>
     </div>
     <!-- FIRST STEP OF PHOTO UPLOAD -->
@@ -186,7 +186,7 @@ export default {
     },
 
     getPhotos() {
-      axios.get('/people/' + this.hash + '/photos')
+      axios.get('people/' + this.hash + '/photos')
         .then(response => {
           this.photos = response.data.data;
         });
@@ -206,7 +206,7 @@ export default {
       this.displayUploadProgress = true;
       let formData = new FormData();
       formData.append('photo', this.file);
-      axios.post( '/people/' + this.hash + '/photos',
+      axios.post( 'people/' + this.hash + '/photos',
         formData,
         {
           headers: {
@@ -234,7 +234,7 @@ export default {
     },
 
     deletePhoto(photo) {
-      axios.delete( '/people/' + this.hash + '/photos/' + photo.id)
+      axios.delete( 'people/' + this.hash + '/photos/' + photo.id)
         .then(response => {
           this.photos.splice(this.photos.indexOf(photo), 1);
           this.$notify({
@@ -249,9 +249,9 @@ export default {
     },
 
     makeProfilePicture(photo) {
-      axios.post( '/people/' + this.hash + '/makeProfilePicture/' + photo.id)
+      axios.post( 'people/' + this.hash + '/makeProfilePicture/' + photo.id)
         .then(response => {
-          window.location.href = '/people/' + this.hash;
+          window.location.href = 'people/' + this.hash;
         });
     },
 

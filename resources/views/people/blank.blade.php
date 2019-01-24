@@ -21,7 +21,7 @@
             @endif
 
         <div class="illustration-blank">
-            <img src="/img/people/blank.svg" alt="Image">
+            <img src="img/people/blank.svg" alt="Image">
         </div>
         <h3>{{ trans('people.people_list_blank_title') }}</h3>
 

@@ -78,7 +78,7 @@
       <form class="measure center" @submit.prevent="store">
         <div class="mt3">
           <label for="add-contact-type" class="db fw6 lh-copy f6">
-            {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">
+            {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="settings/personalization" target="_blank">
               {{ $t('people.contact_info_form_personalize') }}
             </a>
           </label>
@@ -163,14 +163,14 @@ export default {
     },
 
     getContactInformationData() {
-      axios.get('/people/' + this.hash + '/contactfield')
+      axios.get('people/' + this.hash + '/contactfield')
         .then(response => {
           this.contactInformationData = response.data;
         });
     },
 
     getContactFieldTypes() {
-      axios.get('/people/' + this.hash + '/contactfieldtypes')
+      axios.get('people/' + this.hash + '/contactfieldtypes')
         .then(response => {
           this.contactFieldTypes = response.data;
         });
@@ -178,7 +178,7 @@ export default {
 
     store() {
       this.persistClient(
-        'post', '/people/' + this.hash + '/contactfield',
+        'post', 'people/' + this.hash + '/contactfield',
         this.createForm
       );
 
@@ -200,7 +200,7 @@ export default {
 
     update(contactField) {
       this.persistClient(
-        'put', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        'put', 'people/' + this.hash + '/contactfield/' + contactField.id,
         this.updateForm
       );
     },
@@ -209,7 +209,7 @@ export default {
       this.updateForm.id = contactField.id;
 
       this.persistClient(
-        'delete', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        'delete', 'people/' + this.hash + '/contactfield/' + contactField.id,
         this.updateForm
       );
 
