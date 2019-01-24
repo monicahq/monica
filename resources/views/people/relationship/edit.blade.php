@@ -107,7 +107,6 @@
       <form-specialdate
         :months="{{ $months }}"
         :days="{{ $days }}"
-        :locale="'{{ auth()->user()->locale }}'"
         :month="{{ $month }}"
         :day="{{ $day }}"
         :age="'{{ $age }}'"
