@@ -110,7 +110,7 @@ class UpdateTaskTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateTask = (new UpdateTask)->execute($request);
+        $updateTask = app(UpdateTask::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_task_is_not_linked_to_account()
@@ -130,6 +130,6 @@ class UpdateTaskTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateTask = (new UpdateTask)->execute($request);
+        $updateTask = app(UpdateTask::class)->execute($request);
     }
 }

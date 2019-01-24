@@ -69,7 +69,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     {
         if ($date instanceof SpecialDate) {
             try {
-                $vcal = (new ExportVCalendar())
+                $vcal = app(ExportVCalendar::class)
                     ->execute([
                         'account_id' => Auth::user()->account_id,
                         'special_date_id' => $date->id,

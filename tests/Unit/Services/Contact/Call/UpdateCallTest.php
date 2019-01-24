@@ -308,6 +308,6 @@ class UpdateCallTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createConversation = (new UpdateCall)->execute($request);
+        $createConversation = app(UpdateCall::class)->execute($request);
     }
 }

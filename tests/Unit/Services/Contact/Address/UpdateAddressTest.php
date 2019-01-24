@@ -62,7 +62,7 @@ class UpdateAddressTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateAddress)->execute($request);
+        app(UpdateAddress::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_address_is_not_linked_to_account()
@@ -78,6 +78,6 @@ class UpdateAddressTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateAddress)->execute($request);
+        app(UpdateAddress::class)->execute($request);
     }
 }

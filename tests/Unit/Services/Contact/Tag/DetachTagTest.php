@@ -76,6 +76,6 @@ class DetachTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DetachTag)->execute($request);
+        app(DetachTag::class)->execute($request);
     }
 }

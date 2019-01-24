@@ -148,6 +148,6 @@ class AssociateTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $associateTagService = (new AssociateTag)->execute($request);
+        $associateTagService = app(AssociateTag::class)->execute($request);
     }
 }

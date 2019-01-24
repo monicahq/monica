@@ -123,6 +123,6 @@ class CreateTaskTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createTask = (new CreateTask)->execute($request);
+        $createTask = app(CreateTask::class)->execute($request);
     }
 }

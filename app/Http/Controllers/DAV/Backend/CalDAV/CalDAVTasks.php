@@ -95,7 +95,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
     {
         if ($task instanceof Task) {
             try {
-                $vcal = (new ExportTask())
+                $vcal = app(ExportTask::class)
                     ->execute([
                         'account_id' => Auth::user()->account_id,
                         'task_id' => $task->id,
@@ -145,7 +145,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
         }
 
         try {
-            $result = (new ImportTask())
+            $result = app(ImportTask::class)
                 ->execute([
                     'account_id' => Auth::user()->account_id,
                     'task_id' => $task_id,
@@ -179,7 +179,7 @@ class CalDAVTasks extends AbstractCalDAVBackend
 
         if ($task) {
             try {
-                (new DestroyTask)
+                app(DestroyTask::class)
                     ->execute([
                         'account_id' => Auth::user()->account_id,
                         'task_id' => $task->id,

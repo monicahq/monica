@@ -27,7 +27,7 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $place = (new GetGPSCoordinate)->execute($request);
+        $place = app(GetGPSCoordinate::class)->execute($request);
 
         $this->assertNull($place);
     }
@@ -49,7 +49,7 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $place = (new GetGPSCoordinate)->execute($request, $client);
+        $place = app(GetGPSCoordinate::class)->execute($request, $client);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -83,7 +83,7 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $place = (new GetGPSCoordinate)->execute($request);
+        $place = app(GetGPSCoordinate::class)->execute($request);
 
         $this->assertNull($place);
     }
@@ -97,6 +97,6 @@ class GetGPSCoordinateTest extends TestCase
         $this->expectException(ValidationException::class);
 
         $geocodingService = new GetGPSCoordinate;
-        $place = (new GetGPSCoordinate)->execute($request);
+        $place = app(GetGPSCoordinate::class)->execute($request);
     }
 }

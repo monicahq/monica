@@ -59,7 +59,7 @@ class ApiReminderController extends ApiController
     public function store(Request $request)
     {
         try {
-            $reminder = (new CreateReminder)->execute(
+            $reminder = app(CreateReminder::class)->execute(
                 $request->all()
                     +
                     [
@@ -86,7 +86,7 @@ class ApiReminderController extends ApiController
     public function update(Request $request, $reminderId)
     {
         try {
-            $reminder = (new UpdateReminder)->execute(
+            $reminder = app(UpdateReminder::class)->execute(
                 $request->all()
                     +
                     [
@@ -113,7 +113,7 @@ class ApiReminderController extends ApiController
     public function destroy(Request $request, $reminderId)
     {
         try {
-            (new DestroyReminder)->execute([
+            app(DestroyReminder::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'reminder_id' => $reminderId,
             ]);
