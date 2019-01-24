@@ -21,6 +21,7 @@ Enhancements:
 
 Fixes:
 
+* Fix vue.js DateTime picker to type a date in other format than en-us one
 * Fix DateTime parse when compact format is used
 * Fix contact and relationship edit with reminder enabled
 * Fix broken migration for the activities table
