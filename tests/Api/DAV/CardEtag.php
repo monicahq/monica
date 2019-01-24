@@ -63,18 +63,18 @@ END:VCARD
 VERSION:2.0
 PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
 CALSCALE:GREGORIAN
-UID:{$specialDate->uuid}
 BEGIN:VTIMEZONE
 TZID:UTC
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:{$specialDate->uuid}
-DTSTAMP:{$timestamp}
-SUMMARY:Birthday of {$contact->name}
 DTSTART:{$start}
 DTEND:{$end}
 RRULE:FREQ=YEARLY
+DTSTAMP:{$timestamp}
 CREATED:{$timestamp}
+SUMMARY:Birthday of {$contact->name}
+ATTACH:{$url}
 DESCRIPTION:{$description1}
  {$description2}
 END:VEVENT
@@ -103,8 +103,8 @@ TZID:UTC
 END:VTIMEZONE
 BEGIN:VTODO
 UID:{$task->uuid}
-DTSTAMP:{$timestamp}
 SUMMARY:{$task->title}
+DTSTAMP:{$timestamp}
 CREATED:{$timestamp}
 DESCRIPTION:{$task->description}
 ";

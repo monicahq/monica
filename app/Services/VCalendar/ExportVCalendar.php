@@ -55,12 +55,12 @@ class ExportVCalendar extends BaseService
         }
 
         // Basic information
-        $vcal = new VCalendar([
-            'UID' => $date->uuid,
-        ]);
+        $vcal = new VCalendar();
+        $vevent = $vcal->create('VEVENT');
+        $vcal->add($vevent);
 
         $this->exportTimezone($vcal);
-        $this->exportBirthday($date, $vcal);
+        $this->exportBirthday($date, $vevent);
 
         return $vcal;
     }
@@ -78,25 +78,30 @@ class ExportVCalendar extends BaseService
 
     /**
      * @param SpecialDate $date
-     * @param VCalendar $vcard
+     * @param VEvent $vevent
      * @return void
      */
-    private function exportBirthday(SpecialDate $date, VCalendar $vcal)
+    private function exportBirthday(SpecialDate $date, VEvent $vevent)
     {
         $contact = $date->contact;
-        $name = $contact->name;
-        $vcal->add('VEVENT', [
-            'UID' => $date->uuid,
-            'SUMMARY' => trans('people.reminders_birthday', ['name' => $name]),
-            'DTSTART' => $date->date->format('Ymd'),
-            'DTEND' => $date->date->addDays(1)->format('Ymd'),
-            'RRULE' => 'FREQ=YEARLY',
-            'CREATED' => DateHelper::parseDateTime($date->created_at, Auth::user()->timezone),
-            'DTSTAMP' => DateHelper::parseDateTime($date->created_at),
-            'DESCRIPTION' => trans('mail.footer_contact_info2_link', [
-                    'name' => $name,
-                    'url' => route('people.show', $contact),
-                ]),
-        ]);
+
+        $vevent->UID = $date->uuid;
+        $vevent->DTSTART = $date->date->format('Ymd');
+        $vevent->DTEND = $date->date->addDays(1)->format('Ymd');
+        $vevent->RRULE = 'FREQ=YEARLY';
+
+        if ($date->created_at) {
+            $vevent->DTSTAMP = $date->created_at;
+            $vevent->CREATED = $date->created_at;
+        }
+        if ($contact) {
+            $name = $contact->name;
+            $vevent->SUMMARY = trans('people.reminders_birthday', ['name' => $name]);
+            $vevent->ATTACH = route('people.show', $contact);
+            $vevent->DESCRIPTION = trans('mail.footer_contact_info2_link', [
+                'name' => $name,
+                'url' => route('people.show', $contact),
+            ]);
+        }
     }
 }
