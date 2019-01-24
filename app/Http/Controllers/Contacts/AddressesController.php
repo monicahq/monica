@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Helpers\LocaleHelper;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
@@ -38,7 +38,7 @@ class AddressesController extends Controller
      */
     public function getCountries()
     {
-        $key = 'countries.'.LocaleHelper::getLocale();
+        $key = 'countries.'.App::getLocale();
 
         $countries = Cache::rememberForever($key, function () {
             return CountriesHelper::getAll();

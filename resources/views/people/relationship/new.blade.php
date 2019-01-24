@@ -110,7 +110,6 @@
           :months="{{ $months }}"
           :days="{{ $days }}"
           :default-date="'{{ $birthdate }}'"
-          :locale="'{{ auth()->user()->locale }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">

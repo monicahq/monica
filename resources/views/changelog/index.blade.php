@@ -7,7 +7,7 @@
       <div class="mt4 mw7 center mb3">
         <h3>{{ trans('changelog.title') }}</h3>
 
-        @if (\App\Helpers\LocaleHelper::getLocale() != 'en')
+        @if (\App::getLocale() != 'en')
         <p>{{ trans('changelog.note') }}</p>
         @endif
       </div>
