@@ -38,11 +38,11 @@ N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
 GENDER:O;
 ";
         foreach ($contact->addresses as $address) {
-            $data .= "ADR:;;";
-            $data .= $address->place->street.";";
-            $data .= $address->place->city.";";
-            $data .= $address->place->province.";";
-            $data .= $address->place->postal_code.";";
+            $data .= 'ADR:;;';
+            $data .= $address->place->street.';';
+            $data .= $address->place->city.';';
+            $data .= $address->place->province.';';
+            $data .= $address->place->postal_code.';';
             $data .= $address->place->country;
             $data .= "\n";
         }
