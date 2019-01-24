@@ -4,13 +4,13 @@
 <template>
   <div>
     <datepicker :value="selectedDate"
-                :format="customFormatter"
-                :format-typed-date="formatTypedDate"
+                :format="displayValue"
+                :format-typed-date="formatTypedValue"
                 :language="language"
                 :monday-first="mondayFirst"
                 :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
                 :typeable="true"
-                @input="$emit('input', getDateInEloquentFormat($event))"
+                @input="$emit('input', exchangeValue($event))"
                 @selected="update"
     />
     <input :name="id" type="hidden" :value="value" />
@@ -45,7 +45,11 @@ export default {
 
   data() {
     return {
+      /**
+       * Value of the date in exchange format
+       */
       value: '',
+
       selectedDate: '',
       language: Languages.en,
       mondayFirst: false
@@ -76,16 +80,17 @@ export default {
   },
 
   methods: {
-    customFormatter(date) {
+    displayValue(date) {
       return moment(date).format(this.displayFormat);
     },
 
-    getDateInEloquentFormat(date) {
+    exchangeValue(date) {
       return moment(date).format(this.exchangeFormat);
     },
 
     /**
-     * Update the value of hidden input, in exchange format value
+     * Update the value of hidden input.
+     * Store it in exchange format value.
      */
     update(date) {
       var mdate = moment(date);
@@ -97,14 +102,10 @@ export default {
 
     /**
      * Format the typed value with the locale specicifcation.
-     * Returns in exchangeFormat.
+     * Return in exchange format value.
      */
-    formatTypedDate(date) {
-      var mdate = moment(date, this.displayFormat);
-      if (! mdate.isValid()) {
-        mdate = moment();
-      }
-      return mdate.format(this.exchangeFormat);
+    formatTypedValue(date) {
+      return moment(date, this.displayFormat).format(this.exchangeFormat);
     },
 
   }
