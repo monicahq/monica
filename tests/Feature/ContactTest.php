@@ -32,6 +32,7 @@ class ContactTest extends FeatureTestCase
     public function test_user_can_search_contacts()
     {
         $contact = new Contact;
+        $randomContact = Contact::inRandomOrder()->first();
         $searchableFields = $contact->getSearchableFields();
         $keyword = '';
 
