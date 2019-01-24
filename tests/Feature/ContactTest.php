@@ -4,10 +4,10 @@ namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Models\Contact\Gift;
+use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Helpers\StringHelper;
 
 class ContactTest extends FeatureTestCase
 {
@@ -34,14 +34,14 @@ class ContactTest extends FeatureTestCase
         $contact = new Contact;
         $searchableFields = $contact->getSearchableFields();
         $keyword = '';
-        
-        if(isset($randomContact->first_name) && isset($randomContact->last_name)) {
+
+        if (isset($randomContact->first_name) && isset($randomContact->last_name)) {
             $keyword = $randomContact->first_name.' '.$randomContact->last_name;
         }
 
         $queryString = StringHelper::buildQuery($searchableFields, $keyword);
         $records = $contact->whereRaw($queryString)->get();
-        
+
         $this->assertGreaterThanOrEqual(1, count($records));
     }
 
