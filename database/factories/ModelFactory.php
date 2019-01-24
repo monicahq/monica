@@ -61,7 +61,7 @@ $factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generat
     ];
 });
 
-$factory->define(App\Models\Contact\ActivityTypeCategory::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\ActivityTypeCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'translation_key' => $faker->sentence,

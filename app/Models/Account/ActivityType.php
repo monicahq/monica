@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Contact;
+namespace App\Models\Account;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;

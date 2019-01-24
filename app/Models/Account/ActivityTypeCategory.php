@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Contact;
+namespace App\Models\Account;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
@@ -20,6 +20,7 @@ class ActivityTypeCategory extends Model
      */
     protected $fillable = [
         'name',
+        'translation_key',
         'account_id',
     ];
 
