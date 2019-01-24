@@ -18,7 +18,7 @@ class SearchHelper
     public static function searchContacts($query, $limitPerPage, $order)
     {
         $needle = $query;
-        $accountId = request()->get('accountId') ? request()->get('accountId') : Auth::user()->account_id;
+        $accountId = Auth::user()->account_id;
 
         if (preg_match('/(.{1,})[:](.{1,})/', $needle, $matches)) {
             $search_field = $matches[1];

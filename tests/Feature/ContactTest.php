@@ -7,6 +7,7 @@ use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Helpers\StringHelper;
 
 class ContactTest extends FeatureTestCase
 {
@@ -30,15 +31,18 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_search_contacts()
     {
-        $user = $this->signIn();
         $contact = new Contact;
-        $firtContact = $contact->all()->first();
-        $response = $this->call('POST', 'people/search', [
-            '_token' => csrf_token(),
-            'needle' => $firtContact->first_name.' '.$firtContact->last_name,
-        ]);
+        $searchableFields = $contact->getSearchableFields();
+        $keyword = '';
+        
+        if(isset($randomContact->first_name) && isset($randomContact->last_name)) {
+            $keyword = $randomContact->first_name.' '.$randomContact->last_name;
+        }
 
-        $this->assertGreaterThanOrEqual(1, count($response->getData()->data));
+        $queryString = StringHelper::buildQuery($searchableFields, $keyword);
+        $records = $contact->whereRaw($queryString)->get();
+        
+        $this->assertGreaterThanOrEqual(1, count($records));
     }
 
     public function test_user_can_see_contacts()

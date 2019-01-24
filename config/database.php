@@ -89,6 +89,21 @@ $db = [
 
         'testing' => [
             'driver' => 'mysql',
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '3306'),
+            'unix_socket' => env('DB_UNIX_SOCKET', ''),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',
+            'collation' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4_unicode_ci' : 'utf8_unicode_ci',
+            'prefix' => env('DB_PREFIX', ''),
+            'strict' => false,
+            'engine' => null,
+        ],
+
+        'testing1' => [
+            'driver' => 'mysql',
             'host' => env('DB_TEST_HOST'),
             'unix_socket' => env('DB_TEST_UNIX_SOCKET', ''),
             'database' => env('DB_TEST_DATABASE'),
