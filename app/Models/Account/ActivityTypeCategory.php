@@ -57,17 +57,4 @@ class ActivityTypeCategory extends Model
 
         return $value;
     }
-
-    /**
-     * Delete all associated activity types with this category.
-     *
-     * @return void
-     */
-    public function deleteAllAssociatedActivityTypes()
-    {
-        foreach ($this->activityTypes as $activityType) {
-            $activityType->resetAssociationWithActivities();
-            $activityType->delete();
-        }
-    }
 }

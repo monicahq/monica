@@ -31,10 +31,12 @@ class CreateActivityTypeCategory extends BaseService
     {
         $this->validate($data);
 
-        return ActivityTypeCategory::create([
+        $activityTypeCategory = ActivityTypeCategory::create([
             'account_id' => $data['account_id'],
             'name' => $this->nullOrValue($data, 'name'),
             'translation_key' => $this->nullOrValue($data, 'translation_key'),
         ]);
+
+        return ActivityTypeCategory::find($activityTypeCategory->id);
     }
 }
