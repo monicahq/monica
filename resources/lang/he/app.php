@@ -404,7 +404,7 @@ return [
     'emotion_shock' => 'הלם',
     'emotion_fear' => 'פחד',
     'emotion_fright' => 'Fright',
-    'emotion_horror' => 'Horror',
+    'emotion_horror' => 'אימה',
     'emotion_terror' => 'Terror',
     'emotion_panic' => 'Panic',
     'emotion_hysteria' => 'Hysteria',
