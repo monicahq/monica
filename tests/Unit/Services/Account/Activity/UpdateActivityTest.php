@@ -6,9 +6,9 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Activity;
 use Illuminate\Validation\ValidationException;
-use App\Services\Account\Activity\Activity\UpdateActivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Account\Activity\Activity\UpdateActivity;
 
 class UpdateActivityTest extends TestCase
 {

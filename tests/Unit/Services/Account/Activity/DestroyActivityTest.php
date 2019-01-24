@@ -4,8 +4,8 @@ namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Contact\Activity;
-use App\Services\Account\Activity\Activity\DestroyActivity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Account\Activity\Activity\DestroyActivity;
 
 class DestroyActivityTest extends TestCase
 {
