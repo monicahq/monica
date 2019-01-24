@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Helpers\DBHelper;
-use App\Services\BaseService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
