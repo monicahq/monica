@@ -10,6 +10,7 @@ return [
     'sidebar_settings_import' => 'יבוא נתונים',
     'sidebar_settings_tags' => 'ניהול תגיות',
     'sidebar_settings_api' => 'API',
+    'sidebar_settings_dav' => 'DAV Resources',
     'sidebar_settings_security' => 'אבטחה',
 
     'export_title' => 'יצוא נתוני החשבון שלך',
@@ -416,4 +417,20 @@ return [
     'storage_account_info' => 'מגבלת החשבון שלך: :accountLimit מ״ב /  הניצולת הנוכחית שלך: :currentAccountSize מ״ב (:percentUsage%)',
     'storage_upgrade_notice' => 'עליך לשדרג את החשבון שלך כדי שתהיה לך אפשרות להעלות מסמכים ותמונות.',
     'storage_description' => 'כאן ניתן לצפות בכל המסמכים והתמונות שהועלו לטובת אנשי הקשר שלך.',
+
+    'dav_title' => 'WebDAV',
+    'dav_description' => 'Here you can find all settings to use WebDAV resources for CardDAV and CalDAV exports.',
+    'dav_copy_help' => 'Copy into your clipboard',
+    'dav_clipboard_copied' => 'Value copied into your clipboard',
+    'dav_url_base' => 'Base url for all CardDAV and CalDAV resources:',
+    'dav_connect_help' => 'You can connect your contacts and/or calendars with this base url on you phone or computer.',
+    'dav_connect_help2' => 'Use your login (email) and password, or create an API token to authenticate.',
+    'dav_url_carddav' => 'CardDAV url for Contacts resource:',
+    'dav_url_caldav_birthdays' => 'CalDAV url for Birthdays resources:',
+    'dav_url_caldav_tasks' => 'CalDAV url for Tasks resources:',
+    'dav_title_carddav' => 'CardDAV',
+    'dav_title_caldav' => 'CalDAV',
+    'dav_carddav_export' => 'Export all contacts in one file',
+    'dav_caldav_birthdays_export' => 'Export all birthdays in one file',
+    'dav_caldav_tasks_export' => 'Export all tasks in one file',
 ];
