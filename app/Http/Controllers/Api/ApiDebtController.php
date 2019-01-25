@@ -62,13 +62,13 @@ class ApiDebtController extends ApiController
         }
 
         try {
-            $debt = Debt::create($request->all());
+            $debt = Debt::create(
+                $request->all()
+                + ['account_id' => auth()->user()->account_id]
+            );
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
-
-        $debt->account_id = auth()->user()->account_id;
-        $debt->save();
 
         return new DebtResource($debt);
     }
@@ -129,8 +129,7 @@ class ApiDebtController extends ApiController
         ]);
 
         if ($validator->fails()) {
-            return $this->setErrorCode(32)
-                        ->respondWithError($validator->errors()->all());
+            return $this->respondValidatorFailed($validator);
         }
 
         try {

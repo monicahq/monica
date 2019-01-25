@@ -16,8 +16,16 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         'id',
         'object',
         'name',
+        'location_type',
         'activity_type_category' => [
             'id',
+            'object',
+            'name',
+            'account' => [
+                'id',
+            ],
+            'created_at',
+            'updated_at',
         ],
         'account' => [
             'id',
@@ -99,17 +107,11 @@ class ApiActivityTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->json('POST', '/api/activitytypes', [
-                        ]);
+        $response = $this->json('POST', '/api/activitytypes');
 
-        $response->assertStatus(400);
-
-        $response->assertJsonFragment([
-            'message' => [
-                'The activity type category id field is required.',
-                'The name field is required.',
-            ],
-            'error_code' => 32,
+        $this->expectDataError($response, [
+            'The name field is required.',
+            'The activity type category id field is required.',
         ]);
     }
 
@@ -171,11 +173,8 @@ class ApiActivityTypeControllerTest extends ApiTestCase
             'activity_type_category_id' => 3,
         ]);
 
-        $response->assertStatus(400);
-
-        $response->assertJsonFragment([
-            'message' => ['The name field is required.'],
-            'error_code' => 32,
+        $this->expectDataError($response, [
+            'The name field is required.',
         ]);
     }
 

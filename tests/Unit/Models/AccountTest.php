@@ -7,18 +7,27 @@ use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\User\Module;
 use App\Models\Contact\Call;
+use App\Models\Account\Photo;
+use App\Models\Account\Place;
 use App\Models\Contact\Gender;
-use App\Models\User\Changelog;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
+use App\Models\Account\Weather;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 use App\Models\Account\Invitation;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
+use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
+use App\Models\Contact\LifeEventCategory;
 use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
@@ -41,22 +50,6 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->genders()->exists());
-    }
-
-    public function test_it_has_many_notifications()
-    {
-        $contact = factory(Contact::class)->create();
-        $account = $contact->account;
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertTrue($account->notifications()->exists());
     }
 
     public function test_it_has_many_relationship_types()
@@ -142,6 +135,103 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->messages()->exists());
+    }
+
+    public function test_it_has_many_life_event_categories()
+    {
+        $account = factory(Account::class)->create([]);
+        $lifeEventCategory = factory(LifeEventCategory::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->lifeEventCategories()->exists());
+    }
+
+    public function test_it_has_many_reminder_outboxes()
+    {
+        $reminderOutbox = factory(ReminderOutbox::class)->create([]);
+        $this->assertTrue($reminderOutbox->account->reminderOutboxes()->exists());
+    }
+
+    public function test_it_has_many_life_event_types()
+    {
+        $account = factory(Account::class)->create([]);
+        $lifeEventType = factory(LifeEventType::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->lifeEventTypes()->exists());
+    }
+
+    public function test_it_has_many_life_events()
+    {
+        $account = factory(Account::class)->create([]);
+        $lifeEvent = factory(LifeEvent::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->lifeEvents()->exists());
+    }
+
+    public function test_it_has_many_documents()
+    {
+        $account = factory(Account::class)->create([]);
+        $document = factory(Document::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertTrue($account->documents()->exists());
+    }
+
+    public function test_it_has_many_photos()
+    {
+        $account = factory(Account::class)->create([]);
+        $photo = factory(Photo::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->photos()->exists());
+    }
+
+    public function test_it_has_many_weathers()
+    {
+        $weather = factory(Weather::class)->create([]);
+        $this->assertTrue($weather->account->weathers()->exists());
+    }
+
+    public function test_it_has_many_places()
+    {
+        $account = factory(Account::class)->create([]);
+        $places = factory(Place::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->places()->exists());
+    }
+
+    public function test_it_has_many_addresses()
+    {
+        $account = factory(Account::class)->create([]);
+        $addresses = factory(Address::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->addresses()->exists());
+    }
+
+    public function test_it_has_many_companies()
+    {
+        $account = factory(Account::class)->create([]);
+        $companies = factory(Company::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->companies()->exists());
+    }
+
+    public function test_it_has_many_occupations()
+    {
+        $account = factory(Account::class)->create([]);
+        $occupations = factory(Occupation::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->occupations()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
@@ -351,12 +441,9 @@ class AccountTest extends FeatureTestCase
         $account = $user->account;
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        factory(Reminder::class, 3)->create(['account_id' => $account->id]);
 
-        // add 3 reminders for the month of March
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-
+        // check if there are reminders for the month of March
         $this->assertEquals(
             0,
             $account->getRemindersForMonth(3)->count()
@@ -375,8 +462,10 @@ class AccountTest extends FeatureTestCase
         for ($i = 0; $i < 3; $i++) {
             $reminder = factory(Reminder::class)->create([
                 'account_id' => $account->id,
-                'next_expected_date' => '2017-03-03 00:00:00',
+                'initial_date' => '2017-03-03 00:00:00',
             ]);
+
+            $reminder->schedule($user);
         }
 
         $this->assertEquals(
@@ -668,74 +757,15 @@ class AccountTest extends FeatureTestCase
         );
     }
 
-    public function test_it_populates_default_account_modules_table_if_tables_havent_been_migrated_yet()
+    public function test_it_create_default_account()
     {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'work_information',
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
         ]);
-
-        $account->populateModulesTable();
-
-        $this->assertDatabaseHas('modules', [
-            'key' => 'work_information',
-        ]);
-    }
-
-    public function test_it_skips_default_account_modules_table_for_types_already_migrated()
-    {
-        $account = factory(Account::class)->create();
-        DB::table('default_contact_modules')->insert([
-            'key' => 'awesome',
-            'migrated' => 1,
-        ]);
-
-        $account->populateModulesTable(true);
-
-        $this->assertDatabaseMissing('modules', [
+        $this->assertDatabaseHas('users', [
             'account_id' => $account->id,
-            'key' => 'awesome',
-        ]);
-    }
-
-    public function test_it_adds_an_unread_changelog_entry_to_all_users()
-    {
-        $account = factory(Account::class)->create();
-        $user = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-        $user2 = factory(User::class)->create([
-            'account_id' => $account->id,
-        ]);
-
-        $changelog = factory(Changelog::class)->create();
-
-        $account->addUnreadChangelogEntry($changelog->id);
-
-        $this->assertDatabaseHas('changelog_user', [
-            'changelog_id' => $changelog->id,
-            'user_id' => $user->id,
-        ]);
-
-        $this->assertDatabaseHas('changelog_user', [
-            'changelog_id' => $changelog->id,
-            'user_id' => $user2->id,
-        ]);
-    }
-
-    public function test_it_populates_account_with_changelogs()
-    {
-        $account = factory(Account::class)->create();
-        $user = factory(User::class)->create(['account_id' => $account->id]);
-        $changelog = factory(Changelog::class)->create();
-        $changelog->users()->sync($user->id);
-
-        $account->populateChangelogsTable();
-
-        $this->assertDatabaseHas('changelog_user', [
-            'user_id' => $user->id,
-            'changelog_id' => $changelog->id,
-            'read' => 0,
         ]);
     }
 
@@ -752,10 +782,121 @@ class AccountTest extends FeatureTestCase
             $account->hasReachedContactLimit()
         );
 
+        $partials = factory(Contact::class, 5)->state('partial')->create([
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.number_of_allowed_contacts_free_account' => 15]);
+
+        $this->assertFalse(
+            $account->hasReachedContactLimit()
+        );
         config(['monica.number_of_allowed_contacts_free_account' => 100]);
 
         $this->assertFalse(
             $account->hasReachedContactLimit()
+        );
+    }
+
+    public function test_it_gets_first_user_locale()
+    {
+        $account = factory(Account::class)->create();
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+            'locale' => 'fr',
+        ]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+            'locale' => 'en',
+        ]);
+
+        $this->assertEquals(
+            'fr',
+            $account->getFirstLocale()
+        );
+    }
+
+    public function test_getting_first_locale_returns_null_if_user_doesnt_exist()
+    {
+        $account = factory(Account::class)->create();
+
+        $this->assertNull($account->getFirstLocale());
+    }
+
+    /**
+     * Test that default_life_event_categories and types are correctly
+     * populated.
+     *
+     * @return void
+     */
+    public function test_it_populates_default_life_event_tables_upon_creation()
+    {
+        $account = factory(Account::class)->create();
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $account->populateDefaultFields();
+
+        $this->assertEquals(
+            5,
+            DB::table('life_event_categories')->where('account_id', $account->id)->get()->count()
+        );
+
+        $this->assertEquals(
+            43,
+            DB::table('life_event_types')->where('account_id', $account->id)->get()->count()
+        );
+    }
+
+    public function test_it_tests_account_storage_limit()
+    {
+        config(['monica.requires_subscription' => true]);
+        $account = factory(Account::class)->create([]);
+
+        $document = factory(Document::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.max_storage_size' => 0.1]);
+        $this->assertTrue($account->hasReachedAccountStorageLimit());
+
+        config(['monica.max_storage_size' => 1]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        config(['monica.max_storage_size' => 2]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+
+        config(['monica.max_storage_size' => 1]);
+        $this->assertTrue($account->hasReachedAccountStorageLimit());
+
+        config(['monica.requires_subscription' => false]);
+        $this->assertFalse($account->hasReachedAccountStorageLimit());
+    }
+
+    public function test_it_calculates_storage_size()
+    {
+        $account = factory(Account::class)->create([]);
+
+        $document = factory(Document::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $photo = factory(Photo::class)->create([
+            'filesize' => 1000000,
+            'account_id' => $account->id,
+        ]);
+
+        $this->assertEquals(
+            2000000,
+            $account->getStorageSize()
         );
     }
 }

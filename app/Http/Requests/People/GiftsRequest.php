@@ -29,7 +29,7 @@ class GiftsRequest extends FormRequest
             'url' => '',
             'offered' => 'string',
             'date_offered' => 'date|nullable',
-            'value' => 'int|nullable',
+            'value' => 'integer|nullable',
             'has_recipient' => 'boolean',
             'recipient' => 'required_with:has_recipient',
         ];

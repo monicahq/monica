@@ -36,4 +36,22 @@ class InstanceHelper
             'friendlyPrice' => config('monica.paid_plan_'.$timePeriod.'_price') / 100,
         ];
     }
+
+    /**
+     * Get changelogs entries.
+     *
+     * @param int $number
+     * @return array
+     */
+    public static function getChangelogEntries($limit = null)
+    {
+        $json = public_path('changelog.json');
+        $changelogs = json_decode(file_get_contents($json), true)['entries'];
+
+        if ($limit) {
+            $changelogs = array_slice($changelogs, 0, $limit);
+        }
+
+        return $changelogs;
+    }
 }

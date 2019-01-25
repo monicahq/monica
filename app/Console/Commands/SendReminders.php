@@ -2,11 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Models\User\User;
-use App\Models\Account\Account;
 use Illuminate\Console\Command;
-use App\Models\Contact\Reminder;
-use App\Jobs\SetNextReminderDate;
+use App\Models\Contact\ReminderOutbox;
+use App\Jobs\Reminder\NotifyUserAboutReminder;
 
 class SendReminders extends Command
 {
@@ -35,39 +33,24 @@ class SendReminders extends Command
         // Why 2? because in terms of timezone, we can have up to more than 24 hours
         // between two timezones and we need to take into accounts reminders
         // that are not in the same timezone.
-        $reminders = Reminder::where('next_expected_date', '<', now()->addDays(2))
-                                ->orderBy('next_expected_date', 'asc')->get();
-
-        foreach ($reminders as $reminder) {
-            // Skip the reminder if the contact has been deleted (and for some
-            // reasons, the reminder hasn't)
-            if (! $reminder->contact) {
-                $reminder->delete();
-                continue;
-            }
-            $this->handleReminder($reminder);
-        }
+        ReminderOutbox::where('planned_date', '<', now()->addDays(2))
+                    ->orderBy('planned_date', 'asc')
+                    ->chunk(500, function ($reminderOutboxes) {
+                        $this->send($reminderOutboxes);
+                    });
     }
 
-    private function handleReminder($reminder)
+    /**
+     * Send the reminder to the user and schedule the future.
+     *
+     * @return void
+     */
+    private function send($reminderOutboxes)
     {
-        $account = $reminder->contact->account;
-        $numberOfUsersInAccount = $account->users->count();
-        $counter = 1;
-
-        foreach ($account->users as $user) {
-            if ($user->isTheRightTimeToBeReminded($reminder->next_expected_date)) {
-                if (! $account->hasLimitations()) {
-                    $user->sendReminder($reminder);
-                }
-
-                if ($counter == $numberOfUsersInAccount) {
-                    // We should only do this when we are sure that this is
-                    // the last user who should be warned in this account.
-                    dispatch(new SetNextReminderDate($reminder));
-                }
+        foreach ($reminderOutboxes as $reminderOutbox) {
+            if ($reminderOutbox->user->isTheRightTimeToBeReminded($reminderOutbox->planned_date)) {
+                NotifyUserAboutReminder::dispatch($reminderOutbox);
             }
-            $counter++;
         }
     }
 }

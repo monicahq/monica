@@ -31,7 +31,7 @@ class ApiCurrencyController extends ApiController
     public function show(Request $request, $currencyId)
     {
         try {
-            $currency = Currency::find($currencyId);
+            $currency = Currency::findOrFail($currencyId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }

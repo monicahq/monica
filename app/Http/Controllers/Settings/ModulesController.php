@@ -11,7 +11,7 @@ class ModulesController extends Controller
     /**
      * Get all the reminder rules.
      */
-    public function get()
+    public function index()
     {
         $modulesData = collect([]);
         $modules = auth()->user()->account->modules;

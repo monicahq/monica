@@ -21,11 +21,10 @@ class ConversationsController extends Controller
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function new(Request $request, Contact $contact)
+    public function create(Request $request, Contact $contact)
     {
         return view('people.conversations.new')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
     }
 
@@ -41,14 +40,15 @@ class ConversationsController extends Controller
         $conversations = $contact->conversations()->get();
 
         foreach ($conversations as $conversation) {
+            $message = $conversation->messages->last();
             $data = [
                 'id' => $conversation->id,
                 'message_count' => $conversation->messages->count(),
                 'contact_field_type' => $conversation->contactFieldType->name,
                 'icon' => $conversation->contactFieldType->fontawesome_icon,
-                'content' => str_limit($conversation->messages->last()->content, 50),
+                'content' => ! is_null($message) ? mb_strimwidth($message->content, 0, 50, '…') : '',
                 'happened_at' => DateHelper::getShortDate($conversation->happened_at),
-                'route' => route('people.conversation.edit', [$contact, $conversation]),
+                'route' => route('people.conversations.edit', [$contact, $conversation]),
             ];
             $conversationsCollection->push($data);
         }
@@ -113,7 +113,7 @@ class ConversationsController extends Controller
         }
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.relationship_form_add_success'));
+            ->with('success', trans('people.conversation_add_success'));
     }
 
     /**
@@ -136,7 +136,6 @@ class ConversationsController extends Controller
 
         return view('people.conversations.edit')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withConversation($conversation)
             ->withMessages($messages)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
@@ -210,7 +209,7 @@ class ConversationsController extends Controller
         }
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.relationship_form_add_success'));
+            ->with('success', trans('people.conversation_edit_success'));
     }
 
     /**

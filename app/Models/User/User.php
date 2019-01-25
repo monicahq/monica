@@ -6,21 +6,25 @@ use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
+use App\Helpers\RequestHelper;
 use App\Models\Account\Account;
-use App\Models\Contact\Reminder;
+use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
-use App\Jobs\Reminder\SendReminderEmail;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, HasApiTokens;
 
@@ -38,6 +42,7 @@ class User extends Authenticatable
         'locale',
         'currency_id',
         'fluid_container',
+        'temperature_scale',
         'name_order',
         'google2fa_secret',
     ];
@@ -57,6 +62,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'profile_new_life_event_badge_seen' => 'boolean',
+        'admin' => 'boolean',
+    ];
+
+    /**
      * Create a new User.
      *
      * @param int $account_id
@@ -65,9 +80,10 @@ class User extends Authenticatable
      * @param string $email
      * @param string $password
      * @param string $ipAddress
+     * @param string $lang
      * @return $this
      */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null)
+    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create the user
         $user = new self;
@@ -76,14 +92,74 @@ class User extends Authenticatable
         $user->last_name = $last_name;
         $user->email = $email;
         $user->password = bcrypt($password);
-        $user->timezone = config('app.timezone');
         $user->created_at = now();
-        $user->locale = App::getLocale();
+        $user->locale = $lang ?: App::getLocale();
+
+        $user->setDefaultCurrencyAndTimezone($ipAddress, $user->locale);
+
         $user->save();
 
         $user->acceptPolicy($ipAddress);
 
         return $user;
+    }
+
+    private function setDefaultCurrencyAndTimezone($ipAddress, $locale)
+    {
+        $infos = RequestHelper::infos($ipAddress);
+
+        // Associate timezone and currency
+        $currencyCode = $infos['currency'];
+        $timezone = $infos['timezone'];
+        if ($infos['country']) {
+            $country = CountriesHelper::getCountry($infos['country']);
+        } else {
+            $country = CountriesHelper::getCountryFromLocale($locale);
+        }
+
+        // Timezone
+        if (! is_null($timezone)) {
+            $this->timezone = $timezone;
+        } elseif (! is_null($country)) {
+            $this->timezone = CountriesHelper::getDefaultTimezone($country);
+        } else {
+            $this->timezone = config('app.timezone');
+        }
+
+        // Currency
+        if (! is_null($currencyCode)) {
+            $this->associateCurrency($currencyCode);
+        } elseif (! is_null($country)) {
+            foreach ($country->currencies as $currency) {
+                if ($this->associateCurrency($currency)) {
+                    break;
+                }
+            }
+        }
+
+        // Temperature scale
+        switch ($country->cca2) {
+            case 'US':
+            case 'BZ':
+            case 'KY':
+                $this->temperature_scale = 'fahrenheit';
+                break;
+            default:
+                $this->temperature_scale = 'celsius';
+                break;
+        }
+    }
+
+    private function associateCurrency($currency) : bool
+    {
+        $currencyObj = Currency::where('iso', $currency)->first();
+        if (! is_null($currencyObj)) {
+            $this->currency()->associate($currencyObj);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -97,19 +173,23 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the changelog records associated with the user.
-     */
-    public function changelogs()
-    {
-        return $this->belongsToMany(Changelog::class)->withPivot('read', 'upvote')->withTimestamps();
-    }
-
-    /**
      * Get the term records associated with the user.
+     *
+     * @return BelongsToMany
      */
     public function terms()
     {
         return $this->belongsToMany(Term::class)->withPivot('ip_address')->withTimestamps();
+    }
+
+    /**
+     * Get the recovery codes associated with the user.
+     *
+     * @return HasMany
+     */
+    public function recoveryCodes()
+    {
+        return $this->hasMany(RecoveryCode::class);
     }
 
     /**
@@ -262,42 +342,21 @@ class User extends Authenticatable
     {
         $isTheRightTime = true;
 
-        $dateToCompareTo = $date->hour(0)->minute(0)->second(0)->toDateString();
-        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
-        $currentDateOnUserTimezone = now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
-        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
-
-        if ($dateToCompareTo != $currentDateOnUserTimezone) {
+        // compare date with current date for the user
+        if (! $date->isSameDay(now($this->timezone))) {
             $isTheRightTime = false;
         }
+
+        // compare current hour for the user with the hour they want to be
+        // reminded as per the hour set on the profile
+        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
+        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
 
         if ($defaultHourReminderShouldBeSent != $currentHourOnUserTimezone) {
             $isTheRightTime = false;
         }
 
         return $isTheRightTime;
-    }
-
-    /**
-     * Check if user has one or more unread changelog entries.
-     *
-     * @return bool
-     */
-    public function hasUnreadChangelogs()
-    {
-        return $this->changelogs()->wherePivot('read', 0)->count() > 0;
-    }
-
-    /**
-     * Mark all changelog entries as read.
-     *
-     * @return void
-     */
-    public function markChangelogAsRead()
-    {
-        DB::table('changelog_user')
-            ->where('user_id', $this->id)
-            ->update(['read' => 1]);
     }
 
     /**
@@ -415,14 +474,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Send the given reminder using all the ways the user wants to be reminded.
-     * Currently only email is supported.
+     * Send the email verification notification.
      *
-     * @param  Reminder $reminder
-     * @return
+     * @return void
      */
-    public function sendReminder(Reminder $reminder)
+    public function sendEmailVerificationNotification()
     {
-        dispatch(new SendReminderEmail($reminder, $this));
+        $this->notify(new ConfirmEmail(true));
     }
 }

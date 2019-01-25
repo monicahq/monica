@@ -2,31 +2,64 @@
 
 namespace App\Services;
 
-class BaseService
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
+
+abstract class BaseService
 {
     /**
-     * Check if an array has a given structure.
+     * Get the validation rules that apply to the service.
      *
-     * @param  array  $data
-     * @param  array  $structure
+     * @return array
+     */
+    public function rules()
+    {
+        return [];
+    }
+
+    /**
+     * Validate all documents in an account.
+     *
+     * @param array $data
      * @return bool
      */
-    public function validateDataStructure(array $data, array $structure)
+    public function validate(array $data) : bool
     {
-        foreach ($structure as $structKey => $structValue) {
-            $found = false;
-
-            foreach ($data as $key => $value) {
-                if ($key == $structValue) {
-                    $found = true;
-                }
-            }
-
-            if (! $found) {
-                return false;
-            }
-        }
+        Validator::make($data, $this->rules())
+            ->validate();
 
         return true;
+    }
+
+    /**
+     * Checks if the value is empty or null.
+     *
+     * @param mixed $data
+     * @param mixed $index
+     * @return mixed
+     */
+    protected function nullOrValue($data, $index)
+    {
+        if (empty($data[$index])) {
+            return;
+        }
+
+        return $data[$index] == '' ? null : $data[$index];
+    }
+
+    /**
+     * Checks if the value is empty or null and returns a date from a string.
+     *
+     * @param mixed $data
+     * @param mixed $index
+     * @return mixed
+     */
+    protected function nullOrDate($data, $index)
+    {
+        if (empty($data[$index])) {
+            return;
+        }
+
+        return $data[$index] == '' ? null : Carbon::parse($data[$index]);
     }
 }

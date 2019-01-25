@@ -15,28 +15,36 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
-use App\Models\User\Changelog;
-use App\Jobs\AddChangelogEntry;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
+use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\ActivityStatistic;
+use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
 use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Services\Auth\Population\PopulateModulesTable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Auth\Population\PopulateLifeEventsTable;
+use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class Account extends Model
 {
@@ -113,16 +121,6 @@ class Account extends Model
     }
 
     /**
-     * Get the event records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function events()
-    {
-        return $this->hasMany(Event::class)->orderBy('created_at', 'desc');
-    }
-
-    /**
      * Get the note records associated with the account.
      *
      * @return HasMany
@@ -140,6 +138,16 @@ class Account extends Model
     public function reminders()
     {
         return $this->hasMany(Reminder::class);
+    }
+
+    /**
+     * Get the reminder outboxes records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function reminderOutboxes()
+    {
+        return $this->hasMany(ReminderOutbox::class);
     }
 
     /**
@@ -353,16 +361,6 @@ class Account extends Model
     }
 
     /**
-     * Get the Notifications records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
-
-    /**
      * Get the Conversation records associated with the account.
      *
      * @return HasMany
@@ -380,6 +378,106 @@ class Account extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get the Document records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Get the Life Event Category records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEventCategories()
+    {
+        return $this->hasMany(LifeEventCategory::class);
+    }
+
+    /**
+     * Get the Life Event Type records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEventTypes()
+    {
+        return $this->hasMany(LifeEventType::class);
+    }
+
+    /**
+     * Get the Life Event records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function lifeEvents()
+    {
+        return $this->hasMany(LifeEvent::class);
+    }
+
+    /**
+     * Get the Photos records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
+    /**
+     * Get the Weather records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function weathers()
+    {
+        return $this->hasMany(Weather::class);
+    }
+
+    /**
+     * Get the Places records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function places()
+    {
+        return $this->hasMany(Place::class);
+    }
+
+    /**
+     * Get the Addresses records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    /**
+     * Get the Company records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Get the Occupation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**
@@ -481,8 +579,11 @@ class Account extends Model
     {
         // Weird method to get the next billing date from Laravel Cashier
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $timestamp = $this->asStripeCustomer()['subscriptions']
-                            ->data[0]['current_period_end'];
+        $subscriptions = $this->asStripeCustomer()['subscriptions'];
+        if (count($subscriptions->data) <= 0) {
+            return;
+        }
+        $timestamp = $subscriptions->data[0]['current_period_end'];
 
         return DateHelper::getShortDate($timestamp);
     }
@@ -518,7 +619,7 @@ class Account extends Model
      */
     public function hasReachedContactLimit()
     {
-        return $this->contacts->count() >= config('monica.number_of_allowed_contacts_free_account');
+        return $this->contacts()->real()->count() >= config('monica.number_of_allowed_contacts_free_account');
     }
 
     /**
@@ -539,28 +640,6 @@ class Account extends Model
     }
 
     /**
-     * Populates the Contact Field Types table right after an account is
-     * created.
-     */
-    public function populateContactFieldTypeTable($ignoreTableAlreadyMigrated = false)
-    {
-        $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
-
-        foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
-                ContactFieldType::create([
-                    'account_id' => $this->id,
-                    'name' => $defaultContactFieldType->name,
-                    'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                    'delible' => $defaultContactFieldType->delible,
-                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
-                ]);
-            }
-        }
-    }
-
-    /**
      * Populates the Activity Type table right after an account is
      * created.
      */
@@ -575,15 +654,15 @@ class Account extends Model
             ]);
 
             $defaultActivityTypes = DB::table('default_activity_types')
-                                        ->where('default_activity_type_category_id', $defaultActivityTypeCategory->id)
-                                        ->get();
+                ->where('default_activity_type_category_id', $defaultActivityTypeCategory->id)
+                ->get();
 
             foreach ($defaultActivityTypes as $defaultActivityType) {
                 DB::table('activity_types')->insert([
-                  'account_id' => $this->id,
-                  'activity_type_category_id' => $activityTypeCategoryId,
-                  'translation_key' => $defaultActivityType->translation_key,
-              ]);
+                    'account_id' => $this->id,
+                    'activity_type_category_id' => $activityTypeCategoryId,
+                    'translation_key' => $defaultActivityType->translation_key,
+                ]);
             }
         }
     }
@@ -645,8 +724,8 @@ class Account extends Model
 
         foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
             $defaultRelationshipTypeGroup = DB::table('default_relationship_type_groups')
-                                    ->where('id', $defaultRelationshipType->relationship_type_group_id)
-                                    ->first();
+                ->where('id', $defaultRelationshipType->relationship_type_group_id)
+                ->first();
 
             $relationshipTypeGroup = $this->getRelationshipTypeGroupByType($defaultRelationshipTypeGroup->name);
 
@@ -657,29 +736,6 @@ class Account extends Model
                     'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
                     'relationship_type_group_id' => $relationshipTypeGroup->id,
                     'delible' => $defaultRelationshipType->delible,
-                ]);
-            }
-        }
-    }
-
-    /**
-     * Populate the account modules table based on the default ones.
-     *
-     * @param  bool $ignoreTableAlreadyMigrated
-     * @return void
-     */
-    public function populateModulesTable($ignoreTableAlreadyMigrated = false)
-    {
-        $defaultModules = DB::table('default_contact_modules')->get();
-
-        foreach ($defaultModules as $defaultModule) {
-            if (! $ignoreTableAlreadyMigrated || $defaultModule->migrated == 0) {
-                Module::create([
-                    'account_id' => $this->id,
-                    'key' => $defaultModule->key,
-                    'translation_key' => $defaultModule->translation_key,
-                    'delible' => $defaultModule->delible,
-                    'active' => $defaultModule->active,
                 ]);
             }
         }
@@ -701,9 +757,11 @@ class Account extends Model
         }
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
-        return $this->reminders()
-                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
-                     ->orderBy('next_expected_date', 'asc')
+        return $this->reminderOutboxes()
+                     ->with(['reminder', 'reminder.contact'])
+                     ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
+                     ->where('nature', 'reminder')
+                     ->orderBy('planned_date', 'asc')
                      ->get();
     }
 
@@ -719,6 +777,8 @@ class Account extends Model
         if (! is_null($plan)) {
             return $plan->stripe_plan;
         }
+
+        return '';
     }
 
     /**
@@ -758,8 +818,8 @@ class Account extends Model
     public function replaceGender(Gender $genderToDelete, Gender $genderToReplaceWith)
     {
         Contact::where('account_id', $this->id)
-                    ->where('gender_id', $genderToDelete->id)
-                    ->update(['gender_id' => $genderToReplaceWith->id]);
+            ->where('gender_id', $genderToDelete->id)
+            ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
     }
@@ -784,7 +844,7 @@ class Account extends Model
      * @param string $ipAddress
      * @return $this
      */
-    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null)
+    public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create new account
         $account = new self;
@@ -792,10 +852,10 @@ class Account extends Model
         $account->created_at = now();
         $account->save();
 
-        $account->populateDefaultFields();
-
         // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress);
+        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+
+        $account->populateDefaultFields();
 
         return $account;
     }
@@ -806,14 +866,26 @@ class Account extends Model
      */
     public function populateDefaultFields()
     {
-        $this->populateContactFieldTypeTable();
+        (new PopulateContactFieldTypesTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
+
         $this->populateDefaultGendersTable();
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();
         $this->populateRelationshipTypesTable();
-        $this->populateModulesTable();
-        $this->populateChangelogsTable();
         $this->populateActivityTypeTable();
+
+        (new PopulateLifeEventsTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
+
+        (new PopulateModulesTable)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
     }
 
     /**
@@ -909,29 +981,61 @@ class Account extends Model
     }
 
     /**
-     * Add the given changelog entry and mark it unread for all users in this
-     * account.
+     * Get the first available locale in an account. This gets the first user
+     * in the account and reads his locale.
      *
-     * @param int $changelogId
+     * @return string
+     *
+     * @throws ModelNotFoundException
      */
-    public function addUnreadChangelogEntry(int $changelogId)
+    public function getFirstLocale()
     {
-        foreach ($this->users as $user) {
-            $user->changelogs()->syncWithoutDetaching([$changelogId => ['read' => 0]]);
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return;
         }
+
+        return $user->locale;
     }
 
     /**
-     * Populate the changelog_user table, which contains all the new changes
-     * made on the application.
+     * Indicates whether the account has the reached the maximum storage size
+     * for document upload.
      *
-     * @return void
+     * @return bool
      */
-    public function populateChangelogsTable()
+    public function hasReachedAccountStorageLimit()
     {
-        $changelogs = Changelog::all();
-        foreach ($changelogs as $changelog) {
-            AddChangelogEntry::dispatch($this, $changelog->id);
+        if (! config('monica.requires_subscription')) {
+            return false;
         }
+
+        $currentAccountSize = $this->getStorageSize();
+
+        return $currentAccountSize > (config('monica.max_storage_size') * 1000000);
+    }
+
+    /**
+     * Get the storage size of the account, in bytes.
+     *
+     * @return int
+     */
+    public function getStorageSize()
+    {
+        $documents = Document::where('account_id', $this->id)
+            ->orderBy('created_at', 'desc')->get();
+        $photos = Photo::where('account_id', $this->id)
+            ->orderBy('created_at', 'desc')->get();
+
+        $currentAccountSize = 0;
+        foreach ($documents as $document) {
+            $currentAccountSize += $document->filesize;
+        }
+        foreach ($photos as $photo) {
+            $currentAccountSize += $photo->filesize;
+        }
+
+        return $currentAccountSize;
     }
 }

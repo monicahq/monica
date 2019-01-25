@@ -4,9 +4,12 @@ namespace App\Helpers;
 
 use Matriphe\ISO639\ISO639;
 use Illuminate\Support\Facades\Auth;
+use libphonenumber\PhoneNumberFormat;
 
 class LocaleHelper
 {
+    private const LANG_SPLIT = '/(-|_)/';
+
     /**
      * Get the current or default locale.
      *
@@ -21,6 +24,58 @@ class LocaleHelper
         }
 
         return $locale;
+    }
+
+    /**
+     * Get the current lang from locale.
+     *
+     * @return string  lang, lowercase form.
+     */
+    public static function getLang($locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = self::getLocale();
+        }
+        if (preg_match(self::LANG_SPLIT, $locale)) {
+            $locale = preg_split(self::LANG_SPLIT, $locale, 2)[0];
+        }
+
+        return mb_strtolower($locale);
+    }
+
+    /**
+     * Get the current country from locale.
+     *
+     * @return string  country, uppercase form.
+     */
+    public static function getCountry($locale = null)
+    {
+        $countryCode = self::extractCountry($locale);
+
+        if (is_null($countryCode)) {
+            $country = CountriesHelper::getCountryFromLocale($locale);
+            $countryCode = $country->cca2;
+        }
+
+        return mb_strtoupper($countryCode);
+    }
+
+    /**
+     * Extract the current country from locale, i.e. 'en-US' will return 'US'.
+     * If no country is present in the locale, it will return null.
+     *
+     * @return string|null  country, uppercase form.
+     */
+    public static function extractCountry($locale = null)
+    {
+        if (is_null($locale)) {
+            $locale = self::getLocale();
+        }
+        if (preg_match(self::LANG_SPLIT, $locale)) {
+            $locale = preg_split(self::LANG_SPLIT, $locale, 2)[1];
+
+            return mb_strtoupper($locale);
+        }
     }
 
     /**
@@ -53,9 +108,8 @@ class LocaleHelper
      */
     public static function getDirection()
     {
-        $locale = self::getLocale();
-
-        switch ($locale) {
+        $lang = self::getLang();
+        switch ($lang) {
             // Source: https://meta.wikimedia.org/wiki/Template:List_of_language_names_ordered_by_code
             case 'ar':
             case 'arc':
@@ -103,5 +157,33 @@ class LocaleHelper
         static::$locales[$locale] = $lang;
 
         return $lang;
+    }
+
+    /**
+     * Format phone number by country.
+     *
+     * @param string $tel
+     * @param $iso
+     * @param int $format
+     *
+     * @return null | string
+     */
+    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL)
+    {
+        if (empty($iso)) {
+            return $tel;
+        }
+
+        try {
+            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+
+            $phoneInstance = $phoneUtil->parse($tel, strtoupper($iso));
+
+            $tel = $phoneUtil->format($phoneInstance, $format);
+        } catch (\libphonenumber\NumberParseException $e) {
+            // Do nothing if the number cannot be parsed successfully
+        }
+
+        return $tel;
     }
 }

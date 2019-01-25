@@ -9,23 +9,24 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UpdateConversation extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'happened_at',
-        'contact_field_type_id',
-        'account_id',
-        'conversation_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'happened_at' => 'required|date',
+            'contact_field_type_id' => 'required|integer',
+            'conversation_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Update a conversation.
@@ -35,32 +36,18 @@ class UpdateConversation extends BaseService
      */
     public function execute(array $data): Conversation
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
-        }
+        $this->validate($data);
 
-        try {
-            $conversation = Conversation::where('account_id', $data['account_id'])
-                        ->findOrFail($data['conversation_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        $conversation = Conversation::where('account_id', $data['account_id'])
+                                    ->findOrFail($data['conversation_id']);
 
-        try {
-            ContactFieldType::where('account_id', $data['account_id'])
-                                ->findOrFail($data['contact_field_type_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        ContactFieldType::where('account_id', $data['account_id'])
+                            ->findOrFail($data['contact_field_type_id']);
 
-        try {
-            $conversation->update([
-                'happened_at' => $data['happened_at'],
-                'contact_field_type_id' => $data['contact_field_type_id'],
-            ]);
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        $conversation->update([
+            'happened_at' => $data['happened_at'],
+            'contact_field_type_id' => $data['contact_field_type_id'],
+        ]);
 
         return $conversation;
     }

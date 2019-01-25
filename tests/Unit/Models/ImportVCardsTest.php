@@ -15,6 +15,8 @@ class ImportVCardsTest extends TestCase
 
     public function testItValidatesUser()
     {
+        $this->withoutMockingConsoleOutput();
+
         $path = base_path('tests/stubs/vcard_stub.vcf');
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
@@ -30,6 +32,8 @@ class ImportVCardsTest extends TestCase
 
     public function testItValidatesFile()
     {
+        $this->withoutMockingConsoleOutput();
+
         $user = $this->getUser();
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
@@ -45,6 +49,8 @@ class ImportVCardsTest extends TestCase
 
     public function testItImportsContacts()
     {
+        $this->withoutMockingConsoleOutput();
+
         $user = $this->getUser();
         $path = base_path('tests/stubs/vcard_stub.vcf');
 
@@ -77,7 +83,7 @@ class ImportVCardsTest extends TestCase
         ]);
 
         // Allows checking addresses are correctly saved
-        $this->assertDatabaseHas('addresses', [
+        $this->assertDatabaseHas('places', [
             'street' => '17 Shakespeare Ave.',
             'postal_code' => 'SO17 2HB',
             'city' => 'Southampton',

@@ -28,16 +28,21 @@ return [
     'u2f_otp_extension' => 'U2F验证已受Chrome、<a href="{urlquantum}" lang="en">FireFox</a>、Opera支持。如果您用的是旧版FireFox，请您安装<a href="{urlext}">U2F支持</a>插件。',
 
     'login_to_account' => '登录您的账号',
+    'login_with_recovery' => '使用恢复代码登录',
     'login_again' => '请再次登录您的账号',
     'email' => '电子邮箱',
     'password' => '密码',
+    'recovery' => '恢复代码',
     'login' => '登录',
     'button_remember' => '记住我',
     'password_forget' => '忘记密码？',
     'password_reset' => '重置密码',
+    'use_recovery' => '或者您可以使用 <a href=":url">恢复代码</a>',
     'signup_no_account' => '没有账号？',
     'signup' => '注册',
     'create_account' => '单击此处 <a href=":url">注册</a>',
+    'change_language_title' => '更改语言：',
+    'change_language' => '更改语言至：:lang',
 
     'password_reset_title' => '重置密码',
     'password_reset_email' => '电子邮箱',
@@ -63,6 +68,11 @@ return [
     'register_action' => '注册',
     'register_policy' => '我已阅读并同意 <a href=":url" hreflang=":hreflang">隐私政策</a> 与 <a href=":urlterm" hreflang=":hreflang">用户协议</a>',
     'register_invitation_email' => '为了安全，请您输入邀请人的电子邮件地址。这可以在受邀邮件中找到',
+
+    'confirmation_title' => '验证您的电子邮件地址',
+    'confirmation_fresh' => '一条新的验证链接已经发送到您的邮箱',
+    'confirmation_check' => '在您继续之前，请检查您的邮箱以获得验证链接。',
+    'confirmation_request_another' => '如果您没有收到电子邮件 <a href=":url">, 请单击此处重新发送</a>。',
 
     'confirmation_again' => '如果要更改电子邮件地址, 可以 <a href=":url" class="alert-link">单击此处</a>。',
     'email_change_current_email' => '当前邮件地址：',

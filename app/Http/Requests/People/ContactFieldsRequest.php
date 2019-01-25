@@ -24,7 +24,7 @@ class ContactFieldsRequest extends FormRequest
     public function rules()
     {
         return [
-            'contact_field_type_id' => 'required',
+            'contact_field_type_id' => 'required|integer',
             'data' => 'max:255|required',
         ];
     }

@@ -4,12 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use App\Helpers\LocaleHelper;
+use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Models\Account\Account;
+use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Bestmomo\LaravelEmailConfirmation\Traits\RegistersUsers;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -48,14 +51,16 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
         $first = ! Account::hasAny();
         if (config('monica.disable_signup') == 'true' && ! $first) {
             abort(403, trans('auth.signup_disabled'));
         }
 
-        return view('auth.register', ['first' => $first]);
+        return view('auth.register')
+            ->withFirst($first)
+            ->withLocales(CollectionHelper::sortByCollator(LocaleHelper::getLocaleList(), 'lang'));
     }
 
     /**
@@ -89,7 +94,8 @@ class RegisterController extends Controller
             $data['last_name'],
             $data['email'],
             $data['password'],
-            \Request::ip()
+            RequestHelper::ip(),
+            $data['lang']
         );
         $user = $account->users()->first();
 
@@ -113,9 +119,7 @@ class RegisterController extends Controller
         $first = Account::count() == 1;
         if (! config('monica.signup_double_optin') || $first) {
             // if signup_double_optin is disabled, skip the confirm email part
-            $user->confirmation_code = null;
-            $user->confirmed = true;
-            $user->save();
+            $user->markEmailAsVerified();
 
             $this->guard()->login($user);
 

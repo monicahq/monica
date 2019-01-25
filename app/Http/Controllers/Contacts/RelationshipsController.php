@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
 class RelationshipsController extends Controller
 {
@@ -17,12 +18,13 @@ class RelationshipsController extends Controller
      * @param  Contact $contact
      * @return \Illuminate\Http\Response
      */
-    public function new(Request $request, Contact $contact)
+    public function create(Request $request, Contact $contact)
     {
         // getting top 100 of existing contacts
         $existingContacts = auth()->user()->account->contacts()
                                     ->real()
-                                    ->select(['id', 'first_name', 'last_name'])
+                                    ->active()
+                                    ->select(['id', 'first_name', 'last_name', 'middle_name', 'nickname'])
                                     ->sortedBy('name')
                                     ->take(100)
                                     ->get();
@@ -36,7 +38,7 @@ class RelationshipsController extends Controller
             }
             $arrayContacts->push([
                 'id' => $existingContact->id,
-                'name' => $existingContact->name,
+                'complete_name' => $existingContact->name,
             ]);
         }
 
@@ -73,6 +75,16 @@ class RelationshipsController extends Controller
     {
         // case of linking to an existing contact
         if ($request->get('relationship_type') == 'existing') {
+            $validator = Validator::make($request->all(), [
+                'existing_contact_id' => 'required|integer',
+                'relationship_type_id' => 'required|integer',
+            ]);
+
+            if ($validator->fails()) {
+                return back()
+                    ->withInput()
+                    ->withErrors($validator);
+            }
             $partner = Contact::where('account_id', $request->user()->account_id)
                 ->findOrFail($request->get('existing_contact_id'));
             $contact->setRelationship($partner, $request->get('relationship_type_id'));
@@ -85,8 +97,9 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
-            'gender_id' => 'required',
+            'gender_id' => 'required|integer',
             'birthdayDate' => 'date_format:Y-m-d',
+            'relationship_type_id' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -113,43 +126,30 @@ class RelationshipsController extends Controller
 
         $partner->save();
 
-        // Handling the case of the birthday
-        $partner->removeSpecialDate('birthdate');
-        switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
-            case 'approximate':
-                $specialDate = $partner->setSpecialDateFromAge('birthdate', $request->input('age'));
-                break;
-            case 'almost':
-                $specialDate = $partner->setSpecialDate(
-                    'birthdate',
-                    0,
-                    $request->input('month'),
-                    $request->input('day')
-                );
-
-                if ($request->input('addReminder') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
-                }
-
-                break;
-            case 'exact':
-                $birthdate = $request->input('birthdayDate');
-                $birthdate = DateHelper::parseDate($birthdate);
-                $specialDate = $partner->setSpecialDate(
-                    'birthdate',
-                    $birthdate->year,
-                    $birthdate->month,
-                    $birthdate->day
-                );
-
-                if ($request->input('addReminder') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $partner->first_name]));
-                }
-
-                break;
+        // this is really ugly. it should be changed
+        if ($request->get('birthdate') == 'exact') {
+            $birthdate = $request->input('birthdayDate');
+            $birthdate = DateHelper::parseDate($birthdate);
+            $day = $birthdate->day;
+            $month = $birthdate->month;
+            $year = $birthdate->year;
+        } else {
+            $day = $request->get('day');
+            $month = $request->get('month');
+            $year = $request->get('year');
         }
+
+        (new UpdateBirthdayInformation)->execute([
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $partner->id,
+            'is_date_known' => ($request->get('birthdate') == 'unknown' ? false : true),
+            'day' => $day,
+            'month' => $month,
+            'year' => $year,
+            'is_age_based' => ($request->get('birthdate') == 'approximate' ? true : false),
+            'age' => $request->get('age'),
+            'add_reminder' => ($request->get('addReminder') != '' ? true : false),
+        ]);
 
         // create the relationship
         $contact->setRelationship($partner, $request->get('relationship_type_id'));
@@ -179,7 +179,7 @@ class RelationshipsController extends Controller
         $day = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->day : $now->day;
         $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : $now->month;
 
-        $hasBirthdayReminder = ! is_null($otherContact->birthdate) ? (is_null($otherContact->birthdate->reminder) ? 0 : 1) : 0;
+        $hasBirthdayReminder = is_null($otherContact->birthday_reminder_id) ? 0 : 1;
 
         // Building the list of relationship types specifically for the dropdown which asks
         // for an id and a name.
@@ -223,7 +223,7 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
-            'gender_id' => 'required',
+            'gender_id' => 'required|integer',
             'birthdayDate' => 'date_format:Y-m-d',
         ]);
 
@@ -244,43 +244,30 @@ class RelationshipsController extends Controller
         $otherContact->gender_id = $request->input('gender_id');
         $otherContact->save();
 
-        // Handling the case of the birthday
-        $otherContact->removeSpecialDate('birthdate');
-        switch ($request->input('birthdate')) {
-            case 'unknown':
-                break;
-            case 'approximate':
-                $specialDate = $otherContact->setSpecialDateFromAge('birthdate', $request->input('age'));
-                break;
-            case 'almost':
-                $specialDate = $otherContact->setSpecialDate(
-                    'birthdate',
-                    0,
-                    $request->input('month'),
-                    $request->input('day')
-                );
-
-                if ($request->input('addReminder') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $otherContact->first_name]));
-                }
-
-                break;
-            case 'exact':
-                $birthdate = $request->input('birthdayDate');
-                $birthdate = DateHelper::parseDate($birthdate);
-                $specialDate = $otherContact->setSpecialDate(
-                    'birthdate',
-                    $birthdate->year,
-                    $birthdate->month,
-                    $birthdate->day
-                );
-
-                if ($request->input('addReminder') != '') {
-                    $newReminder = $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $otherContact->first_name]));
-                }
-
-                break;
+        // this is really ugly. it should be changed
+        if ($request->get('birthdate') == 'exact') {
+            $birthdate = $request->input('birthdayDate');
+            $birthdate = DateHelper::parseDate($birthdate);
+            $day = $birthdate->day;
+            $month = $birthdate->month;
+            $year = $birthdate->year;
+        } else {
+            $day = $request->get('day');
+            $month = $request->get('month');
+            $year = $request->get('year');
         }
+
+        (new UpdateBirthdayInformation)->execute([
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $otherContact->id,
+            'is_date_known' => ($request->get('birthdate') == 'unknown' ? false : true),
+            'day' => $day,
+            'month' => $month,
+            'year' => $year,
+            'is_age_based' => ($request->get('birthdate') == 'approximate' ? true : false),
+            'age' => $request->get('age'),
+            'add_reminder' => ($request->get('addReminder') != '' ? true : false),
+        ]);
 
         // update the relationship
         $contact->updateRelationship($otherContact, $request->get('type'), $request->get('relationship_type_id'));

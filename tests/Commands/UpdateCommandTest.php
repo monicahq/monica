@@ -4,9 +4,12 @@ namespace Tests\Commands;
 
 use Tests\TestCase;
 use App\Console\Commands\Update;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UpdateCommandTest extends TestCase
 {
+    use DatabaseTransactions;
+
     public function test_update_command_default()
     {
         $commandExecutor = new CommandExecutorTester();

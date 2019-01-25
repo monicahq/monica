@@ -41,10 +41,6 @@ class ApiStatisticsControllerTest extends ApiTestCase
 
         $response = $this->json('GET', '/api/statistics');
 
-        $response->assertStatus(404);
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
-        ]);
+        $this->expectNotFound($response);
     }
 }

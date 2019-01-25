@@ -24,7 +24,7 @@ class ActivitiesRequest extends FormRequest
     public function rules()
     {
         return [
-            'contacts' => 'required',
+            'contacts' => 'required|array',
             'summary' => 'required',
             'date_it_happened' => 'required|date',
             'description' => 'string|nullable',

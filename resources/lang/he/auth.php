@@ -28,16 +28,21 @@ return [
     'u2f_otp_extension' => 'ב־Chrome, ב־<a href="{urlquantum}" lang="en">Firefox</a> וב־Opera קיימת תמיכה מובנית ב־U2F. בגרסאות ישנות של Firefox יש להתקין את <a href="{urlext}">תוספת התמיכה ב־U2F</a>.',
 
     'login_to_account' => 'כניסה לחשבון שלך',
+    'login_with_recovery' => 'כניסה עם קוד שחזור',
     'login_again' => 'נא להיכנס לחשבונך פעם נוספת',
     'email' => 'דוא״ל',
     'password' => 'ססמה',
+    'recovery' => 'קוד שחזור',
     'login' => 'כניסה',
     'button_remember' => 'לשמור את הפרטים שלי',
     'password_forget' => 'שכחת את הססמה שלך?',
     'password_reset' => 'איפוס הססמה שלך',
+    'use_recovery' => 'באפשרותך להשתמש גם ב<a href=":url">קוד שחזור</a>',
     'signup_no_account' => 'אין לך חשבון?',
     'signup' => 'הרשמה',
     'create_account' => 'ניתן ליצור את החשבון הראשון על ידי <a href=":url">הרשמה</a>',
+    'change_language_title' => 'החלפת שפה:',
+    'change_language' => 'החלפת השפה ל:lang',
 
     'password_reset_title' => 'איפוס ססמה',
     'password_reset_email' => 'כתובת דוא״ל',
@@ -63,6 +68,11 @@ return [
     'register_action' => 'רישום',
     'register_policy' => 'הרשמה מאמתת שקראת והסכמת ל<a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> ול<a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> שלנו.',
     'register_invitation_email' => 'מטעמי אבטחה, נא לציין את כתובת הדוא״ל של מי שהזמין אותך להצטרף לחשבון הזה. המידע הזה מופיע בהודעת ההזמנה.',
+
+    'confirmation_title' => 'אימות כתובת הדוא״ל שלך',
+    'confirmation_fresh' => 'נשלח קישור אימות טרי לכתובת הדוא״ל שלך.',
+    'confirmation_check' => 'בטרם המשך התהליך, נא לחפש את קישור האימות בתיבת הדוא״ל שלך.',
+    'confirmation_request_another' => 'אם לא קיבלת את ההודעה <a href=":url">נא ללחוץ כאן כדי לבקש אחת נוספת</a>.',
 
     'confirmation_again' => 'כדי לשנות את כתובת הדוא״ל שלך נא <a href=":url" class="alert-link">ללחוץ כאן</a>.',
     'email_change_current_email' => 'כתובת הדוא״ל הנוכחית:',

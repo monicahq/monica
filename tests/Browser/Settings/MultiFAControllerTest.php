@@ -6,6 +6,7 @@ use Zxing\QrReader;
 use Tests\DuskTestCase;
 use App\Models\User\User;
 use Laravel\Dusk\Browser;
+use Illuminate\Console\Application;
 use Tests\Browser\Pages\SettingsSecurity;
 use Tests\Browser\Pages\DashboardValidate2fa;
 
@@ -16,7 +17,7 @@ class MultiFAControllerTest extends DuskTestCase
      */
     public function cleanup()
     {
-        exec('php artisan 2fa:deactivate --force --email=admin@admin.com', $output);
+        exec(Application::formatCommandString('2fa:deactivate --force --email=admin@admin.com'), $output);
         //$this->log(implode($output));
     }
 

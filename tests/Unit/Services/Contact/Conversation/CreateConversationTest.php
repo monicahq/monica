@@ -4,9 +4,11 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\CreateConversation;
@@ -54,7 +56,7 @@ class CreateConversationTest extends TestCase
             'happened_at' => Carbon::now(),
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ValidationException::class);
 
         $createConversation = new CreateConversation;
         $conversation = $createConversation->execute($request);
@@ -62,24 +64,22 @@ class CreateConversationTest extends TestCase
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
-        $contact = factory(Contact::class)->create([
-            'account_id' => 1,
-        ]);
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create();
         $contactFieldType = factory(ContactFieldType::class)->create([
             'account_id' => $contact->account_id,
         ]);
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => 2,
+            'account_id' => $account->id,
             'happened_at' => Carbon::now(),
             'contact_field_type_id' => $contactFieldType->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createConversation = new CreateConversation;
-        $conversation = $createConversation->execute($request);
+        $createConversation = (new CreateConversation)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contactfieldtype_is_not_linked_to_account()

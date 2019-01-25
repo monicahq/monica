@@ -34,7 +34,7 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
             <div class="br3 ba b--gray-monica bg-white mb4">
               <div class="pa3 bb b--gray-monica">
-                <form method="POST" action="{{ route('settings.users.save') }}">
+                <form method="POST" action="{{ route('settings.users.store') }}">
                   {{ csrf_field() }}
 
                   <h2>{{ trans('settings.users_add_title') }}</h2>

@@ -30,7 +30,7 @@
     </a>
     @endif
 
-    <form method="POST" action="{{ route('people.relationships.update', [$contact, $relationship->ofContact]) }}" class="entry-delete-form hidden">
+    <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship->ofContact]) }}" class="entry-delete-form hidden">
       {{ method_field('DELETE') }}
       {{ csrf_field() }}
     </form>

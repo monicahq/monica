@@ -86,15 +86,6 @@ class ActivityTest extends FeatureTestCase
             'activity_id' => $latestActivity->id,
         ]);
 
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'activity';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
-
         // Check that the Contact view contains the newly created note
         $response = $this->get('/people/'.$contact->hashID());
         $response->assertSee($activityTitle);
@@ -163,7 +154,7 @@ class ActivityTest extends FeatureTestCase
         ]);
 
         // Attach the created activity to the current user to make this an update
-        $contact->activities()->save($activity);
+        $contact->activities()->save($activity, ['account_id' => $user->account_id]);
 
         // check that we can access the edit activity view
         $response = $this->get('/activities/'.$activity->hashID().'/edit/'.$contact->hashID());
@@ -189,17 +180,6 @@ class ActivityTest extends FeatureTestCase
         $newParams['summary'] = 'this is another test';
 
         $this->assertDatabaseHas('activities', $newParams);
-
-        $eventParams = [];
-
-        // make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'activity';
-        $eventParams['object_id'] = $activity->id;
-        $eventParams['nature_of_operation'] = 'update';
-
-        $this->assertDatabaseHas('events', $eventParams);
     }
 
     public function test_user_doesnt_see_activity_report_link_when_no_activities_are_available()
@@ -239,14 +219,14 @@ class ActivityTest extends FeatureTestCase
             'summary' => 'This is the title',
             'date_it_happened' => '1990-01-05',
         ]);
-        $contact->activities()->save($activity);
+        $contact->activities()->save($activity, ['account_id' => $user->account_id]);
 
         $activity = factory(Activity::class)->create([
             'account_id' => $user->account_id,
             'summary' => 'This is a second title',
             'date_it_happened' => '2000-01-05',
         ]);
-        $contact->activities()->save($activity);
+        $contact->activities()->save($activity, ['account_id' => $user->account_id]);
 
         $contact->calculateActivitiesStatistics();
 

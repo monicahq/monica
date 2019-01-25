@@ -13,6 +13,14 @@ return [
     'tab_calls_blank' => 'לא תיעדת אף שיחה עדיין.',
     'tab_debts' => 'חובות',
     'tab_debts_blank' => 'לא תיעדת חובות עדיין.',
+    'tab_tasks' => 'משימות',
+    'tab_tasks_blank' => 'אין לך משימות עדיין.',
+
+    'tasks_add_task_placeholder' => 'מה מהות המשימה הזאת?',
+    'tasks_tab_your_contacts' => 'משימות שקשורות לאנשי הקשר שלך',
+    'tasks_tab_your_tasks' => 'המשימות שלך',
+    'tasks_add_note' => 'נא ללחוץ על <kbd>Enter</kbd> כדי להוסיף את המשימה.',
+    'task_add_cta' => 'הוספת משימה',
 
     'debts_you_owe' => 'חובך הוא',
 
@@ -23,5 +31,6 @@ return [
     'reminders_next_months' => 'אירועים ב־3 החודשים הקרובים',
     'reminders_none' => 'אין תזכורת לחודש הזה',
 
-    'linkedin_profile' => 'LinkedIn',
+    'product_changes' => 'שינויים במוצר',
+    'product_view_details' => 'הצגת פרטים',
 ];

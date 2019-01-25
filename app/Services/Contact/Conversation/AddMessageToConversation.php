@@ -8,26 +8,28 @@
 namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddMessageToConversation extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'contact_id',
-        'conversation_id',
-        'written_at',
-        'written_by_me',
-        'content',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'conversation_id' => 'required|integer',
+            'written_at' => 'required|date',
+            'written_by_me' => 'required|boolean',
+            'content' => 'required|string',
+        ];
+    }
 
     /**
      * Add message to a conversation.
@@ -37,24 +39,15 @@ class AddMessageToConversation extends BaseService
      */
     public function execute(array $data): Message
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
-        }
+        $this->validate($data);
 
-        try {
-            Conversation::where('contact_id', $data['contact_id'])
-                                ->where('account_id', $data['account_id'])
-                                ->findOrFail($data['conversation_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        Contact::where('account_id', $data['account_id'])
+                ->findOrFail($data['contact_id']);
 
-        try {
-            $message = Message::create($data);
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        Conversation::where('contact_id', $data['contact_id'])
+                    ->where('account_id', $data['account_id'])
+                    ->findOrFail($data['conversation_id']);
 
-        return $message;
+        return Message::create($data);
     }
 }

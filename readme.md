@@ -7,7 +7,7 @@
 <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
 <a href="https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=coverage" alt="Code coverage"/></a>
 <a href="https://sonarcloud.io/dashboard?id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=alert_status" alt="Quality gate" /></a>
-<a href="https://github.com/djaiss/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
+<a href="https://github.com/monicahq/monica/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-AGPL-blue.svg" alt="License"></a>
 <a class="badge-align" href="https://slack.monicahq.com"><img src="https://slack.monicahq.com/badge.svg"></a>
 </p>
 
@@ -45,7 +45,7 @@ Monica is an open-source web application to organize the interactions with your 
 <img src="docs/images/main-app.png" alt="screenshot of the application">
 </p>
 
-We also have official [open source mobile apps](https://github.com/monicahq/chandler).
+We also have official [open source mobile apps](https://github.com/monicahq/chandler) but they are extremely basic at this point and not well maintained.
 
 ### Purpose
 
@@ -69,12 +69,13 @@ Monica allows people to keep track of everything that's important about their fr
 * Management of contact pets
 * Basic journal
 * Ability to indicate how the day went
+* Upload documents and photos
 * Export and import of data
 * Export a contact as vCard
 * Ability to set custom genders
 * Ability to define custom activity types
 * Ability to favorite contacts
-* Track conversations
+* Track conversations made on social media or SMS
 * Multi users
 * Labels to organize contacts
 * Ability to define what section should appear on the contact sheet
@@ -150,13 +151,17 @@ We want to use technology in a way that does not harm human relationships, like 
 
 ### Principles
 
-* It should be open-source.
-* It should be transparent.
+Monica has a few principles.
+
+* It should help have better relationships.
 * It should be simple to use, simple to contribute to, simple to understand, extremely simple to maintain.
 * It is not a social network and shall never be.
-* It should do one thing (organizing interactions) extremely well, and nothing more.
+* It is not and will never be ad-supported.
+* Users are not and will never be tracked.
+* It should be transparent.
+* It should be open-source.
+* It should do one thing (documenting social interactions) extremely well, and nothing more.
 * It should be well documented.
-* It should help have better relationships.
 
 ### Vision
 

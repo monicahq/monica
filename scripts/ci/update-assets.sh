@@ -1,10 +1,29 @@
 #!/bin/bash
 
 if [ "$CIRCLECI" == "true" ]; then
-  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then export CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}" ; fi
-  REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+  if [[ ! -z $CIRCLE_PULL_REQUEST ]] ; then
+    CIRCLE_PR_NUMBER="${CIRCLE_PR_NUMBER:-${CIRCLE_PULL_REQUEST##*/}}"
+    REPO=$CIRCLE_PULL_REQUEST
+    REPO=${REPO##https://github.com/}
+    REPO=${REPO%%/pull/$CIRCLE_PR_NUMBER}
+  else
+    REPO=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+  fi
   BRANCH=${CIRCLE_BRANCH:-$CIRCLE_TAG}
   PR_NUMBER=${CIRCLE_PR_NUMBER:-false}
+elif [ "$TRAVIS" == "true" ]; then
+  REPO=$TRAVIS_REPO_SLUG
+  BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
+  PR_NUMBER=$TRAVIS_PULL_REQUEST
+elif [[ -n $BUILD_NUMBER ]]; then
+  echo "CHANGE_ID=$CHANGE_ID"
+  echo "CHANGE_URL=$CHANGE_URL"
+  REPO=${CHANGE_URL##https://github.com/}
+  if [[ ! -z $CHANGE_ID ]] ; then
+    REPO=${REPO%%/pull/$CHANGE_ID}
+  fi
+  PR_NUMBER=${CHANGE_ID:-false}
+  BRANCH=$BRANCH_NAME
 fi
 
 REPOSITORY_OWNER=monicahq/monica
@@ -26,6 +45,8 @@ if [ "$status" = "" ]; then
   echo "Nothing to push, already up to date."
   exit 0;
 fi
+echo "Waiting modifications:"
+echo $status
 
 # Add files
 git add public/mix-manifest.json

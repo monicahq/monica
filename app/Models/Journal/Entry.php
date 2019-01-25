@@ -28,6 +28,7 @@ class Entry extends Model implements IsJournalableInterface
      * @var array
      */
     protected $fillable = [
+        'account_id',
         'title',
         'post',
     ];

@@ -15,9 +15,9 @@ return [
 
     'password' => 'Wachtwoorden moeten minstens zes tekens bevatten en overeenkomen.',
     'reset' => 'Je wachtwoord is gereset!',
-    'sent' => 'Als de e-mail die je ingevoerd hebt al bestaat in onze database, zul je een wachtwoord reset link ontvangen.',
+    'sent' => 'We hebben een e-mail verstuurd met instructies om een nieuw wachtwoord in te stellen.',
     'token' => 'Deze wachtwoord reset token is ongeldig.',
-    'user' => 'Als de e-mail die je ingevoerd hebt al bestaat in onze database, zul je een wachtwoord reset link ontvangen.',
+    'user' => 'Geen gebruiker bekend met het e-mailadres.',
     'changed' => 'Wachtwoord succesvol gewijzigd.',
     'invalid' => 'Het ingevoerde wachtwoord is niet correct.',
 

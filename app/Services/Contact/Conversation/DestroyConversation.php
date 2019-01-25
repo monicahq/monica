@@ -9,20 +9,21 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyConversation extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'conversation_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'conversation_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Destroy a conversation.
@@ -32,22 +33,12 @@ class DestroyConversation extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
-        }
+        $this->validate($data);
 
-        try {
-            $conversation = Conversation::where('account_id', $data['account_id'])
-                ->findOrFail($data['conversation_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        $conversation = Conversation::where('account_id', $data['account_id'])
+                                    ->findOrFail($data['conversation_id']);
 
-        try {
-            $conversation->delete();
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        $conversation->delete();
 
         return true;
     }

@@ -45,8 +45,8 @@ class ContactTest extends FeatureTestCase
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
-            'next_expected_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d H:i:s'),
-            'frequency_type' => 'once',
+            'initial_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
+            'frequency_type' => 'one_time',
             'description' => $this->faker->sentence(),
         ];
 
@@ -73,10 +73,11 @@ class ContactTest extends FeatureTestCase
             'title' => $this->faker->sentence(),
             'description' => $this->faker->sentence(3),
             'completed' => 0,
+            'contact_id' => $contact->id,
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/tasks',
+            '/tasks',
             $task
         );
 
@@ -102,7 +103,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -138,7 +139,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -171,7 +172,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            '/people/'.$contact->hashID().'/gifts/store',
+            '/people/'.$contact->hashID().'/gifts',
             $gift
         );
 
@@ -206,8 +207,8 @@ class ContactTest extends FeatureTestCase
             'comment' => $this->faker->sentence(),
         ];
 
-        $this->post(
-            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
+        $this->put(
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id,
             $gift
         );
 
@@ -247,8 +248,8 @@ class ContactTest extends FeatureTestCase
             'recipient' => $otherContact->id,
         ];
 
-        $this->post(
-            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id.'/update',
+        $this->put(
+            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id,
             $gift
         );
 
@@ -280,7 +281,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            route('people.debt.store', $contact),
+            route('people.debts.store', $contact),
             $debt
         );
 
@@ -302,7 +303,7 @@ class ContactTest extends FeatureTestCase
         ];
 
         $this->post(
-            route('people.debt.store', $contact),
+            route('people.debts.store', $contact),
             $debt
         );
 
@@ -338,7 +339,7 @@ class ContactTest extends FeatureTestCase
             'birthdate' => 'unknown',
         ];
 
-        $this->post('/people/'.$contact->hashID().'/update', $data);
+        $this->put('/people/'.$contact->hashID(), $data);
 
         $data['id'] = $contact->id;
         $this->assertDatabaseHas('contacts', [
@@ -379,11 +380,39 @@ class ContactTest extends FeatureTestCase
         $response->assertStatus(200);
     }
 
+    public function test_viewing_a_user_increments_the_number_of_views()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $this->assertDatabaseHas('contacts', [
+            'number_of_views' => 0,
+        ]);
+
+        $response = $this->get('/people/'.$contact->hashID());
+        $response = $this->get('/people/'.$contact->hashID());
+
+        $this->assertDatabaseHas('contacts', [
+            'number_of_views' => 2,
+        ]);
+    }
+
     private function changeArrayKey($from, $to, &$array = [])
     {
         $array[$to] = $array[$from];
         unset($array[$from]);
 
         return $array;
+    }
+
+    public function test_vcard_download()
+    {
+        list($user, $contact) = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID().'/vcard');
+
+        $response->assertOk();
+        $response->assertHeader('Content-type', 'text/x-vcard; charset=UTF-8');
+        $response->assertSee('FN:John Doe');
+        $response->assertSee('N:Doe;John;;;');
     }
 }

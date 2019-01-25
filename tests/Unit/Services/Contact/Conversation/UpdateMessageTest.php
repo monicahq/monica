@@ -4,8 +4,10 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Carbon\Carbon;
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Conversation\UpdateMessage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -66,18 +68,18 @@ class UpdateMessageTest extends TestCase
             'content' => 'lorem',
         ];
 
-        $this->expectException(\Exception::class);
+        $this->expectException(ValidationException::class);
 
-        $updateMessage = new UpdateMessage;
-        $conversation = $updateMessage->execute($request);
+        $updateMessage = (new UpdateMessage)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_message_does_not_exist()
     {
+        $account = factory(Account::class)->create();
         $message = factory(Message::class)->create([]);
 
         $request = [
-            'account_id' => 123,
+            'account_id' => $account->id,
             'contact_id' => 123,
             'conversation_id' => 123,
             'message_id' => $message->id,
@@ -88,7 +90,6 @@ class UpdateMessageTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateMessage = new UpdateMessage;
-        $conversation = $updateMessage->execute($request);
+        $updateMessage = (new UpdateMessage)->execute($request);
     }
 }

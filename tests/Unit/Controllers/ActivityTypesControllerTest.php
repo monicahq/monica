@@ -3,6 +3,7 @@
 namespace Tests\Unit\Controllers;
 
 use Tests\FeatureTestCase;
+use App\Models\Account\Account;
 use App\Models\Contact\ActivityType;
 use App\Models\Contact\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -38,6 +39,28 @@ class ActivityTypesControllerTest extends FeatureTestCase
         ]);
     }
 
+    public function test_activity_type_bad_account()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create();
+        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $response = $this->json('POST', '/settings/personalization/activitytypes', [
+                            'name' => 'Movies',
+                            'activity_type_category_id' => $activityTypeCategory->id,
+                        ]);
+
+        $this->expectNotFound($response);
+
+        $this->assertDatabaseMissing('activity_types', [
+            'name' => 'Movies',
+            'activity_type_category_id' => $activityTypeCategory->id,
+        ]);
+    }
+
     public function test_it_updates_a_activity_type()
     {
         $user = $this->signin();
@@ -51,8 +74,7 @@ class ActivityTypesControllerTest extends FeatureTestCase
             'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 
-        $response = $this->json('PUT', '/settings/personalization/activitytypes', [
-                            'id' => $activityType->id,
+        $response = $this->json('PUT', '/settings/personalization/activitytypes/'.$activityType->id, [
                             'name' => 'Movies',
                         ]);
 

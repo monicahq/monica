@@ -35,7 +35,7 @@ class PetsController extends Controller
      * Get all the pets for this contact.
      * @param  Contact $contact
      */
-    public function get(Contact $contact)
+    public function index(Contact $contact)
     {
         $petsCollection = collect([]);
         $pets = $contact->pets;
@@ -102,7 +102,7 @@ class PetsController extends Controller
         ];
     }
 
-    public function trash(Contact $contact, Pet $pet)
+    public function destroy(Contact $contact, Pet $pet)
     {
         $pet->delete();
     }

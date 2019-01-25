@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'Estas credenciales no concuerdas con nuestros registros.',
-    'throttle' => 'Demasiados intentos de ingreso. Por favor intente nuevamente en :seconds segundos.',
+    'failed' => 'Estas credenciales no coinciden con nuestros registros.',
+    'throttle' => 'Demasiados intentos de acceso. Por favor intente nuevamente en :seconds segundos.',
     'not_authorized' => 'Usted no esta autorizado para ejecutar esta acción',
     'signup_disabled' => 'La registración se encuentra actualmente deshabilitada',
     'back_homepage' => 'Volver al inicio',
@@ -28,16 +28,21 @@ return [
     'u2f_otp_extension' => 'U2F is supported natively on Chrome, <a href="{urlquantum}" lang="en">Firefox</a> and Opera. On old Firefox versions, install the <a href="{urlext}">U2F Support Add-on</a>.',
 
     'login_to_account' => 'Login to your account',
+    'login_with_recovery' => 'Login with a recovery code',
     'login_again' => 'Please login again to your account',
     'email' => 'Email',
     'password' => 'Contraseña',
+    'recovery' => 'Recovery code',
     'login' => 'Login',
     'button_remember' => 'Remember Me',
     'password_forget' => 'Forget your password?',
     'password_reset' => 'Reset your password',
+    'use_recovery' => 'Or you can use a <a href=":url">recovery code</a>',
     'signup_no_account' => 'Don’t have an account?',
     'signup' => 'Sign up',
     'create_account' => 'Create the first account by <a href=":url">signing up</a>',
+    'change_language_title' => 'Change language:',
+    'change_language' => 'Change language to :lang',
 
     'password_reset_title' => 'Reset Password',
     'password_reset_email' => 'E-Mail Address',
@@ -63,6 +68,11 @@ return [
     'register_action' => 'Register',
     'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
     'register_invitation_email' => 'For security purposes, please indicate the email of the person who’ve invited you to join this account. This information is provided in the invitation email.',
+
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
 
     'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
     'email_change_current_email' => 'Current email address:',

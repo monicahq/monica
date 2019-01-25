@@ -18,17 +18,21 @@ class ExportAccountAsSQL
         'activity_types',
         'api_usage',
         'cache',
-        'changelog_user',
+        'countries',
         'currencies',
+        'contact_photo',
         'default_activity_types',
         'default_activity_type_categories',
         'default_contact_field_types',
         'default_contact_modules',
+        'default_life_event_categories',
+        'default_life_event_types',
         'default_relationship_type_groups',
         'default_relationship_types',
+        'emotions',
+        'emotions_primary',
+        'emotions_secondary',
         'failed_jobs',
-        'import_jobs',
-        'import_job_reports',
         'instances',
         'jobs',
         'migrations',
@@ -42,6 +46,9 @@ class ExportAccountAsSQL
         'sessions',
         'statistics',
         'subscriptions',
+        'terms',
+        'u2f_key',
+        'users',
     ];
 
     protected $ignoredColumns = [
@@ -53,6 +60,12 @@ class ExportAccountAsSQL
 
     protected $file = '';
     protected $path = '';
+
+    /**
+     * Storage disk used to store the exported file.
+     * @var string
+     */
+    public const STORAGE = 'public';
 
     /**
      * Create a new job instance.
@@ -153,7 +166,7 @@ class ExportAccountAsSQL
             $sql .= $newSQLLine;
         }
 
-        Storage::disk(config('filesystems.default'))->put($downloadPath, $sql);
+        Storage::disk(self::STORAGE)->put($downloadPath, $sql);
 
         return $downloadPath;
     }

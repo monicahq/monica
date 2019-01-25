@@ -1,12 +1,185 @@
 UNRELEASED CHANGES:
 
+New features:
+
+* Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
+* Add Laravel Telescope (deactivated by default)
+* Add notion of instance administrator for a user
+* Add ability to name u2f security keys and to delete register ones
+* Add ability to add a comment when rating your day in the journal
+* Add API methods to manage genders
+* Breaking change: rewrite API methods to manage contacts
+
+Enhancements:
+
+* Refactor reminders by removing Notifications table and creating two new tables: reminder outbox and reminder sent
+* Display the name of the contact field instead of the URL (Facebook instead of https:/facebook.com/johndoe)
+* Add foreign keys to activities table
+* Add foreign keys to reminders, reminder rules, contacts and life events tables
+* Add number of life events on the contact profile page
+* Add base HTML tag and tweak all assets and urls to use relative paths
+
+Fixes:
+
+* Fix vue.js DateTime picker to type a date in other format than en-us one
+* Fix DateTime parse when compact format is used
+* Fix contact and relationship edit with reminder enabled
+* Fix broken migration for the activities table
+* Fix VCard import with partial N entry
+* Fix using 'label' tag without 'for' attribute
+* Fix model binding when it is a guest request (not logged in)
+* Fix bug preventing to create life event without day and month
+* Fix ability to delete a user with a u2f key activated
+* Fix validation fails with Services
+* Fix getting birthday reminders about related contacts
+* Fix default temperature scale setting
+* Fix API methods for Occupation object
+* Fix activity date viewed as one day before the event happened
+* Fix settags api call with an empty tag
+
+RELEASED VERSIONS:
+
+v2.11.2 - 2019-01-01
+--------------------
+
+* Carddav: support sync-token (rfc6578)
+* Fix premium feature flag appearing on self-hosted version
+* Fix exception when user is logged out (again)
+* Fix carddav group-member-set propfind call
+* Fix contacts view in case birthdate returns null
+* Fix conversation without message
+
+v2.11.1 - 2018-12-26
+--------------------
+
+* Migrate LinkedIn url from the Contact object to a ContactFieldType object
+* Activate eslint to check vue and javascript formatting
+* Fix tasks store and update
+* Fix error handling in vue components
+* Fix exception when user is logged out
+* Fix subscription plan display
+* Fix dashboard calls display
+* Fix tags getting error
+* Fix contact getIncompleteName to work with UTF-8 last_name characters
+* Fix associate null tags
+
+v2.11.0 - 2018-12-23
+--------------------
+
+* Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
+* Add ability to see the current weather on the contact profile page
+* Add ability to generate recovery codes in order to bypass 2FA/U2F
+* Add ability to indicate latitude and longitude to addresses
+* Add ability to upload photos
+* Add ability to indicate how you felt when logging a call
+* Add information about who initiated a phone call
+* Add ability to edit a phone call
+* Add ability to create tasks that are not linked to any contacts
+* Remove limitation on the date field when creating an activity
+* Fix Set Tag api method which deleted existing tags, which it shouldn't
+* Fix editing relationship not working
+* Fix Storage page not being displayed
+* Fix VCard import without firstname
+* Fix avatar display in searches
+* Fix conversation add/update using contact add/update flash messages
+* Fix incompatibility of people search queries with PostgreSQL
+* Refactor how contacts are managed
+* Add the notion of places
+
+v2.10.2 - 2018-11-14
+--------------------
+
+* Fix composer install problems
+* Fix editing conversations not working
+* Fix deletion of relationships not working
+
+v2.10.1 - 2018-11-13
+--------------------
+
+* Fix work information not being able to be edited
+* Display contacts for each tag in the Tags view on the Settings page
+
+v2.10.0 - 2018-11-11
+--------------------
+
+* Add ability to upload documents
+* Add ability to archive a contact
+* Add right-click support on contact list
+* Add autocompletion on tags
+* Add CardDAV support — disabled by default. To enable it, toggle the `CARDDAV_ENABLED` env variable.
+* Add a command (export:all) to export all data from an instance in SQL
+* New header on a profile page
+* Standardize phonenumber format while importing vCard
+* Set currency and timezone for new users
+* Remove changelogs from the database and manage changelogs from a json file instead
+* Highlight buttons when selected using keyboard
+* Hide deceased people from dashboard's 'Last Consulted' section
+* Improve API methods for tag management
+* Fix settings' sidebar links and change security icon
+* Fix CSV import
+* Filter deceased people from people list by default
+* Fix errors during PostgreSQL migration
+* Better documentation for PostgreSQL users
+* Fix some API methods
+* API breaking change: Remove 'POST /contacts/:contact_id/pets' in favor of 'POST /pets/' with a 'contact_id'
+* API breaking change: Remove 'PUT /contacts/:contact_id/pets/:id' in favor of 'PUT /pets/:id' with a 'contact_id'
+* API breaking change: Every validator fails now send a HTTP 400 code (was 200) with the error 32
+* API breaking change: Every Invald Parameters errors now send a HTTP 400 (was 500 or 200) code with the error 41
+* Use Laravel email verification, and remove the old package used for that
+* Prevent submitting an empty form when pressing enter
+* Remove Antiflood package on oauth/login and use Laravel throttle
+
+v2.9.0 - 2018-10-14
+-------------------
+
+* Allow to define a max file size for uploaded document in an ENV variable (default to 10240kb)
+* Add description field for a contact
+* Add ability to retrieve all conversations for one contact through the API
+* Add all tasks not yet completed on the dashboard
+* Fix gravatar not displayed on dashboard view
+
+v2.8.1 - 2018-10-08
+-------------------
+
+* Add ability to set a reminder for a life event
+* Stop reporting OAuth exceptions
+* Replace karakus/laravel-cloudflare with monicahq/laravel-cloudflare to fix dependencies issues
+* Fix use of 'json' mysql column type
+
+v2.8.0 - 2018-09-28
+-------------------
+
+* Add ability to track life events
+* Add ability to define the default email address used for support
+* Add sentry:release command
+* Add Envoy file template
+* Add passport config file
+* Add new variable APP_DISPLAY_NAME
+* Rename env variable 2FA_ENABLED to MFA_ENABLED (2FA_ENABLED is still functional for compatibility reasons)
+* Improve search
+* Fix reminders displaying wrong date
+* Fix select boxes not working properly anymore
+* Fix confirm email sent when signup_double_optin is false
+* Fix now() without timezone functions
+* Remove notion of events
+* Support papertrail logging
+
+v2.7.1 - 2018-09-05
+-------------------
+
+* Fix duplication of modules in the Settings page
+
+v2.7.0 - 2018-09-04
+-------------------
+
 * Add ability to log conversations made on social networks or SMS
-* Fix gifts not showing when value was not set
-* Fix phpunit not parsing all test files
-* Improve automatic route binding
+* Add language selector on register page
 * Support Arabic language
+* Improve automatic route binding
 * Split app css in two files for better support of ltr/rtl text direction
 * Add helper function htmldir()
+* Fix gifts not showing when value was not set
+* Fix phpunit not parsing all test files
 * Fix login remember with 2fa and u2f enabled
 * Fix gender update
 * Fix how comparing version is done
@@ -14,8 +187,7 @@ UNRELEASED CHANGES:
 * Fix gift recipient relation
 * Fix subscription cancel on account deletion
 * Fix email maximum size on settings
-
-RELEASED VERSIONS:
+* Fix reminder link in email sent
 
 v2.6.0 - 2018-08-17
 -------------------

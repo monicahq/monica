@@ -88,6 +88,7 @@ class JournalController extends Controller
         $day = auth()->user()->account->days()->create([
             'date' => now(DateHelper::getTimezone()),
             'rate' => $request->get('rate'),
+            'comment' => $request->get('comment'),
         ]);
 
         // Log a journal entry
@@ -145,8 +146,8 @@ class JournalController extends Controller
     public function save(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'entry' => 'required',
-            'date' => 'required',
+            'entry' => 'required|string',
+            'date' => 'required|date',
         ]);
 
         if ($validator->fails()) {

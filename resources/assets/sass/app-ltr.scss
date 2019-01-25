@@ -3,9 +3,6 @@
 
 @import "~tachyons/css/tachyons.min";
 
-// Tags for a contact
-@import "~jquery-tags-input/dist/jquery.tagsinput.min";
-
 // For the datatables
 @import "_datatable.min";
 
@@ -16,6 +13,7 @@
 @import '~pretty-checkbox/src/pretty-checkbox';
 
 $border-color: #dfdfdf;
+$bg-hover-monica: #f1f5fd;
 $htmldir: ltr !default;
 
 @import "buttons";
@@ -39,6 +37,19 @@ $htmldir: ltr !default;
 
 .b--gray-monica {
   border-color: #dde2e9;
+}
+
+.bg-hover-monica {
+  &:hover {
+    background-color: $bg-hover-monica;
+  }
+}
+
+.box-shadow {
+  background: #fff;
+  border: 1px solid #e7e7e7;
+  box-shadow: 1px -1px 4px rgba(122, 122, 122, 0.25);
+  border-radius: 11px;
 }
 
 .w-5 {
@@ -124,52 +135,42 @@ $htmldir: ltr !default;
   background-color: #d9534f;
 }
 
-.pretty-tag {
-  background: #eee;
-  border-radius: 3px;
-  color: #555;
-  display: inline-block;
-  font-size: 11px;
-  height: 22px;
-  line-height: 22px;
-  padding-right: 10px;
-  padding-left: 19px;
-  position: relative;
-  @if $htmldir == ltr {
-    margin-right: 10px;
-  } @else {
-    margin-left: 10px;
-  }
-  text-decoration: none;
-  -webkit-transition: color 0.2s;
+kbd {
+  padding:0.1em 0.6em;
+  border:1px solid #ccc;
+  font-size:11px;
+  font-family:Arial,Helvetica,sans-serif;
+  background-color:#f7f7f7;
+  color:#333;
+  box-shadow:0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+  border-radius:3px;
+  display:inline-block;
+  margin:0 0.1em;
+  text-shadow:0 1px 0 #fff;
+  line-height:1.4;
+  white-space:nowrap;
+}
 
-  &:before {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
-    content: '';
-    height: 6px;
-    left: 7px;
-    position: absolute;
-    width: 6px;
-    top: 9px;
-  }
-
-  &:hover {
-    background-color: #0366d6;
-
-    a {
-      color: #fff;
+.life-event {
+  .life-event-add-row {
+    &:hover {
+      background-color: $bg-hover-monica;
     }
   }
 
-  a {
-    text-decoration: none;
-    color: #555;
+  .life-event-add-arrow {
+    right: 10px;
+    top: 12px;
+  }
 
-    &:hover {
-      background-color: transparent;
-      color: #fff;
+  .life-event-add-icon {
+    background-color: #d7e3ec;
+    border-radius: 50%;
+    padding: 20px;
+    width: 65px;
+
+    img {
+      width: 70px;
     }
   }
 }
@@ -217,7 +218,7 @@ $htmldir: ltr !default;
 
 // Generic styles
 body {
-  color: #323b43;
+  color: #4a4a4a;
 }
 
 a {
@@ -347,6 +348,19 @@ input:disabled {
   }
 }
 
+.profile-page-avatar {
+  left: 48%;
+  top: -60px;
+
+  img, div {
+    border-radius: 50%;
+  }
+
+  @media (max-width: 480px) {
+    left: 40%;
+  }
+}
+
 .avatar-photo {
   img {
     border-radius: 3px;
@@ -409,6 +423,24 @@ input:disabled {
   }
 }
 
+.profile-selected {
+  .profile-selected-left {
+    border-left: 1px solid #dde2e9;
+    border-top: 1px solid #dde2e9;
+    border-bottom: 1px solid #dde2e9;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  .profile-selected-right {
+    border-right: 1px solid #dde2e9;
+    border-top: 1px solid #dde2e9;
+    border-bottom: 1px solid #dde2e9;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+}
+
 .full-page-modal {
   background: #fff;
   border: 1px solid #eee;
@@ -437,6 +469,11 @@ input:disabled {
   &:hover {
     background-color: #f6fbff;
   }
+}
+
+.profile-edit-contact-button {
+  right: 20px;
+  top: 20px;
 }
 
 // datasets

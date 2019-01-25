@@ -36,14 +36,4 @@ class TagTest extends TestCase
 
         $this->assertTrue($tag->contacts()->exists());
     }
-
-    public function test_it_updates_the_slug()
-    {
-        $tag = factory(Tag::class)->create(['name' => 'this is great']);
-        $tag->updateSlug();
-        $this->assertEquals(
-            'this-is-great',
-            $tag->name_slug
-        );
-    }
 }

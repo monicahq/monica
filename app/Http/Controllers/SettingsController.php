@@ -8,6 +8,7 @@ use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
+use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
@@ -15,16 +16,20 @@ use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
+use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
-use App\Notifications\ConfirmEmail;
+use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
+use App\Services\Contact\Tag\DestroyTag;
 use PragmaRX\Google2FALaravel\Google2FA;
+use App\Services\Account\DestroyAllDocuments;
+use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 
-class SettingsController extends Controller
+class SettingsController
 {
     protected $ignoredTables = [
         'accounts',
@@ -32,16 +37,20 @@ class SettingsController extends Controller
         'activity_types',
         'api_usage',
         'cache',
-        'changelog_user',
-        'changelogs',
         'countries',
         'currencies',
+        'contact_photo',
         'default_activity_types',
         'default_activity_type_categories',
         'default_contact_field_types',
         'default_contact_modules',
+        'default_life_event_categories',
+        'default_life_event_types',
         'default_relationship_type_groups',
         'default_relationship_types',
+        'emotions',
+        'emotions_primary',
+        'emotions_secondary',
         'failed_jobs',
         'instances',
         'jobs',
@@ -56,6 +65,9 @@ class SettingsController extends Controller
         'sessions',
         'statistics',
         'subscriptions',
+        'telescope_entries',
+        'telescope_entries_tags',
+        'telescope_monitoring',
         'terms',
         'u2f_key',
         'users',
@@ -109,16 +121,16 @@ class SettingsController extends Controller
                 'name_order',
             ]) + [
                 'fluid_container' => $request->get('layout'),
+                'temperature_scale' => $request->get('temperature_scale'),
             ]
         );
 
         if ($user->email != $request->get('email')) {
-            $user->email = $request->get('email');
-            $user->confirmation_code = str_random(30);
-            $user->confirmed = false;
-            $user->save();
-
-            $user->notify(new ConfirmEmail);
+            (new EmailChange)->execute([
+                'account_id' => $user->account_id,
+                'email' => $request->get('email'),
+                'user_id' => $user->id,
+            ]);
         }
 
         $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
@@ -138,6 +150,10 @@ class SettingsController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
+
+        (new DestroyAllDocuments)->execute([
+            'account_id' => $account->id,
+        ]);
 
         $tables = DBHelper::getTables();
 
@@ -160,7 +176,7 @@ class SettingsController extends Controller
 
         DB::table('accounts')->where('id', $account->id)->delete();
         auth()->logout();
-        $user->forceDelete();
+        $user->delete();
 
         return redirect()->route('login');
     }
@@ -175,6 +191,10 @@ class SettingsController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
+
+        (new DestroyAllDocuments)->execute([
+            'account_id' => $account->id,
+        ]);
 
         $tables = DBHelper::getTables();
 
@@ -214,10 +234,10 @@ class SettingsController extends Controller
      */
     public function exportToSql()
     {
-        $path = $this->dispatchNow(new ExportAccountAsSQL());
+        $path = dispatch_now(new ExportAccountAsSQL());
 
         return response()
-            ->download(Storage::disk('public')->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
+            ->download(Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
             ->deleteFileAfterSend(true);
     }
 
@@ -407,7 +427,11 @@ class SettingsController extends Controller
                     $request->input('first_name'),
                     $request->input('last_name'),
                     $request->input('email'),
-                    $request->input('password'));
+                    $request->input('password'),
+                    RequestHelper::ip()
+                );
+        $user->invited_by_user_id = $invitation->invited_by_user_id;
+        $user->save();
 
         $invitation->delete();
 
@@ -425,7 +449,7 @@ class SettingsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function deleteAdditionalUser(Request $request, $userID)
+    public function deleteAdditionalUser($userID)
     {
         $user = User::where('account_id', auth()->user()->account_id)
             ->findOrFail($userID);
@@ -449,14 +473,18 @@ class SettingsController extends Controller
         return view('settings.tags');
     }
 
-    public function deleteTag(Request $request, $tagId)
+    /**
+     * Destroy the tag.
+     *
+     * @param int $tagId
+     * @return void
+     */
+    public function deleteTag($tagId)
     {
-        $tag = Tag::where('account_id', auth()->user()->account_id)
-            ->findOrFail($tagId);
-
-        $tag->contacts()->detach();
-
-        $tag->delete();
+        (new DestroyTag)->execute([
+            'tag_id' => $tagId,
+            'account_id' => auth()->user()->account->id,
+        ]);
 
         return redirect()->route('settings.tags.index')
                 ->with('success', trans('settings.tags_list_delete_success'));
@@ -467,8 +495,42 @@ class SettingsController extends Controller
         return view('settings.api.index');
     }
 
-    public function security(Request $request)
+    public function security()
     {
-        return view('settings.security.index', ['is2FAActivated' => app('pragmarx.google2fa')->isActivated()]);
+        $u2fKeys = U2fKey::where('user_id', auth()->id())
+                        ->get();
+
+        return view('settings.security.index')
+            ->with('is2FAActivated', app('pragmarx.google2fa')->isActivated())
+            ->with('currentkeys', U2fKeyResource::collection($u2fKeys));
+    }
+
+    /**
+     * Update the default view when viewing a contact.
+     * The default view can be either the life events feed or the general data
+     * about the contact (notes, reminders, ...).
+     * Possible values: life-events | notes.
+     *
+     * @param  Request $request
+     * @return bool
+     */
+    public function updateDefaultProfileView(Request $request)
+    {
+        $allowedValues = ['life-events', 'notes', 'photos'];
+        $view = $request->get('name');
+
+        if (! in_array($view, $allowedValues)) {
+            return 'not allowed';
+        }
+
+        auth()->user()->profile_active_tab = $view;
+
+        if ($view == 'life-events') {
+            auth()->user()->profile_new_life_event_badge_seen = true;
+        }
+
+        auth()->user()->save();
+
+        return $view;
     }
 }

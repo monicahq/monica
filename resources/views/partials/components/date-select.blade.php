@@ -37,15 +37,15 @@
         <option value="0">{{ trans('app.unknown') }}</option>
       @endif
 
-      @foreach($years as $year => $value)
-        <option value="{{ $value }}"
+      @foreach($years as $year)
+        <option value="{{ $year['id'] }}"
           @if ($specialDate && $specialDate instanceof Carbon\Carbon)
-            {{ $specialDate->year == $value ? 'selected="selected"': '' }}
+            {{ $specialDate->year == $year['id'] ? 'selected="selected"': '' }}
           @else
-            {{ ($specialDate == null) ? '' : ($specialDate->is_year_unknown ? '' : (($specialDate->date->year == $value) ? 'selected="selected"': '')) }}
+            {{ ($specialDate == null) ? '' : ($specialDate->is_year_unknown ? '' : (($specialDate->date->year == $year['id']) ? 'selected="selected"': '')) }}
           @endif
         >
-          {{ $value }}
+          {{ $year['id'] }}
         </option>
       @endforeach
     </select>

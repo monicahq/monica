@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class DateHelper
@@ -23,6 +24,8 @@ class DateHelper
 
     /**
      * Creates a Carbon object from DateTime format.
+     * If timezone is given, it parse the date with this timezone.
+     * Always return a date with default timezone (UTC).
      *
      * @param \DateTime|Carbon|string date
      * @param string timezone
@@ -33,15 +36,24 @@ class DateHelper
         if (is_null($date)) {
             return;
         }
-        if ($date instanceof \DateTime) {
-            $date = Carbon::instance($date);
-        }
         if ($date instanceof Carbon) {
-            $date = $date->toDateTimeString();
+            // ok
+        } elseif ($date instanceof \DateTimeInterface) {
+            $date = Carbon::instance($date);
+        } else {
+            try {
+                $date = Carbon::parse($date);
+            } catch (\Exception $e) {
+                // Parse error
+                return;
+            }
         }
-        $date = Carbon::createFromFormat('Y-m-d H:i:s', $date, config('app.timezone'));
-        if ($timezone !== null) {
-            $date->setTimezone($timezone);
+
+        $date = Carbon::create($date->year, $date->month, $date->day, $date->hour, $date->minute, $date->second, $timezone ?? $date->timezone);
+
+        $appTimezone = config('app.timezone');
+        if ($date->timezone !== $appTimezone) {
+            $date->setTimezone($appTimezone);
         }
 
         return $date;
@@ -49,8 +61,11 @@ class DateHelper
 
     /**
      * Creates a Carbon object from Date format.
+     * If timezone is given, it parse the date with this timezone.
+     * Always return a date with default timezone (UTC).
      *
-     * @param string date
+     * @param Carbon|string date
+     * @param string timezone
      * @return Carbon
      */
     public static function parseDate($date, $timezone = null)
@@ -63,9 +78,12 @@ class DateHelper
                 return;
             }
         }
-        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, config('app.timezone'));
-        if ($timezone !== null) {
-            $date->setTimezone($timezone);
+
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, $timezone ?? $date->timezone);
+
+        $appTimezone = config('app.timezone');
+        if ($date->timezone !== $appTimezone) {
+            $date->setTimezone($appTimezone);
         }
 
         return $date;
@@ -86,7 +104,7 @@ class DateHelper
             $date = $date->date;
         }
         if (! $date instanceof Carbon) {
-            $date = Carbon::create($date, config('app.timezone'));
+            $date = Carbon::create($date);
         }
 
         return $date->format(config('api.timestamp_format'));
@@ -100,20 +118,19 @@ class DateHelper
     public static function getTimezone()
     {
         if (Auth::check()) {
-            return auth()->user()->timezone;
+            return Auth::user()->timezone;
         }
     }
 
     /**
-     * Return a date according to the timezone of the user, in a short format
-     * like "Oct 29, 1981".
+     * Return a date in a short format like "Oct 29, 1981".
      *
      * @param Carbon $date
      * @return string
      */
     public static function getShortDate($date)
     {
-        $date = new Date($date, static::getTimezone());
+        $date = new Date($date);
         $format = trans('format.short_date_year', [], Date::getLocale());
 
         return $date->format($format) ?: '';
@@ -225,7 +242,7 @@ class DateHelper
      */
     public static function getMonthAndYear(int $month)
     {
-        $date = Date::now()->addMonthsNoOverflow($month);
+        $date = Date::now(static::getTimezone())->addMonthsNoOverflow($month);
         $format = trans('format.short_month_year', [], Date::getLocale());
 
         return $date->format($format) ?: '';
@@ -254,16 +271,19 @@ class DateHelper
      * @param int min
      * @param int max
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfYears($max = 120, $min = 0)
     {
-        $years = [];
+        $years = collect([]);
         $maxYear = now(static::getTimezone())->subYears($min)->year;
         $minYear = now(static::getTimezone())->subYears($max)->year;
 
         for ($year = $maxYear; $year >= $minYear; $year--) {
-            array_push($years, $year);
+            $years->push([
+                'id' => $year,
+                'name' => $year,
+            ]);
         }
 
         return $years;
@@ -272,7 +292,7 @@ class DateHelper
     /**
      * Gets a list of all the months in a year.
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfMonths()
     {
@@ -294,7 +314,7 @@ class DateHelper
     /**
      * Gets a list of all the days in a month.
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfDays()
     {
@@ -326,17 +346,5 @@ class DateHelper
         }
 
         return $hours;
-    }
-
-    /**
-     * Removes a given number of days of a date given in parameter.
-     *
-     * @param  Carbon  $date
-     * @param  int    $numberOfDaysBefore
-     * @return Carbon
-     */
-    public static function getDateMinusGivenNumberOfDays(Carbon $date, int $numberOfDaysBefore)
-    {
-        return $date->subDays($numberOfDaysBefore);
     }
 }

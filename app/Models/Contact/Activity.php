@@ -102,17 +102,6 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the date_it_happened field.
-     *
-     * @param string $value
-     * @return string
-     */
-    public function getDateItHappenedAttribute($value)
-    {
-        return DateHelper::parseDateTime($value, DateHelper::getTimezone());
-    }
-
-    /**
      * Get the summary for this activity.
      *
      * @return string or null
@@ -150,9 +139,11 @@ class Activity extends Model implements IsJournalableInterface
         $attendees = collect([]);
 
         foreach ($this->contacts as $contact) {
-            $attendee = Contact::where('account_id', $this->account_id)
-                ->find($contact->id);
-            $attendees->push(new ContactShortResource($attendee));
+            if ($contact->account_id !== $this->account_id) {
+                // This should not be possible!
+                continue;
+            }
+            $attendees->push(new ContactShortResource($contact));
         }
 
         return $attendees;

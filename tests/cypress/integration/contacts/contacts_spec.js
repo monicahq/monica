@@ -6,7 +6,7 @@ describe('Contacts', function () {
   it('lets you add a contact', function () {
     cy.createContact('John', 'Doe', 'Man')
     cy.url().should('include', '/people/h:')
-    cy.get('h3').should('contain', 'John Doe')
+    cy.get('h1').should('contain', 'John Doe')
   })
 
   it('lets you add two contacts in a row', function () {
@@ -28,7 +28,7 @@ describe('Contacts', function () {
     cy.get('button[name=save]').click()
 
     cy.url().should('include', '/people/h:')
-    cy.get('h3').should('contain', 'John')
+    cy.get('h1').should('contain', 'John')
   })
 
   it('lets you edit a contact', function () {
@@ -47,14 +47,14 @@ describe('Contacts', function () {
     cy.get('button[name=save]').click()
 
     cy.url().should('include', '/people/h:')
-    cy.get('h3').should('contain', 'Jane')
+    cy.get('h1').should('contain', 'Jane')
   })
 
   it('lets you delete a contact', function () {
     cy.createContact('John', 'Doe', 'Man')
 
     cy.visit('/people')
-    cy.get('.people-list-item-name').should('contain', 'John Doe')
+    cy.get('.people-list-item').should('contain', 'John Doe')
 
     // this gets the first content of the list
     cy.get('li.people-list-item.bg-white.pointer').click()
@@ -65,7 +65,7 @@ describe('Contacts', function () {
     cy.url().should('include', '/people')
 
     cy.visit('/people')
-    cy.get('.people-list-item-name').should('not.exist')
+    cy.get('.people-list-item').should('not.contain', 'John')
   })
 
   it('lets you add a contact as favorite', function () {
@@ -90,9 +90,9 @@ describe('Contacts', function () {
     cy.createContact('Abc', 'Abc', 'Man')
     cy.visit('/people')
 
-    cy.get('.people-list-item-name span').should('contain', 'John Doe')
-    cy.get('.people-list-item-name svg').should('be.visible')
+    cy.get('.people-list-item span').should('contain', 'John Doe')
+    cy.get('.people-list-item svg').should('be.visible')
 
-    cy.get('.list > li:nth-child(3) > span.people-list-item-name').should('contain', 'Abc Abc')
+    cy.get('.people-list-item').should('contain', 'Abc Abc')
   })
 })

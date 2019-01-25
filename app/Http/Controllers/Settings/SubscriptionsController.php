@@ -137,6 +137,7 @@ class SubscriptionsController extends Controller
         $stripeToken = $request->input('stripeToken');
 
         $plan = InstanceHelper::getPlanInformationFromConfig($request->input('plan'));
+        $errorMessage = '';
 
         try {
             auth()->user()->account->newSubscription($plan['name'], $plan['id'])
@@ -149,24 +150,24 @@ class SubscriptionsController extends Controller
             // Since it's a decline, \Stripe\Error\Card will be caught
             $body = $e->getJsonBody();
             $err = $body['error'];
-            $message = trans('settings.stripe_error_card', ['message' => $err['message']]);
+            $errorMessage = trans('settings.stripe_error_card', ['message' => $err['message']]);
         } catch (\Stripe\Error\RateLimit $e) {
             // Too many requests made to the API too quickly
-            $message = trans('settings.stripe_error_rate_limit');
+            $errorMessage = trans('settings.stripe_error_rate_limit');
         } catch (\Stripe\Error\Authentication $e) {
             // Authentication with Stripe's API failed
             // (maybe you changed API keys recently)
-            $message = trans('settings.stripe_error_authentication');
+            $errorMessage = trans('settings.stripe_error_authentication');
         } catch (\Stripe\Error\ApiConnection $e) {
             // Network communication with Stripe failed
-            $message = trans('settings.stripe_error_api_connection_error');
+            $errorMessage = trans('settings.stripe_error_api_connection_error');
         } catch (\Stripe\Error\Base $e) {
-            $message = $e->getMessage();
+            $errorMessage = $e->getMessage();
         }
 
         return back()
             ->withInput()
-            ->withErrors($message);
+            ->withErrors($errorMessage);
     }
 
     /**

@@ -39,13 +39,13 @@
             <li class="{{ (auth()->user()->account->users()->count() > 1)?'fail':'success' }}">
               <span class="icon"></span>
               <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_users') }}</span>
-              <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_users_constraint', auth()->user()->account->users()->count(), ['url' => '/settings/users', 'count' => auth()->user()->account->users()->count()]) !!}</span>
+              <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_users_constraint', auth()->user()->account->users()->count(), ['url' => route('settings.users.index'), 'count' => auth()->user()->account->users()->count()]) !!}</span>
             </li>
 
             <li class="{{ (auth()->user()->account->invitations()->count() > 0)?'fail':'success' }}">
               <span class="icon"></span>
               <span class="rule-title">{{ trans('settings.subscriptions_downgrade_rule_invitations') }}</span>
-              <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_invitations_constraint', auth()->user()->account->invitations()->count(), ['url' => '/settings/users', 'count' => auth()->user()->account->invitations()->count()]) !!}</span>
+              <span class="rule-to-succeed">{!! trans_choice('settings.subscriptions_downgrade_rule_invitations_constraint', auth()->user()->account->invitations()->count(), ['url' => route('settings.users.index'), 'count' => auth()->user()->account->invitations()->count()]) !!}</span>
             </li>
 
             <li class="{{ (auth()->user()->account->hasReachedContactLimit() == true)?'fail':'success' }}">

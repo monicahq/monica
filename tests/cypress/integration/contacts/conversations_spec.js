@@ -15,7 +15,7 @@ describe('Conversations', function () {
 
     cy.get('[cy-name=add-conversation-button]').should('be.visible')
     cy.get('[cy-name=add-conversation-button]').click()
-    cy.url().should('include', '/conversation/new')
+    cy.url().should('include', '/conversations/create')
 
     cy.get('[name=contactFieldTypeId]').select('3')
     cy.get('[name=content_1]').type('This is a message')

@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Console\Application;
 
 class SetupTest extends Command
 {
@@ -67,7 +68,7 @@ class SetupTest extends Command
     public function artisan($message, $command, array $arguments = [])
     {
         $this->info($message);
-        $this->line('php artisan '.$command);
+        $this->line(Application::formatCommandString($command));
         $this->callSilent($command, $arguments);
         $this->line('');
     }

@@ -67,7 +67,7 @@ git checkout tags/v2.2.1
 
 Log in with the root account to configure the database.
 ```sh
-mysql -uroot -p
+mysql -u root -p
 ```
 
 Create a database called 'monica'.
@@ -142,7 +142,7 @@ sudo nano /etc/apache2/sites-available/monica.conf
 
 3. Then, in the `nano` text editor window you just opened, copy the following - swapping the `YOUR IP ADDRESS/DOMAIN` with your server's IP address/associated domain:
 
-```html
+```
 <VirtualHost *:80>
     ServerName YOUR IP ADDRESS/DOMAIN
 

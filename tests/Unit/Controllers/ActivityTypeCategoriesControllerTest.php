@@ -53,14 +53,32 @@ class ActivityTypeCategoriesControllerTest extends FeatureTestCase
             'account_id' => $user->account->id,
         ]);
 
-        $response = $this->json('PUT', '/settings/personalization/activitytypecategories', [
-                            'id' => $activityTypeCategory->id,
-                            'name' => 'Movies',
-                        ]);
+        $response = $this->json('PUT', '/settings/personalization/activitytypecategories/'.$activityTypeCategory->id, [
+            'name' => 'Movies',
+        ]);
 
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('activity_type_categories', [
+            'id' => $activityTypeCategory->id,
+            'name' => 'Movies',
+        ]);
+    }
+
+    public function test_activity_type_category_update_bad_account()
+    {
+        $user = $this->signin();
+
+        $activityTypeCategory = factory(ActivityTypeCategory::class)->create();
+
+        $response = $this->json('PUT', '/settings/personalization/activitytypecategories/'.$activityTypeCategory->id, [
+            'name' => 'Movies',
+        ]);
+
+        $response->assertStatus(404);
+
+        $this->assertDatabaseMissing('activity_type_categories', [
+            'id' => $activityTypeCategory->id,
             'name' => 'Movies',
         ]);
     }

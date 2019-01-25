@@ -2,8 +2,6 @@
 
 namespace App\Models\Instance;
 
-use App\Jobs\AddChangelogEntry;
-use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,18 +17,5 @@ class Instance extends Model
     {
         DB::table('default_contact_field_types')
             ->update(['migrated' => 1]);
-    }
-
-    /**
-     * Create a job to add a changelog entry for each account of the instance.
-     *
-     * @param int $changelogId
-     */
-    public function addUnreadChangelogEntry(int $changelogId)
-    {
-        $accounts = Account::all();
-        foreach ($accounts as $account) {
-            AddChangelogEntry::dispatch($account, $changelogId);
-        }
     }
 }

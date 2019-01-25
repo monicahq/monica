@@ -10,23 +10,24 @@ namespace App\Services\Contact\Conversation;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateConversation extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'happened_at',
-        'account_id',
-        'contact_id',
-        'contact_field_type_id',
-    ];
+    public function rules()
+    {
+        return [
+            'happened_at' => 'required|date',
+            'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer',
+            'contact_field_type_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Create a conversation.
@@ -36,30 +37,14 @@ class CreateConversation extends BaseService
      */
     public function execute(array $data): Conversation
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
-        }
+        $this->validate($data);
 
-        try {
-            Contact::where('account_id', $data['account_id'])
-                    ->where($data['contact_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        Contact::where('account_id', $data['account_id'])
+                ->findOrFail($data['contact_id']);
 
-        try {
-            ContactFieldType::where('account_id', $data['account_id'])
-                            ->findOrFail($data['contact_field_type_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        ContactFieldType::where('account_id', $data['account_id'])
+                        ->findOrFail($data['contact_field_type_id']);
 
-        try {
-            $conversation = Conversation::create($data);
-        } catch (QueryException $e) {
-            throw $e;
-        }
-
-        return $conversation;
+        return Conversation::create($data);
     }
 }

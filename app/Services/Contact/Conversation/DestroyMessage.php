@@ -9,21 +9,23 @@ namespace App\Services\Contact\Conversation;
 
 use App\Services\BaseService;
 use App\Models\Contact\Message;
-use Illuminate\Database\QueryException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Contact\Conversation;
 
 class DestroyMessage extends BaseService
 {
     /**
-     * The structure that the method expects to receive as parameter.
+     * Get the validation rules that apply to the service.
      *
-     * @var array
+     * @return array
      */
-    private $structure = [
-        'account_id',
-        'conversation_id',
-        'message_id',
-    ];
+    public function rules()
+    {
+        return [
+            'account_id' => 'required|integer|exists:accounts,id',
+            'conversation_id' => 'required|integer',
+            'message_id' => 'required|integer',
+        ];
+    }
 
     /**
      * Destroy a message.
@@ -33,23 +35,16 @@ class DestroyMessage extends BaseService
      */
     public function execute(array $data) : bool
     {
-        if (! $this->validateDataStructure($data, $this->structure)) {
-            throw new \Exception('Missing parameters');
-        }
+        $this->validate($data);
 
-        try {
-            $message = Message::where('account_id', $data['account_id'])
-                ->where('conversation_id', $data['conversation_id'])
-                ->findOrFail($data['message_id']);
-        } catch (ModelNotFoundException $e) {
-            throw $e;
-        }
+        Conversation::where('account_id', $data['account_id'])
+                    ->findOrFail($data['conversation_id']);
 
-        try {
-            $message->delete();
-        } catch (QueryException $e) {
-            throw $e;
-        }
+        $message = Message::where('account_id', $data['account_id'])
+                            ->where('conversation_id', $data['conversation_id'])
+                            ->findOrFail($data['message_id']);
+
+        $message->delete();
 
         return true;
     }

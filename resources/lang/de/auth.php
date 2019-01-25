@@ -28,16 +28,21 @@ return [
     'u2f_otp_extension' => 'U2F is supported natively on Chrome, <a href="{urlquantum}" lang="en">Firefox</a> and Opera. On old Firefox versions, install the <a href="{urlext}">U2F Support Add-on</a>.',
 
     'login_to_account' => 'In Konto einloggen',
+    'login_with_recovery' => 'Login with a recovery code',
     'login_again' => 'Bitte loggen Sie sich wieder in Ihren Account ein',
     'email' => 'E-Mail',
     'password' => 'Passwort',
+    'recovery' => 'Recovery code',
     'login' => 'Einloggen',
     'button_remember' => 'Eingeloggt bleiben',
     'password_forget' => 'Passwort vergessen?',
     'password_reset' => 'Passwort zurücksetzen',
+    'use_recovery' => 'Or you can use a <a href=":url">recovery code</a>',
     'signup_no_account' => 'Haben Sie noch kein Konto?',
     'signup' => 'Registrieren',
     'create_account' => 'Erstellen Sie ihr erstes Konto, indem sie sich <a href=":url">registrieren</a>',
+    'change_language_title' => 'Change language:',
+    'change_language' => 'Change language to :lang',
 
     'password_reset_title' => 'Passwort zurücksetzen',
     'password_reset_email' => 'E-Mail-Adresse',
@@ -63,6 +68,11 @@ return [
     'register_action' => 'Anmelden',
     'register_policy' => 'Deine Anmeldung bedeutet, dass du unsere <a href=":url" hreflang=":hreflang">Datenschutzrichtlinien</a> and <a href=":urlterm" hreflang=":hreflang">AGBs</a> gelesen und akzeptiert hast.',
     'register_invitation_email' => 'Aus Sicherheitsgründen geben Sie bitte die E-Mail-Adresse der Person an, die Sie eingeladen hat, diesem Konto beizutreten. Diese Informationen finden Sie in der Einladungs-E-Mail.',
+
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
 
     'confirmation_again' => 'Wenn Sie Ihre E-Mail-Adresse ändern möchten, <a href=":url" class="alert-link">klicken Sie bitte hier</a>.',
     'email_change_current_email' => 'Aktuelle E-Mail-Adresse:',

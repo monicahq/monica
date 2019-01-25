@@ -28,16 +28,21 @@ return [
     'u2f_otp_extension' => 'U2F is supported natively on Chrome, <a href="{urlquantum}" lang="en">Firefox</a> and Opera. On old Firefox versions, install the <a href="{urlext}">U2F Support Add-on</a>.',
 
     'login_to_account' => 'Accedi al tuo conto',
+    'login_with_recovery' => 'Login with a recovery code',
     'login_again' => 'Please login again to your account',
     'email' => 'Email',
     'password' => 'Password',
+    'recovery' => 'Recovery code',
     'login' => 'Accedi',
     'button_remember' => 'Ricordami',
     'password_forget' => 'Hai dimenticato la password?',
     'password_reset' => 'Reimposta la Tua password',
+    'use_recovery' => 'Or you can use a <a href=":url">recovery code</a>',
     'signup_no_account' => 'Non hai ancora un account?',
     'signup' => 'Iscriviti',
     'create_account' => 'Creare il primo account di <a href=":url">firma</a>',
+    'change_language_title' => 'Change language:',
+    'change_language' => 'Change language to :lang',
 
     'password_reset_title' => 'Reimposta Password',
     'password_reset_email' => 'Indirizzo E-Mail',
@@ -63,6 +68,11 @@ return [
     'register_action' => 'Registrati',
     'register_policy' => 'Signing up signifies you’ve read and agree to our <a href=":url" hreflang=":hreflang">Privacy Policy</a> and <a href=":urlterm" hreflang=":hreflang">Terms of use</a>.',
     'register_invitation_email' => 'Per ragioni di sicurezza, inserisci l\'indirizzo email della persona che ti ha invitato. Trovi questa informazione nella mail di invito.',
+
+    'confirmation_title' => 'Verify Your Email Address',
+    'confirmation_fresh' => 'A fresh verification link has been sent to your email address.',
+    'confirmation_check' => 'Before proceeding, please check your email for a verification link.',
+    'confirmation_request_another' => 'If you did not receive the email <a href=":url">click here to request another</a>.',
 
     'confirmation_again' => 'If you want to change your email address you can <a href=":url" class="alert-link">click here</a>.',
     'email_change_current_email' => 'Current email address:',

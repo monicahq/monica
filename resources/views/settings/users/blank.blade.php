@@ -35,7 +35,7 @@
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
 
-            <img src="/img/settings/users/blank.svg">
+            <img src="img/settings/users/blank.svg">
 
             <h2>{{ trans('settings.users_blank_title') }}</h2>
 
@@ -43,7 +43,7 @@
 
             <p>{{ trans('settings.users_blank_description') }}</p>
 
-            <p class="cta"><a href="{{ route('settings.users.add') }}" class="btn">{{ trans('settings.users_blank_cta') }}</a></p>
+            <p class="cta"><a href="{{ route('settings.users.create') }}" class="btn">{{ trans('settings.users_blank_cta') }}</a></p>
 
             @if (config('monica.requires_subscription') && auth()->user()->account->hasLimitations())
               <p class="requires-subscription">{{ trans('settings.users_invitation_need_subscription') }}</p>

@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    links:
+    depends_on:
       - mysql
     ports:
       - 8080:80
@@ -30,7 +30,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    links:
+    depends_on:
       - mysql
     environment:
       PMA_HOST: mysql

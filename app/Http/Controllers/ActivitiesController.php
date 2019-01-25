@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Activity;
 use App\Models\Journal\JournalEntry;
@@ -32,6 +33,7 @@ class ActivitiesController extends Controller
     {
         return view('activities.add')
             ->withContact($contact)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withActivity(new Activity);
     }
 
@@ -72,7 +74,6 @@ class ActivitiesController extends Controller
         // New attendees
         foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->attach($activity, ['account_id' => $request->user()->account_id]);
-            $newContact->logEvent('activity', $activity->id, 'create');
             $newContact->calculateActivitiesStatistics();
         }
 
@@ -94,6 +95,7 @@ class ActivitiesController extends Controller
     {
         return view('activities.edit')
             ->withContact($contact)
+            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withActivity($activity);
     }
 
@@ -140,11 +142,6 @@ class ActivitiesController extends Controller
             // Has an existing attendee been removed?
             if (! array_key_exists($existingContact->id, $specifiedContactsObj)) {
                 $existingContact->activities()->detach($activity);
-                $existingContact->logEvent('activity', $activity->id, 'delete');
-            } else {
-                // Otherwise we're updating an activity that someone's
-                // already a part of
-                $existingContact->logEvent('activity', $activity->id, 'update');
             }
 
             // Remove this ID from our list of contacts as we don't
@@ -157,7 +154,6 @@ class ActivitiesController extends Controller
         // New attendees
         foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->save($activity);
-            $newContact->logEvent('activity', $activity->id, 'create');
         }
 
         return redirect()->route('people.show', $contact)
@@ -176,7 +172,6 @@ class ActivitiesController extends Controller
         $activity->deleteJournalEntry();
 
         foreach ($activity->contacts as $contactActivity) {
-            $contactActivity->events()->forObject($activity)->get()->each->delete();
             $contactActivity->calculateActivitiesStatistics();
         }
 

@@ -24,9 +24,6 @@
       </div>
     </div>
 
-    <!-- Page header -->
-    @include('people._header')
-
     <!-- Page content -->
     <div class="main-content central-form">
       <div class="{{ Auth::user()->getFluidLayout() }}">
@@ -49,12 +46,6 @@
               <div class="form-group">
                 <label for="company">{{ trans('people.work_edit_company') }}</label>
                 <input type="text" class="form-control" name="company" id="company" value="{{ $contact->company }}">
-              </div>
-
-              {{-- LinkedIn --}}
-              <div class="form-group">
-                <label for="linkedin">{{ trans('people.information_edit_linkedin') }}</label>
-                <input class="form-control" name="linkedin" id="linkedin" value="{{ $contact->linkedin_profile_url }}" placeholder="https://linkedin.com/john.doe">
               </div>
 
               <div class="form-group actions">

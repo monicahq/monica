@@ -19,13 +19,15 @@ class Contact extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->hashID(),
+            'hash_id' => $this->getHashId(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
+            'description' => $this->description,
             'gender' => $this->gender->name,
             'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
+            'is_active' => (bool) $this->is_active,
             'is_dead' => (bool) $this->is_dead,
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
@@ -65,7 +67,6 @@ class Contact extends Resource
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
-                    'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(110),
@@ -100,5 +101,20 @@ class Contact extends Resource
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
+    }
+
+    private function getHashId()
+    {
+        $hashid = '';
+        if ($this->is_partial) {
+            $realContact = $this->getRelatedRealContact();
+            if ($realContact) {
+                $hashid = $realContact->hashID();
+            }
+        } else {
+            $hashid = $this->hashID();
+        }
+
+        return $hashid;
     }
 }

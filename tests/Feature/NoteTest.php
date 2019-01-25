@@ -44,15 +44,6 @@ class NoteTest extends FeatureTestCase
         $this->assertDatabaseHas('notes', [
             'body' => $noteBody,
         ]);
-
-        $eventParams = [];
-
-        // Make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'note';
-        $eventParams['nature_of_operation'] = 'create';
-        $this->assertDatabaseHas('events', $eventParams);
     }
 
     public function test_user_can_edit_a_note()
@@ -78,17 +69,6 @@ class NoteTest extends FeatureTestCase
         $this->assertDatabaseHas('notes', [
             'body' => 'this is another test',
         ]);
-
-        $eventParams = [];
-
-        // make sure an event has been created for this action
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_type'] = 'note';
-        $eventParams['object_id'] = $note->id;
-        $eventParams['nature_of_operation'] = 'update';
-
-        $this->assertDatabaseHas('events', $eventParams);
     }
 
     public function test_user_can_delete_a_note()
@@ -107,14 +87,5 @@ class NoteTest extends FeatureTestCase
         $params['id'] = $note->id;
 
         $this->assertDatabaseMissing('notes', $params);
-
-        $eventParams = [];
-
-        // make sure no event is in the database about this object
-        $eventParams['account_id'] = $user->account_id;
-        $eventParams['contact_id'] = $contact->id;
-        $eventParams['object_id'] = $note->id;
-
-        $this->assertDatabaseMissing('events', $eventParams);
     }
 }

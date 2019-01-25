@@ -14,7 +14,7 @@ return [
     */
 
     'failed' => 'Ces identifiants ne correspondent pas à nos enregistrements.',
-    'throttle' => 'Trop de tentatives de connexion. Veuillez essayer de nouveau dans :seconds secondes.',
+    'throttle' => 'Tentatives de connexion trop nombreuses. Veuillez essayer de nouveau dans :seconds secondes.',
     'not_authorized' => 'Vous n’êtes pas autorisé à exécuter cette action',
     'signup_disabled' => 'L’inscription est actuellement désactivée',
     'back_homepage' => 'Retour à la page d’accueil',
@@ -28,16 +28,21 @@ return [
     'u2f_otp_extension' => 'U2F est supporté nativement sur Chrome, <a href="{urlquantum}" lang="en">Firefox</a>, et Opera. Sur les anciennes versions de Firefox, installez <a href="{urlext}">l\'extension U2F</a>.',
 
     'login_to_account' => 'Connectez-vous à votre compte',
+    'login_with_recovery' => 'Connexion avec un code de récupération',
     'login_again' => 'Merci de vous connecter à nouveau à votre compte',
     'email' => 'Courriel',
     'password' => 'Mot de passe',
+    'recovery' => 'Code de récupération',
     'login' => 'Connexion',
     'button_remember' => 'Se souvenir de moi',
     'password_forget' => 'Mot de passe oublié ?',
     'password_reset' => 'Réinitialisez votre mot de passe',
+    'use_recovery' => 'Ou vous pouvez utiliser un <a href=":url">code de récupération</a>',
     'signup_no_account' => 'Vous n’avez pas de compte ?',
     'signup' => 'S’inscrire',
     'create_account' => 'Créer le premier compte en vous <a href=":url">enregistrant</a>',
+    'change_language_title' => 'Changer la langue :',
+    'change_language' => 'Afficher la page en :lang',
 
     'password_reset_title' => 'Réinitialiser le mot de passe',
     'password_reset_email' => 'Adresse courriel',
@@ -63,6 +68,11 @@ return [
     'register_action' => 'Enregistrement',
     'register_policy' => 'L’inscription signifie vous avez lu et acceptez notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a> et nos <a href=":urlterm" hreflang=":hreflang">Conditions d’Utilisation</a>.',
     'register_invitation_email' => 'Pour des raisons de sécurité, merci d’indiquer l’adresse courriel de la personne qui vous a invité à joindre son compte. Cette information est indiquée dans le courriel d’invitation.',
+
+    'confirmation_title' => 'Vérifiez votre adresse courriel',
+    'confirmation_fresh' => 'Un nouveau lien de vérification a été envoyé à votre adresse courriel.',
+    'confirmation_check' => 'Avant de continuer, veuillez vérifier votre boîte mail pour un lien de vérification.',
+    'confirmation_request_another' => 'Si vous n’avez pas reçu le courriel <a href=":url">cliquez ici pour en demander un autre</a>.',
 
     'confirmation_again' => 'Si vous souhaitez modifier votre adresse courriel vous pouvez <a href=":url" class="alert-link">cliquer ici</a>.',
     'email_change_current_email' => 'Adresse courriel actuelle :',

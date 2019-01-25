@@ -5,15 +5,15 @@ namespace App\Models\Contact;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
-use App\Models\Account\Event;
+use Illuminate\Support\Str;
+use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
-use App\Mail\StayInTouchEmail;
+use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Relationship\Relationship;
@@ -26,8 +26,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use App\Http\Resources\Address\AddressShort as AddressShortResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
@@ -49,6 +49,7 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
+        'description',
         'job',
     ];
 
@@ -87,11 +88,13 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
-        'linkedin_profile_url',
+        'birthday_reminder_id',
+        'birthday_special_date_id',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',
         'created_at',
+        'first_met_additional_info',
     ];
 
     /**
@@ -118,6 +121,7 @@ class Contact extends Model
         'is_dead' => 'boolean',
         'has_avatar' => 'boolean',
         'is_starred' => 'boolean',
+        'is_active' => 'boolean',
     ];
 
     /**
@@ -189,16 +193,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the event records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function events()
-    {
-        return $this->hasMany(Event::class)->orderBy('created_at', 'desc');
-    }
-
-    /**
      * Get the note records associated with the contact.
      *
      * @return HasMany
@@ -215,7 +209,17 @@ class Contact extends Model
      */
     public function reminders()
     {
-        return $this->hasMany(Reminder::class)->orderBy('next_expected_date', 'asc');
+        return $this->hasMany(Reminder::class);
+    }
+
+    /**
+     * Get only the active reminder records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function activeReminders()
+    {
+        return $this->hasMany(Reminder::class)->active();
     }
 
     /**
@@ -339,16 +343,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the Notifications records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
-
-    /**
      * Get the Conversation records associated with the contact.
      *
      * @return HasMany
@@ -366,6 +360,46 @@ class Contact extends Model
     public function messages()
     {
         return $this->hasMany(Message::class);
+    }
+
+    /**
+     * Get the Document records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function documents()
+    {
+        return $this->hasMany(Document::class);
+    }
+
+    /**
+     * Get the Photo records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function photos()
+    {
+        return $this->belongsToMany(Photo::class)->withTimestamps();
+    }
+
+    /**
+     * Get the Life event records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function lifeEvents()
+    {
+        return $this->hasMany(LifeEvent::class)->orderBy('life_events.happened_at', 'desc');
+    }
+
+    /**
+     * Get the Occupation records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
     }
 
     /**
@@ -414,6 +448,28 @@ class Contact extends Model
     public function scopeReal($query)
     {
         return $query->where('is_partial', 0);
+    }
+
+    /**
+     * Scope a query to only include contacts who are active.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', 1);
+    }
+
+    /**
+     * Scope a query to only include contacts who are not active.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotActive($query)
+    {
+        return $query->where('is_active', 0);
     }
 
     /**
@@ -498,7 +554,7 @@ class Contact extends Model
      */
     public function getInitialsAttribute()
     {
-        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $this->name, $initials);
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', Str::ascii($this->name), $initials);
 
         return implode('', $initials[0]);
     }
@@ -656,7 +712,7 @@ class Contact extends Model
         $incompleteName = $this->first_name;
 
         if (! is_null($this->last_name)) {
-            $incompleteName = $incompleteName.' '.substr($this->last_name, 0, 1);
+            $incompleteName .= ' '.mb_substr($this->last_name, 0, 1);
         }
 
         if ($this->is_dead) {
@@ -803,26 +859,6 @@ class Contact extends Model
         ];
 
         $this->default_avatar_color = $color ?? $colors[mt_rand(0, count($colors) - 1)];
-    }
-
-    /**
-     * Log an event in the Event table about this contact.
-     *
-     * @param  string $objectType Contact, Activity, Kid,...
-     * @param  int $objectId ID of the object
-     * @param  string $natureOfOperation 'add', 'update', 'delete'
-     * @return int                          Id of the created event
-     */
-    public function logEvent($objectType, $objectId, $natureOfOperation)
-    {
-        $event = $this->events()->make();
-        $event->account_id = $this->account_id;
-        $event->object_type = $objectType;
-        $event->object_id = $objectId;
-        $event->nature_of_operation = $natureOfOperation;
-        $event->save();
-
-        return $event->id;
     }
 
     /**
@@ -1117,7 +1153,7 @@ class Contact extends Model
      */
     public function getAddressesForAPI()
     {
-        return AddressShortResource::collection($this->addresses);
+        return AddressResource::collection($this->addresses);
     }
 
     /**
@@ -1126,24 +1162,6 @@ class Contact extends Model
     public function getContactFieldsForAPI()
     {
         return ContactFieldResource::collection($this->contactFields);
-    }
-
-    /**
-     * Update the last called info on the contact, if the call has been made
-     * in the most recent date.
-     *
-     * @param  Call   $call
-     * @return void
-     */
-    public function updateLastCalledInfo(Call $call)
-    {
-        if (is_null($this->last_talked_to)) {
-            $this->last_talked_to = $call->called_at;
-        } else {
-            $this->last_talked_to = $this->last_talked_to->max($call->called_at);
-        }
-
-        $this->save();
     }
 
     /**
@@ -1322,104 +1340,23 @@ class Contact extends Model
         $specialDate = new SpecialDate;
         $specialDate->setToContact($this)->createFromAge($age);
 
-        if ($occasion == 'birthdate') {
-            $this->birthday_special_date_id = $specialDate->id;
-        }
-
-        if ($occasion == 'deceased_date') {
-            $this->deceased_special_date_id = $specialDate->id;
-        }
-
-        if ($occasion == 'first_met') {
-            $this->first_met_special_date_id = $specialDate->id;
+        switch ($occasion) {
+            case 'birthdate':
+                $this->birthday_special_date_id = $specialDate->id;
+                break;
+            case 'deceased_date':
+                $this->deceased_special_date_id = $specialDate->id;
+                break;
+            case 'first_met':
+                $this->first_met_special_date_id = $specialDate->id;
+                break;
+            default:
+                break;
         }
 
         $this->save();
 
         return $specialDate;
-    }
-
-    /**
-     * Removes the date that is set for a specific occasion (like a birthdate,
-     * the deceased date,...).
-     * @param string $occasion
-     */
-    public function removeSpecialDate($occasion)
-    {
-        if (null === $occasion) {
-            return;
-        }
-
-        switch ($occasion) {
-            case 'birthdate':
-                if ($this->birthday_special_date_id) {
-                    $birthdate = $this->birthdate;
-                    $this->birthday_special_date_id = null;
-                    $this->save();
-
-                    $this->birthdate->deleteReminder();
-                    $this->birthdate->delete();
-                }
-            break;
-            case 'deceased_date':
-                if ($this->deceased_special_date_id) {
-                    $deceasedDate = $this->deceasedDate;
-                    $this->deceased_special_date_id = null;
-                    $this->save();
-
-                    $deceasedDate->deleteReminder();
-                    $deceasedDate->delete();
-                }
-            break;
-            case 'first_met':
-                if ($this->first_met_special_date_id) {
-                    $firstMetDate = $this->firstMetDate;
-                    $this->first_met_special_date_id = null;
-                    $this->save();
-
-                    $firstMetDate->deleteReminder();
-                    $firstMetDate->delete();
-                }
-            break;
-        }
-    }
-
-    /**
-     * Sets a tag to the contact.
-     *
-     * @param string $tag
-     * @return Tag
-     */
-    public function setTag(string $name)
-    {
-        $tag = $this->account->tags()->firstOrCreate([
-            'name' => $name,
-        ]);
-
-        $tag->name_slug = str_slug($tag->name);
-        $tag->save();
-
-        $this->tags()->syncWithoutDetaching([$tag->id => ['account_id' => $this->account_id]]);
-
-        return $tag;
-    }
-
-    /**
-     * Unset all the tags associated with the contact.
-     * @return bool
-     */
-    public function unsetTags()
-    {
-        $this->tags()->detach();
-    }
-
-    /**
-     * Unset one tag associated with the contact.
-     * @return bool
-     */
-    public function unsetTag(Tag $tag)
-    {
-        $this->tags()->detach($tag->id);
     }
 
     /**
@@ -1430,14 +1367,16 @@ class Contact extends Model
      */
     public function getRelationshipNatureWith(self $otherContact)
     {
-        return Relationship::where('account_id', $this->account_id)
-                                    ->where('contact_is', $this->id)
-                                    ->where('of_contact', $otherContact->id)
-                                    ->first();
+        return Relationship::where([
+            'account_id' => $this->account_id,
+            'contact_is' => $this->id,
+            'of_contact' => $otherContact->id,
+        ])
+            ->first();
     }
 
     /**
-     * Delete the contact and all the related object.
+     * Delete all related objects.
      *
      * @return bool
      */
@@ -1472,14 +1411,15 @@ class Contact extends Model
      */
     public function getBirthdayRemindersAboutRelatedContacts()
     {
-        $reminders = collect();
         $relationships = $this->relationships->filter(function ($item) {
-            return ! is_null($item->ofContact->birthday_special_date_id);
+            return ! is_null($item->ofContact) &&
+                   ! is_null($item->ofContact->birthday_special_date_id);
         });
 
+        $reminders = collect();
         foreach ($relationships as $relationship) {
             $reminder = Reminder::where('account_id', $this->account_id)
-                ->find($relationship->ofContact->birthdate->reminder_id);
+                ->find($relationship->ofContact->birthday_reminder_id);
 
             if ($reminder) {
                 $reminders->push($reminder);
@@ -1495,14 +1435,18 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $relatedContact = Relationship::where('account_id', $this->account_id)
-            ->where('contact_is', $this->id)
-            ->first();
+        $contact = $this;
 
-        if ($relatedContact) {
-            return self::where('account_id', $this->account_id)
-                ->find($relatedContact->of_contact);
-        }
+        return self::setEagerLoads([])->where('account_id', $this->account_id)
+            ->where('id', function ($query) use ($contact) {
+                $query->select('of_contact')
+                        ->from('relationships')
+                        ->where([
+                            'account_id' => $contact->account_id,
+                            'contact_is' => $contact->id,
+                        ]);
+            })
+            ->first();
     }
 
     /**
@@ -1536,7 +1480,19 @@ class Contact extends Model
      */
     public function getAgeAtDeath()
     {
-        return $this->deceasedDate->getAgeAtDeath();
+        if (! $this->deceasedDate) {
+            return;
+        }
+
+        if ($this->deceasedDate->is_year_unkown == 1) {
+            return;
+        }
+
+        if (! $this->birthdate) {
+            return;
+        }
+
+        return $this->birthdate->date->diffInYears($this->deceasedDate->date);
     }
 
     /**
@@ -1582,13 +1538,13 @@ class Contact extends Model
     }
 
     /**
-     * Send the email about staying in touch with the contact.
+     * Get the weather information for this contact, based on the first address
+     * on the profile.
      *
-     * @param  User $user
      * @return void
      */
-    public function sendStayInTouchEmail(User $user)
+    public function getWeather()
     {
-        Mail::to($user->email)->send(new StayInTouchEmail($this, $user));
+        return WeatherHelper::getWeatherForAddress($this->addresses()->first());
     }
 }

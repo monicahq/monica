@@ -17,6 +17,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Application Display Name
+    |--------------------------------------------------------------------------
+    |
+    | This is the name of the application that will be displayed in the notification emails.
+    |
+    */
+
+    'display_name' => env('APP_DISPLAY_NAME', env('APP_NAME', 'Monica')),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |
@@ -161,7 +172,6 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         Creativeorange\Gravatar\GravatarServiceProvider::class,
         Lahaxearnaud\U2f\U2fServiceProvider::class,
-        Ircop\Antiflood\AntifloodServiceProvider::class,
     ],
 
     /*
@@ -214,7 +224,6 @@ return [
         'Sentry' => Sentry\SentryLaravel\SentryFacade::class,
         'Gravatar' => Creativeorange\Gravatar\Facades\Gravatar::class,
         'U2f' => Lahaxearnaud\U2f\U2fFacade::class,
-        'Antiflood' => Ircop\Antiflood\Facade\Antiflood::class,
     ],
 
 ];
