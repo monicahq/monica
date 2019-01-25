@@ -1,4 +1,4 @@
-version: "3"
+version: "3.4"
 
 services:
   monicahq:
@@ -9,10 +9,9 @@ services:
     ports:
       - 80:80
     env_file: .env
-    networks:
-      - database:
     volumes:
       - monica_data:/var/www/monica/storage
+    restart: always
 
   mysql:
     image: mysql:5.7
@@ -21,14 +20,12 @@ services:
       - MYSQL_DATABASE=monica
       - MYSQL_USER=homestead
       - MYSQL_PASSWORD=secret
-    networks:
-      - database:
     volumes:
       - monica_mysql:/var/lib/mysql
-
-networks:
-  database:
+    restart: always
 
 volumes:
   monica_data:
+    name: monica_data
   monica_mysql:
+    name: monica_mysql
