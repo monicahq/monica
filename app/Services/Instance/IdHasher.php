@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Helpers;
+namespace App\Services\Instance;
 
 use Vinkla\Hashids\Facades\Hashids;
 use App\Exceptions\WrongIdException;

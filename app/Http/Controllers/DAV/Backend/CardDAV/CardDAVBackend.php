@@ -156,7 +156,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     private function prepareCard($contact)
     {
         try {
-            $vcard = (new ExportVCard())
+            $vcard = app(ExportVCard::class)
                 ->execute([
                     'account_id' => Auth::user()->account_id,
                     'contact_id' => $contact->id,

@@ -13,6 +13,7 @@ New features:
 
 Enhancements:
 
+* Register all app services as singleton
 * Docker image: add sentry-cli and run sentry:release command if sentry is enabled
 * Refactor reminders by removing Notifications table and creating two new tables: reminder outbox and reminder sent
 * Display the name of the contact field instead of the URL (Facebook instead of https:/facebook.com/johndoe)

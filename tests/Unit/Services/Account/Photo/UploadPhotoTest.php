@@ -67,6 +67,6 @@ class UploadPhotoTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $uploadService = (new UploadPhoto)->execute($request);
+        $uploadService = app(UploadPhoto::class)->execute($request);
     }
 }

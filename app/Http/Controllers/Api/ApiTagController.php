@@ -60,7 +60,7 @@ class ApiTagController extends ApiController
     public function store(Request $request)
     {
         try {
-            $tag = (new CreateTag)->execute(
+            $tag = app(CreateTag::class)->execute(
                 $request->all()
                     +
                     [
@@ -84,7 +84,7 @@ class ApiTagController extends ApiController
     public function update(Request $request, $id)
     {
         try {
-            $tag = (new UpdateTag)->execute(
+            $tag = app(UpdateTag::class)->execute(
                 $request->all()
                     +
                     [
@@ -109,7 +109,7 @@ class ApiTagController extends ApiController
     public function destroy(Request $request, $id)
     {
         try {
-            (new DestroyTag)->execute([
+            app(DestroyTag::class)->execute([
                 'tag_id' => $id,
                 'account_id' => auth()->user()->account->id,
             ]);

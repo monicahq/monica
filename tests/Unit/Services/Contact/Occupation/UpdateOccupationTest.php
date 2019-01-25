@@ -55,7 +55,7 @@ class UpdateOccupationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateOccupation)->execute($request);
+        app(UpdateOccupation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_occupation_is_not_linked_to_account()
@@ -72,6 +72,6 @@ class UpdateOccupationTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateOccupation)->execute($request);
+        app(UpdateOccupation::class)->execute($request);
     }
 }

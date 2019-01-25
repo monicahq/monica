@@ -52,7 +52,7 @@ class UpdateCompanyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateCompany)->execute($request);
+        app(UpdateCompany::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_place_is_not_linked_to_account()
@@ -67,6 +67,6 @@ class UpdateCompanyTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateCompany)->execute($request);
+        app(UpdateCompany::class)->execute($request);
     }
 }

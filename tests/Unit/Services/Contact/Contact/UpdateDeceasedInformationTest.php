@@ -141,7 +141,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        (new UpdateDeceasedInformation)->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
         $reminder = Reminder::where('contact_id', $contact->id)->first();
@@ -169,7 +169,7 @@ class UpdateDeceasedInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateDeceasedInformation)->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
@@ -188,6 +188,6 @@ class UpdateDeceasedInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateDeceasedInformation)->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
     }
 }

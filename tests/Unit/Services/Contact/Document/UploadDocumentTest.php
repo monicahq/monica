@@ -75,6 +75,6 @@ class UploadDocumentTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $uploadService = (new UploadDocument)->execute($request);
+        $uploadService = app(UploadDocument::class)->execute($request);
     }
 }

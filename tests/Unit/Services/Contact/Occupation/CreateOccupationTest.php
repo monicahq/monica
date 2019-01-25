@@ -57,6 +57,6 @@ class CreateOccupationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateOccupation)->execute($request);
+        app(CreateOccupation::class)->execute($request);
     }
 }

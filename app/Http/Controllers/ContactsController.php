@@ -174,7 +174,7 @@ class ContactsController extends Controller
     public function store(Request $request)
     {
         try {
-            $contact = (new CreateContact)->execute([
+            $contact = app(CreateContact::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'first_name' => $request->get('first_name'),
                 'last_name' => $request->input('last_name', null),
@@ -355,7 +355,7 @@ class ContactsController extends Controller
             'deceased_date_add_reminder' => ($request->get('add_reminder_deceased') != '' ? true : false),
         ];
 
-        $contact = (new UpdateContact)->execute($data);
+        $contact = app(UpdateContact::class)->execute($data);
 
         if ($request->file('avatar') != '') {
             if ($contact->has_avatar) {
@@ -397,7 +397,7 @@ class ContactsController extends Controller
             'contact_id' => $contact->id,
         ];
 
-        (new DestroyContact)->execute($data);
+        app(DestroyContact::class)->execute($data);
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));
@@ -500,7 +500,7 @@ class ContactsController extends Controller
             Debugbar::disable();
         }
 
-        $vcard = (new ExportVCard)->execute([
+        $vcard = app(ExportVCard::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
         ]);

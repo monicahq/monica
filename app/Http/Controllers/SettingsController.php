@@ -126,7 +126,7 @@ class SettingsController
         );
 
         if ($user->email != $request->get('email')) {
-            (new EmailChange)->execute([
+            app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
                 'email' => $request->get('email'),
                 'user_id' => $user->id,
@@ -151,7 +151,7 @@ class SettingsController
         $user = $request->user();
         $account = $user->account;
 
-        (new DestroyAllDocuments)->execute([
+        app(DestroyAllDocuments::class)->execute([
             'account_id' => $account->id,
         ]);
 
@@ -192,7 +192,7 @@ class SettingsController
         $user = $request->user();
         $account = $user->account;
 
-        (new DestroyAllDocuments)->execute([
+        app(DestroyAllDocuments::class)->execute([
             'account_id' => $account->id,
         ]);
 
@@ -481,7 +481,7 @@ class SettingsController
      */
     public function deleteTag($tagId)
     {
-        (new DestroyTag)->execute([
+        app(DestroyTag::class)->execute([
             'tag_id' => $tagId,
             'account_id' => auth()->user()->account->id,
         ]);

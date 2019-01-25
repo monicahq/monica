@@ -178,7 +178,7 @@ class ImportCSV extends Command
                 'postal_code' => $postalCode,
             ];
 
-            (new CreateAddress)->execute($request);
+            app(CreateAddress::class)->execute($request);
         }
 
         if (! empty($data[42])) {
@@ -196,7 +196,7 @@ class ImportCSV extends Command
 
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
 
-            (new CreateReminder)->execute([
+            app(CreateReminder::class)->execute([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'initial_date' => $specialDate->date->toDateString(),
