@@ -10,7 +10,7 @@ return [
     'sidebar_settings_import' => 'Importar datos',
     'sidebar_settings_tags' => 'Administrar tags',
     'sidebar_settings_api' => 'API',
-    'sidebar_settings_dav' => 'DAV Resources',
+    'sidebar_settings_dav' => 'Recursos DAV',
     'sidebar_settings_security' => 'Seguridad',
 
     'export_title' => 'Exportar los datos de tu cuenta',
