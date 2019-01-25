@@ -5,6 +5,7 @@ namespace App\Services\VCalendar;
 use Illuminate\Support\Str;
 use App\Models\Contact\Task;
 use App\Services\BaseService;
+use Sabre\VObject\Component\VTodo;
 use Illuminate\Support\Facades\Auth;
 use Sabre\VObject\Component\VCalendar;
 
@@ -53,12 +54,12 @@ class ExportTask extends BaseService
         }
 
         // Basic information
-        $vcal = new VCalendar([
-            //'UID' => $task->uuid,
-        ]);
+        $vcal = new VCalendar();
+        $vtodo = $vcal->create('VTODO');
+        $vcal->add($vtodo);
 
         $this->exportTimezone($vcal);
-        $this->exportVTodo($task, $vcal);
+        $this->exportVTodo($task, $vtodo);
 
         return $vcal;
     }
@@ -75,30 +76,30 @@ class ExportTask extends BaseService
 
     /**
      * @param Task $task
-     * @param VCalendar $vcard
+     * @param VTodo $vtodo
      */
-    private function exportVTodo(Task $task, VCalendar $vcal)
+    private function exportVTodo(Task $task, VTodo $vtodo)
     {
         $contact = $task->contact;
 
-        $vcal->add('VTODO', [
-            'UID' => $task->uuid,
-            'SUMMARY' => $task->title,
-        ]);
+        $vtodo->UID = $task->uuid;
+        $vtodo->SUMMARY = $task->title;
+
         if ($task->created_at) {
-            $vcal->VTODO->add('CREATED', $task->created_at);
+            $vtodo->DTSTAMP = $task->created_at;
+            $vtodo->CREATED = $task->created_at;
         }
         if (! empty($task->description)) {
-            $vcal->VTODO->add('DESCRIPTION', $task->description);
+            $vtodo->DESCRIPTION = $task->description;
         }
         if ($contact) {
-            $vcal->VTODO->add('ATTACH', route('people.show', $contact));
+            $vtodo->ATTACH = route('people.show', $contact);
         }
         if ($task->completed) {
-            $vcal->VTODO->add('STATUS', 'COMPLETED');
+            $vtodo->STATUS = 'COMPLETED';
         }
         if ($task->completed_at) {
-            $vcal->VTODO->add('COMPLETED', $task->completed_at);
+            $vtodo->COMPLETED = $task->completed_at;
         }
     }
 }
