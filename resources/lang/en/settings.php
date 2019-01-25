@@ -10,7 +10,7 @@ return [
     'sidebar_settings_import' => 'Import data',
     'sidebar_settings_tags' => 'Tags management',
     'sidebar_settings_api' => 'API',
-    'sidebar_settings_dav' => 'CardDAV ― CalDAV',
+    'sidebar_settings_dav' => 'DAV Resources',
     'sidebar_settings_security' => 'Security',
 
     'export_title' => 'Export your account data',
@@ -423,6 +423,8 @@ return [
     'dav_copy_help' => 'Copy into your clipboard',
     'dav_clipboard_copied' => 'Value copied into your clipboard',
     'dav_url_base' => 'Base url for all CardDAV and CalDAV resources:',
+    'dav_connect_help' => 'You can connect your contacts and/or calendars with this base url on you phone or computer.',
+    'dav_connect_help2' => 'Use your login (email) and password, or create an API token to authenticate.',
     'dav_url_carddav' => 'CardDAV url for Contacts resource:',
     'dav_url_caldav_birthdays' => 'CalDAV url for Birthdays resources:',
     'dav_url_caldav_tasks' => 'CalDAV url for Tasks resources:',

@@ -22,6 +22,12 @@
       <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click="copyIntoClipboard(davRoute)">
         {{ $t('app.copy') }}
       </a>
+      <p>
+        {{ $t('settings.dav_connect_help') }}
+      </p>
+      <p>
+        {{ $t('settings.dav_connect_help2') }}
+      </p>
     </div>
 
     <div class="settings-group">
@@ -89,12 +95,6 @@ export default {
     calDavTasksRoute: {
       type: String,
       default: '',
-    },
-  },
-
-  computed: {
-    dirltr() {
-      return this.$root.htmldir == 'ltr';
     },
   },
 
