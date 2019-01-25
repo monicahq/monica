@@ -267,15 +267,17 @@ Vue.component(
   'recovery-codes',
   require('./components/settings/RecoveryCodes.vue').default
 );
-
 Vue.component(
   'modules',
   require('./components/settings/Modules.vue').default
 );
-
 Vue.component(
   'activity-types',
   require('./components/settings/ActivityTypes.vue').default
+);
+Vue.component(
+  'dav-resources',
+  require('./components/settings/DAVResources.vue').default
 );
 
 // axios

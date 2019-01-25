@@ -265,6 +265,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         Route::get('/settings/api', 'SettingsController@api')->name('api');
+        Route::get('/settings/dav', 'SettingsController@dav')->name('dav');
 
         Route::post('/settings/updateDefaultProfileView', 'SettingsController@updateDefaultProfileView');
 
