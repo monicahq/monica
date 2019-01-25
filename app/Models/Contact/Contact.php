@@ -88,6 +88,8 @@ class Contact extends Model
         'job',
         'company',
         'food_preferencies',
+        'birthday_reminder_id',
+        'birthday_special_date_id',
         'is_dead',
         'avatar_external_url',
         'last_consulted_at',
@@ -207,7 +209,17 @@ class Contact extends Model
      */
     public function reminders()
     {
-        return $this->hasMany(Reminder::class)->orderBy('next_expected_date', 'asc');
+        return $this->hasMany(Reminder::class);
+    }
+
+    /**
+     * Get only the active reminder records associated with the contact.
+     *
+     * @return HasMany
+     */
+    public function activeReminders()
+    {
+        return $this->hasMany(Reminder::class)->active();
     }
 
     /**
@@ -328,16 +340,6 @@ class Contact extends Model
     public function firstMetDate()
     {
         return $this->hasOne(SpecialDate::class, 'id', 'first_met_special_date_id');
-    }
-
-    /**
-     * Get the Notifications records associated with the contact.
-     *
-     * @return HasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
     }
 
     /**
@@ -1358,53 +1360,6 @@ class Contact extends Model
     }
 
     /**
-     * Removes the date that is set for a specific occasion (like a birthdate,
-     * the deceased date,...).
-     * @param string $occasion
-     */
-    public function removeSpecialDate($occasion)
-    {
-        if (null === $occasion) {
-            return;
-        }
-
-        switch ($occasion) {
-            case 'birthdate':
-                if ($this->birthday_special_date_id) {
-                    $birthdate = $this->birthdate;
-                    $this->birthday_special_date_id = null;
-                    $this->save();
-
-                    $birthdate->deleteReminder();
-                    $birthdate->delete();
-                }
-                break;
-            case 'deceased_date':
-                if ($this->deceased_special_date_id) {
-                    $deceasedDate = $this->deceasedDate;
-                    $this->deceased_special_date_id = null;
-                    $this->save();
-
-                    $deceasedDate->deleteReminder();
-                    $deceasedDate->delete();
-                }
-                break;
-            case 'first_met':
-                if ($this->first_met_special_date_id) {
-                    $firstMetDate = $this->firstMetDate;
-                    $this->first_met_special_date_id = null;
-                    $this->save();
-
-                    $firstMetDate->deleteReminder();
-                    $firstMetDate->delete();
-                }
-            break;
-            default:
-                break;
-        }
-    }
-
-    /**
      * Get the Relationship object representing the relation between two contacts.
      *
      * @param  Contact $otherContact
@@ -1412,10 +1367,12 @@ class Contact extends Model
      */
     public function getRelationshipNatureWith(self $otherContact)
     {
-        return Relationship::where('account_id', $this->account_id)
-                                    ->where('contact_is', $this->id)
-                                    ->where('of_contact', $otherContact->id)
-                                    ->first();
+        return Relationship::where([
+            'account_id' => $this->account_id,
+            'contact_is' => $this->id,
+            'of_contact' => $otherContact->id,
+        ])
+            ->first();
     }
 
     /**
@@ -1454,14 +1411,15 @@ class Contact extends Model
      */
     public function getBirthdayRemindersAboutRelatedContacts()
     {
-        $reminders = collect();
         $relationships = $this->relationships->filter(function ($item) {
-            return ! is_null($item->ofContact->birthday_special_date_id);
+            return ! is_null($item->ofContact) &&
+                   ! is_null($item->ofContact->birthday_special_date_id);
         });
 
+        $reminders = collect();
         foreach ($relationships as $relationship) {
             $reminder = Reminder::where('account_id', $this->account_id)
-                ->find($relationship->ofContact->birthdate->reminder_id);
+                ->find($relationship->ofContact->birthday_reminder_id);
 
             if ($reminder) {
                 $reminders->push($reminder);
@@ -1477,12 +1435,16 @@ class Contact extends Model
      */
     public function getRelatedRealContact()
     {
-        $account = $this;
+        $contact = $this;
 
         return self::setEagerLoads([])->where('account_id', $this->account_id)
-            ->where('id', function ($query) use ($account) {
-                $query->select('of_contact')->from('relationships')->where('account_id', $account->account_id)
-                    ->where('contact_is', $account->id);
+            ->where('id', function ($query) use ($contact) {
+                $query->select('of_contact')
+                        ->from('relationships')
+                        ->where([
+                            'account_id' => $contact->account_id,
+                            'contact_is' => $contact->id,
+                        ]);
             })
             ->first();
     }

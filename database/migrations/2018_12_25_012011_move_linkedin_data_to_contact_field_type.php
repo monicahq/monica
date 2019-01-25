@@ -15,7 +15,7 @@ class MoveLinkedinDataToContactFieldType extends Migration
      */
     public function up()
     {
-        $contacts = Contact::select('id', 'linkedin_profile_url', 'account_id')
+        Contact::select('id', 'linkedin_profile_url', 'account_id')
             ->whereNotNull('linkedin_profile_url')
             ->chunk(50, function ($contacts) {
                 foreach ($contacts as $contact) {

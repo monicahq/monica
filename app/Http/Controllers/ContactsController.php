@@ -13,6 +13,7 @@ use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
@@ -172,13 +173,22 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
-        $contact = (new CreateContact)->execute([
-            'account_id' => auth()->user()->account->id,
-            'first_name' => $request->get('first_name'),
-            'last_name' => $request->input('last_name', null),
-            'nickname' => $request->input('nickname', null),
-            'gender_id' => $request->get('gender'),
-        ]);
+        try {
+            $contact = (new CreateContact)->execute([
+                'account_id' => auth()->user()->account->id,
+                'first_name' => $request->get('first_name'),
+                'last_name' => $request->input('last_name', null),
+                'nickname' => $request->input('nickname', null),
+                'gender_id' => $request->get('gender'),
+                'is_birthdate_known' => false,
+                'is_deceased' => false,
+                'is_deceased_date_known' => false,
+            ]);
+        } catch (ValidationException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->validator);
+        }
 
         // Did the user press "Save" or "Submit and add another person"
         if (! is_null($request->get('save'))) {
@@ -228,10 +238,16 @@ class ContactsController extends Controller
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });
         // reminders
-        $reminders = $contact->reminders;
+        $reminders = $contact->activeReminders;
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
-        $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
-                                ->sortBy('next_expected_date');
+        $reminders = $reminders->merge($relevantRemindersFromRelatedContacts);
+        // now we need to sort the reminders by next date they will be triggered
+        foreach ($reminders as $reminder) {
+            $reminder->next_expected_date_human_readable = DateHelper::getShortDate($reminder->calculateNextExpectedDate());
+            $reminder->next_expected_date = $reminder->calculateNextExpectedDate()->format('Y-m-d');
+        }
+        $reminders = $reminders->sortBy('next_expected_date');
+
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
@@ -277,7 +293,7 @@ class ContactsController extends Controller
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
-        $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
+        $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
 
         return view('people.edit')
             ->withContact($contact)

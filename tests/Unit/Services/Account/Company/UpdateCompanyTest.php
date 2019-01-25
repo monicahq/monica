@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Account\Place;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Account\Company\UpdateCompany;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -51,7 +51,7 @@ class UpdateCompanyTest extends TestCase
             'name' => '199 Lafayette Street',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new UpdateCompany)->execute($request);
     }
 

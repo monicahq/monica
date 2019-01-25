@@ -77,6 +77,10 @@ class AssociateTag extends BaseService
             'name_slug' => str_slug($data['name']),
         ];
 
+        if (empty($array['name_slug'])) {
+            $array['name_slug'] = htmlentities($data['name']);
+        }
+
         return Tag::create($array);
     }
 

@@ -37,6 +37,7 @@ aliases:
       command: |
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
+        touch .sentry-release
   - &yarn-install
     run:
       name: yarn install
@@ -64,7 +65,9 @@ aliases:
   - &unit-tests
     run:
       name: Run unit tests
-      command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
+      command: |
+        php artisan route:cache
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
   - &psalm
     run:
       name: Run psalm
@@ -166,7 +169,7 @@ jobs:
       - *restore_node
       - run:
           name: Update yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" GK_LOCK_YARN_OPTS="--ignore-engines" $(yarn global bin)/greenkeeper-lockfile-update
       - *yarn-install
       - save_cache:
           key: *node_key

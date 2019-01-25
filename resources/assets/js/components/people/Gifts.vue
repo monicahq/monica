@@ -7,10 +7,10 @@
 
     <!-- Title -->
     <div>
-      <img src="/img/people/gifts.svg" class="icon-section icon-tasks" />
+      <img src="img/people/gifts.svg" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.gifts_title') }}
-        <a :href="'/people/' + hash + '/gifts/create'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
+        <a :href="'people/' + hash + '/gifts/create'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
           {{ $t('people.gifts_add_gift') }}
         </a>
       </h3>
@@ -70,7 +70,7 @@
             <a class="pointer mr1" @click="toggle(gift)">
               {{ $t('people.gifts_mark_offered') }}
             </a>
-            <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
+            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click="showDeleteModal(gift)">
@@ -117,7 +117,7 @@
             <a class="pointer mr1" @click="toggle(gift)">
               {{ $t('people.gifts_offered_as_an_idea') }}
             </a>
-            <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
+            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click="showDeleteModal(gift)">
@@ -161,7 +161,7 @@
             <a v-if="gift.comment" class="ml1 mr1 pointer" @click="toggleComment(gift)">
               {{ $t('people.gifts_view_comment') }}
             </a>
-            <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">
+            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'">
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" @click="showDeleteModal(gift)">
@@ -201,100 +201,102 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
+  components: {
+    SweetModal
+  },
+
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    giftsActiveTab: {
+      type: String,
+      default: 'ideas',
+    },
+  },
+
+  data() {
+    return {
+      gifts: [],
+      activeTab: '',
+      giftToTrash: '',
+    };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
     },
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        giftsActiveTab: {
-            type: String,
-            default: 'ideas',
-        },
+    ideas: function () {
+      return this.gifts.filter(function (gift) {
+        return gift.is_an_idea === true;
+      });
     },
 
-    data() {
-        return {
-            gifts: [],
-            activeTab: '',
-            giftToTrash: '',
-            dirltr: true,
-        };
+    offered: function () {
+      return this.gifts.filter(function (gift) {
+        return gift.has_been_offered === true;
+      });
     },
 
-    computed: {
-        ideas: function () {
-            return this.gifts.filter(function (gift) {
-                return gift.is_an_idea === true;
-            });
-        },
+    received: function () {
+      return this.gifts.filter(function (gift) {
+        return gift.has_been_received === true;
+      });
+    },
+  },
 
-        offered: function () {
-            return this.gifts.filter(function (gift) {
-                return gift.has_been_offered === true;
-            });
-        },
+  mounted() {
+    this.prepareComponent();
+  },
 
-        received: function () {
-            return this.gifts.filter(function (gift) {
-                return gift.has_been_received === true;
-            });
-        },
+  methods: {
+    prepareComponent() {
+      this.getGifts();
+      this.setActiveTab(this.giftsActiveTab);
     },
 
-    mounted() {
-        this.prepareComponent();
+    toggleComment(gift) {
+      Vue.set(gift, 'show_comment', !gift.show_comment);
     },
 
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getGifts();
-            this.setActiveTab(this.giftsActiveTab);
-        },
+    setActiveTab(view) {
+      this.activeTab = view;
+    },
 
-        toggleComment(gift) {
-            Vue.set(gift, 'show_comment', !gift.show_comment);
-        },
+    getGifts() {
+      axios.get('people/' + this.hash + '/gifts')
+        .then(response => {
+          this.gifts = response.data;
+        });
+    },
 
-        setActiveTab(view) {
-            this.activeTab = view;
-        },
+    toggle(gift) {
+      axios.post('people/' + this.hash + '/gifts/' + gift.id + '/toggle')
+        .then(response => {
+          Vue.set(gift, 'is_an_idea', response.data.is_an_idea);
+          Vue.set(gift, 'has_been_offered', response.data.has_been_offered);
+        });
+    },
 
-        getGifts() {
-            axios.get('/people/' + this.hash + '/gifts')
-                .then(response => {
-                    this.gifts = response.data;
-                });
-        },
+    showDeleteModal(gift) {
+      this.$refs.modal.open();
+      this.giftToTrash = gift;
+    },
 
-        toggle(gift) {
-            axios.post('/people/' + this.hash + '/gifts/' + gift.id + '/toggle')
-                .then(response => {
-                    Vue.set(gift, 'is_an_idea', response.data.is_an_idea);
-                    Vue.set(gift, 'has_been_offered', response.data.has_been_offered);
-                });
-        },
+    trash(gift) {
+      axios.delete('people/' + this.hash + '/gifts/' + gift.id)
+        .then(response => {
+          this.gifts.splice(this.gifts.indexOf(gift), 1);
+          this.closeDeleteModal();
+        });
+    },
 
-        showDeleteModal(gift) {
-            this.$refs.modal.open();
-            this.giftToTrash = gift;
-        },
-
-        trash(gift) {
-            axios.delete('/people/' + this.hash + '/gifts/' + gift.id)
-                .then(response => {
-                    this.gifts.splice(this.gifts.indexOf(gift), 1);
-                    this.$refs.modal.close();
-                });
-        },
-
-        closeDeleteModal() {
-            this.$refs.modal.close();
-        }
+    closeDeleteModal() {
+      this.$refs.modal.close();
     }
+  }
 };
 </script>

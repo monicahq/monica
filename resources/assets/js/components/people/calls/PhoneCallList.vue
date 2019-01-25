@@ -42,8 +42,7 @@
                 <form-date
                   v-model="newCall.called_at"
                   :default-date="todayDate"
-                  :locale="'en'"
-                  @selected="updateDate($event)"
+                  :locale="locale"
                 />
               </div>
             </div>
@@ -75,13 +74,10 @@
 
         <!-- CONTENT -->
         <div>
-          <label class="b">
-            {{ $t('people.modal_call_comment') }}
-          </label>
           <form-textarea
             v-model="newCall.content"
             :required="true"
-            :no-label="true"
+            :label="$t('people.modal_call_comment')"
             :rows="4"
             :placeholder="$t('people.conversation_add_content')"
             @contentChange="updateContent($event)"
@@ -132,14 +128,13 @@
       <div v-show="editCallId == call.id" class="pa2">
         <div>
           <div>
-            <label>{{ $t('people.modal_call_comment') }}</label>
-            <textarea
+            <form-textarea
               v-model="editCall.content"
-              autofocus
+              :label="$t('people.modal_call_comment')"
               rows="4"
-              class="br2 f5 w-100 ba b--black-40 pa2 outline-0"
+              iclass="br2 f5 w-100 ba b--black-40 pa2 outline-0"
               @contentChange="updateEditCallContent($event)"
-            ></textarea>
+            />
             <p class="f6">
               {{ $t('app.markdown_description') }}
             </p>
@@ -245,148 +240,156 @@ import moment from 'moment';
 
 export default {
 
-    filters: {
-        moment: function (date) {
-            return moment.utc(date).format('LL');
-        }
-    },
-
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
-        name: {
-            type: String,
-            default: '',
-        },
-    },
-    data() {
-        return {
-            calls: [],
-            dirltr: true,
-            displayLogCall: false,
-            todayDate: '',
-            editCallId: 0,
-            destroyCallId: 0,
-            chosenEmotions: [],
-            newCall: {
-                content: '',
-                called_at: '',
-                contact_called: false,
-                emotions: [],
-            },
-            editCall: {
-                content: '',
-                contact_called: false,
-                emotions: [],
-            }
-        };
-    },
-
-    mounted() {
-        this.prepareComponent(this.hash);
-    },
-
-    methods: {
-        prepareComponent(hash) {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getCalls();
-            this.todayDate = moment().format('YYYY-MM-DD');
-            this.newCall.called_at = this.todayDate;
-        },
-
-        compiledMarkdown (text) {
-            return marked(text, { sanitize: true });
-        },
-
-        resetFields() {
-            this.newCall.content = '';
-            this.newCall.called_at = this.todayDate;
-        },
-
-        getCalls() {
-            axios.get('/people/' + this.hash + '/calls')
-                .then(response => {
-                    this.calls = response.data.data;
-                });
-        },
-
-        store() {
-            axios.post('/people/' + this.hash + '/calls', this.newCall)
-                .then(response => {
-                    this.getCalls();
-                    this.resetFields();
-                    this.displayLogCall = false;
-                    this.chosenEmotions = [];
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.calls_add_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        update() {
-            axios.put('/people/' + this.hash + '/calls/' + this.editCallId, this.editCall)
-                .then(response => {
-                    this.getCalls();
-                    this.editCallId = 0;
-                    this.chosenEmotions = [];
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('app.default_save_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        showEditBox(call) {
-            this.editCallId = call.id;
-            this.editCall.content = call.content;
-            this.editCall.contact_called = call.contact_called;
-            this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD');
-        },
-
-        updateContent(updatedContent) {
-            this.newCall.content = updatedContent;
-        },
-
-        updateEditCallContent(updatedContent) {
-            this.editCall.content = updatedContent;
-        },
-
-        updateDate(updatedContent) {
-            this.newCall.called_at = updatedContent;
-        },
-
-        showDestroyCall(call) {
-            this.destroyCallId = call.id;
-        },
-
-        destroyCall(call) {
-            axios.delete('/people/' + this.hash + '/calls/' + this.destroyCallId)
-                .then(response => {
-                    this.calls.splice(this.calls.indexOf(call), 1);
-                });
-        },
-
-        updateEmotionsList: function(emotions) {
-            this.chosenEmotions = emotions;
-            this.newCall.emotions = [];
-            this.editCall.emotions = [];
-
-            // filter the list of emotions to populate a new array
-            // containing only the emotion ids and not the entire objetcs
-            for (let i = 0; i < this.chosenEmotions.length; i++) {
-                this.newCall.emotions.push(this.chosenEmotions[i].id);
-                this.editCall.emotions.push(this.chosenEmotions[i].id);
-            }
-        }
+  filters: {
+    moment: function (date) {
+      return moment.utc(date).format('LL');
     }
+  },
+
+  props: {
+    hash: {
+      type: String,
+      default: '',
+    },
+    name: {
+      type: String,
+      default: '',
+    },
+  },
+
+  data() {
+    return {
+      calls: [],
+      displayLogCall: false,
+      todayDate: '',
+      editCallId: 0,
+      destroyCallId: 0,
+      chosenEmotions: [],
+      newCall: {
+        content: '',
+        called_at: '',
+        contact_called: false,
+        emotions: [],
+      },
+      editCall: {
+        content: '',
+        contact_called: false,
+        emotions: [],
+      }
+    };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
+    locale() {
+      return this.$root.locale;
+    }
+  },
+
+  mounted() {
+    this.prepareComponent(this.hash);
+  },
+
+  methods: {
+    prepareComponent(hash) {
+      this.getCalls();
+      this.todayDate = moment().format('YYYY-MM-DD');
+      this.newCall.called_at = this.todayDate;
+    },
+
+    compiledMarkdown (text) {
+      return marked(text, { sanitize: true });
+    },
+
+    resetFields() {
+      this.newCall.content = '';
+      this.newCall.called_at = this.todayDate;
+    },
+
+    getCalls() {
+      axios.get('people/' + this.hash + '/calls')
+        .then(response => {
+          this.calls = response.data.data;
+        });
+    },
+
+    store() {
+      axios.post('people/' + this.hash + '/calls', this.newCall)
+        .then(response => {
+          this.getCalls();
+          this.resetFields();
+          this.displayLogCall = false;
+          this.chosenEmotions = [];
+
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.calls_add_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+
+    update() {
+      axios.put('people/' + this.hash + '/calls/' + this.editCallId, this.editCall)
+        .then(response => {
+          this.getCalls();
+          this.editCallId = 0;
+          this.chosenEmotions = [];
+
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+
+    showEditBox(call) {
+      this.editCallId = call.id;
+      this.editCall.content = call.content;
+      this.editCall.contact_called = call.contact_called;
+      this.editCall.called_at = moment.utc(call.called_at).format('YYYY-MM-DD');
+    },
+
+    updateContent(updatedContent) {
+      this.newCall.content = updatedContent;
+    },
+
+    updateEditCallContent(updatedContent) {
+      this.editCall.content = updatedContent;
+    },
+
+    updateDate(updatedContent) {
+      this.newCall.called_at = updatedContent;
+    },
+
+    showDestroyCall(call) {
+      this.destroyCallId = call.id;
+    },
+
+    destroyCall(call) {
+      axios.delete('people/' + this.hash + '/calls/' + this.destroyCallId)
+        .then(response => {
+          this.calls.splice(this.calls.indexOf(call), 1);
+        });
+    },
+
+    updateEmotionsList: function(emotions) {
+      this.chosenEmotions = emotions;
+      this.newCall.emotions = [];
+      this.editCall.emotions = [];
+
+      // filter the list of emotions to populate a new array
+      // containing only the emotion ids and not the entire objetcs
+      for (let i = 0; i < this.chosenEmotions.length; i++) {
+        this.newCall.emotions.push(this.chosenEmotions[i].id);
+        this.editCall.emotions.push(this.chosenEmotions[i].id);
+      }
+    }
+  }
 };
 </script>

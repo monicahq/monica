@@ -30,7 +30,7 @@
 
     <!-- List of pets -->
     <ul v-if="pets.length > 0">
-      <li v-for="pet in pets" :key="pet.id" class="mb2">
+      <li v-for="(pet, i) in pets" :key="pet.id" class="mb2">
         <div v-show="!pet.edit" class="w-100 dt">
           <div class="dtc">
             {{ $t('people.pets_' + pet.category_name) }}
@@ -48,20 +48,20 @@
         <div v-show="pet.edit" class="w-100">
           <form class="measure center">
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
+              <label :for="'edit-category' + i" class="db fw6 lh-copy f6">
                 {{ $t('people.pets_kind') }}
               </label>
-              <select v-model="updateForm.pet_category_id" class="db w-100 h2">
+              <select :id="'edit-category' + i" v-model="updateForm.pet_category_id" class="db w-100 h2">
                 <option v-for="petCategory in petCategories" :key="petCategory.id" :value="petCategory.id">
                   {{ $t('people.pets_' + petCategory.name) }}
                 </option>
               </select>
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
+              <label :for="'edit-name' + i" class="db fw6 lh-copy f6">
                 {{ $t('people.pets_name') }}
               </label>
-              <input v-model="updateForm.name" class="pa2 db w-100" type="text" @keyup.enter="update(pet)" />
+              <input :id="'edit-name' + i" v-model="updateForm.name" class="pa2 db w-100" type="text" @keyup.enter="update(pet)" />
             </div>
             <div class="lh-copy mt3">
               <a class="btn btn-primary" @click.prevent="update(pet)">
@@ -85,20 +85,22 @@
     <div v-if="addMode">
       <form class="measure center">
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
+          <label for="add-category" class="db fw6 lh-copy f6">
             {{ $t('people.pets_kind') }}
           </label>
-          <select v-model="createForm.pet_category_id" class="db w-100 h2">
+          <select id="add-category" v-model="createForm.pet_category_id" class="db w-100 h2">
             <option v-for="petCategory in petCategories" :key="petCategory.id" :value="petCategory.id">
               {{ $t('people.pets_' + petCategory.name) }}
             </option>
           </select>
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
+          <label for="add-name" class="db fw6 lh-copy f6">
             {{ $t('people.pets_name') }}
           </label>
-          <input v-model="createForm.name" class="pa2 db w-100" type="text" @keyup.enter="store" @keyup.esc="addMode = false" />
+          <input id="add-name" v-model="createForm.name" class="pa2 db w-100" type="text" @keyup.enter="store"
+                 @keyup.esc="addMode = false"
+          />
         </div>
         <div class="lh-copy mt3">
           <a class="btn btn-primary" @click.prevent="store">
@@ -116,128 +118,131 @@
 <script>
 export default {
 
-    props: {
-        hash: {
-            type: String,
-            default: '',
-        },
+  props: {
+    hash: {
+      type: String,
+      default: '',
     },
+  },
 
-    data() {
-        return {
-            petCategories: [],
-            pets: [],
+  data() {
+    return {
+      petCategories: [],
+      pets: [],
 
-            editMode: false,
-            addMode: false,
-            updateMode: false,
+      editMode: false,
+      addMode: false,
+      updateMode: false,
 
-            createForm: {
-                pet_category_id: '',
-                name: '',
-                errors: []
-            },
+      createForm: {
+        pet_category_id: '',
+        name: '',
+        errors: []
+      },
 
-            updateForm: {
-                id: '',
-                pet_category_id: '',
-                name: '',
-                edit: false,
-                errors: []
-            },
+      updateForm: {
+        id: '',
+        pet_category_id: '',
+        name: '',
+        edit: false,
+        errors: []
+      },
+    };
+  },
 
-            dirltr: true,
-        };
-    },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getPetCategories();
-            this.getPets();
-        },
-
-        getPetCategories() {
-            axios.get('/petcategories')
-                .then(response => {
-                    this.petCategories = response.data;
-                });
-        },
-
-        getPets() {
-            axios.get('/people/' + this.hash + '/pets')
-                .then(response => {
-                    this.pets = response.data;
-                });
-        },
-
-        store() {
-            axios.post('/people/' + this.hash + '/pets', this.createForm)
-                .then(response => {
-                    this.addMode = false;
-                    this.pets.push(response.data);
-                    this.createForm.name = '';
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.pets_create_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        toggleAdd() {
-            this.addMode = true;
-            this.createForm.data = '';
-            this.createForm.pet_category_id = '';
-        },
-
-        toggleEdit(pet) {
-            Vue.set(pet, 'edit', !pet.edit);
-            this.updateForm.id = pet.id;
-            this.updateForm.name = pet.name;
-            this.updateForm.pet_category_id = pet.pet_category_id;
-        },
-
-        update(pet) {
-            axios.put('/people/' + this.hash + '/pets/' + pet.id, this.updateForm)
-                .then(response => {
-                    Vue.set(pet, 'edit', !pet.edit);
-                    Vue.set(pet, 'name', response.data.name);
-                    Vue.set(pet, 'pet_category_id', response.data.pet_category_id);
-                    Vue.set(pet, 'category_name', response.data.category_name);
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.pets_update_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-        },
-
-        trash(pet) {
-            axios.delete('/people/' + this.hash + '/pets/' + pet.id)
-                .then(response => {
-                    this.getPets();
-
-                    this.$notify({
-                        group: 'main',
-                        title: this.$t('people.pets_delete_success'),
-                        text: '',
-                        type: 'success'
-                    });
-                });
-
-            if (this.pets.length <= 1) {
-                this.editMode = false;
-            }
-        },
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
     }
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.getPetCategories();
+      this.getPets();
+    },
+
+    getPetCategories() {
+      axios.get('petcategories')
+        .then(response => {
+          this.petCategories = response.data;
+        });
+    },
+
+    getPets() {
+      axios.get('people/' + this.hash + '/pets')
+        .then(response => {
+          this.pets = response.data;
+        });
+    },
+
+    store() {
+      axios.post('people/' + this.hash + '/pets', this.createForm)
+        .then(response => {
+          this.addMode = false;
+          this.pets.push(response.data);
+          this.createForm.name = '';
+
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.pets_create_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+
+    toggleAdd() {
+      this.addMode = true;
+      this.createForm.data = '';
+      this.createForm.pet_category_id = '';
+    },
+
+    toggleEdit(pet) {
+      Vue.set(pet, 'edit', !pet.edit);
+      this.updateForm.id = pet.id;
+      this.updateForm.name = pet.name;
+      this.updateForm.pet_category_id = pet.pet_category_id;
+    },
+
+    update(pet) {
+      axios.put('people/' + this.hash + '/pets/' + pet.id, this.updateForm)
+        .then(response => {
+          Vue.set(pet, 'edit', !pet.edit);
+          Vue.set(pet, 'name', response.data.name);
+          Vue.set(pet, 'pet_category_id', response.data.pet_category_id);
+          Vue.set(pet, 'category_name', response.data.category_name);
+
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.pets_update_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+    },
+
+    trash(pet) {
+      axios.delete('people/' + this.hash + '/pets/' + pet.id)
+        .then(response => {
+          this.getPets();
+
+          this.$notify({
+            group: 'main',
+            title: this.$t('people.pets_delete_success'),
+            text: '',
+            type: 'success'
+          });
+        });
+
+      if (this.pets.length <= 1) {
+        this.editMode = false;
+      }
+    },
+  }
 };
 </script>

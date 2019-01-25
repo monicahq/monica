@@ -50,17 +50,32 @@ class LocaleHelper
      */
     public static function getCountry($locale = null)
     {
+        $countryCode = self::extractCountry($locale);
+
+        if (is_null($countryCode)) {
+            $country = CountriesHelper::getCountryFromLocale($locale);
+            $countryCode = $country->cca2;
+        }
+
+        return mb_strtoupper($countryCode);
+    }
+
+    /**
+     * Extract the current country from locale, i.e. 'en-US' will return 'US'.
+     * If no country is present in the locale, it will return null.
+     *
+     * @return string|null  country, uppercase form.
+     */
+    public static function extractCountry($locale = null)
+    {
         if (is_null($locale)) {
             $locale = self::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[1];
-        } else {
-            $country = CountriesHelper::getCountryFromLocale($locale);
-            $locale = $country->cca2;
-        }
 
-        return mb_strtoupper($locale);
+            return mb_strtoupper($locale);
+        }
     }
 
     /**

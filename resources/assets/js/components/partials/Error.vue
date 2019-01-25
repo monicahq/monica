@@ -15,13 +15,13 @@
 
 <script>
 export default {
-    props: {
-        errors: {
-            type: Array,
-            default: function () {
-                return [];
-            }
-        },
+  props: {
+    errors: {
+      type: Array,
+      default: function () {
+        return [];
+      }
     },
+  },
 };
 </script>

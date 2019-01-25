@@ -7,7 +7,7 @@ use App\Models\Account\Account;
 use App\Models\Account\Company;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Occupation;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Occupation\CreateOccupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -56,7 +56,7 @@ class CreateOccupationTest extends TestCase
             'street' => '199 Lafayette Street',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new CreateOccupation)->execute($request);
     }
 }

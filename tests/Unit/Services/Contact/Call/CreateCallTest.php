@@ -9,7 +9,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Instance\Emotion\Emotion;
 use App\Services\Contact\Call\CreateCall;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -211,7 +211,7 @@ class CreateCallTest extends TestCase
             'called_at' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new CreateCall)->execute($request);
     }
 

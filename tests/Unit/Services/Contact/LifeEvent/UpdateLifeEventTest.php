@@ -8,7 +8,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -63,7 +63,7 @@ class UpdateLifeEventTest extends TestCase
             'happened_at' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
         $updateConversation = (new UpdateLifeEvent)->execute($request);
     }

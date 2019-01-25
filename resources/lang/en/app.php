@@ -34,6 +34,9 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
+    'next' => 'Next ❯',
+    'previous' => '❮ Previous',
+    'retry' => 'Retry',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -325,7 +328,7 @@ return [
     'emotion_pride' => 'Pride',
     'emotion_eagerness' => 'Eagerness',
     'emotion_hope' => 'Hope',
-    'emotion_optimism' => 'optimism',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => 'Enthrallment',
     'emotion_rapture' => 'Rapture',
     'emotion_relief' => 'Relief',

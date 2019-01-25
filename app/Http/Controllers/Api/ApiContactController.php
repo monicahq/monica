@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\DBHelper;
-use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\UpdateContact;
+use App\Services\Contact\Contact\DestroyContact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
@@ -85,49 +85,27 @@ class ApiContactController extends ApiController
 
     /**
      * Store the contact.
+     *
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
-        // Create the contact
         try {
-            $contact = Contact::create(
-                $request->only([
-                    'first_name',
-                    'last_name',
-                    'nickname',
-                    'gender_id',
-                    'job',
-                    'company',
-                    'food_preferencies',
-                    'first_met_through_contact_id',
-                    'is_starred',
-                    'is_partial',
-                    'is_dead',
-                    'deceased_date',
-                ]) + [
-                'avatar_external_url' => $request->get('avatar_url'),
-                'first_met_additional_info' => $request->get('first_met_information'),
-                'account_id' => auth()->user()->account_id,
-            ]);
+            $contact = (new CreateContact)->execute(
+                $request->all()
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
-
-        if ($request->get('avatar_url')) {
-            $contact->has_avatar = true;
-            $contact->avatar_location = 'external';
-        }
-
-        $contact->setAvatarColor();
-
-        $this->updateContact($request, $contact);
 
         return new ContactResource($contact);
     }
@@ -140,191 +118,23 @@ class ApiContactController extends ApiController
     public function update(Request $request, $contactId)
     {
         try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->findOrFail($contactId);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        $isvalid = $this->validateUpdate($request);
-        if ($isvalid !== true) {
-            return $isvalid;
-        }
-
-        // Update the contact
-        try {
-            $contact->update(
-                $request->except([
-                    'first_met_information',
-                ]) + [
-                    'first_met_additional_info' => $request->get('first_met_information'),
+            $contact = (new UpdateContact)->execute(
+                $request->all()
+                    +
+                    [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account->id,
                 ]
             );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
-
-        $this->updateContact($request, $contact);
 
         return new ContactResource($contact);
-    }
-
-    /**
-     * Update the contact from the request.
-     *
-     * @param  Request $request
-     * @param  Contact $contact
-     * @return void
-     */
-    private function updateContact(Request $request, Contact $contact)
-    {
-        $this->updateContactBirthDate($request, $contact);
-        $this->updateContactFirstMetDate($request, $contact);
-        $this->updateContactDeceasedDate($request, $contact);
-
-        $contact->save();
-    }
-
-    /**
-     * Update the contact from the request.
-     *
-     * @param  Request $request
-     * @param  Contact $contact
-     * @return void
-     */
-    private function updateContactBirthDate(Request $request, Contact $contact)
-    {
-        // birthdate
-        if (! $contact->wasRecentlyCreated) {
-            $contact->removeSpecialDate('birthdate');
-        }
-        if ($request->get('birthdate')) {
-
-            // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('birthdate'));
-
-            if ($request->get('birthdate_is_year_unknown')) {
-                $specialDate = $contact->setSpecialDate('birthdate', 0, $date->month, $date->day);
-            } else {
-                $specialDate = $contact->setSpecialDate('birthdate', $date->year, $date->month, $date->day);
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-            }
-        } elseif ($request->get('birthdate_is_age_based')) {
-            $specialDate = $contact->setSpecialDateFromAge('birthdate', $request->input('birthdate_age'));
-        }
-    }
-
-    /**
-     * Update the contact from the request.
-     *
-     * @param  Request $request
-     * @param  Contact $contact
-     * @return void
-     */
-    private function updateContactFirstMetDate(Request $request, Contact $contact)
-    {
-        // first met date
-        if (! $contact->wasRecentlyCreated) {
-            $contact->removeSpecialDate('first_met');
-        }
-        if ($request->get('first_met_date')) {
-
-            // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('first_met_date'));
-
-            if ($request->get('first_met_date_is_year_unknown')) {
-                $specialDate = $contact->setSpecialDate('first_met', 0, $date->month, $date->day);
-            } else {
-                $specialDate = $contact->setSpecialDate('first_met', $date->year, $date->month, $date->day);
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-            }
-        } elseif ($request->get('first_met_date_is_age_based')) {
-            $specialDate = $contact->setSpecialDateFromAge('first_met', $request->input('first_met_date_age'));
-        }
-    }
-
-    /**
-     * Update the contact from the request.
-     *
-     * @param  Request $request
-     * @param  Contact $contact
-     * @return void
-     */
-    private function updateContactDeceasedDate(Request $request, Contact $contact)
-    {
-        // deceased date
-        if (! $contact->wasRecentlyCreated) {
-            $contact->removeSpecialDate('deceased_date');
-        }
-        if ($request->get('deceased_date')) {
-
-            // in this case, we know the month and day, but not necessarily the year
-            $date = DateHelper::parseDate($request->get('deceased_date'));
-
-            if ($request->get('deceased_date_is_year_unknown')) {
-                $specialDate = $contact->setSpecialDate('deceased_date', 0, $date->month, $date->day);
-            } else {
-                $specialDate = $contact->setSpecialDate('deceased_date', $date->year, $date->month, $date->day);
-                $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
-            }
-        } elseif ($request->get('deceased_date_is_age_based')) {
-            $specialDate = $contact->setSpecialDateFromAge('deceased_date', $request->input('deceased_date_age'));
-        }
-    }
-
-    /**
-     * Validate the request for update.
-     *
-     * @param  Request $request
-     * @return mixed
-     */
-    private function validateUpdate(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|max:50',
-            'last_name' => 'nullable|max:100',
-            'nickname' => 'nullable|max:100',
-            'gender_id' => 'integer|required',
-            'birthdate' => 'nullable|date',
-            'birthdate_is_age_based' => 'boolean',
-            'birthdate_is_year_unknown' => 'boolean',
-            'birthdate_age' => 'nullable|integer',
-            'job' => 'nullable|max:255',
-            'company' => 'nullable|max:255',
-            'food_preferencies' => 'nullable|max:100000',
-            'first_met_information' => 'nullable|max:1000000',
-            'first_met_date' => 'nullable|date',
-            'first_met_date_is_age_based' => 'boolean',
-            'first_met_date_is_year_unknown' => 'boolean',
-            'first_met_date_age' => 'nullable|integer',
-            'first_met_through_contact_id' => 'nullable|integer',
-            'is_starred' => 'required|boolean',
-            'is_partial' => 'required|boolean',
-            'is_dead' => 'required|boolean',
-            'deceased_date' => 'nullable|date',
-            'deceased_date_is_age_based' => 'boolean',
-            'deceased_date_is_year_unknown' => 'boolean',
-            'deceased_date_age' => 'nullable|integer',
-            'avatar_url' => 'nullable|max:400',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        // Make sure the `first_met_through_contact_id` is a contact id that the
-        // user is authorized to access
-        if ($request->get('first_met_through_contact_id')) {
-            try {
-                Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('first_met_through_contact_id'));
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -332,37 +142,15 @@ class ApiContactController extends ApiController
      * @param  Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $contactId)
     {
-        try {
-            $contact = Contact::where('account_id', auth()->user()->account_id)
-                ->findOrFail($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
+        $data = [
+            'contact_id' => $contactId,
+            'account_id' => auth()->user()->account->id,
+        ];
+        (new DestroyContact)->execute($data);
 
-        $tables = DBHelper::getTables();
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-            $tableData = DB::table($tableName)->get();
-
-            $contactIdRowExists = false;
-            foreach ($tableData as $data) {
-                foreach ($data as $columnName => $value) {
-                    if ($columnName == 'contact_id') {
-                        $contactIdRowExists = true;
-                    }
-                }
-            }
-
-            if ($contactIdRowExists) {
-                DB::table($tableName)->where('contact_id', $contact->id)->delete();
-            }
-        }
-
-        $contact->delete();
-
-        return $this->respondObjectDeleted($contact->id);
+        return $this->respondObjectDeleted($contactId);
     }
 
     /**

@@ -8,7 +8,7 @@ use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -211,7 +211,7 @@ class ImportJob extends Model
                 'entry' => $entry,
                 'behaviour' => $behaviour,
             ]);
-        } catch (MissingParameterException $e) {
+        } catch (ValidationException $e) {
             $this->fail((string) $e);
 
             return;

@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Account\Place;
 use App\Models\Account\Account;
 use App\Services\Account\Place\DestroyPlace;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -52,7 +52,7 @@ class DestroyPlaceTest extends TestCase
             'place_id' => 11111111,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new DestroyPlace)->execute($request);
     }
 }

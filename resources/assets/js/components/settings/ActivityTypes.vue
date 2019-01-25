@@ -250,224 +250,227 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
-    components: {
-        SweetModal
+  components: {
+    SweetModal
+  },
+
+  props: {
+    limited: {
+      type: Boolean,
+      default: false,
     },
+  },
 
-    props: {
-        limited: {
-            type: Boolean,
-            default: false,
-        },
-    },
+  data() {
+    return {
+      activityTypes: [],
+      activityTypeCategories: [],
+      errorMessage: '',
 
-    data() {
-        return {
-            activityTypes: [],
-            activityTypeCategories: [],
-            errorMessage: '',
+      updatedCategory: {
+        id: '',
+        name: ''
+      },
 
-            updatedCategory: {
-                id: '',
-                name: ''
-            },
+      createCategoryForm: {
+        name: '',
+        errors: []
+      },
 
-            createCategoryForm: {
-                name: '',
-                errors: []
-            },
+      createTypeForm: {
+        name: '',
+        activity_type_category_id: '',
+        errors: []
+      },
 
-            createTypeForm: {
-                name: '',
-                activity_type_category_id: '',
-                errors: []
-            },
+      updateCategoryForm: {
+        id: '',
+        name: '',
+        errors: []
+      },
 
-            updateCategoryForm: {
-                id: '',
-                name: '',
-                errors: []
-            },
+      updateTypeForm: {
+        id: '',
+        name: '',
+        errors: []
+      },
 
-            updateTypeForm: {
-                id: '',
-                name: '',
-                errors: []
-            },
+      destroyCategoryForm: {
+        id: '',
+        errors: []
+      },
 
-            destroyCategoryForm: {
-                id: '',
-                errors: []
-            },
+      destroyTypeForm: {
+        id: '',
+        errors: []
+      },
+    };
+  },
 
-            destroyTypeForm: {
-                id: '',
-                errors: []
-            },
-
-            dirltr: true,
-        };
-    },
-
-    mounted() {
-        this.prepareComponent();
-    },
-
-    methods: {
-        prepareComponent() {
-            this.dirltr = this.$root.htmldir == 'ltr';
-            this.getActivityTypeCategories();
-        },
-
-        getActivityTypeCategories() {
-            axios.get('/settings/personalization/activitytypecategories')
-                .then(response => {
-                    this.activityTypeCategories = response.data;
-                });
-        },
-
-        closeCategoryModal() {
-            this.$refs.createCategoryModal.close();
-        },
-
-        closeDeleteCategoryModal() {
-            this.$refs.deleteCategoryModal.close();
-        },
-
-        showCreateCategoryModal() {
-            this.$refs.createCategoryModal.open();
-        },
-
-        storeCategory() {
-            axios.post('/settings/personalization/activitytypecategories', this.createCategoryForm)
-                .then(response => {
-                    this.$refs.createCategoryModal.close();
-                    this.activityTypeCategories.push(response.data);
-                    this.createCategoryForm.name = '';
-
-                    this.notify(this.$t('app.default_save_success'), true);
-                });
-        },
-
-        showEditCategory(category) {
-            this.updateCategoryForm.id = category.id;
-            this.updateCategoryForm.name = category.name;
-            this.updatedCategory = category;
-
-            this.$refs.updateCategoryModal.open();
-        },
-
-        showDeleteCategory(category) {
-            this.destroyCategoryForm.id = category.id;
-
-            this.$refs.deleteCategoryModal.open();
-        },
-
-        showDeleteType(type) {
-            this.destroyTypeForm.id = type.id;
-
-            this.$refs.deleteTypeModal.open();
-        },
-
-        showEditType(type) {
-            this.updateTypeForm.id = type.id;
-            this.updateTypeForm.name = type.name;
-
-            this.$refs.updateTypeModal.open();
-        },
-
-        closeUpdateCategoryModal() {
-            this.$refs.updateCategoryModal.close();
-        },
-
-        closeCreateTypeModal() {
-            this.$refs.createTypeModal.close();
-        },
-
-        closeUpdateTypeModal() {
-            this.$refs.updateTypeModal.close();
-        },
-
-        closeDeleteTypeModal() {
-            this.$refs.deleteTypeModal.close();
-        },
-
-        updateCategory() {
-            axios.put('/settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
-                .then(response => {
-                    this.$refs.updateCategoryModal.close();
-                    this.updatedCategory.name = this.updateCategoryForm.name;
-                    this.updateCategoryForm.name = '';
-
-                    this.notify(this.$t('app.default_save_success'), true);
-                });
-        },
-
-        showCreateTypeModal(category) {
-            this.$refs.createTypeModal.open();
-            this.createTypeForm.activity_type_category_id = category.id;
-        },
-
-        storeType() {
-            axios.post('/settings/personalization/activitytypes', this.createTypeForm)
-                .then(response => {
-                    this.$refs.createTypeModal.close();
-                    this.activityTypes.push(response.data);
-                    this.createTypeForm.name = '';
-                    this.getActivityTypeCategories();
-
-                    this.notify(this.$t('app.default_save_success'), true);
-                });
-        },
-
-        destroyCategory() {
-            axios.delete('/settings/personalization/activitytypecategories/' + this.destroyCategoryForm.id)
-                .then(response => {
-                    this.$refs.deleteCategoryModal.close();
-                    this.destroyCategoryForm.id = '';
-                    this.getActivityTypeCategories();
-
-                    this.notify(this.$t('app.default_save_success'), true);
-                })
-                .catch(error => {
-                    this.errorMessage = error.response.data.message;
-                });
-        },
-
-        updateType() {
-            axios.put('/settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
-                .then(response => {
-                    this.$refs.updateTypeModal.close();
-                    this.updatedCategory.name = this.updateTypeForm.name;
-                    this.updateTypeForm.name = '';
-                    this.getActivityTypeCategories();
-
-                    this.notify(this.$t('app.default_save_success'), true);
-                });
-        },
-
-        destroyType() {
-            axios.delete('/settings/personalization/activitytypes/' + this.destroyTypeForm.id)
-                .then(response => {
-                    this.$refs.deleteTypeModal.close();
-                    this.destroyTypeForm.id = '';
-                    this.getActivityTypeCategories();
-
-                    this.notify(this.$t('app.default_save_success'), true);
-                })
-                .catch(error => {
-                    this.errorMessage = error.response.data.message;
-                });
-        },
-
-        notify(text, success) {
-            this.$notify({
-                group: 'activityTypes',
-                title: text,
-                text: '',
-                type: success ? 'success' : 'error'
-            });
-        }
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
     }
+  },
+
+  mounted() {
+    this.prepareComponent();
+  },
+
+  methods: {
+    prepareComponent() {
+      this.getActivityTypeCategories();
+    },
+
+    getActivityTypeCategories() {
+      axios.get('settings/personalization/activitytypecategories')
+        .then(response => {
+          this.activityTypeCategories = response.data;
+        });
+    },
+
+    closeCategoryModal() {
+      this.$refs.createCategoryModal.close();
+    },
+
+    closeDeleteCategoryModal() {
+      this.$refs.deleteCategoryModal.close();
+    },
+
+    showCreateCategoryModal() {
+      this.$refs.createCategoryModal.open();
+    },
+
+    storeCategory() {
+      axios.post('settings/personalization/activitytypecategories', this.createCategoryForm)
+        .then(response => {
+          this.$refs.createCategoryModal.close();
+          this.activityTypeCategories.push(response.data);
+          this.createCategoryForm.name = '';
+
+          this.notify(this.$t('app.default_save_success'), true);
+        });
+    },
+
+    showEditCategory(category) {
+      this.updateCategoryForm.id = category.id;
+      this.updateCategoryForm.name = category.name;
+      this.updatedCategory = category;
+
+      this.$refs.updateCategoryModal.open();
+    },
+
+    showDeleteCategory(category) {
+      this.destroyCategoryForm.id = category.id;
+
+      this.$refs.deleteCategoryModal.open();
+    },
+
+    showDeleteType(type) {
+      this.destroyTypeForm.id = type.id;
+
+      this.$refs.deleteTypeModal.open();
+    },
+
+    showEditType(type) {
+      this.updateTypeForm.id = type.id;
+      this.updateTypeForm.name = type.name;
+
+      this.$refs.updateTypeModal.open();
+    },
+
+    closeUpdateCategoryModal() {
+      this.$refs.updateCategoryModal.close();
+    },
+
+    closeCreateTypeModal() {
+      this.$refs.createTypeModal.close();
+    },
+
+    closeUpdateTypeModal() {
+      this.$refs.updateTypeModal.close();
+    },
+
+    closeDeleteTypeModal() {
+      this.$refs.deleteTypeModal.close();
+    },
+
+    updateCategory() {
+      axios.put('settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
+        .then(response => {
+          this.$refs.updateCategoryModal.close();
+          this.updatedCategory.name = this.updateCategoryForm.name;
+          this.updateCategoryForm.name = '';
+
+          this.notify(this.$t('app.default_save_success'), true);
+        });
+    },
+
+    showCreateTypeModal(category) {
+      this.$refs.createTypeModal.open();
+      this.createTypeForm.activity_type_category_id = category.id;
+    },
+
+    storeType() {
+      axios.post('settings/personalization/activitytypes', this.createTypeForm)
+        .then(response => {
+          this.$refs.createTypeModal.close();
+          this.activityTypes.push(response.data);
+          this.createTypeForm.name = '';
+          this.getActivityTypeCategories();
+
+          this.notify(this.$t('app.default_save_success'), true);
+        });
+    },
+
+    destroyCategory() {
+      axios.delete('settings/personalization/activitytypecategories/' + this.destroyCategoryForm.id)
+        .then(response => {
+          this.$refs.deleteCategoryModal.close();
+          this.destroyCategoryForm.id = '';
+          this.getActivityTypeCategories();
+
+          this.notify(this.$t('app.default_save_success'), true);
+        })
+        .catch(error => {
+          this.errorMessage = error.response.data.message;
+        });
+    },
+
+    updateType() {
+      axios.put('settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
+        .then(response => {
+          this.$refs.updateTypeModal.close();
+          this.updatedCategory.name = this.updateTypeForm.name;
+          this.updateTypeForm.name = '';
+          this.getActivityTypeCategories();
+
+          this.notify(this.$t('app.default_save_success'), true);
+        });
+    },
+
+    destroyType() {
+      axios.delete('settings/personalization/activitytypes/' + this.destroyTypeForm.id)
+        .then(response => {
+          this.$refs.deleteTypeModal.close();
+          this.destroyTypeForm.id = '';
+          this.getActivityTypeCategories();
+
+          this.notify(this.$t('app.default_save_success'), true);
+        })
+        .catch(error => {
+          this.errorMessage = error.response.data.message;
+        });
+    },
+
+    notify(text, success) {
+      this.$notify({
+        group: 'activityTypes',
+        title: text,
+        text: '',
+        type: success ? 'success' : 'error'
+      });
+    }
+  }
 };
 </script>

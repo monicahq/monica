@@ -33,7 +33,7 @@
   </div>
   <div class="col-xs-12 col-md-6">
     <div class="form-group actions">
-      <a href="{{ route('logout') }}" class="btn action">{{ trans('app.cancel') }}</a>
+      <a href="logout" class="btn action">{{ trans('app.cancel') }}</a>
     </div>
   </div>
 </div>

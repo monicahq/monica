@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Account\Place;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Occupation;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Occupation\UpdateOccupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -54,7 +54,7 @@ class UpdateOccupationTest extends TestCase
             'name' => '199 Lafayette Street',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
         (new UpdateOccupation)->execute($request);
     }
 

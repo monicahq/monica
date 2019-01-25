@@ -4,8 +4,9 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 
@@ -53,6 +54,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'account_id' => $contact->account->id,
             'is_dead' => 0,
             'deceased_special_date_id' => null,
+            'deceased_reminder_id' => null,
         ]);
     }
 
@@ -139,12 +141,17 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        (new UpdateDeceasedInformation)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
+        $reminder = Reminder::where('contact_id', $contact->id)->first();
 
-        $this->assertNotNull($specialDate->reminder_id);
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'deceased_special_date_id' => $specialDate->id,
+            'deceased_reminder_id' => $reminder->id,
+        ]);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -161,10 +168,8 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $this->expectException(ValidationException::class);
+        (new UpdateDeceasedInformation)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
@@ -182,8 +187,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
+        $this->expectException(ValidationException::class);
         (new UpdateDeceasedInformation)->execute($request);
     }
 }

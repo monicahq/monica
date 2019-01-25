@@ -13,6 +13,7 @@ use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Reminder\CreateReminder;
 use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -74,6 +75,9 @@ class FakeContentTableSeeder extends Seeder
                 'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                 'gender_id' => $this->getRandomGender()->id,
                 'is_partial' => false,
+                'is_birthdate_known' => false,
+                'is_deceased' => false,
+                'is_deceased_date_known' => false,
             ]);
 
             $this->contact->setAvatarColor();
@@ -201,7 +205,17 @@ class FakeContentTableSeeder extends Seeder
                 // add a date where we know the year
                 $specialDate = $this->contact->setSpecialDate('first_met', $firstMetDate->format('Y'), $firstMetDate->format('m'), $firstMetDate->format('d'));
             }
-            $specialDate->setReminder('year', 1, trans('people.introductions_reminder_title', ['name' => $this->contact->first_name]));
+            (new CreateReminder)->execute([
+                'account_id' => $this->contact->account_id,
+                'contact_id' => $this->contact->id,
+                'initial_date' => $specialDate->date->toDateString(),
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'title' => trans(
+                    'people.introductions_reminder_title',
+                    ['name' => $this->contact->first_name]
+                ),
+            ]);
         }
 
         if (rand(1, 2) == 1) {
@@ -228,6 +242,9 @@ class FakeContentTableSeeder extends Seeder
                     'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                     'gender_id' => $this->getRandomGender()->id,
                     'is_partial' => (rand(1, 2) == 1) ? false : true,
+                    'is_birthdate_known' => false,
+                    'is_deceased' => false,
+                    'is_deceased_date_known' => false,
                 ]);
 
                 $relatedContact->setAvatarColor();
