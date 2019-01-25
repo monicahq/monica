@@ -139,7 +139,7 @@ class ImportVCardTest extends TestCase
 
         $contact = $this->invokePrivateMethod($importVCard, 'getExistingContact', [
             ['account_id' => $account->id],
-            $vcard
+            $vcard,
         ]);
         $this->assertNull($contact);
     }
@@ -243,7 +243,7 @@ class ImportVCardTest extends TestCase
         $contact = $this->invokePrivateMethod($importVCard, 'importEntry', [
             ['account_id' => $account->id],
             null,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertTrue($contact->exists);
@@ -262,7 +262,7 @@ class ImportVCardTest extends TestCase
         $this->invokePrivateMethod($importVCard, 'importNames', [
             ['account_id' => $account->id],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertEquals('John', $contact->first_name);
@@ -283,9 +283,8 @@ class ImportVCardTest extends TestCase
         $this->invokePrivateMethod($importVCard, 'importNames', [
             ['account_id' => $account->id],
             $contact,
-            $vcard
+            $vcard,
         ]);
-
 
         $this->assertEquals('John', $contact->first_name);
     }
@@ -307,7 +306,7 @@ class ImportVCardTest extends TestCase
                 'user_id' => $user->id,
             ],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertEquals('John', $contact->first_name);
@@ -321,7 +320,7 @@ class ImportVCardTest extends TestCase
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create([
             'account_id' => $account->id,
-            'name_order' => 'lastname_firstname'
+            'name_order' => 'lastname_firstname',
         ]);
         $importVCard = new ImportVCard;
 
@@ -334,7 +333,7 @@ class ImportVCardTest extends TestCase
                 'user_id' => $user->id,
             ],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertEquals('Doe', $contact->first_name);
@@ -358,7 +357,7 @@ class ImportVCardTest extends TestCase
                 'user_id' => $user->id,
             ],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertEquals('John', $contact->first_name);
@@ -383,7 +382,7 @@ class ImportVCardTest extends TestCase
                 'user_id' => $user->id,
             ],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertEquals('John', $contact->first_name);
@@ -397,7 +396,7 @@ class ImportVCardTest extends TestCase
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create([
             'account_id' => $account->id,
-            'name_order' => 'lastname_firstname'
+            'name_order' => 'lastname_firstname',
         ]);
         $importVCard = new ImportVCard;
 
@@ -411,7 +410,7 @@ class ImportVCardTest extends TestCase
                 'user_id' => $user->id,
             ],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertEquals('John', $contact->first_name);
@@ -436,7 +435,7 @@ class ImportVCardTest extends TestCase
                 'user_id' => $user->id,
             ],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertEquals('John', $contact->first_name);
@@ -525,7 +524,7 @@ class ImportVCardTest extends TestCase
         $this->invokePrivateMethod($importVCard, 'importEmail', [
             ['account_id' => $account->id],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertDatabaseHas('contact_fields', [
@@ -554,7 +553,7 @@ class ImportVCardTest extends TestCase
         $this->invokePrivateMethod($importVCard, 'importTel', [
             ['account_id' => $account->id],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertDatabaseHas('contact_fields', [
@@ -584,7 +583,7 @@ class ImportVCardTest extends TestCase
         $this->invokePrivateMethod($importVCard, 'importTel', [
             ['account_id' => $account->id],
             $contact,
-            $vcard
+            $vcard,
         ]);
 
         $this->assertDatabaseHas('contact_fields', [

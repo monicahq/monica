@@ -3,9 +3,9 @@
 namespace App\Services\VCard;
 
 use Ramsey\Uuid\Uuid;
+use App\Models\User\User;
 use App\Traits\DAVFormat;
 use Sabre\VObject\Reader;
-use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
@@ -482,7 +482,7 @@ class ImportVCard extends BaseService
             if (count($fullnameParts) > 1) {
                 $contact->last_name = $this->formatValue($fullnameParts[1]);
             }
-        } else if (count($fullnameParts) > 1) {
+        } elseif (count($fullnameParts) > 1) {
             $contact->last_name = $this->formatValue($fullnameParts[0]);
             $contact->first_name = $this->formatValue($fullnameParts[1]);
         } else {
