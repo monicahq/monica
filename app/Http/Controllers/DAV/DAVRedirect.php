@@ -8,17 +8,17 @@ use Sabre\HTTP\RequestInterface;
 use Sabre\HTTP\ResponseInterface;
 
 /**
- * Redirect all GET methods to settings page
+ * Redirect all GET methods to settings page.
  */
 class DAVRedirect extends ServerPlugin
 {
-    function initialize(Server $server)
+    public function initialize(Server $server)
     {
         $server->on('method:GET', [$this, 'httpGet'], 500);
     }
 
     /**
-     * This method intercepts GET requests to collections and returns the html
+     * This method intercepts GET requests to collections and returns the html.
      *
      * @param RequestInterface $request
      * @param ResponseInterface $response
