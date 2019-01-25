@@ -128,7 +128,9 @@ class DAVController extends Controller
 
         // In local environment add browser plugin
         if (App::environment('local')) {
-            $server->addPlugin(new BrowserPlugin());
+            $server->addPlugin(new BrowserPlugin(false));
+        } else {
+            $server->addPlugin(new DAVRedirect());
         }
     }
 
