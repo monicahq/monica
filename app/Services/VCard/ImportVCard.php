@@ -5,6 +5,7 @@ namespace App\Services\VCard;
 use Ramsey\Uuid\Uuid;
 use App\Traits\DAVFormat;
 use Sabre\VObject\Reader;
+use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
@@ -51,28 +52,11 @@ class ImportVCard extends BaseService
     protected $contactFields;
 
     /**
-     * The Account id.
-     *
-     * @var int
-     */
-    protected $accountId;
-
-    /**
      * The "Vcard" gender that will be associated with all imported contacts.
      *
      * @var array[Gender]
      */
     protected $genders;
-
-    /**
-     * Create a new command.
-     *
-     * @param int accountId
-     */
-    public function __construct($accountId)
-    {
-        $this->accountId = $accountId;
-    }
 
     /**
      * Get the validation rules that apply to the service.
@@ -83,7 +67,8 @@ class ImportVCard extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'nullable|integer',
+            'user_id' => 'required|integer|exists:users,id',
+            'contact_id' => 'nullable|integer|exists:contacts,id',
             'entry' => 'required|string',
             'behaviour' => [
                 'required',
@@ -100,16 +85,13 @@ class ImportVCard extends BaseService
      */
     public function execute(array $data) : array
     {
-        $this->validate(
-            array_except($data, [
-                'account_id',
-            ]) + [
-                'account_id' => $this->accountId,
-            ]
-        );
+        $this->validate($data);
+
+        User::where('account_id', $data['account_id'])
+            ->findOrFail($data['user_id']);
 
         if (array_has($data, 'contact_id') && ! is_null($data['contact_id'])) {
-            Contact::where('account_id', $this->accountId)
+            Contact::where('account_id', $data['account_id'])
                 ->findOrFail($data['contact_id']);
         }
 
@@ -143,7 +125,7 @@ class ImportVCard extends BaseService
         }
 
         $contact_id = array_has($data, 'contact_id') ? $data['contact_id'] : null;
-        $contact = $this->getExistingContact($entry, $contact_id);
+        $contact = $this->getExistingContact($data, $entry, $contact_id);
 
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
@@ -155,7 +137,7 @@ class ImportVCard extends BaseService
             ];
         }
 
-        $contact = $this->importEntry($contact, $entry);
+        $contact = $this->importEntry($data, $contact, $entry);
 
         return [
             'contact_id' => $contact->id,
@@ -182,27 +164,28 @@ class ImportVCard extends BaseService
      * Get or create the gender called "Vcard" that is associated with all
      * imported contacts.
      *
+     * @param  array  $data
      * @param  string  $genderCode
      * @return Gender
      */
-    private function getGender($genderCode) : Gender
+    private function getGender($data, $genderCode) : Gender
     {
         if (! array_has($this->genders, $genderCode)) {
             switch ($genderCode) {
                 case 'M':
-                    $gender = $this->getGenderByName('Man') ?? $this->getGenderByName('vCard');
+                    $gender = $this->getGenderByName($data, 'Man') ?? $this->getGenderByName($data, 'vCard');
                     break;
                 case 'F':
-                    $gender = $this->getGenderByName('Woman') ?? $this->getGenderByName('vCard');
+                    $gender = $this->getGenderByName($data, 'Woman') ?? $this->getGenderByName($data, 'vCard');
                     break;
                 default:
-                    $gender = $this->getGenderByName('vCard');
+                    $gender = $this->getGenderByName($data, 'vCard');
                     break;
             }
 
             if (! $gender) {
                 $gender = new Gender;
-                $gender->account_id = $this->accountId;
+                $gender->account_id = $data['account_id'];
                 $gender->name = 'vCard';
                 $gender->save();
             }
@@ -216,14 +199,15 @@ class ImportVCard extends BaseService
     /**
      * Get the gender by name.
      *
+     * @param array $data
      * @param  string  $name
      * @return Gender|null
      */
-    private function getGenderByName($name)
+    private function getGenderByName($data, $name)
     {
         return Gender::where([
-            ['account_id', $this->accountId],
-            ['name', $name],
+            'account_id' => $data['account_id'],
+            'name' => $name,
         ])->first();
     }
 
@@ -283,24 +267,25 @@ class ImportVCard extends BaseService
     /**
      * Check whether the contact already exists in the database.
      *
+     * @param  array $data
      * @param  VCard $entry
      * @param  int $contact_id
      * @return Contact|null
      */
-    private function getExistingContact(VCard $entry, $contact_id = null)
+    private function getExistingContact(array $data, VCard $entry, $contact_id = null)
     {
         $contact = null;
         if (! is_null($contact_id)) {
-            $contact = Contact::where('account_id', $this->accountId)
+            $contact = Contact::where('account_id', $data['account_id'])
                 ->find($contact_id);
         }
 
         if (! $contact) {
-            $contact = $this->existingContactWithEmail($entry);
+            $contact = $this->existingContactWithEmail($data, $entry);
         }
 
         if (! $contact) {
-            $contact = $this->existingContactWithName($entry);
+            $contact = $this->existingContactWithName($data, $entry);
         }
 
         return $contact;
@@ -309,10 +294,11 @@ class ImportVCard extends BaseService
     /**
      * Search with email field.
      *
+     * @param array $data
      * @param  VCard $entry
      * @return Contact|null
      */
-    private function existingContactWithEmail(VCard $entry)
+    private function existingContactWithEmail(array $data, VCard $entry)
     {
         if (empty($entry->EMAIL)) {
             return;
@@ -320,8 +306,8 @@ class ImportVCard extends BaseService
 
         if ($this->isValidEmail((string) $entry->EMAIL)) {
             $contactField = ContactField::where([
-                ['account_id', $this->accountId],
-                ['contact_field_type_id', $this->getContactFieldTypeId('email')],
+                'account_id' => $data['account_id'],
+                'contact_field_type_id' => $this->getContactFieldTypeId($data, 'email'),
             ])->whereIn('data', iterator_to_array($entry->EMAIL))->first();
 
             if ($contactField) {
@@ -333,49 +319,51 @@ class ImportVCard extends BaseService
     /**
      * Search with names fields.
      *
+     * @param array $data
      * @param  VCard $entry
      * @return Contact|null
      */
-    private function existingContactWithName(VCard $entry)
+    private function existingContactWithName(array $data, VCard $entry)
     {
         $contact = new Contact;
-        $this->importNames($contact, $entry);
+        $this->importNames($data, $contact, $entry);
 
         return Contact::where([
-            ['account_id', $this->accountId],
-            ['first_name', $contact->first_name],
-            ['middle_name', $contact->middle_name],
-            ['last_name', $contact->last_name],
+            'account_id' => $data['account_id'],
+            'first_name' => $contact->first_name,
+            'middle_name' => $contact->middle_name,
+            'last_name' => $contact->last_name,
         ])->first();
     }
 
     /**
      * Create the Contact object matching the current entry.
      *
-     * @param  Contact $contact
-     * @param  VCard $entry
+     * @param  array  $data
+     * @param  Contact|null  $contact
+     * @param  VCard  $entry
      * @return Contact
      */
-    private function importEntry($contact, VCard $entry): Contact
+    private function importEntry(array $data, $contact, VCard $entry): Contact
     {
         if (! $contact) {
             $contact = new Contact;
-            $contact->account_id = $this->accountId;
-            $contact->gender_id = $this->getGender('O')->id;
+            $contact->account_id = $data['account_id'];
+            $contact->gender_id = $this->getGender($data, 'O')->id;
             $contact->setAvatarColor();
             $contact->save();
         }
 
-        $this->importNames($contact, $entry);
+        $this->importNames($data, $contact, $entry);
         $this->importUid($contact, $entry);
-        $this->importGender($contact, $entry);
+        $this->importGender($data, $contact, $entry);
         $this->importPhoto($contact, $entry);
         $this->importWorkInformation($contact, $entry);
         $this->importBirthday($contact, $entry);
         $this->importAddress($contact, $entry);
-        $this->importEmail($contact, $entry);
-        $this->importTel($contact, $entry);
-        $this->importSocialProfile($contact, $entry);
+        $this->importEmail($data, $contact, $entry);
+        $this->importTel($data, $contact, $entry);
+        $this->importSocialProfile($data, $contact, $entry);
 
         $contact->save();
 
@@ -385,16 +373,17 @@ class ImportVCard extends BaseService
     /**
      * Import names of the contact.
      *
+     * @param array $data
      * @param Contact $contact
      * @param  VCard $entry
      * @return void
      */
-    private function importNames(Contact $contact, VCard $entry): void
+    private function importNames(array $data, Contact $contact, VCard $entry): void
     {
         if ($this->hasFirstnameInN($entry)) {
             $this->importFromN($contact, $entry);
         } elseif ($this->hasFN($entry)) {
-            $this->importFromFN($contact, $entry);
+            $this->importFromFN($data, $contact, $entry);
         } elseif ($this->hasNICKNAME($entry)) {
             $this->importFromNICKNAME($contact, $entry);
         } else {
@@ -476,16 +465,28 @@ class ImportVCard extends BaseService
     }
 
     /**
+     * @param array $data
      * @param Contact $contact
      * @param  VCard $entry
      * @return void
      */
-    private function importFromFN(Contact $contact, VCard $entry): void
+    private function importFromFN(array $data, Contact $contact, VCard $entry): void
     {
         $fullnameParts = preg_split('/\s+/', $entry->FN, 2);
-        $contact->first_name = $this->formatValue($fullnameParts[0]);
-        if (count($fullnameParts) > 1) {
-            $contact->last_name = $this->formatValue($fullnameParts[1]);
+
+        $user = User::where('account_id', $data['account_id'])
+            ->findOrFail($data['user_id']);
+
+        if ($user->name_order == 'firstname_lastname' || $user->name_order == 'firstname_lastname_nickname') {
+            $contact->first_name = $this->formatValue($fullnameParts[0]);
+            if (count($fullnameParts) > 1) {
+                $contact->last_name = $this->formatValue($fullnameParts[1]);
+            }
+        } else if (count($fullnameParts) > 1) {
+            $contact->last_name = $this->formatValue($fullnameParts[0]);
+            $contact->first_name = $this->formatValue($fullnameParts[1]);
+        } else {
+            $contact->first_name = $this->formatValue($fullnameParts[0]);
         }
 
         if (! empty($entry->NICKNAME)) {
@@ -510,14 +511,15 @@ class ImportVCard extends BaseService
     /**
      * Import gender of the contact.
      *
-     * @param Contact $contact
-     * @param  VCard $entry
+     * @param  array  $data
+     * @param  Contact  $contact
+     * @param  VCard  $entry
      * @return void
      */
-    private function importGender(Contact $contact, VCard $entry): void
+    private function importGender(array $data, Contact $contact, VCard $entry): void
     {
         if ($entry->GENDER) {
-            $contact->gender_id = $this->getGender((string) $entry->GENDER)->id;
+            $contact->gender_id = $this->getGender($data, (string) $entry->GENDER)->id;
         }
     }
 
@@ -619,11 +621,12 @@ class ImportVCard extends BaseService
     }
 
     /**
+     * @param array $data
      * @param Contact $contact
      * @param  VCard $entry
      * @return void
      */
-    private function importEmail(Contact $contact, VCard $entry): void
+    private function importEmail(array $data, Contact $contact, VCard $entry): void
     {
         if (is_null($entry->EMAIL)) {
             return;
@@ -635,18 +638,19 @@ class ImportVCard extends BaseService
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'data' => $this->formatValue($email),
-                    'contact_field_type_id' => $this->getContactFieldTypeId('email'),
+                    'contact_field_type_id' => $this->getContactFieldTypeId($data, 'email'),
                 ]);
             }
         }
     }
 
     /**
+     * @param array $data
      * @param Contact $contact
      * @param  VCard $entry
      * @return void
      */
-    private function importTel(Contact $contact, VCard $entry): void
+    private function importTel(array $data, Contact $contact, VCard $entry): void
     {
         if (is_null($entry->TEL)) {
             return;
@@ -663,17 +667,18 @@ class ImportVCard extends BaseService
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'data' => $this->formatValue($tel),
-                'contact_field_type_id' => $this->getContactFieldTypeId('phone'),
+                'contact_field_type_id' => $this->getContactFieldTypeId($data, 'phone'),
             ]);
         }
     }
 
     /**
+     * @param array $data
      * @param Contact $contact
      * @param  VCard $entry
      * @return void
      */
-    private function importSocialProfile(Contact $contact, VCard $entry): void
+    private function importSocialProfile(array $data, Contact $contact, VCard $entry): void
     {
         if (is_null($entry->socialProfile)) {
             return;
@@ -682,38 +687,38 @@ class ImportVCard extends BaseService
         foreach ($entry->socialProfile as $socialProfile) {
             $type = $socialProfile['type'];
             $contactFieldTypeId = null;
-            $data = null;
+            $field = null;
             switch ((string) $type) {
                 case 'facebook':
-                    $contactFieldTypeId = $this->getContactFieldTypeId('Facebook');
-                    $data = str_replace('https://www.facebook.com/', '', $this->formatValue((string) $socialProfile));
+                    $contactFieldTypeId = $this->getContactFieldTypeId($data, 'Facebook');
+                    $field = str_replace('https://www.facebook.com/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'twitter':
-                    $contactFieldTypeId = $this->getContactFieldTypeId('Twitter');
-                    $data = str_replace('https://twitter.com/', '', $this->formatValue((string) $socialProfile));
+                    $contactFieldTypeId = $this->getContactFieldTypeId($data, 'Twitter');
+                    $field = str_replace('https://twitter.com/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'whatsapp':
-                    $contactFieldTypeId = $this->getContactFieldTypeId('Whatsapp');
-                    $data = str_replace('https://wa.me/', '', $this->formatValue((string) $socialProfile));
+                    $contactFieldTypeId = $this->getContactFieldTypeId($data, 'Whatsapp');
+                    $field = str_replace('https://wa.me/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'telegram':
-                    $contactFieldTypeId = $this->getContactFieldTypeId('Telegram');
-                    $data = str_replace('http://t.me/', '', $this->formatValue((string) $socialProfile));
+                    $contactFieldTypeId = $this->getContactFieldTypeId($data, 'Telegram');
+                    $field = str_replace('http://t.me/', '', $this->formatValue((string) $socialProfile));
                     break;
                 case 'linkedin':
-                    $contactFieldTypeId = $this->getContactFieldTypeId('LinkedIn');
-                    $data = str_replace('http://www.linkedin.com/in/', '', $this->formatValue((string) $socialProfile));
+                    $contactFieldTypeId = $this->getContactFieldTypeId($data, 'LinkedIn');
+                    $field = str_replace('http://www.linkedin.com/in/', '', $this->formatValue((string) $socialProfile));
                     break;
                 default:
                     // Not supported
                     break;
             }
 
-            if (! is_null($contactFieldTypeId) && ! is_null($data)) {
+            if (! is_null($contactFieldTypeId) && ! is_null($field)) {
                 ContactField::firstOrCreate([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
-                    'data' => $data,
+                    'data' => $field,
                     'contact_field_type_id' => $contactFieldTypeId,
                 ]);
             }
@@ -723,20 +728,21 @@ class ImportVCard extends BaseService
     /**
      * Get the contact field type id for the $type.
      *
+     * @param array $data
      * @param string $type  The type of the ContactFieldType, or the name
      * @return int
      */
-    private function getContactFieldTypeId(string $type): int
+    private function getContactFieldTypeId(array $data, string $type): int
     {
         if (! array_has($this->contactFields, $type)) {
             $contactFieldType = ContactFieldType::where([
-                ['account_id', $this->accountId],
-                ['type', $type],
+                'account_id' => $data['account_id'],
+                'type' => $type,
             ])->first();
             if (is_null($contactFieldType)) {
                 $contactFieldType = ContactFieldType::where([
-                    ['account_id', $this->accountId],
-                    ['name', $type],
+                    'account_id' => $data['account_id'],
+                    'name' => $type,
                 ])->first();
             }
             array_set($this->contactFields, $type, $contactFieldType != null ? $contactFieldType->id : null);
