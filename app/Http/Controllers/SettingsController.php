@@ -495,6 +495,18 @@ class SettingsController
         return view('settings.api.index');
     }
 
+    public function dav()
+    {
+        $davroute = route('dav');
+        $email = auth()->user()->email;
+
+        return view('settings.dav.index')
+                ->withDavRoute($davroute)
+                ->withCardDavRoute("{$davroute}/addressbooks/{$email}/contacts")
+                ->withCalDavBirthdaysRoute("{$davroute}/calendars/{$email}/birthdays")
+                ->withCalDavTasksRoute("{$davroute}/calendars/{$email}/tasks");
+    }
+
     public function security()
     {
         $u2fKeys = U2fKey::where('user_id', auth()->id())
