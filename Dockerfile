@@ -3,6 +3,7 @@ FROM alpine:latest
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG VCS_REF
+ARG COMMIT
 ARG VERSION
 LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.name="MonicaHQ, the Personal Relationship Manager" \
@@ -84,6 +85,7 @@ COPY routes ./routes
 COPY scripts ./scripts
 
 RUN echo $VCS_REF > .sentry-release
+RUN echo $COMMIT > .sentry-commit
 RUN mkdir -p bootstrap/cache
 RUN mkdir -p storage
 COPY .env.example .env
