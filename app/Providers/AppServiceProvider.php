@@ -104,6 +104,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Tag\DestroyTag::class => \App\Services\Contact\Tag\DestroyTag::class,
         \App\Services\Contact\Tag\DetachTag::class => \App\Services\Contact\Tag\DetachTag::class,
         \App\Services\Contact\Tag\UpdateTag::class => \App\Services\Contact\Tag\UpdateTag::class,
+        \App\Services\Instance\IdHasher::class => \App\Services\Instance\IdHasher::class,
         \App\Services\Instance\Geolocalization\GetGPSCoordinate::class => \App\Services\Instance\Geolocalization\GetGPSCoordinate::class,
         \App\Services\Instance\Weather\GetWeatherInformation::class => \App\Services\Instance\Weather\GetWeatherInformation::class,
         \App\Services\Task\CreateTask::class => \App\Services\Task\CreateTask::class,
