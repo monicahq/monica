@@ -66,7 +66,7 @@ class ImportVCards extends Command
             return;
         }
 
-        $importJob = $this->import($filesystem, $path, $user);
+        $importJob = $this->import($path, $user);
 
         return $this->report($importJob);
     }
@@ -82,7 +82,7 @@ class ImportVCards extends Command
         }
     }
 
-    private function import(Filesystem $filesystem, string $path, User $user): ImportJob
+    private function import(string $path, User $user): ImportJob
     {
         $pathName = Storage::putFile('public', new File($path));
 
