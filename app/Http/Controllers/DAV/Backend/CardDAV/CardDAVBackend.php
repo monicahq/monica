@@ -322,8 +322,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         }
 
         try {
-            $result = (new ImportVCard(Auth::user()->account_id))
+            $result = app(ImportVCard::class)
                 ->execute([
+                    'account_id' => Auth::user()->account_id,
+                    'user_id' => Auth::user()->id,
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
