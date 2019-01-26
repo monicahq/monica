@@ -260,7 +260,7 @@ class ImportVCardTest extends TestCase
 
         $result = $this->invokePrivateMethod($importVCard, 'processEntry', [
             ['behaviour' => 'behaviour_add'],
-            $vcard
+            $vcard,
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -287,7 +287,7 @@ class ImportVCardTest extends TestCase
                 'behaviour' => 'behaviour_replace',
                 'contact_id' => $contact->id,
             ],
-            $vcard
+            $vcard,
         ]);
 
         $this->assertDatabaseHas('contacts', [
