@@ -3,21 +3,23 @@
 namespace App\Console\Commands;
 
 use App\Models\User\User;
-use App\Traits\VCardImporter;
+use Illuminate\Http\File;
 use Illuminate\Console\Command;
-use Sabre\VObject\Component\VCard;
+use App\Jobs\AddContactFromVCard;
+use App\Models\Account\ImportJob;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Storage;
 
 class ImportVCards extends Command
 {
-    use VCardImporter;
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'import:vcard {user} {path}';
+    protected $signature = 'import:vcard
+                            {--user= : user to import the contacts}
+                            {--path= : path of the file to import}';
 
     /**
      * The console command description.
@@ -25,8 +27,6 @@ class ImportVCards extends Command
      * @var string
      */
     protected $description = 'Imports contacts from vCard files for a specific user';
-
-    private $path;
 
     /**
      * Execute the console command.
@@ -36,58 +36,81 @@ class ImportVCards extends Command
      */
     public function handle(Filesystem $filesystem)
     {
-        $this->path = $this->argument('path');
+        $email = $this->option('user');
 
-        $user = User::where('email', $this->argument('user'))->first();
+        // if no email was passed to the option, prompt the user to enter the email
+        if (! $email) {
+            $email = $this->ask('what is the user\'s email?');
+        }
+
+        // retrieve the user with the specified email
+        $user = User::where('email', $email)->first();
 
         if (! $user) {
-            $this->error('You need to provide a valid user email!');
+            // show an error and exist if the user does not exist
+            $this->error('No user with that email.');
 
             return;
         }
 
-        if (! $filesystem->exists($this->path) || $filesystem->extension($this->path) !== 'vcf') {
+        $path = $this->option('path');
+
+        // if no email was passed to the option, prompt the user to enter the email
+        if (! $path) {
+            $path = $this->ask('what file you want to import?');
+        }
+
+        if (! $filesystem->exists($path) || ! $this->acceptedExtensions($filesystem, $path)) {
             $this->error('The provided vcard file was not found or is not valid!');
 
             return;
         }
 
-        $this->work($user->account_id, $filesystem->get($this->path));
+        $importJob = $this->import($path, $user);
+
+        return $this->report($importJob);
     }
 
-    protected function workInit($matchCount)
+    private function acceptedExtensions(Filesystem $filesystem, string $path) : bool
     {
-        $this->info("We found {$matchCount} contacts in {$this->path}.");
+        switch ($filesystem->extension($path)) {
+            case 'vcf':
+            case 'vcard':
+                return true;
+            default:
+                return false;
+        }
+    }
 
-        if (! $this->confirm('Would you like to import them?', true)) {
+    private function import(string $path, User $user): ImportJob
+    {
+        $pathName = Storage::putFile('public', new File($path));
+
+        $importJob = $user->account->importjobs()->create([
+            'user_id' => $user->id,
+            'type' => 'vcard',
+            'filename' => $pathName,
+        ]);
+
+        dispatch_now(new AddContactFromVCard($importJob));
+
+        return $importJob;
+    }
+
+    private function report(ImportJob $importJob)
+    {
+        $importJob->refresh();
+
+        if ($importJob->failed) {
+            $this->warn('Error: '.$importJob->failed_reason);
+
             return false;
         }
 
-        $this->info("Importing contacts from {$this->path}");
-        $this->output->progressStart($matchCount);
+        $this->info('Contacts found: '.$importJob->contacts_found);
+        $this->info('Contacts skipped: '.$importJob->contacts_skipped);
+        $this->info('Contacts imported: '.$importJob->contacts_imported);
 
         return true;
-    }
-
-    protected function workContactExists($vcard)
-    {
-        $this->output->progressAdvance();
-    }
-
-    protected function workContactNoFirstname($vcard)
-    {
-        $this->output->progressAdvance();
-    }
-
-    protected function workNext($vcard)
-    {
-        $this->output->progressAdvance();
-    }
-
-    protected function workEnd($numberOfContactsInTheFile, $skippedContacts, $importedContacts)
-    {
-        $this->output->progressFinish();
-
-        $this->info("Successfully imported {$importedContacts} contacts and skipped {$skippedContacts}.");
     }
 }
