@@ -2,13 +2,13 @@
 
 namespace App\Traits;
 
-use App\Helpers\IdHasher;
+use App\Services\Instance\IdHasher;
 
 trait Hasher
 {
     public function getRouteKey()
     {
-        return app('idhasher')->encodeId(parent::getRouteKey());
+        return app(IdHasher::class)->encodeId(parent::getRouteKey());
     }
 
     public function resolveRouteBinding($value)
@@ -20,7 +20,7 @@ trait Hasher
 
     protected function decodeId($value)
     {
-        return app('idhasher')->decodeId($value);
+        return app(IdHasher::class)->decodeId($value);
     }
 
     public function hashID()

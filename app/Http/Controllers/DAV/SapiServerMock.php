@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\CardDAV;
+namespace App\Http\Controllers\DAV;
 
 use Sabre\HTTP\Sapi;
 use Sabre\HTTP\ResponseInterface;

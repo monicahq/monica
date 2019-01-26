@@ -20,6 +20,8 @@ class VCardHelper
             return;
         }
 
-        return CountriesHelper::find($VCardAddress->getParts()[6]);
+        if (count($VCardAddress->getParts()) >= 7) {
+            return CountriesHelper::find($VCardAddress->getParts()[6]);
+        }
     }
 }

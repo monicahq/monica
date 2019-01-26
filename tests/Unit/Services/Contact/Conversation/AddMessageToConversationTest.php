@@ -76,7 +76,7 @@ class AddMessageToConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $conversationService = (new AddMessageToConversation)->execute($request);
+        $conversationService = app(AddMessageToConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_conversation_is_not_found2()
@@ -100,6 +100,6 @@ class AddMessageToConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $conversationService = (new AddMessageToConversation)->execute($request);
+        $conversationService = app(AddMessageToConversation::class)->execute($request);
     }
 }

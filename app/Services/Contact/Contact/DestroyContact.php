@@ -70,13 +70,11 @@ class DestroyContact extends BaseService
     private function destroySpecificRelationships(array $data, $relationships)
     {
         foreach ($relationships as $relationship) {
-            $data = [
-                'account_id' => $data['account_id'],
-                'relationship_id' => $relationship->id,
-            ];
-
-            $relationshipService = new DestroyRelationship;
-            $relationshipService->execute($data);
+            app(DestroyRelationship::class)
+                ->execute([
+                    'account_id' => $data['account_id'],
+                    'relationship_id' => $relationship->id,
+                ]);
         }
     }
 }

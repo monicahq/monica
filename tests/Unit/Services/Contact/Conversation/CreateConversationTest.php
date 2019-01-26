@@ -79,7 +79,7 @@ class CreateConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createConversation = (new CreateConversation)->execute($request);
+        $createConversation = app(CreateConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contactfieldtype_is_not_linked_to_account()

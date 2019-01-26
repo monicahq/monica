@@ -212,7 +212,7 @@ class CreateCallTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateCall)->execute($request);
+        app(CreateCall::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -228,6 +228,6 @@ class CreateCallTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new CreateCall)->execute($request);
+        app(CreateCall::class)->execute($request);
     }
 }

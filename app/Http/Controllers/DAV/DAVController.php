@@ -1,33 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\CardDAV;
+namespace App\Http\Controllers\DAV;
 
 use Illuminate\Http\Request;
+use Sabre\CalDAV\CalendarRoot;
+use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\Plugin as AclPlugin;
 use Sabre\DAVACL\PrincipalCollection;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\DAV\Auth\Plugin as AuthPlugin;
 use Sabre\DAV\Sync\Plugin as SyncPlugin;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use App\Models\CardDAV\MonicaAddressBookRoot;
+use App\Http\Controllers\DAV\Auth\AuthBackend;
 use Sabre\DAV\Browser\Plugin as BrowserPlugin;
-use App\Models\CardDAV\Backends\MonicaAuthBackend;
-use App\Models\CardDAV\Backends\MonicaCardDAVBackend;
-use App\Models\CardDAV\Backends\MonicaPrincipalBackend;
+use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use App\Http\Controllers\DAV\Backend\CalDAV\CalDAVBackend;
+use App\Http\Controllers\DAV\Backend\CardDAV\CardDAVBackend;
+use App\Http\Controllers\DAV\Backend\CardDAV\AddressBookRoot;
 
-class CardDAVController extends Controller
+class DAVController extends Controller
 {
-    private const BASE_URI = '/carddav/';
-
     /**
      * Display the specified resource.
      */
     public function init(Request $request)
     {
+        if (! config('dav.enabled')) {
+            abort(404);
+        }
+
         // Disable debugger for caldav output
         if (config('app.debug')) {
             Debugbar::disable();
@@ -43,12 +49,14 @@ class CardDAVController extends Controller
     private function getNodes() : array
     {
         // Initiate custom backends for link between Sabre and Monica
-        $principalBackend = new MonicaPrincipalBackend();   // User rights
-        $carddavBackend = new MonicaCardDAVBackend();       // Contacts
+        $principalBackend = new PrincipalBackend();   // User rights
+        $carddavBackend = new CardDAVBackend();       // Contacts
+        $caldavBackend = new CalDAVBackend();         // Calendar
 
         return [
             new PrincipalCollection($principalBackend),
-            new MonicaAddressBookRoot($principalBackend, $carddavBackend),
+            new AddressBookRoot($principalBackend, $carddavBackend),
+            new CalendarRoot($principalBackend, $caldavBackend),
         ];
     }
 
@@ -61,7 +69,7 @@ class CardDAVController extends Controller
         $server->sapi = new SapiServerMock();
 
         // Base Uri of carddav
-        $server->setBaseUri(self::BASE_URI);
+        $server->setBaseUri($this->getBaseUri());
         // Set Url with trailing slash
         $server->httpRequest->setUrl($this->fullUrl($request));
 
@@ -98,11 +106,16 @@ class CardDAVController extends Controller
     private function addPlugins(SabreServer $server)
     {
         // Authentication backend
-        $authBackend = new MonicaAuthBackend();
+        $authBackend = new AuthBackend();
         $server->addPlugin(new AuthPlugin($authBackend, 'SabreDAV'));
 
         // CardDAV plugin
         $server->addPlugin(new CardDAVPlugin());
+        $server->addPlugin(new VCFExportPlugin());
+
+        // CalDAV plugin
+        $server->addPlugin(new CalDAVPlugin());
+        $server->addPlugin(new ICSExportPlugin());
 
         // Sync Plugin - rfc6578
         $server->addPlugin(new SyncPlugin());
@@ -113,12 +126,11 @@ class CardDAVController extends Controller
         $aclPlugin->hideNodesFromListings = true;
         $server->addPlugin($aclPlugin);
 
-        // VCFExport
-        $server->addPlugin(new VCFExportPlugin());
-
         // In local environment add browser plugin
         if (App::environment('local')) {
-            $server->addPlugin(new BrowserPlugin());
+            $server->addPlugin(new BrowserPlugin(false));
+        } else {
+            $server->addPlugin(new DAVRedirect());
         }
     }
 
@@ -134,5 +146,10 @@ class CardDAVController extends Controller
 
         return response($content, $status)
             ->withHeaders($headers);
+    }
+
+    private function getBaseUri()
+    {
+        return str_start(str_finish(config('dav.path'), '/'), '/');
     }
 }

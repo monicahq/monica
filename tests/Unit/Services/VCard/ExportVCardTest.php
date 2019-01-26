@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
+use Tests\Api\DAV\CardEtag;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -16,7 +17,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class ExportVCardTest extends TestCase
 {
     use DatabaseTransactions,
-        PHPUnitAssertions;
+        PHPUnitAssertions,
+        CardEtag;
 
     /** @var int */
     const defaultPropsCount = 3;
@@ -265,22 +267,11 @@ class ExportVCardTest extends TestCase
         $vCard = $this->invokePrivateMethod($exportVCard, 'export', [$contact]);
 
         $this->assertCount(
-            self::defaultPropsCount + 4,
+            self::defaultPropsCount + 5,
             $vCard->children()
         );
 
-        $url = route('people.show', $contact);
-        $sabreversion = \Sabre\VObject\Version::VERSION;
-
-        $this->assertVObjectEqualsVObject("BEGIN:VCARD
-VERSION:4.0
-PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
-UID:{$contact->uuid}
-SOURCE:{$url}
-FN:John Doe
-N:Doe;John;;;
-GENDER:O;
-END:VCARD", $vCard);
+        $this->assertVObjectEqualsVObject($this->getCard($contact), $vCard);
     }
 
     public function test_vcard_prepares_a_complete_vcard()
@@ -311,24 +302,10 @@ END:VCARD", $vCard);
         $vCard = $this->invokePrivateMethod($exportVCard, 'export', [$contact]);
 
         $this->assertCount(
-            self::defaultPropsCount + 7,
+            self::defaultPropsCount + 8,
             $vCard->children()
         );
 
-        $url = route('people.show', $contact);
-        $sabreversion = \Sabre\VObject\Version::VERSION;
-
-        $this->assertVObjectEqualsVObject("BEGIN:VCARD
-VERSION:4.0
-PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN
-UID:{$contact->uuid}
-SOURCE:{$url}
-FN:John Doe
-N:Doe;John;;;
-GENDER:O;
-ADR:;;12;beverly hills;;90210;US\r\n
-ADR:;;12;beverly hills;;90210;US\r\n
-EMAIL:john@doe.com
-END:VCARD", $vCard);
+        $this->assertVObjectEqualsVObject($this->getCard($contact), $vCard);
     }
 }

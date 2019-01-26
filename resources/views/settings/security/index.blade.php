@@ -73,7 +73,10 @@
               <recovery-codes></recovery-codes>
 
               @if (config('google2fa.enabled')===true)
-                 <mfa-activate :activated="@if ($is2FAActivated) true @else false @endif"></mfa-activate>
+                <mfa-activate
+                  :activated="{{ json_encode($is2FAActivated) }}"
+                >
+                </mfa-activate>
               @endif
 
               @if (config('u2f.enable')===true)

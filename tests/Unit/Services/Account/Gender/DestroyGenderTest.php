@@ -42,7 +42,7 @@ class DestroyGenderTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyGender)->execute($request);
+        app(DestroyGender::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_do_not_exist()
@@ -53,6 +53,6 @@ class DestroyGenderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyGender)->execute($request);
+        app(DestroyGender::class)->execute($request);
     }
 }

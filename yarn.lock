@@ -7820,9 +7820,10 @@ vue@^2.5.21:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.21.tgz#3d33dcd03bb813912ce894a8303ab553699c4a85"
   integrity sha512-Aejvyyfhn0zjVeLvXd70h4hrE4zZDx1wfZqia6ekkobLmUZ+vNFQer53B4fu0EjWBSiqApxPejzkO1Znt3joxQ==
 
-vuejs-datepicker@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/vuejs-datepicker/-/vuejs-datepicker-1.0.4.tgz#1f2c1c19a512bae175fe24d4273e99249f80f60a"
+vuejs-datepicker-tmp@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/vuejs-datepicker-tmp/-/vuejs-datepicker-tmp-1.5.4.tgz#8435db77cd6536adde95e5be89bb6d0ff21f2e4f"
+  integrity sha512-nX0QkcTjxQz3TYcZwZN3BY9bzu04EW3K2HQm9HaIBmOJoeGfNSwV4KRKmsYbR2lQtNPrK4gpN7jlvN8edMEYiw==
 
 watchpack@^1.5.0:
   version "1.6.0"

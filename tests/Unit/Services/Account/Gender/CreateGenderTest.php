@@ -46,6 +46,6 @@ class CreateGenderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateGender)->execute($request);
+        app(CreateGender::class)->execute($request);
     }
 }

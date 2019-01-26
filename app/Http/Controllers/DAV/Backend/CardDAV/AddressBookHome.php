@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models\CardDAV;
+namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
-use Sabre\CardDAV\AddressBookHome;
+use Sabre\CardDAV\AddressBookHome as BaseAddressBookHome;
 
-class MonicaAddressBookHome extends AddressBookHome
+class AddressBookHome extends BaseAddressBookHome
 {
     /**
      * Returns a list of ACE's for this node.
@@ -39,7 +39,7 @@ class MonicaAddressBookHome extends AddressBookHome
         $addressbooks = $this->carddavBackend->getAddressBooksForUser($this->principalUri);
 
         return collect($addressbooks)->map(function ($addressbook) {
-            return new MonicaAddressBook($this->carddavBackend, $addressbook);
+            return new AddressBook($this->carddavBackend, $addressbook);
         });
     }
 }
