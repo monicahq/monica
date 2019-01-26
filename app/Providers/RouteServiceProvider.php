@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
+use App\Services\Instance\IdHasher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
@@ -42,7 +42,7 @@ class RouteServiceProvider extends ServiceProvider
             }
 
             try {
-                $id = app('idhasher')->decodeId($value);
+                $id = app(IdHasher::class)->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
                     ->findOrFail($id);
@@ -69,15 +69,9 @@ class RouteServiceProvider extends ServiceProvider
         }
 
         $this->mapApiRoutes($router);
-
         $this->mapWebRoutes($router);
-
         $this->mapOAuthRoutes($router);
-
-        if (config('carddav.enabled')) {
-            $this->mapCardDAVRoutes($router);
-        }
-
+        $this->mapDAVRoutes($router);
         $this->mapSpecialRoutes($router);
     }
 
@@ -94,7 +88,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'middleware' => 'web',
             'namespace' => $this->namespace,
-        ], function ($router) {
+        ], function () {
             require base_path('routes/web.php');
         });
     }
@@ -134,20 +128,20 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Define the "carddav" routes for the application.
+     * Define the DAV routes for the application.
      *
      * These routes are typically stateless.
      *
      * @return void
      */
-    protected function mapCardDAVRoutes(Router $router)
+    protected function mapDAVRoutes(Router $router)
     {
         $router->group([
-            'prefix' => 'carddav',
+            'prefix' => config('dav.path'),
             'middleware' => 'api',
             'namespace' => $this->namespace,
         ], function () {
-            require base_path('routes/carddav.php');
+            require base_path('routes/dav.php');
         });
     }
 

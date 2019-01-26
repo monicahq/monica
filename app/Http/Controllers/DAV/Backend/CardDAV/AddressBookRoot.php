@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Models\CardDAV;
+namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAVACL\IACL;
 use Sabre\DAVACL\ACLTrait;
-use Sabre\CardDAV\AddressBookRoot;
+use Sabre\CardDAV\AddressBookRoot as BaseAddressBookRoot;
 
-class MonicaAddressBookRoot extends AddressBookRoot implements IACL
+class AddressBookRoot extends BaseAddressBookRoot implements IACL
 {
     use ACLTrait;
 
@@ -45,6 +45,6 @@ class MonicaAddressBookRoot extends AddressBookRoot implements IACL
      */
     public function getChildForPrincipal(array $principal)
     {
-        return new MonicaAddressBookHome($this->carddavBackend, $principal['uri']);
+        return new AddressBookHome($this->carddavBackend, $principal['uri']);
     }
 }

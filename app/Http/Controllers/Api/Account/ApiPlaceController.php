@@ -61,7 +61,7 @@ class ApiPlaceController extends ApiController
     public function store(Request $request)
     {
         try {
-            $place = (new CreatePlace)->execute(
+            $place = app(CreatePlace::class)->execute(
                 $request->all()
                     +
                     [
@@ -89,7 +89,7 @@ class ApiPlaceController extends ApiController
     public function update(Request $request, $placeId)
     {
         try {
-            $place = (new UpdatePlace)->execute(
+            $place = app(UpdatePlace::class)->execute(
                 $request->all()
                     +
                     [
@@ -117,7 +117,7 @@ class ApiPlaceController extends ApiController
     public function destroy(Request $request, $placeId)
     {
         try {
-            (new DestroyPlace)->execute([
+            app(DestroyPlace::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'place_id' => $placeId,
             ]);

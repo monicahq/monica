@@ -95,7 +95,7 @@ class LifeEventsController extends Controller
 
         // create the conversation
         try {
-            $lifeEvent = (new CreateLifeEvent)->execute($data);
+            $lifeEvent = app(CreateLifeEvent::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -120,7 +120,7 @@ class LifeEventsController extends Controller
         ];
 
         try {
-            (new DestroyLifeEvent)->execute($data);
+            app(DestroyLifeEvent::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()

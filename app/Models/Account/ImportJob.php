@@ -49,11 +49,6 @@ class ImportJob extends Model
     protected $dates = ['started_at', 'ended_at'];
 
     /**
-     * @var ImportVCard
-     */
-    private $service;
-
-    /**
      * Get the account record associated with the import job.
      *
      * @return BelongsTo
@@ -207,7 +202,9 @@ class ImportJob extends Model
     private function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
     {
         try {
-            $result = $this->getService()->execute([
+            $result = app(ImportVCard::class)->execute([
+                'account_id' => $this->account_id,
+                'user_id' => $this->user_id,
                 'entry' => $entry,
                 'behaviour' => $behaviour,
             ]);
@@ -225,18 +222,6 @@ class ImportJob extends Model
 
         $this->contacts_imported++;
         $this->fileImportJobReport($result['name'], self::VCARD_IMPORTED);
-    }
-
-    /**
-     * @return ImportVCard
-     */
-    private function getService()
-    {
-        if (! $this->service) {
-            $this->service = new ImportVCard($this->account_id);
-        }
-
-        return $this->service;
     }
 
     /**

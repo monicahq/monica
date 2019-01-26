@@ -11,13 +11,17 @@
 
     # Redirect .well-known urls (https://en.wikipedia.org/wiki/List_of_/.well-known/_services_offered_by_webservers)
     RewriteCond %{REQUEST_URI} .well-known/carddav
-    RewriteRule ^ /carddav/ [L,R=301]
+    RewriteCond %{REQUEST_URI} .well-known/caldav
+    RewriteRule ^ /dav/ [L,R=301]
     RewriteCond %{REQUEST_URI} .well-known/security.txt
     RewriteRule ^ /security.txt [L,R=301]
+    # old carddav url
+    RewriteCond %{REQUEST_URI} /carddav/(.+)
+    RewriteRule ^ /dav/%1 [L,R=301]
 
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !carddav/*
+    RewriteCond %{REQUEST_FILENAME} !dav/*
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 

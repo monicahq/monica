@@ -46,7 +46,7 @@ class RemindersController extends Controller
             'description' => $request->get('description'),
         ];
 
-        (new CreateReminder)->execute($data);
+        app(CreateReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));
@@ -88,7 +88,7 @@ class RemindersController extends Controller
             'description' => $request->get('description'),
         ];
 
-        (new UpdateReminder)->execute($data);
+        app(UpdateReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_update_success'));
@@ -109,7 +109,7 @@ class RemindersController extends Controller
             'reminder_id' => $reminder->id,
         ];
 
-        (new DestroyReminder)->execute($data);
+        app(DestroyReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_delete_success'));

@@ -31,7 +31,7 @@ class TasksController extends Controller
      */
     public function store(Request $request) : Task
     {
-        return (new CreateTask)->execute([
+        return app(CreateTask::class)->execute([
             'account_id' => auth()->user()->account->id,
             'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
             'title' => $request->get('title'),
@@ -47,7 +47,7 @@ class TasksController extends Controller
      */
     public function update(Request $request, $taskId) : Task
     {
-        return (new UpdateTask)->execute([
+        return app(UpdateTask::class)->execute([
             'account_id' => auth()->user()->account->id,
             'task_id' => $taskId,
             'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
@@ -66,7 +66,7 @@ class TasksController extends Controller
      */
     public function destroy(Contact $contact, $taskId)
     {
-        (new DestroyTask)->execute([
+        app(DestroyTask::class)->execute([
             'task_id' => $taskId,
             'account_id' => auth()->user()->account->id,
         ]);

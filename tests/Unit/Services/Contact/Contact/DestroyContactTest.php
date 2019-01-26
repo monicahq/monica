@@ -41,7 +41,7 @@ class DestroyContactTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        (new DestroyContact)->execute($request);
+        app(DestroyContact::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_doesnt_exist()
@@ -55,6 +55,6 @@ class DestroyContactTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyContact)->execute($request);
+        app(DestroyContact::class)->execute($request);
     }
 }

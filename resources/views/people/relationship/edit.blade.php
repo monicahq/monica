@@ -107,12 +107,11 @@
       <form-specialdate
         :months="{{ $months }}"
         :days="{{ $days }}"
-        :locale="'{{ auth()->user()->locale }}'"
         :month="{{ $month }}"
         :day="{{ $day }}"
         :age="'{{ $age }}'"
         :default-date="'{{ $birthdate }}'"
-        :reminder={{ $hasBirthdayReminder }}
+        :reminder="{{ json_encode($hasBirthdayReminder) }}"
         :value="'{{ $birthdayState }}'"
       ></form-specialdate>
 
