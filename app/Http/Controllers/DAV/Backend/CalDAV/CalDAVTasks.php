@@ -28,13 +28,12 @@ class CalDAVTasks extends AbstractCalDAVBackend
 
     public function getDescription()
     {
-        $name = Auth::user()->name;
         $token = $this->getCurrentSyncToken();
 
         $des = [
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
-            '{DAV:}displayname' => $name,
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Tasks',
+            '{DAV:}displayname' => trans('app.dav_tasks'),
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_tasks_description', ['name' => Auth::user()->name]),
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
         ];
         if ($token) {

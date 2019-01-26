@@ -27,14 +27,13 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
 
     public function getDescription()
     {
-        $name = Auth::user()->name;
         $token = $this->getCurrentSyncToken();
 
         $des = [
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
-            '{DAV:}displayname' => $name,
+            '{DAV:}displayname' => trans('app.dav_birthdays'),
             '{'.SabreServer::NS_SABREDAV.'}read-only' => 1,
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Birthdays',
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_birthdays_description', ['name' => Auth::user()->name]),
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
         ];
         if ($token) {
