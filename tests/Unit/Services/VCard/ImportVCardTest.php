@@ -243,6 +243,63 @@ class ImportVCardTest extends TestCase
         $this->assertTrue($contact->exists);
     }
 
+    public function test_it_creates_a_contact_with_process()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'N' => ['John', 'Doe', '', '', ''],
+            'EMAIL' => 'john@doe.com',
+        ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'email',
+        ]);
+
+        $result = $this->invokePrivateMethod($importVCard, 'processEntry', [
+            ['behaviour' => 'behaviour_add'],
+            $vcard
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $account->id,
+            'id' => $result['contact_id'],
+        ]);
+    }
+
+    public function test_it_updates_a_contact_with_process()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'N' => ['Miles', 'Davis', '', '', ''],
+        ]);
+
+        $result = $this->invokePrivateMethod($importVCard, 'processEntry', [
+            [
+                'behaviour' => 'behaviour_replace',
+                'contact_id' => $contact->id,
+            ],
+            $vcard
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $account->id,
+            'id' => $contact->id,
+        ]);
+        $contact->refresh();
+
+        $this->assertEquals('Davis', $contact->first_name);
+        $this->assertEquals('Miles', $contact->last_name);
+    }
+
     public function test_it_imports_names_N()
     {
         $contact = new Contact;
@@ -440,6 +497,7 @@ class ImportVCardTest extends TestCase
 
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);
+        $this->assertNotNull($contact->birthday_reminder_id);
     }
 
     public function test_it_imports_address()

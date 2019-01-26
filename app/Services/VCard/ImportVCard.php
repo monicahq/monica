@@ -66,7 +66,7 @@ class ImportVCard extends BaseService
     protected $contactFields;
 
     /**
-     * The "Vcard" gender that will be associated with all imported contacts.
+     * The genders that will be associated with imported contacts.
      *
      * @var array[Gender]
      */
@@ -104,9 +104,9 @@ class ImportVCard extends BaseService
         User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 
-        if (array_has($data, 'contact_id') && ! is_null($data['contact_id'])) {
+        if ($contactId = array_get($data, 'contact_id')) {
             Contact::where('account_id', $data['account_id'])
-                ->findOrFail($data['contact_id']);
+                ->findOrFail($contactId);
         }
 
         return $this->process($data);
@@ -121,7 +121,7 @@ class ImportVCard extends BaseService
     }
 
     /**
-     * Import one VCard.
+     * Process data importation.
      *
      * @param array $data
      * @return array
@@ -144,6 +144,18 @@ class ImportVCard extends BaseService
             ];
         }
 
+        return $this->processEntry($data, $entry);
+    }
+
+    /**
+     * Process entry importation.
+     *
+     * @param array $data
+     * @param VCard entry
+     * @return array
+     */
+    private function processEntry(array $data, VCard $entry) : array
+    {
         if (! $this->canImportCurrentEntry($entry)) {
             return [
                 'error' => 'ERROR_CONTACT_DOESNT_HAVE_FIRSTNAME',
@@ -152,9 +164,22 @@ class ImportVCard extends BaseService
             ];
         }
 
-        $contact_id = array_has($data, 'contact_id') ? $data['contact_id'] : null;
-        $contact = $this->getExistingContact($entry, $contact_id);
+        $contactId = array_get($data, 'contact_id');
+        $contact = $this->getExistingContact($entry, $contactId);
 
+        return $this->processEntryContact($data, $entry, $contact);
+    }
+
+    /**
+     * Process entry importation.
+     *
+     * @param array $data
+     * @param VCard entry
+     * @param Contact|null $contact
+     * @return array
+     */
+    private function processEntryContact(array $data, VCard $entry, $contact) : array
+    {
         $behaviour = $data['behaviour'] ?: self::BEHAVIOUR_ADD;
         if ($contact && $behaviour === self::BEHAVIOUR_ADD) {
             return [
@@ -415,6 +440,7 @@ class ImportVCard extends BaseService
     /**
      * Return the name and email address of the current entry.
      * John Doe Johnny john@doe.com.
+     * Only used for report display.
      *
      * @param  VCard $entry
      * @return string
@@ -748,12 +774,14 @@ class ImportVCard extends BaseService
                 'account_id' => $this->accountId,
                 'type' => $type,
             ])->first();
+
             if (is_null($contactFieldType)) {
                 $contactFieldType = ContactFieldType::where([
                     'account_id' => $this->accountId,
                     'name' => $type,
                 ])->first();
             }
+
             array_set($this->contactFields, $type, $contactFieldType != null ? $contactFieldType->id : null);
         }
 
