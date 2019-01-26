@@ -52,9 +52,7 @@ aliases:
   - &seed-test-db
     run:
       name: Seed database
-      command: |
-        php artisan db:seed --no-interaction -vvv
-        php artisan passport:keys --no-interaction -vvv
+      command: php artisan db:seed --no-interaction -vvv
   - &http-server-cc
     run:
       name: Run http server
