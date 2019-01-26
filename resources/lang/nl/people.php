@@ -59,7 +59,7 @@ return [
 
     // archived contacts
     'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
-    'list_link_to_archived_contacts' => 'List of archived contacts',
+    'list_link_to_archived_contacts' => 'Lijst van gearchiveerde contacten',
 
     // Header
     'edit_contact_information' => 'Bewerk contact informatie',
@@ -82,7 +82,7 @@ return [
     'modal_call_title' => 'Registreer een belgesprek',
     'modal_call_comment' => 'Waar hebben jullie het over gehad? (optioneel)',
     'modal_call_exact_date' => 'Het telefoongesprek gebeurde op',
-    'modal_call_who_called' => 'Who called?',
+    'modal_call_who_called' => 'Wie belde?',
     'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Het telefoongesprek is opgeslagen.',
     'call_delete_confirmation' => 'Weet je zeker dat je deze oproep wil wissen?',
@@ -91,14 +91,14 @@ return [
     'call_empty_comment' => 'Geen details',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'You called {name}',
-    'call_you_called' => 'You called',
-    'call_he_called' => '{name} called',
+    'call_you_called' => 'Jij belde',
+    'call_he_called' => '{name} belde',
     'call_emotions' => 'Emoties:',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
     'conversation_delete_link' => 'Verwijder het gesprek',
-    'conversation_edit_title' => 'Edit conversation',
+    'conversation_edit_title' => 'Bewerk gesprek',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
     'conversation_add_success' => 'The conversation has been successfully added.',
     'conversation_edit_success' => 'The conversation has been successfully updated.',
@@ -107,7 +107,7 @@ return [
     'conversation_add_when' => 'When did you have this conversation?',
     'conversation_add_who_wrote' => 'Who said this message?',
     'conversation_add_how' => 'How did you communicate?',
-    'conversation_add_you' => 'You',
+    'conversation_add_you' => 'Jij',
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Add another message',
