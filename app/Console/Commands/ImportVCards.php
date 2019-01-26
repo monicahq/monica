@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Http\File;
 use App\Models\User\User;
+use Illuminate\Http\File;
 use Illuminate\Console\Command;
 use App\Jobs\AddContactFromVCard;
 use App\Models\Account\ImportJob;
