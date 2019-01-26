@@ -101,9 +101,7 @@ class UpdateBirthdayInformation extends BaseService
 
         if ($data['is_age_based']) {
             $this->approximate($data);
-        }
-
-        if (! $data['is_age_based']) {
+        } else {
             $this->exact($data);
         }
     }
@@ -128,7 +126,7 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function exact(array $data)
     {
-        $specialDate = $specialDate = $this->contact->setSpecialDate(
+        $specialDate = $this->contact->setSpecialDate(
             'birthdate',
             (is_null($data['year']) ? 0 : $data['year']),
             $data['month'],
