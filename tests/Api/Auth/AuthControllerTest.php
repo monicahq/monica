@@ -5,9 +5,12 @@ namespace Tests\Api\Auth;
 use Tests\ApiTestCase;
 use App\Models\User\User;
 use Laravel\Passport\ClientRepository;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AuthControllerTest extends ApiTestCase
 {
+    use DatabaseTransactions;
+
     public function setUp()
     {
         parent::setUp();
