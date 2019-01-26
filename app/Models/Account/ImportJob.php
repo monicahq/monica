@@ -81,7 +81,7 @@ class ImportJob extends Model
     /**
      * Process an import job.
      *
-     * @return [type] [description]
+     * @return void
      */
     public function process($behaviour = ImportVCard::BEHAVIOUR_ADD)
     {

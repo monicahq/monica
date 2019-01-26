@@ -1,12 +1,13 @@
 <?php
 
-namespace Tests\Unit\Models;
+namespace Tests\Unit\Commands;
 
 use Mockery as m;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportVCardsTest extends TestCase
@@ -21,11 +22,11 @@ class ImportVCardsTest extends TestCase
 
         $command = m::mock('\App\Console\Commands\ImportVCards[error]', [new \Illuminate\Filesystem\Filesystem()]);
 
-        $command->shouldReceive('error')->once()->with('You need to provide a valid user email!');
+        $command->shouldReceive('error')->once()->with('No user with that email.');
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $exitCode = $this->artisan('import:vcard', ['user' => 'notfound@example.com', 'path' => $path, '--no-interaction' => true]);
+        $exitCode = $this->artisan('import:vcard', ['--user' => 'notfound@example.com', '--path' => $path, '--no-interaction' => true]);
 
         $this->assertEquals(0, $exitCode);
     }
@@ -42,7 +43,7 @@ class ImportVCardsTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $exitCode = $this->artisan('import:vcard', ['user' => $user->email, 'path' => 'not_found', '--no-interaction' => true]);
+        $exitCode = $this->artisan('import:vcard', ['--user' => $user->email, '--path' => 'not_found', '--no-interaction' => true]);
 
         $this->assertEquals(0, $exitCode);
     }
@@ -50,13 +51,14 @@ class ImportVCardsTest extends TestCase
     public function testItImportsContacts()
     {
         $this->withoutMockingConsoleOutput();
+        Storage::fake('public');
 
         $user = $this->getUser();
         $path = base_path('tests/stubs/vcard_stub.vcf');
 
         $totalContacts = Contact::where('account_id', $user->account_id)->count();
 
-        $exitCode = $this->artisan('import:vcard', ['user' => $user->email, 'path' => $path, '--no-interaction' => true]);
+        $exitCode = $this->artisan('import:vcard', ['--user' => $user->email, '--path' => $path, '--no-interaction' => true]);
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'John',
