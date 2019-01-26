@@ -42,7 +42,7 @@ class DestroyPlaceTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyPlace)->execute($request);
+        app(DestroyPlace::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_do_not_exist()
@@ -53,6 +53,6 @@ class DestroyPlaceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyPlace)->execute($request);
+        app(DestroyPlace::class)->execute($request);
     }
 }

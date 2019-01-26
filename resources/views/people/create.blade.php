@@ -7,7 +7,7 @@
     <h3 class="f3 fw5">{{ trans('people.people_add_title') }}</h3>
 
     @if (! auth()->user()->account->hasLimitations())
-      <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
+      <p class="import">{!! trans('people.people_add_import', ['url' => 'settings/import']) !!}</p>
     @endif
   </div>
 

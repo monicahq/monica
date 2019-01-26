@@ -35,7 +35,7 @@
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
 
-            <img src="/img/settings/imports/import.svg">
+            <img src="img/settings/imports/import.svg">
 
             <h2>{{ trans('settings.import_blank_title') }}</h2>
 

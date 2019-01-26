@@ -124,9 +124,13 @@ export default {
   data() {
     return {
       day: [],
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -135,12 +139,11 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.day = this.journalEntry.object;
     },
 
     destroy() {
-      axios.delete('/journal/day/' + this.day.id)
+      axios.delete('journal/day/' + this.day.id)
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });

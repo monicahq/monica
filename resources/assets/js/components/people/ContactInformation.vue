@@ -33,10 +33,10 @@
             <i v-else class="pr2 fa fa-address-card-o f6 gray"></i>
 
             <a v-if="contactInformation.protocol" :href="contactInformation.protocol + contactInformation.data">
-              {{ contactInformation.data }}
+              {{ contactInformation.name }}
             </a>
             <a v-else :href="contactInformation.data">
-              {{ contactInformation.data }}
+              {{ contactInformation.name }}
             </a>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
@@ -48,10 +48,13 @@
         <div v-show="contactInformation.edit" class="w-100">
           <form class="measure center" @submit.prevent="update(contactInformation)">
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_info_form_content') }}
-              </label>
-              <input v-model="updateForm.data" class="pa2 db w-100" type="text" />
+              <form-input
+                id="contact-content"
+                v-model="updateForm.data"
+                :title="$t('people.contact_info_form_content')"
+                iclass="pa2 db w-100"
+                :input-type="'text'"
+              />
             </div>
             <div class="lh-copy mt3">
               <a class="btn btn-primary" @click.prevent="update(contactInformation)">
@@ -74,12 +77,12 @@
     <div v-if="addMode">
       <form class="measure center" @submit.prevent="store">
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">
+          <label for="add-contact-type" class="db fw6 lh-copy f6">
+            {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="settings/personalization" target="_blank">
               {{ $t('people.contact_info_form_personalize') }}
             </a>
           </label>
-          <select v-model="createForm.contact_field_type_id" class="db w-100 h2">
+          <select id="add-contact-type" v-model="createForm.contact_field_type_id" class="db w-100 h2">
             <option v-for="contactFieldType in contactFieldTypes" :key="contactFieldType.id" :value="contactFieldType.id">
               {{ contactFieldType.name }}
             </option>
@@ -140,9 +143,13 @@ export default {
         edit: false,
         errors: []
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -151,20 +158,19 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getContactInformationData();
       this.getContactFieldTypes();
     },
 
     getContactInformationData() {
-      axios.get('/people/' + this.hash + '/contactfield')
+      axios.get('people/' + this.hash + '/contactfield')
         .then(response => {
           this.contactInformationData = response.data;
         });
     },
 
     getContactFieldTypes() {
-      axios.get('/people/' + this.hash + '/contactfieldtypes')
+      axios.get('people/' + this.hash + '/contactfieldtypes')
         .then(response => {
           this.contactFieldTypes = response.data;
         });
@@ -172,7 +178,7 @@ export default {
 
     store() {
       this.persistClient(
-        'post', '/people/' + this.hash + '/contactfield',
+        'post', 'people/' + this.hash + '/contactfield',
         this.createForm
       );
 
@@ -194,7 +200,7 @@ export default {
 
     update(contactField) {
       this.persistClient(
-        'put', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        'put', 'people/' + this.hash + '/contactfield/' + contactField.id,
         this.updateForm
       );
     },
@@ -203,7 +209,7 @@ export default {
       this.updateForm.id = contactField.id;
 
       this.persistClient(
-        'delete', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        'delete', 'people/' + this.hash + '/contactfield/' + contactField.id,
         this.updateForm
       );
 

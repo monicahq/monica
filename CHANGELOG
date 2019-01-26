@@ -2,17 +2,36 @@ UNRELEASED CHANGES:
 
 New features:
 
+* Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
+* Add a page in settings to display all DAV resources
+* Add Laravel Telescope (deactivated by default)
+* Add notion of instance administrator for a user
+* Add ability to name u2f security keys and to delete register ones
 * Add ability to add a comment when rating your day in the journal
 * Add API methods to manage genders
 * Breaking change: rewrite API methods to manage contacts
 
 Enhancements:
 
+* Accept last name when using contact search field
+* Register all app services as singleton
+* Docker image: add sentry-cli and run sentry:release command if sentry is enabled
+* Refactor reminders by removing Notifications table and creating two new tables: reminder outbox and reminder sent
+* Display the name of the contact field instead of the URL (Facebook instead of https:/facebook.com/johndoe)
+* Add foreign keys to activities table
 * Add foreign keys to reminders, reminder rules, contacts and life events tables
 * Add number of life events on the contact profile page
+* Add base HTML tag and tweak all assets and urls to use relative paths
 
 Fixes:
 
+* Accept lastname_firstname name order for VCard imports (FN field)
+* Fix vue.js DateTime picker to type a date in other format than en-us one
+* Fix DateTime parse when compact format is used
+* Fix contact and relationship edit with reminder enabled
+* Fix broken migration for the activities table
+* Fix VCard import with partial N entry
+* Fix using 'label' tag without 'for' attribute
 * Fix model binding when it is a guest request (not logged in)
 * Fix bug preventing to create life event without day and month
 * Fix ability to delete a user with a u2f key activated

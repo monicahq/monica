@@ -16,10 +16,12 @@ use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -66,6 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'profile_new_life_event_badge_seen' => 'boolean',
+        'admin' => 'boolean',
     ];
 
     /**
@@ -171,6 +174,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the term records associated with the user.
+     *
+     * @return BelongsToMany
      */
     public function terms()
     {
@@ -179,6 +184,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Get the recovery codes associated with the user.
+     *
+     * @return HasMany
      */
     public function recoveryCodes()
     {
@@ -335,14 +342,15 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $isTheRightTime = true;
 
-        $dateToCompareTo = $date->hour(0)->minute(0)->second(0)->toDateString();
-        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
-        $currentDateOnUserTimezone = now($this->timezone)->hour(0)->minute(0)->second(0)->toDateString();
-        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
-
-        if ($dateToCompareTo != $currentDateOnUserTimezone) {
+        // compare date with current date for the user
+        if (! $date->isSameDay(now($this->timezone))) {
             $isTheRightTime = false;
         }
+
+        // compare current hour for the user with the hour they want to be
+        // reminded as per the hour set on the profile
+        $currentHourOnUserTimezone = now($this->timezone)->format('H:00');
+        $defaultHourReminderShouldBeSent = $this->account->default_time_reminder_is_sent;
 
         if ($defaultHourReminderShouldBeSent != $currentHourOnUserTimezone) {
             $isTheRightTime = false;

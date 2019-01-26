@@ -1,0 +1,19 @@
+[{
+    "place_id":"200788090",
+    "licence":"\u00a9 LocationIQ.com CC BY 4.0, Data \u00a9 OpenStreetMap contributors, ODbL 1.0",
+    "osm_type":"relation",
+    "osm_id":"3503615",
+    "boundingbox":[
+        "34.05269",
+        "34.112456",
+        "-118.4270732",
+        "-118.3715358"
+    ],
+    "lat":"34.0736204",
+    "lon":"-118.4003563",
+    "display_name":"Beverly Hills, Los Angeles County, California, USA",
+    "class":"place",
+    "type":"city",
+    "importance":0.72188891692726,
+    "icon":"https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png"
+}]

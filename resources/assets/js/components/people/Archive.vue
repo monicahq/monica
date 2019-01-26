@@ -49,7 +49,7 @@ export default {
     },
 
     toggle() {
-      axios.put('/people/' + this.hash + '/archive')
+      axios.put('people/' + this.hash + '/archive')
         .then(response => {
           this.isActive = response.data.is_active;
 

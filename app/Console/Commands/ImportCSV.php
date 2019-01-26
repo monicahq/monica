@@ -10,6 +10,7 @@ use Illuminate\Console\Command;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Reminder\CreateReminder;
 
 class ImportCSV extends Command
 {
@@ -73,11 +74,11 @@ class ImportCSV extends Command
         // create special gender for this import
         // we don't know which gender all the contacts are, so we need to create a special status for them, as we
         // can't guess whether they are men, women or else.
-        $gender = Gender::where('name', 'vCard')->first();
+        $gender = Gender::where('name', config('dav.default_gender'))->first();
         if (! $gender) {
             $gender = new Gender;
             $gender->account_id = $user->account_id;
-            $gender->name = 'vCard';
+            $gender->name = config('dav.default_gender');
             $gender->save();
         }
 
@@ -177,7 +178,7 @@ class ImportCSV extends Command
                 'postal_code' => $postalCode,
             ];
 
-            (new CreateAddress)->execute($request);
+            app(CreateAddress::class)->execute($request);
         }
 
         if (! empty($data[42])) {
@@ -194,7 +195,19 @@ class ImportCSV extends Command
             $birthdate = new \DateTime(strtotime($data[14]));
 
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-            $specialDate->setReminder('year', 1, trans('people.people_add_birthday_reminder', ['name' => $contact->first_name]));
+
+            app(CreateReminder::class)->execute([
+                'account_id' => $contact->account_id,
+                'contact_id' => $contact->id,
+                'initial_date' => $specialDate->date->toDateString(),
+                'frequency_type' => 'year',
+                'frequency_number' => 1,
+                'title' => trans(
+                    'people.people_add_birthday_reminder',
+                    ['name' => $contact->first_name]
+                ),
+                'delible' => false,
+            ]);
         }
 
         $contact->updateGravatar();

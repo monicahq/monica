@@ -55,7 +55,7 @@ class ApiLifeEventController extends ApiController
     public function store(Request $request)
     {
         try {
-            $lifeEvent = (new CreateLifeEvent)->execute(
+            $lifeEvent = app(CreateLifeEvent::class)->execute(
                 $request->all()
                 +
                 [
@@ -81,7 +81,7 @@ class ApiLifeEventController extends ApiController
     public function update(Request $request, $lifeEventId)
     {
         try {
-            $lifeEvent = (new UpdateLifeEvent)->execute(
+            $lifeEvent = app(UpdateLifeEvent::class)->execute(
                 $request->all()
                     +
                     [
@@ -108,7 +108,7 @@ class ApiLifeEventController extends ApiController
     public function destroy(Request $request, $lifeEventId)
     {
         try {
-            (new DestroyLifeEvent)->execute([
+            app(DestroyLifeEvent::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'life_event_id' => $lifeEventId,
             ]);

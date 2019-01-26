@@ -154,7 +154,7 @@ class ActivityTest extends FeatureTestCase
         ]);
 
         // Attach the created activity to the current user to make this an update
-        $contact->activities()->save($activity);
+        $contact->activities()->save($activity, ['account_id' => $user->account_id]);
 
         // check that we can access the edit activity view
         $response = $this->get('/activities/'.$activity->hashID().'/edit/'.$contact->hashID());
@@ -219,14 +219,14 @@ class ActivityTest extends FeatureTestCase
             'summary' => 'This is the title',
             'date_it_happened' => '1990-01-05',
         ]);
-        $contact->activities()->save($activity);
+        $contact->activities()->save($activity, ['account_id' => $user->account_id]);
 
         $activity = factory(Activity::class)->create([
             'account_id' => $user->account_id,
             'summary' => 'This is a second title',
             'date_it_happened' => '2000-01-05',
         ]);
-        $contact->activities()->save($activity);
+        $contact->activities()->save($activity, ['account_id' => $user->account_id]);
 
         $contact->calculateActivitiesStatistics();
 

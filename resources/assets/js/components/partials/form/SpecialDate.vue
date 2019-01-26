@@ -131,10 +131,6 @@ export default {
       type: String,
       default: '',
     },
-    locale: {
-      type: String,
-      default: 'en',
-    },
     reminder: {
       type: Number,
       default: 0,
@@ -147,13 +143,20 @@ export default {
       selectedOption: 'unknown',
       selectedMonth: 0,
       selectedDay: 0,
-      dirltr: true,
       hasBirthdayReminder: 0
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
+    locale() {
+      return this.$root.locale;
+    }
+  },
+
   mounted() {
-    this.dirltr = this.$root.htmldir == 'ltr';
     this.selectedOption = this.value;
     this.selectedMonth = this.month;
     this.selectedDay = this.day;

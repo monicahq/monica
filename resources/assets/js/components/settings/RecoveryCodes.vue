@@ -64,28 +64,25 @@ export default {
   data() {
     return {
       codes: [],
-                
-      usedHelp: '',
-      copyHelp: '',
-
-      dirltr: true,
     };
   },
 
-  mounted() {
-    this.prepareComponent();
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
+    usedHelp() {
+      return this.$t('settings.recovery_already_used_help');
+    },
+    copyHelp() {
+      return this.$t('settings.recovery_copy_help');
+    },
   },
 
   methods: {
-    prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
-      this.usedHelp = this.$t('settings.recovery_already_used_help');
-      this.copyHelp = this.$t('settings.recovery_copy_help');
-    },
-
     showRecoveryModal() {
       this.codes = [];
-      axios.post('/settings/security/recovery-codes')
+      axios.post('settings/security/recovery-codes')
         .then(response => {
           this.codes = response.data;
           this.$refs.recoveryModal.open();
@@ -96,7 +93,7 @@ export default {
 
     generateNewCodes() {
       this.codes = [];
-      axios.post('/settings/security/generate-recovery-codes')
+      axios.post('settings/security/generate-recovery-codes')
         .then(response => {
           this.codes = response.data;
         }).catch(error => {

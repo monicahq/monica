@@ -47,7 +47,7 @@ export default {
 
   data () {
     return {
-      src : '/people/search',
+      src : 'people/search',
       filterable : false,
       selected: null,
       newOptions: [],

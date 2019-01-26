@@ -34,7 +34,7 @@ class CallsController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        return (new CreateCall)->execute([
+        return app(CreateCall::class)->execute([
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
             'content' => $request->get('content'),
@@ -53,7 +53,7 @@ class CallsController extends Controller
      */
     public function update(Request $request, Contact $contact, Call $call)
     {
-        return (new UpdateCall)->execute([
+        return app(UpdateCall::class)->execute([
             'account_id' => auth()->user()->account->id,
             'call_id' => $call->id,
             'content' => $request->get('content'),
@@ -79,7 +79,7 @@ class CallsController extends Controller
         ];
 
         try {
-            (new DestroyCall)->execute($data);
+            app(DestroyCall::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

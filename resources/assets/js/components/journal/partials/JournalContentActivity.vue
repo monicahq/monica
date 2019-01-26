@@ -120,9 +120,13 @@ export default {
     return {
       showDescription: false,
       activity: [],
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -131,7 +135,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       // not necessary, just a way to add more clarity to the code
       this.activity = this.journalEntry.object;
     },
@@ -141,7 +144,7 @@ export default {
     },
 
     redirect(attendee) {
-      window.location.href = '/people/' + attendee.hash_id;
+      window.location.href = 'people/' + attendee.hash_id;
     }
   }
 };

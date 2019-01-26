@@ -65,7 +65,7 @@ class UpdateLifeEventTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $updateConversation = (new UpdateLifeEvent)->execute($request);
+        $updateConversation = app(UpdateLifeEvent::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_type_doesnt_exist()
@@ -88,6 +88,6 @@ class UpdateLifeEventTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateConversation = (new UpdateLifeEvent)->execute($request);
+        $updateConversation = app(UpdateLifeEvent::class)->execute($request);
     }
 }

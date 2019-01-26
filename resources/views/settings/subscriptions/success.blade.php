@@ -59,7 +59,7 @@
 
       <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_success') }}</h2>
       <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_thanks') }}</p>
-      <p class="tc"><a href="{{ url('/settings/subscriptions') }}" class="btn btn-primary">{{ trans('settings.subscriptions_back') }}</a></p>
+      <p class="tc"><a href="settings/subscriptions" class="btn btn-primary">{{ trans('settings.subscriptions_back') }}</a></p>
     </div>
   </div>
 </div>

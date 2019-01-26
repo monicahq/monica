@@ -30,7 +30,7 @@
 
     <!-- List of pets -->
     <ul v-if="pets.length > 0">
-      <li v-for="pet in pets" :key="pet.id" class="mb2">
+      <li v-for="(pet, i) in pets" :key="pet.id" class="mb2">
         <div v-show="!pet.edit" class="w-100 dt">
           <div class="dtc">
             {{ $t('people.pets_' + pet.category_name) }}
@@ -48,20 +48,20 @@
         <div v-show="pet.edit" class="w-100">
           <form class="measure center">
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
+              <label :for="'edit-category' + i" class="db fw6 lh-copy f6">
                 {{ $t('people.pets_kind') }}
               </label>
-              <select v-model="updateForm.pet_category_id" class="db w-100 h2">
+              <select :id="'edit-category' + i" v-model="updateForm.pet_category_id" class="db w-100 h2">
                 <option v-for="petCategory in petCategories" :key="petCategory.id" :value="petCategory.id">
                   {{ $t('people.pets_' + petCategory.name) }}
                 </option>
               </select>
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
+              <label :for="'edit-name' + i" class="db fw6 lh-copy f6">
                 {{ $t('people.pets_name') }}
               </label>
-              <input v-model="updateForm.name" class="pa2 db w-100" type="text" @keyup.enter="update(pet)" />
+              <input :id="'edit-name' + i" v-model="updateForm.name" class="pa2 db w-100" type="text" @keyup.enter="update(pet)" />
             </div>
             <div class="lh-copy mt3">
               <a class="btn btn-primary" @click.prevent="update(pet)">
@@ -85,20 +85,22 @@
     <div v-if="addMode">
       <form class="measure center">
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
+          <label for="add-category" class="db fw6 lh-copy f6">
             {{ $t('people.pets_kind') }}
           </label>
-          <select v-model="createForm.pet_category_id" class="db w-100 h2">
+          <select id="add-category" v-model="createForm.pet_category_id" class="db w-100 h2">
             <option v-for="petCategory in petCategories" :key="petCategory.id" :value="petCategory.id">
               {{ $t('people.pets_' + petCategory.name) }}
             </option>
           </select>
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
+          <label for="add-name" class="db fw6 lh-copy f6">
             {{ $t('people.pets_name') }}
           </label>
-          <input v-model="createForm.name" class="pa2 db w-100" type="text" @keyup.enter="store" @keyup.esc="addMode = false" />
+          <input id="add-name" v-model="createForm.name" class="pa2 db w-100" type="text" @keyup.enter="store"
+                 @keyup.esc="addMode = false"
+          />
         </div>
         <div class="lh-copy mt3">
           <a class="btn btn-primary" @click.prevent="store">
@@ -145,9 +147,13 @@ export default {
         edit: false,
         errors: []
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -156,27 +162,26 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getPetCategories();
       this.getPets();
     },
 
     getPetCategories() {
-      axios.get('/petcategories')
+      axios.get('petcategories')
         .then(response => {
           this.petCategories = response.data;
         });
     },
 
     getPets() {
-      axios.get('/people/' + this.hash + '/pets')
+      axios.get('people/' + this.hash + '/pets')
         .then(response => {
           this.pets = response.data;
         });
     },
 
     store() {
-      axios.post('/people/' + this.hash + '/pets', this.createForm)
+      axios.post('people/' + this.hash + '/pets', this.createForm)
         .then(response => {
           this.addMode = false;
           this.pets.push(response.data);
@@ -205,7 +210,7 @@ export default {
     },
 
     update(pet) {
-      axios.put('/people/' + this.hash + '/pets/' + pet.id, this.updateForm)
+      axios.put('people/' + this.hash + '/pets/' + pet.id, this.updateForm)
         .then(response => {
           Vue.set(pet, 'edit', !pet.edit);
           Vue.set(pet, 'name', response.data.name);
@@ -222,7 +227,7 @@ export default {
     },
 
     trash(pet) {
-      axios.delete('/people/' + this.hash + '/pets/' + pet.id)
+      axios.delete('people/' + this.hash + '/pets/' + pet.id)
         .then(response => {
           this.getPets();
 

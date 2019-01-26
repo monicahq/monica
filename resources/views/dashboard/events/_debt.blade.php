@@ -1,5 +1,5 @@
 <div class="event-icon">
-  <img src="/img/dashboard/debt_{{ $event['nature_of_operation'] }}.png">
+  <img src="img/dashboard/debt_{{ $event['nature_of_operation'] }}.png">
 </div>
 
 <div class="event-description">

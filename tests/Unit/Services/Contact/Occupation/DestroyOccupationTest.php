@@ -24,7 +24,7 @@ class DestroyOccupationTest extends TestCase
             'id' => $occupation->id,
         ]);
 
-        (new DestroyOccupation)->execute($request);
+        app(DestroyOccupation::class)->execute($request);
 
         $this->assertDatabaseMissing('occupations', [
             'id' => $occupation->id,

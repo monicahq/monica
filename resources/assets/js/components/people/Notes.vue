@@ -118,9 +118,13 @@ export default {
       deleteNote: {
         id: 0,
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -129,7 +133,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getNotes();
     },
 
@@ -154,14 +157,14 @@ export default {
     },
 
     getNotes() {
-      axios.get('/people/' + this.hash + '/notes')
+      axios.get('people/' + this.hash + '/notes')
         .then(response => {
           this.notes = response.data;
         });
     },
 
     store() {
-      axios.post('/people/' + this.hash + '/notes', this.newNote)
+      axios.post('people/' + this.hash + '/notes', this.newNote)
         .then(response => {
           this.newNote.body = '';
           this.getNotes();
@@ -177,14 +180,14 @@ export default {
     },
 
     toggleFavorite(note) {
-      axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
+      axios.post('people/' + this.hash + '/notes/' + note.id + '/toggle')
         .then(response => {
           this.getNotes();
         });
     },
 
     update(note) {
-      axios.put('/people/' + this.hash + '/notes/' + note.id, note)
+      axios.put('people/' + this.hash + '/notes/' + note.id, note)
         .then(response => {
           Vue.set(note, 'edit', note.edit);
           this.getNotes();
@@ -205,7 +208,7 @@ export default {
     },
 
     trash(note) {
-      axios.delete('/people/' + this.hash + '/notes/' + note.id)
+      axios.delete('people/' + this.hash + '/notes/' + note.id)
         .then(response => {
           this.getNotes();
 

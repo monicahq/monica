@@ -7,10 +7,10 @@
 
     <!-- Title -->
     <div>
-      <img src="/img/people/gifts.svg" class="icon-section icon-tasks" />
+      <img src="img/people/gifts.svg" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.gifts_title') }}
-        <a :href="'/people/' + hash + '/gifts/create'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
+        <a :href="'people/' + hash + '/gifts/create'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
           {{ $t('people.gifts_add_gift') }}
         </a>
       </h3>
@@ -70,7 +70,7 @@
             <a class="pointer mr1" @click="toggle(gift)">
               {{ $t('people.gifts_mark_offered') }}
             </a>
-            <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
+            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click="showDeleteModal(gift)">
@@ -117,7 +117,7 @@
             <a class="pointer mr1" @click="toggle(gift)">
               {{ $t('people.gifts_offered_as_an_idea') }}
             </a>
-            <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
+            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click="showDeleteModal(gift)">
@@ -161,7 +161,7 @@
             <a v-if="gift.comment" class="ml1 mr1 pointer" @click="toggleComment(gift)">
               {{ $t('people.gifts_view_comment') }}
             </a>
-            <a :href="'/people/' + hash + '/gifts/' + gift.id + '/edit'">
+            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'">
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" @click="showDeleteModal(gift)">
@@ -221,11 +221,14 @@ export default {
       gifts: [],
       activeTab: '',
       giftToTrash: '',
-      dirltr: true,
     };
   },
 
   computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    },
+
     ideas: function () {
       return this.gifts.filter(function (gift) {
         return gift.is_an_idea === true;
@@ -251,7 +254,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getGifts();
       this.setActiveTab(this.giftsActiveTab);
     },
@@ -265,14 +267,14 @@ export default {
     },
 
     getGifts() {
-      axios.get('/people/' + this.hash + '/gifts')
+      axios.get('people/' + this.hash + '/gifts')
         .then(response => {
           this.gifts = response.data;
         });
     },
 
     toggle(gift) {
-      axios.post('/people/' + this.hash + '/gifts/' + gift.id + '/toggle')
+      axios.post('people/' + this.hash + '/gifts/' + gift.id + '/toggle')
         .then(response => {
           Vue.set(gift, 'is_an_idea', response.data.is_an_idea);
           Vue.set(gift, 'has_been_offered', response.data.has_been_offered);
@@ -285,10 +287,10 @@ export default {
     },
 
     trash(gift) {
-      axios.delete('/people/' + this.hash + '/gifts/' + gift.id)
+      axios.delete('people/' + this.hash + '/gifts/' + gift.id)
         .then(response => {
           this.gifts.splice(this.gifts.indexOf(gift), 1);
-          this.$refs.modal.close();
+          this.closeDeleteModal();
         });
     },
 

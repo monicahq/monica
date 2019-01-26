@@ -77,6 +77,6 @@ class DestroyTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $destroyTagService = (new DestroyTag)->execute($request);
+        $destroyTagService = app(DestroyTag::class)->execute($request);
     }
 }

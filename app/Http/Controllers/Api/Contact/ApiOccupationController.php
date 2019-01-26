@@ -61,7 +61,7 @@ class ApiOccupationController extends ApiController
     public function store(Request $request)
     {
         try {
-            $occupation = (new CreateOccupation)->execute(
+            $occupation = app(CreateOccupation::class)->execute(
                 $request->all()
                     +
                     [
@@ -89,7 +89,7 @@ class ApiOccupationController extends ApiController
     public function update(Request $request, $occupationId)
     {
         try {
-            $occupation = (new UpdateOccupation)->execute(
+            $occupation = app(UpdateOccupation::class)->execute(
                 $request->all()
                     +
                     [
@@ -117,7 +117,7 @@ class ApiOccupationController extends ApiController
     public function destroy(Request $request, $occupationId)
     {
         try {
-            (new DestroyOccupation)->execute([
+            app(DestroyOccupation::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'occupation_id' => $occupationId,
             ]);
