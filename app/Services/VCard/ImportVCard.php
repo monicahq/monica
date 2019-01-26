@@ -595,7 +595,6 @@ class ImportVCard extends BaseService
         if ($entry->BDAY && ! empty((string) $entry->BDAY)) {
             $birthdate = DateHelper::parseDate((string) $entry->BDAY);
             if (! is_null($birthdate)) {
-
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
