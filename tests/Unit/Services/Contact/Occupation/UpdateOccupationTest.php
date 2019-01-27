@@ -28,8 +28,7 @@ class UpdateOccupationTest extends TestCase
             'salary' => '30000',
         ];
 
-        $occupationService = new UpdateOccupation;
-        $occupation = $occupationService->execute($request);
+        $occupation = app(UpdateOccupation::class)->execute($request);
 
         $this->assertDatabaseHas('occupations', [
             'id' => $occupation->id,

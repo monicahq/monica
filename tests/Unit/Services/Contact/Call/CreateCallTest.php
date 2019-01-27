@@ -141,7 +141,7 @@ class CreateCallTest extends TestCase
             'called_at' => Carbon::now(),
         ];
 
-        app(CreateCall::class)->execute($request);
+        $call = app(CreateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,

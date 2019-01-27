@@ -28,8 +28,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $deceasedService->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -46,8 +45,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $deceasedService->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -73,8 +71,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $contact = app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -107,8 +104,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $contact = app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 

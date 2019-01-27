@@ -21,8 +21,7 @@ class CreateTagTest extends TestCase
             'name' => 'Central Perk',
         ];
 
-        $createTagService = new CreateTag;
-        $tag = $createTagService->execute($request);
+        $tag = app(CreateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'id' => $tag->id,
@@ -45,7 +44,6 @@ class CreateTagTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $createTagService = new CreateTag;
-        $tag = $createTagService->execute($request);
+        app(CreateTag::class)->execute($request);
     }
 }
