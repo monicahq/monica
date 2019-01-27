@@ -6,8 +6,9 @@ use Sabre\DAV;
 use App\Models\User\SyncToken;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
+use Sabre\CalDAV\Backend\SubscriptionSupport;
 
-class CalDAVBackend extends AbstractBackend implements SyncSupport
+class CalDAVBackend extends AbstractBackend implements SyncSupport, SubscriptionSupport
 {
     /**
      * Set the Calendar backends.
@@ -25,9 +26,9 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     /**
      * Get the backend for this id.
      *
-     * @return AbstractCalDAVBackend
+     * @return AbstractCalDAVBackend|null
      */
-    private function getBackend($id): AbstractCalDAVBackend
+    private function getBackend($id)
     {
         return collect($this->getBackends())->first(function ($backend) use ($id) {
             return $backend->backendUri() === $id;
@@ -62,12 +63,45 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getCalendarsForUser($principalUri)
     {
         return array_map(function ($backend) {
-            return $backend->getDescription()
-            + [
-                'id' => $backend->backendUri(),
-                'uri' => $backend->backendUri(),
-            ];
+            return $backend->getDescription();
         }, $this->getBackends());
+    }
+
+    /**
+     * Returns a list of subscriptions for a principal.
+     *
+     * Every subscription is an array with the following keys:
+     *  * id, a unique id that will be used by other functions to modify the
+     *    subscription. This can be the same as the uri or a database key.
+     *  * uri. This is just the 'base uri' or 'filename' of the subscription.
+     *  * principaluri. The owner of the subscription. Almost always the same as
+     *    principalUri passed to this method.
+     *
+     * Furthermore, all the subscription info must be returned too:
+     *
+     * 1. {DAV:}displayname
+     * 2. {http://apple.com/ns/ical/}refreshrate
+     * 3. {http://calendarserver.org/ns/}subscribed-strip-todos (omit if todos
+     *    should not be stripped).
+     * 4. {http://calendarserver.org/ns/}subscribed-strip-alarms (omit if alarms
+     *    should not be stripped).
+     * 5. {http://calendarserver.org/ns/}subscribed-strip-attachments (omit if
+     *    attachments should not be stripped).
+     * 6. {http://calendarserver.org/ns/}source (Must be a
+     *     Sabre\DAV\Property\Href).
+     * 7. {http://apple.com/ns/ical/}calendar-color
+     * 8. {http://apple.com/ns/ical/}calendar-order
+     * 9. {urn:ietf:params:xml:ns:caldav}supported-calendar-component-set
+     *    (should just be an instance of
+     *    Sabre\CalDAV\Property\SupportedCalendarComponentSet, with a bunch of
+     *    default components).
+     *
+     * @param string $principalUri
+     * @return array
+     */
+    function getSubscriptionsForUser($principalUri)
+    {
+        return $this->getCalendarsForUser($principalUri);
     }
 
     /**
@@ -302,4 +336,51 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function deleteCalendar($calendarId)
     {
     }
+
+    /**
+     * Creates a new subscription for a principal.
+     *
+     * If the creation was a success, an id must be returned that can be used to reference
+     * this subscription in other methods, such as updateSubscription.
+     *
+     * @param string $principalUri
+     * @param string $uri
+     * @param array $properties
+     * @return mixed
+     */
+    function createSubscription($principalUri, $uri, array $properties)
+    {
+        return false;
+    }
+
+    /**
+     * Updates a subscription
+     *
+     * The list of mutations is stored in a Sabre\DAV\PropPatch object.
+     * To do the actual updates, you must tell this object which properties
+     * you're going to process with the handle() method.
+     *
+     * Calling the handle method is like telling the PropPatch object "I
+     * promise I can handle updating this property".
+     *
+     * Read the PropPatch documentation for more info and examples.
+     *
+     * @param mixed $subscriptionId
+     * @param \Sabre\DAV\PropPatch $propPatch
+     * @return void
+     */
+    function updateSubscription($subscriptionId, DAV\PropPatch $propPatch)
+    {
+    }
+
+    /**
+     * Deletes a subscription.
+     *
+     * @param mixed $subscriptionId
+     * @return void
+     */
+    function deleteSubscription($subscriptionId)
+    {
+    }
+
 }
