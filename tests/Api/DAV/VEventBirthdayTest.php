@@ -5,11 +5,12 @@ namespace Tests\Api\DAV;
 use Tests\ApiTestCase;
 use Illuminate\Support\Str;
 use App\Models\Contact\Contact;
+use Sabre\VObject\PHPUnitAssertions;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VEventBirthdayTest extends ApiTestCase
 {
-    use DatabaseTransactions, CardEtag;
+    use DatabaseTransactions, CardEtag, PHPUnitAssertions;
 
     /**
      * @group dav
@@ -29,7 +30,7 @@ class VEventBirthdayTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
 
-        $this->assertEquals($this->getCal($specialDate, true), $response->getContent());
+        $this->assertVObjectEqualsVObject($this->getCal($specialDate, true), $response->getContent());
     }
 
     public function test_caldav_birthdays_report()
