@@ -75,6 +75,7 @@ class ImportVCard extends BaseService
     /**
      * Get the validation rules that apply to the service.
      *
+     *
      * @return array
      */
     public function rules()
@@ -83,7 +84,14 @@ class ImportVCard extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'user_id' => 'required|integer|exists:users,id',
             'contact_id' => 'nullable|integer|exists:contacts,id',
-            'entry' => 'required|string',
+            'entry' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    if (! is_string($value) && ! $value instanceof VCard) {
+                        $fail($attribute.' must be a string or a VCard object.');
+                    }
+                },
+            ],
             'behaviour' => [
                 'required',
                 Rule::in(self::$behaviourTypes),
@@ -204,10 +212,14 @@ class ImportVCard extends BaseService
      */
     private function getEntry($data)
     {
-        try {
-            $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
-        } catch (ParseException $e) {
-            return;
+        $entry = $data['entry'];
+
+        if (! $entry instanceof VCard) {
+            try {
+                $entry = Reader::read($entry, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+            } catch (ParseException $e) {
+                return;
+            }
         }
 
         return $entry;
@@ -670,13 +682,19 @@ class ImportVCard extends BaseService
             return;
         }
 
+        $contactFieldTypeId = $this->getContactFieldTypeId('email');
+        if (! $contactFieldTypeId) {
+            // Case of contact field type email does not exist
+            return;
+        }
+
         foreach ($entry->EMAIL as $email) {
             if ($this->isValidEmail($email)) {
                 ContactField::firstOrCreate([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'data' => $this->formatValue($email),
-                    'contact_field_type_id' => $this->getContactFieldTypeId('email'),
+                    'contact_field_type_id' => $contactFieldTypeId,
                 ]);
             }
         }
@@ -693,6 +711,12 @@ class ImportVCard extends BaseService
             return;
         }
 
+        $contactFieldTypeId = $this->getContactFieldTypeId('phone');
+        if (! $contactFieldTypeId) {
+            // Case of contact field type phone does not exist
+            return;
+        }
+
         foreach ($entry->TEL as $tel) {
             $tel = (string) $entry->TEL;
 
@@ -704,7 +728,7 @@ class ImportVCard extends BaseService
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'data' => $this->formatValue($tel),
-                'contact_field_type_id' => $this->getContactFieldTypeId('phone'),
+                'contact_field_type_id' => $contactFieldTypeId,
             ]);
         }
     }
@@ -765,9 +789,9 @@ class ImportVCard extends BaseService
      * Get the contact field type id for the $type.
      *
      * @param string $type  The type of the ContactFieldType, or the name
-     * @return int
+     * @return int|null
      */
-    private function getContactFieldTypeId(string $type): int
+    private function getContactFieldTypeId(string $type)
     {
         if (! array_has($this->contactFields, $type)) {
             $contactFieldType = ContactFieldType::where([

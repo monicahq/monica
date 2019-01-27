@@ -13,6 +13,7 @@ New features:
 
 Enhancements:
 
+* Use iterator reader for vcard imports
 * Accept last name when using contact search field
 * Register all app services as singleton
 * Docker image: add sentry-cli and run sentry:release command if sentry is enabled
