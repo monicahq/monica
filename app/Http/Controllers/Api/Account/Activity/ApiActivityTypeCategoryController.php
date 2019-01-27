@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Api\Account\Activity;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Validation\ValidationException;
 use App\Models\Account\ActivityTypeCategory;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory;
-use App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory;
 use App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory;
+use App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory;
 use App\Http\Resources\Activity\ActivityTypeCategory as ActivityTypeCategoryResource;
 
 class ApiActivityTypeCategoryController extends ApiController
@@ -131,6 +130,6 @@ class ApiActivityTypeCategoryController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$activityTypeCategoryId);
+        return $this->respondObjectDeleted((int) $activityTypeCategoryId);
     }
 }
