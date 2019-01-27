@@ -3,7 +3,6 @@
 namespace Tests\Api\Account\Activity;
 
 use Tests\ApiTestCase;
-use App\Models\Account\ActivityType;
 use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
