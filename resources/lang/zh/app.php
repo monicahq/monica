@@ -33,7 +33,7 @@ return [
     'type' => '类型',
     'zoom' => '放大',
     'upgrade' => '升级解锁',
-    'percent_uploaded' => '已上传 {percent}% ',
+    'percent_uploaded' => '已上传 {percent}%',
     'next' => '下一页 ❯',
     'previous' => '❮ 上一页',
     'retry' => '重试',
@@ -433,4 +433,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => '当前天气',
+
+    // dav
+    'dav_contacts' => 'Contacts',
+    'dav_contacts_description' => ':name’s contacts',
+    'dav_birthdays' => 'Birthdays',
+    'dav_birthdays_description' => ':name’s contact’s birthdays',
+    'dav_tasks' => 'Tasks',
+    'dav_tasks_description' => ':name’s tasks',
 ];
