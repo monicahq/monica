@@ -4,11 +4,14 @@ namespace App\Models\Account;
 
 use Exception;
 use App\Models\User\User;
+use Sabre\VObject\Reader;
+use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Sabre\VObject\Splitter\VCard as VCardReader;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
@@ -170,15 +173,7 @@ class ImportJob extends Model
      */
     private function getEntries()
     {
-        $this->contacts_found = preg_match_all('/(BEGIN:VCARD.*?END:VCARD)/s',
-                                                $this->physicalFile,
-                                                $this->entries);
-
-        $this->contacts_found = count($this->entries[0]);
-
-        if ($this->contacts_found == 0) {
-            $this->fail(trans('settings.import_vcard_file_no_entries'));
-        }
+        $this->entries = new VCardReader($this->physicalFile, Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
     }
 
     /**
@@ -188,15 +183,31 @@ class ImportJob extends Model
      */
     private function processEntries($behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
-        collect($this->entries[0])->each(function ($entry) use ($behaviour) {
+        while (true) {
+            try {
+                $entry = $this->entries->getNext();
+                if (! $entry) {
+                    // file end
+                    break;
+                }
+                $this->contacts_found++;
+            } catch (ParseException $e) {
+                $this->skipEntry('?', (string) $e);
+                continue;
+            }
+
             $this->processSingleEntry($entry, $behaviour);
-        });
+        }
+
+        if ($this->contacts_found == 0) {
+            $this->fail(trans('settings.import_vcard_file_no_entries'));
+        }
     }
 
     /**
      * Process a single vCard entry.
      *
-     * @param  string $entry
+     * @param  string|VCard $entry
      * @param  string $behaviour
      */
     private function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
@@ -209,7 +220,7 @@ class ImportJob extends Model
                 'behaviour' => $behaviour,
             ]);
         } catch (ValidationException $e) {
-            $this->fail((string) $e);
+            $this->fail(implode(',', $e->validator->errors()->all()));
 
             return;
         }
