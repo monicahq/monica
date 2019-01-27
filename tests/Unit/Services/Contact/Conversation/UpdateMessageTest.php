@@ -39,7 +39,7 @@ class UpdateMessageTest extends TestCase
             'content' => 'lorem',
         ];
 
-        $message = app(UpdateConversation::class)->execute($request);
+        $message = app(UpdateMessage::class)->execute($request);
 
         $this->assertDatabaseHas('messages', [
             'id' => $message->id,
