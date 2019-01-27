@@ -82,7 +82,7 @@ return [
     'modal_call_title' => 'Telefonat vermerken',
     'modal_call_comment' => 'Worüber habt ihr geredet? (optional)',
     'modal_call_exact_date' => 'Das Telefonat war am',
-    'modal_call_who_called' => 'Who called?',
+    'modal_call_who_called' => 'Wer hat angerufen?',
     'modal_call_emotion' => 'Möchten sie speichern wie Sie sich während das Anrufs fühlten? (optional)',
     'calls_add_success' => 'Telefonat gespeichert.',
     'call_delete_confirmation' => 'Möchtest du das Telefonat wirklich löschen?',
@@ -91,9 +91,9 @@ return [
     'call_empty_comment' => 'Keine Details',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
     'call_blank_desc' => 'Du hast {name} angerufen',
-    'call_you_called' => 'You called',
-    'call_he_called' => '{name} called',
-    'call_emotions' => 'Emotions:',
+    'call_you_called' => 'Du hast angerufen',
+    'call_he_called' => '{name} rief an',
+    'call_emotions' => 'Emotionen:',
 
     // Conversation
     'conversation_blank' => 'Führe ein Logbuch über die Konversationen, die du mit :name auf Social Media, via SMS etc. hast...',
