@@ -42,7 +42,7 @@ N:;;;;
 NICKNAME:Johnny
 ADR:;;17 Shakespeare Ave.;Southampton;;SO17 2HB;United Kingdom
 END:VCARD
-    ';
+';
 
     public function test_it_belongs_to_a_user()
     {
@@ -176,9 +176,8 @@ END:VCARD
     public function test_it_calculates_how_many_entries_there_are_and_populate_the_entries_array()
     {
         Storage::fake('public');
-        $importJob = factory(ImportJob::class)->create([
-            'filename' => 'testfile.vcf',
-        ]);
+        $importJob = $this->createImportJob();
+        $importJob->filename = 'testfile.vcf';
 
         Storage::disk('public')->put(
             'testfile.vcf',
@@ -187,15 +186,11 @@ END:VCARD
 
         $this->invokePrivateMethod($importJob, 'getPhysicalFile');
         $this->invokePrivateMethod($importJob, 'getEntries');
+        $this->invokePrivateMethod($importJob, 'processEntries');
 
         $this->assertEquals(
             3,
             $importJob->contacts_found
-        );
-
-        $this->assertEquals(
-            3,
-            count($importJob->entries[0])
         );
     }
 
