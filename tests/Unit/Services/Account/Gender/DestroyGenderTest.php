@@ -23,8 +23,7 @@ class DestroyGenderTest extends TestCase
             'gender_id' => $gender->id,
         ];
 
-        $genderService = new DestroyGender;
-        $bool = $genderService->execute($request);
+        app(DestroyGender::class)->execute($request);
 
         $this->assertDatabaseMissing('genders', [
             'id' => $gender->id,

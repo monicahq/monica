@@ -23,8 +23,7 @@ class DestroyContactTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contactService = new DestroyContact;
-        $bool = $contactService->execute($request);
+        app(DestroyContact::class)->execute($request);
 
         $this->assertDatabaseMissing('contacts', [
             'id' => $contact->id,

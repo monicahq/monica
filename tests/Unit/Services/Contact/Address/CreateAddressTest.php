@@ -32,8 +32,7 @@ class CreateAddressTest extends TestCase
             'longitude' => '',
         ];
 
-        $addressService = new CreateAddress;
-        $address = $addressService->execute($request);
+        $address = app(CreateAddress::class)->execute($request);
 
         $this->assertDatabaseHas('addresses', [
             'id' => $address->id,
