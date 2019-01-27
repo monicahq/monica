@@ -145,7 +145,7 @@ return [
     'relationship_type_lover' => 'amante',
     'relationship_type_lover_female' => 'amante',
     'relationship_type_lover_with_name' => ':nombre de amante',
-    'relationship_type_lover_female_with_name' => ':nombre de amante',
+    'relationship_type_lover_female_with_name' => ':name’s lover',
 
     'relationship_type_inlovewith' => 'enamorado de',
     'relationship_type_inlovewith_female' => 'enamorado de',
