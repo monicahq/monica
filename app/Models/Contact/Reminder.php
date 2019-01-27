@@ -122,9 +122,28 @@ class Reminder extends Model
      */
     public function calculateNextExpectedDate()
     {
+        return $this->calculateNextExpectedDateInternal($this->initial_date);
+    }
+
+    /**
+     * Calculate the next expected date using user timezone for this reminder.
+     *
+     * @return Carbon
+     */
+    public function calculateNextExpectedDateOnTimezone()
+    {
         $date = $this->initial_date;
         $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, DateHelper::getTimezone() ?? config('app.timezone'));
+        return $this->calculateNextExpectedDateInternal($date);
+    }
 
+    /**
+     * Calculate the next expected date.
+     *
+     * @return Carbon
+     */
+    private function calculateNextExpectedDateInternal($date)
+    {
         while ($date->isPast()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
         }

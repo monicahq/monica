@@ -243,7 +243,7 @@ class ContactsController extends Controller
         $reminders = $reminders->merge($relevantRemindersFromRelatedContacts);
         // now we need to sort the reminders by next date they will be triggered
         foreach ($reminders as $reminder) {
-            $next_expected_date = $reminder->calculateNextExpectedDate();
+            $next_expected_date = $reminder->calculateNextExpectedDateOnTimezone();
             $reminder->next_expected_date_human_readable = DateHelper::getShortDate($next_expected_date);
             $reminder->next_expected_date = $next_expected_date->format('Y-m-d');
         }
