@@ -23,7 +23,7 @@ class DestroyActivityTypeCategoryTest extends TestCase
             'activity_type_category_id' => $activityTypeCategory->id,
         ];
 
-        (new DestroyActivityTypeCategory)->execute($request);
+        app(DestroyActivityTypeCategory::class)->execute($request);
 
         $this->assertDatabaseMissing('activity_type_categories', [
             'id' => $activityTypeCategory->id,
@@ -41,7 +41,7 @@ class DestroyActivityTypeCategoryTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyActivityTypeCategory)->execute($request);
+        app(DestroyActivityTypeCategory::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_do_not_exist()
@@ -52,6 +52,6 @@ class DestroyActivityTypeCategoryTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyActivityTypeCategory)->execute($request);
+        app(DestroyActivityTypeCategory::class)->execute($request);
     }
 }

@@ -25,7 +25,7 @@ class UpdateActivityTypeCategoryTest extends TestCase
             'translation_key' => 'https://centralperk.com',
         ];
 
-        $activityTypeCategory = (new UpdateActivityTypeCategory)->execute($request);
+        $activityTypeCategory = app(UpdateActivityTypeCategory::class)->execute($request);
 
         $this->assertDatabaseHas('activity_type_categories', [
             'id' => $activityTypeCategory->id,
@@ -49,7 +49,7 @@ class UpdateActivityTypeCategoryTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateActivityTypeCategory)->execute($request);
+        app(UpdateActivityTypeCategory::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_activity_is_not_linked_to_account()
@@ -64,6 +64,6 @@ class UpdateActivityTypeCategoryTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateActivityTypeCategory)->execute($request);
+        app(UpdateActivityTypeCategory::class)->execute($request);
     }
 }

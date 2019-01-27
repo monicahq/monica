@@ -23,7 +23,7 @@ class CreateActivityTypeCategoryTest extends TestCase
             'translation_key' => 'central_perk',
         ];
 
-        $activityTypeCategory = (new CreateActivityTypeCategory)->execute($request);
+        $activityTypeCategory = app(CreateActivityTypeCategory::class)->execute($request);
 
         $this->assertDatabaseHas('activity_type_categories', [
             'id' => $activityTypeCategory->id,
@@ -45,6 +45,6 @@ class CreateActivityTypeCategoryTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateActivityTypeCategory)->execute($request);
+        app(CreateActivityTypeCategory::class)->execute($request);
     }
 }
