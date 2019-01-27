@@ -67,10 +67,9 @@ class DAVServerTest extends ApiTestCase
 
         $response = $this->call('GET', '/dav');
 
-        $response->assertStatus(501);
+        $response->assertStatus(302);
         $response->assertHeader('X-Sabre-Version');
-
-        $response->assertSee('There was no plugin in the system that was willing to handle this GET method. Enable the Browser plugin to get a better result here.');
+        $response->assertHeader('Location', route('settings.dav'));
     }
 
     /**

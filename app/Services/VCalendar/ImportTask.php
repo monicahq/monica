@@ -148,8 +148,12 @@ class ImportTask extends BaseService
      */
     private function importTimestamp(Task $task, VCalendar $entry): void
     {
-        if (empty($task->created_at) && $entry->VTODO->CREATED) {
-            $task->created_at = DateHelper::parseDateTime((string) $entry->VTODO->CREATED);
+        if (empty($task->created_at)) {
+            if ($entry->VTODO->DTSTAMP) {
+                $task->created_at = DateHelper::parseDateTime($entry->VTODO->DTSTAMP->getDateTime());
+            } elseif ($entry->VTODO->CREATED) {
+                $task->created_at = DateHelper::parseDateTime($entry->VTODO->CREATED->getDateTime());
+            }
         }
     }
 
@@ -175,7 +179,7 @@ class ImportTask extends BaseService
         if (! $task->completed) {
             $task->completed_at = null;
         } elseif ($entry->VTODO->COMPLETED) {
-            $task->completed_at = DateHelper::parseDateTime((string) $entry->VTODO->COMPLETED);
+            $task->completed_at = DateHelper::parseDateTime($entry->VTODO->COMPLETED->getDateTime());
         }
     }
 }

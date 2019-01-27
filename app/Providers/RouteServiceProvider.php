@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
+use App\Services\Instance\IdHasher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
@@ -42,7 +42,7 @@ class RouteServiceProvider extends ServiceProvider
             }
 
             try {
-                $id = app('idhasher')->decodeId($value);
+                $id = app(IdHasher::class)->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
                     ->findOrFail($id);

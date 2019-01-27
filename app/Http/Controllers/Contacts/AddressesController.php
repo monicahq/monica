@@ -66,7 +66,7 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        $address = (new CreateAddress)->execute($datas);
+        $address = app(CreateAddress::class)->execute($datas);
 
         return $this->setHTTPStatusCode(201)
                     ->respond($this->addressObject($address));
@@ -92,7 +92,7 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        $address = (new UpdateAddress)->execute($datas);
+        $address = app(UpdateAddress::class)->execute($datas);
 
         return $this->respond($this->addressObject($address));
     }
@@ -112,7 +112,7 @@ class AddressesController extends Controller
             'address_id' => $address->id,
         ];
 
-        if ((new DestroyAddress)->execute($datas)) {
+        if (app(DestroyAddress::class)->execute($datas)) {
             return $this->respondObjectDeleted($address->id);
         }
 

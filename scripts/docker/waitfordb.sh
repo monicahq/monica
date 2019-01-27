@@ -8,7 +8,7 @@ while [ $attempts -lt $max_attempts ]; do
     nc -z "${DB_HOST}" "${DB_PORT}" && break
     echo "Waiting for ${DB_HOST}:${DB_PORT} ..."
     sleep 1
-    (( attempts++ ))
+    let "attempts=attempts+1"
 done
 
 if [ $attempts -eq $max_attempts ]; then

@@ -139,7 +139,7 @@ class RelationshipsController extends Controller
             $year = $request->get('year');
         }
 
-        (new UpdateBirthdayInformation)->execute([
+        app(UpdateBirthdayInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $partner->id,
             'is_date_known' => ($request->get('birthdate') == 'unknown' ? false : true),
@@ -257,7 +257,7 @@ class RelationshipsController extends Controller
             $year = $request->get('year');
         }
 
-        (new UpdateBirthdayInformation)->execute([
+        app(UpdateBirthdayInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $otherContact->id,
             'is_date_known' => ($request->get('birthdate') == 'unknown' ? false : true),

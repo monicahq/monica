@@ -866,7 +866,7 @@ class Account extends Model
      */
     public function populateDefaultFields()
     {
-        (new PopulateContactFieldTypesTable)->execute([
+        app(PopulateContactFieldTypesTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);
@@ -877,12 +877,12 @@ class Account extends Model
         $this->populateRelationshipTypesTable();
         $this->populateActivityTypeTable();
 
-        (new PopulateLifeEventsTable)->execute([
+        app(PopulateLifeEventsTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);
 
-        (new PopulateModulesTable)->execute([
+        app(PopulateModulesTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);

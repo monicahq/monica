@@ -5,7 +5,7 @@ namespace App\Http\Controllers\DAV\Backend\CalDAV;
 interface ICalDAVBackend
 {
     /**
-     * Returns a list of calendars for a principal.
+     * Returns a list of properties for a principal.
      *
      * Every project is an array with the following keys:
      *  * id, a unique id that will be used by other functions to modify the
@@ -26,7 +26,27 @@ interface ICalDAVBackend
      * If you return {http://sabredav.org/ns}read-only and set the value to 1,
      * ACL will automatically be put in read-only mode.
      *
-     * @param string $principalUri
+     ************************
+     * == From Subscription :
+     * Furthermore, all the subscription info must be returned too:
+     *
+     * 1. {DAV:}displayname
+     * 2. {http://apple.com/ns/ical/}refreshrate
+     * 3. {http://calendarserver.org/ns/}subscribed-strip-todos (omit if todos
+     *    should not be stripped).
+     * 4. {http://calendarserver.org/ns/}subscribed-strip-alarms (omit if alarms
+     *    should not be stripped).
+     * 5. {http://calendarserver.org/ns/}subscribed-strip-attachments (omit if
+     *    attachments should not be stripped).
+     * 6. {http://calendarserver.org/ns/}source (Must be a
+     *     Sabre\DAV\Property\Href).
+     * 7. {http://apple.com/ns/ical/}calendar-color
+     * 8. {http://apple.com/ns/ical/}calendar-order
+     * 9. {urn:ietf:params:xml:ns:caldav}supported-calendar-component-set
+     *    (should just be an instance of
+     *    Sabre\CalDAV\Property\SupportedCalendarComponentSet, with a bunch of
+     *    default components).
+     *
      * @return array
      */
     public function getDescription();
@@ -78,7 +98,6 @@ interface ICalDAVBackend
      * calendar-data. If the result of a subsequent GET to this object is not
      * the exact same as this request body, you should omit the ETag.
      *
-     * @param mixed $calendarId
      * @param string $objectUri
      * @param string $calendarData
      * @return string|null
@@ -90,7 +109,6 @@ interface ICalDAVBackend
      *
      * The object uri is only the basename, or filename and not a full path.
      *
-     * @param mixed $calendarId
      * @param string $objectUri
      * @return void
      */

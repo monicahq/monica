@@ -247,8 +247,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $peopleurl = route('people.show', $contact);
-        $sabreversion = \Sabre\VObject\Version::VERSION;
+        $vcard = mb_ereg_replace("\n", "&#13;\n", $this->getCard($contact));
 
         $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
         '<d:response>'.
@@ -256,16 +255,7 @@ class VCardContactTest extends ApiTestCase
           '<d:propstat>'.
             '<d:prop>'.
               "<d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>".
-              "<card:address-data>BEGIN:VCARD&#13;\n".
-        "VERSION:4.0&#13;\n".
-        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
-        "UID:{$contact->uuid}&#13;\n".
-        "SOURCE:{$peopleurl}&#13;\n".
-        "FN:John Doe&#13;\n".
-        "N:Doe;John;;;&#13;\n".
-        "GENDER:O;&#13;\n".
-        "END:VCARD&#13;\n".
-               '</card:address-data>'.
+              "<card:address-data>{$vcard}</card:address-data>".
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
@@ -296,8 +286,8 @@ class VCardContactTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $peopleurl = route('people.show', $contact);
-        $sabreversion = \Sabre\VObject\Version::VERSION;
+        $vcard = mb_ereg_replace('VERSION:4.0', 'VERSION:3.0', $this->getCard($contact));
+        $vcard = mb_ereg_replace("\n", "&#13;\n", $vcard);
 
         $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
         '<d:response>'.
@@ -305,16 +295,7 @@ class VCardContactTest extends ApiTestCase
           '<d:propstat>'.
             '<d:prop>'.
               "<d:getetag>&quot;{$this->getEtag($contact)}&quot;</d:getetag>".
-              "<card:address-data>BEGIN:VCARD&#13;\n".
-        "VERSION:3.0&#13;\n".
-        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
-        "UID:{$contact->uuid}&#13;\n".
-        "SOURCE:{$peopleurl}&#13;\n".
-        "FN:John Doe&#13;\n".
-        "N:Doe;John;;;&#13;\n".
-        "GENDER:O;&#13;\n".
-        "END:VCARD&#13;\n".
-               '</card:address-data>'.
+              "<card:address-data>{$vcard}</card:address-data>".
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
@@ -349,9 +330,8 @@ class VCardContactTest extends ApiTestCase
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
-        $people1url = route('people.show', $contact1);
-        $people2url = route('people.show', $contact2);
-        $sabreversion = \Sabre\VObject\Version::VERSION;
+        $vcard1 = mb_ereg_replace("\n", "&#13;\n", $this->getCard($contact1));
+        $vcard2 = mb_ereg_replace("\n", "&#13;\n", $this->getCard($contact2));
 
         $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">'.
         '<d:response>'.
@@ -359,16 +339,7 @@ class VCardContactTest extends ApiTestCase
           '<d:propstat>'.
             '<d:prop>'.
               "<d:getetag>&quot;{$this->getEtag($contact1)}&quot;</d:getetag>".
-              "<card:address-data>BEGIN:VCARD&#13;\n".
-        "VERSION:4.0&#13;\n".
-        "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
-        "UID:{$contact1->uuid}&#13;\n".
-        "SOURCE:{$people1url}&#13;\n".
-        "FN:John Doe&#13;\n".
-        "N:Doe;John;;;&#13;\n".
-        "GENDER:O;&#13;\n".
-        "END:VCARD&#13;\n".
-               '</card:address-data>'.
+              "<card:address-data>{$vcard1}</card:address-data>".
              '</d:prop>'.
              '<d:status>HTTP/1.1 200 OK</d:status>'.
            '</d:propstat>'.
@@ -379,16 +350,7 @@ class VCardContactTest extends ApiTestCase
             '<d:propstat>'.
               '<d:prop>'.
                 "<d:getetag>&quot;{$this->getEtag($contact2)}&quot;</d:getetag>".
-                "<card:address-data>BEGIN:VCARD&#13;\n".
-          "VERSION:4.0&#13;\n".
-          "PRODID:-//Sabre//Sabre VObject {$sabreversion}//EN&#13;\n".
-          "UID:{$contact2->uuid}&#13;\n".
-          "SOURCE:{$people2url}&#13;\n".
-          "FN:John Doe&#13;\n".
-          "N:Doe;John;;;&#13;\n".
-          "GENDER:O;&#13;\n".
-          "END:VCARD&#13;\n".
-                 '</card:address-data>'.
+                "<card:address-data>{$vcard2}</card:address-data>".
                '</d:prop>'.
                '<d:status>HTTP/1.1 200 OK</d:status>'.
              '</d:propstat>'.

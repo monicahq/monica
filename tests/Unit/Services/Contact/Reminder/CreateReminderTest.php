@@ -35,7 +35,7 @@ class CreateReminderTest extends TestCase
             'description' => 'description',
         ];
 
-        $reminder = (new CreateReminder)->execute($request);
+        $reminder = app(CreateReminder::class)->execute($request);
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
@@ -74,7 +74,7 @@ class CreateReminderTest extends TestCase
             'description' => 'description',
         ];
 
-        $reminder = (new CreateReminder)->execute($request);
+        $reminder = app(CreateReminder::class)->execute($request);
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
@@ -119,7 +119,7 @@ class CreateReminderTest extends TestCase
             'description' => 'description',
         ];
 
-        $reminder = (new CreateReminder)->execute($request);
+        $reminder = app(CreateReminder::class)->execute($request);
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
@@ -159,7 +159,7 @@ class CreateReminderTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $reminderService = (new CreateReminder)->execute($request);
+        $reminderService = app(CreateReminder::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_are_not_found()
@@ -179,7 +179,7 @@ class CreateReminderTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $reminder = (new CreateReminder)->execute($request);
+        $reminder = app(CreateReminder::class)->execute($request);
 
         $request = [
             'contact_id' => $contact->id,
@@ -193,7 +193,7 @@ class CreateReminderTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $reminderService = (new CreateReminder)->execute($request);
+        $reminderService = app(CreateReminder::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_frequency_type_is_not_right()
@@ -213,7 +213,7 @@ class CreateReminderTest extends TestCase
         $this->expectException(ValidationException::class);
 
         try {
-            $reminderService = (new CreateReminder)->execute($request);
+            $reminderService = app(CreateReminder::class)->execute($request);
         } catch (ValidationException $e) {
             $this->assertEquals(['The selected frequency type is invalid.'], $e->validator->errors()->all());
             throw $e;

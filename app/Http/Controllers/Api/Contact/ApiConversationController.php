@@ -88,7 +88,7 @@ class ApiConversationController extends ApiController
     public function store(Request $request)
     {
         try {
-            $conversation = (new CreateConversation)->execute(
+            $conversation = app(CreateConversation::class)->execute(
                 $request->all()
                 +
                 [
@@ -116,7 +116,7 @@ class ApiConversationController extends ApiController
     public function update(Request $request, $conversationId)
     {
         try {
-            $conversation = (new UpdateConversation)->execute(
+            $conversation = app(UpdateConversation::class)->execute(
                 $request->all()
                 +
                 [
@@ -145,7 +145,7 @@ class ApiConversationController extends ApiController
     public function destroy(Request $request, $conversationId)
     {
         try {
-            (new DestroyConversation)->execute([
+            app(DestroyConversation::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'conversation_id' => $conversationId,
             ]);

@@ -70,7 +70,7 @@ class UpdateMessageTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $updateMessage = (new UpdateMessage)->execute($request);
+        $updateMessage = app(UpdateMessage::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_message_does_not_exist()
@@ -90,6 +90,6 @@ class UpdateMessageTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateMessage = (new UpdateMessage)->execute($request);
+        $updateMessage = app(UpdateMessage::class)->execute($request);
     }
 }

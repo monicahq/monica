@@ -134,6 +134,16 @@ class Contact extends Model
     protected $nameOrder = 'firstname_lastname';
 
     /**
+     * Get Searchable Fields.
+     *
+     * @return array
+     */
+    public function getSearchableFields()
+    {
+        return $this->searchable_columns;
+    }
+
+    /**
      * Get the user associated with the contact.
      *
      * @return BelongsTo
