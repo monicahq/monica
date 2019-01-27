@@ -59,7 +59,7 @@ class ApiTaskController extends ApiController
     public function store(Request $request)
     {
         try {
-            $task = (new CreateTask)->execute([
+            $task = app(CreateTask::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
                 'title' => $request->get('title'),
@@ -83,7 +83,7 @@ class ApiTaskController extends ApiController
     public function update(Request $request, $taskId)
     {
         try {
-            $task = (new UpdateTask)->execute(
+            $task = app(UpdateTask::class)->execute(
                 $request->all()
                     +
                     [
@@ -108,7 +108,7 @@ class ApiTaskController extends ApiController
     public function destroy(Request $request, $taskId)
     {
         try {
-            (new DestroyTask)->execute([
+            app(DestroyTask::class)->execute([
                 'task_id' => $taskId,
                 'account_id' => auth()->user()->account->id,
             ]);

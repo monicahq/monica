@@ -33,8 +33,7 @@ class DestroyRelationshipTest extends TestCase
             'relationship_id' => $relationship->id,
         ];
 
-        $relationshipService = new DestroyRelationship;
-        $relationshipService->execute($request);
+        app(DestroyRelationship::class)->execute($request);
 
         $this->assertDatabaseMissing('relationships', [
             'id' => $relationship->id,
@@ -51,7 +50,7 @@ class DestroyRelationshipTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        (new DestroyRelationship)->execute($request);
+        app(DestroyRelationship::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_relationship_is_not_linked_to_account()
@@ -66,6 +65,6 @@ class DestroyRelationshipTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        (new DestroyRelationship)->execute($request);
+        app(DestroyRelationship::class)->execute($request);
     }
 }

@@ -34,7 +34,7 @@ class UpdatePlaceTest extends TestCase
             'longitude' => '10',
         ];
 
-        $place = (new UpdatePlace)->execute($request);
+        $place = app(UpdatePlace::class)->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -73,7 +73,7 @@ class UpdatePlaceTest extends TestCase
             'longitude' => '',
         ];
 
-        $place = (new UpdatePlace)->execute($request, $client);
+        $place = app(UpdatePlace::class)->execute($request, $client);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -93,7 +93,7 @@ class UpdatePlaceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePlace)->execute($request);
+        app(UpdatePlace::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_place_is_not_linked_to_account()
@@ -107,6 +107,6 @@ class UpdatePlaceTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdatePlace)->execute($request);
+        app(UpdatePlace::class)->execute($request);
     }
 }

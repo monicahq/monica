@@ -34,8 +34,7 @@ class CreateContactTest extends TestCase
             'is_deceased_date_known' => false,
         ];
 
-        $contactService = new CreateContact;
-        $contact = $contactService->execute($request);
+        $contact = app(CreateContact::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -69,7 +68,7 @@ class CreateContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateContact)->execute($request);
+        app(CreateContact::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_account_doesnt_exist()
@@ -90,6 +89,6 @@ class CreateContactTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        (new CreateContact)->execute($request);
+        app(CreateContact::class)->execute($request);
     }
 }

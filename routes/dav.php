@@ -23,5 +23,5 @@ $verbs = [
 Illuminate\Routing\Router::$verbs = $verbs;
 
 Route::group(['middleware' => ['auth.tokenonbasic', 'limitations']], function () use ($verbs) {
-    Route::match($verbs, '{path?}', 'DAV\\DAVController@init')->where('path', '(.)*');
+    Route::match($verbs, '{path?}', 'DAV\\DAVController@init')->where('path', '(.)*')->name('dav');
 });

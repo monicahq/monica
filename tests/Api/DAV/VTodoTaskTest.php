@@ -7,11 +7,12 @@ use Tests\ApiTestCase;
 use Illuminate\Support\Str;
 use App\Models\Contact\Task;
 use App\Models\Contact\Contact;
+use Sabre\VObject\PHPUnitAssertions;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VTodoTaskTest extends ApiTestCase
 {
-    use DatabaseTransactions, CardEtag;
+    use DatabaseTransactions, CardEtag, PHPUnitAssertions;
 
     /**
      * @group dav
@@ -31,7 +32,7 @@ class VTodoTaskTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
 
-        $this->assertEquals($this->getVTodo($task, true), $response->getContent());
+        $this->assertVObjectEqualsVObject($this->getVTodo($task, true), $response->getContent());
     }
 
     /**

@@ -136,7 +136,7 @@ class GetWeatherInformation extends BaseService
      */
     private function fetchGPS(Place $place)
     {
-        return (new GetGPSCoordinate)->execute([
+        return app(GetGPSCoordinate::class)->execute([
             'account_id' => $place->account_id,
             'place_id' => $place->id,
         ]);

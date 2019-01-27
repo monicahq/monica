@@ -23,8 +23,7 @@ class DestroyCompanyTest extends TestCase
             'company_id' => $company->id,
         ];
 
-        $companyService = new DestroyCompany;
-        $bool = $companyService->execute($request);
+        app(DestroyCompany::class)->execute($request);
 
         $this->assertDatabaseMissing('companies', [
             'id' => $company->id,
@@ -42,7 +41,7 @@ class DestroyCompanyTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyCompany)->execute($request);
+        app(DestroyCompany::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_do_not_exist()
@@ -53,6 +52,6 @@ class DestroyCompanyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyCompany)->execute($request);
+        app(DestroyCompany::class)->execute($request);
     }
 }

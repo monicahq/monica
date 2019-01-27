@@ -50,7 +50,7 @@ class IntroductionsController extends Controller
         }
 
         try {
-            (new DestroyReminder)->execute([
+            app(DestroyReminder::class)->execute([
                 'account_id' => $contact->account_id,
                 'reminder_id' => $contact->first_met_reminder_id,
             ]);
@@ -61,7 +61,7 @@ class IntroductionsController extends Controller
             $specialDate = $contact->setSpecialDate('first_met', $request->input('first_met_year'), $request->input('first_met_month'), $request->input('first_met_day'));
 
             if ($request->addReminder == 'on') {
-                (new CreateReminder)->execute([
+                app(CreateReminder::class)->execute([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'initial_date' => $specialDate->date->toDateString(),

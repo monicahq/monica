@@ -53,15 +53,14 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function getAddressBooksForUser($principalUri)
     {
-        $name = Auth::user()->name;
         $token = $this->getCurrentSyncToken();
 
         $des = [
             'id'                => $this->backendUri(),
             'uri'               => $this->backendUri(),
             'principaluri'      => PrincipalBackend::getPrincipalUser(),
-            '{DAV:}displayname' => $name,
-            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => $name,
+            '{DAV:}displayname' => trans('app.dav_contacts'),
+            '{'.CardDAVPlugin::NS_CARDDAV.'}addressbook-description' => trans('app.dav_contacts_description', ['name' => Auth::user()->name]),
         ];
         if ($token) {
             $des += [
@@ -156,7 +155,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     private function prepareCard($contact)
     {
         try {
-            $vcard = (new ExportVCard())
+            $vcard = app(ExportVCard::class)
                 ->execute([
                     'account_id' => Auth::user()->account_id,
                     'contact_id' => $contact->id,
@@ -322,8 +321,10 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
         }
 
         try {
-            $result = (new ImportVCard(Auth::user()->account_id))
+            $result = app(ImportVCard::class)
                 ->execute([
+                    'account_id' => Auth::user()->account_id,
+                    'user_id' => Auth::user()->id,
                     'contact_id' => $contact_id,
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,

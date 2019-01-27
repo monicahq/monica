@@ -25,9 +25,9 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     /**
      * Get the backend for this id.
      *
-     * @return AbstractCalDAVBackend
+     * @return AbstractCalDAVBackend|null
      */
-    private function getBackend($id): AbstractCalDAVBackend
+    private function getBackend($id)
     {
         return collect($this->getBackends())->first(function ($backend) use ($id) {
             return $backend->backendUri() === $id;
@@ -62,11 +62,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
     public function getCalendarsForUser($principalUri)
     {
         return array_map(function ($backend) {
-            return $backend->getDescription()
-            + [
-                'id' => $backend->backendUri(),
-                'uri' => $backend->backendUri(),
-            ];
+            return $backend->getDescription();
         }, $this->getBackends());
     }
 
@@ -300,6 +296,52 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      * @return void
      */
     public function deleteCalendar($calendarId)
+    {
+    }
+
+    /**
+     * Creates a new subscription for a principal.
+     *
+     * If the creation was a success, an id must be returned that can be used to reference
+     * this subscription in other methods, such as updateSubscription.
+     *
+     * @param string $principalUri
+     * @param string $uri
+     * @param array $properties
+     * @return mixed
+     */
+    public function createSubscription($principalUri, $uri, array $properties)
+    {
+        return false;
+    }
+
+    /**
+     * Updates a subscription.
+     *
+     * The list of mutations is stored in a Sabre\DAV\PropPatch object.
+     * To do the actual updates, you must tell this object which properties
+     * you're going to process with the handle() method.
+     *
+     * Calling the handle method is like telling the PropPatch object "I
+     * promise I can handle updating this property".
+     *
+     * Read the PropPatch documentation for more info and examples.
+     *
+     * @param mixed $subscriptionId
+     * @param \Sabre\DAV\PropPatch $propPatch
+     * @return void
+     */
+    public function updateSubscription($subscriptionId, DAV\PropPatch $propPatch)
+    {
+    }
+
+    /**
+     * Deletes a subscription.
+     *
+     * @param mixed $subscriptionId
+     * @return void
+     */
+    public function deleteSubscription($subscriptionId)
     {
     }
 }

@@ -61,7 +61,7 @@ class ApiGenderController extends ApiController
     public function store(Request $request)
     {
         try {
-            $gender = (new CreateGender)->execute(
+            $gender = app(CreateGender::class)->execute(
                 $request->all()
                     +
                     [
@@ -89,7 +89,7 @@ class ApiGenderController extends ApiController
     public function update(Request $request, $genderId)
     {
         try {
-            $gender = (new UpdateGender)->execute(
+            $gender = app(UpdateGender::class)->execute(
                 $request->all()
                     +
                     [
@@ -117,7 +117,7 @@ class ApiGenderController extends ApiController
     public function destroy(Request $request, $genderId)
     {
         try {
-            (new DestroyGender)->execute([
+            app(DestroyGender::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'gender_id' => $genderId,
             ]);

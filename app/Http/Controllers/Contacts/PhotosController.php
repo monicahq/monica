@@ -34,7 +34,7 @@ class PhotosController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        $photo = (new UploadPhoto)->execute([
+        $photo = app(UploadPhoto::class)->execute([
             'account_id' => auth()->user()->account->id,
             'photo' => $request->photo,
         ]);
@@ -62,7 +62,7 @@ class PhotosController extends Controller
         ];
 
         try {
-            (new DestroyPhoto)->execute($data);
+            app(DestroyPhoto::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

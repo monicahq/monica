@@ -45,7 +45,7 @@ class WeatherHelper
     private static function callWeatherAPI(Address $address)
     {
         try {
-            $weather = (new GetWeatherInformation)->execute([
+            $weather = app(GetWeatherInformation::class)->execute([
                 'place_id' => $address->place->id,
             ]);
         } catch (\Exception $e) {

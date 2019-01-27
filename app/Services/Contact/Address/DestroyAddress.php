@@ -34,7 +34,7 @@ class DestroyAddress extends BaseService
         $address = Address::where('account_id', $data['account_id'])
             ->findOrFail($data['address_id']);
 
-        (new DestroyPlace)->execute([
+        app(DestroyPlace::class)->execute([
             'account_id' => $data['account_id'],
             'place_id' => $address->place_id,
         ]);

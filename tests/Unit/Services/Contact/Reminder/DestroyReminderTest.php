@@ -33,7 +33,7 @@ class DestroyReminderTest extends TestCase
             'id' => $reminder->id,
         ]);
 
-        (new DestroyReminder)->execute($request);
+        app(DestroyReminder::class)->execute($request);
 
         $this->assertDatabaseMissing('reminders', [
             'id' => $reminder->id,
@@ -74,7 +74,7 @@ class DestroyReminderTest extends TestCase
             'id' => $reminder->id,
         ]);
 
-        (new DestroyReminder)->execute($request);
+        app(DestroyReminder::class)->execute($request);
 
         $this->assertDatabaseMissing('reminders', [
             'id' => $reminder->id,

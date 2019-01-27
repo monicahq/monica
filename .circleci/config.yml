@@ -52,11 +52,18 @@ aliases:
   - &seed-test-db
     run:
       name: Seed database
-      command: php artisan db:seed --no-interaction -vvv
+      command: |
+        php artisan db:seed --no-interaction -vvv
+        php artisan passport:keys --no-interaction -vvv
+  - &http-server-cc
+    run:
+      name: Run http server
+      command: php -S localhost:8000 -t public scripts/tests/server-cc.php
+      background: true
   - &http-server
     run:
       name: Run http server
-      command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+      command: php artisan serve
       background: true
   - &wait-for-server
     run:
@@ -207,6 +214,8 @@ jobs:
       - *remove-xdebug
       - *prepare-db
       - *seed-test-db
+      - *http-server
+      - *wait-for-server
       - *unit-tests
       - store_test_results:
           path: results/junit
@@ -247,7 +256,7 @@ jobs:
       - *prepare-db
       - *seed-test-db
       - *selenium
-      - *http-server
+      - *http-server-cc
       - *wait-for-server
       - *browser-tests
       - *fix-coverage
@@ -279,7 +288,7 @@ jobs:
       - *restore_node
       - *yarn-install
       - *prepare-db
-      - *http-server
+      - *http-server-cc
       - *wait-for-server
       - *browser-cypress
       - *fix-coverage2
