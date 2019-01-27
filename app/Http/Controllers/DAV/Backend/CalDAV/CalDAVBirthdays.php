@@ -10,8 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Services\VCalendar\ExportVCalendar;
-use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
-use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 

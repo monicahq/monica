@@ -99,7 +99,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport, Subscription
      * @param string $principalUri
      * @return array
      */
-    function getSubscriptionsForUser($principalUri)
+    public function getSubscriptionsForUser($principalUri)
     {
         return $this->getCalendarsForUser($principalUri);
     }
@@ -348,13 +348,13 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport, Subscription
      * @param array $properties
      * @return mixed
      */
-    function createSubscription($principalUri, $uri, array $properties)
+    public function createSubscription($principalUri, $uri, array $properties)
     {
         return false;
     }
 
     /**
-     * Updates a subscription
+     * Updates a subscription.
      *
      * The list of mutations is stored in a Sabre\DAV\PropPatch object.
      * To do the actual updates, you must tell this object which properties
@@ -369,7 +369,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport, Subscription
      * @param \Sabre\DAV\PropPatch $propPatch
      * @return void
      */
-    function updateSubscription($subscriptionId, DAV\PropPatch $propPatch)
+    public function updateSubscription($subscriptionId, DAV\PropPatch $propPatch)
     {
     }
 
@@ -379,8 +379,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport, Subscription
      * @param mixed $subscriptionId
      * @return void
      */
-    function deleteSubscription($subscriptionId)
+    public function deleteSubscription($subscriptionId)
     {
     }
-
 }

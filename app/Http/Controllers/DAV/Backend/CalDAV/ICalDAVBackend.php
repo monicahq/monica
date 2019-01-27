@@ -25,7 +25,7 @@ interface ICalDAVBackend
      *
      * If you return {http://sabredav.org/ns}read-only and set the value to 1,
      * ACL will automatically be put in read-only mode.
-     * 
+     *
      ************************
      * == From Subscription :
      * Furthermore, all the subscription info must be returned too:

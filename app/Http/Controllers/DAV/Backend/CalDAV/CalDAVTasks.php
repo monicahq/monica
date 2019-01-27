@@ -7,12 +7,9 @@ use App\Models\Contact\Task;
 use App\Services\Task\DestroyTask;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Sabre\DAV\Server as SabreServer;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
-use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 
