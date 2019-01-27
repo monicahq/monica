@@ -255,7 +255,7 @@ return [
     // emotions
     'emotion_primary_love' => 'Amour',
     'emotion_primary_joy' => 'Joie',
-    'emotion_primary_surprise' => 'Suprise',
+    'emotion_primary_surprise' => 'Surprise',
     'emotion_primary_anger' => 'Colère',
     'emotion_primary_sadness' => 'Tristesse',
     'emotion_primary_fear' => 'Peur',
@@ -270,7 +270,7 @@ return [
     'emotion_secondary_optimism' => 'Optimisme',
     'emotion_secondary_enthrallment' => 'Captivation',
     'emotion_secondary_relief' => 'Soulagement',
-    'emotion_secondary_surprise' => 'Surprise !',
+    'emotion_secondary_surprise' => 'Surprise',
     'emotion_secondary_irritation' => 'Irritation',
     'emotion_secondary_exasperation' => 'Exaspération',
     'emotion_secondary_rage' => 'Rage',
@@ -436,9 +436,9 @@ return [
 
     // dav
     'dav_contacts' => 'Contacts',
-    'dav_contacts_description' => ':name’s contacts',
-    'dav_birthdays' => 'Birthdays',
-    'dav_birthdays_description' => ':name’s contact’s birthdays',
-    'dav_tasks' => 'Tasks',
-    'dav_tasks_description' => ':name’s tasks',
+    'dav_contacts_description' => 'Contacts de :name',
+    'dav_birthdays' => 'Anniversaires',
+    'dav_birthdays_description' => 'Anniversaires des contacts de :name',
+    'dav_tasks' => 'Tâches',
+    'dav_tasks_description' => 'Tâches de :name',
 ];
