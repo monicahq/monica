@@ -187,6 +187,7 @@ END:VCARD
         $this->invokePrivateMethod($importJob, 'getPhysicalFile');
         $this->invokePrivateMethod($importJob, 'getEntries');
         $this->invokePrivateMethod($importJob, 'processEntries');
+        $this->assertJobSuccess($importJob);
 
         $this->assertEquals(
             3,
@@ -205,6 +206,7 @@ END:VCARD
         $this->invokePrivateMethod($importJob, 'processSingleEntry', [
             $vcard->serialize(),
         ]);
+        $this->assertJobSuccess($importJob);
         $this->assertEquals(
             1,
             $importJob->contacts_skipped
@@ -233,9 +235,8 @@ END:VCARD
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $this->invokePrivateMethod($importJob, 'processSingleEntry', [
-            $vcard->serialize(),
-        ]);
+        $this->invokePrivateMethod($importJob, 'processSingleEntry', [$vcard]);
+        $this->assertJobSuccess($importJob);
         $this->assertEquals(
             1,
             $importJob->contacts_skipped
@@ -320,6 +321,12 @@ END:VCARD
         return factory(ImportJob::class)->create([
             'account_id' => $account->id,
             'user_id' => $user->id,
+            'failed' => false,
         ]);
+    }
+
+    private function assertJobSuccess($importJob)
+    {
+        $this->assertFalse($importJob->failed, 'Job has failed, reason: '.$importJob->failed_reason);
     }
 }

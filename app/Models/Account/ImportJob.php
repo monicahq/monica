@@ -207,7 +207,7 @@ class ImportJob extends Model
     /**
      * Process a single vCard entry.
      *
-     * @param  VCard $entry
+     * @param  string|VCard $entry
      * @param  string $behaviour
      */
     private function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
@@ -220,7 +220,7 @@ class ImportJob extends Model
                 'behaviour' => $behaviour,
             ]);
         } catch (ValidationException $e) {
-            $this->fail((string) $e);
+            $this->fail(implode(',', $e->validator->errors()->all()));
 
             return;
         }
