@@ -10,7 +10,6 @@ use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Contact\ContactFieldType;
 use Illuminate\Validation\ValidationException;
 use Sabre\VObject\Splitter\VCard as VCardReader;
 use Illuminate\Database\Eloquent\Relations\HasMany;

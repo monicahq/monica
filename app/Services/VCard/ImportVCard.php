@@ -74,7 +74,7 @@ class ImportVCard extends BaseService
 
     /**
      * Get the validation rules that apply to the service.
-     * 
+     *
      *
      * @return array
      */
@@ -90,7 +90,7 @@ class ImportVCard extends BaseService
                     if (! $value instanceof string || ! $value instanceof VCard) {
                         $fail($attribute.' must be a string or a VCard object.');
                     }
-                } 
+                },
             ],
             'behaviour' => [
                 'required',
