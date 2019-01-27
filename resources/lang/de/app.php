@@ -32,7 +32,7 @@ return [
     'date' => 'Datum',
     'type' => 'Type',
     'zoom' => 'vergrößern',
-    'upgrade' => 'Zum Freischalten aktuallisieren',
+    'upgrade' => 'Zum Freischalten aktualisieren',
     'percent_uploaded' => '{percent}% hochgeladen',
     'next' => 'Weiter ❯',
     'previous' => '< Zurück',
