@@ -34,7 +34,7 @@ class DocumentsController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        return (new UploadDocument)->execute([
+        return app(UploadDocument::class)->execute([
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
             'document' => $request->document,
@@ -57,7 +57,7 @@ class DocumentsController extends Controller
         ];
 
         try {
-            (new DestroyDocument)->execute($data);
+            app(DestroyDocument::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

@@ -32,7 +32,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        (new UpdateBirthdayInformation)->execute($request);
+        app(UpdateBirthdayInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -55,7 +55,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'is_date_known' => false,
         ];
 
-        (new UpdateBirthdayInformation)->execute($request);
+        app(UpdateBirthdayInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -186,6 +186,6 @@ class UpdateBirthdayInformationTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        (new UpdateBirthdayInformation)->execute($request);
+        app(UpdateBirthdayInformation::class)->execute($request);
     }
 }

@@ -267,15 +267,17 @@ Vue.component(
   'recovery-codes',
   require('./components/settings/RecoveryCodes.vue').default
 );
-
 Vue.component(
   'modules',
   require('./components/settings/Modules.vue').default
 );
-
 Vue.component(
   'activity-types',
   require('./components/settings/ActivityTypes.vue').default
+);
+Vue.component(
+  'dav-resources',
+  require('./components/settings/DAVResources.vue').default
 );
 
 // axios
@@ -339,6 +341,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       date_met_the_contact: 'known',
       global_relationship_form_new_contact: true,
       htmldir: window.Laravel.htmldir,
+      locale: lang,
       global_profile_default_view: window.Laravel.profileDefaultView,
     },
     mounted: function() {

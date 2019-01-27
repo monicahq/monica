@@ -98,7 +98,7 @@ trait VCardImporter
             $birthdate = new \DateTime((string) $vcard->BDAY);
 
             $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
-            (new CreateReminder)->execute([
+            app(CreateReminder::class)->execute([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'initial_date' => $specialDate->date->toDateString(),
@@ -123,7 +123,7 @@ trait VCardImporter
                 'country' => CountriesHelper::find($vcard->ADR->getParts()[6]),
             ];
 
-            (new CreateAddress)->execute($request);
+            app(CreateAddress::class)->execute($request);
         }
 
         if (! is_null($this->formatValue($vcard->EMAIL))) {

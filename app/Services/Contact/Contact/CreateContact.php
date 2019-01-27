@@ -107,7 +107,7 @@ class CreateContact extends BaseService
      */
     private function updateBirthDayInformation(array $data)
     {
-        (new UpdateBirthdayInformation)->execute([
+        app(UpdateBirthdayInformation::class)->execute([
             'account_id' => $data['account_id'],
             'contact_id' => $this->contact->id,
             'is_date_known' => $data['is_birthdate_known'],
@@ -128,7 +128,7 @@ class CreateContact extends BaseService
      */
     private function updateDeceasedInformation(array $data)
     {
-        (new UpdateDeceasedInformation)->execute([
+        app(UpdateDeceasedInformation::class)->execute([
             'account_id' => $data['account_id'],
             'contact_id' => $this->contact->id,
             'is_deceased' => $data['is_deceased'],

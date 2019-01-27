@@ -66,7 +66,7 @@ class UpdateBirthdayInformation extends BaseService
             return;
         }
 
-        (new DestroyReminder)->execute([
+        app(DestroyReminder::class)->execute([
             'account_id' => $this->contact->account_id,
             'reminder_id' => $this->contact->birthday_reminder_id,
         ]);
@@ -101,9 +101,7 @@ class UpdateBirthdayInformation extends BaseService
 
         if ($data['is_age_based']) {
             $this->approximate($data);
-        }
-
-        if (! $data['is_age_based']) {
+        } else {
             $this->exact($data);
         }
     }
@@ -128,7 +126,7 @@ class UpdateBirthdayInformation extends BaseService
      */
     private function exact(array $data)
     {
-        $specialDate = $specialDate = $this->contact->setSpecialDate(
+        $specialDate = $this->contact->setSpecialDate(
             'birthdate',
             (is_null($data['year']) ? 0 : $data['year']),
             $data['month'],
@@ -152,7 +150,7 @@ class UpdateBirthdayInformation extends BaseService
         }
 
         if ($data['add_reminder']) {
-            $reminder = (new CreateReminder)->execute([
+            $reminder = app(CreateReminder::class)->execute([
                 'account_id' => $data['account_id'],
                 'contact_id' => $data['contact_id'],
                 'initial_date' => $specialDate->date->toDateString(),

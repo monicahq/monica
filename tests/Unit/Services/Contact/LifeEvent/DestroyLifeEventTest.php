@@ -66,7 +66,7 @@ class DestroyLifeEventTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $destroyMessage = (new DestroyLifeEvent)->execute($request);
+        $destroyMessage = app(DestroyLifeEvent::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_event_doesnt_exist()
@@ -81,6 +81,6 @@ class DestroyLifeEventTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyMessage = (new DestroyLifeEvent)->execute($request);
+        $destroyMessage = app(DestroyLifeEvent::class)->execute($request);
     }
 }

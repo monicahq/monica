@@ -23,7 +23,7 @@ class DestroyAddressTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        (new DestroyAddress)->execute($request);
+        app(DestroyAddress::class)->execute($request);
 
         $this->assertDatabaseMissing('addresses', [
             'id' => $address->id,
@@ -41,7 +41,7 @@ class DestroyAddressTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyAddress)->execute($request);
+        app(DestroyAddress::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_do_not_exist()
@@ -52,6 +52,6 @@ class DestroyAddressTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyAddress)->execute($request);
+        app(DestroyAddress::class)->execute($request);
     }
 }

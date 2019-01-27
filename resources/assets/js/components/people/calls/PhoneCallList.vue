@@ -42,8 +42,7 @@
                 <form-date
                   v-model="newCall.called_at"
                   :default-date="todayDate"
-                  :locale="'en'"
-                  @selected="updateDate($event)"
+                  :locale="locale"
                 />
               </div>
             </div>
@@ -283,6 +282,9 @@ export default {
   computed: {
     dirltr() {
       return this.$root.htmldir == 'ltr';
+    },
+    locale() {
+      return this.$root.locale;
     }
   },
 

@@ -74,7 +74,7 @@ class EmailChangeTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $emailChangeService = (new EmailChange)->execute($request);
+        $emailChangeService = app(EmailChange::class)->execute($request);
     }
 
     public function test_it_update_user_email_and_send_confirmation()

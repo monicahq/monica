@@ -83,7 +83,7 @@ class UpdateContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContact)->execute($request);
+        app(UpdateContact::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_account_doesnt_exist()
@@ -115,6 +115,6 @@ class UpdateContactTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateContact)->execute($request);
+        app(UpdateContact::class)->execute($request);
     }
 }

@@ -63,6 +63,6 @@ class UpdateTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $updateTagService = (new UpdateTag)->execute($request);
+        $updateTagService = app(UpdateTag::class)->execute($request);
     }
 }

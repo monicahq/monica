@@ -50,6 +50,6 @@ class CreateCompanyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateCompany)->execute($request);
+        app(CreateCompany::class)->execute($request);
     }
 }

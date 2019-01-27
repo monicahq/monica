@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models\CardDAV\Backends;
+namespace App\Http\Controllers\DAV\DAVACL;
 
 use Sabre\DAV;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
 
-class MonicaPrincipalBackend extends AbstractBackend
+class PrincipalBackend extends AbstractBackend
 {
     /**
      * This is the prefix that will be used to generate principal urls.

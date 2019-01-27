@@ -120,7 +120,7 @@ class CreateLifeEventTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createLifeEvent = (new CreateLifeEvent)->execute($request);
+        $createLifeEvent = app(CreateLifeEvent::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_event_type_is_not_linked_to_account()

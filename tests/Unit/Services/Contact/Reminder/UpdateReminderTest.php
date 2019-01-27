@@ -38,7 +38,7 @@ class UpdateReminderTest extends TestCase
             'title' => 'title',
         ];
 
-        $reminder = (new UpdateReminder)->execute($request);
+        $reminder = app(UpdateReminder::class)->execute($request);
 
         $this->assertDatabaseHas('reminders', [
             'id' => $reminder->id,
@@ -71,7 +71,7 @@ class UpdateReminderTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $reminderService = (new UpdateReminder)->execute($request);
+        $reminderService = app(UpdateReminder::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_frequency_type_is_not_right()
@@ -98,7 +98,7 @@ class UpdateReminderTest extends TestCase
         $this->expectException(ValidationException::class);
 
         try {
-            $reminderService = (new UpdateReminder)->execute($request);
+            $reminderService = app(UpdateReminder::class)->execute($request);
         } catch (ValidationException $e) {
             $this->assertEquals(['The selected frequency type is invalid.'], $e->validator->errors()->all());
             throw $e;
