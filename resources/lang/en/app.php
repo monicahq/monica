@@ -438,7 +438,7 @@ return [
     'dav_contacts' => 'Contacts',
     'dav_contacts_description' => ':name’s contacts',
     'dav_birthdays' => 'Birthdays',
-    'dav_birthdays_description' => ':name’s contacts birthdays',
+    'dav_birthdays_description' => ':name’s contact’s birthdays',
     'dav_tasks' => 'Tasks',
     'dav_tasks_description' => ':name’s tasks',
 ];
