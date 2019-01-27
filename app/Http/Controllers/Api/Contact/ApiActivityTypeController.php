@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\ActivityType;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
-use App\Models\Contact\ActivityTypeCategory;
+use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 

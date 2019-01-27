@@ -3,7 +3,9 @@
 namespace App\Models\Account;
 
 use App\Models\Account\Account;
+use App\Models\Account\Activity;
 use App\Models\ModelBinding as Model;
+use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ActivityType extends Model

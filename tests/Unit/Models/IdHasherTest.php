@@ -5,7 +5,7 @@ namespace Tests\Unit\Models;
 use Tests\TestCase;
 use App\Helpers\IdHasher;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class IdHasherTest extends TestCase

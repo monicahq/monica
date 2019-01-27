@@ -6,9 +6,9 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
-use App\Models\Contact\ActivityStatistic;
+use App\Models\Account\Activity;
+use App\Models\Account\ActivityType;
+use App\Models\Account\ActivityStatistic;
 use App\Services\ActivityStatisticService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

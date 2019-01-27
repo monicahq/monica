@@ -4,7 +4,7 @@ namespace App\Services;
 
 use Carbon\Carbon;
 use App\Models\Contact\Contact;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\ActivityType;
 
 class ActivityStatisticService
 {

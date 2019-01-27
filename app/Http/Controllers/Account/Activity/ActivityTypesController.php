@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\ActivityType;
 use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Validator;
-use App\Models\Contact\ActivityTypeCategory;
+use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivityTypesController extends Controller
