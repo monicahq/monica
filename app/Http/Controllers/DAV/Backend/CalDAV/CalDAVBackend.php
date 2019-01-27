@@ -6,9 +6,8 @@ use Sabre\DAV;
 use App\Models\User\SyncToken;
 use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
-use Sabre\CalDAV\Backend\SubscriptionSupport;
 
-class CalDAVBackend extends AbstractBackend implements SyncSupport, SubscriptionSupport
+class CalDAVBackend extends AbstractBackend implements SyncSupport
 {
     /**
      * Set the Calendar backends.
@@ -65,43 +64,6 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport, Subscription
         return array_map(function ($backend) {
             return $backend->getDescription();
         }, $this->getBackends());
-    }
-
-    /**
-     * Returns a list of subscriptions for a principal.
-     *
-     * Every subscription is an array with the following keys:
-     *  * id, a unique id that will be used by other functions to modify the
-     *    subscription. This can be the same as the uri or a database key.
-     *  * uri. This is just the 'base uri' or 'filename' of the subscription.
-     *  * principaluri. The owner of the subscription. Almost always the same as
-     *    principalUri passed to this method.
-     *
-     * Furthermore, all the subscription info must be returned too:
-     *
-     * 1. {DAV:}displayname
-     * 2. {http://apple.com/ns/ical/}refreshrate
-     * 3. {http://calendarserver.org/ns/}subscribed-strip-todos (omit if todos
-     *    should not be stripped).
-     * 4. {http://calendarserver.org/ns/}subscribed-strip-alarms (omit if alarms
-     *    should not be stripped).
-     * 5. {http://calendarserver.org/ns/}subscribed-strip-attachments (omit if
-     *    attachments should not be stripped).
-     * 6. {http://calendarserver.org/ns/}source (Must be a
-     *     Sabre\DAV\Property\Href).
-     * 7. {http://apple.com/ns/ical/}calendar-color
-     * 8. {http://apple.com/ns/ical/}calendar-order
-     * 9. {urn:ietf:params:xml:ns:caldav}supported-calendar-component-set
-     *    (should just be an instance of
-     *    Sabre\CalDAV\Property\SupportedCalendarComponentSet, with a bunch of
-     *    default components).
-     *
-     * @param string $principalUri
-     * @return array
-     */
-    public function getSubscriptionsForUser($principalUri)
-    {
-        return $this->getCalendarsForUser($principalUri);
     }
 
     /**

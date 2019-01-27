@@ -21,9 +21,6 @@ abstract class AbstractCalDAVBackend implements ICalDAVBackend, IDAVBackend
             'id' => $this->backendUri(),
             'uri' => $this->backendUri(),
             'principaluri' => PrincipalBackend::getPrincipalUser(),
-            'source' => $this->backendUri(),
-            '{'.CalDAVPlugin::NS_CALENDARSERVER.'}source' => $this->backendUri(),
-            'lastmodified' => $this->getLastModified(),
         ];
         if ($token) {
             $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id;

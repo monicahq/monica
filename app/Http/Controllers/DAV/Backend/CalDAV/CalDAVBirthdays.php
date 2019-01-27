@@ -34,7 +34,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_birthdays_description', ['name' => Auth::user()->name]),
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
             '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT']),
-            '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp('transparent'),
+            '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),
         ];
     }
 
