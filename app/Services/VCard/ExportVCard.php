@@ -60,7 +60,7 @@ class ExportVCard extends BaseService
         // Basic information
         $vcard = new VCard([
             'UID' => $contact->uuid,
-            'SOURCE' => route('people.show', $contact),
+            'SOURCE' => $contact->getLink(),
             'VERSION' => '4.0',
         ]);
 

@@ -13,6 +13,7 @@ New features:
 
 Enhancements:
 
+* Redirect to the related real contact when trying to display a partial contact
 * Use iterator reader for vcard imports
 * Accept last name when using contact search field
 * Register all app services as singleton

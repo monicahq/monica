@@ -98,10 +98,10 @@ class ExportVCalendar extends BaseService
         if ($contact) {
             $name = $contact->name;
             $vevent->SUMMARY = trans('people.reminders_birthday', ['name' => $name]);
-            $vevent->ATTACH = route('people.show', $contact);
+            $vevent->ATTACH = $contact->getLink();
             $vevent->DESCRIPTION = trans('mail.footer_contact_info2_link', [
                 'name' => $name,
-                'url' => route('people.show', $contact),
+                'url' => $contact->getLink(),
             ]);
         }
     }
