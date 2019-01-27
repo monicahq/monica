@@ -92,8 +92,8 @@ TZID:UTC
 END:VTIMEZONE
 BEGIN:VEVENT
 UID:{$specialDate->uuid}
-DTSTART:{$start}
-DTEND:{$end}
+DTSTART;VALUE=DATE:{$start}
+DTEND;VALUE=DATE:{$end}
 RRULE:FREQ=YEARLY
 DTSTAMP:{$timestamp}
 CREATED:{$timestamp}

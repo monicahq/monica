@@ -86,7 +86,9 @@ class ExportVCalendar extends BaseService
 
         $vevent->UID = $date->uuid;
         $vevent->DTSTART = $date->date->format('Ymd');
+        $vevent->DTSTART['VALUE'] = 'DATE';
         $vevent->DTEND = $date->date->addDays(1)->format('Ymd');
+        $vevent->DTEND['VALUE'] = 'DATE';
         $vevent->RRULE = 'FREQ=YEARLY';
 
         if ($date->created_at) {
