@@ -33,8 +33,7 @@ class DestroyRelationshipTest extends TestCase
             'relationship_id' => $relationship->id,
         ];
 
-        $relationshipService = new DestroyRelationship;
-        $relationshipService->execute($request);
+        app(DestroyRelationship::class)->execute($request);
 
         $this->assertDatabaseMissing('relationships', [
             'id' => $relationship->id,

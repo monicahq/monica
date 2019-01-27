@@ -28,8 +28,7 @@ class DestroyAllDocumentsTest extends TestCase
             'account_id' => $contact->account->id,
         ];
 
-        $destroyAllDocumentsService = new DestroyAllDocuments;
-        $bool = $destroyAllDocumentsService->execute($request);
+        app(DestroyAllDocuments::class)->execute($request);
 
         $this->assertDatabaseMissing('documents', [
             'account_id' => $contact->account->id,
@@ -45,8 +44,7 @@ class DestroyAllDocumentsTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $destroyAllDocumentsService = new DestroyAllDocuments;
-        $result = $destroyAllDocumentsService->execute($request);
+        app(DestroyAllDocuments::class)->execute($request);
     }
 
     private function uploadDocument($contact)

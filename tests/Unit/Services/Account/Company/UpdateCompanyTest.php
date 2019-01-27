@@ -26,8 +26,7 @@ class UpdateCompanyTest extends TestCase
             'number_of_employees' => 300,
         ];
 
-        $companyService = new UpdateCompany;
-        $company = $companyService->execute($request);
+        app(UpdateCompany::class)->execute($request);
 
         $this->assertDatabaseHas('companies', [
             'id' => $company->id,

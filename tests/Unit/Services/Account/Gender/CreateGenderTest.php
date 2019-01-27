@@ -22,8 +22,7 @@ class CreateGenderTest extends TestCase
             'name' => 'man',
         ];
 
-        $genderService = new CreateGender;
-        $gender = $genderService->execute($request);
+        $gender = app(CreateGender::class)->execute($request);
 
         $this->assertDatabaseHas('genders', [
             'id' => $gender->id,
