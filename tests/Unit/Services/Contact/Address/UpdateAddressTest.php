@@ -33,8 +33,7 @@ class UpdateAddressTest extends TestCase
             'longitude' => '',
         ];
 
-        $addressService = new UpdateAddress;
-        $address = $addressService->execute($request);
+        $address = app(UpdateAddress::class)->execute($request);
 
         $this->assertDatabaseHas('addresses', [
             'id' => $address->id,
