@@ -7,12 +7,11 @@ use App\Models\Contact\Task;
 use App\Services\Task\DestroyTask;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Sabre\DAV\Server as SabreServer;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
-use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
+use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 
 class CalDAVTasks extends AbstractCalDAVBackend
 {
@@ -28,25 +27,14 @@ class CalDAVTasks extends AbstractCalDAVBackend
 
     public function getDescription()
     {
-        $name = Auth::user()->name;
-        $token = $this->getCurrentSyncToken();
-
-        $des = [
-            'principaluri'      => PrincipalBackend::getPrincipalUser(),
-            '{DAV:}displayname' => $name,
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Tasks',
+        return parent::getDescription()
+        + [
+            '{DAV:}displayname' => trans('app.dav_tasks'),
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_tasks_description', ['name' => Auth::user()->name]),
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
+            '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VTODO']),
+            '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),
         ];
-        if ($token) {
-            $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id;
-            $des += [
-                '{DAV:}sync-token'  => $token,
-                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token,
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
-            ];
-        }
-
-        return $des;
     }
 
     /**

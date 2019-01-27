@@ -56,7 +56,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
             "<d:href>/dav/calendars/{$user->email}/birthdays/</d:href>".
             '<d:propstat>'.
               '<d:prop>'.
-                "<d:displayname>{$user->name}</d:displayname>".
+                '<d:displayname>Birthdays</d:displayname>'.
               '</d:prop>'.
               '<d:status>HTTP/1.1 200 OK</d:status>'.
             '</d:propstat>'.

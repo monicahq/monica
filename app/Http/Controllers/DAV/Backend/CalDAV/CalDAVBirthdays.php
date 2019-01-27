@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use App\Services\VCalendar\ExportVCalendar;
-use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
-use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
+use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;
 
 class CalDAVBirthdays extends AbstractCalDAVBackend
 {
@@ -27,26 +27,15 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
 
     public function getDescription()
     {
-        $name = Auth::user()->name;
-        $token = $this->getCurrentSyncToken();
-
-        $des = [
-            'principaluri'      => PrincipalBackend::getPrincipalUser(),
-            '{DAV:}displayname' => $name,
-            '{'.SabreServer::NS_SABREDAV.'}read-only' => 1,
-            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => 'Birthdays',
+        return parent::getDescription()
+        + [
+            '{DAV:}displayname' => trans('app.dav_birthdays'),
+            '{'.SabreServer::NS_SABREDAV.'}read-only' => true,
+            '{'.CalDAVPlugin::NS_CALDAV.'}calendar-description' => trans('app.dav_birthdays_description', ['name' => Auth::user()->name]),
             '{'.CalDAVPlugin::NS_CALDAV.'}calendar-timezone' => Auth::user()->timezone,
+            '{'.CalDAVPlugin::NS_CALDAV.'}supported-calendar-component-set' => new SupportedCalendarComponentSet(['VEVENT']),
+            '{'.CalDAVPlugin::NS_CALDAV.'}schedule-calendar-transp' => new ScheduleCalendarTransp(ScheduleCalendarTransp::TRANSPARENT),
         ];
-        if ($token) {
-            $token = DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id;
-            $des += [
-                '{DAV:}sync-token'  => $token,
-                '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token,
-                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => $token,
-            ];
-        }
-
-        return $des;
     }
 
     /**
