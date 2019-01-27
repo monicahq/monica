@@ -67,7 +67,7 @@ class ActivityTypeCategoriesController extends Controller
      * Update an activity type category.
      *
      * @param Request $request
-     * @param int $activityTypeCategory
+     * @param int $activityTypeCategoryId
      * @return ActivityTypeCategory
      */
     public function update(Request $request, $activityTypeCategoryId)
