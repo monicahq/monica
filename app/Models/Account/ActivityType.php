@@ -18,6 +18,7 @@ class ActivityType extends Model
         'name',
         'activity_type_category_id',
         'account_id',
+        'translation_key',
     ];
 
     /**

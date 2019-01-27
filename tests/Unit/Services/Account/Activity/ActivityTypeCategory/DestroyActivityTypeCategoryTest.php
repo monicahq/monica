@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Account\Company;
+namespace Tests\Unit\Services\Account\Activity\ActivityTypeCategory;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
