@@ -86,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'הוספת הערה',
     'breadcrumb_edit_note' => 'עריכת הערה',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_api' => 'משאבי DAV',
     'breadcrumb_edit_introductions' => 'איך הכרתם',
     'breadcrumb_settings_personalization' => 'התאמה אישית',
     'breadcrumb_settings_security' => 'אבטחה',
@@ -435,10 +435,10 @@ return [
     'weather_current_title' => 'מזג אוויר נוכחי',
 
     // dav
-    'dav_contacts' => 'Contacts',
-    'dav_contacts_description' => ':name’s contacts',
-    'dav_birthdays' => 'Birthdays',
-    'dav_birthdays_description' => ':name’s contact’s birthdays',
-    'dav_tasks' => 'Tasks',
-    'dav_tasks_description' => ':name’s tasks',
+    'dav_contacts' => 'אנשי קשר',
+    'dav_contacts_description' => 'אנשי הקשר של :name',
+    'dav_birthdays' => 'ימי הולדת',
+    'dav_birthdays_description' => 'ימי ההולדת של אנשי הקשר של :name',
+    'dav_tasks' => 'משימות',
+    'dav_tasks_description' => 'המשימות של :name',
 ];
