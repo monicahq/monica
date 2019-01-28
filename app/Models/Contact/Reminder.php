@@ -120,9 +120,21 @@ class Reminder extends Model
      *
      * @return Carbon
      */
-    public function calculateNextExpectedDate()
+    public function calculateNextExpectedDate($date = null)
     {
-        return $this->calculateNextExpectedDateInternal($this->initial_date);
+        if (is_null($date)) {
+            $date = $this->initial_date;
+        }
+
+        while ($date->isPast()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        }
+
+        if ($date->isToday()) {
+            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
+        }
+
+        return $date;
     }
 
     /**
@@ -133,27 +145,10 @@ class Reminder extends Model
     public function calculateNextExpectedDateOnTimezone()
     {
         $date = $this->initial_date;
-        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0, DateHelper::getTimezone() ?? config('app.timezone'));
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0,
+                    DateHelper::getTimezone() ?? config('app.timezone'));
 
-        return $this->calculateNextExpectedDateInternal($date);
-    }
-
-    /**
-     * Calculate the next expected date.
-     *
-     * @return Carbon
-     */
-    private function calculateNextExpectedDateInternal($date)
-    {
-        while ($date->isPast()) {
-            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
-        }
-
-        if ($date->isToday()) {
-            $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
-        }
-
-        return $date;
+        return $this->calculateNextExpectedDate($date);
     }
 
     /**
