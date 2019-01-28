@@ -27,6 +27,7 @@ Enhancements:
 
 Fixes:
 
+* Fix middleware priority order to always set locale after authenticate
 * Accept lastname_firstname name order for VCard imports (FN field)
 * Fix vue.js DateTime picker to type a date in other format than en-us one
 * Fix DateTime parse when compact format is used
