@@ -435,10 +435,10 @@ return [
     'weather_current_title' => '当前天气',
 
     // dav
-    'dav_contacts' => 'Contacts',
-    'dav_contacts_description' => ':name’s contacts',
-    'dav_birthdays' => 'Birthdays',
-    'dav_birthdays_description' => ':name’s contact’s birthdays',
-    'dav_tasks' => 'Tasks',
-    'dav_tasks_description' => ':name’s tasks',
+    'dav_contacts' => '名片',
+    'dav_contacts_description' => ':name的名片',
+    'dav_birthdays' => '生日',
+    'dav_birthdays_description' => ':name的名片生日',
+    'dav_tasks' => '任务',
+    'dav_tasks_description' => ':name的任务',
 ];
