@@ -180,7 +180,7 @@ export default {
         if (short.length > vm.sizeLimit + 1) {
           shortenName = vm.$t('format.short_text', { text: shortenName.substr(0, vm.sizeLimit) });
         }
-        value.short = short;
+        value.shortenName = shortenName;
       });
       return data;
     },
