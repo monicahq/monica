@@ -93,7 +93,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('journal', 'ApiJournalController');
 
     // Activity Types
-    Route::apiResource('activitytypes', 'Contact\\ApiActivityTypeController');
+    Route::apiResource('activitytypes', 'Account\\Activity\\ApiActivityTypeController');
 
     // Activity Type Categories
     Route::apiResource('activitytypecategories', 'Account\\Activity\\ApiActivityTypeCategoryController');
