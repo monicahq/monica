@@ -4,11 +4,12 @@ namespace Tests\Api\DAV;
 
 use Tests\ApiTestCase;
 use App\Models\Contact\Contact;
+use Sabre\VObject\PHPUnitAssertions;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VCardContactTest extends ApiTestCase
 {
-    use DatabaseTransactions, CardEtag;
+    use DatabaseTransactions, CardEtag, PHPUnitAssertions;
 
     /**
      * @group dav
@@ -27,7 +28,7 @@ class VCardContactTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
 
-        $this->assertEquals($this->getCard($contact, true), $response->getContent());
+        $this->assertVObjectEqualsVObject($this->getCard($contact, true), $response->getContent());
     }
 
     /**

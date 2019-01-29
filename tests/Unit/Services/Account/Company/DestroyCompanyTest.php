@@ -23,8 +23,7 @@ class DestroyCompanyTest extends TestCase
             'company_id' => $company->id,
         ];
 
-        $companyService = new DestroyCompany;
-        $bool = $companyService->execute($request);
+        app(DestroyCompany::class)->execute($request);
 
         $this->assertDatabaseMissing('companies', [
             'id' => $company->id,

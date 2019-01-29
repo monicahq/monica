@@ -28,8 +28,7 @@ class CreateCallTest extends TestCase
             'content' => 'this is the content',
         ];
 
-        $callService = new CreateCall;
-        $call = $callService->execute($request);
+        $call = app(CreateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
@@ -57,8 +56,7 @@ class CreateCallTest extends TestCase
             'contact_called' => true,
         ];
 
-        $callService = new CreateCall;
-        $call = $callService->execute($request);
+        $call = app(CreateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
@@ -88,8 +86,7 @@ class CreateCallTest extends TestCase
             'emotions' => $emotionArray,
         ];
 
-        $callService = new CreateCall;
-        $call = $callService->execute($request);
+        $call = app(CreateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
@@ -131,8 +128,7 @@ class CreateCallTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $callService = new CreateCall;
-        $call = $callService->execute($request);
+        app(CreateCall::class)->execute($request);
     }
 
     public function test_it_stores_a_call_without_the_content()
@@ -145,8 +141,7 @@ class CreateCallTest extends TestCase
             'called_at' => Carbon::now(),
         ];
 
-        $callService = new CreateCall;
-        $call = $callService->execute($request);
+        $call = app(CreateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
@@ -170,8 +165,7 @@ class CreateCallTest extends TestCase
             'called_at' => $date,
         ];
 
-        $callService = new CreateCall;
-        $call = $callService->execute($request);
+        app(CreateCall::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -193,8 +187,7 @@ class CreateCallTest extends TestCase
             'called_at' => $date,
         ];
 
-        $callService = new CreateCall;
-        $call = $callService->execute($request);
+        app(CreateCall::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

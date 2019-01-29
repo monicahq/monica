@@ -25,8 +25,7 @@ class AssociateTagTest extends TestCase
             'name' => '朋友',
         ];
 
-        $associateTagService = new AssociateTag;
-        $tag = $associateTagService->execute($request);
+        $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'account_id' => $contact->account->id,
@@ -56,8 +55,7 @@ class AssociateTagTest extends TestCase
             'name' => 'Central Perk',
         ];
 
-        $associateTagService = new AssociateTag;
-        $tag = $associateTagService->execute($request);
+        $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'account_id' => $contact->account->id,
@@ -102,8 +100,7 @@ class AssociateTagTest extends TestCase
             'name' => 'Central Perk',
         ];
 
-        $associateTagService = new AssociateTag;
-        $tag = $associateTagService->execute($request);
+        $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'account_id' => $contact->account->id,
@@ -132,8 +129,7 @@ class AssociateTagTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $associateTagService = new AssociateTag;
-        $tag = $associateTagService->execute($request);
+        app(AssociateTag::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_does_not_exist()
@@ -148,6 +144,6 @@ class AssociateTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $associateTagService = app(AssociateTag::class)->execute($request);
+        app(AssociateTag::class)->execute($request);
     }
 }

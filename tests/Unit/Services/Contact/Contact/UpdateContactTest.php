@@ -40,8 +40,7 @@ class UpdateContactTest extends TestCase
             'deceased_date_add_reminder' => true,
         ];
 
-        $contactService = new UpdateContact;
-        $contact = $contactService->execute($request);
+        $contact = app(UpdateContact::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

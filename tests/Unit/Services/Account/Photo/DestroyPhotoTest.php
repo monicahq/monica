@@ -31,8 +31,7 @@ class DestroyPhotoTest extends TestCase
             'id' => $photo->id,
         ]);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $bool = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
 
         $this->assertDatabaseMissing('photos', [
             'id' => $photo->id,
@@ -49,8 +48,7 @@ class DestroyPhotoTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $result = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
     }
 
     public function test_it_throws_a_photo_doesnt_exist()
@@ -64,8 +62,7 @@ class DestroyPhotoTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $photo = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
     }
 
     private function uploadPhoto($contact)

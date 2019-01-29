@@ -61,7 +61,7 @@ class UserReminded extends LaravelNotification implements ShouldQueue
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
             ->line(trans('mail.want_reminded_of', ['reason' => $this->reminderOutbox->reminder->title]))
             ->line(trans('mail.for', ['name' => $contact->name]))
-            ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
+            ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), $contact->getLink());
 
         if (! is_null($this->reminderOutbox->reminder->description)) {
             $message = $message

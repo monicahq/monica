@@ -32,8 +32,7 @@ class CreateOccupationTest extends TestCase
             'title' => 'Waiter',
         ];
 
-        $occupationService = new CreateOccupation;
-        $occupation = $occupationService->execute($request);
+        $occupation = app(CreateOccupation::class)->execute($request);
 
         $this->assertDatabaseHas('occupations', [
             'id' => $occupation->id,

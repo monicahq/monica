@@ -210,7 +210,7 @@ class ContactsController extends Controller
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
-            return redirect()->route('people.index');
+            return redirect()->route('people.show', $contact->getRelatedRealContact());
         }
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
