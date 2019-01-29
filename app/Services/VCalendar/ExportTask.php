@@ -93,7 +93,7 @@ class ExportTask extends BaseService
             $vtodo->DESCRIPTION = $task->description;
         }
         if ($contact) {
-            $vtodo->ATTACH = route('people.show', $contact);
+            $vtodo->ATTACH = $contact->getLink();
         }
         if ($task->completed) {
             $vtodo->STATUS = 'COMPLETED';

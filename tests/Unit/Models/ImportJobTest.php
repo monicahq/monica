@@ -42,7 +42,7 @@ N:;;;;
 NICKNAME:Johnny
 ADR:;;17 Shakespeare Ave.;Southampton;;SO17 2HB;United Kingdom
 END:VCARD
-    ';
+';
 
     public function test_it_belongs_to_a_user()
     {
@@ -176,9 +176,8 @@ END:VCARD
     public function test_it_calculates_how_many_entries_there_are_and_populate_the_entries_array()
     {
         Storage::fake('public');
-        $importJob = factory(ImportJob::class)->create([
-            'filename' => 'testfile.vcf',
-        ]);
+        $importJob = $this->createImportJob();
+        $importJob->filename = 'testfile.vcf';
 
         Storage::disk('public')->put(
             'testfile.vcf',
@@ -187,15 +186,12 @@ END:VCARD
 
         $this->invokePrivateMethod($importJob, 'getPhysicalFile');
         $this->invokePrivateMethod($importJob, 'getEntries');
+        $this->invokePrivateMethod($importJob, 'processEntries');
+        $this->assertJobSuccess($importJob);
 
         $this->assertEquals(
             3,
             $importJob->contacts_found
-        );
-
-        $this->assertEquals(
-            3,
-            count($importJob->entries[0])
         );
     }
 
@@ -210,6 +206,7 @@ END:VCARD
         $this->invokePrivateMethod($importJob, 'processSingleEntry', [
             $vcard->serialize(),
         ]);
+        $this->assertJobSuccess($importJob);
         $this->assertEquals(
             1,
             $importJob->contacts_skipped
@@ -238,9 +235,8 @@ END:VCARD
             'EMAIL' => 'john@doe.com',
         ]);
 
-        $this->invokePrivateMethod($importJob, 'processSingleEntry', [
-            $vcard->serialize(),
-        ]);
+        $this->invokePrivateMethod($importJob, 'processSingleEntry', [$vcard]);
+        $this->assertJobSuccess($importJob);
         $this->assertEquals(
             1,
             $importJob->contacts_skipped
@@ -325,6 +321,12 @@ END:VCARD
         return factory(ImportJob::class)->create([
             'account_id' => $account->id,
             'user_id' => $user->id,
+            'failed' => false,
         ]);
+    }
+
+    private function assertJobSuccess($importJob)
+    {
+        $this->assertFalse($importJob->failed, 'Job has failed, reason: '.$importJob->failed_reason);
     }
 }
