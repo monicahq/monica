@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "62080afea9e01fe7f542b357995245b0",
+    "content-hash": "bc60d3516f50e8bb59b3dbae15ded5c3",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -6786,7 +6786,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -7853,6 +7853,49 @@
             "time": "2018-11-09T08:37:55+00:00"
         },
         {
+            "name": "caouecs/laravel-lang",
+            "version": "3.0.59",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/caouecs/Laravel-lang.git",
+                "reference": "c74446c1253e2a48541cb6cc5d9e2ea008f16634"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/caouecs/Laravel-lang/zipball/c74446c1253e2a48541cb6cc5d9e2ea008f16634",
+                "reference": "c74446c1253e2a48541cb6cc5d9e2ea008f16634",
+                "shasum": ""
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.10"
+            },
+            "suggest": {
+                "ablunier/laravel-lang-installer": "Command for easily add languages to a Laravel project",
+                "andrey-helldar/laravel-lang-publisher": "Easy installation and update of translation files for your project",
+                "arcanedev/laravel-lang": "Translations manager and checker for Laravel 5",
+                "overtrue/laravel-lang": "Command to add languages in your project"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "caouecs",
+                    "email": "caouecs@caouecs.net"
+                }
+            ],
+            "description": "Languages for Laravel",
+            "keywords": [
+                "lang",
+                "languages",
+                "laravel",
+                "lpm"
+            ],
+            "time": "2018-11-22T19:30:58+00:00"
+        },
+        {
             "name": "composer/xdebug-handler",
             "version": "1.3.1",
             "source": {
@@ -7949,6 +7992,46 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
+        },
+        {
+            "name": "elkuku/crowdin-api",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/elkuku/crowdin-api.git",
+                "reference": "0f8fcb9b24cb566b80ba8a443e7278d808fcf53b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/elkuku/crowdin-api/zipball/0f8fcb9b24cb566b80ba8a443e7278d808fcf53b",
+                "reference": "0f8fcb9b24cb566b80ba8a443e7278d808fcf53b",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "6.*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ElKuKu\\Crowdin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "WTFPL"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolai Plath",
+                    "email": "der.el.kuku@gmail.com"
+                }
+            ],
+            "description": "A crowdin API implementation in PHP",
+            "time": "2017-07-01T14:19:44+00:00"
         },
         {
             "name": "enm1989/chromedriver",
@@ -8477,6 +8560,65 @@
                 "testing"
             ],
             "time": "2018-10-02T21:52:37+00:00"
+        },
+        {
+            "name": "monicahq/gunther",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/monicahq/gunther.git",
+                "reference": "588e48f30aca8ae2698ac000c828ad879324e861"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/monicahq/gunther/zipball/588e48f30aca8ae2698ac000c828ad879324e861",
+                "reference": "588e48f30aca8ae2698ac000c828ad879324e861",
+                "shasum": ""
+            },
+            "require": {
+                "caouecs/laravel-lang": "^3.0",
+                "elkuku/crowdin-api": "^2.0",
+                "laravel/framework": "^5.6",
+                "umpirsky/locale-list": "^1.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "^7.3",
+                "vimeo/psalm": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Gunther\\Providers\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Gunther\\": "src",
+                    "Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Alexis Saettler",
+                    "email": "alexis@saettler.org"
+                }
+            ],
+            "description": "Update Laravel translations on Crowdin",
+            "keywords": [
+                "crowdin",
+                "i18n",
+                "language",
+                "laravel",
+                "php"
+            ],
+            "time": "2019-01-29T11:06:14+00:00"
         },
         {
             "name": "muglug/package-versions-56",
@@ -10329,6 +10471,41 @@
             ],
             "description": "A small library for converting tokenized PHP source code into XML and potentially other formats",
             "time": "2017-04-07T12:08:54+00:00"
+        },
+        {
+            "name": "umpirsky/locale-list",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/umpirsky/locale-list.git",
+                "reference": "8141f749e16e568a5a9f7e813c50f72efa794c2e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/umpirsky/locale-list/zipball/8141f749e16e568a5a9f7e813c50f72efa794c2e",
+                "reference": "8141f749e16e568a5a9f7e813c50f72efa794c2e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
+            },
+            "require-dev": {
+                "symfony/locale": "^2.7|^3.0",
+                "umpirsky/list-generator": "^1.1"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Saša Stamenković",
+                    "email": "umpirsky@gmail.com"
+                }
+            ],
+            "description": "List of all locales with names and codes in all languages and all data formats.",
+            "time": "2018-06-01T17:50:07+00:00"
         },
         {
             "name": "vimeo/psalm",
