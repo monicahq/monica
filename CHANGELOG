@@ -13,6 +13,7 @@ New features:
 
 Enhancements:
 
+* Redirect to the related real contact when trying to display a partial contact
 * Use iterator reader for vcard imports
 * Accept last name when using contact search field
 * Register all app services as singleton
@@ -26,6 +27,7 @@ Enhancements:
 
 Fixes:
 
+* Fix middleware priority order to always set locale after authenticate
 * Accept lastname_firstname name order for VCard imports (FN field)
 * Fix vue.js DateTime picker to type a date in other format than en-us one
 * Fix DateTime parse when compact format is used

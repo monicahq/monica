@@ -1442,6 +1442,8 @@ class Contact extends Model
     /**
      * Gets the first contact related to this contact if the current contact is
      * partial.
+     *
+     * @return self
      */
     public function getRelatedRealContact()
     {
@@ -1457,6 +1459,15 @@ class Contact extends Model
                         ]);
             })
             ->first();
+    }
+
+    /**
+     * Get the link to this contact, or the related real contact.
+     * @return string
+     */
+    public function getLink()
+    {
+        return route('people.show', $this->is_partial ? $this->getRelatedRealContact() : $this);
     }
 
     /**

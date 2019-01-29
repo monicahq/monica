@@ -59,7 +59,7 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue
                 'name' => $this->contact->name,
                 'frequency' => $this->contact->stay_in_touch_frequency,
             ]))
-            ->action(trans('mail.footer_contact_info2', ['name' => $this->contact->name]), route('people.show', $this->contact));
+            ->action(trans('mail.footer_contact_info2', ['name' => $this->contact->name]), $this->contact->getLink());
     }
 
     /**
