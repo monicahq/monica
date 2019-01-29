@@ -176,7 +176,7 @@ export default {
     formatResponse(data) {
       var vm = this;
       _.each(data, function(value) {
-        var short = value.data;
+        var shortenName = value.data;
         if (short.length > vm.sizeLimit + 1) {
           shortenName = vm.$t('format.short_text', { text: shortenName.substr(0, vm.sizeLimit) });
         }
