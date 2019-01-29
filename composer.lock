@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "62080afea9e01fe7f542b357995245b0",
+    "content-hash": "fab6b967d2a90f8f4122b02ceafdac6d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -2282,69 +2282,6 @@
             "time": "2019-01-21T12:35:13+00:00"
         },
         {
-            "name": "laravel/telescope",
-            "version": "v1.0.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laravel/telescope.git",
-                "reference": "4962a3c3a5da71756dd01dad2ea86e55fbb86df8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/4962a3c3a5da71756dd01dad2ea86e55fbb86df8",
-                "reference": "4962a3c3a5da71756dd01dad2ea86e55fbb86df8",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "laravel/framework": "~5.7.7",
-                "moontoast/math": "^1.1",
-                "php": "^7.1.3",
-                "symfony/var-dumper": "^4.1"
-            },
-            "require-dev": {
-                "nunomaduro/larastan": "^0.3.7",
-                "orchestra/testbench": "~3.7"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Laravel\\Telescope\\TelescopeServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laravel\\Telescope\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Taylor Otwell",
-                    "email": "taylor@laravel.com"
-                },
-                {
-                    "name": "Mohamed Said",
-                    "email": "mohamed@laravel.com"
-                }
-            ],
-            "description": "An elegant debug assistant for the Laravel framework.",
-            "keywords": [
-                "debugging",
-                "laravel",
-                "monitoring"
-            ],
-            "time": "2018-12-09T16:34:14+00:00"
-        },
-        {
             "name": "laravel/tinker",
             "version": "v1.0.8",
             "source": {
@@ -3276,55 +3213,6 @@
                 "psr-3"
             ],
             "time": "2018-11-05T09:00:11+00:00"
-        },
-        {
-            "name": "moontoast/math",
-            "version": "1.1.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ramsey/moontoast-math.git",
-                "reference": "c2792a25df5cad4ff3d760dd37078fc5b6fccc79"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/moontoast-math/zipball/c2792a25df5cad4ff3d760dd37078fc5b6fccc79",
-                "reference": "c2792a25df5cad4ff3d760dd37078fc5b6fccc79",
-                "shasum": ""
-            },
-            "require": {
-                "ext-bcmath": "*",
-                "php": ">=5.3.3"
-            },
-            "require-dev": {
-                "jakub-onderka/php-parallel-lint": "^0.9.0",
-                "phpunit/phpunit": "^4.7|>=5.0 <5.4",
-                "satooshi/php-coveralls": "^0.6.1",
-                "squizlabs/php_codesniffer": "^2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Moontoast\\Math\\": "src/Moontoast/Math/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Ben Ramsey",
-                    "email": "ben@benramsey.com",
-                    "homepage": "https://benramsey.com"
-                }
-            ],
-            "description": "A mathematics library, providing functionality for large numbers",
-            "homepage": "https://github.com/ramsey/moontoast-math",
-            "keywords": [
-                "bcmath",
-                "math"
-            ],
-            "time": "2017-02-16T16:54:46+00:00"
         },
         {
             "name": "mtdowling/jmespath.php",
@@ -6786,7 +6674,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
