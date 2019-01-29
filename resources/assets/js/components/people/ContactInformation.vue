@@ -36,7 +36,7 @@
               {{ contactInformation.shortenName }}
             </a>
             <a v-else :href="contactInformation.data">
-              {{ contactInformation.short }}
+              {{ contactInformation.shortenName }}
             </a>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
