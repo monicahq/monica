@@ -178,7 +178,7 @@ export default {
       _.each(data, function(value) {
         var short = value.data;
         if (short.length > vm.sizeLimit + 1) {
-          short = vm.$t('format.short_text', { text: short.substr(0, vm.sizeLimit) });
+          shortenName = vm.$t('format.short_text', { text: shortenName.substr(0, vm.sizeLimit) });
         }
         value.short = short;
       });
