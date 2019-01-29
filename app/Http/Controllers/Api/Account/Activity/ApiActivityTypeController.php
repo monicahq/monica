@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Api\Account\Activity;
 use Illuminate\Http\Request;
 use App\Models\Account\ActivityType;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Validation\ValidationException;
-use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Account\Activity\ActivityType\CreateActivityType;
 use App\Services\Account\Activity\ActivityType\UpdateActivityType;
@@ -119,7 +117,7 @@ class ApiActivityTypeController extends ApiController
      */
     public function destroy(Request $request, $activityTypeId)
     {
-       try {
+        try {
             (new DestroyActivityType)->execute([
                 'account_id' => auth()->user()->account->id,
                 'activity_type_id' => $activityTypeId,
@@ -132,6 +130,6 @@ class ApiActivityTypeController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int)$activityTypeId);
+        return $this->respondObjectDeleted((int) $activityTypeId);
     }
 }
