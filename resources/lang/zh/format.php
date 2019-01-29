@@ -25,4 +25,5 @@ return [
     'full_month_year' => 'Y F',
     'full_hour' => 'h.i A',
 
+    'short_text' => '{text}…',
 ];
