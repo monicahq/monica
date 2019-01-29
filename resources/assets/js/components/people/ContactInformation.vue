@@ -33,7 +33,7 @@
             <i v-else class="pr2 fa fa-address-card-o f6 gray"></i>
 
             <a v-if="contactInformation.protocol" :href="contactInformation.protocol + contactInformation.data">
-              {{ contactInformation.short }}
+              {{ contactInformation.shortenName }}
             </a>
             <a v-else :href="contactInformation.data">
               {{ contactInformation.short }}
