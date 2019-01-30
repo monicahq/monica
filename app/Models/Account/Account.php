@@ -32,7 +32,7 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Account\Activity\ActivityStatistic;
+use App\Models\Account\ActivityStatistic;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
