@@ -2,7 +2,6 @@
 
 namespace App\Models\Account;
 
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
 
