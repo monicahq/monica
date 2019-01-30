@@ -35,7 +35,7 @@ class JournalEntryTest extends TestCase
             'account_id' => $activity->account_id,
             'date' => $date,
             'journalable_id' => $activity->id,
-            'journalable_type' => 'App\Models\Contact\Activity',
+            'journalable_type' => 'App\Models\Account\Activity',
         ]);
     }
 

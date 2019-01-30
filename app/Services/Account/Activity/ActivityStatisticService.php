@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Account\Activity;
 
 use Carbon\Carbon;
 use App\Models\Contact\Contact;

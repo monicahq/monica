@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\Account\Activity;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -9,7 +9,7 @@ use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
 use App\Models\Account\ActivityStatistic;
-use App\Services\ActivityStatisticService;
+use App\Services\Account\Activity\ActivityStatisticService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityStatisticServiceTest extends TestCase
