@@ -24,7 +24,7 @@ class ActivityTypesController extends Controller
      */
     public function store(Request $request)
     {
-        $type = (new CreateActivityType)->execute([
+        $type = app(CreateActivityType::class)->execute([
             'account_id' => auth()->user()->account->id,
             'activity_type_category_id' => $request->get('activity_type_category_id'),
             'name' => $request->get('name'),
@@ -51,7 +51,7 @@ class ActivityTypesController extends Controller
             'translation_key' => $request->get('translation_key'),
         ];
 
-        $type = (new UpdateActivityType)->execute($data);
+        $type = app(UpdateActivityType::class)->execute($data);
 
         return new ActivityTypeResource($type);
     }
@@ -71,7 +71,7 @@ class ActivityTypesController extends Controller
         ];
 
         try {
-            (new DestroyActivityType)->execute($data);
+            app(DestroyActivityType::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

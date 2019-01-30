@@ -62,7 +62,7 @@ class ApiActivityTypeCategoryController extends ApiController
     public function store(Request $request)
     {
         try {
-            $activityTypeCategory = (new CreateActivityTypeCategory)->execute(
+            $activityTypeCategory = app(CreateActivityTypeCategory::class)->execute(
                 $request->all()
                     +
                     [
@@ -90,7 +90,7 @@ class ApiActivityTypeCategoryController extends ApiController
     public function update(Request $request, $activityTypeCategoryId)
     {
         try {
-            $activityTypeCategory = (new UpdateActivityTypeCategory)->execute(
+            $activityTypeCategory = app(UpdateActivityTypeCategory::class)->execute(
                 $request->all()
                     +
                     [
@@ -118,7 +118,7 @@ class ApiActivityTypeCategoryController extends ApiController
     public function destroy(Request $request, $activityTypeCategoryId)
     {
         try {
-            (new DestroyActivityTypeCategory)->execute([
+            app(DestroyActivityTypeCategory::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'activity_type_category_id' => $activityTypeCategoryId,
             ]);
