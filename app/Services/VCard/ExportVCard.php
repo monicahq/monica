@@ -60,7 +60,7 @@ class ExportVCard extends BaseService
         // Basic information
         $vcard = new VCard([
             'UID' => $contact->uuid,
-            'SOURCE' => route('people.show', $contact),
+            'SOURCE' => $contact->getLink(),
             'VERSION' => '4.0',
         ]);
 
@@ -71,6 +71,7 @@ class ExportVCard extends BaseService
         $this->exportBirthday($contact, $vcard);
         $this->exportAddress($contact, $vcard);
         $this->exportContactFields($contact, $vcard);
+        $this->exportTimestamp($contact, $vcard);
 
         return $vcard;
     }
@@ -210,5 +211,14 @@ class ExportVCard extends BaseService
                     break;
             }
         }
+    }
+
+    /**
+     * @param Contact $contact
+     * @param VCard $vcard
+     */
+    private function exportTimestamp(Contact $contact, VCard $vcard)
+    {
+        $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
     }
 }

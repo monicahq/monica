@@ -61,7 +61,7 @@ class ApiAddressController extends ApiController
     public function store(Request $request)
     {
         try {
-            $address = (new CreateAddress)->execute(
+            $address = app(CreateAddress::class)->execute(
                 $request->all()
                     +
                     [
@@ -88,7 +88,7 @@ class ApiAddressController extends ApiController
     public function update(Request $request, $addressId)
     {
         try {
-            $address = (new UpdateAddress)->execute(
+            $address = app(UpdateAddress::class)->execute(
                 $request->all()
                     +
                     [
@@ -115,7 +115,7 @@ class ApiAddressController extends ApiController
     public function destroy(Request $request, $addressId)
     {
         try {
-            (new DestroyAddress)->execute([
+            app(DestroyAddress::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'address_id' => $addressId,
             ]);

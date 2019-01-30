@@ -84,7 +84,7 @@ class ConversationsController extends Controller
 
         // create the conversation
         try {
-            $conversation = (new CreateConversation)->execute($data);
+            $conversation = app(CreateConversation::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -104,7 +104,7 @@ class ConversationsController extends Controller
             ];
 
             try {
-                (new AddMessageToConversation)->execute($data);
+                app(AddMessageToConversation::class)->execute($data);
             } catch (\Exception $e) {
                 return back()
                     ->withInput()
@@ -170,7 +170,7 @@ class ConversationsController extends Controller
 
         // update the conversation
         try {
-            $conversation = (new UpdateConversation)->execute($data);
+            $conversation = app(UpdateConversation::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -184,7 +184,7 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'message_id' => $message->id,
             ];
-            (new DestroyMessage)->execute($data);
+            app(DestroyMessage::class)->execute($data);
         }
 
         // and create all new ones
@@ -200,7 +200,7 @@ class ConversationsController extends Controller
             ];
 
             try {
-                (new AddMessageToConversation)->execute($data);
+                app(AddMessageToConversation::class)->execute($data);
             } catch (\Exception $e) {
                 return back()
                     ->withInput()
@@ -228,7 +228,7 @@ class ConversationsController extends Controller
         ];
 
         try {
-            (new DestroyConversation)->execute($data);
+            app(DestroyConversation::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

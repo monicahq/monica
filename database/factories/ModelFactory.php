@@ -131,6 +131,12 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
 $factory->state(App\Models\Contact\Contact::class, 'partial', [
     'is_partial' => 1,
 ]);
+$factory->state(App\Models\Contact\Contact::class, 'named', function (Faker\Generator $faker) {
+    return [
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+    ];
+});
 
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     return [

@@ -31,8 +31,7 @@ class DestroyCallTest extends TestCase
             'id' => $call->id,
         ]);
 
-        $callService = new DestroyCall;
-        $bool = $callService->execute($request);
+        app(DestroyCall::class)->execute($request);
 
         $this->assertDatabaseMissing('calls', [
             'id' => $call->id,
@@ -60,8 +59,7 @@ class DestroyCallTest extends TestCase
             'call_id' => $call->id,
         ];
 
-        $callService = new DestroyCall;
-        $bool = $callService->execute($request);
+        app(DestroyCall::class)->execute($request);
 
         $this->assertDatabaseMissing('emotion_call', [
             'contact_id' => $call->contact_id,
@@ -94,8 +92,7 @@ class DestroyCallTest extends TestCase
             'call_id' => $call->id,
         ];
 
-        $callService = new DestroyCall;
-        $bool = $callService->execute($request);
+        app(DestroyCall::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -118,8 +115,7 @@ class DestroyCallTest extends TestCase
             'call_id' => $call->id,
         ];
 
-        $callService = new DestroyCall;
-        $bool = $callService->execute($request);
+        app(DestroyCall::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,

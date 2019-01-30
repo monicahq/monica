@@ -107,7 +107,7 @@ class UpdateDeceasedInformation extends BaseService
         }
 
         if ($data['add_reminder']) {
-            $reminder = (new CreateReminder)->execute([
+            $reminder = app(CreateReminder::class)->execute([
                 'account_id' => $data['account_id'],
                 'contact_id' => $data['contact_id'],
                 'initial_date' => $specialDate->date->toDateString(),

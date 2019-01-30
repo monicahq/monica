@@ -92,7 +92,7 @@ class ApiContactController extends ApiController
     public function store(Request $request)
     {
         try {
-            $contact = (new CreateContact)->execute(
+            $contact = app(CreateContact::class)->execute(
                 $request->all()
                     +
                     [
@@ -118,7 +118,7 @@ class ApiContactController extends ApiController
     public function update(Request $request, $contactId)
     {
         try {
-            $contact = (new UpdateContact)->execute(
+            $contact = app(UpdateContact::class)->execute(
                 $request->all()
                     +
                     [
@@ -148,7 +148,7 @@ class ApiContactController extends ApiController
             'contact_id' => $contactId,
             'account_id' => auth()->user()->account->id,
         ];
-        (new DestroyContact)->execute($data);
+        app(DestroyContact::class)->execute($data);
 
         return $this->respondObjectDeleted($contactId);
     }

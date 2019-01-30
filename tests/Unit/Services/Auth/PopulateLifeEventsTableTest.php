@@ -22,8 +22,7 @@ class PopulateLifeEventsTableTest extends TestCase
 
         $this->expectException(\Exception::class);
 
-        $populateLifeEventService = new PopulateLifeEventsTable;
-        $populateLifeEventService->execute($request);
+        app(PopulateLifeEventsTable::class)->execute($request);
 
         $request = [
             'migrate_existing_data' => false,
@@ -31,8 +30,7 @@ class PopulateLifeEventsTableTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $populateLifeEventService = new PopulateLifeEventsTable;
-        $populateLifeEventService->execute($request);
+        app(PopulateLifeEventsTable::class)->execute($request);
     }
 
     public function test_it_populate_life_event_tables()
@@ -51,8 +49,7 @@ class PopulateLifeEventsTableTest extends TestCase
             'migrate_existing_data' => 1,
         ];
 
-        $populateLifeEventService = new PopulateLifeEventsTable;
-        $populateLifeEventService->execute($request);
+        app(PopulateLifeEventsTable::class)->execute($request);
 
         $this->assertEquals(
             5,
@@ -83,8 +80,7 @@ class PopulateLifeEventsTableTest extends TestCase
             'migrate_existing_data' => 0,
         ];
 
-        $populateLifeEventService = new PopulateLifeEventsTable;
-        $this->assertFalse($populateLifeEventService->execute($request));
+        $this->assertFalse(app(PopulateLifeEventsTable::class)->execute($request));
     }
 
     public function test_it_only_populates_life_event_tables_partially()
@@ -107,8 +103,7 @@ class PopulateLifeEventsTableTest extends TestCase
             'migrate_existing_data' => 0,
         ];
 
-        $populateLifeEventService = new PopulateLifeEventsTable;
-        $populateLifeEventService->execute($request);
+        app(PopulateLifeEventsTable::class)->execute($request);
 
         $this->assertEquals(
             4,

@@ -21,7 +21,7 @@ class AddLinkedinToDefaultContactFieldType extends Migration
 
         Account::chunk(200, function ($accounts) {
             foreach ($accounts as $account) {
-                (new PopulateContactFieldTypesTable)->execute([
+                app(PopulateContactFieldTypesTable::class)->execute([
                     'account_id' => $account->id,
                     'migrate_existing_data' => false,
                 ]);

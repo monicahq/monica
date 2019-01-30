@@ -37,8 +37,7 @@ class DestroyMessageTest extends TestCase
             'id' => $message->id,
         ]);
 
-        $messageService = new DestroyMessage;
-        $bool = $messageService->execute($request);
+        app(DestroyMessage::class)->execute($request);
 
         $this->assertDatabaseMissing('messages', [
             'id' => $message->id,
@@ -54,8 +53,7 @@ class DestroyMessageTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $destroyMessage = new DestroyMessage;
-        $result = $destroyMessage->execute($request);
+        app(DestroyMessage::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_message_doesnt_exist()
@@ -70,7 +68,6 @@ class DestroyMessageTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyMessage = new DestroyMessage;
-        $message = $destroyMessage->execute($request);
+        app(DestroyMessage::class)->execute($request);
     }
 }

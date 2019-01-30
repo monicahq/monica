@@ -28,8 +28,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $deceasedService->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -46,8 +45,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $deceasedService->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -73,8 +71,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $contact = app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -107,8 +104,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $contact = app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -141,7 +137,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        (new UpdateDeceasedInformation)->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
         $reminder = Reminder::where('contact_id', $contact->id)->first();
@@ -169,7 +165,7 @@ class UpdateDeceasedInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateDeceasedInformation)->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
@@ -188,6 +184,6 @@ class UpdateDeceasedInformationTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateDeceasedInformation)->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
     }
 }
