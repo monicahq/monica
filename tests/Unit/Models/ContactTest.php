@@ -364,7 +364,7 @@ class ContactTest extends FeatureTestCase
     public function test_get_initials_with_special_chars()
     {
         $user = $this->signIn();
-        $user->locale= 'de';
+        $user->locale = 'de';
         $user->save();
 
         $contact = new Contact;
