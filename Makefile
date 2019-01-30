@@ -30,9 +30,11 @@ $(info BRANCH=$(BRANCH))
 $(info BUILD_NUMBER=$(BUILD_NUMBER))
 
 ifeq ($(GIT_COMMIT),)
-  GIT_COMMIT := $(shell git log --format="%h" -n 1)
+  GIT_COMMIT := $(shell git log --format="%H" -n 1)
+  GIT_REF := $(shell git log --format="%h" -n 1)
 else
-  GIT_COMMIT := $(shell git rev-parse --short=8 ${GIT_COMMIT})
+  GIT_COMMIT := $(shell git rev-parse ${GIT_COMMIT})
+  GIT_REF := $(shell git rev-parse --short ${GIT_COMMIT})
 endif
 $(info GIT_COMMIT=$(GIT_COMMIT))
 ifeq ($(GIT_TAG),)
@@ -48,7 +50,7 @@ BUILD := $(GIT_TAG)
 ifeq ($(BUILD),)
   ifeq ($(BRANCH),)
     # If we are not on CI or it's not a TAG build, we add "-dev" to the name
-    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null); then echo "-dev"; fi)
+    BUILD := $(GIT_REF)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null); then echo "-dev"; fi)
   else
     BUILD := $(BRANCH)
   endif
@@ -73,7 +75,8 @@ docker:
 docker_build:
 	docker build \
 		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
-		--build-arg VCS_REF=$(GIT_COMMIT) \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
 		-t $(DOCKER_IMAGE) .
 	docker images
@@ -104,21 +107,21 @@ docker_push_bintray: .deploy.json
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
 	php artisan lang:generate
-	yarn install
+	yarn inst
 	yarn lint --fix
 	yarn run production
 
 build-prod:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
 	php artisan lang:generate
-	yarn install
+	yarn inst
 	yarn lint --fix
 	yarn run production
 
 build-dev:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
 	php artisan lang:generate
-	yarn install
+	yarn inst
 	yarn lint --fix
 	yarn run dev
 

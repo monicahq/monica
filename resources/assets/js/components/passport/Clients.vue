@@ -91,13 +91,13 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="createForm.errors" />
+            <error :errors="createForm.errors" />
 
             <!-- Create Client Form -->
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="create-client-name" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -114,12 +114,12 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="create-redirect-url" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 
                 <div class="col-md-7">
-                  <input v-model="createForm.redirect" type="text" class="form-control"
+                  <input id="create-redirect-url" v-model="createForm.redirect" type="text" class="form-control"
                          name="redirect" @keyup.enter="store"
                   />
 
@@ -161,13 +161,13 @@
 
           <div class="modal-body">
             <!-- Form Errors -->
-            <div :is="errorTemplate" :errors="editForm.errors" />
+            <error :errors="editForm.errors" />
 
             <!-- Edit Client Form -->
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="edit-client-name" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -184,12 +184,12 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label class="col-md-3 control-label">
+                <label for="edit-redirect-url" class="col-md-3 control-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 
                 <div class="col-md-7">
-                  <input v-model="editForm.redirect" type="text" class="form-control"
+                  <input id="edit-redirect-url" v-model="editForm.redirect" type="text" class="form-control"
                          name="redirect" @keyup.enter="update"
                   />
 
@@ -222,6 +222,10 @@ import Error from '../partials/Error.vue';
 
 export default {
 
+  components: {
+    Error
+  },
+
   data() {
     return {
       clients: [],
@@ -237,11 +241,13 @@ export default {
         name: '',
         redirect: ''
       },
-
-      errorTemplate: Error,
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -250,7 +256,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getClients();
 
       $('#modal-create-client').on('shown.bs.modal', () => {
@@ -263,35 +268,35 @@ export default {
     },
 
     /**
-          * Get all of the OAuth clients for the user.
-          */
+      * Get all of the OAuth clients for the user.
+      */
     getClients() {
-      axios.get('/oauth/clients')
+      axios.get('oauth/clients')
         .then(response => {
           this.clients = response.data;
         });
     },
 
     /**
-          * Show the form for creating new clients.
-          */
+      * Show the form for creating new clients.
+      */
     showCreateClientForm() {
       $('#modal-create-client').modal('show');
     },
 
     /**
-          * Create a new OAuth client for the user.
-          */
+      * Create a new OAuth client for the user.
+      */
     store() {
       this.persistClient(
-        'post', '/oauth/clients',
+        'post', 'oauth/clients',
         this.createForm, '#modal-create-client'
       );
     },
 
     /**
-          * Edit the given client.
-          */
+      * Edit the given client.
+      */
     edit(client) {
       this.editForm.id = client.id;
       this.editForm.name = client.name;
@@ -301,18 +306,18 @@ export default {
     },
 
     /**
-          * Update the client being edited.
-          */
+      * Update the client being edited.
+      */
     update() {
       this.persistClient(
-        'put', '/oauth/clients/' + this.editForm.id,
+        'put', 'oauth/clients/' + this.editForm.id,
         this.editForm, '#modal-edit-client'
       );
     },
 
     /**
-          * Persist the client to storage using the given form.
-          */
+      * Persist the client to storage using the given form.
+      */
     persistClient(method, uri, form, modal) {
       form.errors = [];
 
@@ -336,10 +341,10 @@ export default {
     },
 
     /**
-          * Destroy the given client.
-          */
+      * Destroy the given client.
+      */
     destroy(client) {
-      axios.delete('/oauth/clients/' + client.id)
+      axios.delete('oauth/clients/' + client.id)
         .then(response => {
           this.getClients();
         });

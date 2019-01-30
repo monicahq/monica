@@ -72,8 +72,13 @@ export default {
   data() {
     return {
       modules: [],
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -82,7 +87,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getModules();
       if (!this.limited) {
         this.limited = 0;
@@ -90,14 +94,14 @@ export default {
     },
 
     getModules() {
-      axios.get('/settings/personalization/modules')
+      axios.get('settings/personalization/modules')
         .then(response => {
           this.modules = response.data;
         });
     },
 
     toggle(module) {
-      axios.post('/settings/personalization/modules/' + module.id)
+      axios.post('settings/personalization/modules/' + module.id)
         .then(response => {
           this.$notify({
             group: 'main',

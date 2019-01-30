@@ -28,5 +28,5 @@
     </script>
   @endif
 
-  <p><a href="/">{{ trans('auth.back_homepage') }}</a></p>
+  <p><a href="">{{ trans('auth.back_homepage') }}</a></p>
 @endsection

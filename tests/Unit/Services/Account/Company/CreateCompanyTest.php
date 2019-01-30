@@ -24,8 +24,7 @@ class CreateCompanyTest extends TestCase
             'number_of_employees' => 3,
         ];
 
-        $companyService = new CreateCompany;
-        $company = $companyService->execute($request);
+        $company = app(CreateCompany::class)->execute($request);
 
         $this->assertDatabaseHas('companies', [
             'id' => $company->id,
@@ -50,6 +49,6 @@ class CreateCompanyTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateCompany)->execute($request);
+        app(CreateCompany::class)->execute($request);
     }
 }

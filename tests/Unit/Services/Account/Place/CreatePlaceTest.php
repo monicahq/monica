@@ -3,8 +3,12 @@
 namespace Tests\Unit\Services\Account\Place;
 
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
+use GuzzleHttp\Psr7\Response;
 use App\Models\Account\Account;
+use GuzzleHttp\Handler\MockHandler;
 use App\Services\Account\Place\CreatePlace;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -28,8 +32,7 @@ class CreatePlaceTest extends TestCase
             'longitude' => '10',
         ];
 
-        $placeService = new CreatePlace;
-        $place = $placeService->execute($request);
+        $place = app(CreatePlace::class)->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -49,10 +52,10 @@ class CreatePlaceTest extends TestCase
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
 
-        \VCR\VCR::turnOn();
-        \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(['url']);
-        \VCR\VCR::insertCassette('create_place_service_gets_gps_coordinates.yml');
+        $body = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/CreatePlaceSampleResponse.json'));
+        $mock = new MockHandler([new Response(200, [], $body)]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
 
         $account = factory(Account::class)->create([]);
 
@@ -67,8 +70,7 @@ class CreatePlaceTest extends TestCase
             'longitude' => '',
         ];
 
-        $placeService = new CreatePlace;
-        $place = $placeService->execute($request);
+        $place = app(CreatePlace::class)->execute($request, $client);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -77,9 +79,6 @@ class CreatePlaceTest extends TestCase
             'latitude' => 34.0736204,
             'longitude' => -118.4003563,
         ]);
-
-        \VCR\VCR::eject();
-        \VCR\VCR::turnOff();
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -91,6 +90,6 @@ class CreatePlaceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePlace)->execute($request);
+        app(CreatePlace::class)->execute($request);
     }
 }

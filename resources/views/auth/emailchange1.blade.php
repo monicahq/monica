@@ -9,7 +9,7 @@
           <div class="signup-box">
             <div class="dt w-100">
               <div class="dtc tc">
-                <img src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             <h2>{{ trans('auth.email_change_title') }}</h2>
@@ -22,7 +22,7 @@
               </div>
             @endif
 
-            <form action="/settings/emailchange1" method="post">
+            <form action="settings/emailchange1" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">

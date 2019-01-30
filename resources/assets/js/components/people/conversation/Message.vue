@@ -107,19 +107,16 @@ export default {
     return {
       buffer: this.content,
       updatedAuthor: this.author,
-      dirltr: true,
     };
   },
 
-  mounted() {
-    this.prepareComponent();
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   methods: {
-    prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
-    },
-
     updateContent(updatedContent) {
       this.buffer = updatedContent;
       this.$emit('contentChange', this.buffer);

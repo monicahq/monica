@@ -4,7 +4,7 @@
 <template>
   <div>
     <div>
-      <img src="/img/people/tasks.svg" class="icon-section icon-tasks" />
+      <img src="img/people/tasks.svg" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
@@ -32,7 +32,7 @@
 
       <!-- LIST OF IN PROGRESS TASKS -->
       <ul>
-        <li v-for="task in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
+        <li v-for="(task, i) in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
           <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
           {{ task.title }}
           <span v-if="task.description" class="silver ml3">
@@ -47,16 +47,17 @@
           <!-- EDIT BOX -->
           <form v-show="task.edit" class="bg-near-white pa2 br2 mt3 mb3">
             <div>
-              <label class="db fw6 lh-copy f6">
+              <label :for="'edit-title' + i" class="db fw6 lh-copy f6">
                 {{ $t('people.tasks_form_title') }}
               </label>
-              <input v-model="task.title" class="pa2 db w-100" type="text" @keyup.esc="editMode = false" />
+              <input :id="'edit-title' + i" v-model="task.title" class="pa2 db w-100" type="text" @keyup.esc="editMode = false" />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
+              <label :for="'edit-description' + i" class="db fw6 lh-copy f6">
                 {{ $t('people.tasks_form_description') }}
               </label>
-              <textarea v-model="task.description"
+              <textarea :id="'edit-description' + i"
+                        v-model="task.description"
                         class="pa2 db w-100"
                         type="text"
                         @keyup.esc="editMode = false"
@@ -86,16 +87,18 @@
       <div v-if="addMode" cy-name="task-add-view">
         <form class="bg-near-white pa2 br2 mt3 mb3">
           <div>
-            <label class="db fw6 lh-copy f6">
+            <label for="add-title" class="db fw6 lh-copy f6">
               {{ $t('people.tasks_form_title') }}
             </label>
-            <input v-model="newTask.title" class="pa2 db w-100" type="text" cy-name="task-add-title" @keyup.esc="addMode = false" />
+            <input id="add-title" v-model="newTask.title" class="pa2 db w-100" type="text" cy-name="task-add-title"
+                   @keyup.esc="addMode = false"
+            />
           </div>
           <div class="mt3">
-            <label class="db fw6 lh-copy f6">
+            <label for="add-description" class="db fw6 lh-copy f6">
               {{ $t('people.tasks_form_description') }}
             </label>
-            <textarea v-model="newTask.description" class="pa2 db w-100" type="text" @keyup.esc="addMode = false"></textarea>
+            <textarea id="add-description" v-model="newTask.description" class="pa2 db w-100" type="text" @keyup.esc="addMode = false"></textarea>
           </div>
           <div class="lh-copy mt3">
             <a class="btn btn-primary" cy-name="save-task-button" @click.prevent="store">
@@ -159,9 +162,13 @@ export default {
         description: '',
         completed: 0
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -170,7 +177,6 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.newTask.contact_id = this.contactId;
       this.index();
     },
@@ -202,14 +208,14 @@ export default {
     },
 
     index() {
-      axios.get('/people/' + this.hash + '/tasks')
+      axios.get('people/' + this.hash + '/tasks')
         .then(response => {
           this.tasks = response.data;
         });
     },
 
     store() {
-      axios.post('/tasks', this.newTask)
+      axios.post('tasks', this.newTask)
         .then(response => {
           this.addMode = false;
           this.reinitialize();
@@ -229,7 +235,7 @@ export default {
     },
 
     update(task, toggleEdit) {
-      axios.put('/tasks/' + task.id, task)
+      axios.put('tasks/' + task.id, task)
         .then(response => {
           this.updateMode = false;
           if (toggleEdit) {
@@ -245,7 +251,7 @@ export default {
     },
 
     trash(task) {
-      axios.delete('/tasks/' + task.id)
+      axios.delete('tasks/' + task.id)
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1);
         });

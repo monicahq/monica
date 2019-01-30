@@ -3,8 +3,12 @@
 namespace Tests\Unit\Services\Account\Place;
 
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
+use GuzzleHttp\Psr7\Response;
 use App\Models\Account\Account;
+use GuzzleHttp\Handler\MockHandler;
 use App\Services\Account\Place\UpdatePlace;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -19,7 +23,7 @@ class UpdatePlaceTest extends TestCase
         $place = factory(Place::class)->create([]);
 
         $request = [
-            'account_id' => $place->account->id,
+            'account_id' => $place->account_id,
             'place_id' => $place->id,
             'street' => '199 Lafayette Street',
             'city' => 'New York City',
@@ -30,8 +34,7 @@ class UpdatePlaceTest extends TestCase
             'longitude' => '10',
         ];
 
-        $placeService = new UpdatePlace;
-        $place = $placeService->execute($request);
+        $place = app(UpdatePlace::class)->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -51,15 +54,15 @@ class UpdatePlaceTest extends TestCase
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
 
-        \VCR\VCR::turnOn();
-        \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(['url']);
-        \VCR\VCR::insertCassette('create_place_service_gets_gps_coordinates.yml');
+        $body = file_get_contents(base_path('tests/Fixtures/Services/Account/Place/UpdatePlaceSampleResponse.json'));
+        $mock = new MockHandler([new Response(200, [], $body)]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
 
         $place = factory(Place::class)->create([]);
 
         $request = [
-            'account_id' => $place->account->id,
+            'account_id' => $place->account_id,
             'place_id' => $place->id,
             'street' => '12',
             'city' => 'beverly hills',
@@ -70,8 +73,7 @@ class UpdatePlaceTest extends TestCase
             'longitude' => '',
         ];
 
-        $placeService = new UpdatePlace;
-        $place = $placeService->execute($request);
+        $place = app(UpdatePlace::class)->execute($request, $client);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -80,9 +82,6 @@ class UpdatePlaceTest extends TestCase
             'latitude' => 34.0736204,
             'longitude' => -118.4003563,
         ]);
-
-        \VCR\VCR::eject();
-        \VCR\VCR::turnOff();
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -94,7 +93,7 @@ class UpdatePlaceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdatePlace)->execute($request);
+        app(UpdatePlace::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_place_is_not_linked_to_account()
@@ -108,6 +107,6 @@ class UpdatePlaceTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdatePlace)->execute($request);
+        app(UpdatePlace::class)->execute($request);
     }
 }

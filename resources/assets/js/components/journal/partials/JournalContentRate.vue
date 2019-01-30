@@ -23,7 +23,10 @@
 
           <!-- Log content -->
           <div class="flex-auto flex items-center">
-            <p class="mb2">
+            <p v-if="day.comment" class="mb2">
+              {{ day.comment }}
+            </p>
+            <p v-if="!day.comment" class="mb2">
               {{ $t('journal.journal_entry_rate') }}
             </p>
           </div>
@@ -83,29 +86,6 @@
               </g>
             </svg>
           </div>
-
-          <!-- Show comment -->
-          <div v-if="day.comment" class="flex-none w-5">
-            <div class="flex justify-center items-center h-100">
-              <svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                   xmlns:xlink="http://www.w3.org/1999/xlink" class="flex-none"
-              >
-                <defs />
-                <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
-                   stroke-linecap="square"
-                >
-                  <g id="Desktop" transform="translate(-839.000000, -279.000000)" stroke="#979797">
-                    <g id="Group-4" transform="translate(839.000000, 278.000000)">
-                      <path id="Line-2" d="M0.5,1.5 L15.5,1.5" />
-                      <path id="Line-2" d="M0.5,9.5 L15.5,9.5" />
-                      <path id="Line-2" d="M0.5,5.5 L13.5,5.5" />
-                      <path id="Line-2" d="M0.5,13.5 L10.5,13.5" />
-                    </g>
-                  </g>
-                </g>
-              </svg>
-            </div>
-          </div>
         </div>
 
         <!-- Edit/Delete -->
@@ -115,6 +95,9 @@
           </div>
           <div class="flex-none w-90 mt2 pt0 pr3 pb2">
             <ul class="f7">
+              <li class="di">
+                {{ $t('journal.journal_entry_rate') }}
+              </li>
               <li class="di">
                 <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" @click="destroy()">
                   {{ $t('app.delete') }}
@@ -141,9 +124,13 @@ export default {
   data() {
     return {
       day: [],
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -152,12 +139,11 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.day = this.journalEntry.object;
     },
 
     destroy() {
-      axios.delete('/journal/day/' + this.day.id)
+      axios.delete('journal/day/' + this.day.id)
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });

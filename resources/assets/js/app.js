@@ -214,6 +214,11 @@ Vue.component(
 );
 
 Vue.component(
+  'journal-rate-day',
+  require('./components/journal/RateDay.vue').default
+);
+
+Vue.component(
   'journal-calendar',
   require('./components/journal/partials/JournalCalendar.vue').default
 );
@@ -262,15 +267,17 @@ Vue.component(
   'recovery-codes',
   require('./components/settings/RecoveryCodes.vue').default
 );
-
 Vue.component(
   'modules',
   require('./components/settings/Modules.vue').default
 );
-
 Vue.component(
   'activity-types',
   require('./components/settings/ActivityTypes.vue').default
+);
+Vue.component(
+  'dav-resources',
+  require('./components/settings/DAVResources.vue').default
 );
 
 // axios
@@ -291,6 +298,7 @@ Vue.filter('formatDate', function(value) {
 // Markdown
 window.marked = require('marked');
 
+// i18n
 import messages from '../../../public/js/langs/en.json';
 
 export const i18n = new VueI18n({
@@ -333,7 +341,8 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
       date_met_the_contact: 'known',
       global_relationship_form_new_contact: true,
       htmldir: window.Laravel.htmldir,
-      global_profile_default_view: window.Laravel.profileDefaultView
+      locale: lang,
+      global_profile_default_view: window.Laravel.profileDefaultView,
     },
     mounted: function() {
 
@@ -344,7 +353,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     },
     methods: {
       updateDefaultProfileView(view) {
-        axios.post('/settings/updateDefaultProfileView', { 'name': view })
+        axios.post('settings/updateDefaultProfileView', { 'name': view })
           .then(response => {
             this.global_profile_default_view = view;
           });

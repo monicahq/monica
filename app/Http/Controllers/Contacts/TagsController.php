@@ -52,7 +52,7 @@ class TagsController extends Controller
         // detaching all the tags
         $contactTags = $contact->tags()->get();
         foreach ($contactTags as $tag) {
-            (new DetachTag)->execute([
+            app(DetachTag::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,
                 'tag_id' => $tag->id,
@@ -62,7 +62,7 @@ class TagsController extends Controller
         // attach all the new/updated tags
         foreach ($tags as $tag) {
             if (! empty($tag['name'])) {
-                (new AssociateTag)->execute([
+                app(AssociateTag::class)->execute([
                     'account_id' => auth()->user()->account->id,
                     'contact_id' => $contact->id,
                     'name' => $tag['name'],

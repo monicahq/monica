@@ -97,12 +97,16 @@ export default {
       results: [],
       isOpen: false,
       arrowCounter: 0,
-      dirltr: true,
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   mounted() {
-    this.dirltr = this.$root.htmldir == 'ltr';
     this.prepareComponent();
     document.addEventListener('click', this.handleClickOutside);
   },
@@ -118,14 +122,14 @@ export default {
     },
 
     getExistingTags() {
-      axios.get('/tags')
+      axios.get('tags')
         .then(response => {
           this.allTags = response.data.data;
         });
     },
 
     getContactTags() {
-      axios.get('/people/' + this.hash + '/tags')
+      axios.get('people/' + this.hash + '/tags')
         .then(response => {
           this.contactTags = response.data.data;
         });
@@ -191,14 +195,14 @@ export default {
 
     store() {
       this.editMode = false;
-      axios.post('/people/' + this.hash + '/tags/update', this.contactTags)
+      axios.post('people/' + this.hash + '/tags/update', this.contactTags)
         .then(response => {
           this.getExistingTags();
         });
     },
 
     navigateTo(tag) {
-      window.location.href = '/people?tag1=' + tag.name_slug;
+      window.location.href = 'people?tag1=' + tag.name_slug;
     },
 
     handleClickOutside(evt) {

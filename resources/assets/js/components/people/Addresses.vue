@@ -13,7 +13,7 @@
         <a v-if="!editMode" class="pointer" @click="editMode = true">
           {{ $t('app.edit') }}
         </a>
-        <a v-else class="pointer" @click="[editMode = false, addMode = false]">
+        <a v-else class="pointer" @click="toggleEditExcept(-1); editMode = false; addMode = false">
           {{ $t('app.done') }}
         </a>
       </div>
@@ -28,7 +28,7 @@
 
     <!-- LIST OF ADDRESSES  -->
     <ul v-if="contactAddresses.length > 0">
-      <li v-for="contactAddress in contactAddresses" :key="contactAddress.id" class="mb2">
+      <li v-for="(contactAddress, i) in contactAddresses" :key="contactAddress.id" class="mb2">
         <div v-show="!contactAddress.edit" class="w-100 dt">
           <div class="dtc">
             <i class="f6 light-silver fa fa-globe pr2"></i>
@@ -59,64 +59,85 @@
 
         <!-- EDIT BOX -->
         <div v-show="contactAddress.edit" class="w-100">
-          <form class="measure center">
+          <form class="measure center" @keyup.enter="update(contactAddress)">
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_name') }}
-              </label>
-              <input v-model="updateForm.name" class="pa2 db w-100" type="text" />
+              <form-input
+                :id="'name' + i"
+                v-model="updateForm.name"
+                :title="$t('people.contact_address_form_name')"
+                input-type="text"
+                :required="false"
+                :iclass="'pa2 db w-100'"
+              />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_street') }}
-              </label>
-              <input v-model="updateForm.street" class="pa2 db w-100" type="text" />
+              <form-input
+                :id="'street' + i"
+                v-model="updateForm.street"
+                :title="$t('people.contact_address_form_street')"
+                input-type="text"
+                :required="false"
+              />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_city') }}
-              </label>
-              <input v-model="updateForm.city" class="pa2 db w-100" type="text" />
+              <form-input
+                :id="'city' + i"
+                v-model="updateForm.city"
+                :title="$t('people.contact_address_form_city')"
+                input-type="text"
+                :required="false"
+              />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_province') }}
-              </label>
-              <input v-model="updateForm.province" class="pa2 db w-100" type="text" />
+              <form-input
+                :id="'province' + i"
+                v-model="updateForm.province"
+                :title="$t('people.contact_address_form_province')"
+                input-type="text"
+                :required="false"
+              />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_postal_code') }}
-              </label>
-              <input v-model="updateForm.postal_code" class="pa2 db w-100" type="text" />
+              <form-input
+                :id="'postal_code' + i"
+                v-model="updateForm.postal_code"
+                :title="$t('people.contact_address_form_postal_code')"
+                input-type="text"
+                :required="false"
+              />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_country') }}
-              </label>
-              <select v-model="updateForm.country" class="db w-100 h2">
-                <option v-for="country in countries" :key="country.id" :value="country.id">
-                  {{ country.country }}
-                </option>
-              </select>
+              <form-select
+                :id="'name' + i"
+                v-model="updateForm.country"
+                :title="$t('people.contact_address_form_country')"
+                :options="countries"
+                :required="false"
+              />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_latitude') }}
-              </label>
-              <input v-model="updateForm.latitude" class="pa2 db w-100" type="text" />
+              <form-input
+                :id="'latitude' + i"
+                v-model="updateForm.latitude"
+                :title="$t('people.contact_address_form_latitude')"
+                input-type="number"
+                :required="false"
+              />
             </div>
             <div class="mt3">
-              <label class="db fw6 lh-copy f6">
-                {{ $t('people.contact_address_form_latitude') }}
-              </label>
-              <input v-model="updateForm.longitude" class="pa2 db w-100" type="text" />
+              <form-input
+                :id="'longitude' + i"
+                v-model="updateForm.longitude"
+                :title="$t('people.contact_address_form_latitude')"
+                input-type="number"
+                :required="false"
+              />
             </div>
             <div class="lh-copy mt3">
               <a class="btn btn-primary" @click.prevent="update(contactAddress)">
-                {{ $t('app.add') }}
+                {{ $t('app.save') }}
               </a>
-              <a class="btn" @click="toggleEdit(contactAddress)">
+              <a class="btn" @click.prevent="toggleEdit(contactAddress)">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -135,65 +156,85 @@
 
     <!-- ADD NEW ADDRESS  -->
     <div v-if="addMode">
-      <form class="measure center">
+      <form class="measure center" @keyup.enter="store">
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_name') }}
-          </label>
-          <input v-model="createForm.name" class="pa2 db w-100" type="text" />
+          <form-input
+            id="name"
+            v-model="createForm.name"
+            :title="$t('people.contact_address_form_name')"
+            input-type="text"
+            :required="false"
+            :iclass="'pa2 db w-100'"
+          />
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_street') }}
-          </label>
-          <input v-model="createForm.street" class="pa2 db w-100" type="text" />
+          <form-input
+            id="street"
+            v-model="createForm.street"
+            :title="$t('people.contact_address_form_street')"
+            input-type="text"
+            :required="false"
+          />
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_city') }}
-          </label>
-          <input v-model="createForm.city" class="pa2 db w-100" type="text" />
+          <form-input
+            id="city"
+            v-model="createForm.city"
+            :title="$t('people.contact_address_form_city')"
+            input-type="text"
+            :required="false"
+          />
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_province') }}
-          </label>
-          <input v-model="createForm.province" class="pa2 db w-100" type="text" />
+          <form-input
+            id="province"
+            v-model="createForm.province"
+            :title="$t('people.contact_address_form_province')"
+            input-type="text"
+            :required="false"
+          />
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_postal_code') }}
-          </label>
-          <input v-model="createForm.postal_code" class="pa2 db w-100" type="text" />
+          <form-input
+            id="postal_code"
+            v-model="createForm.postal_code"
+            :title="$t('people.contact_address_form_postal_code')"
+            input-type="text"
+            :required="false"
+          />
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_country') }}
-          </label>
-          <select v-model="createForm.country" class="db w-100 h2">
-            <option value="0"></option>
-            <option v-for="country in countries" :key="country.id" :value="country.id">
-              {{ country.country }}
-            </option>
-          </select>
+          <form-select
+            id="name"
+            v-model="createForm.country"
+            :title="$t('people.contact_address_form_country')"
+            :options="countries"
+            :required="false"
+          />
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_latitude') }}
-          </label>
-          <input v-model="createForm.latitude" class="pa2 db w-100" type="text" />
+          <form-input
+            id="latitude"
+            v-model="createForm.latitude"
+            :title="$t('people.contact_address_form_latitude')"
+            input-type="number"
+            :required="false"
+          />
         </div>
         <div class="mt3">
-          <label class="db fw6 lh-copy f6">
-            {{ $t('people.contact_address_form_latitude') }}
-          </label>
-          <input v-model="createForm.longitude" class="pa2 db w-100" type="text" />
+          <form-input
+            id="longitude"
+            v-model="createForm.longitude"
+            :title="$t('people.contact_address_form_latitude')"
+            input-type="number"
+            :required="false"
+          />
         </div>
         <div class="lh-copy mt3">
           <a class="btn btn-primary" @click.prevent="store">
             {{ $t('app.add') }}
           </a>
-          <a class="btn" @click="addMode = false">
+          <a class="btn" @click.prevent="addMode = false">
             {{ $t('app.cancel') }}
           </a>
         </div>
@@ -221,30 +262,34 @@ export default {
       addMode: false,
 
       createForm: {
-        country: 0,
         name: '',
         street: '',
         city: '',
         province: '',
         postal_code: '',
+        country: '',
         latitude: 0,
         longitude: 0,
       },
 
       updateForm: {
         id: '',
-        country: 0,
         name: '',
         street: '',
         city: '',
         province: '',
         postal_code: '',
+        country: '',
         latitude: 0,
         longitude: 0,
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -253,32 +298,36 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getAddresses();
       this.getCountries();
     },
 
     getAddresses() {
-      axios.get('/people/' + this.hash + '/addresses')
+      axios.get('people/' + this.hash + '/addresses')
         .then(response => {
           this.contactAddresses = response.data;
         });
     },
 
     getCountries() {
-      axios.get('/countries')
+      axios.get('countries')
         .then(response => {
-          this.countries = response.data;
+          this.countries = _.map(response.data, function(country) {
+            return {
+              id: country.id,
+              name: country.country
+            };
+          });
         });
     },
 
     reinitialize() {
-      this.createForm.country = '';
       this.createForm.name = '';
       this.createForm.street = '';
       this.createForm.city = '';
       this.createForm.province = '';
       this.createForm.postal_code = '';
+      this.createForm.country = '';
       this.createForm.latitude = '';
       this.createForm.longitude = '';
     },
@@ -289,41 +338,63 @@ export default {
     },
 
     toggleEdit(contactAddress) {
+      this.addMode = false;
+      this.toggleEditExcept(contactAddress.id);
       Vue.set(contactAddress, 'edit', !contactAddress.edit);
       this.updateForm.id = contactAddress.id;
-      this.updateForm.country = contactAddress.country;
       this.updateForm.name = contactAddress.name;
       this.updateForm.street = contactAddress.street;
       this.updateForm.city = contactAddress.city;
       this.updateForm.province = contactAddress.province;
       this.updateForm.postal_code = contactAddress.postal_code;
+      this.updateForm.country = contactAddress.country;
       this.updateForm.latitude = contactAddress.latitude;
       this.updateForm.longitude = contactAddress.longitude;
     },
 
+    toggleEditExcept(contactAddressId) {
+      _.forEach(_.filter(this.contactAddresses, function (a) {
+        return a.id != contactAddressId;}
+      ), function (a) {
+        Vue.set(a, 'edit', false);
+      });
+    },
+
     store() {
+      var vm = this;
       this.persistClient(
-        'post', '/people/' + this.hash + '/addresses',
+        'post', 'people/' + this.hash + '/addresses',
         this.createForm
-      );
+      ).then(response => {
+        vm.contactAddresses.push(response.data);
+      });
 
       this.addMode = false;
     },
 
     update(contactAddress) {
+      var vm = this;
+      Vue.set(contactAddress, 'edit', !contactAddress.edit);
       this.persistClient(
-        'put', '/people/' + this.hash + '/addresses/' + contactAddress.id,
+        'put', 'people/' + this.hash + '/addresses/' + contactAddress.id,
         this.updateForm
-      );
+      ).then(response => {
+        Vue.set(vm.contactAddresses, vm.contactAddresses.indexOf(vm.contactAddresses.find(item => item.id === response.data.id)), response.data);
+      });
     },
 
     trash(contactAddress) {
+      var vm = this;
       this.updateForm.id = contactAddress.id;
 
       this.persistClient(
-        'delete', '/people/' + this.hash + '/addresses/' + contactAddress.id,
+        'delete', 'people/' + this.hash + '/addresses/' + contactAddress.id,
         this.updateForm
-      );
+      ).then(response => {
+        if (response.data.deleted === true) {
+          vm.contactAddresses.splice(vm.contactAddresses.indexOf(vm.contactAddresses.find(item => item.id === response.data.id)), 1);
+        }
+      });
 
       if (this.contactAddresses.length <= 1) {
         this.editMode = false;
@@ -333,10 +404,7 @@ export default {
     persistClient(method, uri, form) {
       form.errors = {};
 
-      axios[method](uri, form)
-        .then(response => {
-          this.getAddresses();
-        })
+      return axios[method](uri, form)
         .catch(error => {
           if (typeof error.response.data === 'object') {
             form.errors = _.flatten(_.toArray(error.response.data));

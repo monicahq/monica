@@ -267,7 +267,7 @@ export default {
     },
 
     getDocuments() {
-      axios.get('/people/' + this.hash + '/documents')
+      axios.get('people/' + this.hash + '/documents')
         .then(response => {
           this.documents = response.data.data;
         });
@@ -306,7 +306,7 @@ export default {
 
       formData.append('document', this.file);
 
-      axios.post( '/people/' + this.hash + '/documents',
+      axios.post( 'people/' + this.hash + '/documents',
         formData,
         {
           headers: {
@@ -335,7 +335,7 @@ export default {
     },
 
     deleteDocument(document) {
-      axios.delete( '/people/' + this.hash + '/documents/' + document.id)
+      axios.delete( 'people/' + this.hash + '/documents/' + document.id)
         .then(response => {
           this.documents.splice(this.documents.indexOf(document), 1);
         })

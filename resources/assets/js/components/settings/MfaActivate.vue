@@ -36,14 +36,13 @@
           <p>
             {{ $t('settings.2fa_enable_otp_validate') }}
           </p>
-          <label for="one_time_password1">
-            {{ $t('auth.2fa_one_time_password') }}
-          </label>
-          <form-input :id="'one_time_password1'"
-                      v-model="one_time_password"
-                      :input-type="'number'"
-                      :width="100"
-                      :required="true"
+          <form-input
+            :id="'one_time_password1'"
+            v-model="one_time_password"
+            :title="$t('auth.2fa_one_time_password')"
+            :input-type="'number'"
+            :width="100"
+            :required="true"
           />
         </div>
       </form>
@@ -64,14 +63,13 @@
         <p>{{ $t('settings.2fa_disable_description') }}</p>
 
         <div class="form-group">
-          <label for="one_time_password2">
-            {{ $t('auth.2fa_one_time_password') }}
-          </label>
-          <form-input :id="'one_time_password2'"
-                      v-model="one_time_password"
-                      :input-type="'number'"
-                      :width="100"
-                      :required="true"
+          <form-input
+            :id="'one_time_password2'"
+            v-model="one_time_password"
+            :title="$t('auth.2fa_one_time_password')"
+            :input-type="'number'"
+            :width="100"
+            :required="true"
           />
         </div>
       </form>
@@ -118,7 +116,7 @@ export default {
 
   methods: {
     register() {
-      axios.post('/settings/security/2fa-enable', { one_time_password: this.one_time_password })
+      axios.post('settings/security/2fa-enable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeEnableModal();
           this.activated = response.data.success;
@@ -134,7 +132,7 @@ export default {
     },
 
     unregister() {
-      axios.post('/settings/security/2fa-disable', { one_time_password: this.one_time_password })
+      axios.post('settings/security/2fa-disable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeDisableModal();
           this.activated = ! response.data.success;
@@ -151,7 +149,7 @@ export default {
 
     showEnableModal() {
       this.one_time_password = '';
-      axios.get('/settings/security/2fa-enable')
+      axios.get('settings/security/2fa-enable')
         .then(response => {
           this.image = response.data.image;
           this.secret = response.data.secret;
