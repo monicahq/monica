@@ -125,7 +125,7 @@ return [
     'users_list_add_user' => 'Nieuwe gebruiker uitnodigen',
     'users_list_you' => 'Dat ben jij',
     'users_list_invitations_title' => 'Openstaande uitnodigingen',
-    'users_list_invitations_explanation' => 'Hieronder staan de mensen die u hebt uitgenodigd om mee samen te werken.',
+    'users_list_invitations_explanation' => 'Hieronder staan de mensen die je hebt uitgenodigd om mee samen te werken.',
     'users_list_invitations_invited_by' => 'invited by :name',
     'users_list_invitations_sent_date' => 'sent on :date',
     'users_blank_title' => 'You are the only one who has access to this account.',
