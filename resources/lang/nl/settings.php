@@ -10,10 +10,10 @@ return [
     'sidebar_settings_import' => 'Importeer gegevens',
     'sidebar_settings_tags' => 'Label beheer',
     'sidebar_settings_api' => 'API',
-    'sidebar_settings_dav' => 'DAV Resources',
-    'sidebar_settings_security' => 'Security',
+    'sidebar_settings_dav' => 'DAV bronnen',
+    'sidebar_settings_security' => 'Beveiliging',
 
-    'export_title' => 'Export your account data',
+    'export_title' => 'Exporteer uw accountgegevens',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
     'export_title_sql' => 'Export to SQL',
     'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only valuable if you do have your own server.',
