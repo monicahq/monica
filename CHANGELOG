@@ -4,7 +4,6 @@ New features:
 
 * Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
 * Add a page in settings to display all DAV resources
-* Add Laravel Telescope (deactivated by default)
 * Add notion of instance administrator for a user
 * Add ability to name u2f security keys and to delete register ones
 * Add ability to add a comment when rating your day in the journal

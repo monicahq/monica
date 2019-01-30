@@ -120,9 +120,11 @@ class Reminder extends Model
      *
      * @return Carbon
      */
-    public function calculateNextExpectedDate()
+    public function calculateNextExpectedDate($date = null)
     {
-        $date = $this->initial_date;
+        if (is_null($date)) {
+            $date = $this->initial_date;
+        }
 
         while ($date->isPast()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
@@ -133,6 +135,20 @@ class Reminder extends Model
         }
 
         return $date;
+    }
+
+    /**
+     * Calculate the next expected date using user timezone for this reminder.
+     *
+     * @return Carbon
+     */
+    public function calculateNextExpectedDateOnTimezone()
+    {
+        $date = $this->initial_date;
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0,
+                    DateHelper::getTimezone() ?? config('app.timezone'));
+
+        return $this->calculateNextExpectedDate($date);
     }
 
     /**
