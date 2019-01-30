@@ -9,8 +9,8 @@ use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
 use App\Models\Account\ActivityStatistic;
-use App\Services\Account\Activity\ActivityStatisticService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Account\Activity\ActivityStatisticService;
 
 class ActivityStatisticServiceTest extends TestCase
 {

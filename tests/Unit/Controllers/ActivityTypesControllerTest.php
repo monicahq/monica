@@ -3,7 +3,6 @@
 namespace Tests\Unit\Controllers;
 
 use Tests\FeatureTestCase;
-use App\Models\Account\Account;
 use App\Models\Account\ActivityType;
 use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
