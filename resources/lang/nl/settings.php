@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'sidebar_settings' => 'Account settings',
-    'sidebar_personalization' => 'Personalization',
-    'sidebar_settings_storage' => 'Storage',
-    'sidebar_settings_export' => 'Export data',
-    'sidebar_settings_users' => 'Users',
-    'sidebar_settings_subscriptions' => 'Subscription',
-    'sidebar_settings_import' => 'Import data',
-    'sidebar_settings_tags' => 'Tags management',
+    'sidebar_settings' => 'Accountinstellingen',
+    'sidebar_personalization' => 'Personalisatie',
+    'sidebar_settings_storage' => 'Opslag',
+    'sidebar_settings_export' => 'Exporteer gegevens',
+    'sidebar_settings_users' => 'Gebruikers',
+    'sidebar_settings_subscriptions' => 'Abonnement',
+    'sidebar_settings_import' => 'Importeer gegevens',
+    'sidebar_settings_tags' => 'Label beheer',
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV Resources',
     'sidebar_settings_security' => 'Security',
