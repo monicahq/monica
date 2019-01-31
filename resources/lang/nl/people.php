@@ -316,8 +316,8 @@ return [
     'debts_blank_title' => 'Beheer schulden die je bent verschuldigd aan :name of :name jou is verschuldigd',
 
     // tags
-    'tag_edit' => 'Edit tag',
-    'tag_add' => 'Add tags',
+    'tag_edit' => 'Label bewerken',
+    'tag_add' => 'Labels toevoegen',
     'tag_add_search' => 'Add or search tags',
     'tag_no_tags' => 'No tags yet',
 
