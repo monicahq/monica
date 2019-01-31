@@ -65,7 +65,7 @@ return [
     'edit_contact_information' => 'Bewerk contact informatie',
     'contact_archive' => 'Archiveer contact',
     'contact_unarchive' => 'Dearchiveer contact',
-    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
+    'contact_archive_help' => 'Gearchiveerde contacten worden niet getoond in de lijst met contactpersonen, maar worden wel weergegeven in zoekresultaten.',
     'call_button' => 'Registreer een belgesprek',
     'set_favorite' => 'Favoriete contacten worden bovenaan de lijst met contactpersonen geplaatst',
 
@@ -82,7 +82,7 @@ return [
     'modal_call_title' => 'Registreer een belgesprek',
     'modal_call_comment' => 'Waar hebben jullie het over gehad? (optioneel)',
     'modal_call_exact_date' => 'Het telefoongesprek gebeurde op',
-    'modal_call_who_called' => 'Wie belde?',
+    'modal_call_who_called' => 'Wie heeft gebeld?',
     'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Het telefoongesprek is opgeslagen.',
     'call_delete_confirmation' => 'Weet je zeker dat je deze oproep wil wissen?',
