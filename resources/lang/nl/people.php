@@ -58,7 +58,7 @@ return [
     'section_personal_notes' => 'Notities',
 
     // archived contacts
-    'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
+    'list_link_to_active_contacts' => 'Je bekijkt gearchiveerde contacten. Bekijk in plaats daarvan de <a href=":url">lijst van actieve contacten</a>.',
     'list_link_to_archived_contacts' => 'Lijst van gearchiveerde contacten',
 
     // Header
