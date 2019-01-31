@@ -319,7 +319,7 @@ function setI18nLanguage (lang) {
 export function loadLanguageAsync (lang, set) {
   if (i18n.locale !== lang) {
     if (!loadedLanguages.includes(lang)) {
-      return axios.get(`/js/langs/${lang}.json`).then(msgs => {
+      return axios.get(`js/langs/${lang}.json`).then(msgs => {
         i18n.setLocaleMessage(lang, msgs.data);
         loadedLanguages.push(lang);
         return set ? setI18nLanguage(lang) : lang;
