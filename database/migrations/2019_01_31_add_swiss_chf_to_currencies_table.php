@@ -13,7 +13,7 @@ class AddSwissCHFToCurrenciesTable extends Migration
      */
     public function up()
     {
-        DB::table('currencies')->insert([ 'iso' => 'CHF', 'name' => 'Swiss CHF', 'symbol'=>'CHF' ]);
+        DB::table('currencies')->insert([ 'iso' => 'CHF', 'name' => 'Swiss CHF', 'symbol' => 'CHF']);
     }
 }
 
