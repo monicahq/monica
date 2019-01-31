@@ -33,10 +33,10 @@
             <i v-else class="pr2 fa fa-address-card-o f6 gray"></i>
 
             <a v-if="contactInformation.protocol" :href="contactInformation.protocol + contactInformation.data">
-              {{ contactInformation.name }}
+              {{ contactInformation.shortenName }}
             </a>
             <a v-else :href="contactInformation.data">
-              {{ contactInformation.name }}
+              {{ contactInformation.shortenName }}
             </a>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
@@ -119,6 +119,10 @@ export default {
       type: Number,
       default: -1,
     },
+    sizeLimit: {
+      type: Number,
+      default: 26,
+    }
   },
 
   data() {
@@ -165,8 +169,20 @@ export default {
     getContactInformationData() {
       axios.get('people/' + this.hash + '/contactfield')
         .then(response => {
-          this.contactInformationData = response.data;
+          this.contactInformationData = this.formatResponse(response.data);
         });
+    },
+
+    formatResponse(data) {
+      var vm = this;
+      _.each(data, function(value) {
+        var shortenName = value.data;
+        if (shortenName.length > vm.sizeLimit + 1) {
+          shortenName = vm.$t('format.short_text', { text: shortenName.substr(0, vm.sizeLimit) });
+        }
+        value.shortenName = shortenName;
+      });
+      return data;
     },
 
     getContactFieldTypes() {
