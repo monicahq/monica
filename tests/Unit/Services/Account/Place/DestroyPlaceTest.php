@@ -23,8 +23,7 @@ class DestroyPlaceTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $placeService = new DestroyPlace;
-        $bool = $placeService->execute($request);
+        app(DestroyPlace::class)->execute($request);
 
         $this->assertDatabaseMissing('places', [
             'id' => $place->id,

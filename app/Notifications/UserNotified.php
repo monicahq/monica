@@ -66,7 +66,7 @@ class UserNotified extends LaravelNotification implements ShouldQueue
             ]))
             ->line($this->reminderOutbox->reminder->title)
             ->line(trans('mail.for', ['name' => $contact->name]))
-            ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), route('people.show', $contact));
+            ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), $contact->getLink());
 
         if (! is_null($this->reminderOutbox->reminder->description)) {
             $message = $message

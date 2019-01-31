@@ -34,8 +34,7 @@ class CreateContactTest extends TestCase
             'is_deceased_date_known' => false,
         ];
 
-        $contactService = new CreateContact;
-        $contact = $contactService->execute($request);
+        $contact = app(CreateContact::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
