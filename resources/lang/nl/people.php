@@ -123,19 +123,19 @@ return [
     'age_exact_birthdate' => 'geboren :date',
 
     // Last called
-    'last_called' => 'Last called: :date',
-    'last_called_empty' => 'Last called: unknown',
+    'last_called' => 'Laatst gebeld op: :date',
+    'last_called_empty' => 'Laatst gebeld op: onbekend',
     'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
+    'last_activity_date_empty' => 'Laatste activiteit samen: onbekend',
 
     // additional information
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
     'information_edit_avatar' => 'Foto/avatar van het contact',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => 'Maximaal :size Kb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
-    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description' => 'Beschrijving (optioneel)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_unknown' => 'Ik weet de leeftijd van deze persoon niet',
     'information_edit_probably' => 'Deze persoon is waarschijnlijk...',
