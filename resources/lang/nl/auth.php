@@ -22,9 +22,9 @@ return [
     'mfa_auth_u2f' => 'Authenticate with a U2F device',
     '2fa_title' => 'Tweestapsverificatie',
     '2fa_wrong_validation' => 'De tweestapsverificatie is mislukt.',
-    '2fa_one_time_password' => 'Two factor authentication code',
+    '2fa_one_time_password' => 'Tweestapsverificatiecode',
     '2fa_recuperation_code' => 'Voer een tweestapsverificatiecode in',
-    '2fa_otp_help' => 'Open up your two factor authentication mobile app and copy the code',
+    '2fa_otp_help' => 'Open je tweestapsverificatiecode-app en kopieer de code',
     'u2f_otp_extension' => 'U2F is supported natively on Chrome, <a href="{urlquantum}" lang="en">Firefox</a> and Opera. On old Firefox versions, install the <a href="{urlext}">U2F Support Add-on</a>.',
 
     'login_to_account' => 'Aanmelden op uw account',
