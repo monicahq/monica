@@ -8,9 +8,9 @@ use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Http\Controllers\Controller;
 use App\Models\Account\ActivityType;
-use App\Services\Account\Activity\ActivityStatisticService;
 use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Account\Activity\Activity\DestroyActivity;
+use App\Services\Account\Activity\ActivityStatisticService;
 use App\Http\Resources\Activity\Activity as ActivityResource;
 use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
