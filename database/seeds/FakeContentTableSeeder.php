@@ -315,7 +315,7 @@ class FakeContentTableSeeder extends Seeder
                     'account_id' => $this->account->id,
                     'date' => $date,
                     'journalable_id' => $activity->id,
-                    'journalable_type' => 'App\Models\Contact\Activity',
+                    'journalable_type' => 'App\Models\Account\Activity',
                 ]);
             }
         }

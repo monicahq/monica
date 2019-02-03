@@ -34,11 +34,11 @@ $factory->define(App\Models\Account\Account::class, function (Faker\Generator $f
     ];
 });
 
-$factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\Activity::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'activity_type_id' => function (array $data) {
-            return factory(App\Models\Contact\ActivityType::class)->create([
+            return factory(App\Models\Account\ActivityType::class)->create([
                 'account_id' => $data['account_id'],
             ])->id;
         },
@@ -48,11 +48,11 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
     ];
 });
 
-$factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\ActivityType::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'activity_type_category_id' => function (array $data) {
-            return factory(App\Models\Contact\ActivityTypeCategory::class)->create([
+            return factory(App\Models\Account\ActivityTypeCategory::class)->create([
                 'account_id' => $data['account_id'],
             ])->id;
         },
@@ -61,7 +61,7 @@ $factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generat
     ];
 });
 
-$factory->define(App\Models\Contact\ActivityTypeCategory::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\ActivityTypeCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'translation_key' => $faker->sentence,
