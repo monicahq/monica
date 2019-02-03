@@ -38,7 +38,7 @@ class SetupTest extends Command
         $this->artisan('✓ Symlink the storage folder', 'storage:link');
 
         if (! $this->option('skipSeed')) {
-            $this->artisan('✓ Filling  database with fake data', 'db:seed', ['--class' => 'FakeContentTableSeeder']);
+            $this->artisan('✓ Filling database with fake data', 'db:seed', ['--class' => 'FakeContentTableSeeder']);
         }
 
         $this->line('');

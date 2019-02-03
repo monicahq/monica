@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\Activity;
+use App\Models\Account\ActivityType;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
