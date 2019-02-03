@@ -3,7 +3,7 @@
 namespace App\Services\Account\Activity\Activity;
 
 use App\Services\BaseService;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 
 class DestroyActivity extends BaseService
 {

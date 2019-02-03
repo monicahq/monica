@@ -3,8 +3,8 @@
 namespace App\Services\Account\Activity\Activity;
 
 use App\Services\BaseService;
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\Activity;
+use App\Models\Account\ActivityType;
 use App\Models\Instance\Emotion\Emotion;
 
 class CreateActivity extends BaseService

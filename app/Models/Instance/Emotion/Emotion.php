@@ -3,7 +3,7 @@
 namespace App\Models\Instance\Emotion;
 
 use App\Models\Contact\Call;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

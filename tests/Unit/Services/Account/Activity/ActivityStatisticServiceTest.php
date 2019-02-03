@@ -23,7 +23,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => Carbon::now()->subMonth(),
+                'happened_at' => Carbon::now()->subMonth(),
                 'account_id' => $contact->account_id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -47,7 +47,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => Carbon::now()->subYears(2),
+                'happened_at' => Carbon::now()->subYears(2),
                 'account_id' => $contact->account_id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -74,7 +74,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => Carbon::now(),
+                'happened_at' => Carbon::now(),
                 'account_id' => $account->id,
                 'activity_type_id' => $activityType->id,
             ]);
@@ -87,7 +87,7 @@ class ActivityStatisticServiceTest extends TestCase
         ]);
 
         $activity = factory(Activity::class)->create([
-            'date_it_happened' => Carbon::now(),
+            'happened_at' => Carbon::now(),
             'account_id' => $account->id,
             'activity_type_id' => $activityType->id,
         ]);
@@ -132,7 +132,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => Carbon::now()->subYears(2),
+                'happened_at' => Carbon::now()->subYears(2),
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -140,7 +140,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => Carbon::now(),
+                'happened_at' => Carbon::now(),
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -195,7 +195,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => '2017-01-02',
+                'happened_at' => '2017-01-02',
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -203,7 +203,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => '2017-02-01',
+                'happened_at' => '2017-02-01',
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);

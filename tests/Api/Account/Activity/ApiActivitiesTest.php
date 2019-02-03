@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api;
+namespace Tests\Api\Account\Activity;
 
 use Tests\ApiTestCase;
 use App\Models\Account\Account;
@@ -18,7 +18,7 @@ class ApiActivitiesTest extends ApiTestCase
         'object',
         'summary',
         'description',
-        'date_it_happened',
+        'happened_at',
         'activity_type' => [
             'id',
             'object',
@@ -60,7 +60,7 @@ class ApiActivitiesTest extends ApiTestCase
         'object',
         'summary',
         'description',
-        'date_it_happened',
+        'happened_at',
         'account' => [
             'id',
         ],
@@ -187,7 +187,7 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
             'activity_type_id' => $activityType->id,
         ]);
 
@@ -207,7 +207,7 @@ class ApiActivitiesTest extends ApiTestCase
             'id' => $activity_id,
             'summary' => 'the activity',
             'description' => 'the description',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
             'account_id' => $user->account_id,
@@ -248,7 +248,7 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $this->expectNotFound($response);
@@ -270,7 +270,7 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
             'activity_type_id' => $activityType->id,
         ]);
 
@@ -291,7 +291,7 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(200);
@@ -310,7 +310,7 @@ class ApiActivitiesTest extends ApiTestCase
             'account_id' => $user->account_id,
             'id' => $activity_id,
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
             'account_id' => $user->account_id,
@@ -352,7 +352,7 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $response->assertStatus(200);
@@ -371,7 +371,7 @@ class ApiActivitiesTest extends ApiTestCase
             'account_id' => $user->account_id,
             'id' => $activity_id,
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
             'account_id' => $user->account_id,
@@ -410,7 +410,7 @@ class ApiActivitiesTest extends ApiTestCase
             'contacts' => [$contact->id],
             'description' => 'the description',
             'summary' => 'the activity',
-            'date_it_happened' => '2018-05-01',
+            'happened_at' => '2018-05-01',
         ]);
 
         $this->expectNotFound($response);

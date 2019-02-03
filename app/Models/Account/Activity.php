@@ -124,9 +124,9 @@ class Activity extends Model implements IsJournalableInterface
      *
      * @return string or null
      */
-    public function getDescription()
+    public function getDescriptionAttribute($value)
     {
-        return $this->description;
+        return $value;
     }
 
     /**

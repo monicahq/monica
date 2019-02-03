@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

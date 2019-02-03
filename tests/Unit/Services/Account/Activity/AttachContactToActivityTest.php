@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Activity\Activity\AttachContactToActivity;
+use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
 class AttachContactToActivityTest extends TestCase
 {

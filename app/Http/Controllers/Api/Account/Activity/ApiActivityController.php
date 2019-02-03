@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Account\Activity;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
+use App\Http\Controllers\Api\ApiController;
 use App\Models\Account\ActivityType;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Database\QueryException;
@@ -162,53 +163,6 @@ class ApiActivityController extends ApiController
         }
 
         return new ActivityResource($activity);
-    }
-
-    /**
-     * Validate the request for update.
-     *
-     * @param  Request $request
-     * @return mixed
-     */
-    private function validateUpdate(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'summary' => 'required|max:100000',
-            'description' => 'required|max:1000000',
-            'date_it_happened' => 'required|date',
-            'activity_type_id' => 'integer',
-            'contacts' => 'required|array',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        // Make sure each contact exists and has the right to be associated with
-        // this account
-        $attendeesID = $request->get('contacts');
-        foreach ($attendeesID as $attendeeID) {
-            try {
-                Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($attendeeID);
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        // Make sure the activity type has the right to be associated with
-        // this account
-        if ($request->get('activity_type_id')) {
-            try {
-                ActivityType::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->get('activity_type_id'));
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        return true;
     }
 
     /**
