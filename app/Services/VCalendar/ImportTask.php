@@ -118,12 +118,11 @@ class ImportTask extends BaseService
     {
         try {
             $entry = Reader::read($data['entry'], Reader::OPTION_FORGIVING + Reader::OPTION_IGNORE_INVALID_LINES);
+            if ($entry instanceof VCalendar) {
+                return $entry;
+            }
         } catch (ParseException $e) {
-            return;
-        }
-
-        if ($entry instanceof VCalendar) {
-            return $entry;
+            // catch parse errors
         }
     }
 
