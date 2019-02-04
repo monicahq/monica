@@ -11,11 +11,13 @@ trait Searchable
      * Search for needle in the columns defined by $searchable_columns.
      *
      * @param  Builder $builder query builder
-     * @param  $needle
+     * @param  string $needle
      * @param  int  $accountId
      * @param  int $limitPerPage
+     * @param  string $sortOrder
+     * @param  string $whereCondition
      *
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|null
      */
     public function scopeSearch(Builder $builder, $needle, $accountId, $limitPerPage, $sortOrder, $whereCondition = null)
     {

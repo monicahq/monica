@@ -14,7 +14,7 @@ class ExportAllAsSQL
     /**
      * Execute the job.
      *
-     * @return void
+     * @return string
      */
     public function handle()
     {

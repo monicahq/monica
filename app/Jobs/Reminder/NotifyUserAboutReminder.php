@@ -16,6 +16,9 @@ class NotifyUserAboutReminder implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * @var ReminderOutbox
+     */
     protected $reminderOutbox;
 
     /**
@@ -36,13 +39,16 @@ class NotifyUserAboutReminder implements ShouldQueue
     public function handle()
     {
         // prepare the notification to be sent
-        $message = '';
-        if ($this->reminderOutbox->nature == 'reminder') {
-            $message = new UserReminded($this->reminderOutbox);
-        }
-
-        if ($this->reminderOutbox->nature == 'notification') {
-            $message = new UserNotified($this->reminderOutbox);
+        $message = null;
+        switch ($this->reminderOutbox->nature) {
+            case 'reminder':
+                $message = new UserReminded($this->reminderOutbox);
+                break;
+            case 'notification':
+                $message = new UserNotified($this->reminderOutbox);
+                break;
+            default:
+                break;
         }
 
         // send the notification to this user

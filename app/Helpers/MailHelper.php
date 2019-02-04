@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Models\User\User;
 use App\Notifications\UserReminded;
+use App\Interfaces\MailNotification;
 
 class MailHelper
 {
@@ -12,7 +13,7 @@ class MailHelper
      * notification class.
      * Yes, this is weird, but it's the only way to do it (as of Laravel 5.7).
      *
-     * @param UserReminded $notification
+     * @param MailNotification $notification
      * @param User $user
      * @return string
      */
@@ -21,6 +22,6 @@ class MailHelper
         $message = $notification->toMail($user);
         $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
 
-        return $markdown->render($message->markdown, $message->toArray($user));
+        return $markdown->render($message->markdown, $message->toArray());
     }
 }

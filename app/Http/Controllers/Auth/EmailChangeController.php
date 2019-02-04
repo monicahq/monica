@@ -32,7 +32,7 @@ class EmailChangeController extends Controller
     {
         $user = $request->user();
         if ($user &&
-            $user instanceof MustVerifyEmail &&
+            $user instanceof User &&
             ! $user->hasVerifiedEmail()) {
             return view('auth.emailchange1')
                 ->with('email', $user->email);

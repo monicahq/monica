@@ -7,7 +7,7 @@ use App\Helpers\MailHelper;
 use App\Models\Account\Account;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
-use Illuminate\Notifications\Notification;
+use App\Interfaces\MailNotification;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
@@ -68,7 +68,7 @@ class ReminderOutbox extends Model
     /**
      * Log the message that has been sent to the user.
      *
-     * @param Notification $message
+     * @param MailNotification $message
      * @return void
      */
     public function logSent($message)
@@ -82,14 +82,8 @@ class ReminderOutbox extends Model
         $reminderSent->frequency_type = is_null($this->reminder) ? null : $this->reminder->frequency_type;
         $reminderSent->frequency_number = is_null($this->reminder) ? null : $this->reminder->frequency_number;
         $reminderSent->html_content = MailHelper::emailView($message, $this->user);
+        $reminderSent->nature = $message->getNature();
 
-        if ($message instanceof UserNotified) {
-            $reminderSent->nature = 'notification';
-        }
-
-        if ($message instanceof UserReminded) {
-            $reminderSent->nature = 'reminder';
-        }
         $reminderSent->save();
     }
 }

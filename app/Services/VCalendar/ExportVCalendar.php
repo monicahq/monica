@@ -65,7 +65,7 @@ class ExportVCalendar extends BaseService
     }
 
     /**
-     * @param VCalendar $vcard
+     * @param VCalendar $vcal
      * @return void
      */
     private function exportTimezone(VCalendar $vcal)

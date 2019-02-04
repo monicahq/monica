@@ -28,7 +28,7 @@ class ApiUserController extends ApiController
      *
      * @param Request $request
      * @param int $termId
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function get(Request $request, $termId)
     {
@@ -47,7 +47,7 @@ class ApiUserController extends ApiController
      * Get all the policies ever signed by the authenticated user.
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function compliance(Request $request)
     {
@@ -62,7 +62,7 @@ class ApiUserController extends ApiController
      * Sign the latest policy for the authenticated user.
      *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function set(Request $request)
     {

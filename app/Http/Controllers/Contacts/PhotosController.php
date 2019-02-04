@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the list of photos.
      *

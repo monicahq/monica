@@ -81,7 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param string $password
      * @param string $ipAddress
      * @param string $lang
-     * @return $this
+     * @return self
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
@@ -429,7 +429,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the list of all the policies the user has signed.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getAllCompliances()
     {

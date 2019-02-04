@@ -156,7 +156,7 @@ class ApiContactController extends ApiController
     /**
      * Apply the `?with=` parameter.
      * @param  Collection $contacts
-     * @return Collection
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     private function applyWithParameter($contacts, string $parameter = null)
     {

@@ -168,7 +168,7 @@ class RelationshipsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @param SignificantOther $significantOther
+     * @param Contact $otherContact  significant other contact
      * @return \Illuminate\Http\Response
      */
     public function edit(Contact $contact, Contact $otherContact)
@@ -215,7 +215,7 @@ class RelationshipsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @param SignificantOther $significantOther
+     * @param Contact $otherContact  significant other contact
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Contact $contact, Contact $otherContact)
@@ -286,7 +286,7 @@ class RelationshipsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Contact $partner
+     * @param Contact $otherContact
      * @return \Illuminate\Http\Response
      */
     public function destroy(Contact $contact, Contact $otherContact)
