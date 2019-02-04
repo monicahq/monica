@@ -115,7 +115,7 @@ class PasswordChangeController extends Controller
     /**
      * Set the new password if all validation has passed.
      *
-     * @param Authenticatable $user
+     * @param User $user
      * @param string $password
      * @return void
      */

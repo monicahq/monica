@@ -63,7 +63,11 @@ class AuthenticateWithTokenOnBasicAuth
             $request->headers->set('Authorization', 'Bearer '.$password);
         }
 
-        $user = $this->auth->guard('api')->setRequest($request)->user();
+        $user = null;
+        $guard = $this->auth->guard('api');
+        if (method_exists($guard, 'setRequest')) {
+            $user = $guard->setRequest($request)->user();
+        }
 
         if ($user && (! $request->getUser() || $request->getUser() === $user->email)) {
             $this->auth->guard()->setUser($user);
