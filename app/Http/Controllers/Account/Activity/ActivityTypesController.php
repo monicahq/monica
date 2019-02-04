@@ -19,8 +19,8 @@ class ActivityTypesController extends Controller
     /**
      * Store an activity type category.
      *
-     * @param  Contact $contact
-     * @return ActivityType
+     * @param  Request $request
+     * @return ActivityTypeResource
      */
     public function store(Request $request)
     {
@@ -39,7 +39,7 @@ class ActivityTypesController extends Controller
      *
      * @param Request $request
      * @param int $activityTypeId
-     * @return ActivityTypeCategory
+     * @return ActivityTypeResource
      */
     public function update(Request $request, $activityTypeId)
     {
@@ -60,7 +60,7 @@ class ActivityTypesController extends Controller
      * Delete the activity type.
      *
      * @param Request $request
-     * @param int $activityType
+     * @param int $activityTypeId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $activityTypeId)
