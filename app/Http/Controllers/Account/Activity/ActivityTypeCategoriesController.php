@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Account\Activity;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
-use App\Models\Account\ActivityTypeCategory;
 use App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory;
 use App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory;
 use App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory;

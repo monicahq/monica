@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Account\Activity;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Account\ActivityType;
 use App\Traits\JsonRespondController;
-use App\Models\Account\ActivityTypeCategory;
 use App\Services\Account\Activity\ActivityType\CreateActivityType;
 use App\Services\Account\Activity\ActivityType\UpdateActivityType;
 use App\Services\Account\Activity\ActivityType\DestroyActivityType;
