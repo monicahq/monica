@@ -46,7 +46,7 @@ class UserReminded extends LaravelNotification implements ShouldQueue, MailNotif
 
     /**
      * Get the nature of the notification.
-     * 
+     *
      * @return string
      */
     public function getNature() : string

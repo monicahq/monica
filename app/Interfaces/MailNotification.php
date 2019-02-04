@@ -9,7 +9,7 @@ interface MailNotification
 {
     /**
      * Get the nature of the notification.
-     * 
+     *
      * @return string
      */
     public function getNature() : string;

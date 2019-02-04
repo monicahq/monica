@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use App\Models\User\User;
-use App\Notifications\UserReminded;
 use App\Interfaces\MailNotification;
 
 class MailHelper

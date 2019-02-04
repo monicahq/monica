@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;

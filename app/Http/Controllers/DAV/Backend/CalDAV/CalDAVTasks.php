@@ -143,9 +143,9 @@ class CalDAVTasks extends AbstractCalDAVBackend
             if (! array_has($result, 'error')) {
                 $task = Task::where('account_id', Auth::user()->account_id)
                     ->find($result['task_id']);
-        
+
                 $calendar = $this->prepareData($task);
-        
+
                 return $calendar['etag'];
             }
         } catch (\Exception $e) {

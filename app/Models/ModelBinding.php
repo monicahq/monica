@@ -9,7 +9,7 @@ abstract class ModelBinding extends Model
 {
     /**
      * Resolve binding.
-     * 
+     *
      * @param  string  $value
      * @return mixed|null
      */

@@ -10,7 +10,7 @@ abstract class ModelBindingWithContact extends Model
 {
     /**
      * Resolve binding with contact relation.
-     * 
+     *
      * @param  string  $value
      * @return mixed|null
      */

@@ -4,15 +4,14 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User\User;
 use Illuminate\Support\Str;
-use UnexpectedValueException;
 use App\Http\Requests\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use App\Http\Requests\PasswordChangeRequest;
-use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Contracts\Auth\CanResetPassword;
 
 class PasswordChangeController extends Controller
@@ -104,7 +103,7 @@ class PasswordChangeController extends Controller
         // Using current email from user, and current password sent with the request to authenticate the user
         if (! Auth::attempt([
                 'email' => $user->getEmailForPasswordReset(),
-                'password' => $credentials['password_current']
+                'password' => $credentials['password_current'],
             ])) {
             // authentication fails
             return;

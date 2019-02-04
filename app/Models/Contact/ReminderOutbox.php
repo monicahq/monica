@@ -5,8 +5,6 @@ namespace App\Models\Contact;
 use App\Models\User\User;
 use App\Helpers\MailHelper;
 use App\Models\Account\Account;
-use App\Notifications\UserNotified;
-use App\Notifications\UserReminded;
 use App\Interfaces\MailNotification;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
