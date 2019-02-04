@@ -133,7 +133,7 @@ return [
     'users_blank_description' => 'Deze persoon zal dezelfde toegang hebben als jij en zal contactinformatie kunnen toevoegen, bewerken of verwijderen.',
     'users_blank_cta' => 'Iemand uitnodigen',
     'users_add_title' => 'Nieuwe gebruiker uitnodigen via e-mail',
-    'users_add_description' => 'Deze persoon zal dezelfde rechten hebben als jij, inclusief het uitnodigen van andere gebruikers en verwijderen van hen (waaronder jijzelf). Weet daarom zeker dat je deze persoon vertrouwt.',
+    'users_add_description' => 'Deze gebruiker zal dezelfde rechten hebben als jij, inclusief het uitnodigen van andere gebruikers en verwijderen van hen (waaronder jijzelf). Weet daarom zeker dat je deze gebruiker vertrouwt.',
     'users_add_email_field' => 'Voer het e-mailadres in van de persoon die je wil uitnodigen',
     'users_add_confirmation' => 'Ik bevestig dat ik deze gebruiker wil uitnodigen voor mijn account. Deze gebruiker heeft toegang tot AL mijn gegevens en kan precies zien wat ik ook zie.',
     'users_add_cta' => 'Uitnodigen via e-mail',
