@@ -93,13 +93,13 @@ class GetWeatherInformation extends BaseService
         try {
             $response = $this->client->request('GET', $query);
             $response = json_decode($response->getBody());
-            
+
             $weather = new Weather();
             $weather->weather_json = $response;
             $weather->account_id = $place->account_id;
             $weather->place_id = $place->id;
             $weather->save();
-    
+
             return $weather;
         } catch (ClientException $e) {
             Log::error('Error making the call: '.$e);
