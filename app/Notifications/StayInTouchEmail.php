@@ -44,16 +44,6 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailN
     }
 
     /**
-     * Get the nature of the notification.
-     *
-     * @return string
-     */
-    public function getNature() : string
-    {
-        return 'stayintouch';
-    }
-
-    /**
      * Get the mail representation of the notification.
      *
      * @param  User $user
