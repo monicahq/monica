@@ -224,8 +224,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/personalization/modules', 'Settings\\ModulesController@index');
             Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
 
-            Route::apiResource('settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController');
-            Route::apiResource('settings/personalization/activitytypes', 'Settings\\ActivityTypesController', ['except' => ['index']]);
+            Route::apiResource('settings/personalization/activitytypecategories', 'Account\\Activity\\ActivityTypeCategoriesController');
+            Route::apiResource('settings/personalization/activitytypes', 'Account\\Activity\\ActivityTypesController', ['except' => ['index']]);
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');

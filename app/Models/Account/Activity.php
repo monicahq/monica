@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Models\Contact;
+namespace App\Models\Account;
 
 use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
-use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Journal\JournalEntry;
 use App\Interfaces\IsJournalableInterface;
 use App\Models\ModelBindingHasher as Model;

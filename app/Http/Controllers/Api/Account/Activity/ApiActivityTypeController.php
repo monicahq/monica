@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Api\Contact;
+namespace App\Http\Controllers\Api\Account\Activity;
 
 use Illuminate\Http\Request;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\ActivityType;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
-use App\Models\Contact\ActivityTypeCategory;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Account\Activity\ActivityType\CreateActivityType;
+use App\Services\Account\Activity\ActivityType\UpdateActivityType;
+use App\Services\Account\Activity\ActivityType\DestroyActivityType;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class ApiActivityTypeController extends ApiController
@@ -58,19 +60,20 @@ class ApiActivityTypeController extends ApiController
      */
     public function store(Request $request)
     {
-        $isValid = $this->validateRequest($request);
-
-        if ($isValid !== true) {
-            return $isValid;
-        }
-
         try {
-            $activityType = ActivityType::create(
+            $activityType = app(CreateActivityType::class)->execute(
                 $request->all()
-                + ['account_id' => auth()->user()->account_id]
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                ]
             );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new ActivityTypeResource($activityType);
@@ -86,74 +89,47 @@ class ApiActivityTypeController extends ApiController
     public function update(Request $request, $activityTypeId)
     {
         try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
-                ->firstOrFail();
+            $activityType = app(UpdateActivityType::class)->execute(
+                $request->all()
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+                    'activity_type_id' => $activityTypeId,
+                ]
+            );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        }
-
-        $isValid = $this->validateRequest($request);
-        if ($isValid !== true) {
-            return $isValid;
-        }
-
-        try {
-            $activityType->update($request->all());
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
-            return $this->respondNotTheRightParameters();
+            return $this->respondInvalidQuery();
         }
 
         return new ActivityTypeResource($activityType);
     }
 
     /**
-     * Validate the request for store/update.
+     * Delete an activity type.
      *
      * @param  Request $request
-     * @return mixed
-     */
-    private function validateRequest(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|max:255|string',
-            'activity_type_category_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        try {
-            ActivityTypeCategory::where('account_id', auth()->user()->account_id)
-                ->where('id', $request->input('activity_type_category_id'))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return true;
-    }
-
-    /**
-     * Delete an activity type.
-     * @param  Request $request
+     * @param int $activityTypeId
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $activityTypeId)
     {
         try {
-            $activityType = ActivityType::where('account_id', auth()->user()->account_id)
-                ->where('id', $activityTypeId)
-                ->firstOrFail();
+            app(DestroyActivityType::class)->execute([
+                'account_id' => auth()->user()->account->id,
+                'activity_type_id' => $activityTypeId,
+            ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
         }
 
-        $activityType->resetAssociationWithActivities();
-        $activityType->delete();
-
-        return $this->respondObjectDeleted($activityType->id);
+        return $this->respondObjectDeleted((int) $activityTypeId);
     }
 }

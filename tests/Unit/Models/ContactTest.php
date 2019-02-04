@@ -11,7 +11,7 @@ use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
