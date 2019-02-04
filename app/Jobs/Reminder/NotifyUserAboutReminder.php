@@ -66,7 +66,7 @@ class NotifyUserAboutReminder implements ShouldQueue
 
     /**
      * Get message to send.
-     * 
+     *
      * @return MailNotification|null
      */
     private function getMessage()

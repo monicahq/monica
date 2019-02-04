@@ -68,6 +68,7 @@ class AddressBook extends BaseAddressBook
             if (is_null($date)) {
                 return;
             }
+
             return $date->timestamp;
         }
     }
