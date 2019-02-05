@@ -63,11 +63,10 @@ class TasksController extends Controller
     /**
      * Destroy the task.
      *
-     * @param Contact $contact
      * @param Task $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contact $contact, Task $task)
+    public function destroy(Task $task)
     {
         if (app(DestroyTask::class)->execute([
             'task_id' => $task->id,
