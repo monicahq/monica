@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact\Task;
 use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
 use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
 use App\Services\Task\DestroyTask;
