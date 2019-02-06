@@ -45,7 +45,6 @@
 
     <div>
       <div v-for="activityTypeCategory in activityTypeCategories" :key="activityTypeCategory.id" class="dt dt--fixed w-100 collapse br--top br--bottom mt3">
-
         <!-- ACTIVITY TYPE CATEGORY -->
         <div class="dt-row hover bb b--light-gray">
           <div class="dtc">
