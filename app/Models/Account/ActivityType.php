@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models\Contact;
+namespace App\Models\Account;
 
-use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -19,6 +18,7 @@ class ActivityType extends Model
         'name',
         'activity_type_category_id',
         'account_id',
+        'translation_key',
     ];
 
     /**

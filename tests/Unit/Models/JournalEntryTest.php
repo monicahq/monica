@@ -5,7 +5,7 @@ namespace Tests\Unit\Models;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -35,7 +35,7 @@ class JournalEntryTest extends TestCase
             'account_id' => $activity->account_id,
             'date' => $date,
             'journalable_id' => $activity->id,
-            'journalable_type' => 'App\Models\Contact\Activity',
+            'journalable_type' => 'App\Models\Account\Activity',
         ]);
     }
 

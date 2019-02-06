@@ -7,6 +7,7 @@ use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
+use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
@@ -508,7 +509,7 @@ class ContactsController extends Controller
 
         return response($vcard->serialize())
             ->header('Content-type', 'text/x-vcard')
-            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name).'.vcf');
+            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
     }
 
     /**
