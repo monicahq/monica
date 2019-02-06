@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Models\Contact;
+namespace App\Models\Account;
 
-use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,6 +19,7 @@ class ActivityTypeCategory extends Model
      */
     protected $fillable = [
         'name',
+        'translation_key',
         'account_id',
     ];
 
@@ -55,18 +55,5 @@ class ActivityTypeCategory extends Model
         }
 
         return $value;
-    }
-
-    /**
-     * Delete all associated activity types with this category.
-     *
-     * @return void
-     */
-    public function deleteAllAssociatedActivityTypes()
-    {
-        foreach ($this->activityTypes as $activityType) {
-            $activityType->resetAssociationWithActivities();
-            $activityType->delete();
-        }
     }
 }
