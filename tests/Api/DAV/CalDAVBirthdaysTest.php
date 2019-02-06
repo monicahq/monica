@@ -2,6 +2,7 @@
 
 namespace Tests\Api\DAV;
 
+use Carbon\Carbon;
 use Tests\ApiTestCase;
 use Illuminate\Support\Str;
 use App\Models\User\SyncToken;
@@ -189,6 +190,8 @@ class CalDAVBirthdaysTest extends ApiTestCase
 
     public function test_caldav_birthdays_sync_collection_with_token()
     {
+        Carbon::setTestNow(Carbon::create(2019, 1, 1, 9, 0, 0));
+
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
           'account_id' => $user->account->id,
@@ -196,11 +199,13 @@ class CalDAVBirthdaysTest extends ApiTestCase
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
         $specialDate->save();
+
+        Carbon::setTestNow(Carbon::create(2019, 1, 1, 8, 0, 0));
         $token = factory(SyncToken::class)->create([
             'account_id' => $user->account->id,
             'user_id' => $user->id,
             'name' => 'birthdays',
-            'timestamp' => \App\Helpers\DateHelper::parseDateTime(now()),
+            'timestamp' => now(),
         ]);
 
         $response = $this->call('REPORT', "/dav/calendars/{$user->email}/birthdays/", [], [], [],

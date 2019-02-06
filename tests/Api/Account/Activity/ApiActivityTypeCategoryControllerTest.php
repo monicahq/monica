@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Api\Activity;
+namespace Tests\Api\Account\Activity;
 
 use Tests\ApiTestCase;
-use App\Models\Contact\ActivityType;
-use App\Models\Contact\ActivityTypeCategory;
+use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiActivityTypeCategoryControllerTest extends ApiTestCase
@@ -26,7 +25,7 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $activityTypeCategories = factory(ActivityTypeCategory::class, 10)->create([
+        factory(ActivityTypeCategory::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -43,7 +42,7 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $activityTypeCategories = factory(ActivityTypeCategory::class, 10)->create([
+        factory(ActivityTypeCategory::class, 10)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -71,10 +70,10 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $response = $this->json('POST', '/api/activitytypecategories', [
-                            'name' => 'Movies',
-                        ]);
+            'name' => 'Movies',
+        ]);
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
 
         $this->assertDatabaseHas('activity_type_categories', [
             'name' => 'Movies',
@@ -82,17 +81,6 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureActivityTypeCategory,
-        ]);
-    }
-
-    public function test_it_doesnt_store_an_activity_type_category_if_query_not_valid()
-    {
-        $user = $this->signin();
-
-        $response = $this->json('POST', '/api/activitytypecategories');
-
-        $this->expectDataError($response, [
-            'The name field is required.',
         ]);
     }
 
@@ -124,31 +112,13 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $response = $this->json('PUT', '/api/activitytypecategories/2349273984279348', [
-                            'name' => 'Movies',
-                        ]);
-
-        $response->assertStatus(404);
-
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
-        ]);
-    }
-
-    public function test_it_doesnt_update_if_query_is_invalid()
-    {
-        $user = $this->signin();
-
-        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([
-            'account_id' => $user->account_id,
-            'name' => 'France',
+            'name' => 'Movies',
         ]);
 
-        $response = $this->json('PUT', '/api/activitytypecategories/'.$activityTypeCategory->id, [
-                        ]);
+        $response->assertStatus(422);
 
         $this->expectDataError($response, [
-            'The name field is required.',
+            'The selected activity type category id is invalid.',
         ]);
     }
 
@@ -161,21 +131,12 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
             'name' => 'France',
         ]);
 
-        $activityType = factory(ActivityType::class, 10)->create([
-            'account_id' => $user->account_id,
-            'activity_type_category_id' => $activityTypeCategory->id,
-        ]);
-
         $response = $this->delete('/api/activitytypecategories/'.$activityTypeCategory->id);
 
         $response->assertStatus(200);
 
         $this->assertDatabaseMissing('activity_type_categories', [
             'id' => $activityTypeCategory->id,
-        ]);
-
-        $this->assertDatabaseMissing('activity_types', [
-            'activity_type_category_id' => $activityTypeCategory->id,
         ]);
 
         $response->assertJsonFragment([
@@ -190,11 +151,10 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
 
         $response = $this->delete('/api/activitytypecategories/2349273984279348');
 
-        $response->assertStatus(404);
+        $response->assertStatus(422);
 
-        $response->assertJsonFragment([
-            'message' => 'The resource has not been found',
-            'error_code' => 31,
+        $this->expectDataError($response, [
+            'The selected activity type category id is invalid.',
         ]);
     }
 

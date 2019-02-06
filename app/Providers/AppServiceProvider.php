@@ -51,6 +51,12 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     public $singletons = [
+        \App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory::class,
+        \App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory::class,
+        \App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory::class,
+        \App\Services\Account\Activity\ActivityType\CreateActivityType::class => \App\Services\Account\Activity\ActivityType\CreateActivityType::class,
+        \App\Services\Account\Activity\ActivityType\DestroyActivityType::class => \App\Services\Account\Activity\ActivityType\DestroyActivityType::class,
+        \App\Services\Account\Activity\ActivityType\UpdateActivityType::class => \App\Services\Account\Activity\ActivityType\UpdateActivityType::class,
         \App\Services\Account\Company\CreateCompany::class => \App\Services\Account\Company\CreateCompany::class,
         \App\Services\Account\Company\DestroyCompany::class => \App\Services\Account\Company\DestroyCompany::class,
         \App\Services\Account\Company\UpdateCompany::class => \App\Services\Account\Company\UpdateCompany::class,
