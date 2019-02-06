@@ -4,7 +4,7 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use App\Services\Instance\IdHasher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

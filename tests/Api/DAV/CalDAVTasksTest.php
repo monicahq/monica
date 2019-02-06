@@ -2,6 +2,7 @@
 
 namespace Tests\Api\DAV;
 
+use Carbon\Carbon;
 use Tests\ApiTestCase;
 use App\Models\Contact\Task;
 use App\Models\User\SyncToken;
@@ -193,6 +194,8 @@ class CalDAVTasksTest extends ApiTestCase
 
     public function test_caldav_tasks_sync_collection_with_token()
     {
+        Carbon::setTestNow(Carbon::create(2019, 1, 1, 9, 0, 0));
+
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
           'account_id' => $user->account->id,
@@ -203,11 +206,13 @@ class CalDAVTasksTest extends ApiTestCase
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+
+        Carbon::setTestNow(Carbon::create(2019, 1, 1, 8, 0, 0));
         $token = factory(SyncToken::class)->create([
             'account_id' => $user->account->id,
             'user_id' => $user->id,
             'name' => 'tasks',
-            'timestamp' => \App\Helpers\DateHelper::parseDateTime(now()),
+            'timestamp' => now(),
         ]);
 
         $response = $this->call('REPORT', "/dav/calendars/{$user->email}/tasks/", [], [], [],

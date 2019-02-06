@@ -11,7 +11,7 @@ use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
@@ -357,6 +357,24 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             'GP',
+            $contact->getInitials()
+        );
+    }
+
+    public function test_get_initials_with_special_chars()
+    {
+        $user = $this->signIn();
+        $user->locale = 'de';
+        $user->save();
+
+        $contact = new Contact;
+        $contact->first_name = 'Änders';
+        $contact->middle_name = null;
+        $contact->last_name = 'Ürgen';
+        $contact->nameOrder('lastname_firstname');
+
+        $this->assertEquals(
+            'AU',
             $contact->getInitials()
         );
     }
