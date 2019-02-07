@@ -34,8 +34,6 @@ return [
     'zoom' => 'Inzoomen',
     'upgrade' => 'Upgrade om te ontgrendelen',
     'percent_uploaded' => '{percent}% geüpload',
-    'next' => 'Volgende ❯',
-    'previous' => '❮ Vorige',
     'retry' => 'Opnieuw Proberen',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
