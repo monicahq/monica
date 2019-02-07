@@ -34,8 +34,6 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Actualiza para desbloquear',
     'percent_uploaded' => '{percent}% cargado',
-    'next' => 'Siguiente ❯',
-    'previous' => '❮ Anterior',
     'retry' => 'Reintentar',
 
     'application_title' => 'Monica – gestor de relaciones personales',
