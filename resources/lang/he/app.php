@@ -34,8 +34,6 @@ return [
     'zoom' => 'תקריב',
     'upgrade' => 'יש לשדרג כדי לשחרר',
     'percent_uploaded' => '{percent}% נשלחו',
-    'next' => 'הבא ❯',
-    'previous' => '❮ הקודם',
     'retry' => 'לנסות שוב',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
