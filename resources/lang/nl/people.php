@@ -50,11 +50,11 @@ return [
     'people_add_reminder_for_birthday' => 'Maak een jaarlijkse herinnering voor de verjaardag aan',
 
     // show
-    'section_contact_information' => 'Contact informatie',
+    'section_contact_information' => 'Contactinformatie',
     'section_personal_activities' => 'Activiteiten',
     'section_personal_reminders' => 'Herinneringen',
     'section_personal_tasks' => 'Taken',
-    'section_personal_gifts' => 'Cadeaux',
+    'section_personal_gifts' => 'Cadeaus',
     'section_personal_notes' => 'Notities',
 
     // archived contacts
@@ -62,32 +62,32 @@ return [
     'list_link_to_archived_contacts' => 'Lijst van gearchiveerde contacten',
 
     // Header
-    'edit_contact_information' => 'Bewerk contact informatie',
+    'edit_contact_information' => 'Bewerk contactinformatie',
     'contact_archive' => 'Archiveer contact',
     'contact_unarchive' => 'Dearchiveer contact',
     'contact_archive_help' => 'Gearchiveerde contacten worden niet getoond in de lijst met contactpersonen, maar worden wel weergegeven in zoekresultaten.',
-    'call_button' => 'Registreer een belgesprek',
+    'call_button' => 'Telefoongesprek registreren',
     'set_favorite' => 'Favoriete contacten worden bovenaan de lijst met contactpersonen geplaatst',
 
     // Stay in touch
     'stay_in_touch' => 'Blijf in contact',
     'stay_in_touch_frequency' => 'Blijf elke dag in contact | Blijf elke {count} dagen in contact',
     'stay_in_touch_invalid' => 'De frequentie moet groter zijn dan 0.',
-    'stay_in_touch_premium' => 'U moe uw account upgraden om gebruik te maken van deze functie',
+    'stay_in_touch_premium' => 'U moet uw account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
-    'stay_in_touch_modal_desc' => 'We kunnen je helpen om in contact te blijven met {firstname} via email op regelmatige basis.',
+    'stay_in_touch_modal_desc' => 'We kunnen je herinneren via e-mail om regelmatig in contact te blijven met {firstname}.',
     'stay_in_touch_modal_label' => 'Stuur me een e-mail elke...',
 
     // Calls
-    'modal_call_title' => 'Registreer een belgesprek',
+    'modal_call_title' => 'Telefoongesprek registreren',
     'modal_call_comment' => 'Waar hebben jullie het over gehad? (optioneel)',
     'modal_call_exact_date' => 'Het telefoongesprek gebeurde op',
     'modal_call_who_called' => 'Wie heeft gebeld?',
     'modal_call_emotion' => 'Wil je opslaan hoe jij je voelde tijdens dit gesprek? (optioneel)',
     'calls_add_success' => 'Het telefoongesprek is opgeslagen.',
     'call_delete_confirmation' => 'Weet je zeker dat je deze oproep wil wissen?',
-    'call_delete_success' => 'Deze oproep is succesvol verwijdert',
-    'call_title' => 'Telefoon gesprekken',
+    'call_delete_success' => 'Deze oproep is succesvol verwijderd',
+    'call_title' => 'Telefoongesprekken',
     'call_empty_comment' => 'Geen details',
     'call_blank_title' => 'Hou de telefoongesprekken bij die je met {name} hebt gevoerd',
     'call_blank_desc' => 'Jij hebt {name} gebeld',
@@ -120,7 +120,7 @@ return [
     'birthdate_not_set' => 'Geen verjaardag toegevoegd',
     'age_approximate_in_years' => 'ongeveer :age jaren oud',
     'age_exact_in_years' => ':age jaren oud',
-    'age_exact_birthdate' => 'geboren :date',
+    'age_exact_birthdate' => 'geboren op :date',
 
     // Last called
     'last_called' => 'Laatst gebeld op: :date',
