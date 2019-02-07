@@ -34,8 +34,6 @@ return [
     'zoom' => '放大',
     'upgrade' => '升级解锁',
     'percent_uploaded' => '已上传 {percent}%',
-    'next' => '下一页 ❯',
-    'previous' => '❮ 上一页',
     'retry' => '重试',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
