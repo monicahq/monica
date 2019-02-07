@@ -116,7 +116,7 @@ class JournalController extends Controller
 
     /**
      * Indicates whether the user has already rated the current day.
-     * @return bool
+     * @return string
      */
     public function hasRated()
     {

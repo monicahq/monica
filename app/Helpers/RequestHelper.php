@@ -30,7 +30,8 @@ class RequestHelper
 
     /**
      * Get client country.
-     * @return string
+     *
+     * @return string|null
      */
     public static function country()
     {

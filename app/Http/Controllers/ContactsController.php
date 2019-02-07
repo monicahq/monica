@@ -496,7 +496,7 @@ class ContactsController extends Controller
     /**
      * Download the contact as vCard.
      * @param  Contact $contact
-     * @return
+     * @return \Illuminate\Http\Response
      */
     public function vCard(Contact $contact)
     {
@@ -520,7 +520,7 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return [type]
+     * @return int
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
@@ -541,7 +541,7 @@ class ContactsController extends Controller
             throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
-        $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
+        $contact->setStayInTouchTriggerDate($frequency);
 
         return $frequency;
     }

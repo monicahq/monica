@@ -48,7 +48,8 @@ class RecoveryLoginController extends Controller
         $user = auth()->user();
         $recovery = $request->get('recovery');
 
-        if ($this->recoveryLogin($user, $recovery)) {
+        if ($user instanceof \App\Models\User\User &&
+            $this->recoveryLogin($user, $recovery)) {
             $this->fireLoginEvent($user);
         } else {
             abort(403);

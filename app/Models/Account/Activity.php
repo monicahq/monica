@@ -10,6 +10,7 @@ use App\Models\Journal\JournalEntry;
 use App\Interfaces\IsJournalableInterface;
 use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 /**
@@ -62,7 +63,7 @@ class Activity extends Model implements IsJournalableInterface
     /**
      * Get the contact record associated with the activity.
      *
-     * @return BelongsTo
+     * @return BelongsToMany
      */
     public function contacts()
     {
@@ -90,7 +91,7 @@ class Activity extends Model implements IsJournalableInterface
     /**
      * Return the markdown parsed body.
      *
-     * @return string
+     * @return string|null
      */
     public function getParsedContentAttribute()
     {
