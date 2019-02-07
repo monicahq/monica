@@ -14,4 +14,3 @@ class AddSwissCHFToCurrenciesTable extends Migration
         DB::table('currencies')->insert(['iso' => 'CHF', 'name' => 'Swiss CHF', 'symbol' => 'CHF']);
     }
 }
-
