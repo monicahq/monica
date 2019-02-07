@@ -50,7 +50,7 @@
               <form-date
                 :id="'conversationDate'"
                 :default-date="'{{ now(\App\Helpers\DateHelper::getTimezone()) }}'"
-                :locale="'{{ $locale }}'">
+                :locale="'{{ \App::getLocale() }}'">
               </form-date>
             </div>
           </div>

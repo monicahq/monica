@@ -136,7 +136,6 @@
           :day="{{ $day }}"
           :age="'{{ $age }}'"
           :default-date="'{{ $birthdate }}'"
-          :locale="'{{ auth()->user()->locale }}'"
           :reminder="{{ json_encode($hasBirthdayReminder) }}"
           :value="'{{ $birthdayState }}'"
         ></form-specialdate>

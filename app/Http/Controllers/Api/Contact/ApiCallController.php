@@ -62,7 +62,7 @@ class ApiCallController extends ApiController
     public function store(Request $request)
     {
         try {
-            $call = (new CreateCall)->execute(
+            $call = app(CreateCall::class)->execute(
                 $request->all()
                     +
                     [
@@ -90,7 +90,7 @@ class ApiCallController extends ApiController
     public function update(Request $request, $callId)
     {
         try {
-            $call = (new UpdateCall)->execute(
+            $call = app(UpdateCall::class)->execute(
                 $request->all()
                     +
                     [
@@ -118,7 +118,7 @@ class ApiCallController extends ApiController
     public function destroy(Request $request, $callId)
     {
         try {
-            (new DestroyCall)->execute([
+            app(DestroyCall::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'call_id' => $callId,
             ]);

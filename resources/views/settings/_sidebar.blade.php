@@ -57,6 +57,14 @@
       'title' => 'settings.sidebar_settings_api'])
     @endcomponent
 
+    @if (config('dav.enabled') && ! auth()->user()->account->has_access_to_paid_version_for_free)
+      @component('components.sidebar', [
+        'route' => 'settings.dav',
+        'icon' => 'fa fa-calendar',
+        'title' => 'settings.sidebar_settings_dav'])
+      @endcomponent
+    @endif
+
     @component('components.sidebar', [
       'route' => 'settings.security.index',
       'icon' => 'fa fa-shield',

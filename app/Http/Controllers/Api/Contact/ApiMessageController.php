@@ -31,7 +31,7 @@ class ApiMessageController extends ApiController
         }
 
         try {
-            (new AddMessageToConversation)->execute(
+            app(AddMessageToConversation::class)->execute(
                 $request->all()
                 +
                 [
@@ -69,7 +69,7 @@ class ApiMessageController extends ApiController
         }
 
         try {
-            (new UpdateMessage)->execute(
+            app(UpdateMessage::class)->execute(
                 $request->all()
                 +
                 [
@@ -108,7 +108,7 @@ class ApiMessageController extends ApiController
         }
 
         try {
-            (new DestroyMessage)->execute([
+            app(DestroyMessage::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'conversation_id' => $conversationId,
                 'message_id' => $messageId,

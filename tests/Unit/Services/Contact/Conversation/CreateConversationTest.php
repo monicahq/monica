@@ -31,8 +31,7 @@ class CreateConversationTest extends TestCase
             'contact_field_type_id' => $contactFieldType->id,
         ];
 
-        $conversationService = new CreateConversation;
-        $conversation = $conversationService->execute($request);
+        $conversation = app(CreateConversation::class)->execute($request);
 
         $this->assertDatabaseHas('conversations', [
             'id' => $conversation->id,
@@ -58,8 +57,7 @@ class CreateConversationTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $createConversation = new CreateConversation;
-        $conversation = $createConversation->execute($request);
+        app(CreateConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -79,7 +77,7 @@ class CreateConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createConversation = (new CreateConversation)->execute($request);
+        app(CreateConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contactfieldtype_is_not_linked_to_account()
@@ -96,7 +94,6 @@ class CreateConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createConversation = new CreateConversation;
-        $conversation = $createConversation->execute($request);
+        app(CreateConversation::class)->execute($request);
     }
 }

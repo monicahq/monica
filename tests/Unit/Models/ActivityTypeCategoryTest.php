@@ -3,8 +3,8 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use App\Models\Contact\ActivityType;
-use App\Models\Contact\ActivityTypeCategory;
+use App\Models\Account\ActivityType;
+use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTypeCategoryTest extends TestCase
@@ -48,26 +48,6 @@ class ActivityTypeCategoryTest extends TestCase
         $this->assertEquals(
             'awesome_name',
             $activityTypeCategory->name
-        );
-    }
-
-    public function test_it_deletes_the_associated_activity_types()
-    {
-        $activityTypeCategory = factory(ActivityTypeCategory::class)->create([]);
-        $activityType = factory(ActivityType::class, 3)->create([
-            'activity_type_category_id' => $activityTypeCategory->id,
-        ]);
-
-        $this->assertEquals(
-            3,
-            $activityTypeCategory->activityTypes()->count()
-        );
-
-        $activityTypeCategory->deleteAllAssociatedActivityTypes();
-
-        $this->assertEquals(
-            0,
-            $activityTypeCategory->activityTypes()->count()
         );
     }
 }

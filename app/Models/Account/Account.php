@@ -18,13 +18,11 @@ use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
-use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ReminderRule;
@@ -34,10 +32,8 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\ActivityStatistic;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
-use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -866,7 +862,7 @@ class Account extends Model
      */
     public function populateDefaultFields()
     {
-        (new PopulateContactFieldTypesTable)->execute([
+        app(PopulateContactFieldTypesTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);
@@ -877,12 +873,12 @@ class Account extends Model
         $this->populateRelationshipTypesTable();
         $this->populateActivityTypeTable();
 
-        (new PopulateLifeEventsTable)->execute([
+        app(PopulateLifeEventsTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);
 
-        (new PopulateModulesTable)->execute([
+        app(PopulateModulesTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);

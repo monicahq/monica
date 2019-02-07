@@ -86,6 +86,7 @@ return [
     'breadcrumb_add_note' => 'Add a note',
     'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
+    'breadcrumb_api' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'How did you meet',
     'breadcrumb_settings_personalization' => 'Personalization',
     'breadcrumb_settings_security' => 'Security',
@@ -432,4 +433,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Current weather',
+
+    // dav
+    'dav_contacts' => 'Contacts',
+    'dav_contacts_description' => ':name’s contacts',
+    'dav_birthdays' => 'Birthdays',
+    'dav_birthdays_description' => ':name’s contact’s birthdays',
+    'dav_tasks' => 'Tasks',
+    'dav_tasks_description' => ':name’s tasks',
 ];

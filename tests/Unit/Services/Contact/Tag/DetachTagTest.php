@@ -41,8 +41,7 @@ class DetachTagTest extends TestCase
             'tag_id' => $tag->id,
         ];
 
-        $detachTagService = new DetachTag;
-        $detachTagService->execute($request);
+        app(DetachTag::class)->execute($request);
 
         $this->assertDatabaseMissing('contact_tag', [
             'account_id' => $contact->account->id,
@@ -58,8 +57,7 @@ class DetachTagTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $detachTagService = new DetachTag;
-        $detachTagService->execute($request);
+        app(DetachTag::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_does_not_exist()
@@ -76,6 +74,6 @@ class DetachTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DetachTag)->execute($request);
+        app(DetachTag::class)->execute($request);
     }
 }

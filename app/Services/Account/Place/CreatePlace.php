@@ -66,7 +66,7 @@ class CreatePlace extends BaseService
      */
     private function getGeocodingInfo(Place $place, GuzzleClient $client = null)
     {
-        (new GetGPSCoordinate)->execute([
+        app(GetGPSCoordinate::class)->execute([
             'account_id' => $place->account_id,
             'place_id' => $place->id,
         ], $client);

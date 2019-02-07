@@ -26,8 +26,7 @@ class AddMessageToConversationTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $addMessageToConversation = new AddMessageToConversation;
-        $conversation = $addMessageToConversation->execute($request);
+        app(AddMessageToConversation::class)->execute($request);
     }
 
     public function test_it_stores_a_message()
@@ -43,8 +42,7 @@ class AddMessageToConversationTest extends TestCase
             'content' => 'lorem ipsum',
         ];
 
-        $conversationService = new AddMessageToConversation;
-        $message = $conversationService->execute($request);
+        $message = app(AddMessageToConversation::class)->execute($request);
 
         $this->assertDatabaseHas('messages', [
             'id' => $message->id,
@@ -76,7 +74,7 @@ class AddMessageToConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $conversationService = (new AddMessageToConversation)->execute($request);
+        app(AddMessageToConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_conversation_is_not_found2()
@@ -100,6 +98,6 @@ class AddMessageToConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $conversationService = (new AddMessageToConversation)->execute($request);
+        app(AddMessageToConversation::class)->execute($request);
     }
 }

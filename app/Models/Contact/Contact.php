@@ -6,16 +6,19 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
+use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
+use App\Models\Account\Activity;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
@@ -131,6 +134,16 @@ class Contact extends Model
      * @var string
      */
     protected $nameOrder = 'firstname_lastname';
+
+    /**
+     * Get Searchable Fields.
+     *
+     * @return array
+     */
+    public function getSearchableFields()
+    {
+        return $this->searchable_columns;
+    }
 
     /**
      * Get the user associated with the contact.
@@ -554,7 +567,8 @@ class Contact extends Model
      */
     public function getInitialsAttribute()
     {
-        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', Str::ascii($this->name), $initials);
+        $name = Str::ascii($this->name, LocaleHelper::getLang());
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $name, $initials);
 
         return implode('', $initials[0]);
     }
@@ -1432,6 +1446,8 @@ class Contact extends Model
     /**
      * Gets the first contact related to this contact if the current contact is
      * partial.
+     *
+     * @return self
      */
     public function getRelatedRealContact()
     {
@@ -1447,6 +1463,15 @@ class Contact extends Model
                         ]);
             })
             ->first();
+    }
+
+    /**
+     * Get the link to this contact, or the related real contact.
+     * @return string
+     */
+    public function getLink()
+    {
+        return route('people.show', $this->is_partial ? $this->getRelatedRealContact() : $this);
     }
 
     /**

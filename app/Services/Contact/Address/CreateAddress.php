@@ -73,6 +73,6 @@ class CreateAddress extends BaseService
             'longitude' => $this->nullOrValue($data, 'longitude'),
         ];
 
-        return (new CreatePlace)->execute($request);
+        return app(CreatePlace::class)->execute($request);
     }
 }
