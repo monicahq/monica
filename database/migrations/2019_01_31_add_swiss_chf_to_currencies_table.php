@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class AddSwissCHFToCurrenciesTable extends Migration
+class AddSwissChfToCurrenciesTable extends Migration
 {
     /**
      * Run the migrations.
