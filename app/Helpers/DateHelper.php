@@ -42,14 +42,12 @@ class DateHelper
             $date = Carbon::instance($date);
         } else {
             try {
-                $date = Carbon::parse($date);
+                $date = Carbon::parse($date, $timezone);
             } catch (\Exception $e) {
                 // Parse error
                 return;
             }
         }
-
-        $date = Carbon::create($date->year, $date->month, $date->day, $date->hour, $date->minute, $date->second, $timezone ?? $date->timezone);
 
         $appTimezone = config('app.timezone');
         if ($date->timezone !== $appTimezone) {
