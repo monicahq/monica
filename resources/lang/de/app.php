@@ -34,8 +34,6 @@ return [
     'zoom' => 'vergrößern',
     'upgrade' => 'Zum Freischalten aktualisieren',
     'percent_uploaded' => '{percent}% hochgeladen',
-    'next' => 'Weiter ❯',
-    'previous' => '❮ Zurück',
     'retry' => 'Wiederholen',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
