@@ -34,8 +34,6 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Mettre à jour pour débloquer',
     'percent_uploaded' => '{percent}% téléchargé',
-    'next' => 'Suivant ❯',
-    'previous' => '❮ Précédent',
     'retry' => 'Réessayer',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
