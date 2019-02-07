@@ -39,7 +39,7 @@ return [
     'password_reset' => 'Wachtwoord resetten',
     'use_recovery' => 'Of je kan een <a href=":url">herstelcode</a> gebruiken',
     'signup_no_account' => 'Heb je nog geen account?',
-    'signup' => 'Aanmelden',
+    'signup' => 'Registreren',
     'create_account' => 'Maak het eerste account aan door je te <a href=":url">registreren</a>',
     'change_language_title' => 'Verander taal:',
     'change_language' => 'Verander taal naar :lang',
