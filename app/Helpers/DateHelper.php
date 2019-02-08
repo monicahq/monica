@@ -12,7 +12,7 @@ class DateHelper
     /**
      * Set the locale of the instance for Date frameworks.
      *
-     * @param string
+     * @param string $locale
      * @return string
      */
     public static function setLocale($locale)
@@ -27,9 +27,9 @@ class DateHelper
      * If timezone is given, it parse the date with this timezone.
      * Always return a date with default timezone (UTC).
      *
-     * @param \DateTime|Carbon|string date
-     * @param string timezone
-     * @return Carbon
+     * @param \DateTime|Carbon|string|null $date
+     * @param string $timezone
+     * @return Carbon|null
      */
     public static function parseDateTime($date, $timezone = null)
     {
@@ -62,9 +62,9 @@ class DateHelper
      * If timezone is given, it parse the date with this timezone.
      * Always return a date with default timezone (UTC).
      *
-     * @param Carbon|string date
-     * @param string timezone
-     * @return Carbon
+     * @param Carbon|string $date
+     * @param string $timezone
+     * @return Carbon|null
      */
     public static function parseDate($date, $timezone = null)
     {
@@ -90,8 +90,8 @@ class DateHelper
     /**
      * Return timestamp date format.
      *
-     * @param Carbon|\App\Models\Instance\SpecialDate|string $date
-     * @return string
+     * @param Carbon|\App\Models\Instance\SpecialDate|string|null $date
+     * @return string|null
      */
     public static function getTimestamp($date)
     {
@@ -126,7 +126,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDate($date)
+    public static function getShortDate($date) : string
     {
         $date = new Date($date);
         $format = trans('format.short_date_year', [], Date::getLocale());
@@ -141,7 +141,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortMonth($date)
+    public static function getShortMonth($date) : string
     {
         $date = new Date($date, static::getTimezone());
         $format = trans('format.short_month', [], Date::getLocale());
@@ -156,7 +156,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getFullMonthAndDate($date)
+    public static function getFullMonthAndDate($date) : string
     {
         $date = new Date($date, static::getTimezone());
         $format = trans('format.full_month_year', [], Date::getLocale());
@@ -171,7 +171,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDay($date)
+    public static function getShortDay($date) : string
     {
         $date = new Date($date, static::getTimezone());
         $format = trans('format.short_day', [], Date::getLocale());
@@ -186,7 +186,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithoutYear($date)
+    public static function getShortDateWithoutYear($date) : string
     {
         $date = new Date($date, static::getTimezone());
         $format = trans('format.short_date', [], Date::getLocale());
@@ -201,7 +201,7 @@ class DateHelper
      * @param Carbon $date
      * @return string
      */
-    public static function getShortDateWithTime($date)
+    public static function getShortDateWithTime($date) : string
     {
         $date = new Date($date, static::getTimezone());
         $format = trans('format.short_date_year_time', [], Date::getLocale());
@@ -214,8 +214,9 @@ class DateHelper
      * @param Carbon $date      the start date
      * @param string $frequency week/month/year
      * @param int $number    the number of week/month/year to increment to
+     * @return Carbon
      */
-    public static function addTimeAccordingToFrequencyType(Carbon $date, $frequency, $number)
+    public static function addTimeAccordingToFrequencyType(Carbon $date, string $frequency, int $number) : Carbon
     {
         switch ($frequency) {
             case 'week':
@@ -238,7 +239,7 @@ class DateHelper
      * @param  int    $month
      * @return string
      */
-    public static function getMonthAndYear(int $month)
+    public static function getMonthAndYear(int $month) : string
     {
         $date = Date::now(static::getTimezone())->addMonthsNoOverflow($month);
         $format = trans('format.short_month_year', [], Date::getLocale());
@@ -251,10 +252,10 @@ class DateHelper
      * This is used on the Upgrade page to tell the user when the next billing
      * date would be if he subscribed.
      *
-     * @param  string
+     * @param  string $interval
      * @return Carbon
      */
-    public static function getNextTheoriticalBillingDate(String $interval)
+    public static function getNextTheoriticalBillingDate(String $interval) : Carbon
     {
         if ($interval == 'monthly') {
             return now(static::getTimezone())->addMonth();
@@ -266,12 +267,11 @@ class DateHelper
     /**
      * Gets a list of all the year from min to max (0 is the current year).
      *
-     * @param int min
-     * @param int max
-     *
+     * @param int $max
+     * @param int $min
      * @return Collection
      */
-    public static function getListOfYears($max = 120, $min = 0)
+    public static function getListOfYears($max = 120, $min = 0) : Collection
     {
         $years = collect([]);
         $maxYear = now(static::getTimezone())->subYears($min)->year;
@@ -327,7 +327,7 @@ class DateHelper
     /**
      * Gets a list of all the hours in a day.
      *
-     * @return array
+     * @return Collection
      */
     public static function getListOfHours()
     {

@@ -10,7 +10,7 @@ class DBHelper
     /**
      * Get the version of DB engine.
      *
-     * @return string
+     * @return string|null
      */
     public static function version()
     {
@@ -24,7 +24,7 @@ class DBHelper
     /**
      * Test if db version if greater than $version param.
      *
-     * @param string
+     * @param string $version
      * @return bool
      */
     public static function testVersion($version)

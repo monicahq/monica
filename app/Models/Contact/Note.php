@@ -102,7 +102,6 @@ class Note extends Model
     /**
      * Gets the activity date for this note.
      *
-     * @param  string $locale
      * @return string
      */
     public function getCreatedAt()

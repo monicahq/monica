@@ -22,8 +22,8 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
  */
 class ImportJob extends Model
 {
-    const VCARD_SKIPPED = 1;
-    const VCARD_IMPORTED = 0;
+    const VCARD_SKIPPED = true;
+    const VCARD_IMPORTED = false;
 
     protected $table = 'import_jobs';
 
@@ -141,7 +141,7 @@ class ImportJob extends Model
     /**
      * Get the physical file (the vCard file).
      *
-     * @return $this
+     * @return self
      */
     private function getPhysicalFile()
     {
@@ -157,7 +157,7 @@ class ImportJob extends Model
     /**
      * Delete the physical file from the disk.
      *
-     * @return $this
+     * @return self
      */
     private function deletePhysicalFile()
     {
@@ -179,7 +179,8 @@ class ImportJob extends Model
     /**
      * Process all entries contained in the vCard file.
      *
-     * @return
+     * @param string $behaviour
+     * @return void
      */
     private function processEntries($behaviour = ImportVCard::BEHAVIOUR_ADD)
     {
@@ -209,6 +210,7 @@ class ImportJob extends Model
      *
      * @param  string|VCard $entry
      * @param  string $behaviour
+     * @return void
      */
     private function processSingleEntry($entry, $behaviour = ImportVCard::BEHAVIOUR_ADD): void
     {

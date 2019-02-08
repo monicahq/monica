@@ -230,15 +230,21 @@ class SettingsController
     /**
      * Exports the data of the account in SQL format.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
      */
     public function exportToSql()
     {
         $path = dispatch_now(new ExportAccountAsSQL());
 
-        return response()
-            ->download(Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
-            ->deleteFileAfterSend(true);
+        $driver = Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver();
+        if ($driver instanceof \League\Flysystem\Filesystem) {
+            $adapter = $driver->getAdapter();
+            if ($adapter instanceof \League\Flysystem\Adapter\AbstractAdapter) {
+                return response()
+                    ->download($adapter->getPathPrefix().$path, 'monica.sql')
+                    ->deleteFileAfterSend(true);
+            }
+        }
     }
 
     /**
@@ -446,7 +452,7 @@ class SettingsController
     /**
      * Delete additional user account.
      *
-     * @param Request $request
+     * @param int $userID
      * @return \Illuminate\Http\Response
      */
     public function deleteAdditionalUser($userID)
@@ -477,7 +483,7 @@ class SettingsController
      * Destroy the tag.
      *
      * @param int $tagId
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function deleteTag($tagId)
     {
@@ -524,7 +530,7 @@ class SettingsController
      * Possible values: life-events | notes.
      *
      * @param  Request $request
-     * @return bool
+     * @return string
      */
     public function updateDefaultProfileView(Request $request)
     {

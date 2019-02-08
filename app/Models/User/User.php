@@ -81,7 +81,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param string $password
      * @param string $ipAddress
      * @param string $lang
-     * @return $this
+     * @return self
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
@@ -335,11 +335,15 @@ class User extends Authenticatable implements MustVerifyEmail
      * This is affected by the user settings regarding the hour of the day he
      * wants to be reminded.
      *
-     * @param Carbon $date
+     * @param Carbon|null $date
      * @return bool
      */
-    public function isTheRightTimeToBeReminded(Carbon $date)
+    public function isTheRightTimeToBeReminded($date)
     {
+        if (is_null($date)) {
+            return false;
+        }
+
         $isTheRightTime = true;
 
         // compare date with current date for the user
@@ -429,7 +433,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the list of all the policies the user has signed.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getAllCompliances()
     {

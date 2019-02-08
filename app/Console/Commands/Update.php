@@ -36,8 +36,6 @@ class Update extends Command
 
     /**
      * Create a new command.
-     *
-     * @param CommandExecutorInterface
      */
     public function __construct()
     {

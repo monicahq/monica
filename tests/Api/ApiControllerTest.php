@@ -108,7 +108,8 @@ class ApiControllerTest extends ApiTestCase
 
         $apiController->setSortCriteria('anything');
 
-        $this->assertNull(
+        $this->assertEquals(
+            '',
             $apiController->getSortCriteria()
         );
     }
