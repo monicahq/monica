@@ -28,6 +28,7 @@ Enhancements:
 
 Fixes:
 
+* Fix case when schedule date is null
 * Add phpstan analyser, and fix a lot of issues
 * Fix middleware priority order to always set locale after authenticate
 * Accept lastname_firstname name order for VCard imports (FN field)

@@ -335,11 +335,15 @@ class User extends Authenticatable implements MustVerifyEmail
      * This is affected by the user settings regarding the hour of the day he
      * wants to be reminded.
      *
-     * @param Carbon $date
+     * @param Carbon|null $date
      * @return bool
      */
-    public function isTheRightTimeToBeReminded(Carbon $date)
+    public function isTheRightTimeToBeReminded($date)
     {
+        if (is_null($date)) {
+            return false;
+        }
+
         $isTheRightTime = true;
 
         // compare date with current date for the user
