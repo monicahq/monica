@@ -19,7 +19,6 @@ use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;

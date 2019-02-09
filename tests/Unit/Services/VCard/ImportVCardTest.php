@@ -546,7 +546,7 @@ class ImportVCardTest extends TestCase
             'ADR' => [
                 '',
                 '',
-                'street'
+                'street',
             ],
         ]);
 
@@ -712,7 +712,7 @@ class ImportVCardTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
-        
+
         $importVCard = new ImportVCard;
         $importVCard->accountId = $account->id;
 
@@ -744,9 +744,9 @@ class ImportVCardTest extends TestCase
         $email2 = factory(ContactField::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
-            'data' => 'xxx@mail.com'
+            'data' => 'xxx@mail.com',
         ]);
-        
+
         $importVCard = new ImportVCard;
         $importVCard->accountId = $account->id;
 

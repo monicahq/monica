@@ -21,7 +21,7 @@ class VCardHelper
         }
 
         $country = array_get($vCardAddress->getParts(), 6);
-        if (!empty($country)) {
+        if (! empty($country)) {
             return CountriesHelper::find($country);
         }
     }

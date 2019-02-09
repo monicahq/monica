@@ -659,7 +659,6 @@ class ImportVCard extends BaseService
                                 ->sortBy('id');
 
         foreach ($entry->ADR as $adr) {
-
             $parts = $adr->getParts();
             $addressContent = [
                 'street' => $this->formatValue(array_get($parts, 2)),
@@ -677,7 +676,7 @@ class ImportVCard extends BaseService
                 app(CreateAddress::class)->execute([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
-                ] + 
+                ] +
                     $addressContent
                 );
             } else {
@@ -687,7 +686,7 @@ class ImportVCard extends BaseService
                     'contact_id' => $contact->id,
                     'address_id' => $address->id,
                     'name' => $address->name,
-                ] + 
+                ] +
                     $addressContent
                 );
             }

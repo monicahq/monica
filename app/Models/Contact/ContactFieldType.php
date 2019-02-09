@@ -20,14 +20,14 @@ class ContactFieldType extends Model
 
     /**
      * Email type contact field.
-     * 
+     *
      * @var string
      */
     public const EMAIL = 'email';
 
     /**
      * Phone type contact field.
-     * 
+     *
      * @var string
      */
     public const PHONE = 'phone';
