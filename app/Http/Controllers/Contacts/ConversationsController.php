@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\Conversation;
+use App\Traits\JsonRespondController;
 use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\UpdateConversation;
@@ -15,6 +17,8 @@ use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the Create conversation page.
      *
@@ -32,7 +36,7 @@ class ConversationsController extends Controller
      * Display the list of conversations.
      *
      * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
     public function index(Request $request, Contact $contact)
     {

@@ -70,7 +70,7 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Update the contact field type.
      * @param  Request $request
-     * @param  int
+     * @param  int $contactFieldTypeId
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $contactFieldTypeId)

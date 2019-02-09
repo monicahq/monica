@@ -149,7 +149,7 @@ class ApiContactFieldController extends ApiController
      * Get the list of contact fields for the given contact.
      *
      * @param  Request $request
-     * @param  int $contactFieldId
+     * @param  int $contactId
      * @return \Illuminate\Http\Response
      */
     public function contactFields(Request $request, $contactId)

@@ -15,7 +15,7 @@ trait SyncDAVBackend
      * If null is returned from this function, the plugin assumes there's no
      * sync information available.
      *
-     * @return SyncToken
+     * @return SyncToken|null
      */
     protected function getCurrentSyncToken()
     {
@@ -43,7 +43,7 @@ trait SyncDAVBackend
     /**
      * Get SyncToken by token id.
      *
-     * @return SyncToken
+     * @return SyncToken|null
      */
     protected function getSyncToken($syncToken)
     {
@@ -92,7 +92,7 @@ trait SyncDAVBackend
     /**
      * Returns the last modification date.
      *
-     * @return \Carbon\Carbon
+     * @return \Carbon\Carbon|null
      */
     public function getLastModified()
     {
@@ -151,7 +151,7 @@ trait SyncDAVBackend
      * The limit is 'suggestive'. You are free to ignore it.
      *
      * @param string $syncToken
-     * @return array
+     * @return array|null
      */
     public function getChanges($syncToken)
     {
@@ -235,7 +235,7 @@ trait SyncDAVBackend
     /**
      * Returns the object for the specific uuid.
      *
-     * @param string  $uri
+     * @param string  $uuid
      * @return mixed
      */
     abstract public function getObjectUuid($uuid);

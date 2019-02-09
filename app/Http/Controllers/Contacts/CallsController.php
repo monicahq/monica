@@ -6,6 +6,7 @@ use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use App\Services\Contact\Call\CreateCall;
 use App\Services\Contact\Call\UpdateCall;
 use App\Services\Contact\Call\DestroyCall;
@@ -13,6 +14,8 @@ use App\Http\Resources\Call\Call as CallResource;
 
 class CallsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the list of calls.
      *
@@ -79,7 +82,9 @@ class CallsController extends Controller
         ];
 
         try {
-            app(DestroyCall::class)->execute($data);
+            if (app(DestroyCall::class)->execute($data)) {
+                return $this->respondObjectDeleted($call->id);
+            }
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

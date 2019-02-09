@@ -9,6 +9,7 @@ return [
     'comment' => 'Commentaire : :comment',
     'footer_contact_info' => 'Ajouter, afficher, compléter et modifier les informations sur ce contact :',
     'footer_contact_info2' => 'Voir le profil de :name',
+    'footer_contact_info2_link' => 'Voir le profil de :name : :url',
 
     'notification_subject_line' => 'Vous avez un événement à venir',
     'notification_description' => 'Dans :count jours (le :date), l’événement suivant se produira :',

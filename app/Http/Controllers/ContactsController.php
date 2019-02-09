@@ -11,6 +11,7 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -362,9 +363,10 @@ class ContactsController extends Controller
                 try {
                     $contact->deleteAvatars();
                 } catch (\Exception $e) {
-                    return back()
-                        ->withInput()
-                        ->withErrors(trans('app.error_save'));
+                    Log::warning(__CLASS__.' update: Failed to delete avatars', [
+                        'contact' => $contact,
+                        'exception' => $e,
+                    ]);
                 }
             }
             $contact->has_avatar = true;
@@ -492,7 +494,7 @@ class ContactsController extends Controller
     /**
      * Download the contact as vCard.
      * @param  Contact $contact
-     * @return
+     * @return \Illuminate\Http\Response
      */
     public function vCard(Contact $contact)
     {
@@ -516,7 +518,7 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return [type]
+     * @return int
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
@@ -537,7 +539,7 @@ class ContactsController extends Controller
             throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
-        $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
+        $contact->setStayInTouchTriggerDate($frequency);
 
         return $frequency;
     }

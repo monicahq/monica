@@ -16,7 +16,7 @@ class CommandExecutor implements CommandExecutorInterface
     /**
      * Create a new CommandExecutor.
      *
-     * @param Command
+     * @param Command $command base
      */
     public function __construct(Command $command)
     {

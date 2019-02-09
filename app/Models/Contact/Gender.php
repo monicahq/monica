@@ -4,6 +4,7 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Gender extends Model
@@ -46,7 +47,7 @@ class Gender extends Model
     /**
      * Get the contact records associated with the gender.
      *
-     * @return BelongsTo
+     * @return HasMany
      */
     public function contacts()
     {

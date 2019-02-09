@@ -501,7 +501,7 @@ class Account extends Model
     /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @return $this
+     * @return bool
      */
     public function canDowngrade()
     {
@@ -838,7 +838,7 @@ class Account extends Model
      * @param string $email
      * @param string $password
      * @param string $ipAddress
-     * @return $this
+     * @return self
      */
     public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
@@ -899,7 +899,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeGroupName
-     * @return RelationshipTypeGroup
+     * @return RelationshipTypeGroup|null
      */
     public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)
     {
@@ -909,7 +909,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of calls grouped by year.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getYearlyCallStatistics()
     {
@@ -944,7 +944,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of activities grouped by year.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getYearlyActivitiesStatistics()
     {
@@ -980,7 +980,7 @@ class Account extends Model
      * Get the first available locale in an account. This gets the first user
      * in the account and reads his locale.
      *
-     * @return string
+     * @return string|null
      *
      * @throws ModelNotFoundException
      */

@@ -124,8 +124,8 @@ class ImportVCard extends BaseService
     {
         $this->contactFields = [];
         $this->genders = [];
-        $this->accountId = null;
-        $this->userId = null;
+        $this->accountId = 0;
+        $this->userId = 0;
     }
 
     /**
@@ -159,7 +159,7 @@ class ImportVCard extends BaseService
      * Process entry importation.
      *
      * @param array $data
-     * @param VCard entry
+     * @param VCard $entry
      * @return array
      */
     private function processEntry(array $data, VCard $entry) : array
@@ -182,7 +182,7 @@ class ImportVCard extends BaseService
      * Process entry importation.
      *
      * @param array $data
-     * @param VCard entry
+     * @param VCard $entry
      * @param Contact|null $contact
      * @return array
      */
@@ -208,7 +208,7 @@ class ImportVCard extends BaseService
 
     /**
      * @param array $data
-     * @return VCard
+     * @return VCard|null
      */
     private function getEntry($data)
     {
@@ -222,7 +222,9 @@ class ImportVCard extends BaseService
             }
         }
 
-        return $entry;
+        if ($entry instanceof VCard) {
+            return $entry;
+        }
     }
 
     /**

@@ -16,6 +16,7 @@ class AuthenticateWithTokenOnBasicAuth
      * The guard factory instance.
      *
      * @var AuthManager
+     * @return \Illuminate\Contracts\Auth\Guard|\Illuminate\Contracts\Auth\StatefulGuard
      */
     protected $auth;
 
@@ -52,7 +53,7 @@ class AuthenticateWithTokenOnBasicAuth
      */
     private function authenticate($request)
     {
-        if ($this->auth->check()) {
+        if ($this->auth->guard()->check()) {
             return;
         }
 
@@ -62,13 +63,17 @@ class AuthenticateWithTokenOnBasicAuth
             $request->headers->set('Authorization', 'Bearer '.$password);
         }
 
-        $user = $this->auth->guard('api')->user($request);
+        $user = null;
+        $guard = $this->auth->guard('api');
+        if (method_exists($guard, 'setRequest')) {
+            $user = $guard->setRequest($request)->user();
+        }
 
         if ($user && (! $request->getUser() || $request->getUser() === $user->email)) {
-            $this->auth->setUser($user);
+            $this->auth->guard()->setUser($user);
         } else {
             // Basic authentication
-            $this->auth->onceBasic();
+            $this->auth->guard()->onceBasic();
         }
     }
 }
