@@ -28,6 +28,7 @@ Enhancements:
 
 Fixes:
 
+* Remove users without an existing account in the accounts table
 * Fix case when schedule date is null
 * Add phpstan analyser, and fix a lot of issues
 * Fix middleware priority order to always set locale after authenticate
