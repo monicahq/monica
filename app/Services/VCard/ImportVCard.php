@@ -299,7 +299,7 @@ class ImportVCard extends BaseService
      */
     private function hasFirstnameInN(VCard $entry) : bool
     {
-        return $entry->N !== null && ! empty(array_get($entry->N->getParts(), 1));
+        return $entry->N !== null && ! empty(array_get($entry->N->getParts(), '1'));
     }
 
     /**
@@ -467,13 +467,13 @@ class ImportVCard extends BaseService
             $parts = $entry->N->getParts();
 
             $name = '';
-            if (! empty(array_get($parts, 1))) {
+            if (! empty(array_get($parts, '1'))) {
                 $name .= $this->formatValue($parts[1]);
             }
-            if (! empty(array_get($parts, 2))) {
+            if (! empty(array_get($parts, '2'))) {
                 $name .= ' '.$this->formatValue($parts[2]);
             }
-            if (! empty(array_get($parts, 0))) {
+            if (! empty(array_get($parts, '0'))) {
                 $name .= ' '.$this->formatValue($parts[0]);
             }
             $name .= ' '.$this->formatValue($entry->EMAIL);
@@ -498,9 +498,9 @@ class ImportVCard extends BaseService
     private function importFromN(Contact $contact, VCard $entry): void
     {
         $parts = $entry->N->getParts();
-        $contact->last_name = $this->formatValue(array_get($parts, 0));
-        $contact->first_name = $this->formatValue(array_get($parts, 1));
-        $contact->middle_name = $this->formatValue(array_get($parts, 2));
+        $contact->last_name = $this->formatValue(array_get($parts, '0'));
+        $contact->first_name = $this->formatValue(array_get($parts, '1'));
+        $contact->middle_name = $this->formatValue(array_get($parts, '2'));
         // prefix [3]
         // suffix [4]
 
@@ -661,11 +661,11 @@ class ImportVCard extends BaseService
         foreach ($entry->ADR as $adr) {
             $parts = $adr->getParts();
             $addressContent = [
-                'street' => $this->formatValue(array_get($parts, 2)),
-                'city' => $this->formatValue(array_get($parts, 3)),
-                'province' => $this->formatValue(array_get($parts, 4)),
-                'postal_code' => $this->formatValue(array_get($parts, 5)),
-                'country' => CountriesHelper::find(array_get($parts, 6)),
+                'street' => $this->formatValue(array_get($parts, '2')),
+                'city' => $this->formatValue(array_get($parts, '3')),
+                'province' => $this->formatValue(array_get($parts, '4')),
+                'postal_code' => $this->formatValue(array_get($parts, '5')),
+                'country' => CountriesHelper::find(array_get($parts, '6')),
             ];
 
             // We assume addresses are in the same order

@@ -796,7 +796,7 @@ class ImportVCardTest extends TestCase
         ]);
     }
 
-    public function test_it_imports_phone_by_international_format()
+    public function test_it_imports_phone_by_national_format()
     {
         $account = factory(Account::class)->create([]);
         $importVCard = new ImportVCard;
@@ -804,6 +804,33 @@ class ImportVCardTest extends TestCase
 
         $vcard = new VCard([
             'TEL' => '202-555-0191',
+            'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'phone',
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importTel', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => '020 2555 0191',
+        ]);
+    }
+
+    public function test_it_imports_phone_by_international_format()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'TEL' => '+44(0)202-555-0191',
             'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
         ]);
 
