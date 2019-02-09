@@ -2,6 +2,23 @@ UNRELEASED CHANGES:
 
 New features:
 
+*
+
+Enhancements:
+
+*
+
+Fixes:
+
+*
+
+RELEASED VERSIONS:
+
+v2.12.0 - 2019-02-09
+--------------------
+
+New features:
+
 * Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
 * Add a page in settings to display all DAV resources
 * Add notion of instance administrator for a user
@@ -50,8 +67,6 @@ Fixes:
 * Fix API methods for Occupation object
 * Fix activity date viewed as one day before the event happened
 * Fix settags api call with an empty tag
-
-RELEASED VERSIONS:
 
 v2.11.2 - 2019-01-01
 --------------------
