@@ -5,6 +5,7 @@ namespace App\Models\Contact;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
+use App\Helpers\DateHelper;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
@@ -1102,11 +1103,7 @@ class Contact extends Model
      */
     public function getGravatar($size)
     {
-        $emails = $this->contactFields()
-            ->whereHas('contactFieldType', function ($query) {
-                $query->where('type', '=', 'email');
-            })
-            ->get();
+        $emails = $this->contactFields()->email()->get();
 
         foreach ($emails as $email) {
             if (empty($email) || empty($email->data)) {
@@ -1580,5 +1577,14 @@ class Contact extends Model
     public function getWeather()
     {
         return WeatherHelper::getWeatherForAddress($this->addresses()->first());
+    }
+
+    public function updateConsulted()
+    {
+        $this->last_consulted_at = now(DateHelper::getTimezone());
+        $this->number_of_views = $this->number_of_views + 1;
+
+        // prevent timestamp update
+        $this->save(['timestamps' => false]);
     }
 }

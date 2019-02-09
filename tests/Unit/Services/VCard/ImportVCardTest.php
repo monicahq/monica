@@ -5,6 +5,7 @@ namespace Tests\Unit\Services\VCard;
 use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
+use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
@@ -500,13 +501,21 @@ class ImportVCardTest extends TestCase
         $this->assertNotNull($contact->birthday_reminder_id);
     }
 
-    public function test_it_imports_address()
+    public function test_import_vcard_imports_address()
     {
         $account = factory(Account::class)->create([]);
         $importVCard = new ImportVCard;
 
         $vcard = new VCard([
-            'ADR' => ['data', 'data', 'data', 'data', 'data', 'data', 'us'],
+            'ADR' => [
+                '',
+                '',
+                'street',
+                'CITY',
+                'province',
+                '10000',
+                'us',
+            ],
         ]);
 
         $contact = factory(Contact::class)->create([
@@ -518,9 +527,156 @@ class ImportVCardTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
+        $this->assertDatabaseHas('places', [
+            'account_id' => $account->id,
+            'street' => 'street',
+            'city' => 'CITY',
+            'province' => 'province',
+            'postal_code' => '10000',
+            'country' => 'US',
+        ]);
     }
 
-    public function test_it_imports_email()
+    public function test_import_vcard_imports_partial_address()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+
+        $vcard = new VCard([
+            'ADR' => [
+                '',
+                '',
+                'street',
+            ],
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importAddress', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('addresses', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $this->assertDatabaseHas('places', [
+            'account_id' => $account->id,
+            'street' => 'street',
+            'city' => null,
+            'province' => null,
+            'postal_code' => null,
+            'country' => null,
+        ]);
+    }
+
+    public function test_import_vcard_updates_address()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $address = factory(Address::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $importVCard = new ImportVCard;
+
+        $vcard = new VCard([
+            'ADR' => [
+                '',
+                '',
+                'street',
+                'CITY',
+                'province',
+                '10000',
+                'us',
+            ],
+        ]);
+
+        $this->invokePrivateMethod($importVCard, 'importAddress', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('addresses', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'id' => $address->id,
+        ]);
+        $this->assertDatabaseHas('places', [
+            'account_id' => $account->id,
+            'street' => 'street',
+            'city' => 'CITY',
+            'province' => 'province',
+            'postal_code' => '10000',
+            'country' => 'US',
+        ]);
+        $address->refresh();
+        $place = $address->place()->first();
+        $this->assertEquals($place->street, 'street');
+        $this->assertEquals($place->city, 'CITY');
+        $this->assertEquals($place->province, 'province');
+        $this->assertEquals($place->postal_code, '10000');
+        $this->assertEquals($place->country, 'US');
+    }
+
+    public function test_import_vcard_updates_and_destroy_address()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $address1 = factory(Address::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $address2 = factory(Address::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $importVCard = new ImportVCard;
+
+        $vcard = new VCard([
+            'ADR' => [
+                '',
+                '',
+                'street',
+                'CITY',
+                'province',
+                '10000',
+                'us',
+            ],
+        ]);
+
+        $this->invokePrivateMethod($importVCard, 'importAddress', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('addresses', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'id' => $address1->id,
+        ]);
+        $this->assertDatabaseMissing('addresses', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'id' => $address2->id,
+        ]);
+        $this->assertDatabaseHas('places', [
+            'account_id' => $account->id,
+            'street' => 'street',
+            'city' => 'CITY',
+            'province' => 'province',
+            'postal_code' => '10000',
+            'country' => 'US',
+        ]);
+        $address1->refresh();
+        $place = $address1->place()->first();
+        $this->assertEquals($place->street, 'street');
+        $this->assertEquals($place->city, 'CITY');
+        $this->assertEquals($place->province, 'province');
+        $this->assertEquals($place->postal_code, '10000');
+        $this->assertEquals($place->country, 'US');
+    }
+
+    public function test_import_vcard_imports_email()
     {
         $account = factory(Account::class)->create([]);
         $importVCard = new ImportVCard;
@@ -544,6 +700,74 @@ class ImportVCardTest extends TestCase
             'contact_id' => $contact->id,
             'data' => 'john@doe.com',
         ]);
+    }
+
+    public function test_import_vcard_updates_email()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $email = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'EMAIL' => 'other@doe.com',
+        ]);
+
+        $this->invokePrivateMethod($importVCard, 'importEmail', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => 'other@doe.com',
+        ]);
+        $email->refresh();
+        $this->assertEquals($email->data, 'other@doe.com');
+    }
+
+    public function test_import_vcard_updates_and_detroy_email()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $email1 = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
+        $email2 = factory(ContactField::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => 'xxx@mail.com',
+        ]);
+
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'EMAIL' => 'other@doe.com',
+        ]);
+
+        $this->invokePrivateMethod($importVCard, 'importEmail', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => 'other@doe.com',
+        ]);
+        $this->assertDatabaseMissing('contact_fields', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => 'xxx@mail.com',
+        ]);
+        $email1->refresh();
+        $this->assertEquals($email1->data, 'other@doe.com');
     }
 
     public function test_it_imports_phone()
@@ -572,7 +796,7 @@ class ImportVCardTest extends TestCase
         ]);
     }
 
-    public function test_it_imports_phone_by_international_format()
+    public function test_it_imports_phone_by_national_format()
     {
         $account = factory(Account::class)->create([]);
         $importVCard = new ImportVCard;
@@ -580,6 +804,33 @@ class ImportVCardTest extends TestCase
 
         $vcard = new VCard([
             'TEL' => '202-555-0191',
+            'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactFieldType = factory(ContactFieldType::class)->create([
+            'account_id' => $account->id,
+            'type' => 'phone',
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importTel', [$contact, $vcard]);
+
+        $this->assertDatabaseHas('contact_fields', [
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+            'data' => '020 2555 0191',
+        ]);
+    }
+
+    public function test_it_imports_phone_by_international_format()
+    {
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+        $importVCard->accountId = $account->id;
+
+        $vcard = new VCard([
+            'TEL' => '+44(0)202-555-0191',
             'ADR' => ['', '', '17 Shakespeare Ave.', 'Southampton', '', 'SO17 2HB', 'United Kingdom'],
         ]);
 

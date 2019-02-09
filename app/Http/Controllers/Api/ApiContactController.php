@@ -76,6 +76,8 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
+        $contact->updateConsulted();
+
         if ($this->getWithParameter() == 'contactfields') {
             return new ContactWithContactFieldsResource($contact);
         }
