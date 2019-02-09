@@ -218,9 +218,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->last_consulted_at = now(DateHelper::getTimezone());
-        $contact->number_of_views = $contact->number_of_views + 1;
-        $contact->save();
+        $contact->updateConsulted();
 
         $relationships = $contact->relationships;
         // get love relationship type

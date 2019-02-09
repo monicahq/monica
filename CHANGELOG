@@ -12,6 +12,7 @@ New features:
 
 Enhancements:
 
+* Don't change timestamps on contact number_of_views update
 * Redirect to the related real contact when trying to display a partial contact
 * Use iterator reader for vcard imports
 * Accept last name when using contact search field
