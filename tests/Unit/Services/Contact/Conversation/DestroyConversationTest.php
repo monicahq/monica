@@ -30,8 +30,7 @@ class DestroyConversationTest extends TestCase
             'id' => $conversation->id,
         ]);
 
-        $conversationService = new DestroyConversation;
-        $bool = $conversationService->execute($request);
+        app(DestroyConversation::class)->execute($request);
 
         $this->assertDatabaseMissing('conversations', [
             'id' => $conversation->id,
@@ -62,7 +61,7 @@ class DestroyConversationTest extends TestCase
             'conversation_id' => $conversation->id,
         ];
 
-        $conversationService = (new DestroyConversation)->execute($request);
+        app(DestroyConversation::class)->execute($request);
 
         $this->assertDatabaseMissing('messages', [
             'id' => $message->id,
@@ -81,7 +80,7 @@ class DestroyConversationTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $conversationService = (new DestroyConversation)->execute($request);
+        app(DestroyConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_conversation_doesnt_exist()
@@ -96,6 +95,6 @@ class DestroyConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyConversation = (new DestroyConversation)->execute($request);
+        app(DestroyConversation::class)->execute($request);
     }
 }

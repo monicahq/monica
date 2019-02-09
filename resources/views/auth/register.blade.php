@@ -32,7 +32,7 @@
           <div class="signup-box">
             <div class="dt w-100">
               <div class="dtc tc">
-                <img src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             @if($first)
@@ -40,7 +40,7 @@
               <h2>{{ trans('auth.register_create_account') }}</h2>
             @else
               <h2>{{ trans('auth.register_title_create') }}</h2>
-              <h3>{!! trans('auth.register_login', ['url' => '/login']) !!}</h3>
+              <h3>{!! trans('auth.register_login', ['url' => 'login']) !!}</h3>
             @endif
 
             @include ('partials.errors')
@@ -50,7 +50,7 @@
                 </div>
             @endif
 
-            <form action="/register" method="post">
+            <form action="register" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">

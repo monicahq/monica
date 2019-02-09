@@ -37,6 +37,7 @@ aliases:
       command: |
         mkdir -p results/coverage
         cp scripts/tests/.env.mysql .env
+        touch .sentry-release
   - &yarn-install
     run:
       name: yarn install
@@ -51,11 +52,18 @@ aliases:
   - &seed-test-db
     run:
       name: Seed database
-      command: php artisan db:seed --no-interaction -vvv
+      command: |
+        php artisan db:seed --no-interaction -vvv
+        php artisan passport:keys --no-interaction -vvv
+  - &http-server-cc
+    run:
+      name: Run http server
+      command: php -S localhost:8000 -t public scripts/tests/server-cc.php
+      background: true
   - &http-server
     run:
       name: Run http server
-      command: php -S localhost:8000 -t public scripts/tests/server-cc.php 2>/dev/null
+      command: php artisan serve
       background: true
   - &wait-for-server
     run:
@@ -64,11 +72,17 @@ aliases:
   - &unit-tests
     run:
       name: Run unit tests
-      command: phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
+      command: |
+        php artisan route:cache
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
   - &psalm
     run:
       name: Run psalm
       command: vendor/bin/psalm --show-info=false
+  - &phpstan
+    run:
+      name: Run phpstan
+      command: php artisan code:analyse
   - &browser-tests
     run:
       name: Run browser tests
@@ -166,7 +180,7 @@ jobs:
       - *restore_node
       - run:
           name: Update yarn lockfile
-          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" $(yarn global bin)/greenkeeper-lockfile-update
+          command: CIRCLE_PREVIOUS_BUILD_NUM=$(test "$CIRCLE_BRANCH" != "master" -a "greenkeeper[bot]" = "`git log --format="%an" -n 1`" || echo false) CI_PULL_REQUEST="" GK_LOCK_YARN_OPTS="--ignore-engines" $(yarn global bin)/greenkeeper-lockfile-update
       - *yarn-install
       - save_cache:
           key: *node_key
@@ -204,6 +218,8 @@ jobs:
       - *remove-xdebug
       - *prepare-db
       - *seed-test-db
+      - *http-server
+      - *wait-for-server
       - *unit-tests
       - store_test_results:
           path: results/junit
@@ -226,6 +242,19 @@ jobs:
       - *prepare-environment
       - *psalm
 
+  phpstan:
+    <<: *defaults
+    docker:
+      - image: monicahq/circleci-docker-centralperk:latest
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *phpstan
+
   tests-browser-7.2:
     <<: *defaults
     docker:
@@ -244,7 +273,7 @@ jobs:
       - *prepare-db
       - *seed-test-db
       - *selenium
-      - *http-server
+      - *http-server-cc
       - *wait-for-server
       - *browser-tests
       - *fix-coverage
@@ -276,7 +305,7 @@ jobs:
       - *restore_node
       - *yarn-install
       - *prepare-db
-      - *http-server
+      - *http-server-cc
       - *wait-for-server
       - *browser-cypress
       - *fix-coverage2
@@ -419,6 +448,14 @@ workflows:
             tags:
               only: /.*/
       - psalm:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+      - phpstan:
           requires:
             - build
           filters:

@@ -73,14 +73,19 @@
               <recovery-codes></recovery-codes>
 
               @if (config('google2fa.enabled')===true)
-                 <mfa-activate :activated="@if ($is2FAActivated) true @else false @endif"></mfa-activate>
+                <mfa-activate
+                  :activated="{{ json_encode($is2FAActivated) }}"
+                >
+                </mfa-activate>
               @endif
 
               @if (config('u2f.enable')===true)
                 <u2f-connector
-                  :method="'register-modal'">
+                  :method="'register-modal'"
+                  :currentkeys="{{ json_encode($currentkeys) }}"
+                  :timezone="{{ json_encode(auth()->user()->timezone) }}">
                 </u2f-connector>
-                <script src="{{ mix('js/u2f-api.js') }}" type="text/javascript"></script>
+                <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
               @endif
 
             </form>

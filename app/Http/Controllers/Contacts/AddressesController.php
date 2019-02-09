@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Helpers\LocaleHelper;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
@@ -24,30 +24,13 @@ class AddressesController extends Controller
      */
     public function index(Contact $contact)
     {
-        $contactAddresses = collect([]);
+        $addresses = collect([]);
 
         foreach ($contact->addresses as $address) {
-            $place = $address->place;
-            $data = [
-                'id' => $address->id,
-                'name' => $address->name,
-                'googleMapAddress' => $place->getGoogleMapAddress(),
-                'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
-                'address' => $place->getAddressAsString(),
-                'country' => $place->country,
-                'country_name' => $place->country_name,
-                'street' => $place->street,
-                'city' => $place->city,
-                'province' => $place->province,
-                'postal_code' => $place->postal_code,
-                'latitude' => $place->latitude,
-                'longitude' => $place->longitude,
-                'edit' => false,
-            ];
-            $contactAddresses->push($data);
+            $addresses->push($this->addressObject($address));
         }
 
-        return $contactAddresses;
+        return $addresses;
     }
 
     /**
@@ -55,7 +38,7 @@ class AddressesController extends Controller
      */
     public function getCountries()
     {
-        $key = 'countries.'.LocaleHelper::getLocale();
+        $key = 'countries.'.App::getLocale();
 
         $countries = Cache::rememberForever($key, function () {
             return CountriesHelper::getAll();
@@ -83,7 +66,10 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return (new CreateAddress)->execute($datas);
+        $address = app(CreateAddress::class)->execute($datas);
+
+        return $this->setHTTPStatusCode(201)
+                    ->respond($this->addressObject($address));
     }
 
     /**
@@ -106,7 +92,9 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        return (new UpdateAddress)->execute($datas);
+        $address = app(UpdateAddress::class)->execute($datas);
+
+        return $this->respond($this->addressObject($address));
     }
 
     /**
@@ -115,7 +103,7 @@ class AddressesController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Address $address
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, Contact $contact, Address $address)
     {
@@ -124,8 +112,34 @@ class AddressesController extends Controller
             'address_id' => $address->id,
         ];
 
-        if ((new DestroyAddress)->execute($datas)) {
+        if (app(DestroyAddress::class)->execute($datas)) {
             return $this->respondObjectDeleted($address->id);
         }
+
+        return $this->setHTTPStatusCode(400)
+                    ->setErrorCode(32)
+                    ->respondWithError();
+    }
+
+    private function addressObject($address)
+    {
+        $place = $address->place;
+
+        return [
+            'id' => $address->id,
+            'name' => $address->name,
+            'googleMapAddress' => $place->getGoogleMapAddress(),
+            'googleMapAddressLatitude' => $place->getGoogleMapsAddressWithLatitude(),
+            'address' => $place->getAddressAsString(),
+            'country' => $place->country,
+            'country_name' => $place->country_name,
+            'street' => $place->street,
+            'city' => $place->city,
+            'province' => $place->province,
+            'postal_code' => $place->postal_code,
+            'latitude' => $place->latitude,
+            'longitude' => $place->longitude,
+            'edit' => false,
+        ];
     }
 }

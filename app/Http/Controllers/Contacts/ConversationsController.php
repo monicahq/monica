@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\Conversation;
+use App\Traits\JsonRespondController;
 use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\UpdateConversation;
@@ -15,6 +17,8 @@ use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the Create conversation page.
      *
@@ -25,7 +29,6 @@ class ConversationsController extends Controller
     {
         return view('people.conversations.new')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
     }
 
@@ -33,7 +36,7 @@ class ConversationsController extends Controller
      * Display the list of conversations.
      *
      * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -85,7 +88,7 @@ class ConversationsController extends Controller
 
         // create the conversation
         try {
-            $conversation = (new CreateConversation)->execute($data);
+            $conversation = app(CreateConversation::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -105,7 +108,7 @@ class ConversationsController extends Controller
             ];
 
             try {
-                (new AddMessageToConversation)->execute($data);
+                app(AddMessageToConversation::class)->execute($data);
             } catch (\Exception $e) {
                 return back()
                     ->withInput()
@@ -137,7 +140,6 @@ class ConversationsController extends Controller
 
         return view('people.conversations.edit')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withConversation($conversation)
             ->withMessages($messages)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
@@ -172,7 +174,7 @@ class ConversationsController extends Controller
 
         // update the conversation
         try {
-            $conversation = (new UpdateConversation)->execute($data);
+            $conversation = app(UpdateConversation::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -186,7 +188,7 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'message_id' => $message->id,
             ];
-            (new DestroyMessage)->execute($data);
+            app(DestroyMessage::class)->execute($data);
         }
 
         // and create all new ones
@@ -202,7 +204,7 @@ class ConversationsController extends Controller
             ];
 
             try {
-                (new AddMessageToConversation)->execute($data);
+                app(AddMessageToConversation::class)->execute($data);
             } catch (\Exception $e) {
                 return back()
                     ->withInput()
@@ -230,7 +232,7 @@ class ConversationsController extends Controller
         ];
 
         try {
-            (new DestroyConversation)->execute($data);
+            app(DestroyConversation::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

@@ -34,11 +34,11 @@ $factory->define(App\Models\Account\Account::class, function (Faker\Generator $f
     ];
 });
 
-$factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\Activity::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'activity_type_id' => function (array $data) {
-            return factory(App\Models\Contact\ActivityType::class)->create([
+            return factory(App\Models\Account\ActivityType::class)->create([
                 'account_id' => $data['account_id'],
             ])->id;
         },
@@ -48,11 +48,11 @@ $factory->define(App\Models\Contact\Activity::class, function (Faker\Generator $
     ];
 });
 
-$factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\ActivityType::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'activity_type_category_id' => function (array $data) {
-            return factory(App\Models\Contact\ActivityTypeCategory::class)->create([
+            return factory(App\Models\Account\ActivityTypeCategory::class)->create([
                 'account_id' => $data['account_id'],
             ])->id;
         },
@@ -61,7 +61,7 @@ $factory->define(App\Models\Contact\ActivityType::class, function (Faker\Generat
     ];
 });
 
-$factory->define(App\Models\Contact\ActivityTypeCategory::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Account\ActivityTypeCategory::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'translation_key' => $faker->sentence,
@@ -77,6 +77,40 @@ $factory->define(App\Models\Contact\Reminder::class, function (Faker\Generator $
                 'account_id' => $data['account_id'],
             ])->id;
         },
+    ];
+});
+
+$factory->define(App\Models\Contact\ReminderOutbox::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'user_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'reminder_id' => function (array $data) {
+            return factory(App\Models\Contact\Reminder::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'planned_date' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+    ];
+});
+
+$factory->define(App\Models\Contact\ReminderSent::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'user_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'reminder_id' => function (array $data) {
+            return factory(App\Models\Contact\Reminder::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'planned_date' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });
 
@@ -97,6 +131,12 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
 $factory->state(App\Models\Contact\Contact::class, 'partial', [
     'is_partial' => 1,
 ]);
+$factory->state(App\Models\Contact\Contact::class, 'named', function (Faker\Generator $faker) {
+    return [
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
+    ];
+});
 
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     return [
@@ -134,6 +174,7 @@ $factory->define(App\Models\Contact\Task::class, function (Faker\Generator $fake
         'description' => $faker->word,
         'completed' => 0,
         'created_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
+        'uuid' => Str::uuid(),
     ];
 });
 

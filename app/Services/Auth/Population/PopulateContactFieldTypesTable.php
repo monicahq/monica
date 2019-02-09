@@ -80,7 +80,8 @@ class PopulateContactFieldTypesTable extends BaseService
     /**
      * Create an entry in the life event category table.
      *
-     * @param object $defaultLifeEventCategory
+     * @param object $defaultContactFieldType
+     * @param array $data
      * @return void
      */
     private function createEntry($defaultContactFieldType, $data)

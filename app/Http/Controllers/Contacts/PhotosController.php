@@ -6,12 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the list of photos.
      *
@@ -34,7 +37,7 @@ class PhotosController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        $photo = (new UploadPhoto)->execute([
+        $photo = app(UploadPhoto::class)->execute([
             'account_id' => auth()->user()->account->id,
             'photo' => $request->photo,
         ]);
@@ -62,7 +65,7 @@ class PhotosController extends Controller
         ];
 
         try {
-            (new DestroyPhoto)->execute($data);
+            app(DestroyPhoto::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

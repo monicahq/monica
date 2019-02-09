@@ -60,9 +60,13 @@ export default {
   data() {
     return {
       entry: [],
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -71,13 +75,12 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       // not necessary, just a way to add more clarity to the code
       this.entry = this.journalEntry.object;
     },
 
     trash() {
-      axios.delete('/journal/' + this.entry.id)
+      axios.delete('journal/' + this.entry.id)
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });

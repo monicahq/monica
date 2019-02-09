@@ -23,8 +23,7 @@ class DestroyPlaceTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $placeService = new DestroyPlace;
-        $bool = $placeService->execute($request);
+        app(DestroyPlace::class)->execute($request);
 
         $this->assertDatabaseMissing('places', [
             'id' => $place->id,
@@ -42,7 +41,7 @@ class DestroyPlaceTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyPlace)->execute($request);
+        app(DestroyPlace::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_do_not_exist()
@@ -53,6 +52,6 @@ class DestroyPlaceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new DestroyPlace)->execute($request);
+        app(DestroyPlace::class)->execute($request);
     }
 }

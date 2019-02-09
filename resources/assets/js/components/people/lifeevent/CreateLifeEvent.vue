@@ -34,7 +34,7 @@
           <!-- CATEGORIES -->
           <li v-for="category in categories" :key="category.id" class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" @click="getType(category)">
             <div class="dib mr2">
-              <img :src="'/img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" style="min-width: 12px;" />
+              <img :src="'img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" style="min-width: 12px;" />
             </div>
             {{ category.name }}
 
@@ -50,7 +50,7 @@
           <!-- TYPES -->
           <li v-for="type in types" :key="type.id" class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" @click="displayAddScreen(type)">
             <div class="dib mr2">
-              <img :src="'/img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" style="min-width: 12px;" />
+              <img :src="'img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" style="min-width: 12px;" />
             </div>
             {{ type.name }}
 
@@ -66,7 +66,7 @@
       <!-- ADD SCREEN -->
       <div v-else class="ba b--gray-monica br2 pt4">
         <div class="life-event-add-icon tc center">
-          <img :src="'/img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'" style="min-width: 17px;" />
+          <img :src="'img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'" style="min-width: 17px;" />
         </div>
 
         <h3 class="pt3 ph4 f3 fw5 tc">
@@ -75,7 +75,7 @@
 
         <!-- This field will be the same for every life event type no matter what, as the date is the only required field -->
         <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
-          <label for="another" class="mr2">
+          <label for="year" class="mr2">
             {{ $t('people.life_event_date_it_happened') }}
           </label>
           <div class="flex mb3">
@@ -192,8 +192,13 @@ export default {
       activeType: '',
       types: [],
       view: 'categories',
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -203,7 +208,6 @@ export default {
   methods: {
     prepareComponent() {
       this.getCategories();
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.newLifeEvent.happened_at = moment().format('YYYY-MM-DD');
       this.selectedYear = moment().year();
       this.selectedMonth = moment().month() + 1; // month is zero indexed (O_o) in moments.js
@@ -217,14 +221,14 @@ export default {
     },
 
     getCategories() {
-      axios.get('/lifeevents/categories')
+      axios.get('lifeevents/categories')
         .then(response => {
           this.categories = response.data.data;
         });
     },
 
     getType(category) {
-      axios.get('/lifeevents/categories/' + category.id + '/types')
+      axios.get('lifeevents/categories/' + category.id + '/types')
         .then(response => {
           this.types = response.data.data;
         });
@@ -263,7 +267,7 @@ export default {
     },
 
     store() {
-      axios.post('/people/' + this.hash + '/lifeevents', this.newLifeEvent)
+      axios.post('people/' + this.hash + '/lifeevents', this.newLifeEvent)
         .then(response => {
           this.$emit('updateLifeEventTimeline', response.data);
 

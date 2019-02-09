@@ -22,6 +22,12 @@ fi
 # Run migrations
 ${ARTISAN} monica:update --force -v
 
+if [[ -n ${SENTRY_SUPPORT:-} && $SENTRY_SUPPORT && -z ${SENTRY_NORELEASE:-} ]]; then
+  commit=$(cat .sentry-commit)
+  release=$(cat .sentry-release)
+  ${ARTISAN} sentry:release --release=$release --commit=$commit --environment=$SENTRY_ENV -v || true
+fi
+
 # Run cron
 crond -b &
 

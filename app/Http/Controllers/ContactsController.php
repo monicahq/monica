@@ -7,9 +7,11 @@ use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
+use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -174,7 +176,7 @@ class ContactsController extends Controller
     public function store(Request $request)
     {
         try {
-            $contact = (new CreateContact)->execute([
+            $contact = app(CreateContact::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'first_name' => $request->get('first_name'),
                 'last_name' => $request->input('last_name', null),
@@ -210,7 +212,7 @@ class ContactsController extends Controller
         // make sure we don't display a significant other if it's not set as a
         // real contact
         if ($contact->is_partial) {
-            return redirect()->route('people.index');
+            return redirect()->route('people.show', $contact->getRelatedRealContact());
         }
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
@@ -238,10 +240,17 @@ class ContactsController extends Controller
             return $item->relationshipType->relationshipTypeGroup->name == 'work';
         });
         // reminders
-        $reminders = $contact->reminders;
+        $reminders = $contact->activeReminders;
         $relevantRemindersFromRelatedContacts = $contact->getBirthdayRemindersAboutRelatedContacts();
-        $reminders = $reminders->merge($relevantRemindersFromRelatedContacts)
-                                ->sortBy('next_expected_date');
+        $reminders = $reminders->merge($relevantRemindersFromRelatedContacts);
+        // now we need to sort the reminders by next date they will be triggered
+        foreach ($reminders as $reminder) {
+            $next_expected_date = $reminder->calculateNextExpectedDateOnTimezone();
+            $reminder->next_expected_date_human_readable = DateHelper::getShortDate($next_expected_date);
+            $reminder->next_expected_date = $next_expected_date->format('Y-m-d');
+        }
+        $reminders = $reminders->sortBy('next_expected_date');
+
         // list of active features
         $modules = $contact->account->modules()->active()->get();
 
@@ -287,7 +296,7 @@ class ContactsController extends Controller
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
-        $hasBirthdayReminder = ! is_null($contact->birthdate) ? (is_null($contact->birthdate->reminder) ? 0 : 1) : 0;
+        $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
 
         return view('people.edit')
             ->withContact($contact)
@@ -349,16 +358,17 @@ class ContactsController extends Controller
             'deceased_date_add_reminder' => ($request->get('add_reminder_deceased') != '' ? true : false),
         ];
 
-        $contact = (new UpdateContact)->execute($data);
+        $contact = app(UpdateContact::class)->execute($data);
 
         if ($request->file('avatar') != '') {
             if ($contact->has_avatar) {
                 try {
                     $contact->deleteAvatars();
                 } catch (\Exception $e) {
-                    return back()
-                        ->withInput()
-                        ->withErrors(trans('app.error_save'));
+                    Log::warning(__CLASS__.' update: Failed to delete avatars', [
+                        'contact' => $contact,
+                        'exception' => $e,
+                    ]);
                 }
             }
             $contact->has_avatar = true;
@@ -391,7 +401,7 @@ class ContactsController extends Controller
             'contact_id' => $contact->id,
         ];
 
-        (new DestroyContact)->execute($data);
+        app(DestroyContact::class)->execute($data);
 
         return redirect()->route('people.index')
             ->with('success', trans('people.people_delete_success'));
@@ -486,7 +496,7 @@ class ContactsController extends Controller
     /**
      * Download the contact as vCard.
      * @param  Contact $contact
-     * @return
+     * @return \Illuminate\Http\Response
      */
     public function vCard(Contact $contact)
     {
@@ -494,14 +504,14 @@ class ContactsController extends Controller
             Debugbar::disable();
         }
 
-        $vcard = (new ExportVCard)->execute([
+        $vcard = app(ExportVCard::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
         ]);
 
         return response($vcard->serialize())
             ->header('Content-type', 'text/x-vcard')
-            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name).'.vcf');
+            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
     }
 
     /**
@@ -510,7 +520,7 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return [type]
+     * @return int
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
@@ -531,7 +541,7 @@ class ContactsController extends Controller
             throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
-        $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
+        $contact->setStayInTouchTriggerDate($frequency);
 
         return $frequency;
     }

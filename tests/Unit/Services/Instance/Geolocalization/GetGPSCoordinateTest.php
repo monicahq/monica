@@ -3,7 +3,11 @@
 namespace Tests\Unit\Services\Instance\Geolocalization;
 
 use Tests\TestCase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Handler\MockHandler;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
@@ -23,8 +27,7 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $geocodingService = new GetGPSCoordinate;
-        $place = $geocodingService->execute($request);
+        $place = app(GetGPSCoordinate::class)->execute($request);
 
         $this->assertNull($place);
     }
@@ -34,10 +37,10 @@ class GetGPSCoordinateTest extends TestCase
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
 
-        \VCR\VCR::turnOn();
-        \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(['url']);
-        \VCR\VCR::insertCassette('geolocalization_service_gets_gps_coordinates.yml');
+        $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Geolocalization/GetGPSCoordinateSampleResponse.json'));
+        $mock = new MockHandler([new Response(200, [], $body)]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
 
         $place = factory(Place::class)->create();
 
@@ -46,8 +49,7 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $geocodingService = new GetGPSCoordinate;
-        $place = $geocodingService->execute($request);
+        $place = app(GetGPSCoordinate::class)->execute($request, $client);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -57,20 +59,17 @@ class GetGPSCoordinateTest extends TestCase
             Place::class,
             $place
         );
-
-        \VCR\VCR::eject();
-        \VCR\VCR::turnOff();
     }
 
     public function test_it_returns_null_if_address_is_garbage()
     {
-        \VCR\VCR::turnOn();
-        \VCR\VCR::configure()->setMode('none');
-        \VCR\VCR::configure()->enableRequestMatchers(['method', 'url']);
-        \VCR\VCR::insertCassette('geolocalization_service_returns_null_if_address_is_garbage.yml');
-
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
+
+        $body = file_get_contents(base_path('tests/Fixtures/Services/Instance/Geolocalization/GetGPSCoordinateGarbageResponse.json'));
+        $mock = new MockHandler([new Response(200, [], $body)]);
+        $handler = HandlerStack::create($mock);
+        $client = new Client(['handler' => $handler]);
 
         $place = factory(Place::class)->create([
             'country' => 'ewqr',
@@ -84,13 +83,9 @@ class GetGPSCoordinateTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $geocodingService = new GetGPSCoordinate;
-        $place = $geocodingService->execute($request);
+        $place = app(GetGPSCoordinate::class)->execute($request);
 
         $this->assertNull($place);
-
-        \VCR\VCR::eject();
-        \VCR\VCR::turnOff();
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -102,6 +97,6 @@ class GetGPSCoordinateTest extends TestCase
         $this->expectException(ValidationException::class);
 
         $geocodingService = new GetGPSCoordinate;
-        $place = $geocodingService->execute($request);
+        $place = app(GetGPSCoordinate::class)->execute($request);
     }
 }

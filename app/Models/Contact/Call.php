@@ -69,7 +69,7 @@ class Call extends Model
     /**
      * Return the markdown parsed body.
      *
-     * @return string
+     * @return string|null
      */
     public function getParsedContentAttribute()
     {

@@ -31,8 +31,7 @@ class UploadDocumentTest extends TestCase
             'document' => $file,
         ];
 
-        $uploadService = new UploadDocument;
-        $document = $uploadService->execute($request);
+        $document = app(UploadDocument::class)->execute($request);
 
         $this->assertDatabaseHas('documents', [
             'id' => $document->id,
@@ -56,8 +55,7 @@ class UploadDocumentTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $uploadService = new UploadDocument;
-        $document = $uploadService->execute($request);
+        app(UploadDocument::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_does_not_exist()
@@ -75,6 +73,6 @@ class UploadDocumentTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $uploadService = (new UploadDocument)->execute($request);
+        $document = app(UploadDocument::class)->execute($request);
     }
 }

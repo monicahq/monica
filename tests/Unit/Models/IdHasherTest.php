@@ -3,9 +3,9 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use App\Helpers\IdHasher;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
+use App\Services\Instance\IdHasher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class IdHasherTest extends TestCase
@@ -14,11 +14,11 @@ class IdHasherTest extends TestCase
 
     public function testPrependH()
     {
-        $IdHasher = new IdHasher();
+        $idHasher = new IdHasher();
 
         $test_id = rand();
 
-        $test_hash = $IdHasher->encodeId($test_id);
+        $test_hash = $idHasher->encodeId($test_id);
 
         $value = substr($test_hash, 0, 1);
 
@@ -27,13 +27,13 @@ class IdHasherTest extends TestCase
 
     public function testGetIDback()
     {
-        $IdHasher = new IdHasher();
+        $idHasher = new IdHasher();
 
         $test_id = rand();
 
-        $test_hash = $IdHasher->encodeId($test_id);
+        $test_hash = $idHasher->encodeId($test_id);
 
-        $result_id = $IdHasher->decodeId($test_hash);
+        $result_id = $idHasher->decodeId($test_hash);
 
         $this->assertEquals($test_id, $result_id);
     }
@@ -43,31 +43,31 @@ class IdHasherTest extends TestCase
      */
     public function test_bad_id_get_exception()
     {
-        $IdHasher = new IdHasher();
+        $idHasher = new IdHasher();
 
         $test_id = rand();
 
-        $IdHasher->decodeId($test_id);
+        $idHasher->decodeId($test_id);
     }
 
     public function testHashIDContact()
     {
-        $IdHasher = new IdHasher();
+        $idHasher = new IdHasher();
 
         $contact = factory(Contact::class)->create();
 
-        $value = $IdHasher->decodeId($contact->hashID());
+        $value = $idHasher->decodeId($contact->hashID());
 
         $this->assertEquals($contact->id, $value);
     }
 
     public function testHashIDActivity()
     {
-        $IdHasher = new IdHasher();
+        $idHasher = new IdHasher();
 
         $activity = factory(Activity::class)->create();
 
-        $value = $IdHasher->decodeId($activity->hashID());
+        $value = $idHasher->decodeId($activity->hashID());
 
         $this->assertEquals($activity->id, $value);
     }

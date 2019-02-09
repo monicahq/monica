@@ -10,7 +10,7 @@
       </div>
 
       <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-20-ns w-100 pa2 tc bt b--gray-monica pt3">
-        <img src="/img/monica.svg" width="20" height="21" />
+        <img src="img/monica.svg" width="20" height="21" />
       </div>
 
       <div class="{{ htmldir() == 'ltr' ? 'fl tr' : 'fr tl' }} w-40-ns w-100 pa2 bt b--gray-monica pt3">

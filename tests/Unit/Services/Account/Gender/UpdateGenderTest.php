@@ -24,8 +24,7 @@ class UpdateGenderTest extends TestCase
             'name' => 'man',
         ];
 
-        $genderService = new UpdateGender;
-        $gender = $genderService->execute($request);
+        $gender = app(UpdateGender::class)->execute($request);
 
         $this->assertDatabaseHas('genders', [
             'id' => $gender->id,
@@ -48,7 +47,7 @@ class UpdateGenderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateGender)->execute($request);
+        app(UpdateGender::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_place_is_not_linked_to_account()
@@ -63,6 +62,6 @@ class UpdateGenderTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateGender)->execute($request);
+        app(UpdateGender::class)->execute($request);
     }
 }

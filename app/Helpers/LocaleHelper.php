@@ -137,7 +137,7 @@ class LocaleHelper
     /**
      * Get ISO-639-2/t (three-letter codes) from ISO-639-1 (two-letters code).
      *
-     * @param string
+     * @param  string $locale
      * @return string
      */
     public static function getLocaleAlpha($locale)
@@ -163,12 +163,11 @@ class LocaleHelper
      * Format phone number by country.
      *
      * @param string $tel
-     * @param $iso
+     * @param string|null $iso
      * @param int $format
-     *
-     * @return null | string
+     * @return string
      */
-    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL)
+    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL) : string
     {
         if (empty($iso)) {
             return $tel;

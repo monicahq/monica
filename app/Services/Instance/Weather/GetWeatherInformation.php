@@ -13,6 +13,8 @@ use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class GetWeatherInformation extends BaseService
 {
+    protected $client;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -29,13 +31,14 @@ class GetWeatherInformation extends BaseService
      * Get the weather information.
      *
      * @param array $data
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Weather|null
-     * @throws Illuminate\Validation\ValidationException if the array that is given in parameter is not valid
-     * @throws App\Exceptions\MissingEnvVariableException if the weather services are not enabled
-     * @throws Illuminate\Database\Eloquent\ModelNotFoundException if the Place object is not found
-     * @throws GuzzleHttp\Exception\ClientException if the request to Darksky crashed
+     * @throws \Illuminate\Validation\ValidationException if the array that is given in parameter is not valid
+     * @throws \App\Exceptions\MissingEnvVariableException if the weather services are not enabled
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException if the Place object is not found
+     * @throws \GuzzleHttp\Exception\ClientException if the request to Darksky crashed
      */
-    public function execute(array $data)
+    public function execute(array $data, GuzzleClient $client = null)
     {
         $this->validateWeatherEnvVariables();
 
@@ -49,6 +52,12 @@ class GetWeatherInformation extends BaseService
             if (is_null($place)) {
                 return;
             }
+        }
+
+        if (! is_null($client)) {
+            $this->client = $client;
+        } else {
+            $this->client = new GuzzleClient();
         }
 
         return $this->query($place);
@@ -74,31 +83,27 @@ class GetWeatherInformation extends BaseService
      * Actually make the call to Darksky.
      *
      * @param Place $place
-     * @return Weather
-     * @throws Exception
+     * @return Weather|null
+     * @throws \Exception
      */
-    private function query(Place $place) : Weather
+    private function query(Place $place)
     {
         $query = $this->buildQuery($place);
 
-        $client = new GuzzleClient();
-
         try {
-            $response = $client->request('GET', $query);
+            $response = $this->client->request('GET', $query);
             $response = json_decode($response->getBody());
+
+            $weather = new Weather();
+            $weather->weather_json = $response;
+            $weather->account_id = $place->account_id;
+            $weather->place_id = $place->id;
+            $weather->save();
+
+            return $weather;
         } catch (ClientException $e) {
             Log::error('Error making the call: '.$e);
-
-            return null;
         }
-
-        $weather = new Weather();
-        $weather->weather_json = $response;
-        $weather->account_id = $place->account_id;
-        $weather->place_id = $place->id;
-        $weather->save();
-
-        return $weather;
     }
 
     /**
@@ -129,7 +134,7 @@ class GetWeatherInformation extends BaseService
      */
     private function fetchGPS(Place $place)
     {
-        return (new GetGPSCoordinate)->execute([
+        return app(GetGPSCoordinate::class)->execute([
             'account_id' => $place->account_id,
             'place_id' => $place->id,
         ]);

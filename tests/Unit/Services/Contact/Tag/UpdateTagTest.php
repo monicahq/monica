@@ -24,8 +24,7 @@ class UpdateTagTest extends TestCase
             'name' => 'Central Perk',
         ];
 
-        $updateTagService = new UpdateTag;
-        $tag = $updateTagService->execute($request);
+        $tag = app(UpdateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'id' => $tag->id,
@@ -48,8 +47,7 @@ class UpdateTagTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $updateTagService = new UpdateTag;
-        $tag = $updateTagService->execute($request);
+        app(UpdateTag::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_tag_does_not_exist()
@@ -63,6 +61,6 @@ class UpdateTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $updateTagService = (new UpdateTag)->execute($request);
+        app(UpdateTag::class)->execute($request);
     }
 }

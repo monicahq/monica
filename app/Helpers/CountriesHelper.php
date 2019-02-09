@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\App;
 use PragmaRX\CountriesLaravel\Package\Facade as Countries;
+use PragmaRX\Countries\Package\Support\Collection as Country;
 
 class CountriesHelper
 {
@@ -62,7 +63,7 @@ class CountriesHelper
     /**
      * Get the common name of country, in locale version.
      *
-     * @param string $country
+     * @param \ArrayAccess $country
      * @return string
      */
     private static function getCommonNameLocale($country)
@@ -79,7 +80,7 @@ class CountriesHelper
      * Get country for a specific iso code.
      *
      * @param string $iso
-     * @return object  the Country element
+     * @return Country|null  the Country element
      */
     public static function getCountry($iso)
     {
@@ -98,7 +99,7 @@ class CountriesHelper
      * Get country for a specific language.
      *
      * @param string $locale  language code (iso)
-     * @return object  the Country element
+     * @return Country|null  the Country element
      */
     public static function getCountryFromLocale($locale)
     {
@@ -124,7 +125,7 @@ class CountriesHelper
      * Get default country for a language.
      *
      * @param string $locale   language code (iso)
-     * @return string  cca2 code
+     * @return string|null  cca2 code
      */
     private static function getDefaultCountryFromLocale($locale)
     {

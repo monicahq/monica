@@ -13,7 +13,7 @@ class SearchHelper
      *
      * @param  string $query
      * @param  int $limitPerPage
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return mixed
      */
     public static function searchContacts($query, $limitPerPage, $order)
     {

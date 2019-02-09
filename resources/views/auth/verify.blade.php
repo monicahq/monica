@@ -9,7 +9,7 @@
 
             <div class="dt w-100">
               <div class="dtc tc">
-                <img src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             <h2>{{ trans('auth.confirmation_title') }}</h2>
@@ -23,7 +23,7 @@
 
               {{ trans('auth.confirmation_check') }}<br/>
               {!! trans('auth.confirmation_request_another', ['url' => route('verification.resend')]) !!}<br/>
-              {!! trans('auth.confirmation_again', ['url' => url('settings/emailchange1')]) !!}
+              {!! trans('auth.confirmation_again', ['url' => 'settings/emailchange1']) !!}
             </div>
           </div>
         </div>

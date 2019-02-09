@@ -40,7 +40,7 @@ class ApiController extends Controller
                 $this->setSortCriteria($request->get('sort'));
 
                 // It has a sort criteria, but is it a valid one?
-                if (is_null($this->getSortCriteria())) {
+                if (empty($this->getSortCriteria())) {
                     return $this->setHTTPStatusCode(400)
                               ->setErrorCode(39)
                               ->respondWithError();
@@ -99,7 +99,7 @@ class ApiController extends Controller
 
     /**
      * @param string $with
-     * @return $this
+     * @return self
      */
     public function setWithParameter($with)
     {
@@ -118,7 +118,7 @@ class ApiController extends Controller
 
     /**
      * @param int $limit
-     * @return $this
+     * @return self
      */
     public function setLimitPerPage($limit)
     {
@@ -146,7 +146,7 @@ class ApiController extends Controller
 
     /**
      * @param string $criteria
-     * @return $this
+     * @return self
      */
     public function setSortCriteria($criteria)
     {
@@ -161,8 +161,6 @@ class ApiController extends Controller
             '-called_at',
             'favorited_at',
             '-favorited_at',
-            'next_expected_date',
-            '-next_expected_date',
         ];
 
         if (in_array($criteria, $acceptedCriteria)) {
@@ -171,7 +169,7 @@ class ApiController extends Controller
             return $this;
         }
 
-        $this->sort = null;
+        $this->sort = '';
 
         return $this;
     }

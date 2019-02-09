@@ -9,6 +9,7 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
+use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -154,9 +155,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2018-02-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2018-02-01',
+        ]);
 
-        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_user_should_not_be_reminded_because_hours_are_different()
@@ -164,9 +168,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '08:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2017-01-01',
+            ]);
 
-        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_user_should_not_be_reminded_because_timezone_is_different()
@@ -174,9 +181,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'Europe/Berlin'));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2017-01-01',
+        ]);
 
-        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_user_should_be_reminded()
@@ -184,9 +194,12 @@ class UserTest extends TestCase
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 32, 12));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id, 'next_expected_date' => '2017-01-01']);
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $account->id,
+            'initial_date' => '2017-01-01',
+        ]);
 
-        $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->next_expected_date));
+        $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
     public function test_it_indicates_user_is_compliant()
@@ -307,6 +320,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'USD')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -316,7 +330,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'en',
             'timezone' => 'America/Chicago',
-            'currency_id' => 2,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'fahrenheit',
         ]);
     }
 
@@ -326,6 +341,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -335,7 +351,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'fr',
             'timezone' => 'Europe/Paris',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -345,6 +362,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'CZK')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -354,7 +372,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'cs',
             'timezone' => 'Europe/Prague',
-            'currency_id' => 43,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -364,6 +383,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -373,7 +393,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'de',
             'timezone' => 'Europe/Berlin',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -383,6 +404,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -392,7 +414,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'es',
             'timezone' => 'Europe/Madrid',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -402,6 +425,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'ILS')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -411,7 +435,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'he',
             'timezone' => 'Asia/Jerusalem',
-            'currency_id' => 66,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -421,6 +446,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -430,7 +456,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'it',
             'timezone' => 'Europe/Rome',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -440,6 +467,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -449,7 +477,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'nl',
             'timezone' => 'Europe/Amsterdam',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -459,6 +488,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -468,7 +498,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'pt',
             'timezone' => 'Europe/Lisbon',
-            'currency_id' => 4,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -478,6 +509,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'RUB')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -487,7 +519,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'ru',
             'timezone' => 'Europe/Moscow',
-            'currency_id' => 5,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 
@@ -497,6 +530,7 @@ class UserTest extends TestCase
 
         $account = factory(Account::class)->create([]);
         $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $currency = Currency::where('iso', 'CNY')->first();
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -506,7 +540,8 @@ class UserTest extends TestCase
             'email' => 'john@doe.com',
             'locale' => 'zh',
             'timezone' => 'Asia/Shanghai',
-            'currency_id' => 37,
+            'currency_id' => $currency->id,
+            'temperature_scale' => 'celsius',
         ]);
     }
 }

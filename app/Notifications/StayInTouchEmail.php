@@ -6,6 +6,7 @@ use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\App;
+use App\Interfaces\MailNotification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,7 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as LaravelNotification;
 
-class StayInTouchEmail extends LaravelNotification implements ShouldQueue
+class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailNotification
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -59,7 +60,7 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue
                 'name' => $this->contact->name,
                 'frequency' => $this->contact->stay_in_touch_frequency,
             ]))
-            ->action(trans('mail.footer_contact_info2', ['name' => $this->contact->name]), route('people.show', $this->contact));
+            ->action(trans('mail.footer_contact_info2', ['name' => $this->contact->name]), $this->contact->getLink());
     }
 
     /**

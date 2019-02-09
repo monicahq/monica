@@ -4,6 +4,7 @@ namespace App\Services\Account\Place;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use GuzzleHttp\Client as GuzzleClient;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class CreatePlace extends BaseService
@@ -31,9 +32,10 @@ class CreatePlace extends BaseService
      * Create a place.
      *
      * @param array $data
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place
      */
-    public function execute(array $data) : Place
+    public function execute(array $data, GuzzleClient $client = null) : Place
     {
         $this->validate($data);
 
@@ -49,7 +51,7 @@ class CreatePlace extends BaseService
         ]);
 
         if (is_null($place->latitude)) {
-            $this->getGeocodingInfo($place);
+            $this->getGeocodingInfo($place, $client);
         }
 
         return $place;
@@ -59,13 +61,14 @@ class CreatePlace extends BaseService
      * Get geocoding information about the place (lat/longitude).
      *
      * @param Place $place
-     * @return void|null
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
+     * @return void
      */
-    private function getGeocodingInfo(Place $place)
+    private function getGeocodingInfo(Place $place, GuzzleClient $client = null)
     {
-        (new GetGPSCoordinate)->execute([
+        app(GetGPSCoordinate::class)->execute([
             'account_id' => $place->account_id,
             'place_id' => $place->id,
-        ]);
+        ], $client);
     }
 }

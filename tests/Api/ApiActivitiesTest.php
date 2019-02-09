@@ -5,8 +5,8 @@ namespace Tests\Api;
 use Tests\ApiTestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\Activity;
+use App\Models\Account\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiActivitiesTest extends ApiTestCase
@@ -72,10 +72,10 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $activity1 = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $activity2 = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/activities');
@@ -98,20 +98,20 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $activity1 = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
-        $activity1->contacts()->attach($contact1);
+        $activity1->contacts()->attach($contact1, ['account_id' => $user->account_id]);
 
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $activity2 = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
-        $activity2->contacts()->attach($contact2);
+        $activity2->contacts()->attach($contact2, ['account_id' => $user->account_id]);
 
         $response = $this->json('GET', '/api/contacts/'.$contact1->id.'/activities');
 
@@ -142,10 +142,10 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $activity1 = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $activity2 = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/activities/'.$activity1->id);
@@ -177,10 +177,10 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $activityType = factory(ActivityType::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/activities', [
@@ -203,14 +203,14 @@ class ApiActivitiesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $activity_id);
         $this->assertDatabaseHas('activities', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $activity_id,
             'summary' => 'the activity',
             'description' => 'the description',
             'date_it_happened' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'activity_id' => $activity_id,
         ]);
@@ -220,7 +220,7 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('POST', '/api/activities', [
@@ -258,7 +258,7 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $account = factory(Account::class)->create();
@@ -281,10 +281,10 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $activity = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/activities/'.$activity->id, [
@@ -307,13 +307,13 @@ class ApiActivitiesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $activity_id);
         $this->assertDatabaseHas('activities', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $activity_id,
             'summary' => 'the activity',
             'date_it_happened' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'activity_id' => $activity_id,
         ]);
@@ -323,27 +323,27 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $activity = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact->activities()->attach($activity, [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact2 = factory(Contact::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $contact2->activities()->attach($activity, [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $this->assertDatabaseHas('activity_contact', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'activity_id' => $activity->id,
         ]);
         $this->assertDatabaseHas('activity_contact', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
             'activity_id' => $activity->id,
         ]);
@@ -368,18 +368,18 @@ class ApiActivitiesTest extends ApiTestCase
 
         $this->assertGreaterThan(0, $activity_id);
         $this->assertDatabaseHas('activities', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $activity_id,
             'summary' => 'the activity',
             'date_it_happened' => '2018-05-01',
         ]);
         $this->assertDatabaseHas('activity_contact', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'activity_id' => $activity_id,
         ]);
         $this->assertDatabaseMissing('activity_contact', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'contact_id' => $contact2->id,
             'activity_id' => $activity_id,
         ]);
@@ -403,7 +403,7 @@ class ApiActivitiesTest extends ApiTestCase
             'account_id' => $account->id,
         ]);
         $activity = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('PUT', '/api/activities/'.$activity->id, [
@@ -420,17 +420,17 @@ class ApiActivitiesTest extends ApiTestCase
     {
         $user = $this->signin();
         $activity = factory(Activity::class)->create([
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
         $this->assertDatabaseHas('activities', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('DELETE', '/api/activities/'.$activity->id);
 
         $response->assertStatus(200);
         $this->assertDatabaseMissing('activities', [
-            'account_id' => $user->account->id,
+            'account_id' => $user->account_id,
             'id' => $activity->id,
         ]);
     }

@@ -17,22 +17,31 @@
 
     {{-- Date --}}
     <div class="form-group">
-        <label for="next_expected_date">{{ trans('people.reminders_add_next_time') }}</label>
-        <input type="date" id="next_expected_date" name="next_expected_date" class="form-control"
-               value="{{ old('next_expected_date') ?? $reminder->next_expected_date->toDateString() ?? now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
+        <label for="initial_date">{{ trans('people.reminders_add_next_time') }}</label>
+
+        @if (is_null($reminder->initial_date))
+        <input type="date" id="initial_date" name="initial_date" class="form-control"
+               value="{{ old('initial_date') ?? now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
                min="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
                max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}"
         >
+        @else
+        <input type="date" id="initial_date" name="initial_date" class="form-control"
+               value="{{ old('initial_date') ?? $reminder->initial_date->toDateString() }}"
+               min="{{ now(\App\Helpers\DateHelper::getTimezone())->toDateString() }}"
+               max="{{ now(\App\Helpers\DateHelper::getTimezone())->addYears(10)->toDateString() }}"
+        >
+        @endif
 
         <fieldset class="form-group frequency{{ $errors->has('frequency_type') ? ' has-error' : '' }}">
 
             {{-- One time reminder --}}
             <div class="form-check">
                 <label class="form-check-label" for="frequency_type_once">
-                    <input type="radio" id="frequency_type_once" class="form-check-input" name="frequency_type" value="once"
+                    <input type="radio" id="frequency_type_once" class="form-check-input" name="frequency_type" value="one_time"
                            v-model="reminders_frequency"
-                           :value="'once'"
-                           :checked="'once'"
+                           :value="'one_time'"
+                           :checked="'one_time'"
                     >
                     {{ trans('people.reminders_add_once') }}
                 </label>
@@ -53,9 +62,9 @@
                            value="1"
                            min="1"
                            max="115"
-                           :disabled="reminders_frequency == 'once'">
+                           :disabled="reminders_frequency == 'one_time'">
 
-                    <select name="frequency_type" :disabled="reminders_frequency == 'once'">
+                    <select name="frequency_type" :disabled="reminders_frequency == 'one_time'">
                         <option value="week">{{ trans('people.reminders_type_week') }}</option>
                         <option value="month">{{ trans('people.reminders_type_month') }}</option>
                         <option value="year">{{ trans('people.reminders_type_year') }}</option>

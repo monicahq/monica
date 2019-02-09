@@ -40,7 +40,7 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Execute the service.
      *
-     * @param array $data
+     * @param array $givenData
      * @return bool
      */
     public function execute(array $givenData) : bool
@@ -66,7 +66,7 @@ class PopulateLifeEventsTable extends BaseService
     /**
      * Get the locale associated with the account.
      *
-     * @return string
+     * @return string|null
      */
     private function getLocaleOfAccount($accountId)
     {

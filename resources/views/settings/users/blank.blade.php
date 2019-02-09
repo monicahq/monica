@@ -35,7 +35,7 @@
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
 
-            <img src="/img/settings/users/blank.svg">
+            <img src="img/settings/users/blank.svg">
 
             <h2>{{ trans('settings.users_blank_title') }}</h2>
 

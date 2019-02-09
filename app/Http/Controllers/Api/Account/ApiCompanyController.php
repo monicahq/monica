@@ -61,7 +61,7 @@ class ApiCompanyController extends ApiController
     public function store(Request $request)
     {
         try {
-            $company = (new CreateCompany)->execute(
+            $company = app(CreateCompany::class)->execute(
                 $request->all()
                     +
                     [
@@ -89,7 +89,7 @@ class ApiCompanyController extends ApiController
     public function update(Request $request, $companyId)
     {
         try {
-            $company = (new UpdateCompany)->execute(
+            $company = app(UpdateCompany::class)->execute(
                 $request->all()
                     +
                     [
@@ -117,7 +117,7 @@ class ApiCompanyController extends ApiController
     public function destroy(Request $request, $companyId)
     {
         try {
-            (new DestroyCompany)->execute([
+            app(DestroyCompany::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'company_id' => $companyId,
             ]);

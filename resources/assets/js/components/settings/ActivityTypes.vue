@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_activity_type_category_title') }}
-      <a v-if="!limited" class="btn nt2" cy-name="add-activity-category-type-button" :class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateCategoryModal">
+      <a v-if="!limited" class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateCategoryModal">
         {{ $t('settings.personalization_activity_type_category_add') }}
       </a>
     </h3>
@@ -22,7 +22,7 @@
             </g>
           </svg>
         </div>
-        <div cy-name="activity-type-premium-message">
+        <div>
           {{ $t('settings.personalisation_paid_upgrade') }}
         </div>
       </div>
@@ -43,8 +43,9 @@
       </div>
     </div>
 
-    <div cy-name="activity-types">
-      <div v-for="activityTypeCategory in activityTypeCategories" :key="activityTypeCategory.id" class="dt dt--fixed w-100 collapse br--top br--bottom">
+    <div>
+      <div v-for="activityTypeCategory in activityTypeCategories" :key="activityTypeCategory.id" class="dt dt--fixed w-100 collapse br--top br--bottom mt3">
+        <!-- ACTIVITY TYPE CATEGORY -->
         <div class="dt-row hover bb b--light-gray">
           <div class="dtc">
             <div class="pa2 b">
@@ -53,12 +54,12 @@
           </div>
           <div class="dtc">
             <div class="pa2" :class="[ dirltr ? 'tr' : 'tl' ]">
-              <i v-if="!limited" class="fa fa-pencil-square-o pointer pr2" :cy-name="'activity-type-category-edit-button-' + activityTypeCategory.id" @click="showEditCategory(activityTypeCategory)"></i>
-              <i v-if="!limited" class="fa fa-trash-o pointer" :cy-name="'activity-type-category-delete-button-' + activityTypeCategory.id" @click="showDeleteCategory(activityTypeCategory)"></i>
+              <i v-if="!limited" class="fa fa-pencil-square-o pointer pr2" @click="showEditCategory(activityTypeCategory)"></i>
+              <i v-if="!limited" class="fa fa-trash-o pointer" @click="showDeleteCategory(activityTypeCategory)"></i>
             </div>
           </div>
         </div>
-        <div v-for="activityType in activityTypeCategory.activityTypes" :key="activityType.id" class="dt-row hover bb b--light-gray" :cy-name="'activity-type-id-' + activityType.id">
+        <div v-for="activityType in activityTypeCategory.activityTypes" :key="activityType.id" class="dt-row hover bb b--light-gray">
           <div class="dtc">
             <div class="pa2 pl4">
               {{ activityType.name }}
@@ -66,15 +67,15 @@
           </div>
           <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
             <div class="pa2">
-              <i v-if="!limited" class="fa fa-pencil-square-o pointer pr2" :cy-name="'activity-type-edit-button-' + activityType.id" @click="showEditType(activityType)"></i>
-              <i v-if="!limited" class="fa fa-trash-o pointer" :cy-name="'activity-type-delete-button-' + activityType.id" @click="showDeleteType(activityType)"></i>
+              <i v-if="!limited" class="fa fa-pencil-square-o pointer pr2" @click="showEditType(activityType)"></i>
+              <i v-if="!limited" class="fa fa-trash-o pointer" @click="showDeleteType(activityType)"></i>
             </div>
           </div>
         </div>
         <div v-if="!limited" class="dt-row">
           <div class="dtc">
             <div class="pa2 pl4">
-              <a class="pointer" :cy-name="'add-activity-type-button-for-category-' + activityTypeCategory.id" @click="showCreateTypeModal(activityTypeCategory)">
+              <a class="pointer" @click="showCreateTypeModal(activityTypeCategory)">
                 {{ $t('settings.personalization_activity_type_add_button') }}
               </a>
             </div>
@@ -102,7 +103,7 @@
           <a class="btn" @click="closeCategoryModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a cy-name="add-activity-type-category-button" class="btn btn-primary" @click="storeCategory()">
+          <a class="btn btn-primary" @click="storeCategory()">
             {{ $t('app.save') }}
           </a>
         </span>
@@ -128,7 +129,7 @@
           <a class="btn" @click="closeUpdateCategoryModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a cy-name="update-activity-type-category-button" class="btn btn-primary" @click="updateCategory()">
+          <a class="btn btn-primary" @click="updateCategory()">
             {{ $t('app.update') }}
           </a>
         </span>
@@ -154,7 +155,7 @@
           <a class="btn" @click="closeCreateTypeModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a :cy-name="'add-type-button'" class="btn btn-primary" @click="storeType()">
+          <a class="btn btn-primary" @click="storeType()">
             {{ $t('app.save') }}
           </a>
         </span>
@@ -180,7 +181,7 @@
           <a class="btn" @click="closeUpdateTypeModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a :cy-name="'update-type-button'" class="btn btn-primary" @click="updateType()">
+          <a class="btn btn-primary" @click="updateType()">
             {{ $t('app.update') }}
           </a>
         </span>
@@ -208,7 +209,7 @@
           <a class="btn" @click="closeDeleteCategoryModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a :cy-name="'delete-category-button'" class="btn btn-primary" @click="destroyCategory()">
+          <a class="btn btn-primary" @click="destroyCategory()">
             {{ $t('app.delete') }}
           </a>
         </span>
@@ -236,7 +237,7 @@
           <a class="btn" @click="closeDeleteTypeModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a :cy-name="'delete-type-button'" class="btn btn-primary" @click="destroyType()">
+          <a class="btn btn-primary" @click="destroyType()">
             {{ $t('app.delete') }}
           </a>
         </span>
@@ -304,9 +305,13 @@ export default {
         id: '',
         errors: []
       },
-
-      dirltr: true,
     };
+  },
+
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
   },
 
   mounted() {
@@ -315,12 +320,11 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getActivityTypeCategories();
     },
 
     getActivityTypeCategories() {
-      axios.get('/settings/personalization/activitytypecategories')
+      axios.get('settings/personalization/activitytypecategories')
         .then(response => {
           this.activityTypeCategories = response.data;
         });
@@ -339,10 +343,10 @@ export default {
     },
 
     storeCategory() {
-      axios.post('/settings/personalization/activitytypecategories', this.createCategoryForm)
+      axios.post('settings/personalization/activitytypecategories', this.createCategoryForm)
         .then(response => {
           this.$refs.createCategoryModal.close();
-          this.activityTypeCategories.push(response.data);
+          this.activityTypeCategories.push(response.data.data);
           this.createCategoryForm.name = '';
 
           this.notify(this.$t('app.default_save_success'), true);
@@ -393,7 +397,7 @@ export default {
     },
 
     updateCategory() {
-      axios.put('/settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
+      axios.put('settings/personalization/activitytypecategories/' + this.updateCategoryForm.id, this.updateCategoryForm)
         .then(response => {
           this.$refs.updateCategoryModal.close();
           this.updatedCategory.name = this.updateCategoryForm.name;
@@ -409,7 +413,7 @@ export default {
     },
 
     storeType() {
-      axios.post('/settings/personalization/activitytypes', this.createTypeForm)
+      axios.post('settings/personalization/activitytypes', this.createTypeForm)
         .then(response => {
           this.$refs.createTypeModal.close();
           this.activityTypes.push(response.data);
@@ -421,7 +425,7 @@ export default {
     },
 
     destroyCategory() {
-      axios.delete('/settings/personalization/activitytypecategories/' + this.destroyCategoryForm.id)
+      axios.delete('settings/personalization/activitytypecategories/' + this.destroyCategoryForm.id)
         .then(response => {
           this.$refs.deleteCategoryModal.close();
           this.destroyCategoryForm.id = '';
@@ -435,7 +439,7 @@ export default {
     },
 
     updateType() {
-      axios.put('/settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
+      axios.put('settings/personalization/activitytypes/' + this.updateTypeForm.id, this.updateTypeForm)
         .then(response => {
           this.$refs.updateTypeModal.close();
           this.updatedCategory.name = this.updateTypeForm.name;
@@ -447,7 +451,7 @@ export default {
     },
 
     destroyType() {
-      axios.delete('/settings/personalization/activitytypes/' + this.destroyTypeForm.id)
+      axios.delete('settings/personalization/activitytypes/' + this.destroyTypeForm.id)
         .then(response => {
           this.$refs.deleteTypeModal.close();
           this.destroyTypeForm.id = '';
