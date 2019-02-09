@@ -1581,10 +1581,15 @@ class Contact extends Model
 
     public function updateConsulted()
     {
-        $this->last_consulted_at = now(DateHelper::getTimezone());
+        $this->last_consulted_at = now();
         $this->number_of_views = $this->number_of_views + 1;
 
         // prevent timestamp update
-        $this->save(['timestamps' => false]);
+        $timestamps = $this->timestamps;
+        $this->timestamps = false;
+
+        $this->save();
+
+        $this->timestamps = $timestamps;
     }
 }
