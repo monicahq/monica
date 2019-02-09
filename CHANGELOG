@@ -2,6 +2,21 @@ UNRELEASED CHANGES:
 
 New features:
 
+*
+
+Enhancements:
+
+*
+
+Fixes:
+
+*
+
+RELEASED VERSIONS:
+
+v2.12.0 - 2019-02-09
+--------------------
+
 * Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
 * Add a page in settings to display all DAV resources
 * Add notion of instance administrator for a user
@@ -9,9 +24,6 @@ New features:
 * Add ability to add a comment when rating your day in the journal
 * Add API methods to manage genders
 * Breaking change: rewrite API methods to manage contacts
-
-Enhancements:
-
 * Redirect to the related real contact when trying to display a partial contact
 * Use iterator reader for vcard imports
 * Accept last name when using contact search field
@@ -25,9 +37,6 @@ Enhancements:
 * Add base HTML tag and tweak all assets and urls to use relative paths
 * Refactor activity types with services
 * Refactor activity type categories with services
-
-Fixes:
-
 * Remove users without an existing account in the accounts table
 * Fix case when schedule date is null
 * Add phpstan analyser, and fix a lot of issues
@@ -48,8 +57,6 @@ Fixes:
 * Fix API methods for Occupation object
 * Fix activity date viewed as one day before the event happened
 * Fix settags api call with an empty tag
-
-RELEASED VERSIONS:
 
 v2.11.2 - 2019-01-01
 --------------------
