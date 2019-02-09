@@ -9,6 +9,7 @@ return [
     'journal_entry_type_journal' => 'Entrada de diário',
     'journal_entry_type_activity' => 'Atividade',
     'journal_entry_rate' => 'Você avaliou o seu dia.',
+    'journal_add_comment' => 'Care to add a comment (optional)?',
     'entry_delete_success' => 'O registro no diário foi eliminada com sucesso.',
     'journal_add_title' => 'Título (Opcional)',
     'journal_add_date' => 'Date',

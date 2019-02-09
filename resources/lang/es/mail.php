@@ -9,6 +9,7 @@ return [
     'comment' => 'Comment: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
     'footer_contact_info2' => 'See :name’s profile',
+    'footer_contact_info2_link' => 'Ver :name\'s profile: :url',
 
     'notification_subject_line' => 'You have an upcoming event',
     'notification_description' => 'In :count days (on :date), the following event will happen:',
@@ -23,6 +24,6 @@ return [
     'notifications_rights' => 'All rights reserved',
 
     'confirmation_email_title' => 'Monica – Email verification',
-    'confirmation_email_intro'=> 'To validate your email click on the button below',
-    'confirmation_email_button' => 'Verify email address',
+    'confirmation_email_intro'=> 'Para validar tu email haz click en el botón de abajo',
+    'confirmation_email_button' => 'Verificar la dirección de correo electrónico',
 ];

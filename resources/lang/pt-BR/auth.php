@@ -13,8 +13,8 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'failed' => 'Credenciais informadas não correspondem com nossos registros.',
+    'throttle' => 'Você realizou muitas tentativas de login. Por favor, tente novamente em :seconds segundos.',
     'not_authorized' => 'You are not authorized to execute this action',
     'signup_disabled' => 'Registration is currently disabled',
     'back_homepage' => 'Back to homepage',
