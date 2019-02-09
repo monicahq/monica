@@ -43,7 +43,7 @@ class Address extends Model
     }
 
     /**
-     * Get the contact record associated with the address.
+     * Get the place record associated with the address.
      *
      * @return BelongsTo
      */
