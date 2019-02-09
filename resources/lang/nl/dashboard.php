@@ -13,14 +13,14 @@ return [
     'tab_calls_blank' => 'Je hebt nog geen oproepen opgeslagen.',
     'tab_debts' => 'Schulden',
     'tab_debts_blank' => 'Je hebt nog geen schulden opgegeven.',
-    'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any task yet.',
+    'tab_tasks' => 'Taken',
+    'tab_tasks_blank' => 'Je hebt nog geen taken.',
 
-    'tasks_add_task_placeholder' => 'What is this task about?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_add_task_placeholder' => 'Waar gaat deze taak over?',
+    'tasks_tab_your_contacts' => 'Taken met betrekking tot je contacten',
+    'tasks_tab_your_tasks' => 'Jouw taken',
+    'tasks_add_note' => 'Druk op <kbd>Enter</kbd> om de taak toe te voegen.',
+    'task_add_cta' => 'Taak toevoegen',
 
     'debts_you_owe' => 'U bent verschuldigd',
 
@@ -31,6 +31,6 @@ return [
     'reminders_next_months' => 'Gebeurtenissen in de komende 3 maanden',
     'reminders_none' => 'Geen herinnering voor deze maand',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Productwijzigingen',
+    'product_view_details' => 'Details weergeven',
 ];
