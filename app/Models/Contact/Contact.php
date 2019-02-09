@@ -19,6 +19,7 @@ use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Contact\ContactFieldType;
 use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
@@ -1102,11 +1103,7 @@ class Contact extends Model
      */
     public function getGravatar($size)
     {
-        $emails = $this->contactFields()
-            ->whereHas('contactFieldType', function ($query) {
-                $query->where('type', '=', 'email');
-            })
-            ->get();
+        $emails = $this->contactFields()->email()->get();
 
         foreach ($emails as $email) {
             if (empty($email) || empty($email->data)) {
