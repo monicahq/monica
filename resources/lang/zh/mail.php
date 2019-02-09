@@ -9,6 +9,7 @@ return [
     'comment' => '备注：:comment',
     'footer_contact_info' => '添加、查看、完成和更改有关此联系人的信息:',
     'footer_contact_info2' => '看看 :name的个人资料',
+    'footer_contact_info2_link' => '看看:name的个人资料: :url',
 
     'notification_subject_line' => '您有一个即将进行的活动',
     'notification_description' => '在:count天后(:date),将有以下事件发生：',

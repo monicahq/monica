@@ -9,6 +9,7 @@ return [
     'comment' => 'תגובה: :comment',
     'footer_contact_info' => 'הוספה, צפייה, השלמה ושינוי מידע על איש הקשר הזה:',
     'footer_contact_info2' => 'הצגת הפרופיל של :profile',
+    'footer_contact_info2_link' => 'הצגת הפרופיל של :name‏ :url',
 
     'notification_subject_line' => 'יש לך אירוע קרב',
     'notification_description' => 'בעוד :count ימים (ב־:date), יתרחש האירוע הבא:',

@@ -9,6 +9,7 @@ return [
     'journal_entry_type_journal' => 'Günlük girdisi',
     'journal_entry_type_activity' => 'Faaliyet',
     'journal_entry_rate' => 'Gününü değerlendirdin.',
+    'journal_add_comment' => 'Care to add a comment (optional)?',
     'entry_delete_success' => 'Günlük girdisi başarıyla silindi.',
     'journal_add_title' => 'Başlık (isteğe bağlı)',
     'journal_add_date' => 'Tarih',
