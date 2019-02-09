@@ -3,8 +3,10 @@
 namespace App\Helpers;
 
 use Matriphe\ISO639\ISO639;
+use libphonenumber\PhoneNumberUtil;
 use Illuminate\Support\Facades\Auth;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\NumberParseException;
 
 class LocaleHelper
 {
@@ -174,12 +176,12 @@ class LocaleHelper
         }
 
         try {
-            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+            $phoneUtil = PhoneNumberUtil::getInstance();
 
-            $phoneInstance = $phoneUtil->parse($tel, strtoupper($iso));
+            $phoneInstance = $phoneUtil->parse($tel, mb_strtoupper($iso));
 
             $tel = $phoneUtil->format($phoneInstance, $format);
-        } catch (\libphonenumber\NumberParseException $e) {
+        } catch (NumberParseException $e) {
             // Do nothing if the number cannot be parsed successfully
         }
 

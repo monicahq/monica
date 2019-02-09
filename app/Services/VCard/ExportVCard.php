@@ -7,6 +7,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactFieldType;
 
 class ExportVCard extends BaseService
 {
@@ -181,10 +182,10 @@ class ExportVCard extends BaseService
     {
         foreach ($contact->contactFields as $contactField) {
             switch ($contactField->contactFieldType->type) {
-                case 'phone':
+                case ContactFieldType::PHONE:
                     $vcard->add('TEL', $this->escape($contactField->data));
                     break;
-                case 'email':
+                case ContactFieldType::EMAIL:
                     $vcard->add('EMAIL', $this->escape($contactField->data));
                     break;
                 default:

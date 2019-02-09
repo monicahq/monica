@@ -29,6 +29,7 @@ Enhancements:
 
 Fixes:
 
+* Fix addresses and contact fields imports on VCard import
 * Remove users without an existing account in the accounts table
 * Fix case when schedule date is null
 * Add phpstan analyser, and fix a lot of issues

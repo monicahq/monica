@@ -1103,11 +1103,7 @@ class Contact extends Model
      */
     public function getGravatar($size)
     {
-        $emails = $this->contactFields()
-            ->whereHas('contactFieldType', function ($query) {
-                $query->where('type', '=', 'email');
-            })
-            ->get();
+        $emails = $this->contactFields()->email()->get();
 
         foreach ($emails as $email) {
             if (empty($email) || empty($email->data)) {

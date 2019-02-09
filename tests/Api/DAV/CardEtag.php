@@ -5,6 +5,7 @@ namespace Tests\Api\DAV;
 use App\Models\Contact\Task;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
+use App\Models\Contact\ContactFieldType;
 
 trait CardEtag
 {
@@ -48,10 +49,10 @@ GENDER:O;
         }
         foreach ($contact->contactFields as $contactField) {
             switch ($contactField->contactFieldType->type) {
-                case 'phone':
+                case ContactFieldType::PHONE:
                     $data .= "TEL:{$contactField->data}\n";
                     break;
-                case 'email':
+                case ContactFieldType::EMAIL:
                     $data .= "EMAIL:{$contactField->data}\n";
                     break;
                 default:

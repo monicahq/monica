@@ -20,6 +20,8 @@ use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
+use App\Services\Contact\Address\UpdateAddress;
+use App\Services\Contact\Address\DestroyAddress;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
 class ImportVCard extends BaseService
@@ -297,7 +299,7 @@ class ImportVCard extends BaseService
      */
     private function hasFirstnameInN(VCard $entry) : bool
     {
-        return $entry->N !== null && ! empty($entry->N->getParts()[1]);
+        return $entry->N !== null && ! empty(array_get($entry->N->getParts(), '1'));
     }
 
     /**
@@ -370,7 +372,7 @@ class ImportVCard extends BaseService
         if ($this->isValidEmail((string) $entry->EMAIL)) {
             $contactField = ContactField::where([
                 'account_id' => $this->accountId,
-                'contact_field_type_id' => $this->getContactFieldTypeId('email'),
+                'contact_field_type_id' => $this->getContactFieldTypeId(ContactFieldType::EMAIL),
             ])->whereIn('data', iterator_to_array($entry->EMAIL))->first();
 
             if ($contactField) {
@@ -463,15 +465,15 @@ class ImportVCard extends BaseService
     {
         if ($this->hasFirstnameInN($entry)) {
             $parts = $entry->N->getParts();
-            $count = count($parts);
+
             $name = '';
-            if ($count >= 2) {
+            if (! empty(array_get($parts, '1'))) {
                 $name .= $this->formatValue($parts[1]);
             }
-            if ($count >= 3 && ! empty($parts[2])) {
+            if (! empty(array_get($parts, '2'))) {
                 $name .= ' '.$this->formatValue($parts[2]);
             }
-            if ($count >= 1 && ! empty($parts[0])) {
+            if (! empty(array_get($parts, '0'))) {
                 $name .= ' '.$this->formatValue($parts[0]);
             }
             $name .= ' '.$this->formatValue($entry->EMAIL);
@@ -496,17 +498,9 @@ class ImportVCard extends BaseService
     private function importFromN(Contact $contact, VCard $entry): void
     {
         $parts = $entry->N->getParts();
-        $count = count($parts);
-
-        if ($count >= 1) {
-            $contact->last_name = $this->formatValue($parts[0]);
-        }
-        if ($count >= 2) {
-            $contact->first_name = $this->formatValue($parts[1]);
-        }
-        if ($count >= 3) {
-            $contact->middle_name = $this->formatValue($parts[2]);
-        }
+        $contact->last_name = $this->formatValue(array_get($parts, '0'));
+        $contact->first_name = $this->formatValue(array_get($parts, '1'));
+        $contact->middle_name = $this->formatValue(array_get($parts, '2'));
         // prefix [3]
         // suffix [4]
 
@@ -660,16 +654,50 @@ class ImportVCard extends BaseService
             return;
         }
 
+        $addresses = $contact->addresses()
+                                ->get()
+                                ->sortBy('id');
+
         foreach ($entry->ADR as $adr) {
-            app(CreateAddress::class)->execute([
+            $parts = $adr->getParts();
+            $addressContent = [
+                'street' => $this->formatValue(array_get($parts, '2')),
+                'city' => $this->formatValue(array_get($parts, '3')),
+                'province' => $this->formatValue(array_get($parts, '4')),
+                'postal_code' => $this->formatValue(array_get($parts, '5')),
+                'country' => CountriesHelper::find(array_get($parts, '6')),
+            ];
+
+            // We assume addresses are in the same order
+            $address = $addresses->shift();
+
+            if (is_null($address)) {
+                // Address does not exist
+                app(CreateAddress::class)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                ] +
+                    $addressContent
+                );
+            } else {
+                // Address has to be updated
+                app(UpdateAddress::class)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'address_id' => $address->id,
+                    'name' => $address->name,
+                ] +
+                    $addressContent
+                );
+            }
+        }
+
+        foreach ($addresses as $address) {
+            // Remaining addresses have to be removed
+            app(DestroyAddress::class)->execute([
                 'account_id' => $contact->account_id,
-                'contact_id' => $contact->id,
-                'street' => $this->formatValue($adr->getParts()[2]),
-                'city' => $this->formatValue($adr->getParts()[3]),
-                'province' => $this->formatValue($adr->getParts()[4]),
-                'postal_code' => $this->formatValue($adr->getParts()[5]),
-                'country' => CountriesHelper::find($adr->getParts()[6]),
-            ]);
+                'address_id' => $address->id,
+                ]);
         }
     }
 
@@ -684,21 +712,40 @@ class ImportVCard extends BaseService
             return;
         }
 
-        $contactFieldTypeId = $this->getContactFieldTypeId('email');
+        $contactFieldTypeId = $this->getContactFieldTypeId(ContactFieldType::EMAIL);
         if (! $contactFieldTypeId) {
             // Case of contact field type email does not exist
             return;
         }
 
+        $emails = $contact->contactFields()
+                            ->email()
+                            ->get()
+                            ->sortBy('id');
+
         foreach ($entry->EMAIL as $email) {
-            if ($this->isValidEmail($email)) {
-                ContactField::firstOrCreate([
+            // We assume contact fields are in the same order
+            $email1 = $emails->shift();
+
+            if (is_null($email1)) {
+                // Contact field does not exist
+                ContactField::create([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'data' => $this->formatValue($email),
                     'contact_field_type_id' => $contactFieldTypeId,
                 ]);
+            } else {
+                // Contact field has to be updated
+                $email1->update([
+                    'data' => $this->formatValue($email),
+                ]);
             }
+        }
+
+        foreach ($emails as $email) {
+            // Remaining contact fields have to be removed
+            $email->delete();
         }
     }
 
@@ -713,25 +760,45 @@ class ImportVCard extends BaseService
             return;
         }
 
-        $contactFieldTypeId = $this->getContactFieldTypeId('phone');
+        $contactFieldTypeId = $this->getContactFieldTypeId(ContactFieldType::PHONE);
         if (! $contactFieldTypeId) {
             // Case of contact field type phone does not exist
             return;
         }
 
+        $phones = $contact->contactFields()
+                            ->phone()
+                            ->get()
+                            ->sortBy('id');
+
+        $countryISO = VCardHelper::getCountryISOFromSabreVCard($entry);
+
         foreach ($entry->TEL as $tel) {
-            $tel = (string) $entry->TEL;
+            // We assume contact fields are in the same order
+            $phone = $phones->shift();
 
-            $countryISO = VCardHelper::getCountryISOFromSabreVCard($entry);
+            $tel = (string) $tel;
+            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO, starts_with($tel, '+') ? \libphonenumber\PhoneNumberFormat::INTERNATIONAL : \libphonenumber\PhoneNumberFormat::NATIONAL);
 
-            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO);
+            if (is_null($phone)) {
+                // Contact field does not exist
+                ContactField::create([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'data' => $this->formatValue($tel),
+                    'contact_field_type_id' => $contactFieldTypeId,
+                ]);
+            } else {
+                // Contact field has to be updated
+                $phone->update([
+                    'data' => $this->formatValue($tel),
+                ]);
+            }
+        }
 
-            ContactField::firstOrCreate([
-                'account_id' => $contact->account_id,
-                'contact_id' => $contact->id,
-                'data' => $this->formatValue($tel),
-                'contact_field_type_id' => $contactFieldTypeId,
-            ]);
+        foreach ($phones as $phone) {
+            // Remaining contact fields have to be removed
+            $phone->delete();
         }
     }
 
