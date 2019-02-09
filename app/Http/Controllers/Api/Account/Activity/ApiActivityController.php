@@ -10,6 +10,7 @@ use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Activity\Activity as ActivityResource;
+use App\Services\Activity\Activity\CreateActivity;
 
 class ApiActivityController extends ApiController
 {
@@ -57,6 +58,26 @@ class ApiActivityController extends ApiController
      */
     public function store(Request $request)
     {
+        try {
+            $activity = app(CreateActivity::class)->execute(
+                $request->all()
+                    +
+                    [
+                    'account_id' => auth()->user()->account->id,
+
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ActivityResource($activityType);
+
+
         $isvalid = $this->validateUpdate($request);
         if ($isvalid !== true) {
             return $isvalid;
