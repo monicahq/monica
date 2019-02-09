@@ -8,9 +8,9 @@ use App\Models\Account\Activity;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
+use App\Services\Activity\Activity\CreateActivity;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Services\Activity\Activity\CreateActivity;
 
 class ApiActivityController extends ApiController
 {
@@ -76,7 +76,6 @@ class ApiActivityController extends ApiController
         }
 
         return new ActivityResource($activityType);
-
 
         $isvalid = $this->validateUpdate($request);
         if ($isvalid !== true) {
