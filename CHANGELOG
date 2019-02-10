@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix adding person to an activity
 * Fix setting a relationship without selecting any birthdate option
 
 RELEASED VERSIONS:
