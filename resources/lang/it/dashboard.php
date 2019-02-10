@@ -11,18 +11,18 @@ return [
     'tab_recent_calls' => 'Chiamate recenti',
     'tab_favorite_notes' => 'Note preferite',
     'tab_calls_blank' => 'Non hai ancora aggiunto nessuna etichetta.',
-    'tab_debts' => 'Debts',
-    'tab_debts_blank' => 'You haven’t logged any debt yet.',
-    'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any task yet.',
+    'tab_debts' => 'Debiti',
+    'tab_debts_blank' => 'Non hai inserito ancora nessun debito.',
+    'tab_tasks' => 'Promemoria',
+    'tab_tasks_blank' => 'Non hai registrato ancora nessuna attività.',
 
-    'tasks_add_task_placeholder' => 'What is this task about?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_add_task_placeholder' => 'Cosa vuoi ricordarti?',
+    'tasks_tab_your_contacts' => 'Promemoria riguardanti i tuoi contatti',
+    'tasks_tab_your_tasks' => 'I tuoi promemoria',
+    'tasks_add_note' => 'Premi <kbd>Invio</kbd> per creare il promemoria.',
+    'task_add_cta' => 'Aggiungi un promemoria',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Devi',
 
     'statistics_contacts' => 'Contatti',
     'statistics_activities' => 'Attività',
@@ -31,6 +31,6 @@ return [
     'reminders_next_months' => 'Eventi nei prossimi 3 mesi',
     'reminders_none' => 'Nessun promemoria per questo mese',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Changelog',
+    'product_view_details' => 'Mostra dettagli',
 ];
