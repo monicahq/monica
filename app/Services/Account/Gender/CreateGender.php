@@ -21,7 +21,7 @@ class CreateGender extends BaseService
             'type' => [
                 'required',
                 Rule::in([Gender::MALE, Gender::FEMALE, Gender::OTHER]),
-            ]
+            ],
         ];
     }
 
