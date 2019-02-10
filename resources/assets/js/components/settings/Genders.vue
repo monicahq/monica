@@ -32,7 +32,7 @@
           <div class="pa2">
             {{ gender.name }}
             <span class="i">
-              ({{ gender.numberOfContacts }} contacts)
+              {{ $tc('settings.personalization_genders_list_contact_number', gender.numberOfContacts, { count:gender.numberOfContacts }) }}
             </span>
           </div>
         </div>
@@ -57,6 +57,13 @@
             :required="true"
             :title="$t('settings.personalization_genders_modal_question')"
           />
+          <form-select
+            :id="''"
+            v-model="createForm.type"
+            :options="genderTypes"
+            :title="'type'"
+            :required="true"
+          />
         </div>
       </form>
       <div class="relative">
@@ -73,7 +80,7 @@
 
     <!-- Edit gender type -->
     <sweet-modal ref="updateModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_edit')">
-      <form>
+      <form @submit.prevent="update(updatedGender)">
         <div class="mb4">
           <form-input
             :id="''"
@@ -81,6 +88,13 @@
             :input-type="'text'"
             :required="true"
             :title="$t('settings.personalization_genders_modal_edit_question')"
+          />
+          <form-select
+            :id="''"
+            v-model="updateForm.type"
+            :options="genderTypes"
+            :title="'type'"
+            :required="true"
           />
         </div>
       </form>
@@ -152,9 +166,17 @@ export default {
   data() {
     return {
       genders: [],
+      genderTypes: [
+        {id: 'M', name: 'Male'},
+        {id: 'F', name: 'Female'},
+        {id: 'O', name: 'Other'},
+        {id: 'U', name: 'Uknown'},
+        {id: 'N', name: 'None'},
+      ],
       updatedGender: {
         id: '',
-        name: ''
+        name: '',
+        type: '',
       },
 
       numberOfContacts: 0,
@@ -162,12 +184,14 @@ export default {
 
       createForm: {
         name: '',
+        type: '',
         errors: []
       },
 
       updateForm: {
         id: '',
         name: '',
+        type: '',
         errors: []
       },
 
@@ -223,12 +247,14 @@ export default {
           this.$refs.createModal.close();
           this.genders.push(response.data);
           this.createForm.name = '';
+          this.createForm.type = '';
         });
     },
 
     showEdit(gender) {
       this.updateForm.id = gender.id.toString();
       this.updateForm.name = gender.name;
+      this.updateForm.type = gender.type;
       this.updatedGender = gender;
 
       this.$refs.updateModal.open();
@@ -239,6 +265,7 @@ export default {
         .then(response => {
           this.$refs.updateModal.close();
           this.updatedGender.name = this.updateForm.name;
+          this.updatedGender.type = this.updateForm.type;
           this.updateForm.name = '';
         });
     },

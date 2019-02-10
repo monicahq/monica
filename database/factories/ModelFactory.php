@@ -264,6 +264,8 @@ $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $f
 $factory->define(App\Models\Contact\Gender::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'type' => 'M',
+        'name' => 'Male',
     ];
 });
 

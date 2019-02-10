@@ -102,18 +102,21 @@ class ExportVCard extends BaseService
      */
     private function exportGender(Contact $contact, VCard $vcard)
     {
-        switch ($contact->gender->name) {
-            case 'Man':
-                $gender = 'M';
-                break;
-            case 'Woman':
-                $gender = 'F';
-                break;
-            default:
-                $gender = 'O';
-                break;
+        $gender = $contact->gender->type;
+        if (empty($gender)) {
+            switch ($contact->gender->name) {
+                case trans('app.gender_male'):
+                    $gender = Gender::MALE;
+                    break;
+                case trans('app.gender_female'):
+                    $gender = Gender::FEMALE;
+                    break;
+                default:
+                    $gender = Gender::OTHER;
+                    break;
+            }
         }
-        $vcard->add('GENDER', [$gender, $contact->gender->name]);
+        $vcard->add('GENDER', $gender);
     }
 
     /**

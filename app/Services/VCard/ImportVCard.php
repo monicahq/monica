@@ -239,16 +239,19 @@ class ImportVCard extends BaseService
     private function getGender($genderCode) : Gender
     {
         if (! array_has($this->genders, $genderCode)) {
-            switch ($genderCode) {
-                case 'M':
-                    $gender = $this->getGenderByName('Man') ?? $this->getGenderByName(config('dav.default_gender'));
-                    break;
-                case 'F':
-                    $gender = $this->getGenderByName('Woman') ?? $this->getGenderByName(config('dav.default_gender'));
-                    break;
-                default:
-                    $gender = $this->getGenderByName(config('dav.default_gender'));
-                    break;
+            $gender = $this->getGenderByType($genderCode);
+            if (! $gender) {
+                switch ($genderCode) {
+                    case 'M':
+                        $gender = $this->getGenderByName(trans('app.gender_male')) ?? $this->getGenderByName(config('dav.default_gender'));
+                        break;
+                    case 'F':
+                        $gender = $this->getGenderByName(trans('app.gender_female')) ?? $this->getGenderByName(config('dav.default_gender'));
+                        break;
+                    default:
+                        $gender = $this->getGenderByName(config('dav.default_gender'));
+                        break;
+                }
             }
 
             if (! $gender) {
@@ -275,6 +278,20 @@ class ImportVCard extends BaseService
         return Gender::where([
             'account_id' => $this->accountId,
             'name' => $name,
+        ])->first();
+    }
+
+    /**
+     * Get the gender by type.
+     *
+     * @param  string  $name
+     * @return Gender|null
+     */
+    private function getGenderByType($type)
+    {
+        return Gender::where([
+            'account_id' => $this->accountId,
+            'type' => $type,
         ])->first();
     }
 

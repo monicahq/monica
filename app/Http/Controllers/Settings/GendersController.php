@@ -26,6 +26,7 @@ class GendersController extends Controller
             $data = [
                 'id' => $gender->id,
                 'name' => $gender->name,
+                'type' => $gender->type,
                 'numberOfContacts' => $gender->contacts->count(),
             ];
             $gendersData->push($data);
@@ -46,6 +47,7 @@ class GendersController extends Controller
         $gender = auth()->user()->account->genders()->create(
             $request->only([
                 'name',
+                'type',
             ])
             + [
                 'account_id' => auth()->user()->account_id,
@@ -55,6 +57,7 @@ class GendersController extends Controller
         return [
             'id' => $gender->id,
             'name' => $gender->name,
+            'type' => $gender->type,
             'numberOfContacts' => $gender->contacts->count(),
         ];
     }
@@ -67,6 +70,7 @@ class GendersController extends Controller
         $gender->update(
             $request->only([
                 'name',
+                'type',
             ])
         );
 

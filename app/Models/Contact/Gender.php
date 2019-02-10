@@ -31,8 +31,30 @@ class Gender extends Model
      */
     protected $fillable = [
         'name',
+        'type',
         'account_id',
     ];
+
+    /**
+     * Male type gender.
+     *
+     * @var string
+     */
+    public const MALE = 'M';
+
+    /**
+     * Female type gender.
+     *
+     * @var string
+     */
+    public const FEMALE = 'F';
+
+    /**
+     * Other type gender.
+     *
+     * @var string
+     */
+    public const OTHER = 'O';
 
     /**
      * Get the account record associated with the gender.
