@@ -61,8 +61,8 @@
             :id="''"
             v-model="createForm.type"
             :options="genderTypes"
-            :title="'type'"
             :required="true"
+            :title="$t('settings.personalization_genders_modal_sex')"
           />
         </div>
       </form>
@@ -93,8 +93,8 @@
             :id="''"
             v-model="updateForm.type"
             :options="genderTypes"
-            :title="'type'"
             :required="true"
+            :title="$t('settings.personalization_genders_modal_sex')"
           />
         </div>
       </form>
@@ -167,11 +167,11 @@ export default {
     return {
       genders: [],
       genderTypes: [
-        {id: 'M', name: 'Male'},
-        {id: 'F', name: 'Female'},
-        {id: 'O', name: 'Other'},
-        {id: 'U', name: 'Uknown'},
-        {id: 'N', name: 'None'},
+        {id: 'M', name: this.$t('settings.personalization_genders_male')},
+        {id: 'F', name: this.$t('settings.personalization_genders_female')},
+        {id: 'O', name: this.$t('settings.personalization_genders_other')},
+        {id: 'U', name: this.$t('settings.personalization_genders_unknown')},
+        {id: 'N', name: this.$t('settings.personalization_genders_none')},
       ],
       updatedGender: {
         id: '',

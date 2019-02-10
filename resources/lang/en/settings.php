@@ -328,7 +328,13 @@ return [
     'personalization_genders_modal_delete_desc' => 'Are you sure you want to delete {name}?',
     'personalization_genders_modal_delete_question' => 'You currently have {count} contact that has this gender. If you delete this gender, what gender should this contact have?|You currently have {count} contacts that have this gender. If you delete this gender, what gender should these contacts have?',
     'personalization_genders_modal_error' => 'Please choose a valid gender from the list.',
+    'personalization_genders_modal_sex' => 'What is the sex of this gender?',
     'personalization_genders_list_contact_number' => '{count} contact|{count} contacts',
+    'personalization_genders_male' => 'Male',
+    'personalization_genders_female' => 'Female',
+    'personalization_genders_other' => 'Other',
+    'personalization_genders_unknown' => 'Unknown',
+    'personalization_genders_none' => 'None or not applicable',
 
     'personalization_reminder_rule_save' => 'The change has been saved',
     'personalization_reminder_rule_title' => 'Reminder rules',
