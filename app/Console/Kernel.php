@@ -39,18 +39,18 @@ class Kernel extends ConsoleKernel
         ImportCSV::class,
         ImportVCards::class,
         LangGenerate::class,
+        MigrateDatabaseCollation::class,
+        MoveAvatars::class,
         PingVersionServer::class,
         SendReminders::class,
         SendStayInTouch::class,
         SentryRelease::class,
+        SetPremiumAccount::class,
+        SetupFrontEndTest::class,
         SetupProduction::class,
         SetupTest::class,
-        SetupFrontEndTest::class,
-        SetPremiumAccount::class,
         SetUserAdmin::class,
         Update::class,
-        MigrateDatabaseCollation::class,
-        MoveAvatars::class,
     ];
 
     /**
