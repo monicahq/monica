@@ -347,13 +347,13 @@ class ContactsController extends Controller
             'birthdate_year' => $year,
             'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
             'birthdate_age' => $request->get('age'),
-            'birthdate_add_reminder' => $request->get('addReminder') !== '',
-            'is_deceased' => $request->get('is_deceased') !== '',
-            'is_deceased_date_known' => $request->get('is_deceased_date_known') !== '',
+            'birthdate_add_reminder' => ! empty($request->get('addReminder')),
+            'is_deceased' => ! empty($request->get('is_deceased')),
+            'is_deceased_date_known' => ! empty($request->get('is_deceased_date_known')),
             'deceased_date_day' => $request->get('deceased_date_day'),
             'deceased_date_month' => $request->get('deceased_date_month'),
             'deceased_date_year' => $request->get('deceased_date_year'),
-            'deceased_date_add_reminder' => $request->get('add_reminder_deceased') !== '',
+            'deceased_date_add_reminder' => ! empty($request->get('add_reminder_deceased')),
         ];
 
         $contact = app(UpdateContact::class)->execute($data);

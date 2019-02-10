@@ -148,7 +148,7 @@ class RelationshipsController extends Controller
             'year' => $year,
             'is_age_based' => $request->get('birthdate') === 'approximate',
             'age' => $request->get('age'),
-            'add_reminder' => $request->get('addReminder') !== '',
+            'add_reminder' => ! empty($request->get('addReminder')),
         ]);
 
         // create the relationship
@@ -266,7 +266,7 @@ class RelationshipsController extends Controller
             'year' => $year,
             'is_age_based' => $request->get('birthdate') === 'approximate',
             'age' => $request->get('age'),
-            'add_reminder' => $request->get('addReminder') !== '',
+            'add_reminder' => ! empty($request->get('addReminder')),
         ]);
 
         // update the relationship
