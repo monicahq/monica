@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
+use App\Services\Contact\Reminder\DestroyReminder;
 
 class UpdateDeceasedInformation extends BaseService
 {
@@ -43,9 +44,45 @@ class UpdateDeceasedInformation extends BaseService
         $this->contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $this->clearRelatedReminder();
+
+        $this->clearRelatedSpecialDate();
+
         $this->manageDeceasedDate($data);
 
         return $this->contact;
+    }
+
+    /**
+     * Delete related reminder.
+     *
+     * @return void
+     */
+    private function clearRelatedReminder()
+    {
+        if (is_null($this->contact->deceased_reminder_id)) {
+            return;
+        }
+
+        app(DestroyReminder::class)->execute([
+            'account_id' => $this->contact->account_id,
+            'reminder_id' => $this->contact->deceased_reminder_id,
+        ]);
+    }
+
+    /**
+     * Delete related special date.
+     *
+     * @return void
+     */
+    private function clearRelatedSpecialDate()
+    {
+        if (is_null($this->contact->deceased_special_date_id)) {
+            return;
+        }
+
+        $specialDate = SpecialDate::find($this->contact->deceased_special_date_id);
+        $specialDate->delete();
     }
 
     /**
@@ -59,7 +96,6 @@ class UpdateDeceasedInformation extends BaseService
         if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB
             $this->contact->is_dead = false;
-            $this->contact->deceased_special_date_id = null;
             $this->contact->save();
 
             return;
@@ -68,15 +104,13 @@ class UpdateDeceasedInformation extends BaseService
         $this->contact->is_dead = true;
         $this->contact->save();
 
-        if (! $data['is_date_known']) {
-            return;
+        if ($data['is_date_known']) {
+            $this->exact($data);
         }
-
-        $this->exact($data);
     }
 
     /**
-     * Case where we have a year, month and day for the birthday.
+     * Case where we have a year, month and day for the date.
      *
      * @param  array  $data
      * @return void
