@@ -57,6 +57,13 @@ class Gender extends Model
     public const OTHER = 'O';
 
     /**
+     * Unknown type gender.
+     *
+     * @var string
+     */
+    public const UNKNOWN = 'U';
+
+    /**
      * Get the account record associated with the gender.
      *
      * @return BelongsTo

@@ -78,7 +78,7 @@ class ExportVCardTest extends TestCase
             self::defaultPropsCount + 1,
             $vCard->children()
         );
-        $this->assertContains('GENDER:M;Male', $vCard->serialize());
+        $this->assertContains('GENDER:M', $vCard->serialize());
     }
 
     public function test_vcard_add_photo()

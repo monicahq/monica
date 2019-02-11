@@ -258,6 +258,7 @@ class ImportVCard extends BaseService
                 $gender = new Gender;
                 $gender->account_id = $this->accountId;
                 $gender->name = config('dav.default_gender');
+                $gender->type = Gender::UNKNOWN;
                 $gender->save();
             }
 
