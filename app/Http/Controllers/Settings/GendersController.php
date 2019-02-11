@@ -54,7 +54,7 @@ class GendersController extends Controller
         foreach ($types as $type) {
             $gendersData->push([
                 'id' => $type,
-                'name' => trans('settings.personalization_genders_'.strtolower($type))
+                'name' => trans('settings.personalization_genders_'.strtolower($type)),
             ]);
         }
 
