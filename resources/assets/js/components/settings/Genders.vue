@@ -27,7 +27,10 @@
         </div>
       </div>
 
-      <div v-for="gender in genders" :key="gender.id" class="dt-row bb b--light-gray">
+      <div v-for="gender in genders" :key="gender.id"
+           class="dt-row bb b--light-gray"
+           :title="sex(gender.type)"
+      >
         <div class="dtc">
           <div class="pa2">
             {{ gender.name }}
@@ -166,13 +169,7 @@ export default {
   data() {
     return {
       genders: [],
-      genderTypes: [
-        {id: 'M', name: this.$t('settings.personalization_genders_male')},
-        {id: 'F', name: this.$t('settings.personalization_genders_female')},
-        {id: 'O', name: this.$t('settings.personalization_genders_other')},
-        {id: 'U', name: this.$t('settings.personalization_genders_unknown')},
-        {id: 'N', name: this.$t('settings.personalization_genders_none')},
-      ],
+      genderTypes: [],
       updatedGender: {
         id: '',
         name: '',
@@ -206,7 +203,7 @@ export default {
   computed: {
     dirltr() {
       return this.$root.htmldir == 'ltr';
-    }
+    },
   },
 
   mounted() {
@@ -215,13 +212,23 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.getGenders();
+      axios.all([
+        this.getGenders(),
+        this.getGenderTypes()
+      ]);
     },
 
     getGenders() {
-      axios.get('settings/personalization/genders')
+      return axios.get('settings/personalization/genders')
         .then(response => {
-          this.genders = response.data;
+          this.genders = _.toArray(response.data);
+        });
+    },
+
+    getGenderTypes() {
+      return axios.get('settings/personalization/genderTypes')
+        .then(response => {
+          this.genderTypes = _.toArray(response.data);
         });
     },
 
@@ -301,6 +308,12 @@ export default {
           }
         });
     },
+
+    sex(type) {
+      //var t = _.find(this.genderTypes, function (o) {return o.id == type});
+      var t = _.find(this.genderTypes, ['id', type]);
+      return t ? t.name : '';
+    }
   }
 };
 </script>

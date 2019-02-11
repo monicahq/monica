@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Gender;
+use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +33,32 @@ class GendersController extends Controller
             $gendersData->push($data);
         }
 
-        return $gendersData;
+        return CollectionHelper::sortByCollator($gendersData, 'name');
+    }
+
+    /**
+     * Get all the gender sex types.
+     */
+    public function types()
+    {
+        $gendersData = collect([]);
+
+        $types = [
+            Gender::MALE,
+            Gender::FEMALE,
+            Gender::OTHER,
+            Gender::UNKNOWN,
+            Gender::NONE,
+        ];
+
+        foreach ($types as $type) {
+            $gendersData->push([
+                'id' => $type,
+                'name' => trans('settings.personalization_genders_'.strtolower($type))
+            ]);
+        }
+
+        return CollectionHelper::sortByCollator($gendersData, 'name');
     }
 
     /**

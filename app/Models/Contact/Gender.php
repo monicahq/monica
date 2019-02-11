@@ -64,6 +64,13 @@ class Gender extends Model
     public const UNKNOWN = 'U';
 
     /**
+     * None type gender.
+     *
+     * @var string
+     */
+    public const NONE = 'N';
+
+    /**
      * Get the account record associated with the gender.
      *
      * @return BelongsTo
