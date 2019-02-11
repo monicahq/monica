@@ -32,7 +32,7 @@ trait JsonRespondController
      * Set HTTP status code of the response.
      *
      * @param int $statusCode
-     * @return $this
+     * @return self
      */
     public function setHTTPStatusCode($statusCode)
     {
@@ -55,7 +55,7 @@ trait JsonRespondController
      * Set error code of the response.
      *
      * @param int $errorCode
-     * @return $this
+     * @return self
      */
     public function setErrorCode($errorCode)
     {
@@ -80,7 +80,6 @@ trait JsonRespondController
      * Sends a response not found (404) to the request.
      * Error Code = 31.
      *
-     * @param string $message
      * @return JsonResponse
      */
     public function respondNotFound()
@@ -164,7 +163,7 @@ trait JsonRespondController
     /**
      * Sends a response with error.
      *
-     * @param string message
+     * @param string|array $message
      * @return JsonResponse
      */
     public function respondWithError($message = null)

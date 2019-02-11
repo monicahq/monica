@@ -19,7 +19,7 @@ return [
     'people_list_filter_tag' => 'Tutti i contatti etichettati con',
     'people_list_clear_filter' => 'Reimposta filtro',
     'people_list_contacts_per_tags' => '1 contatto|:count contatti',
-    'people_list_show_dead' => 'Show deceased people (:count)',
+    'people_list_show_dead' => 'Visualizza persone decedute (: conteggio)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Cerca nei tuoi contatti...',
     'people_search_no_results' => 'Nessun contatto trovato :(',

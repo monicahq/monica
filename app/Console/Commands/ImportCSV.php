@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User\User;
+use App\Helpers\DateHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -51,7 +52,7 @@ class ImportCSV extends Command
     {
         $file = $this->argument('file');
 
-        if (is_int($this->argument('user'))) {
+        if (is_numeric($this->argument('user'))) {
             $user = User::find($this->argument('user'));
         } else {
             $user = User::where('email', $this->argument('user'))->first();
@@ -192,9 +193,9 @@ class ImportCSV extends Command
         }
 
         if (! empty($data[14])) {
-            $birthdate = new \DateTime(strtotime($data[14]));
+            $birthdate = DateHelper::parseDate($data[14]);
 
-            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->year, $birthdate->month, $birthdate->day);
 
             app(CreateReminder::class)->execute([
                 'account_id' => $contact->account_id,
@@ -231,7 +232,7 @@ class ImportCSV extends Command
     /**
      * Get the default contact field phone id for the account.
      *
-     * @return void
+     * @return int
      */
     private function contactFieldPhoneId()
     {

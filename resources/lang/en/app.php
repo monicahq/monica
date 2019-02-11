@@ -34,8 +34,6 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
-    'next' => 'Next ❯',
-    'previous' => '❮ Previous',
     'retry' => 'Retry',
     'filter' => 'Filter the list',
 

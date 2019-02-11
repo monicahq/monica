@@ -58,7 +58,7 @@ class GiftsController extends Controller
      * Mark a gift as being offered.
      * @param  Contact $contact
      * @param  Gift    $gift
-     * @return void
+     * @return Gift
      */
     public function toggle(Contact $contact, Gift $gift)
     {

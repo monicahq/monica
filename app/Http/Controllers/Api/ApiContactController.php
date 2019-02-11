@@ -76,6 +76,8 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
+        $contact->updateConsulted();
+
         if ($this->getWithParameter() == 'contactfields') {
             return new ContactWithContactFieldsResource($contact);
         }
@@ -156,7 +158,7 @@ class ApiContactController extends ApiController
     /**
      * Apply the `?with=` parameter.
      * @param  Collection $contacts
-     * @return Collection
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     private function applyWithParameter($contacts, string $parameter = null)
     {

@@ -13,14 +13,14 @@ return [
     'tab_calls_blank' => 'Du hast noch keine Telefonate protokolliert.',
     'tab_debts' => 'Schulden',
     'tab_debts_blank' => 'Du hast noch keine Schulden protokolliert.',
-    'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any task yet.',
+    'tab_tasks' => 'Aufgaben',
+    'tab_tasks_blank' => 'Sie haben noch keine Aufgaben.',
 
-    'tasks_add_task_placeholder' => 'What is this task about?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_add_task_placeholder' => 'Worum geht es bei dieser Aufgabe?',
+    'tasks_tab_your_contacts' => 'Aufgaben im Zusammenhang mit Ihren Kontakten',
+    'tasks_tab_your_tasks' => 'Ihre Aufgaben',
+    'tasks_add_note' => 'Drücken Sie <kbd>Eingabe</kbd> um die Aufgabe hinzuzufügen.',
+    'task_add_cta' => 'Aufgabe hinzufügen',
 
     'debts_you_owe' => 'Du schuldest',
 
@@ -31,6 +31,6 @@ return [
     'reminders_next_months' => 'Ereignisse der nächsten 3 Monate',
     'reminders_none' => 'Keine Erinnerungen für diesen Monat',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Produktänderungen',
+    'product_view_details' => 'Details anzeigen',
 ];

@@ -60,8 +60,6 @@ class SentryRelease extends Command
 
     /**
      * Create a new command.
-     *
-     * @param CommandExecutorInterface
      */
     public function __construct()
     {
@@ -99,7 +97,7 @@ class SentryRelease extends Command
 
         if ($this->option('store-release')) {
             // Set sentry release
-            $this->line('Store release in .sentry-release file', OutputInterface::VERBOSITY_VERBOSE);
+            $this->line('Store release in .sentry-release file', null, OutputInterface::VERBOSITY_VERBOSE);
             file_put_contents(__DIR__.'/../../../.sentry-release', $this->option('release'));
         }
     }

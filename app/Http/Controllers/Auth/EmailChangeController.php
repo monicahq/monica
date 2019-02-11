@@ -8,7 +8,6 @@ use App\Services\User\EmailChange;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EmailChangeRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class EmailChangeController extends Controller
@@ -32,7 +31,7 @@ class EmailChangeController extends Controller
     {
         $user = $request->user();
         if ($user &&
-            $user instanceof MustVerifyEmail &&
+            $user instanceof User &&
             ! $user->hasVerifiedEmail()) {
             return view('auth.emailchange1')
                 ->with('email', $user->email);

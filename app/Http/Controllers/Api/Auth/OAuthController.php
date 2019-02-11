@@ -76,8 +76,8 @@ class OAuthController extends Controller
     /**
      * Proxy a request to the OAuth server.
      *
-     * @param string $grantType what type of grant type should be proxied
      * @param array $data the data to send to the server
+     * @return array
      */
     private function proxy(array $data = [])
     {

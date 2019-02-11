@@ -79,6 +79,10 @@ aliases:
     run:
       name: Run psalm
       command: vendor/bin/psalm --show-info=false
+  - &phpstan
+    run:
+      name: Run phpstan
+      command: php artisan code:analyse
   - &browser-tests
     run:
       name: Run browser tests
@@ -237,6 +241,19 @@ jobs:
           at: *root
       - *prepare-environment
       - *psalm
+
+  phpstan:
+    <<: *defaults
+    docker:
+      - image: monicahq/circleci-docker-centralperk:latest
+
+    steps:
+      - checkout:
+          <<: *post_checkout
+      - attach_workspace:
+          at: *root
+      - *prepare-environment
+      - *phpstan
 
   tests-browser-7.2:
     <<: *defaults
@@ -431,6 +448,14 @@ workflows:
             tags:
               only: /.*/
       - psalm:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /l10n_master.*/
+            tags:
+              only: /.*/
+      - phpstan:
           requires:
             - build
           filters:

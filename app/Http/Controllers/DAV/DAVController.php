@@ -107,7 +107,7 @@ class DAVController extends Controller
     {
         // Authentication backend
         $authBackend = new AuthBackend();
-        $server->addPlugin(new AuthPlugin($authBackend, 'SabreDAV'));
+        $server->addPlugin(new AuthPlugin($authBackend));
 
         // CardDAV plugin
         $server->addPlugin(new CardDAVPlugin());

@@ -48,7 +48,7 @@ class Weather extends Model
     /**
      * Get the place record associated with the weather data.
      *
-     * @return Place
+     * @return BelongsTo
      */
     public function place()
     {

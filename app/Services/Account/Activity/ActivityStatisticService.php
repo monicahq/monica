@@ -88,7 +88,8 @@ class ActivityStatisticService
      * a contact in a given timeframe, along with the number of occurences.
      *
      * @param Contact $contact
-     * @param int $year
+     * @param Carbon $startDate
+     * @param Carbon $endDate
      * @return \Illuminate\Support\Collection
      */
     public function uniqueActivityTypesInTimeRange(Contact $contact, Carbon $startDate, Carbon $endDate)

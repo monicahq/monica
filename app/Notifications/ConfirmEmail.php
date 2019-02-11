@@ -2,18 +2,20 @@
 
 namespace App\Notifications;
 
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
+use App\Interfaces\MailNotification;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as LaravelNotification;
 
-class ConfirmEmail extends LaravelNotification implements ShouldQueue
+class ConfirmEmail extends LaravelNotification implements ShouldQueue, MailNotification
 {
     use Dispatchable, InteractsWithQueue, Queueable;
 
@@ -47,10 +49,10 @@ class ConfirmEmail extends LaravelNotification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @param  User $user
+     * @return MailMessage
      */
-    public function toMail($user)
+    public function toMail(User $user) : MailMessage
     {
         App::setLocale($user->locale);
 
