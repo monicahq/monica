@@ -153,7 +153,7 @@ class ActivitiesController extends Controller
 
         // New attendees
         foreach ($specifiedContactsObj as $newContact) {
-            $newContact->activities()->save($activity);
+            $newContact->activities()->attach($activity, ['account_id' => $account->id]);
         }
 
         return redirect()->route('people.show', $contact)
