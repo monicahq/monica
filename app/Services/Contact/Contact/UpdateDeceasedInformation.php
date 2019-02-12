@@ -9,8 +9,6 @@ use App\Services\Contact\Reminder\CreateReminder;
 
 class UpdateDeceasedInformation extends BaseService
 {
-    private $contact;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -40,67 +38,68 @@ class UpdateDeceasedInformation extends BaseService
     {
         $this->validate($data);
 
-        $this->contact = Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->manageDeceasedDate($data);
+        $this->manageDeceasedDate($data, $contact);
 
-        return $this->contact;
+        return $contact;
     }
 
     /**
      * Update deceased date information depending on the type of information.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void|null
      */
-    private function manageDeceasedDate(array $data)
+    private function manageDeceasedDate(array $data, Contact $contact)
     {
         if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB
-            $this->contact->is_dead = false;
-            $this->contact->deceased_special_date_id = null;
-            $this->contact->save();
+            $contact->is_dead = false;
+            $contact->deceased_special_date_id = null;
+            $contact->save();
 
             return;
         }
 
-        $this->contact->is_dead = true;
-        $this->contact->save();
+        $contact->is_dead = true;
+        $contact->save();
 
-        if (! $data['is_date_known']) {
-            return;
+        if ($data['is_date_known']) {
+            $this->exact($data, $contact);
         }
-
-        $this->exact($data);
     }
 
     /**
      * Case where we have a year, month and day for the birthday.
      *
      * @param  array  $data
+     * @param Contact $contact
      * @return void
      */
-    private function exact(array $data)
+    private function exact(array $data, Contact $contact)
     {
-        $specialDate = $specialDate = $this->contact->setSpecialDate(
+        $specialDate = $specialDate = $contact->setSpecialDate(
             'deceased_date',
             (is_null($data['year']) ? 0 : $data['year']),
             $data['month'],
             $data['day']
         );
 
-        $this->setReminder($data, $specialDate);
+        $this->setReminder($data, $contact, $specialDate);
     }
 
     /**
      * Set a reminder for the given special date, if required.
      *
      * @param array  $data
+     * @param Contact $contact
      * @param SpecialDate $specialDate
      * @return void
      */
-    private function setReminder(array $data, SpecialDate $specialDate)
+    private function setReminder(array $data, Contact $contact, SpecialDate $specialDate)
     {
         if (empty($data['add_reminder'])) {
             return;
@@ -115,12 +114,12 @@ class UpdateDeceasedInformation extends BaseService
                 'frequency_number' => 1,
                 'title' => trans(
                     'people.deceased_reminder_title',
-                    ['name' => $this->contact->first_name]
+                    ['name' => $contact->first_name]
                 ),
             ]);
 
-            $this->contact->deceased_reminder_id = $reminder->id;
-            $this->contact->save();
+            $contact->deceased_reminder_id = $reminder->id;
+            $contact->save();
         }
     }
 }
