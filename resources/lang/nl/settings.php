@@ -355,7 +355,7 @@ return [
     'personalization_activity_type_modal_add' => 'Nieuw type activiteit toevoegen',
     'personalization_activity_type_modal_question' => 'Hoe moeten we deze nieuwe type activiteit noemen?',
     'personalization_activity_type_modal_edit' => 'Bewerk type activiteit',
-    'personalization_activity_type_category_modal_delete' => 'Delete an activity type category',
+    'personalization_activity_type_category_modal_delete' => 'Verwijder een categorie activiteiten',
     'personalization_activity_type_category_modal_delete_desc' => 'Are you sure you want to delete this category? Deleting it will delete all associated activity types. However, activities that belong to this category will not be affected by this deletion.',
     'personalization_activity_type_modal_delete' => 'Delete an activity type',
     'personalization_activity_type_modal_delete_desc' => 'Are you sure you want to delete this activity type? Activities that belong to this category will not be affected by this deletion.',
