@@ -2,7 +2,6 @@
 
 namespace App\Models\Account;
 
-use Exception;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
 use Sabre\VObject\ParseException;
