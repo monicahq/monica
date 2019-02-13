@@ -285,7 +285,7 @@ class ImportVCard extends BaseService
     /**
      * Get the gender by type.
      *
-     * @param  string  $name
+     * @param  string  $type
      * @return Gender|null
      */
     private function getGenderByType($type)
