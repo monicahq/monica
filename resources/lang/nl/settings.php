@@ -297,7 +297,7 @@ return [
 
     'personalization_tab_title' => 'Personaliseer je account',
 
-    'personalization_title' => 'Here you can find different settings to configure your account. These features are more for “power users” who want maximum control over Monica.',
+    'personalization_title' => 'Hier vind je verschillende instellingen voor je account. Deze functies zijn gericht op ervaren gebruikers die maximale controle over Monica willen hebben.',
     'personalization_contact_field_type_title' => 'Contactvelden',
     'personalization_contact_field_type_add' => 'Nieuw type contactveld toevoegen',
     'personalization_contact_field_type_description' => 'Hier kun je alle verschillende soorten contactvelden configureren. Als er bijvoorbeeld in de toekomst een nieuw sociaal netwerk ontstaat kun je dat hier toevoegen.',
