@@ -31,7 +31,8 @@ class IntroductionsController extends Controller
      *
      * @param IntroductionsRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function update(IntroductionsRequest $request, Contact $contact)
     {

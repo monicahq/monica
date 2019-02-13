@@ -324,9 +324,10 @@ class ImportVCard extends BaseService
      * Check whether the email is valid.
      *
      * @param string $email
-     * @return bool
+     *
+     * @return string|false
      */
-    private function isValidEmail(string $email): bool
+    private function isValidEmail(string $email)
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
@@ -458,10 +459,14 @@ class ImportVCard extends BaseService
      * John Doe Johnny john@doe.com.
      * Only used for report display.
      *
-     * @param  VCard $entry
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress InvalidReturnType
+     *
+     * @param VCard $entry
+     *
      * @return string
      */
-    private function name($entry): string
+    private function name($entry)
     {
         if ($this->hasFirstnameInN($entry)) {
             $parts = $entry->N->getParts();

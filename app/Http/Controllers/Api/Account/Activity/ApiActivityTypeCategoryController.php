@@ -18,7 +18,7 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Get the list of activity type categories.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,9 +36,10 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Get the detail of a given activity type category.
      *
-     * @param  Request $request
-     * @param  int $activityTypeCategoryId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $activityTypeCategoryId
+     *
+     * @return ActivityTypeCategoryResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $activityTypeCategoryId)
     {
@@ -56,8 +57,9 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Store the activity type category.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return ActivityTypeCategoryResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -83,9 +85,10 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Update the activity type category.
      *
-     * @param  Request $request
-     * @param  int $activityTypeCategoryId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $activityTypeCategoryId
+     *
+     * @return ActivityTypeCategoryResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $activityTypeCategoryId)
     {
@@ -112,8 +115,9 @@ class ApiActivityTypeCategoryController extends ApiController
     /**
      * Delete an activity type category.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $activityTypeCategoryId)
     {

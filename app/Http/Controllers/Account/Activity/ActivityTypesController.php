@@ -59,7 +59,8 @@ class ActivityTypesController extends Controller
      *
      * @param Request $request
      * @param int $activityTypeId
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $activityTypeId)
     {

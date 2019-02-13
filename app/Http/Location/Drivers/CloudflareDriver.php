@@ -10,7 +10,7 @@ use Stevebauman\Location\Drivers\Driver;
 
 class CloudflareDriver extends Driver
 {
-    public function url()
+    public function url(): void
     {
     }
 

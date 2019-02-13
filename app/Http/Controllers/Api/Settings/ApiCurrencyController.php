@@ -13,7 +13,7 @@ class ApiCurrencyController extends ApiController
     /**
      * Get the list of currencies.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -25,8 +25,9 @@ class ApiCurrencyController extends ApiController
     /**
      * Get the detail of a given currency.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return CurrencyResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $currencyId)
     {

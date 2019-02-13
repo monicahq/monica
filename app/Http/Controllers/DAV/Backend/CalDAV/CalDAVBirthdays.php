@@ -127,7 +127,7 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
         });
     }
 
-    public function updateOrCreateCalendarObject($objectUri, $calendarData)
+    public function updateOrCreateCalendarObject($objectUri, $calendarData): void
     {
     }
 

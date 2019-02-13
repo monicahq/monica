@@ -65,7 +65,8 @@ class ConversationsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -151,7 +152,8 @@ class ConversationsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Conversation $conversation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact, Conversation $conversation)
     {
@@ -222,7 +224,8 @@ class ConversationsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Conversation $conversation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Conversation $conversation)
     {

@@ -42,7 +42,8 @@ class ActivitiesController extends Controller
      *
      * @param ActivitiesRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
@@ -105,7 +106,8 @@ class ActivitiesController extends Controller
      * @param ActivitiesRequest $request
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ActivitiesRequest $request, Activity $activity, Contact $contact)
     {
@@ -165,7 +167,8 @@ class ActivitiesController extends Controller
      *
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Activity $activity, Contact $contact)
     {

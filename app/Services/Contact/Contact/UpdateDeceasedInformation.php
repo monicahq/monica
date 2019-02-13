@@ -52,9 +52,10 @@ class UpdateDeceasedInformation extends BaseService
      * Update deceased date information depending on the type of information.
      *
      * @param array $data
-     * @return void|null
+     *
+     * @return void
      */
-    private function manageDeceasedDate(array $data)
+    private function manageDeceasedDate(array $data): void
     {
         if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB

@@ -49,6 +49,8 @@ class RelationshipType extends Model
 
     /**
      * Get the i18n version of the name attribute, like "Significant other".
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
      *
      * @return string
      */

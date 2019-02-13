@@ -25,7 +25,7 @@ class EmailChangeController extends Controller
      * Show the application's login form.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
     public function showLoginFormSpecial(Request $request)
     {
@@ -58,7 +58,7 @@ class EmailChangeController extends Controller
      * Change user email.
      *
      * @param EmailChangeRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save(EmailChangeRequest $request)
     {
@@ -96,7 +96,8 @@ class EmailChangeController extends Controller
      * Get the response for a successful password changed.
      *
      * @param string $response
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendChangedResponse($response)
     {
@@ -108,7 +109,8 @@ class EmailChangeController extends Controller
      * Get the response for a failed password.
      *
      * @param string $response
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     protected function sendChangedFailedResponse($response)
     {

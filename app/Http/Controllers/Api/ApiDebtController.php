@@ -16,7 +16,7 @@ class ApiDebtController extends ApiController
     /**
      * Get the list of debts.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -33,8 +33,10 @@ class ApiDebtController extends ApiController
 
     /**
      * Get the detail of a given debt.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return DebtResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $debtId)
     {
@@ -51,8 +53,10 @@ class ApiDebtController extends ApiController
 
     /**
      * Store the debt.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return DebtResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -75,9 +79,11 @@ class ApiDebtController extends ApiController
 
     /**
      * Update the debt.
-     * @param  Request $request
-     * @param  int $debtId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $debtId
+     *
+     * @return DebtResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $debtId)
     {
@@ -107,7 +113,7 @@ class ApiDebtController extends ApiController
      * Validate the request for update.
      *
      * @param  Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
     {
@@ -145,8 +151,10 @@ class ApiDebtController extends ApiController
 
     /**
      * Delete a debt.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $debtId)
     {
@@ -166,7 +174,7 @@ class ApiDebtController extends ApiController
     /**
      * Get the list of debts for the given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function debts(Request $request, $contactId)
     {

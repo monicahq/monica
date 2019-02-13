@@ -91,9 +91,10 @@ class UpdateBirthdayInformation extends BaseService
      * Update birthday information depending on the type of information.
      *
      * @param array $data
-     * @return void|null
+     *
+     * @return void
      */
-    private function manageBirthday(array $data)
+    private function manageBirthday(array $data): void
     {
         if (! $data['is_date_known']) {
             return;
