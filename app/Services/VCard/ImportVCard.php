@@ -464,7 +464,7 @@ class ImportVCard extends BaseService
      *
      * @param VCard $entry
      *
-     * @return string
+     * @return array|string|null|\Illuminate\Contracts\Translation\Translator
      */
     private function name($entry)
     {

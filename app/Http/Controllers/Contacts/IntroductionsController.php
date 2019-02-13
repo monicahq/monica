@@ -18,7 +18,8 @@ class IntroductionsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact)
     {

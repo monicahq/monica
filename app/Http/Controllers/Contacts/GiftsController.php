@@ -72,7 +72,8 @@ class GiftsController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
@@ -106,7 +107,8 @@ class GiftsController extends Controller
      *
      * @param Contact $contact
      * @param Gift $gift
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Gift $gift)
     {

@@ -22,8 +22,9 @@ class ConversationsController extends Controller
     /**
      * Display the Create conversation page.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Request $request, Contact $contact)
     {
@@ -124,8 +125,9 @@ class ConversationsController extends Controller
     /**
      * Display a specific conversation.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Request $request, Contact $contact, Conversation $conversation)
     {

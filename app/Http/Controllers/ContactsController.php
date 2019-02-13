@@ -28,7 +28,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index(Request $request)
     {
@@ -40,7 +40,7 @@ class ContactsController extends Controller
      *
      * @param Request $request
      *
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function archived(Request $request)
     {
@@ -51,7 +51,8 @@ class ContactsController extends Controller
      * Display contacts.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     private function contacts(Request $request, bool $active)
     {
@@ -207,8 +208,9 @@ class ContactsController extends Controller
     /**
      * Display the contact profile.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show(Contact $contact)
     {
@@ -287,7 +289,8 @@ class ContactsController extends Controller
      * Display the Edit people's view.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact)
     {
@@ -413,9 +416,10 @@ class ContactsController extends Controller
     /**
      * Show the Edit work view.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function editWork(Request $request, Contact $contact)
     {
@@ -448,9 +452,10 @@ class ContactsController extends Controller
     /**
      * Show the Edit food preferencies view.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
