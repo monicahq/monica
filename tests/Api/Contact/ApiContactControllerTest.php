@@ -697,7 +697,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -764,7 +764,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -819,7 +819,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -875,7 +875,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -929,7 +929,7 @@ class ApiContactControllerTest extends ApiTestCase
             'deceased_date_add_reminder' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -983,7 +983,7 @@ class ApiContactControllerTest extends ApiTestCase
             'deceased_date_add_reminder' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -1031,7 +1031,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_birthdate_known' => true,
             'birthdate_day' => 01,
             'birthdate_month' => 01,
-            'birthdate_year' => 1900,
+            'birthdate_year' => 2000,
             'birthdate_is_age_based' => false,
             'birthdate_age' => 0,
             'birthdate_add_reminder' => true,
@@ -1053,7 +1053,7 @@ class ApiContactControllerTest extends ApiTestCase
 
         $response->assertJsonFragment([
             'birthdate' => [
-                'date' => '1900-01-01T00:00:00Z',
+                'date' => '2000-01-01T00:00:00Z',
                 'is_age_based' => false,
                 'is_year_unknown' => false,
             ],
@@ -1065,7 +1065,7 @@ class ApiContactControllerTest extends ApiTestCase
             'id' => Contact::find($contact_id)->birthday_special_date_id,
             'is_age_based' => false,
             'is_year_unknown' => false,
-            'date' => '1900-01-01',
+            'date' => '2000-01-01',
         ]);
     }
 
