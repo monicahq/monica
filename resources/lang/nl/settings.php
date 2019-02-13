@@ -332,10 +332,10 @@ return [
     'personalization_reminder_rule_save' => 'De instellingen zijn opgeslagen',
     'personalization_reminder_rule_title' => 'Herinneringen',
     'personalization_reminder_rule_line' => '{count} dag ervoor|{count} dagen ervoor',
-    'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
+    'personalization_reminder_rule_desc' => 'Voor elke herinnering die je hebt ingesteld, kunnen we je een paar dagen van te voren een e-mail sturen. Je kunt deze meldingen hier aan of uit zetten. Let op dat deze meldingen alleen van toepassing zijn op maandelijkse en jaarlijkse herinneringen.',
 
-    'personalization_module_save' => 'The change has been saved',
-    'personalization_module_title' => 'Features',
+    'personalization_module_save' => 'De wijziging is opgeslagen',
+    'personalization_module_title' => 'Functionaliteiten',
     'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
 
     'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
