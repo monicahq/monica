@@ -76,7 +76,7 @@ class CreateContact extends BaseService
 
         $this->updateDeceasedInformation($data, $contact);
 
-        $this->generateUUID();
+        $this->generateUUID($contact);
 
         $contact->setAvatarColor();
         $contact->save();
