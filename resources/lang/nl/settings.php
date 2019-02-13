@@ -292,10 +292,10 @@ return [
     'api_authorized_clients' => 'Lijst van geautoriseerde clients',
     'api_authorized_clients_desc' => 'Deze lijst bevat alle Clients die je hebt gemachtigd om toegang te krijgen tot uw applicatie. Je kan deze machtiging te allen tijde intrekken.',
     'api_authorized_clients_title' => 'Geautoriseerde applicaties',
-    'api_authorized_clients_name' => 'Name',
-    'api_authorized_clients_scopes' => 'Scopes',
+    'api_authorized_clients_name' => 'Naam',
+    'api_authorized_clients_scopes' => 'Bereik',
 
-    'personalization_tab_title' => 'Personalize your account',
+    'personalization_tab_title' => 'Personaliseer je account',
 
     'personalization_title' => 'Here you can find different settings to configure your account. These features are more for “power users” who want maximum control over Monica.',
     'personalization_contact_field_type_title' => 'Contactvelden',
