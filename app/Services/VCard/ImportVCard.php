@@ -324,12 +324,10 @@ class ImportVCard extends BaseService
      * Check whether the email is valid.
      *
      * @param string $email
-     *
-     * @return string|false
      */
-    private function isValidEmail(string $email)
+    private function isValidEmail(string $email) : bool
     {
-        return filter_var($email, FILTER_VALIDATE_EMAIL);
+        return (bool) filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
     /**
@@ -464,7 +462,7 @@ class ImportVCard extends BaseService
      *
      * @param VCard $entry
      *
-     * @return array|string|null|\Illuminate\Contracts\Translation\Translator
+     * @return string
      */
     private function name($entry)
     {
