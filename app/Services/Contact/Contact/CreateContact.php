@@ -82,7 +82,7 @@ class CreateContact extends BaseService
         $contact->save();
 
         // we query the DB again to fill the object with all the new properties
-        $contact->refersh();
+        $contact->refresh();
 
         return $contact;
     }
