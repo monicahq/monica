@@ -32,6 +32,10 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
+        
+        if (App::environment('production')) {
+            URL::forceScheme('https');
+        }
 
         Route::bind('contact', function ($value) {
             // In case the user is logged out
@@ -64,10 +68,6 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        if (App::environment('production')) {
-            URL::forceScheme('https');
-        }
-
         $this->mapApiRoutes($router);
         $this->mapWebRoutes($router);
         $this->mapOAuthRoutes($router);
