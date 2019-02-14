@@ -7,8 +7,6 @@ use App\Models\Contact\Contact;
 
 class UpdateContact extends BaseService
 {
-    private $contact;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -52,6 +50,32 @@ class UpdateContact extends BaseService
     {
         $this->validate($data);
 
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
+        $this->updateGeneralInformation($data, $contact);
+
+        $this->updateBirthDayInformation($data, $contact);
+
+        $this->updateDeceasedInformation($data, $contact);
+
+        $contact->updateGravatar();
+
+        // we query the DB again to fill the object with all the new properties
+        $contact->refresh();
+
+        return $contact;
+    }
+
+    /**
+     * Update general information.
+     *
+     * @param array $data
+     * @param Contact $contact
+     * @return void
+     */
+    private function updateGeneralInformation(array $data, Contact $contact)
+    {
         // filter out the data that shall not be updated here
         $dataOnly = array_except(
             $data,
@@ -72,32 +96,21 @@ class UpdateContact extends BaseService
             ]
         );
 
-        $this->contact = Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_id']);
-
-        $this->contact->update($dataOnly);
-
-        $this->updateBirthDayInformation($data);
-
-        $this->updateDeceasedInformation($data);
-
-        $this->contact->updateGravatar();
-
-        // we query the DB again to fill the object with all the new properties
-        return Contact::find($this->contact->id);
+        $contact->update($dataOnly);
     }
 
     /**
      * Update the information about the birthday.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void
      */
-    private function updateBirthDayInformation(array $data)
+    private function updateBirthDayInformation(array $data, Contact $contact)
     {
         app(UpdateBirthdayInformation::class)->execute([
             'account_id' => $data['account_id'],
-            'contact_id' => $this->contact->id,
+            'contact_id' => $contact->id,
             'is_date_known' => $data['is_birthdate_known'],
             'day' => $this->nullOrvalue($data, 'birthdate_day'),
             'month' => $this->nullOrvalue($data, 'birthdate_month'),
@@ -112,13 +125,14 @@ class UpdateContact extends BaseService
      * Update the information about the date of death.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void
      */
-    private function updateDeceasedInformation(array $data)
+    private function updateDeceasedInformation(array $data, Contact $contact)
     {
         app(UpdateDeceasedInformation::class)->execute([
             'account_id' => $data['account_id'],
-            'contact_id' => $this->contact->id,
+            'contact_id' => $contact->id,
             'is_deceased' => $data['is_deceased'],
             'is_date_known' => $data['is_deceased_date_known'],
             'day' => $this->nullOrvalue($data, 'deceased_date_day'),

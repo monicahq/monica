@@ -9,8 +9,6 @@ use App\Services\Contact\Relationship\DestroyRelationship;
 
 class DestroyContact extends BaseService
 {
-    private $contact;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -34,13 +32,13 @@ class DestroyContact extends BaseService
     {
         $this->validate($data);
 
-        $this->contact = Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->destroyRelationships($data);
+        $this->destroyRelationships($data, $contact);
 
-        $this->contact->deleteAvatars();
-        $this->contact->deleteEverything();
+        $contact->deleteAvatars();
+        $contact->deleteEverything();
 
         return true;
     }
@@ -49,14 +47,15 @@ class DestroyContact extends BaseService
      * Destroy all associated relationships.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void
      */
-    private function destroyRelationships(array $data)
+    private function destroyRelationships(array $data, Contact $contact)
     {
-        $relationships = Relationship::where('contact_is', $this->contact->id)->get();
+        $relationships = Relationship::where('contact_is', $contact->id)->get();
         $this->destroySpecificRelationships($data, $relationships);
 
-        $relationships = Relationship::where('of_contact', $this->contact->id)->get();
+        $relationships = Relationship::where('of_contact', $contact->id)->get();
         $this->destroySpecificRelationships($data, $relationships);
     }
 

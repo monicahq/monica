@@ -697,7 +697,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -764,7 +764,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -819,7 +819,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -875,7 +875,7 @@ class ApiContactControllerTest extends ApiTestCase
             'is_deceased_date_known' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -929,7 +929,7 @@ class ApiContactControllerTest extends ApiTestCase
             'deceased_date_add_reminder' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
@@ -983,7 +983,7 @@ class ApiContactControllerTest extends ApiTestCase
             'deceased_date_add_reminder' => false,
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureContact,
