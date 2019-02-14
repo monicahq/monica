@@ -32,7 +32,7 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-        
+
         if (App::environment('production')) {
             URL::forceScheme('https');
         }
