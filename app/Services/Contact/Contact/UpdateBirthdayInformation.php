@@ -11,8 +11,6 @@ use App\Services\Contact\Reminder\DestroyReminder;
 
 class UpdateBirthdayInformation extends BaseService
 {
-    private $contact;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -43,47 +41,49 @@ class UpdateBirthdayInformation extends BaseService
     {
         $this->validate($data);
 
-        $this->contact = Contact::where('account_id', $data['account_id'])
+        $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->clearRelatedReminder();
+        $this->clearRelatedReminder($contact);
 
-        $this->clearRelatedSpecialDate();
+        $this->clearRelatedSpecialDate($contact);
 
-        $this->manageBirthday($data);
+        $this->manageBirthday($data, $contact);
 
-        return $this->contact;
+        return $contact;
     }
 
     /**
      * Delete related reminder.
      *
+     * @param Contact $contact
      * @return void
      */
-    private function clearRelatedReminder()
+    private function clearRelatedReminder(Contact $contact)
     {
-        if (is_null($this->contact->birthday_reminder_id)) {
+        if (is_null($contact->birthday_reminder_id)) {
             return;
         }
 
         app(DestroyReminder::class)->execute([
-            'account_id' => $this->contact->account_id,
-            'reminder_id' => $this->contact->birthday_reminder_id,
+            'account_id' => $contact->account_id,
+            'reminder_id' => $contact->birthday_reminder_id,
         ]);
     }
 
     /**
      * Delete related special date.
      *
+     * @param Contact $contact
      * @return void
      */
-    private function clearRelatedSpecialDate()
+    private function clearRelatedSpecialDate(Contact $contact)
     {
-        if (is_null($this->contact->birthday_special_date_id)) {
+        if (is_null($contact->birthday_special_date_id)) {
             return;
         }
 
-        $specialDate = SpecialDate::find($this->contact->birthday_special_date_id);
+        $specialDate = SpecialDate::find($contact->birthday_special_date_id);
         $specialDate->delete();
     }
 
@@ -91,18 +91,19 @@ class UpdateBirthdayInformation extends BaseService
      * Update birthday information depending on the type of information.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void|null
      */
-    private function manageBirthday(array $data)
+    private function manageBirthday(array $data, Contact $contact)
     {
         if (! $data['is_date_known']) {
             return;
         }
 
         if ($data['is_age_based']) {
-            $this->approximate($data);
+            $this->approximate($data, $contact);
         } else {
-            $this->exact($data);
+            $this->exact($data, $contact);
         }
     }
 
@@ -111,39 +112,42 @@ class UpdateBirthdayInformation extends BaseService
      * on the estimated age of the contact.
      *
      * @param array $data
+     * @param Contact $contact
      * @return void
      */
-    private function approximate(array $data)
+    private function approximate(array $data, Contact $contact)
     {
-        $this->contact->setSpecialDateFromAge('birthdate', $data['age']);
+        $contact->setSpecialDateFromAge('birthdate', $data['age']);
     }
 
     /**
      * Case where we have a year, month and day for the birthday.
      *
      * @param  array  $data
+     * @param Contact $contact
      * @return void
      */
-    private function exact(array $data)
+    private function exact(array $data, Contact $contact)
     {
-        $specialDate = $this->contact->setSpecialDate(
+        $specialDate = $contact->setSpecialDate(
             'birthdate',
             (is_null($data['year']) ? 0 : $data['year']),
             $data['month'],
             $data['day']
         );
 
-        $this->setReminder($data, $specialDate);
+        $this->setReminder($data, $contact, $specialDate);
     }
 
     /**
      * Set a reminder for the given special date, if required.
      *
      * @param array  $data
+     * @param Contact $contact
      * @param SpecialDate $specialDate
      * @return void
      */
-    private function setReminder(array $data, SpecialDate $specialDate)
+    private function setReminder(array $data, Contact $contact, SpecialDate $specialDate)
     {
         if (empty($data['add_reminder'])) {
             return;
@@ -158,13 +162,13 @@ class UpdateBirthdayInformation extends BaseService
                 'frequency_number' => 1,
                 'title' => trans(
                     'people.people_add_birthday_reminder',
-                    ['name' => $this->contact->first_name]
+                    ['name' => $contact->first_name]
                 ),
                 'delible' => false,
             ]);
 
-            $this->contact->birthday_reminder_id = $reminder->id;
-            $this->contact->save();
+            $contact->birthday_reminder_id = $reminder->id;
+            $contact->save();
         }
     }
 }

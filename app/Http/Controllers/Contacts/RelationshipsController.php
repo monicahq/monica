@@ -142,13 +142,13 @@ class RelationshipsController extends Controller
         app(UpdateBirthdayInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $partner->id,
-            'is_date_known' => ($request->get('birthdate') == 'unknown' ? false : true),
+            'is_date_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
             'day' => $day,
             'month' => $month,
             'year' => $year,
-            'is_age_based' => ($request->get('birthdate') == 'approximate' ? true : false),
+            'is_age_based' => $request->get('birthdate') === 'approximate',
             'age' => $request->get('age'),
-            'add_reminder' => ($request->get('addReminder') != '' ? true : false),
+            'add_reminder' => ! empty($request->get('addReminder')),
         ]);
 
         // create the relationship
@@ -260,13 +260,13 @@ class RelationshipsController extends Controller
         app(UpdateBirthdayInformation::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $otherContact->id,
-            'is_date_known' => ($request->get('birthdate') == 'unknown' ? false : true),
+            'is_date_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
             'day' => $day,
             'month' => $month,
             'year' => $year,
-            'is_age_based' => ($request->get('birthdate') == 'approximate' ? true : false),
+            'is_age_based' => $request->get('birthdate') === 'approximate',
             'age' => $request->get('age'),
-            'add_reminder' => ($request->get('addReminder') != '' ? true : false),
+            'add_reminder' => ! empty($request->get('addReminder')),
         ]);
 
         // update the relationship
