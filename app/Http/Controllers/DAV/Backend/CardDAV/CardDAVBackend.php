@@ -368,7 +368,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * @param string $addressBookId
      * @param \Sabre\DAV\PropPatch $propPatch
-     * @return void|bool
+     * @return bool|null
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
@@ -395,7 +395,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * Deletes an entire addressbook and all its contents.
      *
      * @param mixed $addressBookId
-     * @return void|bool
+     * @return bool|null
      */
     public function deleteAddressBook($addressBookId)
     {

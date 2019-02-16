@@ -98,9 +98,9 @@ class Reminder extends Model
     /**
      * Set the title of a reminder.
      *
-     * @return string
+     * @return void
      */
-    public function setTitleAttribute($title)
+    public function setTitleAttribute($title): void
     {
         $this->attributes['title'] = $title;
     }

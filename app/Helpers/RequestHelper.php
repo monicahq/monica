@@ -12,7 +12,7 @@ class RequestHelper
     /**
      * Get client ip.
      *
-     * @return string
+     * @return array|string
      */
     public static function ip()
     {

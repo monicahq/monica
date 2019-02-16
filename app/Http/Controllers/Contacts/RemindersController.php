@@ -17,7 +17,8 @@ class RemindersController extends Controller
      * Show the form for creating a new reminder.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
@@ -32,7 +33,8 @@ class RemindersController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -57,7 +59,8 @@ class RemindersController extends Controller
      *
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Reminder $reminder)
     {
@@ -73,7 +76,8 @@ class RemindersController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact, Reminder $reminder)
     {
@@ -100,7 +104,8 @@ class RemindersController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, Contact $contact, Reminder $reminder)
     {
