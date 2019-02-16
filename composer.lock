@@ -2218,24 +2218,24 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v4.0.3",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "25eea36010c4e714c58a4792ef52b0a8e8a9c21c"
+                "reference": "7581c57a60742f423a68362c79d507028f989bd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/25eea36010c4e714c58a4792ef52b0a8e8a9c21c",
-                "reference": "25eea36010c4e714c58a4792ef52b0a8e8a9c21c",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/7581c57a60742f423a68362c79d507028f989bd7",
+                "reference": "7581c57a60742f423a68362c79d507028f989bd7",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "guzzlehttp/guzzle": "~6.0",
-                "illuminate/contracts": "~5.7",
-                "illuminate/http": "~5.7",
-                "illuminate/support": "~5.7",
+                "illuminate/contracts": "~5.7.0|~5.8.0",
+                "illuminate/http": "~5.7.0|~5.8.0",
+                "illuminate/support": "~5.7.0|~5.8.0",
                 "league/oauth1-client": "~1.0",
                 "php": "^7.1.3"
             },
@@ -2278,7 +2278,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2019-01-21T12:35:13+00:00"
+            "time": "2019-02-14T16:57:39+00:00"
         },
         {
             "name": "laravel/tinker",
