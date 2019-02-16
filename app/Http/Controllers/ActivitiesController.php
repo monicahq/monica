@@ -15,7 +15,8 @@ class ActivitiesController extends Controller
      * Display a listing of the resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function index(Contact $contact)
     {
@@ -27,7 +28,8 @@ class ActivitiesController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
@@ -42,7 +44,8 @@ class ActivitiesController extends Controller
      *
      * @param ActivitiesRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
@@ -89,7 +92,8 @@ class ActivitiesController extends Controller
      *
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Activity $activity, Contact $contact)
     {
@@ -105,7 +109,8 @@ class ActivitiesController extends Controller
      * @param ActivitiesRequest $request
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ActivitiesRequest $request, Activity $activity, Contact $contact)
     {
@@ -165,7 +170,8 @@ class ActivitiesController extends Controller
      *
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Activity $activity, Contact $contact)
     {

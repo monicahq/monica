@@ -2,7 +2,26 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Update;
+use App\Console\Commands\ExportAll;
+use App\Console\Commands\ImportCSV;
+use App\Console\Commands\SetupTest;
+use App\Console\Commands\GetVersion;
+use App\Console\Commands\ImportVCards;
+use App\Console\Commands\LangGenerate;
+use App\Console\Commands\SetUserAdmin;
+use App\Console\Commands\Deactivate2FA;
+use App\Console\Commands\SendReminders;
+use App\Console\Commands\SentryRelease;
+use App\Console\Commands\SendStayInTouch;
+use App\Console\Commands\SetupProduction;
+use App\Console\Commands\PingVersionServer;
+use App\Console\Commands\SetPremiumAccount;
+use App\Console\Commands\SetupFrontEndTest;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\CalculateStatistics;
+use App\Console\Commands\OneTime\MoveAvatars;
+use App\Console\Commands\MigrateDatabaseCollation;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -13,25 +32,25 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\CalculateStatistics',
-        'App\Console\Commands\Deactivate2FA',
-        'App\Console\Commands\ExportAll',
-        'App\Console\Commands\GetVersion',
-        'App\Console\Commands\ImportCSV',
-        'App\Console\Commands\ImportVCards',
-        'App\Console\Commands\LangGenerate',
-        'App\Console\Commands\PingVersionServer',
-        'App\Console\Commands\SendReminders',
-        'App\Console\Commands\SendStayInTouch',
-        'App\Console\Commands\SentryRelease',
-        'App\Console\Commands\SetupProduction',
-        'App\Console\Commands\SetupTest',
-        'App\Console\Commands\SetupFrontEndTest',
-        'App\Console\Commands\SetPremiumAccount',
-        'App\Console\Commands\SetUserAdmin',
-        'App\Console\Commands\Update',
-        'App\Console\Commands\MigrateDatabaseCollation',
-        'App\Console\Commands\OneTime\MoveAvatars',
+        CalculateStatistics::class,
+        Deactivate2FA::class,
+        ExportAll::class,
+        GetVersion::class,
+        ImportCSV::class,
+        ImportVCards::class,
+        LangGenerate::class,
+        MigrateDatabaseCollation::class,
+        MoveAvatars::class,
+        PingVersionServer::class,
+        SendReminders::class,
+        SendStayInTouch::class,
+        SentryRelease::class,
+        SetPremiumAccount::class,
+        SetupFrontEndTest::class,
+        SetupProduction::class,
+        SetupTest::class,
+        SetUserAdmin::class,
+        Update::class,
     ];
 
     /**

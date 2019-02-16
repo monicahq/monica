@@ -89,8 +89,6 @@
         <NullableReturnStatement errorLevel="info" />
         <ImplementedReturnTypeMismatch errorLevel="info" />
         <UnresolvableInclude errorLevel="info" />
-        <InvalidReturnStatement errorLevel="info" />
-        <InvalidReturnType errorLevel="info" />
 
         <InvalidArgument errorLevel="info" />
 

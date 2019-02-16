@@ -51,9 +51,10 @@ class UpdateDeceasedInformation extends BaseService
      *
      * @param array $data
      * @param Contact $contact
-     * @return void|null
+     *
+     * @return void
      */
-    private function manageDeceasedDate(array $data, Contact $contact)
+    private function manageDeceasedDate(array $data, Contact $contact): void
     {
         if (! $data['is_deceased']) {
             // remove all information about deceased date in the DB

@@ -17,7 +17,7 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the list of life events.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -31,8 +31,9 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the detail of a given life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $lifeEventId)
     {
@@ -49,8 +50,9 @@ class ApiLifeEventController extends ApiController
     /**
      * Store the life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -74,9 +76,10 @@ class ApiLifeEventController extends ApiController
     /**
      * Update the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $lifeEventId)
     {
@@ -101,9 +104,10 @@ class ApiLifeEventController extends ApiController
     /**
      * Destroy the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $lifeEventId)
     {
