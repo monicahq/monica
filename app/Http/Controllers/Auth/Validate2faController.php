@@ -10,8 +10,9 @@ class Validate2faController extends Controller
     /**
      * Redirect the user after 2fa form has been submitted.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function index(Request $request)
     {

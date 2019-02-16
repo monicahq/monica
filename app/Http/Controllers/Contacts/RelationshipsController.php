@@ -15,8 +15,9 @@ class RelationshipsController extends Controller
     /**
      * Display the Create relationship page.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Request $request, Contact $contact)
     {
@@ -69,7 +70,8 @@ class RelationshipsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -169,7 +171,8 @@ class RelationshipsController extends Controller
      *
      * @param Contact $contact
      * @param Contact $otherContact  significant other contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Contact $otherContact)
     {
@@ -216,7 +219,8 @@ class RelationshipsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Contact $otherContact  significant other contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact, Contact $otherContact)
     {
@@ -287,7 +291,8 @@ class RelationshipsController extends Controller
      *
      * @param Contact $contact
      * @param Contact $otherContact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Contact $contact, Contact $otherContact)
     {
