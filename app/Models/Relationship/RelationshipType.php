@@ -38,7 +38,7 @@ class RelationshipType extends Model
     }
 
     /**
-     * Get the account record associated with the reminder.
+     * Get the relationship type group record associated with the reminder.
      *
      * @return BelongsTo
      */
