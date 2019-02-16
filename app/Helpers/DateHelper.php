@@ -13,9 +13,10 @@ class DateHelper
      * Set the locale of the instance for Date frameworks.
      *
      * @param string $locale
-     * @return string
+     *
+     * @return void
      */
-    public static function setLocale($locale)
+    public static function setLocale($locale): void
     {
         $locale = $locale ?: config('app.locale');
         Carbon::setLocale($locale);
@@ -123,7 +124,7 @@ class DateHelper
     /**
      * Return a date in a short format like "Oct 29, 1981".
      *
-     * @param Carbon $date
+     * @param string $date
      * @return string
      */
     public static function getShortDate($date) : string
@@ -138,7 +139,7 @@ class DateHelper
      * Return the month of the date according to the timezone of the user
      * like "Oct", or "Dec".
      *
-     * @param Carbon $date
+     * @param string $date
      * @return string
      */
     public static function getShortMonth($date) : string
@@ -153,7 +154,7 @@ class DateHelper
      * Return the month and year of the date according to the timezone of the user
      * like "October 2010", or "March 2032".
      *
-     * @param Carbon $date
+     * @param string $date
      * @return string
      */
     public static function getFullMonthAndDate($date) : string

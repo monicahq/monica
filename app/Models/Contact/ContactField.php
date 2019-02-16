@@ -16,6 +16,13 @@ class ContactField extends Model
     protected $guarded = ['id'];
 
     /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['contact'];
+
+    /**
      * Get the account record associated with the contact field.
      *
      * @return BelongsTo

@@ -23,9 +23,9 @@ class GetVersion extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $this->line(config('monica.app_version'));
     }

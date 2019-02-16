@@ -2,7 +2,6 @@
 
 namespace App\Models\Account;
 
-use Exception;
 use App\Models\User\User;
 use Sabre\VObject\Reader;
 use Sabre\VObject\ParseException;
@@ -128,10 +127,11 @@ class ImportJob extends Model
     /**
      * Mark the import job as failed.
      *
-     * @param  string $reason
-     * @return Exception
+     * @param string $reason
+     *
+     * @return void
      */
-    private function fail(string $reason)
+    private function fail(string $reason): void
     {
         $this->failed = true;
         $this->failed_reason = $reason;
@@ -157,9 +157,9 @@ class ImportJob extends Model
     /**
      * Delete the physical file from the disk.
      *
-     * @return self
+     * @return void
      */
-    private function deletePhysicalFile()
+    private function deletePhysicalFile(): void
     {
         if (! Storage::disk('public')->delete($this->filename)) {
             $this->fail(trans('settings.import_vcard_file_not_found'));

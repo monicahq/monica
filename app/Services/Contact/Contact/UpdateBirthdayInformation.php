@@ -92,9 +92,10 @@ class UpdateBirthdayInformation extends BaseService
      *
      * @param array $data
      * @param Contact $contact
-     * @return void|null
+     *
+     * @return void
      */
-    private function manageBirthday(array $data, Contact $contact)
+    private function manageBirthday(array $data, Contact $contact): void
     {
         if (! $data['is_date_known']) {
             return;

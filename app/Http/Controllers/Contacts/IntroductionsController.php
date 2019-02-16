@@ -18,7 +18,8 @@ class IntroductionsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact)
     {
@@ -31,7 +32,8 @@ class IntroductionsController extends Controller
      *
      * @param IntroductionsRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function update(IntroductionsRequest $request, Contact $contact)
     {
