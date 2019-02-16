@@ -10,7 +10,8 @@ class ComplianceController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index(Request $request)
     {
@@ -18,8 +19,9 @@ class ComplianceController extends Controller
     }
 
     /**
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {

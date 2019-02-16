@@ -7,10 +7,13 @@ New features:
 Enhancements:
 
 * Add a sex type behind the gender
+* Add eloquent relationships touches
 
 Fixes:
 
-*
+* Fix contact information update
+* Fix adding people on activity create and update
+* Fix setting a relationship without selecting any birthdate option
 
 RELEASED VERSIONS:
 

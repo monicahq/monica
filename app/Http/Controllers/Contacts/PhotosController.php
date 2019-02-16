@@ -18,8 +18,9 @@ class PhotosController extends Controller
     /**
      * Display the list of photos.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -33,9 +34,10 @@ class PhotosController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return PhotoResource
      */
-    public function store(Request $request, Contact $contact)
+    public function store(Request $request, Contact $contact): PhotoResource
     {
         $photo = app(UploadPhoto::class)->execute([
             'account_id' => auth()->user()->account->id,
@@ -55,7 +57,8 @@ class PhotosController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Photo $photo
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Photo $photo)
     {

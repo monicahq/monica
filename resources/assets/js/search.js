@@ -184,7 +184,8 @@ if (multiUserInput.length > 0) {
   );
 }
 
-$('.user-input-search-results').on( 'click', '.header-search-result', function() {
+$('.user-input-search-results').on( 'click', '.header-search-result', function(e) {
+  e.preventDefault();
   let t = $(this);
 
   // Make sure this isn't a duplicate or a not found message

@@ -49,9 +49,10 @@ class LifeEventsController extends Controller
     /**
      * Display the list of life events.
      *
-     * @param  Request $request
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Contact $contact
+     *
+     * @return Collection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -78,7 +79,8 @@ class LifeEventsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return LifeEvent|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -108,9 +110,11 @@ class LifeEventsController extends Controller
 
     /**
      * Destroy the life event.
-     * @param  Request   $request
-     * @param  LifeEvent $lifeEvent
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request   $request
+     * @param LifeEvent $lifeEvent
+     *
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, LifeEvent $lifeEvent)
     {

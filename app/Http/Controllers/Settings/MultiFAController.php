@@ -98,7 +98,8 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function disableTwoFactor(Request $request)
     {
@@ -150,7 +151,8 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function u2fRegisterData(Request $request)
     {
@@ -187,7 +189,8 @@ class MultiFAController extends Controller
      * Remove an existing security key.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function u2fRemove(Request $request, int $u2fKeyId)
     {

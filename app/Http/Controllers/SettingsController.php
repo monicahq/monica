@@ -76,7 +76,7 @@ class SettingsController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -105,7 +105,8 @@ class SettingsController
      * Save user settings.
      *
      * @param SettingsRequest $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save(SettingsRequest $request)
     {
@@ -144,7 +145,8 @@ class SettingsController
      * Delete user account.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function delete(Request $request)
     {
@@ -185,7 +187,8 @@ class SettingsController
      * Reset user account.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function reset(Request $request)
     {
@@ -220,7 +223,7 @@ class SettingsController
     /**
      * Display the export view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function export()
     {
@@ -250,7 +253,7 @@ class SettingsController
     /**
      * Display the import view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function import()
     {
@@ -264,7 +267,7 @@ class SettingsController
     /**
      * Display the Import people's view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function upload()
     {
@@ -293,7 +296,7 @@ class SettingsController
     /**
      * Display the import report view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function report($importJobId)
     {
@@ -306,7 +309,7 @@ class SettingsController
     /**
      * Display the users view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function users()
     {
@@ -322,7 +325,7 @@ class SettingsController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function addUser()
     {
@@ -337,7 +340,8 @@ class SettingsController
      * Store a newly created resource in storage.
      *
      * @param InvitationRequest $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function inviteUser(InvitationRequest $request)
     {
@@ -383,7 +387,8 @@ class SettingsController
      * Remove the specified resource from storage.
      *
      * @param Invitation $invitation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroyInvitation(Invitation $invitation)
     {
@@ -397,7 +402,8 @@ class SettingsController
      * Display the specified resource.
      *
      * @param string $key
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function acceptInvitation($key)
     {
@@ -416,7 +422,8 @@ class SettingsController
      *
      * @param Request $request
      * @param string $key
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\RedirectResponse
      */
     public function storeAcceptedInvitation(Request $request, $key)
     {
@@ -453,7 +460,8 @@ class SettingsController
      * Delete additional user account.
      *
      * @param int $userID
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteAdditionalUser($userID)
     {
@@ -483,7 +491,8 @@ class SettingsController
      * Destroy the tag.
      *
      * @param int $tagId
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteTag($tagId)
     {
