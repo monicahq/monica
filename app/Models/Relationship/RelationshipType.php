@@ -53,7 +53,7 @@ class RelationshipType extends Model
      * @psalm-suppress InvalidReturnType
      * @psalm-suppress InvalidReturnStatement
      *
-     * @return string
+     * @return array|string|null|\Illuminate\Contracts\Translation\Translator
      */
     public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = 'man')
     {
