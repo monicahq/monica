@@ -39,7 +39,7 @@ return [
     'people_add_cta' => 'Ajouter',
     'people_save_and_add_another_cta' => 'Sauver et ajouter un autre contact',
     'people_add_success' => ':name a été crée avec succès',
-    'people_add_gender' => 'Sexe',
+    'people_add_gender' => 'Genre',
     'people_delete_success' => 'Le contact a été supprimé',
     'people_delete_message' => 'Supprimer le contact',
     'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
