@@ -166,7 +166,7 @@ class ContactsController extends Controller
                     'name' => $gender->name,
                 ];
             }),
-            'default_gender' => auth()->user()->account->default_gender_id, 
+            'default_gender' => auth()->user()->account->default_gender_id,
         ];
 
         return view('people.create', $data);

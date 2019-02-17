@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
