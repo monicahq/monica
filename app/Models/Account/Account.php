@@ -55,6 +55,7 @@ class Account extends Model
         'number_of_invitations_sent',
         'api_key',
         'default_time_reminder_is_sent',
+        'default_gender_id',
     ];
 
     /**

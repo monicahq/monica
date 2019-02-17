@@ -40,13 +40,13 @@ class AddGenderType extends Migration
                 $genders = Gender::where('account_id', $user->account_id)->get()->all();
                 foreach ($genders as $gender) {
                     if ($gender->name == $woman || $gender->name == $woman_en) {
-                        $gender->type = 'F';
+                        $gender->type = Gender::FEMALE;
                         $gender->save();
                     } elseif ($gender->name == $man || $gender->name == $man_en) {
-                        $gender->type = 'M';
+                        $gender->type = Gender::MALE;
                         $gender->save();
                     } elseif ($gender->name == $other || $gender->name == $other_en) {
-                        $gender->type = 'O';
+                        $gender->type = Gender::OTHER;
                         $gender->save();
                     }
                 }

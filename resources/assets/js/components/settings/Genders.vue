@@ -20,6 +20,10 @@
             {{ $t('settings.personalization_contact_field_type_table_name') }}
           </div>
         </div>
+        <div class="dtc">
+          <div class="pa2 b">
+          </div>
+        </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2 b">
             {{ $t('settings.personalization_contact_field_type_table_actions') }}
@@ -37,6 +41,16 @@
             <span class="i">
               {{ $tc('settings.personalization_genders_list_contact_number', gender.numberOfContacts, { count:gender.numberOfContacts }) }}
             </span>
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2">
+            <template v-if="gender.is_default">
+              {{ $t('settings.personalization_genders_default') }}
+            </template>
+            <a v-else class="pointer" @click="mdefault(gender.id)">
+              {{ $t('settings.personalization_genders_make_default') }}
+            </a>
           </div>
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
@@ -127,8 +141,13 @@
           <p class="mb2">
             {{ $t('settings.personalization_genders_modal_delete_desc', {name: deleteForm.name}) }}
           </p>
-          <div v-if="numberOfContacts != 0">
-            <p>{{ $tc('settings.personalization_genders_modal_delete_question', numberOfContacts, {count: numberOfContacts}) }}</p>
+          <div v-if="deleteForm.numberOfContacts != 0 || deleteForm.is_default">
+            <p v-if="deleteForm.numberOfContacts != 0">
+              {{ $tc('settings.personalization_genders_modal_delete_question', deleteForm.numberOfContacts, {count: deleteForm.numberOfContacts}) }}
+            </p>
+            <p v-else>
+              {{ $tc('settings.personalization_genders_modal_delete_question_default') }}
+            </p>
             <form-select
               :id="'deleteNewId'"
               v-model="deleteForm.newId"
@@ -145,7 +164,7 @@
           <a class="btn" @click="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a v-if="numberOfContacts === 0" class="btn btn-primary" @click="trash()">
+          <a v-if="deleteForm.numberOfContacts === 0 && ! deleteForm.is_default" class="btn btn-primary" @click="trash()">
             {{ $t('app.delete') }}
           </a>
           <a v-else class="btn btn-primary" @click="trashAndReplace()">
@@ -176,7 +195,6 @@ export default {
         type: '',
       },
 
-      numberOfContacts: 0,
       errorMessage: '',
 
       createForm: {
@@ -195,6 +213,8 @@ export default {
       deleteForm: {
         id: '',
         name: '',
+        is_default: false,
+        numberOfContacts: 0,
         newId: 0
       },
     };
@@ -281,7 +301,8 @@ export default {
       this.errorMessage = '';
       this.deleteForm.name = gender.name;
       this.deleteForm.id = gender.id.toString();
-      this.numberOfContacts = gender.numberOfContacts;
+      this.deleteForm.is_default = gender.is_default;
+      this.deleteForm.numberOfContacts = gender.numberOfContacts;
 
       this.$refs.deleteModal.open();
     },
@@ -310,9 +331,15 @@ export default {
     },
 
     sex(type) {
-      //var t = _.find(this.genderTypes, function (o) {return o.id == type});
       var t = _.find(this.genderTypes, ['id', type]);
       return t ? t.name : '';
+    },
+
+    mdefault(id) {
+      axios.put('settings/personalization/genders/default/' + id)
+        .then(response => {
+          this.getGenders();
+        });
     }
   }
 };

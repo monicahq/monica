@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
+use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
@@ -159,7 +160,13 @@ class ContactsController extends Controller
         }
 
         $data = [
-            'genders' => auth()->user()->account->genders,
+            'genders' => auth()->user()->account->genders->map(function ($gender) {
+                return [
+                    'id' => $gender->id,
+                    'name' => $gender->name,
+                ];
+            }),
+            'default_gender' => auth()->user()->account->default_gender_id, 
         ];
 
         return view('people.create', $data);
