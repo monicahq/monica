@@ -18,7 +18,7 @@ class ApiTaskController extends ApiController
     /**
      * Get the list of task.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -35,8 +35,10 @@ class ApiTaskController extends ApiController
 
     /**
      * Get the detail of a given task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $taskId)
     {
@@ -53,8 +55,10 @@ class ApiTaskController extends ApiController
 
     /**
      * Store the task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -76,9 +80,11 @@ class ApiTaskController extends ApiController
 
     /**
      * Update the task.
-     * @param  Request $request
-     * @param  int $taskId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $taskId
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $taskId)
     {
@@ -102,8 +108,10 @@ class ApiTaskController extends ApiController
 
     /**
      * Delete a task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $taskId)
     {
@@ -124,7 +132,7 @@ class ApiTaskController extends ApiController
     /**
      * Get the list of tasks for the given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function tasks(Request $request, $contactId)
     {

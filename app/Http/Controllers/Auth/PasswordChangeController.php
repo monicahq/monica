@@ -53,7 +53,8 @@ class PasswordChangeController extends Controller
      * Validate a password change request and update password of the user.
      *
      * @param array $credentials
-     * @return string
+     *
+     * @return string|Authenticatable
      */
     protected function validateAndPasswordChange($credentials)
     {
@@ -73,7 +74,8 @@ class PasswordChangeController extends Controller
      * Validate a password change request with the given credentials.
      *
      * @param array $credentials
-     * @return CanResetPassword|string
+     *
+     * @return string|Authenticatable
      *
      * @throws \UnexpectedValueException
      */
@@ -94,7 +96,8 @@ class PasswordChangeController extends Controller
      * Get the user with the given credentials.
      *
      * @param array $credentials
-     * @return CanResetPassword|null
+     *
+     * @return null|Authenticatable
      */
     protected function getUser(array $credentials)
     {

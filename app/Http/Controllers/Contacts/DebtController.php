@@ -14,7 +14,8 @@ class DebtController extends Controller
      * Display a listing of the resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function index(Contact $contact)
     {
@@ -26,7 +27,8 @@ class DebtController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
@@ -41,7 +43,8 @@ class DebtController extends Controller
      *
      * @param DebtRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(DebtRequest $request, Contact $contact)
     {
@@ -66,9 +69,10 @@ class DebtController extends Controller
      *
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return void
      */
-    public function show(Contact $contact, Debt $debt)
+    public function show(Contact $contact, Debt $debt): void
     {
         //
     }
@@ -78,7 +82,8 @@ class DebtController extends Controller
      *
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Debt $debt)
     {
@@ -94,7 +99,8 @@ class DebtController extends Controller
      * @param DebtRequest $request
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(DebtRequest $request, Contact $contact, Debt $debt)
     {
@@ -119,7 +125,8 @@ class DebtController extends Controller
      *
      * @param Contact $contact
      * @param Debt $debt
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Contact $contact, Debt $debt)
     {

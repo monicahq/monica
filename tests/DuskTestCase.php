@@ -26,7 +26,12 @@ abstract class DuskTestCase extends BaseTestCase
         }
     }
 
-    protected function setUp()
+    /**
+     * Register the base URL and some macro with Dusk.
+     *
+     * @return void
+     */
+    protected function setUp(): void
     {
         parent::setUp();
 
