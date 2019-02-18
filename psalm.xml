@@ -16,6 +16,10 @@
         </ignoreFiles>
     </projectFiles>
 
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin" />
+    </plugins>
+
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
 
