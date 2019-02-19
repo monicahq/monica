@@ -18,7 +18,7 @@ return [
     'sent' => 'We hebben een e-mail verstuurd met instructies om een nieuw wachtwoord in te stellen.',
     'token' => 'Deze wachtwoord reset token is ongeldig.',
     'user' => 'Geen gebruiker bekend met het e-mailadres.',
-    'changed' => 'Wachtwoord succesvol gewijzigd.',
+    'changed' => 'Password changed successfully.',
     'invalid' => 'Het ingevoerde wachtwoord is niet correct.',
 
 ];
