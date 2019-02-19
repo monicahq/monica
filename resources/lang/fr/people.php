@@ -150,7 +150,7 @@ return [
     'work_edit_company' => 'Entreprise (optionnel)',
     'work_information' => 'Information sur le travail',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
     'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu’un dans la famille :family a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
     'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
@@ -244,7 +244,7 @@ return [
     'activities_add_title' => 'Qu’avez-vous fait avec :name ?',
     'activities_summary' => 'Décrivez ce que vous avez fait',
     'activities_add_pick_activity' => '(optionnel) Souhaitez-vous catégoriser cette activité ? Vous n’avez pas à le faire, mais cela nous permettra de faire des statistiques plus tard',
-    'activities_add_date_occured' => 'Date où l’activité s’est passée',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'Commentaire (optionnel)',
     'activities_add_cta' => 'Enregistrer l’activité',
     'activities_blank_title' => 'Gardez une trace de ce que vous avez fait avec :name par le passé',
@@ -367,7 +367,7 @@ return [
     // Pets
     'pets_kind' => 'Sorte d’animal',
     'pets_name' => 'Nom (optionel)',
-    'pets_create_success' => 'L’animal a été ajouté avec succès',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'L’animal a été mis à jour',
     'pets_delete_success' => 'L’animal a été supprimé',
     'pets_title' => 'Animaux de compagnie',
@@ -423,8 +423,8 @@ return [
     'life_event_sentence_home_improvement' => 'A fait des rénovations',
     'life_event_sentence_holidays' => 'Est allé en vacances',
     'life_event_sentence_new_vehicle' => 'Acquisition dʼun nouveau véhicule',
-    'life_event_sentence_new_roommate' => 'A eu un colocataire',
-    'life_event_sentence_overcame_an_illness' => 'A surmonté une maladie',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'A quitté une habitude',
     'life_event_sentence_new_eating_habits' => 'A commencé de nouvelles habitudes alimentaires',
     'life_event_sentence_weight_loss' => 'A perdu du poids',
