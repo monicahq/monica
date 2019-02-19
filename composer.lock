@@ -11230,16 +11230,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.0.16",
+            "version": "3.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "0f45d14fead69db4e7af55037a0f304080aef01f"
+                "reference": "f49be31aeb7c2e063ae732521020247e769bf83d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/0f45d14fead69db4e7af55037a0f304080aef01f",
-                "reference": "0f45d14fead69db4e7af55037a0f304080aef01f",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/f49be31aeb7c2e063ae732521020247e769bf83d",
+                "reference": "f49be31aeb7c2e063ae732521020247e769bf83d",
                 "shasum": ""
             },
             "require": {
@@ -11304,7 +11304,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-02-15T16:07:08+00:00"
+            "time": "2019-02-18T21:52:09+00:00"
         },
         {
             "name": "webmozart/assert",
