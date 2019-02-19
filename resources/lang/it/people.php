@@ -150,7 +150,7 @@ return [
     'work_edit_company' => 'Azienda (facoltativa)',
     'work_information' => 'Informazioni professionali',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'Le preferenze alimentari sono state salvate',
     'food_preferencies_edit_description' => 'Magari :firstname o qualcuno nella famiglia :family ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
     'food_preferencies_edit_description_no_last_name' => 'Magari :firstname ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
@@ -244,7 +244,7 @@ return [
     'activities_add_title' => 'Cosa hai fatto con :name?',
     'activities_summary' => 'Descrivi cosa avete fatto',
     'activities_add_pick_activity' => '(Facoltativo) Vorresti assegnare una categoria a questa attività? Non è obbligatorio, ma più avanti ti permetterà di vedere delle statistiche',
-    'activities_add_date_occured' => 'Data dell\'attività',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'Commenti aggiuntivi',
     'activities_add_cta' => 'Salva attività',
     'activities_blank_title' => 'Tieni traccia di quello che tu e :name avete fatto, e ciò di cui avete parlato',
@@ -367,7 +367,7 @@ return [
     // Pets
     'pets_kind' => 'Tipo di animale domestico',
     'pets_name' => 'Nome (facoltativo)',
-    'pets_create_success' => 'Animale domestico aggiunto con successo',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'Animale domestico modificato',
     'pets_delete_success' => 'Animale domestico rimosso',
     'pets_title' => 'Animali domestici',
@@ -423,8 +423,8 @@ return [
     'life_event_sentence_home_improvement' => 'Miglioramento alla casa',
     'life_event_sentence_holidays' => 'Andato in vacanza',
     'life_event_sentence_new_vehicle' => 'Nuovo veicolo',
-    'life_event_sentence_new_roommate' => 'Nuovo coinquilino',
-    'life_event_sentence_overcame_an_illness' => 'Superamento di una malattia',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'Fine di un vizio',
     'life_event_sentence_new_eating_habits' => 'Inizio di nuove abitudini alimentari',
     'life_event_sentence_weight_loss' => 'Perso peso',
