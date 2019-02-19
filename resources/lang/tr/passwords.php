@@ -18,7 +18,7 @@ return [
     'sent' => 'Eğer girdiğiniz e-posta adresi kayıtlarımızda varsa, şifre yenileme linki gönderilecektir.',
     'token' => 'Bu şifre sıfırlama güvenlik anahtarı geçersiz.',
     'user' => 'Eğer girdiğiniz e-posta adresi kayıtlarımızda varsa, şifre yenileme linki gönderilecektir.',
-    'changed' => 'Şifreniz başarılı bir şekilde değiştirildi.',
+    'changed' => 'Password changed successfully.',
     'invalid' => 'Girdiğiniz güncel şifreniz doğru değil.',
 
 ];
