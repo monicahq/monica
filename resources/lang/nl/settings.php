@@ -44,7 +44,7 @@ return [
     'layout_big' => 'Volledige breedte van de browser',
     'save' => 'Voorkeuren bijwerken',
     'delete_title' => 'Verwijder je account',
-    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently.',
+    'delete_desc' => 'Wil je jouw account verwijderen? Waarschuwing: verwijdering is permanent en al je gegevens zullen permanent worden verwijderd.',
     'reset_desc' => 'Wil je jouw account resetten? Hiermee verwijder je alle contactpersonen en de gegevens die hieraan zijn gekoppeld. Je account zal niet worden verwijderd.',
     'reset_title' => 'Reset je account',
     'reset_cta' => 'Account resetten',
@@ -118,7 +118,7 @@ return [
     'recovery_help_information' => 'Je kan elke herstelcode eenmalig gebruiken.',
     'recovery_clipboard' => 'Herstelcodes gekopieerd naar het klembord',
     'recovery_generate' => 'Genereer nieuwe codes...',
-    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previously generated codes',
+    'recovery_generate_help' => 'Wees ervan bewust dat door het genereren van nieuwe codes de vorige codes vervallen',
     'recovery_already_used_help' => 'Deze code is reeds gebruikt',
 
     'users_list_title' => 'Gebruikers met toegang tot je account',
