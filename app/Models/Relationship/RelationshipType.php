@@ -2,6 +2,7 @@
 
 namespace App\Models\Relationship;
 
+use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\Model;
@@ -55,7 +56,7 @@ class RelationshipType extends Model
      *
      * @return array|string|null|\Illuminate\Contracts\Translation\Translator
      */
-    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = 'man')
+    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = Gender::MALE)
     {
         // include the reverse of the relation in the string (masculine/feminine)
         // this is used in the dropdown of the relationship types when creating
@@ -79,7 +80,7 @@ class RelationshipType extends Model
 
         // `Regis Freyd's uncle`
         if (! is_null($contact)) {
-            if (strtolower($gender) == 'woman') {
+            if ($gender == Gender::FEMALE) {
                 return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
             }
 
@@ -87,7 +88,7 @@ class RelationshipType extends Model
         }
 
         // `aunt`
-        if (strtolower($gender) == 'woman') {
+        if ($gender == Gender::FEMALE) {
             return trans('app.relationship_type_'.$this->name.'_female');
         }
 

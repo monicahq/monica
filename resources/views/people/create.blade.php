@@ -89,11 +89,11 @@
 
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
-          :options="_.union([{&quot;id&quot;:&quot;&quot;,&quot;name&quot;:&quot;&quot;}],{{ $genders }})"
+          :options="{{ $genders }}"
           :required="false"
           :title="'{{ trans('people.people_add_gender') }}'"
           :id="'gender'"
-          :value="'{{ $default_gender }}'">
+          :value="'{{ $defaultGender }}'">
         </form-select>
       </div>
 

@@ -24,7 +24,8 @@ class ContactShort extends Resource
             'nickname' => $this->nickname,
             'complete_name' => $this->name,
             'initials' => $this->getInitials(),
-            'gender' => $this->gender->name,
+            'gender' => $this->when($this->gender, $this->gender->name),
+            'gender_type' => $this->when($this->gender, $this->gender->type),
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
             'information' => [

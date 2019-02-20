@@ -732,7 +732,6 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The gender id field is required.',
             'The is birthdate known field is required.',
             'The is deceased field is required.',
             'The is deceased date known field is required.',

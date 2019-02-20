@@ -98,7 +98,7 @@
             <form-select
               :options="{{ $genders }}"
               value="{{ $contact->gender_id }}"
-              :required="true"
+              :required="false"
               :title="'{{ trans('people.people_add_gender') }}'"
               :id="'gender'">
             </form-select>

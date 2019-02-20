@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
+use App\Helpers\GendersHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
@@ -159,17 +160,9 @@ class ContactsController extends Controller
             return redirect()->route('settings.subscriptions.index');
         }
 
-        $data = [
-            'genders' => auth()->user()->account->genders->map(function ($gender) {
-                return [
-                    'id' => $gender->id,
-                    'name' => $gender->name,
-                ];
-            }),
-            'default_gender' => auth()->user()->account->default_gender_id,
-        ];
-
-        return view('people.create', $data);
+        return view('people.create')
+            ->withGenders(GendersHelper::getGendersInput())
+            ->withDefaultGender(auth()->user()->account->default_gender_id);
     }
 
     public function missing()
@@ -319,7 +312,7 @@ class ContactsController extends Controller
             ->withMonth($month)
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
-            ->withGenders(auth()->user()->account->genders);
+            ->withGenders(GendersHelper::getGendersInput());
     }
 
     /**
