@@ -126,7 +126,10 @@ class LifeEventsController extends Controller
         try {
             app(DestroyLifeEvent::class)->execute($data);
         } catch (\Exception $e) {
-            return back()
+            // We have to redirect with HTTP status 303 or the browser will issue a
+            // DELETE request to the new location. This may result in deleting other
+            // resources as well. Refer to Github issue #2415
+            return back(303)
                 ->withInput()
                 ->withErrors(trans('app.error_save'));
         }
