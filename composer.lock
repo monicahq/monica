@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "505533fe66180b32ba6fb5be0f08f752",
+    "content-hash": "d4446ade9e7d24abf72e46948c533c2d",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -10676,21 +10676,24 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "0.0.1",
+            "version": "0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/laravel-psalm-plugin.git",
-                "reference": "f1e77a8e564a42ca0a7a6bea578b2fcad943c0d5"
+                "reference": "46ac3d58cec40367148d1e07b28e2d69bb987564"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/f1e77a8e564a42ca0a7a6bea578b2fcad943c0d5",
-                "reference": "f1e77a8e564a42ca0a7a6bea578b2fcad943c0d5",
+                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/46ac3d58cec40367148d1e07b28e2d69bb987564",
+                "reference": "46ac3d58cec40367148d1e07b28e2d69bb987564",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/laravel-ide-helper": "^2.5",
+                "league/flysystem-aws-s3-v3": "^1.0",
                 "orchestra/testbench": "^3.7",
+                "predis/predis": "^1.0",
+                "symfony/psr-http-message-bridge": "^1.0",
                 "vimeo/psalm": "^3.0.17 || ^3.1"
             },
             "type": "psalm-plugin",
@@ -10715,7 +10718,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2019-02-18T23:40:57+00:00"
+            "time": "2019-02-20T06:46:23+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -10723,12 +10726,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "54ee79a17e8cdc4ff8a1570198d5bc669a5803b8"
+                "reference": "7f9676e3d324ff0745cda4f4222b194993d37d57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/54ee79a17e8cdc4ff8a1570198d5bc669a5803b8",
-                "reference": "54ee79a17e8cdc4ff8a1570198d5bc669a5803b8",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7f9676e3d324ff0745cda4f4222b194993d37d57",
+                "reference": "7f9676e3d324ff0745cda4f4222b194993d37d57",
                 "shasum": ""
             },
             "conflict": {
@@ -10823,7 +10826,7 @@
                 "shopware/shopware": "<5.3.7",
                 "silverstripe/cms": ">=3,<=3.0.11|>=3.1,<3.1.11",
                 "silverstripe/forum": "<=0.6.1|>=0.7,<=0.7.3",
-                "silverstripe/framework": ">=3,<3.3",
+                "silverstripe/framework": ">=3,<3.3|>=3.6,<3.6.7|>=3.7,<3.7.3|>=4,<4.0.7|>=4.1,<4.1.5|>=4.2,<4.2.4|>=4.3,<4.3.1",
                 "silverstripe/userforms": "<3",
                 "simple-updates/phpwhois": "<=1",
                 "simplesamlphp/saml2": "<1.10.6|>=2,<2.3.8|>=3,<3.1.4",
@@ -10919,7 +10922,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-02-14T08:06:11+00:00"
+            "time": "2019-02-19T07:02:29+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
