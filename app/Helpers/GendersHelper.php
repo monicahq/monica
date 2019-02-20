@@ -6,7 +6,7 @@ class GendersHelper
 {
     /**
      * Return a collection of genders.
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public static function getGendersInput()
