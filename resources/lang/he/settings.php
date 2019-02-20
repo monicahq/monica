@@ -118,7 +118,7 @@ return [
     'recovery_help_information' => 'ניתן להשתמש בכל קוד שחזור פעם אחת בלבד.',
     'recovery_clipboard' => 'הקודים הועתקו ללוח הגזירים',
     'recovery_generate' => 'יצירת קודים חדשים…',
-    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previously generated codes',
+    'recovery_generate_help' => 'לתשומת לבך: יצירת קודים חדשים תשלול את הקודים שנוצרו לפניהם',
     'recovery_already_used_help' => 'כבר נעשה שימוש בקוד זה',
 
     'users_list_title' => 'משתמשים עם גישה לחשבון שלך',
@@ -200,7 +200,7 @@ return [
     'subscriptions_plan_include3' => '100% מהרווחים מושקעים בפיתוח מיזם הקוד הפתוח הנהדר הזה.',
     'subscriptions_help_title' => 'פרטים נוספים שעשויים לעניין אותך',
     'subscriptions_help_opensource_title' => 'מה הוא מיזם בקוד פתוח?',
-    'subscriptions_help_opensource_desc' => 'Monica is an open source project. This means it is built by an entirely benevolent community who just wants to provide a great tool for the greater good. Being open source means the code is publicly available on GitHub, and everyone can inspect it, modify it or enhance it. All the money we raise is dedicated to build better features, have more powerful servers, help pay the bills. Thanks for your help. We couldn’t do it without you – literally.',
+    'subscriptions_help_opensource_desc' => 'מוניקה הוא מיזם בקוד פתוח. משמעות הדבר היא שהוא נבנה לחלוטין במעורבות הקהילה שרוצה לספק כלי נהדר לטובת הכלל. קוד פתוח משמעו שהקוד גלוי לעיני הציבור ב־GitHub וכולם יכולים לבחון, לשנות או לשפר אותו. כל הכסף שמגויס מושקע לטובת בניית תכונות טובות יותר, שרתים חזקים יותר, תשלום חשבונות שונים. תודה לך על הסיוע. לא היינו מצליחים לעשות זאת בלעדיך - במלוא מובן המילה.',
     'subscriptions_help_limits_title' => 'האם יש מגבלה על מספר אנשי הקשר שאוכל לנהל בתכנית החינמית?',
     'subscriptions_help_limits_plan' => 'כן. התכניות החינמיות מאפשרת לך לנהל :number אנשי קשר.',
     'subscriptions_help_discounts_title' => 'יש לכם הנחה לארגונים ללא מטרות רווח ומוסדות חינוך?',
