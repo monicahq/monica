@@ -44,7 +44,7 @@ return [
     'layout_big' => 'הרוחב המלא של הדפדפן',
     'save' => 'עדכון העדפות',
     'delete_title' => 'מחיקת החשבון שלך',
-    'delete_desc' => 'Do you wish to delete your account? Warning: deletion is permanent and all your data will be erased permanently.',
+    'delete_desc' => 'למחוק את החשבון שלך? אזהרה: מחיקה היא לצמיתות וכל הנתונים שלך יימחקו לצמיתות.',
     'reset_desc' => 'לאפס את החשבון שלך? פעולה זו תסיר את כל אנשי הקשר שלך ואת כל המידע המשויך להם. החשבון שלך לא יימחק.',
     'reset_title' => 'איפוס החשבון שלך',
     'reset_cta' => 'איפוס חשבון',
