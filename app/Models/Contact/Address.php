@@ -20,6 +20,13 @@ class Address extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['contact'];
+
     protected $table = 'addresses';
 
     /**

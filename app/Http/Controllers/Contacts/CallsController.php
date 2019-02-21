@@ -19,8 +19,9 @@ class CallsController extends Controller
     /**
      * Display the list of calls.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -72,7 +73,8 @@ class CallsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Call $call
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Call $call)
     {

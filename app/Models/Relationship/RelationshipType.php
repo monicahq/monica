@@ -38,7 +38,7 @@ class RelationshipType extends Model
     }
 
     /**
-     * Get the account record associated with the reminder.
+     * Get the relationship type group record associated with the reminder.
      *
      * @return BelongsTo
      */
@@ -50,7 +50,10 @@ class RelationshipType extends Model
     /**
      * Get the i18n version of the name attribute, like "Significant other".
      *
-     * @return string
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     *
+     * @return array|string|null|\Illuminate\Contracts\Translation\Translator
      */
     public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = 'man')
     {
