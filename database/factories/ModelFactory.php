@@ -137,6 +137,11 @@ $factory->state(App\Models\Contact\Contact::class, 'named', function (Faker\Gene
         'last_name' => $faker->lastName,
     ];
 });
+$factory->state(App\Models\Contact\Contact::class, 'no_gender', function (Faker\Generator $faker) {
+    return [
+        'gender_id' => null,
+    ];
+});
 
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     return [
