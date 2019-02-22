@@ -302,6 +302,7 @@ return [
     'personalization_contact_field_type_add' => 'Add new field type',
     'personalization_contact_field_type_description' => 'Here you can configure all the different types of contact fields that you can associate to all your contacts. If in the future, a new social network appears, you will be able to add this new type of ways of contacting your contacts right here.',
     'personalization_contact_field_type_table_name' => 'Name',
+    'personalization_contact_field_type_table_sex' => 'Sex',
     'personalization_contact_field_type_table_protocol' => 'Protocol',
     'personalization_contact_field_type_table_actions' => 'Actions',
     'personalization_contact_field_type_modal_title' => 'Add a new contact field type',

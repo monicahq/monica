@@ -22,6 +22,11 @@
         </div>
         <div class="dtc">
           <div class="pa2 b">
+            {{ $t('settings.personalization_contact_field_type_table_sex') }}
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2 b">
           </div>
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
@@ -33,7 +38,6 @@
 
       <div v-for="gender in genders" :key="gender.id"
            class="dt-row bb b--light-gray"
-           :title="sex(gender.type)"
       >
         <div class="dtc">
           <div class="pa2">
@@ -41,6 +45,11 @@
             <span class="i">
               {{ $tc('settings.personalization_genders_list_contact_number', gender.numberOfContacts, { count:gender.numberOfContacts }) }}
             </span>
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2">
+            {{ $t('settings.personalization_genders_'+gender.type.toLowerCase()) }}
           </div>
         </div>
         <div class="dtc">
