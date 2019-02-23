@@ -14,6 +14,7 @@ Fixes:
 * Fix adding people on activity create and update
 * Fix setting a relationship without selecting any birthdate option
 * Fix several typos in English language files
+* Fix Journal view now includes Activities as intended
 
 RELEASED VERSIONS:
 
