@@ -8,6 +8,9 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Relationship\CreateRelationship;
+use App\Services\Contact\Relationship\UpdateRelationship;
+use App\Services\Contact\Relationship\DestroyRelationship;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
 class RelationshipsController extends Controller
@@ -77,20 +80,13 @@ class RelationshipsController extends Controller
     {
         // case of linking to an existing contact
         if ($request->get('relationship_type') == 'existing') {
-            $validator = Validator::make($request->all(), [
-                'existing_contact_id' => 'required|integer',
-                'relationship_type_id' => 'required|integer',
+            app(CreateRelationship::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'contact_id' => $contact->id,
+                'other_contact_id' => $request->get('existing_contact_id'),
+                'relationship_type_id' => $request->get('relationship_type_id'),
             ]);
-
-            if ($validator->fails()) {
-                return back()
-                    ->withInput()
-                    ->withErrors($validator);
-            }
-            $partner = Contact::where('account_id', $request->user()->account_id)
-                ->findOrFail($request->get('existing_contact_id'));
-            $contact->setRelationship($partner, $request->get('relationship_type_id'));
-
+    
             return redirect()->route('people.show', $contact)
                 ->with('success', trans('people.relationship_form_add_success'));
         }
@@ -154,7 +150,12 @@ class RelationshipsController extends Controller
         ]);
 
         // create the relationship
-        $contact->setRelationship($partner, $request->get('relationship_type_id'));
+        app(CreateRelationship::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $contact->id,
+            'other_contact_id' => $partner->id,
+            'relationship_type_id' => $request->get('relationship_type_id'),
+        ]);
 
         // check if the contact is partial
         if ($request->get('realContact')) {
@@ -210,6 +211,7 @@ class RelationshipsController extends Controller
             ->withGenders(auth()->user()->account->genders)
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withRelationshipTypes($arrayRelationshipTypes)
+            ->withRelationshipId($type->id)
             ->withType($type->relationship_type_id);
     }
 
@@ -224,57 +226,63 @@ class RelationshipsController extends Controller
      */
     public function update(Request $request, Contact $contact, Contact $otherContact)
     {
-        $validator = Validator::make($request->all(), [
-            'first_name' => 'required|max:50',
-            'last_name' => 'max:100',
-            'gender_id' => 'required|integer',
-            'birthdayDate' => 'date_format:Y-m-d',
-        ]);
+        if ($otherContact->is_partial) {
+            $validator = Validator::make($request->all(), [
+                'first_name' => 'required|max:50',
+                'last_name' => 'max:100',
+                'gender_id' => 'required|integer',
+                'birthdayDate' => 'date_format:Y-m-d',
+            ]);
 
-        if ($validator->fails()) {
-            return back()
-                ->withInput()
-                ->withErrors($validator);
+            if ($validator->fails()) {
+                return back()
+                    ->withInput()
+                    ->withErrors($validator);
+            }
+
+            // set the name of the contact
+            if (! $otherContact->setName($request->input('first_name'), $request->input('last_name'))) {
+                return back()
+                    ->withInput()
+                    ->withErrors('There has been a problem with saving the name.');
+            }
+
+            // set gender
+            $otherContact->gender_id = $request->input('gender_id');
+            $otherContact->save();
+
+            // this is really ugly. it should be changed
+            if ($request->get('birthdate') == 'exact') {
+                $birthdate = $request->input('birthdayDate');
+                $birthdate = DateHelper::parseDate($birthdate);
+                $day = $birthdate->day;
+                $month = $birthdate->month;
+                $year = $birthdate->year;
+            } else {
+                $day = $request->get('day');
+                $month = $request->get('month');
+                $year = $request->get('year');
+            }
+
+            app(UpdateBirthdayInformation::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'contact_id' => $otherContact->id,
+                'is_date_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
+                'day' => $day,
+                'month' => $month,
+                'year' => $year,
+                'is_age_based' => $request->get('birthdate') === 'approximate',
+                'age' => $request->get('age'),
+                'add_reminder' => ! empty($request->get('addReminder')),
+            ]);
         }
-
-        // set the name of the contact
-        if (! $otherContact->setName($request->input('first_name'), $request->input('last_name'))) {
-            return back()
-                ->withInput()
-                ->withErrors('There has been a problem with saving the name.');
-        }
-
-        // set gender
-        $otherContact->gender_id = $request->input('gender_id');
-        $otherContact->save();
-
-        // this is really ugly. it should be changed
-        if ($request->get('birthdate') == 'exact') {
-            $birthdate = $request->input('birthdayDate');
-            $birthdate = DateHelper::parseDate($birthdate);
-            $day = $birthdate->day;
-            $month = $birthdate->month;
-            $year = $birthdate->year;
-        } else {
-            $day = $request->get('day');
-            $month = $request->get('month');
-            $year = $request->get('year');
-        }
-
-        app(UpdateBirthdayInformation::class)->execute([
-            'account_id' => auth()->user()->account_id,
-            'contact_id' => $otherContact->id,
-            'is_date_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
-            'day' => $day,
-            'month' => $month,
-            'year' => $year,
-            'is_age_based' => $request->get('birthdate') === 'approximate',
-            'age' => $request->get('age'),
-            'add_reminder' => ! empty($request->get('addReminder')),
-        ]);
 
         // update the relationship
-        $contact->updateRelationship($otherContact, $request->get('type'), $request->get('relationship_type_id'));
+        app(UpdateRelationship::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'relationship_id' => $request->get('relationship_id'),
+            'relationship_type_id' => $request->get('relationship_type_id'),
+        ]);
 
         // check if the contact is partial
         if ($request->get('realContact')) {
@@ -305,13 +313,11 @@ class RelationshipsController extends Controller
         }
 
         $type = $contact->getRelationshipNatureWith($otherContact);
-        $contact->deleteRelationship($otherContact, $type->relationship_type_id);
 
-        // the contact is partial - if the relationship is deleted, the partial
-        // contact has no reason to exist anymore
-        if ($otherContact->is_partial) {
-            $otherContact->deleteEverything();
-        }
+        app(DestroyRelationship::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'relationship_id' => $type->relationship_type_id,
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_deletion_success'));

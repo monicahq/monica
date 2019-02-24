@@ -9,6 +9,9 @@ use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\Relationship\CreateRelationship;
+use App\Services\Contact\Relationship\UpdateRelationship;
+use App\Services\Contact\Relationship\DestroyRelationship;
 use App\Http\Resources\Relationship\Relationship as RelationshipResource;
 
 class ApiRelationshipController extends ApiController
@@ -66,21 +69,16 @@ class ApiRelationshipController extends ApiController
             return $validParameters;
         }
 
-        $relationshipType = RelationshipType::where('account_id', auth()->user()->account_id)
-            ->find($request->get('relationship_type_id'));
-
-        $contact = Contact::where('account_id', auth()->user()->account_id)
-            ->find($request->get('contact_is'));
-        $partner = Contact::where('account_id', auth()->user()->account_id)
-            ->find($request->get('of_contact'));
-
         try {
-            $contact->setRelationship($partner, $relationshipType->id);
+            $relationship = app(CreateRelationship::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'contact_id' => $request->get('contact_is'),
+                'other_contact_id' => $request->get('of_contact'),
+                'relationship_type_id' => $request->get('relationship_type_id'),
+            ]);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
-
-        $relationship = $contact->getRelationshipNatureWith($partner);
 
         return new RelationshipResource($relationship);
     }
@@ -98,12 +96,11 @@ class ApiRelationshipController extends ApiController
             return $validParameters;
         }
 
-        $relationshipType = RelationshipType::where('account_id', auth()->user()->account_id)
-            ->find($request->get('relationship_type_id'));
-        $relationship = Relationship::where('account_id', auth()->user()->account_id)
-            ->find($relationshipId);
-        $relationship->relationship_type_id = $relationshipType->id;
-        $relationship->save();
+        $relationship = app(UpdateRelationship::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'relationship_id' => $relationshipId,
+            'relationship_type_id' => $request->get('relationship_type_id'),
+        ]);
 
         return new RelationshipResource($relationship);
     }
@@ -124,15 +121,10 @@ class ApiRelationshipController extends ApiController
             return $this->respondNotFound();
         }
 
-        $contact = $relationship->contactIs;
-        $otherContact = $relationship->ofContact;
-        $contact->deleteRelationship($otherContact, $relationship->relationship_type_id);
-
-        // the contact is partial - if the relationship is deleted, the partial
-        // contact has no reason to exist anymore
-        if ($otherContact->is_partial) {
-            $otherContact->deleteEverything();
-        }
+        app(DestroyRelationship::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'relationship_id' => $relationshipId,
+        ]);
 
         return $this->respondObjectDeleted($relationshipId);
     }

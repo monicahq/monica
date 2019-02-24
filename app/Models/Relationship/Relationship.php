@@ -32,6 +32,7 @@ class Relationship extends Model
         'contact_is',
         'of_contact',
         'relationship_type_id',
+        'relationship_type_name',
     ];
 
     /**

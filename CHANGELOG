@@ -6,6 +6,7 @@ New features:
 
 Enhancements:
 
+* Add ability to update a relationship
 * Add eloquent relationships touches
 
 Fixes:
