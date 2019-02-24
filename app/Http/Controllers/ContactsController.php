@@ -152,22 +152,30 @@ class ContactsController extends Controller
      */
     public function create()
     {
+        return $this->createForm(false);
+    }
+
+    /**
+     * Show the form in case the contact is missing.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    public function missing()
+    {
+        return $this->createForm(true);
+    }
+
+    private function createForm($isMissing = false)
+    {
         if (auth()->user()->account->hasReachedContactLimit()
-        && auth()->user()->account->hasLimitations()
-        && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            && auth()->user()->account->hasLimitations()
+            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
 
-        $data = [
-            'genders' => auth()->user()->account->genders,
-        ];
-
-        return view('people.create', $data);
-    }
-
-    public function missing()
-    {
-        return view('people.missing');
+        return view('people.create')
+            ->withIsMissing($isMissing)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
