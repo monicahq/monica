@@ -128,13 +128,6 @@ class ApiRelationshipController extends ApiController
     public function destroy(Request $request, $relationshipId)
     {
         try {
-            $relationship = Relationship::where('account_id', auth()->user()->account_id)
-                ->findOrFail($relationshipId);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        try {
             app(DestroyRelationship::class)->execute([
                 'account_id' => auth()->user()->account_id,
                 'relationship_id' => $relationshipId,
