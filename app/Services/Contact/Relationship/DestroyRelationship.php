@@ -37,13 +37,17 @@ class DestroyRelationship extends BaseService
 
         $reverseRelationshipType = $relationship->account->getRelationshipTypeByType($relationship->relationshipType->name_reverse_relationship);
 
-        $otherRelationship = Relationship::where([
-                'account_id' => $data['account_id'],
-                'contact_is' => $relationship->of_contact,
-                'of_contact' => $relationship->contact_is,
-                'relationship_type_id' => $reverseRelationshipType->id,
+        if ($reverseRelationshipType) {
+            $otherRelationship = Relationship::where([
+                    'account_id' => $data['account_id'],
+                    'contact_is' => $relationship->of_contact,
+                    'of_contact' => $relationship->contact_is,
+                    'relationship_type_id' => $reverseRelationshipType->id,
                 ])
-            ->first();
+                ->first();
+        } else {
+            $otherRelationship = null;
+        }
 
         $this->deleteRelationship($relationship, $otherRelationship, $otherContact);
 

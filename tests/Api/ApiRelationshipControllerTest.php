@@ -112,7 +112,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
                             'of_contact' => $contactB->id,
                         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
         $this->assertDatabaseHas('relationships', [
             'account_id' => auth()->user()->account_id,

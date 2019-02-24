@@ -38,19 +38,25 @@ class UpdateRelationship extends BaseService
 
         $reverseRelationshipType = $relationship->account->getRelationshipTypeByType($relationship->relationshipType->name_reverse_relationship);
 
-        $otherRelationship = Relationship::where([
-                'account_id' => $data['account_id'],
-                'contact_is' => $relationship->of_contact,
-                'of_contact' => $relationship->contact_is,
-                'relationship_type_id' => $reverseRelationshipType->id,
+        if ($reverseRelationshipType) {
+            $otherRelationship = Relationship::where([
+                    'account_id' => $data['account_id'],
+                    'contact_is' => $relationship->of_contact,
+                    'of_contact' => $relationship->contact_is,
+                    'relationship_type_id' => $reverseRelationshipType->id,
                 ])
-            ->first();
+                ->first();
+        } else {
+            $otherRelationship = null;
+        }
 
         $relationshipType = RelationshipType::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_type_id']);
 
         // update the relationship
         $this->updateRelationship($relationship, $otherRelationship, $relationshipType);
+
+        $relationship->refresh();
 
         return $relationship;
     }
@@ -72,18 +78,20 @@ class UpdateRelationship extends BaseService
         // Get the reverse relationship
         $reverseRelationshipType = $relationship->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
-        if ($otherRelationship) {
-            // Contact B is linked to Contact A
-            $otherRelationship->update([
-                'relationship_type_id' => $reverseRelationshipType->id,
-            ]);
-        } else {
-            Relationship::create([
-                'account_id' => $relationshipType->account_id,
-                'relationship_type_id' => $reverseRelationshipType->id,
-                'contact_is' => $relationship->of_contact,
-                'of_contact' => $relationship->contact_is,
-            ]);
+        if ($reverseRelationshipType) {
+            if ($otherRelationship) {
+                // Contact B is linked to Contact A
+                $otherRelationship->update([
+                    'relationship_type_id' => $reverseRelationshipType->id,
+                ]);
+            } else {
+                Relationship::create([
+                    'account_id' => $relationshipType->account_id,
+                    'relationship_type_id' => $reverseRelationshipType->id,
+                    'contact_is' => $relationship->of_contact,
+                    'of_contact' => $relationship->contact_is,
+                ]);
+            }
         }
     }
 }

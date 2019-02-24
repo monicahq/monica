@@ -70,13 +70,15 @@ class CreateRelationship extends BaseService
         // Get the reverse relationship
         $reverseRelationshipType = $contact->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
 
-        // Contact B is linked to Contact A
-        Relationship::create([
-            'account_id' => $relationshipType->account_id,
-            'relationship_type_id' => $reverseRelationshipType->id,
-            'contact_is' => $otherContact->id,
-            'of_contact' => $contact->id,
-        ]);
+        if ($reverseRelationshipType) {
+            // Contact B is linked to Contact A
+            Relationship::create([
+                'account_id' => $relationshipType->account_id,
+                'relationship_type_id' => $reverseRelationshipType->id,
+                'contact_is' => $otherContact->id,
+                'of_contact' => $contact->id,
+            ]);
+        }
 
         return $relationship;
     }

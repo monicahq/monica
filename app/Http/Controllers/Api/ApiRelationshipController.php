@@ -76,6 +76,10 @@ class ApiRelationshipController extends ApiController
                 'other_contact_id' => $request->get('of_contact'),
                 'relationship_type_id' => $request->get('relationship_type_id'),
             ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -96,11 +100,19 @@ class ApiRelationshipController extends ApiController
             return $validParameters;
         }
 
-        $relationship = app(UpdateRelationship::class)->execute([
-            'account_id' => auth()->user()->account_id,
-            'relationship_id' => $relationshipId,
-            'relationship_type_id' => $request->get('relationship_type_id'),
-        ]);
+        try {
+            $relationship = app(UpdateRelationship::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'relationship_id' => $relationshipId,
+                'relationship_type_id' => $request->get('relationship_type_id'),
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return new RelationshipResource($relationship);
     }
@@ -121,10 +133,18 @@ class ApiRelationshipController extends ApiController
             return $this->respondNotFound();
         }
 
-        app(DestroyRelationship::class)->execute([
-            'account_id' => auth()->user()->account_id,
-            'relationship_id' => $relationshipId,
-        ]);
+        try {
+            app(DestroyRelationship::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'relationship_id' => $relationshipId,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
 
         return $this->respondObjectDeleted($relationshipId);
     }
