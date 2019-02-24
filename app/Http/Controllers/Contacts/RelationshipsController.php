@@ -86,7 +86,7 @@ class RelationshipsController extends Controller
                 'other_contact_id' => $request->get('existing_contact_id'),
                 'relationship_type_id' => $request->get('relationship_type_id'),
             ]);
-    
+
             return redirect()->route('people.show', $contact)
                 ->with('success', trans('people.relationship_form_add_success'));
         }

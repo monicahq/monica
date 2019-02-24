@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\RelationshipType;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Relationship\CreateRelationship;
@@ -26,11 +25,11 @@ class CreateRelationshipTest extends TestCase
         ]);
         $relationshipType0 = factory(RelationshipType::class)->create([
             'account_id' => $account->id,
-            'name' => 'name'
+            'name' => 'name',
         ]);
         $relationshipType = factory(RelationshipType::class)->create([
             'account_id' => $account->id,
-            'name_reverse_relationship' => $relationshipType0->name
+            'name_reverse_relationship' => $relationshipType0->name,
         ]);
 
         $request = [

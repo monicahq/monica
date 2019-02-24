@@ -7,9 +7,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Relationship\UpdateRelationship;
 
@@ -34,7 +32,7 @@ class UpdateRelationshipTest extends TestCase
         $relationshipType = factory(RelationshipType::class)->create([
             'account_id' => $account->id,
             'name' => $relationshipType0->name_reverse_relationship,
-            'name_reverse_relationship' => $relationshipType0->name
+            'name_reverse_relationship' => $relationshipType0->name,
         ]);
         $request = [
             'contact_id' => $contact->id,
@@ -53,7 +51,7 @@ class UpdateRelationshipTest extends TestCase
         $relationshipType = factory(RelationshipType::class)->create([
             'account_id' => $account->id,
             'name' => $relationshipType0->name_reverse_relationship,
-            'name_reverse_relationship' => $relationshipType0->name
+            'name_reverse_relationship' => $relationshipType0->name,
         ]);
 
         $request = [
@@ -90,11 +88,11 @@ class UpdateRelationshipTest extends TestCase
 
         $relationshipType0 = factory(RelationshipType::class)->create([
             'account_id' => $account->id,
-            'name' => 'name'
+            'name' => 'name',
         ]);
         $relationshipType = factory(RelationshipType::class)->create([
             'account_id' => $account->id,
-            'name_reverse_relationship' => $relationshipType0->name
+            'name_reverse_relationship' => $relationshipType0->name,
         ]);
 
         $request = [

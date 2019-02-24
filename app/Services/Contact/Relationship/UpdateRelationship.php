@@ -83,7 +83,7 @@ class UpdateRelationship extends BaseService
                 'relationship_type_id' => $reverseRelationshipType->id,
                 'contact_is' => $relationship->of_contact,
                 'of_contact' => $relationship->contact_is,
-            ]);    
+            ]);
         }
     }
 }

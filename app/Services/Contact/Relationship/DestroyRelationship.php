@@ -54,7 +54,7 @@ class DestroyRelationship extends BaseService
 
     /**
      * Delete relationship.
-     * 
+     *
      * @param Relationship $relationship
      * @param Relationship|null $otherRelationship
      * @param Contact $otherContact
