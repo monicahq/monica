@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Relationship;
 
 use App\Services\BaseService;
+use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 
 class DestroyRelationship extends BaseService
@@ -34,10 +35,7 @@ class DestroyRelationship extends BaseService
             ->findOrFail($data['relationship_id']);
         $otherContact = $relationship->ofContact;
 
-        $relationship = Relationship::where('account_id', $data['account_id'])
-            ->findOrFail($data['relationship_id']);
-
-        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationship->relationshipType->name_reverse_relationship);
+        $reverseRelationshipType = $relationship->account->getRelationshipTypeByType($relationship->relationshipType->name_reverse_relationship);
 
         $otherRelationship = Relationship::where([
                 'account_id' => $data['account_id'],
