@@ -835,7 +835,7 @@ class Contact extends Model
             $contacts->push([
                 'relationship' => [
                     'id' => $relationship->id,
-                    'name' => $relationship->relationship_type_name,
+                    'name' => $relationship->relationshipType->name,
                 ],
                 'contact' => new ContactShortResource($contact),
                 ]);
