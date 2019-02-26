@@ -91,6 +91,7 @@ class CreateContactFieldsTable extends Migration
         $id = DB::table('default_contact_field_types')->insertGetId([
             'name' => 'Twitter',
             'fontawesome_icon' => 'fa fa-twitter-square',
+            'protocol' => 'https://twitter.com/',
         ]);
 
         $id = DB::table('default_contact_field_types')->insertGetId([
