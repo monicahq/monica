@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
+use App\Jobs\ExportAccountAsJson;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
@@ -248,6 +249,32 @@ class SettingsController
                     ->deleteFileAfterSend(true);
             }
         }
+
+        // TODO: Return error response
+    }
+
+    /**
+     * Exports the data of the account in JSON format.
+     *
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
+     */
+    public function exportToJson()
+    {
+        // return response()->make("not implemented yet");
+
+        $path = dispatch_now(new ExportAccountAsJson());
+
+        $driver = Storage::disk(ExportAccountAsJson::STORAGE)->getDriver();
+        if ($driver instanceof \League\Flysystem\Filesystem) {
+            $adapter = $driver->getAdapter();
+            if ($adapter instanceof \League\Flysystem\Adapter\AbstractAdapter) {
+                return response()
+                    ->download($adapter->getPathPrefix().$path, 'monica.json')
+                    ->deleteFileAfterSend(true);
+            }
+        }
+
+        // TODO: Return error response
     }
 
     /**

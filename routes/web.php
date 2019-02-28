@@ -229,7 +229,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
-        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql');
+        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql'); // TODO: Remove deprecated URL
+        Route::get('/settings/export/sql', 'SettingsController@exportToSql')->name('sql');
+        Route::get('/settings/export/json', 'SettingsController@exportToJson')->name('json');
         Route::get('/settings/import', 'SettingsController@import')->name('import');
         Route::get('/settings/import/report/{importjobid}', 'SettingsController@report')->name('report');
         Route::get('/settings/import/upload', 'SettingsController@upload')->name('upload');
