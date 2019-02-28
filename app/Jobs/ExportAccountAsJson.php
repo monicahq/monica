@@ -96,7 +96,8 @@ class ExportAccountAsJson
         $exported_at = now();
         $json_output = <<< END_HEAD
 {
-  "meta": {
+  "export_meta": {
+    "format": 1,
     "username": "{$user->first_name} {$user->last_name}",
     "filename": "{$this->file}",
     "exported": "{$exported_at}"
@@ -114,11 +115,9 @@ END_HEAD;
                 continue;
             }
 
-            $json_output .= <<< END
+            $json_output .= "\n  \"$tableName\": [";
 
-  "$tableName": [
-END;
-
+            $tableJsonRows = [];
             $tableData = DB::table($tableName)->get();
 
             // Looping over the rows
@@ -133,51 +132,59 @@ END;
                         break;
                     }
 
-                    $value = json_encode($value);
-                    /*
-                    if (is_null($value)) {
-                        $value = 'null';
-                    } elseif (! is_numeric($value)) {
-                        $value = '"'.addslashes($value).'"'; // TODO: fix wrong JSON encoding function
-                    }
-                    //*/
-
-                    $value = "\"$columnName\": $value";
+                    $value = '"'.$columnName.'": '.json_encode($value);
                     array_push($tableValues, $value);
                 }
 
                 if (! $skipLine) {
                     $newSQLLine = implode(",\n      ", $tableValues);
-                    $json_output .= "\n    {\n      ".$newSQLLine."\n    },";
+                    array_push($tableJsonRows, "{\n      ".$newSQLLine."\n    }");
                 }
             }
 
-            // TODO: Trim off "," at end
-            $json_output .= "\n  ],";
+            if(count($tableJsonRows) > 0) {
+                $json_output .= "\n    ".implode(",\n    ", $tableJsonRows)."\n  ],";
+            } else {
+                $json_output .= "],";
+            }
         }
 
-        /*
         // Specific to `accounts` table
         $tableName = 'accounts';
         $tableData = DB::table($tableName)
             ->where('id', '=', $account->id)
             ->get()
             ->toArray();
+
+        $firstElement = true;
+        $json_output .= "\n  \"$tableName\": [";
         foreach ($tableData as $data) {
             $data = (array) $data;
             $values = [
                 $data['id'],
-                "'".addslashes($data['api_key'])."'",
-                $data['number_of_invitations_sent'] ?? 'NULL',
+                json_encode($data['api_key']),
+                json_encode($data['number_of_invitations_sent']),
             ];
-            $newSQLLine = 'INSERT INTO '.$tableName.' (id, api_key, number_of_invitations_sent) VALUES (';
-            $newSQLLine .= implode(',', $values).');'.PHP_EOL;
-            $json_output .= $newSQLLine;
-        }
-        //*/
 
-        // Trim off "," at end
-        $json_output .= "\n}";
+            if($firstElement)
+                $firstElement = false;
+            else
+                $json_output .= ",";
+
+            $json_output .= <<< END
+
+    {
+      "id": ${values[0]},
+      "api_key": ${values[1]},
+      "number_of_invitations_sent": ${values[2]}
+    }
+END;
+        }
+
+        if(!$firstElement)
+            $json_output .= "\n  ";
+
+        $json_output .= "]\n}";
 
         Storage::disk(self::STORAGE)->put($downloadPath, $json_output);
 
