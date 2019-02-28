@@ -42,10 +42,10 @@
             <p><a href="{{ route('settings.sql') }}" class="btn">{{ trans('settings.export_sql_cta') }}</a></p>
             <p>{!! trans('settings.export_sql_link_instructions', ['url' => 'https://github.com/monicahq/monica/blob/master/docs/installation/update.md#importing-sql-from-the-exporter-feature']) !!}</p>
 
-            <h4>Export to JSON</h4>
-            <p>Exporting your data in JSON format allows you to take your data and manipulate it in more advanced ways. This is the best format to use if you have experience with programming or data processing.</p>
+            <h4>{{ trans('settings.export_title_json') }}</h4>
+            <p>{{ trans('settings.export_json_explanation') }}</p>
             <p>{{ trans('settings.export_be_patient') }}</p>
-            <p><a href="{{ route('settings.json') }}" class="btn">Export to JSON</a></p>
+            <p><a href="{{ route('settings.json') }}" class="btn">{{ trans('settings.export_json_cta') }}</a></p>
 
           </div>
         </div>
