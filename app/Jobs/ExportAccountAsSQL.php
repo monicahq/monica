@@ -12,7 +12,7 @@ class ExportAccountAsSQL
 {
     use Dispatchable, SerializesModels;
 
-    protected $ignoredTables = [
+    public const ignoredTables = [
         'accounts',
         'activity_type_activities',
         'activity_types',
@@ -49,13 +49,6 @@ class ExportAccountAsSQL
         'terms',
         'u2f_key',
         'users',
-    ];
-
-    protected $ignoredColumns = [
-        'stripe_id',
-        'card_brand',
-        'card_last_four',
-        'trial_ends_at',
     ];
 
     protected $file = '';
@@ -105,7 +98,7 @@ class ExportAccountAsSQL
         foreach ($tables as $table) {
             $tableName = $table->table_name;
 
-            if (in_array($tableName, $this->ignoredTables)) {
+            if (in_array($tableName, ExportAccountAsSQL::ignoredTables)) {
                 continue;
             }
 

@@ -13,52 +13,6 @@ class ExportAccountAsJson
 {
     use Dispatchable, SerializesModels;
 
-    protected $ignoredTables = [
-        'accounts',
-        'activity_type_activities',
-        'activity_types',
-        'api_usage',
-        'cache',
-        'countries',
-        'currencies',
-        'contact_photo',
-        'default_activity_types',
-        'default_activity_type_categories',
-        'default_contact_field_types',
-        'default_contact_modules',
-        'default_life_event_categories',
-        'default_life_event_types',
-        'default_relationship_type_groups',
-        'default_relationship_types',
-        'emotions',
-        'emotions_primary',
-        'emotions_secondary',
-        'failed_jobs',
-        'instances',
-        'jobs',
-        'migrations',
-        'oauth_access_tokens',
-        'oauth_auth_codes',
-        'oauth_clients',
-        'oauth_personal_access_clients',
-        'oauth_refresh_tokens',
-        'password_resets',
-        'pet_categories',
-        'sessions',
-        'statistics',
-        'subscriptions',
-        'terms',
-        'u2f_key',
-        'users',
-    ];
-
-    protected $ignoredColumns = [
-        'stripe_id',
-        'card_brand',
-        'card_last_four',
-        'trial_ends_at',
-    ];
-
     protected $file = '';
     protected $path = '';
 
@@ -93,6 +47,27 @@ class ExportAccountAsJson
         $user = auth()->user();
         $account = $user->account;
 
+        $json_output = "";
+        $this->generate_json_header($json_output, $user);
+
+        // Looping over the tables
+        $tables = DBHelper::getTables();
+        foreach ($tables as $table) {
+            $this->process_table($json_output, $account, $table->table_name);
+        }
+
+        // Accounts table has to be handled differently
+        $this->process_accounts_table($json_output, $account);
+
+        // Close the JSON object and write it to disk
+        $json_output .= "\n}";
+
+        Storage::disk(self::STORAGE)->put($downloadPath, $json_output);
+
+        return $downloadPath;
+    }
+
+    private function generate_json_header(string& $json_output, User $user) {
         $exported_at = now();
         $json_output = <<< END_HEAD
 {
@@ -103,51 +78,50 @@ class ExportAccountAsJson
     "exported": "{$exported_at}"
   },
 END_HEAD;
+    }
 
-        $tables = DBHelper::getTables();
+    private function process_table(string& $json_output, $account, string $tableName)
+    {
+        if (in_array($tableName, ExportAccountAsSQL::ignoredTables)) {
+            // Skip blacklisted tables. The blacklist is shared with the ExportAccountAsSQL job.
+            return;
+        }
 
-        // Looping over the tables
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
+        $json_output .= "\n  \"$tableName\": [";
+        $tableJsonRows = [];
 
-            if (in_array($tableName, $this->ignoredTables)) {
-                continue;
-            }
+        // Looping over the rows
+        $tableData = DB::table($tableName)->get();
+        foreach ($tableData as $data) {
+            $tableValues = [];
+            $skipLine = false;
 
-            $json_output .= "\n  \"$tableName\": [";
-
-            $tableJsonRows = [];
-            $tableData = DB::table($tableName)->get();
-
-            // Looping over the rows
-            foreach ($tableData as $data) {
-                $tableValues = [];
-                $skipLine = false;
-
-                // Looping over the values
-                foreach ($data as $columnName => $value) {
-                    if ($columnName == 'account_id' && $value !== $account->id) {
-                        $skipLine = true;
-                        break;
-                    }
-
-                    $value = '"'.$columnName.'": '.json_encode($value);
-                    array_push($tableValues, $value);
+            // Looping over the values
+            foreach ($data as $columnName => $value) {
+                if ($columnName == 'account_id' && $value !== $account->id) {
+                    $skipLine = true;
+                    break;
                 }
 
-                if (! $skipLine) {
-                    $newSQLLine = implode(",\n      ", $tableValues);
-                    array_push($tableJsonRows, "{\n      ".$newSQLLine."\n    }");
-                }
+                $value = '"'.$columnName.'": '.json_encode($value);
+                array_push($tableValues, $value);
             }
 
-            if (count($tableJsonRows) > 0) {
-                $json_output .= "\n    ".implode(",\n    ", $tableJsonRows)."\n  ],";
-            } else {
-                $json_output .= '],';
+            if (! $skipLine) {
+                $newSQLLine = implode(",\n      ", $tableValues);
+                array_push($tableJsonRows, "{\n      ".$newSQLLine."\n    }");
             }
         }
 
+        if (count($tableJsonRows) > 0) {
+            $json_output .= "\n    ".implode(",\n    ", $tableJsonRows)."\n  ";
+        }
+
+        $json_output .= '],';
+    }
+
+    private function process_accounts_table(string& $json_output, $account)
+    {
         // Specific to `accounts` table
         $tableName = 'accounts';
         $tableData = DB::table($tableName)
@@ -185,10 +159,8 @@ END;
             $json_output .= "\n  ";
         }
 
-        $json_output .= "]\n}";
-
-        Storage::disk(self::STORAGE)->put($downloadPath, $json_output);
-
-        return $downloadPath;
+        $json_output .= ']';
     }
+
+
 }
