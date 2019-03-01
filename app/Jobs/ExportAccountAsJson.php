@@ -104,7 +104,6 @@ class ExportAccountAsJson
   },
 END_HEAD;
 
-
         $tables = DBHelper::getTables();
 
         // Looping over the tables
@@ -142,10 +141,10 @@ END_HEAD;
                 }
             }
 
-            if(count($tableJsonRows) > 0) {
+            if (count($tableJsonRows) > 0) {
                 $json_output .= "\n    ".implode(",\n    ", $tableJsonRows)."\n  ],";
             } else {
-                $json_output .= "],";
+                $json_output .= '],';
             }
         }
 
@@ -166,10 +165,11 @@ END_HEAD;
                 json_encode($data['number_of_invitations_sent']),
             ];
 
-            if($firstElement)
+            if ($firstElement) {
                 $firstElement = false;
-            else
-                $json_output .= ",";
+            } else {
+                $json_output .= ',';
+            }
 
             $json_output .= <<< END
 
@@ -181,8 +181,9 @@ END_HEAD;
 END;
         }
 
-        if(!$firstElement)
+        if (! $firstElement) {
             $json_output .= "\n  ";
+        }
 
         $json_output .= "]\n}";
 

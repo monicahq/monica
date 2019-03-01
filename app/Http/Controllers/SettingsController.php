@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
-use App\Jobs\ExportAccountAsJson;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
@@ -12,6 +11,7 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
+use App\Jobs\ExportAccountAsJson;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
 use App\Jobs\SendInvitationEmail;
