@@ -98,7 +98,7 @@ class ExportAccountAsSQL
         foreach ($tables as $table) {
             $tableName = $table->table_name;
 
-            if (in_array($tableName, ExportAccountAsSQL::ignoredTables)) {
+            if (in_array($tableName, self::ignoredTables)) {
                 continue;
             }
 

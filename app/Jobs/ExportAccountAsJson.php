@@ -47,7 +47,7 @@ class ExportAccountAsJson
         $user = auth()->user();
         $account = $user->account;
 
-        $json_output = "";
+        $json_output = '';
         $this->generate_json_header($json_output, $user);
 
         // Looping over the tables
@@ -67,7 +67,8 @@ class ExportAccountAsJson
         return $downloadPath;
     }
 
-    private function generate_json_header(string& $json_output, User $user) {
+    private function generate_json_header(string &$json_output, User $user)
+    {
         $exported_at = now();
         $json_output = <<< END_HEAD
 {
@@ -80,7 +81,7 @@ class ExportAccountAsJson
 END_HEAD;
     }
 
-    private function process_table(string& $json_output, $account, string $tableName)
+    private function process_table(string &$json_output, $account, string $tableName)
     {
         if (in_array($tableName, ExportAccountAsSQL::ignoredTables)) {
             // Skip blacklisted tables. The blacklist is shared with the ExportAccountAsSQL job.
@@ -120,7 +121,7 @@ END_HEAD;
         $json_output .= '],';
     }
 
-    private function process_accounts_table(string& $json_output, $account)
+    private function process_accounts_table(string &$json_output, $account)
     {
         // Specific to `accounts` table
         $tableName = 'accounts';
