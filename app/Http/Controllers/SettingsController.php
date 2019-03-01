@@ -250,7 +250,7 @@ class SettingsController
             }
         }
 
-        // TODO: Return error response
+        return redirect()->back(303)->withErrors(trans('settings.export_error'))->withInput();
     }
 
     /**
@@ -274,7 +274,7 @@ class SettingsController
             }
         }
 
-        // TODO: Return error response
+        return redirect()->back(303)->withErrors(trans('settings.export_error'))->withInput();
     }
 
     /**

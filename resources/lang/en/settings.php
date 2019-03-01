@@ -15,6 +15,7 @@ return [
 
     'export_title' => 'Export your account data',
     'export_be_patient' => 'Click the button to start the export. It might take several minutes to process the export – please be patient and do not spam the button.',
+    'export_error' => 'An error occurred while attempting to generate your export.',
     'export_title_sql' => 'Export to SQL',
     'export_sql_explanation' => 'Exporting your data in SQL format allows you to take your data and import it to your own Monica instance. This is only valuable if you do have your own server.',
     'export_sql_cta' => 'Export to SQL',
