@@ -162,6 +162,4 @@ END;
 
         $json_output .= ']';
     }
-
-
 }
