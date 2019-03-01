@@ -83,7 +83,7 @@ END_HEAD;
 
     private function process_table(string &$json_output, $account, string $tableName)
     {
-        if (in_array($tableName, ExportAccountAsSQL::ignoredTables)) {
+        if (in_array($tableName, ExportAccountAsSQL::IGNORED_TABLES)) {
             // Skip blacklisted tables. The blacklist is shared with the ExportAccountAsSQL job.
             return;
         }

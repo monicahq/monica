@@ -260,8 +260,6 @@ class SettingsController
      */
     public function exportToJson()
     {
-        // return response()->make("not implemented yet");
-
         $path = dispatch_now(new ExportAccountAsJson());
 
         $driver = Storage::disk(ExportAccountAsJson::STORAGE)->getDriver();

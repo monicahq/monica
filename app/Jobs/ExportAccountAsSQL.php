@@ -12,7 +12,7 @@ class ExportAccountAsSQL
 {
     use Dispatchable, SerializesModels;
 
-    public const ignoredTables = [
+    public const IGNORED_TABLES = [
         'accounts',
         'activity_type_activities',
         'activity_types',
@@ -98,7 +98,7 @@ class ExportAccountAsSQL
         foreach ($tables as $table) {
             $tableName = $table->table_name;
 
-            if (in_array($tableName, self::ignoredTables)) {
+            if (in_array($tableName, self::IGNORED_TABLES)) {
                 continue;
             }
 
