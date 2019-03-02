@@ -31,16 +31,16 @@ class DAVServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        LaravelSabre::nodes(function() {
+        LaravelSabre::nodes(function () {
             return $this->nodes();
         });
-        LaravelSabre::plugins(function() {
+        LaravelSabre::plugins(function () {
             return $this->plugins();
         });
     }
 
     /**
-     * List of nodes for DAV Collection
+     * List of nodes for DAV Collection.
      */
     private function nodes() : array
     {

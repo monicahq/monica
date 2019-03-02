@@ -1,6 +1,5 @@
 <?php
 
-use LaravelSabre\Http\Middleware\Authorize;
 
 return [
 
