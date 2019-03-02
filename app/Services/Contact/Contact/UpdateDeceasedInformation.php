@@ -42,9 +42,9 @@ class UpdateDeceasedInformation extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
-        $this->clearRelatedReminder();
+        $this->clearRelatedReminder($contact);
 
-        $this->clearRelatedSpecialDate();
+        $this->clearRelatedSpecialDate($contact);
 
         $this->manageDeceasedDate($data, $contact);
 
@@ -54,32 +54,34 @@ class UpdateDeceasedInformation extends BaseService
     /**
      * Delete related reminder.
      *
+     * @param Contact  $contact
      * @return void
      */
-    private function clearRelatedReminder()
+    private function clearRelatedReminder(Contact $contact)
     {
-        if (is_null($this->contact->deceased_reminder_id)) {
+        if (is_null($contact->deceased_reminder_id)) {
             return;
         }
 
         app(DestroyReminder::class)->execute([
-            'account_id' => $this->contact->account_id,
-            'reminder_id' => $this->contact->deceased_reminder_id,
+            'account_id' => $contact->account_id,
+            'reminder_id' => $contact->deceased_reminder_id,
         ]);
     }
 
     /**
      * Delete related special date.
      *
+     * @param Contact  $contact
      * @return void
      */
-    private function clearRelatedSpecialDate()
+    private function clearRelatedSpecialDate(Contact $contact)
     {
-        if (is_null($this->contact->deceased_special_date_id)) {
+        if (is_null($contact->deceased_special_date_id)) {
             return;
         }
 
-        $specialDate = SpecialDate::find($this->contact->deceased_special_date_id);
+        $specialDate = SpecialDate::find($contact->deceased_special_date_id);
         $specialDate->delete();
     }
 
