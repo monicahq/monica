@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d70cb191cad5d1e04ce062368c9d294",
+    "content-hash": "d2cf9b8b58a3ec346a69dd828196282e",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3135,6 +3135,61 @@
                 "proxies"
             ],
             "time": "2018-11-03T19:42:49+00:00"
+        },
+        {
+            "name": "monicahq/laravel-sabre",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/monicahq/laravel-sabre.git",
+                "reference": "075d0db841bec1faa9b2b859c589d30d9accb110"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/075d0db841bec1faa9b2b859c589d30d9accb110",
+                "reference": "075d0db841bec1faa9b2b859c589d30d9accb110",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^5.6",
+                "sabre/dav": "^3.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "^7.3",
+                "vimeo/psalm": "^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "LaravelSabre\\LaravelSabreServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "LaravelSabre\\": "lib"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexis Saettler",
+                    "email": "alexis@saettler.org"
+                }
+            ],
+            "description": "Sabre DAV server adapter for Laravel.",
+            "keywords": [
+                "dav",
+                "laravel",
+                "php",
+                "sabre"
+            ],
+            "time": "2019-03-01T18:37:50+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -11454,6 +11509,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "monicahq/laravel-sabre": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
