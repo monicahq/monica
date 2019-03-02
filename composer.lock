@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2cf9b8b58a3ec346a69dd828196282e",
+    "content-hash": "5a80a2adc70b994df638255bda4514a0",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3138,16 +3138,16 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "dev-master",
+            "version": "0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "075d0db841bec1faa9b2b859c589d30d9accb110"
+                "reference": "f9cbb6e17b392e06b8504d953a476fbe39e3219f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/075d0db841bec1faa9b2b859c589d30d9accb110",
-                "reference": "075d0db841bec1faa9b2b859c589d30d9accb110",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/f9cbb6e17b392e06b8504d953a476fbe39e3219f",
+                "reference": "f9cbb6e17b392e06b8504d953a476fbe39e3219f",
                 "shasum": ""
             },
             "require": {
@@ -3155,6 +3155,7 @@
                 "sabre/dav": "^3.2"
             },
             "require-dev": {
+                "nunomaduro/larastan": "^0.3.15",
                 "orchestra/testbench": "~3.0",
                 "phpunit/phpunit": "^7.3",
                 "vimeo/psalm": "^3.0"
@@ -3169,7 +3170,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "LaravelSabre\\": "lib"
+                    "LaravelSabre\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -3189,7 +3190,7 @@
                 "php",
                 "sabre"
             ],
-            "time": "2019-03-01T18:37:50+00:00"
+            "time": "2019-03-02T10:50:28+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -11509,7 +11510,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "monicahq/laravel-sabre": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": false,
