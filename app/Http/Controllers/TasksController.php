@@ -17,7 +17,7 @@ class TasksController extends Controller
     /**
      * Get the list of tasks for the account.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -63,7 +63,8 @@ class TasksController extends Controller
      * Destroy the task.
      *
      * @param Task $task
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Task $task)
     {

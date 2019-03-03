@@ -37,6 +37,13 @@ class SpecialDate extends Model
     protected $guarded = ['id'];
 
     /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['contact'];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
