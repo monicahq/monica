@@ -28,9 +28,7 @@ class SentryContext
                         'email' => $user->email,
                         'username' => $user->name,
                     ]);
-                    $scope->setExtra([
-                        'isSubscribed' => $user->account->isSubscribed(),
-                    ]);
+                    $scope->setExtra('isSubscribed', $user->account->isSubscribed());
                 });
             } else {
                 \Sentry\configureScope(function (Scope $scope): void {
