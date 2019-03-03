@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix setting deceased information with removing date and reminder
 * Fix contact information update
 * Fix adding people on activity create and update
 * Fix setting a relationship without selecting any birthdate option
