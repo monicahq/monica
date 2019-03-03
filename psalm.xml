@@ -16,6 +16,10 @@
         </ignoreFiles>
     </projectFiles>
 
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin" />
+    </plugins>
+
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
 
@@ -96,50 +100,5 @@
         <ReservedWord errorLevel="info" />
 
         <RawObjectIteration errorLevel="suppress" />
-
-        <NullReference>
-            <errorLevel type="suppress">
-                <directory name="app/Http/Controllers/DAV/Backend" />
-            </errorLevel>
-        </NullReference>
-
-        <UndefinedInterfaceMethod>
-            <errorLevel type="suppress">
-                <referencedMethod name="Illuminate\Database\ConnectionInterface::getconfig" />
-                <referencedMethod name="Illuminate\Database\ConnectionInterface::getpdo" />
-                <referencedMethod name="Illuminate\Database\ConnectionInterface::getdatabasename" />
-                <referencedMethod name="Illuminate\Database\ConnectionInterface::getdrivername" />
-                <referencedMethod name="Illuminate\Database\ConnectionInterface::gettableprefix" />
-                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::assertmissing" />
-                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::assertexists" />
-                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::url" />
-                <referencedMethod name="Illuminate\Contracts\Filesystem\Filesystem::getdriver" />
-                <referencedMethod name="Illuminate\Contracts\Auth\Authenticatable::getemailforpasswordreset" />
-            </errorLevel>
-        </UndefinedInterfaceMethod>
-
-        <UndefinedGlobalVariable>
-            <errorLevel type="suppress">
-                <directory name="resources/views" />
-            </errorLevel>
-        </UndefinedGlobalVariable>
-
-        <UndefinedPropertyAssignment>
-            <errorLevel type="suppress">
-                <file name="app/Models/Contact/Contact.php" />
-            </errorLevel>
-        </UndefinedPropertyAssignment>
-
-        <UndefinedThisPropertyFetch>
-            <errorLevel type="suppress">
-                <file name="tests/DuskTestCase.php" />
-            </errorLevel>
-        </UndefinedThisPropertyFetch>
-
-        <UndefinedPropertyFetch>
-            <errorLevel type="suppress">
-                <file name="app/Models/Contact/Contact.php" />
-            </errorLevel>
-        </UndefinedPropertyFetch>
     </issueHandlers>
 </psalm>
