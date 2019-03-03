@@ -39,7 +39,7 @@
         "predis/predis": "^1.1",
         "ralouphie/mimey": "^2.0",
         "sabre/dav": "^3.2",
-        "sentry/sentry-laravel": "^0.11",
+        "sentry/sentry-laravel": "^1.0",
         "stevebauman/location": "^3.0",
         "symfony/translation": "^4.0",
         "vectorface/whip": "^0.3.2",
