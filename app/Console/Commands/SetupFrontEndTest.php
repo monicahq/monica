@@ -47,9 +47,9 @@ class SetupFrontEndTest extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $connection = DB::connection();
         if (file_exists('monicadump.sql')) {

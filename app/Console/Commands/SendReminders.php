@@ -25,9 +25,9 @@ class SendReminders extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         // Grab all the reminders that are supposed to be sent in the next two days
         // Why 2? because in terms of timezone, we can have up to more than 24 hours

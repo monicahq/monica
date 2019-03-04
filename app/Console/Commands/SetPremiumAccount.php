@@ -24,9 +24,9 @@ class SetPremiumAccount extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $account = Account::findOrFail($this->argument('accountId'));
         $account->has_access_to_paid_version_for_free = 1;

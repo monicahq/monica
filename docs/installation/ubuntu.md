@@ -8,10 +8,13 @@ The official Monica installation uses mySQL as the database system and **this is
 
 Monica depends on the following:
 
+* [Apache httpd webserver](https://httpd.apache.org/) 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 * PHP 7.1+
 * [Composer](https://getcomposer.org/)
 * [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
+
+**Apache:** If it doesn't come pre-installed with your server, follow the [instrucitons here](https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-16-04#step-1-install-apache-and-allow-in-firewall) to setup Apache and config the firewall.
 
 **Git:** Git should come pre-installed with your server. If it doesn't - use the installation instructions in the link.
 
@@ -22,7 +25,7 @@ sudo add-apt-repository ppa:ondrej/php
 sudo apt-get update
 sudo apt-get install php7.1 php7.1-cli php7.1-common php7.1-json php7.1-opcache \
     php7.1-mysql php7.1-mbstring php7.1-mcrypt php7.1-zip php7.1-fpm php7.1-bcmath \
-    php7.1-intl php7.1-simplexml php7.1-dom php7.1-curl php7.1-gd
+    php7.1-intl php7.1-simplexml php7.1-dom php7.1-curl php7.1-gd libapache2-mod-php7.1
 ```
 
 **Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
@@ -39,6 +42,7 @@ sudo apt-get install composer
 sudo apt-get update
 sudo apt-get install mysql-server
 ```
+
 ### Types of databases
 
 The official Monica installation uses mySQL as the database system and **this is the only official system we support**. While Laravel technically supports PostgreSQL and SQLite, we can't guarantee that it will work fine with Monica as we've never tested it. Feel free to read [Laravel's documentation](https://laravel.com/docs/database#configuration) on that topic if you feel adventurous.
@@ -49,7 +53,7 @@ Once the softwares above are installed:
 
 ### 1. Clone the repository
 
-You may install Monica by simply cloning the repository. In order for this to work with Apache, which is often pre-packaged with many common linux instances ([DigitalOcean](https://www.digitalocean.com/) droplets are one example), you need to clone the repository in a specific folder:
+You may install Monica by simply cloning the repository. In order for this to work with Apache, you need to clone the repository in a specific folder:
 
 ```sh
 cd /var/www/html
