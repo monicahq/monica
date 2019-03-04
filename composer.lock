@@ -6693,16 +6693,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.2.3",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "1f0ad51dfde4da8a6070f06adc58b4e37cbb37a4"
+                "reference": "9dc2299a016497f9ee620be94524e6c0af0280a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/1f0ad51dfde4da8a6070f06adc58b4e37cbb37a4",
-                "reference": "1f0ad51dfde4da8a6070f06adc58b4e37cbb37a4",
+                "url": "https://api.github.com/repos/symfony/console/zipball/9dc2299a016497f9ee620be94524e6c0af0280a9",
+                "reference": "9dc2299a016497f9ee620be94524e6c0af0280a9",
                 "shasum": ""
             },
             "require": {
@@ -6761,7 +6761,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-01-25T14:35:16+00:00"
+            "time": "2019-02-23T15:17:42+00:00"
         },
         {
             "name": "symfony/contracts",
@@ -12330,16 +12330,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.0.17",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "f49be31aeb7c2e063ae732521020247e769bf83d"
+                "reference": "aeab6e292bc6102ff994ca4204ebcdd059b92c1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/f49be31aeb7c2e063ae732521020247e769bf83d",
-                "reference": "f49be31aeb7c2e063ae732521020247e769bf83d",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/aeab6e292bc6102ff994ca4204ebcdd059b92c1c",
+                "reference": "aeab6e292bc6102ff994ca4204ebcdd059b92c1c",
                 "shasum": ""
             },
             "require": {
@@ -12364,6 +12364,7 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.2",
                 "phpunit/phpunit": "^6.0 || ^7.0",
+                "psalm/plugin-phpunit": "^0.5.1",
                 "squizlabs/php_codesniffer": "^3.0"
             },
             "suggest": {
@@ -12404,7 +12405,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-02-18T21:52:09+00:00"
+            "time": "2019-03-04T05:17:45+00:00"
         },
         {
             "name": "webmozart/assert",
