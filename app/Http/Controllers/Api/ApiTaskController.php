@@ -18,7 +18,7 @@ class ApiTaskController extends ApiController
     /**
      * Get the list of task.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -35,8 +35,10 @@ class ApiTaskController extends ApiController
 
     /**
      * Get the detail of a given task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $taskId)
     {
@@ -53,13 +55,15 @@ class ApiTaskController extends ApiController
 
     /**
      * Store the task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $task = (new CreateTask)->execute([
+            $task = app(CreateTask::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
                 'title' => $request->get('title'),
@@ -76,14 +80,16 @@ class ApiTaskController extends ApiController
 
     /**
      * Update the task.
-     * @param  Request $request
-     * @param  int $taskId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $taskId
+     *
+     * @return TaskResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $taskId)
     {
         try {
-            $task = (new UpdateTask)->execute(
+            $task = app(UpdateTask::class)->execute(
                 $request->all()
                     +
                     [
@@ -102,13 +108,15 @@ class ApiTaskController extends ApiController
 
     /**
      * Delete a task.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $taskId)
     {
         try {
-            (new DestroyTask)->execute([
+            app(DestroyTask::class)->execute([
                 'task_id' => $taskId,
                 'account_id' => auth()->user()->account->id,
             ]);
@@ -124,7 +132,7 @@ class ApiTaskController extends ApiController
     /**
      * Get the list of tasks for the given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function tasks(Request $request, $contactId)
     {

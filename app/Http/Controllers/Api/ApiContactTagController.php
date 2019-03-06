@@ -31,7 +31,7 @@ class ApiContactTagController extends ApiController
             });
 
         foreach ($tags as $tag) {
-            (new AssociateTag)->execute([
+            app(AssociateTag::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,
                 'name' => $tag,
@@ -60,7 +60,7 @@ class ApiContactTagController extends ApiController
         $contactTags = $contact->tags()->get();
 
         foreach ($contactTags as $tag) {
-            (new DetachTag)->execute([
+            app(DetachTag::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,
                 'tag_id' => $tag->id,
@@ -89,7 +89,7 @@ class ApiContactTagController extends ApiController
             });
 
         foreach ($tags as $tag) {
-            (new DetachTag)->execute([
+            app(DetachTag::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,
                 'tag_id' => $tag,

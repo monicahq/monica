@@ -33,8 +33,7 @@ class UpdateConversationTest extends TestCase
             'contact_field_type_id' => $contactFieldType->id,
         ];
 
-        $conversationService = new UpdateConversation;
-        $conversation = $conversationService->execute($request);
+        $conversation = app(UpdateConversation::class)->execute($request);
 
         $this->assertDatabaseHas('conversations', [
             'id' => $conversation->id,
@@ -59,8 +58,7 @@ class UpdateConversationTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $updateConversation = new UpdateConversation;
-        $conversation = $updateConversation->execute($request);
+        app(UpdateConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_conversation_doesnt_exist()
@@ -80,7 +78,6 @@ class UpdateConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateConversation = new UpdateConversation;
-        $conversation = $updateConversation->execute($request);
+        app(UpdateConversation::class)->execute($request);
     }
 }

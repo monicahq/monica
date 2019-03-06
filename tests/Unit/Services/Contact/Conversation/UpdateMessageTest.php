@@ -39,8 +39,7 @@ class UpdateMessageTest extends TestCase
             'content' => 'lorem',
         ];
 
-        $messageService = new UpdateMessage;
-        $message = $messageService->execute($request);
+        $message = app(UpdateMessage::class)->execute($request);
 
         $this->assertDatabaseHas('messages', [
             'id' => $message->id,
@@ -70,7 +69,7 @@ class UpdateMessageTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $updateMessage = (new UpdateMessage)->execute($request);
+        app(UpdateMessage::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_message_does_not_exist()
@@ -90,6 +89,6 @@ class UpdateMessageTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateMessage = (new UpdateMessage)->execute($request);
+        app(UpdateMessage::class)->execute($request);
     }
 }

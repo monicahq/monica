@@ -2,8 +2,28 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Update;
+use App\Console\Commands\ExportAll;
+use App\Console\Commands\ImportCSV;
+use App\Console\Commands\SetupTest;
+use App\Console\Commands\GetVersion;
+use App\Console\Commands\ImportVCards;
+use App\Console\Commands\LangGenerate;
+use App\Console\Commands\SetUserAdmin;
+use App\Console\Commands\Deactivate2FA;
+use App\Console\Commands\SendReminders;
+use App\Console\Commands\SentryRelease;
+use App\Console\Commands\SendStayInTouch;
+use App\Console\Commands\SetupProduction;
+use App\Console\Commands\PingVersionServer;
+use App\Console\Commands\SetPremiumAccount;
+use App\Console\Commands\SetupFrontEndTest;
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\CalculateStatistics;
+use App\Console\Commands\OneTime\MoveAvatars;
+use App\Console\Commands\MigrateDatabaseCollation;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,27 +33,26 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        'App\Console\Commands\CalculateStatistics',
-        'App\Console\Commands\Deactivate2FA',
-        'App\Console\Commands\ExportAll',
-        'App\Console\Commands\GetVersion',
-        'App\Console\Commands\ImportCSV',
-        'App\Console\Commands\ImportVCards',
-        'App\Console\Commands\LangGenerate',
-        'App\Console\Commands\PingVersionServer',
-        'App\Console\Commands\SendNotifications',
-        'App\Console\Commands\SendReminders',
-        'App\Console\Commands\SendStayInTouch',
-        'App\Console\Commands\SentryRelease',
-        'App\Console\Commands\SetupProduction',
-        'App\Console\Commands\SetupTest',
-        'App\Console\Commands\SetupFrontEndTest',
-        'App\Console\Commands\SetPremiumAccount',
-        'App\Console\Commands\Update',
-        'App\Console\Commands\MigrateDatabaseCollation',
-        'App\Console\Commands\OneTime\MoveAvatars',
-        'App\Console\Commands\Reminder\ProcessOldReminders',
-        'App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory',
+        CalculateStatistics::class,
+        Deactivate2FA::class,
+        ExportAll::class,
+        GetVersion::class,
+        ImportCSV::class,
+        ImportVCards::class,
+        LangGenerate::class,
+        MigrateDatabaseCollation::class,
+        MoveAvatars::class,
+        MoveAvatarsToPhotosDirectory::class,
+        PingVersionServer::class,
+        SendReminders::class,
+        SendStayInTouch::class,
+        SentryRelease::class,
+        SetPremiumAccount::class,
+        SetupFrontEndTest::class,
+        SetupProduction::class,
+        SetupTest::class,
+        SetUserAdmin::class,
+        Update::class,
     ];
 
     /**
@@ -44,14 +63,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:notifications')->hourly();
         $schedule->command('send:reminders')->hourly();
         $schedule->command('send:stay_in_touch')->hourly();
         $schedule->command('monica:calculatestatistics')->daily();
-        $schedule->command('process:old_reminders')->daily();
         $schedule->command('monica:ping')->daily();
         if (config('trustedproxy.cloudflare')) {
             $schedule->command('cloudflare:reload')->daily();
+        }
+        if (config('telescope.enabled')) {
+            $schedule->command('telescope:prune --hours=48')->daily();
         }
     }
 }

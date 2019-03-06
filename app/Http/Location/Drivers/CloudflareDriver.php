@@ -10,8 +10,12 @@ use Stevebauman\Location\Drivers\Driver;
 
 class CloudflareDriver extends Driver
 {
+    /**
+     * @return string
+     */
     public function url()
     {
+        return '';
     }
 
     protected function hydrate(Position $position, Fluent $location)

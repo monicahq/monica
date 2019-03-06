@@ -4,20 +4,22 @@
 <template>
   <div>
     <datepicker :value="selectedDate"
-                :format="customFormatter"
+                :format="displayValue"
+                :format-typed-date="formatTypedValue"
                 :language="language"
                 :monday-first="mondayFirst"
                 :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-                @input="update"
-                @selected="$emit('selected', getDateInEloquentFormat($event))"
+                :typeable="true"
+                @input="$emit('input', exchangeValue($event))"
+                @selected="update"
     />
     <input :name="id" type="hidden" :value="value" />
   </div>
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker';
-import * as Languages from 'vuejs-datepicker/dist/locale';
+import Datepicker from 'vuejs-datepicker-tmp';
+import * as Languages from 'vuejs-datepicker-tmp/dist/locale';
 import moment from 'moment';
 
 export default {
@@ -43,46 +45,69 @@ export default {
 
   data() {
     return {
+      /**
+       * Value of the date in exchange format
+       */
       value: '',
+
       selectedDate: '',
       language: Languages.en,
       mondayFirst: false
     };
   },
 
+  computed: {
+    /**
+     * Exchange format with controller (moment format type).
+     */
+    exchangeFormat() {
+      return 'YYYY-MM-DD';
+    },
+
+    /**
+     * Display format (moment format type).
+     */
+    displayFormat() {
+      return 'L';
+    },
+  },
+
   mounted() {
     this.language = Languages[this.locale];
-    this.selectedDate = moment(this.defaultDate, this.exchangeFormat()).toDate();
+    this.selectedDate = moment(this.defaultDate, this.exchangeFormat).toDate();
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
     this.update(this.selectedDate);
   },
 
   methods: {
-    customFormatter(date) {
-      return moment(date).format('L');
+    displayValue(date) {
+      return moment(date).format(this.displayFormat);
     },
 
-    getDateInEloquentFormat(date) {
-      return moment(date).format(this.exchangeFormat());
+    exchangeValue(date) {
+      return moment(date).format(this.exchangeFormat);
     },
 
     /**
-          * Update the value of hidden input, in exchange format value
-          */
+     * Update the value of hidden input.
+     * Store it in exchange format value.
+     */
     update(date) {
       var mdate = moment(date);
       if (! mdate.isValid()) {
         mdate = moment();
       }
-      this.value = mdate.format(this.exchangeFormat());
+      this.value = mdate.format(this.exchangeFormat);
     },
 
     /**
-          * Exchange format with controller (moment format type)
-          */
-    exchangeFormat() {
-      return 'YYYY-MM-DD';
-    }
+     * Format the typed value with the locale specicifcation.
+     * Return in exchange format value.
+     */
+    formatTypedValue(date) {
+      return moment(date, this.displayFormat).format(this.exchangeFormat);
+    },
+
   }
 };
 </script>

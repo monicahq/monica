@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Account\Account;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
@@ -42,7 +42,10 @@ class AddForeignKeysToActivities extends Migration
             try {
                 Account::findOrFail($activityContact->account_id);
             } catch (ModelNotFoundException $e) {
-                DB::table('activity_contact')->where('id', $activityContact->id)->delete();
+                DB::table('activity_contact')->where('account_id', $activityContact->account_id)
+                    ->where('activity_id', $activityContact->activity_id)
+                    ->where('contact_id', $activityContact->contact_id)
+                    ->delete();
                 continue;
             }
         }

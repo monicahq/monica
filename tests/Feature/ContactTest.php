@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Models\Contact\Gift;
+use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -28,6 +29,153 @@ class ContactTest extends FeatureTestCase
         return [$user, $contact];
     }
 
+    public function test_user_can_query_search_contacts()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $randomContact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $searchableFields = $randomContact->getSearchableFields();
+        $keyword = $randomContact->first_name.' '.$randomContact->last_name;
+
+        $queryString = StringHelper::buildQuery($searchableFields, $keyword);
+        $records = Contact::whereRaw($queryString)->get();
+
+        $this->assertGreaterThanOrEqual(1, count($records));
+    }
+
+    public function test_user_can_query_search_no_result()
+    {
+        $user = $this->signIn();
+
+        $contacts = factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $searchableFields = $contacts[0]->getSearchableFields();
+        $keyword = 'no_result_with_this_keyword';
+
+        $queryString = StringHelper::buildQuery($searchableFields, $keyword);
+        $records = Contact::whereRaw($queryString)->get();
+
+        $this->assertEquals(0, count($records));
+    }
+
+    public function test_user_can_search_one_contact_firstname()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $randomContact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $response = $this->post('/people/search', [
+            'needle' => $randomContact->first_name,
+        ]);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $randomContact->id,
+            'first_name' => $randomContact->first_name,
+            'last_name' => $randomContact->last_name,
+        ]);
+    }
+
+    public function test_user_can_search_one_contact_lastname()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $randomContact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $response = $this->post('/people/search', [
+            'needle' => $randomContact->last_name,
+        ]);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $randomContact->id,
+            'first_name' => $randomContact->first_name,
+            'last_name' => $randomContact->last_name,
+        ]);
+    }
+
+    public function test_user_can_search_one_contact_firstname_lastname()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $randomContact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $response = $this->post('/people/search', [
+            'needle' => $randomContact->first_name.' '.$randomContact->last_name,
+        ]);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $randomContact->id,
+            'first_name' => $randomContact->first_name,
+            'last_name' => $randomContact->last_name,
+        ]);
+    }
+
+    public function test_user_can_search_one_contact_lastname_firstname()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $randomContact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $response = $this->post('/people/search', [
+            'needle' => $randomContact->last_name.' '.$randomContact->first_name,
+        ]);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $randomContact->id,
+            'first_name' => $randomContact->first_name,
+            'last_name' => $randomContact->last_name,
+        ]);
+    }
+
+    public function test_user_can_search_one_contact_no_result()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->post('/people/search', [
+            'needle' => 'no_result_with_this needle',
+        ]);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'noResults' => 'No relevant contacts found :(',
+        ]);
+    }
+
     public function test_user_can_see_contacts()
     {
         list($user, $contact) = $this->fetchUser();
@@ -45,8 +193,8 @@ class ContactTest extends FeatureTestCase
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
-            'next_expected_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d H:i:s'),
-            'frequency_type' => 'once',
+            'initial_date' => $this->faker->dateTimeBetween('now', '+2 years')->format('Y-m-d'),
+            'frequency_type' => 'one_time',
             'description' => $this->faker->sentence(),
         ];
 

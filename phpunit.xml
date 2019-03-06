@@ -42,6 +42,6 @@
         <env name="QUEUE_DRIVER" value="sync"/>
         <env name="APP_DEFAULT_LOCALE" value="en"/>
         <env name="LOG_CHANNEL" value="testing"/>
-        <env name="CARDDAV_ENABLED" value="true"/>
+        <env name="DAV_ENABLED" value="true"/>
     </php>
 </phpunit>

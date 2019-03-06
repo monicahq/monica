@@ -32,7 +32,7 @@ class CreatePlaceTest extends TestCase
             'longitude' => '10',
         ];
 
-        $place = (new CreatePlace)->execute($request);
+        $place = app(CreatePlace::class)->execute($request);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -70,7 +70,7 @@ class CreatePlaceTest extends TestCase
             'longitude' => '',
         ];
 
-        $place = (new CreatePlace)->execute($request, $client);
+        $place = app(CreatePlace::class)->execute($request, $client);
 
         $this->assertDatabaseHas('places', [
             'id' => $place->id,
@@ -90,6 +90,6 @@ class CreatePlaceTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreatePlace)->execute($request);
+        app(CreatePlace::class)->execute($request);
     }
 }

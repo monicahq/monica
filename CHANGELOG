@@ -3,6 +3,32 @@ UNRELEASED CHANGES:
 New features:
 
 * Add ability to change the avatar of your contacts
+
+Enhancements:
+
+* Add eloquent relationships touches
+
+Fixes:
+
+* Fix setting deceased information with removing date and reminder
+* Fix contact information update
+* Fix adding people on activity create and update
+* Fix setting a relationship without selecting any birthdate option
+* Fix several typos in English language files
+* Fix Journal view now includes Activities as intended
+* Fix deleting a LifeEvent no longer deletes the associated Contact
+
+
+RELEASED VERSIONS:
+
+v2.12.0 - 2019-02-09
+--------------------
+
+New features:
+
+* Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
+* Add a page in settings to display all DAV resources
+* Add notion of instance administrator for a user
 * Add ability to name u2f security keys and to delete register ones
 * Add ability to add a comment when rating your day in the journal
 * Add API methods to manage genders
@@ -10,13 +36,34 @@ New features:
 
 Enhancements:
 
-* Display the name of the contact field instead of the URL (Facebook instead of https:/facebook.com/johndoe)
+* Don't change timestamps on contact number_of_views update
+* Redirect to the related real contact when trying to display a partial contact
+* Use iterator reader for vcard imports
+* Accept last name when using contact search field
+* Register all app services as singleton
+* Docker image: add sentry-cli and run sentry:release command if sentry is enabled
+* Refactor reminders by removing Notifications table and creating two new tables: reminder outbox and reminder sent
+* Shorten the value of the contact field if it does not fit into the contact field information
 * Add foreign keys to activities table
 * Add foreign keys to reminders, reminder rules, contacts and life events tables
 * Add number of life events on the contact profile page
+* Add base HTML tag and tweak all assets and urls to use relative paths
+* Refactor activity types with services
+* Refactor activity type categories with services
 
 Fixes:
 
+* Fix addresses and contact fields imports on VCard import
+* Remove users without an existing account in the accounts table
+* Fix case when schedule date is null
+* Add phpstan analyser, and fix a lot of issues
+* Fix middleware priority order to always set locale after authenticate
+* Accept lastname_firstname name order for VCard imports (FN field)
+* Fix vue.js DateTime picker to type a date in other format than en-us one
+* Fix DateTime parse when compact format is used
+* Fix contact and relationship edit with reminder enabled
+* Fix broken migration for the activities table
+* Fix VCard import with partial N entry
 * Fix using 'label' tag without 'for' attribute
 * Fix model binding when it is a guest request (not logged in)
 * Fix bug preventing to create life event without day and month
@@ -27,8 +74,6 @@ Fixes:
 * Fix API methods for Occupation object
 * Fix activity date viewed as one day before the event happened
 * Fix settags api call with an empty tag
-
-RELEASED VERSIONS:
 
 v2.11.2 - 2019-01-01
 --------------------

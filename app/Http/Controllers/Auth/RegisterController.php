@@ -49,7 +49,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function showRegistrationForm(Request $request)
     {
@@ -83,7 +83,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)

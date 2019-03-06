@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class ModelBinding extends Model
 {
+    /**
+     * Resolve binding.
+     *
+     * @param  string  $value
+     * @return mixed|null
+     */
     public function resolveRouteBinding($value)
     {
         if (Auth::guest()) {

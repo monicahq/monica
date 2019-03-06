@@ -3,13 +3,9 @@
 namespace Tests\Unit\Models;
 
 use Carbon\Carbon;
-use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Reminder;
-use App\Models\Contact\Notification;
-use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -30,154 +26,15 @@ class SpecialDateTest extends FeatureTestCase
     public function test_it_belongs_to_a_contact()
     {
         $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
         $specialDate = factory(SpecialDate::class)->create([
             'account_id' => $account->id,
             'contact_id' => $contact->id,
         ]);
 
         $this->assertTrue($specialDate->contact()->exists());
-    }
-
-    public function test_it_belongs_to_a_reminder()
-    {
-        $account = factory(Account::class)->create([]);
-        $reminder = factory(Reminder::class)->create([]);
-        $specialDate = factory(SpecialDate::class)->create([
-            'account_id' => $account->id,
-            'reminder_id' => $reminder->id,
-        ]);
-
-        $this->assertTrue($specialDate->reminder()->exists());
-    }
-
-    public function test_reminder_id_getter_returns_null_if_undefined()
-    {
-        $reminder = new Reminder;
-
-        $this->assertNull($reminder->reminder_id);
-    }
-
-    public function test_reminder_id_getter_returns_correct_string()
-    {
-        $reminder = new Reminder;
-        $reminder->reminder_id = 3;
-
-        $this->assertInternalType('integer', $reminder->reminder_id);
-        $this->assertEquals(3, $reminder->reminder_id);
-    }
-
-    public function test_delete_reminder_returns_null_if_no_reminder_is_set()
-    {
-        $specialDate = new SpecialDate;
-
-        $this->assertNull($specialDate->deleteReminder());
-    }
-
-    public function test_delete_reminder_destroys_the_associated_reminder()
-    {
-        $reminder = factory(Reminder::class)->make();
-        $reminder->id = 1;
-        $reminder->save();
-
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->reminder_id = $reminder->id;
-        $specialDate->save();
-
-        $this->assertEquals(1, $specialDate->deleteReminder());
-
-        $this->assertNull(Reminder::find($reminder->id));
-    }
-
-    public function test_delete_reminder_also_deletes_notifications()
-    {
-        $account = factory(Account::class)->create();
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $notification = factory(Notification::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-        $specialDate = factory(SpecialDate::class)->create(['account_id' => $account->id, 'reminder_id' => $reminder->id]);
-
-        $this->assertDatabaseHas('notifications', ['reminder_id' => $reminder->id]);
-
-        $specialDate->deleteReminder();
-
-        $this->assertDatabaseMissing('notifications', ['reminder_id' => $reminder->id]);
-    }
-
-    public function test_delete_reminder_returns_0_if_reminder_not_found()
-    {
-        $specialDate = factory(SpecialDate::class)->create(['reminder_id' => null]);
-
-        $this->assertEquals(0, $specialDate->deleteReminder());
-    }
-
-    public function test_set_reminder_creates_a_new_reminder_if_old_one_already_existed()
-    {
-        $user = $this->signIn();
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
-
-        $reminder = new Reminder;
-        $reminder->account_id = $user->account_id;
-        $reminder->contact_id = $contact->id;
-        $reminder->id = 1;
-        $reminder->save();
-
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->reminder_id = $reminder->id;
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contact->id;
-        $specialDate->save();
-
-        $specialDate->setReminder('year', 1, '');
-
-        $this->assertNotEquals(1, $specialDate->reminder_id);
-    }
-
-    public function test_set_reminder_creates_a_new_reminder()
-    {
-        $user = $this->signIn();
-        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
-
-        $specialDate = factory(SpecialDate::class)->make();
-        $specialDate->account_id = $user->account_id;
-        $specialDate->contact_id = $contact->id;
-        $specialDate->save();
-
-        $specialDate->setReminder('year', 1, '');
-
-        $this->assertNotNull($specialDate->reminder_id);
-    }
-
-    public function test_set_reminder_creates_notifications()
-    {
-        $user = factory(User::class)->create([]);
-        Carbon::setTestNow(Carbon::create(2017, 1, 1));
-
-        $reminderRule = factory(ReminderRule::class)->create([
-            'account_id' => $user->account->id,
-            'number_of_days_before' => 7,
-            'active' => 1,
-        ]);
-        $reminderRule = factory(ReminderRule::class)->create([
-            'account_id' => $user->account->id,
-            'number_of_days_before' => 30,
-            'active' => 1,
-        ]);
-
-        $contact = factory(Contact::class)->create(['account_id' => $user->account_id]);
-        $specialDate = factory(SpecialDate::class)->create([
-            'account_id' => $user->account->id,
-            'date' => '2018-03-02',
-            'contact_id' => $contact->id,
-        ]);
-
-        $reminder = $specialDate->setReminder('year', 1, '');
-
-        $this->assertEquals(
-            2,
-            $reminder->notifications()->count()
-        );
     }
 
     public function test_get_age_returns_null_if_no_date_is_set()

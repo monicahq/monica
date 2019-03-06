@@ -12,7 +12,7 @@ class RequestHelper
     /**
      * Get client ip.
      *
-     * @return string
+     * @return array|string
      */
     public static function ip()
     {
@@ -30,7 +30,8 @@ class RequestHelper
 
     /**
      * Get client country.
-     * @return string
+     *
+     * @return string|null
      */
     public static function country()
     {

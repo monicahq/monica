@@ -33,10 +33,10 @@
             <i v-else class="pr2 fa fa-address-card-o f6 gray"></i>
 
             <a v-if="contactInformation.protocol" :href="contactInformation.protocol + contactInformation.data">
-              {{ contactInformation.name }}
+              {{ contactInformation.shortenName }}
             </a>
             <a v-else :href="contactInformation.data">
-              {{ contactInformation.name }}
+              {{ contactInformation.shortenName }}
             </a>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
@@ -78,7 +78,7 @@
       <form class="measure center" @submit.prevent="store">
         <div class="mt3">
           <label for="add-contact-type" class="db fw6 lh-copy f6">
-            {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="/settings/personalization" target="_blank">
+            {{ $t('people.contact_info_form_contact_type') }} <a class="fr normal" href="settings/personalization" target="_blank">
               {{ $t('people.contact_info_form_personalize') }}
             </a>
           </label>
@@ -119,6 +119,10 @@ export default {
       type: Number,
       default: -1,
     },
+    sizeLimit: {
+      type: Number,
+      default: 26,
+    }
   },
 
   data() {
@@ -163,14 +167,26 @@ export default {
     },
 
     getContactInformationData() {
-      axios.get('/people/' + this.hash + '/contactfield')
+      axios.get('people/' + this.hash + '/contactfield')
         .then(response => {
-          this.contactInformationData = response.data;
+          this.contactInformationData = this.formatResponse(response.data);
         });
     },
 
+    formatResponse(data) {
+      var vm = this;
+      _.each(data, function(value) {
+        var shortenName = value.data;
+        if (shortenName.length > vm.sizeLimit + 1) {
+          shortenName = vm.$t('format.short_text', { text: shortenName.substr(0, vm.sizeLimit) });
+        }
+        value.shortenName = shortenName;
+      });
+      return data;
+    },
+
     getContactFieldTypes() {
-      axios.get('/people/' + this.hash + '/contactfieldtypes')
+      axios.get('people/' + this.hash + '/contactfieldtypes')
         .then(response => {
           this.contactFieldTypes = response.data;
         });
@@ -178,7 +194,7 @@ export default {
 
     store() {
       this.persistClient(
-        'post', '/people/' + this.hash + '/contactfield',
+        'post', 'people/' + this.hash + '/contactfield',
         this.createForm
       );
 
@@ -200,7 +216,7 @@ export default {
 
     update(contactField) {
       this.persistClient(
-        'put', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        'put', 'people/' + this.hash + '/contactfield/' + contactField.id,
         this.updateForm
       );
     },
@@ -209,7 +225,7 @@ export default {
       this.updateForm.id = contactField.id;
 
       this.persistClient(
-        'delete', '/people/' + this.hash + '/contactfield/' + contactField.id,
+        'delete', 'people/' + this.hash + '/contactfield/' + contactField.id,
         this.updateForm
       );
 

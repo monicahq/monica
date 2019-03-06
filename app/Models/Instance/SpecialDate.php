@@ -6,9 +6,7 @@ use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Reminder;
 use Illuminate\Database\Eloquent\Model;
-use App\Services\Contact\Reminder\CreateReminder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -39,11 +37,28 @@ class SpecialDate extends Model
     protected $guarded = ['id'];
 
     /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['contact'];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = ['date'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'contact_id',
+        'account_id',
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -76,25 +91,6 @@ class SpecialDate extends Model
     }
 
     /**
-     * Get the reminder record associated with the special date.
-     *
-     * @return BelongsTo
-     */
-    public function reminder()
-    {
-        return $this->belongsTo(Reminder::class);
-    }
-
-    /**
-     * Mutator for the reminder id attribute.
-     * @return int
-     */
-    public function getReminderIdAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Returns a short version of the date, taking into account if the year is
      * unknown or not. This will return either `July 21` or `July 21, 2017`.
      */
@@ -108,67 +104,9 @@ class SpecialDate extends Model
     }
 
     /**
-     * Sets a reminder for this date. If a reminder is already defined for this
-     * date, it will delete it first and recreate one.
-     *
-     * @param string $frequency The frequency the reminder will be set. Can be 'year', 'month', 'day'.
-     * @param int $frequencyNumber
-     * @return Reminder
-     */
-    public function setReminder(string $frequency, int $frequencyNumber, string $title)
-    {
-        $this->deleteReminder();
-
-        $request = [
-            'contact_id' => $this->contact_id,
-            'account_id'  => $this->account_id,
-            'date' => $this->date,
-            'frequency_type' => $frequency,
-            'frequency_number' => $frequencyNumber,
-            'title' => $title,
-            'description' => null,
-            'special_date_id' => $this->id,
-        ];
-
-        $reminder = (new CreateReminder)->execute($request);
-
-        $this->reminder_id = $reminder->id;
-        $this->save();
-
-        return $reminder;
-    }
-
-    /**
-     * Deletes the reminder for this date, if it exists.
-     * @return int
-     */
-    public function deleteReminder()
-    {
-        if (! $this->reminder_id) {
-            return;
-        }
-
-        if (! $this->reminder) {
-            return;
-        }
-
-        $reminder = $this->reminder;
-
-        // Unlink the reminder so we can delete it
-        // (otherwise we still depend on it, thus the delete will fail
-        // due to a foreign key constraint)
-        $this->reminder_id = null;
-        $this->save();
-
-        $reminder->purgeNotifications();
-
-        return $reminder->delete();
-    }
-
-    /**
      * Returns the age that the date represents, if the date is set and if it's
      * not based on a year we don't know.
-     * @return int
+     * @return int|null
      */
     public function getAge()
     {

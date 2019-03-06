@@ -32,7 +32,7 @@ function Search(form, input, resultsContainer, showResults) {
     data.forEach(function (contact) {
       let person = {};
       person.id = contact.id;
-      person.url = `/people/${contact.hash_id}`;
+      person.url = `people/${contact.hash_id}`;
 
       person.name = contact.complete_name;
 
@@ -73,7 +73,7 @@ function Search(form, input, resultsContainer, showResults) {
     }
 
     $.post({
-      url: '/people/search',
+      url: 'people/search',
       data: {
         needle: needle,
         accountId: search.accountId
@@ -143,7 +143,7 @@ const HeaderSearch = Search(
       html = `
                 <li class="header-search-result">
                     <div class="avatar avatar-initials" style="background-color: #fdb660;">+</div>
-                    <a href="/people/add">Add new person<span /></a>
+                    <a href="people/add">Add new person<span /></a>
                 </li>
             `;
     }
@@ -184,17 +184,18 @@ if (multiUserInput.length > 0) {
   );
 }
 
-$('.user-input-search-results').on( 'click', '.header-search-result', function() {
+$('.user-input-search-results').on( 'click', '.header-search-result', function(e) {
+  e.preventDefault();
   let t = $(this);
 
-  // Make sure this isn't a duplicate or a not found message 
+  // Make sure this isn't a duplicate or a not found message
   if (!t.data('contact') || $(`.contacts-list input[value="${t.data('contact')}"]`).length) {
     return false;
   }
 
   // If it's not, append to our list
   $('.contacts-list').append(`
-        <li class="pretty-tag"><a href="/people/${t.data('contact')}">${t.data('name')}</a></li>
+        <li class="pretty-tag"><a href="people/${t.data('contact')}">${t.data('name')}</a></li>
         <input type="hidden" name="contacts[]" value="${t.data('contact')}" />
     `);
 });

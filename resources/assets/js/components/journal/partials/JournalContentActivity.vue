@@ -140,7 +140,7 @@ export default {
     },
 
     redirect(attendee) {
-      window.location.href = '/people/' + attendee.hash_id;
+      window.location.href = 'people/' + attendee.hash_id;
     }
   }
 };

@@ -30,9 +30,11 @@ class AddForeignKeyToReminderRule extends Migration
             }
         });
 
+        Schema::disableForeignKeyConstraints();
         Schema::table('reminder_rules', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
+        Schema::enableForeignKeyConstraints();
     }
 }

@@ -25,8 +25,9 @@ class RecoveryLoginController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function get(Request $request)
     {
@@ -37,7 +38,8 @@ class RecoveryLoginController extends Controller
      * Validate recovery login.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -48,7 +50,8 @@ class RecoveryLoginController extends Controller
         $user = auth()->user();
         $recovery = $request->get('recovery');
 
-        if ($this->recoveryLogin($user, $recovery)) {
+        if ($user instanceof \App\Models\User\User &&
+            $this->recoveryLogin($user, $recovery)) {
             $this->fireLoginEvent($user);
         } else {
             abort(403);

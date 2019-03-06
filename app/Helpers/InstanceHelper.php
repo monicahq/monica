@@ -19,10 +19,10 @@ class InstanceHelper
     /**
      * Get the plan information for the given time period.
      *
-     * @param  string Accepted values: 'monthly', 'annual'
-     * @return array
+     * @param  string $timePeriod  Accepted values: 'monthly', 'annual'
+     * @return array|null
      */
-    public static function getPlanInformationFromConfig(String $timePeriod)
+    public static function getPlanInformationFromConfig(string $timePeriod)
     {
         if ($timePeriod != 'monthly' && $timePeriod != 'annual') {
             return;
@@ -40,7 +40,7 @@ class InstanceHelper
     /**
      * Get changelogs entries.
      *
-     * @param int $number
+     * @param int $limit
      * @return array
      */
     public static function getChangelogEntries($limit = null)

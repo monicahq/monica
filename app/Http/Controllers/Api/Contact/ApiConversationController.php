@@ -19,7 +19,7 @@ class ApiConversationController extends ApiController
     /**
      * Get the list of conversations.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -37,7 +37,7 @@ class ApiConversationController extends ApiController
     /**
      * Get the list of conversations for a specific contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function conversations(Request $request, $contactId)
     {
@@ -64,8 +64,9 @@ class ApiConversationController extends ApiController
     /**
      * Get the detail of a given conversation.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $conversationId)
     {
@@ -82,13 +83,14 @@ class ApiConversationController extends ApiController
     /**
      * Store the conversation.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $conversation = (new CreateConversation)->execute(
+            $conversation = app(CreateConversation::class)->execute(
                 $request->all()
                 +
                 [
@@ -109,14 +111,15 @@ class ApiConversationController extends ApiController
     /**
      * Update the conversation.
      *
-     * @param  Request $request
-     * @param  int $conversationId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $conversationId
+     *
+     * @return ConversationResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $conversationId)
     {
         try {
-            $conversation = (new UpdateConversation)->execute(
+            $conversation = app(UpdateConversation::class)->execute(
                 $request->all()
                 +
                 [
@@ -138,14 +141,15 @@ class ApiConversationController extends ApiController
     /**
      * Destroy the conversation.
      *
-     * @param  Request $request
-     * @param  int $conversationId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $conversationId
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $conversationId)
     {
         try {
-            (new DestroyConversation)->execute([
+            app(DestroyConversation::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'conversation_id' => $conversationId,
             ]);

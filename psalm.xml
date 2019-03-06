@@ -16,6 +16,10 @@
         </ignoreFiles>
     </projectFiles>
 
+    <plugins>
+        <pluginClass class="Psalm\LaravelPlugin\Plugin" />
+    </plugins>
+
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
 
@@ -89,36 +93,12 @@
         <NullableReturnStatement errorLevel="info" />
         <ImplementedReturnTypeMismatch errorLevel="info" />
         <UnresolvableInclude errorLevel="info" />
-        <InvalidReturnStatement errorLevel="info" />
-        <InvalidReturnType errorLevel="info" />
 
         <InvalidArgument errorLevel="info" />
 
         <PossiblyUndefinedMethod errorLevel="info" />
         <ReservedWord errorLevel="info" />
 
-        <UndefinedGlobalVariable>
-            <errorLevel type="suppress">
-                <directory name="resources/views" />
-            </errorLevel>
-        </UndefinedGlobalVariable>
-
-        <UndefinedPropertyAssignment>
-            <errorLevel type="suppress">
-                <file name="app/Models/Contact/Contact.php" />
-            </errorLevel>
-        </UndefinedPropertyAssignment>
-
-        <UndefinedThisPropertyFetch>
-            <errorLevel type="suppress">
-                <file name="tests/DuskTestCase.php" />
-            </errorLevel>
-        </UndefinedThisPropertyFetch>
-
-        <UndefinedPropertyFetch>
-            <errorLevel type="suppress">
-                <file name="app/Models/Contact/Contact.php" />
-            </errorLevel>
-        </UndefinedPropertyFetch>
+        <RawObjectIteration errorLevel="suppress" />
     </issueHandlers>
 </psalm>

@@ -29,8 +29,7 @@ class UploadPhotoTest extends TestCase
             'photo' => $file,
         ];
 
-        $uploadService = new UploadPhoto;
-        $photo = $uploadService->execute($request);
+        $photo = app(UploadPhoto::class)->execute($request);
 
         $this->assertDatabaseHas('photos', [
             'id' => $photo->id,
@@ -52,8 +51,7 @@ class UploadPhotoTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $uploadService = new UploadPhoto;
-        $photo = $uploadService->execute($request);
+        app(UploadPhoto::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_account_does_not_exist()
@@ -67,6 +65,6 @@ class UploadPhotoTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $uploadService = (new UploadPhoto)->execute($request);
+        $uploadService = app(UploadPhoto::class)->execute($request);
     }
 }

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Helpers\LocaleHelper;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
@@ -38,7 +38,7 @@ class AddressesController extends Controller
      */
     public function getCountries()
     {
-        $key = 'countries.'.LocaleHelper::getLocale();
+        $key = 'countries.'.App::getLocale();
 
         $countries = Cache::rememberForever($key, function () {
             return CountriesHelper::getAll();
@@ -66,7 +66,7 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        $address = (new CreateAddress)->execute($datas);
+        $address = app(CreateAddress::class)->execute($datas);
 
         return $this->setHTTPStatusCode(201)
                     ->respond($this->addressObject($address));
@@ -92,7 +92,7 @@ class AddressesController extends Controller
             'longitude',
         ]);
 
-        $address = (new UpdateAddress)->execute($datas);
+        $address = app(UpdateAddress::class)->execute($datas);
 
         return $this->respond($this->addressObject($address));
     }
@@ -103,7 +103,8 @@ class AddressesController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Address $address
-     * @return void
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Address $address)
     {
@@ -112,7 +113,7 @@ class AddressesController extends Controller
             'address_id' => $address->id,
         ];
 
-        if ((new DestroyAddress)->execute($datas)) {
+        if (app(DestroyAddress::class)->execute($datas)) {
             return $this->respondObjectDeleted($address->id);
         }
 

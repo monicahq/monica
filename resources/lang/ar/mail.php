@@ -9,6 +9,7 @@ return [
     'comment' => 'تعليق: :comment',
     'footer_contact_info' => 'أضف، عرض، أكمل، و قم بتغيير معلومات عن جهة الإتصال هذه:',
     'footer_contact_info2' => 'عرض ملف :name الشخصي',
+    'footer_contact_info2_link' => 'See :name’s profile: :url',
 
     'notification_subject_line' => 'لديك حدث قادم',
     'notification_description' => 'في :count أيام ( في :date)، سوف يحصل الحدث التالي:',

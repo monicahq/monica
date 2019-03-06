@@ -49,7 +49,7 @@ export default {
     },
 
     store(toggle) {
-      axios.post('/people/' + this.hash + '/favorite', {'toggle': toggle})
+      axios.post('people/' + this.hash + '/favorite', {'toggle': toggle})
         .then(response => {
           this.isFavorite = response.data.is_starred;
 

@@ -244,7 +244,7 @@ export default {
         return;
       }
 
-      axios.post('/people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.isActive})
+      axios.post('people/' + this.hash + '/stayintouch',   {'frequency': this.frequency, 'state': this.isActive})
         .then(response => {
           this.$refs.updateModal.close();
           this.initialState = this.isActive;

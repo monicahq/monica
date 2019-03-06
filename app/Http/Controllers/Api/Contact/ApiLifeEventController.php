@@ -17,7 +17,7 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the list of life events.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -31,8 +31,9 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the detail of a given life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $lifeEventId)
     {
@@ -49,13 +50,14 @@ class ApiLifeEventController extends ApiController
     /**
      * Store the life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $lifeEvent = (new CreateLifeEvent)->execute(
+            $lifeEvent = app(CreateLifeEvent::class)->execute(
                 $request->all()
                 +
                 [
@@ -74,14 +76,15 @@ class ApiLifeEventController extends ApiController
     /**
      * Update the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $lifeEventId)
     {
         try {
-            $lifeEvent = (new UpdateLifeEvent)->execute(
+            $lifeEvent = app(UpdateLifeEvent::class)->execute(
                 $request->all()
                     +
                     [
@@ -101,14 +104,15 @@ class ApiLifeEventController extends ApiController
     /**
      * Destroy the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $lifeEventId)
     {
         try {
-            (new DestroyLifeEvent)->execute([
+            app(DestroyLifeEvent::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'life_event_id' => $lifeEventId,
             ]);

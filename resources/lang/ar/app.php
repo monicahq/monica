@@ -34,6 +34,7 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
+    'retry' => 'Retry',
 
     'application_title' => 'Monica (مونيكا) – مدير العلاقات الشخصية',
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
@@ -83,6 +84,7 @@ return [
     'breadcrumb_add_note' => 'أضف ملاحظة',
     'breadcrumb_edit_note' => 'حرر ملاحظة',
     'breadcrumb_api' => 'API (واجهة برمجة التطبيق)',
+    'breadcrumb_api' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'كيف تقابلتما',
     'breadcrumb_settings_personalization' => 'التخصيص',
     'breadcrumb_settings_security' => 'الأمن',
@@ -325,7 +327,7 @@ return [
     'emotion_pride' => 'Pride',
     'emotion_eagerness' => 'Eagerness',
     'emotion_hope' => 'Hope',
-    'emotion_optimism' => 'optimism',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => 'Enthrallment',
     'emotion_rapture' => 'Rapture',
     'emotion_relief' => 'Relief',
@@ -429,4 +431,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Current weather',
+
+    // dav
+    'dav_contacts' => 'Contacts',
+    'dav_contacts_description' => ':name’s contacts',
+    'dav_birthdays' => 'Birthdays',
+    'dav_birthdays_description' => ':name’s contact’s birthdays',
+    'dav_tasks' => 'Tasks',
+    'dav_tasks_description' => ':name’s tasks',
 ];

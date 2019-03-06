@@ -17,8 +17,9 @@ class OAuthController extends Controller
     /**
      * Log in a user and returns an accessToken.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
@@ -49,7 +50,7 @@ class OAuthController extends Controller
      * Validate the request.
      *
      * @param  Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateRequest(Request $request)
     {
@@ -76,8 +77,8 @@ class OAuthController extends Controller
     /**
      * Proxy a request to the OAuth server.
      *
-     * @param string $grantType what type of grant type should be proxied
      * @param array $data the data to send to the server
+     * @return array
      */
     private function proxy(array $data = [])
     {

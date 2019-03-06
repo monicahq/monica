@@ -4,18 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact\Task;
 use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
 use App\Services\Task\CreateTask;
 use App\Services\Task\UpdateTask;
 use App\Services\Task\DestroyTask;
+use App\Traits\JsonRespondController;
 use App\Http\Resources\Task\Task as TaskResource;
 
 class TasksController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Get the list of tasks for the account.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
@@ -25,13 +27,12 @@ class TasksController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param $request
-     * @param Contact $contact
+     * @param Request $request
      * @return Task
      */
     public function store(Request $request) : Task
     {
-        return (new CreateTask)->execute([
+        return app(CreateTask::class)->execute([
             'account_id' => auth()->user()->account->id,
             'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
             'title' => $request->get('title'),
@@ -43,13 +44,14 @@ class TasksController extends Controller
      * Update a task.
      *
      * @param Request $request
+     * @param Task $task
      * @return Task
      */
-    public function update(Request $request, $taskId) : Task
+    public function update(Request $request, Task $task) : Task
     {
-        return (new UpdateTask)->execute([
+        return app(UpdateTask::class)->execute([
             'account_id' => auth()->user()->account->id,
-            'task_id' => $taskId,
+            'task_id' => $task->id,
             'contact_id' => ($request->get('contact_id') == '' ? null : $request->get('contact_id')),
             'title' => $request->get('title'),
             'description' => ($request->get('description') == '' ? null : $request->get('description')),
@@ -60,15 +62,17 @@ class TasksController extends Controller
     /**
      * Destroy the task.
      *
-     * @param Contact $contact
      * @param Task $task
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\JsonResponse
      */
-    public function destroy(Contact $contact, $taskId)
+    public function destroy(Task $task)
     {
-        (new DestroyTask)->execute([
-            'task_id' => $taskId,
+        if (app(DestroyTask::class)->execute([
+            'task_id' => $task->id,
             'account_id' => auth()->user()->account->id,
-        ]);
+        ])) {
+            return $this->respondObjectDeleted($task->id);
+        }
     }
 }

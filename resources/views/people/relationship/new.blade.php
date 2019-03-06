@@ -110,7 +110,6 @@
           :months="{{ $months }}"
           :days="{{ $days }}"
           :default-date="'{{ $birthdate }}'"
-          :locale="'{{ auth()->user()->locale }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
@@ -126,7 +125,7 @@
         <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
           @if ($existingContacts->count() == 0)
             <div class="mb1 mt2 tc">
-              <img src="/img/people/no_record_found.svg">
+              <img src="img/people/no_record_found.svg">
               <p>{{ trans('people.relationship_form_add_no_existing_contact', ['name' => $contact->first_name]) }}</p>
             </div>
           @else
@@ -157,7 +156,7 @@
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
           <div>
-            <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+            <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" style="text-align: center;">{{ trans('app.cancel') }}</a>
           </div>
           <div>
             @if ($existingContacts->count() == 0)

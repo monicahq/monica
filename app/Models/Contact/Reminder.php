@@ -2,6 +2,8 @@
 
 namespace App\Models\Contact;
 
+use Carbon\Carbon;
+use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,8 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
- * @property Account $account
- * @property Contact $contact
+ * A reminder has two states: active and inactive.
+ * An inactive reminder is basically a one_time reminder that has already be
+ * sent once and has been marked inactive so we don't schedule it again.
  */
 class Reminder extends Model
 {
@@ -22,19 +25,14 @@ class Reminder extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['last_triggered', 'next_expected_date'];
-
-    /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [
         'is_birthday' => 'boolean',
+        'delible' => 'boolean',
+        'initial_date' => 'date:Y-m-d',
     ];
 
     /**
@@ -43,7 +41,7 @@ class Reminder extends Model
      * @var array
      */
     public static $frequencyTypes = [
-        'one_time', 'day', 'month', 'year',
+        'one_time', 'week', 'month', 'year',
     ];
 
     /**
@@ -67,38 +65,29 @@ class Reminder extends Model
     }
 
     /**
-     * Get the Notifications records associated with the account.
+     * Get the Reminder Outbox records associated with the account.
      *
      * @return HasMany
      */
-    public function notifications()
+    public function reminderOutboxes()
     {
-        return $this->hasMany(Notification::class);
+        return $this->hasMany(ReminderOutbox::class);
     }
 
     /**
-     * Get the next_expected_date field according to user's timezone.
+     * Scope a query to only include active reminders.
      *
-     * @param string $value
-     * @return string
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getNextExpectedDateAttribute($value)
+    public function scopeActive($query)
     {
-        return DateHelper::parseDate($value);
-    }
-
-    /**
-     * Correctly set the frequency type.
-     *
-     * @param string $value
-     */
-    public function setFrequencyTypeAttribute($value)
-    {
-        $this->attributes['frequency_type'] = $value === 'once' ? 'one_time' : $value;
+        return $query->where('inactive', false);
     }
 
     /**
      * Get the title of a reminder.
+     *
      * @return string
      */
     public function getTitleAttribute($value)
@@ -108,15 +97,17 @@ class Reminder extends Model
 
     /**
      * Set the title of a reminder.
-     * @return string
+     *
+     * @return void
      */
-    public function setTitleAttribute($title)
+    public function setTitleAttribute($title): void
     {
         $this->attributes['title'] = $title;
     }
 
     /**
      * Get the description of a reminder.
+     *
      * @return string
      */
     public function getDescriptionAttribute($value)
@@ -125,23 +116,15 @@ class Reminder extends Model
     }
 
     /**
-     * Return the next expected date.
-     *
-     * @return string
-     */
-    public function getNextExpectedDate()
-    {
-        return $this->next_expected_date->toDateString();
-    }
-
-    /**
      * Calculate the next expected date for this reminder.
      *
-     * @return static
+     * @return Carbon
      */
-    public function calculateNextExpectedDate()
+    public function calculateNextExpectedDate($date = null)
     {
-        $date = $this->next_expected_date;
+        if (is_null($date)) {
+            $date = $this->initial_date;
+        }
 
         while ($date->isPast()) {
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
@@ -151,62 +134,78 @@ class Reminder extends Model
             $date = DateHelper::addTimeAccordingToFrequencyType($date, $this->frequency_type, $this->frequency_number);
         }
 
-        $this->next_expected_date = $date;
-
-        return $this;
+        return $date;
     }
 
     /**
-     * Schedules the notifications for the given reminder.
+     * Calculate the next expected date using user timezone for this reminder.
      *
+     * @return Carbon
+     */
+    public function calculateNextExpectedDateOnTimezone()
+    {
+        $date = $this->initial_date;
+        $date = Carbon::create($date->year, $date->month, $date->day, 0, 0, 0,
+                    DateHelper::getTimezone() ?? config('app.timezone'));
+
+        return $this->calculateNextExpectedDate($date);
+    }
+
+    /**
+     * Schedule the reminder to be sent.
+     *
+     * @param User $user
      * @return void
      */
-    public function scheduleNotifications()
+    public function schedule(User $user)
     {
-        if ($this->frequency_type == 'week') {
-            return;
-        }
+        // remove any existing scheduled reminders
+        $this->reminderOutboxes->each->delete();
 
-        // Only schedule notifications for active reminder rules
+        // when should we send this reminder?
+        $triggerDate = $this->calculateNextExpectedDate();
+
+        // schedule the reminder in the outbox, one for each user of the account
+        ReminderOutbox::create([
+            'account_id' => $this->account_id,
+            'reminder_id' => $this->id,
+            'user_id' => $user->id,
+            'planned_date' => $triggerDate,
+            'nature' => 'reminder',
+        ]);
+
+        $this->scheduleNotifications($triggerDate, $user);
+    }
+
+    /**
+     * Create all the notifications that are supposed to be sent
+     * 30 and 7 days prior to the actual reminder.
+     *
+     * @param Carbon $triggerDate
+     * @param User $user
+     * @return void
+     */
+    public function scheduleNotifications(Carbon $triggerDate, User $user)
+    {
+        $date = $triggerDate->toDateString();
         $reminderRules = $this->account->reminderRules()->where('active', 1)->get();
 
         foreach ($reminderRules as $reminderRule) {
-            $this->scheduleSingleNotification($reminderRule->number_of_days_before);
+            $datePrior = Carbon::createFromFormat('Y-m-d', $date);
+            $datePrior->subDays($reminderRule->number_of_days_before);
+
+            if ($datePrior->lessThanOrEqualTo(now())) {
+                continue;
+            }
+
+            ReminderOutbox::create([
+                'account_id' => $this->account_id,
+                'reminder_id' => $this->id,
+                'user_id' => $user->id,
+                'planned_date' => $datePrior->toDateString(),
+                'nature' => 'notification',
+                'notification_number_days_before' => $reminderRule->number_of_days_before,
+            ]);
         }
-    }
-
-    /**
-     * Schedules a notification for the given reminder.
-     *
-     * @param  int  $numberOfDaysBefore
-     * @return Notification
-     */
-    public function scheduleSingleNotification(int $numberOfDaysBefore)
-    {
-        $date = DateHelper::getDateMinusGivenNumberOfDays($this->next_expected_date, $numberOfDaysBefore);
-
-        if ($date->lte(now())) {
-            return;
-        }
-
-        $notification = new Notification;
-        $notification->account_id = $this->account_id;
-        $notification->contact_id = $this->contact_id;
-        $notification->reminder_id = $this->id;
-        $notification->trigger_date = $date;
-        $notification->scheduled_number_days_before = $numberOfDaysBefore;
-        $notification->save();
-
-        return $notification;
-    }
-
-    /**
-     * Purge all the existing notifications for a reminder.
-     *
-     * @return void
-     */
-    public function purgeNotifications()
-    {
-        $this->notifications->each->delete();
     }
 }

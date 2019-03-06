@@ -187,7 +187,7 @@ export default {
     },
 
     hasAlreadyRatedToday() {
-      axios.get('/journal/hasRated')
+      axios.get('journal/hasRated')
         .then(response => {
           this.hasRated = response.data;
         });
@@ -211,7 +211,7 @@ export default {
     rate() {
       this.hasRated = 'justNow';
 
-      axios.post('/journal/day', this.day)
+      axios.post('journal/day', this.day)
         .then(response => {
           this.showSadSmileyColor = false;
           this.showHappySmileyColor = false;

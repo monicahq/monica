@@ -7,6 +7,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactFieldType;
 
 class ExportVCard extends BaseService
 {
@@ -19,12 +20,12 @@ class ExportVCard extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'nullable|integer',
+            'contact_id' => 'required|integer|exists:contacts,id',
         ];
     }
 
     /**
-     * Import one VCard.
+     * Export one VCard.
      *
      * @param array $data
      * @return VCard
@@ -60,7 +61,7 @@ class ExportVCard extends BaseService
         // Basic information
         $vcard = new VCard([
             'UID' => $contact->uuid,
-            'SOURCE' => route('people.show', $contact),
+            'SOURCE' => $contact->getLink(),
             'VERSION' => '4.0',
         ]);
 
@@ -71,6 +72,7 @@ class ExportVCard extends BaseService
         $this->exportBirthday($contact, $vcard);
         $this->exportAddress($contact, $vcard);
         $this->exportContactFields($contact, $vcard);
+        $this->exportTimestamp($contact, $vcard);
 
         return $vcard;
     }
@@ -181,10 +183,10 @@ class ExportVCard extends BaseService
     {
         foreach ($contact->contactFields as $contactField) {
             switch ($contactField->contactFieldType->type) {
-                case 'phone':
+                case ContactFieldType::PHONE:
                     $vcard->add('TEL', $this->escape($contactField->data));
                     break;
-                case 'email':
+                case ContactFieldType::EMAIL:
                     $vcard->add('EMAIL', $this->escape($contactField->data));
                     break;
                 default:
@@ -211,5 +213,14 @@ class ExportVCard extends BaseService
                     break;
             }
         }
+    }
+
+    /**
+     * @param Contact $contact
+     * @param VCard $vcard
+     */
+    private function exportTimestamp(Contact $contact, VCard $vcard)
+    {
+        $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
     }
 }

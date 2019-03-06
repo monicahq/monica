@@ -4,7 +4,7 @@
 <template>
   <div>
     <template v-if="clickable == true">
-      <a :href="'/people/' + contact.id">
+      <a :href="'people/' + contact.id">
         <img :src="contact.avatar_url" v-tooltip.bottom="contact.complete_name" class="br4 h3 w3 dib tc" />
       </a>
     </template>

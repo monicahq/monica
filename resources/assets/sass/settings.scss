@@ -40,7 +40,8 @@
   }
 
   .settings-reset,
-  .settings-delete {
+  .settings-delete,
+  .settings-group {
     border: 1px solid;
     padding: 10px;
     margin-top: 40px;
@@ -63,6 +64,11 @@
 
   .settings-reset {
     border-color: #f0ad4e;
+    border-radius: 3px;
+  }
+
+  .settings-group {
+    border-color: #999;
     border-radius: 3px;
   }
 

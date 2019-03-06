@@ -17,7 +17,7 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -70,8 +70,8 @@ class DashboardController extends Controller
         // get last 3 changelog entries
         $changelogs = InstanceHelper::getChangelogEntries(3);
 
-        // Load the reminder for the upcoming three months
-        $reminders = [
+        // Load the reminderOutboxes for the upcoming three months
+        $reminderOutboxes = [
             0 => auth()->user()->account->getRemindersForMonth(0),
             1 => auth()->user()->account->getRemindersForMonth(1),
             2 => auth()->user()->account->getRemindersForMonth(2),
@@ -90,7 +90,7 @@ class DashboardController extends Controller
             'debts' => $debt,
             'user' => auth()->user(),
             'changelogs' => $changelogs,
-            'reminders' => $reminders,
+            'reminderOutboxes' => $reminderOutboxes,
         ];
 
         return view('dashboard.index', $data);
