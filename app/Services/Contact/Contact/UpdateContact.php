@@ -101,7 +101,7 @@ class UpdateContact extends BaseService
 
         // only update the avatar if the name has changed
         if ($oldName != $contact->name) {
-            $this->updateDefaultAvatar();
+            $this->updateDefaultAvatar($contact);
         }
     }
 
