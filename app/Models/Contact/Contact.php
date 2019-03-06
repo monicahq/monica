@@ -997,7 +997,6 @@ class Contact extends Model
      *  - Gravatar
      *  - or a photo that has been uploaded.
      *
-     * @param  int $size
      * @return string|null
      */
     public function getAvatarURL()
