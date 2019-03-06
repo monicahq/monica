@@ -9,8 +9,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetAvatarsFromInternet extends BaseService
 {
-    protected $contact;
-
     /**
      * Get the validation rules that apply to the service.
      *
@@ -39,38 +37,40 @@ class GetAvatarsFromInternet extends BaseService
     {
         $this->validate($data);
 
-        $this->contact = Contact::findOrFail($data['contact_id']);
+        $contact = Contact::findOrFail($data['contact_id']);
 
-        $this->generateUUID();
-        $this->getAdorable();
-        $this->getGravatar();
+        $this->generateUUID($contact);
+        $this->getAdorable($contact);
+        $this->getGravatar($contact);
 
-        return $this->contact;
+        return $contact;
     }
 
     /**
      * Generate the UUID used to identify the contact in the Adorable service.
      *
+     * @param Contact  $contact
      * @return void
      */
-    private function generateUUID()
+    private function generateUUID(Contact $contact)
     {
-        $this->contact->avatar_adorable_uuid = RandomHelper::uuid();
-        $this->contact->save();
+        $contact->avatar_adorable_uuid = RandomHelper::uuid();
+        $contact->save();
     }
 
     /**
      * Get the adorable avatar.
      *
+     * @param Contact  $contact
      * @return void
      */
-    private function getAdorable()
+    private function getAdorable(Contact $contact)
     {
-        $this->contact->avatar_adorable_url = (new GetAdorableAvatarURL)->execute([
-            'uuid' => $this->contact->avatar_adorable_uuid,
+        $contact->avatar_adorable_url = (new GetAdorableAvatarURL)->execute([
+            'uuid' => $contact->avatar_adorable_uuid,
             'size' => 200,
         ]);
-        $this->contact->save();
+        $contact->save();
     }
 
     /**
@@ -97,26 +97,27 @@ class GetAvatarsFromInternet extends BaseService
     /**
      * Query Gravatar (if it exists) for the contact's email address.
      *
+     * @param Contact  $contact
      * @return void
      */
-    private function getGravatar()
+    private function getGravatar(Contact $contact)
     {
-        $email = $this->getEmail($this->contact);
+        $email = $this->getEmail($contact);
 
         if ($email) {
-            $this->contact->avatar_gravatar_url = (new GetGravatarURL)->execute([
+            $contact->avatar_gravatar_url = (new GetGravatarURL)->execute([
                 'email' => $email,
                 'size' => 200,
             ]);
         } else {
             // in this case we need to make sure that we reset the gravatar URL
-            $this->contact->avatar_gravatar_url = null;
+            $contact->avatar_gravatar_url = null;
 
-            if ($this->contact->avatar_source == 'gravatar') {
-                $this->contact->avatar_source = 'adorable';
+            if ($contact->avatar_source == 'gravatar') {
+                $contact->avatar_source = 'adorable';
             }
         }
 
-        $this->contact->save();
+        $contact->save();
     }
 }

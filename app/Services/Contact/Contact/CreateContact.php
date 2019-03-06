@@ -79,7 +79,7 @@ class CreateContact extends BaseService
 
         $this->generateUUID($contact);
 
-        $this->addAvatars();
+        $this->addAvatars($contact);
 
         // we query the DB again to fill the object with all the new properties
         $contact->refresh();
@@ -102,22 +102,23 @@ class CreateContact extends BaseService
     /**
      * Add the different default avatars.
      *
+     * @param Contact $contact
      * @return void
      */
-    private function addAvatars()
+    private function addAvatars(Contact $contact)
     {
         // set the default avatar color
-        $this->contact->setAvatarColor();
-        $this->contact->save();
+        $contact->setAvatarColor();
+        $contact->save();
 
         // populate the avatar from Adorable and grab the Gravatar
-        $this->contact = (new GetAvatarsFromInternet)->execute([
-            'contact_id' => $this->contact->id,
+        (new GetAvatarsFromInternet)->execute([
+            'contact_id' => $contact->id,
         ]);
 
         // also generate the default avatar
-        $this->contact = (new GenerateDefaultAvatar)->execute([
-            'contact_id' => $this->contact->id,
+        (new GenerateDefaultAvatar)->execute([
+            'contact_id' => $contact->id,
         ]);
     }
 
