@@ -139,7 +139,10 @@
 
     <!-- LIST OF ACTIVITIES -->
     <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
-      {{ activity.summary }} {{ activity.description }}
+      <h2>{{ activity.summary }}</h2>
+
+      <div v-html="activity.description">
+      </div>
 
       <!-- DETAILS -->
       <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
