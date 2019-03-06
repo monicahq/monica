@@ -982,7 +982,6 @@ class Contact extends Model
     /**
      * Get the default avatar URL.
      *
-     * @param $value
      * @return string
      */
     public function getAvatarDefaultURL()
