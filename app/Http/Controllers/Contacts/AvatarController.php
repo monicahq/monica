@@ -48,7 +48,7 @@ class AvatarController extends Controller
                     ->withErrors($validator);
             }
 
-            $photo = (new UploadPhoto)->execute([
+            $photo = app(UploadPhoto::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'photo' => $request->photo,
             ]);
@@ -57,7 +57,7 @@ class AvatarController extends Controller
             $data['source'] = 'photo';
         }
 
-        (new UpdateAvatar)->execute($data);
+        app(UpdateAvatar::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
@@ -80,6 +80,6 @@ class AvatarController extends Controller
             'photo_id' => $photoId,
         ];
 
-        return (new UpdateAvatar)->execute($data);
+        return app(UpdateAvatar::class)->execute($data);
     }
 }

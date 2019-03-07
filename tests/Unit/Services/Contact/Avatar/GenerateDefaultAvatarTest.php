@@ -23,7 +23,7 @@ class GenerateDefaultAvatarTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new GenerateDefaultAvatar)->execute($request);
+        $contact = app(GenerateDefaultAvatar::class)->execute($request);
 
         $this->assertContains(
             'avatars/',
@@ -36,7 +36,7 @@ class GenerateDefaultAvatarTest extends TestCase
         $request = [];
 
         $this->expectException(ValidationException::class);
-        (new GenerateDefaultAvatar)->execute($request);
+        app(GenerateDefaultAvatar::class)->execute($request);
     }
 
     public function test_it_replaces_existing_default_avatar()
@@ -54,7 +54,7 @@ class GenerateDefaultAvatarTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new GenerateDefaultAvatar)->execute($request);
+        $contact = app(GenerateDefaultAvatar::class)->execute($request);
 
         $this->assertContains(
             'avatars/',

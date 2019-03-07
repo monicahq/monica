@@ -212,7 +212,7 @@ class ImportCSV extends Command
             ]);
         }
 
-        (new GetAvatarsFromInternet)->execute([
+        app(GetAvatarsFromInternet::class)->execute([
             'contact_id' => $contact->id,
         ]);
     }

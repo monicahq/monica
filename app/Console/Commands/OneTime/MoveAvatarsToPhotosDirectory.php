@@ -125,7 +125,7 @@ class MoveAvatarsToPhotosDirectory extends Command
             'source' => 'photo',
             'photo_id' => $photo->id,
         ];
-        (new UpdateAvatar)->execute($data);
+        app(UpdateAvatar::class)->execute($data);
     }
 
     private function deleteThumbnails($contact)

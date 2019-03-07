@@ -18,7 +18,7 @@ class GetAdorableAvatarTest extends TestCase
             'size' => 400,
         ];
 
-        $url = (new GetAdorableAvatarURL)->execute($request);
+        $url = app(GetAdorableAvatarURL::class)->execute($request);
 
         $this->assertEquals(
             'https://api.adorable.io/avatars/400/matt@wordpress.com.png',
@@ -32,7 +32,7 @@ class GetAdorableAvatarTest extends TestCase
             'uuid' => 'matt@wordpress.com',
         ];
 
-        $url = (new GetAdorableAvatarURL)->execute($request);
+        $url = app(GetAdorableAvatarURL::class)->execute($request);
 
         // should return an avatar of 200 px wide
         $this->assertEquals(
@@ -48,6 +48,6 @@ class GetAdorableAvatarTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new GetAdorableAvatarURL)->execute($request);
+        app(GetAdorableAvatarURL::class)->execute($request);
     }
 }

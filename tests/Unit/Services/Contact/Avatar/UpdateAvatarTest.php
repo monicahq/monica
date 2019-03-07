@@ -25,7 +25,7 @@ class UpdateAvatarTest extends TestCase
             'source' => 'gravatar',
         ];
 
-        $contact = (new UpdateAvatar)->execute($request);
+        $contact = app(UpdateAvatar::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -48,7 +48,7 @@ class UpdateAvatarTest extends TestCase
             'source' => 'default',
         ];
 
-        $contact = (new UpdateAvatar)->execute($request);
+        $contact = app(UpdateAvatar::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -71,7 +71,7 @@ class UpdateAvatarTest extends TestCase
             'source' => 'adorable',
         ];
 
-        $contact = (new UpdateAvatar)->execute($request);
+        $contact = app(UpdateAvatar::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -98,7 +98,7 @@ class UpdateAvatarTest extends TestCase
             'photo_id' => $photo->id,
         ];
 
-        $contact = (new UpdateAvatar)->execute($request);
+        $contact = app(UpdateAvatar::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -122,7 +122,7 @@ class UpdateAvatarTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateAvatar)->execute($request);
+        app(UpdateAvatar::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_not_linked_to_account()
@@ -136,7 +136,7 @@ class UpdateAvatarTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateAvatar)->execute($request);
+        app(UpdateAvatar::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_photo_not_linked_to_account()
@@ -152,7 +152,7 @@ class UpdateAvatarTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $contact = (new UpdateAvatar)->execute($request);
+        $contact = app(UpdateAvatar::class)->execute($request);
 
         // Case: photo exists but belongs to another account
         $photo = factory(Photo::class)->create([
@@ -166,6 +166,6 @@ class UpdateAvatarTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateAvatar)->execute($request);
+        app(UpdateAvatar::class)->execute($request);
     }
 }

@@ -24,11 +24,8 @@ class CreateAvatarsForExistingContacts extends Migration
                     'contact_id' => $contact->id,
                 ];
 
-                $avatarService = new GetAvatarsFromInternet;
-                $avatarService->execute($request);
-
-                $avatarService = new GenerateDefaultAvatar;
-                $avatarService->execute($request);
+                app(GetAvatarsFromInternet::class)->execute($request);
+                app(GenerateDefaultAvatar::class)->execute($request);
             }
         });
     }

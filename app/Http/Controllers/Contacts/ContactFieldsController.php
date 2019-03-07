@@ -58,7 +58,7 @@ class ContactFieldsController extends Controller
             ]
         );
 
-        (new GetAvatarsFromInternet)->execute([
+        app(GetAvatarsFromInternet::class)->execute([
             'contact_id' => $contact->id,
         ]);
 
@@ -80,7 +80,7 @@ class ContactFieldsController extends Controller
             ]
         );
 
-        (new GetAvatarsFromInternet)->execute([
+        app(GetAvatarsFromInternet::class)->execute([
             'contact_id' => $contact->id,
         ]);
 
@@ -91,7 +91,7 @@ class ContactFieldsController extends Controller
     {
         $contactField->delete();
 
-        (new GetAvatarsFromInternet)->execute([
+        app(GetAvatarsFromInternet::class)->execute([
             'contact_id' => $contact->id,
         ]);
     }

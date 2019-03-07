@@ -18,7 +18,7 @@ class GetGravatarTest extends TestCase
             'size' => 400,
         ];
 
-        $url = (new GetGravatarURL)->execute($request);
+        $url = app(GetGravatarURL::class)->execute($request);
 
         $this->assertEquals(
             'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=400&d=mm&r=g',
@@ -33,7 +33,7 @@ class GetGravatarTest extends TestCase
             'size' => 80,
         ];
 
-        $url = (new GetGravatarURL)->execute($request);
+        $url = app(GetGravatarURL::class)->execute($request);
 
         $this->assertEquals(
             'https://www.gravatar.com/avatar/5bbc9048a99ec78cdbc227770e707efb.jpg?s=80&d=mm&r=g',
@@ -47,7 +47,7 @@ class GetGravatarTest extends TestCase
             'email' => 'matt@wordpress.com',
         ];
 
-        $url = (new GetGravatarURL)->execute($request);
+        $url = app(GetGravatarURL::class)->execute($request);
 
         // should return an avatar of 200 px wide
         $this->assertEquals(
@@ -64,7 +64,7 @@ class GetGravatarTest extends TestCase
 
         // should return an avatar of 200 px wide
         $this->assertNull(
-            (new GetGravatarURL)->execute($request)
+            app(GetGravatarURL::class)->execute($request)
         );
     }
 
@@ -75,6 +75,6 @@ class GetGravatarTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        $url = (new GetGravatarURL)->execute($request);
+        $url = app(GetGravatarURL::class)->execute($request);
     }
 }

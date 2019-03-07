@@ -76,7 +76,7 @@ class PhotosController extends Controller
 
         if ($contact->avatar_source == 'photo') {
             if ($contact->avatar_photo_id == $photo->id) {
-                (new UpdateAvatar)->execute([
+                app(UpdateAvatar::class)->execute([
                     'account_id' => auth()->user()->account->id,
                     'contact_id' => $contact->id,
                     'source' => 'adorable',

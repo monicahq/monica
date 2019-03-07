@@ -112,12 +112,12 @@ class CreateContact extends BaseService
         $contact->save();
 
         // populate the avatar from Adorable and grab the Gravatar
-        (new GetAvatarsFromInternet)->execute([
+        app(GetAvatarsFromInternet::class)->execute([
             'contact_id' => $contact->id,
         ]);
 
         // also generate the default avatar
-        (new GenerateDefaultAvatar)->execute([
+        app(GenerateDefaultAvatar::class)->execute([
             'contact_id' => $contact->id,
         ]);
     }

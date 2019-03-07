@@ -31,7 +31,7 @@ class GetAvatarsFromInternetTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new GetAvatarsFromInternet)->execute($request);
+        $contact = app(GetAvatarsFromInternet::class)->execute($request);
 
         $this->assertInstanceOf(
             Contact::class,
@@ -55,7 +55,7 @@ class GetAvatarsFromInternetTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new GetAvatarsFromInternet)->execute($request);
+        $contact = app(GetAvatarsFromInternet::class)->execute($request);
 
         $this->assertNull(
             $contact->avatar_gravatar_url
@@ -81,11 +81,11 @@ class GetAvatarsFromInternetTest extends TestCase
             'contact_id' => $contact->id,
         ];
 
-        $contact = (new GetAvatarsFromInternet)->execute($request);
+        $contact = app(GetAvatarsFromInternet::class)->execute($request);
 
         // now we call the service again to reset the gravatar url
         $contactField->delete();
-        $contact = (new GetAvatarsFromInternet)->execute($request);
+        $contact = app(GetAvatarsFromInternet::class)->execute($request);
 
         $this->assertNull(
             $contact->avatar_gravatar_url
@@ -104,6 +104,6 @@ class GetAvatarsFromInternetTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new GetAvatarsFromInternet)->execute($request);
+        app(GetAvatarsFromInternet::class)->execute($request);
     }
 }

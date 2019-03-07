@@ -113,7 +113,7 @@ class UpdateContact extends BaseService
      */
     private function updateDefaultAvatar(Contact $contact)
     {
-        (new GenerateDefaultAvatar)->execute([
+        app(GenerateDefaultAvatar::class)->execute([
             'contact_id' => $contact->id,
         ]);
     }
