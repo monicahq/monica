@@ -74,14 +74,13 @@ class PhotosController extends Controller
             return $this->respondNotFound();
         }
 
-        if ($contact->avatar_source == 'photo') {
-            if ($contact->avatar_photo_id == $photo->id) {
-                app(UpdateAvatar::class)->execute([
-                    'account_id' => auth()->user()->account->id,
-                    'contact_id' => $contact->id,
-                    'source' => 'adorable',
-                ]);
-            }
+        if ($contact->avatar_source == 'photo'
+            && $contact->avatar_photo_id == $photo->id) {
+            app(UpdateAvatar::class)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => $contact->id,
+                'source' => 'adorable',
+            ]);
         }
     }
 }

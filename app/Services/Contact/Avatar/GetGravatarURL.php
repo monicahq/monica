@@ -4,6 +4,7 @@ namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
 use Illuminate\Support\Facades\App;
+use Creativeorange\Gravatar\Facades\Gravatar;
 
 class GetGravatarURL extends BaseService
 {
@@ -31,7 +32,7 @@ class GetGravatarURL extends BaseService
         $this->validate($data);
 
         try {
-            if (! app('gravatar')->exists($data['email'])) {
+            if (! Gravatar::exists($data['email'])) {
                 return;
             }
         } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
@@ -41,7 +42,7 @@ class GetGravatarURL extends BaseService
 
         $size = $this->size($data);
 
-        return app('gravatar')->get($data['email'], [
+        return Gravatar::get($data['email'], [
                 'size' => $size,
                 'secure' => App::environment('production'),
             ]);

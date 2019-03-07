@@ -85,15 +85,13 @@ class GetAvatarsFromInternet extends BaseService
     {
         try {
             $contactField = $contact->contactFields()
-                ->whereHas('contactFieldType', function ($query) {
-                    $query->where('type', '=', 'email');
-                })
-                ->firstOrFail();
+                                    ->email()
+                                    ->first();
         } catch (ModelNotFoundException $e) {
             return;
         }
 
-        return $contactField->data;
+        return $contactField ? $contactField->data : null;
     }
 
     /**
