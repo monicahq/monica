@@ -31,7 +31,7 @@ class ExportVCardTest extends TestCase
         ]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportNames', [$contact, $vCard]);
 
         $this->assertCount(
@@ -51,7 +51,7 @@ class ExportVCardTest extends TestCase
         ]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportNames', [$contact, $vCard]);
 
         $this->assertCount(
@@ -71,7 +71,7 @@ class ExportVCardTest extends TestCase
         ]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportGender', [$contact, $vCard]);
 
         $this->assertCount(
@@ -90,7 +90,7 @@ class ExportVCardTest extends TestCase
         $contact->avatar_source = 'gravatar';
         $contact->avatar_gravatar_url = 'gravatar';
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportPhoto', [$contact, $vCard]);
 
         $this->assertCount(
@@ -109,7 +109,7 @@ class ExportVCardTest extends TestCase
         ]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportWorkInformation', [$contact, $vCard]);
 
         $this->assertCount(
@@ -128,7 +128,7 @@ class ExportVCardTest extends TestCase
         ]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportWorkInformation', [$contact, $vCard]);
 
         $this->assertCount(
@@ -148,7 +148,7 @@ class ExportVCardTest extends TestCase
         ]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportWorkInformation', [$contact, $vCard]);
 
         $this->assertCount(
@@ -166,7 +166,7 @@ class ExportVCardTest extends TestCase
         $contact->setSpecialDate('birthdate', 2000, 10, 5);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportBirthday', [$contact, $vCard]);
 
         $this->assertCount(
@@ -182,7 +182,7 @@ class ExportVCardTest extends TestCase
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
 
         $this->assertCount(
@@ -204,7 +204,7 @@ class ExportVCardTest extends TestCase
             'contact_field_type_id' => $contactFieldType->id,
         ]);
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportContactFields', [$contact, $vCard]);
 
         $this->assertCount(
@@ -220,7 +220,7 @@ class ExportVCardTest extends TestCase
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
         $vCard = new VCard();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportAddress', [$contact, $vCard]);
 
         $this->assertCount(
@@ -247,7 +247,7 @@ class ExportVCardTest extends TestCase
             'account_id' => $account->id,
         ]);
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $this->invokePrivateMethod($exportVCard, 'exportAddress', [$contact, $vCard]);
 
         $this->assertCount(
@@ -261,13 +261,13 @@ class ExportVCardTest extends TestCase
     public function test_vcard_prepares_an_almost_empty_vcard()
     {
         $account = factory(Account::class)->create();
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id])->refresh();
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
         $vCard = $this->invokePrivateMethod($exportVCard, 'export', [$contact]);
 
         $this->assertCount(
-            self::defaultPropsCount + 5,
+            self::defaultPropsCount + 6,
             $vCard->children()
         );
 
@@ -298,11 +298,12 @@ class ExportVCardTest extends TestCase
             'contact_field_type_id' => $contactFieldType->id,
         ]);
 
-        $exportVCard = new ExportVCard();
+        $exportVCard = app(ExportVCard::class);
+        $contact = $contact->refresh();
         $vCard = $this->invokePrivateMethod($exportVCard, 'export', [$contact]);
 
         $this->assertCount(
-            self::defaultPropsCount + 8,
+            self::defaultPropsCount + 9,
             $vCard->children()
         );
 

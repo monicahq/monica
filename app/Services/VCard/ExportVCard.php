@@ -124,7 +124,7 @@ class ExportVCard extends BaseService
     {
         $picture = $contact->getAvatarURL();
 
-        if (! is_null($picture) && $picture != '') {
+        if (! empty($picture)) {
             $vcard->add('PHOTO', $picture);
         }
     }

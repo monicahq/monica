@@ -2,7 +2,7 @@
 
 namespace App\Services\Contact\Avatar;
 
-use Laravolt\Avatar\Avatar;
+use Laravolt\Avatar\Facade as Avatar;
 use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
@@ -74,18 +74,21 @@ class GenerateDefaultAvatar extends BaseService
      */
     private function createNewAvatar(Contact $contact)
     {
-        $img = (new Avatar([
-            'width' => '150',
-            'height' => '150',
-            'shape' => 'square',
-            'backgrounds' => [$contact->default_avatar_color],
-            'ascii' => true,
-        ]))->create($contact->name)->getImageObject()->encode('jpg');
+        try {
+            $img = Avatar::create($contact->name)
+                ->setBackground($contact->default_avatar_color)
+                ->getImageObject()
+                ->encode('jpg');
 
-        $filename = 'avatars/'.$contact->uuid.'.jpg';
-        Storage::put($filename, $img);
+            $filename = 'avatars/'.$contact->uuid.'.jpg';
+            Storage::put($filename, $img);
 
-        return $filename;
+            return $filename;
+        } finally {
+            if ($img) {
+                $img->destroy();
+            }
+        }
     }
 
     /**
