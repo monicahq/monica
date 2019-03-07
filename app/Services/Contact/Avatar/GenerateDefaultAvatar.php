@@ -2,10 +2,10 @@
 
 namespace App\Services\Contact\Avatar;
 
-use Laravolt\Avatar\Facade as Avatar;
 use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Laravolt\Avatar\Facade as Avatar;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
