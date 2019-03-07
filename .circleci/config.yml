@@ -60,11 +60,6 @@ aliases:
       name: Run http server
       command: php -S localhost:8000 -t public scripts/tests/server-cc.php
       background: true
-  - &http-server
-    run:
-      name: Run http server
-      command: php artisan serve
-      background: true
   - &wait-for-server
     run:
       name: Wait for http server
@@ -218,8 +213,6 @@ jobs:
       - *remove-xdebug
       - *prepare-db
       - *seed-test-db
-      - *http-server
-      - *wait-for-server
       - *unit-tests
       - store_test_results:
           path: results/junit
