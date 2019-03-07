@@ -193,7 +193,7 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         $response = $this->delete('/api/activitytypes/2349273984279348');
 
         $this->expectDataError($response, [
-            'The activity type id must be an integer.',
+            'The selected activity type id is invalid.',
         ]);
     }
 

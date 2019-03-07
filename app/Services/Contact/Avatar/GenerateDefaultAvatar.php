@@ -74,6 +74,7 @@ class GenerateDefaultAvatar extends BaseService
      */
     private function createNewAvatar(Contact $contact)
     {
+        $img = null;
         try {
             $img = Avatar::create($contact->name)
                 ->setBackground($contact->default_avatar_color)

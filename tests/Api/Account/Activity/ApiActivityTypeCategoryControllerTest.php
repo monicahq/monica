@@ -118,7 +118,7 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         $response->assertStatus(422);
 
         $this->expectDataError($response, [
-            'The activity type category id must be an integer.',
+            'The selected activity type category id is invalid.',
         ]);
     }
 
@@ -154,7 +154,7 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
         $response->assertStatus(422);
 
         $this->expectDataError($response, [
-            'The activity type category id must be an integer.',
+            'The selected activity type category id is invalid.',
         ]);
     }
 
