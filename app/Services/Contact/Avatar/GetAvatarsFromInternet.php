@@ -39,7 +39,7 @@ class GetAvatarsFromInternet extends BaseService
 
         $contact = Contact::findOrFail($data['contact_id']);
 
-        $this->generateUUID($contact);
+        $contact = $this->generateUUID($contact);
         $this->getAdorable($contact);
         $this->getGravatar($contact);
 
@@ -50,12 +50,14 @@ class GetAvatarsFromInternet extends BaseService
      * Generate the UUID used to identify the contact in the Adorable service.
      *
      * @param Contact  $contact
-     * @return void
+     * @return Contact
      */
     private function generateUUID(Contact $contact)
     {
         $contact->avatar_adorable_uuid = RandomHelper::uuid();
         $contact->save();
+
+        return $contact;
     }
 
     /**
@@ -66,7 +68,7 @@ class GetAvatarsFromInternet extends BaseService
      */
     private function getAdorable(Contact $contact)
     {
-        $contact->avatar_adorable_url = (new GetAdorableAvatarURL)->execute([
+        $contact->avatar_adorable_url = app(GetAdorableAvatarURL::class)->execute([
             'uuid' => $contact->avatar_adorable_uuid,
             'size' => 200,
         ]);
@@ -105,7 +107,7 @@ class GetAvatarsFromInternet extends BaseService
         $email = $this->getEmail($contact);
 
         if ($email) {
-            $contact->avatar_gravatar_url = (new GetGravatarURL)->execute([
+            $contact->avatar_gravatar_url = app(GetGravatarURL::class)->execute([
                 'email' => $email,
                 'size' => 200,
             ]);

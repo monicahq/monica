@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Avatar;
 
 use App\Services\BaseService;
+use Illuminate\Support\Facades\App;
 
 class GetGravatarURL extends BaseService
 {
@@ -42,7 +43,7 @@ class GetGravatarURL extends BaseService
 
         return app('gravatar')->get($data['email'], [
                 'size' => $size,
-                'secure' => config('app.env') === 'production',
+                'secure' => App::environment('production'),
             ]);
     }
 

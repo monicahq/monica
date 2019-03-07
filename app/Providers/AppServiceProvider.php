@@ -73,7 +73,6 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Auth\Population\PopulateLifeEventsTable::class => \App\Services\Auth\Population\PopulateLifeEventsTable::class,
         \App\Services\Auth\Population\PopulateModulesTable::class => \App\Services\Auth\Population\PopulateModulesTable::class,
         \App\Services\Contact\Avatar\GenerateDefaultAvatar::class => \App\Services\Contact\Avatar\GenerateDefaultAvatar::class,
-        \App\Services\Contact\Avatar\GetAdorableAvatar::class => \App\Services\Contact\Avatar\GetAdorableAvatar::class,
         \App\Services\Contact\Avatar\GetAdorableAvatarURL::class => \App\Services\Contact\Avatar\GetAdorableAvatarURL::class,
         \App\Services\Contact\Avatar\GetAvatarsFromInternet::class => \App\Services\Contact\Avatar\GetAvatarsFromInternet::class,
         \App\Services\Contact\Avatar\GetGravatarURL::class => \App\Services\Contact\Avatar\GetGravatarURL::class,

@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Avatar;
 
 use Laravolt\Avatar\Avatar;
+use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;
@@ -35,6 +36,8 @@ class GenerateDefaultAvatar extends BaseService
 
         $contact = Contact::find($data['contact_id']);
 
+        $contact = $this->generateContactUUID($contact);
+
         // delete existing default avatar
         $this->deleteExistingDefaultAvatar($contact);
 
@@ -43,6 +46,22 @@ class GenerateDefaultAvatar extends BaseService
 
         $contact->avatar_default_url = $filename;
         $contact->save();
+
+        return $contact;
+    }
+
+    /**
+     * Create an uuid for the contact if it does not exist.
+     *
+     * @param Contact  $contact
+     * @return Contact
+     */
+    private function generateContactUUID(Contact $contact)
+    {
+        if (! $contact->uuid) {
+            $contact->uuid = RandomHelper::uuid();
+            $contact->save();
+        }
 
         return $contact;
     }
