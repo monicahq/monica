@@ -27,7 +27,7 @@ class Photo extends Resource
             'account' => [
                 'id' => $this->account->id,
             ],
-            'contact' => new ContactShortResource($this->contact()),
+            'contact' => new ContactShortResource($this->contact),
             'created_at' => DateHelper::getTimestamp($this->created_at),
             'updated_at' => DateHelper::getTimestamp($this->updated_at),
         ];
