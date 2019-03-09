@@ -10,7 +10,7 @@
           </div>
           <div class="child absolute top-0 left-0 h-100 w-100 br3">
             <div class="db w-100 h-100 center tc pt5">
-              <a class="no-underline white" href="/people/{{ $contact->hashID() }}/avatar">{{ trans('app.update' )}}</a>
+              <a class="no-underline white" href="{{ route('people.avatar.edit', $contact) }}">{{ trans('app.update' )}}</a>
             </div>
           </div>
         </div>
