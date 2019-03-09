@@ -150,7 +150,7 @@ return [
     'work_edit_company' => 'الشركة (اختياري)',
     'work_information' => 'معلومات العمل',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'تم حفظ التفضيلات الغذائية',
     'food_preferencies_edit_description' => 'قد يكون :firstname أو شخص في عائلة :family مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
     'food_preferencies_edit_description_no_last_name' => 'قد يكون :firstname مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
@@ -244,7 +244,7 @@ return [
     'activities_add_title' => 'ماذا فعلت مع :name؟',
     'activities_summary' => 'صف ما فعلته',
     'activities_add_pick_activity' => '(اختياري) هل ترغب في تصنيف هذا النشاط؟ لا يجب عليك، ولكن سوف توفر لك إحصاءات في لاحقا',
-    'activities_add_date_occured' => 'تاريخ حدوث هذا النشاط',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'تعليق اختياري',
     'activities_add_cta' => 'سجل النشاط',
     'activities_blank_title' => 'تابع ما فعلته مع :name في الماضي وعما تحدثتم',
@@ -367,7 +367,7 @@ return [
     // Pets
     'pets_kind' => 'نوع الحيوان الأليف',
     'pets_name' => 'الاسم (اختيارى)',
-    'pets_create_success' => 'تم إضافة الحيوان الأليف بنجاح',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'تم تحديث الحيوان الأليف',
     'pets_delete_success' => 'تم حذف الحيوان الأليف',
     'pets_title' => 'الحيوانات الأليفة',
@@ -423,8 +423,8 @@ return [
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'ذهبت في عطلة',
     'life_event_sentence_new_vehicle' => 'Got a new vehicle',
-    'life_event_sentence_new_roommate' => 'Got a roomate',
-    'life_event_sentence_overcame_an_illness' => 'التغلب على المرض',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'أقلعت عن عادة',
     'life_event_sentence_new_eating_habits' => 'Started new eating habits',
     'life_event_sentence_weight_loss' => 'فقدت الوزن',
