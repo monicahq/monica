@@ -6,6 +6,20 @@ New features:
 
 Enhancements:
 
+*
+
+Fixes:
+
+*
+
+
+RELEASED VERSIONS:
+
+v2.12.1 - 2019-03-09
+--------------------
+
+Enhancements:
+
 * Add eloquent relationships touches
 
 Fixes:
@@ -18,9 +32,6 @@ Fixes:
 * Fix several typos in English language files
 * Fix Journal view now includes Activities as intended
 * Fix deleting a LifeEvent no longer deletes the associated Contact
-
-
-RELEASED VERSIONS:
 
 v2.12.0 - 2019-02-09
 --------------------
