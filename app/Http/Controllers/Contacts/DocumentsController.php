@@ -18,8 +18,9 @@ class DocumentsController extends Controller
     /**
      * Display the list of documents.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -33,9 +34,10 @@ class DocumentsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return Document
      */
-    public function store(Request $request, Contact $contact)
+    public function store(Request $request, Contact $contact): Document
     {
         return app(UploadDocument::class)->execute([
             'account_id' => auth()->user()->account->id,
@@ -50,7 +52,8 @@ class DocumentsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Document $document
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Document $document)
     {
