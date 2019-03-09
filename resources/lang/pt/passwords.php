@@ -18,7 +18,7 @@ return [
     'sent' => 'O link para redefinição de senha foi enviado para o seu e-mail.',
     'token' => 'Token para recuperação de senha inválido.',
     'user' => 'O link para redefinição de senha foi enviado para o seu e-mail.',
-    'changed' => 'Senha alterada com sucesso.',
+    'changed' => 'Password changed successfully.',
     'invalid' => 'A senha que introduziu não está correta.',
 
 ];
