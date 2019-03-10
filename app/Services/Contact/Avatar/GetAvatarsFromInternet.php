@@ -90,7 +90,7 @@ class GetAvatarsFromInternet extends BaseService
 
             return $contactField ? $contactField->data : null;
         } catch (ModelNotFoundException $e) {
-            return;
+            // Not found
         }
     }
 
