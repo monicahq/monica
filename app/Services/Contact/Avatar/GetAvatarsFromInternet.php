@@ -87,11 +87,11 @@ class GetAvatarsFromInternet extends BaseService
             $contactField = $contact->contactFields()
                                     ->email()
                                     ->first();
+
+            return $contactField ? $contactField->data : null;
         } catch (ModelNotFoundException $e) {
             return;
         }
-
-        return $contactField ? $contactField->data : null;
     }
 
     /**

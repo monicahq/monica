@@ -31,21 +31,30 @@ class GetGravatarURL extends BaseService
     {
         $this->validate($data);
 
+        if ($this->exists($data)) {
+            $size = $this->size($data);
+
+            return Gravatar::get($data['email'], [
+                    'size' => $size,
+                    'secure' => App::environment('production'),
+                ]);
+        }
+    }
+
+    /**
+     * Test given email.
+     *
+     * @param array $data
+     * @return bool
+     */
+    private function exists(array $data)
+    {
         try {
-            if (! Gravatar::exists($data['email'])) {
-                return;
-            }
+            return Gravatar::exists($data['email']);
         } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
             // catch invalid email
-            return;
+            return false;
         }
-
-        $size = $this->size($data);
-
-        return Gravatar::get($data['email'], [
-                'size' => $size,
-                'secure' => App::environment('production'),
-            ]);
     }
 
     /**

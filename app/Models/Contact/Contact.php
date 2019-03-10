@@ -1003,9 +1003,6 @@ class Contact extends Model
         $avatarURL = '';
 
         switch ($this->avatar_source) {
-            case 'default':
-                $avatarURL = $this->getAvatarDefaultURL();
-                break;
             case 'adorable':
                 $avatarURL = $this->avatar_adorable_url;
                 break;
@@ -1014,6 +1011,10 @@ class Contact extends Model
                 break;
             case 'photo':
                 $avatarURL = Photo::find($this->avatar_photo_id)->url();
+                break;
+            case 'default':
+            default:
+                $avatarURL = $this->getAvatarDefaultURL();
                 break;
         }
 
