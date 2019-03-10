@@ -5762,24 +5762,24 @@
         },
         {
             "name": "ralouphie/mimey",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ralouphie/mimey.git",
-                "reference": "3af64e9ba0495aa9e3d22651b3b4e6dca06a4d43"
+                "reference": "8f74e6da73f9df7bd965e4e123f3d8fb9acb89ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ralouphie/mimey/zipball/3af64e9ba0495aa9e3d22651b3b4e6dca06a4d43",
-                "reference": "3af64e9ba0495aa9e3d22651b3b4e6dca06a4d43",
+                "url": "https://api.github.com/repos/ralouphie/mimey/zipball/8f74e6da73f9df7bd965e4e123f3d8fb9acb89ba",
+                "reference": "8f74e6da73f9df7bd965e4e123f3d8fb9acb89ba",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.4|^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~3.7.0",
-                "satooshi/php-coveralls": ">=1.0"
+                "php-coveralls/php-coveralls": "^1.1",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
             },
             "type": "library",
             "autoload": {
@@ -5798,7 +5798,7 @@
                 }
             ],
             "description": "PHP package for converting file extensions to MIME types and vice versa.",
-            "time": "2018-07-06T05:58:33+00:00"
+            "time": "2019-03-08T08:49:03+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -7295,7 +7295,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
