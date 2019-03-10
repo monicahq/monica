@@ -8499,16 +8499,16 @@
         },
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "754bb4d075d7fb2b23b1a416802c0e45884df495"
+                "reference": "725711022be71c6fa2e7bc8f9648bf125986f027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/754bb4d075d7fb2b23b1a416802c0e45884df495",
-                "reference": "754bb4d075d7fb2b23b1a416802c0e45884df495",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/725711022be71c6fa2e7bc8f9648bf125986f027",
+                "reference": "725711022be71c6fa2e7bc8f9648bf125986f027",
                 "shasum": ""
             },
             "require": {
@@ -8569,7 +8569,7 @@
                 "phpstorm",
                 "sublime"
             ],
-            "time": "2019-02-18T19:54:27+00:00"
+            "time": "2019-03-05T09:24:51+00:00"
         },
         {
             "name": "barryvdh/reflection-docblock",
@@ -11195,16 +11195,16 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "0.2",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/laravel-psalm-plugin.git",
-                "reference": "a700c89061d151d1c08851abd93d834f9183534d"
+                "reference": "33850a723752c15474dca3f8f680716a353e333f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/a700c89061d151d1c08851abd93d834f9183534d",
-                "reference": "a700c89061d151d1c08851abd93d834f9183534d",
+                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/33850a723752c15474dca3f8f680716a353e333f",
+                "reference": "33850a723752c15474dca3f8f680716a353e333f",
                 "shasum": ""
             },
             "require": {
@@ -11237,7 +11237,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2019-03-04T18:37:34+00:00"
+            "time": "2019-03-06T16:18:05+00:00"
         },
         {
             "name": "roave/security-advisories",
