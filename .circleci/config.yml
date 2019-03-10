@@ -69,7 +69,7 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
+        vendor/bin/phpunit -c phpunit.xml -d memory_limit=4G --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
   - &psalm
     run:
       name: Run psalm
@@ -105,11 +105,6 @@ aliases:
       name: Run selenium chromedriver
       command: vendor/bin/chromedriver
       background: true
-  - &remove-xdebug
-    run:
-      name: Remove xdebug
-      command: |
-        sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
   - &docker-install
     run:
       name: Install docker_squash
@@ -210,7 +205,6 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
-      - *remove-xdebug
       - *prepare-db
       - *seed-test-db
       - *unit-tests
