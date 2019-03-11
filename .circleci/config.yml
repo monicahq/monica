@@ -74,7 +74,7 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        TESTSUITE=$(echo Api Unit Feature | circleci tests split)
+        TESTSUITE=$(echo -e "Api\nUnit\nFeature" | circleci tests split)
         phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results0${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage0${CIRCLE_NODE_INDEX}.xml --filter $TESTSUITE
   - &psalm
     run:
