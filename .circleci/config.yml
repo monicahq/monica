@@ -346,7 +346,7 @@ jobs:
           name: Run sonar scanner
           command: |
             export SONAR_RESULT=./results/results.xml
-            export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g')
+            export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g' | sed ':a;N;$!ba;s/\n//g')
             scripts/tests/runsonar.sh
 
       - save_cache:
