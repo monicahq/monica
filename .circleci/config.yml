@@ -209,6 +209,7 @@ jobs:
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
+    parallelism: 3
 
     steps:
       - checkout:
@@ -443,7 +444,6 @@ workflows:
       - tests-7.2:
           requires:
             - build
-          parallelism: 3
           filters:
             branches:
               ignore: /l10n_master.*/
