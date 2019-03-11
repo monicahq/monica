@@ -30,6 +30,8 @@ abstract class DuskTestCase extends BaseTestCase
      * Register the base URL and some macro with Dusk.
      *
      * @return void
+     *
+     * @psalm-suppress UndefinedThisPropertyFetch
      */
     protected function setUp(): void
     {
