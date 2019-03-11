@@ -150,7 +150,7 @@ return [
     'work_edit_company' => 'Company (optional)',
     'work_information' => 'Work information',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'Food preferences have been saved',
     'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
@@ -244,7 +244,7 @@ return [
     'activities_add_title' => 'What did you do with :name?',
     'activities_summary' => 'Describe what you did',
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
-    'activities_add_date_occured' => 'Date this activity occured',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'Optional comment',
     'activities_add_cta' => 'Record activity',
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
@@ -367,7 +367,7 @@ return [
     // Pets
     'pets_kind' => 'Kind of pet',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
     'pets_title' => 'Pets',
@@ -423,8 +423,8 @@ return [
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'Went on holidays',
     'life_event_sentence_new_vehicle' => 'Got a new vehicle',
-    'life_event_sentence_new_roommate' => 'Got a roomate',
-    'life_event_sentence_overcame_an_illness' => 'Overcam an illness',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'Quit a habit',
     'life_event_sentence_new_eating_habits' => 'Started new eating habits',
     'life_event_sentence_weight_loss' => 'Lost weight',

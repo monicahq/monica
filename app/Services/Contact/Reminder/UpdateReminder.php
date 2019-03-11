@@ -19,7 +19,7 @@ class UpdateReminder extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'reminder_id' => 'required|integer|exists:reminders,id',
-            'initial_date' => 'required|date|date_format:Y-m-d',
+            'initial_date' => 'required|date_format:Y-m-d',
             'frequency_type' => [
                 'required',
                 Rule::in(Reminder::$frequencyTypes),
