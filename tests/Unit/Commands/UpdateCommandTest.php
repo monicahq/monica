@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Commands;
+namespace Tests\Unit\Commands;
 
 use Tests\TestCase;
 use App\Console\Commands\Update;

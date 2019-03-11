@@ -74,7 +74,8 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
+        TESTSUITE=$(echo Api Unit Feature | circleci tests split)
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results0${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage0${CIRCLE_NODE_INDEX}.xml --filter $TESTSUITE
   - &psalm
     run:
       name: Run psalm
@@ -344,7 +345,7 @@ jobs:
           name: Run sonar scanner
           command: |
             export SONAR_RESULT=./results/results.xml
-            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml
+            export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g')
             scripts/tests/runsonar.sh
 
       - save_cache:
@@ -442,6 +443,7 @@ workflows:
       - tests-7.2:
           requires:
             - build
+          parallelism: 3
           filters:
             branches:
               ignore: /l10n_master.*/
