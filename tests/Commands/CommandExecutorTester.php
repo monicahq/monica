@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Commands;
+namespace Tests\Commands;
 
 use App\Console\Commands\Helpers\CommandExecutorInterface;
 

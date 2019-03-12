@@ -11,6 +11,7 @@
     <testsuites>
         <testsuite name="Api-and-Feature">
             <directory suffix="Test.php">./tests/Api</directory>
+            <directory suffix="Test.php">./tests/Commands</directory>
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
 
