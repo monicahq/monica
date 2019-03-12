@@ -74,8 +74,8 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        TESTSUITE=$(echo -e "Api\nUnit\nFeature" | circleci tests split)
-        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results0${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage0${CIRCLE_NODE_INDEX}.xml --filter $TESTSUITE
+        TESTSUITE=$(echo -e "/Api/\n/Unit/\n/Feature/" | circleci tests split)
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage${CIRCLE_NODE_INDEX}.xml --filter $TESTSUITE
   - &psalm
     run:
       name: Run psalm
@@ -87,7 +87,7 @@ aliases:
   - &browser-tests
     run:
       name: Run browser tests
-      command: php artisan dusk --log-junit results/junit/dusk/results.xml
+      command: php artisan dusk --log-junit results/junit/dusk/results3.xml
   - &browser-cypress
     run:
       name: Run browser tests (cypress)
@@ -98,13 +98,13 @@ aliases:
     run:
       name: Fix coverage
       command: |
-        vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
         rm -rf results/coverage
   - &fix-coverage2
     run:
       name: Fix coverage
       command: |
-        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
+        vendor/bin/phpcov merge --clover=results/coverage4.xml results/coverage/
         rm -rf results/coverage
   - &selenium
     run:
