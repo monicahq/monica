@@ -60,6 +60,11 @@ aliases:
       name: Run http server
       command: php -S localhost:8000 -t public scripts/tests/server-cc.php
       background: true
+  - &http-server
+    run:
+      name: Run http server
+      command: php artisan serve
+      background: true
   - &wait-for-server
     run:
       name: Wait for http server
@@ -69,7 +74,8 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        vendor/bin/phpunit -c phpunit.xml -d memory_limit=4G --log-junit ./results/junit/unit/results.xml --coverage-clover ./results/coverage.xml
+        TESTSUITE=$(echo -e "Api-and-Feature\nUnit" | circleci tests split)
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage${CIRCLE_NODE_INDEX}.xml --testsuite $TESTSUITE
   - &psalm
     run:
       name: Run psalm
@@ -81,7 +87,7 @@ aliases:
   - &browser-tests
     run:
       name: Run browser tests
-      command: php artisan dusk --log-junit results/junit/dusk/results.xml
+      command: php artisan dusk --log-junit results/junit/dusk/results3.xml
   - &browser-cypress
     run:
       name: Run browser tests (cypress)
@@ -92,19 +98,24 @@ aliases:
     run:
       name: Fix coverage
       command: |
-        vendor/bin/phpcov merge --clover=results/coverage2.xml results/coverage/
+        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
         rm -rf results/coverage
   - &fix-coverage2
     run:
       name: Fix coverage
       command: |
-        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
+        vendor/bin/phpcov merge --clover=results/coverage4.xml results/coverage/
         rm -rf results/coverage
   - &selenium
     run:
       name: Run selenium chromedriver
       command: vendor/bin/chromedriver
       background: true
+  - &remove-xdebug
+    run:
+      name: Remove xdebug
+      command: |
+        sudo rm -f /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
   - &docker-install
     run:
       name: Install docker_squash
@@ -198,6 +209,7 @@ jobs:
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
+    parallelism: 2
 
     steps:
       - checkout:
@@ -205,8 +217,11 @@ jobs:
       - attach_workspace:
           at: *root
       - *prepare-environment
+      - *remove-xdebug
       - *prepare-db
       - *seed-test-db
+      - *http-server
+      - *wait-for-server
       - *unit-tests
       - store_test_results:
           path: results/junit
@@ -331,7 +346,7 @@ jobs:
           name: Run sonar scanner
           command: |
             export SONAR_RESULT=./results/results.xml
-            export SONAR_COVERAGE=./results/coverage.xml,./results/coverage2.xml,./results/coverage3.xml
+            export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g' | sed ':a;N;$!ba;s/\n//g')
             scripts/tests/runsonar.sh
 
       - save_cache:

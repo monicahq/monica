@@ -1237,16 +1237,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.10.6",
+            "version": "8.10.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "75fa86dec0a79632fe492fa121b2a067ec100bf1"
+                "reference": "09686926c6a4ded26944602eae80e56eba088c4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/75fa86dec0a79632fe492fa121b2a067ec100bf1",
-                "reference": "75fa86dec0a79632fe492fa121b2a067ec100bf1",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/09686926c6a4ded26944602eae80e56eba088c4b",
+                "reference": "09686926c6a4ded26944602eae80e56eba088c4b",
                 "shasum": ""
             },
             "require": {
@@ -1301,7 +1301,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2019-02-21T11:30:36+00:00"
+            "time": "2019-03-07T08:42:08+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -5884,24 +5884,24 @@
         },
         {
             "name": "ralouphie/mimey",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ralouphie/mimey.git",
-                "reference": "3af64e9ba0495aa9e3d22651b3b4e6dca06a4d43"
+                "reference": "8f74e6da73f9df7bd965e4e123f3d8fb9acb89ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ralouphie/mimey/zipball/3af64e9ba0495aa9e3d22651b3b4e6dca06a4d43",
-                "reference": "3af64e9ba0495aa9e3d22651b3b4e6dca06a4d43",
+                "url": "https://api.github.com/repos/ralouphie/mimey/zipball/8f74e6da73f9df7bd965e4e123f3d8fb9acb89ba",
+                "reference": "8f74e6da73f9df7bd965e4e123f3d8fb9acb89ba",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.4|^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~3.7.0",
-                "satooshi/php-coveralls": ">=1.0"
+                "php-coveralls/php-coveralls": "^1.1",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^6.5"
             },
             "type": "library",
             "autoload": {
@@ -5920,7 +5920,7 @@
                 }
             ],
             "description": "PHP package for converting file extensions to MIME types and vice versa.",
-            "time": "2018-07-06T05:58:33+00:00"
+            "time": "2019-03-08T08:49:03+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -7417,7 +7417,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -8621,16 +8621,16 @@
         },
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v2.6.0",
+            "version": "v2.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "754bb4d075d7fb2b23b1a416802c0e45884df495"
+                "reference": "725711022be71c6fa2e7bc8f9648bf125986f027"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/754bb4d075d7fb2b23b1a416802c0e45884df495",
-                "reference": "754bb4d075d7fb2b23b1a416802c0e45884df495",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/725711022be71c6fa2e7bc8f9648bf125986f027",
+                "reference": "725711022be71c6fa2e7bc8f9648bf125986f027",
                 "shasum": ""
             },
             "require": {
@@ -8691,7 +8691,7 @@
                 "phpstorm",
                 "sublime"
             ],
-            "time": "2019-02-18T19:54:27+00:00"
+            "time": "2019-03-05T09:24:51+00:00"
         },
         {
             "name": "barryvdh/reflection-docblock",
@@ -11317,16 +11317,16 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "0.2",
+            "version": "0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/laravel-psalm-plugin.git",
-                "reference": "a700c89061d151d1c08851abd93d834f9183534d"
+                "reference": "33850a723752c15474dca3f8f680716a353e333f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/a700c89061d151d1c08851abd93d834f9183534d",
-                "reference": "a700c89061d151d1c08851abd93d834f9183534d",
+                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/33850a723752c15474dca3f8f680716a353e333f",
+                "reference": "33850a723752c15474dca3f8f680716a353e333f",
                 "shasum": ""
             },
             "require": {
@@ -11359,7 +11359,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2019-03-04T18:37:34+00:00"
+            "time": "2019-03-06T16:18:05+00:00"
         },
         {
             "name": "roave/security-advisories",

@@ -18,7 +18,7 @@ return [
     'sent' => 'Si el correo eletrónico que ingresaste existe en nuestros registros te hemos enviado un correo para restablecer tu contraseña.',
     'token' => 'Este token para reestablecer la contraseña no es válido.',
     'user' => 'Si el correo eletrónico que ingresaste existe en nuestros registros te hemos enviado un correo para restablecer tu contraseña.',
-    'changed' => 'Contraseña restablecida exitosamente.',
+    'changed' => 'Password changed successfully.',
     'invalid' => 'La contraseña que ingresaste no es correcta.',
 
 ];
