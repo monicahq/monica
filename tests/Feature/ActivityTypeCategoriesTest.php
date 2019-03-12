@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\Controllers;
+namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ActivityTypeCategoriesControllerTest extends FeatureTestCase
+class ActivityTypeCategoriesTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
