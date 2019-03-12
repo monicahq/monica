@@ -74,8 +74,8 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        TESTSUITE=$(echo -e "/Api/\n/Unit/\n/Feature/" | circleci tests split)
-        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage${CIRCLE_NODE_INDEX}.xml --filter $TESTSUITE
+        TESTSUITE=$(echo -e "Api-and-Feature/\nUnit" | circleci tests split)
+        phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage${CIRCLE_NODE_INDEX}.xml --testsuite $TESTSUITE
   - &psalm
     run:
       name: Run psalm
@@ -209,7 +209,7 @@ jobs:
         environment:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_ROOT_PASSWORD: ''
-    parallelism: 3
+    parallelism: 2
 
     steps:
       - checkout:
