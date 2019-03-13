@@ -13,14 +13,14 @@
             {{ trans('people.gifts_add_gift_idea') }}
         </label>
 
-        <label class="form-check-inline" for="received">
-            <input type="radio" class="form-check-input" name="offered" id="received" value="received" @if(old('received') === true || $gift->has_been_received) checked @endif>
-            {{ trans('people.gifts_add_gift_received') }}
-        </label>
-
         <label class="form-check-inline" for="offered">
             <input type="radio" class="form-check-input" name="offered" id="offered" value="offered" @if(old('offered') === true || $gift->has_been_offered) checked @endif>
             {{ trans('people.gifts_add_gift_already_offered') }}
+        </label>
+
+        <label class="form-check-inline" for="received">
+            <input type="radio" class="form-check-input" name="offered" id="received" value="received" @if(old('received') === true || $gift->has_been_received) checked @endif>
+            {{ trans('people.gifts_add_gift_received') }}
         </label>
     </fieldset>
 
