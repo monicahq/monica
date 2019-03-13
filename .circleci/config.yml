@@ -220,8 +220,6 @@ jobs:
       - *remove-xdebug
       - *prepare-db
       - *seed-test-db
-      - *http-server
-      - *wait-for-server
       - *unit-tests
       - store_test_results:
           path: results/junit
