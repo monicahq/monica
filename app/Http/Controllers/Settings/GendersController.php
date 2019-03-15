@@ -24,7 +24,7 @@ class GendersController extends Controller
         $genders = auth()->user()->account->genders;
 
         foreach ($genders as $gender) {
-            $gendersData->push($this->format($gender));
+            $gendersData->push($this->formatData($gender));
         }
 
         return CollectionHelper::sortByCollator($gendersData, 'name');
@@ -74,7 +74,7 @@ class GendersController extends Controller
             ]
         );
 
-        return $this->format($gender);
+        return $this->formatData($gender);
     }
 
     /**
@@ -89,7 +89,7 @@ class GendersController extends Controller
             ])
         );
 
-        return $this->format($gender);
+        return $this->formatData($gender);
     }
 
     /**
@@ -139,16 +139,22 @@ class GendersController extends Controller
         $account->default_gender_id = $gender->id;
         $account->save();
 
-        return $this->format($gender);
+        return $this->formatData($gender);
     }
 
-    private function format($gender)
+    /**
+     * Format data for output.
+     * 
+     * @param Gender  $gender
+     * @return array
+     */
+    private function formatData($gender)
     {
         return [
             'id' => $gender->id,
             'name' => $gender->name,
             'type' => $gender->type,
-            'is_default' => $gender->isDefault(),
+            'isDefault' => $gender->isDefault(),
             'numberOfContacts' => $gender->contacts->count(),
         ];
     }

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DefaultGender extends Migration
+class AddDefaultGender extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,7 @@ class DefaultGender extends Migration
     {
         Schema::table('accounts', function (Blueprint $table) {
             $table->unsignedInteger('default_gender_id')->after('default_time_reminder_is_sent')->nullable();
-            $table->foreign('default_gender_id')->references('id')->on('genders');
+            $table->foreign('default_gender_id')->references('id')->on('genders')->onDelete('set null');
         });
 
         DB::table('genders')
