@@ -2321,16 +2321,16 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v4.1.0",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "7581c57a60742f423a68362c79d507028f989bd7"
+                "reference": "0bb624e7e52c1858240c783a5418b8dcc5a7c2d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/7581c57a60742f423a68362c79d507028f989bd7",
-                "reference": "7581c57a60742f423a68362c79d507028f989bd7",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/0bb624e7e52c1858240c783a5418b8dcc5a7c2d1",
+                "reference": "0bb624e7e52c1858240c783a5418b8dcc5a7c2d1",
                 "shasum": ""
             },
             "require": {
@@ -2381,7 +2381,7 @@
                 "laravel",
                 "oauth"
             ],
-            "time": "2019-02-14T16:57:39+00:00"
+            "time": "2019-03-15T12:39:01+00:00"
         },
         {
             "name": "laravel/tinker",
