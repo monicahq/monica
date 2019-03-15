@@ -144,7 +144,7 @@ class GendersController extends Controller
 
     /**
      * Format data for output.
-     * 
+     *
      * @param Gender  $gender
      * @return array
      */
