@@ -4,7 +4,7 @@
 
 <section class="ph3 ph0-ns">
   <div class="mt4 mw7 center mb3">
-    @if ($isMissing)
+    @if ($isContactMissing)
       <h2 class="f2 fw5">{{ trans('people.people_add_missing') }}</h2>
     @else
       <h2 class="f3 fw5">{{ trans('people.people_add_title') }}</h2>

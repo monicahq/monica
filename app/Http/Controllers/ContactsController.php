@@ -165,7 +165,13 @@ class ContactsController extends Controller
         return $this->createForm(true);
     }
 
-    private function createForm($isMissing = false)
+    /**
+     * Show the Add user form unless the contact has limitations.
+     *
+     * @param  boolean $isContactMissing
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    private function createForm($isContactMissing = false)
     {
         if (auth()->user()->account->hasReachedContactLimit()
             && auth()->user()->account->hasLimitations()
@@ -174,7 +180,7 @@ class ContactsController extends Controller
         }
 
         return view('people.create')
-            ->withIsMissing($isMissing)
+            ->withIsContactMissing($isContactMissing)
             ->withGenders(auth()->user()->account->genders);
     }
 
