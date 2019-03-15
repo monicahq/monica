@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Auth;
+namespace Tests\Browser\Auth;
 
 use Tests\ApiTestCase;
 use App\Models\User\User;

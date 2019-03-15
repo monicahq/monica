@@ -73,9 +73,9 @@ class NotifyUserAboutReminder implements ShouldQueue
     {
         switch ($this->reminderOutbox->nature) {
             case 'reminder':
-                return new UserReminded($this->reminderOutbox);
+                return new UserReminded($this->reminderOutbox->reminder);
             case 'notification':
-                return new UserNotified($this->reminderOutbox);
+                return new UserNotified($this->reminderOutbox->reminder, $this->reminderOutbox->notification_number_days_before);
             default:
                 break;
         }

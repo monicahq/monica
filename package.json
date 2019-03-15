@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "cross-env": "^5.1.4",
-    "cypress": "3.1.4",
+    "cypress": "3.2.0",
     "eslint": "^5.10.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": ">=2.13.0",
@@ -23,7 +23,7 @@
     "eslint-plugin-promise": ">=4.0.0",
     "eslint-plugin-standard": ">=4.0.0",
     "eslint-plugin-vue": "^5.0.0",
-    "mocha": "^5.2.0",
+    "mocha": "^6.0.2",
     "mocha-junit-reporter": "^1.17.0",
     "mocha-multi-reporters": "^1.1.7",
     "resolve-url-loader": "2.3.1",

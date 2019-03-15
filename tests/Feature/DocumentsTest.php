@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit\Controllers;
+namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class DocumentsControllerTest extends FeatureTestCase
+class DocumentsTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
