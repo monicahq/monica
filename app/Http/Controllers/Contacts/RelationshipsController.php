@@ -304,14 +304,12 @@ class RelationshipsController extends Controller
             return redirect()->route('people.index');
         }
 
-        $type = $contact->getRelationshipNatureWith($otherContact);
-        $contact->deleteRelationship($otherContact, $type->relationship_type_id);
+        $relationship = $contact->getRelationshipNatureWith($otherContact);
 
-        // the contact is partial - if the relationship is deleted, the partial
-        // contact has no reason to exist anymore
-        if ($otherContact->is_partial) {
-            $otherContact->deleteEverything();
-        }
+        app(DestroyRelationship::class)->execute([
+            'account_id' => $this->account_id,
+            'relationship_id' => $relationship->id,
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_deletion_success'));

@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix destroy relationship
 * Fix contact missing create form
 
 

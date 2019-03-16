@@ -1182,7 +1182,7 @@ class Contact extends Model
      * @param Contact $otherContact
      * @param int $relationshipTypeId
      */
-    public function setRelationship(self $otherContact, $relationshipTypeId)
+    public function setRelationship(self $otherContact, int $relationshipTypeId)
     {
         $relationshipType = RelationshipType::where('account_id', $this->account_id)
             ->find($relationshipTypeId);
@@ -1216,42 +1216,35 @@ class Contact extends Model
      * @param int $oldRelationshipTypeId
      * @param int $newRelationshipTypeId
      */
-    public function updateRelationship(self $otherContact, $oldRelationshipTypeId, $newRelationshipTypeId)
+    public function updateRelationship(self $otherContact, int $oldRelationshipTypeId, int $newRelationshipTypeId)
     {
-        $this->deleteRelationship($otherContact, $oldRelationshipTypeId);
+        if ($oldRelationshipTypeId !== $newRelationshipTypeId) {
+            $this->deleteRelationship($otherContact, $oldRelationshipTypeId);
 
-        $this->setRelationship($otherContact, $newRelationshipTypeId);
+            $this->setRelationship($otherContact, $newRelationshipTypeId);
+        }
     }
 
     /**
      * Delete a relationship between two contacts.
      *
-     * @param  self   $otherContact
+     * @param Contact  $otherContact
+     * @param int  $relationshipTypeId
      */
     public function deleteRelationship(self $otherContact, int $relationshipTypeId)
     {
-        // Each relationship between two contacts has two Relationship objects.
-        // We need to delete both.
-
         $relationship = Relationship::where('account_id', $this->account_id)
                                     ->where('contact_is', $this->id)
                                     ->where('of_contact', $otherContact->id)
                                     ->where('relationship_type_id', $relationshipTypeId)
                                     ->first();
 
-        $relationship->delete();
-
-        $relationshipType = RelationshipType::where('account_id', $this->account_id)
-            ->find($relationshipTypeId);
-        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
-
-        $relationship = Relationship::where('account_id', $this->account_id)
-                                    ->where('contact_is', $otherContact->id)
-                                    ->where('of_contact', $this->id)
-                                    ->where('relationship_type_id', $reverseRelationshipType->id)
-                                    ->first();
-
-        $relationship->delete();
+        if ($relationship) {
+            app(DestroyRelationship::class)->execute([
+                'account_id' => $this->account_id,
+                'relationship_id' => $relationship->id,
+            ]);
+        }
     }
 
     /**
