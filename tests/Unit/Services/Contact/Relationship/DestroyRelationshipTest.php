@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
+use App\Models\Relationship\RelationshipType;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,6 +38,116 @@ class DestroyRelationshipTest extends TestCase
 
         $this->assertDatabaseMissing('relationships', [
             'id' => $relationship->id,
+        ]);
+    }
+
+    public function test_it_destroys_a_relationship_and_reverse()
+    {
+        $contactA = factory(Contact::class)->create([]);
+        $contactB = factory(Contact::class)->create([
+            'account_id' => $contactA->account_id,
+        ]);
+
+        $relationshipTypeA = factory(RelationshipType::class)->create([
+            'account_id' => $contactA->account_id,
+            'name' => 'uncle',
+            'name_reverse_relationship' => 'nephew',
+        ]);
+        $relationshipA = factory(Relationship::class)->create([
+            'account_id' => $contactA->account_id,
+            'contact_is' => $contactA,
+            'of_contact' => $contactB,
+            'relationship_type_id' => $relationshipTypeA->id,
+        ]);
+
+        $relationshipTypeB = factory(RelationshipType::class)->create([
+            'account_id' => $contactA->account_id,
+            'name' => 'nephew',
+            'name_reverse_relationship' => 'uncle',
+        ]);
+        $relationshipB = factory(Relationship::class)->create([
+            'account_id' => $contactA->account_id,
+            'contact_is' => $contactB,
+            'of_contact' => $contactA,
+            'relationship_type_id' => $relationshipTypeB->id,
+        ]);
+
+        $request = [
+            'account_id' => $contactA->account_id,
+            'relationship_id' => $relationshipA->id,
+        ];
+
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationshipA->id,
+        ]);
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationshipB->id,
+        ]);
+
+        app(DestroyRelationship::class)->execute($request);
+
+        $this->assertDatabaseMissing('relationships', [
+            'id' => $relationshipA->id,
+        ]);
+        $this->assertDatabaseMissing('relationships', [
+            'id' => $relationshipB->id,
+        ]);
+    }
+
+    public function test_it_destroys_a_relationship_and_reverse_and_partial_contact()
+    {
+        $contactA = factory(Contact::class)->create([]);
+        $contactB = factory(Contact::class)->create([
+            'account_id' => $contactA->account_id,
+            'is_partial' => true,
+        ]);
+
+        $relationshipTypeA = factory(RelationshipType::class)->create([
+            'account_id' => $contactA->account_id,
+            'name' => 'uncle',
+            'name_reverse_relationship' => 'nephew',
+        ]);
+        $relationshipA = factory(Relationship::class)->create([
+            'account_id' => $contactA->account_id,
+            'contact_is' => $contactA,
+            'of_contact' => $contactB,
+            'relationship_type_id' => $relationshipTypeA->id,
+        ]);
+
+        $relationshipTypeB = factory(RelationshipType::class)->create([
+            'account_id' => $contactA->account_id,
+            'name' => 'nephew',
+            'name_reverse_relationship' => 'uncle',
+        ]);
+        $relationshipB = factory(Relationship::class)->create([
+            'account_id' => $contactA->account_id,
+            'contact_is' => $contactB,
+            'of_contact' => $contactA,
+            'relationship_type_id' => $relationshipTypeB->id,
+        ]);
+
+        $request = [
+            'account_id' => $contactA->account_id,
+            'relationship_id' => $relationshipA->id,
+        ];
+
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationshipA->id,
+        ]);
+        $this->assertDatabaseHas('relationships', [
+            'id' => $relationshipB->id,
+        ]);
+
+        app(DestroyRelationship::class)->execute($request);
+
+        $this->assertDatabaseMissing('relationships', [
+            'id' => $relationshipA->id,
+        ]);
+        $this->assertDatabaseMissing('relationships', [
+            'id' => $relationshipB->id,
+        ]);
+        $this->assertDatabaseMissing('contacts', [
+            'id' => $contactB->id,
         ]);
     }
 

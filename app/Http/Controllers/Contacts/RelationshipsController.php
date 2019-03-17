@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Contact\Relationship\DestroyRelationship;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
 class RelationshipsController extends Controller
