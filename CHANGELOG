@@ -11,6 +11,7 @@ Enhancements:
 Fixes:
 
 * Fix destroy relationship
+* Fix import/export vcard with birthday with year unknown
 * Fix contact missing create form
 
 
