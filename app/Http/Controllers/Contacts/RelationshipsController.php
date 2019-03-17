@@ -308,7 +308,7 @@ class RelationshipsController extends Controller
         $relationship = $contact->getRelationshipNatureWith($otherContact);
 
         app(DestroyRelationship::class)->execute([
-            'account_id' => $this->account_id,
+            'account_id' => auth()->user()->account_id,
             'relationship_id' => $relationship->id,
         ]);
 

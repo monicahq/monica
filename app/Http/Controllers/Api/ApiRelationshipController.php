@@ -8,6 +8,7 @@ use Illuminate\Database\QueryException;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Relationship\RelationshipType;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Relationship\DestroyRelationship;
 use App\Http\Resources\Relationship\Relationship as RelationshipResource;
