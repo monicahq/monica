@@ -7,6 +7,7 @@
     "require": {
         "php": "^7.1.3",
         "ext-bcmath": "*",
+        "ext-gd": "*",
         "ext-intl": "*",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
