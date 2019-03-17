@@ -150,7 +150,11 @@ class ExportVCard extends BaseService
     private function exportBirthday(Contact $contact, VCard $vcard)
     {
         if (! is_null($contact->birthdate)) {
-            $date = $contact->birthdate->date->format('Ymd');
+            if ($contact->birthdate->is_year_unknown) {
+                $date = $contact->birthdate->date->format('--m-d');
+            } else {
+                $date = $contact->birthdate->date->format('Ymd');
+            }
             $vcard->add('BDAY', $date);
         }
     }
