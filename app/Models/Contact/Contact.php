@@ -32,8 +32,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Address\Address as AddressResource;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Services\Contact\Relationship\DestroyRelationship;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
