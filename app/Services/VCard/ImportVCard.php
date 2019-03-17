@@ -630,20 +630,18 @@ class ImportVCard extends BaseService
     private function importBirthday(Contact $contact, VCard $entry): void
     {
         if ($entry->BDAY && ! empty((string) $entry->BDAY)) {
-
             $bday = (string) $entry->BDAY;
             $is_year_unknown = false;
 
             if (starts_with($bday, '--')) {
-                $bday = '0' . substr($bday, 1);
+                $bday = '0'.substr($bday, 1);
                 $is_year_unknown = true;
             }
 
             $birthdate = null;
             try {
                 $birthdate = DateHelper::parseDate($bday);
-            }
-            catch (\Exception $e) {
+            } catch (\Exception $e) {
                 // catch any date parse exception
             }
 
