@@ -550,7 +550,7 @@ class ImportVCardTest extends TestCase
         $this->assertNotNull($contact->birthday_special_date_id);
         $this->assertNotNull($contact->birthday_reminder_id);
         $this->assertDatabaseHas('special_dates', [
-            'date' => now()->year . '-05-22',
+            'date' => now()->year.'-05-22',
             'contact_id' => $contact->id,
             'is_year_unknown' => true,
         ]);
