@@ -73,6 +73,7 @@ class CreateContactTest extends TestCase
             'id' => $contact->id,
             'account_id' => $contact->account->id,
             'first_name' => 'john',
+            'gender_id' => null,
         ]);
 
         $this->assertInstanceOf(
