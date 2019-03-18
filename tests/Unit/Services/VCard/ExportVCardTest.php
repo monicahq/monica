@@ -88,7 +88,7 @@ class ExportVCardTest extends TestCase
         $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
             'type' => 'F',
-            'name' => 'Female'
+            'name' => 'Female',
         ]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
@@ -135,7 +135,7 @@ class ExportVCardTest extends TestCase
         $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
             'type' => null,
-            'name' => 'Something'
+            'name' => 'Something',
         ]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
@@ -159,7 +159,7 @@ class ExportVCardTest extends TestCase
         $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
             'type' => null,
-            'name' => 'Male'
+            'name' => 'Male',
         ]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
@@ -183,7 +183,7 @@ class ExportVCardTest extends TestCase
         $gender = factory(Gender::class)->create([
             'account_id' => $account->id,
             'type' => null,
-            'name' => 'Woman'
+            'name' => 'Woman',
         ]);
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
