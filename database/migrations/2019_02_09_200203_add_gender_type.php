@@ -23,9 +23,9 @@ class AddGenderType extends Migration
         $woman = null;
         $man = null;
         $other = null;
-        $womanEn = trans('app.gender_female', [], 'en');
-        $manEn = trans('app.gender_male', [], 'en');
-        $otherEn = trans('app.gender_none', [], 'en');
+        $womanEn = trans('app.gender_female', [], config('app.locale'));
+        $manEn = trans('app.gender_male', [], config('app.locale'));
+        $otherEn = trans('app.gender_none', [], config('app.locale'));
 
         $currentLocale = null;
         User::orderBy('locale')->chunkById(200, function ($users) use ($currentLocale, $woman, $man, $womanEn, $manEn, $other, $otherEn) {
@@ -35,20 +35,21 @@ class AddGenderType extends Migration
                     App::setLocale($currentLocale);
                     $woman = trans('app.gender_female');
                     $man = trans('app.gender_male');
+                    $other = trans('app.gender_none');
                 }
 
                 $genders = Gender::where('account_id', $user->account_id)->get()->all();
                 foreach ($genders as $gender) {
                     if ($gender->name == $woman || $gender->name == $womanEn) {
                         $gender->type = Gender::FEMALE;
-                        $gender->save();
                     } elseif ($gender->name == $man || $gender->name == $manEn) {
                         $gender->type = Gender::MALE;
-                        $gender->save();
                     } elseif ($gender->name == $other || $gender->name == $otherEn) {
                         $gender->type = Gender::OTHER;
-                        $gender->save();
+                    } else {
+                        $gender->type = Gender::UNKNOWN;
                     }
+                    $gender->save();
                 }
             }
         });

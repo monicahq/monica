@@ -82,8 +82,11 @@
               v-model="createForm.name"
               :input-type="'text'"
               :required="true"
-              :title="$t('settings.personalization_genders_modal_question')"
+              :title="$t('settings.personalization_genders_modal_name')"
             />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_name_help') }}
+            </small>
           </div>
           <div class="form-group">
             <form-select
@@ -93,6 +96,9 @@
               :required="true"
               :title="$t('settings.personalization_genders_modal_sex')"
             />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_sex_help') }}
+            </small>
           </div>
           <div class="form-group">
             <form-toggle
@@ -127,8 +133,11 @@
               v-model="updateForm.name"
               :input-type="'text'"
               :required="true"
-              :title="$t('settings.personalization_genders_modal_edit_question')"
+              :title="$t('settings.personalization_genders_modal_name')"
             />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_name_help') }}
+            </small>
           </div>
           <div class="form-group">
             <form-select
@@ -138,6 +147,9 @@
               :required="true"
               :title="$t('settings.personalization_genders_modal_sex')"
             />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_sex_help') }}
+            </small>
           </div>
           <div class="form-group">
             <form-toggle
@@ -351,9 +363,7 @@ export default {
 
     showDefaultGenderModal() {
       var defaultGender = _.findIndex(this.genders, ['isDefault', true]);
-      if (defaultGender >= 0) {
-        this.defaultGenderId = this.genders[defaultGender].id;
-      }
+      this.defaultGenderId = this.genders[defaultGender >= 0 ? defaultGender : 0].id;
       this.$refs.defaultGenderModal.open();
     },
 
