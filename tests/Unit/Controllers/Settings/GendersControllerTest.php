@@ -135,7 +135,7 @@ class GendersControllerTest extends FeatureTestCase
         ]);
         $gender2 = factory(Gender::class)->create();
 
-        $response = $this->json('DELETE', '/settings/personalization/genders/' . $gender1->id . '/replaceby/' . $gender2->id);
+        $response = $this->json('DELETE', '/settings/personalization/genders/'.$gender1->id.'/replaceby/'.$gender2->id);
 
         $response->assertStatus(403);
         $response->assertJson([
