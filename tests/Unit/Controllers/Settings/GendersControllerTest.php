@@ -3,7 +3,6 @@
 namespace Tests\Unit\Controllers\Contact;
 
 use Tests\FeatureTestCase;
-use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -85,7 +84,7 @@ class GendersControllerTest extends FeatureTestCase
 
         $gender = $user->account->genders()->first();
 
-        $response = $this->json('PUT', '/settings/personalization/genders/' . $gender->id, [
+        $response = $this->json('PUT', '/settings/personalization/genders/'.$gender->id, [
             'name' => 'gender',
         ]);
 
@@ -112,7 +111,7 @@ class GendersControllerTest extends FeatureTestCase
             'gender_id' => $gender1,
         ]);
 
-        $response = $this->json('DELETE', '/settings/personalization/genders/' . $gender1 . '/replaceby/' . $gender2);
+        $response = $this->json('DELETE', '/settings/personalization/genders/'.$gender1.'/replaceby/'.$gender2);
 
         $this->expectObjectDeleted($response, $genders[0]->id);
 
@@ -133,7 +132,7 @@ class GendersControllerTest extends FeatureTestCase
 
         $gender = $user->account->genders()->first();
 
-        $response = $this->json('DELETE', '/settings/personalization/genders/' . $gender->id);
+        $response = $this->json('DELETE', '/settings/personalization/genders/'.$gender->id);
 
         $this->expectObjectDeleted($response, $gender->id);
 
@@ -151,7 +150,7 @@ class GendersControllerTest extends FeatureTestCase
 
         $this->assertNull($user->account->default_gender_id);
 
-        $response = $this->json('PUT', '/settings/personalization/genders/default/' . $gender->id);
+        $response = $this->json('PUT', '/settings/personalization/genders/default/'.$gender->id);
 
         $response->assertStatus(200);
         $response->assertJsonStructure($this->jsonStructure);
