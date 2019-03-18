@@ -3,6 +3,7 @@
 namespace Tests\Unit\Controllers\Contact;
 
 use Tests\FeatureTestCase;
+use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -123,6 +124,22 @@ class GendersControllerTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'id' => $contact->id,
             'gender_id' => $gender2,
+        ]);
+    }
+
+    public function test_it_replace_a_gender_with_error()
+    {
+        $user = $this->signin();
+        $gender1 = factory(Gender::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $gender2 = factory(Gender::class)->create();
+
+        $response = $this->json('DELETE', '/settings/personalization/genders/' . $gender1->id . '/replaceby/' . $gender2->id);
+
+        $response->assertStatus(403);
+        $response->assertJson([
+            'message' => 'Please choose a valid gender from the list.',
         ]);
     }
 
