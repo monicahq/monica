@@ -88,6 +88,16 @@ class GendersController extends Controller
                 'type',
             ])
         );
+        if ($request->get('isDefault')) {
+            $this->updateDefault($request, $gender);
+            $gender->refresh();
+        } else if ($gender->isDefault()) {
+            // Case of this gender was the default one previously
+            $account = auth()->user()->account;
+            $account->default_gender_id = null;
+            $account->save();
+            $gender->refresh();
+        }
 
         return $this->formatData($gender);
     }
