@@ -30,6 +30,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\Relationship\CreateRelationship;
+use App\Services\Contact\Relationship\UpdateRelationship;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Address\Address as AddressResource;
 use App\Services\Contact\Relationship\DestroyRelationship;
@@ -1182,32 +1184,16 @@ class Contact extends Model
      *
      * @param Contact $otherContact
      * @param int $relationshipTypeId
+     * @return Relationship
      */
     public function setRelationship(self $otherContact, int $relationshipTypeId)
     {
-        $relationshipType = RelationshipType::where('account_id', $this->account_id)
-            ->find($relationshipTypeId);
-
-        // Contact A is linked to Contact B
-        $relationship = new Relationship;
-        $relationship->account_id = $this->account_id;
-        $relationship->relationship_type_id = $relationshipType->id;
-        $relationship->contact_is = $this->id;
-        $relationship->relationship_type_name = $relationshipType->name;
-        $relationship->of_contact = $otherContact->id;
-        $relationship->save();
-
-        // Get the reverse relationship
-        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
-
-        // Contact B is linked to Contact A
-        $relationship = new Relationship;
-        $relationship->account_id = $this->account_id;
-        $relationship->relationship_type_id = $reverseRelationshipType->id;
-        $relationship->contact_is = $otherContact->id;
-        $relationship->relationship_type_name = $relationshipType->name_reverse_relationship;
-        $relationship->of_contact = $this->id;
-        $relationship->save();
+        return app(CreateRelationship::class)->execute([
+            'account_id' => $this->account_id,
+            'contact_is' => $this->id,
+            'of_contact' => $otherContact->id,
+            'relationship_type_id' => $relationshipTypeId,
+        ]);
     }
 
     /**
@@ -1220,30 +1206,16 @@ class Contact extends Model
     public function updateRelationship(self $otherContact, int $oldRelationshipTypeId, int $newRelationshipTypeId)
     {
         if ($oldRelationshipTypeId !== $newRelationshipTypeId) {
-            $this->deleteRelationship($otherContact, $oldRelationshipTypeId);
-
-            $this->setRelationship($otherContact, $newRelationshipTypeId);
-        }
-    }
-
-    /**
-     * Delete a relationship between two contacts.
-     *
-     * @param Contact  $otherContact
-     * @param int  $relationshipTypeId
-     */
-    public function deleteRelationship(self $otherContact, int $relationshipTypeId)
-    {
-        $relationship = Relationship::where('account_id', $this->account_id)
+            $relationship = Relationship::where('account_id', $this->account_id)
                                     ->where('contact_is', $this->id)
                                     ->where('of_contact', $otherContact->id)
-                                    ->where('relationship_type_id', $relationshipTypeId)
+                                    ->where('relationship_type_id', $oldRelationshipTypeId)
                                     ->first();
 
-        if ($relationship) {
-            app(DestroyRelationship::class)->execute([
+            app(UpdateRelationship::class)->execute([
                 'account_id' => $this->account_id,
                 'relationship_id' => $relationship->id,
+                'relationship_type_id' => $newRelationshipTypeId,
             ]);
         }
     }

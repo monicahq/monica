@@ -178,4 +178,65 @@ class DestroyRelationshipTest extends TestCase
 
         app(DestroyRelationship::class)->execute($request);
     }
+
+    public function test_it_deletes_relationship_between_two_contacts_and_deletes_the_contact()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $partner = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'is_partial' => true,
+        ]);
+        $relationshipType = factory(RelationshipType::class)->create(['account_id' => $account->id]);
+
+        $relationship = $contact->setRelationship($partner, $relationshipType->id);
+
+        app(DestroyRelationship::class)->execute([
+            'account_id' => $account->id,
+            'relationship_id' => $relationship->id,
+        ]);
+
+        $this->assertDatabaseMissing(
+            'relationships',
+            [
+                'contact_is' => $contact->id,
+                'of_contact' => $partner->id,
+                'relationship_type_id' => $relationshipType->id,
+            ]
+        );
+    }
+
+    public function test_it_deletes_relationship_between_two_contacts_and_doesnt_delete_the_contact()
+    {
+        $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
+        $partner = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'is_partial' => false,
+        ]);
+        $relationshipType = factory(RelationshipType::class)->create(['account_id' => $account->id]);
+
+        $relationship = $contact->setRelationship($partner, $relationshipType->id);
+
+        app(DestroyRelationship::class)->execute([
+            'account_id' => $account->id,
+            'relationship_id' => $relationship->id,
+        ]);
+
+        $this->assertDatabaseMissing(
+            'relationships',
+            [
+                'contact_is' => $contact->id,
+                'of_contact' => $partner->id,
+                'relationship_type_id' => $relationshipType->id,
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'contacts',
+            [
+                'id' => $partner->id,
+            ]
+        );
+    }
 }

@@ -210,6 +210,24 @@ class ApiRelationshipControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_it_rejects_the_delete_api_call_if_parameters_are_not_right()
+    {
+        $user = $this->signin();
+
+        // make sure relationship id is valid
+        $response = $this->json('DELETE', '/api/relationships/0');
+        $this->expectDataError($response, ['The selected relationship id is invalid.']);
+
+        // make sure relationship id is an integer
+        $response = $this->json('DELETE', '/api/relationships/x');
+        $this->expectDataError($response, ['The relationship id must be an integer.']);
+
+        // make sure relationship id is with the right account
+        $relationship = factory(Relationship::class)->create();
+        $response = $this->json('DELETE', '/api/relationships/' . $relationship->id);
+        $this->expectNotFound($response);
+    }
+
     public function test_it_rejects_the_update_api_call_if_parameters_are_not_right()
     {
         $user = $this->signin();
