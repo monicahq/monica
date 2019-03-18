@@ -270,7 +270,7 @@ $factory->define(App\Models\Contact\Gender::class, function (Faker\Generator $fa
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'type' => 'M',
-        'name' => 'Male',
+        'name' => 'Man',
     ];
 });
 
