@@ -21,6 +21,15 @@ class MoneyHelperTest extends TestCase
         $this->assertEquals('€5,038.29', MoneyHelper::format(5038.29, $currency));
     }
 
+    public function testFormatReturnsAmountWithCurrencySymbolOfZeroMinorUnitCurrency()
+    {
+        $currency = new Currency();
+        $currency->iso = 'JPY'; // minorUnit value is zero "0"
+
+        $this->assertEquals('¥500', MoneyHelper::format(500, $currency));
+        $this->assertEquals('¥5,038', MoneyHelper::format(5038, $currency));
+    }
+
     public function testFormatUsesCurrencySettingIfDefined()
     {
         $currency = Currency::where('iso', 'GBP')->first();
