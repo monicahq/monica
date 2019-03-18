@@ -6,9 +6,9 @@ use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Support\Facades\App;
 use App\Interfaces\MailNotification;
-use App\Models\Contact\ReminderOutbox;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -21,18 +21,20 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var ReminderOutbox
+     * @var Reminder
      */
-    public $reminderOutbox;
+    public $reminder;
+    public $numberDaysBefore;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(ReminderOutbox $reminderOutbox)
+    public function __construct(Reminder $reminder, $numberDaysBefore)
     {
-        $this->reminderOutbox = $reminderOutbox;
+        $this->reminder = $reminder;
+        $this->numberDaysBefore = $numberDaysBefore;
     }
 
     /**
@@ -56,22 +58,22 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
         App::setLocale($user->locale);
 
         $contact = Contact::where('account_id', $user->account_id)
-            ->findOrFail($this->reminderOutbox->reminder->contact_id);
+            ->findOrFail($this->reminder->contact_id);
 
         $message = (new MailMessage)
             ->subject(trans('mail.subject_line', ['contact' => $contact->name]))
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))
-            ->line(trans_choice('mail.notification_description', $this->reminderOutbox->notification_number_days_before, [
-                'count' => $this->reminderOutbox->notification_number_days_before,
-                'date' => DateHelper::getShortDate($this->reminderOutbox->reminder->calculateNextExpectedDate()),
+            ->line(trans_choice('mail.notification_description', $this->numberDaysBefore, [
+                'count' => $this->numberDaysBefore,
+                'date' => DateHelper::getShortDate($this->reminder->calculateNextExpectedDate()),
             ]))
-            ->line($this->reminderOutbox->reminder->title)
+            ->line($this->reminder->title)
             ->line(trans('mail.for', ['name' => $contact->name]))
             ->action(trans('mail.footer_contact_info2', ['name' => $contact->name]), $contact->getLink());
 
-        if (! is_null($this->reminderOutbox->reminder->description)) {
+        if (! is_null($this->reminder->description)) {
             $message = $message
-                ->line(trans('mail.comment', ['comment' => $this->reminderOutbox->reminder->description]));
+                ->line(trans('mail.comment', ['comment' => $this->reminder->description]));
         }
 
         return $message;

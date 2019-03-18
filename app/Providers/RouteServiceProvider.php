@@ -71,7 +71,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapApiRoutes($router);
         $this->mapWebRoutes($router);
         $this->mapOAuthRoutes($router);
-        $this->mapDAVRoutes($router);
         $this->mapSpecialRoutes($router);
     }
 
@@ -124,24 +123,6 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace.'\Api',
         ], function () {
             require base_path('routes/api.php');
-        });
-    }
-
-    /**
-     * Define the DAV routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapDAVRoutes(Router $router)
-    {
-        $router->group([
-            'prefix' => config('dav.path'),
-            'middleware' => 'api',
-            'namespace' => $this->namespace,
-        ], function () {
-            require base_path('routes/dav.php');
         });
     }
 
