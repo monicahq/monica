@@ -91,7 +91,7 @@ class GendersController extends Controller
         if ($request->get('isDefault')) {
             $this->updateDefault($request, $gender);
             $gender->refresh();
-        } else if ($gender->isDefault()) {
+        } elseif ($gender->isDefault()) {
             // Case of this gender was the default one previously
             $account = auth()->user()->account;
             $account->default_gender_id = null;
