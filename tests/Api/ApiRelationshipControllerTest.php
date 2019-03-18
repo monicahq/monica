@@ -224,7 +224,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         // make sure relationship id is with the right account
         $relationship = factory(Relationship::class)->create();
-        $response = $this->json('DELETE', '/api/relationships/' . $relationship->id);
+        $response = $this->json('DELETE', '/api/relationships/'.$relationship->id);
         $this->expectNotFound($response);
     }
 

@@ -43,7 +43,7 @@ class UpdateRelationship extends BaseService
             Arr::only($data, [
                 'account_id',
                 'relationship_id',
-            ])
+            ]),
         ]);
 
         return app(CreateRelationship::class)->execute([
@@ -53,7 +53,7 @@ class UpdateRelationship extends BaseService
             ]) + [
                 'contact_is' => $relationship->contact->id,
                 'of_contact' => $relationship->of_contact->id,
-            ]
+            ],
         ]);
     }
 }

@@ -43,6 +43,7 @@ class CreateRelationship extends BaseService
             ->findOrFail($data['of_contact']);
 
         $this->setRelationship($partner, $contact, $relationshipType->reverseRelationshipType());
+
         return $this->setRelationship($contact, $partner, $relationshipType);
     }
 

@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use Illuminate\Database\QueryException;
 use App\Models\Relationship\Relationship;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Relationship\RelationshipType;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Relationship\CreateRelationship;
