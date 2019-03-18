@@ -48,7 +48,7 @@ class RelationshipType extends Model
     }
 
     /**
-     * Get the reverser relationship of this one.
+     * Get the reverser relationship type of this one.
      *
      * @return self
      */

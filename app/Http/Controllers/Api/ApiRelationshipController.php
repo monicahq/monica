@@ -101,6 +101,7 @@ class ApiRelationshipController extends ApiController
             return $this->respondValidatorFailed($e->validator);
         }
 
+        $relationship->refresh();
         return new RelationshipResource($relationship);
     }
 

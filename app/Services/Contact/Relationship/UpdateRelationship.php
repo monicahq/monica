@@ -33,27 +33,33 @@ class UpdateRelationship extends BaseService
     {
         $this->validate($data);
 
-        RelationshipType::where('account_id', $data['account_id'])
-            ->findOrFail($data['relationship_type_id']);
-
         $relationship = Relationship::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_id']);
 
-        app(DestroyRelationship::class)->execute([
-            Arr::only($data, [
-                'account_id',
-                'relationship_id',
-            ])
+        $newRelationshipType = RelationshipType::where('account_id', $data['account_id'])
+            ->findOrFail($data['relationship_type_id']);
+
+        $reverseRelationship = $relationship->reverseRelationship();
+        if ($reverseRelationship) {
+            $this->updateRelationship($reverseRelationship, $newRelationshipType->reverseRelationshipType());
+        }
+
+        return $this->updateRelationship($relationship, $newRelationshipType);
+    }
+
+    /**
+     * Update one relationship.
+     * 
+     * @param Relationship $relationship
+     * @param RelationshipType $relationshipType
+     * @return Relationship
+     */
+    private function updateRelationship(Relationship $relationship, RelationshipType $relationshipType) : Relationship
+    {
+        $relationship->update([
+            'relationship_type_id' => $relationshipType->id
         ]);
 
-        return app(CreateRelationship::class)->execute([
-            Arr::only($data, [
-                'account_id',
-                'relationship_type_id',
-            ]) + [
-                'contact_is' => $relationship->contact->id,
-                'of_contact' => $relationship->of_contact->id,
-            ]
-        ]);
+        return $relationship;
     }
 }
