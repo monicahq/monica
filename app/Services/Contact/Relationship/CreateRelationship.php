@@ -46,6 +46,7 @@ class CreateRelationship extends BaseService
         if ($reverseRelationshipType) {
             $this->setRelationship($partner, $contact, $reverseRelationshipType);
         }
+
         return $this->setRelationship($contact, $partner, $relationshipType);
     }
 
