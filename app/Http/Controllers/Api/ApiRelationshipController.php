@@ -99,6 +99,7 @@ class ApiRelationshipController extends ApiController
         }
 
         $relationship->refresh();
+
         return new RelationshipResource($relationship);
     }
 

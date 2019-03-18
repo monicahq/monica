@@ -2,7 +2,6 @@
 
 namespace App\Services\Contact\Relationship;
 
-use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
@@ -49,7 +48,7 @@ class UpdateRelationship extends BaseService
 
     /**
      * Update one relationship.
-     * 
+     *
      * @param Relationship $relationship
      * @param RelationshipType $relationshipType
      * @return Relationship
@@ -57,7 +56,7 @@ class UpdateRelationship extends BaseService
     private function updateRelationship(Relationship $relationship, RelationshipType $relationshipType) : Relationship
     {
         $relationship->update([
-            'relationship_type_id' => $relationshipType->id
+            'relationship_type_id' => $relationshipType->id,
         ]);
 
         return $relationship;

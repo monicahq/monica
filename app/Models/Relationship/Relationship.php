@@ -84,7 +84,7 @@ class Relationship extends Model
         $reverseRelationshipType = $this->relationshipType->reverseRelationshipType();
 
         if ($reverseRelationshipType) {
-            return Relationship::where([
+            return self::where([
                 'account_id'=> $this->account->id,
                 'contact_is' => $this->of_contact,
                 'of_contact' => $this->contact_is,

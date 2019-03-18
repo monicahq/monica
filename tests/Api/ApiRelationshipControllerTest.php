@@ -262,7 +262,7 @@ class ApiRelationshipControllerTest extends ApiTestCase
 
         // make sure relationship type id is an integer
         $response = $this->json('PUT', '/api/relationships/'.$relationship->id, [
-                            'relationship_type_id' => $relationshipType->id
+                            'relationship_type_id' => $relationshipType->id,
                         ]);
 
         $this->expectNotFound($response);
