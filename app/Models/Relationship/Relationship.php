@@ -77,7 +77,7 @@ class Relationship extends Model
     /**
      * Get the reverser relationship of this one.
      *
-     * @return self
+     * @return self|null
      */
     public function reverseRelationship()
     {
