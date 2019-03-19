@@ -150,7 +150,7 @@ return [
     'work_edit_company' => '公司 (可选)',
     'work_information' => '工作信息',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => '食品偏好已被保存',
     'food_preferencies_edit_description' => '也许:firstname或:family的家庭有过敏，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
     'food_preferencies_edit_description_no_last_name' => '也许:firstname有过敏情况，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
