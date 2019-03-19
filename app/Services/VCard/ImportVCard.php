@@ -9,6 +9,7 @@ use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
+use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
@@ -413,6 +414,7 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
+            $contact->uuid = RandomHelper::uuid();
             $contact->save();
         }
 
