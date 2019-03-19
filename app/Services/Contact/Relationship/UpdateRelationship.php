@@ -3,7 +3,6 @@
 namespace App\Services\Contact\Relationship;
 
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
 
@@ -24,7 +23,7 @@ class UpdateRelationship extends BaseService
     }
 
     /**
-     * Update the relationship between two contacts.
+     * Update a relationship.
      *
      * @param array $data
      * @return Relationship
@@ -36,62 +35,33 @@ class UpdateRelationship extends BaseService
         $relationship = Relationship::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_id']);
 
-        $reverseRelationshipType = $relationship->account->getRelationshipTypeByType($relationship->relationshipType->name_reverse_relationship);
-
-        if ($reverseRelationshipType) {
-            $otherRelationship = Relationship::where([
-                    'account_id' => $data['account_id'],
-                    'contact_is' => $relationship->of_contact,
-                    'of_contact' => $relationship->contact_is,
-                    'relationship_type_id' => $reverseRelationshipType->id,
-                ])
-                ->first();
-        } else {
-            $otherRelationship = null;
-        }
-
-        $relationshipType = RelationshipType::where('account_id', $data['account_id'])
+        $newRelationshipType = RelationshipType::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_type_id']);
 
-        // update the relationship
-        $this->updateRelationship($relationship, $otherRelationship, $relationshipType);
+        $reverseRelationship = $relationship->reverseRelationship();
+        if ($reverseRelationship) {
+            $newReverseRelationshipType = $newRelationshipType->reverseRelationshipType();
+            if ($newReverseRelationshipType) {
+                $this->updateRelationship($reverseRelationship, $newReverseRelationshipType);
+            }
+        }
 
-        $relationship->refresh();
-
-        return $relationship;
+        return $this->updateRelationship($relationship, $newRelationshipType);
     }
 
     /**
-     * Update the relationship between two contacts.
+     * Update one relationship.
      *
      * @param Relationship $relationship
-     * @param Relationship|null $otherRelationship
      * @param RelationshipType $relationshipType
+     * @return Relationship
      */
-    public function updateRelationship(Relationship $relationship, $otherRelationship, RelationshipType $relationshipType)
+    private function updateRelationship(Relationship $relationship, RelationshipType $relationshipType) : Relationship
     {
-        // Contact A is linked to Contact B
         $relationship->update([
             'relationship_type_id' => $relationshipType->id,
         ]);
 
-        // Get the reverse relationship
-        $reverseRelationshipType = $relationship->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
-
-        if ($reverseRelationshipType) {
-            if ($otherRelationship) {
-                // Contact B is linked to Contact A
-                $otherRelationship->update([
-                    'relationship_type_id' => $reverseRelationshipType->id,
-                ]);
-            } else {
-                Relationship::create([
-                    'account_id' => $relationshipType->account_id,
-                    'relationship_type_id' => $reverseRelationshipType->id,
-                    'contact_is' => $relationship->of_contact,
-                    'of_contact' => $relationship->contact_is,
-                ]);
-            }
-        }
+        return $relationship;
     }
 }

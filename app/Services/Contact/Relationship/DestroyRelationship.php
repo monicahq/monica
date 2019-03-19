@@ -32,24 +32,13 @@ class DestroyRelationship extends BaseService
         $this->validate($data);
 
         $relationship = Relationship::where('account_id', $data['account_id'])
-            ->findOrFail($data['relationship_id']);
+                                    ->findOrFail($data['relationship_id']);
+
         $otherContact = $relationship->ofContact;
 
-        $reverseRelationshipType = $relationship->account->getRelationshipTypeByType($relationship->relationshipType->name_reverse_relationship);
+        $this->deleteRelationship($relationship);
 
-        if ($reverseRelationshipType) {
-            $otherRelationship = Relationship::where([
-                    'account_id' => $data['account_id'],
-                    'contact_is' => $relationship->of_contact,
-                    'of_contact' => $relationship->contact_is,
-                    'relationship_type_id' => $reverseRelationshipType->id,
-                ])
-                ->first();
-        } else {
-            $otherRelationship = null;
-        }
-
-        $this->deleteRelationship($relationship, $otherRelationship, $otherContact);
+        $this->deletePartialContact($otherContact);
 
         return true;
     }
@@ -58,21 +47,28 @@ class DestroyRelationship extends BaseService
      * Delete relationship.
      *
      * @param Relationship $relationship
-     * @param Relationship|null $otherRelationship
-     * @param Contact $otherContact
      */
-    private function deleteRelationship(Relationship $relationship, $otherRelationship, Contact $otherContact)
+    private function deleteRelationship(Relationship $relationship)
     {
-        if ($otherRelationship) {
-            $otherRelationship->delete();
+        $reverseRelationship = $relationship->reverseRelationship();
+        if ($reverseRelationship) {
+            $reverseRelationship->delete();
         }
 
         $relationship->delete();
+    }
 
+    /**
+     * Delete partial contact.
+     *
+     * @param Contact $contact
+     */
+    private function deletePartialContact(Contact $contact)
+    {
         // the contact is partial - if the relationship is deleted, the partial
         // contact has no reason to exist anymore
-        if ($otherContact->is_partial) {
-            $otherContact->deleteEverything();
+        if ($contact->is_partial) {
+            $contact->deleteEverything();
         }
     }
 }

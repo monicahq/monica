@@ -65,16 +65,11 @@ class ApiRelationshipController extends ApiController
      */
     public function store(Request $request)
     {
-        $validParameters = $this->validateParameters($request);
-        if ($validParameters !== true) {
-            return $validParameters;
-        }
-
         try {
             $relationship = app(CreateRelationship::class)->execute([
                 'account_id' => auth()->user()->account_id,
-                'contact_id' => $request->get('contact_is'),
-                'other_contact_id' => $request->get('of_contact'),
+                'contact_is' => $request->get('contact_is'),
+                'of_contact' => $request->get('of_contact'),
                 'relationship_type_id' => $request->get('relationship_type_id'),
             ]);
         } catch (ModelNotFoundException $e) {
@@ -96,11 +91,6 @@ class ApiRelationshipController extends ApiController
      */
     public function update(Request $request, $relationshipId)
     {
-        $validParameters = $this->validateUpdateParameters($request, $relationshipId);
-        if ($validParameters !== true) {
-            return $validParameters;
-        }
-
         try {
             $relationship = app(UpdateRelationship::class)->execute([
                 'account_id' => auth()->user()->account_id,
@@ -114,6 +104,8 @@ class ApiRelationshipController extends ApiController
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
+
+        $relationship->refresh();
 
         return new RelationshipResource($relationship);
     }
@@ -141,90 +133,5 @@ class ApiRelationshipController extends ApiController
         }
 
         return $this->respondObjectDeleted($relationshipId);
-    }
-
-    /**
-     * Validate the parameters.
-     *
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse|true
-     */
-    private function validateParameters(Request $request)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'contact_is' => 'integer|required',
-            'relationship_type_id' => 'integer|required',
-            'of_contact' => 'integer|required',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        if ($request->get('relationship_type_id')) {
-            try {
-                RelationshipType::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('relationship_type_id'));
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        if ($request->get('contact_is')) {
-            try {
-                Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('contact_is'));
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        if ($request->get('of_contact')) {
-            try {
-                Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('of_contact'));
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Validate the update parameters.
-     *
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse|true
-     */
-    private function validateUpdateParameters(Request $request, $relationshipId)
-    {
-        // Validates basic fields to create the entry
-        $validator = Validator::make($request->all(), [
-            'relationship_type_id' => 'required|integer',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        if ($request->get('relationship_type_id')) {
-            try {
-                RelationshipType::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->get('relationship_type_id'));
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-        }
-
-        try {
-            Relationship::where('account_id', auth()->user()->account_id)
-                ->findOrFail($relationshipId);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return true;
     }
 }

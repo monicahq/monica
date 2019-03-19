@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Relationship\UpdateRelationship;
 
@@ -35,8 +36,8 @@ class UpdateRelationshipTest extends TestCase
             'name_reverse_relationship' => $relationshipType0->name,
         ]);
         $request = [
-            'contact_id' => $contact->id,
-            'other_contact_id' => $otherContact->id,
+            'contact_is' => $contact->id,
+            'of_contact' => $otherContact->id,
             'account_id' => $account->id,
             'relationship_type_id' => $relationshipType->id,
         ];
@@ -110,5 +111,43 @@ class UpdateRelationshipTest extends TestCase
             'contact_is' => $contact->id,
             'of_contact' => $otherContact->id,
         ]);
+    }
+
+    public function test_it_throws_an_exception_if_relationship_is_not_linked_to_account()
+    {
+        $account = factory(Account::class)->create();
+        $relationship = factory(Relationship::class)->create();
+        $relationshipType = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $request = [
+            'account_id' => $account->id,
+            'relationship_id' => $relationship->id,
+            'relationship_type_id' => $relationshipType->id,
+        ];
+
+        $this->expectException(ModelNotFoundException::class);
+
+        app(UpdateRelationship::class)->execute($request);
+    }
+
+    public function test_it_throws_an_exception_if_relationship_type_is_not_linked_to_account()
+    {
+        $account = factory(Account::class)->create();
+        $relationship = factory(Relationship::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $relationshipType = factory(RelationshipType::class)->create();
+
+        $request = [
+            'account_id' => $account->id,
+            'relationship_id' => $relationship->id,
+            'relationship_type_id' => $relationshipType->id,
+        ];
+
+        $this->expectException(ModelNotFoundException::class);
+
+        app(UpdateRelationship::class)->execute($request);
     }
 }

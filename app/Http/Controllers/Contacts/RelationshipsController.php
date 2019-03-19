@@ -82,8 +82,8 @@ class RelationshipsController extends Controller
         if ($request->get('relationship_type') == 'existing') {
             app(CreateRelationship::class)->execute([
                 'account_id' => auth()->user()->account_id,
-                'contact_id' => $contact->id,
-                'other_contact_id' => $request->get('existing_contact_id'),
+                'contact_is' => $contact->id,
+                'of_contact' => $request->get('existing_contact_id'),
                 'relationship_type_id' => $request->get('relationship_type_id'),
             ]);
 
@@ -152,8 +152,8 @@ class RelationshipsController extends Controller
         // create the relationship
         app(CreateRelationship::class)->execute([
             'account_id' => auth()->user()->account_id,
-            'contact_id' => $contact->id,
-            'other_contact_id' => $partner->id,
+            'contact_is' => $contact->id,
+            'of_contact' => $partner->id,
             'relationship_type_id' => $request->get('relationship_type_id'),
         ]);
 
@@ -312,12 +312,12 @@ class RelationshipsController extends Controller
             return redirect()->route('people.index');
         }
 
-        $type = $contact->getRelationshipNatureWith($otherContact);
+        $relationship = $contact->getRelationshipNatureWith($otherContact);
 
         app(DestroyRelationship::class)->execute([
             'account_id' => auth()->user()->account_id,
-            'relationship_id' => $type->relationship_type_id,
-        ]);
+            'relationship_id' => $relationship->id,
+        ]);     
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_deletion_success'));

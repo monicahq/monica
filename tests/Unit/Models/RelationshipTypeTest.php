@@ -142,4 +142,32 @@ class RelationshipTypeTest extends TestCase
             $relationshipType->getLocalizedName($contact, true)
         );
     }
+
+    public function test_it_gets_the_reverse_relationship_type()
+    {
+        $account = factory(Account::class)->create([]);
+        $relationshipTypeA = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+            'name' => 'uncle',
+            'name_reverse_relationship' => 'nephew',
+        ]);
+        $relationshipTypeB = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+            'name' => 'nephew',
+            'name_reverse_relationship' => 'uncle',
+        ]);
+
+        $reverseRelationshipType = $relationshipTypeA->reverseRelationshipType();
+
+        $this->assertEquals(
+            $relationshipTypeB->id,
+            $reverseRelationshipType->id
+        );
+
+        $reverseReverseRelationshipType = $reverseRelationshipType->reverseRelationshipType();
+        $this->assertEquals(
+            $relationshipTypeA->id,
+            $reverseReverseRelationshipType->id
+        );
+    }
 }

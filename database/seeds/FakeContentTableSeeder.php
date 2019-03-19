@@ -269,8 +269,8 @@ class FakeContentTableSeeder extends Seeder
                 $relationshipId = $this->contact->account->relationshipTypes->random()->id;
                 $relationship = app(CreateRelationship::class)->execute([
                     'account_id' => $this->contact->account_id,
-                    'contact_id' => $this->contact->id,
-                    'other_contact_id' => $relatedContact->id,
+                    'contact_is' => $this->contact->id,
+                    'of_contact' => $relatedContact->id,
                     'relationship_type_id' => $relationshipId,
                 ]);
             }

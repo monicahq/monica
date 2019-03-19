@@ -18,8 +18,8 @@ class CreateRelationship extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer|exists:contacts,id',
-            'other_contact_id' => 'required|integer|exists:contacts,id',
+            'contact_is' => 'required|integer|exists:contacts,id',
+            'of_contact' => 'required|integer|exists:contacts,id',
             'relationship_type_id' => 'required|integer|exists:relationship_types,id',
         ];
     }
@@ -36,13 +36,18 @@ class CreateRelationship extends BaseService
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['contact_id']);
+            ->findOrFail($data['contact_is']);
 
         $otherContact = Contact::where('account_id', $data['account_id'])
-            ->findOrFail($data['other_contact_id']);
+            ->findOrFail($data['of_contact']);
 
         $relationshipType = RelationshipType::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_type_id']);
+
+        $reverseRelationshipType = $relationshipType->reverseRelationshipType();
+        if ($reverseRelationshipType) {
+            $this->setRelationship($otherContact, $contact, $reverseRelationshipType);
+        }
 
         // create the relationship
         return $this->setRelationship($contact, $otherContact, $relationshipType);
@@ -59,27 +64,11 @@ class CreateRelationship extends BaseService
      */
     public function setRelationship(Contact $contact, Contact $otherContact, RelationshipType $relationshipType) : Relationship
     {
-        // Contact A is linked to Contact B
-        $relationship = Relationship::create([
+        return Relationship::create([
             'account_id' => $relationshipType->account_id,
             'relationship_type_id' => $relationshipType->id,
             'contact_is' => $contact->id,
             'of_contact' => $otherContact->id,
         ]);
-
-        // Get the reverse relationship
-        $reverseRelationshipType = $contact->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
-
-        if ($reverseRelationshipType) {
-            // Contact B is linked to Contact A
-            Relationship::create([
-                'account_id' => $relationshipType->account_id,
-                'relationship_type_id' => $reverseRelationshipType->id,
-                'contact_is' => $otherContact->id,
-                'of_contact' => $contact->id,
-            ]);
-        }
-
-        return $relationship;
     }
 }
