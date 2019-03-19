@@ -317,7 +317,7 @@ class RelationshipsController extends Controller
         app(DestroyRelationship::class)->execute([
             'account_id' => auth()->user()->account_id,
             'relationship_id' => $relationship->id,
-        ]);     
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_deletion_success'));

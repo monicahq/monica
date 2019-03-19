@@ -188,7 +188,7 @@ class DestroyRelationshipTest extends TestCase
             'is_partial' => true,
         ]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $relationship = factory(Relationship::class)->create([
             'account_id' => $account->id,
@@ -221,7 +221,7 @@ class DestroyRelationshipTest extends TestCase
             'is_partial' => false,
         ]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $relationship = factory(Relationship::class)->create([
             'account_id' => $account->id,
