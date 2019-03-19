@@ -209,6 +209,16 @@ $factory->define(App\Models\Relationship\Relationship::class, function (Faker\Ge
         'relationship_type_id' => function () {
             return factory(App\Models\Relationship\RelationshipType::class)->create()->id;
         },
+        'contact_is' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'of_contact' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
     ];
 });
 
