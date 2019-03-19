@@ -192,7 +192,7 @@ class ImportJob extends Model
                     break;
                 }
                 $this->contacts_found++;
-            } catch (ParseException $e) {
+            } catch (\Throwable $e) {
                 $this->skipEntry('?', (string) $e);
                 continue;
             }

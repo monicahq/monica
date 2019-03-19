@@ -6,6 +6,7 @@ use Ramsey\Uuid\Uuid;
 use App\Models\User\User;
 use App\Traits\DAVFormat;
 use Sabre\VObject\Reader;
+use App\Helpers\RandomHelper;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
@@ -413,6 +414,7 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
+            $contact->uuid = RandomHelper::uuid();
             $contact->save();
         }
 
