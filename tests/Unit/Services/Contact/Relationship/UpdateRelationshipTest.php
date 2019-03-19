@@ -4,10 +4,8 @@ namespace Tests\Unit\Services\Contact\Relationship;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Relationship\UpdateRelationship;
@@ -23,7 +21,7 @@ class UpdateRelationshipTest extends TestCase
             'account_id' => $account->id,
         ]);
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         $request = [
@@ -45,7 +43,7 @@ class UpdateRelationshipTest extends TestCase
         $account = factory(Account::class)->create();
         $relationship = factory(Relationship::class)->create();
         $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         $request = [
@@ -63,7 +61,7 @@ class UpdateRelationshipTest extends TestCase
     {
         $account = factory(Account::class)->create();
         $relationship = factory(Relationship::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
         $relationshipType = factory(RelationshipType::class)->create();
 
