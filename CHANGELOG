@@ -13,6 +13,7 @@ Fixes:
 * Fix import vCard with Cyrillic encoding
 * Fix import/export vcard with birthday with year unknown
 * Fix contact missing create form
+* Fix money format for non two "2" minor unit currencies
 
 
 RELEASED VERSIONS:
