@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Helpers\MoneyHelper;
 use App\Models\Settings\Currency;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MoneyHelperTest extends TestCase
@@ -19,6 +20,17 @@ class MoneyHelperTest extends TestCase
 
         $this->assertEquals('€500.00', MoneyHelper::format(500, $currency));
         $this->assertEquals('€5,038.29', MoneyHelper::format(5038.29, $currency));
+    }
+
+    public function testFormatReturnsAmountWithLocale()
+    {
+        App::setLocale('fr');
+
+        $currency = new Currency();
+        $currency->iso = 'EUR';
+
+        $this->assertEquals('500,00 €', MoneyHelper::format(500, $currency));
+        $this->assertEquals('5 038,29 €', MoneyHelper::format(5038.29, $currency));
     }
 
     public function testFormatReturnsAmountWithCurrencySymbolOfZeroMinorUnitCurrency()
