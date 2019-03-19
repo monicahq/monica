@@ -74,8 +74,6 @@ class ApiRelationshipController extends ApiController
             return $this->respondNotFound();
         } catch (ValidationException $e) {
             return $this->respondValidatorFailed($e->validator);
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
         }
 
         return new RelationshipResource($relationship);
@@ -99,8 +97,6 @@ class ApiRelationshipController extends ApiController
             return $this->respondNotFound();
         } catch (ValidationException $e) {
             return $this->respondValidatorFailed($e->validator);
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
         }
 
         $relationship->refresh();
@@ -126,8 +122,6 @@ class ApiRelationshipController extends ApiController
             return $this->respondNotFound();
         } catch (ValidationException $e) {
             return $this->respondValidatorFailed($e->validator);
-        } catch (QueryException $e) {
-            return $this->respondInvalidQuery();
         }
 
         return $this->respondObjectDeleted($relationshipId);
