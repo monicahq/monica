@@ -14,7 +14,6 @@ use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Relationship\UpdateRelationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
-use App\Services\Contact\Contact\UpdateBirthdayInformation;
 
 class RelationshipsController extends Controller
 {
@@ -273,7 +272,7 @@ class RelationshipsController extends Controller
      * Building the list of relationship types specifically for the dropdown which asks
      * for an id and a name.
      *
-     * @return Collection 
+     * @return Collection
      */
     private function getRelationshipTypesList(Contact $contact)
     {
@@ -284,6 +283,7 @@ class RelationshipsController extends Controller
                 'name' => $relationshipType->getLocalizedName($contact, true),
             ]);
         }
+
         return $arrayRelationshipTypes;
     }
 }
