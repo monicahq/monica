@@ -4,7 +4,6 @@ namespace App\Models\Account;
 
 use App\Models\User\User;
 use Sabre\VObject\Reader;
-use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
