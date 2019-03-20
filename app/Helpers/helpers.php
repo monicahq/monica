@@ -4,7 +4,7 @@ use App\Helpers\LocaleHelper;
 
 // @codeCoverageIgnoreStart
 if (! function_exists('htmldir')) {
-// @codeCoverageIgnoreEnd
+    // @codeCoverageIgnoreEnd
     /**
      * Get the direction: left to right/right to left.
      *
