@@ -78,10 +78,10 @@ class RelationshipsController extends Controller
             // case of creating a new contact
             $datas = $this->getDataForStoreOrUpdate($request);
 
-            if (! $datas) {
+            if ($datas instanceof \Illuminate\Contracts\Validation\Validator) {
                 return back()
                     ->withInput()
-                    ->withErrors($validator);
+                    ->withErrors($datas);
             }
 
             $partner = app(CreateContact::class)->execute($datas);
@@ -152,10 +152,10 @@ class RelationshipsController extends Controller
         if ($otherContact->is_partial) {
             $datas = $this->getDataForStoreOrUpdate($request);
 
-            if (! $datas) {
+            if ($datas instanceof \Illuminate\Contracts\Validation\Validator) {
                 return back()
                     ->withInput()
-                    ->withErrors($validator);
+                    ->withErrors($datas);
             }
 
             app(UpdateContact::class)->execute($datas + [
@@ -176,7 +176,7 @@ class RelationshipsController extends Controller
 
     /**
      * @param Request $request
-     * @return array|null
+     * @return array|\Illuminate\Contracts\Validation\Validator
      */
     private function getDataForStoreOrUpdate(Request $request)
     {
@@ -188,7 +188,7 @@ class RelationshipsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return;
+            return $validator;
         }
 
         // this is really ugly. it should be changed
