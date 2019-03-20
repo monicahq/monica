@@ -76,49 +76,15 @@ class RelationshipsController extends Controller
         } else {
 
             // case of creating a new contact
-            $validator = Validator::make($request->all(), [
-                'first_name' => 'required|max:255',
-                'last_name' => 'max:255',
-                'gender_id' => 'required|integer',
-                'birthdayDate' => 'date_format:Y-m-d',
-                'relationship_type_id' => 'required|integer',
-            ]);
+            $datas = $this->getDataForStoreOrUpdate($request);
 
-            if ($validator->fails()) {
+            if (! $datas) {
                 return back()
                     ->withInput()
                     ->withErrors($validator);
             }
 
-            // this is really ugly. it should be changed
-            if ($request->get('birthdate') == 'exact') {
-                $birthdate = $request->input('birthdayDate');
-                $birthdate = DateHelper::parseDate($birthdate);
-                $day = $birthdate->day;
-                $month = $birthdate->month;
-                $year = $birthdate->year;
-            } else {
-                $day = $request->get('day');
-                $month = $request->get('month');
-                $year = $request->get('year');
-            }
-
-            $partner = app(CreateContact::class)->execute([
-                'account_id' => auth()->user()->account_id,
-                'first_name' => $request->input('first_name'),
-                'last_name' => $request->input('last_name'),
-                'gender_id' => $request->input('gender_id'),
-                'is_birthdate_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
-                'birthdate_day' => $day,
-                'birthdate_month' => $month,
-                'birthdate_year' => $year,
-                'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
-                'age' => $request->get('age'),
-                'add_reminder' => ! empty($request->get('addReminder')),
-                'is_partial' => ! $request->get('realContact'),
-                'is_deceased' => false,
-                'is_deceased_date_known' => false,
-            ]);
+            $partner = app(CreateContact::class)->execute($datas);
 
             $partnerId = $partner->id;
         }
@@ -184,47 +150,16 @@ class RelationshipsController extends Controller
     public function update(Request $request, Contact $contact, Contact $otherContact)
     {
         if ($otherContact->is_partial) {
-            $validator = Validator::make($request->all(), [
-                'first_name' => 'required|max:255',
-                'last_name' => 'max:255',
-                'gender_id' => 'required|integer',
-                'birthdayDate' => 'date_format:Y-m-d',
-            ]);
+            $datas = $this->getDataForStoreOrUpdate($request);
 
-            if ($validator->fails()) {
+            if (! $datas) {
                 return back()
                     ->withInput()
                     ->withErrors($validator);
             }
 
-            // this is really ugly. it should be changed
-            if ($request->get('birthdate') == 'exact') {
-                $birthdate = $request->input('birthdayDate');
-                $birthdate = DateHelper::parseDate($birthdate);
-                $day = $birthdate->day;
-                $month = $birthdate->month;
-                $year = $birthdate->year;
-            } else {
-                $day = $request->get('day');
-                $month = $request->get('month');
-                $year = $request->get('year');
-            }
-
-            app(UpdateContact::class)->execute([
-                'account_id' => auth()->user()->account_id,
-                'first_name' => $request->input('first_name'),
-                'last_name' => $request->input('last_name'),
-                'gender_id' => $request->input('gender_id'),
-                'is_birthdate_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
-                'birthdate_day' => $day,
-                'birthdate_month' => $month,
-                'birthdate_year' => $year,
-                'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
-                'age' => $request->get('age'),
-                'add_reminder' => ! empty($request->get('addReminder')),
-                'is_partial' => ! $request->get('realContact'),
-                'is_deceased' => false,
-                'is_deceased_date_known' => false,
+            app(UpdateContact::class)->execute($datas + [
+                'contact_id' => $otherContact->id,
             ]);
         }
 
@@ -237,6 +172,54 @@ class RelationshipsController extends Controller
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.relationship_form_add_success'));
+    }
+
+    /**
+     * @param Request $request
+     * @return array|null
+     */
+    private function getDataForStoreOrUpdate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|max:255',
+            'last_name' => 'max:255',
+            'gender_id' => 'required|integer',
+            'birthdayDate' => 'date_format:Y-m-d',
+        ]);
+
+        if ($validator->fails()) {
+            return null;
+        }
+
+        // this is really ugly. it should be changed
+        if ($request->get('birthdate') == 'exact') {
+            $birthdate = $request->input('birthdayDate');
+            $birthdate = DateHelper::parseDate($birthdate);
+            $day = $birthdate->day;
+            $month = $birthdate->month;
+            $year = $birthdate->year;
+        } else {
+            $day = $request->get('day');
+            $month = $request->get('month');
+            $year = $request->get('year');
+        }
+
+        return [
+            'account_id' => auth()->user()->account_id,
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'gender_id' => $request->input('gender_id'),
+            'is_birthdate_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
+            'birthdate_day' => $day,
+            'birthdate_month' => $month,
+            'birthdate_year' => $year,
+            'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
+            'age' => $request->get('age'),
+            'add_reminder' => ! empty($request->get('addReminder')),
+            'is_partial' => ! $request->get('realContact'),
+            'is_deceased' => false,
+            'is_deceased_date_known' => false,
+        ];
     }
 
     /**
