@@ -1,4 +1,5 @@
 UNRELEASED CHANGES:
+* Fix Dashboard doesn't crash anymore, when trying to get property 'contact' of non-object
 
 New features:
 
