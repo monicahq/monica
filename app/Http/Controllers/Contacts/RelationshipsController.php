@@ -188,7 +188,7 @@ class RelationshipsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return null;
+            return;
         }
 
         // this is really ugly. it should be changed
