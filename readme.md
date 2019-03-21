@@ -45,8 +45,6 @@ Monica is an open-source web application to organize the interactions with your 
 <img src="docs/images/main-app.png" alt="screenshot of the application">
 </p>
 
-We also have official [open source mobile apps](https://github.com/monicahq/chandler) but they are extremely basic at this point and not well maintained.
-
 ### Purpose
 
 Monica allows people to keep track of everything that's important about their friends and family. Like the activities done with them. When you last called someone. What you talked about. It will help you remember the name and the age of the kids. It can also remind you to call someone you haven't talked to in a while.
@@ -82,7 +80,6 @@ Monica allows people to keep track of everything that's important about their fr
 * Multi currencies
 * Multi languages
 * An API that covers most of the data
-* We also have [official mobile apps](https://github.com/monicahq/chandler), also open source
 
 ### Who is it for?
 
@@ -185,7 +182,6 @@ Here what we should do in order to realize our vision:
 * (**done**) Build importers and exporters of data. We don't want to have any vendor lock-ins. Data is the property of the users and they should be able to do whatever they want with it.
 * Be the central point of contact management, by supporting CardDav protocol.
 * Be the central point of calendar events, by supporting CalDav protocol.
-* (**done**) Be available on [mobile apps](https://github.com/monicahq/chandler), not just a responsive site.
 * (**partially done**) Build great reports so people can have interesting insights on how they interact with their loved ones.
 * Create a smart recommendation system for gifts. For instance, if my nephew is soon 6 years old in a month, I will be able to receive an email with a list of 5 potential gifts I can offer to a 6 year old boy.
 * Add more ways of being reminded: Telegram, SMS,...

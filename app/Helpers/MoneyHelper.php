@@ -39,8 +39,11 @@ class MoneyHelper
             return $numberFormatter->format($amount);
         }
 
-        $money = new Money($amount * 100, new MoneyCurrency($currency->iso));
+        $moneyCurrency = new MoneyCurrency($currency->iso);
         $currencies = new ISOCurrencies();
+        $minorUnitAdjustment = pow(10, $currencies->subunitFor($moneyCurrency));
+
+        $money = new Money($amount * $minorUnitAdjustment, $moneyCurrency);
 
         $numberFormatter = new \NumberFormatter(App::getLocale(), \NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);

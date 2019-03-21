@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Commands;
+namespace Tests\Commands;
 
 use Mockery as m;
 use Tests\TestCase;
