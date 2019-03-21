@@ -60,7 +60,7 @@ class RegisterController extends Controller
 
         return view('auth.register')
             ->withFirst($first)
-            ->withLocales(CollectionHelper::sortByCollator(LocaleHelper::getLocaleList(), 'lang'));
+            ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('lang'));
     }
 
     /**
