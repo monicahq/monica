@@ -57,7 +57,7 @@
             {{ $t('app.emotion_primary_' + primaryEmotion.name) }}
 
             <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                 xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4" />
             </svg>
@@ -73,7 +73,7 @@
             {{ $t('app.emotion_secondary_' + secondaryEmotion.name) }}
 
             <svg class="absolute emotion-add-arrow" width="10" height="13" viewBox="0 0 10 13" fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                 xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M8.75071 5.66783C9.34483 6.06361 9.34483 6.93653 8.75072 7.33231L1.80442 11.9598C1.13984 12.4025 0.25 11.9261 0.25 11.1275L0.25 1.87263C0.25 1.07409 1.13984 0.59767 1.80442 1.04039L8.75071 5.66783Z" fill="#C4C4C4" />
             </svg>

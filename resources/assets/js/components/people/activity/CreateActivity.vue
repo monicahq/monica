@@ -13,11 +13,11 @@
               {{ $t('people.activities_add_title', { name: name }) }}
             </p>
             <form-input
-              v-model="newActivity.summary"
               :id="'last_name'"
+              v-model="newActivity.summary"
               :input-type="'text'"
-              :required="false">
-            </form-input>
+              :required="false"
+            />
           </div>
 
           <!-- WHEN -->
@@ -39,17 +39,25 @@
         </div>
 
         <!-- ADDITIONAL FIELDS -->
-        <div class="bb b--gray-monica pv3 mb3" v-show="!displayDescription || !displayEmotions || !displayCategory">
+        <div v-show="!displayDescription || !displayEmotions || !displayCategory" class="bb b--gray-monica pv3 mb3">
           <ul class="list">
-            <li class="di pointer mr3" v-show="!displayDescription"><a @click="displayDescription = true">Add more details</a></li>
-            <li class="di pointer mr3" v-show="!displayEmotions"><a @click="displayEmotions = true">Add emotions</a></li>
-            <li class="di pointer mr3" v-show="!displayCategory"><a @click="displayCategory = true">Indicate a category</a></li>
-            <li class="di pointer" v-show="!displayParticipants"><a @click="displayParticipants = true">Add participants</a></li>
+            <li v-show="!displayDescription" class="di pointer mr3">
+              <a @click="displayDescription = true">Add more details</a>
+            </li>
+            <li v-show="!displayEmotions" class="di pointer mr3">
+              <a @click="displayEmotions = true">Add emotions</a>
+            </li>
+            <li v-show="!displayCategory" class="di pointer mr3">
+              <a @click="displayCategory = true">Indicate a category</a>
+            </li>
+            <li v-show="!displayParticipants" class="di pointer">
+              <a @click="displayParticipants = true">Add participants</a>
+            </li>
           </ul>
         </div>
 
         <!-- DESCRIPTION -->
-        <div class="bb b--gray-monica pv3 mb3" v-show="displayDescription">
+        <div v-show="displayDescription" class="bb b--gray-monica pv3 mb3">
           <label>
             {{ $t('people.activities_summary') }}
           </label>
@@ -69,7 +77,7 @@
         </div>
 
         <!-- EMOTIONS -->
-        <div class="bb b--gray-monica pb3 mb3" v-show="displayEmotions">
+        <div v-show="displayEmotions" class="bb b--gray-monica pb3 mb3">
           <label>
             {{ $t('people.activities_add_emotions') }}
           </label>
@@ -77,19 +85,19 @@
         </div>
 
         <!-- ACTIVITY CATEGORIES -->
-        <div class="bb b--gray-monica pb3 mb3" v-show="displayCategory">
+        <div v-show="displayCategory" class="bb b--gray-monica pb3 mb3">
           <label>
             {{ $t('people.activities_add_pick_activity') }}
           </label>
-          <activity-type-list v-on:change="updateCategory($event)" />
+          <activity-type-list @change="updateCategory($event)" />
         </div>
 
         <!-- PARTICPANTS -->
-        <div class="bb b--gray-monica pb3 mb3" v-show="displayParticipants">
+        <div v-show="displayParticipants" class="bb b--gray-monica pb3 mb3">
           <label>
             {{ $t('people.activities_add_participants', {name: name}) }}
           </label>
-          <participant-list :hash="hash" v-on:update="updateParticipant($event)" />
+          <participant-list :hash="hash" @update="updateParticipant($event)" />
         </div>
 
         <error :errors="errors" />
@@ -140,7 +148,7 @@ export default {
     },
     displayLogActivity: {
       type: Boolean,
-      default: '',
+      default: false,
     },
   },
 

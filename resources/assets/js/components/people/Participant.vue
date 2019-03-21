@@ -20,7 +20,8 @@ input[type=text]:focus {
       <ul v-show="chosenParticipants.length != 0" class="mr2 mb3">
         <li v-for="chosenParticipant in chosenParticipants"
             :key="chosenParticipant.id"
-            class="dib participant br5 mr2">
+            class="dib participant br5 mr2"
+        >
           <span class="ph2 pv1 dib">
             {{ chosenParticipant.name }}
           </span>
@@ -29,15 +30,16 @@ input[type=text]:focus {
           </span>
         </li>
       </ul>
-      <div class="ba b--gray-monica" v-show="participants.length != 0">
+      <div v-show="participants.length != 0" class="ba b--gray-monica">
         <span class="db bb b--gray-monica pa2">
-          <input type="text" v-model="search" :placeholder="$t('app.filter')" class="br2 f5 w-100 ba b--black-20 pa2 outline-0" />
+          <input v-model="search" type="text" :placeholder="$t('app.filter')" class="br2 f5 w-100 ba b--black-20 pa2 outline-0" />
         </span>
         <ul class="overflow-auto" style="height: 150px;">
           <li v-for="participant in filteredList"
-            :key="participant.id"
-            @click.prevent="select(participant)"
-            class="bb b--gray-monica pa2 pointer potential-participant">
+              :key="participant.id"
+              class="bb b--gray-monica pa2 pointer potential-participant"
+              @click.prevent="select(participant)"
+          >
             {{ participant.name }}
           </li>
         </ul>
@@ -72,18 +74,13 @@ export default {
     };
   },
 
-  mounted() {
-    this.prepareComponent();
-    this.chosenParticipants = this.initialParticipants;
-  },
-
   computed: {
     filteredList() {
       // filter the list when searching
       // also, sort the list by name
       var list;
       list = this.participants.filter(participant => {
-        return participant.name.toLowerCase().includes(this.search.toLowerCase())
+        return participant.name.toLowerCase().includes(this.search.toLowerCase());
       });
 
       function compare(a, b) {
@@ -96,6 +93,11 @@ export default {
 
       return list.sort(compare);
     }
+  },
+
+  mounted() {
+    this.prepareComponent();
+    this.chosenParticipants = this.initialParticipants;
   },
 
   methods: {

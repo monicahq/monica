@@ -33,14 +33,17 @@
       :hash="hash"
       :name="name"
       :display-log-activity="displayLogActivity"
-      v-on:update="updateList($event)"
-      v-on:cancel="displayLogActivity = false" />
+      @update="updateList($event)"
+      @cancel="displayLogActivity = false"
+    />
 
     <!-- LIST OF ACTIVITIES -->
     <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
-      <h2 class="pl2 pr2 pt3 f5">{{ activity.summary }}</h2>
+      <h2 class="pl2 pr2 pt3 f5">
+        {{ activity.summary }}
+      </h2>
 
-      <div v-html="activity.description" class="pl2 pr2 pb3" v-if="activity.description">
+      <div v-if="activity.description" class="pl2 pr2 pb3" v-html="activity.description">
       </div>
 
       <!-- DETAILS -->
@@ -55,7 +58,9 @@
             <!-- PARTICIPANT LIST -->
             <li v-if="activity.attendees.total > 1" class="di">
               <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
-                <li class="di">{{ $t('people.activities_list_participants') }}</li>
+                <li class="di">
+                  {{ $t('people.activities_list_participants') }}
+                </li>
                 <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di mr2">
                   <span v-show="attendee.id != contactId">{{ attendee.complete_name }}</span>
                 </li>
@@ -65,7 +70,9 @@
             <!-- EMOTIONS LIST -->
             <li v-if="activity.emotions.length != 0" class="di">
               <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
-                <li class="di">{{ $t('people.activities_list_emotions') }}</li>
+                <li class="di">
+                  {{ $t('people.activities_list_emotions') }}
+                </li>
                 <li v-for="emotion in activity.emotions" :key="emotion.id" class="di">
                   {{ $t('app.emotion_' + emotion.name) }}
                 </li>
@@ -73,7 +80,7 @@
             </li>
 
             <!-- ACTIVITY TYPE -->
-            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]" v-if="activity.activity_type">
+            <li v-if="activity.activity_type" :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
               {{ activity.activity_type.name }}
             </li>
           </ul>
@@ -99,22 +106,18 @@
           </ul>
         </div>
       </div>
-
     </div>
 
-    <p class="tc" v-if="activities.length > 0">📗 <a :href="'people/' + hash + '/activities/summary'">{{ $t('people.activities_view_activities_report') }}</a></p>
+    <p v-if="activities.length > 0" class="tc">
+      📗 <a :href="'people/' + hash + '/activities/summary'">{{ $t('people.activities_view_activities_report') }}</a>
+    </p>
   </div>
 </template>
 
 <script>
 import moment from 'moment';
-import Error from '../../partials/Error.vue';
 
 export default {
-  components: {
-    Error
-  },
-
   filters: {
     moment: function (date) {
       return moment.utc(date).format('LL');
