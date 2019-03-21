@@ -56,35 +56,53 @@ class RelationshipType extends Model
      *
      * @return array|string|null|\Illuminate\Contracts\Translation\Translator
      */
-    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = Gender::MALE)
+    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, $gender = null)
     {
+        $defaultGenderType = Gender::MALE;
+        if ($this->account->default_gender_id) {
+            $defaultGender = Gender::where([
+                'account_id' => $this->account_id,
+            ])->find($this->account->default_gender_id);
+            if ($defaultGender) {
+                $defaultGenderType = $defaultGender->type;
+            }
+        }
+        if (is_null($gender)) {
+            $gender = $defaultGenderType;
+        }
+
         // include the reverse of the relation in the string (masculine/feminine)
         // this is used in the dropdown of the relationship types when creating
         // or deleting a relationship.
-        if (! is_null($contact) && $includeOpposite) {
-            // in some language, masculine and feminine version of a relationship type is the same.
-            // we need to keep just one version in that case.
-            $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
-
-            // `Regis Freyd's significant other`
-            if (strtolower($femaleVersion) == strtolower($this->getLocalizedName())) {
-                return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
-            }
-
-            // otherwise `Regis Freyd's uncle/aunt`
-            return trans(
-                'app.relationship_type_'.$this->name.'_with_name',
-                ['name' => $contact->name]
-            ).'/'.$femaleVersion;
-        }
-
-        // `Regis Freyd's uncle`
         if (! is_null($contact)) {
-            if ($gender == Gender::FEMALE) {
-                return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
-            }
+            if ($includeOpposite) {
+                // in some language, masculine and feminine version of a relationship type is the same.
+                // we need to keep just one version in that case.
+                $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
+                $maleVersion = trans('app.relationship_type_'.$this->name);
+                $withName = trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
 
-            return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
+                // `Regis Freyd's significant other`
+                if ($femaleVersion === $maleVersion) {
+                    return $withName;
+                }
+
+                // otherwise `Regis Freyd's uncle/aunt`
+                if ($defaultGenderType === Gender::FEMALE) {
+                    return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]).'/'.$maleVersion;
+                } else {
+                    return $withName.'/'.$femaleVersion;
+                }
+            } else {
+                // `Regis Freyd's uncle`
+                if (! is_null($contact)) {
+                    if ($gender == Gender::FEMALE) {
+                        return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
+                    }
+
+                    return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
+                }
+            }
         }
 
         // `aunt`

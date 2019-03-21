@@ -18,7 +18,7 @@ class GendersHelper
             ];
         });
         $genders = CollectionHelper::sortByCollator($genders, 'name');
-        $genders->prepend(['id' => '', 'name' => '']);
+        $genders->prepend(['id' => '', 'name' => trans('app.gender_no_gender')]);
 
         return $genders;
     }
