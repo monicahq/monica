@@ -20,7 +20,7 @@ class ActivityTest extends TestCase
 
         $this->assertEquals(
             'this is a desc',
-            $reminder->description
+            $activity->description
         );
     }
 

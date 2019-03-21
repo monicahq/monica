@@ -60,15 +60,4 @@ class IdHasherTest extends TestCase
 
         $this->assertEquals($contact->id, $value);
     }
-
-    public function testHashIDActivity()
-    {
-        $idHasher = new IdHasher();
-
-        $activity = factory(Activity::class)->create();
-
-        $value = $idHasher->decodeId($activity->hashID());
-
-        $this->assertEquals($activity->id, $value);
-    }
 }

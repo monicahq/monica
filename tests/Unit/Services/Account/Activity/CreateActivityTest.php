@@ -17,7 +17,7 @@ class CreateActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_activity()
+    public function test_it_stores_a_activity_and_creates_an_entry_in_the_journal()
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([
@@ -46,6 +46,12 @@ class CreateActivityTest extends TestCase
             Activity::class,
             $activity
         );
+
+        $this->assertDatabaseHas('journal_entries', [
+            'account_id' => $account->id,
+            'journalable_id' => $activity->id,
+            'journalable_type' => get_class($activity),
+        ]);
     }
 
     public function test_it_adds_emotions()

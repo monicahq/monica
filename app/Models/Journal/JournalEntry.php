@@ -53,7 +53,7 @@ class JournalEntry extends Model
         $this->account_id = $resourceToLog->account_id;
         $this->date = now();
         if ($resourceToLog instanceof \App\Models\Account\Activity) {
-            $this->date = $resourceToLog->date_it_happened;
+            $this->date = $resourceToLog->happened_at;
         }
         if ($resourceToLog instanceof \App\Models\Journal\Entry) {
             $this->date = $resourceToLog->date;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Account;
+namespace App\Http\Controllers\Contacts;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -37,7 +37,10 @@ class ActivitiesController extends Controller
      */
     public function index(Request $request, Contact $contact)
     {
-        $activities = $contact->activities()->orderBy('happened_at', 'desc')->get();
+        $activities = $contact->activities()
+                            ->orderBy('happened_at', 'desc')
+                            ->limit(10)
+                            ->get();
 
         return ActivityResource::collection($activities);
     }
@@ -151,6 +154,24 @@ class ActivitiesController extends Controller
     }
 
     /**
+     * Display the summary of activities for a given contact.
+     *
+     * @param Request $request
+     * @param Contact $contact
+     * @return \Illuminate\Http\Response
+     */
+    public function summary(Request $request, Contact $contact)
+    {
+        // get the year of the most recent activity done with the contact
+        $year = $contact->activities->sortByDesc('happened_at')
+                        ->first()
+                        ->happened_at
+                        ->year;
+
+        return redirect()->route('people.activities.year', [$contact, $year]);
+    }
+
+    /**
      * Get all the activities for this contact for a specific year.
      */
     public function year(Request $request, Contact $contact, int $year)
@@ -171,7 +192,7 @@ class ActivitiesController extends Controller
                         ->activitiesPerMonthForYear($contact, $year)
                         ->sortByDesc('month');
 
-        return view('people.activities.index')
+        return view('people.activities.year')
             ->withTotalActivities($contact->activities->count())
             ->withActivitiesLastTwelveMonths($activitiesLastTwelveMonths)
             ->withUniqueActivityTypes($uniqueActivityTypes)

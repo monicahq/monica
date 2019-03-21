@@ -193,6 +193,11 @@ Vue.component(
 );
 
 Vue.component(
+  'create-activity',
+  require('./components/people/activity/CreateActivity.vue').default
+);
+
+Vue.component(
   'activity-type-list',
   require('./components/people/activity/ActivityTypeList.vue').default
 );

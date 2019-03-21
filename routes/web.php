@@ -176,10 +176,11 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::put('/people/{contact}/archive', 'ContactsController@archive');
 
         // Activities
-        Route::get('/activityCategories', 'Account\\ActivitiesController@categories')->name('activities.categories');
-        Route::resource('people/{contact}/activities', 'Account\\ActivitiesController')->only(['index', 'store', 'update', 'destroy']);
-        Route::get('/people/{contact}/activities/contacts', 'Account\\ActivitiesController@contacts')->name('activities.contacts');
-        Route::get('/people/{contact}/activities/{year}', 'Account\\ActivitiesController@year')->name('activities.year');
+        Route::get('/activityCategories', 'Contacts\\ActivitiesController@categories')->name('activities.categories');
+        Route::resource('people/{contact}/activities', 'Contacts\\ActivitiesController')->only(['index', 'store', 'update', 'destroy']);
+        Route::get('/people/{contact}/activities/contacts', 'Contacts\\ActivitiesController@contacts')->name('activities.contacts');
+        Route::get('/people/{contact}/activities/summary', 'Contacts\\ActivitiesController@summary')->name('activities.summary');
+        Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
     });
 
     Route::name('journal.')->group(function () {

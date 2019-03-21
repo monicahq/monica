@@ -33,6 +33,8 @@ class DestroyActivity extends BaseService
         $activity = Activity::where('account_id', $data['account_id'])
             ->findOrFail($data['activity_id']);
 
+        $activity->deleteJournalEntry();
+
         $activity->delete();
 
         return true;

@@ -11,7 +11,7 @@
           <a v-if="displayLogActivity == false" class="btn edit-information" @click="displayLogActivity = true">
             {{ $t('people.activities_add_activity') }}
           </a>
-          <a v-if="displayLogActivity" class="btn edit-information" @click="resetFields()">
+          <a v-if="displayLogActivity" class="btn edit-information" @click="displayLogActivity = false">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -29,131 +29,34 @@
     </div>
 
     <!-- LOG AN ACTIVITY -->
-    <transition name="fade">
-      <div v-if="displayLogActivity" class="ba br3 mb3 pa3 b--black-40">
-        <div class="dt dt--fixed pb3 mb3 mb0-ns bb b--gray-monica">
-          <!-- SUMMARY -->
-          <div class="dtc pr2">
-            <p class="mb2 b">
-              {{ $t('people.activities_add_title', { name: name }) }}
-            </p>
-            <form-input
-              v-model="newActivity.summary"
-              :id="'last_name'"
-              :input-type="'text'"
-              :required="false">
-            </form-input>
-          </div>
-
-          <!-- WHEN -->
-          <div class="dtc">
-            <p class="mb2 b">
-              {{ $t('people.activities_add_date_occured') }}
-            </p>
-            <div class="di">
-              <div class="dib">
-                <form-date
-                  v-model="newActivity.happened_at"
-                  :default-date="todayDate"
-                  :locale="'en'"
-                  @selected="updateDate($event)"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ADDITIONAL FIELDS -->
-        <div class="bb b--gray-monica pv3 mb3" v-show="!displayDescription || !displayEmotions || !displayCategory">
-          <ul class="list">
-            <li class="di pointer mr3" v-show="!displayDescription"><a @click="displayDescription = true">Add more details</a></li>
-            <li class="di pointer mr3" v-show="!displayEmotions"><a @click="displayEmotions = true">Add emotions</a></li>
-            <li class="di pointer mr3" v-show="!displayCategory"><a @click="displayCategory = true">Indicate a category</a></li>
-            <li class="di pointer" v-show="!displayParticipants"><a @click="displayParticipants = true">Add participants</a></li>
-          </ul>
-        </div>
-
-        <!-- DESCRIPTION -->
-        <div class="bb b--gray-monica pv3 mb3" v-show="displayDescription">
-          <label>
-            {{ $t('people.activities_summary') }}
-          </label>
-          <form-textarea
-            v-model="newActivity.description"
-            :required="true"
-            :no-label="true"
-            :rows="4"
-            :placeholder="$t('people.conversation_add_content')"
-            @contentChange="updateDescription($event)"
-          />
-          <p class="f6">
-            {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">
-              {{ $t('app.markdown_link') }}
-            </a>
-          </p>
-        </div>
-
-        <!-- EMOTIONS -->
-        <div class="bb b--gray-monica pb3 mb3" v-show="displayEmotions">
-          <label>
-            {{ $t('people.activities_add_emotions') }}
-          </label>
-          <emotion class="pv2" @updateEmotionsList="updateEmotionsList" />
-        </div>
-
-        <!-- ACTIVITY CATEGORIES -->
-        <div class="bb b--gray-monica pb3 mb3" v-show="displayCategory">
-          <label>
-            {{ $t('people.activities_add_pick_activity') }}
-          </label>
-          <activity-type-list v-on:change="updateCategory($event)" />
-        </div>
-
-        <!-- PARTICPANTS -->
-        <div class="bb b--gray-monica pb3 mb3" v-show="displayParticipants">
-          <label>
-            {{ $t('people.activities_add_participants', {name: name}) }}
-          </label>
-          <participant-list :hash="hash" v-on:update="updateParticipant($event)" />
-        </div>
-
-        <error :errors="errors" />
-
-        <!-- ACTIONS -->
-        <div class="pt3">
-          <div class="flex-ns justify-between">
-            <div class="">
-              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="resetFields()">
-                {{ $t('app.cancel') }}
-              </a>
-            </div>
-            <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="store()">
-                {{ $t('app.add') }}
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </transition>
+    <create-activity
+      :hash="hash"
+      :name="name"
+      :display-log-activity="displayLogActivity"
+      v-on:update="updateList($event)"
+      v-on:cancel="displayLogActivity = false" />
 
     <!-- LIST OF ACTIVITIES -->
     <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
-      <h2 class="pl2 pr2 pt3 f5 normal">{{ activity.summary }}</h2>
+      <h2 class="pl2 pr2 pt3 f5">{{ activity.summary }}</h2>
 
       <div v-html="activity.description" class="pl2 pr2 pb3" v-if="activity.description">
       </div>
 
       <!-- DETAILS -->
-      <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
+      <div class="pa2 cf bt b--black-10 br--bottom f7">
         <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
           <ul class="list">
+            <!-- HAPPENED AT -->
+            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
+              {{ activity.happened_at | moment }}
+            </li>
 
             <!-- PARTICIPANT LIST -->
             <li v-if="activity.attendees.total > 1" class="di">
               <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
-                <li class="di">{{ $t('app.with') }}</li>
-                <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di">
+                <li class="di">{{ $t('people.activities_list_participants') }}</li>
+                <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di mr2">
                   <span v-show="attendee.id != contactId">{{ attendee.complete_name }}</span>
                 </li>
               </ul>
@@ -162,35 +65,33 @@
             <!-- EMOTIONS LIST -->
             <li v-if="activity.emotions.length != 0" class="di">
               <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
+                <li class="di">{{ $t('people.activities_list_emotions') }}</li>
                 <li v-for="emotion in activity.emotions" :key="emotion.id" class="di">
                   {{ $t('app.emotion_' + emotion.name) }}
                 </li>
               </ul>
             </li>
 
-            <!-- HAPPENED AT -->
-            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
-              {{ activity.happened_at | moment }}
-            </li>
-
             <!-- ACTIVITY TYPE -->
             <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]" v-if="activity.activity_type">
               {{ activity.activity_type.name }}
             </li>
-
-            <!-- ACTIONS -->
-            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
-              <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(activity)">{{ $t('app.update') }}</a>
+          </ul>
+        </div>
+        <div class="w-30" :class="[ dirltr ? 'fl tr' : 'fr tl' ]">
+          <!-- ACTIONS -->
+          <ul class="list">
+            <li class="di">
               <a v-show="destroyActivityId != activity.id" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
               <ul v-show="destroyActivityId == activity.id" class="di">
                 <li class="di">
-                  <a class="pointer mr1" @click.prevent="destroyActivityId = 0">
-                    {{ $t('app.cancel') }}
+                  <a class="pointer red" @click.prevent="destroyActivity(activity)">
+                    {{ $t('app.delete_confirm') }}
                   </a>
                 </li>
                 <li class="di">
-                  <a class="pointer red" @click.prevent="destroyActivity(activity)">
-                    {{ $t('app.delete_confirm') }}
+                  <a class="pointer mr1" @click.prevent="destroyActivityId = 0">
+                    {{ $t('app.cancel') }}
                   </a>
                 </li>
               </ul>
@@ -200,6 +101,8 @@
       </div>
 
     </div>
+
+    <p class="tc" v-if="activities.length > 0">📗 <a :href="'people/' + hash + '/activities/summary'">{{ $t('people.activities_view_activities_report') }}</a></p>
   </div>
 </template>
 
@@ -243,14 +146,6 @@ export default {
       displayEmotions: false,
       displayCategory: false,
       displayParticipants: false,
-      newActivity: {
-        summary: '',
-        description: '',
-        happened_at: '',
-        emotions: [],
-        activity_type_id: 0,
-        participants: [],
-      },
       destroyActivityId: 0,
       errors: [],
     };
@@ -265,22 +160,6 @@ export default {
       this.dirltr = this.$root.htmldir == 'ltr';
       this.getActivities();
       this.todayDate = moment().format('YYYY-MM-DD');
-      this.newActivity.happened_at = this.todayDate;
-    },
-
-    resetFields() {
-      this.displayDescription = false;
-      this.displayEmotions = false;
-      this.displayCategory = false;
-      this.displayParticipants = false;
-      this.newActivity.summary = '';
-      this.newActivity.participants = [];
-      this.description = '';
-      this.happened_at = '';
-      this.emotions = [];
-      this.activity_type_id = 0;
-      this.displayLogActivity = false;
-      this.errors = [];
     },
 
     compiledMarkdown (text) {
@@ -294,35 +173,9 @@ export default {
         });
     },
 
-    updateDescription(description) {
-      this.newActivity.description = description;
-    },
-
-    updateDate(date) {
-      this.newActivity.happened_at = date;
-    },
-
-    updateCategory(id) {
-      this.newActivity.activity_type_id = parseInt(id);
-    },
-
-    store() {
-      axios.post('/people/' + this.hash + '/activities', this.newActivity)
-        .then(response => {
-          this.displayLogActivity = false;
-          this.getActivities();
-          this.resetFields();
-
-          this.$notify({
-            group: 'main',
-            title: this.$t('people.activities_add_success'),
-            text: '',
-            type: 'success'
-          });
-        })
-        .catch(error => {
-          this.errors = _.flatten(_.toArray(error.response.data));
-        });
+    updateList: function (activity) {
+      this.displayLogActivity = false;
+      this.getActivities();
     },
 
     showDestroyActivity(activity) {
@@ -335,21 +188,6 @@ export default {
           this.activities.splice(this.activities.indexOf(activity), 1);
         });
     },
-
-    updateParticipant: function (participants) {
-      this.newActivity.participants = participants;
-    },
-
-    updateEmotionsList: function(emotions) {
-      this.emotions = emotions;
-      this.newActivity.emotions = [];
-
-      // filter the list of emotions to populate a new array
-      // containing only the emotion ids and not the entire objetcs
-      for (let i = 0; i < this.emotions.length; i++) {
-        this.newActivity.emotions.push(this.emotions[i].id);
-      }
-    }
   }
 };
 </script>
