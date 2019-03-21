@@ -4,8 +4,8 @@ namespace App\Services\Account\Activity\Activity;
 
 use App\Services\BaseService;
 use App\Models\Account\Activity;
-use App\Models\Journal\JournalEntry;
 use App\Models\Account\ActivityType;
+use App\Models\Journal\JournalEntry;
 use App\Models\Instance\Emotion\Emotion;
 
 class CreateActivity extends BaseService

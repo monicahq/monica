@@ -3,12 +3,12 @@
 namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
+use App\Models\Account\Account;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
-use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Services\Account\Activity\Activity\CreateActivity;
+use App\Services\Account\Activity\Activity\DestroyActivity;
 
 class DestroyActivityTest extends TestCase
 {
