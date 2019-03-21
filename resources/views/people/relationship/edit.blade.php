@@ -39,7 +39,7 @@
         </form-select>
       </div>
 
-      @if ($contact->is_partial)
+      @if ($partner->is_partial)
         {{-- Name --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
           {{-- This check is for the cultures that are used to say the last name first --}}

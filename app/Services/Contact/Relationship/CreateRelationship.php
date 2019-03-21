@@ -44,13 +44,16 @@ class CreateRelationship extends BaseService
         $relationshipType = RelationshipType::where('account_id', $data['account_id'])
             ->findOrFail($data['relationship_type_id']);
 
+        // create the relationship
+        $relationship = $this->setRelationship($contact, $otherContact, $relationshipType);
+
         $reverseRelationshipType = $relationshipType->reverseRelationshipType();
         if ($reverseRelationshipType) {
+            // create the reverse relationship
             $this->setRelationship($otherContact, $contact, $reverseRelationshipType);
         }
 
-        // create the relationship
-        return $this->setRelationship($contact, $otherContact, $relationshipType);
+        return $relationship;
     }
 
     /**

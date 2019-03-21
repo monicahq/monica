@@ -76,7 +76,7 @@ class RelationshipsController extends Controller
         } else {
 
             // case of creating a new contact
-            $datas = $this->getDataForStoreOrUpdate($request);
+            $datas = $this->validateAndGetDatas($request);
 
             if ($datas instanceof \Illuminate\Contracts\Validation\Validator) {
                 return back()
@@ -150,7 +150,7 @@ class RelationshipsController extends Controller
     public function update(Request $request, Contact $contact, Contact $otherContact)
     {
         if ($otherContact->is_partial) {
-            $datas = $this->getDataForStoreOrUpdate($request);
+            $datas = $this->validateAndGetDatas($request);
 
             if ($datas instanceof \Illuminate\Contracts\Validation\Validator) {
                 return back()
@@ -175,10 +175,12 @@ class RelationshipsController extends Controller
     }
 
     /**
+     * Validate datas and get an array for create or update a contact.
+     *
      * @param Request $request
      * @return array|\Illuminate\Contracts\Validation\Validator
      */
-    private function getDataForStoreOrUpdate(Request $request)
+    private function validateAndGetDatas(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:255',
