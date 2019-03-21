@@ -35,11 +35,6 @@ class AttachContactToActivity extends BaseService
         $activity = Activity::where('account_id', $data['account_id'])
             ->findOrFail($data['activity_id']);
 
-        foreach ($data['contacts'] as &$contactId) {
-            Contact::where('account_id', $data['account_id'])
-                ->findOrFail($contactId);
-        }
-
         $this->attach($data, $activity);
 
         return $activity;
@@ -58,9 +53,14 @@ class AttachContactToActivity extends BaseService
         $activity->contacts()->sync([]);
 
         foreach ($data['contacts'] as &$contactId) {
+            $contact = Contact::where('account_id', $data['account_id'])
+                ->findOrFail($contactId);
+
             $activity->contacts()->syncWithoutDetaching([$contactId => [
                 'account_id' => $activity->account_id,
             ]]);
+
+            $contact->calculateActivitiesStatistics();
         }
     }
 }
