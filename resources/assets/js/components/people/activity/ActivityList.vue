@@ -139,9 +139,9 @@
 
     <!-- LIST OF ACTIVITIES -->
     <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
-      <h2>{{ activity.summary }}</h2>
+      <h2 class="pl2 pr2 pt3 f5 normal">{{ activity.summary }}</h2>
 
-      <div v-html="activity.description">
+      <div v-html="activity.description" class="pl2 pr2 pb3" v-if="activity.description">
       </div>
 
       <!-- DETAILS -->
@@ -150,9 +150,9 @@
           <ul class="list">
 
             <!-- PARTICIPANT LIST -->
-            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
-              Was also present:
-              <ul class="list">
+            <li v-if="activity.attendees.total > 1" class="di">
+              <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
+                <li class="di">{{ $t('app.with') }}</li>
                 <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di">
                   <span v-show="attendee.id != contactId">{{ attendee.complete_name }}</span>
                 </li>
@@ -160,8 +160,8 @@
             </li>
 
             <!-- EMOTIONS LIST -->
-            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]" v-if="activity.emotions.length != 0">
-              <ul class="list">
+            <li v-if="activity.emotions.length != 0" class="di">
+              <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
                 <li v-for="emotion in activity.emotions" :key="emotion.id" class="di">
                   {{ $t('app.emotion_' + emotion.name) }}
                 </li>
