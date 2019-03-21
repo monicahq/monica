@@ -25,6 +25,4 @@ class VCardHelper
             return CountriesHelper::find($country);
         }
     }
-
-    // @codeCoverageIgnore
 }
