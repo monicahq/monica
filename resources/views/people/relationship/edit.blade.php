@@ -28,17 +28,6 @@
       <input type="hidden" name="relationship_id" value="{{ $relationshipId }}">
       <input type="hidden" name="type" value="{{ $type }}">
 
-      {{-- Nature of relationship --}}
-      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-        <form-select
-          :options="{{ $relationshipTypes }}"
-          value="{{ $type }}"
-          :required="true"
-          :title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
-          :id="'relationship_type_id'">
-        </form-select>
-      </div>
-
       @if ($partner->is_partial)
         {{-- Name --}}
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
@@ -125,6 +114,20 @@
           </div>
         </div>
       @endif
+
+      {{-- Nature of relationship --}}
+      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+        <form-select
+          :options="{{ $relationshipTypes }}"
+          value="{{ $type }}"
+          :required="true"
+          :title="'{{
+            $partner->is_partial ? trans('people.relationship_form_is_with') :
+          trans('people.relationship_form_is_with_name', ['name' => $partner->name])
+          }}'"
+          :id="'relationship_type_id'">
+        </form-select>
+      </div>
 
       {{-- Form actions --}}
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
