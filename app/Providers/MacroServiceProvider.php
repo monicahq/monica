@@ -19,6 +19,7 @@ class MacroServiceProvider extends ServiceProvider
             Collection::macro('sortByCollator', function ($callback, $options = \Collator::SORT_STRING, $descending = false) {
                 /** @var Collection */
                 $collect = $this;
+
                 return CollectionHelper::sortByCollator($collect, $callback, $options, $descending);
             });
         }
