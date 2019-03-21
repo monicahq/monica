@@ -23,7 +23,7 @@ class CollectionHelperTest extends FeatureTestCase
                 ['name' => 'b'],
                 ['name' => 'c'],
             ],
-            $collection->toArray()
+            array_values($collection->toArray())
         );
     }
 
@@ -42,7 +42,7 @@ class CollectionHelperTest extends FeatureTestCase
                 ['name' => 'b'],
                 ['name' => 'c'],
             ],
-            $collection->toArray()
+            array_values($collection->toArray())
         );
     }
 
@@ -63,7 +63,7 @@ class CollectionHelperTest extends FeatureTestCase
                 ['name' => 'b'],
                 ['name' => 'c'],
             ],
-            $collection->toArray()
+            array_values($collection->toArray())
         );
     }
 
@@ -86,7 +86,7 @@ class CollectionHelperTest extends FeatureTestCase
                 ['name' => 'côte'],
                 ['name' => 'côté'],
             ],
-            $collection->toArray()
+            array_values($collection->toArray())
         );
     }
 
@@ -109,7 +109,7 @@ class CollectionHelperTest extends FeatureTestCase
                 ['name' => 'coté'],
                 ['name' => 'côté'],
             ],
-            $collection->toArray()
+            array_values($collection->toArray())
         );
     }
 

@@ -40,7 +40,7 @@ class CollectionHelper
         $keys = array_keys($results);
         $results = [];
         foreach ($keys as $key) {
-            $results[] = $collect->get($key);
+            $results[$key] = $collect->get($key);
         }
 
         return new Collection($results);
