@@ -11,7 +11,7 @@ class ComposerScripts
      *
      * @param  mixed  $event
      * @return void
-     * 
+     *
      * @codeCoverageIgnore
      */
     public static function preInstall($event)
@@ -27,7 +27,7 @@ class ComposerScripts
      *
      * @param  mixed  $event
      * @return void
-     * 
+     *
      * @codeCoverageIgnore
      */
     public static function preUpdate($event)
