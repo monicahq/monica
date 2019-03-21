@@ -74,7 +74,7 @@ class ActivitiesController extends Controller
      * @param  Contact $contact
      * @return Activity
      */
-    public function store(Request $request, Contact $contact)
+    public function store(Request $request, Contact $contact) : Activity
     {
         $activity = (new CreateActivity)->execute([
             'account_id' => auth()->user()->account->id,

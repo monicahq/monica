@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Mar 22, 2019",
+            "title": "Enhancement: add emotions to activities",
+            "description": "Adding activities is now done inline, and you can add emotions and participants to an activity. ![image](img/changelogs/2019-03-22-new-activity.png)"
+        },
+        {
             "date": "Jan 06, 2019",
             "title": "Enhancement: comment when rating your day",
             "description": "In the Journal, you can now add a comment after you rate your day. ![image](img/changelogs/2019-01-06-rate-day-comment.png)"

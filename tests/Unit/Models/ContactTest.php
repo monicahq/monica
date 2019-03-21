@@ -403,7 +403,7 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             '2015-10-29',
-            $contact->getLastActivityDate()
+            $contact->getLastActivityDate()->format('Y-m-d')
         );
     }
 
@@ -419,7 +419,7 @@ class ContactTest extends FeatureTestCase
 
         $this->assertEquals(
             '2015-10-29',
-            $contact->getLastActivityDate()
+            $contact->getLastActivityDate()->format('Y-m-d')
         );
     }
 

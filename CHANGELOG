@@ -1,13 +1,12 @@
 UNRELEASED CHANGES:
-* Fix Dashboard doesn't crash anymore, when trying to get property 'contact' of non-object
 
 New features:
 
-*
+* Add emotions and participants to activities
 
 Enhancements:
 
-*
+* Activities are now added inline
 
 Fixes:
 
@@ -15,7 +14,7 @@ Fixes:
 * Fix import/export vcard with birthday with year unknown
 * Fix contact missing create form
 * Fix money format for non two "2" minor unit currencies
-
+* Fix dashboard do not crash anymore when trying to get property contact of non-object
 
 RELEASED VERSIONS:
 
