@@ -40,6 +40,15 @@ class Activity extends Model implements IsJournalableInterface
     protected $dates = ['happened_at'];
 
     /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'happened_at' => 'Y-m-d',
+    ];
+
+    /**
      * The relations to eager load on every query.
      *
      * @var array
