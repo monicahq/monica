@@ -7,7 +7,7 @@ New features:
 
 Enhancements:
 
-*
+* Add a Collection::sortByCollator macro
 
 Fixes:
 

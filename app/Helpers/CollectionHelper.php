@@ -37,9 +37,7 @@ class CollectionHelper
         // Once we have sorted all of the keys in the array, we will loop through them
         // and grab the corresponding model so we can set the underlying items list
         // to the sorted version. Then we'll just return the collection instance.
-        $keys = array_keys($results);
-        $results = [];
-        foreach ($keys as $key) {
+        foreach (array_keys($results) as $key) {
             $results[$key] = $collect->get($key);
         }
 
