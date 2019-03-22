@@ -54,63 +54,54 @@ class RelationshipType extends Model
      * @psalm-suppress InvalidReturnType
      * @psalm-suppress InvalidReturnStatement
      *
-     * @return array|string|null|\Illuminate\Contracts\Translation\Translator
+     * @param Contact $contact
+     * @param bool $includeOpposite
+     * @param string $gender
+     * @return string|null|\Illuminate\Contracts\Translation\Translator
      */
-    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, $gender = null)
+    public function getLocalizedName(Contact $contact = null, bool $includeOpposite = false, string $gender = null)
     {
-        $defaultGenderType = Gender::MALE;
-        if ($this->account->default_gender_id) {
-            $defaultGender = Gender::where([
-                'account_id' => $this->account_id,
-            ])->find($this->account->default_gender_id);
-            if ($defaultGender) {
-                $defaultGenderType = $defaultGender->type;
-            }
-        }
+        $defaultGender = $this->account->defaultGender();
         if (is_null($gender)) {
-            $gender = $defaultGenderType;
+            $gender = $defaultGender;
         }
 
-        // include the reverse of the relation in the string (masculine/feminine)
-        // this is used in the dropdown of the relationship types when creating
-        // or deleting a relationship.
+        $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
+        $maleVersion = trans('app.relationship_type_'.$this->name);
+
         if (! is_null($contact)) {
+            $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
+            $femaleVersionWithName = trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
+            
+            // include the reverse of the relation in the string (masculine/feminine)
+            // this is used in the dropdown of the relationship types when creating
+            // or deleting a relationship.
             if ($includeOpposite) {
                 // in some language, masculine and feminine version of a relationship type is the same.
                 // we need to keep just one version in that case.
-                $femaleVersion = trans('app.relationship_type_'.$this->name.'_female');
-                $maleVersion = trans('app.relationship_type_'.$this->name);
-                $withName = trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
-
-                // `Regis Freyd's significant other`
                 if ($femaleVersion === $maleVersion) {
-                    return $withName;
+                    // `Regis Freyd's significant other`
+                    return $maleVersionWithName;
                 }
 
-                // otherwise `Regis Freyd's uncle/aunt`
-                if ($defaultGenderType === Gender::FEMALE) {
-                    return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]).'/'.$maleVersion;
-                } else {
-                    return $withName.'/'.$femaleVersion;
-                }
+                return $defaultGender === Gender::FEMALE ? 
+                    // `Regis Freyd's aunt/uncle`
+                    $femaleVersionWithName.'/'.$maleVersion :
+                    // `Regis Freyd's uncle/aunt`
+                    $maleVersionWithName.'/'.$femaleVersion;
             } else {
-                // `Regis Freyd's uncle`
-                if (! is_null($contact)) {
-                    if ($gender == Gender::FEMALE) {
-                        return trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
-                    }
-
-                    return trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
-                }
+                return $gender === Gender::FEMALE ?
+                    // `Regis Freyd's aunt`
+                    $femaleVersionWithName :
+                    // `Regis Freyd's uncle`
+                    $maleVersionWithName;
             }
         }
 
-        // `aunt`
-        if ($gender == Gender::FEMALE) {
-            return trans('app.relationship_type_'.$this->name.'_female');
-        }
-
-        // `uncle`
-        return trans('app.relationship_type_'.$this->name);
+        return $gender === Gender::FEMALE ?
+            // `aunt`
+            $femaleVersion :
+            // `uncle`
+            $maleVersion;
     }
 }
