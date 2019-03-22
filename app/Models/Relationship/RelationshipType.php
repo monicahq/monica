@@ -72,7 +72,7 @@ class RelationshipType extends Model
         if (! is_null($contact)) {
             $maleVersionWithName = trans('app.relationship_type_'.$this->name.'_with_name', ['name' => $contact->name]);
             $femaleVersionWithName = trans('app.relationship_type_'.$this->name.'_female_with_name', ['name' => $contact->name]);
-            
+
             // include the reverse of the relation in the string (masculine/feminine)
             // this is used in the dropdown of the relationship types when creating
             // or deleting a relationship.
@@ -84,7 +84,7 @@ class RelationshipType extends Model
                     return $maleVersionWithName;
                 }
 
-                return $defaultGender === Gender::FEMALE ? 
+                return $defaultGender === Gender::FEMALE ?
                     // `Regis Freyd's aunt/uncle`
                     $femaleVersionWithName.'/'.$maleVersion :
                     // `Regis Freyd's uncle/aunt`

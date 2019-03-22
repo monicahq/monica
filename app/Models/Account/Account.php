@@ -837,6 +837,7 @@ class Account extends Model
                 $defaultGenderType = $defaultGender->type;
             }
         }
+
         return $defaultGenderType;
     }
 
