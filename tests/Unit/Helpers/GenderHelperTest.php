@@ -16,7 +16,7 @@ class GenderHelperTest extends FeatureTestCase
         $this->assertCount(4, $genders);
         $this->assertEquals([
             'id' => '',
-            'name' => '',
+            'name' => 'No gender',
         ], $genders[0]);
     }
 }
