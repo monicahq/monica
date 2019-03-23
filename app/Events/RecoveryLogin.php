@@ -20,6 +20,8 @@ class RecoveryLogin extends Event
      *
      * @param  \Illuminate\Contracts\Auth\Authenticatable  $user
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     public function __construct($user)
     {
