@@ -69,10 +69,6 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('conversations/{conversation}/messages', 'Contact\\ApiMessageController', ['except' => ['index', 'show']]);
     Route::get('/contacts/{contact}/conversations', 'Contact\\ApiConversationController@conversations');
 
-    // Activities
-    Route::apiResource('activities', 'Account\\Activity\\ApiActivityController');
-    Route::get('/contacts/{contact}/activities', 'Account\\Activity\\ApiActivityController@activities');
-
     // Reminders
     Route::apiResource('reminders', 'ApiReminderController');
     Route::get('/contacts/{contact}/reminders', 'ApiReminderController@reminders');

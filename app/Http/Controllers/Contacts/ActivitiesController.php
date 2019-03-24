@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Contacts;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Models\Account\Activity;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use App\Models\Account\ActivityType;
 use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Account\Activity\Activity\DestroyActivity;
@@ -16,6 +18,8 @@ use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
 class ActivitiesController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Statistics about an activity.
      *
@@ -33,7 +37,7 @@ class ActivitiesController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -46,23 +50,30 @@ class ActivitiesController extends Controller
     }
 
     /**
-     * Get the list of contacts.
-     * For performance purposes we have to create our own collection instead of
-     * returning a JSON resource.
+     * Get the list of contacts available to associate the activity with
+     * participants.
+     * We could have chosen to query `/people` to get the full list of contacts
+     * but some accounts have thousands of contacts. Thus for performance
+     * purposes we have to create our own collection containing just the
+     * necessary information.
+     * Also we need to filter out the current contact from the list.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     * @return Collection
      */
-    public function contacts(Request $request)
+    public function contacts(Request $request, Contact $contact)
     {
         $contactsCollection = collect([]);
         $contacts = auth()->user()->account->contacts;
 
-        foreach ($contacts as $contact) {
-            $contactsCollection->push([
-                'id' => $contact->id,
-                'name' => $contact->name,
-            ]);
+        foreach ($contacts as $singleContact) {
+            if ($contact->id != $singleContact->id) {
+                $contactsCollection->push([
+                    'id' => $singleContact->id,
+                    'name' => $singleContact->name,
+                ]);
+            }
         }
 
         return $contactsCollection;
@@ -72,9 +83,9 @@ class ActivitiesController extends Controller
      * Store an activity.
      *
      * @param  Contact $contact
-     * @return Activity
+     * @return ActivityResource
      */
-    public function store(Request $request, Contact $contact) : Activity
+    public function store(Request $request, Contact $contact)
     {
         $activity = (new CreateActivity)->execute([
             'account_id' => auth()->user()->account->id,
@@ -92,11 +103,13 @@ class ActivitiesController extends Controller
         // also push the current contact
         array_push($arrayParticipants, $contact->id);
 
-        return (new AttachContactToActivity)->execute([
+        $activity = (new AttachContactToActivity)->execute([
             'account_id' => auth()->user()->account->id,
             'activity_id' => $activity->id,
             'contacts' => $arrayParticipants,
         ]);
+
+        return new ActivityResource($activity);
     }
 
     /**
@@ -104,8 +117,8 @@ class ActivitiesController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     * @param int $activityId
+     * @return bool
      */
     public function destroy(Request $request, Contact $contact, $activityId)
     {
@@ -125,7 +138,7 @@ class ActivitiesController extends Controller
      * Get the list of activity categories.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
     public function categories(Request $request)
     {
@@ -158,7 +171,7 @@ class ActivitiesController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function summary(Request $request, Contact $contact)
     {
