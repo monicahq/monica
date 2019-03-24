@@ -339,7 +339,7 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Anniversaire de la mort de :name',
-    'deceased_mark_person_deceased' => 'Indiquez cette personne comme décédée',
+    'deceased_mark_person_deceased' => 'Indiquer cette personne comme décédée',
     'deceased_know_date' => 'Je connais la date de décès de cette personne',
     'deceased_add_reminder' => 'Ajouter un rappel pour cette date',
     'deceased_label' => 'Décédé',
