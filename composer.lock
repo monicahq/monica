@@ -3185,27 +3185,31 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "a93e8df1110444b045abaa6b5d71358a85dd480e"
+                "reference": "52a26f7dd265c4c8e6b2e77162ab313f6694f685"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/a93e8df1110444b045abaa6b5d71358a85dd480e",
-                "reference": "a93e8df1110444b045abaa6b5d71358a85dd480e",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/52a26f7dd265c4c8e6b2e77162ab313f6694f685",
+                "reference": "52a26f7dd265c4c8e6b2e77162ab313f6694f685",
                 "shasum": ""
             },
             "require": {
+                "fideloper/proxy": "~4.0",
                 "guzzlehttp/guzzle": "^6.3",
                 "illuminate/console": "^5.6",
                 "illuminate/http": "^5.6",
                 "illuminate/support": "^5.6"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.4",
-                "vimeo/psalm": "^2.0"
+                "laravel/framework": "^5.6",
+                "mockery/mockery": "^1.2",
+                "orchestra/testbench": "^3.8",
+                "phpunit/phpunit": "^7.4 || ^8.0",
+                "vimeo/psalm": "^2.0 || ^3.0"
             },
             "type": "library",
             "extra": {
@@ -3237,7 +3241,7 @@
                 "php",
                 "proxies"
             ],
-            "time": "2018-11-03T19:42:49+00:00"
+            "time": "2019-03-23T11:40:35+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
@@ -7298,7 +7302,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
