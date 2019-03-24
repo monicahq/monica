@@ -301,7 +301,7 @@ class FakeContentTableSeeder extends Seeder
                     'date' => $date,
                 ];
 
-                $activity = (app(CreateActivity::class)->execute($request);
+                $activity = app(CreateActivity::class)->execute($request);
 
                 $request = [
                     'account_id' => $this->contact->account_id,
