@@ -1,5 +1,4 @@
 UNRELEASED CHANGES:
-* Fix Dashboard doesn't crash anymore, when trying to get property 'contact' of non-object
 
 New features:
 
@@ -11,6 +10,8 @@ Enhancements:
 
 Fixes:
 
+* Fix address input label mistake
+* Fix dashboard crash when reminder is empty
 * Fix import vCard with Cyrillic encoding
 * Fix import/export vcard with birthday with year unknown
 * Fix contact missing create form
