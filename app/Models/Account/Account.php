@@ -18,13 +18,11 @@ use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
-use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Contact\ReminderRule;
@@ -34,10 +32,8 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\ActivityStatistic;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
-use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -505,7 +501,7 @@ class Account extends Model
     /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @return $this
+     * @return bool
      */
     public function canDowngrade()
     {
@@ -842,7 +838,7 @@ class Account extends Model
      * @param string $email
      * @param string $password
      * @param string $ipAddress
-     * @return $this
+     * @return self
      */
     public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
@@ -903,7 +899,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeGroupName
-     * @return RelationshipTypeGroup
+     * @return RelationshipTypeGroup|null
      */
     public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)
     {
@@ -913,7 +909,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of calls grouped by year.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getYearlyCallStatistics()
     {
@@ -948,7 +944,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of activities grouped by year.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getYearlyActivitiesStatistics()
     {
@@ -984,7 +980,7 @@ class Account extends Model
      * Get the first available locale in an account. This gets the first user
      * in the account and reads his locale.
      *
-     * @return string
+     * @return string|null
      *
      * @throws ModelNotFoundException
      */

@@ -64,7 +64,7 @@
           <div class="relative">
             <span class="fr">
               <a class="btn" @click.prevent="showRegisterModalTab('2');startRegister();">
-                {{ $t('app.next') }}
+                {{ $t('pagination.next') }}
               </a>
             </span>
           </div>
@@ -113,7 +113,7 @@
           <div class="relative">
             <span class="fr">
               <a class="btn" @click.prevent="showRegisterModalTab('1')">
-                {{ $t('app.previous') }}
+                {{ $t('pagination.previous') }}
               </a>
             </span>
           </div>

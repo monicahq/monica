@@ -150,7 +150,7 @@ return [
     'work_edit_company' => 'חברה (רשות)',
     'work_information' => 'פרטי תעסוקה',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'העדפות המזון נשמרו',
     'food_preferencies_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
     'food_preferencies_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
@@ -244,7 +244,7 @@ return [
     'activities_add_title' => 'מה עשית עם :name?',
     'activities_summary' => 'נא לתאר את אופן הפעילות',
     'activities_add_pick_activity' => '(רשות) האם ברצונך לסווג את הפעילות הזאת? לא חובה אך סיווג יאפשר לך לערוך סטטיסטיקה בהמשך',
-    'activities_add_date_occured' => 'המועד בו הפעילות קרתה',
+    'activities_add_date_occured' => 'המועד בו התרחש האירוע',
     'activities_add_optional_comment' => 'הערת רשות',
     'activities_add_cta' => 'תיעוד פעילות',
     'activities_blank_title' => 'מעקב אחר מה שעשית עם :name בעבר ועל מה דיברתם',
@@ -423,7 +423,7 @@ return [
     'life_event_sentence_home_improvement' => 'עריכת שיפוץ',
     'life_event_sentence_holidays' => 'יציאה לחופש',
     'life_event_sentence_new_vehicle' => 'קבלת כלי רכב חדש',
-    'life_event_sentence_new_roommate' => 'התווספות שותפות',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
     'life_event_sentence_overcame_an_illness' => 'החלמה ממחלה',
     'life_event_sentence_quit_a_habit' => 'גמילה',
     'life_event_sentence_new_eating_habits' => 'אימוץ הרגלי אכילה חדשים',

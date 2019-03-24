@@ -16,7 +16,9 @@
 
     
     <div class="form-group">
-      <label for="dav_url_base">{{ $t('settings.dav_url_base') }}</label>
+      <label for="dav_url_base">
+        {{ $t('settings.dav_url_base') }}
+      </label>
       <br />
       <input id="dav_url_base" :value="davRoute" class="url form-control" type="text" readonly />
       <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click="copyIntoClipboard(davRoute)">
@@ -33,7 +35,9 @@
     <div class="settings-group">
       <h2>{{ $t('settings.dav_title_carddav') }}</h2>
       <div class="form-group">
-        <label for="dav_url_carddav">{{ $t('settings.dav_url_carddav') }}</label>
+        <label for="dav_url_carddav">
+          {{ $t('settings.dav_url_carddav') }}
+        </label>
         <br />
         <input id="dav_url_carddav" :value="cardDavRoute" class="url form-control" type="text" readonly />
         <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click="copyIntoClipboard(cardDavRoute)">
@@ -49,7 +53,9 @@
     <div class="settings-group">
       <h2>{{ $t('settings.dav_title_caldav') }}</h2>
       <div class="form-group">
-        <label for="dav_url_caldav_birthdays">{{ $t('settings.dav_url_caldav_birthdays') }}</label>
+        <label for="dav_url_caldav_birthdays">
+          {{ $t('settings.dav_url_caldav_birthdays') }}
+        </label>
         <br />
         <input id="dav_url_caldav_birthdays" :value="calDavBirthdaysRoute" class="url form-control" type="text" readonly />
         <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click="copyIntoClipboard(calDavBirthdaysRoute)">
@@ -61,7 +67,9 @@
         </a>
       </div>
       <div class="form-group">
-        <label for="dav_url_caldav_tasks">{{ $t('settings.dav_url_caldav_tasks') }}</label>
+        <label for="dav_url_caldav_tasks">
+          {{ $t('settings.dav_url_caldav_tasks') }}
+        </label>
         <br />
         <input id="dav_url_caldav_tasks" :value="calDavTasksRoute" class="url form-control" type="text" readonly />
         <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click="copyIntoClipboard(calDavTasksRoute)">

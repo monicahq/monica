@@ -32,7 +32,7 @@ class VTodoTaskTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
 
-        $this->assertVObjectEqualsVObject($this->getVTodo($task, true), $response->getContent());
+        $this->assertVObjectEqualsVObject($this->getVTodo($task, true), $response->getContent() ?: $response->streamedContent());
     }
 
     /**

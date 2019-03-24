@@ -6,16 +6,20 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
+use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
+use App\Models\Account\Weather;
+use App\Models\Account\Activity;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
@@ -26,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
@@ -83,6 +88,7 @@ class Contact extends Model
         'last_name',
         'nickname',
         'gender_id',
+        'description',
         'account_id',
         'is_partial',
         'job',
@@ -155,7 +161,7 @@ class Contact extends Model
     /**
      * Get the gender of the contact.
      *
-     * @return HasOne
+     * @return BelongsTo
      */
     public function gender()
     {
@@ -165,7 +171,7 @@ class Contact extends Model
     /**
      * Get the activity records associated with the contact.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function activities()
     {
@@ -245,7 +251,7 @@ class Contact extends Model
     /**
      * Get the tags records associated with the contact.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function tags()
     {
@@ -385,7 +391,7 @@ class Contact extends Model
     /**
      * Get the Photo records associated with the contact.
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
     public function photos()
     {
@@ -564,7 +570,8 @@ class Contact extends Model
      */
     public function getInitialsAttribute()
     {
-        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', Str::ascii($this->name), $initials);
+        $name = Str::ascii($this->name, LocaleHelper::getLang());
+        preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $name, $initials);
 
         return implode('', $initials[0]);
     }
@@ -745,7 +752,7 @@ class Contact extends Model
     /**
      * Get the date of the last activity done by this contact.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getLastActivityDate()
     {
@@ -817,7 +824,6 @@ class Contact extends Model
      * parse.
      *
      * @param  Collection $collection
-     * @param  bool       $shortVersion Indicates whether the collection should include how contacts are related
      * @return Collection
      */
     public static function translateForAPI(Collection $collection)
@@ -992,7 +998,7 @@ class Contact extends Model
      * Returns the URL of the avatar with the given size.
      *
      * @param  int $size
-     * @return string
+     * @return string|null
      */
     public function getAvatarURL($size = 110)
     {
@@ -1097,14 +1103,10 @@ class Contact extends Model
      */
     public function getGravatar($size)
     {
-        $emails = $this->contactFields()
-            ->whereHas('contactFieldType', function ($query) {
-                $query->where('type', '=', 'email');
-            })
-            ->get();
+        $emails = $this->contactFields()->email()->get();
 
         foreach ($emails as $email) {
-            if (is_null($email) || empty($email->data)) {
+            if (empty($email) || empty($email->data)) {
                 continue;
             }
 
@@ -1211,7 +1213,8 @@ class Contact extends Model
      * Update the relationship between two contacts.
      *
      * @param Contact $otherContact
-     * @param int $relationshipTypeId
+     * @param int $oldRelationshipTypeId
+     * @param int $newRelationshipTypeId
      */
     public function updateRelationship(self $otherContact, $oldRelationshipTypeId, $newRelationshipTypeId)
     {
@@ -1286,7 +1289,8 @@ class Contact extends Model
 
     /**
      * Gets the contact who introduced this person to the user.
-     * @return Contact
+     *
+     * @return Contact|null
      */
     public function getIntroducer()
     {
@@ -1308,27 +1312,33 @@ class Contact extends Model
      * Sets a Special Date for this contact, for a specific occasion (birthday,
      * decease date,...) of which we know the date.
      *
-     * @return SpecialDate
+     * @param string $occasion
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @return SpecialDate|null
      */
     public function setSpecialDate($occasion, int $year, int $month, int $day)
     {
-        if (null === $occasion) {
+        if (empty($occasion)) {
             return;
         }
 
         $specialDate = new SpecialDate;
         $specialDate->setToContact($this)->createFromDate($year, $month, $day);
 
-        if ($occasion == 'birthdate') {
-            $this->birthday_special_date_id = $specialDate->id;
-        }
-
-        if ($occasion == 'deceased_date') {
-            $this->deceased_special_date_id = $specialDate->id;
-        }
-
-        if ($occasion == 'first_met') {
-            $this->first_met_special_date_id = $specialDate->id;
+        switch ($occasion) {
+            case 'birthdate':
+                $this->birthday_special_date_id = $specialDate->id;
+                break;
+            case 'deceased_date':
+                $this->deceased_special_date_id = $specialDate->id;
+                break;
+            case 'first_met':
+                $this->first_met_special_date_id = $specialDate->id;
+                break;
+            default:
+                break;
         }
 
         $this->save();
@@ -1497,7 +1507,7 @@ class Contact extends Model
     /**
      * Indicates the age of the contact at death.
      *
-     * @return int
+     * @return int|null
      */
     public function getAgeAtDeath()
     {
@@ -1562,10 +1572,24 @@ class Contact extends Model
      * Get the weather information for this contact, based on the first address
      * on the profile.
      *
-     * @return void
+     * @return Weather
      */
     public function getWeather()
     {
         return WeatherHelper::getWeatherForAddress($this->addresses()->first());
+    }
+
+    public function updateConsulted()
+    {
+        $this->last_consulted_at = now();
+        $this->number_of_views = $this->number_of_views + 1;
+
+        // prevent timestamp update
+        $timestamps = $this->timestamps;
+        $this->timestamps = false;
+
+        $this->save();
+
+        $this->timestamps = $timestamps;
     }
 }

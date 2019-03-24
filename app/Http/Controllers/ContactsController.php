@@ -7,9 +7,11 @@ use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
+use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Barryvdh\Debugbar\Facade as Debugbar;
@@ -25,7 +27,8 @@ class ContactsController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index(Request $request)
     {
@@ -36,7 +39,8 @@ class ContactsController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function archived(Request $request)
     {
@@ -47,7 +51,8 @@ class ContactsController extends Controller
      * Display contacts.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     private function contacts(Request $request, bool $active)
     {
@@ -143,33 +148,48 @@ class ContactsController extends Controller
     /**
      * Show the form to add a new contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function create()
     {
+        return $this->createForm(false);
+    }
+
+    /**
+     * Show the form in case the contact is missing.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    public function missing()
+    {
+        return $this->createForm(true);
+    }
+
+    /**
+     * Show the Add user form unless the contact has limitations.
+     *
+     * @param  bool $isContactMissing
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    private function createForm($isContactMissing = false)
+    {
         if (auth()->user()->account->hasReachedContactLimit()
-        && auth()->user()->account->hasLimitations()
-        && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            && auth()->user()->account->hasLimitations()
+            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
 
-        $data = [
-            'genders' => auth()->user()->account->genders,
-        ];
-
-        return view('people.create', $data);
-    }
-
-    public function missing()
-    {
-        return view('people.missing');
+        return view('people.create')
+            ->withIsContactMissing($isContactMissing)
+            ->withGenders(auth()->user()->account->genders);
     }
 
     /**
      * Store the contact.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -202,8 +222,9 @@ class ContactsController extends Controller
     /**
      * Display the contact profile.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function show(Contact $contact)
     {
@@ -216,9 +237,7 @@ class ContactsController extends Controller
             $query->orderBy('updated_at', 'desc');
         }]);
 
-        $contact->last_consulted_at = now(DateHelper::getTimezone());
-        $contact->number_of_views = $contact->number_of_views + 1;
-        $contact->save();
+        $contact->updateConsulted();
 
         $relationships = $contact->relationships;
         // get love relationship type
@@ -284,7 +303,8 @@ class ContactsController extends Controller
      * Display the Edit people's view.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact)
     {
@@ -312,9 +332,10 @@ class ContactsController extends Controller
     /**
      * Update the contact.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact)
     {
@@ -341,19 +362,19 @@ class ContactsController extends Controller
             'nickname' => $request->input('nickname', null),
             'gender_id' => $request->get('gender'),
             'description' => $request->input('description', null),
-            'is_birthdate_known' => ($request->get('birthdate') == 'unknown' ? false : true),
+            'is_birthdate_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
             'birthdate_day' => $day,
             'birthdate_month' => $month,
             'birthdate_year' => $year,
-            'birthdate_is_age_based' => ($request->get('birthdate') == 'approximate' ? true : false),
+            'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
             'birthdate_age' => $request->get('age'),
-            'birthdate_add_reminder' => ($request->get('addReminder') != '' ? true : false),
-            'is_deceased' => ($request->get('is_deceased') != '' ? true : false),
-            'is_deceased_date_known' => ($request->get('is_deceased_date_known') != '' ? true : false),
+            'birthdate_add_reminder' => ! empty($request->get('addReminder')),
+            'is_deceased' => ! empty($request->get('is_deceased')),
+            'is_deceased_date_known' => ! empty($request->get('is_deceased_date_known')),
             'deceased_date_day' => $request->get('deceased_date_day'),
             'deceased_date_month' => $request->get('deceased_date_month'),
             'deceased_date_year' => $request->get('deceased_date_year'),
-            'deceased_date_add_reminder' => ($request->get('add_reminder_deceased') != '' ? true : false),
+            'deceased_date_add_reminder' => ! empty($request->get('add_reminder_deceased')),
         ];
 
         $contact = app(UpdateContact::class)->execute($data);
@@ -363,9 +384,10 @@ class ContactsController extends Controller
                 try {
                     $contact->deleteAvatars();
                 } catch (\Exception $e) {
-                    return back()
-                        ->withInput()
-                        ->withErrors(trans('app.error_save'));
+                    Log::warning(__CLASS__.' update: Failed to delete avatars', [
+                        'contact' => $contact,
+                        'exception' => $e,
+                    ]);
                 }
             }
             $contact->has_avatar = true;
@@ -385,7 +407,8 @@ class ContactsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, Contact $contact)
     {
@@ -407,9 +430,10 @@ class ContactsController extends Controller
     /**
      * Show the Edit work view.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function editWork(Request $request, Contact $contact)
     {
@@ -422,7 +446,8 @@ class ContactsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateWork(Request $request, Contact $contact)
     {
@@ -441,9 +466,10 @@ class ContactsController extends Controller
     /**
      * Show the Edit food preferencies view.
      *
-     * @param  Request $request
+     * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function editFoodPreferencies(Request $request, Contact $contact)
     {
@@ -457,7 +483,8 @@ class ContactsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function updateFoodPreferencies(Request $request, Contact $contact)
     {
@@ -493,7 +520,7 @@ class ContactsController extends Controller
     /**
      * Download the contact as vCard.
      * @param  Contact $contact
-     * @return
+     * @return \Illuminate\Http\Response
      */
     public function vCard(Contact $contact)
     {
@@ -508,7 +535,7 @@ class ContactsController extends Controller
 
         return response($vcard->serialize())
             ->header('Content-type', 'text/x-vcard')
-            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name).'.vcf');
+            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
     }
 
     /**
@@ -517,7 +544,7 @@ class ContactsController extends Controller
      *
      * @param  Request $request
      * @param  Contact $contact
-     * @return [type]
+     * @return int
      */
     public function stayInTouch(Request $request, Contact $contact)
     {
@@ -538,7 +565,7 @@ class ContactsController extends Controller
             throw new \LogicException(trans('people.stay_in_touch_invalid'));
         }
 
-        $contact->setStayInTouchTriggerDate($frequency, DateHelper::getTimezone());
+        $contact->setStayInTouchTriggerDate($frequency);
 
         return $frequency;
     }

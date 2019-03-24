@@ -30,7 +30,7 @@ class GetGPSCoordinate extends BaseService
      * This method uses LocationIQ to process the geocoding.
      *
      * @param array $data
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place|null
      */
     public function execute(array $data, GuzzleClient $client = null)

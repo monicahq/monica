@@ -9,6 +9,7 @@ return [
     'journal_entry_type_journal' => 'Dagboek invoer',
     'journal_entry_type_activity' => 'Activiteit',
     'journal_entry_rate' => 'Je hebt je dag beoordeeld.',
+    'journal_add_comment' => 'Wil je een (optionele) opmerking toevoegen?',
     'entry_delete_success' => 'De dagboek invoer is succesvol verwijderd.',
     'journal_add_title' => 'Titel (optioneel)',
     'journal_add_date' => 'Datum',

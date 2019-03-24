@@ -39,7 +39,7 @@ return [
     'people_add_cta' => 'Ajouter',
     'people_save_and_add_another_cta' => 'Sauver et ajouter un autre contact',
     'people_add_success' => ':name a été crée avec succès',
-    'people_add_gender' => 'Sexe',
+    'people_add_gender' => 'Genre',
     'people_delete_success' => 'Le contact a été supprimé',
     'people_delete_message' => 'Supprimer le contact',
     'people_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer ce contact ? La suppression est permanente.',
@@ -150,7 +150,7 @@ return [
     'work_edit_company' => 'Entreprise (optionnel)',
     'work_information' => 'Information sur le travail',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
     'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu’un dans la famille :family a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
     'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',

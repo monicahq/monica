@@ -123,7 +123,7 @@ class ThrottleRequestsMiddleware
     /**
      * Add the limit header information to the given response.
      *
-     * @param  \Illuminate\Http\Response  $response
+     * @param  \Symfony\Component\HttpFoundation\Response  $response
      * @param  int  $maxAttempts
      * @param  int  $remainingAttempts
      * @param  int|null  $retryAfter

@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\Conversation;
+use App\Traits\JsonRespondController;
 use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\UpdateConversation;
@@ -15,11 +17,14 @@ use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the Create conversation page.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Request $request, Contact $contact)
     {
@@ -32,7 +37,7 @@ class ConversationsController extends Controller
      * Display the list of conversations.
      *
      * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -61,7 +66,8 @@ class ConversationsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -119,8 +125,9 @@ class ConversationsController extends Controller
     /**
      * Display a specific conversation.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Request $request, Contact $contact, Conversation $conversation)
     {
@@ -147,7 +154,8 @@ class ConversationsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Conversation $conversation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact, Conversation $conversation)
     {
@@ -218,7 +226,8 @@ class ConversationsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Conversation $conversation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Conversation $conversation)
     {

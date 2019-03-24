@@ -8,7 +8,6 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Models\Account\Account;
-use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -49,7 +48,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function showRegistrationForm(Request $request)
     {
@@ -60,7 +59,7 @@ class RegisterController extends Controller
 
         return view('auth.register')
             ->withFirst($first)
-            ->withLocales(CollectionHelper::sortByCollator(LocaleHelper::getLocaleList(), 'lang'));
+            ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('lang'));
     }
 
     /**
@@ -83,7 +82,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)

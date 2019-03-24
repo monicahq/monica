@@ -176,9 +176,9 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
     }
 
     /**
-     * Returns the contact for the specific uri.
+     * Returns the contact for the specific uuid.
      *
-     * @param string  $uri
+     * @param string  $uuid
      * @return Contact
      */
     public function getObjectUuid($uuid)
@@ -228,7 +228,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 
         return $contacts->map(function ($contact) {
             return $this->prepareCard($contact);
-        });
+        })->toArray();
     }
 
     /**
@@ -329,16 +329,16 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                     'entry' => $cardData,
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
                 ]);
+
+            if (! array_has($result, 'error')) {
+                $contact = Contact::where('account_id', Auth::user()->account_id)
+                    ->find($result['contact_id']);
+                $card = $this->prepareCard($contact);
+
+                return $card['etag'];
+            }
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' updateCard: '.(string) $e);
-        }
-
-        if (! array_has($result, 'error')) {
-            $contact = Contact::where('account_id', Auth::user()->account_id)
-                ->find($result['contact_id']);
-            $card = $this->prepareCard($contact);
-
-            return $card['etag'];
         }
     }
 
@@ -368,7 +368,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      *
      * @param string $addressBookId
      * @param \Sabre\DAV\PropPatch $propPatch
-     * @return void|bool
+     * @return bool|null
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
@@ -395,7 +395,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      * Deletes an entire addressbook and all its contents.
      *
      * @param mixed $addressBookId
-     * @return void|bool
+     * @return bool|null
      */
     public function deleteAddressBook($addressBookId)
     {

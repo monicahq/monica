@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\Activity;
+use App\Models\Account\ActivityType;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +17,7 @@ class ApiActivityController extends ApiController
     /**
      * Get the list of activities.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,10 @@ class ApiActivityController extends ApiController
 
     /**
      * Get the detail of a given activity.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ActivityResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $activityId)
     {
@@ -53,8 +55,10 @@ class ApiActivityController extends ApiController
 
     /**
      * Store the activity.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ActivityResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -96,9 +100,11 @@ class ApiActivityController extends ApiController
 
     /**
      * Update the activity.
-     * @param  Request $request
-     * @param  int $activityId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $activityId
+     *
+     * @return ActivityResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $activityId)
     {
@@ -168,7 +174,7 @@ class ApiActivityController extends ApiController
      * Validate the request for update.
      *
      * @param  Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
     {
@@ -213,8 +219,10 @@ class ApiActivityController extends ApiController
 
     /**
      * Delete an activity.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $activityId)
     {
@@ -235,7 +243,7 @@ class ApiActivityController extends ApiController
     /**
      * Get the list of activities for the given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function activities(Request $request, $contactId)
     {

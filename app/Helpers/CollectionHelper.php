@@ -9,10 +9,11 @@ class CollectionHelper
     /**
      * Sort the collection using the given callback.
      *
+     * @param  \Illuminate\Support\Collection  $collect
      * @param  callable|string  $callback
      * @param  int  $options
      * @param  bool  $descending
-     * @return static
+     * @return Collection
      */
     public static function sortByCollator($collect, $callback, $options = \Collator::SORT_STRING, $descending = false)
     {
@@ -46,7 +47,7 @@ class CollectionHelper
     /**
      * Get a Collator object for the locale or current locale.
      *
-     * @param string
+     * @param string $locale
      * @return \Collator
      */
     public static function getCollator($locale = null)
@@ -58,6 +59,11 @@ class CollectionHelper
         }
         if (! array_has($collators, $locale)) {
             $collator = new \Collator($locale);
+
+            if (LocaleHelper::getLang($locale) == 'fr') {
+                $collator->setAttribute(\Collator::FRENCH_COLLATION, \Collator::ON);
+            }
+
             $collators[$locale] = $collator;
 
             return $collator;
@@ -69,7 +75,7 @@ class CollectionHelper
     /**
      * Get a value retrieving callback.
      *
-     * @param  string  $value
+     * @param  string|callable  $value
      * @return callable
      */
     private static function valueRetriever($value)

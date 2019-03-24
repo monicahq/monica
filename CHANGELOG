@@ -3,6 +3,47 @@ UNRELEASED CHANGES:
 
 New features:
 
+*
+
+Enhancements:
+
+* Add a Collection::sortByCollator macro
+
+Fixes:
+
+* Fix address input label mistake
+* Fix dashboard crash when reminder is empty
+* Fix import vCard with Cyrillic encoding
+* Fix import/export vcard with birthday with year unknown
+* Fix contact missing create form
+* Fix money format for non two "2" minor unit currencies
+
+
+RELEASED VERSIONS:
+
+v2.12.1 - 2019-03-09
+--------------------
+
+Enhancements:
+
+* Add eloquent relationships touches
+
+Fixes:
+
+* Fix reminders not being sent
+* Fix setting deceased information with removing date and reminder
+* Fix contact information update
+* Fix adding people on activity create and update
+* Fix setting a relationship without selecting any birthdate option
+* Fix several typos in English language files
+* Fix Journal view now includes Activities as intended
+* Fix deleting a LifeEvent no longer deletes the associated Contact
+
+v2.12.0 - 2019-02-09
+--------------------
+
+New features:
+
 * Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
 * Add a page in settings to display all DAV resources
 * Add notion of instance administrator for a user
@@ -13,6 +54,7 @@ New features:
 
 Enhancements:
 
+* Don't change timestamps on contact number_of_views update
 * Redirect to the related real contact when trying to display a partial contact
 * Use iterator reader for vcard imports
 * Accept last name when using contact search field
@@ -24,9 +66,15 @@ Enhancements:
 * Add foreign keys to reminders, reminder rules, contacts and life events tables
 * Add number of life events on the contact profile page
 * Add base HTML tag and tweak all assets and urls to use relative paths
+* Refactor activity types with services
+* Refactor activity type categories with services
 
 Fixes:
 
+* Fix addresses and contact fields imports on VCard import
+* Remove users without an existing account in the accounts table
+* Fix case when schedule date is null
+* Add phpstan analyser, and fix a lot of issues
 * Fix middleware priority order to always set locale after authenticate
 * Accept lastname_firstname name order for VCard imports (FN field)
 * Fix vue.js DateTime picker to type a date in other format than en-us one
@@ -44,8 +92,6 @@ Fixes:
 * Fix API methods for Occupation object
 * Fix activity date viewed as one day before the event happened
 * Fix settags api call with an empty tag
-
-RELEASED VERSIONS:
 
 v2.11.2 - 2019-01-01
 --------------------

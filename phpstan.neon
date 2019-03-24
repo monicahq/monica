@@ -1,0 +1,31 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+parameters:
+    level: 5
+    ignoreErrors:
+        # Level 1
+        - '#Call to an undefined static method Vinkla\\Hashids\\Facades\\Hashids::encode\(\)\.#'
+        - '#Call to an undefined static method Vinkla\\Hashids\\Facades\\Hashids::decode\(\)\.#'
+        - '#Call to an undefined static method PragmaRX\\CountriesLaravel\\Package\\Facade::[a-zA-Z0-9_]+\(\)\.#'
+        - '#Call to an undefined method \(Illuminate\\Database\\Eloquent\\Collection&iterable<[a-zA-Z0-9\\_]+>\)\|Illuminate\\Database\\Eloquent\\Model::[a-zA-Z0-9\\_]+\(\)\.#'
+        - '#Call to an undefined method App\\Http\\Resources\\[a-zA-Z0-9\\_]+::[a-zA-Z0-9_]+\(\)\.#'
+        # Level 2
+        - '#Access to an undefined property Illuminate\\Support\\Fluent::\$[a-zA-Z0-9_]+\.#'
+        - '#Access to an undefined property Sabre\\VObject\\Component\\[a-zA-Z0-9\\_]+::\$[a-zA-Z0-9_]+\.#'
+        - '#Access to an undefined property PragmaRX\\Countries\\Package\\Support\\Collection::\$[a-zA-Z0-9_]+\.#'
+        - '#Call to an undefined method Illuminate\\View\\View::with[a-zA-Z0-9\\_]+\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model::[a-zA-Z0-9_]+\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::active\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::real\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::offered\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::isIdea\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::inProgress\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::completed\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::email\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::phone\(\)\.#'
+        # Level 3
+        - '#Method [a-zA-Z0-9\\_:]+\(\) should return [a-zA-Z0-9\\_\|]+ but empty return statement found\.#'
+        - '#Method [a-zA-Z0-9\\_:]+\(\) should return Illuminate\\Http\\Response but returns [a-zA-Z0-9\\_]+\.#'
+    excludes_analyse:
+        - */app/Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
+        - */app/Providers/BroadcastServiceProvider.php

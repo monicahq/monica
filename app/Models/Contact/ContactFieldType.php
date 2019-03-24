@@ -19,6 +19,20 @@ class ContactFieldType extends Model
     protected $table = 'contact_field_types';
 
     /**
+     * Email type contact field.
+     *
+     * @var string
+     */
+    public const EMAIL = 'email';
+
+    /**
+     * Phone type contact field.
+     *
+     * @var string
+     */
+    public const PHONE = 'phone';
+
+    /**
      * Get the account record associated with the contact field type.
      *
      * @return BelongsTo

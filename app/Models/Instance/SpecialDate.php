@@ -37,6 +37,13 @@ class SpecialDate extends Model
     protected $guarded = ['id'];
 
     /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['contact'];
+
+    /**
      * The attributes that should be mutated to dates.
      *
      * @var array
@@ -99,7 +106,7 @@ class SpecialDate extends Model
     /**
      * Returns the age that the date represents, if the date is set and if it's
      * not based on a year we don't know.
-     * @return int
+     * @return int|null
      */
     public function getAge()
     {

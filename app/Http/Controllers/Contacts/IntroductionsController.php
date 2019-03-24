@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Http\Requests\People\IntroductionsRequest;
 use App\Services\Contact\Reminder\DestroyReminder;
@@ -12,12 +12,14 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class IntroductionsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @param Gift $gift
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact)
     {
@@ -30,7 +32,8 @@ class IntroductionsController extends Controller
      *
      * @param IntroductionsRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function update(IntroductionsRequest $request, Contact $contact)
     {

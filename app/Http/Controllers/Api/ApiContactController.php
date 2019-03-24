@@ -22,7 +22,7 @@ class ApiContactController extends ApiController
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\JsonResource|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -63,8 +63,10 @@ class ApiContactController extends ApiController
 
     /**
      * Get the detail of a given contact.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ContactResource|\Illuminate\Http\JsonResponse|ContactWithContactFieldsResource
      */
     public function show(Request $request, $id)
     {
@@ -76,6 +78,8 @@ class ApiContactController extends ApiController
             return $this->respondNotFound();
         }
 
+        $contact->updateConsulted();
+
         if ($this->getWithParameter() == 'contactfields') {
             return new ContactWithContactFieldsResource($contact);
         }
@@ -86,8 +90,9 @@ class ApiContactController extends ApiController
     /**
      * Store the contact.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return ContactResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -112,8 +117,10 @@ class ApiContactController extends ApiController
 
     /**
      * Update the contact.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ContactResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $contactId)
     {
@@ -139,8 +146,10 @@ class ApiContactController extends ApiController
 
     /**
      * Delete a contact.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $contactId)
     {
@@ -156,7 +165,7 @@ class ApiContactController extends ApiController
     /**
      * Apply the `?with=` parameter.
      * @param  Collection $contacts
-     * @return Collection
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     private function applyWithParameter($contacts, string $parameter = null)
     {

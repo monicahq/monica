@@ -18,7 +18,7 @@ return [
     'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
     'token' => 'This password reset token is invalid.',
     'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfuly.',
+    'changed' => 'Password changed successfully.',
     'invalid' => 'Current password you entered is not correct.',
 
 ];

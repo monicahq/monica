@@ -93,9 +93,9 @@ class CalDAVBirthdays extends AbstractCalDAVBackend
     }
 
     /**
-     * Returns the date for the specific uri.
+     * Returns the date for the specific uuid.
      *
-     * @param string  $uri
+     * @param string  $uuid
      * @return mixed
      */
     public function getObjectUuid($uuid)

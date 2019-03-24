@@ -15,10 +15,11 @@ class ApiUserController extends ApiController
     /**
      * Get the detail of the authenticated user.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return UserResource
      */
-    public function show(Request $request)
+    public function show(Request $request): UserResource
     {
         return new UserResource(auth()->user());
     }
@@ -28,7 +29,8 @@ class ApiUserController extends ApiController
      *
      * @param Request $request
      * @param int $termId
-     * @return void
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function get(Request $request, $termId)
     {
@@ -47,7 +49,8 @@ class ApiUserController extends ApiController
      * Get all the policies ever signed by the authenticated user.
      *
      * @param Request $request
-     * @return void
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function compliance(Request $request)
     {
@@ -62,7 +65,8 @@ class ApiUserController extends ApiController
      * Sign the latest policy for the authenticated user.
      *
      * @param Request $request
-     * @return void
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function set(Request $request)
     {

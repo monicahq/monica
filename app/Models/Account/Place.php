@@ -52,7 +52,7 @@ class Place extends Model
     /**
      * Get the address as a sentence.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddressAsString()
     {
@@ -78,7 +78,7 @@ class Place extends Model
             $address .= ' '.$this->getCountryName();
         }
 
-        if (is_null($address)) {
+        if (empty($address)) {
             return;
         }
 

@@ -36,8 +36,6 @@ class Update extends Command
 
     /**
      * Create a new command.
-     *
-     * @param CommandExecutorInterface
      */
     public function __construct()
     {
@@ -48,9 +46,9 @@ class Update extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         if ($this->confirmToProceed()) {
             try {

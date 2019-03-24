@@ -19,7 +19,7 @@ class ApiTagController extends ApiController
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,10 @@ class ApiTagController extends ApiController
 
     /**
      * Get the detail of a given tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TagResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -54,8 +56,10 @@ class ApiTagController extends ApiController
 
     /**
      * Store the tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TagResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -78,8 +82,10 @@ class ApiTagController extends ApiController
 
     /**
      * Update the tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TagResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -103,8 +109,10 @@ class ApiTagController extends ApiController
 
     /**
      * Delete a tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $id)
     {
