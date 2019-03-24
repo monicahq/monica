@@ -301,7 +301,7 @@ class FakeContentTableSeeder extends Seeder
                     'date' => $date,
                 ];
 
-                $activity = (new CreateActivity)->execute($request);
+                $activity = (app(CreateActivity::class)->execute($request);
 
                 $request = [
                     'account_id' => $this->contact->account_id,
@@ -309,7 +309,7 @@ class FakeContentTableSeeder extends Seeder
                     'contacts' => [$this->contact->id],
                 ];
 
-                (new AttachContactToActivity)->execute($request);
+                app(AttachContactToActivity::class)->execute($request);
 
                 DB::table('journal_entries')->insertGetId([
                     'account_id' => $this->account->id,

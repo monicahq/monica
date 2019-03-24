@@ -27,7 +27,7 @@ class DestroyActivityTest extends TestCase
             'id' => $activity->id,
         ]);
 
-        (new DestroyActivity)->execute($request);
+        app(DestroyActivity::class)->execute($request);
 
         $this->assertDatabaseMissing('activities', [
             'id' => $activity->id,
@@ -49,13 +49,13 @@ class DestroyActivityTest extends TestCase
             'date' => '2009-09-09',
         ];
 
-        $activity = (new CreateActivity)->execute($request);
+        $activity = app(CreateActivity::class)->execute($request);
 
         $request = [
             'account_id' => $activity->account_id,
             'activity_id' => $activity->id,
         ];
-        (new DestroyActivity)->execute($request);
+        app(DestroyActivity::class)->execute($request);
 
         $this->assertDatabaseMissing('activities', [
             'id' => $activity->id,

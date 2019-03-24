@@ -87,7 +87,7 @@ class ActivitiesController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        $activity = (new CreateActivity)->execute([
+        $activity = app(CreateActivity::class)->execute([
             'account_id' => auth()->user()->account->id,
             'activity_type_id' => $request->get('activity_type_id'),
             'summary' => $request->get('summary'),
@@ -103,7 +103,7 @@ class ActivitiesController extends Controller
         // also push the current contact
         array_push($arrayParticipants, $contact->id);
 
-        $activity = (new AttachContactToActivity)->execute([
+        $activity = app(AttachContactToActivity::class)->execute([
             'account_id' => auth()->user()->account->id,
             'activity_id' => $activity->id,
             'contacts' => $arrayParticipants,
@@ -118,7 +118,7 @@ class ActivitiesController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param int $activityId
-     * @return bool
+     * @return bool|null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, $activityId)
     {
@@ -128,7 +128,7 @@ class ActivitiesController extends Controller
         ];
 
         try {
-            (new DestroyActivity)->execute($data);
+            app(DestroyActivity::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

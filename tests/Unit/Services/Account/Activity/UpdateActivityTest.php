@@ -27,7 +27,7 @@ class UpdateActivityTest extends TestCase
             'date' => '2009-09-09',
         ];
 
-        (new UpdateActivity)->execute($request);
+        app(UpdateActivity::class)->execute($request);
 
         $this->assertDatabaseHas('activities', [
             'id' => $activity->id,
@@ -55,7 +55,7 @@ class UpdateActivityTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new UpdateActivity)->execute($request);
+        app(UpdateActivity::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -73,6 +73,6 @@ class UpdateActivityTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateActivity)->execute($request);
+        app(UpdateActivity::class)->execute($request);
     }
 }

@@ -34,7 +34,7 @@ class AttachContactToActivityTest extends TestCase
             'contacts' => [$contactA->id, $contactB->id, $contactC->id],
         ];
 
-        $activity = (new AttachContactToActivity)->execute($request);
+        $activity = app(AttachContactToActivity::class)->execute($request);
 
         $this->assertDatabaseHas('activity_contact', [
             'activity_id' => $activity->id,
@@ -73,7 +73,7 @@ class AttachContactToActivityTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new AttachContactToActivity)->execute($request);
+        app(AttachContactToActivity::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -91,6 +91,6 @@ class AttachContactToActivityTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new AttachContactToActivity)->execute($request);
+        app(AttachContactToActivity::class)->execute($request);
     }
 }

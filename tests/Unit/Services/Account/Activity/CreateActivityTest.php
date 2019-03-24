@@ -32,7 +32,7 @@ class CreateActivityTest extends TestCase
             'date' => '2009-09-09',
         ];
 
-        $activity = (new CreateActivity)->execute($request);
+        $activity = app(CreateActivity::class)->execute($request);
 
         $this->assertDatabaseHas('activities', [
             'id' => $activity->id,
@@ -77,7 +77,7 @@ class CreateActivityTest extends TestCase
             'emotions' => $emotionArray,
         ];
 
-        $activity = (new CreateActivity)->execute($request);
+        $activity = app(CreateActivity::class)->execute($request);
 
         $this->assertDatabaseHas('emotion_activity', [
             'account_id' => $contact->account_id,
@@ -101,7 +101,7 @@ class CreateActivityTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        (new CreateActivity)->execute($request);
+        app(CreateActivity::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_activity_type_is_not_linked_to_account()
@@ -118,6 +118,6 @@ class CreateActivityTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new CreateActivity)->execute($request);
+        app(CreateActivity::class)->execute($request);
     }
 }
