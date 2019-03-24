@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Models\User\User;
 use Tests\FeatureTestCase;
-use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
-use App\Models\User\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends FeatureTestCase
@@ -127,14 +126,13 @@ class ActivityTest extends FeatureTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            'data' => $this-> jsonStructure,
+            'data' => $this->jsonStructure,
         ]);
     }
 
     public function test_it_deletes_an_activity()
     {
         $user = $this->signin();
-
 
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
