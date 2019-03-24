@@ -1,8 +1,7 @@
 <?php
 
-use App\Models\User\User;
 use App\Models\Contact\Gender;
-use Illuminate\Support\Facades\App;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -17,29 +16,23 @@ class AddGenderType extends Migration
     public function up()
     {
         Schema::table('genders', function (Blueprint $table) {
-            $table->string('type')->after('name')->nullable();
+            $table->char('type', 1)->after('name')->nullable();
         });
 
-        $woman = null;
-        $man = null;
-        $other = null;
-        $womanEn = trans('app.gender_female', [], config('app.locale'));
-        $manEn = trans('app.gender_male', [], config('app.locale'));
-        $otherEn = trans('app.gender_none', [], config('app.locale'));
+        $appLocale = config('app.locale');
+        $womanEn = trans('app.gender_female', [], $appLocale);
+        $manEn = trans('app.gender_male', [], $appLocale);
+        $otherEn = trans('app.gender_none', [], $appLocale);
 
-        $currentLocale = null;
-        User::orderBy('locale')->chunkById(200, function ($users) use ($currentLocale, $woman, $man, $womanEn, $manEn, $other, $otherEn) {
-            foreach ($users as $user) {
-                if ($user->locale != $currentLocale) {
-                    $currentLocale = $user->locale;
-                    App::setLocale($currentLocale);
-                    $woman = trans('app.gender_female');
-                    $man = trans('app.gender_male');
-                    $other = trans('app.gender_none');
-                }
+        Account::with(['users', 'genders'])->chunk(200, function ($accounts) use ($appLocale, $womanEn, $manEn, $otherEn) {
+            foreach ($accounts as $account) {
+                $locale = $account->getFirstLocale() ?: $appLocale;
 
-                $genders = Gender::where('account_id', $user->account_id)->get()->all();
-                foreach ($genders as $gender) {
+                $woman = trans('app.gender_female', [], $locale);
+                $man = trans('app.gender_male', [], $locale);
+                $other = trans('app.gender_none', [], $locale);
+
+                foreach ($account->genders->all() as $gender) {
                     if ($gender->name == $woman || $gender->name == $womanEn) {
                         $gender->type = Gender::FEMALE;
                     } elseif ($gender->name == $man || $gender->name == $manEn) {
@@ -49,6 +42,9 @@ class AddGenderType extends Migration
                     } else {
                         $gender->type = Gender::UNKNOWN;
                     }
+
+                    // prevent timestamp update
+                    $gender->timestamps = false;
                     $gender->save();
                 }
             }

@@ -23,7 +23,8 @@ class AddDefaultGender extends Migration
         DB::table('genders')
             ->groupBy('account_id')
             ->select(DB::raw('min(id) as id, account_id'))
-            ->orderBy('id')->chunk(200, function ($genders) {
+            ->orderBy('id')
+            ->chunk(200, function ($genders) {
                 foreach ($genders as $gender) {
                     $account = Account::find($gender->account_id);
                     if ($account) {

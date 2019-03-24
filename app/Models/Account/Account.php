@@ -626,14 +626,13 @@ class Account extends Model
      */
     public function timezone()
     {
-        $timezone = '';
-
-        foreach ($this->users as $user) {
-            $timezone = $user->timezone;
-            break;
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return '';
         }
 
-        return $timezone;
+        return $user->timezone;
     }
 
     /**
