@@ -48,16 +48,16 @@ class ExportAccountAsJson
         $account = $user->account;
 
         $json_output = '';
-        $this->generate_json_header($json_output, $user);
+        $this->generateJsonHeader($json_output, $user);
 
         // Looping over the tables
         $tables = DBHelper::getTables();
         foreach ($tables as $table) {
-            $this->process_table($json_output, $account, $table->table_name);
+            $this->processTable($json_output, $account, $table->table_name);
         }
 
         // Accounts table has to be handled differently
-        $this->process_accounts_table($json_output, $account);
+        $this->processAccountsTable($json_output, $account);
 
         // Close the JSON object and write it to disk
         $json_output .= "\n}";
@@ -67,7 +67,7 @@ class ExportAccountAsJson
         return $downloadPath;
     }
 
-    private function generate_json_header(string &$json_output, User $user)
+    private function generateJsonHeader(string &$json_output, User $user)
     {
         $exported_at = now();
         $json_output = <<< END_HEAD
@@ -81,7 +81,7 @@ class ExportAccountAsJson
 END_HEAD;
     }
 
-    private function process_table(string &$json_output, $account, string $tableName)
+    private function processTable(string &$json_output, $account, string $tableName)
     {
         if (in_array($tableName, ExportAccountAsSQL::IGNORED_TABLES)) {
             // Skip blacklisted tables. The blacklist is shared with the ExportAccountAsSQL job.
@@ -121,7 +121,7 @@ END_HEAD;
         $json_output .= '],';
     }
 
-    private function process_accounts_table(string &$json_output, $account)
+    private function processAccountsTable(string &$json_output, $account)
     {
         // Specific to `accounts` table
         $tableName = 'accounts';
