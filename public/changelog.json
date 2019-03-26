@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Mar 26, 2019",
+            "title": "New feature: export data to JSON",
+            "description": "In addition to the export to SQL option, you can now choose to export your data in a JSON format."
+        },
+        {
             "date": "Jan 06, 2019",
             "title": "Enhancement: comment when rating your day",
             "description": "In the Journal, you can now add a comment after you rate your day. ![image](img/changelogs/2019-01-06-rate-day-comment.png)"
