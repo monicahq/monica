@@ -13,6 +13,9 @@ use App\Services\Contact\Reminder\DestroyReminder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Reminder\Reminder as ReminderResource;
 
+/**
+ * @group Reminders
+ */
 class ApiReminderController extends ApiController
 {
     /**

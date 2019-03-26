@@ -13,6 +13,9 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Task\Task as TaskResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Tasks
+ */
 class ApiTaskController extends ApiController
 {
     /**

@@ -12,6 +12,9 @@ use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\LifeEvent\LifeEvent as LifeEventResource;
 
+/**
+ * @group Life Events
+ */
 class ApiLifeEventController extends ApiController
 {
     /**

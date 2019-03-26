@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
+/**
+ * @group Misc
+ */
 class ApiComplianceController extends ApiController
 {
     /**

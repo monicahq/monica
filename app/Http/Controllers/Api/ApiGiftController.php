@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Gift\Gift as GiftResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Gifts
+ */
 class ApiGiftController extends ApiController
 {
     /**

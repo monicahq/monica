@@ -56,6 +56,7 @@
         "laravel/dusk": "^5.0",
         "matthiasnoback/live-code-coverage": "^1.0",
         "mockery/mockery": "^1.0",
+        "mpociot/laravel-apidoc-generator": "^3.4",
         "nunomaduro/larastan": "^0.3.15",
         "phpunit/phpcov": "^5.0",
         "phpunit/phpunit": "^7.0",

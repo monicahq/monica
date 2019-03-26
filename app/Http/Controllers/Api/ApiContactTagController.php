@@ -11,6 +11,9 @@ use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 
+/**
+ * @group Tags
+ */
 class ApiContactTagController extends ApiController
 {
     /**

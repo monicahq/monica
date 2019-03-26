@@ -8,6 +8,9 @@ use App\Models\Instance\Instance;
 use App\Models\Instance\Statistic;
 use App\Http\Controllers\Api\ApiController;
 
+/**
+ * @group Misc
+ */
 class ApiStatisticsController extends ApiController
 {
     /**

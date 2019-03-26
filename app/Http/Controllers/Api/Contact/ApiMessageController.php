@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 use App\Http\Resources\Conversation\Conversation as ConversationResource;
 
+/**
+ * @group Messages
+ */
 class ApiMessageController extends ApiController
 {
     /**

@@ -14,6 +14,9 @@ use App\Services\Contact\Address\DestroyAddress;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Address\Address as AddressResource;
 
+/**
+ * @group Addresses
+ */
 class ApiAddressController extends ApiController
 {
     /**

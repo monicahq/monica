@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Account\User\User as UserResource;
 
+/**
+ * @group Users
+ */
 class ApiUserController extends ApiController
 {
     /**

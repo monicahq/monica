@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
+/**
+ * @group Contacts
+ */
 class ApiContactController extends ApiController
 {
     /**

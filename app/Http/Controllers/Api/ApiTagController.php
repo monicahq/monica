@@ -12,6 +12,9 @@ use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Tags
+ */
 class ApiTagController extends ApiController
 {
     /**

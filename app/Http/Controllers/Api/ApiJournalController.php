@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Journal\Entry as JournalResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Journals
+ */
 class ApiJournalController extends ApiController
 {
     /**

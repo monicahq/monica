@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Pet\Pet as PetResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Pets
+ */
 class ApiPetController extends ApiController
 {
     /**

@@ -8,6 +8,9 @@ use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
 
+/**
+ * @group Misc
+ */
 class ApiCurrencyController extends ApiController
 {
     /**

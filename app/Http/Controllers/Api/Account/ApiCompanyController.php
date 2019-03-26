@@ -13,6 +13,9 @@ use App\Services\Account\Company\DestroyCompany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Company\Company as CompanyResource;
 
+/**
+ * @group Companies
+ */
 class ApiCompanyController extends ApiController
 {
     /**

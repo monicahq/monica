@@ -14,6 +14,9 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Call\Call as CallResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Calls
+ */
 class ApiCallController extends ApiController
 {
     /**

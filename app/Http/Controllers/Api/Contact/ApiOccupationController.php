@@ -13,6 +13,9 @@ use App\Services\Contact\Occupation\DestroyOccupation;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Occupation\Occupation as OccupationResource;
 
+/**
+ * @group Occupations
+ */
 class ApiOccupationController extends ApiController
 {
     /**

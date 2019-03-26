@@ -13,6 +13,9 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Gender\Gender as GenderResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Genders
+ */
 class ApiGenderController extends ApiController
 {
     /**

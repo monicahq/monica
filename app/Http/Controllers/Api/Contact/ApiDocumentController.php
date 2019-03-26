@@ -10,6 +10,9 @@ use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Document\Document as DocumentResource;
 
+/**
+ * @group Documents
+ */
 class ApiDocumentController extends ApiController
 {
     /**

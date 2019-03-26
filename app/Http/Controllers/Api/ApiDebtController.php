@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Debt\Debt as DebtResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Debts
+ */
 class ApiDebtController extends ApiController
 {
     /**

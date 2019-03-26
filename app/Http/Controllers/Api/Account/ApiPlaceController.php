@@ -13,6 +13,9 @@ use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Place\Place as PlaceResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Places
+ */
 class ApiPlaceController extends ApiController
 {
     /**

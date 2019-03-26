@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Cache;
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\Country\Country as CountryResource;
 
+/**
+ * @group Misc
+ */
 class ApiCountryController extends ApiController
 {
     /**

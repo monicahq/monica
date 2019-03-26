@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Resources\Note\Note as NoteResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * @group Notes
+ */
 class ApiNoteController extends ApiController
 {
     /**

@@ -7,6 +7,9 @@ use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\RelationshipTypeGroup\RelationshipTypeGroup as RelationshipTypeGroupResource;
 
+/**
+ * @group Relationship Type Groups
+ */
 class ApiRelationshipTypeGroupController extends ApiController
 {
     /**

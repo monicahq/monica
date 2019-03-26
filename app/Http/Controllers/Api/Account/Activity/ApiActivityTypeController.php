@@ -13,6 +13,9 @@ use App\Services\Account\Activity\ActivityType\UpdateActivityType;
 use App\Services\Account\Activity\ActivityType\DestroyActivityType;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
+/**
+ * @group Activity Types
+ */
 class ApiActivityTypeController extends ApiController
 {
     /**

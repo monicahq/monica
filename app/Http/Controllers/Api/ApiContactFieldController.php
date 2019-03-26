@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
+/**
+ * @group Contact Fields
+ */
 class ApiContactFieldController extends ApiController
 {
     /**

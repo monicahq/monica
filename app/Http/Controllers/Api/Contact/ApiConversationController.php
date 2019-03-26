@@ -14,6 +14,9 @@ use App\Services\Contact\Conversation\UpdateConversation;
 use App\Services\Contact\Conversation\DestroyConversation;
 use App\Http\Resources\Conversation\Conversation as ConversationResource;
 
+/**
+ * @group Conversations
+ */
 class ApiConversationController extends ApiController
 {
     /**

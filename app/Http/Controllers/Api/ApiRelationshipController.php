@@ -11,6 +11,9 @@ use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Relationship\Relationship as RelationshipResource;
 
+/**
+ * @group Relationships
+ */
 class ApiRelationshipController extends ApiController
 {
     /**

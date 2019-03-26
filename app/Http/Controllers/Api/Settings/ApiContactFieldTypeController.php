@@ -10,6 +10,9 @@ use App\Http\Controllers\Api\ApiController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 
+/**
+ * @group Contact Field Types
+ */
 class ApiContactFieldTypeController extends ApiController
 {
     /**
