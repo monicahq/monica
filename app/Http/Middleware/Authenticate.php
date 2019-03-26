@@ -2,10 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use App\Models\User\User;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -21,8 +19,7 @@ class Authenticate extends Middleware
      */
     protected function authenticate($request, array $guards)
     {
-        if (App::environment() == 'documentation')
-        {
+        if (App::environment() == 'documentation') {
             $user = factory(User::class)->create();
             $user->account->populateDefaultFields();
             $user->acceptPolicy();

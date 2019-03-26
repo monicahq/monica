@@ -118,7 +118,7 @@ return [
                      * Note that you must specify the full parameter, including curly brackets and question marks if any.
                      */
                     'bindings' => [
-                        '{user}' => 1
+                        '{user}' => 1,
                     ],
 
                     /*
