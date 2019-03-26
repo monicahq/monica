@@ -30,7 +30,7 @@ class VEventBirthdayTest extends ApiTestCase
         $response->assertStatus(200);
         $response->assertHeader('X-Sabre-Version');
 
-        $this->assertVObjectEqualsVObject($this->getCal($specialDate, true), $response->getContent());
+        $this->assertVObjectEqualsVObject($this->getCal($specialDate, true), $response->getContent() ?: $response->streamedContent());
     }
 
     public function test_caldav_birthdays_report()

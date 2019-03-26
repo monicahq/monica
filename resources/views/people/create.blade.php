@@ -4,10 +4,14 @@
 
 <section class="ph3 ph0-ns">
   <div class="mt4 mw7 center mb3">
-    <h3 class="f3 fw5">{{ trans('people.people_add_title') }}</h3>
+    @if ($isContactMissing)
+      <h2 class="f2 fw5">{{ trans('people.people_add_missing') }}</h2>
+    @else
+      <h2 class="f3 fw5">{{ trans('people.people_add_title') }}</h2>
+    @endif
 
     @if (! auth()->user()->account->hasLimitations())
-      <p class="import">{!! trans('people.people_add_import', ['url' => 'settings/import']) !!}</p>
+      <p class="import">{!! trans('people.people_add_import', ['url' => route('settings.import')]) !!}</p>
     @endif
   </div>
 

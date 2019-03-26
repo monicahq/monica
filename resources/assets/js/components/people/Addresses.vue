@@ -128,7 +128,7 @@
               <form-input
                 :id="'longitude' + i"
                 v-model="updateForm.longitude"
-                :title="$t('people.contact_address_form_latitude')"
+                :title="$t('people.contact_address_form_longitude')"
                 input-type="number"
                 :required="false"
               />
@@ -225,7 +225,7 @@
           <form-input
             id="longitude"
             v-model="createForm.longitude"
-            :title="$t('people.contact_address_form_latitude')"
+            :title="$t('people.contact_address_form_longitude')"
             input-type="number"
             :required="false"
           />

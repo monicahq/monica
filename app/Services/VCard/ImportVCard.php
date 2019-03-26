@@ -9,6 +9,7 @@ use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
+use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
@@ -413,6 +414,7 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
+            $contact->uuid = RandomHelper::uuid();
             $contact->save();
         }
 
@@ -630,7 +632,21 @@ class ImportVCard extends BaseService
     private function importBirthday(Contact $contact, VCard $entry): void
     {
         if ($entry->BDAY && ! empty((string) $entry->BDAY)) {
-            $birthdate = DateHelper::parseDate((string) $entry->BDAY);
+            $bday = (string) $entry->BDAY;
+            $is_year_unknown = false;
+
+            if (starts_with($bday, '--')) {
+                $bday = '0'.substr($bday, 1);
+                $is_year_unknown = true;
+            }
+
+            $birthdate = null;
+            try {
+                $birthdate = DateHelper::parseDate($bday);
+            } catch (\Exception $e) {
+                // catch any date parse exception
+            }
+
             if (! is_null($birthdate)) {
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $contact->account_id,
@@ -638,7 +654,7 @@ class ImportVCard extends BaseService
                     'is_date_known' => true,
                     'day' => $birthdate->day,
                     'month' => $birthdate->month,
-                    'year' => $birthdate->year,
+                    'year' => $is_year_unknown ? null : $birthdate->year,
                     'add_reminder' => true,
                     'is_age_based' => null,
                 ]);

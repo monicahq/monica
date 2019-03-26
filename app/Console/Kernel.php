@@ -66,10 +66,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('monica:calculatestatistics')->daily();
         $schedule->command('monica:ping')->daily();
         if (config('trustedproxy.cloudflare')) {
-            $schedule->command('cloudflare:reload')->daily();
-        }
-        if (config('telescope.enabled')) {
-            $schedule->command('telescope:prune --hours=48')->daily();
+            $schedule->command('cloudflare:reload')->daily(); // @codeCoverageIgnore
         }
     }
 }
