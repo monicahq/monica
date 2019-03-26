@@ -229,7 +229,6 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
-        Route::get('/settings/exportToSql', 'SettingsController@exportToSQL')->name('sql'); // NOTE: Remove deprecated URL
         Route::get('/settings/export/sql', 'SettingsController@exportToSql')->name('sql');
         Route::get('/settings/export/json', 'SettingsController@exportToJson')->name('json');
         Route::get('/settings/import', 'SettingsController@import')->name('import');
