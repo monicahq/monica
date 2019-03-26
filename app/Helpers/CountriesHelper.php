@@ -22,7 +22,7 @@ class CountriesHelper
             ];
         });
 
-        return CollectionHelper::sortByCollator($countries, 'country');
+        return $countries->sortByCollator('country');
     }
 
     /**

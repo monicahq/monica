@@ -18,7 +18,7 @@ return [
     'sent' => 'E-mail s instrukcemi k obnovení hesla byl odeslán!',
     'token' => 'Klíč pro obnovu hesla je nesprávný.',
     'user' => 'Nepodařilo se najít uživatele s touto e-mailovou adresou.',
-    'changed' => 'Password changed successfuly.',
+    'changed' => 'Password changed successfully.',
     'invalid' => 'Current password you entered is not correct.',
 
 ];

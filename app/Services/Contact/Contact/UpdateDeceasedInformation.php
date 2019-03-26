@@ -6,6 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
+use App\Services\Contact\Reminder\DestroyReminder;
 
 class UpdateDeceasedInformation extends BaseService
 {
@@ -41,9 +42,47 @@ class UpdateDeceasedInformation extends BaseService
         $contact = Contact::where('account_id', $data['account_id'])
             ->findOrFail($data['contact_id']);
 
+        $this->clearRelatedReminder($contact);
+
+        $this->clearRelatedSpecialDate($contact);
+
         $this->manageDeceasedDate($data, $contact);
 
         return $contact;
+    }
+
+    /**
+     * Delete related reminder.
+     *
+     * @param Contact  $contact
+     * @return void
+     */
+    private function clearRelatedReminder(Contact $contact)
+    {
+        if (is_null($contact->deceased_reminder_id)) {
+            return;
+        }
+
+        app(DestroyReminder::class)->execute([
+            'account_id' => $contact->account_id,
+            'reminder_id' => $contact->deceased_reminder_id,
+        ]);
+    }
+
+    /**
+     * Delete related special date.
+     *
+     * @param Contact  $contact
+     * @return void
+     */
+    private function clearRelatedSpecialDate(Contact $contact)
+    {
+        if (is_null($contact->deceased_special_date_id)) {
+            return;
+        }
+
+        $specialDate = SpecialDate::find($contact->deceased_special_date_id);
+        $specialDate->delete();
     }
 
     /**
@@ -74,7 +113,7 @@ class UpdateDeceasedInformation extends BaseService
     }
 
     /**
-     * Case where we have a year, month and day for the birthday.
+     * Case where we have a year, month and day for the date.
      *
      * @param  array  $data
      * @param Contact $contact
@@ -82,7 +121,7 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function exact(array $data, Contact $contact)
     {
-        $specialDate = $specialDate = $contact->setSpecialDate(
+        $specialDate = $contact->setSpecialDate(
             'deceased_date',
             (is_null($data['year']) ? 0 : $data['year']),
             $data['month'],

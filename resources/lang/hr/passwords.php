@@ -18,7 +18,7 @@ return [
     'sent' => 'Poveznica za ponovono postavljanje lozinke je poslana!',
     'token' => 'Oznaka za ponovno postavljanje lozinke više nije važeća.',
     'user' => 'Korisnik nije pronađen.',
-    'changed' => 'Lozinka je uspješno promijnjena.',
+    'changed' => 'Password changed successfully.',
     'invalid' => 'Lozinka koju ste unijeli nije točna.',
 
 ];

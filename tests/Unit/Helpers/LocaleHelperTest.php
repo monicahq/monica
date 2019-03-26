@@ -4,6 +4,7 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\LocaleHelper;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LocaleHelperTest extends FeatureTestCase
@@ -40,9 +41,7 @@ class LocaleHelperTest extends FeatureTestCase
 
     public function test_get_direction_french()
     {
-        $user = $this->signIn();
-        $user->locale = 'fr';
-        $user->save();
+        App::setLocale('fr');
 
         $this->assertEquals(
             'ltr',
@@ -52,9 +51,7 @@ class LocaleHelperTest extends FeatureTestCase
 
     public function test_get_direction_hebrew()
     {
-        $user = $this->signIn();
-        $user->locale = 'he';
-        $user->save();
+        App::setLocale('he');
 
         $this->assertEquals(
             'rtl',
@@ -130,6 +127,15 @@ class LocaleHelperTest extends FeatureTestCase
     public function test_locale_extract_country($locale, $expect)
     {
         $country = LocaleHelper::extractCountry($locale);
+
+        $this->assertEquals(
+            $expect,
+            $country
+        );
+
+        App::setLocale($locale);
+
+        $country = LocaleHelper::extractCountry();
 
         $this->assertEquals(
             $expect,

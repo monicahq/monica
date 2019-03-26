@@ -3,36 +3,35 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Sentry dsn
+    | Auth token for api calls
     |--------------------------------------------------------------------------
     |
-    | Do not put your secret!
-    | See https://sentry.io/settings/{slug}/{project}/keys/
+    | See https://sentry.io/settings/account/api/auth-tokens/
     |
     */
-    'dsn' => env('SENTRY_LARAVEL_DSN'),
+    'auth_token' => env('SENTRY_AUTH_TOKEN'),
 
     /*
     |--------------------------------------------------------------------------
-    | Release number
+    | Organisation slug
     |--------------------------------------------------------------------------
-    |
-    | Stored in .sentry-release file, or get from git commit number
-    |
     */
-    'release' => is_file(__DIR__.'/../.sentry-release') ? file_get_contents(__DIR__.'/../.sentry-release') : (is_dir(__DIR__.'/../.git') ? trim(exec('git log --pretty="%h" -n1 HEAD')) : null),
+    'organisation' => env('SENTRY_ORG'),
 
     /*
     |--------------------------------------------------------------------------
-    | Capture bindings on SQL queries
+    | Project
     |--------------------------------------------------------------------------
     */
-    'breadcrumbs.sql_bindings' => true,
+    'project' => env('SENTRY_PROJECT'),
 
     /*
     |--------------------------------------------------------------------------
-    | Capture default user context
+    | Git repository set in sentry
     |--------------------------------------------------------------------------
+    |
+    | See https://sentry.io/settings/{slug}/repos/
+    |
     */
-    'send_default_pii' => true,
+    'repo' => env('SENTRY_REPO', 'monicahq/monica'),
 ];

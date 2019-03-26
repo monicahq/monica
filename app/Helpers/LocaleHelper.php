@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Matriphe\ISO639\ISO639;
+use Illuminate\Support\Facades\App;
 use libphonenumber\PhoneNumberUtil;
 use Illuminate\Support\Facades\Auth;
 use libphonenumber\PhoneNumberFormat;
@@ -36,7 +37,7 @@ class LocaleHelper
     public static function getLang($locale = null)
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[0];
@@ -71,7 +72,7 @@ class LocaleHelper
     public static function extractCountry($locale = null)
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[1];
@@ -100,7 +101,7 @@ class LocaleHelper
             ]);
         }
 
-        return CollectionHelper::sortByCollator($locales, 'name');
+        return $locales->sortByCollator('name');
     }
 
     /**

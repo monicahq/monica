@@ -150,7 +150,7 @@ return [
     'work_edit_company' => 'Bedrijf (optioneel)',
     'work_information' => 'Werk informatie',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'Voedsel voorkeuren zijn opgeslagen',
     'food_preferencies_edit_description' => 'Misschien heeft :firstname of iemand in de :familiy\'s familie een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
     'food_preferencies_edit_description_no_last_name' => 'Misschien heeft :firstname een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
@@ -244,7 +244,7 @@ return [
     'activities_add_title' => 'Wat heb je gedaan met :name?',
     'activities_summary' => 'Beschrijf wat je deed',
     'activities_add_pick_activity' => '(Optioneel) Wilt u deze activiteit categoriseren? Dat hoeft niet, maar het geeft je statistieken later',
-    'activities_add_date_occured' => 'Datum waarop die deze activiteit heeft plaatsgevonden',
+    'activities_add_date_occured' => 'Datum waarop deze activiteit heeft plaatsgevonden',
     'activities_add_optional_comment' => 'Commentaar (optioneel)',
     'activities_add_cta' => 'Registreer een activiteit',
     'activities_blank_title' => 'Hou bij wat je gedaan hebt met :name en waarover jullie gesproken hebben',

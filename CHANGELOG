@@ -6,19 +6,37 @@ New features:
 
 Enhancements:
 
+* Add a Collection::sortByCollator macro
+
+Fixes:
+
+* Fix address input label mistake
+* Fix dashboard crash when reminder is empty
+* Fix import vCard with Cyrillic encoding
+* Fix import/export vcard with birthday with year unknown
+* Fix contact missing create form
+* Fix money format for non two "2" minor unit currencies
+
+
+RELEASED VERSIONS:
+
+v2.12.1 - 2019-03-09
+--------------------
+
+Enhancements:
+
 * Add eloquent relationships touches
 
 Fixes:
 
+* Fix reminders not being sent
+* Fix setting deceased information with removing date and reminder
 * Fix contact information update
 * Fix adding people on activity create and update
 * Fix setting a relationship without selecting any birthdate option
 * Fix several typos in English language files
 * Fix Journal view now includes Activities as intended
 * Fix deleting a LifeEvent no longer deletes the associated Contact
-
-
-RELEASED VERSIONS:
 
 v2.12.0 - 2019-02-09
 --------------------

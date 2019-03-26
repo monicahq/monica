@@ -47,9 +47,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $e)
     {
-        if (config('monica.sentry_support') && config('app.env') == 'production' && $this->shouldReport($e)) {
-            app('sentry')->captureException($e);
+        if (config('monica.sentry_support') && config('app.env') == 'production' && app()->bound('sentry') && $this->shouldReport($e)) {
+            app('sentry')->captureException($e); // @codeCoverageIgnore
         }
+
         parent::report($e);
     }
 
