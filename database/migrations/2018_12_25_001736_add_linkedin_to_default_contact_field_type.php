@@ -17,7 +17,6 @@ class AddLinkedinToDefaultContactFieldType extends Migration
         DB::table('default_contact_field_types')->insertGetId([
             'name' => 'LinkedIn',
             'fontawesome_icon' => 'fa fa-linkedin-square',
-            'protocol' => 'https://linkedin.com/in/',
         ]);
 
         Account::chunk(200, function ($accounts) {
