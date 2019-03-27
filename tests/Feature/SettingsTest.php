@@ -47,10 +47,15 @@ class SettingsTest extends FeatureTestCase
 
         $response->assertSee(trans('settings.export_title'));
 
+        // Test 'Export to SQL'
         $response = $this->get(route('settings.sql'));
-
         $response->assertStatus(200);
         $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica.sql');
+
+        // Test 'Export to JSON'
+        $response = $this->get(route('settings.json'));
+        $response->assertStatus(200);
+        $this->assertTrue($response->headers->get('content-disposition') == 'attachment; filename=monica.json');
     }
 
     public function test_user_can_reset_account()
