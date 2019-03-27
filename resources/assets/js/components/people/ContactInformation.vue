@@ -35,9 +35,12 @@
             <a v-if="contactInformation.protocol" :href="contactInformation.protocol + contactInformation.data">
               {{ contactInformation.shortenName }}
             </a>
-            <a v-else :href="contactInformation.data">
+            <a v-else-if="contactInformation.data.indexOf('://') !== -1" :href="contactInformation.data">
               {{ contactInformation.shortenName }}
             </a>
+            <span v-else>
+              {{ contactInformation.shortenName }}
+            </span>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
             <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactInformation)"></i>
