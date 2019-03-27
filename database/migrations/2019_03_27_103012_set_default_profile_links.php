@@ -12,7 +12,6 @@ class SetDefaultProfileLinks extends Migration
      */
     public function up()
     {
-
         DB::table('default_contact_field_types')
             ->where('name', '=', 'Facebook')
             ->where('protocol', '=', null)
@@ -40,6 +39,5 @@ class SetDefaultProfileLinks extends Migration
             ->update([
                 'protocol' => 'https://linkedin.com/in/',
             ]);
-
     }
 }
