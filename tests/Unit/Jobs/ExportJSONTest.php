@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Jobs\ExportAccountAsJson;
-use App\Jobs\ExportAccountAsSQL;
 use App\Models\User\User;
 use Tests\FeatureTestCase;
+use App\Jobs\ExportAccountAsSQL;
+use App\Jobs\ExportAccountAsJson;
 
 class ExportJSONTest extends FeatureTestCase
 {
@@ -25,7 +25,7 @@ class ExportJSONTest extends FeatureTestCase
         // Check generated string for meta attributes
         $this->assertStringContainsString('"username": "'.$user->first_name.' '.$user->last_name.'",', $json_output);
         $this->assertStringContainsString('"filename": "', $json_output);
-        $this->assertStringContainsString("exported", $json_output);
+        $this->assertStringContainsString('exported', $json_output);
 
         // Check that JSON is decodable (this requires adjusting the output slightly)
         $json_output = trim($json_output, ', \t\n\r').'}';
@@ -46,7 +46,7 @@ class ExportJSONTest extends FeatureTestCase
         $this->invokePrivateMethod($exportJob, 'processTable', [
             'json_output' => &$json_output,
             'account' => $user->account(),
-            'tableName' => 'activities'
+            'tableName' => 'activities',
         ]);
 
         $this->assertEquals("\n  \"activities\": [],", $json_output);
