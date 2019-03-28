@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'yes' => 'Yes',
-    'no' => 'No',
+    'yes' => 'כן',
+    'no' => 'לא',
     'update' => 'עדכון',
     'save' => 'שמירה',
     'add' => 'הוספה',
@@ -96,7 +96,7 @@ return [
     'gender_male' => 'גבר',
     'gender_female' => 'אישה',
     'gender_none' => 'שמור במערכת',
-    'gender_no_gender' => 'No gender',
+    'gender_no_gender' => 'אין מגדר',
 
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
@@ -408,8 +408,8 @@ return [
     'emotion_fright' => 'Fright',
     'emotion_horror' => 'אימה',
     'emotion_terror' => 'Terror',
-    'emotion_panic' => 'Panic',
-    'emotion_hysteria' => 'Hysteria',
+    'emotion_panic' => 'פאניקה',
+    'emotion_hysteria' => 'היסטריה',
     'emotion_mortification' => 'המתה',
     'emotion_anxiety' => 'חרדה',
     'emotion_nervousness' => 'עצבנות',
