@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'עדכון',
     'save' => 'שמירה',
     'add' => 'הוספה',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'גבר',
     'gender_female' => 'אישה',
     'gender_none' => 'שמור במערכת',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'אופס! משהו השתבש.',
     'error_unauthorized' => 'אין לך את ההרשאה לערוך את המשאב הזה.',
