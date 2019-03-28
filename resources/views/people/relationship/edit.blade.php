@@ -96,8 +96,8 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $genders }}"
-          :required="true"
-          value="{{ $partner->gender->id }}"
+          :required="false"
+          value="{{ $partner->gender_id }}"
           :title="'{{ trans('people.people_add_gender') }}'"
           :id="'gender_id'">
         </form-select>

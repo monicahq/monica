@@ -55,6 +55,7 @@ class Account extends Model
         'number_of_invitations_sent',
         'api_key',
         'default_time_reminder_is_sent',
+        'default_gender_id',
     ];
 
     /**
@@ -625,14 +626,13 @@ class Account extends Model
      */
     public function timezone()
     {
-        $timezone = '';
-
-        foreach ($this->users as $user) {
-            $timezone = $user->timezone;
-            break;
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return '';
         }
 
-        return $timezone;
+        return $user->timezone;
     }
 
     /**
@@ -670,9 +670,9 @@ class Account extends Model
      */
     public function populateDefaultGendersTable()
     {
-        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::MALE, 'name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::FEMALE, 'name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::OTHER, 'name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**
@@ -818,6 +818,26 @@ class Account extends Model
             ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
+    }
+
+    /**
+     * Get the default gender for this account.
+     *
+     * @return string
+     */
+    public function defaultGender()
+    {
+        $defaultGenderType = Gender::MALE;
+        if ($this->default_gender_id) {
+            $defaultGender = Gender::where([
+                'account_id' => $this->id,
+            ])->find($this->default_gender_id);
+            if ($defaultGender) {
+                $defaultGenderType = $defaultGender->type;
+            }
+        }
+
+        return $defaultGenderType;
     }
 
     /**
