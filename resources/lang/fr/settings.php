@@ -322,7 +322,7 @@ return [
     'personalization_genders_desc' => 'Vous pouvez définir autant de genres dont vous avez besoin. Il vous faut avoir au moins un type de genre dans votre compte.',
     'personalization_genders_modal_add' => 'Ajouter un nouveau type de genre',
     'personalization_genders_modal_edit' => 'Mettre à jour le type de genre',
-    'personalization_genders_modal_name' => 'Name',
+    'personalization_genders_modal_name' => 'Nom',
     'personalization_genders_modal_name_help' => 'The name used to display the gender on a contact page.',
     'personalization_genders_modal_sex' => 'Sex',
     'personalization_genders_modal_sex_help' => 'Used to define the relationships, and during the VCard import/export process.',
