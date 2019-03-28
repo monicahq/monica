@@ -10,12 +10,12 @@ use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Account\ActivityType;
 use App\Traits\JsonRespondController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Services\Account\Activity\ActivityStatisticService;
 use App\Http\Resources\Activity\Activity as ActivityResource;
 use App\Services\Account\Activity\Activity\AttachContactToActivity;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivitiesController extends Controller
 {
