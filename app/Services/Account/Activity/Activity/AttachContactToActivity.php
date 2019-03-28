@@ -52,7 +52,7 @@ class AttachContactToActivity extends BaseService
         // reset current associations
         $activity->contacts()->sync([]);
 
-        foreach ($data['contacts'] as &$contactId) {
+        foreach ($data['contacts'] as $contactId) {
             $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($contactId);
 

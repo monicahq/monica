@@ -11,7 +11,7 @@
           <a v-if="displayLogActivity == false" class="btn edit-information" @click="displayLogActivity = true">
             {{ $t('people.activities_add_activity') }}
           </a>
-          <a v-if="displayLogActivity" class="btn edit-information" @click="displayLogActivity = false">
+          <a v-else class="btn edit-information" @click="displayLogActivity = false">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -51,13 +51,13 @@
         <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
           <ul class="list">
             <!-- HAPPENED AT -->
-            <li :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
+            <li class="di" :class="[ dirltr ? 'mr3' : 'ml3' ]">
               {{ activity.happened_at | moment }}
             </li>
 
             <!-- PARTICIPANT LIST -->
             <li v-if="activity.attendees.total > 1" class="di">
-              <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
+              <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
                 <li class="di">
                   {{ $t('people.activities_list_participants') }}
                 </li>
@@ -69,7 +69,7 @@
 
             <!-- EMOTIONS LIST -->
             <li v-if="activity.emotions.length != 0" class="di">
-              <ul :class="[ dirltr ? 'mr3 di list' : 'ml3 di list' ]">
+              <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
                 <li class="di">
                   {{ $t('people.activities_list_emotions') }}
                 </li>
@@ -80,7 +80,7 @@
             </li>
 
             <!-- ACTIVITY TYPE -->
-            <li v-if="activity.activity_type" :class="[ dirltr ? 'mr3 di' : 'ml3 di' ]">
+            <li v-if="activity.activity_type" class="di" :class="[ dirltr ? 'mr3' : 'ml3' ]">
               {{ activity.activity_type.name }}
             </li>
           </ul>

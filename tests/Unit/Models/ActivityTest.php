@@ -12,18 +12,6 @@ class ActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_gets_the_description_attribute()
-    {
-        $activity = factory(Activity::class)->make([
-            'description' => 'this is a desc',
-        ]);
-
-        $this->assertEquals(
-            'this is a desc',
-            $activity->description
-        );
-    }
-
     public function test_it_returns_the_happened_at()
     {
         $activity = factory(Activity::class)->make();

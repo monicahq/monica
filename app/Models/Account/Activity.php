@@ -121,16 +121,6 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the description for this activity.
-     *
-     * @return string or null
-     */
-    public function getDescriptionAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Get the key of the title of the activity.
      *
      * @return string or null

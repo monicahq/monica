@@ -22,7 +22,7 @@ class CreateActivity extends BaseService
             'activity_type_id' => 'nullable|integer',
             'summary' => 'required|string:255',
             'description' => 'nullable|string:400000000',
-            'date' => 'required|date_format:Y-m-d',
+            'date' => 'required|date|date_format:Y-m-d',
             'emotions' => 'nullable|array',
         ];
     }
@@ -59,7 +59,7 @@ class CreateActivity extends BaseService
         // Log a journal entry
         (new JournalEntry)->add($activity);
 
-        return Activity::find($activity->id);
+        return $activity->refresh();
     }
 
     /**

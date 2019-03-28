@@ -21,18 +21,22 @@
 export default {
   data() {
     return {
-      dirltr: true,
       activityCategories: [],
     };
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   mounted() {
-    this.prepareComponent(this.hash);
+    this.prepareComponent();
   },
 
   methods: {
-    prepareComponent(hash) {
-      this.dirltr = this.$root.htmldir == 'ltr';
+    prepareComponent() {
       this.getActivities();
     },
 

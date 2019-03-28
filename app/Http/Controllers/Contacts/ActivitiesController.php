@@ -15,6 +15,7 @@ use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Services\Account\Activity\ActivityStatisticService;
 use App\Http\Resources\Activity\Activity as ActivityResource;
 use App\Services\Account\Activity\Activity\AttachContactToActivity;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivitiesController extends Controller
 {
@@ -83,7 +84,7 @@ class ActivitiesController extends Controller
      * Store an activity.
      *
      * @param  Contact $contact
-     * @return ActivityResource
+     * @return ActivityResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -103,11 +104,15 @@ class ActivitiesController extends Controller
         // also push the current contact
         array_push($arrayParticipants, $contact->id);
 
-        $activity = app(AttachContactToActivity::class)->execute([
-            'account_id' => auth()->user()->account->id,
-            'activity_id' => $activity->id,
-            'contacts' => $arrayParticipants,
-        ]);
+        try {
+            $activity = app(AttachContactToActivity::class)->execute([
+                'account_id' => auth()->user()->account->id,
+                'activity_id' => $activity->id,
+                'contacts' => $arrayParticipants,
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        }
 
         return new ActivityResource($activity);
     }
