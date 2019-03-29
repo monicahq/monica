@@ -322,7 +322,7 @@ return [
     'personalization_genders_desc' => 'Je kan zoveel genderidentiteiten definiëren als je nodig acht. Je hebt ten minste één genderidentiteit nodig in je account.',
     'personalization_genders_modal_add' => 'Genderidentiteit toevoegen',
     'personalization_genders_modal_edit' => 'Genderidentiteit bewerken',
-    'personalization_genders_modal_name' => 'Name',
+    'personalization_genders_modal_name' => 'Naam',
     'personalization_genders_modal_name_help' => 'The name used to display the gender on a contact page.',
     'personalization_genders_modal_sex' => 'Sex',
     'personalization_genders_modal_sex_help' => 'Used to define the relationships, and during the VCard import/export process.',
