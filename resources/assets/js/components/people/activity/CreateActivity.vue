@@ -30,7 +30,7 @@
                 <form-date
                   v-model="newActivity.happened_at"
                   :default-date="todayDate"
-                  :locale="'en'"
+                  :locale="locale"
                   @selected="updateDate($event)"
                 />
               </div>
@@ -42,16 +42,16 @@
         <div v-show="!displayDescription || !displayEmotions || !displayCategory" class="bb b--gray-monica pv3 mb3">
           <ul class="list">
             <li v-show="!displayDescription" class="di pointer mr3">
-              <a @click="displayDescription = true">Add more details</a>
+              <a @click="displayDescription = true">{{ $t('people.activities_add_more_details') }}</a>
             </li>
             <li v-show="!displayEmotions" class="di pointer mr3">
-              <a @click="displayEmotions = true">Add emotions</a>
+              <a @click="displayEmotions = true">{{ $t('people.activities_add_emotions') }}</a>
             </li>
             <li v-show="!displayCategory" class="di pointer mr3">
-              <a @click="displayCategory = true">Indicate a category</a>
+              <a @click="displayCategory = true">{{ $t('people.activities_add_category') }}</a>
             </li>
             <li v-show="!displayParticipants" class="di pointer">
-              <a @click="displayParticipants = true">Add participants</a>
+              <a @click="displayParticipants = true">{{ $t('people.activities_add_participants_cta') }}</a>
             </li>
           </ul>
         </div>
@@ -170,6 +170,12 @@ export default {
       },
       errors: [],
     };
+  },
+
+  computed: {
+    locale() {
+      return this.$root.locale;
+    }
   },
 
   mounted() {
