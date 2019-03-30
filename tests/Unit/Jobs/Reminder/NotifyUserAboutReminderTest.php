@@ -58,7 +58,7 @@ class NotifyUserAboutReminderTest extends TestCase
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
-                $this->assertContains("You wanted to be reminded of {$reminderOutbox->reminder->title}", $mailData['introLines']);
+                $this->assertStringContainsString("You wanted to be reminded of {$reminderOutbox->reminder->title}", $mailData['introLines']);
 
                 return $notification->reminder->id === $reminder->id;
             }
@@ -103,7 +103,7 @@ class NotifyUserAboutReminderTest extends TestCase
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
-                $this->assertContains('In  days (on Jan 01, 2018), the following event will happen:', $mailData['introLines']);
+                $this->assertStringContainsString('In  days (on Jan 01, 2018), the following event will happen:', $mailData['introLines']);
 
                 return $notification->reminder->id === $reminder->id;
             }
