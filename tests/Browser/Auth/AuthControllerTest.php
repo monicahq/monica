@@ -8,7 +8,7 @@ use Laravel\Passport\ClientRepository;
 
 class AuthControllerTest extends ApiTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
