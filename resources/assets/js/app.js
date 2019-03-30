@@ -101,6 +101,10 @@ Vue.component(
   require('./components/partials/form/Textarea.vue').default
 );
 Vue.component(
+  'form-toggle',
+  require('./components/partials/form/Toggle.vue').default
+);
+Vue.component(
   'emotion',
   require('./components/people/Emotion.vue').default
 );

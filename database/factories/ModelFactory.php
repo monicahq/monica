@@ -137,6 +137,11 @@ $factory->state(App\Models\Contact\Contact::class, 'named', function (Faker\Gene
         'last_name' => $faker->lastName,
     ];
 });
+$factory->state(App\Models\Contact\Contact::class, 'no_gender', function (Faker\Generator $faker) {
+    return [
+        'gender_id' => null,
+    ];
+});
 
 $factory->define(App\Models\Contact\Gift::class, function (Faker\Generator $faker) {
     return [
@@ -264,6 +269,8 @@ $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $f
 $factory->define(App\Models\Contact\Gender::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'type' => 'M',
+        'name' => 'Man',
     ];
 });
 

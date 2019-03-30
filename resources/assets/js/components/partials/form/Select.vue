@@ -24,7 +24,7 @@ select:focus {
       :id="realid"
       :value="selectedOption"
       :name="id"
-      required
+      :required="required"
       :class="selectClass"
       @input="event => { $emit('input', event.target.value) }"
     >
@@ -44,7 +44,7 @@ export default {
 
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     options: {

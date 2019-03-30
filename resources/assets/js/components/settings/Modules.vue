@@ -89,7 +89,7 @@ export default {
     prepareComponent() {
       this.getModules();
       if (!this.limited) {
-        this.limited = 0;
+        this.limited = false;
       }
     },
 

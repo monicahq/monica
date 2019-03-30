@@ -36,7 +36,7 @@ UID:{$contact->uuid}
 SOURCE:{$url}
 FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
-GENDER:O;
+GENDER:{$contact->gender->type}
 ";
         foreach ($contact->addresses as $address) {
             $data .= 'ADR:;;';

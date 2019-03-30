@@ -20,6 +20,7 @@ class CreateGenderTest extends TestCase
         $request = [
             'account_id' => $account->id,
             'name' => 'man',
+            'type' => 'M',
         ];
 
         $gender = app(CreateGender::class)->execute($request);
@@ -28,6 +29,7 @@ class CreateGenderTest extends TestCase
             'id' => $gender->id,
             'account_id' => $account->id,
             'name' => 'man',
+            'type' => 'M',
         ]);
 
         $this->assertInstanceOf(
@@ -42,6 +44,7 @@ class CreateGenderTest extends TestCase
 
         $request = [
             'name' => 'man',
+            'type' => 'X',
         ];
 
         $this->expectException(ValidationException::class);

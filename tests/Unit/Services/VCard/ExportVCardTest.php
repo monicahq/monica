@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
 use Tests\Api\DAV\CardEtag;
+use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -78,7 +79,126 @@ class ExportVCardTest extends TestCase
             self::defaultPropsCount + 1,
             $vCard->children()
         );
-        $this->assertContains('GENDER:O;', $vCard->serialize());
+        $this->assertContains('GENDER:M', $vCard->serialize());
+    }
+
+    public function test_vcard_add_gender_female()
+    {
+        $account = factory(Account::class)->create();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+            'type' => 'F',
+            'name' => 'Female',
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'gender_id' => $gender->id,
+        ]);
+        $vCard = new VCard();
+
+        $exportVCard = new ExportVCard();
+        $this->invokePrivateMethod($exportVCard, 'exportGender', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertContains('GENDER:F', $vCard->serialize());
+    }
+
+    public function test_vcard_add_gender_unknown()
+    {
+        $account = factory(Account::class)->create();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+            'type' => 'U',
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'gender_id' => $gender->id,
+        ]);
+        $vCard = new VCard();
+
+        $exportVCard = new ExportVCard();
+        $this->invokePrivateMethod($exportVCard, 'exportGender', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertContains('GENDER:U', $vCard->serialize());
+    }
+
+    public function test_vcard_add_gender_type_null()
+    {
+        $account = factory(Account::class)->create();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+            'type' => null,
+            'name' => 'Something',
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'gender_id' => $gender->id,
+        ]);
+        $vCard = new VCard();
+
+        $exportVCard = new ExportVCard();
+        $this->invokePrivateMethod($exportVCard, 'exportGender', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertContains('GENDER:O', $vCard->serialize());
+    }
+
+    public function test_vcard_add_gender_type_null_male()
+    {
+        $account = factory(Account::class)->create();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+            'type' => null,
+            'name' => 'Male',
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'gender_id' => $gender->id,
+        ]);
+        $vCard = new VCard();
+
+        $exportVCard = new ExportVCard();
+        $this->invokePrivateMethod($exportVCard, 'exportGender', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertContains('GENDER:O', $vCard->serialize());
+    }
+
+    public function test_vcard_add_gender_type_null_female()
+    {
+        $account = factory(Account::class)->create();
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+            'type' => null,
+            'name' => 'Woman',
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'gender_id' => $gender->id,
+        ]);
+        $vCard = new VCard();
+
+        $exportVCard = new ExportVCard();
+        $this->invokePrivateMethod($exportVCard, 'exportGender', [$contact, $vCard]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 1,
+            $vCard->children()
+        );
+        $this->assertContains('GENDER:F', $vCard->serialize());
     }
 
     public function test_vcard_add_photo()
