@@ -174,7 +174,7 @@ class MultiFAController extends Controller
                 $key->save();
             }
 
-            Event::fire('u2f.register', ['u2fKey' => $key, 'user' => Auth::user()]);
+            Event::dispatch('u2f.register', ['u2fKey' => $key, 'user' => Auth::user()]);
             session()->forget('u2f.registerData');
 
             session([config('u2f.sessionU2fName') => true]);

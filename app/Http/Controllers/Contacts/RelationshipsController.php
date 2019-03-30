@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Models\Relationship\Relationship;
@@ -56,7 +57,8 @@ class RelationshipsController extends Controller
         return view('people.relationship.new')
             ->withContact($contact)
             ->withPartner(new Contact)
-            ->withGenders(auth()->user()->account->genders)
+            ->withGenders(GendersHelper::getGendersInput())
+            ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
@@ -99,7 +101,7 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
-            'gender_id' => 'required|integer',
+            'gender_id' => 'nullable|integer',
             'birthdayDate' => 'date_format:Y-m-d',
             'relationship_type_id' => 'required|integer',
         ]);
@@ -207,7 +209,7 @@ class RelationshipsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
-            ->withGenders(auth()->user()->account->genders)
+            ->withGenders(GendersHelper::getGendersInput())
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withRelationshipTypes($arrayRelationshipTypes)
             ->withType($type->relationship_type_id);
@@ -227,7 +229,7 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:50',
             'last_name' => 'max:100',
-            'gender_id' => 'required|integer',
+            'gender_id' => 'nullable|integer',
             'birthdayDate' => 'date_format:Y-m-d',
         ]);
 

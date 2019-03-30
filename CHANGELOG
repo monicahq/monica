@@ -6,6 +6,8 @@ New features:
 
 Enhancements:
 
+* Add a sex type behind the gender
+* Make gender optional on a contact profile
 * Add a Collection::sortByCollator macro
 
 Fixes:
