@@ -25,13 +25,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
     Route::get('/auth/login-recovery', 'Auth\RecoveryLoginController@get')->name('recovery.login');
     Route::post('/auth/login-recovery', 'Auth\RecoveryLoginController@store');
+
+    Route::get('/webauthn/auth', 'Auth\\WebauthnController@login');
+    Route::post('/webauthn/auth', 'Auth\\WebauthnController@auth');
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
     Route::post('/validate2fa', 'Auth\Validate2faController@index');
 });
 
-Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
+Route::middleware(['auth', 'verified', 'u2f', '2fa', 'webauthn'])->group(function () {
     Route::name('dashboard.')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
@@ -280,6 +283,10 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegisterData');
             Route::post('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegister');
             Route::delete('/settings/security/u2f/remove/{u2fKeyId}', 'Settings\\MultiFAController@u2fRemove');
+
+            Route::get('/settings/security/webauthn', 'Settings\\MultiFAController@webauthnRegisterData');
+            Route::post('/settings/security/webauthn', 'Settings\\MultiFAController@webauthnRegister');
+            Route::delete('/settings/security/webauthn/{id}', 'Settings\\MultiFAController@webauthnRemove');
 
             Route::post('/settings/security/generate-recovery-codes', 'Settings\\RecoveryCodesController@store');
             Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');

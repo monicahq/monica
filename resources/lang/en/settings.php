@@ -111,6 +111,15 @@ return [
     'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
     'u2f_delete_success' => 'Key deleted',
 
+    'webauthn_title' => 'U2F (WebAuthn) security key',
+    'webauthn_enable_description' => 'Add a new U2F (WebAuthn) security key',
+    'webauthn_key_name_help' => 'Give your key a name.',
+    'webauthn_key_name' => 'Key name:',
+    'webauthn_success' => 'Your key is detected and validated.',
+    'webauthn_last_use' => 'Last use: {timestamp}',
+    'webauthn_delete_confirmation' => 'Are you sure you want to delete this key?',
+    'webauthn_delete_success' => 'Key deleted',
+
     'recovery_title' => 'Recovery codes',
     'recovery_show' => 'Get recovery codes',
     'recovery_copy_help' => 'Copy codes in your clipboard',

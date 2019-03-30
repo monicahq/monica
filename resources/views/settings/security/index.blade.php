@@ -85,6 +85,14 @@
                   :currentkeys="{{ json_encode($currentkeys) }}"
                   :timezone="{{ json_encode(auth()->user()->timezone) }}">
                 </u2f-connector>
+                
+                <webauthn-connector
+                  :method="'register-modal'"
+                  :keys="{{ json_encode($webauthnKeys) }}"
+                  :timezone="{{ json_encode(auth()->user()->timezone) }}"
+                >
+                </webauthn-connector>
+  
                 <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
               @endif
 

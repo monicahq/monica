@@ -3,7 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\RecoveryLogin;
+use App\Services\Webauthn\Webauthn;
 use Lahaxearnaud\U2f\Models\U2fKey;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Auth\Validate2faController;
 
 class RecoveryLoginListener
@@ -22,5 +24,6 @@ class RecoveryLoginListener
         if (config('u2f.enable') && U2fKey::where('user_id', $event->user->getAuthIdentifier())->count() > 0) {
             session([config('u2f.sessionU2fName') => true]);
         }
+        App::make(Webauthn::class)->forceAuthenticate($event->user);
     }
 }

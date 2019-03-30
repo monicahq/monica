@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
 use App\Models\User\User;
+use App\Models\WebauthnKey;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
@@ -28,6 +29,7 @@ use App\Services\Contact\Tag\DestroyTag;
 use PragmaRX\Google2FALaravel\Google2FA;
 use App\Services\Account\DestroyAllDocuments;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
+use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
 class SettingsController
 {
@@ -527,9 +529,12 @@ class SettingsController
         $u2fKeys = U2fKey::where('user_id', auth()->id())
                         ->get();
 
+        $webauthnKeys = WebauthnKey::where('user_id', auth()->id())->get();
+
         return view('settings.security.index')
-            ->with('is2FAActivated', app('pragmarx.google2fa')->isActivated())
-            ->with('currentkeys', U2fKeyResource::collection($u2fKeys));
+            ->withIs2FAActivated(app('pragmarx.google2fa')->isActivated())
+            ->withCurrentkeys(U2fKeyResource::collection($u2fKeys))
+            ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys));
     }
 
     /**
