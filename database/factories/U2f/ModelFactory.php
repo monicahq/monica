@@ -22,6 +22,6 @@ $factory->define(Lahaxearnaud\U2f\Models\U2fKey::class, function (Faker\Generato
         'keyHandle' => $faker->word,
         'publicKey' => $faker->word,
         'certificate' => $faker->word,
-        'counter' => 0
+        'counter' => 0,
     ];
 });

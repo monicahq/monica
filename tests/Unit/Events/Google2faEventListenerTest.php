@@ -6,7 +6,6 @@ use Tests\FeatureTestCase;
 use App\Events\RecoveryLogin;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 
 class Google2faEventListenerTest extends FeatureTestCase
@@ -28,7 +27,7 @@ class Google2faEventListenerTest extends FeatureTestCase
         $user = $this->signIn();
         $user->google2fa_secret = 'x';
 
-        Event::dispatch('u2f.authentication', [ 'u2fKey' => null, 'user' => $user ]);
+        Event::dispatch('u2f.authentication', ['u2fKey' => null, 'user' => $user]);
 
         $this->assertTrue($this->app['session']->get('google2fa.auth_passed'));
     }

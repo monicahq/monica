@@ -87,7 +87,7 @@ class LoginListener
 
     /**
      * Force register Google2fa login.
-     * 
+     *
      * @param User $user
      */
     private function registerGoogle2fa(User $user)
@@ -99,7 +99,7 @@ class LoginListener
 
     /**
      * Force register U2f login.
-     * 
+     *
      * @param User $user
      */
     private function registerU2f(User $user)

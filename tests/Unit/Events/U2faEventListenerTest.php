@@ -7,7 +7,6 @@ use App\Events\RecoveryLogin;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Login;
 use Lahaxearnaud\U2f\Models\U2fKey;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 
