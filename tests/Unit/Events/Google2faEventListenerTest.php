@@ -7,9 +7,13 @@ use App\Events\RecoveryLogin;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Event;
+use PragmaRX\Google2FALaravel\Facade as Google2FA;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class Google2faEventListenerTest extends FeatureTestCase
 {
+    use DatabaseTransactions;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -19,7 +23,8 @@ class Google2faEventListenerTest extends FeatureTestCase
         $request = new FakeRequest();
         $request->session = $this->app['session'];
 
-        app('pragmarx.google2fa')->setRequest($request);
+        Google2FA::setRequest($request);
+        app('pragmarx.google2fa')->stateless = false;
     }
 
     public function test_it_listen_u2f_event()
