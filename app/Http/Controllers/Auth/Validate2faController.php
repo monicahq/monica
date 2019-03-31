@@ -28,9 +28,7 @@ class Validate2faController extends Controller
     {
         try {
             app('pragmarx.google2fa')->stateless = false;
-        }
-        catch (\Exception $e)
-        {
+        } catch (\Exception $e) {
             // catch exception until pragmarx/google2fa-laravel package is fixed
             // See https://github.com/antonioribeiro/google2fa-laravel/pull/55
         }
