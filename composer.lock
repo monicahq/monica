@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e68441ae596095cc07e57c934f26d844",
+    "content-hash": "77fa883401ae6bae28ff4e1fa11aa613",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1881,23 +1881,45 @@
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
-            "version": "v1.3.1",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
-                "reference": "ccd83010c9e05cc6967ecaa60aedc5804a14cea0"
+                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/ccd83010c9e05cc6967ecaa60aedc5804a14cea0",
-                "reference": "ccd83010c9e05cc6967ecaa60aedc5804a14cea0",
+                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/650895fec188fb8ef92d3304a293c655ed5af0d9",
+                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9",
                 "shasum": ""
             },
             "require": {
+                "illuminate/auth": "^5.8",
+                "illuminate/config": "^5.8",
+                "illuminate/container": "^5.8",
+                "illuminate/contracts": "^5.8",
+                "illuminate/database": "^5.8",
+                "illuminate/events": "^5.8",
+                "illuminate/http": "^5.8",
+                "illuminate/routing": "^5.8",
+                "illuminate/session": "^5.8",
+                "illuminate/translation": "^5.8",
+                "illuminate/view": "^5.8",
+                "laravel/framework": "^5.8",
                 "php": ">=7.0",
                 "yubico/u2flib-server": "1.0.1"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lahaxearnaud\\U2f\\U2fServiceProvider"
+                    ],
+                    "aliases": {
+                        "U2f": "Lahaxearnaud\\U2f\\U2fFacade"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Lahaxearnaud\\U2f\\": "src"
@@ -1922,7 +1944,7 @@
                 "security",
                 "u2f"
             ],
-            "time": "2019-01-06T18:15:19+00:00"
+            "time": "2019-03-24T19:37:08+00:00"
         },
         {
             "name": "laravel/cashier",
