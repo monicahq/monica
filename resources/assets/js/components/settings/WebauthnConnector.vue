@@ -280,7 +280,7 @@ export default {
 
     startRegister() {
       var self = this;
-      axios.get('settings/security/webauthn')
+      axios.get('webauthn/register')
         .then(response => {
           if (self.registerTab == '2') {
             var data = response.data.publicKey;
@@ -368,7 +368,7 @@ export default {
 
     webauthnRegisterCallback(data, redirect) {
       var self = this;
-      axios.post('settings/security/webauthn', {
+      axios.post('webauthn/register', {
         register: JSON.stringify(data),
         name: self.keyName,
       })
@@ -409,7 +409,7 @@ export default {
 
     webauthnRemove(id) {
       var self = this;
-      axios.delete('settings/security/webauthn/'+id)
+      axios.delete('webauthn/'+id)
         .catch(error => {
           self.errorMessage = error.response.data.message;
         })

@@ -268,6 +268,10 @@ Vue.component(
   require('./components/settings/U2fConnector.vue').default
 );
 Vue.component(
+  'webauthn-connector',
+  require('./components/settings/WebauthnConnector.vue').default
+);
+Vue.component(
   'recovery-codes',
   require('./components/settings/RecoveryCodes.vue').default
 );

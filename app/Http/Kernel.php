@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
         'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
-        'webauthn' => \App\Http\Middleware\WebauthnMiddleware::class,
+        'webauthn' => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
         'limitations' => \App\Http\Middleware\CheckAccountLimitations::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
         'sentry.context' => \App\Http\Middleware\SentryContext::class,

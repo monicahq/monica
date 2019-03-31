@@ -2,9 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Services\Webauthn\Webauthn;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\App;
+use LaravelWebauthn\Facades\Webauthn;
+use LaravelWebauthn\Models\WebauthnKey;
 use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 
 class LoginSucceed2fa
@@ -20,6 +21,8 @@ class LoginSucceed2fa
         if (config('u2f.enable') && U2fKey::where('user_id', $event->user->getAuthIdentifier())->count() > 0) {
             session([config('u2f.sessionU2fName') => true]);
         }
-        App::make(Webauthn::class)->forceAuthenticate($event->user);
+        if (config('webauthn.enable') && WebauthnKey::where('user_id', $event->user->getAuthIdentifier())->count() > 0) {
+            Webauthn::forceAuthenticate($event->user);
+        }
     }
 }

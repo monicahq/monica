@@ -2,30 +2,25 @@
 
 namespace App\Listeners;
 
-use App\Events\RecoveryLogin;
 use Lahaxearnaud\U2f\Models\U2fKey;
-use LaravelWebauthn\Facades\Webauthn;
-use LaravelWebauthn\Models\WebauthnKey;
+use LaravelWebauthn\Events\WebauthnLogin;
 use App\Http\Controllers\Auth\Validate2faController;
 
-class RecoveryLoginListener
+class LoginSucceedWebauthn
 {
     /**
-     * Handle the recovery login event.
+     * Handle the Login event of webauthn login event.
      *
-     * @param  RecoveryLogin $event
+     * @param  WebauthnLogin $event
      * @return void
      */
-    public function handle(RecoveryLogin $event)
+    public function handle(WebauthnLogin $event)
     {
         if (config('google2fa.enabled') && ! empty($event->user->google2fa_secret)) {
             Validate2faController::loginCallback();
         }
         if (config('u2f.enable') && U2fKey::where('user_id', $event->user->getAuthIdentifier())->count() > 0) {
             session([config('u2f.sessionU2fName') => true]);
-        }
-        if (config('webauthn.enable') && WebauthnKey::where('user_id', $event->user->getAuthIdentifier())->count() > 0) {
-            Webauthn::forceAuthenticate($event->user);
         }
     }
 }

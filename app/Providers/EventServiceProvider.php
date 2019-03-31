@@ -17,6 +17,9 @@ class EventServiceProvider extends ServiceProvider
         \PragmaRX\Google2FALaravel\Events\LoginSucceeded::class => [
             \App\Listeners\LoginSucceed2fa::class,
         ],
+        \LaravelWebauthn\Events\WebauthnLogin::class => [
+            \App\Listeners\LoginSucceedWebauthn::class,
+        ],
         \Illuminate\Auth\Events\Login::class => [
             \App\Listeners\LoginListener::class,
         ],

@@ -119,6 +119,9 @@ return [
     'webauthn_last_use' => 'Last use: {timestamp}',
     'webauthn_delete_confirmation' => 'Are you sure you want to delete this key?',
     'webauthn_delete_success' => 'Key deleted',
+    'webauthn_insertKey' => 'Insert your security key.',
+    'webauthn_buttonAdvise' => 'If your security key has a button, press it.',
+    'webauthn_noButtonAdvise' => 'If it does not, remove it and insert it again.',
 
     'recovery_title' => 'Recovery codes',
     'recovery_show' => 'Get recovery codes',

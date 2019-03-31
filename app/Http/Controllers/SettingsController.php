@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
 use App\Models\User\User;
-use App\Models\WebauthnKey;
+use LaravelWebauthn\Models\WebauthnKey;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
