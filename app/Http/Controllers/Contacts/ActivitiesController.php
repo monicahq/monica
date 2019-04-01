@@ -134,7 +134,7 @@ class ActivitiesController extends Controller
 
         try {
             app(DestroyActivity::class)->execute($data);
-        } catch (\Exception $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
     }

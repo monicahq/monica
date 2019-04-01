@@ -1,4 +1,7 @@
 <style scoped>
+.btn-title {
+  top: -7px;
+}
 </style>
 
 <template>
@@ -7,7 +10,7 @@
       <h3 class="mb2">
         🍿 {{ $t('people.activity_title') }}
 
-        <span class="fr relative" style="top: -7px;">
+        <span class="fr relative btn-title">
           <a v-if="displayLogActivity == false" class="btn edit-information" @click="displayLogActivity = true">
             {{ $t('people.activities_add_activity') }}
           </a>
@@ -144,7 +147,6 @@ export default {
       displayLogActivity: false,
       activities: [],
       emotions: [],
-      dirltr: true,
       displayDescription: false,
       displayEmotions: false,
       displayCategory: false,
@@ -158,9 +160,14 @@ export default {
     this.prepareComponent();
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.getActivities();
       this.todayDate = moment().format('YYYY-MM-DD');
     },

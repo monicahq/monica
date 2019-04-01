@@ -155,7 +155,6 @@ export default {
   data() {
     return {
       emotions: [],
-      dirltr: true,
       displayDescription: false,
       displayEmotions: false,
       displayCategory: false,
@@ -182,9 +181,14 @@ export default {
     this.prepareComponent();
   },
 
+  computed: {
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
+    }
+  },
+
   methods: {
     prepareComponent() {
-      this.dirltr = this.$root.htmldir == 'ltr';
       this.todayDate = moment().format('YYYY-MM-DD');
       this.newActivity.happened_at = this.todayDate;
     },
