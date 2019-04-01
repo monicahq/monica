@@ -26,8 +26,8 @@ use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
-use PragmaRX\Google2FALaravel\Google2FA;
 use App\Services\Account\DestroyAllDocuments;
+use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
@@ -532,8 +532,8 @@ class SettingsController
         $webauthnKeys = WebauthnKey::where('user_id', auth()->id())->get();
 
         return view('settings.security.index')
-            ->withIs2FAActivated(app('pragmarx.google2fa')->isActivated())
-            ->withCurrentkeys(U2fKeyResource::collection($u2fKeys))
+            ->with('is2FAActivated', Google2FA::isActivated())
+            ->with('currentkeys', U2fKeyResource::collection($u2fKeys))
             ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys));
     }
 
