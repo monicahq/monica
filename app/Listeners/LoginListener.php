@@ -37,7 +37,7 @@ class LoginListener
         $events->listen(
             \LaravelWebauthn\Events\WebauthnLogin::class,
             '\App\Listeners\LoginListener@onWebauthnLogin'
-        );        
+        );
         $events->listen(
             \App\Events\RecoveryLogin::class,
             '\App\Listeners\LoginListener@onRecoveryLogin'

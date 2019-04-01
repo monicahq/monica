@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
 use App\Models\User\User;
-use LaravelWebauthn\Models\WebauthnKey;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
@@ -24,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
+use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
 use App\Services\Account\DestroyAllDocuments;
