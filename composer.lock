@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e68441ae596095cc07e57c934f26d844",
+    "content-hash": "4fd8ead9b6f151d0192fa503ceb62bd4",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1881,23 +1881,45 @@
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
-            "version": "v1.3.1",
+            "version": "1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
-                "reference": "ccd83010c9e05cc6967ecaa60aedc5804a14cea0"
+                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/ccd83010c9e05cc6967ecaa60aedc5804a14cea0",
-                "reference": "ccd83010c9e05cc6967ecaa60aedc5804a14cea0",
+                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/650895fec188fb8ef92d3304a293c655ed5af0d9",
+                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9",
                 "shasum": ""
             },
             "require": {
+                "illuminate/auth": "^5.8",
+                "illuminate/config": "^5.8",
+                "illuminate/container": "^5.8",
+                "illuminate/contracts": "^5.8",
+                "illuminate/database": "^5.8",
+                "illuminate/events": "^5.8",
+                "illuminate/http": "^5.8",
+                "illuminate/routing": "^5.8",
+                "illuminate/session": "^5.8",
+                "illuminate/translation": "^5.8",
+                "illuminate/view": "^5.8",
+                "laravel/framework": "^5.8",
                 "php": ">=7.0",
                 "yubico/u2flib-server": "1.0.1"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Lahaxearnaud\\U2f\\U2fServiceProvider"
+                    ],
+                    "aliases": {
+                        "U2f": "Lahaxearnaud\\U2f\\U2fFacade"
+                    }
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Lahaxearnaud\\U2f\\": "src"
@@ -1922,7 +1944,7 @@
                 "security",
                 "u2f"
             ],
-            "time": "2019-01-06T18:15:19+00:00"
+            "time": "2019-03-24T19:37:08+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -4784,16 +4806,16 @@
         },
         {
             "name": "pragmarx/google2fa",
-            "version": "v3.0.3",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa.git",
-                "reference": "6949226739e4424f40031e6f1c96b1fd64047335"
+                "reference": "17c969c82f427dd916afe4be50bafc6299aef1b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/6949226739e4424f40031e6f1c96b1fd64047335",
-                "reference": "6949226739e4424f40031e6f1c96b1fd64047335",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/17c969c82f427dd916afe4be50bafc6299aef1b4",
+                "reference": "17c969c82f427dd916afe4be50bafc6299aef1b4",
                 "shasum": ""
             },
             "require": {
@@ -4803,11 +4825,7 @@
                 "symfony/polyfill-php56": "~1.2"
             },
             "require-dev": {
-                "bacon/bacon-qr-code": "~1.0",
                 "phpunit/phpunit": "~4|~5|~6"
-            },
-            "suggest": {
-                "bacon/bacon-qr-code": "Required to generate inline QR Codes."
             },
             "type": "library",
             "extra": {
@@ -4838,32 +4856,31 @@
                 "2fa",
                 "Authentication",
                 "Two Factor Authentication",
-                "google2fa",
-                "laravel"
+                "google2fa"
             ],
-            "time": "2018-08-29T13:28:06+00:00"
+            "time": "2019-03-19T22:44:16+00:00"
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "v0.2.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
-                "reference": "54f0c30c9be5497a7bd248844f1099156457e719"
+                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/54f0c30c9be5497a7bd248844f1099156457e719",
-                "reference": "54f0c30c9be5497a7bd248844f1099156457e719",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/b5f5bc71dcc52c48720441bc01c701023bd82882",
+                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": ">=5.2",
-                "php": ">=5.4",
-                "pragmarx/google2fa": "~3.0"
+                "laravel/framework": ">=5.4.36",
+                "php": ">=7.0",
+                "pragmarx/google2fa-qrcode": "^1.0"
             },
             "require-dev": {
-                "orchestra/testbench-browser-kit": "~3.4|~3.5|~3.6",
+                "orchestra/testbench": "3.4.*|3.5.*|3.6.*|3.7.*",
                 "phpunit/phpunit": "~5|~6|~7"
             },
             "suggest": {
@@ -4912,7 +4929,65 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2018-03-08T04:08:14+00:00"
+            "time": "2019-03-22T19:54:51+00:00"
+        },
+        {
+            "name": "pragmarx/google2fa-qrcode",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/antonioribeiro/google2fa-qrcode.git",
+                "reference": "fd5ff0531a48b193a659309cc5fb882c14dbd03f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-qrcode/zipball/fd5ff0531a48b193a659309cc5fb882c14dbd03f",
+                "reference": "fd5ff0531a48b193a659309cc5fb882c14dbd03f",
+                "shasum": ""
+            },
+            "require": {
+                "bacon/bacon-qr-code": "~1.0|~2.0",
+                "php": ">=5.4",
+                "pragmarx/google2fa": ">=4.0"
+            },
+            "require-dev": {
+                "khanamiryan/qrcode-detector-decoder": "^1.0",
+                "phpunit/phpunit": "~4|~5|~6|~7"
+            },
+            "type": "library",
+            "extra": {
+                "component": "package",
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PragmaRX\\Google2FAQRCode\\": "src/",
+                    "PragmaRX\\Google2FAQRCode\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Antonio Carlos Ribeiro",
+                    "email": "acr@antoniocarlosribeiro.com",
+                    "role": "Creator & Designer"
+                }
+            ],
+            "description": "QR Code package for Google2FA",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "Two Factor Authentication",
+                "google2fa",
+                "qr code",
+                "qrcode"
+            ],
+            "time": "2019-03-20T16:42:58+00:00"
         },
         {
             "name": "pragmarx/ia-arr",
