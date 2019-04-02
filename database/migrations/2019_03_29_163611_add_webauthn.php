@@ -16,10 +16,16 @@ class AddWebauthn extends Migration
         Schema::create('webauthn', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+
             $table->string('name')->default('key');
-            $table->string('credentialId');
-            $table->text('publicKeyCredentialDescriptor');
-            $table->text('attestedCredentialData');
+            $table->string('credentialId', 255);
+            $table->string('type', 255);
+            $table->text('transports');
+            $table->string('attestationType', 255);
+            $table->text('trustPath');
+            $table->text('aaguid');
+            $table->text('credentialPublicKey');
+            $table->string('userHandle', 255);
             $table->integer('counter');
             $table->timestamps();
 

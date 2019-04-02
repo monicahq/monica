@@ -9,7 +9,7 @@
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-intl": "*",
-        "asbiin/laravel-webauthn": "dev-master",
+        "asbiin/laravel-webauthn": "dev-improvements-2019-03-31",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
@@ -48,6 +48,8 @@
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^5.2",
         "vluzrmos/language-detector": "^1.0",
+        "web-auth/cose-lib": "^1.1",
+        "web-auth/webauthn-lib": "^1.1",
         "zendframework/zend-diactoros": "^2.1"
     },
     "require-dev": {
@@ -124,5 +126,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

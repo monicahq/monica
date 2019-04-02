@@ -80,7 +80,7 @@ class LoginListener
     public function onU2fLogin($u2fKey, User $user)
     {
         $this->registerGoogle2fa($user);
-        $this->registerWebauthn($event->user);
+        $this->registerWebauthn($user);
     }
 
     /**

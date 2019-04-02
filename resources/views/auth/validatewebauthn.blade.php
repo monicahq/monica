@@ -25,7 +25,7 @@
               <webauthn-connector
                 :method="'login'"
                 :public-key="{{ json_encode($publicKey) }}"
-                :callbackurl="{{ json_encode(url()->current()) }}">
+                :callbackurl="{{ json_encode($callback) }}">
               </webauthn-connector>
 
               @if (app('pragmarx.google2fa')->isActivated())
