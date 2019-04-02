@@ -19,7 +19,7 @@
           
               @include ('partials.errors')
           
-              {{ csrf_field() }}
+              @csrf
 
               <h3>{{ trans('auth.mfa_auth_u2f') }}</h3>
               <webauthn-connector
