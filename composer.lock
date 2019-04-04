@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4fd8ead9b6f151d0192fa503ceb62bd4",
+    "content-hash": "7d6ea7f623c7d46151ede82e5686148e",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1541,23 +1541,24 @@
         },
         {
             "name": "hashids/hashids",
-            "version": "3.0.0",
+            "version": "4.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ivanakimov/hashids.php.git",
-                "reference": "b6c61142bfe36d43740a5419d11c351dddac0458"
+                "reference": "43bb2407f16a631f0128f47bcb67ff986c63dde2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ivanakimov/hashids.php/zipball/b6c61142bfe36d43740a5419d11c351dddac0458",
-                "reference": "b6c61142bfe36d43740a5419d11c351dddac0458",
+                "url": "https://api.github.com/repos/ivanakimov/hashids.php/zipball/43bb2407f16a631f0128f47bcb67ff986c63dde2",
+                "reference": "43bb2407f16a631f0128f47bcb67ff986c63dde2",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3"
+                "ext-mbstring": "*",
+                "php": "^7.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.0"
+                "phpunit/phpunit": "^8.0"
             },
             "suggest": {
                 "ext-bcmath": "Required to use BC Math arbitrary precision mathematics (*).",
@@ -1566,7 +1567,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -1586,8 +1587,8 @@
                 },
                 {
                     "name": "Vincent Klaiber",
-                    "email": "hello@vinkla.com",
-                    "homepage": "https://vinkla.com"
+                    "email": "hello@doubledip.se",
+                    "homepage": "https://doubledip.se"
                 }
             ],
             "description": "Generate short, unique, non-sequential ids (like YouTube and Bitly) from numbers",
@@ -1603,7 +1604,7 @@
                 "obfuscate",
                 "youtube"
             ],
-            "time": "2018-03-12T16:30:09+00:00"
+            "time": "2019-04-03T13:40:29+00:00"
         },
         {
             "name": "intervention/image",
@@ -8106,35 +8107,35 @@
         },
         {
             "name": "vinkla/hashids",
-            "version": "5.2.0",
+            "version": "6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vinkla/laravel-hashids.git",
-                "reference": "dbe5c3ac62e7b383c3db4ef3a6d55be6554de1ee"
+                "reference": "bb816f85e5521168e02c7c4300d4f0068c6e2460"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vinkla/laravel-hashids/zipball/dbe5c3ac62e7b383c3db4ef3a6d55be6554de1ee",
-                "reference": "dbe5c3ac62e7b383c3db4ef3a6d55be6554de1ee",
+                "url": "https://api.github.com/repos/vinkla/laravel-hashids/zipball/bb816f85e5521168e02c7c4300d4f0068c6e2460",
+                "reference": "bb816f85e5521168e02c7c4300d4f0068c6e2460",
                 "shasum": ""
             },
             "require": {
                 "graham-campbell/manager": "^4.2",
-                "hashids/hashids": "^3.0",
+                "hashids/hashids": "^4.0",
                 "illuminate/contracts": "5.8.*",
                 "illuminate/support": "5.8.*",
-                "php": "^7.1.3"
+                "php": "^7.2"
             },
             "require-dev": {
                 "graham-campbell/analyzer": "^2.1",
                 "graham-campbell/testbench": "^5.2",
                 "mockery/mockery": "^1.2",
-                "phpunit/phpunit": "^7.5 || ^8.0"
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "5.2-dev"
+                    "dev-master": "6.0-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -8157,8 +8158,8 @@
             "authors": [
                 {
                     "name": "Vincent Klaiber",
-                    "email": "hello@vinkla.com",
-                    "homepage": "https://vinkla.com"
+                    "email": "hello@doubledip.se",
+                    "homepage": "https://doubledip.se"
                 }
             ],
             "description": "A Hashids bridge for Laravel",
@@ -8174,7 +8175,7 @@
                 "obfuscate",
                 "youtube"
             ],
-            "time": "2019-02-27T15:32:38+00:00"
+            "time": "2019-04-03T13:52:33+00:00"
         },
         {
             "name": "vlucas/phpdotenv",
