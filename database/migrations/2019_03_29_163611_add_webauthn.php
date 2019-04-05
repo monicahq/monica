@@ -13,7 +13,7 @@ class AddWebauthn extends Migration
      */
     public function up()
     {
-        Schema::create('webauthn', function (Blueprint $table) {
+        Schema::create('webauthn_keys', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
 
