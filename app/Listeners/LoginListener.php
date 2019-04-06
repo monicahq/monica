@@ -139,7 +139,7 @@ class LoginListener
      */
     private function registerWebauthn(User $user)
     {
-        if (config('webauthn.enable') && WebauthnKey::where('user_id', $user->getAuthIdentifier())->count() > 0) {
+        if (Webauthn::enabled($user)) {
             Webauthn::forceAuthenticate($user);
         }
     }
