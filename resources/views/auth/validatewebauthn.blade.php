@@ -4,7 +4,6 @@
   <body class="marketing register">
     <div class="container">
       <form action="validate2fa" method="post">
-        <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
       
         <div class="row">
           <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
@@ -21,7 +20,7 @@
           
               @csrf
 
-              <h3>{{ trans('auth.mfa_auth_u2f') }}</h3>
+              <h3>{{ trans('auth.mfa_auth_webauthn') }}</h3>
               <webauthn-connector
                 :method="'login'"
                 :public-key="{{ json_encode($publicKey) }}"
