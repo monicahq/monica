@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8dd816257fcfb3ebf4a5877ce94c3bc9",
+    "content-hash": "548c19611d79413b3b7a40e3e49c930c",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "0.1.0",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "94fba1330457e8a15db6ad6adfe1f14a3fbbe476"
+                "reference": "96365ec9c5c57c7f9557b76c7b65bc3f74d32605"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/94fba1330457e8a15db6ad6adfe1f14a3fbbe476",
-                "reference": "94fba1330457e8a15db6ad6adfe1f14a3fbbe476",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/96365ec9c5c57c7f9557b76c7b65bc3f74d32605",
+                "reference": "96365ec9c5c57c7f9557b76c7b65bc3f74d32605",
                 "shasum": ""
             },
             "require": {
@@ -42,7 +42,8 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "LaravelWebauthn\\LaravelWebauthnServiceProvider"
+                        "LaravelWebauthn\\SingletonServiceProvider",
+                        "LaravelWebauthn\\WebauthnServiceProvider"
                     ]
                 }
             },
@@ -68,7 +69,7 @@
                 "security",
                 "webauthn"
             ],
-            "time": "2019-04-04T21:24:48+00:00"
+            "time": "2019-04-06T12:40:54+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
@@ -3761,7 +3762,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "? Nette Finder: find files and directories with an intuitive API.",
+            "description": "🔍 Nette Finder: find files and directories with an intuitive API.",
             "homepage": "https://nette.org",
             "keywords": [
                 "filesystem",
@@ -11317,7 +11318,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "? Nette NEON: encodes and decodes NEON file format.",
+            "description": "🍸 Nette NEON: encodes and decodes NEON file format.",
             "homepage": "http://ne-on.org",
             "keywords": [
                 "export",
@@ -11444,7 +11445,7 @@
                     "homepage": "https://nette.org/contributors"
                 }
             ],
-            "description": "? Nette RobotLoader: high performance and comfortable autoloader that will search and autoload classes within your application.",
+            "description": "🍀 Nette RobotLoader: high performance and comfortable autoloader that will search and autoload classes within your application.",
             "homepage": "https://nette.org",
             "keywords": [
                 "autoload",

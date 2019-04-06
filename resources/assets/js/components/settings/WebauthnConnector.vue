@@ -26,20 +26,21 @@
               </template>
             </div>
             <div class="table-cell actions">
-              <a
-                class="pointer"
-                :cy-name="'webauthnkey-delete-button-' + key.id"
-                @click.prevent="showDeleteModal(key.id)"
-              >
+              <a class="pointer" @click.prevent="showDeleteModal(key.id)">
                 {{ $t('app.delete') }}
               </a>
             </div>
           </li>
         </ul>
       </div>
-      <a class="btn btn-primary" @click="showRegisterModal">
+
+      <a v-if="webAuthnSupport" class="btn btn-primary" @click="showRegisterModal">
         {{ $t('settings.webauthn_enable_description') }}
       </a>
+      <small v-else>
+        {{ notSupportedMessage }}
+      </small>
+
 
       <sweet-modal
         id="registerModal"
@@ -91,9 +92,8 @@
           </div>
 
           <div v-if="errorMessage == ''" align="center">
-            <img
-              src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
-              :alt="$t('settings.webauthn_insertKey')"
+            <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
+                 :alt="$t('settings.webauthn_insertKey')"
             />
           </div>
 
@@ -146,9 +146,8 @@
       </div>
 
       <div align="center">
-        <img
-          src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
-          :alt="$t('settings.webauthn_insertKey')"
+        <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
+             :alt="$t('settings.webauthn_insertKey')"
         />
       </div>
 
@@ -175,10 +174,7 @@
           <a class="btn" @click="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn"
-             :cy-name="'modal-delete-webauthnkey-button-' + keyToTrash"
-             @click.prevent="webauthnRemove(keyToTrash)"
-          >
+          <a class="btn" @click.prevent="webauthnRemove(keyToTrash)">
             {{ $t('app.delete') }}
           </a>
         </span>
@@ -234,6 +230,20 @@ export default {
     };
   },
 
+  computed: {
+    webAuthnSupport() {
+      return ! (window.PublicKeyCredential === undefined ||
+        typeof window.PublicKeyCredential !== 'function' ||
+        typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable !== 'function');
+    },
+    notSupportedMessage() {
+      if (! window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        return this.$t('settings.webauthn_not_secured');
+      }
+      return this.$t('settings.webauthn_not_supported');
+    },
+  },
+
   mounted() {
     this.prepareComponent();
     this.start();
@@ -247,6 +257,7 @@ export default {
 
     start() {
       var self = this;
+      this.errorMessage = '';
       switch(this.method) {
       case 'register':
         setTimeout(function () {
@@ -257,10 +268,10 @@ export default {
         }, 10);
         break;
       case 'login':
-          this.sign(
-            this.publicKey,
-            function (data) { self.webauthnLoginCallback(data); }
-          );
+        this.sign(
+          this.publicKey,
+          function (data) { self.webauthnLoginCallback(data); }
+        );
         break;
       }
     },
@@ -280,6 +291,7 @@ export default {
 
     startRegister() {
       var self = this;
+      this.errorMessage = '';
       axios.get('webauthn/register')
         .then(response => {
           if (self.registerTab == '2') {
@@ -289,76 +301,77 @@ export default {
                 data,
                 function (datas) { self.webauthnRegisterCallback(datas, false); }
               );
-            }, 1000);
+            }, 10);
           }
         }).catch(error => {
           self.notify(error.response.data.message, false);
         });
     },
 
-    arrayToBase64String(a) {
-      return btoa(String.fromCharCode(...a));
+    bufferEncode(value) {
+      var array = new Uint8Array(value);
+      return window.btoa(String.fromCharCode.apply(null, array));
+    },
+
+    bufferDecode(value) {
+      return Uint8Array.from(window.atob(value), c => c.charCodeAt(0));
     },
 
     register(publicKey, callback) {
-        publicKey.challenge = Uint8Array.from(window.atob(publicKey.challenge), c=>c.charCodeAt(0));
-        publicKey.user.id = Uint8Array.from(window.atob(publicKey.user.id), c=>c.charCodeAt(0));
-        if (publicKey.excludeCredentials) {
-            publicKey.excludeCredentials = publicKey.excludeCredentials.map(function(data) {
-                return {
-                    ...data,
-                    'id': Uint8Array.from(window.atob(data.id), c=>c.charCodeAt(0))
-                };
-            });
-        }
+      var self = this;
 
-        var self = this;
-        navigator.credentials.create({publicKey})
-            .then(function (data) {
-                let publicKeyCredential = {
+      publicKey.challenge = this.bufferDecode(publicKey.challenge);
+      publicKey.user.id = this.bufferDecode(publicKey.user.id);
+      if (publicKey.excludeCredentials) {
+        publicKey.excludeCredentials = publicKey.excludeCredentials.map(function(data) {
+          data.id = self.bufferDecode(data.id);
+          return data;
+        });
+      }
 
-                    id: data.id,
-                    type: data.type,
-                    rawId: self.arrayToBase64String(new Uint8Array(data.rawId)),
-                    response: {
-                        clientDataJSON: self.arrayToBase64String(new Uint8Array(data.response.clientDataJSON)),
-                        attestationObject: self.arrayToBase64String(new Uint8Array(data.response.attestationObject))
-                    }
-                };
-                callback(publicKeyCredential);
-            }, function (error) {
-                self.notify(error.message, false);
-            });
+      navigator.credentials.create({publicKey})
+        .then(function (data) {
+          let publicKeyCredential = {
+            id: data.id,
+            type: data.type,
+            rawId: self.bufferEncode(data.rawId),
+            response: {
+              clientDataJSON: self.bufferEncode(data.response.clientDataJSON),
+              attestationObject: self.bufferEncode(data.response.attestationObject)
+            }
+          };
+          callback(publicKeyCredential);
+        }, function (error) {
+          self.notify(error.message, false);
+        });
     },
 
     sign(publicKey, callback) {
-        publicKey.challenge = Uint8Array.from(window.atob(publicKey.challenge), c=>c.charCodeAt(0));
-        publicKey.allowCredentials = publicKey.allowCredentials.map(function(data) {
-            return {
-                ...data,
-                'id': Uint8Array.from(atob(data.id), c=>c.charCodeAt(0))
-            };
+      var self = this;
+
+      publicKey.challenge = this.bufferDecode(publicKey.challenge);
+      publicKey.allowCredentials = publicKey.allowCredentials.map(function(data) {
+        data.id = self.bufferDecode(data.id);
+        return data;
+      });
+
+      navigator.credentials.get({publicKey})
+        .then(function (data) {
+          let publicKeyCredential = {
+            id: data.id,
+            type: data.type,
+            rawId: self.bufferEncode(data.rawId),
+            response: {
+              authenticatorData: self.bufferEncode(data.response.authenticatorData),
+              clientDataJSON: self.bufferEncode(data.response.clientDataJSON),
+              signature: self.bufferEncode(data.response.signature),
+              userHandle: data.response.userHandle ? self.bufferEncode(data.response.userHandle) : null
+            }
+          };
+          callback(publicKeyCredential);
+        }, function (error) {
+          self.notify(error.message, false);
         });
-
-        var self = this;
-        navigator.credentials.get({publicKey})
-            .then(function (data) {
-                let publicKeyCredential = {
-
-                    id: data.id,
-                    type: data.type,
-                    rawId: self.arrayToBase64String(new Uint8Array(data.rawId)),
-                    response: {
-                        authenticatorData: self.arrayToBase64String(new Uint8Array(data.response.authenticatorData)),
-                        clientDataJSON: self.arrayToBase64String(new Uint8Array(data.response.clientDataJSON)),
-                        signature: self.arrayToBase64String(new Uint8Array(data.response.signature)),
-                        userHandle: data.response.userHandle ? self.arrayToBase64String(new Uint8Array(data.response.userHandle)) : null
-                    }
-                };
-                callback(publicKeyCredential);
-            }, function (error) {
-                self.notify(error.message, false);
-            });
     },
 
     closeRegisterModal() {
@@ -371,48 +384,44 @@ export default {
       axios.post('webauthn/register', {
         register: JSON.stringify(data),
         name: self.keyName,
-      })
-        .catch(error => {
-          self.errorMessage = error.response.data.error.message;
-        })
-        .then(response => {
-          self.success = true;
-          self.notify(self.$t('settings.webauthn_success'), true);
-        })
-        .then(response => {
-          if (redirect) {
-            setTimeout(function () {
-              window.location = self.callbackurl;
-            }, 3000);
-          } else {
-            self.closeRegisterModal();
-          }
+      }).then(response => {
+        self.success = true;
+        self.notify(self.$t('settings.webauthn_success'), true);
+        self.currentkeys.push({
+          id: response.data.id,
+          name: response.data.name,
+          counter: response.data.counter,
         });
+      }).then(response => {
+        if (redirect) {
+          setTimeout(function () {
+            window.location = self.callbackurl;
+          }, 100);
+        } else {
+          self.closeRegisterModal();
+        }
+      }).catch(error => {
+        self.errorMessage = error.response.data.error.message;
+      });
     },
 
     webauthnLoginCallback(data) {
       var self = this;
       axios.post('webauthn/auth', {
         data: JSON.stringify(data)
-      })
-        .catch(error => {
-          self.errorMessage = error.response.data.message;
-        })
-        .then(response => {
-          self.success = true;
-          self.notify(self.$t('settings.webauthn_success'), true);
-        })
-        .then(response => {
-          window.location = self.callbackurl;
-        });
+      }).then(response => {
+        self.success = true;
+        self.notify(self.$t('settings.webauthn_success'), true);
+      }).then(response => {
+        window.location = self.callbackurl;
+      }).catch(error => {
+        self.errorMessage = error.response.data.message;
+      });
     },
 
     webauthnRemove(id) {
       var self = this;
       axios.delete('webauthn/'+id)
-        .catch(error => {
-          self.errorMessage = error.response.data.message;
-        })
         .then(response => {
           if (response.data.deleted === true) {
             self.currentkeys.splice(self.currentkeys.indexOf(self.currentkeys.find(item => item.id === response.data.id)), 1);
@@ -420,6 +429,8 @@ export default {
             self.notify(self.$t('settings.webauthn_delete_success'), true);
           }
           self.closeDeleteModal();
+        }).catch(error => {
+          self.errorMessage = error.response.data.message;
         });
     },
 

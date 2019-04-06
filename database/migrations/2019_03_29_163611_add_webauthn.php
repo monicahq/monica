@@ -25,7 +25,6 @@ class AddWebauthn extends Migration
             $table->text('trustPath');
             $table->text('aaguid');
             $table->text('credentialPublicKey');
-            $table->string('userHandle', 255);
             $table->integer('counter');
             $table->timestamps();
 

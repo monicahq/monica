@@ -111,8 +111,8 @@ return [
     'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
     'u2f_delete_success' => 'Key deleted',
 
-    'webauthn_title' => 'U2F (WebAuthn) security key',
-    'webauthn_enable_description' => 'Add a new U2F (WebAuthn) security key',
+    'webauthn_title' => 'Security key (WebAuthn)',
+    'webauthn_enable_description' => 'Add a new security key (WebAuthn)',
     'webauthn_key_name_help' => 'Give your key a name.',
     'webauthn_key_name' => 'Key name:',
     'webauthn_success' => 'Your key is detected and validated.',
@@ -122,6 +122,8 @@ return [
     'webauthn_insertKey' => 'Insert your security key.',
     'webauthn_buttonAdvise' => 'If your security key has a button, press it.',
     'webauthn_noButtonAdvise' => 'If it does not, remove it and insert it again.',
+    'webauthn_not_supported' => 'Your browser doesn’t currently support WebAuthn.',
+    'webauthn_not_secured' => 'WebAuthn only supports secure connections. For testing over HTTP, you can use the origin "localhost".',
 
     'recovery_title' => 'Recovery codes',
     'recovery_show' => 'Get recovery codes',
