@@ -7,7 +7,6 @@ use Illuminate\Auth\Events\Login;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use LaravelWebauthn\Facades\Webauthn;
-use LaravelWebauthn\Models\WebauthnKey;
 use LaravelWebauthn\Events\WebauthnLogin;
 use App\Http\Controllers\Auth\Validate2faController;
 use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
