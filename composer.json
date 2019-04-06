@@ -47,10 +47,7 @@
         "symfony/translation": "^4.0",
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^5.2",
-        "vluzrmos/language-detector": "^1.0",
-        "web-auth/cose-lib": "^1.1",
-        "web-auth/webauthn-lib": "^1.1",
-        "zendframework/zend-diactoros": "^2.1"
+        "vluzrmos/language-detector": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",
@@ -126,7 +123,5 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }

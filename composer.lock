@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "548c19611d79413b3b7a40e3e49c930c",
+    "content-hash": "3f490cbb64a35afca518238205acd74c",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -8836,16 +8836,16 @@
         },
         {
             "name": "web-auth/cose-lib",
-            "version": "v1.1.0-alpha1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/cose-lib.git",
-                "reference": "891c556cebca671f04c41309a477012172bfbbbc"
+                "reference": "3dfcb59aa3c3775f0856612fe1dd2a02cca75577"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/891c556cebca671f04c41309a477012172bfbbbc",
-                "reference": "891c556cebca671f04c41309a477012172bfbbbc",
+                "url": "https://api.github.com/repos/web-auth/cose-lib/zipball/3dfcb59aa3c3775f0856612fe1dd2a02cca75577",
+                "reference": "3dfcb59aa3c3775f0856612fe1dd2a02cca75577",
                 "shasum": ""
             },
             "require": {
@@ -8889,20 +8889,20 @@
                 "COSE",
                 "RFC8152"
             ],
-            "time": "2019-03-06T12:21:19+00:00"
+            "time": "2019-03-27T20:45:55+00:00"
         },
         {
             "name": "web-auth/u2f-lib",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/u2f-lib.git",
-                "reference": "ccb30ff383ec7e3e01c5a096fa0f5da4cef26ce9"
+                "reference": "32031a8e5658bcfb012b0e08cd1d34ddba0e9c6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/u2f-lib/zipball/ccb30ff383ec7e3e01c5a096fa0f5da4cef26ce9",
-                "reference": "ccb30ff383ec7e3e01c5a096fa0f5da4cef26ce9",
+                "url": "https://api.github.com/repos/web-auth/u2f-lib/zipball/32031a8e5658bcfb012b0e08cd1d34ddba0e9c6a",
+                "reference": "32031a8e5658bcfb012b0e08cd1d34ddba0e9c6a",
                 "shasum": ""
             },
             "require": {
@@ -8917,7 +8917,8 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0.x-dev"
+                    "v1.0": "1.0.x-dev",
+                    "v1.1": "1.1.x-dev"
                 }
             },
             "autoload": {
@@ -8945,20 +8946,20 @@
                 "fido",
                 "u2f"
             ],
-            "time": "2019-01-17T21:51:50+00:00"
+            "time": "2019-03-27T20:41:40+00:00"
         },
         {
             "name": "web-auth/webauthn-lib",
-            "version": "v1.1.0-alpha1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-auth/webauthn-lib.git",
-                "reference": "8a7fd04d2b9103145096bf0961bb6ff6a0afbec3"
+                "reference": "8340118733794160164a7f9e8798bb0d9130ea09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/8a7fd04d2b9103145096bf0961bb6ff6a0afbec3",
-                "reference": "8a7fd04d2b9103145096bf0961bb6ff6a0afbec3",
+                "url": "https://api.github.com/repos/web-auth/webauthn-lib/zipball/8340118733794160164a7f9e8798bb0d9130ea09",
+                "reference": "8340118733794160164a7f9e8798bb0d9130ea09",
                 "shasum": ""
             },
             "require": {
@@ -9011,7 +9012,7 @@
                 "u2f",
                 "webauthn"
             ],
-            "time": "2019-03-18T20:16:07+00:00"
+            "time": "2019-03-28T12:43:47+00:00"
         },
         {
             "name": "web-token/jwt-core",
@@ -13922,11 +13923,11 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20
     },
-    "prefer-stable": true,
+    "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.1.3",
