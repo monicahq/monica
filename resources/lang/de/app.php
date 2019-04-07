@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'yes' => 'Yes',
-    'no' => 'No',
+    'yes' => 'Ja',
+    'no' => 'Nein',
     'update' => 'Aktualisieren',
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
@@ -288,7 +288,7 @@ return [
 
     'emotion_adoration' => 'Adoration',
     'emotion_affection' => 'Affection',
-    'emotion_love' => 'Love',
+    'emotion_love' => 'Liebe',
     'emotion_fondness' => 'Fondness',
     'emotion_liking' => 'Liking',
     'emotion_attraction' => 'Attraction',
