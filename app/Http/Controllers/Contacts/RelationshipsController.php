@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
@@ -51,8 +52,9 @@ class RelationshipsController extends Controller
         return view('people.relationship.new')
             ->withContact($contact)
             ->withPartner(new Contact)
-            ->withGenders(auth()->user()->account->genders)
+            ->withGenders(GendersHelper::getGendersInput())
             ->withRelationshipTypes($this->getRelationshipTypesList($contact))
+            ->withDefaultGender(auth()->user()->account->default_gender_id)
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
@@ -85,7 +87,6 @@ class RelationshipsController extends Controller
             }
 
             $partner = app(CreateContact::class)->execute($datas);
-
             $partnerId = $partner->id;
         }
 
@@ -134,6 +135,7 @@ class RelationshipsController extends Controller
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
+            ->withGenders(GendersHelper::getGendersInput())
             ->withHasBirthdayReminder($hasBirthdayReminder)
             ->withRelationshipId($type->id);
     }
@@ -185,7 +187,7 @@ class RelationshipsController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|max:255',
             'last_name' => 'max:255',
-            'gender_id' => 'required|integer',
+            'gender_id' => 'nullable|integer',
             'birthdayDate' => 'date_format:Y-m-d',
         ]);
 

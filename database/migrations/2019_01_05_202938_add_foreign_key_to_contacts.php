@@ -19,7 +19,7 @@ class AddForeignKeyToContacts extends Migration
         // we need to parse the special date table to make sure that we don't have
         // "ghost" special date that are not associated with any contact (as it's
         // the case in production)
-        $contacts = Contact::select('birthday_special_date_id')
+        Contact::select('birthday_special_date_id')
             ->whereNotNull('birthday_special_date_id')
             ->chunk(50, function ($contacts) {
                 foreach ($contacts as $contact) {
@@ -33,7 +33,7 @@ class AddForeignKeyToContacts extends Migration
                 }
             });
 
-        $contacts = Contact::select('first_met_special_date_id')
+        Contact::select('first_met_special_date_id')
             ->whereNotNull('first_met_special_date_id')
             ->chunk(50, function ($contacts) {
                 foreach ($contacts as $contact) {
@@ -47,7 +47,7 @@ class AddForeignKeyToContacts extends Migration
                 }
             });
 
-        $contacts = Contact::select('deceased_special_date_id')
+        Contact::select('deceased_special_date_id')
             ->whereNotNull('deceased_special_date_id')
             ->chunk(50, function ($contacts) {
                 foreach ($contacts as $contact) {

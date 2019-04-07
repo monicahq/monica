@@ -70,7 +70,9 @@ class ImportCSV extends Command
             return -1;
         }
 
-        $this->info("Importing CSV file $file to user {$user->id}");
+        if (is_string($file)) {
+            $this->info("Importing CSV file {$file} to user {$user->id}");
+        }
 
         // create special gender for this import
         // we don't know which gender all the contacts are, so we need to create a special status for them, as we

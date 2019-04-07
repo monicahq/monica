@@ -637,8 +637,8 @@ class ContactTest extends FeatureTestCase
 
         $url = $contact->getAvatarURL();
         $this->assertNotNull($url);
-        $this->assertContains('s=250&d=mm&r=g', $url);
-        $this->assertContains('https://www.gravatar.com', $url);
+        $this->assertStringContainsString('s=250&d=mm&r=g', $url);
+        $this->assertStringContainsString('https://www.gravatar.com', $url);
     }
 
     public function test_gravatar_set_emailreal_multiple()
@@ -663,8 +663,8 @@ class ContactTest extends FeatureTestCase
 
         $url = $contact->getAvatarURL();
         $this->assertNotNull($url);
-        $this->assertContains('s=250&d=mm&r=g', $url);
-        $this->assertContains('https://www.gravatar.com', $url);
+        $this->assertStringContainsString('s=250&d=mm&r=g', $url);
+        $this->assertStringContainsString('https://www.gravatar.com', $url);
     }
 
     public function test_gravatar_set_emailreal_secure()
@@ -685,8 +685,8 @@ class ContactTest extends FeatureTestCase
 
         $url = $contact->getAvatarURL();
         $this->assertNotNull($url);
-        $this->assertContains('s=250&d=mm&r=g', $url);
-        $this->assertContains('https://secure.gravatar.com', $url);
+        $this->assertStringContainsString('s=250&d=mm&r=g', $url);
+        $this->assertStringContainsString('https://secure.gravatar.com', $url);
     }
 
     public function test_get_avatar_returns_external_url()

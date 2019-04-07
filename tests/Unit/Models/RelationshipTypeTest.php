@@ -59,7 +59,7 @@ class RelationshipTypeTest extends TestCase
 
         $this->assertEquals(
             'aunt',
-            $relationshipType->getLocalizedName(null, false, 'woman')
+            $relationshipType->getLocalizedName(null, false, 'F')
         );
     }
 
@@ -79,7 +79,7 @@ class RelationshipTypeTest extends TestCase
 
         $this->assertEquals(
             'Mark Twain’s uncle',
-            $relationshipType->getLocalizedName($contact, false, 'man')
+            $relationshipType->getLocalizedName($contact, false, 'M')
         );
     }
 
@@ -99,7 +99,7 @@ class RelationshipTypeTest extends TestCase
 
         $this->assertEquals(
             'Mark Twain’s aunt',
-            $relationshipType->getLocalizedName($contact, false, 'woman')
+            $relationshipType->getLocalizedName($contact, false, 'F')
         );
     }
 

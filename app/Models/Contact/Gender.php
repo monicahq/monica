@@ -17,22 +17,50 @@ class Gender extends Model
     protected $guarded = ['id'];
 
     /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [
-    ];
-
-    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
         'name',
+        'type',
         'account_id',
     ];
+
+    /**
+     * Male type gender.
+     *
+     * @var string
+     */
+    public const MALE = 'M';
+
+    /**
+     * Female type gender.
+     *
+     * @var string
+     */
+    public const FEMALE = 'F';
+
+    /**
+     * Other type gender.
+     *
+     * @var string
+     */
+    public const OTHER = 'O';
+
+    /**
+     * Unknown type gender.
+     *
+     * @var string
+     */
+    public const UNKNOWN = 'U';
+
+    /**
+     * None type gender.
+     *
+     * @var string
+     */
+    public const NONE = 'N';
 
     /**
      * Get the account record associated with the gender.
@@ -55,13 +83,12 @@ class Gender extends Model
     }
 
     /**
-     * Get the name of the gender.
+     * Is this gender the default account one?.
      *
-     * @param  string  $value
-     * @return string
+     * @return bool
      */
-    public function getNameAttribute($value)
+    public function isDefault(): bool
     {
-        return $value;
+        return $this->account->default_gender_id === $this->id;
     }
 }

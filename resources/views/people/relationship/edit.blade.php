@@ -122,9 +122,10 @@
           value="{{ $type }}"
           :required="true"
           :title="'{{
-            $partner->is_partial ? trans('people.relationship_form_is_with') :
-          trans('people.relationship_form_is_with_name', ['name' => $partner->name])
-          }}'"
+            $partner->is_partial ?
+              trans('people.relationship_form_is_with') :
+              trans('people.relationship_form_is_with_name', ['name' => $partner->name])
+            }}'"
           :id="'relationship_type_id'">
         </form-select>
       </div>

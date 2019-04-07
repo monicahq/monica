@@ -1,6 +1,6 @@
 @foreach ($relationships as $relationship)
   <div class="sidebar-box-paragraph">
-    <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender->name) }}</span>
+    <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null) }}</span>
 
     {{-- NAME --}}
     @if ($relationship->ofContact->is_partial)

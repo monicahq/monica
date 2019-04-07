@@ -217,6 +217,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
             Route::apiResource('settings/personalization/genders', 'Settings\\GendersController');
             Route::delete('/settings/personalization/genders/{gender}/replaceby/{genderToReplaceWith}', 'Settings\\GendersController@destroyAndReplaceGender');
+            Route::get('/settings/personalization/genderTypes', 'Settings\\GendersController@types');
+            Route::put('/settings/personalization/genders/default/{gender}', 'Settings\\GendersController@updateDefault');
 
             Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@index');
             Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
