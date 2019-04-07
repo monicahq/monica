@@ -139,11 +139,33 @@ class DateHelperTest extends FeatureTestCase
 
     public function test_parse_dateTime()
     {
+        $testDate = DateHelper::parseDateTime(null);
+
+        $this->assertNull($testDate);
+
         $date = '2017-01-22 17:56:03';
 
         $testDate = DateHelper::parseDateTime($date);
 
         $this->assertInstanceOf(Carbon::class, $testDate);
+    }
+
+    public function test_parse_dateTime_bad()
+    {
+        $date = 'xF 2017';
+
+        $testDate = DateHelper::parseDateTime($date);
+
+        $this->assertNull($testDate);
+    }
+
+    public function test_parse_parseDate_bad()
+    {
+        $date = 'xF 2017';
+
+        $testDate = DateHelper::parseDate($date);
+
+        $this->assertNull($testDate);
     }
 
     public function test_parse_dateTime_format()

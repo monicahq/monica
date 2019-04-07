@@ -56,6 +56,7 @@ class Google2FATest extends TestCase
         config(['google2fa.enabled' => true]);
 
         $google2fa = app('pragmarx.google2fa');
+        $google2fa->stateless = false;
         $secret = $google2fa->generateSecretKey(32);
 
         $user = factory(User::class)->create();

@@ -499,6 +499,61 @@ class ImportVCardTest extends TestCase
         $contact->refresh();
         $this->assertNotNull($contact->birthday_special_date_id);
         $this->assertNotNull($contact->birthday_reminder_id);
+        $this->assertDatabaseHas('special_dates', [
+            'date' => '1990-01-01',
+            'contact_id' => $contact->id,
+        ]);
+    }
+
+    public function test_it_imports_birthday_compact_format()
+    {
+        config(['monica.requires_subscription' => false]);
+
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+
+        $vcard = new VCard([
+            'BDAY' => '19900101',
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard]);
+
+        $contact->refresh();
+        $this->assertNotNull($contact->birthday_special_date_id);
+        $this->assertNotNull($contact->birthday_reminder_id);
+        $this->assertDatabaseHas('special_dates', [
+            'date' => '1990-01-01',
+            'contact_id' => $contact->id,
+        ]);
+    }
+
+    public function test_it_imports_birthday_year_unknown()
+    {
+        config(['monica.requires_subscription' => false]);
+
+        $account = factory(Account::class)->create([]);
+        $importVCard = new ImportVCard;
+
+        $vcard = new VCard([
+            'BDAY' => '--05-22',
+        ]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->invokePrivateMethod($importVCard, 'importBirthday', [$contact, $vcard]);
+
+        $contact->refresh();
+        $this->assertNotNull($contact->birthday_special_date_id);
+        $this->assertNotNull($contact->birthday_reminder_id);
+        $this->assertDatabaseHas('special_dates', [
+            'date' => now()->year.'-05-22',
+            'contact_id' => $contact->id,
+            'is_year_unknown' => true,
+        ]);
     }
 
     public function test_import_vcard_imports_address()

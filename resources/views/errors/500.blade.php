@@ -22,7 +22,7 @@
                 name: '{{ auth()->user()->name }}',
                 email: '{{ auth()->user()->email }}',
             },
-y        });
+      });
     </script>
   @endif
 

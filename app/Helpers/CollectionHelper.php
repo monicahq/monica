@@ -59,6 +59,11 @@ class CollectionHelper
         }
         if (! array_has($collators, $locale)) {
             $collator = new \Collator($locale);
+
+            if (LocaleHelper::getLang($locale) == 'fr') {
+                $collator->setAttribute(\Collator::FRENCH_COLLATION, \Collator::ON);
+            }
+
             $collators[$locale] = $collator;
 
             return $collator;

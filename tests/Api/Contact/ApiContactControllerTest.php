@@ -23,6 +23,7 @@ class ApiContactControllerTest extends ApiTestCase
         'last_name',
         'nickname',
         'gender',
+        'gender_type',
         'is_starred',
         'is_partial',
         'is_dead',
@@ -83,6 +84,7 @@ class ApiContactControllerTest extends ApiTestCase
         'first_name',
         'last_name',
         'gender',
+        'gender_type',
         'is_starred',
         'is_partial',
         'is_dead',
@@ -194,6 +196,7 @@ class ApiContactControllerTest extends ApiTestCase
         'last_name',
         'nickname',
         'gender',
+        'gender_type',
         'is_partial',
         'is_dead',
         'information' => [
@@ -222,6 +225,27 @@ class ApiContactControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class, 10)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('GET', '/api/contacts');
+
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'data' => ['*' => $this->jsonStructureContact],
+        ]);
+
+        $this->assertCount(
+            10,
+            $response->decodeResponseJson()['data']
+        );
+    }
+
+    public function test_it_gets_a_list_of_contacts_without_gender()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class, 10)->state('no_gender')->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -732,7 +756,6 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The gender id field is required.',
             'The is birthdate known field is required.',
             'The is deceased field is required.',
             'The is deceased date known field is required.',
@@ -1113,7 +1136,6 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $this->expectDataError($response, [
-            'The gender id field is required.',
             'The is birthdate known field is required.',
             'The is deceased date known field is required.',
         ]);
