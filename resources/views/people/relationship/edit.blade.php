@@ -25,7 +25,95 @@
     <form action="{{ route('people.relationships.update', [$contact, $partner]) }}" method="POST">
       {{ method_field('PUT') }}
       {{ csrf_field() }}
+      <input type="hidden" name="relationship_id" value="{{ $relationshipId }}">
       <input type="hidden" name="type" value="{{ $type }}">
+
+      @if ($partner->is_partial)
+        {{-- Name --}}
+        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          {{-- This check is for the cultures that are used to say the last name first --}}
+          <div class="mb3 mb0-ns">
+            @if (auth()->user()->getNameOrderForForms() == 'firstname')
+
+            <div class="dt dt--fixed">
+              <div class="dtc pr2">
+                <form-input
+                  value="{{ $partner->first_name }}"
+                  :input-type="'text'"
+                  :id="'first_name'"
+                  :required="true"
+                  :title="'{{ trans('people.people_add_firstname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc">
+                <form-input
+                  value="{{ $partner->last_name }}"
+                  :input-type="'text'"
+                  :id="'last_name'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_lastname') }}'">
+                </form-input>
+              </div>
+            </div>
+
+            @else
+
+            <div class="dt dt--fixed">
+              <div class="dtc pr2">
+                <form-input
+                  value="{{ $partner->last_name }}"
+                  :input-type="'text'"
+                  :id="'last_name'"
+                  :required="false"
+                  :title="'{{ trans('people.people_add_lastname') }}'">
+                </form-input>
+              </div>
+              <div class="dtc">
+                <form-input
+                  value="{{ $partner->first_name }}"
+                  :input-type="'text'"
+                  :id="'first_name'"
+                  :required="true"
+                  :title="'{{ trans('people.people_add_firstname') }}'">
+                </form-input>
+              </div>
+            </div>
+
+            @endif
+          </div>
+        </div>
+
+        {{-- Gender --}}
+        <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
+          <form-select
+            :options="{{ $genders }}"
+            :required="true"
+            value="{{ $partner->gender->id }}"
+            :title="'{{ trans('people.people_add_gender') }}'"
+            :id="'gender_id'">
+          </form-select>
+        </div>
+
+        {{-- Birthdate --}}
+        <form-specialdate
+          :months="{{ $months }}"
+          :days="{{ $days }}"
+          :month="{{ $month }}"
+          :day="{{ $day }}"
+          :age="'{{ $age }}'"
+          :default-date="'{{ $birthdate }}'"
+          :reminder="{{ json_encode($hasBirthdayReminder) }}"
+          :value="'{{ $birthdayState }}'"
+        ></form-specialdate>
+
+        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          <div class="mb3 mb0-ns">
+            <label class="pa0 ma0 lh-copy pointer" for="realContact">
+              <input type="checkbox" id="realContact" name="realContact"> {{ trans('people.relationship_form_also_create_contact') }} <span class="silver">{{ trans('people.relationship_form_add_description') }}</span>
+            </label>
+          </div>
+        </div>
+      @endif
 
       {{-- Nature of relationship --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
@@ -33,94 +121,13 @@
           :options="{{ $relationshipTypes }}"
           value="{{ $type }}"
           :required="true"
-          :title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
+          :title="'{{
+            $partner->is_partial ?
+              trans('people.relationship_form_is_with') :
+              trans('people.relationship_form_is_with_name', ['name' => $partner->name])
+            }}'"
           :id="'relationship_type_id'">
         </form-select>
-      </div>
-
-      {{-- Name --}}
-      <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-        {{-- This check is for the cultures that are used to say the last name first --}}
-        <div class="mb3 mb0-ns">
-          @if (auth()->user()->getNameOrderForForms() == 'firstname')
-
-          <div class="dt dt--fixed">
-            <div class="dtc pr2">
-              <form-input
-                value="{{ $partner->first_name }}"
-                :input-type="'text'"
-                :id="'first_name'"
-                :required="true"
-                :title="'{{ trans('people.people_add_firstname') }}'">
-              </form-input>
-            </div>
-            <div class="dtc">
-              <form-input
-                value="{{ $partner->last_name }}"
-                :input-type="'text'"
-                :id="'last_name'"
-                :required="false"
-                :title="'{{ trans('people.people_add_lastname') }}'">
-              </form-input>
-            </div>
-          </div>
-
-          @else
-
-          <div class="dt dt--fixed">
-            <div class="dtc pr2">
-              <form-input
-                value="{{ $partner->last_name }}"
-                :input-type="'text'"
-                :id="'last_name'"
-                :required="false"
-                :title="'{{ trans('people.people_add_lastname') }}'">
-              </form-input>
-            </div>
-            <div class="dtc">
-              <form-input
-                value="{{ $partner->first_name }}"
-                :input-type="'text'"
-                :id="'first_name'"
-                :required="true"
-                :title="'{{ trans('people.people_add_firstname') }}'">
-              </form-input>
-            </div>
-          </div>
-
-          @endif
-        </div>
-      </div>
-
-      {{-- Gender --}}
-      <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
-        <form-select
-          :options="{{ $genders }}"
-          :required="false"
-          value="{{ $partner->gender_id }}"
-          :title="'{{ trans('people.people_add_gender') }}'"
-          :id="'gender_id'">
-        </form-select>
-      </div>
-
-      {{-- Birthdate --}}
-      <form-specialdate
-        :months="{{ $months }}"
-        :days="{{ $days }}"
-        :month="{{ $month }}"
-        :day="{{ $day }}"
-        :age="'{{ $age }}'"
-        :default-date="'{{ $birthdate }}'"
-        :reminder="{{ json_encode($hasBirthdayReminder) }}"
-        :value="'{{ $birthdayState }}'"
-      ></form-specialdate>
-
-      <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-        <div class="mb3 mb0-ns">
-          <label class="pa0 ma0 lh-copy pointer" for="realContact">
-            <input type="checkbox" id="realContact" name="realContact"> {{ trans('people.relationship_form_also_create_contact') }} <span class="silver">{{ trans('people.relationship_form_add_description') }}</span>
-          </label>
-        </div>
       </div>
 
       {{-- Form actions --}}
