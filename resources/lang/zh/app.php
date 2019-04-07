@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => '是',
+    'no' => '否',
     'update' => '更新',
     'save' => '保存',
     'add' => '添加',
@@ -94,6 +96,7 @@ return [
     'gender_male' => '男',
     'gender_female' => '女',
     'gender_none' => '保密',
+    'gender_no_gender' => '无性别',
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',

@@ -196,6 +196,7 @@ return [
     'relationship_form_add' => 'Voeg een nieuwe relatie toe',
     'relationship_form_edit' => 'Bewerk bestaande relatie',
     'relationship_form_is_with' => 'Deze persoon is...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Wie is de relatie met?',
     'relationship_form_create_contact' => 'Voeg een nieuwe persoon toe',
     'relationship_form_associate_contact' => 'Toevoegen aan bestaand persoon',

@@ -196,6 +196,7 @@ return [
     'relationship_form_add' => 'הוספת קשר חדש',
     'relationship_form_edit' => 'עריכת קשר קיים',
     'relationship_form_is_with' => 'איש הקשר הוא…',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',

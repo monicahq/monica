@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Ja',
+    'no' => 'Nee',
     'update' => 'Bijwerken',
     'save' => 'Opslaan',
     'add' => 'Toevoegen',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Man',
     'gender_female' => 'Vrouw',
     'gender_none' => 'Zeg ik liever niet',
+    'gender_no_gender' => 'Geen geslacht',
 
     'error_title' => 'Oeps! Er is iets misgegaan.',
     'error_unauthorized' => 'Je hebt niet de rechten om dit onderdeel te bewerken.',
