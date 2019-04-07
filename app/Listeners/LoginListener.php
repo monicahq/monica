@@ -85,7 +85,7 @@ class LoginListener
     /**
      * Handle the Webauthn login event.
      *
-     * @param mixed $u2fKey
+     * @param WebauthnLogin $event
      * @param User $user
      */
     public function onWebauthnLogin(WebauthnLogin $event)
@@ -139,7 +139,7 @@ class LoginListener
     private function registerWebauthn(User $user)
     {
         if (Webauthn::enabled($user)) {
-            Webauthn::forceAuthenticate($user);
+            Webauthn::forceAuthenticate();
         }
     }
 }
