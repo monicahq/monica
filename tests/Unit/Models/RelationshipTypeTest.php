@@ -59,7 +59,7 @@ class RelationshipTypeTest extends TestCase
 
         $this->assertEquals(
             'aunt',
-            $relationshipType->getLocalizedName(null, false, 'woman')
+            $relationshipType->getLocalizedName(null, false, 'F')
         );
     }
 
@@ -79,7 +79,7 @@ class RelationshipTypeTest extends TestCase
 
         $this->assertEquals(
             'Mark Twain’s uncle',
-            $relationshipType->getLocalizedName($contact, false, 'man')
+            $relationshipType->getLocalizedName($contact, false, 'M')
         );
     }
 
@@ -99,7 +99,7 @@ class RelationshipTypeTest extends TestCase
 
         $this->assertEquals(
             'Mark Twain’s aunt',
-            $relationshipType->getLocalizedName($contact, false, 'woman')
+            $relationshipType->getLocalizedName($contact, false, 'F')
         );
     }
 
@@ -140,6 +140,34 @@ class RelationshipTypeTest extends TestCase
         $this->assertEquals(
             'Mark Twain’s significant other',
             $relationshipType->getLocalizedName($contact, true)
+        );
+    }
+
+    public function test_it_gets_the_reverse_relationship_type()
+    {
+        $account = factory(Account::class)->create([]);
+        $relationshipTypeA = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+            'name' => 'uncle',
+            'name_reverse_relationship' => 'nephew',
+        ]);
+        $relationshipTypeB = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+            'name' => 'nephew',
+            'name_reverse_relationship' => 'uncle',
+        ]);
+
+        $reverseRelationshipType = $relationshipTypeA->reverseRelationshipType();
+
+        $this->assertEquals(
+            $relationshipTypeB->id,
+            $reverseRelationshipType->id
+        );
+
+        $reverseReverseRelationshipType = $reverseRelationshipType->reverseRelationshipType();
+        $this->assertEquals(
+            $relationshipTypeA->id,
+            $reverseReverseRelationshipType->id
         );
     }
 }

@@ -66,4 +66,74 @@ class RelationshipTest extends TestCase
 
         $this->assertTrue($relationship->ofContact()->exists());
     }
+
+    public function test_it_gets_the_reverse_relationship()
+    {
+        $account = factory(Account::class)->create();
+        $contactA = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactB = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $relationshipTypeA = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+            'name' => 'uncle',
+            'name_reverse_relationship' => 'nephew',
+        ]);
+        $relationshipA = factory(Relationship::class)->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipTypeA->id,
+            'contact_is' => $contactA->id,
+            'of_contact' => $contactB->id,
+        ]);
+        $relationshipTypeB = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+            'name' => 'nephew',
+            'name_reverse_relationship' => 'uncle',
+        ]);
+        $relationshipB = factory(Relationship::class)->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipTypeB->id,
+            'contact_is' => $contactB->id,
+            'of_contact' => $contactA->id,
+        ]);
+
+        $reverseRelationship = $relationshipA->reverseRelationship();
+        $this->assertEquals(
+            $relationshipB->id,
+            $reverseRelationship->id
+        );
+
+        $reverseReverseRelationship = $reverseRelationship->reverseRelationship();
+        $this->assertEquals(
+            $relationshipA->id,
+            $reverseReverseRelationship->id
+        );
+    }
+
+    public function test_it_not_gets_the_reverse_relationship()
+    {
+        $account = factory(Account::class)->create();
+        $contactA = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $contactB = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $relationshipTypeA = factory(RelationshipType::class)->create([
+            'account_id' => $account->id,
+            'name' => 'uncle',
+        ]);
+        $relationshipA = factory(Relationship::class)->create([
+            'account_id' => $account->id,
+            'relationship_type_id' => $relationshipTypeA->id,
+            'contact_is' => $contactA->id,
+            'of_contact' => $contactB->id,
+        ]);
+
+        $reverseRelationship = $relationshipA->reverseRelationship();
+
+        $this->assertNull($reverseRelationship);
+    }
 }

@@ -100,5 +100,14 @@
         <ReservedWord errorLevel="info" />
 
         <RawObjectIteration errorLevel="suppress" />
+
+        <UndefinedPropertyAssignment>
+            <errorLevel type="suppress">
+                <file name="app/Http/Controllers/Auth/Validate2faController.php" />
+                <file name="tests/Unit/Events/Google2faEventListenerTest.php" />
+                <file name="tests/Unit/Models/Google2FATest.php" />
+            </errorLevel>
+        </UndefinedPropertyAssignment>
+
     </issueHandlers>
 </psalm>

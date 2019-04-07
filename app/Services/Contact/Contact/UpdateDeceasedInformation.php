@@ -121,7 +121,7 @@ class UpdateDeceasedInformation extends BaseService
      */
     private function exact(array $data, Contact $contact)
     {
-        $specialDate = $specialDate = $contact->setSpecialDate(
+        $specialDate = $contact->setSpecialDate(
             'deceased_date',
             (is_null($data['year']) ? 0 : $data['year']),
             $data['month'],

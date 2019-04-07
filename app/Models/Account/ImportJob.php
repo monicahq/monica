@@ -4,7 +4,6 @@ namespace App\Models\Account;
 
 use App\Models\User\User;
 use Sabre\VObject\Reader;
-use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Services\VCard\ImportVCard;
 use Illuminate\Database\Eloquent\Model;
@@ -192,7 +191,7 @@ class ImportJob extends Model
                     break;
                 }
                 $this->contacts_found++;
-            } catch (ParseException $e) {
+            } catch (\Throwable $e) {
                 $this->skipEntry('?', (string) $e);
                 continue;
             }

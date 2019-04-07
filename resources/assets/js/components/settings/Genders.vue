@@ -17,7 +17,17 @@
       <div class="dt-row">
         <div class="dtc">
           <div class="pa2 b">
-            {{ $t('settings.personalization_contact_field_type_table_name') }}
+            {{ $t('settings.personalization_genders_table_name') }}
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2 b">
+            {{ $t('settings.personalization_genders_table_sex') }}
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2 b">
+            {{ $t('settings.personalization_genders_table_default') }}
           </div>
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
@@ -27,13 +37,27 @@
         </div>
       </div>
 
-      <div v-for="gender in genders" :key="gender.id" class="dt-row bb b--light-gray">
+      <div v-for="gender in genders" :key="gender.id"
+           class="dt-row bb b--light-gray"
+      >
         <div class="dtc">
           <div class="pa2">
             {{ gender.name }}
             <span class="i">
-              ({{ gender.numberOfContacts }} contacts)
+              {{ $tc('settings.personalization_genders_list_contact_number', gender.numberOfContacts, { count: gender.numberOfContacts }) }}
             </span>
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2">
+            {{ $t('settings.personalization_genders_' + gender.type.toLowerCase()) }}
+          </div>
+        </div>
+        <div class="dtc">
+          <div class="pa2">
+            <template v-if="gender.isDefault">
+              {{ $t('settings.personalization_genders_default') }}
+            </template>
           </div>
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
@@ -44,19 +68,47 @@
         </div>
       </div>
     </div>
+    <div class="mt2" :class="[ dirltr ? 'tr' : 'tl' ]">
+      <a class="pointer" @click="showDefaultGenderModal">{{ $t('settings.personalization_genders_make_default') }}</a>
+    </div>
 
     <!-- Create Gender type -->
     <sweet-modal ref="createModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_add')">
       <form @submit.prevent="store()">
-        <div class="mb4">
-          <p class="b mb2"></p>
-          <form-input
-            :id="''"
-            v-model="createForm.name"
-            :input-type="'text'"
-            :required="true"
-            :title="$t('settings.personalization_genders_modal_question')"
-          />
+        <div class="form-group">
+          <div class="form-group">
+            <form-input
+              :id="''"
+              v-model="createForm.name"
+              :input-type="'text'"
+              :required="true"
+              :title="$t('settings.personalization_genders_modal_name')"
+            />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_name_help') }}
+            </small>
+          </div>
+          <div class="form-group">
+            <form-select
+              :id="''"
+              v-model="createForm.type"
+              :options="genderTypes"
+              :required="true"
+              :title="$t('settings.personalization_genders_modal_sex')"
+            />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_sex_help') }}
+            </small>
+          </div>
+          <div class="form-group">
+            <form-toggle
+              :id="''"
+              v-model="createForm.isDefault"
+              :labels="toggleOptions"
+              :required="true"
+              :title="$t('settings.personalization_genders_modal_default')"
+            />
+          </div>
         </div>
       </form>
       <div class="relative">
@@ -73,15 +125,41 @@
 
     <!-- Edit gender type -->
     <sweet-modal ref="updateModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_edit')">
-      <form>
-        <div class="mb4">
-          <form-input
-            :id="''"
-            v-model="updateForm.name"
-            :input-type="'text'"
-            :required="true"
-            :title="$t('settings.personalization_genders_modal_edit_question')"
-          />
+      <form @submit.prevent="update(updatedGender)">
+        <div class="form-group">
+          <div class="form-group">
+            <form-input
+              :id="''"
+              v-model="updateForm.name"
+              :input-type="'text'"
+              :required="true"
+              :title="$t('settings.personalization_genders_modal_name')"
+            />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_name_help') }}
+            </small>
+          </div>
+          <div class="form-group">
+            <form-select
+              :id="''"
+              v-model="updateForm.type"
+              :options="genderTypes"
+              :required="true"
+              :title="$t('settings.personalization_genders_modal_sex')"
+            />
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_genders_modal_sex_help') }}
+            </small>
+          </div>
+          <div class="form-group">
+            <form-toggle
+              :id="''"
+              v-model="updateForm.isDefault"
+              :labels="toggleOptions"
+              :required="true"
+              :title="$t('settings.personalization_genders_modal_default')"
+            />
+          </div>
         </div>
       </form>
       <div class="relative">
@@ -110,8 +188,13 @@
           <p class="mb2">
             {{ $t('settings.personalization_genders_modal_delete_desc', {name: deleteForm.name}) }}
           </p>
-          <div v-if="numberOfContacts != 0">
-            <p>{{ $tc('settings.personalization_genders_modal_delete_question', numberOfContacts, {count: numberOfContacts}) }}</p>
+          <div v-if="deleteForm.numberOfContacts != 0 || deleteForm.isDefault">
+            <p v-if="deleteForm.numberOfContacts != 0">
+              {{ $tc('settings.personalization_genders_modal_delete_question', deleteForm.numberOfContacts, {count: deleteForm.numberOfContacts}) }}
+            </p>
+            <p v-else>
+              {{ $tc('settings.personalization_genders_modal_delete_question_default') }}
+            </p>
             <form-select
               :id="'deleteNewId'"
               v-model="deleteForm.newId"
@@ -128,11 +211,41 @@
           <a class="btn" @click="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a v-if="numberOfContacts === 0" class="btn btn-primary" @click="trash()">
+          <a v-if="deleteForm.numberOfContacts === 0 && ! deleteForm.isDefault"
+             class="btn btn-primary"
+             @click="trash()"
+          >
             {{ $t('app.delete') }}
           </a>
           <a v-else class="btn btn-primary" @click="trashAndReplace()">
             {{ $t('app.delete') }}
+          </a>
+        </span>
+      </div>
+    </sweet-modal>
+
+    <!-- Change default Gender -->
+    <sweet-modal ref="defaultGenderModal" overlay-theme="dark" :title="$t('settings.personalization_genders_modal_default')">
+      <form>
+        <div class="form-group">
+          <div class="form-group">
+            <form-select
+              :id="''"
+              v-model="defaultGenderId"
+              :options="genders"
+              :required="true"
+              :title="$t('settings.personalization_genders_select_default')"
+            />
+          </div>
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+          <a class="btn" @click="closeDefaultGenderModal()">
+            {{ $t('app.cancel') }}
+          </a>
+          <a class="btn btn-primary" @click="updateDefaultGender()">
+            {{ $t('app.save') }}
           </a>
         </span>
       </div>
@@ -152,36 +265,53 @@ export default {
   data() {
     return {
       genders: [],
+      genderTypes: [],
       updatedGender: {
         id: '',
-        name: ''
+        name: '',
+        type: '',
+        isDefault: false,
       },
 
-      numberOfContacts: 0,
       errorMessage: '',
 
       createForm: {
         name: '',
+        type: '',
+        isDefault: false,
         errors: []
       },
 
       updateForm: {
         id: '',
         name: '',
+        type: '',
+        isDefault: false,
         errors: []
       },
 
       deleteForm: {
         id: '',
         name: '',
+        isDefault: false,
+        numberOfContacts: 0,
         newId: 0
       },
+
+      defaultGenderId: null,
     };
   },
 
   computed: {
     dirltr() {
       return this.$root.htmldir == 'ltr';
+    },
+
+    toggleOptions() {
+      return {
+        checked: this.$t('app.yes'),
+        unchecked: this.$t('app.no')
+      };
     }
   },
 
@@ -191,13 +321,23 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.getGenders();
+      axios.all([
+        this.getGenders(),
+        this.getGenderTypes()
+      ]);
     },
 
     getGenders() {
-      axios.get('settings/personalization/genders')
+      return axios.get('settings/personalization/genders')
         .then(response => {
-          this.genders = response.data;
+          this.genders = _.toArray(response.data);
+        });
+    },
+
+    getGenderTypes() {
+      return axios.get('settings/personalization/genderTypes')
+        .then(response => {
+          this.genderTypes = _.toArray(response.data);
         });
     },
 
@@ -213,22 +353,35 @@ export default {
       this.$refs.deleteModal.close();
     },
 
+    closeDefaultGenderModal() {
+      this.$refs.defaultGenderModal.close();
+    },
+
     showCreateModal() {
       this.$refs.createModal.open();
+    },
+
+    showDefaultGenderModal() {
+      var defaultGender = _.findIndex(this.genders, ['isDefault', true]);
+      this.defaultGenderId = this.genders[defaultGender >= 0 ? defaultGender : 0].id;
+      this.$refs.defaultGenderModal.open();
     },
 
     store() {
       axios.post('settings/personalization/genders', this.createForm)
         .then(response => {
-          this.$refs.createModal.close();
-          this.genders.push(response.data);
+          this.closeModal();
+          this.getGenders();
           this.createForm.name = '';
+          this.createForm.type = '';
         });
     },
 
     showEdit(gender) {
       this.updateForm.id = gender.id.toString();
       this.updateForm.name = gender.name;
+      this.updateForm.type = gender.type;
+      this.updateForm.isDefault = gender.isDefault;
       this.updatedGender = gender;
 
       this.$refs.updateModal.open();
@@ -237,8 +390,11 @@ export default {
     update() {
       axios.put('settings/personalization/genders/' + this.updateForm.id, this.updateForm)
         .then(response => {
-          this.$refs.updateModal.close();
+          this.closeUpdateModal();
+          this.getGenders();
           this.updatedGender.name = this.updateForm.name;
+          this.updatedGender.type = this.updateForm.type;
+          this.updatedGender.isDefault = this.updateForm.isDefault;
           this.updateForm.name = '';
         });
     },
@@ -247,7 +403,8 @@ export default {
       this.errorMessage = '';
       this.deleteForm.name = gender.name;
       this.deleteForm.id = gender.id.toString();
-      this.numberOfContacts = gender.numberOfContacts;
+      this.deleteForm.isDefault = gender.isDefault;
+      this.deleteForm.numberOfContacts = gender.numberOfContacts;
 
       this.$refs.deleteModal.open();
     },
@@ -274,6 +431,14 @@ export default {
           }
         });
     },
+
+    updateDefaultGender() {
+      axios.put('settings/personalization/genders/default/' + this.defaultGenderId)
+        .then(response => {
+          this.closeDefaultGenderModal();
+          this.getGenders();
+        });
+    }
   }
 };
 </script>

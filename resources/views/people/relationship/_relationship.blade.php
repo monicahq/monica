@@ -1,6 +1,6 @@
 @foreach ($relationships as $relationship)
   <div class="sidebar-box-paragraph">
-    <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender->name) }}</span>
+    <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null) }}</span>
 
     {{-- NAME --}}
     @if ($relationship->ofContact->is_partial)
@@ -17,18 +17,12 @@
     @endif
 
     {{-- ACTIONS: EDIT/DELETE --}}
-    @if ($relationship->ofContact->is_partial)
     <a href="{{ route('people.relationships.edit', [$contact, $relationship->ofContact]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">
-      {{ trans('app.edit') }}
-    </a>
-    <a href="#" onclick="if (confirm('{{ trans('people.relationship_delete_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
+        {{ trans('app.edit') }}
+      </a>
+      <a href="#" onclick="if (confirm('{{ trans('people.relationship_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
       {{ trans('app.delete') }}
     </a>
-    @else
-    <a href="#" onclick="if (confirm('{{ trans('people.relationship_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
-      {{ trans('app.delete') }}
-    </a>
-    @endif
 
     <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship->ofContact]) }}" class="entry-delete-form hidden">
       {{ method_field('DELETE') }}

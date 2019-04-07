@@ -14,10 +14,10 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedBase
      * @param  \Closure  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $redirectToRoute = null)
     {
         if (config('monica.signup_double_optin')) {
-            return parent::handle($request, $next);
+            return parent::handle($request, $next, $redirectToRoute);
         }
 
         return $next($request);
