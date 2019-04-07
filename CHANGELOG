@@ -5,13 +5,14 @@ New features:
 *
 
 Enhancements:
-
+* Add ability to update a relationship
 * Add a sex type behind the gender
 * Make gender optional on a contact profile
 * Add a Collection::sortByCollator macro
 
 Fixes:
 
+* Fix destroy relationship
 * Fix event dispatch for login (google2fa, u2f) events handle
 * Fix address input label mistake
 * Fix dashboard crash when reminder is empty

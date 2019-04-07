@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Apr 07, 2019",
+            "title": "Enhancement: edit relationships",
+            "description": "In a contact profile page, you can now edit a relationship, for a real or even a partial contact. ![image](img/changelogs/2019-04-07-edit-relationship)"
+        },
+        {
             "date": "Mar 28, 2019",
             "title": "Enhancement: gender type/sex",
             "description": "Gender is now optional on a contact profile. In the [personalization tab of settings](settings/personalization), you can define a default gender, and you can attribute a type (sex) for each gender to ensure compatibility on Import/Export. ![image](img/changelogs/2019-03-28-gender-type.png)"

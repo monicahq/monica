@@ -148,7 +148,7 @@
           :options="{{ $relationshipTypes }}"
           value="{{ $type }}"
           :required="true"
-          :title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
+          :title="'{{ trans('people.relationship_form_is_with') }}'"
           :id="'relationship_type_id'">
         </form-select>
       </div>

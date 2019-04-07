@@ -49,6 +49,16 @@ class RelationshipType extends Model
     }
 
     /**
+     * Get the reverser relationship type of this one.
+     *
+     * @return self
+     */
+    public function reverseRelationshipType()
+    {
+        return $this->account->getRelationshipTypeByType($this->name_reverse_relationship);
+    }
+
+    /**
      * Get the i18n version of the name attribute, like "Significant other".
      *
      * @psalm-suppress InvalidReturnType
