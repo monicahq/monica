@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Oui',
+    'no' => 'Non',
     'update' => 'Mettre à jour',
     'save' => 'Sauver',
     'add' => 'Ajouter',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Homme',
     'gender_female' => 'Femme',
     'gender_none' => 'Aucun',
+    'gender_no_gender' => 'Aucun genre',
 
     'error_title' => 'Oups ! Une erreur est survenue.',
     'error_unauthorized' => 'Vous n’avez pas le droit de modifier cette ressource.',

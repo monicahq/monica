@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'Actualizar',
     'save' => 'Guardar',
     'add' => 'Añadir',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Hombre',
     'gender_female' => 'Mujer',
     'gender_none' => 'Prefiero no decirlo',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => '¡Ups! algo ha fallado.',
     'error_unauthorized' => 'No tienes permisos para editar este recurso.',

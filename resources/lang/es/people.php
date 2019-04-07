@@ -196,6 +196,7 @@ return [
     'relationship_form_add' => 'Añadir una nueva relación',
     'relationship_form_edit' => 'Editar una relación existente',
     'relationship_form_is_with' => 'Esta persona es...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => '¿Con quién es esta relación?',
     'relationship_form_create_contact' => 'Añade a una nueva persona',
     'relationship_form_associate_contact' => 'Un contacto existente',
