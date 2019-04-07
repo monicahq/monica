@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Apr 07, 2019",
+            "title": "Enhancement: edit relationships",
+            "description": "In a contact profile page, you can now edit a relationship, for a real or even a partial contact. ![image](img/changelogs/2019-04-07-edit-relationship)"
+        },
+        {
             "date": "Jan 06, 2019",
             "title": "Enhancement: comment when rating your day",
             "description": "In the Journal, you can now add a comment after you rate your day. ![image](img/changelogs/2019-01-06-rate-day-comment.png)"
