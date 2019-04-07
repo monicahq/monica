@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Mar 28, 2019",
+            "title": "Enhancement: gender type/sex",
+            "description": "Gender is now optional on a contact profile. In the [personalization tab of settings](settings/personalization), you can define a default gender, and you can attribute a type (sex) for each gender to ensure compatibility on Import/Export. ![image](img/changelogs/2019-03-28-gender-type.png)"
+        },
+        {
             "date": "Jan 06, 2019",
             "title": "Enhancement: comment when rating your day",
             "description": "In the Journal, you can now add a comment after you rate your day. ![image](img/changelogs/2019-01-06-rate-day-comment.png)"
