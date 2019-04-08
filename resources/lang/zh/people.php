@@ -196,6 +196,7 @@ return [
     'relationship_form_add' => '添加一个新的关系',
     'relationship_form_edit' => '修改一个已有关系',
     'relationship_form_is_with' => '这个人是...',
+    'relationship_form_is_with_name' => ':name 是...',
     'relationship_form_add_choice' => '这是与谁的关系？',
     'relationship_form_create_contact' => '添加一个新的人',
     'relationship_form_associate_contact' => '导入一位已存在的联系人',

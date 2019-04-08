@@ -5,6 +5,20 @@ New features:
 *
 
 Enhancements:
+
+*
+
+Fixes:
+
+*
+
+RELEASED VERSIONS:
+
+v2.13.0 - 2019-04-07
+--------------------
+
+Enhancements:
+
 * Add ability to update a relationship
 * Add a sex type behind the gender
 * Make gender optional on a contact profile
@@ -20,9 +34,6 @@ Fixes:
 * Fix import/export vcard with birthday with year unknown
 * Fix contact missing create form
 * Fix money format for non two "2" minor unit currencies
-
-
-RELEASED VERSIONS:
 
 v2.12.1 - 2019-03-09
 --------------------

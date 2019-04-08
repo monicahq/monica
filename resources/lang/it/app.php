@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'Aggiorna',
     'save' => 'Salva',
     'add' => 'Aggiungi',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',
     'gender_none' => 'Preferisco non specificarlo',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Ops! Qualcosa è andato storto.',
     'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',

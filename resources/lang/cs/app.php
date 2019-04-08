@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'Aktualizovat',
     'save' => 'Uložit',
     'add' => 'Přidat',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Muž',
     'gender_female' => 'Žena',
     'gender_none' => 'Nepovím',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
