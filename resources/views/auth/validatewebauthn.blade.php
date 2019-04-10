@@ -1,7 +1,6 @@
 @extends('marketing.auth')
 
 @section('content')
-  <body class="marketing register">
     <div class="container">
       <form action="validate2fa" method="post">
       
@@ -24,7 +23,7 @@
               <webauthn-connector
                 :method="'login'"
                 :public-key="{{ json_encode($publicKey) }}"
-                :callbackurl="{{ json_encode($callback) }}">
+              >
               </webauthn-connector>
 
               @if (app('pragmarx.google2fa')->isActivated())
@@ -46,6 +45,5 @@
       </form>
     </div>
 
-  </body>
-  <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
+  <script src="{{ asset(mix('js/webauthn.js')) }}" type="text/javascript"></script>
 @endsection

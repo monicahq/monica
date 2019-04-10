@@ -207,11 +207,11 @@ export default {
       type: String,
       default: '',
     },
-    callbackurl: {
+    timezone: {
       type: String,
       default: '',
     },
-    timezone: {
+    script: {
       type: String,
       default: '',
     },
@@ -225,23 +225,10 @@ export default {
       currentkeys: [],
       keyToTrash: '',
       keyName: '',
-      registerTab: '',
-      data: null
+      tregisterTab: '',
+      data: null,
+      webauthn: null,
     };
-  },
-
-  computed: {
-    webAuthnSupport() {
-      return ! (window.PublicKeyCredential === undefined ||
-        typeof window.PublicKeyCredential !== 'function' ||
-        typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable !== 'function');
-    },
-    notSupportedMessage() {
-      if (! window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-        return this.$t('settings.webauthn_not_secured');
-      }
-      return this.$t('settings.webauthn_not_supported');
-    },
   },
 
   mounted() {
@@ -253,22 +240,43 @@ export default {
     prepareComponent() {
       this.currentkeys = this.keys;
       this.data = this.registerdata;
+
+/*
+      let script = document.createElement('script');
+      script.setAttribute('src', this.script);
+      script.setAttribute('type', 'text/javascript');
+      document.body.appendChild(script);
+*/
+      this.webauthn = new WebAuthn(this.notify);
+
+    },
+
+    webAuthnSupport() {
+      return this.webauthn.webAuthnSupport();
+    },
+    notSupportedMessage() {
+      return this.$t('settings.'+this.webauthn.notSupportedMessage());
     },
 
     start() {
       var self = this;
       this.errorMessage = '';
+
+      if (!this.webAuthnSupport()) {
+        this.errorMessage = this.notSupportedMessage();
+      }
+
       switch(this.method) {
       case 'register':
         setTimeout(function () {
-          self.register(
+          self.webauthn.register(
             self.publicKey,
             function (datas) { self.webauthnRegisterCallback(datas, true); }
           );
         }, 10);
         break;
       case 'login':
-        this.sign(
+        this.webauthn.sign(
           this.publicKey,
           function (data) { self.webauthnLoginCallback(data); }
         );
@@ -297,7 +305,7 @@ export default {
           if (self.registerTab == '2') {
             var data = response.data.publicKey;
             setTimeout(function () {
-              self.register(
+              self.webauthn.register(
                 data,
                 function (datas) { self.webauthnRegisterCallback(datas, false); }
               );
@@ -305,72 +313,6 @@ export default {
           }
         }).catch(error => {
           self.notify(error.response.data.message, false);
-        });
-    },
-
-    bufferEncode(value) {
-      var array = new Uint8Array(value);
-      return window.btoa(String.fromCharCode.apply(null, array));
-    },
-
-    bufferDecode(value) {
-      return Uint8Array.from(window.atob(value), c => c.charCodeAt(0));
-    },
-
-    register(publicKey, callback) {
-      var self = this;
-
-      publicKey.challenge = this.bufferDecode(publicKey.challenge);
-      publicKey.user.id = this.bufferDecode(publicKey.user.id);
-      if (publicKey.excludeCredentials) {
-        publicKey.excludeCredentials = publicKey.excludeCredentials.map(function(data) {
-          data.id = self.bufferDecode(data.id);
-          return data;
-        });
-      }
-
-      navigator.credentials.create({publicKey})
-        .then(function (data) {
-          let publicKeyCredential = {
-            id: data.id,
-            type: data.type,
-            rawId: self.bufferEncode(data.rawId),
-            response: {
-              clientDataJSON: self.bufferEncode(data.response.clientDataJSON),
-              attestationObject: self.bufferEncode(data.response.attestationObject)
-            }
-          };
-          callback(publicKeyCredential);
-        }, function (error) {
-          self.notify(error.message, false);
-        });
-    },
-
-    sign(publicKey, callback) {
-      var self = this;
-
-      publicKey.challenge = this.bufferDecode(publicKey.challenge);
-      publicKey.allowCredentials = publicKey.allowCredentials.map(function(data) {
-        data.id = self.bufferDecode(data.id);
-        return data;
-      });
-
-      navigator.credentials.get({publicKey})
-        .then(function (data) {
-          let publicKeyCredential = {
-            id: data.id,
-            type: data.type,
-            rawId: self.bufferEncode(data.rawId),
-            response: {
-              authenticatorData: self.bufferEncode(data.response.authenticatorData),
-              clientDataJSON: self.bufferEncode(data.response.clientDataJSON),
-              signature: self.bufferEncode(data.response.signature),
-              userHandle: data.response.userHandle ? self.bufferEncode(data.response.userHandle) : null
-            }
-          };
-          callback(publicKeyCredential);
-        }, function (error) {
-          self.notify(error.message, false);
         });
     },
 
@@ -395,7 +337,7 @@ export default {
       }).then(response => {
         if (redirect) {
           setTimeout(function () {
-            window.location = self.callbackurl;
+            window.location = response.data.callback;
           }, 100);
         } else {
           self.closeRegisterModal();
@@ -412,8 +354,8 @@ export default {
       }).then(response => {
         self.success = true;
         self.notify(self.$t('settings.webauthn_success'), true);
-      }).then(response => {
-        window.location = self.callbackurl;
+
+        window.location = response.data.callback;
       }).catch(error => {
         self.errorMessage = error.response.data.message;
       });
