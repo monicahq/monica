@@ -19,5 +19,3 @@ mix.js('resources/assets/js/stripe.js', 'public/js')
 
 mix.scripts(['resources/assets/js/vendor/u2f/u2f-api.js'], 'public/js/u2f-api.js')
     .setResourceRoot('../');
-mix.scripts(['resources/assets/js/vendor/webauthn.js'], 'public/js/webauthn.js')
-    .setResourceRoot('../');

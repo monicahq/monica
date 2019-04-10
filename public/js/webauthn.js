@@ -1,1 +1,182 @@
-class WebAuthn{constructor(e=null){e&&this.setNotify(e)}register(e,t){var n=this;e.challenge=this._bufferDecode(e.challenge),e.user.id=this._bufferDecode(e.user.id),e.excludeCredentials&&(e.excludeCredentials=e.excludeCredentials.map(function(e){return e.id=n._bufferDecode(e.id),e})),navigator.credentials.create({publicKey:e}).then(e=>{n._registerCallback(e,t)},e=>{n._notify(e.message,!1)})}_registerCallback(e,t){t({id:e.id,type:e.type,rawId:this._bufferEncode(e.rawId),response:{clientDataJSON:this._bufferEncode(e.response.clientDataJSON),attestationObject:this._bufferEncode(e.response.attestationObject)}})}sign(e,t){var n=this;e.challenge=this._bufferDecode(e.challenge),e.allowCredentials=e.allowCredentials.map(function(e){return e.id=n._bufferDecode(e.id),e}),navigator.credentials.get({publicKey:e}).then(e=>{n._signCallback(e,t)},e=>{n._notify(e.message,!1)})}_signCallback(e,t){t({id:e.id,type:e.type,rawId:this._bufferEncode(e.rawId),response:{authenticatorData:this._bufferEncode(e.response.authenticatorData),clientDataJSON:this._bufferEncode(e.response.clientDataJSON),signature:this._bufferEncode(e.response.signature),userHandle:e.response.userHandle?this._bufferEncode(e.response.userHandle):null}})}_bufferEncode(e){return window.btoa(String.fromCharCode.apply(null,new Uint8Array(e)))}_bufferDecode(e){return Uint8Array.from(window.atob(e),e=>e.charCodeAt(0))}webAuthnSupport(){return!(void 0===window.PublicKeyCredential||"function"!=typeof window.PublicKeyCredential||"function"!=typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable)}notSupportedMessage(){return window.isSecureContext||"localhost"===window.location.hostname||"127.0.0.1"===window.location.hostname?"webauthn_not_supported":"webauthn_not_secured"}_notify(e,t){this._notifyCallback&&this._notifyCallback(e,t)}setNotify(e){this._notifyCallback=e}}
+/**
+ * WebAuthn client.
+ *
+ * @copyright Alexis SAETTLER (c) 2019
+ * @license MIT
+ */
+
+class WebAuthn {
+
+  /**
+   * Create a new instance of WebAuthn.
+   *
+   * @param {function(string, bool)} notifyCallback
+   * @constructor
+   */
+  constructor(notifyCallback = null) {
+    if (notifyCallback) {
+      this.setNotify(notifyCallback);
+    }
+  };
+
+  /**
+   * Register a new key.
+   *
+   * @param {PublicKeyCredentialCreationOptions} publicKey  - see https://www.w3.org/TR/webauthn/#dictdef-publickeycredentialcreationoptions
+   * @param {function(PublicKeyCredential)} callback  User callback
+   */
+  register(publicKey, callback) {
+    var self = this;
+
+    publicKey.challenge = this._bufferDecode(publicKey.challenge);
+    publicKey.user.id = this._bufferDecode(publicKey.user.id);
+    if (publicKey.excludeCredentials) {
+      publicKey.excludeCredentials = publicKey.excludeCredentials.map(function(data) {
+        data.id = self._bufferDecode(data.id);
+        return data;
+      });
+    }
+
+    navigator.credentials.create({
+        publicKey: publicKey
+      }).then((data) => {
+        self._registerCallback(data, callback);
+      }, (error) => {
+        self._notify(error.message, false);
+      }
+    );
+  }
+
+  /**
+   * Register callback on register key.
+   *
+   * @param {PublicKeyCredential} publicKey @see https://www.w3.org/TR/webauthn/#publickeycredential
+   * @param {function(PublicKeyCredential)} callback  User callback
+   */
+  _registerCallback(publicKey, callback) {
+    let publicKeyCredential = {
+      id: publicKey.id,
+      type: publicKey.type,
+      rawId: this._bufferEncode(publicKey.rawId),
+      response: {
+        /** @see https://www.w3.org/TR/webauthn/#authenticatorattestationresponse */
+        clientDataJSON: this._bufferEncode(publicKey.response.clientDataJSON),
+        attestationObject: this._bufferEncode(publicKey.response.attestationObject)
+      }
+    };
+
+    callback(publicKeyCredential);
+  }
+
+  /**
+   * Authenticate a user.
+   *
+   * @param {PublicKeyCredentialRequestOptions} publicKey  - see https://www.w3.org/TR/webauthn/#dictdef-publickeycredentialrequestoptions
+   * @param {function(PublicKeyCredential)} callback  User callback
+   */
+  sign(publicKey, callback) {
+    var self = this;
+
+    publicKey.challenge = this._bufferDecode(publicKey.challenge);
+    publicKey.allowCredentials = publicKey.allowCredentials.map(function(data) {
+      data.id = self._bufferDecode(data.id);
+      return data;
+    });
+
+    navigator.credentials.get({
+        publicKey: publicKey
+      }).then((data) => {
+        self._signCallback(data, callback);
+      }, (error) => {
+        self._notify(error.message, false);
+      }
+    );
+  }
+
+  /**
+   * Signa callback on authenticate.
+   *
+   * @param {PublicKeyCredential} publicKey @see https://www.w3.org/TR/webauthn/#publickeycredential
+   * @param {function(PublicKeyCredential)} callback  User callback
+   */
+  _signCallback(publicKey, callback) {
+    let publicKeyCredential = {
+      id: publicKey.id,
+      type: publicKey.type,
+      rawId: this._bufferEncode(publicKey.rawId),
+      response: {
+        /** @see https://www.w3.org/TR/webauthn/#iface-authenticatorassertionresponse */
+        authenticatorData: this._bufferEncode(publicKey.response.authenticatorData),
+        clientDataJSON: this._bufferEncode(publicKey.response.clientDataJSON),
+        signature: this._bufferEncode(publicKey.response.signature),
+        userHandle: (publicKey.response.userHandle ? this._bufferEncode(publicKey.response.userHandle) : null),
+      }
+    };
+
+    callback(publicKeyCredential);
+  }
+
+  /**
+   * Buffer encode.
+   *
+   * @param {ArrayBuffer} value
+   * @return {string}
+   */
+  _bufferEncode(value) {
+    return window.btoa(String.fromCharCode.apply(null, new Uint8Array(value)));
+  }
+
+  /**
+   * Buffer decode.
+   *
+   * @param {ArrayBuffer} value
+   * @return {string}
+   */
+  _bufferDecode(value) {
+    return Uint8Array.from(window.atob(value), c => c.charCodeAt(0));
+  }
+
+  /**
+   * Test is WebAuthn is supported by this navigator.
+   *
+   * @return {bool}
+   */
+  webAuthnSupport() {
+    return ! (window.PublicKeyCredential === undefined ||
+      typeof window.PublicKeyCredential !== 'function' ||
+      typeof window.PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable !== 'function');
+  }
+
+  /**
+   * Get the message in case WebAuthn is not supported.
+   *
+   * @return {string}
+   */
+  notSupportedMessage() {
+    if (! window.isSecureContext && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+      return 'webauthn_not_secured';
+    }
+    return 'webauthn_not_supported';
+  }
+
+  /**
+   * Call the notify callback.
+   *
+   * @param {string} message
+   * @param {bool} isError
+   */
+  _notify(message, isError) {
+    if (this._notifyCallback) {
+      this._notifyCallback(message, isError);
+    }
+  }
+
+  /**
+   * Set the notify callback.
+   *
+   * @param {function(string, bool)} callback
+   */
+  setNotify(callback) {
+    this._notifyCallback = callback;
+  }
+};

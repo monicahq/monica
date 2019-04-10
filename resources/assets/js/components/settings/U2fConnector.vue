@@ -195,6 +195,7 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
+import * as U2f from '../../vendor/u2f/u2f-api.js';
 
 export default {
 

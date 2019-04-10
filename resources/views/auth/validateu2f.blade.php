@@ -1,7 +1,6 @@
 @extends('marketing.auth')
 
 @section('content')
-  <body class="marketing register">
     <div class="container">
       <form action="validate2fa" method="post">
         <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
@@ -47,6 +46,5 @@
       </form>
     </div>
 
-  </body>
   <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
 @endsection

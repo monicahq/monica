@@ -185,6 +185,7 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
+import * as WebAuthn from '../../vendor/webauthn.js';
 
 export default {
 
@@ -225,7 +226,7 @@ export default {
       currentkeys: [],
       keyToTrash: '',
       keyName: '',
-      tregisterTab: '',
+      registerTab: '',
       data: null,
       webauthn: null,
     };
@@ -241,14 +242,7 @@ export default {
       this.currentkeys = this.keys;
       this.data = this.registerdata;
 
-/*
-      let script = document.createElement('script');
-      script.setAttribute('src', this.script);
-      script.setAttribute('type', 'text/javascript');
-      document.body.appendChild(script);
-*/
       this.webauthn = new WebAuthn(this.notify);
-
     },
 
     webAuthnSupport() {

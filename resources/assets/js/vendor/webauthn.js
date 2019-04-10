@@ -5,6 +5,8 @@
  * @license MIT
  */
 
+'use strict';
+
 class WebAuthn {
 
   /**
@@ -179,4 +181,6 @@ class WebAuthn {
   setNotify(callback) {
     this._notifyCallback = callback;
   }
-};
+}
+
+module.exports = WebAuthn;

@@ -45,5 +45,4 @@
       </form>
     </div>
 
-  <script src="{{ asset(mix('js/webauthn.js')) }}" type="text/javascript"></script>
 @endsection
