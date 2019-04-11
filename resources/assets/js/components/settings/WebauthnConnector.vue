@@ -242,12 +242,26 @@ export default {
       this.currentkeys = this.keys;
       this.data = this.registerdata;
 
-      this.webauthn = new WebAuthn(this.notify);
+      this.webauthn = new WebAuthn((name, message) => {
+        this.errorMessage = this._errorMessage(name, message);
+      });
+    },
+
+    _errorMessage(name, message) {
+      switch (name) {
+        case 'InvalidStateError':
+          return this.$t('settings.webauthn_error_already_used');
+        case 'NotAllowedError':
+          return this.$t('settings.webauthn_error_not_allowed');
+        default:
+          return message;
+      }
     },
 
     webAuthnSupport() {
       return this.webauthn.webAuthnSupport();
     },
+
     notSupportedMessage() {
       return this.$t('settings.'+this.webauthn.notSupportedMessage());
     },

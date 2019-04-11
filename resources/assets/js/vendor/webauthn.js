@@ -44,7 +44,7 @@ class WebAuthn {
       }).then((data) => {
         self._registerCallback(data, callback);
       }, (error) => {
-        self._notify(error.message, false);
+        self._notify(error.name, error.message, false);
       }
     );
   }
@@ -90,7 +90,7 @@ class WebAuthn {
       }).then((data) => {
         self._signCallback(data, callback);
       }, (error) => {
-        self._notify(error.message, false);
+        self._notify(error.name, error.message, false);
       }
     );
   }
@@ -176,7 +176,7 @@ class WebAuthn {
   /**
    * Set the notify callback.
    *
-   * @param {function(string, bool)} callback
+   * @param {function(name: string, message: string, isError: bool)} callback
    */
   setNotify(callback) {
     this._notifyCallback = callback;

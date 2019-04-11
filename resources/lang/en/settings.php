@@ -124,6 +124,8 @@ return [
     'webauthn_noButtonAdvise' => 'If it does not, remove it and insert it again.',
     'webauthn_not_supported' => 'Your browser doesn’t currently support WebAuthn.',
     'webauthn_not_secured' => 'WebAuthn only supports secure connections. For testing over HTTP, you can use the origin "localhost".',
+    'webauthn_error_already_used' => 'This key is already registered.',
+    'webauthn_error_not_allowed' => 'The operation either timed out or was not allowed.',
 
     'recovery_title' => 'Recovery codes',
     'recovery_show' => 'Get recovery codes',
