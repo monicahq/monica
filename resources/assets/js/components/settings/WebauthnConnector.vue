@@ -249,12 +249,12 @@ export default {
 
     _errorMessage(name, message) {
       switch (name) {
-        case 'InvalidStateError':
-          return this.$t('settings.webauthn_error_already_used');
-        case 'NotAllowedError':
-          return this.$t('settings.webauthn_error_not_allowed');
-        default:
-          return message;
+      case 'InvalidStateError':
+        return this.$t('settings.webauthn_error_already_used');
+      case 'NotAllowedError':
+        return this.$t('settings.webauthn_error_not_allowed');
+      default:
+        return message;
       }
     },
 

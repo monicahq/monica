@@ -40,12 +40,12 @@ class WebAuthn {
     }
 
     navigator.credentials.create({
-        publicKey: publicKey
-      }).then((data) => {
-        self._registerCallback(data, callback);
-      }, (error) => {
-        self._notify(error.name, error.message, false);
-      }
+      publicKey: publicKey
+    }).then((data) => {
+      self._registerCallback(data, callback);
+    }, (error) => {
+      self._notify(error.name, error.message, false);
+    }
     );
   }
 
@@ -86,12 +86,12 @@ class WebAuthn {
     });
 
     navigator.credentials.get({
-        publicKey: publicKey
-      }).then((data) => {
-        self._signCallback(data, callback);
-      }, (error) => {
-        self._notify(error.name, error.message, false);
-      }
+      publicKey: publicKey
+    }).then((data) => {
+      self._signCallback(data, callback);
+    }, (error) => {
+      self._notify(error.name, error.message, false);
+    }
     );
   }
 
