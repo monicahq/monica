@@ -43,7 +43,7 @@ class OAuthController extends Controller
      * Log in a user and returns an accessToken.
      *
      * @param Request $request
-     * @return Illuminate\Http\RedirectResponse|Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function login(Request $request)
     {
