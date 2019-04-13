@@ -2,7 +2,7 @@ UNRELEASED CHANGES:
 
 New features:
 
-*
+* Add multi factor auth on oauth
 
 Enhancements:
 

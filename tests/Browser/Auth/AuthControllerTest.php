@@ -55,7 +55,7 @@ class AuthControllerTest extends ApiTestCase
             'password' => bcrypt($userPassword),
         ]);
 
-        $response = $this->json('POST', '/oauth/login', [
+        $response = $this->post('/oauth/login', [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
@@ -63,5 +63,30 @@ class AuthControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure($this->jsonStructureOAuthLogin);
+    }
+
+    public function test_oauth_login_2fa()
+    {
+        $client = (new ClientRepository())->createPasswordGrantClient(
+            null, config('app.name'), config('app.url')
+        );
+
+        config([
+            'monica.mobile_client_id' => $client->id,
+            'monica.mobile_client_secret' => $client->secret,
+        ]);
+
+        $userPassword = 'password';
+        $user = factory(User::class)->create([
+            'password' => bcrypt($userPassword),
+            'google2fa_secret' => 'x',
+        ]);
+
+        $response = $this->post('/oauth/login', [
+            'email' => $user->email,
+            'password' => $userPassword,
+        ]);
+
+        $response->assertStatus(200);
     }
 }

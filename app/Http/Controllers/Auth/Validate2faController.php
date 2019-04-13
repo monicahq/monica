@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 
 class Validate2faController extends Controller
@@ -17,8 +18,11 @@ class Validate2faController extends Controller
      */
     public function index(Request $request)
     {
+        if ($request->session()->get('oauth')) {
+            return Route::respondWithRoute('oauth.verify');
+        }
         if ($request->has('url')) {
-            return redirect(urldecode($request->get('url')));
+            return redirect(urldecode($request->input('url')));
         }
 
         return redirect()->route('login');
