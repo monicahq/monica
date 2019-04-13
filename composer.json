@@ -60,7 +60,7 @@
         "nunomaduro/larastan": "^0.3.15",
         "phpunit/phpcov": "^6.0",
         "phpunit/phpunit": "^8.0",
-        "psalm/plugin-laravel": "^0.3",
+        "psalm/plugin-laravel": "^0.4",
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~4.0",
