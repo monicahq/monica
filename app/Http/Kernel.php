@@ -48,7 +48,7 @@ class Kernel extends HttpKernel
         'oauth' => [
             'throttle:5,1',
             \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,    
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             'sentry.context',
             'locale',
         ],
@@ -58,7 +58,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             'u2f',
             '2fa',
-        ]
+        ],
     ];
 
     /**
