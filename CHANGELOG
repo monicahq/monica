@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix register request validate
 * Fix relationship create
 
 RELEASED VERSIONS:
