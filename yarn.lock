@@ -8036,10 +8036,10 @@ vue-resource@^1.3.6:
   dependencies:
     got "^8.0.3"
 
-vue-select@^2.4.0:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-2.5.1.tgz#9886e7123150a52dc8dbfe3202d0387268835aaa"
-  integrity sha512-Hs+arh7+0gLJoYiM3r9V/5CRn5XsAT8tVkouTkpDAWb923KFgraWrKDLSqz3ROedZUkuVIwkFuYq8+baHUf+bg==
+vue-select@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/vue-select/-/vue-select-3.0.0.tgz#05ffc8825dea96c64f539c502df502a31a82ddf9"
+  integrity sha512-obvi/sRAF4oiXqF+faGdTyftFJUKnO5KeJQ3e4KzQ/8Uw/AOGdNO9WmivD6jD2MN7AhLFtH87bMzn8koOdzLWg==
 
 vue-style-loader@^4.1.0:
   version "4.1.2"
