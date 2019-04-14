@@ -56,7 +56,7 @@ class AuthControllerTest extends ApiTestCase
         ]);
         $user->save();
 
-        $response = $this->post('/oauth/login', [
+        $response = $this->json('POST', '/oauth/login', [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
