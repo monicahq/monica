@@ -121,7 +121,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         // Relationships
         Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only([
-            'create', 'store', 'edit', 'update', 'destroy'
+            'create', 'store', 'edit', 'update', 'destroy',
         ]);
 
         // Pets
