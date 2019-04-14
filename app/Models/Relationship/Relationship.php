@@ -4,7 +4,7 @@ namespace App\Models\Relationship;
 
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
