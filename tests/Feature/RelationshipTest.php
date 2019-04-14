@@ -190,7 +190,7 @@ class RelationshipTest extends FeatureTestCase
             'relationship_type_id' => $relationshipType->id,
         ];
 
-        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$partner->hashID(), $params);
+        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$relationship->id, $params);
 
         $this->assertDatabaseHas('relationships', [
             'id' => $relationship->id,
@@ -230,7 +230,7 @@ class RelationshipTest extends FeatureTestCase
             'birthdayDate' => '1947-07-30',
         ];
 
-        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$partner->hashID(), $params);
+        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$relationship->id, $params);
 
         $this->assertDatabaseHas('contacts', [
             'account_id' => $user->account_id,
