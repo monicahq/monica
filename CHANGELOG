@@ -10,9 +10,9 @@ Enhancements:
 
 Fixes:
 
+* Fix display relationship without a ofContact property
 * Fix register request validate
 * Fix relationship create
-* Fix display relationship without a ofContact property
 
 RELEASED VERSIONS:
 
