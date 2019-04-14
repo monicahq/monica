@@ -351,7 +351,7 @@ export default {
           self.closeRegisterModal();
         }
       }).catch(error => {
-        self.errorMessage = error.response.data.error.message;
+        self.errorMessage = error.message ? error.message : error.response.data.message;
       });
     },
 
@@ -365,7 +365,7 @@ export default {
 
         window.location = response.data.callback;
       }).catch(error => {
-        self.errorMessage = error.response.data.message;
+        self.errorMessage = error.message ? error.message : error.response.data.message;
       });
     },
 
