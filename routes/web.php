@@ -31,7 +31,7 @@ Route::middleware(['auth', '2fa'])->group(function () {
     Route::post('/validate2fa', 'Auth\Validate2faController@index');
 });
 
-Route::middleware(['auth', 'verified', 'u2f', '2fa', 'webauthn'])->group(function () {
+Route::middleware(['auth', 'verified', 'webauthn', 'u2f', '2fa'])->group(function () {
     Route::name('dashboard.')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
