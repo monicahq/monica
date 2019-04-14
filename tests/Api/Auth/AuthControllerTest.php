@@ -9,7 +9,6 @@ use Laravel\Passport\ClientRepository;
 use Illuminate\Foundation\Testing\TestResponse;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
-
 class AuthControllerTest extends ApiTestCase
 {
     public function setUp(): void
@@ -105,8 +104,8 @@ class AuthControllerTest extends ApiTestCase
     protected function postClient($path, $param)
     {
         $http = new Client();
-        $response = $http->post($path,[
-            'form_params' => $param
+        $response = $http->post($path, [
+            'form_params' => $param,
         ]);
 
         $factory = new HttpFoundationFactory();
