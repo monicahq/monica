@@ -6,7 +6,6 @@ use Tests\ApiTestCase;
 use App\Models\User\User;
 use Laravel\Passport\ClientRepository;
 
-
 class AuthControllerTest extends ApiTestCase
 {
     public function setUp(): void
