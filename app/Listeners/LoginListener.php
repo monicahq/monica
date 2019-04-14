@@ -86,7 +86,6 @@ class LoginListener
      * Handle the Webauthn login event.
      *
      * @param WebauthnLogin $event
-     * @param User $user
      */
     public function onWebauthnLogin(WebauthnLogin $event)
     {
