@@ -2,12 +2,10 @@
 
 namespace Tests\Api\Auth;
 
-use GuzzleHttp\Client;
 use Tests\ApiTestCase;
 use App\Models\User\User;
 use Laravel\Passport\ClientRepository;
-use Illuminate\Foundation\Testing\TestResponse;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
+
 
 class AuthControllerTest extends ApiTestCase
 {
@@ -59,14 +57,12 @@ class AuthControllerTest extends ApiTestCase
         ]);
         $user->save();
 
-        $response = $this->postClient(route('oauth.login'), [
+        $response = $this->post('/oauth/login', [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
 
-        $response->dump();
         $response->assertStatus(200);
-
         $response->assertJsonStructure($this->jsonStructureOAuthLogin);
     }
 
@@ -87,30 +83,12 @@ class AuthControllerTest extends ApiTestCase
             'google2fa_secret' => 'x',
         ]);
 
-        $response = $this->postClient(route('oauth.login'), [
+        $response = $this->post('/oauth/login', [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
 
         $response->assertStatus(200);
         $response->assertSee('Two Factor Authentication');
-    }
-
-    /**
-     * @param string $path
-     * @param array $param
-     * @return TestResponse
-     */
-    protected function postClient($path, $param)
-    {
-        $http = new Client();
-        $response = $http->post($path, [
-            'form_params' => $param,
-        ]);
-
-        $factory = new HttpFoundationFactory();
-        $factory->createResponse($response);
-
-        return TestResponse::fromBaseResponse($factory->createResponse($response));
     }
 }
