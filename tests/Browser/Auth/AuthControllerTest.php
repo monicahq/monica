@@ -7,10 +7,13 @@ use Tests\ApiTestCase;
 use App\Models\User\User;
 use Laravel\Passport\ClientRepository;
 use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 class AuthControllerTest extends ApiTestCase
 {
+    use DatabaseTransactions;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -40,7 +43,6 @@ class AuthControllerTest extends ApiTestCase
         $user = factory(User::class)->create([
             'password' => bcrypt($userPassword),
         ]);
-        $user->save();
 
         $response = $this->postClient(route('oauth.login'), [
             'email' => $user->email,
