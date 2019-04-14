@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "20f4fed2cb483ec95f5aec89f6a5d7f34fe543f5"
+                "reference": "170c6cd630adde8ce33e738a5fd633044305b20c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/20f4fed2cb483ec95f5aec89f6a5d7f34fe543f5",
-                "reference": "20f4fed2cb483ec95f5aec89f6a5d7f34fe543f5",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/170c6cd630adde8ce33e738a5fd633044305b20c",
+                "reference": "170c6cd630adde8ce33e738a5fd633044305b20c",
                 "shasum": ""
             },
             "require": {
@@ -69,7 +69,7 @@
                 "security",
                 "webauthn"
             ],
-            "time": "2019-04-11T18:35:53+00:00"
+            "time": "2019-04-14T10:52:19+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
