@@ -120,12 +120,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         // Relationships
-        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only(['create', 'store']);
-        Route::name('relationships.')->group(function () {
-            Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('edit');
-            Route::put('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
-            Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('destroy');
-        });
+        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only([
+            'create', 'store', 'edit', 'update', 'destroy',
+        ]);
 
         // Pets
         Route::resource('people/{contact}/pets', 'Contacts\\PetsController')->only([

@@ -6,7 +6,7 @@
 
   {{-- Breadcrumb --}}
   <div class="mt4 mw7 center mb3">
-    <p><a href="{{ route('people.show', $contact) }}">< {{ $contact->name }}</a></p>
+    <p><a href="{{ route('people.show', $contact) }}">&lt; {{ $contact->name }}</a></p>
     <div class="mt4 mw7 center mb3">
       <h3 class="f3 fw5">{{ trans('people.relationship_form_edit') }}</h3>
     </div>
@@ -22,10 +22,9 @@
 
     @include('partials.errors')
 
-    <form action="{{ route('people.relationships.update', [$contact, $partner]) }}" method="POST">
-      {{ method_field('PUT') }}
-      {{ csrf_field() }}
-      <input type="hidden" name="relationship_id" value="{{ $relationshipId }}">
+    <form action="{{ route('people.relationships.update', [$contact, $relationshipId]) }}" method="POST">
+      @method('PUT') }}
+      @csrf
       <input type="hidden" name="type" value="{{ $type }}">
 
       @if ($partner->is_partial)

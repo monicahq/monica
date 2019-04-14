@@ -1,4 +1,7 @@
 @foreach ($relationships as $relationship)
+  @if (! $relationship->ofContact)
+    @continue
+  @endif
   <div class="sidebar-box-paragraph">
     <span class="silver fw3 ba br2 ph1 {{ htmldir() == 'ltr' ? '' : 'fr' }}">{{ $relationship->relationshipType->getLocalizedName(null, false, $relationship->ofContact->gender ? $relationship->ofContact->gender->type : null) }}</span>
 
@@ -17,14 +20,14 @@
     @endif
 
     {{-- ACTIONS: EDIT/DELETE --}}
-    <a href="{{ route('people.relationships.edit', [$contact, $relationship->ofContact]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">
+    <a href="{{ route('people.relationships.edit', [$contact, $relationship]) }}" class="action-link {{ $contact->hashID() }}-edit-relationship">
         {{ trans('app.edit') }}
       </a>
       <a href="#" onclick="if (confirm('{{ trans('people.relationship_unlink_confirmation') }}')) { $(this).closest('.sidebar-box-paragraph').find('.entry-delete-form').submit(); } return false;" class="action-link">
       {{ trans('app.delete') }}
     </a>
 
-    <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship->ofContact]) }}" class="entry-delete-form hidden">
+    <form method="POST" action="{{ route('people.relationships.destroy', [$contact, $relationship]) }}" class="entry-delete-form hidden">
       {{ method_field('DELETE') }}
       {{ csrf_field() }}
     </form>
