@@ -76,7 +76,7 @@ return [
     'breadcrumb_settings_export' => 'Export',
     'breadcrumb_settings_users' => 'Users',
     'breadcrumb_settings_users_add' => 'Add a user',
-    'breadcrumb_settings_subscriptions' => 'Subscription',
+    'breadcrumb_settings_subscriptions' => 'Premium account',
     'breadcrumb_settings_import' => 'Import',
     'breadcrumb_settings_import_report' => 'Import report',
     'breadcrumb_settings_import_upload' => 'Upload',

@@ -160,6 +160,8 @@ return [
     'paid_plan_annual_friendly_name' => env('PAID_PLAN_ANNUAL_FRIENDLY_NAME', null),
     'paid_plan_annual_id' => env('PAID_PLAN_ANNUAL_ID', null),
     'paid_plan_annual_price' => env('PAID_PLAN_ANNUAL_PRICE', null),
+    'paid_plan_fixed_id' => env('PAID_PLAN_FIXED_ID', null),
+    'paid_plan_fixed_price' => env('PAID_PLAN_FIXED_PRICE', null),
 
     /*
     |--------------------------------------------------------------------------

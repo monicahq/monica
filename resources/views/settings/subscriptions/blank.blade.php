@@ -37,80 +37,72 @@
             <div class="pa4 bb b--gray-monica">
 
               <h3 class="tc">{{ trans('settings.subscriptions_account_payment') }}</h3>
-              <div class="cf mb4">
-                <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3 mt0-ns mt4">
-                  <div class="b--purple ba pt3 br3 bw1 relative">
-                    <img src="img/settings/subscription/best_value.png" class="absolute" style="top: -30px; left: -20px;">
-                    <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_year_title') }}</h3>
-                    <p class="tc mb4">
-                      <a href="settings/subscriptions/upgrade?plan=annual" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
-                    </p>
-                    <ul class="mb4 center ph4">
-                      <li class="mb3 relative ml4">
-                        <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <defs></defs>
-                          <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Group-7">
-                              <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
-                              <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
-                            </g>
-                          </g>
-                        </svg>
-                        <strong>{{ trans('settings.subscriptions_plan_year_cost') }}</strong>&nbsp;&ndash;&nbsp;{{ trans('settings.subscriptions_plan_year_cost_save') }}
-                      </li>
-                      <li class="mb3 relative ml4">
-                        <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <defs></defs>
-                          <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Group-7">
-                              <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
-                              <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
-                            </g>
-                          </g>
-                        </svg>
-                        {{ trans('settings.subscriptions_plan_year_bonus') }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3">
-                  <div class="b--gray-monica ba pt3 br3 bw1">
-                    <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_month_title') }}</h3>
-                    <p class="tc mb4">
-                      <a href="settings/subscriptions/upgrade?plan=monthly" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
-                    </p>
-                    <ul class="mb4 center ph4">
-                      <li class="mb3 relative ml4">
-                        <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <defs></defs>
-                          <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Group-7">
-                              <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
-                              <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
-                            </g>
-                          </g>
-                        </svg>
-                        <strong>{{ trans('settings.subscriptions_plan_month_cost') }}</strong>
-                      </li>
-                      <li class="mb3 relative ml4">
-                        <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                          <defs></defs>
-                          <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Group-7">
-                              <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
-                              <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
-                            </g>
-                          </g>
-                        </svg>
-                        {{ trans('settings.subscriptions_plan_month_bonus') }}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <p class="mb1 tc">{{ trans('settings.subscriptions_plan_include1') }}</p>
-              <p class="mb1 tc">{{ trans('settings.subscriptions_plan_include2') }}</p>
-              <p class="mb1 tc">{{ trans('settings.subscriptions_plan_include3') }}</p>
+              <p>We believe you don't need yet another subscription in your life. Subscriptions suck. Most of the $5/month services out there look cheap, but at after a few years, you end up paying a lot of money.</p>
+              <p>We value your time and money. Monica is now offered as a <strong>one-time payment</strong>. Pay once, and enjoy the pro version of Monica forever. No complex cancellation process, no limitations.</p>
+              <p>For a one time payment of $80, you will have an instant access to the premium version of Monica to enjoy:</p>
+
+              <ul class="mb4">
+                <li class="relative mb3 ml5">
+                  <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs></defs>
+                    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g id="Group-7">
+                        <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
+                        <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
+                      </g>
+                    </g>
+                  </svg>
+                  Unlimited number of contacts</li>
+                <li class="relative mb3 ml5">
+                  <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs></defs>
+                    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g id="Group-7">
+                        <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
+                        <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
+                      </g>
+                    </g>
+                  </svg>
+                  Unlimited number of users</li>
+                <li class="relative mb3 ml5">
+                  <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs></defs>
+                    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g id="Group-7">
+                        <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
+                        <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
+                      </g>
+                    </g>
+                  </svg>
+                  Reminders by email</li>
+                <li class="relative mb3 ml5">
+                  <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs></defs>
+                    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g id="Group-7">
+                        <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
+                        <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
+                      </g>
+                    </g>
+                  </svg>
+                  Contact importing with vCard</li>
+                <li class="relative mb3 ml5">
+                  <svg class="absolute" style="left: -30px; top: -3px;" width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs></defs>
+                    <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                      <g id="Group-7">
+                        <circle id="Oval-14" fill="#836BC8" cx="13" cy="13" r="13"></circle>
+                        <polyline id="Path-16" stroke="#FFFFFF" stroke-width="2" points="6.95703125 13.2783203 11.5048828 17.7226562 21.0205078 7.75"></polyline>
+                      </g>
+                    </g>
+                  </svg>
+                  Personalization of the contact sheet</li>
+              </ul>
+
+              <p class="tc mb1">
+                <a href="settings/subscriptions/upgrade?plan=monthly" class="btn btn-primary pv3">Upgrade your account</a>
+              </p>
+              <p class="tc f6 mb0">For a one-time fee of $80.</p>
             </div>
           </div>
 

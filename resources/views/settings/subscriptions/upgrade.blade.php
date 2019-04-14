@@ -27,7 +27,7 @@
 
   <div class="mt4 mw6 center mb4 pa2 pa0-ns">
     <div class="br3 ba b--gray-monica bg-white pa4">
-      <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_choose', ['plan' => $planInformation['type']]) }}</h2>
+      <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_choose') }}</h2>
       <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_infos') }}</p>
       <form action="{{ route('settings.subscriptions.payment') }}" method="post" id="payment-form" class="mb4">
         {{ csrf_field() }}
@@ -62,7 +62,8 @@
         <button class="btn btn-primary w-100">{{ trans('settings.subscriptions_upgrade_submit') }}</button>
       </form>
 
-      <p>{{ trans('settings.subscriptions_upgrade_charge', ['price' => $planInformation['friendlyPrice'], 'date' => $nextTheoriticalBillingDate]) }}</p>
+      <p>{{ trans('settings.subscriptions_upgrade_charge', ['price' => config('monica.paid_plan_fixed_price')/100, 'date' => $nextTheoriticalBillingDate]) }}</p>
+      <p>{{ trans('settings.subscriptions_upgrade_charge_cancellation') }}</p>
       <p>{!! trans('settings.subscriptions_upgrade_charge_handled', ['url' => 'https://stripe.com']) !!}</p>
     </div>
   </div>
