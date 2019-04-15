@@ -25,6 +25,8 @@ class AuthControllerTest extends ApiTestCase
         'expires_in',
     ];
 
+    private const OAUTH_LOGIN_URL = 'http://localhost:8001/oauth/login';
+
     public function test_oauth_login()
     {
         $client = (new ClientRepository())->createPasswordGrantClient(
@@ -41,7 +43,7 @@ class AuthControllerTest extends ApiTestCase
             'password' => bcrypt($userPassword),
         ]);
 
-        $response = $this->postClient('http://localhost:8001/oauth/login', [
+        $response = $this->postClient(self::OAUTH_LOGIN_URL, [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
@@ -49,6 +51,27 @@ class AuthControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonStructure($this->jsonStructureOAuthLogin);
+    }
+
+    public function test_oauth_login_wrong_mail()
+    {
+        $response = $this->postClient(self::OAUTH_LOGIN_URL, [
+            'email' => 'badmail',
+            'password' => 'xx',
+        ]);
+
+        $response->assertStatus(422);
+        $this->expectDataError($response, ['The email must be a valid email address.']);
+    }
+
+    public function test_oauth_login_wrong_password()
+    {
+        $response = $this->postClient(self::OAUTH_LOGIN_URL, [
+            'email' => 'mail@mail.com',
+            'password' => 'xx'
+        ]);
+
+        $this->expectNotAuthorized($response);
     }
 
     public function test_oauth_login_2fa()
@@ -68,7 +91,7 @@ class AuthControllerTest extends ApiTestCase
             'google2fa_secret' => 'x',
         ]);
 
-        $response = $this->postClient('http://localhost:8001/oauth/login', [
+        $response = $this->postClient(self::OAUTH_LOGIN_URL, [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
@@ -131,12 +154,16 @@ class AuthControllerTest extends ApiTestCase
      */
     protected function postClient($path, $param)
     {
-        $http = new Client([
-            'timeout' => 30,
-        ]);
-        $response = $http->post($path, [
-            'form_params' => $param,
-        ]);
+        try {
+            $http = new Client([
+                'timeout' => 30,
+            ]);
+            $response = $http->post($path, [
+                'form_params' => $param,
+            ]);
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            $response = $e->getResponse();
+        }
 
         $factory = new HttpFoundationFactory();
         $response = $factory->createResponse($response);
