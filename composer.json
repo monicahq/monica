@@ -21,7 +21,6 @@
         "lahaxearnaud/laravel-u2f": "^1.5",
         "laravel/cashier": "~8.0",
         "laravel/framework": "5.8.*",
-        "laravel/helpers": "^1.0",
         "laravel/passport": "^7.0",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^1.0",

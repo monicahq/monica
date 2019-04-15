@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DBHelper;
 use App\Models\User\User;
+use Illuminate\Support\Str;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use Illuminate\Http\Request;
@@ -369,7 +370,7 @@ class SettingsController
             + [
                 'invited_by_user_id' => auth()->user()->id,
                 'account_id' => auth()->user()->account_id,
-                'invitation_key' => str_random(100),
+                'invitation_key' => Str::random(100),
             ]
         );
 

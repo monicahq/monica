@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 use App\Models\User\User;
+use Illuminate\Support\Str;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
@@ -864,7 +865,7 @@ class Account extends Model
     {
         // create new account
         $account = new self;
-        $account->api_key = str_random(30);
+        $account->api_key = Str::random(30);
         $account->created_at = now();
         $account->save();
 

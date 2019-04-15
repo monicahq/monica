@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Tag;
 
+use Illuminate\Support\Str;
 use App\Models\Contact\Tag;
 use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
@@ -75,7 +76,7 @@ class AssociateTag extends BaseService
         $array = [
             'account_id' => $data['account_id'],
             'name' => $data['name'],
-            'name_slug' => str_slug($data['name'], '-', LocaleHelper::getLang()),
+            'name_slug' => Str::slug($data['name'], '-', LocaleHelper::getLang()),
         ];
 
         if (empty($array['name_slug'])) {
