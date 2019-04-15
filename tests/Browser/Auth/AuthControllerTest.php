@@ -7,13 +7,10 @@ use Tests\ApiTestCase;
 use App\Models\User\User;
 use Laravel\Passport\ClientRepository;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 class AuthControllerTest extends ApiTestCase
 {
-    use DatabaseTransactions;
-
     public function setUp(): void
     {
         parent::setUp();
@@ -30,7 +27,6 @@ class AuthControllerTest extends ApiTestCase
 
     public function test_oauth_login()
     {
-        /*
         $client = (new ClientRepository())->createPasswordGrantClient(
             null, config('app.name'), config('app.url')
         );
@@ -39,7 +35,6 @@ class AuthControllerTest extends ApiTestCase
             'MOBILE_CLIENT_ID' => $client->id,
             'MOBILE_CLIENT_SECRET' => $client->secret,
         ]);
-        */
 
         $userPassword = 'password';
         $user = factory(User::class)->create([
@@ -58,7 +53,6 @@ class AuthControllerTest extends ApiTestCase
 
     public function test_oauth_login_2fa()
     {
-        /*
         $client = (new ClientRepository())->createPasswordGrantClient(
             null, config('app.name'), config('app.url')
         );
@@ -67,7 +61,6 @@ class AuthControllerTest extends ApiTestCase
             'MOBILE_CLIENT_ID' => $client->id,
             'MOBILE_CLIENT_SECRET' => $client->secret,
         ]);
-        */
 
         $userPassword = 'password';
         $user = factory(User::class)->create([
@@ -144,8 +137,8 @@ class AuthControllerTest extends ApiTestCase
         ]);
 
         $factory = new HttpFoundationFactory();
-        $factory->createResponse($response);
+        $response = $factory->createResponse($response);
 
-        return TestResponse::fromBaseResponse($factory->createResponse($response));
+        return TestResponse::fromBaseResponse($response);
     }
 }
