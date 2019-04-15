@@ -30,6 +30,7 @@ class AuthControllerTest extends ApiTestCase
 
     public function test_oauth_login()
     {
+        /*
         $client = (new ClientRepository())->createPasswordGrantClient(
             null, config('app.name'), config('app.url')
         );
@@ -38,6 +39,7 @@ class AuthControllerTest extends ApiTestCase
             'MOBILE_CLIENT_ID' => $client->id,
             'MOBILE_CLIENT_SECRET' => $client->secret,
         ]);
+        */
 
         $userPassword = 'password';
         $user = factory(User::class)->create([
@@ -56,6 +58,7 @@ class AuthControllerTest extends ApiTestCase
 
     public function test_oauth_login_2fa()
     {
+        /*
         $client = (new ClientRepository())->createPasswordGrantClient(
             null, config('app.name'), config('app.url')
         );
@@ -64,6 +67,7 @@ class AuthControllerTest extends ApiTestCase
             'MOBILE_CLIENT_ID' => $client->id,
             'MOBILE_CLIENT_SECRET' => $client->secret,
         ]);
+        */
 
         $userPassword = 'password';
         $user = factory(User::class)->create([

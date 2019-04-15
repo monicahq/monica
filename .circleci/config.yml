@@ -55,6 +55,7 @@ aliases:
       command: |
         php artisan db:seed --no-interaction -vvv
         php artisan passport:keys --no-interaction -vvv
+        php artisan passport:client --password --name=Test | sed 's/Password grant client created successfully.//' | sed 's/Client ID: /MOBILE_CLIENT_ID=/' | sed 's/Client secret: /MOBILE_CLIENT_SECRET=/' >> .env
   - &http-server-cc
     run:
       name: Run http server
