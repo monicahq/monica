@@ -14,6 +14,20 @@ class RelationshipTest extends FeatureTestCase
 {
     use DatabaseTransactions, WithFaker;
 
+    public function test_create_a_relationship()
+    {
+        $user = $this->signIn();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->get('/people/'.$contact->hashID().'/relationships/create');
+
+        $response->assertStatus(200);
+
+        $response->assertSee('This person is...');
+    }
+
     public function test_user_can_add_a_relationship()
     {
         $user = $this->signIn();
@@ -34,6 +48,8 @@ class RelationshipTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->hashID().'/relationships', $params);
+
+        $response->assertStatus(302);
 
         $this->assertDatabaseHas('relationships', [
             'account_id' => $user->account_id,
@@ -67,6 +83,8 @@ class RelationshipTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->hashID().'/relationships', $params);
+
+        $response->assertStatus(302);
 
         $this->assertDatabaseHas('contacts', [
             'account_id' => $user->account_id,
@@ -106,6 +124,8 @@ class RelationshipTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->hashID().'/relationships', $params);
+
+        $response->assertStatus(302);
 
         $this->assertDatabaseHas('contacts', [
             'account_id' => $user->account_id,
@@ -147,6 +167,8 @@ class RelationshipTest extends FeatureTestCase
 
         $response = $this->post('/people/'.$contact->hashID().'/relationships', $params);
 
+        $response->assertStatus(302);
+
         $this->assertDatabaseHas('contacts', [
             'account_id' => $user->account_id,
             'first_name' => 'Arnold',
@@ -165,6 +187,30 @@ class RelationshipTest extends FeatureTestCase
             'contact_is' => $contact->id,
             'relationship_type_id' => $relationshipType->id,
         ]);
+    }
+
+    public function test_edit_a_relationship()
+    {
+        $user = $this->signIn();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $partner = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'first_name' => 'Homer',
+            'last_name' => 'Simpson',
+        ]);
+        $relationship = factory(Relationship::class)->create([
+            'account_id' => $user->account_id,
+            'contact_is' => $contact->id,
+            'of_contact' => $partner->id,
+        ]);
+
+        $response = $this->get('/people/'.$contact->hashID().'/relationships/'.$relationship->id.'/edit');
+
+        $response->assertStatus(200);
+
+        $response->assertSee('Homer Simpson is...');
     }
 
     public function test_user_can_update_a_relationship()
@@ -190,7 +236,9 @@ class RelationshipTest extends FeatureTestCase
             'relationship_type_id' => $relationshipType->id,
         ];
 
-        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$partner->hashID(), $params);
+        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$relationship->id, $params);
+
+        $response->assertStatus(302);
 
         $this->assertDatabaseHas('relationships', [
             'id' => $relationship->id,
@@ -230,7 +278,9 @@ class RelationshipTest extends FeatureTestCase
             'birthdayDate' => '1947-07-30',
         ];
 
-        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$partner->hashID(), $params);
+        $response = $this->put('/people/'.$contact->hashID().'/relationships/'.$relationship->id, $params);
+
+        $response->assertStatus(302);
 
         $this->assertDatabaseHas('contacts', [
             'account_id' => $user->account_id,
@@ -250,6 +300,33 @@ class RelationshipTest extends FeatureTestCase
             'contact_is' => $contact->id,
             'of_contact' => $partner->id,
             'relationship_type_id' => $relationshipType->id,
+        ]);
+    }
+
+    public function test_user_can_destroy_a_relationship()
+    {
+        $user = $this->signIn();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $partner = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $relationship = factory(Relationship::class)->create([
+            'account_id' => $user->account_id,
+            'contact_is' => $contact->id,
+            'of_contact' => $partner->id,
+        ]);
+
+        $response = $this->delete('/people/'.$contact->hashID().'/relationships/'.$relationship->id);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseMissing('relationships', [
+            'id' => $relationship->id,
+            'account_id' => $user->account_id,
+            'contact_is' => $contact->id,
+            'of_contact' => $partner->id,
         ]);
     }
 }
