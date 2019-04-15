@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use GuzzleHttp\Client;
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
@@ -131,8 +132,11 @@ class OAuthController extends Controller
      */
     private function proxy(array $data = [])
     {
-        $http = new Client();
-        $response = $http->post(route('passport.token'), [
+        $http = new Client([
+            'timeout' => 20,
+        ]);
+        $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
+        $response = $http->post($url, [
             'form_params' => [
                 'grant_type' => $data['grantType'],
                 'client_id' => config('monica.mobile_client_id'),

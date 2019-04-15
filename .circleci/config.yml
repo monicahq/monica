@@ -60,6 +60,11 @@ aliases:
       name: Run http server
       command: php -S localhost:8000 -t public scripts/tests/server-cc.php
       background: true
+  - &http-server-cc2
+    run:
+      name: Run http server
+      command: php -S localhost:8001 -t public scripts/tests/server-cc.php
+      background: true
   - &http-server
     run:
       name: Run http server
@@ -274,6 +279,7 @@ jobs:
       - *seed-test-db
       - *selenium
       - *http-server-cc
+      - *http-server-cc2
       - *wait-for-server
       - *browser-tests
       - *fix-coverage

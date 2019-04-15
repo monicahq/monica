@@ -41,7 +41,7 @@ class AuthControllerTest extends ApiTestCase
             'password' => bcrypt($userPassword),
         ]);
 
-        $response = $this->postClient(route('oauth.login'), [
+        $response = $this->postClient('http://localhost:8001/oauth/login', [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
@@ -68,7 +68,7 @@ class AuthControllerTest extends ApiTestCase
             'google2fa_secret' => 'x',
         ]);
 
-        $response = $this->postClient(route('oauth.login'), [
+        $response = $this->postClient('http://localhost:8001/oauth/login', [
             'email' => $user->email,
             'password' => $userPassword,
         ]);
@@ -131,7 +131,9 @@ class AuthControllerTest extends ApiTestCase
      */
     protected function postClient($path, $param)
     {
-        $http = new Client();
+        $http = new Client([
+            'timeout' => 30,
+        ]);
         $response = $http->post($path, [
             'form_params' => $param,
         ]);
