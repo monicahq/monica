@@ -3,7 +3,7 @@
 @section('content')
   <body class="marketing register">
     <div class="container">
-      <form action="validate2fa" method="post">
+      <form action="{{ session('oauth') ? route('oauth.validate2fa') : route('validate2fa') }}" method="post">
         <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
       
         <div class="row">
@@ -19,7 +19,7 @@
           
               @include ('partials.errors')
           
-              {{ csrf_field() }}
+              @csrf
 
               <h3>{{ trans('auth.mfa_auth_u2f') }}</h3>
               <u2f-connector
