@@ -68,7 +68,7 @@ class AuthControllerTest extends ApiTestCase
     {
         $response = $this->postClient(self::OAUTH_LOGIN_URL, [
             'email' => 'mail@mail.com',
-            'password' => 'xx'
+            'password' => 'xx',
         ]);
 
         $this->expectNotAuthorized($response);
