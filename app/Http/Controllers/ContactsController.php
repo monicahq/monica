@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
