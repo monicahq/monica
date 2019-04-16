@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5c5ec4e40afb7840599e2bc40586c0f",
+    "content-hash": "e0eb68424eeed8e09f155f068486aa9b",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -1954,39 +1954,39 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v8.0.1",
+            "version": "v9.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "52bdcbe4c911d1075651d529fa40059abbd96139"
+                "reference": "9049f6b3320f2651d5dc1c044445e705e64572c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/52bdcbe4c911d1075651d529fa40059abbd96139",
-                "reference": "52bdcbe4c911d1075651d529fa40059abbd96139",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/9049f6b3320f2651d5dc1c044445e705e64572c1",
+                "reference": "9049f6b3320f2651d5dc1c044445e705e64572c1",
                 "shasum": ""
             },
             "require": {
                 "dompdf/dompdf": "^0.8.0",
-                "illuminate/database": "~5.3",
-                "illuminate/support": "~5.3",
-                "nesbot/carbon": "~1.0",
-                "php": ">=7.0",
+                "ext-json": "*",
+                "illuminate/database": "~5.7.0|~5.8.0",
+                "illuminate/support": "~5.7.0|~5.8.0",
+                "nesbot/carbon": "^1.26.3 || ^2.0",
+                "php": "^7.1.3",
                 "stripe/stripe-php": "~6.0",
-                "symfony/http-kernel": "~2.7|~3.0|~4.0"
+                "symfony/http-kernel": "~4.0"
             },
             "require-dev": {
-                "illuminate/http": "~5.3",
-                "illuminate/routing": "~5.3",
-                "illuminate/view": "~5.3",
+                "illuminate/http": "~5.7.0|~5.8.0",
+                "illuminate/routing": "~5.7.0|~5.8.0",
+                "illuminate/view": "~5.7.0|~5.8.0",
                 "mockery/mockery": "~1.0",
-                "phpunit/phpunit": "~6.0",
-                "vlucas/phpdotenv": "~2.0"
+                "phpunit/phpunit": "~7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.0-dev"
+                    "dev-master": "9.0-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -2015,7 +2015,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2018-11-21T13:42:39+00:00"
+            "time": "2019-03-19T16:28:18+00:00"
         },
         {
             "name": "laravel/framework",
@@ -6486,16 +6486,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.30.5",
+            "version": "v6.31.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467"
+                "reference": "93393b090f7b98f47e7477e8dada4fdab8fcc394"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/1ffc751e7ee2d68b3e4a0068f5537b8334945467",
-                "reference": "1ffc751e7ee2d68b3e4a0068f5537b8334945467",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/93393b090f7b98f47e7477e8dada4fdab8fcc394",
+                "reference": "93393b090f7b98f47e7477e8dada4fdab8fcc394",
                 "shasum": ""
             },
             "require": {
@@ -6538,7 +6538,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-03-11T20:45:23+00:00"
+            "time": "2019-04-12T17:10:19+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -6797,16 +6797,16 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v4.2.5",
+            "version": "v4.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "43ce8ab34c734dcc8a4af576cb86711daab964c5"
+                "reference": "2d279b6bb1d582dd5740d4d3251ae8c18812ed37"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/43ce8ab34c734dcc8a4af576cb86711daab964c5",
-                "reference": "43ce8ab34c734dcc8a4af576cb86711daab964c5",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/2d279b6bb1d582dd5740d4d3251ae8c18812ed37",
+                "reference": "2d279b6bb1d582dd5740d4d3251ae8c18812ed37",
                 "shasum": ""
             },
             "require": {
@@ -6849,20 +6849,20 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2019-03-10T17:09:50+00:00"
+            "time": "2019-04-11T11:27:41+00:00"
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.2.5",
+            "version": "v4.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "ca5af306fbc37f3cf597e91bc9cfa0c7d3f33544"
+                "reference": "fbce53cd74ac509cbe74b6f227622650ab759b02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/ca5af306fbc37f3cf597e91bc9cfa0c7d3f33544",
-                "reference": "ca5af306fbc37f3cf597e91bc9cfa0c7d3f33544",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/fbce53cd74ac509cbe74b6f227622650ab759b02",
+                "reference": "fbce53cd74ac509cbe74b6f227622650ab759b02",
                 "shasum": ""
             },
             "require": {
@@ -6913,7 +6913,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2019-03-30T15:58:42+00:00"
+            "time": "2019-04-06T13:51:08+00:00"
         },
         {
             "name": "symfony/finder",
@@ -6966,7 +6966,7 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v4.2.5",
+            "version": "v4.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
@@ -7020,16 +7020,16 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v4.2.5",
+            "version": "v4.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "e8b940bbeebf0f96789b5d17d9d77f8b2613960b"
+                "reference": "72f5f8f9dd6e6fbda0220ded537610ad20fa2ce8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/e8b940bbeebf0f96789b5d17d9d77f8b2613960b",
-                "reference": "e8b940bbeebf0f96789b5d17d9d77f8b2613960b",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/72f5f8f9dd6e6fbda0220ded537610ad20fa2ce8",
+                "reference": "72f5f8f9dd6e6fbda0220ded537610ad20fa2ce8",
                 "shasum": ""
             },
             "require": {
@@ -7105,7 +7105,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-02T19:03:51+00:00"
+            "time": "2019-04-16T07:20:25+00:00"
         },
         {
             "name": "symfony/options-resolver",
