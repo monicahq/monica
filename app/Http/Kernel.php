@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'mfa' => [
             \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            'webauthn',
             'u2f',
             '2fa',
         ],
