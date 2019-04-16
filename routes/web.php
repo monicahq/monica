@@ -28,10 +28,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
-    Route::post('/validate2fa', 'Auth\Validate2faController@index');
+    Route::post('/validate2fa', 'Auth\Validate2faController@index')->name('validate2fa');
 });
 
-Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
+Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::name('dashboard.')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
