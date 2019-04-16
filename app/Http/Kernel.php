@@ -42,8 +42,22 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'sentry.context',
-            //'bindings',
             'locale',
+        ],
+
+        'oauth' => [
+            'throttle:5,1',
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            'sentry.context',
+            'locale',
+        ],
+
+        'mfa' => [
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            'u2f',
+            '2fa',
         ],
     ];
 

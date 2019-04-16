@@ -3,6 +3,7 @@ UNRELEASED CHANGES:
 New features:
 
 * Add WebAuthn Multi-factor authentication
+* Add multi factor auth on oauth
 
 Enhancements:
 
@@ -10,7 +11,9 @@ Enhancements:
 
 Fixes:
 
-*
+* Fix display relationship without a ofContact property
+* Fix register request validate
+* Fix relationship create
 
 RELEASED VERSIONS:
 

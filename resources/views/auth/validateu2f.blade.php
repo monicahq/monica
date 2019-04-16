@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-      <form action="validate2fa" method="post">
+      <form action="{{ session('oauth') ? route('oauth.validate2fa') : route('validate2fa') }}" method="post">
         <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
       
         <div class="row">

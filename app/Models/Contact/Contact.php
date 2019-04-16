@@ -1301,22 +1301,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the Relationship object representing the relation between two contacts.
-     *
-     * @param  Contact $otherContact
-     * @return Relationship|null
-     */
-    public function getRelationshipNatureWith(self $otherContact)
-    {
-        return Relationship::where([
-            'account_id' => $this->account_id,
-            'contact_is' => $this->id,
-            'of_contact' => $otherContact->id,
-        ])
-            ->first();
-    }
-
-    /**
      * Delete all related objects.
      *
      * @return bool

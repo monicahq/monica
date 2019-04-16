@@ -105,12 +105,14 @@ class RelationshipsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Contact $contact
-     * @param Contact $otherContact  significant other contact
+     * @param Relationship $relationship
      *
      * @return \Illuminate\View\View
      */
-    public function edit(Contact $contact, Contact $otherContact)
+    public function edit(Contact $contact, Relationship $relationship)
     {
+        $otherContact = $relationship->ofContact;
+
         $now = now();
         $age = (string) (! is_null($otherContact->birthdate) ? $otherContact->birthdate->getAge() : 0);
         $birthdate = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->toDateString() : $now->toDateString();
@@ -118,9 +120,6 @@ class RelationshipsController extends Controller
         $month = ! is_null($otherContact->birthdate) ? $otherContact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = is_null($otherContact->birthday_reminder_id) ? 0 : 1;
-
-        // Get the nature of the current relationship
-        $type = $contact->getRelationshipNatureWith($otherContact);
 
         return view('people.relationship.edit')
             ->withContact($contact)
@@ -130,14 +129,14 @@ class RelationshipsController extends Controller
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate($birthdate)
-            ->withType($type->relationship_type_id)
+            ->withRelationshipId($relationship->id)
+            ->withType($relationship->relationship_type_id)
             ->withBirthdayState($otherContact->getBirthdayState())
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
             ->withGenders(GendersHelper::getGendersInput())
-            ->withHasBirthdayReminder($hasBirthdayReminder)
-            ->withRelationshipId($type->id);
+            ->withHasBirthdayReminder($hasBirthdayReminder);
     }
 
     /**
@@ -145,12 +144,14 @@ class RelationshipsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @param Contact $otherContact  significant other contact
+     * @param Relationship $relationship
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Contact $contact, Contact $otherContact)
+    public function update(Request $request, Contact $contact, Relationship $relationship)
     {
+        $otherContact = $relationship->ofContact;
+
         if ($otherContact->is_partial) {
             $datas = $this->validateAndGetDatas($request);
 
@@ -168,7 +169,7 @@ class RelationshipsController extends Controller
         // update the relationship
         app(UpdateRelationship::class)->execute([
             'account_id' => auth()->user()->account_id,
-            'relationship_id' => $request->get('relationship_id'),
+            'relationship_id' => $relationship->id,
             'relationship_type_id' => $request->get('relationship_type_id'),
         ]);
 
@@ -218,8 +219,8 @@ class RelationshipsController extends Controller
             'birthdate_month' => $month,
             'birthdate_year' => $year,
             'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
-            'age' => $request->get('age'),
-            'add_reminder' => ! empty($request->get('addReminder')),
+            'birthdate_age' => $request->get('age'),
+            'birthdate_add_reminder' => ! empty($request->get('addReminder')),
             'is_partial' => ! $request->get('realContact'),
             'is_deceased' => false,
             'is_deceased_date_known' => false,
@@ -230,21 +231,19 @@ class RelationshipsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Contact $contact
-     * @param Contact $otherContact
+     * @param Relationship $relationship
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Contact $contact, Contact $otherContact)
+    public function destroy(Contact $contact, Relationship $relationship)
     {
         if ($contact->account_id != auth()->user()->account_id) {
             return redirect()->route('people.index');
         }
 
-        if ($otherContact->account_id != auth()->user()->account_id) {
+        if ($relationship->account_id != auth()->user()->account_id) {
             return redirect()->route('people.index');
         }
-
-        $relationship = $contact->getRelationshipNatureWith($otherContact);
 
         app(DestroyRelationship::class)->execute([
             'account_id' => auth()->user()->account_id,

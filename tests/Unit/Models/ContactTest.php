@@ -947,32 +947,6 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    public function test_it_gets_the_relationship_between_two_contacts()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
-        $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id,
-            'name' => 'godfather',
-        ]);
-        $relationship = factory(Relationship::class)->create([
-            'account_id' => $account->id,
-            'contact_is' => $contact->id,
-            'of_contact' => $partner->id,
-            'relationship_type_id' => $relationshipType->id,
-        ]);
-
-        $foundRelationship = $contact->getRelationshipNatureWith($partner);
-
-        $this->assertInstanceOf(Relationship::class, $foundRelationship);
-
-        $this->assertEquals(
-            $relationship->id,
-            $foundRelationship->id
-        );
-    }
-
     public function test_it_gets_related_relationships_of_a_certain_relationshiptype_group_name()
     {
         $account = factory(Account::class)->create([]);
