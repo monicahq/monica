@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use Illuminate\Support\Arr;
 use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
@@ -51,7 +52,7 @@ class CreateContact extends BaseService
         $this->validate($data);
 
         // filter out the data that shall not be updated here
-        $dataOnly = array_except(
+        $dataOnly = Arr::except(
             $data,
             [
                 'is_birthdate_known',

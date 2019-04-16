@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Matriphe\ISO639\ISO639;
 use Illuminate\Support\Facades\App;
 use libphonenumber\PhoneNumberUtil;
@@ -145,8 +146,8 @@ class LocaleHelper
      */
     public static function getLocaleAlpha($locale)
     {
-        if (array_has(static::$locales, $locale)) {
-            return array_get(static::$locales, $locale);
+        if (Arr::has(static::$locales, $locale)) {
+            return Arr::get(static::$locales, $locale);
         }
         $locale = mb_strtolower($locale);
         $languages = (new ISO639)->allLanguages();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\DateHelper;
 use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
@@ -538,7 +539,7 @@ class ContactsController extends Controller
 
         return response($vcard->serialize())
             ->header('Content-type', 'text/x-vcard')
-            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
+            ->header('Content-Disposition', 'attachment; filename='.Str::slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
     }
 
     /**

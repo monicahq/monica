@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Tag;
 
 use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Services\BaseService;
 
@@ -34,7 +35,7 @@ class CreateTag extends BaseService
         $array = [
             'account_id' => $data['account_id'],
             'name' => $data['name'],
-            'name_slug' => str_slug($data['name'], '-', LocaleHelper::getLang()),
+            'name_slug' => Str::slug($data['name'], '-', LocaleHelper::getLang()),
         ];
 
         return Tag::create($array);

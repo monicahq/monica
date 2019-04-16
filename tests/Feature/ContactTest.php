@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
@@ -291,7 +292,7 @@ class ContactTest extends FeatureTestCase
             $gift
         );
 
-        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
 
         $this->assertDatabaseHas(
             'gifts',
@@ -324,7 +325,7 @@ class ContactTest extends FeatureTestCase
             $gift
         );
 
-        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
 
         $this->assertDatabaseHas(
             'gifts',
@@ -401,7 +402,7 @@ class ContactTest extends FeatureTestCase
             $gift
         );
 
-        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
 
         $this->assertDatabaseHas(
             'gifts',
