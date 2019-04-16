@@ -30,20 +30,10 @@ class WebAuthn {
   register(publicKey, callback) {
     var self = this;
 
-    let publicKeyCredential = {
-      rp: publicKey.rp,
-      user: {
-        id: this._bufferDecode(publicKey.user.id),
-        displayName: publicKey.user.displayName,
-      },
-      challenge: this._bufferDecode(publicKey.challenge),
-      pubKeyCredParams: publicKey.pubKeyCredParams,
-      timeout: publicKey.timeout,
-      excludeCredentials : this._credentialDecode(publicKey.excludeCredentials),
-      authenticatorSelection: publicKey.authenticatorSelection,
-      attestation: publicKey.attestation,
-      extensions: publicKey.extensions,
-    };
+    let publicKeyCredential = Object.assign({}, publicKey);
+    publicKeyCredential.user.id = this._bufferDecode(publicKey.user.id);
+    publicKeyCredential.challenge = this._bufferDecode(publicKey.challenge);
+    publicKeyCredential.excludeCredentials = this._credentialDecode(publicKey.excludeCredentials);
 
     navigator.credentials.create({
       publicKey: publicKeyCredential
@@ -84,14 +74,9 @@ class WebAuthn {
   sign(publicKey, callback) {
     var self = this;
 
-    let publicKeyCredential = {
-      challenge: this._bufferDecode(publicKey.challenge),
-      timeout : publicKey.timeout,
-      rpId : publicKey.rpId,
-      allowCredentials : this._credentialDecode(publicKey.allowCredentials),
-      userVerification : publicKey.userVerification,
-      extensions : publicKey.extensions,
-    };
+    let publicKeyCredential = Object.assign({}, publicKey);
+    publicKeyCredential.challenge = this._bufferDecode(publicKey.challenge);
+    publicKeyCredential.allowCredentials = this._credentialDecode(publicKey.allowCredentials);
 
     navigator.credentials.get({
       publicKey: publicKeyCredential
@@ -104,7 +89,7 @@ class WebAuthn {
   }
 
   /**
-   * Signa callback on authenticate.
+   * Sign callback on authenticate.
    *
    * @param {PublicKeyCredential} publicKey @see https://www.w3.org/TR/webauthn/#publickeycredential
    * @param {function(PublicKeyCredential)} callback  User callback
@@ -158,7 +143,7 @@ class WebAuthn {
       return {
         id: self._bufferDecode(data.id),
         type: data.type,
-        transports: data.transports, 
+        transports: data.transports,
       };
     });
   }
