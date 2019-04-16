@@ -2,6 +2,7 @@
 
 namespace App\Services\Instance\Weather;
 
+use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
 use App\Models\Account\Weather;
@@ -114,7 +115,7 @@ class GetWeatherInformation extends BaseService
      */
     private function buildQuery(Place $place)
     {
-        $url = str_finish(config('location.darksky_url'), '/');
+        $url = Str::finish(config('location.darksky_url'), '/');
         $key = config('monica.darksky_api_key');
         $coords = $place->latitude.','.$place->longitude;
 

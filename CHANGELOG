@@ -6,7 +6,7 @@ New features:
 
 Enhancements:
 
-*
+* Use string and array classes instead of helpers
 
 Fixes:
 

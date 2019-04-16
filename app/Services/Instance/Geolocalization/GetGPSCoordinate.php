@@ -2,6 +2,7 @@
 
 namespace App\Services\Instance\Geolocalization;
 
+use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
 use Illuminate\Support\Facades\Log;
@@ -71,7 +72,7 @@ class GetGPSCoordinate extends BaseService
             'q' => $place->getAddressAsString(),
         ]);
 
-        return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;
+        return Str::finish(config('location.location_iq_url'), '/').'search.php?'.$query;
     }
 
     /**

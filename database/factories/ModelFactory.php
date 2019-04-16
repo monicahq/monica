@@ -20,8 +20,8 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
         'last_name' => $faker->lastName,
         'email' => $faker->safeEmail,
         'email_verified_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
-        'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
+        'password' => bcrypt(Str::random(10)),
+        'remember_token' => Str::random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
         'locale' => 'en',
@@ -30,7 +30,7 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
 
 $factory->define(App\Models\Account\Account::class, function (Faker\Generator $faker) {
     return [
-        'api_key' => str_random(30),
+        'api_key' => Str::random(30),
     ];
 });
 
@@ -315,7 +315,7 @@ $factory->define(App\Models\Contact\Tag::class, function (Faker\Generator $faker
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'name' => $faker->word,
-        'name_slug' => str_slug($faker->word),
+        'name_slug' => Str::slug($faker->word),
     ];
 });
 
