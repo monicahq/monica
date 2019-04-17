@@ -120,7 +120,7 @@ class SettingsTest extends FeatureTestCase
         ]);
 
         $this->session([
-            'webauthn_auth' => true
+            'webauthn_auth' => true,
         ]);
 
         $response = $this->followingRedirects()
