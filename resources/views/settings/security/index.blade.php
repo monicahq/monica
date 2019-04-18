@@ -79,20 +79,31 @@
                 </mfa-activate>
               @endif
 
-              @if (config('u2f.enable')===true)
-                <u2f-connector
-                  :method="'register-modal'"
-                  :currentkeys="{{ json_encode($currentkeys) }}"
-                  :timezone="{{ json_encode(auth()->user()->timezone) }}">
-                </u2f-connector>
-                
+              @if (config('webauthn.enable')===true)
                 <webauthn-connector
                   :method="'register-modal'"
                   :keys="{{ json_encode($webauthnKeys) }}"
                   :timezone="{{ json_encode(auth()->user()->timezone) }}"
                 >
+                @if (config('u2f.enable')===true)
+                  <u2f-connector
+                    :method="'register-modal'"
+                    :currentkeys="{{ json_encode($currentkeys) }}"
+                    :timezone="{{ json_encode(auth()->user()->timezone) }}"
+                    :enable-register="{{ json_encode(false) }}"
+                  >
+                  </u2f-connector>
+                @endif
                 </webauthn-connector>
-  
+              @elseif (config('u2f.enable')===true)
+                <u2f-connector
+                  :method="'register-modal'"
+                  :currentkeys="{{ json_encode($currentkeys) }}"
+                  :timezone="{{ json_encode(auth()->user()->timezone) }}"
+                  :enable-register="{{ json_encode(true) }}"
+                >
+                </u2f-connector>
+                  
                 <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
               @endif
 

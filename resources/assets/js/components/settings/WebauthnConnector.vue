@@ -34,7 +34,9 @@
         </ul>
       </div>
 
-      <a v-if="webAuthnSupport" class="btn btn-primary" @click="showRegisterModal">
+      <slot></slot>
+
+      <a v-if="isSupported" class="btn btn-primary" @click="showRegisterModal">
         {{ $t('settings.webauthn_enable_description') }}
       </a>
       <small v-else>
@@ -185,7 +187,7 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
-import * as WebAuthn from '../../vendor/webauthn.js';
+import * as WebAuthn from '../../../../../vendor/asbiin/laravel-webauthn/resources/js/webauthn.js';
 
 export default {
 
@@ -220,6 +222,7 @@ export default {
 
   data() {
     return {
+      isSupported: true,
       errorMessage: '',
       infoMessage: '',
       success: false,
@@ -258,19 +261,16 @@ export default {
       }
     },
 
-    webAuthnSupport() {
-      return this.webauthn.webAuthnSupport();
-    },
-
     notSupportedMessage() {
-      return this.$t('settings.'+this.webauthn.notSupportedMessage());
+      return this.$t('settings.webauthn_'+this.webauthn.notSupportedMessage());
     },
 
     start() {
       var self = this;
       this.errorMessage = '';
 
-      if (!this.webAuthnSupport()) {
+      if (! this.webauthn.webAuthnSupport()) {
+        this.isSupported = false;
         this.errorMessage = this.notSupportedMessage();
       }
 

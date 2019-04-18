@@ -9,9 +9,11 @@
     <notifications group="u2f" position="top middle" :duration="5000" width="400" />
 
     <div v-if="method == 'register-modal'">
-      <h3>{{ $t('settings.u2f_title') }}</h3>
+      <h3 v-if="enableRegister || keys.count > 0">
+        {{ $t('settings.u2f_title') }}
+      </h3>
 
-      <div v-if="keys != null">
+      <div v-if="keys != null && keys.count > 0">
         <ul class="table">
           <li v-for="key in keys"
               :key="key.id"
@@ -37,7 +39,7 @@
           </li>
         </ul>
       </div>
-      <a class="btn btn-primary" @click="showRegisterModal">
+      <a v-if="enableRegister" class="btn btn-primary" @click="showRegisterModal">
         {{ $t('settings.u2f_enable_description') }}
       </a>
 
@@ -230,6 +232,10 @@ export default {
     timezone: {
       type: String,
       default: '',
+    },
+    enableRegister: {
+      type: Boolean,
+      default: false,
     },
   },
 

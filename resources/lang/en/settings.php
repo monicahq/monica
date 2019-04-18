@@ -111,8 +111,8 @@ return [
     'u2f_delete_confirmation' => 'Are you sure you want to delete this key?',
     'u2f_delete_success' => 'Key deleted',
 
-    'webauthn_title' => 'Security key (WebAuthn)',
-    'webauthn_enable_description' => 'Add a new security key (WebAuthn)',
+    'webauthn_title' => 'Security key — WebAuthn protocol',
+    'webauthn_enable_description' => 'Add a new security key',
     'webauthn_key_name_help' => 'Give your key a name.',
     'webauthn_key_name' => 'Key name:',
     'webauthn_success' => 'Your key is detected and validated.',
