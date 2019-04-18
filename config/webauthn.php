@@ -27,6 +27,7 @@ return [
     'middleware' => [
         'web',
         'auth',
+        'verified',
     ],
 
     /*
@@ -75,6 +76,30 @@ return [
         'postSuccessRedirectRoute' => '',
     ],
 
+    'register' => [
+        /*
+        |--------------------------------------------------------------------------
+        | View to load on register request.
+        |--------------------------------------------------------------------------
+        |
+        | The name of blade template to load whe a user request a creation of
+        | Webauthn key.
+        |
+        */
+        'view' => 'webauthn::register',
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect route
+        |--------------------------------------------------------------------------
+        |
+        | The route to redirect to after register key request is complete.
+        | Default: empty, for let the client side redirection.
+        |
+        */
+        'postSuccessRedirectRoute' => '',
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Session name
@@ -91,7 +116,7 @@ return [
     | Webauthn challenge length
     |--------------------------------------------------------------------------
     |
-    | Lenght of the random string used in the challenge request.
+    | Length of the random string used in the challenge request.
     |
     */
 
