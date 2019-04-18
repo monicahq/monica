@@ -40,7 +40,7 @@
         {{ $t('settings.webauthn_enable_description') }}
       </a>
       <small v-else>
-        {{ notSupportedMessage }}
+        {{ notSupportedMessage() }}
       </small>
 
 

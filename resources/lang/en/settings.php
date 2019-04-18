@@ -123,7 +123,7 @@ return [
     'webauthn_buttonAdvise' => 'If your security key has a button, press it.',
     'webauthn_noButtonAdvise' => 'If it does not, remove it and insert it again.',
     'webauthn_not_supported' => 'Your browser doesn’t currently support WebAuthn.',
-    'webauthn_not_secured' => 'WebAuthn only supports secure connections. For testing over HTTP, you can use the origin "localhost".',
+    'webauthn_not_secured' => 'WebAuthn only supports secure connections. Please load this page with https scheme.',
     'webauthn_error_already_used' => 'This key is already registered. It’s not necessary to register it again.',
     'webauthn_error_not_allowed' => 'The operation either timed out or was not allowed.',
 

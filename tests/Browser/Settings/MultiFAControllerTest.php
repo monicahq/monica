@@ -39,10 +39,10 @@ class MultiFAControllerTest extends DuskTestCase
     }
 
     /**
-     * Test if the user has U2F Enable Link in Security Page.
+     * Test if the user has WebAuthn Enable Link in Security Page.
      * @group multifa
      */
-    public function testHasSettingsU2fEnableLink()
+    public function testHasSettingsWebAuthnEnableLink()
     {
         $user = factory(User::class)->create();
         $user->account->populateDefaultFields();
@@ -51,7 +51,7 @@ class MultiFAControllerTest extends DuskTestCase
         $this->browse(function (Browser $browser) use ($user) {
             $browser->loginAs($user)
                     ->visit(new SettingsSecurity)
-                    ->assertSeeLink('Add a new U2F security key');
+                    ->assertSeeLink('Add a new security key');
         });
     }
 
