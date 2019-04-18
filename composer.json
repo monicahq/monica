@@ -9,7 +9,7 @@
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-intl": "*",
-        "asbiin/laravel-webauthn": "dev-master",
+        "asbiin/laravel-webauthn": "^0.4.1",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
