@@ -2019,16 +2019,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.12",
+            "version": "v5.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "6dd75b67811a265c57144ab15f25a8061ed4721f"
+                "reference": "837e3823e2274d22b8e281d093391b5d9c23029a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/6dd75b67811a265c57144ab15f25a8061ed4721f",
-                "reference": "6dd75b67811a265c57144ab15f25a8061ed4721f",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/837e3823e2274d22b8e281d093391b5d9c23029a",
+                "reference": "837e3823e2274d22b8e281d093391b5d9c23029a",
                 "shasum": ""
             },
             "require": {
@@ -2162,7 +2162,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-04-16T13:47:32+00:00"
+            "time": "2019-04-18T15:28:45+00:00"
         },
         {
             "name": "laravel/passport",
@@ -6604,7 +6604,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -6797,7 +6797,7 @@
         },
         {
             "name": "symfony/debug",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
@@ -6853,7 +6853,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -6917,7 +6917,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -7020,16 +7020,16 @@
         },
         {
             "name": "symfony/http-kernel",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-kernel.git",
-                "reference": "72f5f8f9dd6e6fbda0220ded537610ad20fa2ce8"
+                "reference": "3db83303dbc1da9777e5ff63423b8b7fde423a1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/72f5f8f9dd6e6fbda0220ded537610ad20fa2ce8",
-                "reference": "72f5f8f9dd6e6fbda0220ded537610ad20fa2ce8",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/3db83303dbc1da9777e5ff63423b8b7fde423a1b",
+                "reference": "3db83303dbc1da9777e5ff63423b8b7fde423a1b",
                 "shasum": ""
             },
             "require": {
@@ -7105,7 +7105,7 @@
             ],
             "description": "Symfony HttpKernel Component",
             "homepage": "https://symfony.com",
-            "time": "2019-04-16T07:20:25+00:00"
+            "time": "2019-04-17T16:17:13+00:00"
         },
         {
             "name": "symfony/options-resolver",
@@ -7564,7 +7564,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
@@ -7678,16 +7678,16 @@
         },
         {
             "name": "symfony/routing",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/routing.git",
-                "reference": "b9f16550d76897ab0a86c198f8008c6578a5068f"
+                "reference": "0e5719d216017b1a0342fa48e86467cedca1c954"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/routing/zipball/b9f16550d76897ab0a86c198f8008c6578a5068f",
-                "reference": "b9f16550d76897ab0a86c198f8008c6578a5068f",
+                "url": "https://api.github.com/repos/symfony/routing/zipball/0e5719d216017b1a0342fa48e86467cedca1c954",
+                "reference": "0e5719d216017b1a0342fa48e86467cedca1c954",
                 "shasum": ""
             },
             "require": {
@@ -7750,7 +7750,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-04-03T13:26:22+00:00"
+            "time": "2019-04-14T18:04:59+00:00"
         },
         {
             "name": "symfony/translation",
@@ -7829,16 +7829,16 @@
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "f42850fa32b8d7a35a75510810f6ef597674be74"
+                "reference": "e760a38e12b15032325e64be63f7ffc1817af617"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/f42850fa32b8d7a35a75510810f6ef597674be74",
-                "reference": "f42850fa32b8d7a35a75510810f6ef597674be74",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/e760a38e12b15032325e64be63f7ffc1817af617",
+                "reference": "e760a38e12b15032325e64be63f7ffc1817af617",
                 "shasum": ""
             },
             "require": {
@@ -7901,7 +7901,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2019-04-11T11:27:41+00:00"
+            "time": "2019-04-17T14:57:01+00:00"
         },
         {
             "name": "tedivm/jshrink",
