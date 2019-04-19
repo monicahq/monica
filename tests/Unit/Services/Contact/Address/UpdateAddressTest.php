@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Address\UpdateAddress;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,8 +33,7 @@ class UpdateAddressTest extends TestCase
             'longitude' => '',
         ];
 
-        $addressService = new UpdateAddress;
-        $address = $addressService->execute($request);
+        $address = app(UpdateAddress::class)->execute($request);
 
         $this->assertDatabaseHas('addresses', [
             'id' => $address->id,
@@ -61,8 +60,8 @@ class UpdateAddressTest extends TestCase
             'street' => '199 Lafayette Street',
         ];
 
-        $this->expectException(MissingParameterException::class);
-        (new UpdateAddress)->execute($request);
+        $this->expectException(ValidationException::class);
+        app(UpdateAddress::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_address_is_not_linked_to_account()
@@ -78,6 +77,6 @@ class UpdateAddressTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new UpdateAddress)->execute($request);
+        app(UpdateAddress::class)->execute($request);
     }
 }

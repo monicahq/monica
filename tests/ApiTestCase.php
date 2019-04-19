@@ -27,14 +27,31 @@ class ApiTestCase extends TestCase
     }
 
     /**
-     * Test that the response contains a not found notification.
+     * Test that the response contains a not authorized notification.
+     *
+     * @param TestResponse $response
+     */
+    public function expectNotAuthorized(TestResponse $response)
+    {
+        $response->assertStatus(401);
+
+        $response->assertJson([
+            'error' => [
+                'message' => 'Not authorized',
+                'error_code' => 42,
+            ],
+        ]);
+    }
+
+    /**
+     * Test that the response contains a data error notification.
      *
      * @param TestResponse $response
      * @param string|array $message
      */
     public function expectDataError(TestResponse $response, $message = '')
     {
-        $response->assertStatus(400);
+        $response->assertStatus(422);
 
         $response->assertJson([
             'error' => [
@@ -45,14 +62,14 @@ class ApiTestCase extends TestCase
     }
 
     /**
-     * Test that the response contains a not found notification.
+     * Test that the response contains an invalid parameter notification.
      *
      * @param TestResponse $response
      * @param string|array $message
      */
     public function expectInvalidParameter(TestResponse $response, $message = '')
     {
-        $response->assertStatus(400);
+        $response->assertStatus(422);
 
         $response->assertJson([
             'error' => [

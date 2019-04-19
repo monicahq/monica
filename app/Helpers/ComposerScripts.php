@@ -11,6 +11,8 @@ class ComposerScripts
      *
      * @param  mixed  $event
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     public static function preInstall($event)
     {
@@ -25,6 +27,8 @@ class ComposerScripts
      *
      * @param  mixed  $event
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     public static function preUpdate($event)
     {
@@ -34,6 +38,9 @@ class ComposerScripts
         static::clear();
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     protected static function clear()
     {
         if (file_exists(self::CONFIG)) {

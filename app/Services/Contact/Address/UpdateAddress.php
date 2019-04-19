@@ -75,6 +75,6 @@ class UpdateAddress extends BaseService
             'longitude' => $this->nullOrValue($data, 'longitude'),
         ];
 
-        return (new UpdatePlace)->execute($request);
+        return app(UpdatePlace::class)->execute($request);
     }
 }

@@ -9,6 +9,7 @@ return [
     'journal_entry_type_journal' => 'רשומה ביומן',
     'journal_entry_type_activity' => 'פעילות',
     'journal_entry_rate' => 'דירגת את היום שלך.',
+    'journal_add_comment' => 'מעניין אותך להשאיר תגובה (רשות)?',
     'entry_delete_success' => 'הרשומה ביומן נמחקה בהצלחה.',
     'journal_add_title' => 'כותרת (רשות)',
     'journal_add_date' => 'תאריך',

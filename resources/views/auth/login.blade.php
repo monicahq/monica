@@ -9,7 +9,7 @@
           <div class="signup-box">
             <div class="dt w-100">
               <div class="dtc tc">
-                <img src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             <h2>{{ trans('auth.login_to_account') }}</h2>
@@ -27,14 +27,14 @@
             @endif
             @if (session('confirmation-danger'))
               <div class="alert alert-danger">
-                {!! __(session('confirmation-danger'), ['url' => url('confirmation/resend')]) !!}
+                {!! __(session('confirmation-danger'), ['url' => 'confirmation/resend']) !!}
               </div>
               <div class="alert alert-danger">
-                {!! trans('auth.confirmation_again', ['url' => url('settings/emailchange1')]) !!}
+                {!! trans('auth.confirmation_again', ['url' => 'settings/emailchange1']) !!}
               </div>
             @endif
 
-            <form action="{{ route('login') }}" method="post">
+            <form action="login" method="post">
               {{ csrf_field() }}
 
               <div class="form-group">
@@ -69,9 +69,9 @@
               <div class="form-group links">
                 <ul>
                   @if(! config('monica.disable_signup'))
-                    <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="/register">{{ trans('auth.signup') }}</a></li>
+                    <li>{{ trans('auth.signup_no_account') }}&nbsp;<a href="register">{{ trans('auth.signup') }}</a></li>
                   @elseif(! \App\Models\Account\Account::hasAny())
-                    <li>{!! trans('auth.create_account', ['url' => '/register']) !!}</li>
+                    <li>{!! trans('auth.create_account', ['url' => 'register']) !!}</li>
                   @endif
                 </ul>
               </div>

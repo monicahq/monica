@@ -16,6 +16,12 @@ return [
     'tab_tasks' => 'Tâches',
     'tab_tasks_blank' => 'Vous n’avez encore aucune tâche.',
 
+    'tasks_add_task_placeholder' => 'En quoi consiste cette tâche ?',
+    'tasks_tab_your_contacts' => 'Tâches liées à vos contacts',
+    'tasks_tab_your_tasks' => 'Vos tâches',
+    'tasks_add_note' => 'Appuyez sur <kbd>Entrée</kbd> pour ajouter la tâche.',
+    'task_add_cta' => 'Ajouter une tâche',
+
     'debts_you_owe' => 'Vous devez',
 
     'statistics_contacts' => 'Contacts',
@@ -24,8 +30,6 @@ return [
 
     'reminders_next_months' => 'Événements dans les 3 prochains mois',
     'reminders_none' => 'Aucun rappel pour ce mois-ci',
-
-    'linkedin_profile' => 'LinkedIn',
 
     'product_changes' => 'Évolutions du produit',
     'product_view_details' => 'Afficher les détails',

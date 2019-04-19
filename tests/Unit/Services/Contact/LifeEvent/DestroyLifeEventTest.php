@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,8 +28,7 @@ class DestroyLifeEventTest extends TestCase
             'id' => $lifeEvent->id,
         ]);
 
-        $lifeEventService = new DestroyLifeEvent;
-        $bool = $lifeEventService->execute($request);
+        app(DestroyLifeEvent::class)->execute($request);
 
         $this->assertDatabaseMissing('life_events', [
             'id' => $lifeEvent->id,
@@ -50,8 +49,7 @@ class DestroyLifeEventTest extends TestCase
             'life_event_id' => $lifeEvent->id,
         ];
 
-        $lifeEventService = new DestroyLifeEvent;
-        $bool = $lifeEventService->execute($request);
+        app(DestroyLifeEvent::class)->execute($request);
 
         $this->assertDatabaseMissing('reminders', [
             'id' => $reminder->id,
@@ -64,9 +62,9 @@ class DestroyLifeEventTest extends TestCase
             'account_id' => 1,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $destroyMessage = (new DestroyLifeEvent)->execute($request);
+        app(DestroyLifeEvent::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_event_doesnt_exist()
@@ -81,6 +79,6 @@ class DestroyLifeEventTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyMessage = (new DestroyLifeEvent)->execute($request);
+        app(DestroyLifeEvent::class)->execute($request);
     }
 }

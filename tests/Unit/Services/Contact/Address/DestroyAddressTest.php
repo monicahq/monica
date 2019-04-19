@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Contact\Address;
 use Tests\TestCase;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Address\DestroyAddress;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,7 +23,7 @@ class DestroyAddressTest extends TestCase
             'address_id' => $address->id,
         ];
 
-        (new DestroyAddress)->execute($request);
+        app(DestroyAddress::class)->execute($request);
 
         $this->assertDatabaseMissing('addresses', [
             'id' => $address->id,
@@ -41,7 +41,7 @@ class DestroyAddressTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DestroyAddress)->execute($request);
+        app(DestroyAddress::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_ids_do_not_exist()
@@ -51,7 +51,7 @@ class DestroyAddressTest extends TestCase
             'address_id' => 11111111,
         ];
 
-        $this->expectException(MissingParameterException::class);
-        (new DestroyAddress)->execute($request);
+        $this->expectException(ValidationException::class);
+        app(DestroyAddress::class)->execute($request);
     }
 }

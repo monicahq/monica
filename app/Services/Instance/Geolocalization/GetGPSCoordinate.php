@@ -2,13 +2,17 @@
 
 namespace App\Services\Instance\Geolocalization;
 
+use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
 
 class GetGPSCoordinate extends BaseService
 {
+    protected $client;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -27,11 +31,18 @@ class GetGPSCoordinate extends BaseService
      * This method uses LocationIQ to process the geocoding.
      *
      * @param array $data
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place|null
      */
-    public function execute(array $data)
+    public function execute(array $data, GuzzleClient $client = null)
     {
         $this->validate($data);
+
+        if (! is_null($client)) {
+            $this->client = $client;
+        } else {
+            $this->client = new GuzzleClient();
+        }
 
         $place = Place::where('account_id', $data['account_id'])
             ->findOrFail($data['place_id']);
@@ -61,7 +72,7 @@ class GetGPSCoordinate extends BaseService
             'q' => $place->getAddressAsString(),
         ]);
 
-        return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;
+        return Str::finish(config('location.location_iq_url'), '/').'search.php?'.$query;
     }
 
     /**
@@ -78,11 +89,11 @@ class GetGPSCoordinate extends BaseService
             return;
         }
 
-        $client = new GuzzleClient();
-
         try {
-            $response = $client->request('GET', $query);
+            $response = $this->client->request('GET', $query);
         } catch (ClientException $e) {
+            Log::error('Error making the call: '.$e);
+
             return;
         }
 

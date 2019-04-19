@@ -12,7 +12,7 @@ class SubscriptionsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function index()
     {
@@ -37,7 +37,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the upgrade view page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function upgrade(Request $request)
     {
@@ -60,7 +60,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the upgrade success page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function upgradeSuccess(Request $request)
     {
@@ -74,7 +74,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the downgrade success page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function downgradeSuccess(Request $request)
     {
@@ -88,7 +88,7 @@ class SubscriptionsController extends Controller
     /**
      * Display the downgrade view page.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function downgrade()
     {
@@ -106,7 +106,7 @@ class SubscriptionsController extends Controller
     /**
      * Process the downgrade process.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function processDowngrade()
     {
@@ -126,7 +126,7 @@ class SubscriptionsController extends Controller
     /**
      * Process the upgrade payment.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function processPayment(Request $request)
     {

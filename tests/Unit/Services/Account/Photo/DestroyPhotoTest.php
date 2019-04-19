@@ -9,7 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -31,8 +31,7 @@ class DestroyPhotoTest extends TestCase
             'id' => $photo->id,
         ]);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $bool = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
 
         $this->assertDatabaseMissing('photos', [
             'id' => $photo->id,
@@ -47,10 +46,9 @@ class DestroyPhotoTest extends TestCase
             'photo_id' => 2,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $result = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
     }
 
     public function test_it_throws_a_photo_doesnt_exist()
@@ -64,8 +62,7 @@ class DestroyPhotoTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $photo = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
     }
 
     private function uploadPhoto($contact)

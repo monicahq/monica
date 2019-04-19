@@ -8,7 +8,7 @@ use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\LifeEventType;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -35,8 +35,7 @@ class UpdateLifeEventTest extends TestCase
             'note' => 'This is a note',
         ];
 
-        $lifeEventService = new UpdateLifeEvent;
-        $lifeEvent = $lifeEventService->execute($request);
+        $lifeEvent = app(UpdateLifeEvent::class)->execute($request);
 
         $this->assertDatabaseHas('life_events', [
             'id' => $lifeEvent->id,
@@ -63,9 +62,9 @@ class UpdateLifeEventTest extends TestCase
             'happened_at' => Carbon::now(),
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $updateConversation = (new UpdateLifeEvent)->execute($request);
+        app(UpdateLifeEvent::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_type_doesnt_exist()
@@ -88,6 +87,6 @@ class UpdateLifeEventTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateConversation = (new UpdateLifeEvent)->execute($request);
+        app(UpdateLifeEvent::class)->execute($request);
     }
 }

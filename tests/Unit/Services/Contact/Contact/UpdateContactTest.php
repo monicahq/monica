@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\UpdateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -40,8 +40,7 @@ class UpdateContactTest extends TestCase
             'deceased_date_add_reminder' => true,
         ];
 
-        $contactService = new UpdateContact;
-        $contact = $contactService->execute($request);
+        $contact = app(UpdateContact::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -82,8 +81,8 @@ class UpdateContactTest extends TestCase
             'deceased_date_add_reminder' => true,
         ];
 
-        $this->expectException(MissingParameterException::class);
-        (new UpdateContact)->execute($request);
+        $this->expectException(ValidationException::class);
+        app(UpdateContact::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_account_doesnt_exist()
@@ -114,7 +113,7 @@ class UpdateContactTest extends TestCase
             'deceased_date_add_reminder' => true,
         ];
 
-        $this->expectException(MissingParameterException::class);
-        (new UpdateContact)->execute($request);
+        $this->expectException(ValidationException::class);
+        app(UpdateContact::class)->execute($request);
     }
 }

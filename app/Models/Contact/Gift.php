@@ -112,9 +112,10 @@ class Gift extends Model
      * Set the recipient for the gift.
      *
      * @param int $value
-     * @return string
+     *
+     * @return void
      */
-    public function setRecipientAttribute($value)
+    public function setRecipientAttribute($value): void
     {
         $this->attributes['is_for'] = $value;
     }
@@ -122,7 +123,6 @@ class Gift extends Model
     /**
      * Get the name of the recipient for this gift.
      *
-     * @param  string  $value
      * @return string
      */
     public function getRecipientNameAttribute()
@@ -133,50 +133,6 @@ class Gift extends Model
                 return $this->recipient->first_name;
             }
         }
-    }
-
-    /**
-     * Get the gift name.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getNameAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the URL of the gift.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getUrlAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the comment of the gift.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getCommentAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the value of the gift.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getValueAttribute($value)
-    {
-        return $value;
     }
 
     /**

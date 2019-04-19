@@ -14,7 +14,8 @@ class PersonalizationController extends Controller
 
     /**
      * Display the personalization page.
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -60,9 +61,10 @@ class PersonalizationController extends Controller
      *
      * @param Request $request
      * @param ContactFieldType $contactFieldType
-     * @return \Illuminate\Http\Response
+     *
+     * @return ContactFieldType
      */
-    public function editContactFieldType(Request $request, ContactFieldType $contactFieldType)
+    public function editContactFieldType(Request $request, ContactFieldType $contactFieldType): ContactFieldType
     {
         Validator::make($request->all(), [
             'name' => 'required|max:255',

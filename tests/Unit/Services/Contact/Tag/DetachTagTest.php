@@ -7,7 +7,7 @@ use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Tag\DetachTag;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -41,8 +41,7 @@ class DetachTagTest extends TestCase
             'tag_id' => $tag->id,
         ];
 
-        $detachTagService = new DetachTag;
-        $detachTagService->execute($request);
+        app(DetachTag::class)->execute($request);
 
         $this->assertDatabaseMissing('contact_tag', [
             'account_id' => $contact->account->id,
@@ -56,10 +55,9 @@ class DetachTagTest extends TestCase
             'account_id' => 1,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $detachTagService = new DetachTag;
-        $detachTagService->execute($request);
+        app(DetachTag::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_does_not_exist()
@@ -76,6 +74,6 @@ class DetachTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        (new DetachTag)->execute($request);
+        app(DetachTag::class)->execute($request);
     }
 }

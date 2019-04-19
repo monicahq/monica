@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Contact;
 use Illuminate\Http\Request;
 use App\Models\Contact\LifeEvent;
 use App\Http\Controllers\Api\ApiController;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\UpdateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
@@ -17,7 +17,7 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the list of life events.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -31,8 +31,9 @@ class ApiLifeEventController extends ApiController
     /**
      * Get the detail of a given life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $lifeEventId)
     {
@@ -49,13 +50,14 @@ class ApiLifeEventController extends ApiController
     /**
      * Store the life event.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $lifeEvent = (new CreateLifeEvent)->execute(
+            $lifeEvent = app(CreateLifeEvent::class)->execute(
                 $request->all()
                 +
                 [
@@ -64,8 +66,8 @@ class ApiLifeEventController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new LifeEventResource($lifeEvent);
@@ -74,14 +76,15 @@ class ApiLifeEventController extends ApiController
     /**
      * Update the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return LifeEventResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $lifeEventId)
     {
         try {
-            $lifeEvent = (new UpdateLifeEvent)->execute(
+            $lifeEvent = app(UpdateLifeEvent::class)->execute(
                 $request->all()
                     +
                     [
@@ -91,8 +94,8 @@ class ApiLifeEventController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new LifeEventResource($lifeEvent);
@@ -101,14 +104,15 @@ class ApiLifeEventController extends ApiController
     /**
      * Destroy the life event.
      *
-     * @param  Request $request
-     * @param  int $lifeEventId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $lifeEventId
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $lifeEventId)
     {
         try {
-            (new DestroyLifeEvent)->execute([
+            app(DestroyLifeEvent::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'life_event_id' => $lifeEventId,
             ]);

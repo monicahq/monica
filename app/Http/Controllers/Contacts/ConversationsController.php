@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Contacts;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\Conversation;
+use App\Traits\JsonRespondController;
 use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\UpdateConversation;
@@ -15,17 +17,19 @@ use App\Services\Contact\Conversation\AddMessageToConversation;
 
 class ConversationsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the Create conversation page.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Request $request, Contact $contact)
     {
         return view('people.conversations.new')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
     }
 
@@ -33,7 +37,7 @@ class ConversationsController extends Controller
      * Display the list of conversations.
      *
      * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @return Collection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -41,12 +45,13 @@ class ConversationsController extends Controller
         $conversations = $contact->conversations()->get();
 
         foreach ($conversations as $conversation) {
+            $message = $conversation->messages->last();
             $data = [
                 'id' => $conversation->id,
                 'message_count' => $conversation->messages->count(),
                 'contact_field_type' => $conversation->contactFieldType->name,
                 'icon' => $conversation->contactFieldType->fontawesome_icon,
-                'content' => str_limit($conversation->messages->last()->content, 50),
+                'content' => ! is_null($message) ? mb_strimwidth($message->content, 0, 50, '…') : '',
                 'happened_at' => DateHelper::getShortDate($conversation->happened_at),
                 'route' => route('people.conversations.edit', [$contact, $conversation]),
             ];
@@ -61,7 +66,8 @@ class ConversationsController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -84,7 +90,7 @@ class ConversationsController extends Controller
 
         // create the conversation
         try {
-            $conversation = (new CreateConversation)->execute($data);
+            $conversation = app(CreateConversation::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -104,7 +110,7 @@ class ConversationsController extends Controller
             ];
 
             try {
-                (new AddMessageToConversation)->execute($data);
+                app(AddMessageToConversation::class)->execute($data);
             } catch (\Exception $e) {
                 return back()
                     ->withInput()
@@ -119,8 +125,9 @@ class ConversationsController extends Controller
     /**
      * Display a specific conversation.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Request $request, Contact $contact, Conversation $conversation)
     {
@@ -136,7 +143,6 @@ class ConversationsController extends Controller
 
         return view('people.conversations.edit')
             ->withContact($contact)
-            ->withLocale(auth()->user()->locale)
             ->withConversation($conversation)
             ->withMessages($messages)
             ->withContactFieldTypes(auth()->user()->account->contactFieldTypes);
@@ -148,7 +154,8 @@ class ConversationsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Conversation $conversation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact, Conversation $conversation)
     {
@@ -171,7 +178,7 @@ class ConversationsController extends Controller
 
         // update the conversation
         try {
-            $conversation = (new UpdateConversation)->execute($data);
+            $conversation = app(UpdateConversation::class)->execute($data);
         } catch (\Exception $e) {
             return back()
                 ->withInput()
@@ -185,7 +192,7 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'message_id' => $message->id,
             ];
-            (new DestroyMessage)->execute($data);
+            app(DestroyMessage::class)->execute($data);
         }
 
         // and create all new ones
@@ -201,7 +208,7 @@ class ConversationsController extends Controller
             ];
 
             try {
-                (new AddMessageToConversation)->execute($data);
+                app(AddMessageToConversation::class)->execute($data);
             } catch (\Exception $e) {
                 return back()
                     ->withInput()
@@ -219,7 +226,8 @@ class ConversationsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Conversation $conversation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Conversation $conversation)
     {
@@ -229,7 +237,7 @@ class ConversationsController extends Controller
         ];
 
         try {
-            (new DestroyConversation)->execute($data);
+            app(DestroyConversation::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

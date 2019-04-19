@@ -11,22 +11,24 @@ use App\Models\Account\Photo;
 use App\Models\Account\Place;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Account\Company;
 use App\Models\Account\Weather;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
 use App\Models\Account\Invitation;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\ActivityType;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
 use App\Models\Contact\LifeEventCategory;
-use App\Models\Contact\ActivityTypeCategory;
+use App\Models\Account\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -48,22 +50,6 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $this->assertTrue($account->genders()->exists());
-    }
-
-    public function test_it_has_many_notifications()
-    {
-        $contact = factory(Contact::class)->create();
-        $account = $contact->account;
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-        $notification = factory(Notification::class)->create([
-            'account_id' => $account->id,
-            'contact_id' => $contact->id,
-        ]);
-
-        $this->assertTrue($account->notifications()->exists());
     }
 
     public function test_it_has_many_relationship_types()
@@ -161,6 +147,12 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->lifeEventCategories()->exists());
     }
 
+    public function test_it_has_many_reminder_outboxes()
+    {
+        $reminderOutbox = factory(ReminderOutbox::class)->create([]);
+        $this->assertTrue($reminderOutbox->account->reminderOutboxes()->exists());
+    }
+
     public function test_it_has_many_life_event_types()
     {
         $account = factory(Account::class)->create([]);
@@ -222,6 +214,24 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->addresses()->exists());
+    }
+
+    public function test_it_has_many_companies()
+    {
+        $account = factory(Account::class)->create([]);
+        $companies = factory(Company::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->companies()->exists());
+    }
+
+    public function test_it_has_many_occupations()
+    {
+        $account = factory(Account::class)->create([]);
+        $occupations = factory(Occupation::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->occupations()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
@@ -431,12 +441,9 @@ class AccountTest extends FeatureTestCase
         $account = $user->account;
 
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
+        factory(Reminder::class, 3)->create(['account_id' => $account->id]);
 
-        // add 3 reminders for the month of March
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-        $reminder = factory(Reminder::class)->create(['account_id' => $account->id]);
-
+        // check if there are reminders for the month of March
         $this->assertEquals(
             0,
             $account->getRemindersForMonth(3)->count()
@@ -455,8 +462,10 @@ class AccountTest extends FeatureTestCase
         for ($i = 0; $i < 3; $i++) {
             $reminder = factory(Reminder::class)->create([
                 'account_id' => $account->id,
-                'next_expected_date' => '2017-03-03 00:00:00',
+                'initial_date' => '2017-03-03 00:00:00',
             ]);
+
+            $reminder->schedule($user);
         }
 
         $this->assertEquals(

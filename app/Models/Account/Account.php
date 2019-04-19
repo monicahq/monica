@@ -7,6 +7,7 @@ use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
 use App\Models\User\Module;
+use Illuminate\Support\Str;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
@@ -18,31 +19,29 @@ use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
-use App\Models\Contact\Activity;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
-use App\Models\Contact\ActivityType;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
-use App\Models\Contact\Notification;
 use App\Models\Contact\ReminderRule;
 use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
 use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\ActivityStatistic;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
-use App\Models\Contact\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Services\Auth\Population\PopulateModulesTable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Auth\Population\PopulateLifeEventsTable;
+use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class Account extends Model
 {
@@ -57,6 +56,7 @@ class Account extends Model
         'number_of_invitations_sent',
         'api_key',
         'default_time_reminder_is_sent',
+        'default_gender_id',
     ];
 
     /**
@@ -136,6 +136,16 @@ class Account extends Model
     public function reminders()
     {
         return $this->hasMany(Reminder::class);
+    }
+
+    /**
+     * Get the reminder outboxes records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function reminderOutboxes()
+    {
+        return $this->hasMany(ReminderOutbox::class);
     }
 
     /**
@@ -349,16 +359,6 @@ class Account extends Model
     }
 
     /**
-     * Get the Notifications records associated with the account.
-     *
-     * @return HasMany
-     */
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
-
-    /**
      * Get the Conversation records associated with the account.
      *
      * @return HasMany
@@ -459,6 +459,26 @@ class Account extends Model
     }
 
     /**
+     * Get the Company records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Get the Occupation records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function occupations()
+    {
+        return $this->hasMany(Occupation::class);
+    }
+
+    /**
      * Get the default time reminder is sent.
      *
      * @param  string  $value
@@ -483,7 +503,7 @@ class Account extends Model
     /**
      * Check if the account can be downgraded, based on a set of rules.
      *
-     * @return $this
+     * @return bool
      */
     public function canDowngrade()
     {
@@ -607,36 +627,13 @@ class Account extends Model
      */
     public function timezone()
     {
-        $timezone = '';
-
-        foreach ($this->users as $user) {
-            $timezone = $user->timezone;
-            break;
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return '';
         }
 
-        return $timezone;
-    }
-
-    /**
-     * Populates the Contact Field Types table right after an account is
-     * created.
-     */
-    public function populateContactFieldTypeTable($ignoreTableAlreadyMigrated = false)
-    {
-        $defaultContactFieldTypes = DB::table('default_contact_field_types')->get();
-
-        foreach ($defaultContactFieldTypes as $defaultContactFieldType) {
-            if (! $ignoreTableAlreadyMigrated || $defaultContactFieldType->migrated == 0) {
-                ContactFieldType::create([
-                    'account_id' => $this->id,
-                    'name' => $defaultContactFieldType->name,
-                    'fontawesome_icon' => (is_null($defaultContactFieldType->fontawesome_icon) ? null : $defaultContactFieldType->fontawesome_icon),
-                    'protocol' => (is_null($defaultContactFieldType->protocol) ? null : $defaultContactFieldType->protocol),
-                    'delible' => $defaultContactFieldType->delible,
-                    'type' => (is_null($defaultContactFieldType->type) ? null : $defaultContactFieldType->type),
-                ]);
-            }
-        }
+        return $user->timezone;
     }
 
     /**
@@ -674,9 +671,9 @@ class Account extends Model
      */
     public function populateDefaultGendersTable()
     {
-        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::MALE, 'name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::FEMALE, 'name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::OTHER, 'name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**
@@ -757,10 +754,11 @@ class Account extends Model
         }
         $endOfMonth = now(DateHelper::getTimezone())->addMonthsNoOverflow($month)->endOfMonth();
 
-        return $this->reminders()
-                     ->with('contact')
-                     ->whereBetween('next_expected_date', [$startOfMonth, $endOfMonth])
-                     ->orderBy('next_expected_date', 'asc')
+        return $this->reminderOutboxes()
+                     ->with(['reminder', 'reminder.contact'])
+                     ->whereBetween('planned_date', [$startOfMonth, $endOfMonth])
+                     ->where('nature', 'reminder')
+                     ->orderBy('planned_date', 'asc')
                      ->get();
     }
 
@@ -776,6 +774,8 @@ class Account extends Model
         if (! is_null($plan)) {
             return $plan->stripe_plan;
         }
+
+        return '';
     }
 
     /**
@@ -822,6 +822,26 @@ class Account extends Model
     }
 
     /**
+     * Get the default gender for this account.
+     *
+     * @return string
+     */
+    public function defaultGender()
+    {
+        $defaultGenderType = Gender::MALE;
+        if ($this->default_gender_id) {
+            $defaultGender = Gender::where([
+                'account_id' => $this->id,
+            ])->find($this->default_gender_id);
+            if ($defaultGender) {
+                $defaultGenderType = $defaultGender->type;
+            }
+        }
+
+        return $defaultGenderType;
+    }
+
+    /**
      * Get if any account exists on the database.
      *
      * @return bool
@@ -839,13 +859,13 @@ class Account extends Model
      * @param string $email
      * @param string $password
      * @param string $ipAddress
-     * @return $this
+     * @return self
      */
     public static function createDefault($first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
         // create new account
         $account = new self;
-        $account->api_key = str_random(30);
+        $account->api_key = Str::random(30);
         $account->created_at = now();
         $account->save();
 
@@ -863,19 +883,23 @@ class Account extends Model
      */
     public function populateDefaultFields()
     {
-        $this->populateContactFieldTypeTable();
+        app(PopulateContactFieldTypesTable::class)->execute([
+            'account_id' => $this->id,
+            'migrate_existing_data' => true,
+        ]);
+
         $this->populateDefaultGendersTable();
         $this->populateDefaultReminderRulesTable();
         $this->populateRelationshipTypeGroupsTable();
         $this->populateRelationshipTypesTable();
         $this->populateActivityTypeTable();
 
-        (new PopulateLifeEventsTable)->execute([
+        app(PopulateLifeEventsTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);
 
-        (new PopulateModulesTable)->execute([
+        app(PopulateModulesTable::class)->execute([
             'account_id' => $this->id,
             'migrate_existing_data' => true,
         ]);
@@ -896,7 +920,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeGroupName
-     * @return RelationshipTypeGroup
+     * @return RelationshipTypeGroup|null
      */
     public function getRelationshipTypeGroupByType(string $relationshipTypeGroupName)
     {
@@ -906,7 +930,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of calls grouped by year.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getYearlyCallStatistics()
     {
@@ -941,7 +965,7 @@ class Account extends Model
     /**
      * Get the statistics of the number of activities grouped by year.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getYearlyActivitiesStatistics()
     {
@@ -977,7 +1001,7 @@ class Account extends Model
      * Get the first available locale in an account. This gets the first user
      * in the account and reads his locale.
      *
-     * @return string
+     * @return string|null
      *
      * @throws ModelNotFoundException
      */

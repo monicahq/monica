@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Contact\Task;
 use App\Models\Account\Account;
 use App\Services\Task\DestroyTask;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -27,8 +27,7 @@ class DestroyTaskTest extends TestCase
             'task_id' => $task->id,
         ];
 
-        $destroyTaskService = new DestroyTask;
-        $bool = $destroyTaskService->execute($request);
+        app(DestroyTask::class)->execute($request);
 
         $this->assertDatabaseMissing('tasks', [
             'id' => $task->id,
@@ -41,10 +40,9 @@ class DestroyTaskTest extends TestCase
             'task_id' => 2,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $destroyTaskService = new DestroyTask;
-        $result = $destroyTaskService->execute($request);
+        app(DestroyTask::class)->execute($request);
     }
 
     public function test_it_throws_a_task_doesnt_exist()
@@ -59,7 +57,6 @@ class DestroyTaskTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyTaskService = new DestroyTask;
-        $task = $destroyTaskService->execute($request);
+        app(DestroyTask::class)->execute($request);
     }
 }

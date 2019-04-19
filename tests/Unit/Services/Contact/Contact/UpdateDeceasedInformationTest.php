@@ -4,8 +4,9 @@ namespace Tests\Unit\Services\Contact\Contact;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 
@@ -27,8 +28,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $deceasedService->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -45,14 +45,14 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $deceasedService->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
             'account_id' => $contact->account->id,
             'is_dead' => 0,
             'deceased_special_date_id' => null,
+            'deceased_reminder_id' => null,
         ]);
     }
 
@@ -71,8 +71,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $contact = app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -105,8 +104,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $contact = app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -139,12 +137,17 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
+        $reminder = Reminder::where('contact_id', $contact->id)->first();
 
-        $this->assertNotNull($specialDate->reminder_id);
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'account_id' => $contact->account_id,
+            'deceased_special_date_id' => $specialDate->id,
+            'deceased_reminder_id' => $reminder->id,
+        ]);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -161,10 +164,8 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
-
-        $deceasedService = new UpdateDeceasedInformation;
-        $contact = $deceasedService->execute($request);
+        $this->expectException(ValidationException::class);
+        app(UpdateDeceasedInformation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
@@ -182,8 +183,59 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
+        app(UpdateDeceasedInformation::class)->execute($request);
+    }
 
-        (new UpdateDeceasedInformation)->execute($request);
+    public function test_it_removes_deceased_reminder()
+    {
+        $reminder = factory(Reminder::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $reminder->account->id,
+            'deceased_reminder_id' => $reminder->id,
+        ]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'is_deceased' => true,
+            'is_date_known' => true,
+            'day' => 10,
+            'month' => 10,
+            'year' => 1980,
+            'add_reminder' => true,
+        ];
+
+        app(UpdateDeceasedInformation::class)->execute($request);
+
+        $this->assertDatabaseMissing('reminders', [
+            'id' => $reminder->id,
+        ]);
+    }
+
+    public function test_it_removes_deceased_special_date()
+    {
+        $special_date = factory(SpecialDate::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $special_date->account->id,
+            'deceased_special_date_id' => $special_date->id,
+        ]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'is_deceased' => true,
+            'is_date_known' => true,
+            'day' => 10,
+            'month' => 10,
+            'year' => 1980,
+            'add_reminder' => true,
+        ];
+
+        app(UpdateDeceasedInformation::class)->execute($request);
+
+        $this->assertDatabaseMissing('special_dates', [
+            'id' => $special_date->id,
+        ]);
     }
 }

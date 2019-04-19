@@ -7,6 +7,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactFieldType;
 
 class ExportVCard extends BaseService
 {
@@ -19,12 +20,12 @@ class ExportVCard extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'nullable|integer',
+            'contact_id' => 'required|integer|exists:contacts,id',
         ];
     }
 
     /**
-     * Import one VCard.
+     * Export one VCard.
      *
      * @param array $data
      * @return VCard
@@ -60,7 +61,7 @@ class ExportVCard extends BaseService
         // Basic information
         $vcard = new VCard([
             'UID' => $contact->uuid,
-            'SOURCE' => route('people.show', $contact),
+            'SOURCE' => $contact->getLink(),
             'VERSION' => '4.0',
         ]);
 
@@ -71,6 +72,7 @@ class ExportVCard extends BaseService
         $this->exportBirthday($contact, $vcard);
         $this->exportAddress($contact, $vcard);
         $this->exportContactFields($contact, $vcard);
+        $this->exportTimestamp($contact, $vcard);
 
         return $vcard;
     }
@@ -100,18 +102,21 @@ class ExportVCard extends BaseService
      */
     private function exportGender(Contact $contact, VCard $vcard)
     {
-        switch ($contact->gender->name) {
-            case 'Man':
-                $gender = 'M';
-                break;
-            case 'Woman':
-                $gender = 'F';
-                break;
-            default:
-                $gender = 'O';
-                break;
+        $gender = $contact->gender->type;
+        if (empty($gender)) {
+            switch ($contact->gender->name) {
+                case trans('app.gender_male'):
+                    $gender = Gender::MALE;
+                    break;
+                case trans('app.gender_female'):
+                    $gender = Gender::FEMALE;
+                    break;
+                default:
+                    $gender = Gender::OTHER;
+                    break;
+            }
         }
-        $vcard->add('GENDER', [$gender, $contact->gender->name]);
+        $vcard->add('GENDER', $gender);
     }
 
     /**
@@ -148,7 +153,11 @@ class ExportVCard extends BaseService
     private function exportBirthday(Contact $contact, VCard $vcard)
     {
         if (! is_null($contact->birthdate)) {
-            $date = $contact->birthdate->date->format('Ymd');
+            if ($contact->birthdate->is_year_unknown) {
+                $date = $contact->birthdate->date->format('--m-d');
+            } else {
+                $date = $contact->birthdate->date->format('Ymd');
+            }
             $vcard->add('BDAY', $date);
         }
     }
@@ -180,10 +189,10 @@ class ExportVCard extends BaseService
     {
         foreach ($contact->contactFields as $contactField) {
             switch ($contactField->contactFieldType->type) {
-                case 'phone':
+                case ContactFieldType::PHONE:
                     $vcard->add('TEL', $this->escape($contactField->data));
                     break;
-                case 'email':
+                case ContactFieldType::EMAIL:
                     $vcard->add('EMAIL', $this->escape($contactField->data));
                     break;
                 default:
@@ -203,13 +212,21 @@ class ExportVCard extends BaseService
                 case 'Telegram':
                     $vcard->add('socialProfile', $this->escape('http://t.me/'.$contactField->data), ['type' => 'telegram']);
                     break;
+                case 'LinkedIn':
+                    $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->data), ['type' => 'linkedin']);
+                    break;
                 default:
                     break;
             }
         }
+    }
 
-        if (! is_null($contact->linkedin_profile_url)) {
-            $vcard->add('socialProfile', $this->escape('http://www.linkedin.com/in/'.$contact->linkedin_profile_url), ['type' => 'linkedin']);
-        }
+    /**
+     * @param Contact $contact
+     * @param VCard $vcard
+     */
+    private function exportTimestamp(Contact $contact, VCard $vcard)
+    {
+        $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
     }
 }

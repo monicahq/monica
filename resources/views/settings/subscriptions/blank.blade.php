@@ -40,10 +40,10 @@
               <div class="cf mb4">
                 <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-50-ns w-100 pa3 mt0-ns mt4">
                   <div class="b--purple ba pt3 br3 bw1 relative">
-                    <img src="{{ url('/img/settings/subscription/best_value.png') }}" class="absolute" style="top: -30px; left: -20px;">
+                    <img src="img/settings/subscription/best_value.png" class="absolute" style="top: -30px; left: -20px;">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_year_title') }}</h3>
                     <p class="tc mb4">
-                      <a href="{{ url('/settings/subscriptions/upgrade?plan=annual') }}" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
+                      <a href="settings/subscriptions/upgrade?plan=annual" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
                     </p>
                     <ul class="mb4 center ph4">
                       <li class="mb3 relative ml4">
@@ -77,7 +77,7 @@
                   <div class="b--gray-monica ba pt3 br3 bw1">
                     <h3 class="tc mb3 pt3">{{ trans('settings.subscriptions_plan_month_title') }}</h3>
                     <p class="tc mb4">
-                      <a href="{{ url('/settings/subscriptions/upgrade?plan=monthly') }}" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
+                      <a href="settings/subscriptions/upgrade?plan=monthly" class="btn btn-primary pv3">{{ trans('settings.subscriptions_plan_choose') }}</a>
                     </p>
                     <ul class="mb4 center ph4">
                       <li class="mb3 relative ml4">

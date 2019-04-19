@@ -6,6 +6,7 @@ use App\Models\Contact\Call;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Traits\JsonRespondController;
 use App\Services\Contact\Call\CreateCall;
 use App\Services\Contact\Call\UpdateCall;
 use App\Services\Contact\Call\DestroyCall;
@@ -13,11 +14,14 @@ use App\Http\Resources\Call\Call as CallResource;
 
 class CallsController extends Controller
 {
+    use JsonRespondController;
+
     /**
      * Display the list of calls.
      *
-     * @param  Contact $contact
-     * @return \Illuminate\Http\Response
+     * @param Contact $contact
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request, Contact $contact)
     {
@@ -34,7 +38,7 @@ class CallsController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
-        return (new CreateCall)->execute([
+        return app(CreateCall::class)->execute([
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
             'content' => $request->get('content'),
@@ -53,7 +57,7 @@ class CallsController extends Controller
      */
     public function update(Request $request, Contact $contact, Call $call)
     {
-        return (new UpdateCall)->execute([
+        return app(UpdateCall::class)->execute([
             'account_id' => auth()->user()->account->id,
             'call_id' => $call->id,
             'content' => $request->get('content'),
@@ -69,7 +73,8 @@ class CallsController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Call $call
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, Contact $contact, Call $call)
     {
@@ -79,7 +84,9 @@ class CallsController extends Controller
         ];
 
         try {
-            (new DestroyCall)->execute($data);
+            if (app(DestroyCall::class)->execute($data)) {
+                return $this->respondObjectDeleted($call->id);
+            }
         } catch (\Exception $e) {
             return $this->respondNotFound();
         }

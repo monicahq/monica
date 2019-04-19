@@ -81,22 +81,27 @@ return [
     // Calls
     'modal_call_title' => 'תיעוד שיחה',
     'modal_call_comment' => 'על מה דיברתם? (רשות)',
-    'modal_call_date' => 'שיחת הטלפון התקיימה מוקדם יותר היום.',
-    'modal_call_change' => 'שינוי',
     'modal_call_exact_date' => 'שיחת הטלפון התקיימה ב־',
+    'modal_call_who_called' => 'מי היה בטלפון?',
+    'modal_call_emotion' => 'מעניין אותך לתעד איך הרגשת במהלך השיחה? (רשות)',
     'calls_add_success' => 'שיחת הטלפון נשמרה.',
     'call_delete_confirmation' => 'למחוק את השיחה הזאת?',
     'call_delete_success' => 'שיחת הטלפון נמחקה בהצלחה',
     'call_title' => 'שיחות טלפון',
     'call_empty_comment' => 'אין פרטים',
-    'call_blank_title' => 'מעקב אחר שיחות הטלפון שקיימת עם :name',
-    'call_blank_desc' => 'התקשרת אל :name',
+    'call_blank_title' => 'מעקב אחר שיחות הטלפון שקיימת עם {name}',
+    'call_blank_desc' => 'התקשרת אל {name}',
+    'call_you_called' => 'התקשרת',
+    'call_he_called' => 'קיבלת שיחה מאת {name}',
+    'call_emotions' => 'רגשות:',
 
     // Conversation
     'conversation_blank' => 'תיעוד דיונים שערכת עם :name ברשתות חברתיות, מסרונים וכו׳…',
     'conversation_delete_link' => 'מחיקת הדיון',
     'conversation_edit_title' => 'עריכת הדיון',
     'conversation_edit_delete' => 'למחוק את הדיון? מחיקה היא לצמיתות.',
+    'conversation_add_success' => 'הדיון נוסף בהצלחה.',
+    'conversation_edit_success' => 'הדיון עודכן בהצלחה.',
     'conversation_delete_success' => 'הדיון נמחק בהצלחה.',
     'conversation_add_title' => 'תיעוד דיון חדש',
     'conversation_add_when' => 'מתי הדיון הזה התרחש?',
@@ -132,15 +137,12 @@ return [
     'information_edit_lastname' => 'שם משפחה (רשות)',
     'information_edit_description' => 'תיאור (רשות)',
     'information_edit_description_help' => 'משמש עבור רשימת אנשי הקשר כדי להוסיף הקשר אם יש צורך בכך.',
-    'information_edit_linkedin' => 'פרופיל LinkedIn (רשות)',
     'information_edit_unknown' => 'גיל האדם הזה לא ידוע לי',
     'information_edit_probably' => 'הגיל של איש הקשר הוא כנראה…',
     'information_edit_not_year' => 'ידועים לי היום והחודש של הולדת איש הקשר, אך לא השנה…',
     'information_edit_exact' => 'מועד הלידה המדויק של אדם זה ידוע לי…',
-    'information_no_linkedin_defined' => 'לא הוגדר LinkedIn',
     'information_no_work_defined' => 'לא צוינו פרטי עבודה',
     'information_work_at' => 'ב:company',
-    'linkedin_profile' => 'פרופיל LinkedIn',
     'work_add_cta' => 'עדכון פרטי עבודה',
     'work_edit_success' => 'פרטי העבודה עודכנו בהצלחה',
     'work_edit_title' => 'עדכון פרטי העבודה של :name',
@@ -148,7 +150,7 @@ return [
     'work_edit_company' => 'חברה (רשות)',
     'work_information' => 'פרטי תעסוקה',
 
-    // food preferencies
+    // food preferences
     'food_preferencies_add_success' => 'העדפות המזון נשמרו',
     'food_preferencies_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
     'food_preferencies_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
@@ -194,6 +196,7 @@ return [
     'relationship_form_add' => 'הוספת קשר חדש',
     'relationship_form_edit' => 'עריכת קשר קיים',
     'relationship_form_is_with' => 'איש הקשר הוא…',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',
@@ -242,7 +245,7 @@ return [
     'activities_add_title' => 'מה עשית עם :name?',
     'activities_summary' => 'נא לתאר את אופן הפעילות',
     'activities_add_pick_activity' => '(רשות) האם ברצונך לסווג את הפעילות הזאת? לא חובה אך סיווג יאפשר לך לערוך סטטיסטיקה בהמשך',
-    'activities_add_date_occured' => 'המועד בו הפעילות קרתה',
+    'activities_add_date_occured' => 'המועד בו התרחש האירוע',
     'activities_add_optional_comment' => 'הערת רשות',
     'activities_add_cta' => 'תיעוד פעילות',
     'activities_blank_title' => 'מעקב אחר מה שעשית עם :name בעבר ועל מה דיברתם',
@@ -359,6 +362,8 @@ return [
     'contact_address_form_province' => 'מחוז (רשות)',
     'contact_address_form_postal_code' => 'מיקוד (רשות)',
     'contact_address_form_country' => 'ארץ (רשות)',
+    'contact_address_form_latitude' => 'רוחב (מספרים בלבד) (רשות)',
+    'contact_address_form_longitude' => 'אורך (מספרים בלבד) (רשות)',
 
     // Pets
     'pets_kind' => 'סוג חיית מחמד',
@@ -419,7 +424,7 @@ return [
     'life_event_sentence_home_improvement' => 'עריכת שיפוץ',
     'life_event_sentence_holidays' => 'יציאה לחופש',
     'life_event_sentence_new_vehicle' => 'קבלת כלי רכב חדש',
-    'life_event_sentence_new_roommate' => 'התווספות שותפות',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
     'life_event_sentence_overcame_an_illness' => 'החלמה ממחלה',
     'life_event_sentence_quit_a_habit' => 'גמילה',
     'life_event_sentence_new_eating_habits' => 'אימוץ הרגלי אכילה חדשים',
@@ -448,4 +453,14 @@ return [
     'document_upload_zone_cta' => 'העלאת קובץ',
     'document_upload_zone_progress' => 'המסמך נשלח…',
     'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
+
+    // Photos
+    'photo_list_title' => 'תמונות קשורות',
+    'photo_list_cta' => 'העלאת תמונה',
+    'photo_list_blank_desc' => 'ניתן לאחסן תמונות של איש הקשר הזה. אפילו ממש ברגע זה!',
+    'photo_upload_zone_cta' => 'העלאת תמונה',
+    'photo_delete' => 'מחיקת תמונה',
+
+    // emotions
+    'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
 ];

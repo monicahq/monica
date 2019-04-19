@@ -5,7 +5,7 @@ namespace Tests\Unit\Services\Contact\Conversation;
 use Tests\TestCase;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Conversation\DestroyMessage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,8 +37,7 @@ class DestroyMessageTest extends TestCase
             'id' => $message->id,
         ]);
 
-        $messageService = new DestroyMessage;
-        $bool = $messageService->execute($request);
+        app(DestroyMessage::class)->execute($request);
 
         $this->assertDatabaseMissing('messages', [
             'id' => $message->id,
@@ -52,10 +51,9 @@ class DestroyMessageTest extends TestCase
             'message_id' => 3,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $destroyMessage = new DestroyMessage;
-        $result = $destroyMessage->execute($request);
+        app(DestroyMessage::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_message_doesnt_exist()
@@ -70,7 +68,6 @@ class DestroyMessageTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyMessage = new DestroyMessage;
-        $message = $destroyMessage->execute($request);
+        app(DestroyMessage::class)->execute($request);
     }
 }

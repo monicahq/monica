@@ -7,7 +7,7 @@ use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -41,8 +41,7 @@ class DestroyTagTest extends TestCase
             'tag_id' => $tag->id,
         ];
 
-        $destroyTagService = new DestroyTag;
-        $destroyTagService->execute($request);
+        app(DestroyTag::class)->execute($request);
 
         $this->assertDatabaseMissing('contact_tag', [
             'account_id' => $contact->account->id,
@@ -61,10 +60,9 @@ class DestroyTagTest extends TestCase
             'account_id' => 1,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $destroyTagService = new DestroyTag;
-        $tag = $destroyTagService->execute($request);
+        app(DestroyTag::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_tag_does_not_exist()
@@ -77,6 +75,6 @@ class DestroyTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $destroyTagService = (new DestroyTag)->execute($request);
+        app(DestroyTag::class)->execute($request);
     }
 }

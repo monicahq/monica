@@ -1,5 +1,141 @@
 UNRELEASED CHANGES:
 
+New features:
+
+* Add multi factor auth on oauth
+
+Enhancements:
+
+* Use string and array classes instead of helpers
+
+Fixes:
+
+* Fix display relationship without a ofContact property
+* Fix register request validate
+* Fix relationship create
+
+RELEASED VERSIONS:
+
+v2.13.0 - 2019-04-07
+--------------------
+
+Enhancements:
+
+* Add ability to update a relationship
+* Add a sex type behind the gender
+* Make gender optional on a contact profile
+* Add a Collection::sortByCollator macro
+
+Fixes:
+
+* Fix destroy relationship
+* Fix event dispatch for login (google2fa, u2f) events handle
+* Fix address input label mistake
+* Fix dashboard crash when reminder is empty
+* Fix import vCard with Cyrillic encoding
+* Fix import/export vcard with birthday with year unknown
+* Fix contact missing create form
+* Fix money format for non two "2" minor unit currencies
+
+v2.12.1 - 2019-03-09
+--------------------
+
+Enhancements:
+
+* Add eloquent relationships touches
+
+Fixes:
+
+* Fix reminders not being sent
+* Fix setting deceased information with removing date and reminder
+* Fix contact information update
+* Fix adding people on activity create and update
+* Fix setting a relationship without selecting any birthdate option
+* Fix several typos in English language files
+* Fix Journal view now includes Activities as intended
+* Fix deleting a LifeEvent no longer deletes the associated Contact
+
+v2.12.0 - 2019-02-09
+--------------------
+
+New features:
+
+* Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
+* Add a page in settings to display all DAV resources
+* Add notion of instance administrator for a user
+* Add ability to name u2f security keys and to delete register ones
+* Add ability to add a comment when rating your day in the journal
+* Add API methods to manage genders
+* Breaking change: rewrite API methods to manage contacts
+
+Enhancements:
+
+* Don't change timestamps on contact number_of_views update
+* Redirect to the related real contact when trying to display a partial contact
+* Use iterator reader for vcard imports
+* Accept last name when using contact search field
+* Register all app services as singleton
+* Docker image: add sentry-cli and run sentry:release command if sentry is enabled
+* Refactor reminders by removing Notifications table and creating two new tables: reminder outbox and reminder sent
+* Shorten the value of the contact field if it does not fit into the contact field information
+* Add foreign keys to activities table
+* Add foreign keys to reminders, reminder rules, contacts and life events tables
+* Add number of life events on the contact profile page
+* Add base HTML tag and tweak all assets and urls to use relative paths
+* Refactor activity types with services
+* Refactor activity type categories with services
+
+Fixes:
+
+* Fix addresses and contact fields imports on VCard import
+* Remove users without an existing account in the accounts table
+* Fix case when schedule date is null
+* Add phpstan analyser, and fix a lot of issues
+* Fix middleware priority order to always set locale after authenticate
+* Accept lastname_firstname name order for VCard imports (FN field)
+* Fix vue.js DateTime picker to type a date in other format than en-us one
+* Fix DateTime parse when compact format is used
+* Fix contact and relationship edit with reminder enabled
+* Fix broken migration for the activities table
+* Fix VCard import with partial N entry
+* Fix using 'label' tag without 'for' attribute
+* Fix model binding when it is a guest request (not logged in)
+* Fix bug preventing to create life event without day and month
+* Fix ability to delete a user with a u2f key activated
+* Fix validation fails with Services
+* Fix getting birthday reminders about related contacts
+* Fix default temperature scale setting
+* Fix API methods for Occupation object
+* Fix activity date viewed as one day before the event happened
+* Fix settags api call with an empty tag
+
+v2.11.2 - 2019-01-01
+--------------------
+
+* Carddav: support sync-token (rfc6578)
+* Fix premium feature flag appearing on self-hosted version
+* Fix exception when user is logged out (again)
+* Fix carddav group-member-set propfind call
+* Fix contacts view in case birthdate returns null
+* Fix conversation without message
+
+v2.11.1 - 2018-12-26
+--------------------
+
+* Migrate LinkedIn url from the Contact object to a ContactFieldType object
+* Activate eslint to check vue and javascript formatting
+* Fix tasks store and update
+* Fix error handling in vue components
+* Fix exception when user is logged out
+* Fix subscription plan display
+* Fix dashboard calls display
+* Fix tags getting error
+* Fix contact getIncompleteName to work with UTF-8 last_name characters
+* Fix associate null tags
+
+v2.11.0 - 2018-12-23
+--------------------
+
 * Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
 * Add ability to see the current weather on the contact profile page
 * Add ability to generate recovery codes in order to bypass 2FA/U2F
@@ -19,8 +155,6 @@ UNRELEASED CHANGES:
 * Fix incompatibility of people search queries with PostgreSQL
 * Refactor how contacts are managed
 * Add the notion of places
-
-RELEASED VERSIONS:
 
 v2.10.2 - 2018-11-14
 --------------------

@@ -4,8 +4,8 @@ namespace Tests\Unit\Models;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Contact\Activity;
-use App\Models\Contact\ActivityType;
+use App\Models\Account\Activity;
+use App\Models\Account\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTypeTest extends TestCase

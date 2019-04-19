@@ -7,7 +7,7 @@ use App\Models\Contact\Task;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Services\Task\CreateTask;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -26,8 +26,7 @@ class CreateTaskTest extends TestCase
             'description' => 'This is a description',
         ];
 
-        $taskService = new CreateTask;
-        $task = $taskService->execute($request);
+        $task = app(CreateTask::class)->execute($request);
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id,
@@ -52,8 +51,7 @@ class CreateTaskTest extends TestCase
             'description' => 'This is a description',
         ];
 
-        $taskService = new CreateTask;
-        $task = $taskService->execute($request);
+        $task = app(CreateTask::class)->execute($request);
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id,
@@ -79,8 +77,7 @@ class CreateTaskTest extends TestCase
             'description' => null,
         ];
 
-        $taskService = new CreateTask;
-        $task = $taskService->execute($request);
+        $task = app(CreateTask::class)->execute($request);
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id,
@@ -103,10 +100,9 @@ class CreateTaskTest extends TestCase
             'account_id' => $contact->account->id,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $createTask = new CreateTask;
-        $task = $createTask->execute($request);
+        app(CreateTask::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -123,6 +119,6 @@ class CreateTaskTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createTask = (new CreateTask)->execute($request);
+        app(CreateTask::class)->execute($request);
     }
 }

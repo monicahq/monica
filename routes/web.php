@@ -28,10 +28,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
-    Route::post('/validate2fa', 'Auth\Validate2faController@index');
+    Route::post('/validate2fa', 'Auth\Validate2faController@index')->name('validate2fa');
 });
 
-Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
+Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::name('dashboard.')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
@@ -68,7 +68,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/lifeevents/categories', 'Contacts\\LifeEventsController@categories')->name('categories');
             Route::get('/lifeevents/categories/{lifeEventCategory}/types', 'Contacts\\LifeEventsController@types')->name('types');
             Route::post('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@store')->name('store');
-            Route::delete('/lifeevents/{lifeevent}', 'Contacts\\LifeEventsController@destroy')->name('destroy');
+            Route::delete('/lifeevents/{lifeEvent}', 'Contacts\\LifeEventsController@destroy')->name('destroy');
         });
 
         // Contact information
@@ -120,12 +120,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         // Relationships
-        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only(['create', 'store']);
-        Route::name('relationships.')->group(function () {
-            Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('edit');
-            Route::put('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
-            Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('destroy');
-        });
+        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only([
+            'create', 'store', 'edit', 'update', 'destroy',
+        ]);
 
         // Pets
         Route::resource('people/{contact}/pets', 'Contacts\\PetsController')->only([
@@ -217,6 +214,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
             Route::apiResource('settings/personalization/genders', 'Settings\\GendersController');
             Route::delete('/settings/personalization/genders/{gender}/replaceby/{genderToReplaceWith}', 'Settings\\GendersController@destroyAndReplaceGender');
+            Route::get('/settings/personalization/genderTypes', 'Settings\\GendersController@types');
+            Route::put('/settings/personalization/genders/default/{gender}', 'Settings\\GendersController@updateDefault');
 
             Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@index');
             Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
@@ -224,8 +223,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/personalization/modules', 'Settings\\ModulesController@index');
             Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
 
-            Route::apiResource('settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController');
-            Route::apiResource('settings/personalization/activitytypes', 'Settings\\ActivityTypesController', ['except' => ['index']]);
+            Route::apiResource('settings/personalization/activitytypecategories', 'Account\\Activity\\ActivityTypeCategoriesController');
+            Route::apiResource('settings/personalization/activitytypes', 'Account\\Activity\\ActivityTypesController', ['except' => ['index']]);
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
@@ -265,6 +264,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         Route::get('/settings/api', 'SettingsController@api')->name('api');
+        Route::get('/settings/dav', 'SettingsController@dav')->name('dav');
 
         Route::post('/settings/updateDefaultProfileView', 'SettingsController@updateDefaultProfileView');
 
@@ -276,7 +276,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::post('/settings/security/2fa-enable', 'Settings\\MultiFAController@validateTwoFactor');
             Route::get('/settings/security/2fa-disable', 'Settings\\MultiFAController@disableTwoFactor')->name('2fa-disable');
             Route::post('/settings/security/2fa-disable', 'Settings\\MultiFAController@deactivateTwoFactor');
-            Route::get('/settings/security/u2f-register', 'Settings\\MultiFAController@u2fRegister')->name('u2f-register');
+            Route::get('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegisterData');
+            Route::post('/settings/security/u2f/register', 'Settings\\MultiFAController@u2fRegister');
+            Route::delete('/settings/security/u2f/remove/{u2fKeyId}', 'Settings\\MultiFAController@u2fRemove');
 
             Route::post('/settings/security/generate-recovery-codes', 'Settings\\RecoveryCodesController@store');
             Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');

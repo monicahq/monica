@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Contact\Reminder;
-use App\Jobs\Reminders\ScheduleReminders;
+use App\Models\Contact\ReminderOutbox;
+use App\Jobs\Reminder\NotifyUserAboutReminder;
 
 class SendReminders extends Command
 {
@@ -25,32 +25,32 @@ class SendReminders extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         // Grab all the reminders that are supposed to be sent in the next two days
         // Why 2? because in terms of timezone, we can have up to more than 24 hours
         // between two timezones and we need to take into accounts reminders
         // that are not in the same timezone.
-        Reminder::where('next_expected_date', '<', now()->addDays(2))
-                    ->orderBy('next_expected_date', 'asc')
-                    ->chunk(500, function ($reminders) {
-                        $this->schedule($reminders);
+        ReminderOutbox::where('planned_date', '<', now()->addDays(2))
+                    ->orderBy('planned_date', 'asc')
+                    ->chunk(500, function ($reminderOutboxes) {
+                        $this->send($reminderOutboxes);
                     });
     }
 
-    private function schedule($reminders)
+    /**
+     * Send the reminder to the user and schedule the future.
+     *
+     * @return void
+     */
+    private function send($reminderOutboxes)
     {
-        foreach ($reminders as $reminder) {
-            // Skip the reminder if the contact has been deleted (and for some
-            // reasons, the reminder hasn't)
-            if (! $reminder->contact) {
-                $reminder->delete();
-                continue;
+        foreach ($reminderOutboxes as $reminderOutbox) {
+            if ($reminderOutbox->user->isTheRightTimeToBeReminded($reminderOutbox->planned_date)) {
+                NotifyUserAboutReminder::dispatch($reminderOutbox);
             }
-
-            ScheduleReminders::dispatch($reminder);
         }
     }
 }

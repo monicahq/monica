@@ -7,7 +7,7 @@ use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
@@ -19,7 +19,7 @@ class ApiAddressController extends ApiController
     /**
      * Get the list of addresses.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,10 @@ class ApiAddressController extends ApiController
 
     /**
      * Get the detail of a given address.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -55,13 +57,14 @@ class ApiAddressController extends ApiController
     /**
      * Store the address.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $address = (new CreateAddress)->execute(
+            $address = app(CreateAddress::class)->execute(
                 $request->all()
                     +
                     [
@@ -70,8 +73,8 @@ class ApiAddressController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -81,14 +84,16 @@ class ApiAddressController extends ApiController
 
     /**
      * Update the address.
-     * @param  Request $request
-     * @param  int $addressId
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $addressId
+     *
+     * @return AddressResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $addressId)
     {
         try {
-            $address = (new UpdateAddress)->execute(
+            $address = app(UpdateAddress::class)->execute(
                 $request->all()
                     +
                     [
@@ -98,8 +103,8 @@ class ApiAddressController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -109,20 +114,22 @@ class ApiAddressController extends ApiController
 
     /**
      * Delete an address.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $addressId)
     {
         try {
-            (new DestroyAddress)->execute([
+            app(DestroyAddress::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'address_id' => $addressId,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
@@ -133,7 +140,7 @@ class ApiAddressController extends ApiController
     /**
      * Get the list of addresses for the given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function addresses(Request $request, $contactId)
     {

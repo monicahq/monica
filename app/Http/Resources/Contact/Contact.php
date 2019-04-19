@@ -11,7 +11,7 @@ class Contact extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -24,7 +24,8 @@ class Contact extends Resource
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
             'description' => $this->description,
-            'gender' => $this->gender->name,
+            'gender' => is_null($this->gender) ? null : $this->gender->name,
+            'gender_type' => is_null($this->gender) ? null : $this->gender->type,
             'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
             'is_active' => (bool) $this->is_active,
@@ -67,7 +68,6 @@ class Contact extends Resource
                 'career' => $this->when(! $this->is_partial, [
                     'job' => $this->job,
                     'company' => $this->company,
-                    'linkedin_profile_url' => $this->linkedin_profile_url,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
                     'url' => $this->getAvatarUrl(110),

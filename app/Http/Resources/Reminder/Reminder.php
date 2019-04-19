@@ -11,7 +11,7 @@ class Reminder extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -23,8 +23,8 @@ class Reminder extends Resource
             'description' => $this->description,
             'frequency_type' => $this->frequency_type,
             'frequency_number' => $this->frequency_number,
-            'last_triggered_date' => DateHelper::getTimestamp($this->last_triggered),
-            'next_expected_date' => DateHelper::getTimestamp($this->next_expected_date),
+            'initial_date' => DateHelper::getTimestamp($this->initial_date),
+            'delible' => DateHelper::getTimestamp($this->delible),
             'account' => [
                 'id' => $this->account_id,
             ],

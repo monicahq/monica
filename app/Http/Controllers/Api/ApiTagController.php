@@ -8,8 +8,8 @@ use App\Services\Contact\Tag\CreateTag;
 use App\Services\Contact\Tag\UpdateTag;
 use Illuminate\Database\QueryException;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Exceptions\MissingParameterException;
 use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiTagController extends ApiController
@@ -19,7 +19,7 @@ class ApiTagController extends ApiController
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,10 @@ class ApiTagController extends ApiController
 
     /**
      * Get the detail of a given tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TagResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $id)
     {
@@ -54,13 +56,15 @@ class ApiTagController extends ApiController
 
     /**
      * Store the tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TagResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $tag = (new CreateTag)->execute(
+            $tag = app(CreateTag::class)->execute(
                 $request->all()
                     +
                     [
@@ -69,8 +73,8 @@ class ApiTagController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new TagResource($tag);
@@ -78,13 +82,15 @@ class ApiTagController extends ApiController
 
     /**
      * Update the tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return TagResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
         try {
-            $tag = (new UpdateTag)->execute(
+            $tag = app(UpdateTag::class)->execute(
                 $request->all()
                     +
                     [
@@ -94,8 +100,8 @@ class ApiTagController extends ApiController
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return new TagResource($tag);
@@ -103,20 +109,22 @@ class ApiTagController extends ApiController
 
     /**
      * Delete a tag.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $id)
     {
         try {
-            (new DestroyTag)->execute([
+            app(DestroyTag::class)->execute([
                 'tag_id' => $id,
                 'account_id' => auth()->user()->account->id,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (MissingParameterException $e) {
-            return $this->respondInvalidParameters($e->errors);
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return $this->respondObjectDeleted($id);

@@ -7,13 +7,43 @@ use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Tag\AssociateTag;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AssociateTagTest extends TestCase
 {
     use DatabaseTransactions;
+
+    public function test_it_sets_a_non_english_tag_to_a_contact_when_tag_doesnt_exist_yet()
+    {
+        $contact = factory(Contact::class)->create([]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'name' => '朋友',
+        ];
+
+        $tag = app(AssociateTag::class)->execute($request);
+
+        $this->assertDatabaseHas('tags', [
+            'account_id' => $contact->account->id,
+            'name' => '朋友',
+            'name_slug' => '朋友',
+        ]);
+
+        $this->assertDatabaseHas('contact_tag', [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'tag_id' => $tag->id,
+        ]);
+
+        $this->assertInstanceOf(
+            Tag::class,
+            $tag
+        );
+    }
 
     public function test_it_sets_a_tag_to_a_contact_when_tag_doesnt_exist_yet()
     {
@@ -25,8 +55,7 @@ class AssociateTagTest extends TestCase
             'name' => 'Central Perk',
         ];
 
-        $associateTagService = new AssociateTag;
-        $tag = $associateTagService->execute($request);
+        $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'account_id' => $contact->account->id,
@@ -71,8 +100,7 @@ class AssociateTagTest extends TestCase
             'name' => 'Central Perk',
         ];
 
-        $associateTagService = new AssociateTag;
-        $tag = $associateTagService->execute($request);
+        $tag = app(AssociateTag::class)->execute($request);
 
         $this->assertDatabaseHas('tags', [
             'account_id' => $contact->account->id,
@@ -99,10 +127,9 @@ class AssociateTagTest extends TestCase
             'contact_id' => 2,
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $associateTagService = new AssociateTag;
-        $tag = $associateTagService->execute($request);
+        app(AssociateTag::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_does_not_exist()
@@ -117,6 +144,6 @@ class AssociateTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $associateTagService = (new AssociateTag)->execute($request);
+        app(AssociateTag::class)->execute($request);
     }
 }

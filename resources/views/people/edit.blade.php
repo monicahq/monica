@@ -9,7 +9,7 @@
       <h3 class="f3 fw5">{{ trans('people.information_edit_title', ['name' => $contact->first_name]) }}</h3>
 
       @if (! auth()->user()->account->hasLimitations())
-      <p class="import">{!! trans('people.people_add_import', ['url' => '/settings/import']) !!}</p>
+      <p class="import">{!! trans('people.people_add_import', ['url' => 'settings/import']) !!}</p>
       @endif
     </div>
 
@@ -98,7 +98,7 @@
             <form-select
               :options="{{ $genders }}"
               value="{{ $contact->gender_id }}"
-              :required="true"
+              :required="false"
               :title="'{{ trans('people.people_add_gender') }}'"
               :id="'gender'">
             </form-select>
@@ -136,8 +136,7 @@
           :day="{{ $day }}"
           :age="'{{ $age }}'"
           :default-date="'{{ $birthdate }}'"
-          :locale="'{{ auth()->user()->locale }}'"
-          :reminder={{ $hasBirthdayReminder }}
+          :reminder="{{ json_encode($hasBirthdayReminder) }}"
           :value="'{{ $birthdayState }}'"
         ></form-specialdate>
 
@@ -172,7 +171,7 @@
         <div class="ph4-ns ph3 pv3 bb b--gray-monica">
           <div class="flex-ns justify-between">
             <div>
-                <a href="{{ route('people.show', $contact) }}"><button class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</button></a>
+                <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" style="text-align: center;">{{ trans('app.cancel') }}</a>
             </div>
             <div>
               <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" name="save" type="submit">{{ trans('app.save') }}</button>

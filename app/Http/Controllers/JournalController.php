@@ -16,7 +16,7 @@ class JournalController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -88,6 +88,7 @@ class JournalController extends Controller
         $day = auth()->user()->account->days()->create([
             'date' => now(DateHelper::getTimezone()),
             'rate' => $request->get('rate'),
+            'comment' => $request->get('comment'),
         ]);
 
         // Log a journal entry
@@ -105,9 +106,10 @@ class JournalController extends Controller
 
     /**
      * Delete the Day entry.
-     * @return mixed
+     *
+     * @return void
      */
-    public function trashDay(Day $day)
+    public function trashDay(Day $day): void
     {
         $day->deleteJournalEntry();
         $day->delete();
@@ -115,7 +117,7 @@ class JournalController extends Controller
 
     /**
      * Indicates whether the user has already rated the current day.
-     * @return bool
+     * @return string
      */
     public function hasRated()
     {
@@ -129,7 +131,7 @@ class JournalController extends Controller
     /**
      * Display the Create journal entry screen.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {

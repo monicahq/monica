@@ -4,6 +4,7 @@ namespace Tests\Unit\Helpers;
 
 use Tests\FeatureTestCase;
 use App\Helpers\LocaleHelper;
+use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LocaleHelperTest extends FeatureTestCase
@@ -40,9 +41,7 @@ class LocaleHelperTest extends FeatureTestCase
 
     public function test_get_direction_french()
     {
-        $user = $this->signIn();
-        $user->locale = 'fr';
-        $user->save();
+        App::setLocale('fr');
 
         $this->assertEquals(
             'ltr',
@@ -52,9 +51,7 @@ class LocaleHelperTest extends FeatureTestCase
 
     public function test_get_direction_hebrew()
     {
-        $user = $this->signIn();
-        $user->locale = 'he';
-        $user->save();
+        App::setLocale('he');
 
         $this->assertEquals(
             'rtl',
@@ -70,5 +67,90 @@ class LocaleHelperTest extends FeatureTestCase
             '+44 20 2555 0191',
             $tel
         );
+    }
+
+    /**
+     * @dataProvider localeHelperGetLangProvider
+     */
+    public function test_locale_get_lang($locale, $expect)
+    {
+        $lang = LocaleHelper::getLang($locale);
+
+        $this->assertEquals(
+            $expect,
+            $lang
+        );
+    }
+
+    public function localeHelperGetLangProvider()
+    {
+        return [
+            ['en', 'en'],
+            ['En', 'en'],
+            ['EN', 'en'],
+            ['en-US', 'en'],
+            ['en-us', 'en'],
+            ['en_US', 'en'],
+            ['pt-BR', 'pt'],
+            ['xx-YY', 'xx'],
+        ];
+    }
+
+    /**
+     * @dataProvider localeHelperGetCountryProvider
+     */
+    public function test_locale_get_country($locale, $expect)
+    {
+        $country = LocaleHelper::getCountry($locale);
+
+        $this->assertEquals(
+            $expect,
+            $country
+        );
+    }
+
+    public function localeHelperGetCountryProvider()
+    {
+        return [
+            ['en', 'US'],
+            ['en-us', 'US'],
+            ['en-US', 'US'],
+            ['en_US', 'US'],
+            ['pt-BR', 'BR'],
+            ['xx-YY', 'YY'],
+        ];
+    }
+
+    /**
+     * @dataProvider localeHelperExtractCountryProvider
+     */
+    public function test_locale_extract_country($locale, $expect)
+    {
+        $country = LocaleHelper::extractCountry($locale);
+
+        $this->assertEquals(
+            $expect,
+            $country
+        );
+
+        App::setLocale($locale);
+
+        $country = LocaleHelper::extractCountry();
+
+        $this->assertEquals(
+            $expect,
+            $country
+        );
+    }
+
+    public function localeHelperExtractCountryProvider()
+    {
+        return [
+            ['en', null],
+            ['fr', null],
+            ['en-US', 'US'],
+            ['pt-BR', 'BR'],
+            ['xx-YY', 'YY'],
+        ];
     }
 }

@@ -7,7 +7,7 @@ use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Services\User\EmailChange;
 use App\Notifications\ConfirmEmail;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -29,8 +29,7 @@ class EmailChangeTest extends TestCase
             'email' => 'newmail@ok.com',
         ];
 
-        $emailChangeService = new EmailChange;
-        $user = $emailChangeService->execute($request);
+        $user = app(EmailChange::class)->execute($request);
 
         NotificationFacade::assertNotSentTo($user, ConfirmEmail::class);
         NotificationFacade::assertNothingSent();
@@ -55,10 +54,9 @@ class EmailChangeTest extends TestCase
             'email' => 'email@email.com',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $emailChangeService = new EmailChange;
-        $user = $emailChangeService->execute($request);
+        app(EmailChange::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_user_is_not_linked_to_account()
@@ -74,7 +72,7 @@ class EmailChangeTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $emailChangeService = (new EmailChange)->execute($request);
+        app(EmailChange::class)->execute($request);
     }
 
     public function test_it_update_user_email_and_send_confirmation()
@@ -90,8 +88,7 @@ class EmailChangeTest extends TestCase
             'email' => 'newmail@ok.com',
         ];
 
-        $emailChangeService = new EmailChange;
-        $user = $emailChangeService->execute($request);
+        $user = app(EmailChange::class)->execute($request);
 
         NotificationFacade::assertSentTo($user, ConfirmEmail::class);
 

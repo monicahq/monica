@@ -78,7 +78,7 @@ return [
         ],
         'testing' => [
             'driver' => 'errorlog',
-            'level' => 'info',
+            'level' => 'emergency',
         ],
     ],
 ];

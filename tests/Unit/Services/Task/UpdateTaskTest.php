@@ -7,7 +7,7 @@ use App\Models\Contact\Task;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Services\Task\UpdateTask;
-use App\Exceptions\MissingParameterException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -28,8 +28,7 @@ class UpdateTaskTest extends TestCase
             'completed' => true,
         ];
 
-        $taskService = new UpdateTask;
-        $task = $taskService->execute($request);
+        $task = app(UpdateTask::class)->execute($request);
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id,
@@ -59,8 +58,7 @@ class UpdateTaskTest extends TestCase
             'completed' => true,
         ];
 
-        $taskService = new UpdateTask;
-        $task = $taskService->execute($request);
+        $task = app(UpdateTask::class)->execute($request);
 
         $this->assertDatabaseHas('tasks', [
             'id' => $task->id,
@@ -87,10 +85,9 @@ class UpdateTaskTest extends TestCase
             'description' => 'description',
         ];
 
-        $this->expectException(MissingParameterException::class);
+        $this->expectException(ValidationException::class);
 
-        $updateTask = new UpdateTask;
-        $task = $updateTask->execute($request);
+        app(UpdateTask::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -110,7 +107,7 @@ class UpdateTaskTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateTask = (new UpdateTask)->execute($request);
+        app(UpdateTask::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_task_is_not_linked_to_account()
@@ -130,6 +127,6 @@ class UpdateTaskTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateTask = (new UpdateTask)->execute($request);
+        app(UpdateTask::class)->execute($request);
     }
 }

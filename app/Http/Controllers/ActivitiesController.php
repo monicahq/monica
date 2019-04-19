@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Activity;
+use App\Models\Account\Activity;
 use App\Models\Journal\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -15,7 +15,8 @@ class ActivitiesController extends Controller
      * Display a listing of the resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function index(Contact $contact)
     {
@@ -27,7 +28,8 @@ class ActivitiesController extends Controller
      * Show the form for creating a new resource.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
@@ -42,7 +44,8 @@ class ActivitiesController extends Controller
      *
      * @param ActivitiesRequest $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
@@ -89,7 +92,8 @@ class ActivitiesController extends Controller
      *
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Activity $activity, Contact $contact)
     {
@@ -105,7 +109,8 @@ class ActivitiesController extends Controller
      * @param ActivitiesRequest $request
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ActivitiesRequest $request, Activity $activity, Contact $contact)
     {
@@ -153,7 +158,7 @@ class ActivitiesController extends Controller
 
         // New attendees
         foreach ($specifiedContactsObj as $newContact) {
-            $newContact->activities()->save($activity);
+            $newContact->activities()->attach($activity, ['account_id' => $account->id]);
         }
 
         return redirect()->route('people.show', $contact)
@@ -165,7 +170,8 @@ class ActivitiesController extends Controller
      *
      * @param Contact $contact
      * @param Activity $activity
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Activity $activity, Contact $contact)
     {

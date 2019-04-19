@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\Http\Request;
 use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\People\RemindersRequest;
+use App\Services\Contact\Reminder\CreateReminder;
+use App\Services\Contact\Reminder\UpdateReminder;
+use App\Services\Contact\Reminder\DestroyReminder;
 
 class RemindersController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new reminder.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
@@ -25,26 +29,26 @@ class RemindersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a reminder.
      *
-     * @param RemindersRequest $request
+     * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(RemindersRequest $request, Contact $contact)
+    public function store(Request $request, Contact $contact)
     {
-        $reminder = $contact->reminders()->create(
-            $request->only([
-                'title',
-                'description',
-                'frequency_type',
-                'next_expected_date',
-                'frequency_number',
-            ])
-            + ['account_id' => $contact->account_id]
-        );
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'initial_date' => $request->get('initial_date'),
+            'frequency_type' => $request->get('frequency_type'),
+            'frequency_number' => is_null($request->get('frequency_number')) ? 1 : $request->get('frequency_number'),
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+        ];
 
-        $reminder->scheduleNotifications();
+        app(CreateReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));
@@ -55,7 +59,8 @@ class RemindersController extends Controller
      *
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Reminder $reminder)
     {
@@ -66,47 +71,50 @@ class RemindersController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the reminder.
      *
-     * @param RemindersRequest $request
+     * @param Request $request
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(RemindersRequest $request, Contact $contact, Reminder $reminder)
+    public function update(Request $request, Contact $contact, Reminder $reminder)
     {
-        $reminder->update(
-            $request->only([
-                'title',
-                'next_expected_date',
-                'description',
-                'frequency_type',
-                'frequency_number',
-            ])
-            + ['account_id' => $contact->account_id]
-        );
+        $data = [
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'reminder_id' => $reminder->id,
+            'initial_date' => $request->get('initial_date'),
+            'frequency_type' => $request->get('frequency_type'),
+            'frequency_number' => is_null($request->get('frequency_number')) ? 1 : $request->get('frequency_number'),
+            'title' => $request->get('title'),
+            'description' => $request->get('description'),
+        ];
 
-        $reminder->purgeNotifications();
-        $reminder->scheduleNotifications();
+        app(UpdateReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_update_success'));
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Destroy the reminder.
      *
+     * @param Request $request
+     * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Contact $contact, Reminder $reminder)
+    public function destroy(Request $request, Contact $contact, Reminder $reminder)
     {
-        if ($reminder->account_id != auth()->user()->account_id) {
-            return redirect()->route('people.index');
-        }
+        $data = [
+            'account_id' => $reminder->account->id,
+            'reminder_id' => $reminder->id,
+        ];
 
-        $reminder->purgeNotifications();
-        $reminder->delete();
+        app(DestroyReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_delete_success'));

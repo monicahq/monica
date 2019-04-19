@@ -32,7 +32,7 @@ trait JsonRespondController
      * Set HTTP status code of the response.
      *
      * @param int $statusCode
-     * @return $this
+     * @return self
      */
     public function setHTTPStatusCode($statusCode)
     {
@@ -55,7 +55,7 @@ trait JsonRespondController
      * Set error code of the response.
      *
      * @param int $errorCode
-     * @return $this
+     * @return self
      */
     public function setErrorCode($errorCode)
     {
@@ -77,22 +77,9 @@ trait JsonRespondController
     }
 
     /**
-     * Sends a response unauthorized (401) to the request.
-     *
-     * @param string $message
-     * @return JsonResponse
-     */
-    public function respondUnauthorized($message = null)
-    {
-        return $this->setHTTPStatusCode(401)
-                    ->setErrorCode(42)
-                    ->respondWithError($message);
-    }
-
-    /**
      * Sends a response not found (404) to the request.
+     * Error Code = 31.
      *
-     * @param string $message
      * @return JsonResponse
      */
     public function respondNotFound()
@@ -103,21 +90,23 @@ trait JsonRespondController
     }
 
     /**
-     * Sends a response invalid query (http 500) to the request.
+     * Sends an error when the validator failed.
+     * Error Code = 32.
      *
-     * @param string $message
+     * @param Validator $validator
      * @return JsonResponse
      */
-    public function respondInvalidQuery($message = null)
+    public function respondValidatorFailed(Validator $validator)
     {
-        return $this->setHTTPStatusCode(500)
-                    ->setErrorCode(40)
-                    ->respondWithError($message);
+        return $this->setHTTPStatusCode(422)
+                    ->setErrorCode(32)
+                    ->respondWithError($validator->errors()->all());
     }
 
     /**
      * Sends an error when the query didn't have the right parameters for
      * creating an object.
+     * Error Code = 33.
      *
      * @param string $message
      * @return JsonResponse
@@ -130,35 +119,51 @@ trait JsonRespondController
     }
 
     /**
+     * Sends a response invalid query (http 500) to the request.
+     * Error Code = 40.
+     *
+     * @param string $message
+     * @return JsonResponse
+     */
+    public function respondInvalidQuery($message = null)
+    {
+        return $this->setHTTPStatusCode(500)
+                    ->setErrorCode(40)
+                    ->respondWithError($message);
+    }
+
+    /**
      * Sends an error when the query contains invalid parameters.
+     * Error Code = 41.
      *
      * @param string $message
      * @return JsonResponse
      */
     public function respondInvalidParameters($message = null)
     {
-        return $this->setHTTPStatusCode(400)
+        return $this->setHTTPStatusCode(422)
                     ->setErrorCode(41)
                     ->respondWithError($message);
     }
 
     /**
-     * Sends an error when the validator failed.
+     * Sends a response unauthorized (401) to the request.
+     * Error Code = 42.
      *
-     * @param Validator $validator
+     * @param string $message
      * @return JsonResponse
      */
-    public function respondValidatorFailed(Validator $validator)
+    public function respondUnauthorized($message = null)
     {
-        return $this->setHTTPStatusCode(400)
-                    ->setErrorCode(32)
-                    ->respondWithError($validator->errors()->all());
+        return $this->setHTTPStatusCode(401)
+                    ->setErrorCode(42)
+                    ->respondWithError($message);
     }
 
     /**
      * Sends a response with error.
      *
-     * @param string message
+     * @param string|array $message
      * @return JsonResponse
      */
     public function respondWithError($message = null)

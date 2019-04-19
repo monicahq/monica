@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use App\Helpers\IdHasher;
 use Illuminate\Routing\Router;
 use App\Models\Contact\Contact;
+use App\Services\Instance\IdHasher;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Exceptions\WrongIdException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -32,9 +33,20 @@ class RouteServiceProvider extends ServiceProvider
     {
         parent::boot();
 
+        if (App::environment('production')) {
+            URL::forceScheme('https');
+        }
+
         Route::bind('contact', function ($value) {
+            // In case the user is logged out
+            if (! Auth::check()) {
+                redirect()->route('login')->send();
+
+                return;
+            }
+
             try {
-                $id = app('idhasher')->decodeId($value);
+                $id = app(IdHasher::class)->decodeId($value);
 
                 return Contact::where('account_id', auth()->user()->account_id)
                     ->findOrFail($id);
@@ -56,20 +68,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        if (App::environment('production')) {
-            URL::forceScheme('https');
-        }
-
         $this->mapApiRoutes($router);
-
         $this->mapWebRoutes($router);
-
         $this->mapOAuthRoutes($router);
-
-        if (config('carddav.enabled')) {
-            $this->mapCardDAVRoutes($router);
-        }
-
         $this->mapSpecialRoutes($router);
     }
 
@@ -86,7 +87,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->group([
             'middleware' => 'web',
             'namespace' => $this->namespace,
-        ], function ($router) {
+        ], function () {
             require base_path('routes/web.php');
         });
     }
@@ -122,24 +123,6 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => $this->namespace.'\Api',
         ], function () {
             require base_path('routes/api.php');
-        });
-    }
-
-    /**
-     * Define the "carddav" routes for the application.
-     *
-     * These routes are typically stateless.
-     *
-     * @return void
-     */
-    protected function mapCardDAVRoutes(Router $router)
-    {
-        $router->group([
-            'prefix' => 'carddav',
-            'middleware' => 'api',
-            'namespace' => $this->namespace,
-        ], function () {
-            require base_path('routes/carddav.php');
         });
     }
 

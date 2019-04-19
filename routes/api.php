@@ -20,6 +20,9 @@ Route::group(['middleware' => ['auth:api']], function () {
     // Contacts
     Route::apiResource('contacts', 'ApiContactController');
 
+    // Genders
+    Route::apiResource('genders', 'Account\\ApiGenderController');
+
     // Relationships
     Route::apiResource('relationships', 'ApiRelationshipController', ['except' => ['index']]);
     Route::get('/contacts/{contact}/relationships', 'ApiRelationshipController@index');
@@ -46,6 +49,12 @@ Route::group(['middleware' => ['auth:api']], function () {
 
     // Tags
     Route::apiResource('tags', 'ApiTagController');
+
+    // Companies
+    Route::apiResource('companies', 'Account\\ApiCompanyController');
+
+    // Companies
+    Route::apiResource('occupations', 'Contact\\ApiOccupationController');
 
     // Notes
     Route::apiResource('notes', 'ApiNoteController');
@@ -84,10 +93,10 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::apiResource('journal', 'ApiJournalController');
 
     // Activity Types
-    Route::apiResource('activitytypes', 'Contact\\ApiActivityTypeController');
+    Route::apiResource('activitytypes', 'Account\\Activity\\ApiActivityTypeController');
 
     // Activity Type Categories
-    Route::apiResource('activitytypecategories', 'Contact\\ApiActivityTypeCategoryController');
+    Route::apiResource('activitytypecategories', 'Account\\Activity\\ApiActivityTypeCategoryController');
 
     // Relationship Type Groups
     Route::apiResource('relationshiptypegroups', 'ApiRelationshipTypeGroupController', ['only' => [

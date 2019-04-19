@@ -20,6 +20,13 @@ class Address extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * All of the relationships to be touched.
+     *
+     * @var array
+     */
+    protected $touches = ['contact'];
+
     protected $table = 'addresses';
 
     /**
@@ -43,7 +50,7 @@ class Address extends Model
     }
 
     /**
-     * Get the contact record associated with the address.
+     * Get the place record associated with the address.
      *
      * @return BelongsTo
      */

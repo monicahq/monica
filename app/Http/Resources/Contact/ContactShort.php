@@ -10,7 +10,7 @@ class ContactShort extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -24,7 +24,8 @@ class ContactShort extends Resource
             'nickname' => $this->nickname,
             'complete_name' => $this->name,
             'initials' => $this->getInitials(),
-            'gender' => $this->gender->name,
+            'gender' => is_null($this->gender) ? null : $this->gender->name,
+            'gender_type' => is_null($this->gender) ? null : $this->gender->type,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
             'information' => [

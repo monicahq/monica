@@ -15,7 +15,7 @@ class ApiContactFieldTypeController extends ApiController
     /**
      * Get the list of contact field types.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -27,8 +27,10 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Get the detail of a given contact field type.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ContactFieldTypeResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $contactFieldTypeId)
     {
@@ -45,8 +47,10 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Store the contactfieldtype.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return ContactFieldTypeResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -69,9 +73,11 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Update the contact field type.
-     * @param  Request $request
-     * @param  int
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     * @param int $contactFieldTypeId
+     *
+     * @return ContactFieldTypeResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $contactFieldTypeId)
     {
@@ -110,7 +116,7 @@ class ApiContactFieldTypeController extends ApiController
      * Validate the request for update.
      *
      * @param  Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
     {
@@ -132,8 +138,10 @@ class ApiContactFieldTypeController extends ApiController
 
     /**
      * Delete an contactfieldtype.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $contactFieldTypeId)
     {
