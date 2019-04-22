@@ -6604,7 +6604,7 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.2.6",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
@@ -11615,12 +11615,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "9c6c45a2bf8825209fc18861ff666a90f4d878cf"
+                "reference": "7c567855e40e04d17e2b91f3fd1d8f6baf5bcca6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/9c6c45a2bf8825209fc18861ff666a90f4d878cf",
-                "reference": "9c6c45a2bf8825209fc18861ff666a90f4d878cf",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/7c567855e40e04d17e2b91f3fd1d8f6baf5bcca6",
+                "reference": "7c567855e40e04d17e2b91f3fd1d8f6baf5bcca6",
                 "shasum": ""
             },
             "conflict": {
@@ -11719,7 +11719,7 @@
                 "silverstripe/userforms": "<3",
                 "simple-updates/phpwhois": "<=1",
                 "simplesamlphp/saml2": "<1.10.6|>=2,<2.3.8|>=3,<3.1.4",
-                "simplesamlphp/simplesamlphp": "<1.16.3",
+                "simplesamlphp/simplesamlphp": "<1.15.2|>=1.16,<1.16.3",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "slim/slim": "<2.6",
                 "smarty/smarty": "<3.1.33",
@@ -11753,7 +11753,7 @@
                 "symfony/yaml": ">=2,<2.0.22|>=2.1,<2.1.7",
                 "tecnickcom/tcpdf": "<6.2.22",
                 "thelia/backoffice-default-template": ">=2.1,<2.1.2",
-                "thelia/thelia": ">=2.1,<2.1.2|>=2.1.0-beta1,<2.1.3",
+                "thelia/thelia": ">=2.1.0-beta1,<2.1.3|>=2.1,<2.1.2",
                 "theonedemon/phpwhois": "<=4.2.5",
                 "titon/framework": ">=0,<9.9.99",
                 "truckersmp/phpwhois": "<=4.3.1",
@@ -11812,7 +11812,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-04-18T06:59:35+00:00"
+            "time": "2019-04-20T06:58:11+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -12704,16 +12704,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.2.7",
+            "version": "3.2.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "6e010d9db95275725e5ad6409c387eb173091f72"
+                "reference": "29b70442b11e3e66113935a2ee22e165a70c74a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/6e010d9db95275725e5ad6409c387eb173091f72",
-                "reference": "6e010d9db95275725e5ad6409c387eb173091f72",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/29b70442b11e3e66113935a2ee22e165a70c74a4",
+                "reference": "29b70442b11e3e66113935a2ee22e165a70c74a4",
                 "shasum": ""
             },
             "require": {
@@ -12780,7 +12780,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-04-12T15:32:35+00:00"
+            "time": "2019-04-20T21:54:17+00:00"
         },
         {
             "name": "webmozart/assert",
