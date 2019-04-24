@@ -51,33 +51,39 @@
 </style>
 
 <template>
-    <div v-if="item.id > 0" class="item-search-result" :data-contact="item.id" :data-name="item.name">
-        <a :href="'/people/'+item.hash_id">
-            <img v-if="item.information.avatar.has_avatar"
-                :src="item.information.avatar.avatar_url"
-                class="avatar">
-            <div v-else
-                class="avatar avatar-initials"
-                :style="'background-color: '+item.information.avatar.default_avatar_color">
-                {{ item.initials }}
-            </div>
-            {{ item.complete_name }}
-            <span />
-        </a>
-    </div>
-    <div v-else class="item-search-result">
-        <a href="/people/add">
-            <div class="avatar avatar-initials avatar-new">+</div>
-            {{ $t('people.people_add_new') }}
-            <span />
-        </a>
-    </div>
+  <div v-if="item.id > 0" class="item-search-result" :data-contact="item.id" :data-name="item.name">
+    <a :href="'/people/'+item.hash_id">
+      <img v-if="item.information.avatar.has_avatar"
+           :src="item.information.avatar.avatar_url"
+           class="avatar"
+      />
+      <div v-else
+           class="avatar avatar-initials"
+           :style="'background-color: '+item.information.avatar.default_avatar_color"
+      >
+        {{ item.initials }}
+      </div>
+      {{ item.complete_name }}
+      <span></span>
+    </a>
+  </div>
+  <div v-else class="item-search-result">
+    <a href="/people/add">
+      <div class="avatar avatar-initials avatar-new">+</div>
+      {{ $t('people.people_add_new') }}
+      <span></span>
+    </a>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    item: { required: true }
+    item: {
+      type: Object,
+      required: true,
+      default: null,
+    },
   }
-}
+};
 </script>

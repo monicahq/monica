@@ -6,21 +6,22 @@
 
     <div class="form-group user-input">
         <label for="summary">{{ trans('people.activities_who_was_involved') }}</label>
-        <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control user-input-search-input">
-        <ul class="user-input-search-results"></ul>
-        <br />
-        <ul class="contacts">
-            <ul class="contacts-list">
-                @if ($contact && $method == 'POST')
-                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
-                    <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
-                @endif
-                @foreach ($activity->contacts as $contact)
-                    <li class="pretty-tag"><a href="{{ route('people.show', $contact) }}">{{ $contact->first_name }} {{ $contact->last_name }}</a></li>
-                    <input type="hidden" name="contacts[]" value="{{ $contact->id }}" />
-                @endforeach
-            </ul>
-        </ul>
+
+        @if ($contact && $method == 'POST')
+            <contact-multi-search
+                :id="'summary'"
+                :user-contact-id="{{ $contact->id }}"
+                :placeholder="'{{ trans('people.people_search') }}'"
+                :contacts="{{ json_encode(\App\Http\Resources\Contact\ContactShort::collection(collect([$contact]))) }}"
+            ></contact-multi-search>
+        @else
+            <contact-multi-search
+                :id="'summary'"
+                :user-contact-id="{{$contact ? $contact->id : 0 }}"
+                :placeholder="'{{ trans('people.people_search') }}'"
+                :contacts="{{ json_encode(\App\Http\Resources\Contact\ContactShort::collection($activity->contacts)) }}"
+            ></contact-multi-search>
+        @endif
     </div>
 
     {{-- Summary --}}
