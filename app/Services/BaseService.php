@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Carbon\Carbon;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 abstract class BaseService
@@ -40,11 +41,9 @@ abstract class BaseService
      */
     protected function nullOrValue($data, $index)
     {
-        if (is_null($data[$index])) {
-            return;
-        }
+        $value = Arr::get($data, $index, null);
 
-        return $data[$index] === '' ? null : $data[$index];
+        return is_null($value) || $value === '' ? null : $value;
     }
 
     /**
@@ -56,10 +55,8 @@ abstract class BaseService
      */
     protected function nullOrDate($data, $index)
     {
-        if (is_null($data[$index])) {
-            return;
-        }
+        $value = Arr::get($data, $index, null);
 
-        return $data[$index] === '' ? null : Carbon::parse($data[$index]);
+        return is_null($value) || $value === '' ? null : Carbon::parse($value);
     }
 }
