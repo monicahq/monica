@@ -3,8 +3,8 @@
 namespace App\Services\Contact\Contact;
 
 use App\Services\BaseService;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Contact;
+use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
@@ -15,7 +15,7 @@ class UpdateBirthdayInformation extends BaseService
     /**
      * @var array
      */
-    var $data;
+    public $data;
 
     /**
      * Get the validation rules that apply to the service.
