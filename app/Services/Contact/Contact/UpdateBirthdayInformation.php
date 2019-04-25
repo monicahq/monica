@@ -3,6 +3,7 @@
 namespace App\Services\Contact\Contact;
 
 use App\Services\BaseService;
+use Illuminate\Validation\Rule;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
@@ -11,6 +12,11 @@ use App\Services\Contact\Reminder\DestroyReminder;
 
 class UpdateBirthdayInformation extends BaseService
 {
+    /**
+     * @var array
+     */
+    var $data;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -22,11 +28,26 @@ class UpdateBirthdayInformation extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'is_date_known' => 'required|boolean',
-            'day' => 'nullable|integer',
-            'month' => 'nullable|integer',
-            'year' => 'nullable|integer',
             'is_age_based' => 'nullable|boolean',
-            'age' => 'nullable|integer',
+            'day' => [
+                'integer',
+                Rule::requiredIf(function () {
+                    return $this->data['is_date_known'] && ! $this->data['is_age_based'];
+                }),
+            ],
+            'month' => [
+                'integer',
+                Rule::requiredIf(function () {
+                    return $this->data['is_date_known'] && ! $this->data['is_age_based'];
+                }),
+            ],
+            'year' => 'nullable|integer',
+            'age' => [
+                'integer',
+                Rule::requiredIf(function () {
+                    return $this->data['is_date_known'] && $this->data['is_age_based'];
+                }),
+            ],
             'add_reminder' => 'nullable|boolean',
         ];
     }
@@ -39,6 +60,7 @@ class UpdateBirthdayInformation extends BaseService
      */
     public function execute(array $data)
     {
+        $this->data = $data;
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])

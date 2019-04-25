@@ -18,7 +18,7 @@ abstract class BaseService
     }
 
     /**
-     * Validate all documents in an account.
+     * Validate all datas to execute the service.
      *
      * @param array $data
      * @return bool
@@ -40,11 +40,11 @@ abstract class BaseService
      */
     protected function nullOrValue($data, $index)
     {
-        if (empty($data[$index])) {
+        if (is_null($data[$index])) {
             return;
         }
 
-        return $data[$index] == '' ? null : $data[$index];
+        return $data[$index] === '' ? null : $data[$index];
     }
 
     /**
@@ -56,10 +56,10 @@ abstract class BaseService
      */
     protected function nullOrDate($data, $index)
     {
-        if (empty($data[$index])) {
+        if (is_null($data[$index])) {
             return;
         }
 
-        return $data[$index] == '' ? null : Carbon::parse($data[$index]);
+        return $data[$index] === '' ? null : Carbon::parse($data[$index]);
     }
 }
