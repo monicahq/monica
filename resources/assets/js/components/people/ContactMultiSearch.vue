@@ -13,6 +13,7 @@
       :filter="filter"
       :add-no-result="false"
       :input-class="'user-input-search-input'"
+      :overflow="true"
       @select="select"
     />
     <ul class="contacts mt2">

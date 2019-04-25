@@ -5,28 +5,18 @@
     <h2>{{ trans('people.activities_add_title', ['name' => $contact->first_name]) }}</h2>
 
     <div class="form-group user-input">
-        <label for="summary">{{ trans('people.activities_who_was_involved') }}</label>
-
-        @if ($contact && $method == 'POST')
-            <contact-multi-search
-                :id="'summary'"
-                :user-contact-id="{{ $contact->id }}"
-                :placeholder="'{{ trans('people.people_search') }}'"
-                :contacts="{{ json_encode(\App\Http\Resources\Contact\ContactShort::collection(collect([$contact]))) }}"
-            ></contact-multi-search>
-        @else
-            <contact-multi-search
-                :id="'summary'"
-                :user-contact-id="{{$contact ? $contact->id : 0 }}"
-                :placeholder="'{{ trans('people.people_search') }}'"
-                :contacts="{{ json_encode(\App\Http\Resources\Contact\ContactShort::collection($activity->contacts)) }}"
-            ></contact-multi-search>
-        @endif
+        <contact-multi-search
+            :id="'summary'"
+            :title="'{{ trans('people.activities_who_was_involved') }}'"
+            :user-contact-id="{{ $contact->id }}"
+            :placeholder="'{{ trans('people.people_search') }}'"
+            :contacts="{{ json_encode(\App\Http\Resources\Contact\ContactShort::collection($contact && $method == 'POST' ? collect([$contact]) : $activity->contacts)) }}"
+        ></contact-multi-search>
     </div>
 
     {{-- Summary --}}
     <div class="form-group{{ $errors->has('summary') ? ' has-error' : '' }}">
-        <label for="summary">{{ trans('people.activities_summary') }}</label>
+        <label for="summary" class="b">{{ trans('people.activities_summary') }}</label>
         <input type="text" id="summary" class="form-control" name="summary" autofocus required maxlength="254" value="{{ old('summary') ?? $activity->summary }}">
         @if ($errors->has('summary'))
             <span class="help-block">
@@ -37,7 +27,7 @@
 
     {{-- Date --}}
     <div class="form-group{{ $errors->has('date_it_happened') ? ' has-error' : '' }}">
-        <label for="date_it_happened">{{ trans('people.activities_add_date_occured') }}</label>
+        <label for="date_it_happened" class="b">{{ trans('people.activities_add_date_occured') }}</label>
         <input type="date" id="date_it_happened" name="date_it_happened" class="form-control"
                value="{{ old('date_it_happened') ?? (! is_null($activity->date_it_happened) ? $activity->date_it_happened->toDateString() : now(\App\Helpers\DateHelper::getTimezone())->toDateString()) }}"
                min="{{ now(\App\Helpers\DateHelper::getTimezone())->subYears(100)->toDateString() }}"

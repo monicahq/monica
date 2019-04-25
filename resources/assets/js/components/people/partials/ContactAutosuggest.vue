@@ -1,8 +1,17 @@
 <style lang="scss">
+  .autosuggest__results-container {
+    position: relative;
+    width: 100%;
+  }
   .autosuggest__results {
     position: absolute;
     width: 100%;
-    z-index: 10;
+    z-index: 100;
+  }
+  .autosuggest__results-overflow {
+    position: absolute;
+    width: 100%;
+    z-index: 100;
     overflow: scroll;
     max-height: 361px;
   }
@@ -19,14 +28,20 @@
 
 <template>
   <div>
-    <p v-if="title" class="mb2" :class="{ b: required }">
+    <label
+      v-if="title"
+      class="mb2"
+      :class="{ b: required }"
+      :for="realid"
+    >
       {{ title }}
-    </p>
+    </label>
     <vue-autosuggest
       ref="autosuggest"
       :suggestions="items"
       :input-props="inputProps"
       :get-suggestion-value="getSuggestionValue"
+      :component-attr-class-autosuggest-results="overflow ? 'autosuggest__results-overflow' : 'autosuggest__results'"
       @selected="selectHandler"
       @click="clickHandler"
       @blur="blurHandler"
@@ -87,6 +102,10 @@ export default {
       type: Number,
       default: 1,
     },
+    overflow: {
+      type: Boolean,
+      default: false,
+    },
     inputClass : {
       type: String,
       default: '',
@@ -106,9 +125,12 @@ export default {
   },
 
   computed: {
+    realid() {
+      return this.id ? this.id : 'autosuggest__input';
+    },
     inputProps() {
       return {
-        id: this.id ? this.id : 'autosuggest__input',
+        id: this.realid,
         onInputChange: this.updateItems,
         placeholder: this.placeholder,
         class: ['form-control', this.inputClass],
