@@ -136,16 +136,16 @@
         },
         {
             "name": "clue/stream-filter",
-            "version": "v1.4.0",
+            "version": "v1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/clue/php-stream-filter.git",
-                "reference": "d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0"
+                "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0",
-                "reference": "d80fdee9b3a7e0d16fc330a22f41f3ad0eeb09d0",
+                "url": "https://api.github.com/repos/clue/php-stream-filter/zipball/5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
+                "reference": "5a58cc30a8bd6a4eb8f856adf61dd3e013f53f71",
                 "shasum": ""
             },
             "require": {
@@ -160,7 +160,7 @@
                     "Clue\\StreamFilter\\": "src/"
                 },
                 "files": [
-                    "src/functions.php"
+                    "src/functions_include.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -184,7 +184,7 @@
                 "stream_filter_append",
                 "stream_filter_register"
             ],
-            "time": "2017-08-18T09:54:01+00:00"
+            "time": "2019-04-09T12:31:48+00:00"
         },
         {
             "name": "colinodell/json5",
@@ -6243,22 +6243,22 @@
         },
         {
             "name": "sentry/sdk",
-            "version": "2.0.0",
+            "version": "2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php-sdk.git",
-                "reference": "7fb7c294de3524999046876f5f572005df89f0ec"
+                "reference": "3ea263b7fad78365ae3e4a6e1891babaee026305"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/7fb7c294de3524999046876f5f572005df89f0ec",
-                "reference": "7fb7c294de3524999046876f5f572005df89f0ec",
+                "url": "https://api.github.com/repos/getsentry/sentry-php-sdk/zipball/3ea263b7fad78365ae3e4a6e1891babaee026305",
+                "reference": "3ea263b7fad78365ae3e4a6e1891babaee026305",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^1.0",
-                "php-http/curl-client": "^1.0",
-                "sentry/sentry": "^2.0"
+                "php-http/curl-client": "^1.0|^2.0",
+                "sentry/sentry": "^2.0.1"
             },
             "type": "metapackage",
             "notification-url": "https://packagist.org/downloads/",
@@ -6272,7 +6272,7 @@
                 }
             ],
             "description": "This is a metapackage shipping sentry/sentry with a recommended http client.",
-            "time": "2019-02-25T08:47:39+00:00"
+            "time": "2019-03-19T11:27:15+00:00"
         },
         {
             "name": "sentry/sentry",
@@ -6355,20 +6355,20 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "126cc5e41394d4e152cd19ff600c09688ee3efe4"
+                "reference": "f4c5544a6dc0472c6f75def70ccc4d4d96d711f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/126cc5e41394d4e152cd19ff600c09688ee3efe4",
-                "reference": "126cc5e41394d4e152cd19ff600c09688ee3efe4",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/f4c5544a6dc0472c6f75def70ccc4d4d96d711f7",
+                "reference": "f4c5544a6dc0472c6f75def70ccc4d4d96d711f7",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*",
+                "illuminate/support": "5.0 - 5.8",
                 "php": "^7.1",
                 "sentry/sdk": "^2.0"
             },
@@ -6419,7 +6419,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-03-15T11:50:41+00:00"
+            "time": "2019-04-24T10:48:42+00:00"
         },
         {
             "name": "stevebauman/location",
@@ -7109,16 +7109,16 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.2.4",
+            "version": "v4.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "3896e5a7d06fd15fa4947694c8dcdd371ff147d1"
+                "reference": "fd4a5f27b7cd085b489247b9890ebca9f3e10044"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/3896e5a7d06fd15fa4947694c8dcdd371ff147d1",
-                "reference": "3896e5a7d06fd15fa4947694c8dcdd371ff147d1",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/fd4a5f27b7cd085b489247b9890ebca9f3e10044",
+                "reference": "fd4a5f27b7cd085b489247b9890ebca9f3e10044",
                 "shasum": ""
             },
             "require": {
@@ -7159,7 +7159,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2019-02-23T15:17:42+00:00"
+            "time": "2019-04-10T16:20:36+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
