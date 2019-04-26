@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5c5ec4e40afb7840599e2bc40586c0f",
+    "content-hash": "355c5c3513701f90a328206efc87a7d5",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
@@ -3160,16 +3160,16 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "0.1.1",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "16567b88a7e286b980fbf85aead054ea96aa8b71"
+                "reference": "647f22f86dc5c5c58dd0e57453291244b0690974"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/16567b88a7e286b980fbf85aead054ea96aa8b71",
-                "reference": "16567b88a7e286b980fbf85aead054ea96aa8b71",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/647f22f86dc5c5c58dd0e57453291244b0690974",
+                "reference": "647f22f86dc5c5c58dd0e57453291244b0690974",
                 "shasum": ""
             },
             "require": {
@@ -3212,7 +3212,7 @@
                 "php",
                 "sabre"
             ],
-            "time": "2019-03-04T09:29:25+00:00"
+            "time": "2019-04-25T13:52:45+00:00"
         },
         {
             "name": "monolog/monolog",
