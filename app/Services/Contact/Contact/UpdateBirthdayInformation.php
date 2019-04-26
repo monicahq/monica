@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
@@ -32,20 +33,20 @@ class UpdateBirthdayInformation extends BaseService
             'day' => [
                 'integer',
                 Rule::requiredIf(function () {
-                    return $this->data['is_date_known'] && ! $this->data['is_age_based'];
+                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'month' => [
                 'integer',
                 Rule::requiredIf(function () {
-                    return $this->data['is_date_known'] && ! $this->data['is_age_based'];
+                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'year' => 'nullable|integer',
             'age' => [
                 'integer',
                 Rule::requiredIf(function () {
-                    return $this->data['is_date_known'] && $this->data['is_age_based'];
+                    return Arr::get($this->data, 'is_date_known', false) && Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'add_reminder' => 'nullable|boolean',
