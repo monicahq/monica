@@ -1382,7 +1382,11 @@ class Contact extends Model
      */
     public function getLink()
     {
-        return route('people.show', $this->is_partial ? $this->getRelatedRealContact() : $this);
+        $contact = $this->is_partial ? $this->getRelatedRealContact() : $this;
+        if (is_null($contact)) {
+            $contact = $this;
+        }
+        return route('people.show', $contact);
     }
 
     /**
