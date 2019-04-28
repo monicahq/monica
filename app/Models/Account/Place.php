@@ -2,8 +2,8 @@
 
 namespace App\Models\Account;
 
-use function Safe\preg_replace;
 use App\Models\Contact\Contact;
+use function Safe\preg_replace;
 use App\Helpers\CountriesHelper;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;

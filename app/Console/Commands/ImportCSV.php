@@ -3,15 +3,14 @@
 namespace App\Console\Commands;
 
 use function Safe\fopen;
-use function Safe\fclose;
 use App\Models\User\User;
+use function Safe\fclose;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Models\Contact\ContactField;
-use Safe\Exceptions\FilesystemException;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Reminder\CreateReminder;
