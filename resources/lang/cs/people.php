@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 dítě|:count děti',
     'people_list_last_updated' => 'Naposledy konzultováno:',
     'people_list_number_reminders' => '1 připomínka|:count připomínek',
