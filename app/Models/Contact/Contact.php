@@ -1386,6 +1386,7 @@ class Contact extends Model
         if (is_null($contact)) {
             $contact = $this;
         }
+
         return route('people.show', $contact);
     }
 

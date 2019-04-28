@@ -239,6 +239,7 @@ class ContactsController extends Controller
                 return redirect()->route('people.index')
                     ->withErrors(trans('people.people_not_found'));
             }
+
             return redirect()->route('people.show', $realContact);
         }
         $contact->load(['notes' => function ($query) {
