@@ -32,12 +32,14 @@ class UpdateBirthdayInformation extends BaseService
             'is_age_based' => 'nullable|boolean',
             'day' => [
                 'integer',
+                'nullable',
                 Rule::requiredIf(function () {
                     return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
                 }),
             ],
             'month' => [
                 'integer',
+                'nullable',
                 Rule::requiredIf(function () {
                     return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
                 }),
@@ -45,6 +47,7 @@ class UpdateBirthdayInformation extends BaseService
             'year' => 'nullable|integer',
             'age' => [
                 'integer',
+                'nullable',
                 Rule::requiredIf(function () {
                     return Arr::get($this->data, 'is_date_known', false) && Arr::get($this->data, 'is_age_based', false);
                 }),

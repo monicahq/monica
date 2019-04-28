@@ -38,14 +38,13 @@ class IdHasherTest extends TestCase
         $this->assertEquals($test_id, $result_id);
     }
 
-    /**
-     * @expectedException App\Exceptions\WrongIdException
-     */
     public function test_bad_id_get_exception()
     {
         $idHasher = new IdHasher();
 
         $test_id = rand();
+
+        $this->expectException(\App\Exceptions\WrongIdException::class);
 
         $idHasher->decodeId($test_id);
     }
