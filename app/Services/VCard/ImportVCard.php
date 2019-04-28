@@ -672,11 +672,11 @@ class ImportVCard extends BaseService
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'is_date_known' => true,
+                    'is_age_based' => false,
                     'day' => $birthdate->day,
                     'month' => $birthdate->month,
                     'year' => $is_year_unknown ? null : $birthdate->year,
                     'add_reminder' => true,
-                    'is_age_based' => null,
                 ]);
             }
         }
