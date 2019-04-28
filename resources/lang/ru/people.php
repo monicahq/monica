@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => ':count ребёнок|:count ребёнка|:count детей',
     'people_list_last_updated' => 'Последнее обновление:',
     'people_list_number_reminders' => ':count напоминание|:count напоминания|:count напоминаний',
