@@ -27,14 +27,43 @@ In addition, make sure to setup a new job that runs every hour using the Heroku 
 
 ### Generating Personal Access Tokens
 
-You cannot generate personal access tokens from the UI. Instead:
+In order to generate personal access tokens from the UI, you need to:
 
 * Install the [Heroku CLI](https://devcenter.heroku.com/categories/command-line) and log in.
 * From your command line, run `heroku run bash -a <APP-ID>`.
 * Run `php artisan passport:install`.
-* Store the tokens that are generated.
+* You will see two keys printed to the screen, each with an integer key ID and a secret.
+* Open the Heroku dashboard and navigate to Settings -> Reveal Config Vars. This is where you can set environment variables.
+* Create two new environment variables using the details from the second key you just created, e.g. set `MOBILE_CLIENT_ID` to `2`, and set `MOBILE_CLIENT_SECRET` to `zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq`
+* Still in the Heroku CLI, run `cat ~/storage/oauth-private.key`. Copy the output to a new Heroku environment variable called `OAUTH_PRIVATE_KEY`
+* Do the same thing with the contents of `~/storage/oauth-public.key`, copying its contents to an environment variable called `OAUTH_PUBLIC_KEY`
+* We created `OAUTH_PRIVATE_KEY` and `OAUTH_PUBLIC_KEY` so that we can re-create those oauth-xxx.key files each time Heroku brings up your app. In order to do that, you need to change the following lines in `composer.json`:
 
-Read the general [setup instructions](https://github.com/monicahq/monica/blob/master/docs/installation/generic.md#3-configure-monica) for more ways to customize your app and enable background alerts.
+Change this:
+```
+        "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall"
+        ]
+```
+To this (i.e. add a comma at the end of the 'Illuminate' line, and add these two new lines:
+```
+        "post-install-cmd": [
+            "Illuminate\\Foundation\\ComposerScripts::postInstall",
+            "echo \"$OAUTH_PUBLIC_KEY\" > storage/oauth-public.key",
+            "echo \"$OAUTH_PRIVATE_KEY\" > storage/oauth-private.key"
+        ]
+```
+
+Once you push this change to your fork, Heroku should re-deploy, and you should be able to use the 'Create new token' function in https://XXX.herokuapp.com/settings/api
+
+Once you have the token, you can use the API with a command line:
+```
+curl -H "Authorization: Bearer eyJ0eXIh7ARV1Xjcf4qNo" https://rahimcrm.herokuapp.com/api
+```
+If everything is well, this call will return:
+```json
+{"success":{"message":"Welcome to Monica"}}
+```
 
 ## Limitations
 
