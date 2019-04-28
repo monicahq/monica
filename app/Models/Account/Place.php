@@ -2,6 +2,7 @@
 
 namespace App\Models\Account;
 
+use function Safe\preg_replace;
 use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Models\ModelBinding as Model;

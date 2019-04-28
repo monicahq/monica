@@ -5,6 +5,7 @@ namespace App\Services\Instance\Weather;
 use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use function Safe\json_decode;
 use App\Models\Account\Weather;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;

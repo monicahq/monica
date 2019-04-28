@@ -23,9 +23,9 @@
 
               <h3>{{ trans('auth.mfa_auth_u2f') }}</h3>
               <u2f-connector
-                :authdatas="{{ json_encode($authenticationData) }}"
+                :authdatas="{{ \Safe\json_encode($authenticationData) }}"
                 :method="'login'"
-                :callbackurl="{{ json_encode(url()->current()) }}">
+                :callbackurl="{{ \Safe\json_encode(url()->current()) }}">
               </u2f-connector>
 
               @if (app('pragmarx.google2fa')->isActivated())
