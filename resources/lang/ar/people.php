@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => 'طفل واحد|:count أطفال',
     'people_list_last_updated' => 'آخر استشارة:',
     'people_list_number_reminders' => 'تذكير واحد|:count تذكيرات',
