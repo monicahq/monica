@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 dijete|:count djece',
     'people_list_last_updated' => 'Posljednji ažurirani:',
     'people_list_number_reminders' => '1 podsjetnik|:count podsjetnika',
