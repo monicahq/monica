@@ -1358,7 +1358,7 @@ class Contact extends Model
      * Gets the first contact related to this contact if the current contact is
      * partial.
      *
-     * @return self
+     * @return self|null
      */
     public function getRelatedRealContact()
     {
