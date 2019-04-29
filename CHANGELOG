@@ -6,6 +6,7 @@ New features:
 
 Enhancements:
 
+* Rewrite contact search fields
 * Use string and array classes instead of helpers
 
 Fixes:
