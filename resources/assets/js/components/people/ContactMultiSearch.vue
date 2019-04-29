@@ -95,14 +95,11 @@ export default {
     select(contact) {
       if (contact.item && contact.item.id > 0) {
         this.items.push(contact.item);
-        // clear cache to reset filters
-        this.$refs.contactauto.clearCache();
       }
     },
 
     remove(contact) {
       this.items.splice(this.items.indexOf(contact), 1);
-      this.$refs.contactauto.clearCache();
     }
   }
 };

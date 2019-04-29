@@ -18,10 +18,10 @@
   .autosuggest__results_item {
     background: white;
   }
-  .autosuggest__results .autosuggest__results_item:active,
-  .autosuggest__results .autosuggest__results_item:hover,
-  .autosuggest__results .autosuggest__results_item:focus,
-  .autosuggest__results .autosuggest__results_item.autosuggest__results_item-highlighted {
+  .autosuggest__results_item:active,
+  .autosuggest__results_item:hover,
+  .autosuggest__results_item:focus,
+  .autosuggest__results_item.autosuggest__results_item-highlighted {
     background: #f5f5f5;
   }
 </style>
@@ -49,13 +49,6 @@
       <template slot-scope="{suggestion}">
         <component :is="componentItem" :item="suggestion.item" />
       </template>
-      <!--
-      <template slot="footer">
-        <div class="autosuggest__results_item" v-if="addNoResult">
-          <component :is="componentItem" :item="{}"></component>
-        </div>
-      </template>
-      -->
     </vue-autosuggest>
   </div>
 </template>
@@ -142,11 +135,8 @@ export default {
     this.callUpdateItems = _.debounce((text) => {
       this.getContacts(text, this)
         .then((response) => {
-          return { data: response };
-        })
-        .then((item) => {
-          this.cache[text] = item;
-          this.items = [item];
+          this.cache[text] = response;
+          this.displayItems(text);
         });
     }, this.wait);
   },
@@ -162,13 +152,27 @@ export default {
         return;
       }
 
-      if (this.cache[text] !== undefined) {
-        this.callUpdateItems.cancel();
-        var item = this.cache[text];
-        this.items = [item];
-      } else {
+      if (this.cache[text] === undefined) {
         this.callUpdateItems(text);
+      } else {
+        this.callUpdateItems.cancel();
+        this.displayItems(text);
       }
+    },
+
+    displayItems (text) {
+      var datas = this.cache[text];
+
+      datas = datas.filter(this.filter);
+      if (datas.length === 0) {
+        datas = [{
+          id: -1,
+          name: 'no_result',
+          keyword: text,
+        }];
+      }
+
+      this.items = [{ data: datas }];
     },
 
     getContacts: function (keyword, vm) {
@@ -184,7 +188,6 @@ export default {
           });
         } else {
           response.data.data
-            .filter(vm.filter)
             .forEach(function (contact) {
               contact.keyword = keyword;
               data.push(contact);
@@ -207,8 +210,6 @@ export default {
     },
 
     blurHandler(sender) {
-      //this.items = [];
-      //this.$refs.autosuggest.searchInput = '';
       this.$emit('blur', sender);
     },
 
@@ -228,7 +229,7 @@ export default {
     },
 
     getSuggestionValue(suggestion) {
-      if (!suggestion || !suggestion.item) {
+      if (!suggestion || !suggestion.item || suggestion.item.id < 0) {
         return;
       }
       return suggestion.item.complete_name.length > 0 ?
