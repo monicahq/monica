@@ -84,7 +84,10 @@ class Place extends Model
         }
 
         // trim extra whitespaces inside the address
-        return preg_replace('/\s+/', ' ', $address);
+        $address = preg_replace('/\s+/', ' ', $address);
+        if (is_string($address)) {
+            return $address;
+        }
     }
 
     /**
