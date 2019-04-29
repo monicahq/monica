@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '1 reminder|:count reminders',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Show deceased people (:count)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Search your contacts...',
-    'people_search_no_results' => 'No relevant contacts found :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',

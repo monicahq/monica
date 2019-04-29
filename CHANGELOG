@@ -6,10 +6,14 @@ New features:
 
 Enhancements:
 
+* Rewrite contact search fields
 * Use string and array classes instead of helpers
 
 Fixes:
 
+* Fix contact create with birthdate age 0
+* Fix contact link create on job queue
+* Fix /settings/dav route
 * Fix display relationship without a ofContact property
 * Fix register request validate
 * Fix relationship create

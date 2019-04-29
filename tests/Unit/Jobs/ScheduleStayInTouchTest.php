@@ -50,7 +50,7 @@ class ScheduleStayInTouchTest extends TestCase
         $notifications = NotificationFacade::sent($user, StayInTouchEmail::class);
         $message = $notifications[0]->toMail($user);
 
-        $this->assertArraySubset(['You asked to be reminded to stay in touch with John Doe every 5 days.'], $message->introLines);
+        $this->assertContains('You asked to be reminded to stay in touch with John Doe every 5 days.', $message->introLines);
 
         $this->assertDatabaseHas('contacts', [
             'stay_in_touch_trigger_date' => '2017-01-06 07:00:00',

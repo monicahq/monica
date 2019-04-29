@@ -1090,6 +1090,11 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
+autocomplete-vue@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/autocomplete-vue/-/autocomplete-vue-1.1.0.tgz#787b28f5349cdaaa310f77d22f923ec6daf4f63d"
+  integrity sha512-XDBYZCbLZPfArtOcJZEYgqoLu5mpc2YUReM9khlGPD1ZGgsc2u3+W9Kj9MIxnZdGuSBQ/TLeG2LjDQko6Qi65g==
+
 autoprefixer@^9.4.2:
   version "9.4.7"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.4.7.tgz#f997994f9a810eae47b38fa6d8a119772051c4ff"
@@ -7901,6 +7906,11 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
+v-autocomplete@^1.8.2:
+  version "1.8.2"
+  resolved "https://registry.yarnpkg.com/v-autocomplete/-/v-autocomplete-1.8.2.tgz#966c7b3eda2c74dd683911114a20284cd096961f"
+  integrity sha1-lmx7PtosdN1oORERSiAoTNCWlh8=
+
 v-dropdown@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/v-dropdown/-/v-dropdown-1.0.5.tgz#54803dc2d801710a05b2da63c694e68c24268326"
@@ -7954,6 +7964,11 @@ vm-browserify@0.0.4:
   integrity sha1-XX6kW7755Kb/ZflUOOCofDV9WnM=
   dependencies:
     indexof "0.0.1"
+
+vue-autosuggest@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/vue-autosuggest/-/vue-autosuggest-1.8.3.tgz#dcce3d3ed90441c9788b6d18b2e67e5b9d4cad52"
+  integrity sha512-I5vQA/UHMcQMyMqNQwmbl+iiFYyg20a2Nx4zjx7MLZ93GRnL1Pclwc6FgLWCJ7u/1mvKpgphsgrS2QGe1cAM0w==
 
 vue-checkbox-radio@^0.6.0:
   version "0.6.0"

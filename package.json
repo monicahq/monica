@@ -51,6 +51,7 @@
     "typeahead.js": "^0.11.1",
     "v-selectmenu": "^1.0.5",
     "vue": "^2.5.21",
+    "vue-autosuggest": "^1.8.3",
     "vue-checkbox-radio": "^0.6.0",
     "vue-clipboard2": "^0.3.0",
     "vue-directive-tooltip": "^1.4.2",
