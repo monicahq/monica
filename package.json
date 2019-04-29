@@ -60,7 +60,7 @@
     "vue-js-toggle-button": "^1.2.2",
     "vue-notification": "^1.3.6",
     "vue-resource": "^1.3.6",
-    "vue-select": "^2.4.0",
+    "vue-select": "^3.0.2",
     "vuejs-datepicker-tmp": "^1.5.4"
   }
 }
