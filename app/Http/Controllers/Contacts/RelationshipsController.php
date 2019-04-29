@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
-use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
