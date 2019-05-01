@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => '联系人未找到',
     'people_list_number_kids' => ':count 个孩子',
     'people_list_last_updated' => '最近更新:',
     'people_list_number_reminders' => ':count 个提醒',
