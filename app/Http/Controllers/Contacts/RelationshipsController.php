@@ -248,7 +248,7 @@ class RelationshipsController extends Controller
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
             $types = $relationshipTypes->get($relationshipType->relationshipTypeGroup->name, [
                 'name' => trans('app.relationship_type_group_'.$relationshipType->relationshipTypeGroup->name),
-                'options' => []
+                'options' => [],
             ]);
 
             $types['options'][] = [
