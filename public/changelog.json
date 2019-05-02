@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "May 02, 2019",
+            "title": "Enhancement: group relationships",
+            "description": "When creatin or editing a relationship, relationships list is now grouped. ![image](img/changelogs/2019-05-02-group-relationships.png)"
+        },
+        {
             "date": "Apr 07, 2019",
             "title": "Enhancement: edit relationships",
             "description": "In a contact profile page, you can now edit a relationship, for a real or even a partial contact. ![image](img/changelogs/2019-04-07-edit-relationship.png)"
