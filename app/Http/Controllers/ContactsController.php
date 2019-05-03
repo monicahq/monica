@@ -232,10 +232,15 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
-        // make sure we don't display a significant other if it's not set as a
-        // real contact
+        // make sure we don't display a partial contact
         if ($contact->is_partial) {
-            return redirect()->route('people.show', $contact->getRelatedRealContact());
+            $realContact = $contact->getRelatedRealContact();
+            if (is_null($realContact)) {
+                return redirect()->route('people.index')
+                    ->withErrors(trans('people.people_not_found'));
+            }
+
+            return redirect()->route('people.show', $realContact);
         }
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');

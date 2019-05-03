@@ -173,7 +173,7 @@ class ContactTest extends FeatureTestCase
 
         $response->assertSuccessful();
         $response->assertJsonFragment([
-            'noResults' => 'No relevant contacts found :(',
+            'noResults' => 'No results found',
         ]);
     }
 
