@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
+use function Safe\json_decode;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

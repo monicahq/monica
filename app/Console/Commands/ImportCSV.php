@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use function Safe\fopen;
 use App\Models\User\User;
+use function Safe\fclose;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
@@ -87,27 +89,26 @@ class ImportCSV extends Command
 
         $first = true;
         $imported = 0;
-        if (($handle = fopen($file, 'r')) !== false) {
-            try {
-                while (($data = fgetcsv($handle)) !== false) {
-                    // don't import the columns
-                    if ($first) {
-                        $first = false;
-                        continue;
-                    }
-
-                    // if first & last name do not exist skip row
-                    if (empty($data[1]) && empty($data[3])) {
-                        continue;
-                    }
-
-                    $this->csvToContact($data, $user->account_id, $gender->id);
-
-                    $imported++;
+        try {
+            $handle = fopen($file, 'r');
+            while (($data = fgetcsv($handle)) !== false) {
+                // don't import the columns
+                if ($first) {
+                    $first = false;
+                    continue;
                 }
-            } finally {
-                fclose($handle);
+
+                // if first & last name do not exist skip row
+                if (empty($data[1]) && empty($data[3])) {
+                    continue;
+                }
+
+                $this->csvToContact($data, $user->account_id, $gender->id);
+
+                $imported++;
             }
+        } finally {
+            fclose($handle);
         }
 
         $this->info("Imported {$imported} Contacts");

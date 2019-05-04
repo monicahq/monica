@@ -118,11 +118,8 @@ class ApiUserControllerTest extends ApiTestCase
 
         $response = $this->post('/api/me/compliance');
 
-        $response->assertStatus(400);
-
-        $response->assertJsonFragment([
-            'error_code' => 37,
-            'message' => 'Problems parsing JSON',
+        $this->expectDataError($response, [
+            'The ip address field is required.',
         ]);
     }
 

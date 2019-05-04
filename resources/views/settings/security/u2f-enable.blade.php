@@ -37,10 +37,10 @@
             <p>{{ trans('settings.u2f_enable_description') }}</p>
 
             <u2f-connector
-              :currentkeys="{{ json_encode($currentKeys) }}"
-              :registerdata="{{ json_encode($registerData) }}"
+              :currentkeys="{{ \Safe\json_encode($currentKeys) }}"
+              :registerdata="{{ \Safe\json_encode($registerData) }}"
               :method="'register'"
-              :callbackurl="{{ json_encode(route('security.index')) }}">
+              :callbackurl="{{ \Safe\json_encode(route('security.index')) }}">
             </u2f-connector>
 
             <a href="{{ route('security.index') }}" class="btn">{{ trans('app.cancel') }}</a>

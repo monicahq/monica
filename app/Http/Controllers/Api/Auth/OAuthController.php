@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use GuzzleHttp\Client;
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use function Safe\json_decode;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

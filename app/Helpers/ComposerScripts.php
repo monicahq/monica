@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use function Safe\unlink;
+
 class ComposerScripts
 {
     const CONFIG = 'bootstrap/cache/config.php';

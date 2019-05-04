@@ -74,7 +74,7 @@
 
               @if (config('google2fa.enabled')===true)
                 <mfa-activate
-                  :activated="{{ json_encode($is2FAActivated) }}"
+                  :activated="{{ \Safe\json_encode($is2FAActivated) }}"
                 >
                 </mfa-activate>
               @endif
@@ -98,9 +98,9 @@
               @elseif (config('u2f.enable')===true)
                 <u2f-connector
                   :method="'register-modal'"
-                  :currentkeys="{{ json_encode($currentkeys) }}"
-                  :timezone="{{ json_encode(auth()->user()->timezone) }}"
-                  :enable-register="{{ json_encode(true) }}"
+                  :currentkeys="{{ \Safe\json_encode($currentkeys) }}"
+                  :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
+                  :enable-register="{{ \Safe\json_encode(true) }}"
                 >
                 </u2f-connector>
                   
