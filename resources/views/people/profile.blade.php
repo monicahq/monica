@@ -65,7 +65,7 @@
                 <a href="{{ route('people.vcard', $contact) }}">{{ trans('people.people_export') }}</a>
               </li>
               <li>
-                <contact-archive hash="{{ $contact->hashID() }}" :active="{{ json_encode($contact->is_active) }}"></contact-archive>
+                <contact-archive hash="{{ $contact->hashID() }}" :active="{{ \Safe\json_encode($contact->is_active) }}"></contact-archive>
               </li>
               <li>
                 <a id="link-delete-contact" class="pointer" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;">{{ trans('people.people_delete_message') }}</a>

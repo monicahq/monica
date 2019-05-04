@@ -136,7 +136,7 @@
           :day="{{ $day }}"
           :age="'{{ $age }}'"
           :default-date="'{{ $birthdate }}'"
-          :reminder="{{ json_encode($hasBirthdayReminder) }}"
+          :reminder="{{ \Safe\json_encode($hasBirthdayReminder) }}"
           :value="'{{ $birthdayState }}'"
         ></form-specialdate>
 

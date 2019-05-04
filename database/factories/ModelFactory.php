@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use function Safe\json_decode;
 
 /*
 |--------------------------------------------------------------------------
