@@ -2,6 +2,7 @@ UNRELEASED CHANGES:
 
 New features:
 
+* Add WebAuthn Multi-factor authentication
 * Add multi factor auth on oauth
 
 Enhancements:

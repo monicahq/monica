@@ -27,16 +27,6 @@ class MultiFAController extends Controller
     private $SESSION_TFA_SECRET = '2FA_secret';
 
     /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('web');
-    }
-
-    /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */

@@ -2,8 +2,7 @@
 
 @section('content')
     <div class="container">
-      <form action="{{ session('oauth') ? route('oauth.validate2fa') : route('validate2fa') }}" method="post">
-        <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
+      <form action="validate2fa" method="post">
       
         <div class="row">
           <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
@@ -20,12 +19,12 @@
           
               @csrf
 
-              <h3>{{ trans('auth.mfa_auth_u2f') }}</h3>
-              <u2f-connector
-                :authdatas="{{ \Safe\json_encode($authenticationData) }}"
+              <h3>{{ trans('auth.mfa_auth_webauthn') }}</h3>
+              <webauthn-connector
                 :method="'login'"
-                :callbackurl="{{ \Safe\json_encode(url()->current()) }}">
-              </u2f-connector>
+                :public-key="{{ json_encode($publicKey) }}"
+              >
+              </webauthn-connector>
 
               @if (app('pragmarx.google2fa')->isActivated())
               <div class="mt5">
@@ -46,5 +45,4 @@
       </form>
     </div>
 
-  <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
 @endsection

@@ -48,7 +48,9 @@ RUN apk add apache2 make netcat-openbsd \
         #- vinkla/hashids
         php7-bcmath \
         #- sentry/sentry
-        php7-curl
+        php7-curl \
+        #- cbor-php (webauthn)
+        php7-gmp
 # Create apache2 dir needed for httpd
 RUN mkdir -p /run/apache2
 

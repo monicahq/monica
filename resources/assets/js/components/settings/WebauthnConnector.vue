@@ -6,16 +6,14 @@
 
 <template>
   <div class="form-group">
-    <notifications group="u2f" position="top middle" :duration="5000" width="400" />
+    <notifications group="webauthn" position="top middle" :duration="5000" width="400" />
 
     <div v-if="method == 'register-modal'">
-      <h3 v-if="enableRegister || keys.count > 0">
-        {{ $t('settings.u2f_title') }}
-      </h3>
+      <h3>{{ $t('settings.webauthn_title') }}</h3>
 
-      <div v-if="keys != null && keys.count > 0">
+      <div v-if="currentkeys != null">
         <ul class="table">
-          <li v-for="key in keys"
+          <li v-for="key in currentkeys"
               :key="key.id"
               class="table-row"
           >
@@ -24,39 +22,42 @@
             </div>
             <div class="table-cell time w-50">
               <template v-if="key.counter > 0">
-                {{ $t('settings.u2f_last_use', {timestamp: formatTime(key.updated_at)}) }}
+                {{ $t('settings.webauthn_last_use', {timestamp: formatTime(key.updated_at)}) }}
               </template>
             </div>
             <div class="table-cell actions">
-              <a
-                class="pointer"
-                :cy-name="'u2fkey-delete-button-' + key.id"
-                @click.prevent="showDeleteModal(key.id)"
-              >
+              <a class="pointer" @click.prevent="showDeleteModal(key.id)">
                 {{ $t('app.delete') }}
               </a>
             </div>
           </li>
         </ul>
       </div>
-      <a v-if="enableRegister" class="btn btn-primary" @click="showRegisterModal">
-        {{ $t('settings.u2f_enable_description') }}
+
+      <slot></slot>
+
+      <a v-if="isSupported" class="btn btn-primary" @click="showRegisterModal">
+        {{ $t('settings.webauthn_enable_description') }}
       </a>
+      <small v-else>
+        {{ notSupportedMessage() }}
+      </small>
+
 
       <sweet-modal
         id="registerModal"
         ref="registerModal"
         overlay-theme="dark"
-        :title="$t('settings.u2f_title')"
+        :title="$t('settings.webauthn_title')"
       >
         <div v-if="registerTab == '1'">
           <p>
-            {{ $t('settings.u2f_key_name_help') }}
+            {{ $t('settings.webauthn_key_name_help') }}
           </p>
           <form-input
             :id="'keyName'"
             v-model="keyName"
-            :title="$t('settings.u2f_key_name')"
+            :title="$t('settings.webauthn_key_name')"
             :value="keyName"
             :input-type="'text'"
             :width="150"
@@ -93,23 +94,19 @@
           </div>
 
           <div v-if="errorMessage == ''" align="center">
-            <img
-              src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
-              :alt="$t('settings.u2f_insertKey')"
+            <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
+                 :alt="$t('settings.webauthn_insertKey')"
             />
           </div>
 
           <div v-if="errorMessage == ''" class="pa2">
             <p>
-              {{ $t('settings.u2f_insertKey') }}
+              {{ $t('settings.webauthn_insertKey') }}
             </p>
             <p>
-              {{ $t('settings.u2f_buttonAdvise') }}
+              {{ $t('settings.webauthn_buttonAdvise') }}
               <br />
-              {{ $t('settings.u2f_noButtonAdvise') }}
-            </p>
-            <p>
-              <span v-html="otpextension"></span>
+              {{ $t('settings.webauthn_noButtonAdvise') }}
             </p>
           </div>
           <div class="relative">
@@ -151,23 +148,19 @@
       </div>
 
       <div align="center">
-        <img
-          src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
-          :alt="$t('settings.u2f_insertKey')"
+        <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
+             :alt="$t('settings.webauthn_insertKey')"
         />
       </div>
 
       <div class="pa2">
         <p>
-          {{ $t('settings.u2f_insertKey') }}
+          {{ $t('settings.webauthn_insertKey') }}
         </p>
         <p>
-          {{ $t('settings.u2f_buttonAdvise') }}
+          {{ $t('settings.webauthn_buttonAdvise') }}
           <br />
-          {{ $t('settings.u2f_noButtonAdvise') }}
-        </p>
-        <p>
-          <span v-html="otpextension"></span>
+          {{ $t('settings.webauthn_noButtonAdvise') }}
         </p>
       </div>
     </div>
@@ -175,7 +168,7 @@
     <sweet-modal ref="delete" overlay-theme="dark" title="Remove a key">
       <form>
         <div class="mb4">
-          {{ $t('settings.u2f_delete_confirmation') }}
+          {{ $t('settings.webauthn_delete_confirmation') }}
         </div>
       </form>
       <div class="relative">
@@ -183,10 +176,7 @@
           <a class="btn" @click="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn"
-             :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
-             @click.prevent="u2fRemove(keyToTrash)"
-          >
+          <a class="btn" @click.prevent="webauthnRemove(keyToTrash)">
             {{ $t('app.delete') }}
           </a>
         </span>
@@ -197,6 +187,7 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
+import * as WebAuthn from '../../../../../vendor/asbiin/laravel-webauthn/resources/js/webauthn.js';
 
 export default {
 
@@ -205,27 +196,17 @@ export default {
   },
 
   props: {
-    currentkeys: {
+    keys: {
       type: Array,
       default: function () {
         return [];
       }
     },
-    registerdata: {
+    publicKey: {
       type: Object,
       default: null,
     },
-    authdatas: {
-      type: Array,
-      default: function () {
-        return [];
-      }
-    },
     method: {
-      type: String,
-      default: '',
-    },
-    callbackurl: {
       type: String,
       default: '',
     },
@@ -233,32 +214,25 @@ export default {
       type: String,
       default: '',
     },
-    enableRegister: {
-      type: Boolean,
-      default: false,
+    script: {
+      type: String,
+      default: '',
     },
   },
 
   data() {
     return {
+      isSupported: true,
       errorMessage: '',
       infoMessage: '',
       success: false,
-      keys: [],
+      currentkeys: [],
       keyToTrash: '',
       keyName: '',
       registerTab: '',
-      data: null
+      data: null,
+      webauthn: null,
     };
-  },
-
-  computed: {
-    otpextension() {
-      return this.$t('auth.u2f_otp_extension', {
-        urlquantum: 'https://www.yubico.com/2017/11/how-to-navigate-fido-u2f-in-firefox-quantum/',
-        urlext: 'https://addons.mozilla.org/firefox/addon/u2f-support-add-on/'
-      });
-    },
   },
 
   mounted() {
@@ -268,33 +242,52 @@ export default {
 
   methods: {
     prepareComponent() {
-      this.keys = this.currentkeys;
+      this.currentkeys = this.keys;
       this.data = this.registerdata;
+
+      this.webauthn = new WebAuthn((name, message) => {
+        this.errorMessage = this._errorMessage(name, message);
+      });
+    },
+
+    _errorMessage(name, message) {
+      switch (name) {
+      case 'InvalidStateError':
+        return this.$t('settings.webauthn_error_already_used');
+      case 'NotAllowedError':
+        return this.$t('settings.webauthn_error_not_allowed');
+      default:
+        return message;
+      }
+    },
+
+    notSupportedMessage() {
+      return this.$t('settings.webauthn_'+this.webauthn.notSupportedMessage());
     },
 
     start() {
       var self = this;
+      this.errorMessage = '';
+
+      if (! this.webauthn.webAuthnSupport()) {
+        this.isSupported = false;
+        this.errorMessage = this.notSupportedMessage();
+      }
+
       switch(this.method) {
       case 'register':
         setTimeout(function () {
-          u2f.register(
-            null,
-            [self.data],
-            self.keys,
-            function (data) { self.u2fRegisterCallback(data, true); }
+          self.webauthn.register(
+            self.publicKey,
+            function (datas) { self.webauthnRegisterCallback(datas, true); }
           );
-        }, 1000);
+        }, 10);
         break;
       case 'login':
-        setTimeout(function () {
-          var registeredKey = self.authdatas[0];
-          u2f.sign(
-            registeredKey.appId,
-            registeredKey.challenge,
-            [registeredKey],
-            function (data) { self.u2fLoginCallback(data); }
-          );
-        }, 1000);
+        this.webauthn.sign(
+          this.publicKey,
+          function (data) { self.webauthnLoginCallback(data); }
+        );
         break;
       }
     },
@@ -314,22 +307,20 @@ export default {
 
     startRegister() {
       var self = this;
-      axios.get('settings/security/u2f/register')
+      this.errorMessage = '';
+      axios.get('webauthn/register')
         .then(response => {
           if (self.registerTab == '2') {
-            var keys = response.data.currentKeys;
-            var data = response.data.registerData;
+            var data = response.data.publicKey;
             setTimeout(function () {
-              u2f.register(
-                null,
-                [data],
-                keys,
-                function (datas) { self.u2fRegisterCallback(datas, false); }
+              self.webauthn.register(
+                data,
+                function (datas) { self.webauthnRegisterCallback(datas, false); }
               );
-            }, 1000);
+            }, 10);
           }
         }).catch(error => {
-          this.notify(error.response.data.message, false);
+          self.notify(error.response.data.message, false);
         });
     },
 
@@ -338,67 +329,58 @@ export default {
       this.showRegisterModalTab('');
     },
 
-    u2fRegisterCallback(data, redirect) {
-      if (data.errorCode) {
-        this.errorMessage = this.getErrorText(data.errorCode);
-        return;
-      }
+    webauthnRegisterCallback(data, redirect) {
       var self = this;
-      axios.post('settings/security/u2f/register', {
+      axios.post('webauthn/register', {
         register: JSON.stringify(data),
         name: self.keyName,
-      })
-        .catch(error => {
-          self.errorMessage = error.response.data.error.message;
-        })
-        .then(response => {
-          self.success = true;
-          self.notify(self.$t('settings.u2f_success'), true);
-        })
-        .then(response => {
-          if (redirect) {
-            setTimeout(function () {
-              window.location = self.callbackurl;
-            }, 3000);
-          } else {
-            self.closeRegisterModal();
-          }
+      }).then(response => {
+        self.success = true;
+        self.notify(self.$t('settings.webauthn_success'), true);
+        self.currentkeys.push({
+          id: response.data.id,
+          name: response.data.name,
+          counter: response.data.counter,
         });
+      }).then(response => {
+        if (redirect) {
+          setTimeout(function () {
+            window.location = response.data.callback;
+          }, 100);
+        } else {
+          self.closeRegisterModal();
+        }
+      }).catch(error => {
+        self.errorMessage = error.message ? error.message : error.response.data.message;
+      });
     },
 
-    u2fLoginCallback(data) {
-      if (data.errorCode) {
-        this.errorMessage = this.getErrorText(data.errorCode);
-        return;
-      }
-
+    webauthnLoginCallback(data) {
       var self = this;
-      axios.post('u2f/auth', { authentication: JSON.stringify(data) })
-        .catch(error => {
-          self.errorMessage = error.response.data.message;
-        })
-        .then(response => {
-          self.success = true;
-          self.notify(self.$t('settings.u2f_success'), true);
-        })
-        .then(response => {
-          window.location = self.callbackurl;
-        });
+      axios.post('webauthn/auth', {
+        data: JSON.stringify(data)
+      }).then(response => {
+        self.success = true;
+        self.notify(self.$t('settings.webauthn_success'), true);
+
+        window.location = response.data.callback;
+      }).catch(error => {
+        self.errorMessage = error.message ? error.message : error.response.data.message;
+      });
     },
 
-    u2fRemove(id) {
+    webauthnRemove(id) {
       var self = this;
-      axios.delete('settings/security/u2f/remove/'+id)
-        .catch(error => {
-          self.errorMessage = error.response.data.message;
-        })
+      axios.delete('webauthn/'+id)
         .then(response => {
           if (response.data.deleted === true) {
-            self.keys.splice(self.keys.indexOf(self.keys.find(item => item.id === response.data.id)), 1);
+            self.currentkeys.splice(self.currentkeys.indexOf(self.currentkeys.find(item => item.id === response.data.id)), 1);
             self.success = true;
-            self.notify(self.$t('settings.u2f_delete_success'), true);
+            self.notify(self.$t('settings.webauthn_delete_success'), true);
           }
           self.closeDeleteModal();
+        }).catch(error => {
+          self.errorMessage = error.response.data.message;
         });
     },
 
@@ -422,25 +404,9 @@ export default {
       return date.format('LLLL');
     },
 
-    getErrorText(errorcode) {
-      switch(errorcode)
-      {
-      case u2f.ErrorCodes.OTHER_ERROR:
-        return this.$t('settings.u2f_error_other_error');
-      case u2f.ErrorCodes.BAD_REQUEST:
-        return this.$t('settings.u2f_error_bad_request');
-      case u2f.ErrorCodes.CONFIGURATION_UNSUPPORTED:
-        return this.$t('settings.u2f_error_configuration_unsupported');
-      case u2f.ErrorCodes.DEVICE_INELIGIBLE:
-        return this.$t('settings.u2f_error_device_ineligible');
-      case u2f.ErrorCodes.TIMEOUT:
-        return this.$t('settings.u2f_error_timeout');
-      }
-    },
-
     notify(text, success) {
       this.$notify({
-        group: 'u2f',
+        group: 'webauthn',
         title: text,
         text: '',
         type: success ? 'success' : 'error'
