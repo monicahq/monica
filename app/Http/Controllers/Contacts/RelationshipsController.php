@@ -244,14 +244,21 @@ class RelationshipsController extends Controller
      */
     private function getRelationshipTypesList(Contact $contact)
     {
-        $arrayRelationshipTypes = collect();
+        $relationshipTypes = collect();
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
-            $arrayRelationshipTypes->push([
+            $types = $relationshipTypes->get($relationshipType->relationshipTypeGroup->name, [
+                'name' => trans('app.relationship_type_group_'.$relationshipType->relationshipTypeGroup->name),
+                'options' => [],
+            ]);
+
+            $types['options'][] = [
                 'id' => $relationshipType->id,
                 'name' => $relationshipType->getLocalizedName($contact, true),
-            ]);
+            ];
+
+            $relationshipTypes->put($relationshipType->relationshipTypeGroup->name, $types);
         }
 
-        return $arrayRelationshipTypes;
+        return $relationshipTypes;
     }
 }
