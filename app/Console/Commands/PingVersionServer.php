@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use GuzzleHttp\Client;
+use function Safe\json_decode;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Models\Instance\Instance;

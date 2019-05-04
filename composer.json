@@ -43,6 +43,7 @@
         "sentry/sentry-laravel": "^1.0",
         "stevebauman/location": "^3.0",
         "symfony/translation": "^4.0",
+        "thecodingmachine/safe": "^0.1.15",
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^6.0",
         "vluzrmos/language-detector": "^1.0"
@@ -63,6 +64,7 @@
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~4.0",
+        "thecodingmachine/phpstan-safe-rule": "^0.1.3",
         "vimeo/psalm": "^3.0"
     },
     "suggest": {
