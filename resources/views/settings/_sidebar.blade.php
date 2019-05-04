@@ -57,7 +57,7 @@
       'title' => 'settings.sidebar_settings_api'])
     @endcomponent
 
-    @if (config('dav.enabled') && ! auth()->user()->account->has_access_to_paid_version_for_free)
+    @if (config('laravelsabre.enabled') && ! auth()->user()->account->has_access_to_paid_version_for_free)
       @component('components.sidebar', [
         'route' => 'settings.dav',
         'icon' => 'fa fa-calendar',
