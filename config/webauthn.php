@@ -164,10 +164,23 @@ return [
     |
     | This parameter specify the preference regarding the attestation conveyance
     | during credential generation.
+    | See https://www.w3.org/TR/webauthn/#attestation-convey
     |
     */
 
     'attestation_conveyance' => \Webauthn\PublicKeyCredentialCreationOptions::ATTESTATION_CONVEYANCE_PREFERENCE_NONE,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Google Safetynet ApiKey
+    |--------------------------------------------------------------------------
+    |
+    | Api key to use Google Safetynet.
+    | See https://developer.android.com/training/safetynet/attestation
+    |
+    */
+
+    'google_safetynet_api_key' => env('GOOGLE_SAFETYNET_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------
@@ -180,8 +193,8 @@ return [
     */
 
     'public_key_credential_parameters' => [
-         \Webauthn\PublicKeyCredentialParameters::ALGORITHM_ES256,
-         \Webauthn\PublicKeyCredentialParameters::ALGORITHM_RS256,
+        \Cose\Algorithms::COSE_ALGORITHM_ES256,
+        \Cose\Algorithms::COSE_ALGORITHM_RS256,
     ],
 
     /*
@@ -196,10 +209,16 @@ return [
 
     'authenticator_selection_criteria' => [
 
+        /*
+        | See https://www.w3.org/TR/webauthn/#attachment
+        */
         'attachment_mode' => \Webauthn\AuthenticatorSelectionCriteria::AUTHENTICATOR_ATTACHMENT_NO_PREFERENCE,
 
         'require_resident_key' => false,
 
+        /*
+        | See https://www.w3.org/TR/webauthn/#userVerificationRequirement
+        */
         'user_verification' => \Webauthn\AuthenticatorSelectionCriteria::USER_VERIFICATION_REQUIREMENT_PREFERRED,
     ],
 
