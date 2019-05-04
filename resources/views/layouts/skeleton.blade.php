@@ -17,7 +17,7 @@
 
     <link rel="shortcut icon" href="img/favicon.png">
     <script>
-      window.Laravel = {!! json_encode([
+      window.Laravel = {!! \Safe\json_encode([
           'csrfToken' => csrf_token(),
           'locale' => \App::getLocale(),
           'htmldir' => htmldir(),
@@ -25,11 +25,10 @@
       ]); !!}
     </script>
   </head>
-  <body data-account-id={{ auth()->user()->account_id }} class="bg-gray-monica">
-
-    @include('partials.header')
+  <body data-account-id="{{ auth()->user()->account_id }}" class="bg-gray-monica">
 
     <div id="app">
+      @include('partials.header')
       @yield('content')
     </div>
 
@@ -45,7 +44,7 @@
 
     {{-- Required only for the Upgrade account page --}}
     @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
-      <script src="https://js.stripe.com/v3/"></script>
+      <script async src="https://js.stripe.com/v3/"></script>
       <script>
         var stripe = Stripe('{{config('services.stripe.key')}}');
       </script>

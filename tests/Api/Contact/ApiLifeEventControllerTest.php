@@ -173,7 +173,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/lifeevents', [
             'contact_id' => $contact->id,
-            'life_event_type_id' => 392029834029,
+            'life_event_type_id' => 0,
             'happened_at' => '1989-02-02',
             'name' => 'This is a text',
             'note' => 'This is a text',
@@ -189,7 +189,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', '/api/lifeevents', [
-            'contact_id' => 9320984209,
+            'contact_id' => 0,
             'life_event_type_id' => $lifeEventType->id,
             'happened_at' => '1989-02-02',
             'name' => 'This is a text',

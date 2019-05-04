@@ -4,12 +4,20 @@
       {{ title }}
     </p>
     <input type="hidden" :name="name" :value="selected ? selected.id : ''" />
-    <v-select v-model="selected" :placeholder="placeholder" :label="'complete_name'" :options="computedOption" @search="search" />
+    <v-select
+      v-model="selected"
+      :placeholder="placeholder"
+      :label="'complete_name'"
+      :options="items"
+      @search="search"
+      @search:blur="blur"
+    />
   </div>
 </template>
 
 <script>
 import vSelect from 'vue-select';
+import 'vue-select/dist/vue-select.css';
 import axios from 'axios';
 
 export default {
@@ -35,52 +43,89 @@ export default {
     },
     defaultOptions: {
       type: Array,
-      default: function () {
-        return [];
-      }
+      default: () => [],
     },
     placeholder: {
       type: String,
       default: '',
-    }
+    },
+    wait : {
+      type: Number,
+      default: 200,
+    },
   },
 
   data () {
     return {
-      src : 'people/search',
-      filterable : false,
       selected: null,
-      newOptions: [],
+      items: [],
+      callUpdateItems: null,
+      cache: [],
     };
   },
 
-  computed: {
-    computedOption : function() {
-      return this.newOptions.length > 0 ? this.newOptions : this.defaultOptions;
-    }
+  mounted() {
+    this.callUpdateItems = _.debounce((text) => {
+      this.getContacts(text, this)
+        .then((response) => {
+          this.cache[text] = response;
+          this.displayItems(text);
+        });
+    }, this.wait);
+    this.items = this.defaultOptions;
   },
 
   methods: {
-    search(keyword, loading) {
-      this.getContacts(keyword, loading, this);
+
+    updateItems (text) {
+      if (text === null) {
+        return;
+      }
+      if (text.length < this.minLen) {
+        this.items = [];
+        return;
+      }
+
+      if (this.cache[text] === undefined) {
+        this.callUpdateItems(text);
+      } else {
+        this.callUpdateItems.cancel();
+        this.displayItems(text);
+      }
     },
 
-    getContacts: function (keyword, loading, vm) {
-      axios.post(this.src, {
-        needle: keyword,
-        accountId: $('body').attr('data-account-id')
-      }).then(function(response) {
-        let data = [];
-        response.data.data.forEach(function (contact) {
-          if (contact.id === vm.userContactId) {
-            return;
-          }
-          data.push(contact);
-        });
+    displayItems (text) {
+      var datas = [];
+      if (text === undefined || text.length === 0) {
+        datas = this.defaultOptions;
+      } else {
+        datas = this.cache[text];
+      }
 
-        vm.newOptions = data;
+      datas = datas.filter(this.filter);
+
+      this.items = datas;
+    },
+
+    getContacts: function (keyword, vm) {
+      return axios.post('/people/search', {
+        needle: keyword
+      }).then(function(response) {
+        return response.data.data;
       });
-    }
+    },
+
+    filter(item) {
+      return this.userContactId !== item.id;
+    },
+
+    search(keyword, loading) {
+      this.updateItems(keyword);
+    },
+
+    blur (e) {
+      this.items = this.defaultOptions;
+    },
   }
 };
 </script>
