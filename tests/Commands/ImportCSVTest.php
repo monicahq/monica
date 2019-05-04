@@ -24,7 +24,7 @@ class ImportCSVTest extends TestCase
 
         $totalContacts = Contact::where('account_id', $user->account_id)->count();
 
-        $exitCode = $this->artisan('import:csv '. $user->email . ' ' . $path);
+        $exitCode = $this->artisan('import:csv '.$user->email.' '.$path);
 
         $this->assertDatabaseHas('contacts', [
             'first_name' => 'Bono',
@@ -61,7 +61,7 @@ class ImportCSVTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $exitCode = $this->artisan('import:csv test@test.com '. $path);
+        $exitCode = $this->artisan('import:csv test@test.com '.$path);
 
         $this->assertEquals(-1, $exitCode);
     }
@@ -78,7 +78,7 @@ class ImportCSVTest extends TestCase
 
         $this->app['Illuminate\Contracts\Console\Kernel']->registerCommand($command);
 
-        $exitCode = $this->artisan('import:csv '. $user->email . ' xxx');
+        $exitCode = $this->artisan('import:csv '.$user->email.' xxx');
 
         $this->assertEquals(-1, $exitCode);
     }
