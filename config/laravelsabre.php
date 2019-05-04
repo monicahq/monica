@@ -1,5 +1,6 @@
 <?php
 
+use LaravelSabre\Http\Middleware\Authorize;
 
 return [
 
@@ -54,6 +55,18 @@ return [
         'api',
         'auth.tokenonbasic',
         'limitations',
+        Authorize::class,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Enable access only to these users
+    |--------------------------------------------------------------------------
+    |
+    | A comma-separated list of user's email to enable dav for.
+    | If null or empty, there will be no restriction.
+    |
+    */
+    'users' => env('DAV_USERS', null),
 
 ];
