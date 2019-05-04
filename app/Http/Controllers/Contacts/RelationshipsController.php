@@ -8,6 +8,7 @@ use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Relationship\Relationship;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Contact\CreateContact;
@@ -15,6 +16,7 @@ use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Relationship\UpdateRelationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
 
 class RelationshipsController extends Controller
 {
@@ -27,27 +29,7 @@ class RelationshipsController extends Controller
      */
     public function create(Request $request, Contact $contact)
     {
-        // getting top 100 of existing contacts
-        $existingContacts = auth()->user()->account->contacts()
-                                    ->real()
-                                    ->active()
-                                    ->select(['id', 'first_name', 'last_name', 'middle_name', 'nickname'])
-                                    ->sortedBy('name')
-                                    ->take(100)
-                                    ->get();
-
-        // Building the list of contacts specifically for the dropdown which asks
-        // for an id and a name. Also filter out the current contact.
-        $arrayContacts = collect();
-        foreach ($existingContacts as $existingContact) {
-            if ($existingContact->id == $contact->id) {
-                continue;
-            }
-            $arrayContacts->push([
-                'id' => $existingContact->id,
-                'complete_name' => $existingContact->name,
-            ]);
-        }
+        $existingContacts = Contact::search('', Auth::user()->account_id, 20, 'updated_at', 'AND `id` != '.$contact->id);
 
         return view('people.relationship.new')
             ->withContact($contact)
@@ -58,7 +40,7 @@ class RelationshipsController extends Controller
             ->withDays(DateHelper::getListOfDays())
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
-            ->withExistingContacts($arrayContacts)
+            ->withExistingContacts(ContactResource::collection($existingContacts))
             ->withType($request->get('type'));
     }
 
@@ -262,14 +244,21 @@ class RelationshipsController extends Controller
      */
     private function getRelationshipTypesList(Contact $contact)
     {
-        $arrayRelationshipTypes = collect();
+        $relationshipTypes = collect();
         foreach (auth()->user()->account->relationshipTypes as $relationshipType) {
-            $arrayRelationshipTypes->push([
+            $types = $relationshipTypes->get($relationshipType->relationshipTypeGroup->name, [
+                'name' => trans('app.relationship_type_group_'.$relationshipType->relationshipTypeGroup->name),
+                'options' => [],
+            ]);
+
+            $types['options'][] = [
                 'id' => $relationshipType->id,
                 'name' => $relationshipType->getLocalizedName($contact, true),
-            ]);
+            ];
+
+            $relationshipTypes->put($relationshipType->relationshipTypeGroup->name, $types);
         }
 
-        return $arrayRelationshipTypes;
+        return $relationshipTypes;
     }
 }

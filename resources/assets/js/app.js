@@ -68,6 +68,14 @@ Vue.component(
   'contact-select',
   require('./components/people/ContactSelect.vue').default
 );
+Vue.component(
+  'contact-search',
+  require('./components/people/ContactSearch.vue').default
+);
+Vue.component(
+  'contact-multi-search',
+  require('./components/people/ContactMultiSearch.vue').default
+);
 
 // Partials
 Vue.component(
@@ -351,7 +359,6 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     mounted: function() {
 
       // required modules
-      require('./search');
       require('./contacts');
 
     },
