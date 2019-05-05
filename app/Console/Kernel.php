@@ -7,6 +7,7 @@ use App\Console\Commands\ExportAll;
 use App\Console\Commands\ImportCSV;
 use App\Console\Commands\SetupTest;
 use App\Console\Commands\GetVersion;
+use App\Console\Scheduling\CronEvent;
 use App\Console\Commands\ImportVCards;
 use App\Console\Commands\LangGenerate;
 use App\Console\Commands\SetUserAdmin;
@@ -61,12 +62,32 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:reminders')->hourly();
-        $schedule->command('send:stay_in_touch')->hourly();
-        $schedule->command('monica:calculatestatistics')->daily();
-        $schedule->command('monica:ping')->daily();
+        $schedule->command('send:reminders')->when(function () {
+            return CronEvent::command('send:reminders')
+                ->hourly()
+                ->isDue();
+        });
+        $schedule->command('send:stay_in_touch')->when(function () {
+            return CronEvent::command('send:stay_in_touch')
+                ->hourly()
+                ->isDue();
+        });
+        $schedule->command('monica:calculatestatistics')->when(function () {
+            return CronEvent::command('monica:calculatestatistics')
+                ->daily()
+                ->isDue();
+        });
+        $schedule->command('monica:ping')->when(function () {
+            return CronEvent::command('monica:ping')
+                ->daily()
+                ->isDue();
+        });
         if (config('trustedproxy.cloudflare')) {
-            $schedule->command('cloudflare:reload')->daily(); // @codeCoverageIgnore
+            $schedule->command('cloudflare:reload')->when(function () {
+                return CronEvent::command('cloudflare:reload')
+                    ->daily()
+                    ->isDue();
+            }); // @codeCoverageIgnore
         }
     }
 }
