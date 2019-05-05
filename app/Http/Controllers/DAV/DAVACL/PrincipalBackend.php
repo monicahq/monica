@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\DAV\DAVACL;
 
 use Sabre\DAV;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Sabre\DAV\Server as SabreServer;
 use Sabre\DAVACL\PrincipalBackend\AbstractBackend;
@@ -55,7 +56,7 @@ class PrincipalBackend extends AbstractBackend
      */
     public function getPrincipalsByPrefix($prefixPath)
     {
-        $prefixPath = str_finish($prefixPath, '/');
+        $prefixPath = Str::finish($prefixPath, '/');
 
         return array_filter($this->getPrincipals(), function ($principal) use ($prefixPath) {
             return ! $prefixPath || strpos($principal['uri'], $prefixPath) == 0;

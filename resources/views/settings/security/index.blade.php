@@ -74,17 +74,36 @@
 
               @if (config('google2fa.enabled')===true)
                 <mfa-activate
-                  :activated="{{ json_encode($is2FAActivated) }}"
+                  :activated="{{ \Safe\json_encode($is2FAActivated) }}"
                 >
                 </mfa-activate>
               @endif
 
-              @if (config('u2f.enable')===true)
+              @if (config('webauthn.enable')===true)
+                <webauthn-connector
+                  :method="'register-modal'"
+                  :keys="{{ json_encode($webauthnKeys) }}"
+                  :timezone="{{ json_encode(auth()->user()->timezone) }}"
+                >
+                @if (config('u2f.enable')===true)
+                  <u2f-connector
+                    :method="'register-modal'"
+                    :currentkeys="{{ json_encode($currentkeys) }}"
+                    :timezone="{{ json_encode(auth()->user()->timezone) }}"
+                    :enable-register="{{ json_encode(false) }}"
+                  >
+                  </u2f-connector>
+                @endif
+                </webauthn-connector>
+              @elseif (config('u2f.enable')===true)
                 <u2f-connector
                   :method="'register-modal'"
-                  :currentkeys="{{ json_encode($currentkeys) }}"
-                  :timezone="{{ json_encode(auth()->user()->timezone) }}">
+                  :currentkeys="{{ \Safe\json_encode($currentkeys) }}"
+                  :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
+                  :enable-register="{{ \Safe\json_encode(true) }}"
+                >
                 </u2f-connector>
+                  
                 <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
               @endif
 

@@ -6,6 +6,8 @@ use App\Events\RecoveryLogin;
 use Illuminate\Auth\Events\Login;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
+use LaravelWebauthn\Facades\Webauthn;
+use LaravelWebauthn\Events\WebauthnLogin;
 use App\Http\Controllers\Auth\Validate2faController;
 use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 use Illuminate\Contracts\Auth\Authenticatable as User;
@@ -32,6 +34,10 @@ class LoginListener
             '\App\Listeners\LoginListener@onU2fLogin'
         );
         $events->listen(
+            \LaravelWebauthn\Events\WebauthnLogin::class,
+            '\App\Listeners\LoginListener@onWebauthnLogin'
+        );
+        $events->listen(
             \App\Events\RecoveryLogin::class,
             '\App\Listeners\LoginListener@onRecoveryLogin'
         );
@@ -48,6 +54,7 @@ class LoginListener
         if (Auth::viaRemember()) {
             $this->registerGoogle2fa($event->user);
             $this->registerU2f($event->user);
+            $this->registerWebauthn($event->user);
         }
     }
 
@@ -60,6 +67,7 @@ class LoginListener
     public function onGoogle2faLogin(LoginSucceeded $event)
     {
         $this->registerU2f($event->user);
+        $this->registerWebauthn($event->user);
     }
 
     /**
@@ -71,6 +79,18 @@ class LoginListener
     public function onU2fLogin($u2fKey, User $user)
     {
         $this->registerGoogle2fa($user);
+        $this->registerWebauthn($user);
+    }
+
+    /**
+     * Handle the Webauthn login event.
+     *
+     * @param WebauthnLogin $event
+     */
+    public function onWebauthnLogin(WebauthnLogin $event)
+    {
+        $this->registerGoogle2fa($event->user);
+        $this->registerU2f($event->user);
     }
 
     /**
@@ -83,6 +103,7 @@ class LoginListener
     {
         $this->registerGoogle2fa($event->user);
         $this->registerU2f($event->user);
+        $this->registerWebauthn($event->user);
     }
 
     /**
@@ -106,6 +127,18 @@ class LoginListener
     {
         if (config('u2f.enable') && U2fKey::where('user_id', $user->getAuthIdentifier())->count() > 0) {
             session([config('u2f.sessionU2fName') => true]);
+        }
+    }
+
+    /**
+     * Force register Webauthn login.
+     *
+     * @param User $user
+     */
+    private function registerWebauthn(User $user)
+    {
+        if (Webauthn::enabled($user)) {
+            Webauthn::forceAuthenticate();
         }
     }
 }

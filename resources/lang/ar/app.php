@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'تحديث',
     'save' => 'حفظ',
     'add' => 'إضافة',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'رجل',
     'gender_female' => 'إمرأة',
     'gender_none' => 'أُفَضل ألا أقول',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'عفواً! حصل خطأ ما.',
     'error_unauthorized' => 'ليس لديك الصلاحية لتحرير هذا المصدر.',

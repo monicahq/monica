@@ -68,6 +68,14 @@ Vue.component(
   'contact-select',
   require('./components/people/ContactSelect.vue').default
 );
+Vue.component(
+  'contact-search',
+  require('./components/people/ContactSearch.vue').default
+);
+Vue.component(
+  'contact-multi-search',
+  require('./components/people/ContactMultiSearch.vue').default
+);
 
 // Partials
 Vue.component(
@@ -268,6 +276,10 @@ Vue.component(
   require('./components/settings/U2fConnector.vue').default
 );
 Vue.component(
+  'webauthn-connector',
+  require('./components/settings/WebauthnConnector.vue').default
+);
+Vue.component(
   'recovery-codes',
   require('./components/settings/RecoveryCodes.vue').default
 );
@@ -351,7 +363,6 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     mounted: function() {
 
       // required modules
-      require('./search');
       require('./contacts');
 
     },

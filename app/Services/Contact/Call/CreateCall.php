@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Call;
 
+use Illuminate\Support\Arr;
 use App\Models\Contact\Call;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
@@ -40,7 +41,7 @@ class CreateCall extends BaseService
             ->findOrFail($data['contact_id']);
 
         // emotions array is left out as they are not attached during this call
-        $call = Call::create(array_except($data, ['emotions']));
+        $call = Call::create(Arr::except($data, ['emotions']));
 
         $this->updateLastCallInfo($contact, $call);
 

@@ -8,7 +8,7 @@
 
       <h1 class="tc mb2 mt0">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
-        <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ json_encode($contact->is_starred) }}"></contact-favorite>
+        <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ \Safe\json_encode($contact->is_starred) }}"></contact-favorite>
       </h1>
 
       <ul class="tc-ns mb3 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">
@@ -63,7 +63,7 @@
         {{-- STAY IN TOUCH --}}
         <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @include('partials.icons.header_stayintouch')
-          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" :limited="{{ json_encode(auth()->user()->account->hasLimitations()) }}"></stay-in-touch>
+          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" :limited="{{ \Safe\json_encode(auth()->user()->account->hasLimitations()) }}"></stay-in-touch>
         </li>
       </ul>
 

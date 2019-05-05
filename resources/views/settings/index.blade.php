@@ -112,8 +112,8 @@
                 <reminder-time
                 :reminder="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
                 :timezone="'{{ $selectedTimezone }}'"
-                :timezones="{{ json_encode($timezones) }}"
-                :hours="{{ json_encode($hours) }}">
+                :timezones="{{ \Safe\json_encode($timezones) }}"
+                :hours="{{ \Safe\json_encode($hours) }}">
                 </reminder-time>
               </div>
 

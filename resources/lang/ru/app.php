@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'Обновить',
     'save' => 'Сохранить',
     'add' => 'Добавить',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Мужской',
     'gender_female' => 'Женский',
     'gender_none' => 'Неизвестно',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',

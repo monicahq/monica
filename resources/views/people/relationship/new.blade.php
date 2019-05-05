@@ -135,7 +135,7 @@
               :title="'{{ trans('people.relationship_form_associate_dropdown') }}'"
               :name="'existing_contact_id'"
               :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
-              :default-options="{{ $existingContacts }}"
+              :default-options="{{ json_encode($existingContacts) }}"
               :user-contact-id="'{{ $contact->id }}'">
             </contact-select>
           @endif
@@ -148,7 +148,7 @@
           :options="{{ $relationshipTypes }}"
           value="{{ $type }}"
           :required="true"
-          :title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
+          :title="'{{ trans('people.relationship_form_is_with') }}'"
           :id="'relationship_type_id'">
         </form-select>
       </div>

@@ -3,6 +3,7 @@
 namespace Tests\Unit\Helpers;
 
 use Tests\TestCase;
+use function Safe\json_decode;
 use App\Helpers\InstanceHelper;
 use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

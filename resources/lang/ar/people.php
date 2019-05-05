@@ -196,6 +196,7 @@ return [
     'relationship_form_add' => 'إضافة علاقة جديدة',
     'relationship_form_edit' => 'تعديل علاقة حالية',
     'relationship_form_is_with' => 'هذا الشخص...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'مع من هذه العلاقة؟',
     'relationship_form_create_contact' => 'إضافة شخص جديد',
     'relationship_form_associate_contact' => 'جهة اتصال موجودة',
