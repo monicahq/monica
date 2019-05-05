@@ -29,7 +29,7 @@ class NoteTest extends FeatureTestCase
 
     public function test_user_can_add_a_note()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $noteBody = 'This is a note that I would like to see';
 
@@ -48,7 +48,7 @@ class NoteTest extends FeatureTestCase
 
     public function test_user_can_edit_a_note()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $note = factory(Note::class)->create([
             'contact_id' => $contact->id,
@@ -73,7 +73,7 @@ class NoteTest extends FeatureTestCase
 
     public function test_user_can_delete_a_note()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $note = factory(Note::class)->create([
             'contact_id' => $contact->id,

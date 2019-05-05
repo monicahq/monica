@@ -24,18 +24,18 @@ class CronEvent
     {
         $this->cron = $cron;
     }
-    
+
     /**
      * Get the command.
      *
      * @param string $command
      * @return self
      */
-    public static function command(string $command) : CronEvent
+    public static function command(string $command) : self
     {
         $cron = Cron::firstOrCreate(['command' => $command]);
 
-        return new CronEvent($cron);
+        return new self($cron);
     }
 
     /**
@@ -43,7 +43,7 @@ class CronEvent
      *
      * @return self
      */
-    public function hourly() : CronEvent
+    public function hourly() : self
     {
         $this->minutes = 60;
 
@@ -55,7 +55,7 @@ class CronEvent
      *
      * @return self
      */
-    public function daily() : CronEvent
+    public function daily() : self
     {
         $this->minutes = 60 * 24;
 
@@ -69,7 +69,7 @@ class CronEvent
      */
     public function isDue() : bool
     {
-        $now  = now();
+        $now = now();
 
         if ($this->cron->last_run) {
             $next_run = $this->cron->last_run->addMinutes($this->minutes);
