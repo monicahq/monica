@@ -30,35 +30,42 @@ In addition, make sure to setup a new job that runs every hour using the Heroku 
 In order to generate personal access tokens from the UI, you need to:
 
 * Install the [Heroku CLI](https://devcenter.heroku.com/categories/command-line) and log in.
-* From your command line, run `heroku run bash -a <APP-ID>`.
-* Run `php artisan passport:install`.
-* You will see two keys printed to the screen, each with an integer key ID and a secret.
+* From your command line, run
+```sh
+heroku run bash -a <APP-ID>
+```
+* Run
+```sh
+php artisan passport:install
+```
+  This command display two keys, each with an integer key ID and a secret:
+  ```
+Encryption keys generated successfully.
+Personal access client created successfully.
+Client ID: 1
+Client secret: RS4dkVC...OYIUamD
+Password grant client created successfully.
+Client ID: 2
+Client secret: tV6RRPo...ZCoW8Cx
+```
 * Open the Heroku dashboard and navigate to Settings -> Reveal Config Vars. This is where you can set environment variables.
-* Create two new environment variables using the details from the second key you just created, e.g. set `MOBILE_CLIENT_ID` to `2`, and set `MOBILE_CLIENT_SECRET` to `zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq`
-* Still in the Heroku CLI, run `cat ~/storage/oauth-private.key`. Copy the output to a new Heroku environment variable called `OAUTH_PRIVATE_KEY`
-* Do the same thing with the contents of `~/storage/oauth-public.key`, copying its contents to an environment variable called `OAUTH_PUBLIC_KEY`
-* We created `OAUTH_PRIVATE_KEY` and `OAUTH_PUBLIC_KEY` so that we can re-create those oauth-xxx.key files each time Heroku brings up your app. In order to do that, you need to change the following lines in `composer.json`:
+* Create two new environment variables using the details from the `Password grant client` key you just created, e.g. set `MOBILE_CLIENT_ID` to `2`, and set `MOBILE_CLIENT_SECRET` to `tV6RRPo...`
+* Still in the Heroku CLI, run this command to output the private key:
+```
+sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-private.key
+```
+   Copy the output to a new Heroku environment variable called `PASSPORT_PRIVATE_KEY`
+* Do the same thing with the contents of the public key:
+```
+sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-public.key
+```
+copying its contents to an environment variable called `PASSPORT_PUBLIC_KEY`
 
-Change this:
-```
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall"
-        ]
-```
-To this (i.e. add a comma at the end of the 'Illuminate' line, and add these two new lines:
-```
-        "post-install-cmd": [
-            "Illuminate\\Foundation\\ComposerScripts::postInstall",
-            "echo \"$OAUTH_PUBLIC_KEY\" > storage/oauth-public.key",
-            "echo \"$OAUTH_PRIVATE_KEY\" > storage/oauth-private.key"
-        ]
-```
-
-Once you push this change to your fork, Heroku should re-deploy, and you should be able to use the 'Create new token' function in https://XXX.herokuapp.com/settings/api
+Once Heroku is re-deploy, you should be able to use the 'Create new token' function in https://XXX.herokuapp.com/settings/api
 
 Once you have the token, you can use the API with a command line:
 ```
-curl -H "Authorization: Bearer eyJ0eXIh7ARV1Xjcf4qNo" https://rahimcrm.herokuapp.com/api
+curl -H "Authorization: Bearer eyJ0eXIh7ARV1Xjcf4qNo" https://XXX.herokuapp.com/api
 ```
 If everything is well, this call will return:
 ```json
