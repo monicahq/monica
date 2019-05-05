@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Api\Contact;
+namespace Tests\Api\Account;
 
 use Tests\ApiTestCase;
 use App\Models\User\User;
@@ -34,7 +34,7 @@ class ApiUserControllerTest extends ApiTestCase
 
         $response = $this->get('/api/me');
 
-        $response->assertStatus(201);
+        $response->assertStatus(200);
 
         $response->assertJsonStructure([
             'data' => $this->jsonStructureUser,
@@ -118,11 +118,8 @@ class ApiUserControllerTest extends ApiTestCase
 
         $response = $this->post('/api/me/compliance');
 
-        $response->assertStatus(400);
-
-        $response->assertJsonFragment([
-            'error_code' => 37,
-            'message' => 'Problems parsing JSON',
+        $this->expectDataError($response, [
+            'The ip address field is required.',
         ]);
     }
 

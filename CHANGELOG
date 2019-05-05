@@ -4,23 +4,47 @@ UNRELEASED CHANGES:
 
 New features:
 
-*
+* Add WebAuthn Multi-factor authentication
+* Add multi factor auth on oauth
 
 Enhancements:
 
+* Add ability to enable DAV for some users
+* Group relationships in create/edit forms
+* Rewrite contact search fields
+* Use string and array classes instead of helpers
+
+Fixes:
+
+* Fix contact create with birthdate age 0
+* Fix contact link create on job queue
+* Fix /settings/dav route
+* Fix display relationship without a ofContact property
+* Fix register request validate
+* Fix relationship create
+
+RELEASED VERSIONS:
+
+v2.13.0 - 2019-04-07
+--------------------
+
+Enhancements:
+
+* Add ability to update a relationship
+* Add a sex type behind the gender
+* Make gender optional on a contact profile
 * Add a Collection::sortByCollator macro
 
 Fixes:
 
+* Fix destroy relationship
+* Fix event dispatch for login (google2fa, u2f) events handle
 * Fix address input label mistake
 * Fix dashboard crash when reminder is empty
 * Fix import vCard with Cyrillic encoding
 * Fix import/export vcard with birthday with year unknown
 * Fix contact missing create form
 * Fix money format for non two "2" minor unit currencies
-
-
-RELEASED VERSIONS:
 
 v2.12.1 - 2019-03-09
 --------------------

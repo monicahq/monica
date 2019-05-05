@@ -24,7 +24,8 @@ class Contact extends Resource
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
             'description' => $this->description,
-            'gender' => $this->gender->name,
+            'gender' => is_null($this->gender) ? null : $this->gender->name,
+            'gender_type' => is_null($this->gender) ? null : $this->gender->type,
             'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
             'is_active' => (bool) $this->is_active,
@@ -103,7 +104,7 @@ class Contact extends Resource
         ];
     }
 
-    private function getHashId()
+    protected function getHashId()
     {
         $hashid = '';
         if ($this->is_partial) {

@@ -19,6 +19,7 @@ class Gender extends Resource
             'id' => $this->id,
             'object' => 'gender',
             'name' => $this->name,
+            'type' => $this->type,
             'account' => [
                 'id' => $this->account->id,
             ],

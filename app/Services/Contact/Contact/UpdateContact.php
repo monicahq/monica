@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 
@@ -21,7 +22,7 @@ class UpdateContact extends BaseService
             'middle_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
             'nickname' => 'nullable|string|max:255',
-            'gender_id' => 'required|integer|exists:genders,id',
+            'gender_id' => 'nullable|integer|exists:genders,id',
             'description' => 'nullable|string|max:255',
             'is_partial' => 'nullable|boolean',
             'is_birthdate_known' => 'required|boolean',
@@ -77,7 +78,7 @@ class UpdateContact extends BaseService
     private function updateGeneralInformation(array $data, Contact $contact)
     {
         // filter out the data that shall not be updated here
-        $dataOnly = array_except(
+        $dataOnly = Arr::except(
             $data,
             [
                 'is_birthdate_known',

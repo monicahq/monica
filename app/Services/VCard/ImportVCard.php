@@ -5,12 +5,16 @@ namespace App\Services\VCard;
 use Ramsey\Uuid\Uuid;
 use App\Models\User\User;
 use App\Traits\DAVFormat;
+use function Safe\substr;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RandomHelper;
 use App\Services\BaseService;
+use function Safe\preg_split;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -115,7 +119,7 @@ class ImportVCard extends BaseService
         User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
 
-        if ($contactId = array_get($data, 'contact_id')) {
+        if ($contactId = Arr::get($data, 'contact_id')) {
             Contact::where('account_id', $data['account_id'])
                 ->findOrFail($contactId);
         }
@@ -175,7 +179,7 @@ class ImportVCard extends BaseService
             ];
         }
 
-        $contactId = array_get($data, 'contact_id');
+        $contactId = Arr::get($data, 'contact_id');
         $contact = $this->getExistingContact($entry, $contactId);
 
         return $this->processEntryContact($data, $entry, $contact);
@@ -239,30 +243,34 @@ class ImportVCard extends BaseService
      */
     private function getGender($genderCode) : Gender
     {
-        if (! array_has($this->genders, $genderCode)) {
-            switch ($genderCode) {
-                case 'M':
-                    $gender = $this->getGenderByName('Man') ?? $this->getGenderByName(config('dav.default_gender'));
-                    break;
-                case 'F':
-                    $gender = $this->getGenderByName('Woman') ?? $this->getGenderByName(config('dav.default_gender'));
-                    break;
-                default:
-                    $gender = $this->getGenderByName(config('dav.default_gender'));
-                    break;
+        if (! Arr::has($this->genders, $genderCode)) {
+            $gender = $this->getGenderByType($genderCode);
+            if (! $gender) {
+                switch ($genderCode) {
+                    case 'M':
+                        $gender = $this->getGenderByName(trans('app.gender_male')) ?? $this->getGenderByName(config('dav.default_gender'));
+                        break;
+                    case 'F':
+                        $gender = $this->getGenderByName(trans('app.gender_female')) ?? $this->getGenderByName(config('dav.default_gender'));
+                        break;
+                    default:
+                        $gender = $this->getGenderByName(config('dav.default_gender'));
+                        break;
+                }
             }
 
             if (! $gender) {
                 $gender = new Gender;
                 $gender->account_id = $this->accountId;
                 $gender->name = config('dav.default_gender');
+                $gender->type = Gender::UNKNOWN;
                 $gender->save();
             }
 
-            array_set($this->genders, $genderCode, $gender);
+            Arr::set($this->genders, $genderCode, $gender);
         }
 
-        return array_get($this->genders, $genderCode);
+        return Arr::get($this->genders, $genderCode);
     }
 
     /**
@@ -276,6 +284,20 @@ class ImportVCard extends BaseService
         return Gender::where([
             'account_id' => $this->accountId,
             'name' => $name,
+        ])->first();
+    }
+
+    /**
+     * Get the gender by type.
+     *
+     * @param  string  $type
+     * @return Gender|null
+     */
+    private function getGenderByType($type)
+    {
+        return Gender::where([
+            'account_id' => $this->accountId,
+            'type' => $type,
         ])->first();
     }
 
@@ -300,7 +322,7 @@ class ImportVCard extends BaseService
      */
     private function hasFirstnameInN(VCard $entry) : bool
     {
-        return $entry->N !== null && ! empty(array_get($entry->N->getParts(), '1'));
+        return $entry->N !== null && ! empty(Arr::get($entry->N->getParts(), '1'));
     }
 
     /**
@@ -472,13 +494,13 @@ class ImportVCard extends BaseService
             $parts = $entry->N->getParts();
 
             $name = '';
-            if (! empty(array_get($parts, '1'))) {
+            if (! empty(Arr::get($parts, '1'))) {
                 $name .= $this->formatValue($parts[1]);
             }
-            if (! empty(array_get($parts, '2'))) {
+            if (! empty(Arr::get($parts, '2'))) {
                 $name .= ' '.$this->formatValue($parts[2]);
             }
-            if (! empty(array_get($parts, '0'))) {
+            if (! empty(Arr::get($parts, '0'))) {
                 $name .= ' '.$this->formatValue($parts[0]);
             }
             $name .= ' '.$this->formatValue($entry->EMAIL);
@@ -503,9 +525,9 @@ class ImportVCard extends BaseService
     private function importFromN(Contact $contact, VCard $entry): void
     {
         $parts = $entry->N->getParts();
-        $contact->last_name = $this->formatValue(array_get($parts, '0'));
-        $contact->first_name = $this->formatValue(array_get($parts, '1'));
-        $contact->middle_name = $this->formatValue(array_get($parts, '2'));
+        $contact->last_name = $this->formatValue(Arr::get($parts, '0'));
+        $contact->first_name = $this->formatValue(Arr::get($parts, '1'));
+        $contact->middle_name = $this->formatValue(Arr::get($parts, '2'));
         // prefix [3]
         // suffix [4]
 
@@ -592,13 +614,13 @@ class ImportVCard extends BaseService
     {
         if ($entry->PHOTO) {
             if ($entry->PHOTO instanceof \Sabre\VObject\Property\Uri) {
-                if (starts_with((string) $entry->PHOTO, 'https://secure.gravatar.com') || starts_with((string) $entry->PHOTO, 'https://www.gravatar.com')) {
+                if (Str::startsWith((string) $entry->PHOTO, 'https://secure.gravatar.com') || Str::startsWith((string) $entry->PHOTO, 'https://www.gravatar.com')) {
                     // Gravatar
                     $contact->gravatar_url = (string) $entry->PHOTO;
                 } else {
                     // assume monica asset
                 }
-            } elseif (starts_with($entry->PHOTO, 'data:')) {
+            } elseif (Str::startsWith($entry->PHOTO, 'data:')) {
                 // Import photo image
             }
         }
@@ -635,7 +657,7 @@ class ImportVCard extends BaseService
             $bday = (string) $entry->BDAY;
             $is_year_unknown = false;
 
-            if (starts_with($bday, '--')) {
+            if (Str::startsWith($bday, '--')) {
                 $bday = '0'.substr($bday, 1);
                 $is_year_unknown = true;
             }
@@ -652,11 +674,11 @@ class ImportVCard extends BaseService
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'is_date_known' => true,
+                    'is_age_based' => false,
                     'day' => $birthdate->day,
                     'month' => $birthdate->month,
                     'year' => $is_year_unknown ? null : $birthdate->year,
                     'add_reminder' => true,
-                    'is_age_based' => null,
                 ]);
             }
         }
@@ -680,11 +702,11 @@ class ImportVCard extends BaseService
         foreach ($entry->ADR as $adr) {
             $parts = $adr->getParts();
             $addressContent = [
-                'street' => $this->formatValue(array_get($parts, '2')),
-                'city' => $this->formatValue(array_get($parts, '3')),
-                'province' => $this->formatValue(array_get($parts, '4')),
-                'postal_code' => $this->formatValue(array_get($parts, '5')),
-                'country' => CountriesHelper::find(array_get($parts, '6')),
+                'street' => $this->formatValue(Arr::get($parts, '2')),
+                'city' => $this->formatValue(Arr::get($parts, '3')),
+                'province' => $this->formatValue(Arr::get($parts, '4')),
+                'postal_code' => $this->formatValue(Arr::get($parts, '5')),
+                'country' => CountriesHelper::find(Arr::get($parts, '6')),
             ];
 
             // We assume addresses are in the same order
@@ -797,7 +819,7 @@ class ImportVCard extends BaseService
             $phone = $phones->shift();
 
             $tel = (string) $tel;
-            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO, starts_with($tel, '+') ? \libphonenumber\PhoneNumberFormat::INTERNATIONAL : \libphonenumber\PhoneNumberFormat::NATIONAL);
+            $tel = LocaleHelper::formatTelephoneNumberByISO($tel, $countryISO, Str::startsWith($tel, '+') ? \libphonenumber\PhoneNumberFormat::INTERNATIONAL : \libphonenumber\PhoneNumberFormat::NATIONAL);
 
             if (is_null($phone)) {
                 // Contact field does not exist
@@ -881,7 +903,7 @@ class ImportVCard extends BaseService
      */
     private function getContactFieldTypeId(string $type)
     {
-        if (! array_has($this->contactFields, $type)) {
+        if (! Arr::has($this->contactFields, $type)) {
             $contactFieldType = ContactFieldType::where([
                 'account_id' => $this->accountId,
                 'type' => $type,
@@ -894,9 +916,9 @@ class ImportVCard extends BaseService
                 ])->first();
             }
 
-            array_set($this->contactFields, $type, $contactFieldType != null ? $contactFieldType->id : null);
+            Arr::set($this->contactFields, $type, $contactFieldType != null ? $contactFieldType->id : null);
         }
 
-        return array_get($this->contactFields, $type);
+        return Arr::get($this->contactFields, $type);
     }
 }

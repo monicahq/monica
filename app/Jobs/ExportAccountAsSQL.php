@@ -49,6 +49,7 @@ class ExportAccountAsSQL
         'terms',
         'u2f_key',
         'users',
+        'webauthn_keys',
     ];
 
     protected $ignoredColumns = [

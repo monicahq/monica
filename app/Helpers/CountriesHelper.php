@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use PragmaRX\CountriesLaravel\Package\Facade as Countries;
 use PragmaRX\Countries\Package\Support\Collection as Country;
@@ -71,8 +72,8 @@ class CountriesHelper
         $locale = App::getLocale();
         $lang = LocaleHelper::getLocaleAlpha($locale);
 
-        return array_get($country, 'translations.'.$lang.'.common',
-            array_get($country, 'name.common', '')
+        return Arr::get($country, 'translations.'.$lang.'.common',
+            Arr::get($country, 'name.common', '')
         );
     }
 

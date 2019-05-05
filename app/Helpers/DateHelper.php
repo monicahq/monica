@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Jenssegers\Date\Date;
+use function Safe\strtotime;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
