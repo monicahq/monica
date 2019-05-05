@@ -8,6 +8,7 @@
         "php": "^7.2",
         "ext-bcmath": "*",
         "ext-gd": "*",
+        "ext-gmp": "*",
         "ext-intl": "*",
         "asbiin/laravel-webauthn": "^0.5.0",
         "bacon/bacon-qr-code": "^1.0",
