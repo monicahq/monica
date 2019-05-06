@@ -29,7 +29,7 @@ class SettingsTest extends FeatureTestCase
 
     public function test_user_can_access_settings_page()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->get('/settings');
 
@@ -40,7 +40,7 @@ class SettingsTest extends FeatureTestCase
 
     public function test_user_can_export_account()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->get('/settings/export');
 
@@ -56,7 +56,7 @@ class SettingsTest extends FeatureTestCase
 
     public function test_user_can_reset_account()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->followingRedirects()
                         ->post(route('settings.reset'));
@@ -68,7 +68,7 @@ class SettingsTest extends FeatureTestCase
 
     public function test_user_can_delete_account()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->followingRedirects()
             ->post(route('settings.delete'));
