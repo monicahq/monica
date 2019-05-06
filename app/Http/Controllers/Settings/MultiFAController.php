@@ -154,7 +154,7 @@ class MultiFAController extends Controller
      */
     public function u2fRegisterData(Request $request)
     {
-        list($req, $sigs) = app('u2f')->getRegisterData($request->user());
+        [$req, $sigs] = app('u2f')->getRegisterData($request->user());
         session(['u2f.registerData' => $req]);
 
         return $this->respond([
