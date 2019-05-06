@@ -125,7 +125,7 @@ return [
     'webauthn_not_supported' => 'Il tuo browser non supporta WebAuthn.',
     'webauthn_not_secured' => 'WebAuthn supporta solo connessioni sicure. Si prega di caricare questa pagina con lo schema https.',
     'webauthn_error_already_used' => 'Questa chiave è già registrata. Non è necessario registrarla nuovamente.',
-    'webauthn_error_not_allowed' => 'The operation either timed out or was not allowed.',
+    'webauthn_error_not_allowed' => 'L\'operazione è scaduta o non è stata consentita.',
 
     'recovery_title' => 'Codici di recupero',
     'recovery_show' => 'Ottieni codici di recupero',
