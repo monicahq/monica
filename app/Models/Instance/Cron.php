@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cron extends Model
 {
-    protected $primaryKey = 'command';
-
     /**
      * The attributes that are mass assignable.
      *

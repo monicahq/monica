@@ -14,12 +14,10 @@ class AddCronSchedule extends Migration
     public function up()
     {
         Schema::create('crons', function (Blueprint $table) {
-            $table->string('command');
+            $table->increments('id');
+            $table->string('command')->unique();
             $table->timestamp('last_run');
             $table->timestamps();
-
-            $table->primary('command');
-            $table->index('last_run');
         });
     }
 

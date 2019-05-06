@@ -2,6 +2,7 @@
 
 namespace App\Console\Scheduling;
 
+use Carbon\Carbon;
 use App\Models\Instance\Cron;
 
 class CronEvent
@@ -71,8 +72,11 @@ class CronEvent
     {
         $now = now();
 
-        if ($this->cron->last_run) {
-            $next_run = $this->cron->last_run->addMinutes($this->minutes);
+        if ($this->cron->last_run !== null) {
+            $t = $this->cron->last_run;
+
+            $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, 0, 0)
+                                ->addMinutes($this->minutes);
 
             if ($next_run > $now) {
                 return false;
