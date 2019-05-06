@@ -29,7 +29,7 @@ class TaskTest extends FeatureTestCase
 
     public function test_user_can_add_a_task()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $taskTitle = $this->faker->realText();
         $taskDescription = $this->faker->realText();
