@@ -19,7 +19,7 @@ class CronEvent
      *
      * @var int
      */
-    private $minutes;
+    private $minutes = 1;
 
     public function __construct(Cron $cron)
     {
@@ -75,7 +75,7 @@ class CronEvent
         if ($this->cron->last_run !== null) {
             $t = $this->cron->last_run;
 
-            $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, 0, 0)
+            $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, floor($t->minute / $this->minutes) * $this->minutes, 0)
                                 ->addMinutes($this->minutes);
 
             if ($next_run > $now) {
