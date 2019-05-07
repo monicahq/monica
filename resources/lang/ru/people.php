@@ -43,13 +43,13 @@ return [
     'people_add_success' => ':name has been successfully created',
     'people_add_gender' => 'Пол',
     'people_delete_success' => 'Контакт был удалён',
-    'people_delete_message' => 'Delete contact',
+    'people_delete_message' => 'Удалить контакт',
     'people_delete_confirmation' => 'Вы уверены что хотите удалить этот контакт? Восстановление невозможно.',
     'people_add_birthday_reminder' => 'Поздравить :name с днём рождения',
     'people_add_import' => 'Вы хотите <a href=":url">импортировать ваши контакты</a>?',
     'people_edit_email_error' => 'There is already a contact in your account with this email address. Please choose another one.',
-    'people_export' => 'Export as vCard',
-    'people_add_reminder_for_birthday' => 'Create an annual reminder for the birthday',
+    'people_export' => 'Экспортировать как vCard',
+    'people_add_reminder_for_birthday' => 'Создать ежегодное напоминание о дне рождения',
 
     // show
     'section_contact_information' => 'Contact information',
@@ -65,18 +65,18 @@ return [
 
     // Header
     'edit_contact_information' => 'Редактировать контакты',
-    'contact_archive' => 'Archive contact',
-    'contact_unarchive' => 'Unarchive contact',
-    'contact_archive_help' => 'Archived contacts will not be shown on the contact list, but still appear in search results.',
+    'contact_archive' => 'Архивировать контакт',
+    'contact_unarchive' => 'Разархивировать контакт',
+    'contact_archive_help' => 'Архивированные контакты не будут отображаться в списке контактов, но будут появляться в результатах поиска.',
     'call_button' => 'Log a call',
     'set_favorite' => 'Favorite contacts are placed at the top of the contact list',
 
     // Stay in touch
-    'stay_in_touch' => 'Stay in touch',
+    'stay_in_touch' => 'Оставаться на связи',
     'stay_in_touch_frequency' => 'Stay in touch every day|Stay in touch every {count} days',
     'stay_in_touch_invalid' => 'The frequency must be a number greater than 0.',
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
-    'stay_in_touch_modal_title' => 'Stay in touch',
+    'stay_in_touch_modal_title' => 'Оставаться на связи',
     'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
     'stay_in_touch_modal_label' => 'Send me an email every...',
 
@@ -95,12 +95,12 @@ return [
     'call_blank_desc' => 'Вы звонили {name}',
     'call_you_called' => 'Вы звонили',
     'call_he_called' => '{name} called',
-    'call_emotions' => 'Emotions:',
+    'call_emotions' => 'Эмоции:',
 
     // Conversation
     'conversation_blank' => 'Record conversations you have with :name on social media, SMS, ...',
-    'conversation_delete_link' => 'Delete the conversation',
-    'conversation_edit_title' => 'Edit conversation',
+    'conversation_delete_link' => 'Удалить разговор',
+    'conversation_edit_title' => 'Изменить разговор',
     'conversation_edit_delete' => 'Are you sure you want to delete this conversation? Deletion is permanent.',
     'conversation_add_success' => 'The conversation has been successfully added.',
     'conversation_edit_success' => 'The conversation has been successfully updated.',
