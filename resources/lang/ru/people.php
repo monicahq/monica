@@ -137,7 +137,7 @@ return [
     'information_edit_max_size' => 'Max :size Kb.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обяз.)',
-    'information_edit_description' => 'Description (Optional)',
+    'information_edit_description' => 'Описание (необязательно)',
     'information_edit_description_help' => 'Used on the contact list to add some context, if necessary.',
     'information_edit_unknown' => 'Я не знаю возраст',
     'information_edit_probably' => 'Этому человеку примерно',
@@ -177,7 +177,7 @@ return [
     'reminders_delete_success' => 'Напоминание было удалено',
     'reminders_update_success' => 'Напоминание успешно обновлено',
 
-    'reminder_frequency_day' => 'every day|every :number days',
+    'reminder_frequency_day' => 'каждый день|[2,4]раз в :number дня|[5,*]раз в :number дней',
     'reminder_frequency_week' => 'каждую :number неделю|каждые :number недели|каждые :number недель',
     'reminder_frequency_month' => 'каждый :number месяц|каждые :number месяца|каждые :number месяцев',
     'reminder_frequency_year' => 'каждый :number год|каждые :number года|каждые :number лет',
@@ -201,7 +201,7 @@ return [
     'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Add a new person',
-    'relationship_form_associate_contact' => 'An existing contact',
+    'relationship_form_associate_contact' => 'Существующий контакт',
     'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
     'relationship_form_associate_dropdown_placeholder' => 'Search and select an existing contact',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
@@ -213,9 +213,9 @@ return [
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
-    'tasks_blank_title' => 'You don’t have any tasks yet.',
+    'tasks_blank_title' => 'У вас пока нет задач.',
     'tasks_form_title' => 'Title',
-    'tasks_form_description' => 'Description (optional)',
+    'tasks_form_description' => 'Описание (необязательно)',
     'tasks_add_task' => 'Добавить задачу',
     'tasks_delete_success' => 'Задача была усрешна удалена',
     'tasks_complete_success' => 'Статус задачи был изменён',
@@ -223,8 +223,8 @@ return [
     // activities
     'activity_title' => 'Активности',
     'activity_type_category_simple_activities' => 'Simple activities',
-    'activity_type_category_sport' => 'Sport',
-    'activity_type_category_food' => 'Food',
+    'activity_type_category_sport' => 'Спорт',
+    'activity_type_category_food' => 'Еда',
     'activity_type_category_cultural_activities' => 'Cultural activities',
     'activity_type_just_hung_out' => 'просто повеселились',
     'activity_type_watched_movie_at_home' => 'смотрели кино дома',
@@ -296,7 +296,7 @@ return [
     'gifts_offered' => 'Gifts offered',
     'gifts_offered_as_an_idea' => 'Mark as an idea',
     'gifts_received' => 'Gifts received',
-    'gifts_view_comment' => 'View comment',
+    'gifts_view_comment' => 'Просмотреть комментарий',
     'gifts_mark_offered' => 'Mark as offered',
     'gifts_update_success' => 'The gift has been updated successfully',
 
@@ -449,7 +449,7 @@ return [
     'life_event_sentence_first_kiss' => 'Kissed for the first time',
 
     // documents
-    'document_list_title' => 'Documents',
+    'document_list_title' => 'Документы',
     'document_list_cta' => 'Upload document',
     'document_list_blank_desc' => 'Here you can store documents related to this person.',
     'document_upload_zone_cta' => 'Upload a file',
