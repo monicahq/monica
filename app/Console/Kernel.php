@@ -72,7 +72,7 @@ class Kernel extends ConsoleKernel
     }
 
     /**
-     * Define a new schedule command with a frequency
+     * Define a new schedule command with a frequency.
      */
     private function scheduleCommand(Schedule $schedule, string $command, $frequency)
     {
@@ -81,6 +81,7 @@ class Kernel extends ConsoleKernel
             if ($frequency) {
                 $event = $event->$frequency(); // @codeCoverageIgnore
             }
+
             return $event->isDue(); // @codeCoverageIgnore
         });
     }
