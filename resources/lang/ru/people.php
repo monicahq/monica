@@ -84,7 +84,7 @@ return [
     'modal_call_title' => 'Log a call',
     'modal_call_comment' => 'О чём вы разговаривали? (не обяз.)',
     'modal_call_exact_date' => 'Дата звонка',
-    'modal_call_who_called' => 'Who called?',
+    'modal_call_who_called' => 'Кто звонил?',
     'modal_call_emotion' => 'Do you want to log how you felt during this call? (optional)',
     'calls_add_success' => 'Звонок сохранён.',
     'call_delete_confirmation' => 'Вы уверены что хотите удалить звонок?',
