@@ -102,7 +102,7 @@ class CronEvent
                                     ->addDays($this->days);
             }
 
-            if ($next_run > $now) {
+            if (! isset($next_run) || $next_run > $now) {
                 return false;
             }
         }
