@@ -134,7 +134,7 @@ return [
     'information_edit_success' => 'Профиль был успешно обновлён',
     'information_edit_title' => 'Редактировать данные :name',
     'information_edit_avatar' => 'Фото/Аватар контакта',
-    'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size' => 'До :size Кб.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обяз.)',
     'information_edit_description' => 'Описание (необязательно)',
@@ -364,8 +364,8 @@ return [
     'contact_address_form_province' => 'Province (optional)',
     'contact_address_form_postal_code' => 'Postal code (optional)',
     'contact_address_form_country' => 'Country (optional)',
-    'contact_address_form_latitude' => 'Latitude (numbers only) (optional)',
-    'contact_address_form_longitude' => 'Longitude (numbers only) (optional)',
+    'contact_address_form_latitude' => 'Широта (только цифры) (необязательно)',
+    'contact_address_form_longitude' => 'Долгота (только цифры) (необязательно)',
 
     // Pets
     'pets_kind' => 'Kind of pet',
