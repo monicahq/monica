@@ -87,7 +87,7 @@ class CronEventTest extends TestCase
 
         $cron = factory(Cron::class)->create();
         $event = new CronEvent($cron);
-        $event->hourly();
+        $event->daily();
 
         Carbon::setTestNow(Carbon::create(2019, 5, 2, 8, 10, 0));
 
@@ -98,7 +98,7 @@ class CronEventTest extends TestCase
             'last_run' => '2019-05-02 08:10:00',
         ]);
 
-        Carbon::setTestNow(Carbon::create(2019, 5, 1, 10, 0, 0));
+        Carbon::setTestNow(Carbon::create(2019, 5, 2, 10, 0, 0));
 
         $this->assertFalse($event->isDue());
 

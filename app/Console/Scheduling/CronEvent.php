@@ -15,11 +15,18 @@ class CronEvent
     private $cron;
 
     /**
-     * Frequency to run the command.
+     * Frequency to run the command in minutes.
      *
      * @var int
      */
     private $minutes = 1;
+
+    /**
+     * Frequency to run the command in days.
+     *
+     * @var int
+     */
+    private $days = 0;
 
     public function __construct(Cron $cron)
     {
@@ -57,6 +64,7 @@ class CronEvent
     public function hourly() : self
     {
         $this->minutes = 60;
+        $this->days = 0;
 
         return $this;
     }
@@ -68,7 +76,8 @@ class CronEvent
      */
     public function daily() : self
     {
-        $this->minutes = 60 * 24;
+        $this->minutes = 0;
+        $this->days = 1;
 
         return $this;
     }
@@ -85,8 +94,13 @@ class CronEvent
         if ($this->cron->last_run !== null) {
             $t = $this->cron->last_run;
 
-            $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, (int) floor($t->minute / $this->minutes) * $this->minutes, 0)
-                                ->addMinutes($this->minutes);
+            if ($this->minutes !== 0) {
+                $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, (int) floor($t->minute / $this->minutes) * $this->minutes, 0)
+                                    ->addMinutes($this->minutes);
+            } else if ($this->days !== 0) {
+                $next_run = Carbon::create($t->year, $t->month, (int) floor($t->day / $this->days) * $this->days, 0, 0, 0)
+                                    ->addDays($this->days);
+            }
 
             if ($next_run > $now) {
                 return false;

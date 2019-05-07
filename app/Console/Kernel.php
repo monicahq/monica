@@ -67,7 +67,7 @@ class Kernel extends ConsoleKernel
         $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
         $this->scheduleCommand($schedule, 'monica:ping', 'daily');
         if (config('trustedproxy.cloudflare')) {
-            $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily');
+            $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }
     }
 
@@ -78,7 +78,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command($command)->when(function () use ($command, $frequency) {
             $event = CronEvent::command($command); // @codeCoverageIgnore
-            if ($frequency) {
+            if ($frequency) { // @codeCoverageIgnore
                 $event = $event->$frequency(); // @codeCoverageIgnore
             }
 
