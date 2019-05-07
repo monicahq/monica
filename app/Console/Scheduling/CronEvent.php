@@ -97,7 +97,7 @@ class CronEvent
             if ($this->minutes !== 0) {
                 $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, (int) floor($t->minute / $this->minutes) * $this->minutes, 0)
                                     ->addMinutes($this->minutes);
-            } else if ($this->days !== 0) {
+            } elseif ($this->days !== 0) {
                 $next_run = Carbon::create($t->year, $t->month, (int) floor($t->day / $this->days) * $this->days, 0, 0, 0)
                                     ->addDays($this->days);
             }
