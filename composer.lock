@@ -7630,7 +7630,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -11905,16 +11905,16 @@
         },
         {
             "name": "phpdocumentor/reflection-docblock",
-            "version": "4.3.0",
+            "version": "4.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpDocumentor/ReflectionDocBlock.git",
-                "reference": "94fd0001232e47129dd3504189fa1c7225010d08"
+                "reference": "bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/94fd0001232e47129dd3504189fa1c7225010d08",
-                "reference": "94fd0001232e47129dd3504189fa1c7225010d08",
+                "url": "https://api.github.com/repos/phpDocumentor/ReflectionDocBlock/zipball/bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c",
+                "reference": "bdd9f737ebc2a01c06ea7ff4308ec6697db9b53c",
                 "shasum": ""
             },
             "require": {
@@ -11952,7 +11952,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2017-11-30T07:14:17+00:00"
+            "time": "2019-04-30T17:48:53+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -12679,12 +12679,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "1dfa887a7e87ba9b7c635299462554b9ad241d5b"
+                "reference": "21ad2a8155dd437a0926a4d1fedb991bebd4810b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/1dfa887a7e87ba9b7c635299462554b9ad241d5b",
-                "reference": "1dfa887a7e87ba9b7c635299462554b9ad241d5b",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/21ad2a8155dd437a0926a4d1fedb991bebd4810b",
+                "reference": "21ad2a8155dd437a0926a4d1fedb991bebd4810b",
                 "shasum": ""
             },
             "conflict": {
@@ -12749,9 +12749,9 @@
                 "laravel/framework": ">=4,<4.0.99|>=4.1,<=4.1.31|>=4.2,<=4.2.22|>=5,<=5.0.35|>=5.1,<=5.1.46|>=5.2,<=5.2.45|>=5.3,<=5.3.31|>=5.4,<=5.4.36|>=5.5,<5.5.42|>=5.6,<5.6.30",
                 "laravel/socialite": ">=1,<1.0.99|>=2,<2.0.10",
                 "league/commonmark": "<0.18.3",
-                "magento/magento1ce": "<1.9.4",
-                "magento/magento1ee": ">=1.9,<1.14.4",
-                "magento/product-community-edition": ">=2,<2.2.7",
+                "magento/magento1ce": "<1.9.4.1",
+                "magento/magento1ee": ">=1.9,<1.14.4.1",
+                "magento/product-community-edition": ">=2,<2.2.8|>=2.3,<2.3.1",
                 "monolog/monolog": ">=1.8,<1.12",
                 "namshi/jose": "<2.2",
                 "onelogin/php-saml": "<2.10.4",
@@ -12879,7 +12879,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-04-30T09:56:45+00:00"
+            "time": "2019-05-06T17:09:30+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -13819,16 +13819,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.2.7",
+            "version": "3.2.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "6e010d9db95275725e5ad6409c387eb173091f72"
+                "reference": "b9bece4cbcb3f342c8412618f73ca02db98064e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/6e010d9db95275725e5ad6409c387eb173091f72",
-                "reference": "6e010d9db95275725e5ad6409c387eb173091f72",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/b9bece4cbcb3f342c8412618f73ca02db98064e8",
+                "reference": "b9bece4cbcb3f342c8412618f73ca02db98064e8",
                 "shasum": ""
             },
             "require": {
@@ -13854,7 +13854,7 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.2",
                 "phpunit/phpunit": "^6.0 || ^7.0",
-                "psalm/plugin-phpunit": "^0.5.1",
+                "psalm/plugin-phpunit": "^0.5.5",
                 "squizlabs/php_codesniffer": "3.4.0"
             },
             "suggest": {
@@ -13895,7 +13895,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-04-12T15:32:35+00:00"
+            "time": "2019-04-29T16:19:51+00:00"
         },
         {
             "name": "webmozart/assert",
