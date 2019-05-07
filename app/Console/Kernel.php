@@ -62,32 +62,26 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:reminders')->when(function () {
-            return CronEvent::command('send:reminders')
-                ->hourly()
-                ->isDue();
-        });
-        $schedule->command('send:stay_in_touch')->when(function () {
-            return CronEvent::command('send:stay_in_touch')
-                ->hourly()
-                ->isDue();
-        });
-        $schedule->command('monica:calculatestatistics')->when(function () {
-            return CronEvent::command('monica:calculatestatistics')
-                ->daily()
-                ->isDue();
-        });
-        $schedule->command('monica:ping')->when(function () {
-            return CronEvent::command('monica:ping')
-                ->daily()
-                ->isDue();
-        });
+        $this->scheduleCommand($schedule, 'send:reminders', 'hourly');
+        $this->scheduleCommand($schedule, 'send:stay_in_touch', 'hourly');
+        $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
+        $this->scheduleCommand($schedule, 'monica:ping', 'daily');
         if (config('trustedproxy.cloudflare')) {
-            $schedule->command('cloudflare:reload')->when(function () {
-                return CronEvent::command('cloudflare:reload')
-                    ->daily()
-                    ->isDue();
-            }); // @codeCoverageIgnore
+            $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily');
         }
+    }
+
+    /**
+     * Define a new schedule command with a frequency
+     */
+    private function scheduleCommand(Schedule $schedule, string $command, $frequency)
+    {
+        $schedule->command($command)->when(function () use ($command, $frequency) {
+            $event = CronEvent::command($command); // @codeCoverageIgnore
+            if ($frequency) {
+                $event = $event->$frequency(); // @codeCoverageIgnore
+            }
+            return $event->isDue(); // @codeCoverageIgnore
+        });
     }
 }

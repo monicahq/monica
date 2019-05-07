@@ -48,7 +48,7 @@ class CronEventTest extends TestCase
         ]);
     }
 
-    public function test_next_hour_is_due()
+    public function test_hourly_cron()
     {
         Carbon::setTestNow(Carbon::create(2019, 5, 1, 7, 0, 0));
 
@@ -78,6 +78,35 @@ class CronEventTest extends TestCase
         $this->assertDatabaseHas('crons', [
             'command' => $cron->command,
             'last_run' => '2019-05-01 09:01:00',
+        ]);
+    }
+
+    public function test_daily_cron()
+    {
+        Carbon::setTestNow(Carbon::create(2019, 5, 1, 7, 0, 0));
+
+        $cron = factory(Cron::class)->create();
+        $event = new CronEvent($cron);
+        $event->hourly();
+
+        $this->assertTrue($event->isDue());
+
+        $this->assertDatabaseHas('crons', [
+            'command' => $cron->command,
+            'last_run' => '2019-05-01 07:00:00',
+        ]);
+
+        Carbon::setTestNow(Carbon::create(2019, 5, 1, 8, 00, 0));
+
+        $this->assertFalse($event->isDue());
+
+        Carbon::setTestNow(Carbon::create(2019, 5, 2, 0, 0, 0));
+
+        $this->assertTrue($event->isDue());
+
+        $this->assertDatabaseHas('crons', [
+            'command' => $cron->command,
+            'last_run' => '2019-05-02 00:00:00',
         ]);
     }
 }
