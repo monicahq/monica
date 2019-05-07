@@ -171,11 +171,11 @@ return [
     'reminders_add_recurrent' => 'Повторять напоминание с периодичностью: ',
     'reminders_add_starting_from' => 'начиная с даты указанной выше',
     'reminders_add_cta' => 'Добавить напоминание',
-    'reminders_edit_update_cta' => 'Update reminder',
+    'reminders_edit_update_cta' => 'Обновить напоминание',
     'reminders_add_error_custom_text' => 'Вы должны указать текст для этого напоминания',
     'reminders_create_success' => 'Напоминание было добавлено',
     'reminders_delete_success' => 'Напоминание было удалено',
-    'reminders_update_success' => 'The reminder has been updated successfully',
+    'reminders_update_success' => 'Напоминание успешно обновлено',
 
     'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'каждую :number неделю|каждые :number недели|каждые :number недель',
