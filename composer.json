@@ -21,7 +21,7 @@
         "intervention/image": "^2.3",
         "jenssegers/date": "^3.3",
         "lahaxearnaud/laravel-u2f": "^1.5",
-        "laravel/cashier": "~8.0",
+        "laravel/cashier": "~9.3",
         "laravel/framework": "5.8.*",
         "laravel/passport": "^7.2",
         "laravel/socialite": "^4.0",
