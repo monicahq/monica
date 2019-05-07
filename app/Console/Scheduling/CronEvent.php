@@ -85,7 +85,7 @@ class CronEvent
         if ($this->cron->last_run !== null) {
             $t = $this->cron->last_run;
 
-            $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, floor($t->minute / $this->minutes) * $this->minutes, 0)
+            $next_run = Carbon::create($t->year, $t->month, $t->day, $t->hour, (int) floor($t->minute / $this->minutes) * $this->minutes, 0)
                                 ->addMinutes($this->minutes);
 
             if ($next_run > $now) {
