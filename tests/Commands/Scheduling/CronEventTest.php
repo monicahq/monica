@@ -89,24 +89,26 @@ class CronEventTest extends TestCase
         $event = new CronEvent($cron);
         $event->hourly();
 
+        Carbon::setTestNow(Carbon::create(2019, 5, 2, 8, 10, 0));
+
         $this->assertTrue($event->isDue());
 
         $this->assertDatabaseHas('crons', [
             'command' => $cron->command,
-            'last_run' => '2019-05-01 07:00:00',
+            'last_run' => '2019-05-02 08:10:00',
         ]);
 
-        Carbon::setTestNow(Carbon::create(2019, 5, 1, 8, 00, 0));
+        Carbon::setTestNow(Carbon::create(2019, 5, 1, 10, 0, 0));
 
         $this->assertFalse($event->isDue());
 
-        Carbon::setTestNow(Carbon::create(2019, 5, 2, 0, 0, 0));
+        Carbon::setTestNow(Carbon::create(2019, 5, 3, 0, 0, 0));
 
         $this->assertTrue($event->isDue());
 
         $this->assertDatabaseHas('crons', [
             'command' => $cron->command,
-            'last_run' => '2019-05-02 00:00:00',
+            'last_run' => '2019-05-03 00:00:00',
         ]);
     }
 }
