@@ -330,14 +330,14 @@ return [
     'introductions_title_edit' => 'How did you meet :name?',
     'introductions_additional_info' => 'Explain how and where you met',
     'introductions_edit_met_through' => 'Has someone introduced you to this person?',
-    'introductions_no_met_through' => 'No one',
+    'introductions_no_met_through' => 'Никто',
     'introductions_first_met_date' => 'Date you met',
-    'introductions_no_first_met_date' => 'I don’t know the date we met',
-    'introductions_first_met_date_known' => 'This is the date we met',
+    'introductions_no_first_met_date' => 'Я не знаю дату, когда мы познакомились',
+    'introductions_first_met_date_known' => 'Это дата, когда мы встретились',
     'introductions_add_reminder' => 'Add a reminder to celebrate this encounter on the anniversary this event happened',
     'introductions_update_success' => 'You’ve successfully updated the information about how you met this person',
     'introductions_met_through' => 'Met through <a href=":url">:name</a>',
-    'introductions_met_date' => 'Met on :date',
+    'introductions_met_date' => 'Встретились :date',
     'introductions_reminder_title' => 'Anniversary of the day you first met',
 
     // Deceased
@@ -373,7 +373,7 @@ return [
     'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
-    'pets_title' => 'Pets',
+    'pets_title' => 'Питомцы',
     'pets_reptile' => 'Reptile',
     'pets_bird' => 'Bird',
     'pets_cat' => 'Cat',
@@ -388,7 +388,7 @@ return [
 
     // life events
     'life_event_list_tab_life_events' => 'Life events',
-    'life_event_list_tab_other' => 'Notes, reminders, ...',
+    'life_event_list_tab_other' => 'Заметки, напоминания, ...',
     'life_event_list_title' => 'Life events',
     'life_event_blank' => 'Log what happens to the life of {name} for your future reference.',
     'life_event_list_cta' => 'Add life event',
