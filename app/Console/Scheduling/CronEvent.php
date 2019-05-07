@@ -40,6 +40,16 @@ class CronEvent
     }
 
     /**
+     * Get current Cron.
+     *
+     * @return Cron
+     */
+    public function cron()
+    {
+        return $this->cron;
+    }
+
+    /**
      * Run the command once per hour.
      *
      * @return self
