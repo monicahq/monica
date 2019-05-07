@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => 'Контакт не найден',
     'people_list_number_kids' => ':count ребёнок|:count ребёнка|:count детей',
     'people_list_last_updated' => 'Последнее обновление:',
     'people_list_number_reminders' => ':count напоминание|:count напоминания|:count напоминаний',
@@ -37,7 +37,7 @@ return [
     'people_add_firstname' => 'Имя',
     'people_add_middlename' => 'Отчество (не обязательно)',
     'people_add_lastname' => 'Фамилия (не обязательно)',
-    'people_add_nickname' => 'Nickname (Optional)',
+    'people_add_nickname' => 'Псевдоним (необязательно)',
     'people_add_cta' => 'Добавить',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
     'people_add_success' => ':name has been successfully created',
@@ -57,7 +57,7 @@ return [
     'section_personal_reminders' => 'Напоминания',
     'section_personal_tasks' => 'Задачи',
     'section_personal_gifts' => 'Подарки',
-    'section_personal_notes' => 'Notes',
+    'section_personal_notes' => 'Заметки',
 
     // archived contacts
     'list_link_to_active_contacts' => 'You are viewing archived contacts. See the <a href=":url">list of active contacts</a> instead.',
@@ -92,8 +92,8 @@ return [
     'call_title' => 'Телефонные звонки',
     'call_empty_comment' => 'Нет деталей',
     'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
-    'call_blank_desc' => 'You called {name}',
-    'call_you_called' => 'You called',
+    'call_blank_desc' => 'Вы звонили {name}',
+    'call_you_called' => 'Вы звонили',
     'call_he_called' => '{name} called',
     'call_emotions' => 'Emotions:',
 
@@ -113,7 +113,7 @@ return [
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Add another message',
-    'conversation_list_table_messages' => 'Messages',
+    'conversation_list_table_messages' => 'Сообщения',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Conversations',
     'conversation_list_cta' => 'Log conversation',
