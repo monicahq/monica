@@ -1090,11 +1090,6 @@ atob@^2.1.1:
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-autocomplete-vue@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/autocomplete-vue/-/autocomplete-vue-1.1.0.tgz#787b28f5349cdaaa310f77d22f923ec6daf4f63d"
-  integrity sha512-XDBYZCbLZPfArtOcJZEYgqoLu5mpc2YUReM9khlGPD1ZGgsc2u3+W9Kj9MIxnZdGuSBQ/TLeG2LjDQko6Qi65g==
-
 autoprefixer@^9.4.2:
   version "9.4.7"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-9.4.7.tgz#f997994f9a810eae47b38fa6d8a119772051c4ff"
@@ -7906,11 +7901,6 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-v-autocomplete@^1.8.2:
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/v-autocomplete/-/v-autocomplete-1.8.2.tgz#966c7b3eda2c74dd683911114a20284cd096961f"
-  integrity sha1-lmx7PtosdN1oORERSiAoTNCWlh8=
-
 v-dropdown@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/v-dropdown/-/v-dropdown-1.0.5.tgz#54803dc2d801710a05b2da63c694e68c24268326"
@@ -8082,10 +8072,10 @@ vue@^2.5.11, vue@^2.5.21:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.6.tgz#dde41e483c11c46a7bf523909f4f2f816ab60d25"
   integrity sha512-Y2DdOZD8sxApS+iUlwv1v8U1qN41kq6Kw45lM6nVZKhygeWA49q7VCCXkjXqeDBXgurrKWkYQ9cJeEJwAq0b9Q==
 
-vuejs-datepicker-tmp@^1.5.4:
+vuejs-datepicker@^1.5.4:
   version "1.5.4"
-  resolved "https://registry.yarnpkg.com/vuejs-datepicker-tmp/-/vuejs-datepicker-tmp-1.5.4.tgz#8435db77cd6536adde95e5be89bb6d0ff21f2e4f"
-  integrity sha512-nX0QkcTjxQz3TYcZwZN3BY9bzu04EW3K2HQm9HaIBmOJoeGfNSwV4KRKmsYbR2lQtNPrK4gpN7jlvN8edMEYiw==
+  resolved "https://registry.yarnpkg.com/vuejs-datepicker/-/vuejs-datepicker-1.5.4.tgz#dacdb5eb5ef44342c67cb59b93a0d5da9c1809b3"
+  integrity sha512-AVzgu3pb/fF/Sj3qu8YPnp7KhtsXkm8TSnBEcyYsWb1bMJr5FdPCxuIzISgw5kq0It7HkVJUGXQ4CiCwq9hhww==
 
 watchpack@^1.5.0:
   version "1.6.0"
