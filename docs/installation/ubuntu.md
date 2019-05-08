@@ -110,9 +110,10 @@ exit
 1. Run `composer install --no-interaction --no-suggest --no-dev` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
-1. Optional: run `php artisan passport:install` to create the access tokens required for the API (Optional).
+1. *Optional*: Setup the queues with Redis, Beanstalk or Amazon SQS: see optional instruction of [generic installation](generic.md#setup-queues)
+1. *Optional*: Setup the access tokens to use the API follow optional instruction of [generic installation](generic.md#setup-access-tokens)
 
-### 3. Configure cron job
+### 4. Configure cron job
 
 Monica requires some background processes to continuously run. The list of things Monica does in the background is described [here](https://github.com/monicahq/monica/blob/master/app/Console/Kernel.php#L33).
 Basically those crons are needed to send reminder emails and check if a new version is available.

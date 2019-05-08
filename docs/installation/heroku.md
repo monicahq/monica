@@ -5,12 +5,18 @@ Monica can be deployed on Heroku using the button below:
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/monicahq/monica/tree/master)
 
 Before deployment, Heroku will ask you to define a few variables.
-Please ensure to enter a custom `APP_KEY` when asked (if, for example, you have the `pwgen` utility installed, you could copy and paste the output of `pwgen -s 32 1`).
-In addition, you can edit the E-Mail address Monica will send e-mails to, the name of the sender and some other important variables on that screen.
+- Please ensure to enter a custom `APP_KEY` when asked (if, for example, you have the `pwgen` utility installed, you could copy and paste the output of `pwgen -s 32 1`).
+- In addition, you can edit the email address Monica will send emails to (`MAIL_FROM_ADDRESS`), the name of the sender (`MAIL_FROM_NAME`) and some other important variables on that screen.
 
-After deployment, and when you visit the app for the first time, you will be prompted to register a new account. Put in your email address and password and you will be logged into the app. This is the only account that has access unless you invite other people.
+After deployment, click on ![Manage App](../images/heroku_manage_app.png) to open the dashboard of your new application:
+![Heroku Dashbord](../images/heroku_dashboard.png)
 
-Feel free to update these credentials in the settings after installation.
+Click on **Heroku Scheduler** to open scheduler dashboard. Create a new job, and defines a new job to run this command every 10 minutes or every hour at 00 minutes:
+```sh
+php artisan schedule:run
+```
+
+You are now able to open the application and register a new user.
 
 ### Configuration 
 
@@ -23,9 +29,8 @@ After deployment, the configuration of your app should look like this:
 
 Note that when you deploy with the "Deploy to Heroku" purple button, only 1 dyno ("web") is activated while the "queue" one is not. That is OK - the "queue" dyno is only helpful if you set `QUEUE_DRIVER=database` (default is 'sync').
 
-In addition, make sure to setup a new job that runs every hour using the Heroku Scheduler (it's located on the bottom of the screen shown above). After creating a new job, set it to be: `php artisan schedule:run`.
 
-### Generating Personal Access Tokens
+### Optional: Setup the access tokens to use the API
 
 In order to generate personal access tokens from the UI, you need to:
 
@@ -36,30 +41,22 @@ heroku run bash -a <APP-ID>
 ```
 * Run
 ```sh
-php artisan passport:install
+php artisan passport:keys
 ```
-  This command display two keys, each with an integer key ID and a secret:
-  ```
-Encryption keys generated successfully.
-Personal access client created successfully.
-Client ID: 1
-Client secret: RS4dkVC...OYIUamD
-Password grant client created successfully.
-Client ID: 2
-Client secret: tV6RRPo...ZCoW8Cx
-```
-* Open the Heroku dashboard and navigate to Settings -> Reveal Config Vars. This is where you can set environment variables.
-* Create two new environment variables using the details from the `Password grant client` key you just created, e.g. set `MOBILE_CLIENT_ID` to `2`, and set `MOBILE_CLIENT_SECRET` to `tV6RRPo...`
+This command will generate encryption keys in the `storage` directory.
+The two keys `oauth-private.key` and `oauth-public.key` cannot be backup and recreate in heroku directly.
+
 * Still in the Heroku CLI, run this command to output the private key:
 ```
 sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-private.key
 ```
-   Copy the output to a new Heroku environment variable called `PASSPORT_PRIVATE_KEY`
+  Copy the output to a new Heroku environment variable called `PASSPORT_PRIVATE_KEY`
 * Do the same thing with the contents of the public key:
 ```
 sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-public.key
 ```
-copying its contents to an environment variable called `PASSPORT_PUBLIC_KEY`
+  Copy its contents to an environment variable called `PASSPORT_PUBLIC_KEY`
+
 
 Once Heroku is re-deploy, you should be able to use the 'Create new token' function in https://XXX.herokuapp.com/settings/api
 
@@ -72,13 +69,31 @@ If everything is well, this call will return:
 {"success":{"message":"Welcome to Monica"}}
 ```
 
+
+#### Optional: Generate a Password grant client for OAuth access
+
+* Still in the Heroku CLI, run this command to generate a password grant client:
+```
+php artisan passport:client --password --no-interaction
+```
+* This will display a client ID and secret:
+```
+Password grant client created successfully.
+Client ID: 5
+Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
+```
+
+* Copy the two values into two new environment variable of your `.env` file:
+   - The value of client ID in a `MOBILE_CLIENT_ID` variable
+   - The value of client secret in a `MOBILE_CLIENT_SECRET` variable
+
 ## Limitations
 
 * No upload of photos for your contacts. Heroku doesn't support storage.
 * No email by default - email configuration isn't required to use Monica on Heroku, but it's recommended. The easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
   * [Sign up for Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
   * In Heroku, go to your app, then to the Settings tab. In it, you will have a button that reads "Reveal Config Vars". Click it, and change the following vars:
-    * `MAIL_DRIVER` = `mailgun`
+    * `MAIL_DRIVER`: `mailgun`
     * `MAILGUN_DOMAIN`: your Mailgun domain
     * `MAILGUN_SECRET`: your Mailgun API key — find it [here](https://app.mailgun.com/app/account/security)
     * `MAIL_FROM_ADDRESS`: email address to use for 'from' email (could just use your own)

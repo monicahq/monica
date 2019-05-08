@@ -167,7 +167,8 @@ a2ensite monica.conf
 service apache2 restart
 ```
 
-### 6. **Optional**: Setup the queues with Redis, Beanstalk or Amazon SQS
+<a id="setup-queues"></a>
+### 6. Optional: Setup the queues with Redis, Beanstalk or Amazon SQS
 
 Monica can work with a queue mechanism to handle different events, so we don't block the main thread while processing stuff that can be run asynchronously, like sending emails. By default, Monica does not use a queue mechanism but can be setup to do so.
 
@@ -196,7 +197,8 @@ php artisan queue:work --sleep=3 --tries=3
 Some process monitor such as [Supervisor](https://laravel.com/docs/master/queues#supervisor-configuration) could be useful to monitor the queue worker.
 
 
-### 7. **Optional**: Setup the access tokens to use the API
+<a id="setup-access-tokens"></a>
+### 7. Optional: Setup the access tokens to use the API
 
 In order to use the Monica API for your instance, you will have to instanciate encryption keys first.
 
@@ -210,7 +212,7 @@ php artisan passport:keys
 This command will generate encryption keys in the `storage` directory.
 Be sure to backup the `oauth-private.key` and `oauth-public.key` files to maintain futur access.
 
-#### *Optional*: Save the encryption keys as variable
+#### Optional: Save the encryption keys as variable
 Instead of keeping the encryption keys as files, you can add them as environment variable. This is very useful for any environment where you cannot deploy these file in each server (heroku, fortrabbit, etc.).
 
 * Output the private key:
@@ -227,7 +229,7 @@ sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-public.key
 copying its contents to an environment variable called `PASSPORT_PUBLIC_KEY`
 
 
-#### *Optional*: Generate a Password grant client
+#### Optional: Generate a Password grant client
 A [password grant client](https://laravel.com/docs/master/passport#creating-a-password-grant-client) can be generated in order to use the OAuth access (used in the mobile application for instance).
 
 * Run this command to generate a password grant client:
