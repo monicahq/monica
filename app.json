@@ -24,7 +24,7 @@
   "env": {
     "APP_KEY": {
       "description": "Please change this to a 32-character string.",
-      "generator": "secret"
+      "value": "change-me-to-a-random-string----"
     },
     "APP_DISABLE_SIGNUP": {
       "description": "Disable user signup.",
