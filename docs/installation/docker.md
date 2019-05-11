@@ -17,7 +17,7 @@ cp .env.example .env
 to create it. If not, you can fetch it from GitHub like:
 
 ```sh
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example -o .env
 ```
 
 Then open `.env` in an editor and update it for your own needs:
@@ -53,8 +53,8 @@ with a pre-packaged MySQL database.
 Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that already.
 
 ```sh
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml > docker-compose.yml
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml -o docker-compose.yml
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example -o .env
 ```
 
 Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
