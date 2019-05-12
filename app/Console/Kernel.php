@@ -7,6 +7,7 @@ use App\Console\Commands\ExportAll;
 use App\Console\Commands\ImportCSV;
 use App\Console\Commands\SetupTest;
 use App\Console\Commands\GetVersion;
+use App\Console\Scheduling\CronEvent;
 use App\Console\Commands\ImportVCards;
 use App\Console\Commands\LangGenerate;
 use App\Console\Commands\SetUserAdmin;
@@ -61,12 +62,27 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('send:reminders')->hourly();
-        $schedule->command('send:stay_in_touch')->hourly();
-        $schedule->command('monica:calculatestatistics')->daily();
-        $schedule->command('monica:ping')->daily();
+        $this->scheduleCommand($schedule, 'send:reminders', 'hourly');
+        $this->scheduleCommand($schedule, 'send:stay_in_touch', 'hourly');
+        $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
+        $this->scheduleCommand($schedule, 'monica:ping', 'daily');
         if (config('trustedproxy.cloudflare')) {
-            $schedule->command('cloudflare:reload')->daily(); // @codeCoverageIgnore
+            $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }
+    }
+
+    /**
+     * Define a new schedule command with a frequency.
+     */
+    private function scheduleCommand(Schedule $schedule, string $command, $frequency)
+    {
+        $schedule->command($command)->when(function () use ($command, $frequency) {
+            $event = CronEvent::command($command); // @codeCoverageIgnore
+            if ($frequency) { // @codeCoverageIgnore
+                $event = $event->$frequency(); // @codeCoverageIgnore
+            }
+
+            return $event->isDue(); // @codeCoverageIgnore
+        });
     }
 }
