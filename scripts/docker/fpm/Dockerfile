@@ -116,7 +116,7 @@ RUN set -ex && \
 RUN apk del .build-deps && \
     rm -rf /var/cache/apk/*
 
-COPY scripts/docker/entrypoint.sh .
+COPY scripts/docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
 # FPM
