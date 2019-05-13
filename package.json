@@ -51,7 +51,6 @@
     "snyk": "^1.163.3",
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
-    "typeahead.js": "^0.11.1",
     "v-selectmenu": "^1.0.5",
     "vue": "^2.5.21",
     "vue-autosuggest": "^1.8.3",
