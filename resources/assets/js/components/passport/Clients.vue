@@ -14,7 +14,7 @@
             {{ $t('settings.api_oauth_title') }}
           </span>
 
-          <a class="btn" @click.prevent="showCreateClientForm" href="">
+          <a class="btn" href="" @click.prevent="showCreateClientForm">
             {{ $t('settings.api_oauth_create_new') }}
           </a>
         </div>
@@ -58,14 +58,14 @@
 
               <!-- Edit Button -->
               <td style="vertical-align: middle;">
-                <a class="action-link" @click.prevent="edit(client)" href="">
+                <a class="action-link" href="" @click.prevent="edit(client)">
                   {{ $t('app.edit') }}
                 </a>
               </td>
 
               <!-- Delete Button -->
               <td style="vertical-align: middle;">
-                <a class="action-link text-danger" @click.prevent="destroy(client)" href="">
+                <a class="action-link text-danger" href="" @click.prevent="destroy(client)">
                   {{ $t('app.delete') }}
                 </a>
               </td>

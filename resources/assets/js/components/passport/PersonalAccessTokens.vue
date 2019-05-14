@@ -28,7 +28,7 @@
               {{ $t('settings.api_personal_access_tokens') }}
             </span>
 
-            <a class="btn" @click.prevent="showCreateTokenForm" href="">
+            <a class="btn" href="" @click.prevent="showCreateTokenForm">
               {{ $t('settings.api_token_create_new') }}
             </a>
           </div>
@@ -58,7 +58,7 @@
 
                 <!-- Delete Button -->
                 <td style="vertical-align: middle;">
-                  <a class="action-link text-danger" @click.prevent="revoke(token)" href="">
+                  <a class="action-link text-danger" href="" @click.prevent="revoke(token)">
                     {{ $t('settings.api_token_delete') }}
                   </a>
                 </td>

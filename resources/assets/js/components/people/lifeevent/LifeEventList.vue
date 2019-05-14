@@ -462,7 +462,7 @@
           {{ $t('people.life_event_blank', { name: contactName }) }}
         </p>
         <div class="tc">
-          <a class="mb4 btn" @click.prevent="showAdd = true" href="">
+          <a class="mb4 btn" href="" @click.prevent="showAdd = true">
             {{ $t('people.life_event_list_cta') }}
           </a>
         </div>
@@ -475,10 +475,10 @@
         🎭 {{ $t('people.life_event_list_title') }}
 
         <span class="absolute" style="top: -5px; right: 0;">
-          <a v-if="showAdd" class="btn edit-information" @click.prevent="showAdd = false" href="">
+          <a v-if="showAdd" class="btn edit-information" href="" @click.prevent="showAdd = false">
             {{ $t('app.cancel') }}
           </a>
-          <a v-else class="btn edit-information" @click.prevent="showAdd = true" href="">
+          <a v-else class="btn edit-information" href="" @click.prevent="showAdd = true">
             {{ $t('people.life_event_list_cta') }}
           </a>
         </span>
@@ -514,7 +514,7 @@
             </p>
             <p>{{ lifeEvent.note }}</p>
             <p class="f7">
-              <a class="pointer" @click.prevent="showDeleteModal(lifeEvent)" href="">
+              <a class="pointer" href="" @click.prevent="showDeleteModal(lifeEvent)">
                 {{ $t('app.delete') }}
               </a>
             </p>
@@ -534,10 +534,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn center" @click.prevent="closeDeleteModal()" href="">
+          <a class="btn center" href="" @click.prevent="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a :cy-name="'delete-life-event-button'" class="btn btn-primary" @click.prevent="destroy(lifeEventToDelete)" href="">
+          <a :cy-name="'delete-life-event-button'" class="btn btn-primary" href="" @click.prevent="destroy(lifeEventToDelete)">
             {{ $t('app.delete') }}
           </a>
         </span>

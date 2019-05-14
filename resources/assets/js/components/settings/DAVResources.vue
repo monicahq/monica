@@ -21,7 +21,7 @@
       </label>
       <br />
       <input id="dav_url_base" :value="davRoute" class="url form-control" type="text" readonly />
-      <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click.prevent="copyIntoClipboard(davRoute)" href="">
+      <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(davRoute)">
         {{ $t('app.copy') }}
       </a>
       <p>
@@ -40,7 +40,7 @@
         </label>
         <br />
         <input id="dav_url_carddav" :value="cardDavRoute" class="url form-control" type="text" readonly />
-        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click.prevent="copyIntoClipboard(cardDavRoute)" href="">
+        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(cardDavRoute)">
           {{ $t('app.copy') }}
         </a>
         <br />
@@ -58,7 +58,7 @@
         </label>
         <br />
         <input id="dav_url_caldav_birthdays" :value="calDavBirthdaysRoute" class="url form-control" type="text" readonly />
-        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click.prevent="copyIntoClipboard(calDavBirthdaysRoute)" href="">
+        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(calDavBirthdaysRoute)">
           {{ $t('app.copy') }}
         </a>
         <br />
@@ -72,7 +72,7 @@
         </label>
         <br />
         <input id="dav_url_caldav_tasks" :value="calDavTasksRoute" class="url form-control" type="text" readonly />
-        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" @click.prevent="copyIntoClipboard(calDavTasksRoute)" href="">
+        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(calDavTasksRoute)">
           {{ $t('app.copy') }}
         </a>
         <br />
