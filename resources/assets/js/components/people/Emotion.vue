@@ -47,7 +47,7 @@
         </ul>
 
         <div class="relative dib">
-          <a class="pointer small-btn pa2" @click.prevent="menu = true">
+          <a class="pointer small-btn pa2" @click.prevent="menu = true" href="">
             😐 {{ $t('people.emotion_this_made_me_feel') }}
           </a>
 
@@ -66,7 +66,7 @@
 
             <!-- SECONDARY -->
             <li v-show="emotionsMenu == 'secondary'" class="pa2 pointer bb b--gray-monica">
-              <a class="no-underline" @click.prevent="emotionsMenu = 'primary'">
+              <a class="no-underline" @click.prevent="emotionsMenu = 'primary'" href="">
                 ← {{ $t('app.back') }}
               </a>
             </li>
@@ -82,7 +82,7 @@
 
             <!-- EMOTION -->
             <li v-show="emotionsMenu == 'emotions'" class="pa2 pointer bb b--gray-monica">
-              <a class="no-underline" @click.prevent="emotionsMenu = 'secondary'">
+              <a class="no-underline" @click.prevent="emotionsMenu = 'secondary'" href="">
                 ← {{ $t('app.back') }}
               </a>
             </li>

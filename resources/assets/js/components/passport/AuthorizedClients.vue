@@ -43,7 +43,7 @@
 
                 <!-- Revoke Button -->
                 <td style="vertical-align: middle;">
-                  <a class="action-link text-danger" @click="revoke(token)">
+                  <a class="action-link text-danger" @click.prevent="revoke(token)" href="">
                     {{ $t('app.revoke') }}
                   </a>
                 </td>

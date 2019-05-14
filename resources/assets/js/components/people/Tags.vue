@@ -37,10 +37,10 @@
         </ul>
       </div>
 
-      <a class="pointer" @click="editMode = false">
+      <a class="pointer" @click.prevent="editMode = false" href="">
         {{ $t('app.cancel') }}
       </a>
-      <a class="pointer" @click="store()">
+      <a class="pointer" @click.prevent="store()" href="">
         {{ $t('app.save_close') }}
       </a>
     </div>
@@ -60,7 +60,7 @@
         </span>
       </li>
       <li v-show="contactTags.length > 0" class="di">
-        <a v-show="!editMode" class="pointer" @click="editMode = true">
+        <a v-show="!editMode" class="pointer" @click.prevent="editMode = true" href="">
           {{ $t('app.edit') }}
         </a>
       </li>
@@ -68,7 +68,7 @@
         <span class="i mr2">
           {{ $t('people.tag_no_tags') }}
         </span>
-        <a v-show="!editMode" class="pointer" @click="editMode = true">
+        <a v-show="!editMode" class="pointer" @click.prevent="editMode = true" href="">
           {{ $t('people.tag_add') }}
         </a>
       </li>

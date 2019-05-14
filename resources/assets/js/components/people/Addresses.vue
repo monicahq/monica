@@ -10,10 +10,10 @@
         </h3>
       </div>
       <div v-if="contactAddresses.length > 0" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
-        <a v-if="!editMode" class="pointer" @click="editMode = true">
+        <a v-if="!editMode" class="pointer" @click.prevent="editMode = true" href="">
           {{ $t('app.edit') }}
         </a>
-        <a v-else class="pointer" @click="toggleEditExcept(-1); editMode = false; addMode = false">
+        <a v-else class="pointer" @click.prevent="toggleEditExcept(-1); editMode = false; addMode = false" href="">
           {{ $t('app.done') }}
         </a>
       </div>
@@ -21,7 +21,7 @@
 
     <!-- EMPTY BOX - DISPLAY ADD BUTTON -->
     <p v-if="contactAddresses.length == 0 && !addMode" class="mb0">
-      <a class="pointer" @click="toggleAdd">
+      <a class="pointer" @click.prevent="toggleAdd" href="">
         {{ $t('app.add') }}
       </a>
     </p>
@@ -134,10 +134,10 @@
               />
             </div>
             <div class="lh-copy mt3">
-              <a class="btn btn-primary" @click.prevent="update(contactAddress)">
+              <a class="btn btn-primary" @click.prevent="update(contactAddress)" href="">
                 {{ $t('app.save') }}
               </a>
-              <a class="btn" @click.prevent="toggleEdit(contactAddress)">
+              <a class="btn" @click.prevent="toggleEdit(contactAddress)" href="">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -147,7 +147,7 @@
 
       <!-- ADD BUTTON ONLY WHEN EDIT MODE IS AVAILABLE  -->
       <li v-if="editMode && !addMode">
-        <a class="pointer" @click="toggleAdd">
+        <a class="pointer" @click.prevent="toggleAdd" href="">
           {{ $t('app.add') }}
         </a>
       </li>
@@ -231,10 +231,10 @@
           />
         </div>
         <div class="lh-copy mt3">
-          <a class="btn btn-primary" @click.prevent="store">
+          <a class="btn btn-primary" @click.prevent="store" href="">
             {{ $t('app.add') }}
           </a>
-          <a class="btn" @click.prevent="addMode = false">
+          <a class="btn" @click.prevent="addMode = false" href="">
             {{ $t('app.cancel') }}
           </a>
         </div>

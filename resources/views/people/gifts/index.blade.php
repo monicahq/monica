@@ -1,3 +1,3 @@
-<div class="col-xs-12 section-title">
+<div class="col-12 section-title">
   <contact-gift hash="{{ $contact->hashID() }}" :gifts-active-tab="'{{ auth()->user()->gifts_active_tab }}'"></contact-gift>
 </div>

@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-3 sidebar-menu">
+<div class="col-12 col-sm-3 sidebar-menu">
   <ul class="mb4">
 
     @component('components.sidebar', [

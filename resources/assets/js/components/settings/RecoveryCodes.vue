@@ -11,7 +11,7 @@
   <div>
     <h3>{{ $t('settings.recovery_title') }}</h3>
     <div class="form-group">
-      <a class="btn btn-primary" @click="showRecoveryModal">
+      <a class="btn btn-primary" @click.prevent="showRecoveryModal" href="">
         {{ $t('settings.recovery_show') }}
       </a>
     </div>
@@ -28,7 +28,7 @@
       <p>{{ $t('settings.recovery_help_information') }}</p>
       <div class="relative">
         <span :class="[ dirltr ? 'fl' : 'fr' ]">
-          <a class="btn" @click="generateNewCodes">
+          <a class="btn" @click.prevent="generateNewCodes" href="">
             {{ $t('settings.recovery_generate') }}
           </a>
           <br />
@@ -37,13 +37,13 @@
           </small>
         </span>
         <span :class="[ dirltr ? 'fr' : 'fl' ]">
-          <a class="btn btn-primary" :title="copyHelp" @click="copyIntoClipboard">
+          <a class="btn btn-primary" :title="copyHelp" @click.prevent="copyIntoClipboard" href="">
             {{ $t('app.copy') }}
           </a>
           <!--
-            <a @click="download" class="btn">{{ $t('app.download') }}</a>
+            <a @click.prevent="download" class="btn" href="">{{ $t('app.download') }}</a>
             -->
-          <a class="btn" @click="closeRecoveryModal">
+          <a class="btn" @click.prevent="closeRecoveryModal" href="">
             {{ $t('app.close') }}
           </a>
         </span>

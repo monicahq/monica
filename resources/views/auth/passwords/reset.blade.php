@@ -5,7 +5,7 @@
     <div class="container">
 
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 offset-md-2">
                 <div class="card">
                   <div class="card-block">
                     <div class="card-title">{{ trans('auth.password_reset_title') }}</div>
@@ -17,7 +17,7 @@
                             <input type="hidden" name="token" value="{{ $token }}">
 
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                <label for="email" class="col-md-4 control-label">{{ trans('auth.password_reset_email') }}</label>
+                                <label for="email" class="col-md-4 col-form-label">{{ trans('auth.password_reset_email') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control" name="email" value="{{ $email ?? old('email') }}">
@@ -31,7 +31,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">{{ trans('auth.password_reset_password') }}</label>
+                                <label for="password" class="col-md-4 col-form-label">{{ trans('auth.password_reset_password') }}</label>
 
                                 <div class="col-md-6">
                                     <input id="password" type="password" class="form-control" name="password">
@@ -45,7 +45,7 @@
                             </div>
 
                             <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                                <label for="password-confirm" class="col-md-4 control-label">{{ trans('auth.password_reset_password_confirm') }}</label>
+                                <label for="password-confirm" class="col-md-4 col-form-label">{{ trans('auth.password_reset_password_confirm') }}</label>
                                 <div class="col-md-6">
                                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation">
 
@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
+                                <div class="col-md-6 offset-md-4">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="fa fa-btn fa-refresh"></i>&nbsp;{{ trans('auth.password_reset_action') }}
                                     </button>

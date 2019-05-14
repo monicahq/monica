@@ -39,7 +39,7 @@
           </li>
         </ul>
       </div>
-      <a v-if="enableRegister" class="btn btn-primary" @click="showRegisterModal">
+      <a v-if="enableRegister" class="btn btn-primary" @click.prevent="showRegisterModal" href="">
         {{ $t('settings.u2f_enable_description') }}
       </a>
 
@@ -65,7 +65,7 @@
           />
           <div class="relative">
             <span class="fr">
-              <a class="btn" @click.prevent="showRegisterModalTab('2');startRegister();">
+              <a class="btn" @click.prevent="showRegisterModalTab('2');startRegister();" href="">
                 {{ $t('pagination.next') }}
               </a>
             </span>
@@ -78,7 +78,7 @@
                 {{ errorMessage }}
               </p>
               <p>
-                <a @click.prevent="startRegister()">
+                <a @click.prevent="startRegister()" href="">
                   {{ $t('app.retry') }}
                 </a>
               </p>
@@ -114,7 +114,7 @@
           </div>
           <div class="relative">
             <span class="fr">
-              <a class="btn" @click.prevent="showRegisterModalTab('1')">
+              <a class="btn" @click.prevent="showRegisterModalTab('1')" href="">
                 {{ $t('pagination.previous') }}
               </a>
             </span>
@@ -122,7 +122,7 @@
         </div>
         <div class="relative">
           <span class="fr">
-            <a class="btn" @click="closeRegisterModal()">
+            <a class="btn" @click.prevent="closeRegisterModal()" href="">
               {{ $t('app.cancel') }}
             </a>
           </span>
@@ -136,7 +136,7 @@
             {{ errorMessage }}
           </p>
           <p>
-            <a @click.prevent="start()">
+            <a @click.prevent="start()" href="">
               {{ $t('app.retry') }}
             </a>
           </p>
@@ -180,12 +180,14 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDeleteModal()">
+          <a class="btn" @click.prevent="closeDeleteModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn"
-             :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
-             @click.prevent="u2fRemove(keyToTrash)"
+          <a
+            class="btn"
+            href=""
+            :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
+            @click.prevent="u2fRemove(keyToTrash)"
           >
             {{ $t('app.delete') }}
           </a>

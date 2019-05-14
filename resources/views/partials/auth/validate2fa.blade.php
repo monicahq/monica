@@ -26,12 +26,12 @@
 --}}
 
 <div class="row">
-  <div class="col-xs-12 col-md-6">
+  <div class="col-12 col-md-6">
     <div class="form-group actions">
       <button type="submit" name="verify" class="btn btn-primary">{{ trans('app.verify') }}</button>
     </div>
   </div>
-  <div class="col-xs-12 col-md-6">
+  <div class="col-12 col-md-6">
     <div class="form-group actions">
       <a href="logout" class="btn action">{{ trans('app.cancel') }}</a>
     </div>

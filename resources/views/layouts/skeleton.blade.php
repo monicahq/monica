@@ -18,7 +18,6 @@
     <link rel="shortcut icon" href="img/favicon.png">
     <script>
       window.Laravel = {!! \Safe\json_encode([
-          'csrfToken' => csrf_token(),
           'locale' => \App::getLocale(),
           'htmldir' => htmldir(),
           'profileDefaultView' => auth()->user()->profile_active_tab,

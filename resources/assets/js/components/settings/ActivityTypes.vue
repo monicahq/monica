@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_activity_type_category_title') }}
-      <a v-if="!limited" class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateCategoryModal">
+      <a v-if="!limited" class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" @click.prevent="showCreateCategoryModal" href="">
         {{ $t('settings.personalization_activity_type_category_add') }}
       </a>
     </h3>
@@ -75,7 +75,7 @@
         <div v-if="!limited" class="dt-row">
           <div class="dtc">
             <div class="pa2 pl4">
-              <a class="pointer" @click="showCreateTypeModal(activityTypeCategory)">
+              <a class="pointer" @click.prevent="showCreateTypeModal(activityTypeCategory)" href="">
                 {{ $t('settings.personalization_activity_type_add_button') }}
               </a>
             </div>
@@ -100,10 +100,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeCategoryModal()">
+          <a class="btn" @click.prevent="closeCategoryModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="storeCategory()">
+          <a class="btn btn-primary" @click.prevent="storeCategory()" href="">
             {{ $t('app.save') }}
           </a>
         </span>
@@ -126,10 +126,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeUpdateCategoryModal()">
+          <a class="btn" @click.prevent="closeUpdateCategoryModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="updateCategory()">
+          <a class="btn btn-primary" @click.prevent="updateCategory()" href="">
             {{ $t('app.update') }}
           </a>
         </span>
@@ -152,10 +152,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeCreateTypeModal()">
+          <a class="btn" @click.prevent="closeCreateTypeModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="storeType()">
+          <a class="btn btn-primary" @click.prevent="storeType()" href="">
             {{ $t('app.save') }}
           </a>
         </span>
@@ -178,10 +178,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeUpdateTypeModal()">
+          <a class="btn" @click.prevent="closeUpdateTypeModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="updateType()">
+          <a class="btn btn-primary" @click.prevent="updateType()" href="">
             {{ $t('app.update') }}
           </a>
         </span>
@@ -206,10 +206,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDeleteCategoryModal()">
+          <a class="btn" @click.prevent="closeDeleteCategoryModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="destroyCategory()">
+          <a class="btn btn-primary" @click.prevent="destroyCategory()" href="">
             {{ $t('app.delete') }}
           </a>
         </span>
@@ -234,10 +234,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDeleteTypeModal()">
+          <a class="btn" @click.prevent="closeDeleteTypeModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="destroyType()">
+          <a class="btn btn-primary" @click.prevent="destroyType()" href="">
             {{ $t('app.delete') }}
           </a>
         </span>

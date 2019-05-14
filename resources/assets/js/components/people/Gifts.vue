@@ -64,16 +64,16 @@
                 •
               </span>
             </span>
-            <a v-if="gift.comment" class="ml1 mr1 pointer" @click="toggleComment(gift)">
+            <a v-if="gift.comment" class="ml1 mr1 pointer" @click.prevent="toggleComment(gift)" href="">
               {{ $t('people.gifts_view_comment') }}
             </a>
-            <a class="pointer mr1" @click="toggle(gift)">
+            <a class="pointer mr1" @click.prevent="toggle(gift)" href="">
               {{ $t('people.gifts_mark_offered') }}
             </a>
             <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
               {{ $t('app.edit') }}
             </a>
-            <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click="showDeleteModal(gift)">
+            <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click.prevent="showDeleteModal(gift)" href="">
               {{ $t('app.delete') }}
             </a>
             <div v-if="gift.show_comment" class="mb1 mt1">
@@ -111,16 +111,16 @@
                 •
               </span>
             </span>
-            <a v-if="gift.comment" class="ml1 mr1 pointer" @click="toggleComment(gift)">
+            <a v-if="gift.comment" class="ml1 mr1 pointer" @click.prevent="toggleComment(gift)" href="">
               {{ $t('people.gifts_view_comment') }}
             </a>
-            <a class="pointer mr1" @click="toggle(gift)">
+            <a class="pointer mr1" @click.prevent="toggle(gift)" href="">
               {{ $t('people.gifts_offered_as_an_idea') }}
             </a>
             <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
               {{ $t('app.edit') }}
             </a>
-            <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click="showDeleteModal(gift)">
+            <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" @click.prevent="showDeleteModal(gift)" href="">
               {{ $t('app.delete') }}
             </a>
             <div v-if="gift.show_comment" class="mb1 mt1">
@@ -158,13 +158,13 @@
                 •
               </span>
             </span>
-            <a v-if="gift.comment" class="ml1 mr1 pointer" @click="toggleComment(gift)">
+            <a v-if="gift.comment" class="ml1 mr1 pointer" @click.prevent="toggleComment(gift)" href="">
               {{ $t('people.gifts_view_comment') }}
             </a>
             <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'">
               {{ $t('app.edit') }}
             </a>
-            <a class="mr1 pointer" @click="showDeleteModal(gift)">
+            <a class="mr1 pointer" @click.prevent="showDeleteModal(gift)" href="">
               {{ $t('app.delete') }}
             </a>
             <div v-if="gift.show_comment" class="mb1 mt1">
@@ -183,10 +183,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDeleteModal()">
+          <a class="btn" @click.prevent="closeDeleteModal()" href="">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn" :cy-name="'modal-delete-gift-button-' + giftToTrash.id" @click="trash(giftToTrash)">
+          <a class="btn" :cy-name="'modal-delete-gift-button-' + giftToTrash.id" @click.prevent="trash(giftToTrash)" href="">
             {{ $t('app.delete') }}
           </a>
         </span>
