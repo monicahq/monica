@@ -145,9 +145,9 @@ class FakeContentTableSeeder extends Seeder
 
     public function populateFoodPreferences()
     {
-        // add food preferencies
+        // add food preferences
         if (rand(1, 2) == 1) {
-            $this->contact->food_preferencies = $this->faker->realText();
+            $this->contact->food_preferences = $this->faker->realText();
             $this->contact->save();
         }
     }

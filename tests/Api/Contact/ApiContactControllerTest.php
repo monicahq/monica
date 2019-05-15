@@ -64,7 +64,7 @@ class ApiContactControllerTest extends ApiTestCase
             ],
             'career',
             'avatar',
-            'food_preferencies',
+            'food_preferences',
             'how_you_met',
         ],
         'addresses',
@@ -132,7 +132,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'source',
                 'default_avatar_color',
             ],
-            'food_preferencies',
+            'food_preferences',
             'how_you_met' => [
                 'general_information',
                 'first_met_date' => [
