@@ -103,7 +103,7 @@ return [
     'u2f_success' => 'Your key is detected and validated.',
     'u2f_insertKey' => 'Insert your security key.',
     'u2f_error_other_error' => 'An error occurred.',
-    'u2f_error_bad_request' => 'The visited URL doesn’t match the App ID or your are not using HTTPS',
+    'u2f_error_bad_request' => 'The visited URL doesn’t match the App ID or you are not using HTTPS',
     'u2f_error_configuration_unsupported' => 'Client configuration is not supported.',
     'u2f_error_device_ineligible' => 'The presented device is not eligible for this request. For a registration request this may mean that the token is already registered, and for a sign request it may mean that the token does not know the presented key handle.',
     'u2f_error_timeout' => 'Timeout reached before request could be satisfied.',
