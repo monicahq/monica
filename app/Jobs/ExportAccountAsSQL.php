@@ -19,6 +19,7 @@ class ExportAccountAsSQL
         'api_usage',
         'cache',
         'countries',
+        'crons',
         'currencies',
         'contact_photo',
         'default_activity_types',

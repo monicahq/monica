@@ -16,6 +16,9 @@ Enhancements:
 
 Fixes:
 
+* Fix dav url on dav settings page
+* Fix debt direction on debt edit
+* Fix schedule run in case cron can't run on fix hours
 * Fix contact create with birthdate age 0
 * Fix contact link create on job queue
 * Fix /settings/dav route

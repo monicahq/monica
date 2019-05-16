@@ -19,7 +19,7 @@ class TimezoneHelper
         $timezones = DateTimeZone::listIdentifiers();
 
         foreach ($timezones as $timezone) {
-            list($tz, $name) = self::formatTimezone($timezone);
+            [$tz, $name] = self::formatTimezone($timezone);
             array_push($list, [
                 'id' => $tz,
                 'timezone' => $timezone,

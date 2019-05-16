@@ -30,10 +30,10 @@
       <h3>
         📄 {{ $t('people.photo_list_title') }}
         <span v-show="reachLimit == 'false'" class="fr relative" style="top: -7px;">
-          <a v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false" class="btn" @click="displayUploadZone = true">
+          <a v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false" class="btn" href="" @click.prevent="displayUploadZone = true">
             {{ $t('people.photo_list_cta') }}
           </a>
-          <a v-if="displayUploadZone || displayUploadError || displayUploadProgress" class="btn" @click="displayUploadZone = false; displayUploadError = false; displayUploadProgress = false">
+          <a v-if="displayUploadZone || displayUploadError || displayUploadProgress" class="btn" href="" @click.prevent="displayUploadZone = false; displayUploadError = false; displayUploadProgress = false">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -108,14 +108,14 @@
             <div class="pt2">
               <ul>
                 <li v-show="confirmDestroyPhotoId != photo.id">
-                  <a class="pointer" @click.prevent="confirmDestroyPhotoId = photo.id">
+                  <a class="pointer" href="" @click.prevent="confirmDestroyPhotoId = photo.id">
                     {{ $t('people.photo_delete') }}
                   </a>
                 </li>
                 <li v-show="confirmDestroyPhotoId == photo.id">
-                  <a class="pointer" @click.prevent="confirmDestroyPhotoId = 0">
+                  <a class="pointer" href="" @click.prevent="confirmDestroyPhotoId = 0">
                     {{ $t('app.cancel') }}
-                  </a> <a class="pointer" @click.prevent="deletePhoto(photo)">
+                  </a> <a class="pointer" href="" @click.prevent="deletePhoto(photo)">
                     {{ $t('app.delete_confirm') }}
                   </a>
                 </li>

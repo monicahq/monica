@@ -41,6 +41,7 @@ class SettingsController
         'api_usage',
         'cache',
         'countries',
+        'crons',
         'currencies',
         'contact_photo',
         'default_activity_types',
@@ -516,7 +517,7 @@ class SettingsController
 
     public function dav()
     {
-        $davroute = route('settings.dav');
+        $davroute = route('sabre.dav');
         $email = auth()->user()->email;
 
         return view('settings.dav.index')

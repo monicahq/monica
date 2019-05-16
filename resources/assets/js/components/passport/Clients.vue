@@ -14,7 +14,7 @@
             {{ $t('settings.api_oauth_title') }}
           </span>
 
-          <a class="btn" @click="showCreateClientForm">
+          <a class="btn" href="" @click.prevent="showCreateClientForm">
             {{ $t('settings.api_oauth_create_new') }}
           </a>
         </div>
@@ -58,14 +58,14 @@
 
               <!-- Edit Button -->
               <td style="vertical-align: middle;">
-                <a class="action-link" @click="edit(client)">
+                <a class="action-link" href="" @click.prevent="edit(client)">
                   {{ $t('app.edit') }}
                 </a>
               </td>
 
               <!-- Delete Button -->
               <td style="vertical-align: middle;">
-                <a class="action-link text-danger" @click="destroy(client)">
+                <a class="action-link text-danger" href="" @click.prevent="destroy(client)">
                   {{ $t('app.delete') }}
                 </a>
               </td>
@@ -97,7 +97,7 @@
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label for="create-client-name" class="col-md-3 control-label">
+                <label for="create-client-name" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -114,7 +114,7 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label for="create-redirect-url" class="col-md-3 control-label">
+                <label for="create-redirect-url" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 
@@ -167,7 +167,7 @@
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label for="edit-client-name" class="col-md-3 control-label">
+                <label for="edit-client-name" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -184,7 +184,7 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label for="edit-redirect-url" class="col-md-3 control-label">
+                <label for="edit-redirect-url" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 

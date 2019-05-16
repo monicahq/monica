@@ -18,8 +18,8 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker-tmp';
-import * as Languages from 'vuejs-datepicker-tmp/dist/locale';
+import Datepicker from 'vuejs-datepicker';
+import * as Languages from 'vuejs-datepicker/dist/locale';
 import moment from 'moment';
 
 export default {

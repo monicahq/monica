@@ -1,4 +1,11 @@
-@import "_custom_bootstrap";
+$htmldir: ltr !default;
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import "custom_bootstrap";
+
 @import "~hint.css/hint.min";
 
 @import "~tachyons/css/tachyons.min";
@@ -12,10 +19,6 @@
 // Radio button
 @import '~pretty-checkbox/src/pretty-checkbox';
 
-$border-color: #dfdfdf;
-$bg-hover-monica: #f1f5fd;
-$htmldir: ltr !default;
-
 @import "buttons";
 @import "header";
 @import "people";
@@ -26,7 +29,10 @@ $htmldir: ltr !default;
 @import "changelog";
 
 // Custom colors
+
 // Extending Tachyions
+$bg-hover-monica: #f1f5fd;
+
 .bg-gray-monica {
   background-color: #f2f4f8;
 }
@@ -295,7 +301,7 @@ input:disabled {
     text-align: center;
   }
 
-  .col-sm-offset-3-right {
+  .offset-sm-3-right {
     margin-right: 25%;
   }
 
@@ -573,4 +579,9 @@ footer {
       margin: 0 4px;
     }
   }
+}
+
+// Fix svg alignment
+svg {
+  vertical-align: baseline !important;
 }
