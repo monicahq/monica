@@ -1,15 +1,25 @@
 UNRELEASED CHANGES:
 
+* Add Swiss CHF currency
+
 New features:
 
+* Add WebAuthn Multi-factor authentication
 * Add multi factor auth on oauth
 
 Enhancements:
 
+* Add ability to enable DAV for some users
+* Group relationships in create/edit forms
+* Rewrite contact search fields
 * Use string and array classes instead of helpers
 
 Fixes:
 
+* Fix dav url on dav settings page
+* Fix debt direction on debt edit
+* Fix schedule run in case cron can't run on fix hours
+* Fix contact create with birthdate age 0
 * Fix contact link create on job queue
 * Fix /settings/dav route
 * Fix display relationship without a ofContact property

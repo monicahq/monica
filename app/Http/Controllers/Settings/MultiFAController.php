@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
+use function Safe\json_decode;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -24,16 +25,6 @@ class MultiFAController extends Controller
      * Session var name to store secret code.
      */
     private $SESSION_TFA_SECRET = '2FA_secret';
-
-    /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('web');
-    }
 
     /**
      * @param \Illuminate\Http\Request $request

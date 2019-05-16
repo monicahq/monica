@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use function Safe\touch;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
 
@@ -12,9 +13,11 @@ class SetupProduction extends Command
      *
      * @var string
      */
-    protected $signature = 'setup:production {--force}
-                            {--email= : Login email for the first account}
-                            {--password= : Password to set for the first account}';
+    protected $signature = 'setup:production
+                            {--force : Force the operation to run when in production.}
+                            {--email= : Login email for the first account.}
+                            {--password= : Password to set for the first account.}
+                            {--skipSeed : Skip the populate database process.}';
 
     /**
      * The console command description.
@@ -42,7 +45,12 @@ class SetupProduction extends Command
             touch(__DIR__.'/../../../.env');
         }
 
-        $this->callSilent('monica:update', ['--force' => true]);
+        $this->call('monica:update', ['--force' => true]);
+
+        if (! $this->option('skipSeed')) {
+            $this->line('✓ Filling database');
+            $this->call('db:seed', ['--force' => true]);
+        }
 
         $this->line('');
         $this->line('-----------------------------');

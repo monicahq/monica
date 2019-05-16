@@ -23,7 +23,7 @@
     @include('partials.errors')
 
     <form action="{{ route('people.relationships.update', [$contact, $relationshipId]) }}" method="POST">
-      @method('PUT') }}
+      @method('PUT')
       @csrf
       <input type="hidden" name="type" value="{{ $type }}">
 
@@ -101,7 +101,7 @@
           :day="{{ $day }}"
           :age="'{{ $age }}'"
           :default-date="'{{ $birthdate }}'"
-          :reminder="{{ json_encode($hasBirthdayReminder) }}"
+          :reminder="{{ \Safe\json_encode($hasBirthdayReminder) }}"
           :value="'{{ $birthdayState }}'"
         ></form-specialdate>
 

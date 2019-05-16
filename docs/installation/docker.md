@@ -17,7 +17,7 @@ cp .env.example .env
 to create it. If not, you can fetch it from GitHub like:
 
 ```sh
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example -o .env
 ```
 
 Then open `.env` in an editor and update it for your own needs:
@@ -53,8 +53,8 @@ with a pre-packaged MySQL database.
 Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that already.
 
 ```sh
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml > docker-compose.yml
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example > .env
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml -o docker-compose.yml
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example -o .env
 ```
 
 Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
@@ -71,7 +71,7 @@ docker-compose up
 Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, shut down the instance and add your first user account.
 
 ```sh
-docker-compose run monicahq shell
+docker-compose run monicahq sh
 php artisan setup:production
 exit
 ```
@@ -101,9 +101,9 @@ Edit `.env` again to set the `DB_*` variables to match your database. Then run:
 
 ```sh
 docker build -t monicahq/monicahq .
-docker run --env-file .env -p 80:80 monicahq/monicahq    # to run MonicaHQ
+docker run --env-file .env -p 80:80 monicahq/monicahq  # to run MonicaHQ
 # ...or...
-docker run --env-file .env -it monicahq/monicahq shell   # to get a prompt
+docker run --env-file .env -it monicahq/monicahq sh    # to get a prompt
 ```
 
 Note that uploaded files, like avatars, will disappear when you

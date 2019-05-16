@@ -7,7 +7,7 @@
 
     <h3 class="mb3">
       {{ $t('settings.personalization_genders_title') }}
-      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" @click="showCreateModal">
+      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" href="" @click.prevent="showCreateModal">
         {{ $t('settings.personalization_genders_add') }}
       </a>
     </h3>
@@ -69,7 +69,7 @@
       </div>
     </div>
     <div class="mt2" :class="[ dirltr ? 'tr' : 'tl' ]">
-      <a class="pointer" @click="showDefaultGenderModal">{{ $t('settings.personalization_genders_make_default') }}</a>
+      <a class="pointer" href="" @click.prevent="showDefaultGenderModal">{{ $t('settings.personalization_genders_make_default') }}</a>
     </div>
 
     <!-- Create Gender type -->
@@ -113,10 +113,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeModal()">
+          <a class="btn" href="" @click.prevent="closeModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="store()">
+          <a class="btn btn-primary" href="" @click.prevent="store()">
             {{ $t('app.save') }}
           </a>
         </span>
@@ -164,10 +164,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeUpdateModal()">
+          <a class="btn" href="" @click.prevent="closeUpdateModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="update(updatedGender)">
+          <a class="btn btn-primary" href="" @click.prevent="update(updatedGender)">
             {{ $t('app.update') }}
           </a>
         </span>
@@ -208,16 +208,17 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDeleteModal()">
+          <a class="btn" href="" @click.prevent="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
           <a v-if="deleteForm.numberOfContacts === 0 && ! deleteForm.isDefault"
              class="btn btn-primary"
-             @click="trash()"
+             href=""
+             @click.prevent="trash()"
           >
             {{ $t('app.delete') }}
           </a>
-          <a v-else class="btn btn-primary" @click="trashAndReplace()">
+          <a v-else class="btn btn-primary" href="" @click.prevent="trashAndReplace()">
             {{ $t('app.delete') }}
           </a>
         </span>
@@ -241,10 +242,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDefaultGenderModal()">
+          <a class="btn" href="" @click.prevent="closeDefaultGenderModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="updateDefaultGender()">
+          <a class="btn btn-primary" href="" @click.prevent="updateDefaultGender()">
             {{ $t('app.save') }}
           </a>
         </span>

@@ -1,4 +1,3 @@
-
 window._ = require('lodash');
 
 /**
@@ -7,16 +6,20 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = require('jquery');
+try {
+  window.Popper = require('popper.js').default;
+  window.$ = window.jQuery = require('jquery');
 
-/**
- * Vue is a modern JavaScript library for building interactive web interfaces
- * using reactive data binding and reusable components. Vue's API is clean
- * and simple, leaving you to focus on building your next great project.
- */
+  //require('bootstrap');
+  require('bootstrap/js/dist/util');
+  //require('bootstrap/js/dist/alert');
+  require('bootstrap/js/dist/button');
+  require('bootstrap/js/dist/collapse');
+  require('bootstrap/js/dist/dropdown');
+  require('bootstrap/js/dist/modal');
+  require('bootstrap/js/dist/tab');
+} catch (e) {}
 
-window.Vue = require('vue');
-require('vue-resource');
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -26,16 +29,21 @@ require('vue-resource');
 
 window.axios = require('axios');
 
-window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-// Individual modules to not trigger the Tether dependency
-require('bootstrap/dist/js/umd/util');
-require('bootstrap/dist/js/umd/alert');
-require('bootstrap/dist/js/umd/button');
-require('bootstrap/dist/js/umd/collapse');
-require('bootstrap/dist/js/umd/dropdown');
-require('bootstrap/dist/js/umd/modal');
-require('bootstrap/dist/js/umd/tab');
+
+/**
+ * Next we will register the CSRF Token as a common header with Axios so that
+ * all outgoing HTTP requests automatically have it attached. This is just
+ * a simple convenience so we don't have to attach every token manually.
+ */
+
+let token = document.head.querySelector('meta[name="csrf-token"]');
+
+if (token) {
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -43,9 +51,13 @@ require('bootstrap/dist/js/umd/tab');
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from "laravel-echo"
+// import Echo from 'laravel-echo'
+
+// window.Pusher = require('pusher-js');
 
 // window.Echo = new Echo({
 //     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
+//     key: process.env.MIX_PUSHER_APP_KEY,
+//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+//     encrypted: true
 // });

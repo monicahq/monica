@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use Illuminate\Support\Arr;
 use Matriphe\ISO639\ISO639;
+use function Safe\preg_match;
+use function Safe\preg_split;
 use Illuminate\Support\Facades\App;
 use libphonenumber\PhoneNumberUtil;
 use Illuminate\Support\Facades\Auth;

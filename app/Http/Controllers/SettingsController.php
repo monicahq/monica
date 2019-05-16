@@ -24,11 +24,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
+use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
 use App\Services\Account\DestroyAllDocuments;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
+use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
 class SettingsController
 {
@@ -39,6 +41,7 @@ class SettingsController
         'api_usage',
         'cache',
         'countries',
+        'crons',
         'currencies',
         'contact_photo',
         'default_activity_types',
@@ -72,6 +75,7 @@ class SettingsController
         'terms',
         'u2f_key',
         'users',
+        'webauthn_keys',
     ];
 
     /**
@@ -513,7 +517,7 @@ class SettingsController
 
     public function dav()
     {
-        $davroute = route('settings.dav');
+        $davroute = route('sabre.dav');
         $email = auth()->user()->email;
 
         return view('settings.dav.index')
@@ -528,9 +532,12 @@ class SettingsController
         $u2fKeys = U2fKey::where('user_id', auth()->id())
                         ->get();
 
+        $webauthnKeys = WebauthnKey::where('user_id', auth()->id())->get();
+
         return view('settings.security.index')
             ->with('is2FAActivated', Google2FA::isActivated())
-            ->with('currentkeys', U2fKeyResource::collection($u2fKeys));
+            ->with('currentkeys', U2fKeyResource::collection($u2fKeys))
+            ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys));
     }
 
     /**

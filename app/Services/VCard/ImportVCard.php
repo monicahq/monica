@@ -5,6 +5,7 @@ namespace App\Services\VCard;
 use Ramsey\Uuid\Uuid;
 use App\Models\User\User;
 use App\Traits\DAVFormat;
+use function Safe\substr;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
 use Illuminate\Support\Arr;
@@ -13,6 +14,7 @@ use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RandomHelper;
 use App\Services\BaseService;
+use function Safe\preg_split;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -672,11 +674,11 @@ class ImportVCard extends BaseService
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,
                     'is_date_known' => true,
+                    'is_age_based' => false,
                     'day' => $birthdate->day,
                     'month' => $birthdate->month,
                     'year' => $is_year_unknown ? null : $birthdate->year,
                     'add_reminder' => true,
-                    'is_age_based' => null,
                 ]);
             }
         }

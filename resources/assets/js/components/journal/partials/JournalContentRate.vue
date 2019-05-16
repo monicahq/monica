@@ -34,7 +34,7 @@
           <div class="flex-none">
             <!-- sad smiley color -->
             <svg v-if="day.rate == 1" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
-                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1" :class="[ dirltr ? 'mr3' : 'ml3' ]"
+                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mt1" :class="[ dirltr ? 'mr3' : 'ml3' ]"
             >
               <defs />
               <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -52,7 +52,7 @@
 
             <!-- mediocre day monochrome -->
             <svg v-else-if="day.rate == 2" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
-                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1" :class="[ dirltr ? 'mr3' : 'ml3' ]"
+                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mt1" :class="[ dirltr ? 'mr3' : 'ml3' ]"
             >
               <defs />
               <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -69,7 +69,7 @@
 
             <!-- happy day color -->
             <svg v-else-if="day.rate == 3" width="42px" height="42px" viewBox="0 0 42 42" version="1.1"
-                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer mt1" :class="[ dirltr ? 'mr3' : 'ml3' ]"
+                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="mt1" :class="[ dirltr ? 'mr3' : 'ml3' ]"
             >
               <defs />
               <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -99,7 +99,7 @@
                 {{ $t('journal.journal_entry_rate') }}
               </li>
               <li class="di">
-                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" @click="destroy()">
+                <a class="pointer" :cy-name="'entry-delete-button-' + journalEntry.id" href="" @click.prevent="destroy()">
                   {{ $t('app.delete') }}
                 </a>
               </li>

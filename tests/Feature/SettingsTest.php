@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
+use LaravelWebauthn\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SettingsTest extends FeatureTestCase
@@ -108,5 +109,26 @@ class SettingsTest extends FeatureTestCase
         ]);
 
         $response->assertStatus(200);
+    }
+
+    public function test_user_see_webauthnkeys()
+    {
+        $user = $this->signin();
+        $webauthnKey = factory(WebauthnKey::class)->create([
+            'user_id' => $user->id,
+            'updated_at' => '2019-04-01 09:18:35',
+        ]);
+
+        $this->session([
+            'webauthn_auth' => true,
+        ]);
+
+        $response = $this->followingRedirects()
+            ->get(route('settings.security.index'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee($webauthnKey->name);
+        $response->assertSee('2019-04-01T09:18:35Z');
     }
 }
