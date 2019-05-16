@@ -86,7 +86,7 @@ return [
     'breadcrumb_add_note' => '添加注释',
     'breadcrumb_edit_note' => '编辑注释',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'Dav 资源',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => '你是怎么知道的',
     'breadcrumb_settings_personalization' => '个性化',
     'breadcrumb_settings_security' => '安全',
