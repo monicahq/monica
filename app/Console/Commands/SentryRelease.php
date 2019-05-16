@@ -20,10 +20,10 @@ class SentryRelease extends Command
      * @var string
      */
     protected $signature = 'sentry:release
-                            {--release= : release version for sentry}
-                            {--store-release : store release version in .sentry-release file}
-                            {--commit= : commit associated with this release}
-                            {--environment= : sentry environment}';
+                            {--release= : release version for sentry.}
+                            {--store-release : store release version in .sentry-release file.}
+                            {--commit= : commit associated with this release.}
+                            {--environment= : sentry environment.}';
 
     /**
      * The console command description.
