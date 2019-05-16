@@ -1381,16 +1381,16 @@
         },
         {
             "name": "giggsey/libphonenumber-for-php",
-            "version": "8.10.11",
+            "version": "8.10.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/giggsey/libphonenumber-for-php.git",
-                "reference": "98f5983a33d704eafea7cc6e1cc2581883a51ddc"
+                "reference": "6187402b4949ca7edc439ed4a0396922eeb13dfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/98f5983a33d704eafea7cc6e1cc2581883a51ddc",
-                "reference": "98f5983a33d704eafea7cc6e1cc2581883a51ddc",
+                "url": "https://api.github.com/repos/giggsey/libphonenumber-for-php/zipball/6187402b4949ca7edc439ed4a0396922eeb13dfa",
+                "reference": "6187402b4949ca7edc439ed4a0396922eeb13dfa",
                 "shasum": ""
             },
             "require": {
@@ -1445,7 +1445,7 @@
                 "phonenumber",
                 "validation"
             ],
-            "time": "2019-04-30T09:55:59+00:00"
+            "time": "2019-05-14T11:30:38+00:00"
         },
         {
             "name": "giggsey/locale",
@@ -2214,16 +2214,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.16",
+            "version": "v5.8.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "83d57f9f9162ab476c43b9ec00d463ff12c578fd"
+                "reference": "33c04dd2a431adeeb49926a4f2b20590cc033ca2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/83d57f9f9162ab476c43b9ec00d463ff12c578fd",
-                "reference": "83d57f9f9162ab476c43b9ec00d463ff12c578fd",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/33c04dd2a431adeeb49926a4f2b20590cc033ca2",
+                "reference": "33c04dd2a431adeeb49926a4f2b20590cc033ca2",
                 "shasum": ""
             },
             "require": {
@@ -2357,7 +2357,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-05-07T14:37:11+00:00"
+            "time": "2019-05-14T16:02:41+00:00"
         },
         {
             "name": "laravel/passport",
@@ -3355,16 +3355,16 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "647f22f86dc5c5c58dd0e57453291244b0690974"
+                "reference": "ebc5a7870e220cdb3c3f39cde5abe078768d9f0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/647f22f86dc5c5c58dd0e57453291244b0690974",
-                "reference": "647f22f86dc5c5c58dd0e57453291244b0690974",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/ebc5a7870e220cdb3c3f39cde5abe078768d9f0b",
+                "reference": "ebc5a7870e220cdb3c3f39cde5abe078768d9f0b",
                 "shasum": ""
             },
             "require": {
@@ -3407,7 +3407,7 @@
                 "php",
                 "sabre"
             ],
-            "time": "2019-04-25T13:52:45+00:00"
+            "time": "2019-05-14T22:01:45+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -7634,7 +7634,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -12558,16 +12558,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "8.1.4",
+            "version": "8.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "b534b017daaef2d7f60c6ee61e6aa2e13fdc6910"
+                "reference": "01392d4b5878aa617e8d9bc7a529e5febc8fe956"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/b534b017daaef2d7f60c6ee61e6aa2e13fdc6910",
-                "reference": "b534b017daaef2d7f60c6ee61e6aa2e13fdc6910",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/01392d4b5878aa617e8d9bc7a529e5febc8fe956",
+                "reference": "01392d4b5878aa617e8d9bc7a529e5febc8fe956",
                 "shasum": ""
             },
             "require": {
@@ -12636,7 +12636,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-05-09T05:13:39+00:00"
+            "time": "2019-05-14T04:57:31+00:00"
         },
         {
             "name": "psalm/plugin-laravel",
@@ -13828,16 +13828,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.2.7",
+            "version": "3.2.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "6e010d9db95275725e5ad6409c387eb173091f72"
+                "reference": "fe0f352132f798512ced19faf75cbfc84e4aabe7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/6e010d9db95275725e5ad6409c387eb173091f72",
-                "reference": "6e010d9db95275725e5ad6409c387eb173091f72",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/fe0f352132f798512ced19faf75cbfc84e4aabe7",
+                "reference": "fe0f352132f798512ced19faf75cbfc84e4aabe7",
                 "shasum": ""
             },
             "require": {
@@ -13863,7 +13863,7 @@
             "require-dev": {
                 "bamarni/composer-bin-plugin": "^1.2",
                 "phpunit/phpunit": "^6.0 || ^7.0",
-                "psalm/plugin-phpunit": "^0.5.1",
+                "psalm/plugin-phpunit": "^0.5.5",
                 "squizlabs/php_codesniffer": "3.4.0"
             },
             "suggest": {
@@ -13904,7 +13904,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-04-12T15:32:35+00:00"
+            "time": "2019-05-13T15:00:17+00:00"
         },
         {
             "name": "webmozart/assert",
