@@ -86,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'Notitie toevoegen',
     'breadcrumb_edit_note' => 'Notitie bewerken',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'DAV bronnen',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'Hoe hebben jullie elkaar ontmoet',
     'breadcrumb_settings_personalization' => 'Personalisatie',
     'breadcrumb_settings_security' => 'Beveiliging',
