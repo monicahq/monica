@@ -3355,16 +3355,16 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "ebc5a7870e220cdb3c3f39cde5abe078768d9f0b"
+                "reference": "1197ca154a90c1d446c8e855b51e32590e634d84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/ebc5a7870e220cdb3c3f39cde5abe078768d9f0b",
-                "reference": "ebc5a7870e220cdb3c3f39cde5abe078768d9f0b",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/1197ca154a90c1d446c8e855b51e32590e634d84",
+                "reference": "1197ca154a90c1d446c8e855b51e32590e634d84",
                 "shasum": ""
             },
             "require": {
@@ -3407,7 +3407,7 @@
                 "php",
                 "sabre"
             ],
-            "time": "2019-05-14T22:01:45+00:00"
+            "time": "2019-05-16T16:16:15+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -7634,7 +7634,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
