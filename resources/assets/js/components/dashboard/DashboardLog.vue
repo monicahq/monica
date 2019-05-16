@@ -169,7 +169,7 @@
             <input v-model="newTask.title" type="text" class="bt-0 br-0 bl-0 w-100 di bb b--gray-monica pt2 pb2" :placeholder="$t('dashboard.tasks_add_task_placeholder')" @keyup.enter="saveTask()"
                    @keyup.esc="taskAddMode = false"
             />
-            <a class="pointer" @click.prevent="taskAddMode = false; newTask.title=''">
+            <a class="pointer" href="" @click.prevent="taskAddMode = false; newTask.title=''">
               {{ $t('app.cancel') }}
             </a>
           </div>
@@ -200,7 +200,7 @@
           <!-- Your tasks: Blank state -->
           <div v-if="customNotCompleted(tasks).length == 0" class="tc mt4 mb4">
             <p class="mb4">
-              <a v-show="!taskAddMode" class="btn pointer" @click.prevent="taskAddMode = true">
+              <a v-show="!taskAddMode" class="btn pointer" href="" @click.prevent="taskAddMode = true">
                 {{ $t('dashboard.task_add_cta') }}
               </a>
             </p>
@@ -209,7 +209,7 @@
 
           <!-- Add a task -->
           <p v-if="customNotCompleted(tasks).length != 0">
-            <a v-show="!taskAddMode" class="pointer" @click.prevent="taskAddMode = true">
+            <a v-show="!taskAddMode" class="pointer" href="" @click.prevent="taskAddMode = true">
               {{ $t('dashboard.task_add_cta') }}
             </a>
           </p>
@@ -221,17 +221,17 @@
                 <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
                 {{ task.title }}
               </label>
-              <a v-show="showTaskAction == task.id" class="pointer mr1" @click.prevent="confirmDestroyTask = task.id">
+              <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
               <ul v-show="confirmDestroyTask == task.id" class="di">
                 <li class="di">
-                  <a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">
+                  <a class="pointer mr1" href="" @click.prevent="confirmDestroyTask = 0">
                     {{ $t('app.cancel') }}
                   </a>
                 </li>
                 <li class="di">
-                  <a class="pointer red" @click.prevent="destroyTask(task)">
+                  <a class="pointer red" href="" @click.prevent="destroyTask(task)">
                     {{ $t('app.delete_confirm') }}
                   </a>
                 </li>
@@ -245,17 +245,17 @@
                 <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
                 {{ task.title }}
               </label>
-              <a v-show="showTaskAction == task.id" class="pointer mr1" @click.prevent="confirmDestroyTask = task.id">
+              <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
               <ul v-show="confirmDestroyTask == task.id" class="di">
                 <li class="di">
-                  <a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">
+                  <a class="pointer mr1" href="" @click.prevent="confirmDestroyTask = 0">
                     {{ $t('app.cancel') }}
                   </a>
                 </li>
                 <li class="di">
-                  <a class="pointer red" @click.prevent="destroyTask(task)">
+                  <a class="pointer red" href="" @click.prevent="destroyTask(task)">
                     {{ $t('app.delete_confirm') }}
                   </a>
                 </li>

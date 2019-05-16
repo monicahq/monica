@@ -8,10 +8,10 @@
     <h3>{{ $t('settings.2fa_otp_title') }}</h3>
 
     <div class="form-group">
-      <a v-if="activated" class="btn btn-warning" @click="showDisableModal">
+      <a v-if="activated" class="btn btn-warning" href="" @click.prevent="showDisableModal">
         {{ $t('settings.2fa_disable_title') }}
       </a>
-      <a v-else class="btn btn-primary" @click="showEnableModal">
+      <a v-else class="btn btn-primary" href="" @click.prevent="showEnableModal">
         {{ $t('settings.2fa_enable_title') }}
       </a>
     </div>
@@ -48,10 +48,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a id="verify1" class="btn btn-primary" @click="register()">
+          <a id="verify1" class="btn btn-primary" href="" @click.prevent="register()">
             {{ $t('app.verify') }}
           </a>
-          <a class="btn" @click="closeEnableModal()">
+          <a class="btn" href="" @click.prevent="closeEnableModal()">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -75,10 +75,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a id="verify2" class="btn btn-primary" @click="unregister()">
+          <a id="verify2" class="btn btn-primary" href="" @click.prevent="unregister()">
             {{ $t('app.verify') }}
           </a>
-          <a class="btn" @click="closeDisableModal()">
+          <a class="btn" href="" @click.prevent="closeDisableModal()">
             {{ $t('app.cancel') }}
           </a>
         </span>

@@ -9,7 +9,7 @@
       <!-- Breadcrumb -->
       <ul v-if="view == 'types' || view == 'add'" class="ba b--gray-monica pa2 mb2">
         <li class="di">
-          <a class="pointer" @click="view = 'categories'">
+          <a class="pointer" href="" @click.prevent="view = 'categories'">
             {{ $t('people.life_event_create_category') }}
           </a>
         </li>
@@ -18,12 +18,12 @@
         </li>
         <template v-else-if="view == 'add'">
           <li class="di">
-            > <a class="pointer" @click="view = 'types'">
+            &gt; <a class="pointer" href="" @click.prevent="view = 'types'">
               {{ activeCategory.name }}
             </a>
           </li>
           <li class="di">
-            > {{ $t('people.life_event_create_life_event') }}
+            &gt; {{ $t('people.life_event_create_life_event') }}
           </li>
         </template>
       </ul>
@@ -126,7 +126,7 @@
         <div class="ph4-ns ph3 pv3 bb b--gray-monica">
           <div class="flex-ns justify-between">
             <div>
-              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click="$emit('dismissModal')">
+              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" href="" @click.prevent="$emit('dismissModal')">
                 {{ $t('app.cancel') }}
               </a>
             </div>

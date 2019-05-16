@@ -5,7 +5,7 @@
       <form action="{{ session('oauth') ? route('oauth.validate2fa') : route('validate2fa') }}" method="post">
         <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
         <div class="row">
-          <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+          <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
             <div class="signup-box">
 
               <div class="dt w-100">

@@ -23,7 +23,7 @@
             <strong>{{ contact.complete_name }}</strong>
           </div>
           <div class="table-cell actions">
-            <a class="pointer" @click.prevent="remove(contact)">
+            <a class="pointer" href="" @click.prevent="remove(contact)">
               {{ $t('app.delete') }}
             </a>
           </div>

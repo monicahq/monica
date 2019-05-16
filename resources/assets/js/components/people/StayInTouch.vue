@@ -6,7 +6,7 @@
     <notifications group="main" position="bottom right" />
 
     <!-- Contact doesn't have a frequency set -->
-    <a v-if="!isActive" class="pointer" @click="showUpdate">
+    <a v-if="!isActive" class="pointer" href="" @click.prevent="showUpdate">
       {{ $t('people.stay_in_touch_modal_title') }}
     </a>
 
@@ -15,7 +15,7 @@
       <span>
         {{ $tc('people.stay_in_touch_frequency', frequency, { count: frequency }) }}
       </span>
-      <a class="pointer" @click="showUpdate">
+      <a class="pointer" href="" @click.prevent="showUpdate">
         {{ $t('app.edit') }}
       </a>
     </div>
@@ -141,10 +141,10 @@
       </form>
       <div class="relative">
         <span class="fr-ns tc">
-          <a class="btn" @click="closeModal()">
+          <a class="btn" href="" @click.prevent="closeModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn btn-primary" @click="update()">
+          <a class="btn btn-primary" href="" @click.prevent="update()">
             {{ $t('app.save') }}
           </a>
         </span>

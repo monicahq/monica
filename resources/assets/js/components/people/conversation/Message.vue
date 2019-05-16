@@ -19,7 +19,7 @@
   <div class="bg-white pa3 relative br3">
     <!-- TRASH CAN -->
     <span v-if="displayTrash" :class="[dirltr ? 'absolute delete-message-l' : 'absolute delete-message-r']">
-      <a class="pointer btn btn-secondary" @click="deleteMessage">
+      <a class="pointer btn btn-secondary" href="" @click.prevent="deleteMessage">
         <svg class="mr1 relative" style="top: 1px;" width="9" height="11" viewBox="0 0 9 11"
              fill="none" xmlns="http://www.w3.org/2000/svg"
         >

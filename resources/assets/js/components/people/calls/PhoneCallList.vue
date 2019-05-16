@@ -8,10 +8,10 @@
         ☎️ {{ $t('people.call_title') }}
 
         <span class="fr relative" style="top: -7px;">
-          <a v-if="displayLogCall == false" class="btn edit-information" @click="displayLogCall = true">
+          <a v-if="displayLogCall == false" class="btn edit-information" href="" @click.prevent="displayLogCall = true">
             {{ $t('people.modal_call_title') }}
           </a>
-          <a v-if="displayLogCall" class="btn edit-information" @click="displayLogCall = false">
+          <a v-if="displayLogCall" class="btn edit-information" href="" @click.prevent="displayLogCall = false">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -22,7 +22,7 @@
     <div v-if="!displayLogCall && calls.length == 0" class="w-100">
       <div class="bg-near-white tc pa3 br2 ba b--light-gray">
         <p>{{ $t('people.call_blank_title', { name: name }) }}</p>
-        <a class="pointer" @click.prevent="displayLogCall = true">
+        <a class="pointer" href="" @click.prevent="displayLogCall = true">
           {{ $t('people.modal_call_title') }}
         </a>
       </div>
@@ -101,7 +101,7 @@
         <div class="pt3">
           <div class="flex-ns justify-between">
             <div class="">
-              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="displayLogCall = false; resetFields()">
+              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" href="" @click.prevent="displayLogCall = false; resetFields()">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -175,7 +175,7 @@
           <div class="">
             <div class="flex-ns justify-between">
               <div class="">
-                <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="editCallId = 0">
+                <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" href="" @click.prevent="editCallId = 0">
                   {{ $t('app.cancel') }}
                 </a>
               </div>
@@ -211,20 +211,20 @@
         </div>
 
         <div :class="[ dirltr ? 'fl tr' : 'fr tl' ]" class="w-30">
-          <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " @click.prevent="showEditBox(call)">
+          <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " href="" @click.prevent="showEditBox(call)">
             {{ $t('app.update') }}
           </a>
-          <a v-show="destroyCallId != call.id" class="pointer" @click.prevent="showDestroyCall(call)">
+          <a v-show="destroyCallId != call.id" class="pointer" href="" @click.prevent="showDestroyCall(call)">
             {{ $t('app.delete') }}
           </a>
           <ul v-show="destroyCallId == call.id" class="di">
             <li class="di">
-              <a class="pointer mr1" @click.prevent="destroyCallId = 0">
+              <a class="pointer mr1" href="" @click.prevent="destroyCallId = 0">
                 {{ $t('app.cancel') }}
               </a>
             </li>
             <li class="di">
-              <a class="pointer red" @click.prevent="destroyCall(call)">
+              <a class="pointer red" href="" @click.prevent="destroyCall(call)">
                 {{ $t('app.delete_confirm') }}
               </a>
             </li>

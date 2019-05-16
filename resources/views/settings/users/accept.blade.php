@@ -4,7 +4,7 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+        <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
 
           <div class="signup-box">
             <div class="dt w-100">
@@ -25,13 +25,13 @@
               </div>
 
               <div class="row">
-                <div class="col-xs-12 col-sm-6">
+                <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="first_name">{{ trans('auth.register_firstname') }}</label>
                     <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ trans('auth.register_firstname_example') }}" value="{{ old('first_name') }}"  required>
                   </div>
                 </div>
-                <div class="col-xs-12 col-sm-6">
+                <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="last_name">{{ trans('auth.register_lastname') }}</label>
                     <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ trans('auth.register_lastname_example') }}" value="{{ old('last_name') }}" required>

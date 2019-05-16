@@ -26,7 +26,7 @@
               </template>
             </div>
             <div class="table-cell actions">
-              <a class="pointer" @click.prevent="showDeleteModal(key.id)">
+              <a class="pointer" href="" @click.prevent="showDeleteModal(key.id)">
                 {{ $t('app.delete') }}
               </a>
             </div>
@@ -36,7 +36,7 @@
 
       <slot></slot>
 
-      <a v-if="isSupported" class="btn btn-primary" @click="showRegisterModal">
+      <a v-if="isSupported" class="btn btn-primary" href="" @click.prevent="showRegisterModal">
         {{ $t('settings.webauthn_enable_description') }}
       </a>
       <small v-else>
@@ -66,7 +66,7 @@
           />
           <div class="relative">
             <span class="fr">
-              <a class="btn" @click.prevent="showRegisterModalTab('2');startRegister();">
+              <a class="btn" href="" @click.prevent="showRegisterModalTab('2');startRegister();">
                 {{ $t('pagination.next') }}
               </a>
             </span>
@@ -79,7 +79,7 @@
                 {{ errorMessage }}
               </p>
               <p>
-                <a @click.prevent="startRegister()">
+                <a href="" @click.prevent="startRegister()">
                   {{ $t('app.retry') }}
                 </a>
               </p>
@@ -111,7 +111,7 @@
           </div>
           <div class="relative">
             <span class="fr">
-              <a class="btn" @click.prevent="showRegisterModalTab('1')">
+              <a class="btn" href="" @click.prevent="showRegisterModalTab('1')">
                 {{ $t('pagination.previous') }}
               </a>
             </span>
@@ -119,7 +119,7 @@
         </div>
         <div class="relative">
           <span class="fr">
-            <a class="btn" @click="closeRegisterModal()">
+            <a class="btn" href="" @click.prevent="closeRegisterModal()">
               {{ $t('app.cancel') }}
             </a>
           </span>
@@ -133,7 +133,7 @@
             {{ errorMessage }}
           </p>
           <p>
-            <a @click.prevent="start()">
+            <a href="" @click.prevent="start()">
               {{ $t('app.retry') }}
             </a>
           </p>
@@ -173,10 +173,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDeleteModal()">
+          <a class="btn" href="" @click.prevent="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn" @click.prevent="webauthnRemove(keyToTrash)">
+          <a class="btn" href="" @click.prevent="webauthnRemove(keyToTrash)">
             {{ $t('app.delete') }}
           </a>
         </span>
