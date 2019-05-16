@@ -1,5 +1,7 @@
 UNRELEASED CHANGES:
 
+* Add Swiss CHF currency
+
 New features:
 
 * Add WebAuthn Multi-factor authentication
