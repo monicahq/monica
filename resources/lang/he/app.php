@@ -86,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'הוספת הערה',
     'breadcrumb_edit_note' => 'עריכת הערה',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'משאבי DAV',
+    'breadcrumb_dav' => 'משאבי DAV',
     'breadcrumb_edit_introductions' => 'איך הכרתם',
     'breadcrumb_settings_personalization' => 'התאמה אישית',
     'breadcrumb_settings_security' => 'אבטחה',

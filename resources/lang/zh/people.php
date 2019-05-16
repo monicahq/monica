@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => '联系人未找到',
     'people_list_number_kids' => ':count 个孩子',
     'people_list_last_updated' => '最近更新:',
     'people_list_number_reminders' => ':count 个提醒',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => '显示已故人员 (:count)',
     'people_list_hide_dead' => '隐藏已故人员 (:count)',
     'people_search' => '搜索联系人...',
-    'people_search_no_results' => '未找到相关联系人:(',
+    'people_search_no_results' => '未找到任何结果',
+    'people_add_new' => '添加新的联系人',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
     'people_list_account_upgrade_title' => '升级您的帐户, 以打开全部功能。',
     'people_list_account_upgrade_cta' => '立即升级',

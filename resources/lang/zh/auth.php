@@ -20,6 +20,7 @@ return [
     'back_homepage' => '回到主页',
     'mfa_auth_otp' => '使用二次验证设备进行认证',
     'mfa_auth_u2f' => '使用U2F设备进行认证',
+    'mfa_auth_webauthn' => '使用安全钥匙验证(WebAuthn)',
     '2fa_title' => '二次验证',
     '2fa_wrong_validation' => '二次验证失败',
     '2fa_one_time_password' => '验证码',

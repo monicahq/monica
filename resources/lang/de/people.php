@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 Kind|:count Kinder',
     'people_list_last_updated' => 'Zuletzt aufgerufen:',
     'people_list_number_reminders' => '1 Erinnerung|:count Erinnerungen',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Verstorbene Kontakte anzeigen (:count)',
     'people_list_hide_dead' => 'Verstorbene Kontakte ausblenden (:count)',
     'people_search' => 'Suche in deinen Kontakten...',
-    'people_search_no_results' => 'Keine passenden Kontakte gefunden :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
     'people_list_account_upgrade_title' => 'Führe ein Upgrade aus, um alle Funktionen freizuschalten.',
     'people_list_account_upgrade_cta' => 'Jetzt upgraden',

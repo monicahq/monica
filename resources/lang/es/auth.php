@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'Volver al inicio',
     'mfa_auth_otp' => 'Autentícate con tú dispositivo de dos pasos',
     'mfa_auth_u2f' => 'Autentícate con un dispositivo U2F',
+    'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
     '2fa_title' => 'Autenticación en dos pasos',
     '2fa_wrong_validation' => 'La autenticación en dos pasos ha fallado.',
     '2fa_one_time_password' => 'Código de autenticación en dos pasos',

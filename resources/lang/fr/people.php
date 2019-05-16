@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact non trouvé',
     'people_list_number_kids' => ':count enfant|:count enfants',
     'people_list_last_updated' => 'Dernière consultation :',
     'people_list_number_reminders' => ':count rappel|:count rappels',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Afficher les contacts décédés (:count)',
     'people_list_hide_dead' => 'Masquer les contacts décédés (:count)',
     'people_search' => 'Recherchez dans vos contacts...',
-    'people_search_no_results' => 'Aucun contact ne correspond à ce critère',
+    'people_search_no_results' => 'Aucun résultat',
+    'people_add_new' => 'Ajouter une nouvelle personne',
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Passez au plan supérieur pour débloquer votre compte et l’amener à son plein potentiel.',
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',

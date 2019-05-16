@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'Ana sayfaya dön',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_u2f' => 'Authenticate with a U2F device',
+    'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
     '2fa_title' => 'İki Adımlı Doğrulama',
     '2fa_wrong_validation' => 'İki adımlı doğrulaması başarısız oldu.',
     '2fa_one_time_password' => 'İki adımlı doğrulama kodu',
