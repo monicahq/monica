@@ -5,7 +5,6 @@ namespace Tests\Browser\Settings;
 use Tests\DuskTestCase;
 use App\Models\User\User;
 use Laravel\Dusk\Browser;
-use Illuminate\Console\Application;
 use Tests\Browser\Pages\SettingsDAV;
 
 class DAVControllerTest extends DuskTestCase
