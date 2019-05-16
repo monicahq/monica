@@ -19,7 +19,8 @@ class PingVersionServer extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:ping {--force}';
+    protected $signature = 'monica:ping
+                            {--force : Force the operation to run when in production.}';
 
     /**
      * The console command description.
