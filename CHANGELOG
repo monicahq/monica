@@ -1,6 +1,21 @@
 UNRELEASED CHANGES:
 
-* Add Swiss CHF currency
+New features:
+
+* 
+
+Enhancements:
+
+* 
+
+Fixes:
+
+* 
+
+RELEASED VERSIONS:
+
+v2.14.0 - 2019-05-16
+--------------------
 
 New features:
 
@@ -9,6 +24,7 @@ New features:
 
 Enhancements:
 
+* Add Swiss CHF currency
 * Add ability to enable DAV for some users
 * Group relationships in create/edit forms
 * Rewrite contact search fields
@@ -25,8 +41,6 @@ Fixes:
 * Fix display relationship without a ofContact property
 * Fix register request validate
 * Fix relationship create
-
-RELEASED VERSIONS:
 
 v2.13.0 - 2019-04-07
 --------------------
