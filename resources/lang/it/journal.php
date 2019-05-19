@@ -10,6 +10,7 @@ return [
     'journal_entry_type_activity' => 'Attività',
     'journal_entry_rate' => 'Hai votato la tua giornata.',
     'journal_add_comment' => 'Ti interessa aggiungere un commento? (facoltativo)',
+    'journal_show_comment' => 'Show comment',
     'entry_delete_success' => 'La pagina del diario è stata rimossa.',
     'journal_add_title' => 'Titolo (facoltativo)',
     'journal_add_date' => 'Data',
