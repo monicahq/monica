@@ -10,6 +10,7 @@ return [
     'journal_entry_type_activity' => 'Activité',
     'journal_entry_rate' => 'Vous avez évalué votre journée.',
     'journal_add_comment' => 'Ajouter un commentaire (optionnel) ?',
+    'journal_show_comment' => 'Afficher le commentaire',
     'entry_delete_success' => 'L’entrée a été supprimée avec succès.',
     'journal_add_title' => 'Titre (optionnel)',
     'journal_add_date' => 'Date',
