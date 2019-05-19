@@ -63,7 +63,7 @@
     "vue-js-toggle-button": "^1.2.2",
     "vue-notification": "^1.3.6",
     "vue-select": "^3.0.2",
-    "vuejs-datepicker": "^1.5.4"
+    "vuejs-datepicker-tmp": "^1.5.4"
   },
   "snyk": true
 }

@@ -8955,10 +8955,10 @@ vue@^2.5.11, vue@^2.5.21:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
-vuejs-datepicker@^1.5.4:
+vuejs-datepicker-tmp@^1.5.4:
   version "1.5.4"
-  resolved "https://registry.yarnpkg.com/vuejs-datepicker/-/vuejs-datepicker-1.5.4.tgz#dacdb5eb5ef44342c67cb59b93a0d5da9c1809b3"
-  integrity sha512-AVzgu3pb/fF/Sj3qu8YPnp7KhtsXkm8TSnBEcyYsWb1bMJr5FdPCxuIzISgw5kq0It7HkVJUGXQ4CiCwq9hhww==
+  resolved "https://registry.yarnpkg.com/vuejs-datepicker-tmp/-/vuejs-datepicker-tmp-1.5.4.tgz#8435db77cd6536adde95e5be89bb6d0ff21f2e4f"
+  integrity sha512-nX0QkcTjxQz3TYcZwZN3BY9bzu04EW3K2HQm9HaIBmOJoeGfNSwV4KRKmsYbR2lQtNPrK4gpN7jlvN8edMEYiw==
 
 watchpack@^1.5.0:
   version "1.6.0"
