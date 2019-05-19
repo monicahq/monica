@@ -69,3 +69,11 @@
 </div>
 
 @endsection
+
+@push('scripts')
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    var stripe = Stripe('{{config('services.stripe.key')}}');
+  </script>
+  <script src="{{ asset(mix('js/stripe.js')) }}"></script>
+@endpush
