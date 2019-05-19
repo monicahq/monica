@@ -10,6 +10,7 @@ return [
     'journal_entry_type_activity' => 'نشاط',
     'journal_entry_rate' => 'لقد قمتَ بتقييم يومك.',
     'journal_add_comment' => 'Care to add a comment (optional)?',
+    'journal_show_comment' => 'Show comment',
     'entry_delete_success' => 'لقد تم حذف تدوين هذه المذكرة بنجاح.',
     'journal_add_title' => 'العنوان (اختياري)',
     'journal_add_date' => 'التاريخ',
