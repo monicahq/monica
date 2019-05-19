@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => 'Kontakt nicht gefunden',
     'people_list_number_kids' => '1 Kind|:count Kinder',
     'people_list_last_updated' => 'Zuletzt aufgerufen:',
     'people_list_number_reminders' => '1 Erinnerung|:count Erinnerungen',
@@ -23,8 +23,8 @@ return [
     'people_list_show_dead' => 'Verstorbene Kontakte anzeigen (:count)',
     'people_list_hide_dead' => 'Verstorbene Kontakte ausblenden (:count)',
     'people_search' => 'Suche in deinen Kontakten...',
-    'people_search_no_results' => 'No results found',
-    'people_add_new' => 'Add new person',
+    'people_search_no_results' => 'Keine Ergebnisse gefunden',
+    'people_add_new' => 'Neue Person hinzufügen',
     'people_list_account_usage' => 'Dein Account nutzt: :current/:limit Kontakte',
     'people_list_account_upgrade_title' => 'Führe ein Upgrade aus, um alle Funktionen freizuschalten.',
     'people_list_account_upgrade_cta' => 'Jetzt upgraden',
@@ -125,7 +125,7 @@ return [
     'age_exact_birthdate' => 'geboren am :date',
 
     // Last called
-    'last_called' => 'Last called: :date',
+    'last_called' => 'Letztes Telefonat: :date',
     'last_called_empty' => 'Last called: unknown',
     'last_activity_date' => 'Last activity together: :date',
     'last_activity_date_empty' => 'Last activity together: unknown',
