@@ -1,10 +1,15 @@
 let mix = require('laravel-mix');
 require('laravel-mix-purgecss');
 
+let purgeCssOptions = {
+    whitelistPatterns: [/^vdp-datepicker/, /^StripeElement/],
+    whitelistPatternsChildren: [/^vdp-datepicker/]
+};
+
 mix.js('resources/assets/js/app.js', 'public/js')
     .sass('resources/assets/sass/app-ltr.scss', 'public/css')
     .sass('resources/assets/sass/app-rtl.scss', 'public/css')
-    .purgeCss()
+    .purgeCss(purgeCssOptions)
     .extract(['vue'])
     .setResourceRoot('../')
     .sourceMaps(false)
@@ -12,7 +17,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
 
 mix.js('resources/assets/js/stripe.js', 'public/js')
     .sass('resources/assets/sass/stripe.scss', 'public/css')
-    .purgeCss()
+    .purgeCss(purgeCssOptions)
     .setResourceRoot('../')
     .sourceMaps(false)
     .version();
