@@ -652,6 +652,11 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
+"@hokify/vuejs-datepicker@^1.6.7":
+  version "1.6.7"
+  resolved "https://registry.yarnpkg.com/@hokify/vuejs-datepicker/-/vuejs-datepicker-1.6.7.tgz#0566ef89ebff56d3593bff12628ca3143e99ef6a"
+  integrity sha512-Ba746RrIxxPJ09KABg+WevoGIXtas1FvtM2hpXAXOv2YqyCMBHe8VyEUGuvechDrS2oaEY+trJ4SMOomKBqUog==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -8954,11 +8959,6 @@ vue@^2.5.11, vue@^2.5.21:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
-
-vuejs-datepicker@^1.5.4:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/vuejs-datepicker/-/vuejs-datepicker-1.5.4.tgz#dacdb5eb5ef44342c67cb59b93a0d5da9c1809b3"
-  integrity sha512-AVzgu3pb/fF/Sj3qu8YPnp7KhtsXkm8TSnBEcyYsWb1bMJr5FdPCxuIzISgw5kq0It7HkVJUGXQ4CiCwq9hhww==
 
 watchpack@^1.5.0:
   version "1.6.0"

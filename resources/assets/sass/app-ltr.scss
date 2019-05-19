@@ -19,6 +19,9 @@ $htmldir: ltr !default;
 // Radio button
 @import '~pretty-checkbox/src/pretty-checkbox';
 
+// datepicker
+@import "~@hokify/vuejs-datepicker/dist/vuejs-datepicker.css";
+
 @import "buttons";
 @import "header";
 @import "people";
