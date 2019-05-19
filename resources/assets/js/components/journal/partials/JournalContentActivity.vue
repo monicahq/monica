@@ -53,7 +53,7 @@
           <template v-if="activity.description">
             <div class="flex-none w-5 pointer" @click="toggleDescription()">
               <div class="flex justify-center items-center h-100">
-                <svg v-tooltip.top="'Show comment'" width="16px" height="13px" viewBox="0 0 16 13" version="1.1"
+                <svg v-tooltip.top="$t('journal.journal_show_comment')" width="16px" height="13px" viewBox="0 0 16 13" version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flex-none"
                 >
                   <defs />
@@ -95,7 +95,7 @@
             <div v-for="attendees in activity.attendees" :key="attendees.id" class="dib pointer ml2" @click="redirect(attendees)">
               <img v-if="attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" />
               <img v-else-if="attendees.information.avatar.gravatar_url" v-tooltip.bottom="attendees.complete_name" :src="attendees.information.avatar.gravatar_url" class="br3 journal-avatar-small" />
-              <div v-else v-tooltip="attendees.complete_name" :style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">
+              <div v-else v-tooltip.bottom="attendees.complete_name" :style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">
                 {{ attendees.initials }}
               </div>
             </div>
