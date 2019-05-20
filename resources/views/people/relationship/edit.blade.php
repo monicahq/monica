@@ -87,7 +87,7 @@
           <form-select
             :options="{{ $genders }}"
             :required="true"
-            value="{{ $partner->gender->id }}"
+            value="{{ $partner->gender_id }}"
             :title="'{{ trans('people.people_add_gender') }}'"
             :id="'gender_id'">
           </form-select>
