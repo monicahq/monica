@@ -10,6 +10,7 @@ Enhancements:
 
 Fixes:
 
+* Fix relationship id with no gender
 * Fix some UX errors
 * Fix stripe payment UI
 * Fix datepicker for locale usage
