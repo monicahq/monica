@@ -296,7 +296,7 @@ return [
     'gifts_offered' => 'מתנות שהוצעו',
     'gifts_offered_as_an_idea' => 'סימון כרעיון',
     'gifts_received' => 'מתנות שהתקבלו',
-    'gifts_view_comment' => 'צפייה בתגובה',
+    'gifts_view_comment' => 'צפייה בהערה',
     'gifts_mark_offered' => 'סימון כהוצעה',
     'gifts_update_success' => 'המתנה עודכנה בהצלחה',
 
