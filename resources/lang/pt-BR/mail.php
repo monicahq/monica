@@ -2,8 +2,8 @@
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
+    'subject_line' => 'Lembrete para :contact',
+    'greetings' => 'Olá :username',
     'want_reminded_of' => 'You wanted to be reminded of :reason',
     'for' => 'For: :name',
     'comment' => 'Comment: :comment',
