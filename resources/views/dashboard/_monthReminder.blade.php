@@ -12,7 +12,7 @@
                     @if ($reminderOutbox->reminder->contact->is_partial)
 
                         @php($relatedRealContact = $reminderOutbox->reminder->contact->getRelatedRealContact())
-                        <a href="{{ route('people.show', $relatedRealContact) }}">{{ $relatedRealContact->getNameAttribute() }}</a>
+                        <a href="{{ route('people.show', $relatedRealContact) }}">{{ $relatedRealContact->name }}</a>
 
                     @else
 
