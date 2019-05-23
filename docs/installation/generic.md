@@ -207,6 +207,7 @@ Run this command:
 
 ```sh
 php artisan passport:keys
+php artisan passport:client --personal --no-interaction
 ```
 
 This command will generate encryption keys in the `storage` directory.
@@ -220,13 +221,13 @@ Instead of keeping the encryption keys as files, you can add them as environment
 ```sh
 sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-private.key
 ```
-   Copy the output to environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file
+   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file
 
 * Do the same thing with the contents of the public key:
 ```sh
 sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-public.key
 ```
-copying its contents to an environment variable called `PASSPORT_PUBLIC_KEY`
+   Copy ths output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file
 
 
 #### Optional: Generate a Password grant client
@@ -244,9 +245,9 @@ Client ID: 5
 Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 ```
 
-* Copy the two values into two new environment variable of your `.env` file:
-   - The value of client ID in a `MOBILE_CLIENT_ID` variable
-   - The value of client secret in a `MOBILE_CLIENT_SECRET` variable
+* Copy the two values into two new environment variables of your `.env` file:
+   - The value of `Client ID` in a `MOBILE_CLIENT_ID` variable
+   - The value of `Client secret` in a `MOBILE_CLIENT_SECRET` variable
 
 * OAuth login can be access on `http://localhost/oauth/login`.
 
