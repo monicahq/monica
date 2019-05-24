@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact non trouvé',
     'people_list_number_kids' => ':count enfant|:count enfants',
     'people_list_last_updated' => 'Dernière consultation :',
     'people_list_number_reminders' => ':count rappel|:count rappels',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Afficher les contacts décédés (:count)',
     'people_list_hide_dead' => 'Masquer les contacts décédés (:count)',
     'people_search' => 'Recherchez dans vos contacts...',
-    'people_search_no_results' => 'Aucun contact ne correspond à ce critère',
+    'people_search_no_results' => 'Aucun résultat',
+    'people_add_new' => 'Ajouter une nouvelle personne',
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Passez au plan supérieur pour débloquer votre compte et l’amener à son plein potentiel.',
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',
@@ -83,7 +85,7 @@ return [
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
     'modal_call_exact_date' => 'L’appel s’est passé le',
     'modal_call_who_called' => 'Qui a appelé ?',
-    'modal_call_emotion' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cet appel ? (facultatif)',
+    'modal_call_emotion' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cet appel ? (optionnel)',
     'calls_add_success' => 'L’appel téléphonique a été enregistré.',
     'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L’appel a été supprimé avec succès',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'Ajouter une relation',
     'relationship_form_edit' => 'Modifier une relation existante',
     'relationship_form_is_with' => 'Cette personne est...',
+    'relationship_form_is_with_name' => ':name est ...',
     'relationship_form_add_choice' => 'Quelle est cette relation ?',
     'relationship_form_create_contact' => 'Ajouter une nouvelle personne',
     'relationship_form_associate_contact' => 'Un contact existant',
@@ -339,7 +342,7 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Anniversaire de la mort de :name',
-    'deceased_mark_person_deceased' => 'Indiquez cette personne comme décédée',
+    'deceased_mark_person_deceased' => 'Indiquer cette personne comme décédée',
     'deceased_know_date' => 'Je connais la date de décès de cette personne',
     'deceased_add_reminder' => 'Ajouter un rappel pour cette date',
     'deceased_label' => 'Décédé',
@@ -361,8 +364,8 @@ return [
     'contact_address_form_province' => 'Province (optionnel)',
     'contact_address_form_postal_code' => 'Code postal (optionnel)',
     'contact_address_form_country' => 'Pays (optionnel)',
-    'contact_address_form_latitude' => 'Latitude (chiffres uniquement) (facultatif)',
-    'contact_address_form_longitude' => 'Longitude (chiffres uniquement) (facultatif)',
+    'contact_address_form_latitude' => 'Latitude (chiffres uniquement) (optionnel)',
+    'contact_address_form_longitude' => 'Longitude (chiffres uniquement) (optionnel)',
 
     // Pets
     'pets_kind' => 'Sorte d’animal',

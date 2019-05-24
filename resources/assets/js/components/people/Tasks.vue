@@ -9,10 +9,10 @@
         {{ $t('people.section_personal_tasks') }}
 
         <span v-if="tasks.length != 0" class="f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
-          <a v-if="!editMode" class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = true">
+          <a v-if="!editMode" class="pointer" cy-name="task-toggle-edit-mode" href="" @click.prevent="editMode = true">
             {{ $t('app.edit') }}
           </a>
-          <a v-else class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false">
+          <a v-else class="pointer" cy-name="task-toggle-edit-mode" href="" @click.prevent="editMode = false">
             {{ $t('app.done') }}
           </a>
         </span>
@@ -24,7 +24,7 @@
       <div v-if="tasks.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3" cy-name="task-blank-state">
         <p>{{ $t('people.tasks_blank_title') }}</p>
         <p>
-          <a class="pointer" cy-name="add-task-button" @click="toggleAddMode">
+          <a class="pointer" cy-name="add-task-button" href="" @click.prevent="toggleAddMode">
             {{ $t('people.tasks_add_task') }}
           </a>
         </p>
@@ -65,10 +65,10 @@
               </textarea>
             </div>
             <div class="lh-copy mt3">
-              <a class="btn btn-primary" @click.prevent="update(task, true)">
+              <a class="btn btn-primary" href="" @click.prevent="update(task, true)">
                 {{ $t('app.update') }}
               </a>
-              <a class="btn" @click="toggleEditMode(task)">
+              <a class="btn" href="" @click.prevent="toggleEditMode(task)">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -78,7 +78,7 @@
 
       <!-- ADD TASK TO ENTER ADD MODE -->
       <div v-if="!updateMode && !addMode && tasks.length != 0" class="bg-near-white pa2 br2 mt3 mb3">
-        <a class="pointer" @click="toggleAddMode">
+        <a class="pointer" href="" @click.prevent="toggleAddMode">
           {{ $t('people.tasks_add_task') }}
         </a>
       </div>
@@ -101,10 +101,10 @@
             <textarea id="add-description" v-model="newTask.description" class="pa2 db w-100" type="text" @keyup.esc="addMode = false"></textarea>
           </div>
           <div class="lh-copy mt3">
-            <a class="btn btn-primary" cy-name="save-task-button" @click.prevent="store">
+            <a class="btn btn-primary" cy-name="save-task-button" href="" @click.prevent="store">
               {{ $t('app.add') }}
             </a>
-            <a class="btn" @click="addMode = false">
+            <a class="btn" href="" @click.prevent="addMode = false">
               {{ $t('app.cancel') }}
             </a>
           </div>

@@ -6,6 +6,7 @@ use Ramsey\Uuid\Uuid;
 use App\Traits\DAVFormat;
 use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
+use Illuminate\Support\Arr;
 use App\Models\Contact\Task;
 use App\Services\BaseService;
 use Sabre\VObject\ParseException;
@@ -39,7 +40,7 @@ class ImportTask extends BaseService
     {
         $this->validate($data);
 
-        if (array_has($data, 'task_id') && ! is_null($data['task_id'])) {
+        if (Arr::has($data, 'task_id') && ! is_null($data['task_id'])) {
             $task = Task::where('account_id', $data['account_id'])
                 ->findOrFail($data['task_id']);
         } else {

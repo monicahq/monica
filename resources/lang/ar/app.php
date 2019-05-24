@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'تحديث',
     'save' => 'حفظ',
     'add' => 'إضافة',
@@ -84,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'أضف ملاحظة',
     'breadcrumb_edit_note' => 'حرر ملاحظة',
     'breadcrumb_api' => 'API (واجهة برمجة التطبيق)',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'كيف تقابلتما',
     'breadcrumb_settings_personalization' => 'التخصيص',
     'breadcrumb_settings_security' => 'الأمن',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'رجل',
     'gender_female' => 'إمرأة',
     'gender_none' => 'أُفَضل ألا أقول',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'عفواً! حصل خطأ ما.',
     'error_unauthorized' => 'ليس لديك الصلاحية لتحرير هذا المصدر.',

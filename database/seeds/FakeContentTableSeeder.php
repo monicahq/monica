@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\User\User;
+use function Safe\json_decode;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
@@ -19,6 +20,7 @@ use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Account\Activity\Activity\CreateActivity;
+use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
@@ -268,7 +270,12 @@ class FakeContentTableSeeder extends Seeder
 
                 // set relationship
                 $relationshipId = $this->contact->account->relationshipTypes->random()->id;
-                $this->contact->setRelationship($relatedContact, $relationshipId);
+                $relationship = app(CreateRelationship::class)->execute([
+                    'account_id' => $this->contact->account_id,
+                    'contact_is' => $this->contact->id,
+                    'of_contact' => $relatedContact->id,
+                    'relationship_type_id' => $relationshipId,
+                ]);
             }
         }
     }

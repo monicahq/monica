@@ -27,6 +27,23 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Set protected/private property of a class.
+     *
+     * @param  object &$object
+     * @param  string $propertyName
+     * @param  mixed  $value
+     * @return void
+     */
+    public function setPrivateValue(&$object, string $propertyName, $value)
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $property = $reflection->getProperty($propertyName);
+        $property->setAccessible(true);
+
+        $property->setValue($object, $value);
+    }
+
+    /**
      * Test that the response contains an ObjectDeleted response.
      *
      * @param TestResponse $response

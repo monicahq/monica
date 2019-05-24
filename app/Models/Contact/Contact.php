@@ -13,6 +13,7 @@ use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
 use App\Models\Account\Activity;
+use function Safe\preg_match_all;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use App\Models\Instance\SpecialDate;
@@ -23,7 +24,6 @@ use App\Models\Account\ActivityStatistic;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingHasher as Model;
-use App\Models\Relationship\RelationshipType;
 use App\Http\Resources\Tag\Tag as TagResource;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -836,7 +836,7 @@ class Contact extends Model
             $contacts->push([
                 'relationship' => [
                     'id' => $relationship->id,
-                    'name' => $relationship->relationship_type_name,
+                    'name' => $relationship->relationshipType->name,
                 ],
                 'contact' => new ContactShortResource($contact),
                 ]);
@@ -1177,84 +1177,6 @@ class Contact extends Model
     }
 
     /**
-     * Set a relationship between two contacts.
-     *
-     * @param Contact $otherContact
-     * @param int $relationshipTypeId
-     */
-    public function setRelationship(self $otherContact, $relationshipTypeId)
-    {
-        $relationshipType = RelationshipType::where('account_id', $this->account_id)
-            ->find($relationshipTypeId);
-
-        // Contact A is linked to Contact B
-        $relationship = new Relationship;
-        $relationship->account_id = $this->account_id;
-        $relationship->relationship_type_id = $relationshipType->id;
-        $relationship->contact_is = $this->id;
-        $relationship->relationship_type_name = $relationshipType->name;
-        $relationship->of_contact = $otherContact->id;
-        $relationship->save();
-
-        // Get the reverse relationship
-        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
-
-        // Contact B is linked to Contact A
-        $relationship = new Relationship;
-        $relationship->account_id = $this->account_id;
-        $relationship->relationship_type_id = $reverseRelationshipType->id;
-        $relationship->contact_is = $otherContact->id;
-        $relationship->relationship_type_name = $relationshipType->name_reverse_relationship;
-        $relationship->of_contact = $this->id;
-        $relationship->save();
-    }
-
-    /**
-     * Update the relationship between two contacts.
-     *
-     * @param Contact $otherContact
-     * @param int $oldRelationshipTypeId
-     * @param int $newRelationshipTypeId
-     */
-    public function updateRelationship(self $otherContact, $oldRelationshipTypeId, $newRelationshipTypeId)
-    {
-        $this->deleteRelationship($otherContact, $oldRelationshipTypeId);
-
-        $this->setRelationship($otherContact, $newRelationshipTypeId);
-    }
-
-    /**
-     * Delete a relationship between two contacts.
-     *
-     * @param  self   $otherContact
-     */
-    public function deleteRelationship(self $otherContact, int $relationshipTypeId)
-    {
-        // Each relationship between two contacts has two Relationship objects.
-        // We need to delete both.
-
-        $relationship = Relationship::where('account_id', $this->account_id)
-                                    ->where('contact_is', $this->id)
-                                    ->where('of_contact', $otherContact->id)
-                                    ->where('relationship_type_id', $relationshipTypeId)
-                                    ->first();
-
-        $relationship->delete();
-
-        $relationshipType = RelationshipType::where('account_id', $this->account_id)
-            ->find($relationshipTypeId);
-        $reverseRelationshipType = $this->account->getRelationshipTypeByType($relationshipType->name_reverse_relationship);
-
-        $relationship = Relationship::where('account_id', $this->account_id)
-                                    ->where('contact_is', $otherContact->id)
-                                    ->where('of_contact', $this->id)
-                                    ->where('relationship_type_id', $reverseRelationshipType->id)
-                                    ->first();
-
-        $relationship->delete();
-    }
-
-    /**
      * Is this contact owed money?
      * @return bool
      */
@@ -1380,22 +1302,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the Relationship object representing the relation between two contacts.
-     *
-     * @param  Contact $otherContact
-     * @return Relationship|null
-     */
-    public function getRelationshipNatureWith(self $otherContact)
-    {
-        return Relationship::where([
-            'account_id' => $this->account_id,
-            'contact_is' => $this->id,
-            'of_contact' => $otherContact->id,
-        ])
-            ->first();
-    }
-
-    /**
      * Delete all related objects.
      *
      * @return bool
@@ -1453,7 +1359,7 @@ class Contact extends Model
      * Gets the first contact related to this contact if the current contact is
      * partial.
      *
-     * @return self
+     * @return self|null
      */
     public function getRelatedRealContact()
     {
@@ -1477,7 +1383,12 @@ class Contact extends Model
      */
     public function getLink()
     {
-        return route('people.show', $this->is_partial ? $this->getRelatedRealContact() : $this);
+        $contact = $this->is_partial ? $this->getRelatedRealContact() : $this;
+        if (is_null($contact)) {
+            $contact = $this;
+        }
+
+        return route('people.show', $contact);
     }
 
     /**

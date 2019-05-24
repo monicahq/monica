@@ -1,13 +1,12 @@
 @extends('marketing.auth')
 
 @section('content')
-  <body class="marketing register">
     <div class="container">
-      <form action="validate2fa" method="post">
+      <form action="{{ session('oauth') ? route('oauth.validate2fa') : route('validate2fa') }}" method="post">
         <input type="hidden" name="url" value="{{ urlencode(url()->current()) }}" />
       
         <div class="row">
-          <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+          <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
             <div class="signup-box">
       
               <div class="dt w-100">
@@ -19,13 +18,13 @@
           
               @include ('partials.errors')
           
-              {{ csrf_field() }}
+              @csrf
 
               <h3>{{ trans('auth.mfa_auth_u2f') }}</h3>
               <u2f-connector
-                :authdatas="{{ json_encode($authenticationData) }}"
+                :authdatas="{{ \Safe\json_encode($authenticationData) }}"
                 :method="'login'"
-                :callbackurl="{{ json_encode(url()->current()) }}">
+                :callbackurl="{{ \Safe\json_encode(url()->current()) }}">
               </u2f-connector>
 
               @if (app('pragmarx.google2fa')->isActivated())
@@ -47,6 +46,5 @@
       </form>
     </div>
 
-  </body>
   <script src="{{ asset(mix('js/u2f-api.js')) }}" type="text/javascript"></script>
 @endsection

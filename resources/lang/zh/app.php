@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => '是',
+    'no' => '否',
     'update' => '更新',
     'save' => '保存',
     'add' => '添加',
@@ -84,7 +86,7 @@ return [
     'breadcrumb_add_note' => '添加注释',
     'breadcrumb_edit_note' => '编辑注释',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'Dav 资源',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => '你是怎么知道的',
     'breadcrumb_settings_personalization' => '个性化',
     'breadcrumb_settings_security' => '安全',
@@ -94,6 +96,7 @@ return [
     'gender_male' => '男',
     'gender_female' => '女',
     'gender_none' => '保密',
+    'gender_no_gender' => '无性别',
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',

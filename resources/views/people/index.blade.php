@@ -8,7 +8,7 @@
     <div class="breadcrumb">
       <div class="{{ Auth::user()->getFluidLayout() }}">
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <ul class="horizontal">
               <li>
                 <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -39,14 +39,14 @@
           <div class="row">
 
             @if ($hasArchived and !$active)
-            <div class="col-xs-12">
+            <div class="col-12">
               <div class="ba mb3 br3 pa3 tc b--gray-monica bg-gray-monica">
                 {!! trans('people.list_link_to_active_contacts', ['url' => route('people.index')]) !!}
               </div>
             </div>
             @endif
 
-            <div class="col-xs-12 col-md-9 mb4">
+            <div class="col-12 col-md-9 mb4">
 
               @if (! is_null($tags))
               <p class="clear-filter">
@@ -73,7 +73,7 @@
                 <li class="people-list-item sorting">
                   {{ trans_choice('people.people_list_stats', $contacts->count(), ['count' => $contacts->count()]) }}
                   <div class="options">
-                    <div class="options-dropdowns">
+                    <div class="options-dropdowns dropdown">
                       <a href="" class="dropdown-btn" data-toggle="dropdown" id="dropdownSort">{{ trans('people.people_list_sort') }}</a>
                       <div class="dropdown-menu" aria-labelledby="dropdownSort">
                         <a class="dropdown-item {{ (auth()->user()->contacts_sort_order == 'firstnameAZ')?'selected':'' }}" href="{{ route('people.index') }}?sort=firstnameAZ">
@@ -172,7 +172,7 @@
               </ul>
             </div>
 
-            <div class="col-xs-12 col-md-3 sidebar">
+            <div class="col-12 col-md-3 sidebar">
               <a href="{{ route('people.create') }}" id="button-add-contact" class="btn btn-primary sidebar-cta">
                 {{ trans('people.people_list_blank_cta') }}
               </a>

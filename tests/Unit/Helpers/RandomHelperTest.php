@@ -16,9 +16,6 @@ class RandomHelperTest extends TestCase
             36,
             strlen(RandomHelper::uuid())
         );
-        $this->assertInternalType(
-            'string',
-            RandomHelper::uuid()
-        );
+        $this->assertIsString(RandomHelper::uuid());
     }
 }

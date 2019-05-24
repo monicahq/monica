@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Ja',
+    'no' => 'Nein',
     'update' => 'Aktualisieren',
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
@@ -84,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'Notiz hinzufügen',
     'breadcrumb_edit_note' => 'Notiz bearbeiten',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'Wie habt ihr euch getroffen',
     'breadcrumb_settings_personalization' => 'Personalisierung',
     'breadcrumb_settings_security' => 'Sicherheit',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Männlich',
     'gender_female' => 'Weiblich',
     'gender_none' => 'Möchte ich nicht angeben',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Whoops! Da lief etwas falsch.',
     'error_unauthorized' => 'Du darfst das leider nicht, da du nicht angemeldet bist.',
@@ -285,7 +288,7 @@ return [
 
     'emotion_adoration' => 'Adoration',
     'emotion_affection' => 'Affection',
-    'emotion_love' => 'Love',
+    'emotion_love' => 'Liebe',
     'emotion_fondness' => 'Fondness',
     'emotion_liking' => 'Liking',
     'emotion_attraction' => 'Attraction',

@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'חזרה לדף הבית',
     'mfa_auth_otp' => 'אימות עם ההתקן שלך לאימות דו־שלבי',
     'mfa_auth_u2f' => 'אימות עם התקן U2F',
+    'mfa_auth_webauthn' => 'אימות עם מפתח אבטחה (WebAuthn)',
     '2fa_title' => 'אימות דו־שלבי',
     '2fa_wrong_validation' => 'האימות הדו־שלבי נכשל.',
     '2fa_one_time_password' => 'קוד אימות דו־שלבי',

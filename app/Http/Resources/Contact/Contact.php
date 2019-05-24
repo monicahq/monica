@@ -105,7 +105,7 @@ class Contact extends Resource
         ];
     }
 
-    private function getHashId()
+    protected function getHashId()
     {
         $hashid = '';
         if ($this->is_partial) {

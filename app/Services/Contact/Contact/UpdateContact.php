@@ -2,6 +2,7 @@
 
 namespace App\Services\Contact\Contact;
 
+use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 
@@ -77,7 +78,7 @@ class UpdateContact extends BaseService
     private function updateGeneralInformation(array $data, Contact $contact)
     {
         // filter out the data that shall not be updated here
-        $dataOnly = array_except(
+        $dataOnly = Arr::except(
             $data,
             [
                 'is_birthdate_known',

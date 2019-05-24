@@ -87,6 +87,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $this->validator($data)->validate();
+
         $first = ! Account::hasAny();
         $account = Account::createDefault(
             $data['first_name'],

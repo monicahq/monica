@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 dijete|:count djece',
     'people_list_last_updated' => 'Posljednji ažurirani:',
     'people_list_number_reminders' => '1 podsjetnik|:count podsjetnika',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Pokaži umrle osobe (:count)',
     'people_list_hide_dead' => 'Sakrij umrle osobe (:count)',
     'people_search' => 'Pretraži svoje kontakte...',
-    'people_search_no_results' => 'Nisu pronađeni odgovarajući kontakti :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Nadogradi sada',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'Dodaj novi odnos',
     'relationship_form_edit' => 'Uredi postojeći odnos',
     'relationship_form_is_with' => 'Ova osoba je...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Dodajte novu osobu',
     'relationship_form_associate_contact' => 'Dodaj postojeći kontakt',
