@@ -102,8 +102,8 @@ return [
     'conversation_delete_link' => 'Unterhaltung löschen',
     'conversation_edit_title' => 'Unterhaltung bearbeiten',
     'conversation_edit_delete' => 'Bist du sicher, dass du diese Unterhaltung löschen willst? Dies kann nicht rückgängig gemacht werden.',
-    'conversation_add_success' => 'The conversation has been successfully added.',
-    'conversation_edit_success' => 'The conversation has been successfully updated.',
+    'conversation_add_success' => 'Die Unterhaltung wurde erfolgreich hinzugefügt.',
+    'conversation_edit_success' => 'Die Unterhaltung wurde erfolgreich aktualisiert.',
     'conversation_delete_success' => 'Die Unterhaltung wurde gelöscht.',
     'conversation_add_title' => 'Eine neue Unterhaltung ins Logbuch protokollieren',
     'conversation_add_when' => 'Wann hattet ihr diese Unterhaltung?',
@@ -114,7 +114,7 @@ return [
     'conversation_add_what_was_said' => 'Was war der Gesprächsinhalt?',
     'conversation_add_another' => 'Eine weitere Nachricht hinzufügen',
     'conversation_list_table_messages' => 'Nachrichten',
-    'conversation_list_table_content' => 'Partial content (last message)',
+    'conversation_list_table_content' => 'Teilinhalt (letzte Nachricht)',
     'conversation_list_title' => 'Unterhaltungen',
     'conversation_list_cta' => 'Unterhaltung protokollieren',
 
@@ -126,9 +126,9 @@ return [
 
     // Last called
     'last_called' => 'Letztes Telefonat: :date',
-    'last_called_empty' => 'Last called: unknown',
-    'last_activity_date' => 'Last activity together: :date',
-    'last_activity_date_empty' => 'Last activity together: unknown',
+    'last_called_empty' => 'Letztes Telefonat: unbekannt',
+    'last_activity_date' => 'Letzte gemeinsame Aktivität: :date',
+    'last_activity_date_empty' => 'Letzte gemeinsame Aktivität: unbekannt',
 
     // additional information
     'information_edit_success' => 'Das Profil wurde erfolgreich aktualisiert',
@@ -202,7 +202,7 @@ return [
     'relationship_form_add_choice' => 'Wer ist die Beziehung zu?',
     'relationship_form_create_contact' => 'Neue Person hinzufügen',
     'relationship_form_associate_contact' => 'Ein bestehender Kontakt',
-    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
+    'relationship_form_associate_dropdown' => 'Wählen Sie einen vorhandenen Kontakt aus der Dropdown-Liste unten aus',
     'relationship_form_associate_dropdown_placeholder' => 'Suche und wähle einen bestehenden Kontakt',
     'relationship_form_also_create_contact' => 'Erstellen Sie einen Kontakt-Eintrag für diese Person.',
     'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
