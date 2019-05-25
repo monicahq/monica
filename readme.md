@@ -112,7 +112,7 @@ Note: while the .com version has a paid plan, there is no limitations on Monica 
 
 If you want to host it yourself, you need
 
-* PHP 7.1+ or newer
+* PHP 7.2+ or newer
 * HTTP server with PHP support (eg: Apache, Nginx, Caddy)
 * Composer
 * MySQL
@@ -246,6 +246,6 @@ Monica use a lot of open source projects and we thank them with all our hearts. 
 
 ## License
 
-Copyright (c) 2016-2018
+Copyright (c) 2016-2019
 
 Licensed under the AGPL License. [View license](/LICENSE).
