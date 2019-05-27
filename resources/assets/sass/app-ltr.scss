@@ -22,6 +22,9 @@ $htmldir: ltr !default;
 // datepicker
 @import "~@hokify/vuejs-datepicker/dist/vuejs-datepicker.css";
 
+// Tables
+@import '~vue-good-table/dist/vue-good-table.css';
+
 @import "buttons";
 @import "header";
 @import "people";
