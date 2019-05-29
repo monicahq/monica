@@ -38,7 +38,7 @@ class ApiActivityTypeControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(ActivityType::class, 10)->create([
+        factory(ActivityType::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -163,7 +163,7 @@ class ApiActivityTypeControllerTest extends ApiTestCase
         $activityType = factory(ActivityType::class)->create([
             'account_id' => $user->account_id,
         ]);
-        $activities = factory(Activity::class, 10)->create([
+        factory(Activity::class, 2)->create([
             'account_id' => $user->account_id,
             'activity_type_id' => $activityType->id,
         ]);

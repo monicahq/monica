@@ -25,7 +25,7 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(ActivityTypeCategory::class, 10)->create([
+        factory(ActivityTypeCategory::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -42,26 +42,26 @@ class ApiActivityTypeCategoryControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(ActivityTypeCategory::class, 10)->create([
+        factory(ActivityTypeCategory::class, 11)->create([
             'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/activitytypecategories?limit=1');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 11,
             'current_page' => 1,
             'per_page' => '1',
-            'last_page' => 10,
+            'last_page' => 11,
         ]);
 
         $response = $this->json('GET', '/api/activitytypecategories?limit=2');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 11,
             'current_page' => 1,
             'per_page' => '2',
-            'last_page' => 5,
+            'last_page' => 6,
         ]);
     }
 

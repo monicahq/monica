@@ -32,7 +32,7 @@ class ApiPlaceControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(Place::class, 3)->create([
+        factory(Place::class, 2)->create([
             'account_id' => $user->account->id,
         ]);
 
@@ -48,26 +48,26 @@ class ApiPlaceControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(Place::class, 10)->create([
+        factory(Place::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/places?limit=1');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '1',
-            'last_page' => 10,
+            'last_page' => 2,
         ]);
 
         $response = $this->json('GET', '/api/places?limit=2');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '2',
-            'last_page' => 5,
+            'last_page' => 1,
         ]);
     }
 

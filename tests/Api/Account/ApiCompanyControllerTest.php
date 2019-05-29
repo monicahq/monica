@@ -28,7 +28,7 @@ class ApiCompanyControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(Company::class, 3)->create([
+        factory(Company::class, 2)->create([
             'account_id' => $user->account->id,
         ]);
 
@@ -44,26 +44,26 @@ class ApiCompanyControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(Company::class, 10)->create([
+        factory(Company::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/companies?limit=1');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '1',
-            'last_page' => 10,
+            'last_page' => 2,
         ]);
 
         $response = $this->json('GET', '/api/companies?limit=2');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '2',
-            'last_page' => 5,
+            'last_page' => 1,
         ]);
     }
 
