@@ -66,7 +66,7 @@ class ApiAdressesControllerTest extends ApiTestCase
         $user = $this->signin();
 
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
-        factory(Address::class, 20)->create([
+        factory(Address::class, 2)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact->id,
         ]);
@@ -76,10 +76,10 @@ class ApiAdressesControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'total' => 20,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '1',
-            'last_page' => 20,
+            'last_page' => 2,
         ]);
 
         $response = $this->json('GET', '/api/addresses?limit=2');
@@ -87,10 +87,10 @@ class ApiAdressesControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
-            'total' => 20,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '2',
-            'last_page' => 10,
+            'last_page' => 1,
         ]);
     }
 

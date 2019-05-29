@@ -224,7 +224,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class, 10)->create([
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -236,7 +236,7 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $this->assertCount(
-            10,
+            2,
             $response->decodeResponseJson()['data']
         );
     }
@@ -245,7 +245,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class, 10)->state('no_gender')->create([
+        $contact = factory(Contact::class, 2)->state('no_gender')->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -257,7 +257,7 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $this->assertCount(
-            10,
+            2,
             $response->decodeResponseJson()['data']
         );
     }
@@ -266,7 +266,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class, 10)->create([
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -278,7 +278,7 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
         ]);
     }
@@ -287,7 +287,7 @@ class ApiContactControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $contact = factory(Contact::class, 10)->create([
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -298,10 +298,10 @@ class ApiContactControllerTest extends ApiTestCase
             'data' => ['*' => $this->jsonStructureContact],
         ]);
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '1',
-            'last_page' => 10,
+            'last_page' => 2,
         ]);
 
         $response = $this->json('GET', '/api/contacts?limit=2');
@@ -311,10 +311,10 @@ class ApiContactControllerTest extends ApiTestCase
             'data' => ['*' => $this->jsonStructureContact],
         ]);
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '2',
-            'last_page' => 5,
+            'last_page' => 1,
         ]);
     }
 
@@ -327,8 +327,8 @@ class ApiContactControllerTest extends ApiTestCase
             'first_name' => 'roger',
         ]);
 
-        // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory(Contact::class, 10)->create([
+        // create 2 other contacts named Bob (to avoid random conflicts if we took a random name)
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -356,8 +356,8 @@ class ApiContactControllerTest extends ApiTestCase
             'first_name' => 'roger',
         ]);
 
-        // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory(Contact::class, 10)->create([
+        // create 2 other contacts named Bob (to avoid random conflicts if we took a random name)
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -387,8 +387,8 @@ class ApiContactControllerTest extends ApiTestCase
             'first_name' => 'roger',
         ]);
 
-        // create 10 other contacts named Bob (to avoid random conflicts if we took a random name)
-        $contact = factory(Contact::class, 10)->create([
+        // create 2 other contacts named Bob (to avoid random conflicts if we took a random name)
+        $contact = factory(Contact::class, 2)->create([
             'account_id' => $user->account_id,
             'first_name' => 'bob',
         ]);
@@ -568,7 +568,7 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
 
         $user = $this->signin();
-        $contact = factory(Contact::class)->create([
+        factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
         $response = $this->json('GET', "/api/contacts?with=contactfields&page=1&limit=100&query=1')%20or%20('%'='");
@@ -680,8 +680,8 @@ class ApiContactControllerTest extends ApiTestCase
             'name' => 'Phone',
             'protocol' => 'tel:',
             'type' => 'phone',
-            ]);
-        $contactField = factory(ContactField::class)->create([
+        ]);
+        factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
             'contact_field_type_id' => $field->id,
