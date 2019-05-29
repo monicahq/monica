@@ -2362,16 +2362,16 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v7.2.2",
+            "version": "v7.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d"
+                "reference": "758e143052f0a353df8dff9349f84601579e457d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d",
-                "reference": "c0c3fca80d8f5af90dcbf65e62bdd1abee9ac25d",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/758e143052f0a353df8dff9349f84601579e457d",
+                "reference": "758e143052f0a353df8dff9349f84601579e457d",
                 "shasum": ""
             },
             "require": {
@@ -2428,7 +2428,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2019-03-13T14:21:06+00:00"
+            "time": "2019-05-28T16:06:20+00:00"
         },
         {
             "name": "laravel/socialite",
@@ -2559,32 +2559,29 @@
         },
         {
             "name": "lcobucci/jwt",
-            "version": "3.2.5",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/jwt.git",
-                "reference": "82be04b4753f8b7693b62852b7eab30f97524f9b"
+                "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/82be04b4753f8b7693b62852b7eab30f97524f9b",
-                "reference": "82be04b4753f8b7693b62852b7eab30f97524f9b",
+                "url": "https://api.github.com/repos/lcobucci/jwt/zipball/a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
+                "reference": "a11ec5f4b4d75d1fcd04e133dede4c317aac9e18",
                 "shasum": ""
             },
             "require": {
+                "ext-mbstring": "*",
                 "ext-openssl": "*",
-                "php": ">=5.5"
+                "php": "^5.6 || ^7.0"
             },
             "require-dev": {
-                "mdanter/ecc": "~0.3.1",
                 "mikey179/vfsstream": "~1.5",
                 "phpmd/phpmd": "~2.2",
                 "phpunit/php-invoker": "~1.1",
-                "phpunit/phpunit": "~4.5",
+                "phpunit/phpunit": "^5.7 || ^7.3",
                 "squizlabs/php_codesniffer": "~2.3"
-            },
-            "suggest": {
-                "mdanter/ecc": "Required to use Elliptic Curves based algorithms."
             },
             "type": "library",
             "extra": {
@@ -2613,7 +2610,7 @@
                 "JWS",
                 "jwt"
             ],
-            "time": "2018-11-11T12:22:26+00:00"
+            "time": "2019-05-24T18:30:49+00:00"
         },
         {
             "name": "league/event",
@@ -4660,16 +4657,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "2.0.15",
+            "version": "2.0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "11cf67cf78dc4acb18dc9149a57be4aee5036ce0"
+                "reference": "3ca5b88d582c69178c8d01fd9d02b94e15042bb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/11cf67cf78dc4acb18dc9149a57be4aee5036ce0",
-                "reference": "11cf67cf78dc4acb18dc9149a57be4aee5036ce0",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/3ca5b88d582c69178c8d01fd9d02b94e15042bb8",
+                "reference": "3ca5b88d582c69178c8d01fd9d02b94e15042bb8",
                 "shasum": ""
             },
             "require": {
@@ -4748,7 +4745,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2019-03-10T16:53:45+00:00"
+            "time": "2019-05-26T20:38:34+00:00"
         },
         {
             "name": "pragmarx/coollection",
