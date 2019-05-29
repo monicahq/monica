@@ -53,26 +53,26 @@ class ApiOccupationControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        factory(Occupation::class, 10)->create([
+        factory(Occupation::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
         $response = $this->json('GET', '/api/occupations?limit=1');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '1',
-            'last_page' => 10,
+            'last_page' => 2,
         ]);
 
         $response = $this->json('GET', '/api/occupations?limit=2');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '2',
-            'last_page' => 5,
+            'last_page' => 1,
         ]);
     }
 

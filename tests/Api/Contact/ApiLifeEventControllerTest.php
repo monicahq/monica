@@ -58,7 +58,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $this->createLifeEvent($user);
         }
 
@@ -67,12 +67,12 @@ class ApiLifeEventControllerTest extends ApiTestCase
         $response->assertStatus(200);
 
         $this->assertCount(
-            10,
+            2,
             $response->decodeResponseJson()['data']
         );
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
         ]);
 
@@ -87,26 +87,26 @@ class ApiLifeEventControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $this->createLifeEvent($user);
         }
 
         $response = $this->json('GET', '/api/lifeevents?limit=1');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '1',
-            'last_page' => 10,
+            'last_page' => 2,
         ]);
 
         $response = $this->json('GET', '/api/lifeevents?limit=2');
 
         $response->assertJsonFragment([
-            'total' => 10,
+            'total' => 2,
             'current_page' => 1,
             'per_page' => '2',
-            'last_page' => 5,
+            'last_page' => 1,
         ]);
     }
 
