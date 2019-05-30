@@ -40,7 +40,6 @@ Vue.use(vSelectMenu);
 
 // Tables
 import VueGoodTablePlugin from 'vue-good-table';
-import 'vue-good-table/dist/vue-good-table.css';
 Vue.use(VueGoodTablePlugin);
 
 import VueClipboard from 'vue-clipboard2';
@@ -346,7 +345,7 @@ export function loadLanguageAsync (lang, set) {
 }
 
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
-  moment.locale(lang);
+  moment.locale(lang === 'zh' ? 'zh-cn' : lang);
 
   // the Vue appplication
   const app = new Vue({
