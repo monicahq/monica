@@ -14,7 +14,7 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $relationshipTypeGroup = factory(RelationshipTypeGroup::class, 10)->create([
+        factory(RelationshipTypeGroup::class, 2)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -24,7 +24,7 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
         $decodedJson = $response->decodeResponseJson();
 
         $this->assertCount(
-            10,
+            2,
             $decodedJson['data']
         );
     }

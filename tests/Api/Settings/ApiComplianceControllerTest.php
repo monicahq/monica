@@ -23,7 +23,7 @@ class ApiComplianceControllerTest extends ApiTestCase
 
     public function test_it_gets_a_list_of_terms()
     {
-        $term = factory(Term::class, 10)->create([
+        $term = factory(Term::class, 2)->create([
             'term_version' => rand(1, 100),
             'term_content' => 'dummy data',
             'privacy_version' => rand(1, 100),
