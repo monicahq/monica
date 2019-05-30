@@ -3807,16 +3807,16 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.2.1",
+            "version": "v4.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "5221f49a608808c1e4d436df32884cbc1b821ac0"
+                "reference": "1bd73cc04c3843ad8d6b0bfc0956026a151fc420"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/5221f49a608808c1e4d436df32884cbc1b821ac0",
-                "reference": "5221f49a608808c1e4d436df32884cbc1b821ac0",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1bd73cc04c3843ad8d6b0bfc0956026a151fc420",
+                "reference": "1bd73cc04c3843ad8d6b0bfc0956026a151fc420",
                 "shasum": ""
             },
             "require": {
@@ -3854,7 +3854,7 @@
                 "parser",
                 "php"
             ],
-            "time": "2019-02-16T20:54:15+00:00"
+            "time": "2019-05-25T20:07:01+00:00"
         },
         {
             "name": "ocramius/package-versions",
@@ -7291,16 +7291,16 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.2.9",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
-                "reference": "e0ff582c4b038567a7c6630f136488b1d793e6a9"
+                "reference": "b3d4f4c0e4eadfdd8b296af9ca637cfbf51d8176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/e0ff582c4b038567a7c6630f136488b1d793e6a9",
-                "reference": "e0ff582c4b038567a7c6630f136488b1d793e6a9",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/b3d4f4c0e4eadfdd8b296af9ca637cfbf51d8176",
+                "reference": "b3d4f4c0e4eadfdd8b296af9ca637cfbf51d8176",
                 "shasum": ""
             },
             "require": {
@@ -7309,7 +7309,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "4.3-dev"
                 }
             },
             "autoload": {
@@ -7336,7 +7336,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-26T20:47:34+00:00"
+            "time": "2019-05-26T20:47:49+00:00"
         },
         {
             "name": "symfony/http-foundation",
@@ -7938,16 +7938,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.2.9",
+            "version": "v4.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "57f11a07b34f009ef64a3f95ad218f895ad95374"
+                "reference": "a5e3dd4e93a364668034a3cb6efa963d0b33ab45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/57f11a07b34f009ef64a3f95ad218f895ad95374",
-                "reference": "57f11a07b34f009ef64a3f95ad218f895ad95374",
+                "url": "https://api.github.com/repos/symfony/process/zipball/a5e3dd4e93a364668034a3cb6efa963d0b33ab45",
+                "reference": "a5e3dd4e93a364668034a3cb6efa963d0b33ab45",
                 "shasum": ""
             },
             "require": {
@@ -7956,7 +7956,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.2-dev"
+                    "dev-master": "4.3-dev"
                 }
             },
             "autoload": {
@@ -7983,7 +7983,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2019-05-26T20:47:34+00:00"
+            "time": "2019-05-26T20:47:49+00:00"
         },
         {
             "name": "symfony/psr-http-message-bridge",
@@ -9984,16 +9984,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.3.2",
+            "version": "1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "d17708133b6c276d6e42ef887a877866b909d892"
+                "reference": "46867cbf8ca9fb8d60c506895449eb799db1184f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/d17708133b6c276d6e42ef887a877866b909d892",
-                "reference": "d17708133b6c276d6e42ef887a877866b909d892",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/46867cbf8ca9fb8d60c506895449eb799db1184f",
+                "reference": "46867cbf8ca9fb8d60c506895449eb799db1184f",
                 "shasum": ""
             },
             "require": {
@@ -10024,7 +10024,7 @@
                 "Xdebug",
                 "performance"
             ],
-            "time": "2019-01-28T20:25:53+00:00"
+            "time": "2019-05-27T17:52:04+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -11362,16 +11362,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.3.16",
+            "version": "v0.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "34e4d2189ab05ebbee07f408f6ee890a94f32b9f"
+                "reference": "a123a601a7796aa6f7793e87feb91a8affc95a80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/34e4d2189ab05ebbee07f408f6ee890a94f32b9f",
-                "reference": "34e4d2189ab05ebbee07f408f6ee890a94f32b9f",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/a123a601a7796aa6f7793e87feb91a8affc95a80",
+                "reference": "a123a601a7796aa6f7793e87feb91a8affc95a80",
                 "shasum": ""
             },
             "require": {
@@ -11385,7 +11385,7 @@
                 "mockery/mockery": "^1.0|0.9.*",
                 "orchestra/testbench": "^3.6",
                 "php": "^7.1.3",
-                "phpstan/phpstan": "^0.11.1",
+                "phpstan/phpstan": "^0.11.8",
                 "symfony/process": "^4.2"
             },
             "require-dev": {
@@ -11425,7 +11425,7 @@
                 "php",
                 "static analysis"
             ],
-            "time": "2019-03-30T22:44:10+00:00"
+            "time": "2019-05-29T12:53:31+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
@@ -11478,22 +11478,22 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v3.8.2",
+            "version": "v3.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "96aef2b9be81839ddf66405d0ecaf2f1598153fb"
+                "reference": "171b29bb9dbd754dc1eb8d9ba0ff05b914b8db1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/96aef2b9be81839ddf66405d0ecaf2f1598153fb",
-                "reference": "96aef2b9be81839ddf66405d0ecaf2f1598153fb",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/171b29bb9dbd754dc1eb8d9ba0ff05b914b8db1d",
+                "reference": "171b29bb9dbd754dc1eb8d9ba0ff05b914b8db1d",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "~5.8.3",
+                "laravel/framework": "~5.8.19",
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench-core": "~3.8.2",
+                "orchestra/testbench-core": "~3.8.4",
                 "php": ">=7.1",
                 "phpunit/phpunit": "^7.5 || ^8.0"
             },
@@ -11524,20 +11524,20 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2019-04-20T16:13:31+00:00"
+            "time": "2019-05-29T23:14:15+00:00"
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v3.8.2",
+            "version": "v3.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "598caa6f7813b8a29b2f1b69912b40659dcef79b"
+                "reference": "27923e6e44d73474deac5d8d1be673524d60dceb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/598caa6f7813b8a29b2f1b69912b40659dcef79b",
-                "reference": "598caa6f7813b8a29b2f1b69912b40659dcef79b",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/27923e6e44d73474deac5d8d1be673524d60dceb",
+                "reference": "27923e6e44d73474deac5d8d1be673524d60dceb",
                 "shasum": ""
             },
             "require": {
@@ -11551,7 +11551,7 @@
                 "phpunit/phpunit": "^7.5 || ^8.0"
             },
             "suggest": {
-                "laravel/framework": "Required for testing (~5.8.3).",
+                "laravel/framework": "Required for testing (~5.8.19).",
                 "mockery/mockery": "Allow to use Mockery for testing (^1.0).",
                 "orchestra/testbench-browser-kit": "Allow to use legacy Laravel BrowserKit for testing (^3.8).",
                 "orchestra/testbench-dusk": "Allow to use Laravel Dusk for testing (^3.8).",
@@ -11589,7 +11589,7 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2019-04-10T12:50:29+00:00"
+            "time": "2019-05-29T22:54:52+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -12022,16 +12022,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "0.3.3",
+            "version": "0.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "472d3161d289f652713a5e353532fa4592663a57"
+                "reference": "ab518a5fc8f1d90f58bd2c5552ba915e2c477b66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/472d3161d289f652713a5e353532fa4592663a57",
-                "reference": "472d3161d289f652713a5e353532fa4592663a57",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/ab518a5fc8f1d90f58bd2c5552ba915e2c477b66",
+                "reference": "ab518a5fc8f1d90f58bd2c5552ba915e2c477b66",
                 "shasum": ""
             },
             "require": {
@@ -12065,20 +12065,20 @@
                 "MIT"
             ],
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
-            "time": "2019-04-23T20:26:19+00:00"
+            "time": "2019-05-28T11:40:00+00:00"
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.11.6",
+            "version": "0.11.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "7af8b9d02b3ab36444dbf4e1b9ca1c1bd5044d81"
+                "reference": "fcf0081bf3a254ddacffa03e78be87842d0c09c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/7af8b9d02b3ab36444dbf4e1b9ca1c1bd5044d81",
-                "reference": "7af8b9d02b3ab36444dbf4e1b9ca1c1bd5044d81",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/fcf0081bf3a254ddacffa03e78be87842d0c09c9",
+                "reference": "fcf0081bf3a254ddacffa03e78be87842d0c09c9",
                 "shasum": ""
             },
             "require": {
@@ -12087,10 +12087,11 @@
                 "nette/bootstrap": "^2.4 || ^3.0",
                 "nette/di": "^2.4.7 || ^3.0",
                 "nette/robot-loader": "^3.0.1",
+                "nette/schema": "^1.0",
                 "nette/utils": "^2.4.5 || ^3.0",
                 "nikic/php-parser": "^4.0.2",
                 "php": "~7.1",
-                "phpstan/phpdoc-parser": "^0.3",
+                "phpstan/phpdoc-parser": "^0.3.4",
                 "symfony/console": "~3.2 || ~4.0",
                 "symfony/finder": "~3.2 || ~4.0"
             },
@@ -12138,7 +12139,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-05-08T16:33:56+00:00"
+            "time": "2019-05-28T19:58:33+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
