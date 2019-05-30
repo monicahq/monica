@@ -652,10 +652,12 @@
     debug "^3.1.0"
     lodash.once "^4.1.1"
 
-"@hokify/vuejs-datepicker@^1.6.7":
-  version "1.6.7"
-  resolved "https://registry.yarnpkg.com/@hokify/vuejs-datepicker/-/vuejs-datepicker-1.6.7.tgz#0566ef89ebff56d3593bff12628ca3143e99ef6a"
-  integrity sha512-Ba746RrIxxPJ09KABg+WevoGIXtas1FvtM2hpXAXOv2YqyCMBHe8VyEUGuvechDrS2oaEY+trJ4SMOomKBqUog==
+"@hokify/vuejs-datepicker@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@hokify/vuejs-datepicker/-/vuejs-datepicker-2.0.2.tgz#17c747feb69696a70e224be450d48e9ea00f0160"
+  integrity sha512-IhZ6tDu29t2iIFUIfTFB/D0bjNNW5KoSszP2pI12Crs+AGYSaQCerSC0oF6TT+2Pvlahvesb2LcPSyVMoXb5Mg==
+  dependencies:
+    moment "^2.24.0"
 
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
@@ -5638,7 +5640,7 @@ moment-timezone@^0.5.21:
   dependencies:
     moment ">= 2.9.0"
 
-moment@2.24.0, "moment@>= 2.9.0", moment@^2.22.1:
+moment@2.24.0, "moment@>= 2.9.0", moment@^2.22.1, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
