@@ -3,7 +3,7 @@
     <datepicker :value="selectedDate"
                 :format="displayValue"
                 :parse-typed-date="formatTypedValue"
-                :language="language"
+                :language="locale"
                 :monday-first="mondayFirst"
                 :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
                 :typeable="true"
@@ -16,7 +16,6 @@
 
 <script>
 import Datepicker from '@hokify/vuejs-datepicker';
-import * as Languages from '@hokify/vuejs-datepicker/dist/locale';
 import moment from 'moment';
 
 export default {
@@ -48,7 +47,6 @@ export default {
       value: '',
 
       selectedDate: '',
-      language: Languages.en,
       mondayFirst: false
     };
   },
@@ -70,7 +68,6 @@ export default {
   },
 
   mounted() {
-    this.language = this.locale === 'pt' || this.locale === 'pt-BR' ? Languages['ptBR'] : Languages[this.locale];
     this.selectedDate = moment(this.defaultDate, this.exchangeFormat).toDate();
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
     this.update(this.selectedDate);
