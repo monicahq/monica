@@ -70,7 +70,7 @@ export default {
   },
 
   mounted() {
-    this.language = Languages[this.locale];
+    this.language = this.locale === 'pt' || this.locale === 'pt-BR' ? Languages['ptBR'] : Languages[this.locale];
     this.selectedDate = moment(this.defaultDate, this.exchangeFormat).toDate();
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
     this.update(this.selectedDate);
