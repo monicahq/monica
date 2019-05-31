@@ -8866,10 +8866,10 @@ vscode-languageserver-types@^3.5.0:
   resolved "https://registry.yarnpkg.com/vscode-languageserver-types/-/vscode-languageserver-types-3.14.0.tgz#d3b5952246d30e5241592b6dde8280e03942e743"
   integrity sha512-lTmS6AlAlMHOvPQemVwo3CezxBp0sNB95KNPkqp3Nxd5VFEnuG1ByM0zlRWos0zjO3ZWtkvhal0COgiV1xIA4A==
 
-vue-autosuggest@^1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/vue-autosuggest/-/vue-autosuggest-1.8.3.tgz#dcce3d3ed90441c9788b6d18b2e67e5b9d4cad52"
-  integrity sha512-I5vQA/UHMcQMyMqNQwmbl+iiFYyg20a2Nx4zjx7MLZ93GRnL1Pclwc6FgLWCJ7u/1mvKpgphsgrS2QGe1cAM0w==
+vue-autosuggest@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vue-autosuggest/-/vue-autosuggest-2.0.0.tgz#451478748ee5538d6c7c4c3316779cd5c0e7358e"
+  integrity sha512-0EhX7RMdMShJe2ubJSJ6wx5VHmWYuNes97aSlzUmQFX2dJABgwhABGajGTBUCxrVpMDmhXRxjwDHPVLUOwhl3w==
 
 vue-checkbox-radio@^0.6.0:
   version "0.6.0"
