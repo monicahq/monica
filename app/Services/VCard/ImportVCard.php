@@ -12,7 +12,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
-use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
 use App\Models\Contact\Gender;
@@ -436,7 +435,7 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
-            $contact->uuid = RandomHelper::uuid();
+            $contact->uuid = Str::uuid();
             $contact->save();
         }
 

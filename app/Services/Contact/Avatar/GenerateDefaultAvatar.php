@@ -2,7 +2,7 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Helpers\RandomHelper;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Laravolt\Avatar\Facade as Avatar;
@@ -59,7 +59,7 @@ class GenerateDefaultAvatar extends BaseService
     private function generateContactUUID(Contact $contact)
     {
         if (! $contact->uuid) {
-            $contact->uuid = RandomHelper::uuid();
+            $contact->uuid = Str::uuid();
             $contact->save();
         }
 

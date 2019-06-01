@@ -2,7 +2,7 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Helpers\RandomHelper;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -54,7 +54,7 @@ class GetAvatarsFromInternet extends BaseService
      */
     private function generateUUID(Contact $contact)
     {
-        $contact->avatar_adorable_uuid = RandomHelper::uuid();
+        $contact->avatar_adorable_uuid = Str::uuid();
         $contact->save();
 
         return $contact;

@@ -3,7 +3,7 @@
 namespace App\Services\Contact\Contact;
 
 use Illuminate\Support\Arr;
-use App\Helpers\RandomHelper;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
@@ -96,7 +96,7 @@ class CreateContact extends BaseService
      */
     private function generateUUID(Contact $contact)
     {
-        $contact->uuid = RandomHelper::uuid();
+        $contact->uuid = Str::uuid();
         $contact->save();
     }
 
