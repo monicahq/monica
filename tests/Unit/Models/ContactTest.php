@@ -549,7 +549,6 @@ class ContactTest extends FeatureTestCase
             $contact->getAvatarURL()
         );
 
-
         // gravatar
         $contact = factory(Contact::class)->create([
             'avatar_gravatar_url' => 'gravatarURL',
