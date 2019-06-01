@@ -35,7 +35,7 @@
 
             <ul class="f7">
               <li class="di">
-                <a class="pointer" :cy-name="'entry-delete-button-' + entry.id" @click="trash()">
+                <a class="pointer" :cy-name="'entry-delete-button-' + entry.id" href="" @click.prevent="trash()">
                   {{ $t('app.delete') }}
                 </a>
               </li>

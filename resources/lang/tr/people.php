@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 çocuk|:count çocuklar',
     'people_list_last_updated' => 'Son görüşme:',
     'people_list_number_reminders' => '1 hatırlatıcı|:count hatırlatıcı',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Ölmüş kişileri göster (:count)',
     'people_list_hide_dead' => 'Ölmüş kişileri gizle (:count)',
     'people_search' => 'Bağlantılarda ara...',
-    'people_search_no_results' => 'İlgili kişi bulunamadı :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Hesap kullanım bilgileriniz: :current/limit bağlantı',
     'people_list_account_upgrade_title' => 'Tüm özellikleri kullanmak için hesabınızı yükseltin.',
     'people_list_account_upgrade_cta' => 'Şimdi güncelle',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'Add a new relationship',
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'Bu kişi ...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Yeni kişi ekle',
     'relationship_form_associate_contact' => 'An existing contact',

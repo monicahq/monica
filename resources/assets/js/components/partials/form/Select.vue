@@ -24,17 +24,34 @@ select:focus {
       :id="realid"
       :value="selectedOption"
       :name="id"
-      required
+      :required="required"
       :class="selectClass"
       @input="event => { $emit('input', event.target.value) }"
     >
-      <option
-        v-for="option in filterExclude(options)"
-        :key="option.id"
-        :value="option.id"
-      >
-        {{ option.name }}
-      </option>
+      <template v-if="Array.isArray(options)">
+        <option
+          v-for="option in filterExclude(options)"
+          :key="option.id"
+          :value="option.id"
+        >
+          {{ option.name }}
+        </option>
+      </template>
+      <template v-else>
+        <optgroup
+          v-for="(optgroup,index) in options"
+          :key="index"
+          :label="optgroup.name"
+        >
+          <option
+            v-for="option in filterExclude(optgroup.options)"
+            :key="option.id"
+            :value="option.id"
+          >
+            {{ option.name }}
+          </option>
+        </optgroup>
+      </template>
     </select>
   </div>
 </template>
@@ -44,14 +61,12 @@ export default {
 
   props: {
     value: {
-      type: String,
+      type: [String, Number],
       default: '',
     },
     options: {
-      type: Array,
-      default: function () {
-        return [];
-      }
+      type: [Array, Object],
+      default: () => [],
     },
     title: {
       type: String,

@@ -10,10 +10,10 @@
         </h3>
       </div>
       <div v-if="contactAddresses.length > 0" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
-        <a v-if="!editMode" class="pointer" @click="editMode = true">
+        <a v-if="!editMode" class="pointer" href="" @click.prevent="editMode = true">
           {{ $t('app.edit') }}
         </a>
-        <a v-else class="pointer" @click="toggleEditExcept(-1); editMode = false; addMode = false">
+        <a v-else class="pointer" href="" @click.prevent="toggleEditExcept(-1); editMode = false; addMode = false">
           {{ $t('app.done') }}
         </a>
       </div>
@@ -21,7 +21,7 @@
 
     <!-- EMPTY BOX - DISPLAY ADD BUTTON -->
     <p v-if="contactAddresses.length == 0 && !addMode" class="mb0">
-      <a class="pointer" @click="toggleAdd">
+      <a class="pointer" href="" @click.prevent="toggleAdd">
         {{ $t('app.add') }}
       </a>
     </p>
@@ -128,16 +128,16 @@
               <form-input
                 :id="'longitude' + i"
                 v-model="updateForm.longitude"
-                :title="$t('people.contact_address_form_latitude')"
+                :title="$t('people.contact_address_form_longitude')"
                 input-type="number"
                 :required="false"
               />
             </div>
             <div class="lh-copy mt3">
-              <a class="btn btn-primary" @click.prevent="update(contactAddress)">
+              <a class="btn btn-primary" href="" @click.prevent="update(contactAddress)">
                 {{ $t('app.save') }}
               </a>
-              <a class="btn" @click.prevent="toggleEdit(contactAddress)">
+              <a class="btn" href="" @click.prevent="toggleEdit(contactAddress)">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -147,7 +147,7 @@
 
       <!-- ADD BUTTON ONLY WHEN EDIT MODE IS AVAILABLE  -->
       <li v-if="editMode && !addMode">
-        <a class="pointer" @click="toggleAdd">
+        <a class="pointer" href="" @click.prevent="toggleAdd">
           {{ $t('app.add') }}
         </a>
       </li>
@@ -225,16 +225,16 @@
           <form-input
             id="longitude"
             v-model="createForm.longitude"
-            :title="$t('people.contact_address_form_latitude')"
+            :title="$t('people.contact_address_form_longitude')"
             input-type="number"
             :required="false"
           />
         </div>
         <div class="lh-copy mt3">
-          <a class="btn btn-primary" @click.prevent="store">
+          <a class="btn btn-primary" href="" @click.prevent="store">
             {{ $t('app.add') }}
           </a>
-          <a class="btn" @click.prevent="addMode = false">
+          <a class="btn" href="" @click.prevent="addMode = false">
             {{ $t('app.cancel') }}
           </a>
         </div>

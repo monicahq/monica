@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 niño|:count niños',
     'people_list_last_updated' => 'Última consulta:',
     'people_list_number_reminders' => '1 recordatorio|:count recordatorios',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Mostrar fallecidos (:count)',
     'people_list_hide_dead' => 'Ocultar fallecidos (:count)',
     'people_search' => 'Buscar en tus contactos...',
-    'people_search_no_results' => 'Ningun contacto pertinente encontrado :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Es uso de tu cuenta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Actualiza tu cuenta para desbloquear todo su potencial.',
     'people_list_account_upgrade_cta' => 'Actualizar ahora',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'Añadir una nueva relación',
     'relationship_form_edit' => 'Editar una relación existente',
     'relationship_form_is_with' => 'Esta persona es...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => '¿Con quién es esta relación?',
     'relationship_form_create_contact' => 'Añade a una nueva persona',
     'relationship_form_associate_contact' => 'Un contacto existente',

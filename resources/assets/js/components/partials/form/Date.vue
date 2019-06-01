@@ -1,12 +1,9 @@
-<style scoped>
-</style>
-
 <template>
   <div>
     <datepicker :value="selectedDate"
                 :format="displayValue"
-                :format-typed-date="formatTypedValue"
-                :language="language"
+                :parse-typed-date="formatTypedValue"
+                :language="locale"
                 :monday-first="mondayFirst"
                 :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
                 :typeable="true"
@@ -18,8 +15,7 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker-tmp';
-import * as Languages from 'vuejs-datepicker-tmp/dist/locale';
+import Datepicker from '@hokify/vuejs-datepicker';
 import moment from 'moment';
 
 export default {
@@ -51,7 +47,6 @@ export default {
       value: '',
 
       selectedDate: '',
-      language: Languages.en,
       mondayFirst: false
     };
   },
@@ -73,17 +68,26 @@ export default {
   },
 
   mounted() {
-    this.language = Languages[this.locale];
     this.selectedDate = moment(this.defaultDate, this.exchangeFormat).toDate();
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
     this.update(this.selectedDate);
   },
 
   methods: {
+    /**
+     * Format date for display it.
+     * @param date string in locale format
+     * @return string date in display format
+     */
     displayValue(date) {
       return moment(date).format(this.displayFormat);
     },
 
+    /**
+     * Format date for save it.
+     * @param date string in locale format
+     * @return string date in exchange format
+     */
     exchangeValue(date) {
       return moment(date).format(this.exchangeFormat);
     },
@@ -102,10 +106,11 @@ export default {
 
     /**
      * Format the typed value with the locale specicifcation.
-     * Return in exchange format value.
+     * @param date string in locale format
+     * @return date value
      */
     formatTypedValue(date) {
-      return moment(date, this.displayFormat).format(this.exchangeFormat);
+      return moment(date, this.displayFormat).toDate();
     },
 
   }

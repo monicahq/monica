@@ -78,10 +78,10 @@
         📄 {{ $t('people.document_list_title') }}
 
         <span v-show="reachLimit == 'false'" class="fr relative" style="top: -7px;">
-          <a v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false" class="btn edit-information" @click="displayUploadZone = true">
+          <a v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false" class="btn edit-information" html="" @click.prevent="displayUploadZone = true">
             {{ $t('people.document_list_cta') }}
           </a>
-          <a v-if="displayUploadZone || displayUploadError || displayUploadProgress" class="btn edit-information" @click="displayUploadZone = false; displayUploadError = false; displayUploadProgress = false">
+          <a v-if="displayUploadZone || displayUploadError || displayUploadProgress" class="btn edit-information" href="" @click.prevent="displayUploadZone = false; displayUploadError = false; displayUploadProgress = false">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -219,7 +219,7 @@
               </a>
             </li>
             <li class="tc">
-              <a class="pv2 pointer ph3 inline-flex items-center no-underline w-100 document-action-menu-item delete" @click="deleteDocument(document)">
+              <a class="pv2 pointer ph3 inline-flex items-center no-underline w-100 document-action-menu-item delete" href="" @click.prevent="deleteDocument(document)">
                 {{ $t('app.delete') }}
               </a>
             </li>

@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -69,3 +69,11 @@
 </div>
 
 @endsection
+
+@push('scripts')
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    var stripe = Stripe('{{config('services.stripe.key')}}');
+  </script>
+  <script src="{{ asset(mix('js/stripe.js')) }}"></script>
+@endpush

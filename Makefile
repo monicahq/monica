@@ -72,13 +72,26 @@ docker:
 	$(MAKE) docker_tag
 	$(MAKE) docker_push
 
-docker_build:
+docker_build: docker_build_apache docker_build_fpm
+
+docker_build_apache:
 	docker build \
 		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/apache/Dockerfile \
 		-t $(DOCKER_IMAGE) .
+	docker images
+
+docker_build_fpm:
+	docker build \
+		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
+		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/fpm/Dockerfile \
+		-t $(DOCKER_IMAGE):fpm .
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)
@@ -87,14 +100,23 @@ ifeq ($(DOCKER_SQUASH),)
 endif
 
 docker_squash:
-	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/apache/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/fpm/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):fpm
 	docker images
 
 docker_tag:
-	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(BUILD)
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-apache
+	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker images
 
 docker_push: docker_tag
 	docker push $(DOCKER_IMAGE):$(BUILD)
+	docker push $(DOCKER_IMAGE):$(BUILD)-apache
+	docker push $(DOCKER_IMAGE):apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push $(DOCKER_IMAGE):fpm
 	docker push $(DOCKER_IMAGE):latest
 
 docker_push_bintray: .deploy.json
@@ -102,7 +124,7 @@ docker_push_bintray: .deploy.json
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
-.PHONY: docker docker_build docker_tag docker_push docker_push_bintray
+.PHONY: docker docker_build docker_build_apache docker_build_fpm docker_tag docker_push docker_push_bintray
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs

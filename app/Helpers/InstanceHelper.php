@@ -2,7 +2,9 @@
 
 namespace App\Helpers;
 
+use function Safe\json_decode;
 use App\Models\Account\Account;
+use function Safe\file_get_contents;
 
 class InstanceHelper
 {

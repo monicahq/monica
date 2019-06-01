@@ -4,7 +4,7 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+        <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
 
           <div class="signup-box">
             <div class="dt w-100">
@@ -31,10 +31,10 @@
 
               <div class="form-group actions">
                 <div class="row">
-                  <div class="col-xs-12 col-md-6">
+                  <div class="col-12 col-md-6">
                     <button type="submit" class="btn btn-primary">{{ trans('auth.login') }}</button>
                   </div>
-                  <div class="col-xs-12 col-md-6">
+                  <div class="col-12 col-md-6">
                     <a href="login" class="btn btn-secondary w-100 mb2 pb0-ns tc" style="margin-top: 10px">{{ trans('app.cancel') }}</a>
                   </div>
                 </div>

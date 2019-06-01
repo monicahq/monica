@@ -549,6 +549,7 @@ class ContactTest extends FeatureTestCase
             $contact->getAvatarURL()
         );
 
+
         // gravatar
         $contact = factory(Contact::class)->create([
             'avatar_gravatar_url' => 'gravatarURL',
@@ -641,42 +642,6 @@ class ContactTest extends FeatureTestCase
         ]));
 
         $this->assertEquals(100, $contact->totalOutstandingDebtAmount());
-
-        $contact->debts()->save(new Debt([
-            'in_debt' => 'yes',
-            'amount' => 300,
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-        ]));
-
-        $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
-
-        $contact->debts()->save(new Debt([
-            'in_debt' => 'yes',
-            'amount' => 300,
-            'status' => 'complete',
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-        ]));
-
-        $this->assertEquals(-200, $contact->totalOutstandingDebtAmount());
-    }
-
-    public function test_set_special_date_creates_a_date_and_saves_the_id()
-    {
-        $contact = factory(Contact::class)->create();
-
-        $this->assertNull($contact->setSpecialDate(null, 2010, 10, 10));
-
-        $this->assertNull($contact->birthday_special_date_id);
-
-        $specialDate = $contact->setSpecialDate('birthdate', 2010, 10, 10);
-        $this->assertNotNull($contact->birthday_special_date_id);
-
-        $specialDate = $contact->setSpecialDate('deceased_date', 2010, 10, 10);
-        $this->assertNotNull($contact->deceased_special_date_id);
-
-        $specialDate = $contact->setSpecialDate('first_met', 2010, 10, 10);
         $this->assertNotNull($contact->first_met_special_date_id);
     }
 
@@ -790,167 +755,6 @@ class ContactTest extends FeatureTestCase
                 'last_name' => 'Doe',
                 'middle_name' => 'Jr',
             ]
-        );
-    }
-
-    public function test_it_sets_a_relationship_between_two_contacts()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
-        $relationshipType = factory(RelationshipType::class)->create(['account_id' => $account->id]);
-
-        $contact->setRelationship($partner, $relationshipType->id);
-
-        $this->assertDatabaseHas(
-            'relationships',
-            [
-                'contact_is' => $contact->id,
-                'of_contact' => $partner->id,
-                'relationship_type_id' => $relationshipType->id,
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'relationships',
-            [
-                'contact_is' => $partner->id,
-                'of_contact' => $contact->id,
-                'relationship_type_id' => $relationshipType->id,
-            ]
-        );
-    }
-
-    public function test_it_updates_the_relationship_type_between_two_contacts()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
-        $oldRelationshipType = factory(RelationshipType::class)->create(['account_id' => $account->id]);
-        $newRelationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id,
-            'name' => 'son',
-            'name_reverse_relationship' => 'father',
-        ]);
-        $reverseNewRelationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id,
-            'name' => 'father',
-            'name_reverse_relationship' => 'son',
-        ]);
-
-        $contact->setRelationship($partner, $oldRelationshipType->id);
-        $contact->updateRelationship($partner, $oldRelationshipType->id, $newRelationshipType->id);
-
-        // relationships have been updated
-        $this->assertDatabaseHas(
-            'relationships',
-            [
-                'contact_is' => $contact->id,
-                'of_contact' => $partner->id,
-                'relationship_type_id' => $newRelationshipType->id,
-            ]
-        );
-
-        $reverseRelationshipType = $account->getRelationshipTypeByType($newRelationshipType->name_reverse_relationship);
-
-        $this->assertDatabaseHas(
-            'relationships',
-            [
-                'contact_is' => $partner->id,
-                'of_contact' => $contact->id,
-                'relationship_type_id' => $reverseNewRelationshipType->id,
-            ]
-        );
-
-        // former relationships do not exist anymore
-        $this->assertDatabaseMissing(
-            'relationships',
-            [
-                'contact_is' => $contact->id,
-                'of_contact' => $partner->id,
-                'relationship_type_id' => $oldRelationshipType->id,
-            ]
-        );
-    }
-
-    public function test_it_deletes_relationship_between_two_contacts_and_deletes_the_contact()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $partner = factory(Contact::class)->create([
-            'account_id' => $account->id,
-            'is_partial' => true,
-        ]);
-        $relationshipType = factory(RelationshipType::class)->create(['account_id' => $account->id]);
-
-        $contact->setRelationship($partner, $relationshipType->id);
-
-        $contact->deleteRelationship($partner, $relationshipType->id);
-
-        $this->assertDatabaseMissing(
-            'relationships',
-            [
-                'contact_is' => $contact->id,
-                'of_contact' => $partner->id,
-                'relationship_type_id' => $relationshipType->id,
-            ]
-        );
-    }
-
-    public function test_it_deletes_relationship_between_two_contacts_and_doesnt_delete_the_contact()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $partner = factory(Contact::class)->create([
-            'account_id' => $account->id,
-            'is_partial' => false,
-        ]);
-        $relationshipType = factory(RelationshipType::class)->create(['account_id' => $account->id]);
-
-        $contact->setRelationship($partner, $relationshipType->id);
-
-        $contact->deleteRelationship($partner, $relationshipType->id);
-
-        $this->assertDatabaseMissing(
-            'relationships',
-            [
-                'contact_is' => $contact->id,
-                'of_contact' => $partner->id,
-                'relationship_type_id' => $relationshipType->id,
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'contacts',
-            [
-                'id' => $partner->id,
-            ]
-        );
-    }
-
-    public function test_it_gets_the_relationship_between_two_contacts()
-    {
-        $account = factory(Account::class)->create([]);
-        $contact = factory(Contact::class)->create(['account_id' => $account->id]);
-        $partner = factory(Contact::class)->create(['account_id' => $account->id]);
-        $relationshipType = factory(RelationshipType::class)->create([
-            'account_id' => $account->id,
-            'name' => 'godfather',
-        ]);
-        $relationship = factory(Relationship::class)->create([
-            'account_id' => $account->id,
-            'contact_is' => $contact->id,
-            'of_contact' => $partner->id,
-            'relationship_type_id' => $relationshipType->id,
-        ]);
-
-        $foundRelationship = $contact->getRelationshipNatureWith($partner);
-
-        $this->assertInstanceOf(Relationship::class, $foundRelationship);
-
-        $this->assertEquals(
-            $relationship->id,
-            $foundRelationship->id
         );
     }
 

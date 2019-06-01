@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
@@ -172,13 +173,13 @@ class ContactTest extends FeatureTestCase
 
         $response->assertSuccessful();
         $response->assertJsonFragment([
-            'noResults' => 'No relevant contacts found :(',
+            'noResults' => 'No results found',
         ]);
     }
 
     public function test_user_can_see_contacts()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->get('/people');
 
@@ -189,7 +190,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_be_reminded_about_an_event_once()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $reminder = [
             'title' => $this->faker->sentence('5'),
@@ -215,7 +216,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_a_task_to_a_contact()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $task = [
             'title' => $this->faker->sentence(),
@@ -240,7 +241,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_a_gift_idea_to_a_contact()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $gift = [
             'offered' => 'idea',
@@ -270,7 +271,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_a_gift_idea_with_recipient()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $otherContact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
@@ -291,7 +292,7 @@ class ContactTest extends FeatureTestCase
             $gift
         );
 
-        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
 
         $this->assertDatabaseHas(
             'gifts',
@@ -307,7 +308,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_a_gift_idea_with_bad_recipient()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $gift = [
             'offered' => 'idea',
@@ -324,7 +325,7 @@ class ContactTest extends FeatureTestCase
             $gift
         );
 
-        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
 
         $this->assertDatabaseHas(
             'gifts',
@@ -340,7 +341,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_edit_a_gift_()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $oldGift = factory(Gift::class)->create([
             'contact_id' => $contact->id,
@@ -375,7 +376,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_recipient_to_a_gift()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $oldGift = factory(Gift::class)->create([
             'contact_id' => $contact->id,
@@ -401,7 +402,7 @@ class ContactTest extends FeatureTestCase
             $gift
         );
 
-        $gift = array_except($gift, ['offered', 'has_recipient', 'recipient']);
+        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
 
         $this->assertDatabaseHas(
             'gifts',
@@ -420,7 +421,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_be_in_debt_to_a_contact()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $debt = [
             'in_debt' => 'yes',
@@ -442,7 +443,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_be_owed_debt_by_a_contact()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $debt = [
             'in_debt' => 'no',
@@ -464,7 +465,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_a_contact_can_have_food_preferences()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $food = ['food' => $this->faker->sentence()];
 
@@ -478,7 +479,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_a_contact_can_have_its_last_name_removed()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $data = [
             'firstname' => $contact->first_name,
@@ -498,7 +499,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_cant_add_new_contacts_if_limit_reached()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $contacts = factory(Contact::class, 3)->create([
             'account_id' => $user->account->id,
@@ -514,7 +515,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_user_can_add_new_contacts_when_instance_requires_no_subscription()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $contacts = factory(Contact::class, 3)->create([
             'account_id' => $user->account->id,
@@ -530,7 +531,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_viewing_a_user_increments_the_number_of_views()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $this->assertDatabaseHas('contacts', [
             'number_of_views' => 0,
@@ -554,7 +555,7 @@ class ContactTest extends FeatureTestCase
 
     public function test_vcard_download()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $response = $this->get('/people/'.$contact->hashID().'/vcard');
 

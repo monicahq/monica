@@ -10,6 +10,7 @@ return [
     'journal_entry_type_activity' => 'Activity',
     'journal_entry_rate' => 'You rated your day.',
     'journal_add_comment' => 'Care to add a comment (optional)?',
+    'journal_show_comment' => 'Show comment',
     'entry_delete_success' => 'The journal entry has been successfully deleted.',
     'journal_add_title' => 'Title (optional)',
     'journal_add_date' => 'Date',

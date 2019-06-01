@@ -15,7 +15,8 @@ class MigrateDatabaseCollation extends Command
      *
      * @var string
      */
-    protected $signature = 'migrate:collation {--force : Force the operation to run when in production.}';
+    protected $signature = 'migrate:collation
+                            {--force : Force the operation to run when in production.}';
 
     /**
      * The console command description.

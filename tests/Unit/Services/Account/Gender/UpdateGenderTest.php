@@ -22,6 +22,7 @@ class UpdateGenderTest extends TestCase
             'account_id' => $gender->account->id,
             'gender_id' => $gender->id,
             'name' => 'man',
+            'type' => 'M',
         ];
 
         $gender = app(UpdateGender::class)->execute($request);
@@ -30,6 +31,7 @@ class UpdateGenderTest extends TestCase
             'id' => $gender->id,
             'account_id' => $gender->account_id,
             'name' => 'man',
+            'type' => 'M',
         ]);
 
         $this->assertInstanceOf(
@@ -44,6 +46,7 @@ class UpdateGenderTest extends TestCase
 
         $request = [
             'name' => 'man',
+            'type' => 'X',
         ];
 
         $this->expectException(ValidationException::class);
@@ -59,6 +62,7 @@ class UpdateGenderTest extends TestCase
             'account_id' => $account->id,
             'gender_id' => $gender->id,
             'name' => 'man',
+            'type' => 'M',
         ];
 
         $this->expectException(ModelNotFoundException::class);

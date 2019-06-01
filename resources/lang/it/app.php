@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Sì',
+    'no' => 'No',
     'update' => 'Aggiorna',
     'save' => 'Salva',
     'add' => 'Aggiungi',
@@ -9,7 +11,7 @@ return [
     'delete' => 'Rimuovi',
     'edit' => 'Modifica',
     'upload' => 'Carica',
-    'download' => 'Download',
+    'download' => 'Scarica',
     'save_close' => 'Salva e chiudi',
     'close' => 'Chiudi',
     'copy' => 'Copia',
@@ -84,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'Aggiungi una nota',
     'breadcrumb_edit_note' => 'Modifica nota',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'Come vi siete conosciuti',
     'breadcrumb_settings_personalization' => 'Personalizzazione',
     'breadcrumb_settings_security' => 'Sicurezza',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Uomo',
     'gender_female' => 'Donna',
     'gender_none' => 'Preferisco non specificarlo',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Ops! Qualcosa è andato storto.',
     'error_unauthorized' => 'Non hai il permesso di aggiornare questa risorsa.',
@@ -435,8 +438,8 @@ return [
     // dav
     'dav_contacts' => 'Contacts',
     'dav_contacts_description' => ':name’s contacts',
-    'dav_birthdays' => 'Birthdays',
+    'dav_birthdays' => 'Compleanni',
     'dav_birthdays_description' => ':name’s contact’s birthdays',
-    'dav_tasks' => 'Tasks',
+    'dav_tasks' => 'Compiti',
     'dav_tasks_description' => ':name’s tasks',
 ];

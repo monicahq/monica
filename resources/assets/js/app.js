@@ -1,7 +1,7 @@
 
 /**
  * First we will load all of this project's JavaScript dependencies which
- * include Vue and Vue Resource. This gives a great starting point for
+ * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 
@@ -13,7 +13,7 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const Vue = require('vue');
+window.Vue = require('vue');
 
 // Notifications
 import Notifications from 'vue-notification';
@@ -40,7 +40,6 @@ Vue.use(vSelectMenu);
 
 // Tables
 import VueGoodTablePlugin from 'vue-good-table';
-import 'vue-good-table/dist/vue-good-table.css';
 Vue.use(VueGoodTablePlugin);
 
 import VueClipboard from 'vue-clipboard2';
@@ -67,6 +66,14 @@ Vue.component(
 Vue.component(
   'contact-select',
   require('./components/people/ContactSelect.vue').default
+);
+Vue.component(
+  'contact-search',
+  require('./components/people/ContactSearch.vue').default
+);
+Vue.component(
+  'contact-multi-search',
+  require('./components/people/ContactMultiSearch.vue').default
 );
 
 // Partials
@@ -99,6 +106,10 @@ Vue.component(
 Vue.component(
   'form-textarea',
   require('./components/partials/form/Textarea.vue').default
+);
+Vue.component(
+  'form-toggle',
+  require('./components/partials/form/Toggle.vue').default
 );
 Vue.component(
   'emotion',
@@ -264,6 +275,10 @@ Vue.component(
   require('./components/settings/U2fConnector.vue').default
 );
 Vue.component(
+  'webauthn-connector',
+  require('./components/settings/WebauthnConnector.vue').default
+);
+Vue.component(
   'recovery-codes',
   require('./components/settings/RecoveryCodes.vue').default
 );
@@ -330,7 +345,7 @@ export function loadLanguageAsync (lang, set) {
 }
 
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
-  moment.locale(lang);
+  moment.locale(lang === 'zh' ? 'zh-cn' : lang);
 
   // the Vue appplication
   const app = new Vue({
@@ -347,7 +362,6 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     mounted: function() {
 
       // required modules
-      require('./search');
       require('./contacts');
 
     },

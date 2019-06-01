@@ -1,13 +1,13 @@
 GIT_TAG := $(shell git describe --abbrev=0 --tags)
 VERSION := $(subst v,,$(GIT_TAG))
 
-build: xenial
+build: base
 	rm -rf .vagrant
 	GIT_TAG=$(GIT_TAG) vagrant up monicahq-stable
 
-xenial:
-	vagrant box list | grep -q "ubuntu/xenial64" || vagrant box add ubuntu/xenial64
-	vagrant box update --box ubuntu/xenial64
+base:
+	vagrant box list | grep -q "ubuntu/bionic64" || vagrant box add ubuntu/bionic64
+	vagrant box update --box ubuntu/bionic64
 
 package: build
 	rm -f monicahq-stable.box
@@ -19,4 +19,4 @@ upload:
 	mv monicahq-stable.box monicahq-$(GIT_TAG).box
 	./vagrant-upload.sh
 
-.PHONY: build xenial package
+.PHONY: build base package

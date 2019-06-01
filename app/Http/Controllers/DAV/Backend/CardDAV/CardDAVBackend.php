@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
 use Sabre\DAV;
+use Illuminate\Support\Arr;
 use App\Models\User\SyncToken;
 use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
@@ -330,7 +331,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                     'behaviour' => ImportVCard::BEHAVIOUR_REPLACE,
                 ]);
 
-            if (! array_has($result, 'error')) {
+            if (! Arr::has($result, 'error')) {
                 $contact = Contact::where('account_id', Auth::user()->account_id)
                     ->find($result['contact_id']);
                 $card = $this->prepareCard($contact);

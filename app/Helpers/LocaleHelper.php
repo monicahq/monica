@@ -2,7 +2,11 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Matriphe\ISO639\ISO639;
+use function Safe\preg_match;
+use function Safe\preg_split;
+use Illuminate\Support\Facades\App;
 use libphonenumber\PhoneNumberUtil;
 use Illuminate\Support\Facades\Auth;
 use libphonenumber\PhoneNumberFormat;
@@ -36,7 +40,7 @@ class LocaleHelper
     public static function getLang($locale = null)
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[0];
@@ -71,7 +75,7 @@ class LocaleHelper
     public static function extractCountry($locale = null)
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[1];
@@ -100,7 +104,7 @@ class LocaleHelper
             ]);
         }
 
-        return CollectionHelper::sortByCollator($locales, 'name');
+        return $locales->sortByCollator('name');
     }
 
     /**
@@ -144,8 +148,8 @@ class LocaleHelper
      */
     public static function getLocaleAlpha($locale)
     {
-        if (array_has(static::$locales, $locale)) {
-            return array_get(static::$locales, $locale);
+        if (Arr::has(static::$locales, $locale)) {
+            return Arr::get(static::$locales, $locale);
         }
         $locale = mb_strtolower($locale);
         $languages = (new ISO639)->allLanguages();

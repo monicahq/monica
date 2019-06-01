@@ -3,10 +3,9 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class ContactWithContactFields extends Resource
+class ContactWithContactFields extends Contact
 {
     /**
      * Transform the resource into an array.
@@ -19,11 +18,12 @@ class ContactWithContactFields extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->is_partial ? $this->getRelatedRealContact()->hashID() : $this->hashID(),
+            'hash_id' => $this->getHashId(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
-            'gender' => $this->gender->name,
+            'gender' => is_null($this->gender) ? null : $this->gender->name,
+            'gender_type' => is_null($this->gender) ? null : $this->gender->type,
             'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
             'is_active' => (bool) $this->is_active,

@@ -4,7 +4,7 @@ namespace App\Models\Relationship;
 
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -72,5 +72,23 @@ class Relationship extends Model
     public function relationshipType()
     {
         return $this->belongsTo(RelationshipType::class, 'relationship_type_id');
+    }
+
+    /**
+     * Get the reverser relationship of this one.
+     *
+     * @return self|null
+     */
+    public function reverseRelationship()
+    {
+        $reverseRelationshipType = $this->relationshipType->reverseRelationshipType();
+        if ($reverseRelationshipType) {
+            return self::where([
+                'account_id'=> $this->account->id,
+                'contact_is' => $this->of_contact,
+                'of_contact' => $this->contact_is,
+                'relationship_type_id' => $reverseRelationshipType->id,
+            ])->first();
+        }
     }
 }

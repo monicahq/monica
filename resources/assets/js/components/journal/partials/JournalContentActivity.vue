@@ -53,7 +53,7 @@
           <template v-if="activity.description">
             <div class="flex-none w-5 pointer" @click="toggleDescription()">
               <div class="flex justify-center items-center h-100">
-                <svg v-tooltip.top="'Show comment'" width="16px" height="13px" viewBox="0 0 16 13" version="1.1"
+                <svg v-tooltip.top="$t('journal.journal_show_comment')" width="16px" height="13px" viewBox="0 0 16 13" version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flex-none"
                 >
                   <defs />
@@ -93,7 +93,7 @@
               {{ $t('app.with') }}
             </span>
             <div v-for="attendees in activity.attendees" class="dib pointer ml2" v-bind:key="attendees.id" @click="redirect(attendees)">
-              <img :src="attendees.information.avatar.avatar_url" v-tooltip="attendees.complete_name" class="br3 journal-avatar-small" />
+              <img :src="attendees.information.avatar.avatar_url" v-tooltip.bottom="attendees.complete_name" class="br3 journal-avatar-small" />
             </div>
           </div>
         </div>

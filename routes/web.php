@@ -28,10 +28,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
-    Route::post('/validate2fa', 'Auth\Validate2faController@index');
+    Route::post('/validate2fa', 'Auth\Validate2faController@index')->name('validate2fa');
 });
 
-Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
+Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::name('dashboard.')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
@@ -125,12 +125,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         // Relationships
-        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only(['create', 'store']);
-        Route::name('relationships.')->group(function () {
-            Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('edit');
-            Route::put('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
-            Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('destroy');
-        });
+        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only([
+            'create', 'store', 'edit', 'update', 'destroy',
+        ]);
 
         // Pets
         Route::resource('people/{contact}/pets', 'Contacts\\PetsController')->only([
@@ -222,6 +219,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
             Route::apiResource('settings/personalization/genders', 'Settings\\GendersController');
             Route::delete('/settings/personalization/genders/{gender}/replaceby/{genderToReplaceWith}', 'Settings\\GendersController@destroyAndReplaceGender');
+            Route::get('/settings/personalization/genderTypes', 'Settings\\GendersController@types');
+            Route::put('/settings/personalization/genders/default/{gender}', 'Settings\\GendersController@updateDefault');
 
             Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@index');
             Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');

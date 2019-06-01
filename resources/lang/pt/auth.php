@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'Voltar à página inicial',
     'mfa_auth_otp' => 'Authenticate with your two factor device',
     'mfa_auth_u2f' => 'Authenticate with a U2F device',
+    'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
     '2fa_title' => 'Autenticação de dois fatores',
     '2fa_wrong_validation' => 'Falha na autenticação de dois fatores.',
     '2fa_one_time_password' => 'Two factor authentication code',

@@ -7,6 +7,7 @@ use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
 use App\Models\User\Module;
+use Illuminate\Support\Str;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
@@ -55,6 +56,7 @@ class Account extends Model
         'number_of_invitations_sent',
         'api_key',
         'default_time_reminder_is_sent',
+        'default_gender_id',
     ];
 
     /**
@@ -625,14 +627,13 @@ class Account extends Model
      */
     public function timezone()
     {
-        $timezone = '';
-
-        foreach ($this->users as $user) {
-            $timezone = $user->timezone;
-            break;
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return '';
         }
 
-        return $timezone;
+        return $user->timezone;
     }
 
     /**
@@ -670,9 +671,9 @@ class Account extends Model
      */
     public function populateDefaultGendersTable()
     {
-        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::MALE, 'name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::FEMALE, 'name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::OTHER, 'name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**
@@ -821,6 +822,26 @@ class Account extends Model
     }
 
     /**
+     * Get the default gender for this account.
+     *
+     * @return string
+     */
+    public function defaultGender()
+    {
+        $defaultGenderType = Gender::MALE;
+        if ($this->default_gender_id) {
+            $defaultGender = Gender::where([
+                'account_id' => $this->id,
+            ])->find($this->default_gender_id);
+            if ($defaultGender) {
+                $defaultGenderType = $defaultGender->type;
+            }
+        }
+
+        return $defaultGenderType;
+    }
+
+    /**
      * Get if any account exists on the database.
      *
      * @return bool
@@ -844,7 +865,7 @@ class Account extends Model
     {
         // create new account
         $account = new self;
-        $account->api_key = str_random(30);
+        $account->api_key = Str::random(30);
         $account->created_at = now();
         $account->save();
 

@@ -6,6 +6,7 @@ use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
+use function Safe\json_encode;
 use App\Helpers\InstanceHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;

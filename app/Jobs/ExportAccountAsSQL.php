@@ -19,6 +19,7 @@ class ExportAccountAsSQL
         'api_usage',
         'cache',
         'countries',
+        'crons',
         'currencies',
         'contact_photo',
         'default_activity_types',
@@ -49,6 +50,7 @@ class ExportAccountAsSQL
         'terms',
         'u2f_key',
         'users',
+        'webauthn_keys',
     ];
 
     protected $ignoredColumns = [

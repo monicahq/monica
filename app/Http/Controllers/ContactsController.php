@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
+use App\Helpers\GendersHelper;
+use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
@@ -150,22 +153,37 @@ class ContactsController extends Controller
      */
     public function create()
     {
+        return $this->createForm(false);
+    }
+
+    /**
+     * Show the form in case the contact is missing.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    public function missing()
+    {
+        return $this->createForm(true);
+    }
+
+    /**
+     * Show the Add user form unless the contact has limitations.
+     *
+     * @param  bool $isContactMissing
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    private function createForm($isContactMissing = false)
+    {
         if (auth()->user()->account->hasReachedContactLimit()
-        && auth()->user()->account->hasLimitations()
-        && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
+            && auth()->user()->account->hasLimitations()
+            && ! auth()->user()->account->legacy_free_plan_unlimited_contacts) {
             return redirect()->route('settings.subscriptions.index');
         }
 
-        $data = [
-            'genders' => auth()->user()->account->genders,
-        ];
-
-        return view('people.create', $data);
-    }
-
-    public function missing()
-    {
-        return view('people.missing');
+        return view('people.create')
+            ->withIsContactMissing($isContactMissing)
+            ->withGenders(GendersHelper::getGendersInput())
+            ->withDefaultGender(auth()->user()->account->default_gender_id);
     }
 
     /**
@@ -212,10 +230,15 @@ class ContactsController extends Controller
      */
     public function show(Contact $contact)
     {
-        // make sure we don't display a significant other if it's not set as a
-        // real contact
+        // make sure we don't display a partial contact
         if ($contact->is_partial) {
-            return redirect()->route('people.show', $contact->getRelatedRealContact());
+            $realContact = $contact->getRelatedRealContact();
+            if (is_null($realContact)) {
+                return redirect()->route('people.index')
+                    ->withErrors(trans('people.people_not_found'));
+            }
+
+            return redirect()->route('people.show', $realContact);
         }
         $contact->load(['notes' => function ($query) {
             $query->orderBy('updated_at', 'desc');
@@ -309,7 +332,7 @@ class ContactsController extends Controller
             ->withMonth($month)
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
-            ->withGenders(auth()->user()->account->genders);
+            ->withGenders(GendersHelper::getGendersInput());
     }
 
     /**
@@ -540,7 +563,7 @@ class ContactsController extends Controller
 
         return response($vcard->serialize())
             ->header('Content-type', 'text/x-vcard')
-            ->header('Content-Disposition', 'attachment; filename='.str_slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
+            ->header('Content-Disposition', 'attachment; filename='.Str::slug($contact->name, '-', LocaleHelper::getLang()).'.vcf');
     }
 
     /**

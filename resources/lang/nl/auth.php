@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'Terug naar homepage',
     'mfa_auth_otp' => 'Verifieer met je tweestapsverificatie apparaat',
     'mfa_auth_u2f' => 'Verifieer met een U2F apparaat',
+    'mfa_auth_webauthn' => 'Authenticeer met een beveiligingssleutel (WebAuthn)',
     '2fa_title' => 'Tweestapsverificatie',
     '2fa_wrong_validation' => 'De tweestapsverificatie is mislukt.',
     '2fa_one_time_password' => 'Tweestapsverificatiecode',

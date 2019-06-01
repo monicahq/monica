@@ -7,7 +7,7 @@
 
     <h3 class="with-actions">
       {{ $t('settings.personalization_contact_field_type_title') }}
-      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" @click="add">
+      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" href="" @click.prevent="add">
         {{ $t('settings.personalization_contact_field_type_add') }}
       </a>
     </h3>

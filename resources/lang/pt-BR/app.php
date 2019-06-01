@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'Update',
     'save' => 'Save',
     'add' => 'Add',
@@ -84,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'Add a note',
     'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'How did you meet',
     'breadcrumb_settings_personalization' => 'Personalization',
     'breadcrumb_settings_security' => 'Security',
@@ -94,6 +96,7 @@ return [
     'gender_male' => 'Man',
     'gender_female' => 'Woman',
     'gender_none' => 'Rather not say',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
