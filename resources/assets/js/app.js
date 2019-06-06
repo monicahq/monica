@@ -27,10 +27,6 @@ Vue.use(Tooltip, { delay: 0 });
 import vSelectMenu from 'v-selectmenu';
 Vue.use(vSelectMenu);
 
-// Tables
-import VueGoodTablePlugin from 'vue-good-table';
-Vue.use(VueGoodTablePlugin);
-
 import VueClipboard from 'vue-clipboard2';
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard);
