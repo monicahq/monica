@@ -107,7 +107,7 @@ class GetAvatarsFromInternet extends BaseService
         if ($email) {
             $contact->avatar_gravatar_url = app(GetGravatarURL::class)->execute([
                 'email' => $email,
-                'size' => 200,
+                'size' => config('monica.avatar_size'),
             ]);
         } else {
             // in this case we need to make sure that we reset the gravatar URL

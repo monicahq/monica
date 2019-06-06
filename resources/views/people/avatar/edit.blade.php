@@ -20,67 +20,92 @@
             <p>{{ trans('people.avatar_question') }}</p>
             <div class="mb3 mb0-ns">
                 <!-- Default avatar -->
-                <div class="flex mb1">
-                    <div class="[dirltr ? 'mr2' : 'ml2']">
-                        <label class="pointer">
-                            <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'default' ? 'checked' : '' }} value="default">
-                            {{ trans('people.avatar_default_avatar') }}
-                        </label>
-                    </div>
-                </div>
-                <img class="mb4 pa2 ba b--gray-monica br3 ml4" style="width: 150px" src="{{ $contact->getAvatarDefaultURL() }}" alt="">
+                <form-radio
+                  :name="'avatar'"
+                  :value="'default'"
+                  :model="'{{ $contact->avatar_source }}'"
+                  :dclass="'flex mb1'"
+                  :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
+                >
+                  <template slot="label">
+                    {{ trans('people.avatar_default_avatar') }}
+                  </template>
+                  <div slot="extra">
+                    <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" src="{{ $contact->getAvatarDefaultURL() }}" alt="" />
+                  </div>
+                </form-radio>
 
                 <!-- Adorable avatar -->
-                <div class="flex mb1">
-                    <div class="[dirltr ? 'mr2' : 'ml2']">
-                        <label class="pointer">
-                            <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'adorable' ? 'checked' : '' }} value="adorable">
-                            {{ trans('people.avatar_adorable_avatar') }}
-                        </label>
-                    </div>
-                </div>
-                <img class="mb4 pa2 ba b--gray-monica br3 ml4" style="width: 150px" src="{{ $contact->avatar_adorable_url }}" alt="">
+                <form-radio
+                  :name="'avatar'"
+                  :value="'adorable'"
+                  :model="'{{ $contact->avatar_source }}'"
+                  :dclass="'flex mb1'"
+                  :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
+                >
+                  <template slot="label">
+                    {{ trans('people.avatar_adorable_avatar') }}
+                  </template>
+                  <div slot="extra">
+                    <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" src="{{ $contact->avatar_adorable_url }}" alt="" />
+                  </div>
+                </form-radio>
 
                 <!-- Gravatar -->
                 @if (!is_null($contact->avatar_gravatar_url))
-                <div class="flex mb1">
-                    <div class="[dirltr ? 'mr2' : 'ml2']">
-                        <label class="pointer">
-                            <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'gravatar' ? 'checked' : '' }} value="gravatar">
-                            {{ trans('people.avatar_gravatar') }}
-                        </label>
-                    </div>
-                </div>
-                <img class="mb4 pa2 ba b--gray-monica br3 ml4" style="width: 150px" src="{{ $contact->avatar_gravatar_url }}" alt="">
+                <form-radio
+                  :name="'avatar'"
+                  :value="'gravatar'"
+                  :model="'{{ $contact->avatar_source }}'"
+                  :dclass="'flex mb1'"
+                  :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
+                >
+                  <template slot="label">
+                    {{ trans('people.avatar_gravatar') }}
+                  </template>
+                  <div slot="extra">
+                    <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" src="{{ $contact->avatar_gravatar_url }}" alt="" />
+                  </div>
+                </form-radio>
                 @endif
 
                 <!-- Existing avatar -->
                 @if ($contact->avatar_source == 'photo')
-                <div class="flex mb1">
-                    <div class="[dirltr ? 'mr2' : 'ml2']">
-                        <label class="pointer">
-                            <input type="radio" id="" name="avatar" {{ $contact->avatar_source == 'photo' ? 'checked' : '' }} value="gravatar">
-                            {{ trans('people.avatar_current') }}
-                        </label>
-                    </div>
-                </div>
-                <img class="mb4 pa2 ba b--gray-monica br3 ml4" style="max-width: 200px;" src="{{ $contact->getAvatarURL() }}" alt="">
+                <form-radio
+                  :name="'avatar'"
+                  :value="'photo'"
+                  :model="'{{ $contact->avatar_source }}'"
+                  :dclass="'flex mb1'"
+                  :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
+                >
+                  <template slot="label">
+                    {{ trans('people.avatar_current') }}
+                  </template>
+                  <div slot="extra">
+                    <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px"
+                      src="{{ $contact->getAvatarURL() }}" alt="" />
+                  </div>
+                </form-radio>
                 @endif
 
                 <!-- Upload avatar -->
-                <div class="flex mb3">
-                    <div class="[dirltr ? 'mr2' : 'ml2']">
-                        <label class="pointer">
-                            <input type="radio" id="" name="avatar" value="upload" {{ $contact->account->hasReachedAccountStorageLimit() ? 'disabled' : '' }}>
-                            {{ trans('people.avatar_photo') }}
-                            <span class="{{ $contact->account->hasReachedAccountStorageLimit() ? '' : 'hidden' }}"><a href="/settings/subscriptions">{{ trans('app.upgrade') }}</a></span>
-                        </label>
-                    </div>
-                </div>
-                <div class="ml4">
+                <form-radio
+                  :name="'avatar'"
+                  :value="'upload'"
+                  :model="'{{ $contact->avatar_source }}'"
+                  :disabled="{{ \Safe\json_encode($contact->account->hasReachedAccountStorageLimit()) }}"
+                  :dclass="'flex mb1'"
+                  :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
+                >
+                  <template slot="label">
+                    {{ trans('people.avatar_photo') }}
+                    <span class="{{ $contact->account->hasReachedAccountStorageLimit() ? '' : 'hidden' }}"><a href="{{ route('settings.subscriptions.index') }}">{{ trans('app.upgrade') }}</a></span>
+                  </template>
+                  <div slot="extra">
                     <input type="file" class="form-control-file" name="photo">
                     <small class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => config('monica.max_upload_size')]) }}</small>
-                </div>
+                  </div>
+                </form-radio>
             </div>
         </div>
 

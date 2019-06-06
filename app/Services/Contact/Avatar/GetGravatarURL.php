@@ -70,6 +70,6 @@ class GetGravatarURL extends BaseService
             return $data['size'];
         }
 
-        return 200;
+        return (int) config('monica.avatar_size');
     }
 }

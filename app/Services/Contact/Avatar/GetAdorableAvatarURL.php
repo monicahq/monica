@@ -6,6 +6,8 @@ use App\Services\BaseService;
 
 class GetAdorableAvatarURL extends BaseService
 {
+    private const ADORABLE_API = 'https://api.adorable.io/avatars/';
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -32,7 +34,7 @@ class GetAdorableAvatarURL extends BaseService
 
         $size = $this->size($data);
 
-        return 'https://api.adorable.io/avatars/'.$size.'/'.$data['uuid'].'.png';
+        return self::ADORABLE_API.$size.'/'.$data['uuid'].'.png';
     }
 
     /**
@@ -48,6 +50,6 @@ class GetAdorableAvatarURL extends BaseService
             return $data['size'];
         }
 
-        return 200;
+        return (int) config('monica.avatar_size');
     }
 }

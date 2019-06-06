@@ -21,7 +21,7 @@ class UpdateAvatar extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
+            'contact_id' => 'required|integer|exists:contacts,id',
             'source' => [
                 'required',
                 Rule::in([
