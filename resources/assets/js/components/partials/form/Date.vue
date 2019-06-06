@@ -1,14 +1,18 @@
 <template>
   <div>
-    <datepicker :value="selectedDate"
-                :format="displayValue"
-                :parse-typed-date="formatTypedValue"
-                :language="locale"
-                :monday-first="mondayFirst"
-                :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-                :typeable="true"
-                @input="$emit('input', exchangeValue($event))"
-                @selected="update"
+    <datepicker
+      ref="select"
+      :refName="'select'"
+      :value="selectedDate"
+      :format="displayValue"
+      :parse-typed-date="formatTypedValue"
+      :language="locale"
+      :monday-first="mondayFirst"
+      :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+      :typeable="true"
+      :showCalendarOnFocus="showCalendarOnFocus"
+      @input="$emit('input', exchangeValue($event))"
+      @selected="update"
     />
     <input :name="id" type="hidden" :value="value" />
   </div>
@@ -37,6 +41,10 @@ export default {
       type: String,
       default: '',
     },
+    showCalendarOnFocus: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   data() {
@@ -112,6 +120,10 @@ export default {
     formatTypedValue(date) {
       return moment(date, this.displayFormat).toDate();
     },
+
+    focus() {
+      this.$refs.select.$children[0].$refs.select.focus();
+    }
 
   }
 };

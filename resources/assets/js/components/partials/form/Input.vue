@@ -78,7 +78,13 @@ export default {
     inputStyle() {
       return this.width >= 0 ? 'width:' + this.width + 'px' : '';
     }
-  }
+  },
+
+  methods: {
+    focus() {
+      this.$refs.input.focus();
+    },
+  },
 
 };
 </script>

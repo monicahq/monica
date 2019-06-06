@@ -21,18 +21,7 @@ Vue.use(Notifications);
 
 // Tooltip
 import Tooltip from 'vue-directive-tooltip';
-import 'vue-directive-tooltip/css/index.css';
-Vue.use(Tooltip, {
-  delay: 0,
-});
-
-// Toggle Buttons
-import ToggleButton from 'vue-js-toggle-button';
-Vue.use(ToggleButton);
-
-// Radio buttons
-import PrettyCheckbox from 'pretty-checkbox-vue';
-Vue.use(PrettyCheckbox);
+Vue.use(Tooltip, { delay: 0 });
 
 // Select used on list items to display edit and delete buttons
 import vSelectMenu from 'v-selectmenu';

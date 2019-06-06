@@ -6,87 +6,103 @@
   <div>
     <div class="pa4-ns ph3 pv2 bb b--gray-monica">
       <div class="mb3 mb0-ns">
-        <div class="flex mb3">
-          <div :class="[dirltr ? 'mr2' : 'ml2']">
-            <input id="" v-model="selectedOption" type="radio" name="birthdate" selected
-                   value="unknown"
-            />
-          </div>
-          <div class="pointer" @click="selectedOption = 'unknown'">
+        <form-radio
+          :name="'birthdate'"
+          :value="'unknown'"
+          v-model="selectedOption"
+          :dclass="'flex mb3'"
+          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
+        >
+          <template slot="label">
             {{ $t('people.information_edit_unknown') }}
-          </div>
-        </div>
-        <div class="flex mb3">
-          <div :class="[dirltr ? 'mr2' : 'ml2']">
-            <input id="" v-model="selectedOption" type="radio" name="birthdate" value="approximate" />
-          </div>
-          <div class="pointer" @click="selectedOption = 'approximate'">
+          </template>
+        </form-radio>
+        <form-radio
+          :name="'birthdate'"
+          :value="'approximate'"
+          v-model="selectedOption"
+          @change="_focusAge()"
+          :dclass="'flex mb3'"
+          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
+        >
+          <template slot="label">
             {{ $t('people.information_edit_probably') }}
-            <div v-if="selectedOption == 'approximate'">
-              <form-input
-                :id="'age'"
-                :value="age"
-                :input-type="'number'"
-                :width="50"
-                :required="true"
-              >
-                >
-              </form-input>
-            </div>
+          </template>
+          <div slot="extra" v-if="selectedOption == 'approximate'">
+            <form-input
+              ref="age"
+              :id="'age'"
+              :value="age"
+              :input-type="'number'"
+              :width="50"
+              :required="true"
+            >
+            </form-input>
           </div>
-        </div>
-        <div class="flex mb3">
-          <div :class="[dirltr ? 'mr2' : 'ml2']">
-            <input id="" v-model="selectedOption" type="radio" name="birthdate" value="almost" />
-          </div>
-          <div class="pointer" @click="selectedOption = 'almost'">
+        </form-radio>
+        <form-radio
+          :name="'birthdate'"
+          :value="'almost'"
+          v-model="selectedOption"
+          @change="_focusMonth()"
+          :dclass="'flex mb3'"
+          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
+        >
+          <template slot="label">
             {{ $t('people.information_edit_not_year') }}
-            <div v-if="selectedOption == 'almost'" class="mt3">
-              <div class="flex">
-                <form-select
-                  :id="'month'"
-                  v-model="selectedMonth"
-                  :options="months"
-                  :title="''"
-                  :class="[ dirltr ? 'mr3' : '' ]"
-                />
-                <form-select
-                  :id="'day'"
-                  v-model="selectedDay"
-                  :options="days"
-                  :title="''"
-                  :class="[ dirltr ? '' : 'mr3' ]"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex">
-          <div :class="[dirltr ? 'mr2' : 'ml2']">
-            <input id="" v-model="selectedOption" type="radio" name="birthdate" value="exact" />
-          </div>
-          <div class="pointer" @click="selectedOption = 'exact'">
-            {{ $t('people.information_edit_exact') }}
-            <div v-if="selectedOption == 'exact'" class="mt3">
-              <form-date
-                :id="'birthdayDate'"
-                :default-date="defaultDate"
-                :locale="locale"
-                :class="[ dirltr ? '' : 'fr' ]"
+          </template>
+          <div slot="extra" v-if="selectedOption == 'almost'" class="mt2">
+            <div class="flex">
+              <form-select
+                ref="month"
+                :id="'month'"
+                v-model="selectedMonth"
+                :options="months"
+                :title="''"
+                :class="[ dirltr ? 'mr3' : '' ]"
+              />
+              <form-select
+                :id="'day'"
+                v-model="selectedDay"
+                :options="days"
+                :title="''"
+                :class="[ dirltr ? '' : 'mr3' ]"
               />
             </div>
           </div>
-        </div>
+        </form-radio>
+        <form-radio
+          :name="'birthdate'"
+          :value="'exact'"
+          v-model="selectedOption"
+          @change="_focusBirthday()"
+          :dclass="'flex mb3'"
+          :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
+        >
+          <template slot="label">
+            {{ $t('people.information_edit_exact') }}
+          </template>
+          <div slot="extra" v-if="selectedOption == 'exact'" class="mt2">
+            <form-date
+              ref="birthday"
+              :id="'birthdayDate'"
+              :default-date="defaultDate"
+              :showCalendarOnFocus="true"
+              :locale="locale"
+              :class="[ dirltr ? 'fl' : 'fr' ]"
+            />
+          </div>
+        </form-radio>
       </div>
     </div>
 
     <div v-if="selectedOption == 'exact' || selectedOption == 'almost'" class="pa4-ns ph3 pv2 bb b--gray-monica">
       <div class="mb2 mb0-ns">
         <div class="form-check">
-          <label :class="[dirltr ? 'mr2 form-check-label pointer' : 'ml2 form-check-label pointer']">
-            <input id="addReminder" class="form-check-input" name="addReminder" type="checkbox" value="addReminder"
+          <input id="addReminder" class="form-check-input" name="addReminder" type="checkbox" value="addReminder"
                    :checked="hasBirthdayReminder"
-            />
+          />
+          <label for="addReminder" class="form-check-label pointer" :class="[ dirltr ? 'mr2' : 'ml2' ]">
             {{ $t('people.people_add_reminder_for_birthday') }}
           </label>
         </div>
@@ -132,8 +148,8 @@ export default {
       default: '',
     },
     reminder: {
-      type: Number,
-      default: 0,
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -143,7 +159,7 @@ export default {
       selectedOption: 'unknown',
       selectedMonth: 0,
       selectedDay: 0,
-      hasBirthdayReminder: 0
+      hasBirthdayReminder: false
     };
   },
 
@@ -162,5 +178,23 @@ export default {
     this.selectedDay = this.day;
     this.hasBirthdayReminder = this.reminder;
   },
+
+  methods: {
+    _focusAge() {
+      setTimeout(() => {
+        this.$refs.age.focus();
+      }, 100);
+    },
+    _focusMonth() {
+      setTimeout(() => {
+        this.$refs.month.focus();
+      }, 100);
+    },
+    _focusBirthday() {
+      setTimeout(() => {
+        this.$refs.birthday.focus();
+      }, 100);
+    },
+  }
 };
 </script>

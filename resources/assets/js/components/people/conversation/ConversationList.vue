@@ -33,7 +33,13 @@
 </template>
 
 <script>
+import VueGoodTablePlugin from 'vue-good-table';
+
 export default {
+
+  components: {
+    VueGoodTablePlugin
+  },
 
   props: {
     hash: {

@@ -21,6 +21,7 @@ select:focus {
       {{ title }}
     </label>
     <select
+      ref="select"
       :id="realid"
       :value="selectedOption"
       :name="id"
@@ -125,6 +126,10 @@ export default {
         return option.id != me.excludedId;
       });
     },
+
+    focus() {
+      this.$refs.select.focus();
+    }
   },
 };
 </script>
