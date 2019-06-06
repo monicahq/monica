@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
 
+use Carbon\Carbon;
+
 class JournalController extends Controller
 {
     /**
@@ -27,37 +29,63 @@ class JournalController extends Controller
      * Get all the journal entries.
      * @return array
      */
-    public function list()
+    public function list(Request $request)
     {
         $entries = collect([]);
         $journalEntries = auth()->user()->account->journalEntries()->paginate(30);
 
         // this is needed to determine if we need to display the calendar
         // (month + year) next to the journal entry
-        $previousEntryMonth = 0;
-        $previousEntryYear = 0;
-        $showCalendar = true;
-
-        foreach ($journalEntries as $journalEntry) {
-            if ($previousEntryMonth == $journalEntry->date->month && $previousEntryYear == $journalEntry->date->year) {
-                $showCalendar = false;
-            }
-
-            $data = [
-                'id' => $journalEntry->id,
-                'date' => $journalEntry->date,
-                'journalable_id' => $journalEntry->journalable_id,
-                'journalable_type' => $journalEntry->journalable_type,
-                'object' => $journalEntry->getObjectData(),
-                'show_calendar' => $showCalendar,
-            ];
-            $entries->push($data);
-
-            $previousEntryMonth = $journalEntry->date->month;
-            $previousEntryYear = $journalEntry->date->year;
+        if($request->has('date') && $request->date != "undefined"){
+            $previousEntryMonth = 0;
+            $previousEntryYear = 0;
             $showCalendar = true;
-        }
+            $date = $request->date;
+            $date = Carbon::parse($date);
+            foreach($journalEntries as $journalEntry){
+                if($journalEntry->date == $date){
+                    $data = [
+                        'id' => $journalEntry->id,
+                        'date' => $journalEntry->date ,
+                        'journalable_id' => $journalEntry->journalable_id,
+                        'journalable_type' => $journalEntry->journalable_type,
+                        'object' => $journalEntry->getObjectData(),
+                        'show_calendar' => $showCalendar,
+                    ];
+                    $entries->push($data);
+    
+                    $previousEntryMonth = $journalEntry->date->month;
+                    $previousEntryYear = $journalEntry->date->year;
+                    $showCalendar = true;
+                }
+            }
+        }else if($request->date == null){
+            $previousEntryMonth = 0;
+            $previousEntryYear = 0;
+            $showCalendar = true;
 
+            foreach ($journalEntries as $journalEntry) {
+                if ($previousEntryMonth == $journalEntry->date->month && $previousEntryYear == $journalEntry->date->year) {
+                    $showCalendar = false;
+                }
+
+                $data = [
+                    'id' => $journalEntry->id,
+                    'date' => $journalEntry->date ,
+                    'journalable_id' => $journalEntry->journalable_id,
+                    'journalable_type' => $journalEntry->journalable_type,
+                    'object' => $journalEntry->getObjectData(),
+                    'show_calendar' => $showCalendar,
+                ];
+                $entries->push($data);
+
+                $previousEntryMonth = $journalEntry->date->month;
+                $previousEntryYear = $journalEntry->date->year;
+                $showCalendar = true;
+            }
+        }
+        
+       
         // I need the pagination items when I send back the array.
         // There is probably a simpler way to achieve this.
         return [

@@ -12,6 +12,8 @@
       <!-- How was your day -->
       <journal-rate-day @hasRated="hasRated" />
 
+      <datepicker placeholder="Select Date"  @selected="getEntriesDate" v-model="date" ></datepicker>               
+
       <!-- Logs -->
       <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" class="cf" :cy-name="'entry-body-' + journalEntry.id">
         <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
@@ -31,6 +33,8 @@
           </span>
         </p>
       </div>
+
+      
 
       <div v-if="journalEntries.total === 0" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc" cy-name="journal-blank-state">
         <div class="tc mb4">
@@ -54,6 +58,9 @@
 </template>
 
 <script>
+import Datepicker from 'vuejs-datepicker';
+import moment from 'moment';
+ 
 export default {
   data() {
     return {
@@ -67,7 +74,13 @@ export default {
       showHappySmileyColor: false,
       loadingMore: false,
 
+      date: null,
+
     };
+  },
+
+  components: {
+    Datepicker
   },
 
   computed: {
@@ -92,6 +105,18 @@ export default {
   methods: {
     prepareComponent() {
       this.getEntries();
+    },
+
+    getEntriesDate(date) {
+      axios.get('journal/entries?date=' + moment(date).format('YYYY-MM-DD'))
+        .then(response => {
+          this.journalEntries = response.data;
+          this.journalEntries.current_page = response.data.current_page;
+          this.journalEntries.next_page_url = response.data.next_page_url;
+          this.journalEntries.per_page = response.data.per_page;
+          this.journalEntries.prev_page_url = response.data.prev_page_url;
+          this.journalEntries.total = response.data.total;
+        });
     },
 
     getEntries() {
