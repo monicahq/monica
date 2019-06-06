@@ -24,9 +24,10 @@ import Tooltip from 'vue-directive-tooltip';
 Vue.use(Tooltip, { delay: 0 });
 
 // Select used on list items to display edit and delete buttons
-import vSelectMenu from 'v-selectmenu';
-Vue.use(vSelectMenu);
+//import vSelectMenu from 'v-selectmenu';
+//Vue.use(vSelectMenu);
 
+// Copy text from clipboard
 import VueClipboard from 'vue-clipboard2';
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard);
