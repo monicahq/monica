@@ -6,6 +6,9 @@
 Homestead.yaml
 Homestead.json
 .env
+.env.dev
+/public/css
+/public/js
 cypress.env.json
 /storage/oauth-private.key
 /storage/oauth-public.key
