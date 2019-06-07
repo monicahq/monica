@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbab02d846536db21f59b8d4657224ee",
+    "content-hash": "465297bf351d915b0a1dbe7681da878c",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -10357,16 +10357,16 @@
         },
         {
             "name": "enm1989/chromedriver",
-            "version": "2.46",
+            "version": "75.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "08927b4412eb1bb668c42797139c8a82ffde2087"
+                "reference": "1905b016df27cbc3eb460aa7c150881319920e90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/08927b4412eb1bb668c42797139c8a82ffde2087",
-                "reference": "08927b4412eb1bb668c42797139c8a82ffde2087",
+                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/1905b016df27cbc3eb460aa7c150881319920e90",
+                "reference": "1905b016df27cbc3eb460aa7c150881319920e90",
                 "shasum": ""
             },
             "bin": [
@@ -10391,7 +10391,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2019-03-17T19:47:18+00:00"
+            "time": "2019-06-07T08:02:35+00:00"
         },
         {
             "name": "facebook/webdriver",
