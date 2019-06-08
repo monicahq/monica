@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
 
-
-
 class JournalController extends Controller
 {
     /**
@@ -37,7 +35,8 @@ class JournalController extends Controller
 
         // this is needed to determine if we need to display the calendar
         // (month + year) next to the journal entry
-        if($request->has('date') && $request->date != 'undefined') {
+
+        if ($request->has('date') && $request->date != 'undefined') {
             $previousEntryMonth = 0;
             $previousEntryYear = 0;
             $showCalendar = true;
@@ -45,8 +44,8 @@ class JournalController extends Controller
             $date = Carbon::parse($date);
 
             
-            foreach($journalEntries as $journalEntry) {
-                if($journalEntry->date == $date){
+            foreach ($journalEntries as $journalEntry) {
+                if ($journalEntry->date == $date) {
                     $data = [
                         'id' => $journalEntry->id,
                         'date' => $journalEntry->date,
@@ -61,7 +60,7 @@ class JournalController extends Controller
                     $showCalendar = true;
                 }
             }
-        } elseif($request->date == null) {
+        } elseif ($request->date == null) {
             $previousEntryMonth = 0;
             $previousEntryYear = 0;
             $showCalendar = true;
@@ -85,7 +84,6 @@ class JournalController extends Controller
                 $previousEntryYear = $journalEntry->date->year;
                 $showCalendar = true;
             }
-            
         }    
         // I need the pagination items when I send back the array.
         // There is probably a simpler way to achieve this.
