@@ -83,7 +83,8 @@ class JournalController extends Controller
                 $previousEntryYear = $journalEntry->date->year;
                 $showCalendar = true;
             }
-
+        
+        
         }    
         // I need the pagination items when I send back the array.
         // There is probably a simpler way to achieve this.
