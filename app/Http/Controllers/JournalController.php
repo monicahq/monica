@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\Journal\DaysRequest;
 
-use Carbon\Carbon;
+
 
 class JournalController extends Controller
 {
@@ -36,17 +37,19 @@ class JournalController extends Controller
 
         // this is needed to determine if we need to display the calendar
         // (month + year) next to the journal entry
-        if($request->has('date') && $request->date != "undefined"){
+        if($request->has('date') && $request->date != 'undefined'){
             $previousEntryMonth = 0;
             $previousEntryYear = 0;
             $showCalendar = true;
             $date = $request->date;
             $date = Carbon::parse($date);
+
+            
             foreach($journalEntries as $journalEntry){
                 if($journalEntry->date == $date){
                     $data = [
                         'id' => $journalEntry->id,
-                        'date' => $journalEntry->date ,
+                        'date' => $journalEntry->date,
                         'journalable_id' => $journalEntry->journalable_id,
                         'journalable_type' => $journalEntry->journalable_type,
                         'object' => $journalEntry->getObjectData(),
@@ -59,7 +62,7 @@ class JournalController extends Controller
                     $showCalendar = true;
                 }
             }
-        }else if($request->date == null){
+        }elseif($request->date == null){
             $previousEntryMonth = 0;
             $previousEntryYear = 0;
             $showCalendar = true;
@@ -71,7 +74,7 @@ class JournalController extends Controller
 
                 $data = [
                     'id' => $journalEntry->id,
-                    'date' => $journalEntry->date ,
+                    'date' => $journalEntry->date,
                     'journalable_id' => $journalEntry->journalable_id,
                     'journalable_type' => $journalEntry->journalable_type,
                     'object' => $journalEntry->getObjectData(),
@@ -83,9 +86,7 @@ class JournalController extends Controller
                 $previousEntryYear = $journalEntry->date->year;
                 $showCalendar = true;
             }
-        }
-        
-       
+        }    
         // I need the pagination items when I send back the array.
         // There is probably a simpler way to achieve this.
         return [
