@@ -11,7 +11,6 @@ variables:
 
 stages:
 - stage: build_and_test
-  displayName: 'Build and tests'
   jobs:
   - template: .azure/build-job.yml
 
