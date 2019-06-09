@@ -6,9 +6,6 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-latest'
-
 variables:
   phpVersion: 7.2
 
@@ -20,6 +17,8 @@ stages:
 
   - job: tests
     dependsOn: build
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
     - template: .azure/remove-xdebug-step.yml
@@ -29,6 +28,8 @@ stages:
     
   - job: psalm
     dependsOn: build
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
     - bash: vendor/bin/psalm --show-info=false
@@ -36,6 +37,8 @@ stages:
 
   - job: phpstan
     dependsOn: build
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
     - bash: php artisan code:analyse
@@ -43,6 +46,8 @@ stages:
 
   - job: tests-browser
     dependsOn: build
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
     - template: .azure/prepare-db-step.yml
@@ -64,6 +69,8 @@ stages:
 
   - job: reporting
     dependsOn: [tests, tests-browser]
+    pool:
+      vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
     - bash: |
