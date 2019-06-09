@@ -11,6 +11,7 @@ variables:
 
 stages:
 - stage: build_and_test
+  displayName: 'Build and tests'
   jobs:
   - template: .azure/build-job.yml
 
@@ -43,7 +44,7 @@ stages:
     - bash: php artisan code:analyse
       displayName: 'Run phpstan'
 
-  - job: tests-browser
+  - job: tests_browser
     dependsOn: build
     pool:
       vmImage: 'ubuntu-latest'
@@ -67,7 +68,7 @@ stages:
       displayName: 'Fix coverage'
 
   - job: reporting
-    dependsOn: [tests, tests-browser]
+    dependsOn: [tests, tests_browser]
     pool:
       vmImage: 'ubuntu-latest'
     steps:
