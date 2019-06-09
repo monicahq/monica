@@ -110,7 +110,7 @@
         <form-specialdate
           :months="{{ $months }}"
           :days="{{ $days }}"
-          :default-date="'{{ $birthdate }}'"
+          :birthdate="'{{ $birthdate }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">

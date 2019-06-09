@@ -99,8 +99,8 @@
           :days="{{ $days }}"
           :month="{{ $month }}"
           :day="{{ $day }}"
-          :age="'{{ $age }}'"
-          :default-date="'{{ $birthdate }}'"
+          :age="{{ $age ?: 0 }}"
+          :birthdate="'{{ $birthdate }}'"
           :reminder="{{ \Safe\json_encode($hasBirthdayReminder) }}"
           :value="'{{ $birthdayState }}'"
         ></form-specialdate>

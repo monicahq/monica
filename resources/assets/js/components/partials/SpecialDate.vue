@@ -9,7 +9,7 @@
         <form-radio
           :name="'birthdate'"
           :value="'unknown'"
-          v-model="selectedOption"
+          v-model.lazy="selectedOption"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
         >
@@ -20,8 +20,8 @@
         <form-radio
           :name="'birthdate'"
           :value="'approximate'"
-          v-model="selectedOption"
-          @change="_focusAge()"
+          v-model.lazy="selectedOption"
+          @change="event => { _focusAge() }"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
         >
@@ -43,8 +43,8 @@
         <form-radio
           :name="'birthdate'"
           :value="'almost'"
-          v-model="selectedOption"
-          @change="_focusMonth()"
+          v-model.lazy="selectedOption"
+          @change="event => { _focusMonth() }"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
         >
@@ -74,8 +74,8 @@
         <form-radio
           :name="'birthdate'"
           :value="'exact'"
-          v-model="selectedOption"
-          @change="_focusBirthday()"
+          v-model.lazy="selectedOption"
+          @change="event => { _focusBirthday() }"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
         >
@@ -86,7 +86,7 @@
             <form-date
               ref="birthday"
               :id="'birthdayDate'"
-              :default-date="defaultDate"
+              v-model="birthdate"
               :showCalendarOnFocus="true"
               :locale="locale"
               :class="[ dirltr ? 'fl' : 'fr' ]"
@@ -98,14 +98,14 @@
 
     <div v-if="selectedOption == 'exact' || selectedOption == 'almost'" class="pa4-ns ph3 pv2 bb b--gray-monica">
       <div class="mb2 mb0-ns">
-        <div class="form-check">
-          <input id="addReminder" class="form-check-input" name="addReminder" type="checkbox" value="addReminder"
-                   :checked="hasBirthdayReminder"
-          />
-          <label for="addReminder" class="form-check-label pointer" :class="[ dirltr ? 'mr2' : 'ml2' ]">
+          <form-checkbox
+            :name="'addReminder'"
+            :value="'addReminder'"
+            v-model.lazy="hasBirthdayReminder"
+            :dclass="[ dirltr ? 'mr2' : 'ml2' ]"
+          >
             {{ $t('people.people_add_reminder_for_birthday') }}
-          </label>
-        </div>
+          </form-checkbox>
       </div>
     </div>
   </div>
@@ -139,13 +139,13 @@ export default {
       type: Number,
       default: 0,
     },
-    defaultDate: {
+    birthdate: {
       type: String,
       default: '',
     },
     age: {
-      type: String,
-      default: '',
+      type: Number,
+      default: 0,
     },
     reminder: {
       type: Boolean,
@@ -156,7 +156,7 @@ export default {
   data() {
     return {
       selectedDate: null,
-      selectedOption: 'unknown',
+      selectedOption: null,
       selectedMonth: 0,
       selectedDay: 0,
       hasBirthdayReminder: false
@@ -173,7 +173,7 @@ export default {
   },
 
   mounted() {
-    this.selectedOption = this.value;
+    this.selectedOption = this.value != '' ? this.value : 'unknown';
     this.selectedMonth = this.month;
     this.selectedDay = this.day;
     this.hasBirthdayReminder = this.reminder;

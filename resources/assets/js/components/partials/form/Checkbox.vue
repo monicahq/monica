@@ -4,7 +4,7 @@
 <template>
   <div :class="dclass">
     <div>
-      <p-radio
+      <p-check
         ref="input"
         :name="name"
         :class="inputClass"
@@ -15,10 +15,10 @@
         @change="event => { $emit('change', event) }"
       >
         <slot></slot>
-      </p-radio>
+      </p-check>
     </div>
     <div class="pointer" @click="select()">
-      <label :for="formid">
+      <label>
         <slot name="label"></slot>
       </label>
       <slot name="extra"></slot>
@@ -27,12 +27,12 @@
 </template>
 
 <script>
-import PRadio from 'pretty-checkbox-vue/radio';
+import PCheck from 'pretty-checkbox-vue/check';
 
 export default {
 
   components: {
-    PRadio
+    PCheck
   },
 
   model: {
@@ -73,7 +73,7 @@ export default {
 
   computed: {
     inputClass() {
-      return [this.iclass, 'p-default p-round p-thick'];
+      return [this.iclass, 'p-default p-curve p-thick'];
     },
     inputColor() {
       return this.color != '' ? this.color : 'primary-o';
@@ -81,12 +81,9 @@ export default {
   },
 
   methods: {
-    formid() {
-      return this.$refs.input.id;
-    },
     select() {
-      this.$refs.input.$refs.input.checked = true;
-      this.$emit('change', this.value);
+      this.$refs.input.$refs.input.checked = ! this.$refs.input.$refs.input.checked;
+      this.$emit('change', this.$refs.input.$refs.input.checked);
     }
   }
 };

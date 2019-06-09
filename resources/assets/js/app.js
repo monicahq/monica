@@ -78,12 +78,12 @@ Vue.component(
   require('./components/partials/form/Select.vue').default
 );
 Vue.component(
-  'form-specialdate',
-  require('./components/partials/form/SpecialDate.vue').default
-);
-Vue.component(
   'form-date',
   require('./components/partials/form/Date.vue').default
+);
+Vue.component(
+  'form-checkbox',
+  require('./components/partials/form/Checkbox.vue').default
 );
 Vue.component(
   'form-radio',
@@ -96,6 +96,14 @@ Vue.component(
 Vue.component(
   'form-toggle',
   require('./components/partials/form/Toggle.vue').default
+);
+Vue.component(
+  'form-specialdate',
+  require('./components/partials/SpecialDate.vue').default
+);
+Vue.component(
+  'form-specialdeceased',
+  require('./components/partials/SpecialDeceased.vue').default
 );
 Vue.component(
   'emotion',
