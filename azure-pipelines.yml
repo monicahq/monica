@@ -12,15 +12,83 @@ pool:
 variables:
   phpVersion: 7.2
 
-steps:
-- script: |
-    sudo update-alternatives --set php /usr/bin/php$(phpVersion)
-    sudo update-alternatives --set phar /usr/bin/phar$(phpVersion)
-    sudo update-alternatives --set phpdbg /usr/bin/phpdbg$(phpVersion)
-    sudo update-alternatives --set php-cgi /usr/bin/php-cgi$(phpVersion)
-    sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
-    php -version
-  displayName: 'Use PHP version $(phpVersion)'
+stages:
+- stage: build_and_test
+  displayName: Build and tests
+  jobs:
+  - template: .azure/build-job.yml
 
-- script: composer install --no-interaction --prefer-dist
-  displayName: 'composer install'
+  - job: tests
+    dependsOn: build
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/remove-xdebug-step.yml
+    - template: .azure/prepare-db-step.yml
+    - template: .azure/seed-test-db-step.yml
+    - template: .azure/unit-tests-step.yml
+    
+  - job: psalm
+    dependsOn: build
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - bash: vendor/bin/psalm --show-info=false
+      displayName: 'Run psalm'
+
+  - job: phpstan
+    dependsOn: build
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - bash: php artisan code:analyse
+      displayName: 'Run phpstan'
+
+  - job: tests-browser
+    dependsOn: build
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/prepare-db-step.yml
+    - template: .azure/seed-test-db-step.yml
+    - bash: vendor/bin/chromedriver &
+      displayName: 'Run selenium chromedriver'
+    - bash: |
+        php -S localhost:8000 -t public scripts/tests/server-cc.php &
+        php -S localhost:8001 -t public scripts/tests/server-cc.php &
+      displayName: 'Run http server'
+    - bash: dockerize -wait tcp://localhost:8000 -timeout 60s
+      displayName: 'Wait for http server'
+    - bash: php artisan dusk --log-junit results/junit/dusk/results3.xml
+      displayName: 'Run browser tests'
+    - bash: |
+        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
+        rm -rf results/coverage
+      displayName: 'Fix coverage'
+
+  - job: reporting
+    dependsOn: [tests, tests-browser]
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - bash: |
+        yarn global add junit-merge
+        $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+      displayName: 'Merge junit files'
+    - bash: |
+        export SONAR_RESULT=./results/results.xml
+        export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g' | sed ':a;N;$!ba;s/\n//g')
+        scripts/tests/runsonar.sh
+      displayName: 'Run sonar scanner'
+
+#- stage: deploy
+#  displayName: Deploy
+#  dependsOn: build_and_test
+#  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+#  jobs:
+#  - template: .azure/build-job.yml
+#  - job: deployAssets
+#    dependsOn: buildDeploy
+#  - job: deployDist
+#    dependsOn: buildDeploy
+#  - job: deploy-docker-master
+#    dependsOn: buildDeploy
+#  - job: deploy-docker-staging
+#    dependsOn: buildDeploy
+#  - job: deploy-docker
+#    dependsOn: buildDeploy
