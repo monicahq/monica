@@ -19,6 +19,8 @@ stages:
     dependsOn: build
     pool:
       vmImage: 'ubuntu-latest'
+    strategy:
+      parallel: 2
     steps:
     - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
