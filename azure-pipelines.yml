@@ -8,6 +8,7 @@ trigger:
 
 variables:
   phpVersion: 7.2
+  artifactComposer: artifactComposer
 
 stages:
 - stage: build_and_test
@@ -20,6 +21,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
     - template: .azure/remove-xdebug-step.yml
     - template: .azure/prepare-db-step.yml
@@ -31,6 +33,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
     - bash: vendor/bin/psalm --show-info=false
       displayName: 'Run psalm'
@@ -40,6 +43,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
     - bash: php artisan code:analyse
       displayName: 'Run phpstan'
@@ -49,6 +53,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
     - template: .azure/prepare-db-step.yml
     - template: .azure/seed-test-db-step.yml
@@ -72,6 +77,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
+    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
     - bash: |
         yarn global add junit-merge
