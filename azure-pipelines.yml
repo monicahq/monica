@@ -8,6 +8,7 @@ trigger:
 
 variables:
   phpVersion: 7.2
+  COMPOSER_HOME: $(System.DefaultWorkingDirectory)
 
 stages:
 - stage: build_and_test
@@ -60,9 +61,7 @@ stages:
     - template: .azure/seed-test-db-step.yml
     - bash: vendor/bin/chromedriver &
       displayName: 'Run selenium chromedriver'
-    - bash: |
-        php -S localhost:8000 -t public scripts/tests/server-cc.php &
-        php -S localhost:8001 -t public scripts/tests/server-cc.php &
+    - bash: php -S localhost:8000 -t public scripts/tests/server-cc.php &
       displayName: 'Run http server'
     - bash: dockerize -wait tcp://localhost:8000 -timeout 60s
       displayName: 'Wait for http server'
