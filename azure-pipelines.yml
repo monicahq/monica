@@ -8,7 +8,6 @@ trigger:
 
 variables:
   phpVersion: 7.2
-  artifactComposer: artifactComposer
 
 stages:
 - stage: build_and_test
