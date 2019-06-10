@@ -8,7 +8,7 @@ trigger:
 
 variables:
   phpVersion: 7.2
-  COMPOSER_HOME: $(System.DefaultWorkingDirectory)
+  COMPOSER_HOME: $(System.DefaultWorkingDirectory)/.composer
 
 stages:
 - stage: build_and_test
