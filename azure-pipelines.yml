@@ -23,8 +23,8 @@ stages:
     strategy:
       parallel: 2
     steps:
-    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
+    - template: .azure/restore-artifacts-step.yml
     - template: .azure/remove-xdebug-step.yml
     - template: .azure/prepare-db-step.yml
     - template: .azure/seed-test-db-step.yml
@@ -35,8 +35,8 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
+    - template: .azure/restore-artifacts-step.yml
     - bash: vendor/bin/psalm --show-info=false
       displayName: 'Run psalm'
 
@@ -45,8 +45,8 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
+    - template: .azure/restore-artifacts-step.yml
     - bash: php artisan code:analyse
       displayName: 'Run phpstan'
 
@@ -55,8 +55,8 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
+    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-db-step.yml
     - template: .azure/seed-test-db-step.yml
     - bash: vendor/bin/chromedriver &
@@ -77,8 +77,8 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-environment-step.yml
+    - template: .azure/restore-artifacts-step.yml
     - bash: |
         yarn global add junit-merge
         $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
