@@ -71,6 +71,10 @@ stages:
         vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
         rm -rf results/coverage
       displayName: 'Fix coverage'
+    - task: PublishPipelineArtifact@0
+      inputs:
+        artifactName: 'results'
+        targetPath: 'results/junit'
 
   - job: reporting
     dependsOn: [tests, tests_browser]
@@ -79,6 +83,10 @@ stages:
     steps:
     - template: .azure/prepare-environment-step.yml
     - template: .azure/restore-artifacts-step.yml
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results'
+        targetPath: $(System.DefaultWorkingDirectory)/results/junit
     - bash: |
         yarn global add junit-merge
         $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
@@ -88,6 +96,11 @@ stages:
         export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g' | sed ':a;N;$!ba;s/\n//g')
         scripts/tests/runsonar.sh
       displayName: 'Run sonar scanner'
+#    - task: PublishTestResults@2
+#      inputs: 
+#        testResultsFormat: 'JUnit'
+#        testResultsFiles: ./results/results.xml
+
 
 #- stage: deploy
 #  displayName: Deploy
