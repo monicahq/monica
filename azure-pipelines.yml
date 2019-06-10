@@ -63,7 +63,7 @@ stages:
       displayName: 'Run selenium chromedriver'
     - bash: php -S localhost:8000 -t public scripts/tests/server-cc.php &
       displayName: 'Run http server'
-    - bash: dockerize -wait tcp://localhost:8000 -timeout 60s
+    - bash: until $(nc -z localhost 8000); do sleep 1; done
       displayName: 'Wait for http server'
     - bash: php artisan dusk --log-junit results/junit/dusk/results3.xml
       displayName: 'Run browser tests'
