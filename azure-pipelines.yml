@@ -62,14 +62,15 @@ stages:
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'results1'
-        downloadPath: $(System.DefaultWorkingDirectory)/results/junit
+        downloadPath: $(System.DefaultWorkingDirectory)/results
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'results2'
-        downloadPath: $(System.DefaultWorkingDirectory)/results/junit
+        downloadPath: $(System.DefaultWorkingDirectory)/results
     - bash: |
         yarn global add junit-merge
         $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+        ls results/results.xml
       displayName: 'Merge junit files'
     - template: .azure/runsonar-step.yml
 #    - task: PublishTestResults@2
