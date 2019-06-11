@@ -61,8 +61,12 @@ stages:
     - template: .azure/composer-install-step.yml
     - task: DownloadPipelineArtifact@1
       inputs:
-        artifactName: 'results'
-        targetPath: $(System.DefaultWorkingDirectory)/results/junit
+        artifactName: 'results1'
+        downloadPath: $(System.DefaultWorkingDirectory)/results/junit
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results2'
+        downloadPath: $(System.DefaultWorkingDirectory)/results/junit
     - bash: |
         yarn global add junit-merge
         $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
