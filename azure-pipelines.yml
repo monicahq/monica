@@ -4,7 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/php
 
 trigger:
-- master
+  branches:
+    exclude:
+    - 'l10n_master*'
 
 variables:
   phpVersion: 7.2
@@ -17,74 +19,46 @@ stages:
   - template: .azure/build-job.yml
 
   - job: tests
-    dependsOn: build
     pool:
       vmImage: 'ubuntu-latest'
     strategy:
       parallel: 2
     steps:
     - template: .azure/prepare-environment-step.yml
-    - template: .azure/restore-artifacts-step.yml
+    - template: .azure/composer-install-step.yml
     - template: .azure/remove-xdebug-step.yml
     - template: .azure/prepare-db-step.yml
     - template: .azure/seed-test-db-step.yml
     - template: .azure/unit-tests-step.yml
     
   - job: psalm
-    dependsOn: build
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
-    - template: .azure/restore-artifacts-step.yml
+    - template: .azure/composer-install-step.yml
     - bash: vendor/bin/psalm --show-info=false
       displayName: 'Run psalm'
 
   - job: phpstan
-    dependsOn: build
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
-    - template: .azure/restore-artifacts-step.yml
+    - template: .azure/composer-install-step.yml
     - bash: php artisan code:analyse
       displayName: 'Run phpstan'
 
-  - job: tests_browser
-    dependsOn: build
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - template: .azure/prepare-environment-step.yml
-    - template: .azure/restore-artifacts-step.yml
-    - template: .azure/prepare-db-step.yml
-    - template: .azure/seed-test-db-step.yml
-#    - bash: vendor/bin/chromedriver &
-#      displayName: 'Run selenium chromedriver'
-    - bash: scripts/tests/start-selenium.sh
-      displayName: 'Run selenium chromedriver'
-    - bash: php -S localhost:8000 -t public scripts/tests/server-cc.php &
-      displayName: 'Run http server'
-    - bash: until $(nc -z localhost 8000); do sleep 1; done
-      displayName: 'Wait for http server'
-    - bash: php artisan dusk --log-junit results/junit/dusk/results3.xml
-      displayName: 'Run browser tests'
-    - bash: |
-        vendor/bin/phpcov merge --clover=results/coverage3.xml results/coverage/
-        rm -rf results/coverage
-      displayName: 'Fix coverage'
-    - task: PublishPipelineArtifact@0
-      inputs:
-        artifactName: 'results'
-        targetPath: 'results/junit'
+#  - template: .azure/test-browser-job.yml
 
   - job: reporting
-    dependsOn: [tests, tests_browser]
+#    dependsOn: [ tests, tests_browser ]
+    dependsOn: tests
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
-    - template: .azure/restore-artifacts-step.yml
+    - template: .azure/composer-install-step.yml
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'results'
@@ -93,11 +67,7 @@ stages:
         yarn global add junit-merge
         $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
       displayName: 'Merge junit files'
-    - bash: |
-        export SONAR_RESULT=./results/results.xml
-        export SONAR_COVERAGE=$(ls -m ./results/coverage*.xml | sed 's/ //g' | sed ':a;N;$!ba;s/\n//g')
-        scripts/tests/runsonar.sh
-      displayName: 'Run sonar scanner'
+    - template: .azure/runsonar-step.yml
 #    - task: PublishTestResults@2
 #      inputs: 
 #        testResultsFormat: 'JUnit'
