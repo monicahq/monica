@@ -59,7 +59,9 @@ stages:
     - template: .azure/restore-artifacts-step.yml
     - template: .azure/prepare-db-step.yml
     - template: .azure/seed-test-db-step.yml
-    - bash: vendor/bin/chromedriver &
+#    - bash: vendor/bin/chromedriver &
+#      displayName: 'Run selenium chromedriver'
+    - bash: scripts/tests/start-selenium.sh
       displayName: 'Run selenium chromedriver'
     - bash: php -S localhost:8000 -t public scripts/tests/server-cc.php &
       displayName: 'Run http server'
