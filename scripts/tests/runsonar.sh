@@ -107,7 +107,7 @@ function gitFetch {
   if [ "$RUNREVPARSE" == "true" ]; then
     if [ -n "${PULL_REQUEST_BASEBRANCH:-}" ]; then
       echo "# git branch -D $PULL_REQUEST_BASEBRANCH"
-      git branch -D $PULL_REQUEST_BASEBRANCH
+      git branch -D $PULL_REQUEST_BASEBRANCH || true
       echo "# git rev-parse origin/$PULL_REQUEST_BASEBRANCH"
       git rev-parse origin/$PULL_REQUEST_BASEBRANCH
     fi
