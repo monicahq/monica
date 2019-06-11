@@ -22,7 +22,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     strategy:
-      parallel: 2
+      parallel: 4
     steps:
     - template: .azure/prepare-environment-step.yml
     - template: .azure/composer-install-step.yml
@@ -66,6 +66,14 @@ stages:
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'results2'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results3'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results4'
         downloadPath: $(System.DefaultWorkingDirectory)/results
     - bash: |
         yarn global add junit-merge
