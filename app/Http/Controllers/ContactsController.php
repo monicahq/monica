@@ -11,7 +11,6 @@ use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
-use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;

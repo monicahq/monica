@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User\Changelog;
 use App\Helpers\InstanceHelper;
 
 class ChangelogController extends Controller
