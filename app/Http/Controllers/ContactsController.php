@@ -448,7 +448,32 @@ class ContactsController extends Controller
      */
     public function editWork(Request $request, Contact $contact)
     {
-        return view('people.work.edit')
+        //To display past Job from the contacts
+        $pastJob = PastJob::get()->unique('contact_id');
+
+        $allJob = [];
+        foreach($pastJob as $key => $job){
+            $allJob[$key]['contact_id'] = $job->contact_id;
+            $allJob[$key]['past_company'] = $job->past_company;
+            $allJob[$key]['past_job'] = $job->past_job;
+        }
+
+        $jobs = [];
+        $allContacts = [];
+        foreach($allJob as $key => $job){
+            $jobs = PastJob::where('contact_id',$job['contact_id'])->get();
+            if($contact->id == $job['contact_id']){
+                $transformed = [];
+                foreach($jobs as $key => $contacts){
+                    $transformed[$key]['contact_id'] = $contacts->contact_id;
+                    $transformed[$key]['past_company'] = $contacts->past_company;
+                    $transformed[$key]['past_job'] = $contacts->past_job;
+                }
+                $allContacts[] = $transformed;
+            }    
+        }
+
+        return view('people.work.edit',['allContacts' => $allContacts])
             ->withContact($contact);
     }
 
@@ -472,21 +497,24 @@ class ContactsController extends Controller
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.work_edit_success'));
+    } 
+
+    public function updatePastJob(Request $request,Contact $contact){
+       dd($request);
+        return view('people.work.editPastJob');
     }
 
     public function addPastJob(Request $request,Contact $contact)
     {
         $toArray = $request->toArray();
-        foreach($toArray as $data){
+        foreach($toArray as $job){
             $pastJob = new PastJob();
-            $pastJob->contact_id = $data['contactId'];
-            $pastJob->past_company = $data['company'];
-            $pastJob->past_job = $data['jobTitle'];
+            $pastJob->contact_id = $job['contactId'];
+            $pastJob->past_company = $job['company'];
+            $pastJob->past_job = $job['jobTitle'];
             $pastJob->save();
         }
-       
-        return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.work_edit_success'));
+        return $toArray;
     }
 
     /**

@@ -32,7 +32,6 @@ class JournalController extends Controller
     {
         $entries = collect([]);
         $journalEntries = auth()->user()->account->journalEntries()->paginate(30);
-
         // this is needed to determine if we need to display the calendar
         // (month + year) next to the journal entry
 
@@ -42,7 +41,6 @@ class JournalController extends Controller
             $showCalendar = true;
             $date = $request->date;
             $date = Carbon::parse($date);
-
             foreach ($journalEntries as $journalEntry) {
                 if ($journalEntry->date == $date) {
                     $data = [
@@ -82,8 +80,6 @@ class JournalController extends Controller
                 $previousEntryMonth = $journalEntry->date->month;
                 $previousEntryYear = $journalEntry->date->year;
                 $showCalendar = true;
-
-                
             }  
         }    
         // I need the pagination items when I send back the array.

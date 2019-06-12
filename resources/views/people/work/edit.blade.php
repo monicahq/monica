@@ -53,6 +53,7 @@
                 <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
               </div> <!-- .form-group -->
             </form>
+            <jobs-component :contact-id="{{ json_encode($contact->id) }}"  :past-jobs="{{  json_encode($allContacts) }}" ></jobs-component>
           </div>
         </div>
       </div>

@@ -92,6 +92,9 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::name('work.')->group(function () {
             Route::get('/people/{contact}/work/edit', 'ContactsController@editWork')->name('edit');
             Route::post('/people/{contact}/work/update', 'ContactsController@updateWork')->name('update');
+            Route::post('/people/{contactId}/work/add', 'ContactsController@addPastJob')->name('add');
+            // Route::get('/people/{contactId}/work/editPastJob', 'ContactsController@editPastJob')->name('editPastJob');
+            Route::put('/people/{contactId}/work/updatePastJob', 'ContactsController@updatePastJob')->name('updatePastJob');
         });
 
         // Introductions
