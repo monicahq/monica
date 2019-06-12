@@ -81,25 +81,24 @@ stages:
         ls results/results.xml
       displayName: 'Merge junit files'
     - template: .azure/runsonar-step.yml
-#    - task: PublishTestResults@2
-#      inputs: 
-#        testResultsFormat: 'JUnit'
-#        testResultsFiles: ./results/results.xml
 
 
-#- stage: deploy
-#  displayName: Deploy
-#  dependsOn: build_and_test
+- stage: deploy
+  displayName: Deploy
+  dependsOn: build_and_test
 #  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-#  jobs:
-#  - template: .azure/build-job.yml
-#  - job: deployAssets
-#    dependsOn: buildDeploy
+  jobs:
+  - job: deployAssets
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - bash: make assets
+    - bash: make push_bintray_assets
+    env:
+      BINTRAY_USER: $(BINTRAY_USER)
+      BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+
 #  - job: deployDist
-#    dependsOn: buildDeploy
 #  - job: deploy-docker-master
-#    dependsOn: buildDeploy
 #  - job: deploy-docker-staging
-#    dependsOn: buildDeploy
 #  - job: deploy-docker
-#    dependsOn: buildDeploy
