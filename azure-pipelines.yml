@@ -75,6 +75,10 @@ stages:
     - template: .azure/composer-install-step.yml
     - task: DownloadPipelineArtifact@1
       inputs:
+        artifactName: 'results'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - task: DownloadPipelineArtifact@1
+      inputs:
         artifactName: 'results1'
         downloadPath: $(System.DefaultWorkingDirectory)/results
     - task: DownloadPipelineArtifact@1
