@@ -23,7 +23,7 @@ pr:
 
 variables:
   phpVersion: 7.2
-  COMPOSER_HOME: $(Agent.WorkFolder)/.composer
+  COMPOSER_HOME: $(Agent.BuildDirectory)/.composer
 
 stages:
 - stage: build_and_test
