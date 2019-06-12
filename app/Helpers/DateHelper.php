@@ -257,7 +257,7 @@ class DateHelper
      * @param  string $interval
      * @return Carbon
      */
-    public static function getNextTheoriticalBillingDate(String $interval) : Carbon
+    public static function getNextTheoriticalBillingDate(string $interval) : Carbon
     {
         if ($interval == 'monthly') {
             return now(static::getTimezone())->addMonth();
