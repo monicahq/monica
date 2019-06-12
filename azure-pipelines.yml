@@ -52,7 +52,6 @@ stages:
     - template: .azure/composer-install-step.yml
     - bash: vendor/bin/psalm --show-info=false
       displayName: 'Run psalm'
-      workingDirectory: monica
 
   - job: phpstan
     pool:
