@@ -13,6 +13,7 @@ use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
+use App\Models\Contact\PastJob;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,7 @@ use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
 use App\Http\Resources\Contact\ContactShort as ContactResource;
+
 
 class ContactsController extends Controller
 {
@@ -468,6 +470,21 @@ class ContactsController extends Controller
 
         $contact->save();
 
+        return redirect()->route('people.show', $contact)
+            ->with('success', trans('people.work_edit_success'));
+    }
+
+    public function addPastJob(Request $request,Contact $contact)
+    {
+        $toArray = $request->toArray();
+        foreach($toArray as $data){
+            $pastJob = new PastJob();
+            $pastJob->contact_id = $data['contactId'];
+            $pastJob->past_company = $data['company'];
+            $pastJob->past_job = $data['jobTitle'];
+            $pastJob->save();
+        }
+       
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.work_edit_success'));
     }
