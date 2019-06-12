@@ -94,9 +94,9 @@ stages:
     steps:
     - bash: make assets
     - bash: make push_bintray_assets
-    env:
-      BINTRAY_USER: $(BINTRAY_USER)
-      BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+      env:
+        BINTRAY_USER: $(BINTRAY_USER)
+        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
 
 #  - job: deployDist
 #  - job: deploy-docker-master
