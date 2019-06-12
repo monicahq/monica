@@ -62,12 +62,12 @@ stages:
     - bash: php artisan code:analyse
       displayName: 'Run phpstan'
 
-#  - template: .azure/test-browser-job.yml
+  - template: .azure/test-browser-job.yml
 
   - job: reporting
     dependsOn:
     - tests
-#    - tests_browser
+    - tests_browser
     pool:
       vmImage: 'ubuntu-latest'
     steps:
