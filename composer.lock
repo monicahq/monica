@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fbab02d846536db21f59b8d4657224ee",
+    "content-hash": "897fe1e145a5ef1f5d54bf4175fa47eb",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -7685,7 +7685,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "BackEndTea@gmail.com"
+                    "email": "backendtea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
@@ -10360,44 +10360,6 @@
                 "instantiate"
             ],
             "time": "2019-03-17T17:37:11+00:00"
-        },
-        {
-            "name": "enm1989/chromedriver",
-            "version": "2.46",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ENM1989/chromedriver.git",
-                "reference": "08927b4412eb1bb668c42797139c8a82ffde2087"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ENM1989/chromedriver/zipball/08927b4412eb1bb668c42797139c8a82ffde2087",
-                "reference": "08927b4412eb1bb668c42797139c8a82ffde2087",
-                "shasum": ""
-            },
-            "bin": [
-                "bin/chromedriver"
-            ],
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Nico Müller",
-                    "email": "nico.mueller.1989@googlemail.com"
-                }
-            ],
-            "description": "Composer distribution of Chromedriver. Adds a executable to your composer bin directory.",
-            "homepage": "https://github.com/ENM1989/chromedriver",
-            "keywords": [
-                "Chromedriver",
-                "chrome",
-                "selenium",
-                "webdriver"
-            ],
-            "time": "2019-03-17T19:47:18+00:00"
         },
         {
             "name": "facebook/webdriver",
