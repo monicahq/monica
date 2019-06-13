@@ -104,7 +104,7 @@ stages:
 - stage: deploy
   displayName: Deploy
   dependsOn: build_and_test
-  condition: eq(variables['Build.Reason'], 'IndividualCI')
+  condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
   jobs:
   - job: deployAssets
     pool:
