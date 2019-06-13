@@ -62,17 +62,21 @@ stages:
     - bash: php artisan code:analyse
       displayName: 'Run phpstan'
 
-#  - template: .azure/test-browser-job.yml
+  - template: .azure/test-browser-job.yml
 
   - job: reporting
     dependsOn:
     - tests
-#    - tests_browser
+    - tests_browser
     pool:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/prepare-environment-step.yml
     - template: .azure/composer-install-step.yml
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
     - task: DownloadPipelineArtifact@1
       inputs:
         artifactName: 'results1'
