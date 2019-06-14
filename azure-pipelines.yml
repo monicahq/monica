@@ -26,7 +26,7 @@ variables:
   COMPOSER_HOME: $(Agent.BuildDirectory)/.composer
 
 stages:
-- stage: build_and_test
+- stage: build
   displayName: 'Build and tests'
   jobs:
   - template: .azure/build-job.yml
@@ -100,10 +100,9 @@ stages:
       displayName: 'Merge junit files'
     - template: .azure/runsonar-step.yml
 
-
 - stage: deploy
   displayName: Deploy
-  dependsOn: build_and_test
+  dependsOn: build
   condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
   jobs:
   - job: deployAssets
@@ -138,23 +137,6 @@ stages:
     - template: .azure/prepare-environment-step.yml
     - template: .azure/docker-build-step.yml
     - template: .azure/docker-push-bintray-step.yml
-
-  - job: pull_docker_staging
-    dependsOn: deploy_docker_master
-    condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - task: SSH@0
-      inputs:
-        sshEndpoint: staging
-        runOptions: 'commands'
-        commands: |
-          docker-compose -f $DOCKER_FILE pull
-          docker-compose -f $DOCKER_FILE up -d
-      displayName: 'Update staging'
-      env:
-        DOCKER_FILE: $(DOCKER_FILE)
 
   - job: deploy_docker
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
