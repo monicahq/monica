@@ -83,7 +83,7 @@ RUN mkdir -p bootstrap/cache; \
     mkdir -p storage; \
     chown -R monica:monica .; \
     chgrp -R apache bootstrap/cache storage; \
-    chmod -R g+w bootstrap/cache storage; \
+    chmod -R g+w bootstrap/cache storage
 COPY .env.example .env
 
 # Sentry
