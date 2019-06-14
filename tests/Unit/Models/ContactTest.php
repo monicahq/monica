@@ -19,7 +19,6 @@ use App\Models\Contact\Occupation;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\Conversation;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Relationship\Relationship;

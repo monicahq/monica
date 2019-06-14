@@ -79,7 +79,7 @@ aliases:
       name: Run unit tests
       command: |
         php artisan route:cache
-        TESTSUITE=$(echo -e "Api-and-Feature\nUnit" | circleci tests split)
+        TESTSUITE=$(echo -e "Api,Feature\nUnit-Models,Unit-Services" | circleci tests split)
         phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${CIRCLE_NODE_INDEX}.xml --coverage-clover ./results/coverage${CIRCLE_NODE_INDEX}.xml --testsuite $TESTSUITE
   - &psalm
     run:
@@ -174,7 +174,10 @@ jobs:
 
       ## COMPOSER
       - *restore_composer
-      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs
+      - run: 
+          command: |
+            composer global require hirak/prestissimo
+            composer install --no-interaction --no-suggest --ignore-platform-reqs
       - save_cache:
           key: *composer_key
           paths: ~/.composer/cache/
@@ -383,7 +386,10 @@ jobs:
           <<: *post_checkout
       - attach_workspace:
           at: *root
-      - run: composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
+      - run: 
+          command: |
+            composer global require hirak/prestissimo
+            composer install --no-interaction --no-suggest --ignore-platform-reqs --no-dev
       - run: make dist
       - run: make push_bintray_dist
 
