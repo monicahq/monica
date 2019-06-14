@@ -100,6 +100,20 @@ stages:
       displayName: 'Merge junit files'
     - template: .azure/runsonar-step.yml
 
+  - job: test_ssh
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: SSH@0
+      inputs:
+        sshEndpoint: staging
+        runOptions: 'inline'
+        inline: |
+          ls $DOCKER_FILE
+      displayName: 'test ssh'
+      env:
+        DOCKER_FILE: $(DOCKER_FILE)
+
 
 - stage: deploy
   displayName: Deploy
@@ -148,8 +162,8 @@ stages:
     - task: SSH@0
       inputs:
         sshEndpoint: staging
-        runOptions: 'commands'
-        commands: |
+        runOptions: 'inline'
+        inline: |
           docker-compose -f $DOCKER_FILE pull
           docker-compose -f $DOCKER_FILE up -d
       displayName: 'Update staging'
