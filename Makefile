@@ -23,7 +23,7 @@ else ifeq ($(TF_BUILD),True)
   BUILD_NUMBER := $(BUILD_BUILDNUMBER)
   GIT_COMMIT := $(shell git rev-parse --verify "HEAD^2" 2>/dev/null)
   ifeq ($(GIT_COMMIT),)
-    GIT_COMMIT :?= $(BUILD_SOURCEVERSION)
+    GIT_COMMIT ?= $(BUILD_SOURCEVERSION)
   endif
 else
   REPO := $(subst https://github.com/,,$(CHANGE_URL))
