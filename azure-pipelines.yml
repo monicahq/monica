@@ -1,5 +1,5 @@
 # PHP
-# Test and package your PHP project.
+# Test and package your PHP project
 # Add steps that run tests, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/php
 
@@ -104,7 +104,7 @@ stages:
 - stage: deploy
   displayName: Deploy
   dependsOn: build_and_test
-  condition: eq(variables['Build.Reason'], 'IndividualCI')
+  condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
   jobs:
   - job: deployAssets
     pool:
