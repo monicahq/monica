@@ -42,28 +42,32 @@ heroku run bash -a <APP-ID>
 * Run
 ```sh
 php artisan passport:keys
+php artisan passport:client --personal --no-interaction
 ```
+
 This command will generate encryption keys in the `storage` directory.
 The two keys `oauth-private.key` and `oauth-public.key` cannot be backup and recreate in heroku directly.
 
 * Still in the Heroku CLI, run this command to output the private key:
-```
+```sh
 sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-private.key
 ```
   Copy the output to a new Heroku environment variable called `PASSPORT_PRIVATE_KEY`
+
 * Do the same thing with the contents of the public key:
-```
+```sh
 sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-public.key
 ```
-  Copy its contents to an environment variable called `PASSPORT_PUBLIC_KEY`
+  Copy its contents to a new Heroku environment variable called `PASSPORT_PUBLIC_KEY`
 
 
 Once Heroku is re-deploy, you should be able to use the 'Create new token' function in https://XXX.herokuapp.com/settings/api
 
 Once you have the token, you can use the API with a command line:
 ```
-curl -H "Authorization: Bearer eyJ0eXIh7ARV1Xjcf4qNo" https://XXX.herokuapp.com/api
+curl -H "Authorization: Bearer API_TOKEN" https://XXX.herokuapp.com/api
 ```
+
 If everything is well, this call will return:
 ```json
 {"success":{"message":"Welcome to Monica"}}
