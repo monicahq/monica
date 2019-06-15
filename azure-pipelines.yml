@@ -27,7 +27,7 @@ variables:
 
 stages:
 - stage: build
-  displayName: 'Build and tests'
+  displayName: 'Build'
   jobs:
   - template: .azure/build-job.yml
 
@@ -101,7 +101,7 @@ stages:
     - template: .azure/runsonar-step.yml
 
 - stage: deploy
-  displayName: Deploy
+  displayName: 'Deploy'
   dependsOn: build
   condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
   jobs:
