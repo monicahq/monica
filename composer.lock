@@ -10363,16 +10363,16 @@
         },
         {
             "name": "facebook/webdriver",
-            "version": "1.6.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facebook/php-webdriver.git",
-                "reference": "bd8c740097eb9f2fc3735250fc1912bc811a954e"
+                "reference": "e43de70f3c7166169d0f14a374505392734160e5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/bd8c740097eb9f2fc3735250fc1912bc811a954e",
-                "reference": "bd8c740097eb9f2fc3735250fc1912bc811a954e",
+                "url": "https://api.github.com/repos/facebook/php-webdriver/zipball/e43de70f3c7166169d0f14a374505392734160e5",
+                "reference": "e43de70f3c7166169d0f14a374505392734160e5",
                 "shasum": ""
             },
             "require": {
@@ -10419,7 +10419,7 @@
                 "selenium",
                 "webdriver"
             ],
-            "time": "2018-05-16T17:37:13+00:00"
+            "time": "2019-06-13T08:02:18+00:00"
         },
         {
             "name": "felixfbecker/advanced-json-rpc",
@@ -10786,22 +10786,22 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.1.0",
+            "version": "v5.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "a6ac3e6489dc774445aa9459cdc332104591634a"
+                "reference": "5bb851989171601b7fc7a031ba173d6cd23d3801"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/a6ac3e6489dc774445aa9459cdc332104591634a",
-                "reference": "a6ac3e6489dc774445aa9459cdc332104591634a",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/5bb851989171601b7fc7a031ba173d6cd23d3801",
+                "reference": "5bb851989171601b7fc7a031ba173d6cd23d3801",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
-                "facebook/webdriver": "^1.3",
+                "facebook/webdriver": "^1.7",
                 "illuminate/console": "~5.7.0|~5.8.0|~5.9.0",
                 "illuminate/support": "~5.7.0|~5.8.0|~5.9.0",
                 "nesbot/carbon": "^1.20|^2.0",
@@ -10847,7 +10847,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-05-02T15:08:14+00:00"
+            "time": "2019-06-14T12:51:18+00:00"
         },
         {
             "name": "laravel/slack-notification-channel",
@@ -12817,12 +12817,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "acc661e72817c7030b7b2af7d2f226bee9b93094"
+                "reference": "baeb6f512b5ec8f0fd58bf890082b179f985c5a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/acc661e72817c7030b7b2af7d2f226bee9b93094",
-                "reference": "acc661e72817c7030b7b2af7d2f226bee9b93094",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/baeb6f512b5ec8f0fd58bf890082b179f985c5a4",
+                "reference": "baeb6f512b5ec8f0fd58bf890082b179f985c5a4",
                 "shasum": ""
             },
             "conflict": {
@@ -12937,7 +12937,7 @@
                 "sylius/grid": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
                 "sylius/grid-bundle": ">=1,<1.1.19|>=1.2,<1.2.18|>=1.3,<1.3.13|>=1.4,<1.4.5|>=1.5,<1.5.1",
                 "sylius/sylius": ">=1,<1.1.18|>=1.2,<1.2.17|>=1.3,<1.3.12|>=1.4,<1.4.4",
-                "symfony/cache": ">=3.2,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7",
+                "symfony/cache": ">=3.1,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7",
                 "symfony/dependency-injection": ">=2,<2.0.17|>=2.7,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7",
                 "symfony/form": ">=2.3,<2.3.35|>=2.4,<2.6.12|>=2.7,<2.7.50|>=2.8,<2.8.49|>=3,<3.4.20|>=4,<4.0.15|>=4.1,<4.1.9|>=4.2,<4.2.1",
                 "symfony/framework-bundle": ">=2,<2.3.18|>=2.4,<2.4.8|>=2.5,<2.5.2|>=2.7,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7",
@@ -13023,7 +13023,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-06-11T05:51:05+00:00"
+            "time": "2019-06-14T17:56:32+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
