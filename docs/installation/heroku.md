@@ -96,6 +96,10 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 * No upload of photos for your contacts. Heroku doesn't support storage.
 * No email by default - email configuration isn't required to use Monica on Heroku, but it's recommended. The easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
   * [Sign up for Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
+  * Add a custom domain in mailgun.
+  * Add the "To" and "From" e-mail addresses you're going to use as verified e-mail addresses on mailgun, and then actually verifying them.
+  * Upgrade mailgun by entering a credit card (there is no charge, but they do require you enter it so you'll be upgraded to some other   tier that enables you to actually send messages).
+  * Verify the custom domain via DNS (there are instructions on their site)
   * In Heroku, go to your app, then to the Settings tab. In it, you will have a button that reads "Reveal Config Vars". Click it, and change the following vars:
     * `MAIL_DRIVER`: `mailgun`
     * `MAILGUN_DOMAIN`: your Mailgun domain
