@@ -3,7 +3,8 @@
 
 set -evuo pipefail
 
-GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
+export GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
+echo "##vso[task.setvariable variable=GIT_COMMIT]$GIT_COMMIT"
 
 git reset --hard "$GIT_COMMIT"
 

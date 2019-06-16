@@ -26,8 +26,9 @@ elif [ "$TF_BUILD" == "True" ]; then
   BRANCH=${SYSTEM_PULLREQUEST_SOURCEBRANCH:-$BUILD_SOURCEBRANCHNAME}
   PR_NUMBER=${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER:-false}
   BUILD_NUMBER=$BUILD_BUILDNUMBER
-  GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
-  RUNREVPARSE=true
+  if [[ -z $GIT_COMMIT ]]; then
+    GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
+  fi
 elif [[ -n $BUILD_NUMBER ]]; then
   echo "CHANGE_ID=$CHANGE_ID"
   echo "CHANGE_URL=$CHANGE_URL"
