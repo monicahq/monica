@@ -21,8 +21,8 @@ select:focus {
       {{ title }}
     </label>
     <select
-      ref="select"
       :id="realid"
+      ref="select"
       :value="selectedOption"
       :name="id"
       :required="required"

@@ -2,7 +2,7 @@
   <div>
     <datepicker
       ref="select"
-      :refName="'select'"
+      :ref-name="'select'"
       :value="selectedDate"
       :format="displayValue"
       :parse-typed-date="formatTypedValue"
@@ -10,8 +10,8 @@
       :monday-first="mondayFirst"
       :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
       :typeable="true"
-      :clearButton="true"
-      :showCalendarOnFocus="showCalendarOnFocus"
+      :clear-button="true"
+      :show-calendar-on-focus="showCalendarOnFocus"
       @input="$emit('input', exchangeValue($event))"
       @selected="update"
       @clearDate="update('')"

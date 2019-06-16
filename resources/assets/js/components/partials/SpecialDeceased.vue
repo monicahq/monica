@@ -6,18 +6,18 @@
   <div class="pa4-ns ph3 pv2 bb b--gray-monica">
     <div class="mb3 mb0-ns">
       <form-checkbox
+        v-model="value"
         :name="'is_deceased'"
         :value="true"
-        v-model="value"
       >
         {{ $t('people.deceased_mark_person_deceased') }}
       </form-checkbox>
       <div v-show="value" :class="[ dirltr ? 'ml4' : 'mr4' ]">
         <form-checkbox
+          v-model.lazy="dateKnown"
           :name="'is_deceased_date_known'"
           :value="true"
           :dclass="'flex mb3'"
-          v-model.lazy="dateKnown"
           @change="_focusDate()"
         >
           <template slot="label">
@@ -26,10 +26,10 @@
         </form-checkbox>
         <div v-show="dateKnown" :class="[ dirltr ? 'ml4' : 'mr4' ]" class="mt2">
           <form-date
-            ref="deaceasedday"
             :id="'deceased_date'"
+            ref="deaceasedday"
             v-model="date"
-            :showCalendarOnFocus="true"
+            :show-calendar-on-focus="true"
             :locale="locale"
           />
           <div v-show="date != ''" class="mt2">

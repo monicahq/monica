@@ -183,8 +183,8 @@
           <ul>
             <li v-for="task in contactRelated(tasks)" :key="task.id" class="pb0 mb2">
               <form-checkbox
-                :name="'todo'"
                 v-model.lazy="task.completed"
+                :name="'todo'"
                 :dclass="'mr1'"
                 @change="updateTask(task)"
               >
@@ -222,8 +222,8 @@
           <ul v-if="customNotCompleted(tasks).length != 0">
             <li v-for="task in customNotCompleted(tasks)" :key="task.id" class="pb0 mb2" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
               <form-checkbox
-                :name="'todo'"
                 v-model.lazy="task.completed"
+                :name="'todo'"
                 :dclass="'mr1'"
                 @change="updateTask(task)"
               >
@@ -250,8 +250,8 @@
           <ul v-if="customCompleted(tasks).length != 0 && !contactRelatedTasksView">
             <li v-for="task in customCompleted(tasks)" :key="task.id" class="pb0 mb0 f6" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
               <form-checkbox
-                :name="'todo'"
                 v-model.lazy="task.completed"
+                :name="'todo'"
                 :dclass="'mb1 mr1'"
                 @change="updateTask(task)"
               >

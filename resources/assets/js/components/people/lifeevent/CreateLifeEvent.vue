@@ -117,8 +117,8 @@
         <!-- YEARLY REMINDER -->
         <div class="ph4 pv3 mb3 mb0-ns bb b--gray-monica">
           <form-checkbox
-            :name="'addReminder'"
             v-model.lazy="newLifeEvent.has_reminder"
+            :name="'addReminder'"
             :dclass="[ dirltr ? 'mr3' : 'ml3' ]"
           >
             {{ $t('people.life_event_create_add_yearly_reminder') }}

@@ -6,12 +6,12 @@
     <div>
       <p-check
         ref="input"
+        v-model.lazy="checked"
         :name="name"
         :class="inputClass"
         :color="inputColor"
         :value="value"
         :disabled="disabled"
-        v-model.lazy="checked"
         @change="event => { $emit('change', event) }"
       >
         <slot></slot>

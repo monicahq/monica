@@ -34,13 +34,13 @@
       <ul>
         <li v-for="(task, i) in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
           <form-checkbox
-            :name="'task'"
             v-model.lazy="task.completed"
+            :name="'task'"
             :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
             @change="toggleComplete(task)"
           >
             {{ task.title }}
-            <span slot="extra" v-if="task.description" class="silver ml3">
+            <span v-if="task.description" slot="extra" class="silver ml3">
               {{ task.description }}
             </span>
           </form-checkbox>
@@ -121,12 +121,11 @@
       <ul>
         <li v-for="task in completed(tasks)" :key="task.id" class="f6" :cy-name="'task-item-completed-' + task.id">
           <form-checkbox
-            :name="'checkbox'"
             v-model.lazy="task.completed"
+            :name="'checkbox'"
             :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
             @change="toggleComplete(task)"
-          >
-          </form-checkbox>
+          />
           <span class="light-silver mr1">
             {{ task.completed_at }}
           </span>
