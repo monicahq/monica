@@ -1,6 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+# Rebase source on top of based branch
 
-set -euov pipefail
+set -evuo pipefail
 
 GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
 
