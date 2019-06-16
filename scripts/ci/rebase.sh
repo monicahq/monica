@@ -1,10 +1,11 @@
 #!/bin/bash
 # Rebase source on top of based branch
 
-set -evo pipefail
+set -exvo pipefail
 
 export GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
-echo "##vso[task.setvariable variable=GIT_COMMIT]$GIT_COMMIT"
+echo -e "GIT_COMMIT=$GIT_COMMIT"
+echo -e "##vso[task.setvariable variable=GIT_COMMIT]$GIT_COMMIT"
 
 git reset --hard "$GIT_COMMIT"
 
