@@ -148,3 +148,5 @@ stages:
         # https://microbadger.com/images/monicahq/monicahq
         curl -X POST $MICROBADGER_WEBHOOK
       displayName: 'Publish docker image'
+      env:
+        MICROBADGER_WEBHOOK: $(MICROBADGER_WEBHOOK)
