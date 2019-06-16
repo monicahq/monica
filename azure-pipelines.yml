@@ -1,5 +1,5 @@
 # PHP
-# Test and package your PHP project
+# Test and package your PHP project.
 # Add steps that run tests, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/php
 
@@ -27,7 +27,7 @@ variables:
 
 stages:
 - stage: build
-  displayName: 'Build and tests'
+  displayName: 'Build'
   jobs:
   - template: .azure/build-job.yml
 
@@ -101,7 +101,7 @@ stages:
     - template: .azure/runsonar-step.yml
 
 - stage: deploy
-  displayName: Deploy
+  displayName: 'Deploy'
   dependsOn: build
   condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
   jobs:
@@ -130,7 +130,7 @@ stages:
         BINTRAY_APIKEY: $(BINTRAY_APIKEY)
 
   - job: deploy_docker_master
-    condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -155,6 +155,5 @@ stages:
         curl -X POST $MICROBADGER_WEBHOOK
       displayName: 'Publish docker image'
       env:
-        DOCKER_USER: $(DOCKER_USER)
-        DOCKER_LOGIN: $(DOCKER_LOGIN)
         MICROBADGER_WEBHOOK: $(MICROBADGER_WEBHOOK)
+        DOCKER_LOGIN: $(DOCKER_LOGIN)
