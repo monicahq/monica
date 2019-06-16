@@ -86,7 +86,7 @@
             <form-date
               ref="birthday"
               :id="'birthdayDate'"
-              v-model="birthdate"
+              :value="birthdate"
               :showCalendarOnFocus="true"
               :locale="locale"
               :class="[ dirltr ? 'fl' : 'fr' ]"

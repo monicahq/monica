@@ -365,7 +365,9 @@ class ContactsController extends Controller
             $month = $request->get('month');
             $year = $request->get('year');
         }
-        if ($request->get('is_deceased_date_known') === 'true') {
+        $is_deceased_date_known = false;
+        if ($request->get('is_deceased_date_known') === 'true' && $request->input('deceased_date')) {
+            $is_deceased_date_known = true;
             $deceased_date = $request->input('deceased_date');
             $deceased_date = DateHelper::parseDate($deceased_date);
             $deceased_date_day = $deceased_date->day;
@@ -391,7 +393,7 @@ class ContactsController extends Controller
             'birthdate_age' => $request->get('age'),
             'birthdate_add_reminder' => ! empty($request->get('addReminder')),
             'is_deceased' => ! empty($request->get('is_deceased')),
-            'is_deceased_date_known' => ! empty($request->get('is_deceased_date_known')),
+            'is_deceased_date_known' => $is_deceased_date_known,
             'deceased_date_day' => $deceased_date_day,
             'deceased_date_month' => $deceased_date_month,
             'deceased_date_year' => $deceased_date_year,

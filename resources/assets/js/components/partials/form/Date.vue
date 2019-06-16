@@ -16,7 +16,7 @@
       @selected="update"
       @clearDate="update('')"
     />
-    <input :name="id" type="hidden" :value="value" />
+    <input :name="id" type="hidden" :value="exchange" />
   </div>
 </template>
 
@@ -30,8 +30,17 @@ export default {
     Datepicker
   },
 
+  model: {
+    prop: 'value',
+    event: 'input'
+  },
+
   props: {
     id: {
+      type: String,
+      default: '',
+    },
+    value: {
       type: String,
       default: '',
     },
@@ -54,7 +63,7 @@ export default {
       /**
        * Value of the date in exchange format
        */
-      value: '',
+      exchange: '',
 
       selectedDate: '',
       mondayFirst: false
@@ -78,8 +87,12 @@ export default {
   },
 
   mounted() {
-    if (this.defaultDate !== '') {
-      var mdate = moment(this.defaultDate, this.exchangeFormat);
+    this.exchange = this.value;
+    if (this.exchange === '') {
+      this.exchange = this.defaultDate;
+    }
+    if (this.exchange !== '') {
+      var mdate = moment(this.exchange, this.exchangeFormat);
       if (! mdate.isValid()) {
         mdate = moment();
       }
@@ -114,15 +127,15 @@ export default {
      */
     update(date) {
       if (date === '' || date === null) {
-        this.value = '';
+        this.exchange = '';
       } else {
         var mdate = moment(date);
         if (! mdate.isValid()) {
           mdate = moment();
         }
-        this.value = mdate.format(this.exchangeFormat);
+        this.exchange = mdate.format(this.exchangeFormat);
       }
-      this.$emit('input', this.value);
+      this.$emit('input', this.exchange);
     },
 
     /**

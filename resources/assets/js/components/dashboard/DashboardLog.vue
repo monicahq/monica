@@ -417,7 +417,6 @@ export default {
     },
 
     updateTask(task) {
-      task.completed = !task.completed;
       axios.put('tasks/' + task.id, task)
         .then(response => {
           this.$notify({
