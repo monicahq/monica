@@ -1,7 +1,7 @@
 #!/bin/bash
 # Rebase source on top of based branch
 
-set -evo pipefail
+set -exo pipefail
 
 export GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
 echo -e "GIT_COMMIT=$GIT_COMMIT"
