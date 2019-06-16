@@ -18,7 +18,7 @@
       </p-radio>
     </div>
     <div class="pointer" @click="select()">
-      <label :for="formid">
+      <label class="pointer" v-if="hasSlot('label')" :for="formid">
         <slot name="label"></slot>
       </label>
       <slot name="extra"></slot>
@@ -87,6 +87,9 @@ export default {
     select() {
       this.$refs.input.$refs.input.checked = true;
       this.$emit('change', this.value);
+    },
+    hasSlot (name = 'default') {
+      return !!this.$slots[ name ] || !!this.$scopedSlots[ name ];
     }
   }
 };
