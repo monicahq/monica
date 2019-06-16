@@ -111,6 +111,9 @@ stages:
     steps:
     - bash: make assets
     - bash: make push_bintray_assets
+      env:
+        BINTRAY_USER: $(BINTRAY_USER)
+        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
 
   - job: deploy_dist
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
@@ -122,9 +125,12 @@ stages:
         no_dev: 'true'
     - bash: make dist
     - bash: make push_bintray_dist
+      env:
+        BINTRAY_USER: $(BINTRAY_USER)
+        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
 
   - job: deploy_docker_master
-    condition: or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), startsWith(variables['Build.SourceBranch'], 'refs/tags/'))
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
     pool:
       vmImage: 'ubuntu-latest'
     steps:
@@ -150,3 +156,4 @@ stages:
       displayName: 'Publish docker image'
       env:
         MICROBADGER_WEBHOOK: $(MICROBADGER_WEBHOOK)
+        DOCKER_LOGIN: $(DOCKER_LOGIN)
