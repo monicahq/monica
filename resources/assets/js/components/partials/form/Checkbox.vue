@@ -18,7 +18,7 @@
       </p-check>
     </div>
     <div class="pointer" @click="select()">
-      <label class="pointer" v-if="hasSlot('label')">
+      <label v-if="hasSlot('label')" class="pointer">
         <slot name="label"></slot>
       </label>
       <slot name="extra"></slot>

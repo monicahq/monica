@@ -56,8 +56,8 @@
             <div class="dt">
               <div class="dt-row">
                 <form-radio
-                  :name="'contact_called'"
                   v-model="newCall.contact_called"
+                  :name="'contact_called'"
                   :value="false"
                   :iclass="'mr1'"
                   :dclass="'dtc mr3'"
@@ -65,8 +65,8 @@
                   {{ $t('people.call_you_called') }}
                 </form-radio>
                 <form-radio
-                  :name="'contact_called'"
                   v-model="newCall.contact_called"
+                  :name="'contact_called'"
                   :value="true"
                   :iclass="'mr1'"
                   :dclass="'dtc mr3'"

@@ -18,7 +18,7 @@
       </p-radio>
     </div>
     <div class="pointer" @click="select()">
-      <label class="pointer" v-if="hasSlot('label')" :for="formid">
+      <label v-if="hasSlot('label')" class="pointer" :for="formid">
         <slot name="label"></slot>
       </label>
       <slot name="extra"></slot>
