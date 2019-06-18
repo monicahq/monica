@@ -201,7 +201,7 @@ stages:
     strategy:
       parallel: 4
     steps:
-    - template: unit-tests-select-step.yml
+    - template: .azure/unit-tests-select-step.yml
     - template: .azure/docker-pull-step.yml
 
     - task: Docker@1
