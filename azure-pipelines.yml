@@ -160,6 +160,7 @@ stages:
 
 - stage: docker
   displayName: 'Docker'
+  dependsOn: []
   jobs:
   - job: build_docker
     pool:
@@ -192,7 +193,6 @@ stages:
       displayName: 'Artifactory Publish Build Info'
       inputs:
         artifactoryService: artifactory
-
 
   - job: tests_docker
     dependsOn: build_docker
