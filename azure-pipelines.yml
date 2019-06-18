@@ -204,6 +204,11 @@ stages:
     - template: .azure/unit-tests-select-step.yml
     - template: .azure/docker-pull-step.yml
 
+    - bash: |
+        mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        mysql -u root -proot monica < scripts/database.test.sql
+      displayName: 'Prepare db'
+
     - task: Docker@1
       displayName: 'Prepare db'
       inputs:
@@ -212,13 +217,9 @@ stages:
         arguments: '--network="host"'
         imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
         containerName: 'monica-dev'
-        containerCommand: |
-          mkdir -p results/coverage;
-          sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/tests/.env.mysql > .env;
-          touch .sentry-release;
-          mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
-          mysql -u root -proot monica < scripts/database.test.sql;
-          php artisan migrate --no-interaction -vvv;
+        containerCommand: 'bash -c \'
+          sed \\\'s/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/\\\' scripts/tests/.env.mysql > .env;
+          php artisan migrate --no-interaction -vvv;\''
         runInBackground: false
 
     - task: Docker@1
@@ -229,11 +230,11 @@ stages:
         arguments: '--network="host"'
         imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
         containerName: 'monica-dev'
-        containerCommand: |
+        containerCommand: 'bash -c \'
           mkdir -p results/coverage;
-          sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/tests/.env.mysql > .env;
+          sed \\\'s/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/\\\' scripts/tests/.env.mysql > .env;
           touch .sentry-release;
-          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${SYSTEM_JOBPOSITIONINPHASE}.xml --coverage-clover ./results/coverage${SYSTEM_JOBPOSITIONINPHASE}.xml --testsuite $TESTSUITE;
+          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${SYSTEM_JOBPOSITIONINPHASE}.xml --coverage-clover ./results/coverage${SYSTEM_JOBPOSITIONINPHASE}.xml --testsuite $TESTSUITE;\''
         runInBackground: false
 
   - job: psalm_docker
