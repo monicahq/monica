@@ -157,3 +157,131 @@ stages:
       env:
         MICROBADGER_WEBHOOK: $(MICROBADGER_WEBHOOK)
         DOCKER_LOGIN: $(DOCKER_LOGIN)
+
+- stage: docker
+  displayName: 'Docker'
+  jobs:
+  - job: build_docker
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@1
+      displayName: 'build docker image'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        command: build
+        dockerFile: '**/Dockerfile.dev'
+        imageName: 'monica-dev:$(Build.BuildId)'
+
+    - task: Docker@1
+      displayName: 'Tag image'
+      inputs:
+        command: 'Tag image'
+        arguments: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
+        imageName: 'monica-dev:$(Build.BuildId)'
+
+    - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-docker.ArtifactoryDocker@1
+      displayName: 'Artifactory docker push'
+      inputs:
+        artifactoryService: artifactory
+        targetRepo: 'docker-local'
+        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
+        collectBuildInfo: true
+
+    - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-publish-build-info.ArtifactoryPublishBuildInfo@1
+      displayName: 'Artifactory Publish Build Info'
+      inputs:
+        artifactoryService: artifactory
+
+
+  - job: tests_docker
+    dependsOn: build_docker
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      parallel: 4
+    steps:
+    - template: unit-tests-select-step.yml
+    - template: .azure/docker-pull-step.yml
+
+    - task: Docker@1
+      displayName: 'Prepare db'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        command: 'Run an image'
+        arguments: '--network="host"'
+        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
+        containerName: 'monica-dev'
+        containerCommand: |
+          mkdir -p results/coverage;
+          sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/tests/.env.mysql > .env;
+          touch .sentry-release;
+          mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;";
+          mysql -u root -proot monica < scripts/database.test.sql;
+          php artisan migrate --no-interaction -vvv;
+        runInBackground: false
+
+    - task: Docker@1
+      displayName: 'Run tests'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        command: 'Run an image'
+        arguments: '--network="host"'
+        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
+        containerName: 'monica-dev'
+        containerCommand: |
+          mkdir -p results/coverage;
+          sed 's/DB_TEST_PASSWORD=/DB_TEST_PASSWORD=root/' scripts/tests/.env.mysql > .env;
+          touch .sentry-release;
+          phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${SYSTEM_JOBPOSITIONINPHASE}.xml --coverage-clover ./results/coverage${SYSTEM_JOBPOSITIONINPHASE}.xml --testsuite $TESTSUITE;
+        runInBackground: false
+
+  - job: psalm_docker
+    dependsOn: build_docker
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/docker-pull-step.yml
+    - task: Docker@1
+      displayName: 'Run psalm'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        command: 'Run an image'
+        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
+        containerName: 'monica-dev'
+        containerCommand: 'vendor/bin/psalm --show-info=false'
+        runInBackground: false
+
+  - job: phpstan_docker
+    dependsOn: build_docker
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/docker-pull-step.yml
+    - task: Docker@1
+      displayName: 'Run phpstan'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        command: 'Run an image'
+        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
+        containerName: 'monica-dev'
+        containerCommand: 'php artisan code:analyse'
+        runInBackground: false
+
+  - job: clean_docker
+    dependsOn:
+      - build_docker
+      - tests_docker
+      - psalm_docker
+      - phpstan_docker
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-discard-builds-task.ArtifactoryDiscardBuilds@1
+      displayName: 'Artifactory Discard Builds'
+      inputs:
+        artifactoryService: artifactory
+        buildName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
+        deleteArtifacts: true
+        async: true
+      continueOnError: true
