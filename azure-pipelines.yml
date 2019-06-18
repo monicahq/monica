@@ -217,7 +217,7 @@ stages:
         arguments: '--network="host"'
         imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
         containerName: 'monica-dev'
-        containerCommand: scripts/ci/prepare-db.sh
+        containerCommand: ./scripts/ci/prepare-db.sh
         runInBackground: false
 
     - task: Docker@1
@@ -228,7 +228,7 @@ stages:
         arguments: '--network="host"'
         imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
         containerName: 'monica-dev'
-        containerCommand: scripts/ci/runtests.sh
+        containerCommand: ./scripts/ci/runtests.sh
         runInBackground: false
 
   - job: psalm_docker
