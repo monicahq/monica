@@ -170,9 +170,10 @@ stages:
       displayName: 'build docker image'
       inputs:
         command: build
-        dockerFile: 'scripts/docker/ubuntu/dev/Dockerfile'
-        buildContext: '.'
-        repository: $(Jfrog.Docker)/monica-dev
+        containerRegistry: 'docker-artifactory'
+        Dockerfile: scripts/docker/ubuntu/dev/Dockerfile
+        buildContext: .
+        repository: 'monica-dev'
         tags: $(Build.BuildId)
 
     - task: Docker@2
