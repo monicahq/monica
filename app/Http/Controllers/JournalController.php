@@ -175,6 +175,54 @@ class JournalController extends Controller
     }
 
     /**
+     * Display the Edit journal entry screen.
+     *
+     * @param Entry $entry
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function edit(Entry $entry)
+    {
+        return view('journal.edit')
+            ->withEntry($entry);
+    }
+
+    /**
+     * Update a journal entry.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request, $entryId)
+    {
+        $validator = Validator::make($request->all(), [
+            'entry' => 'required|string',
+            'date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
+        $entry = Entry::findOrFail($entryId);
+        $entry->post = $request->input('entry');
+
+        if ($request->input('title') != '') {
+            $entry->title = $request->input('title');
+        }
+
+        $entry->save();
+
+        $entry->date = $request->input('date');
+        // Log a journal entry
+        (new JournalEntry)->add($entry);
+
+        return redirect()->route('journal.index');
+    }
+
+    /**
      * Delete the reminder.
      */
     public function deleteEntry(Request $request, $entryId)
