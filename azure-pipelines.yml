@@ -172,9 +172,7 @@ stages:
         command: build
         dockerFile: 'scripts/docker/ubuntu/dev/Dockerfile'
         buildContext: '.'
-        tags: |
-          monica-dev:$(Build.BuildId)
-          $(Jfrog.Docker)/monica-dev:$(Build.BuildId)
+        tags: $(Jfrog.Docker)/monica-dev:$(Build.BuildId)
 
     - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-docker.ArtifactoryDocker@1
       displayName: 'Artifactory docker push'
@@ -222,6 +220,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/docker-pull-step.yml
+
     - task: Docker@2
       displayName: 'Run psalm'
       inputs:
@@ -234,6 +233,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/docker-pull-step.yml
+
     - task: Docker@2
       displayName: 'Run phpstan'
       inputs:
@@ -255,5 +255,5 @@ stages:
         artifactoryService: artifactory
         buildName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
         deleteArtifacts: true
-        async: true
+#        async: true
       continueOnError: true
