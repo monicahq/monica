@@ -27,7 +27,6 @@ public/storage
 resources/vendor/
 results/
 .sass-lint.yml
-scripts/tests
 scripts/vagrant
 server.php
 sonar-project.properties
