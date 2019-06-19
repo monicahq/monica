@@ -172,7 +172,8 @@ stages:
         command: build
         dockerFile: 'scripts/docker/ubuntu/dev/Dockerfile'
         buildContext: '.'
-        tags: $(Jfrog.Docker)/monica-dev:$(Build.BuildId)
+        repository: $(Jfrog.Docker)/monica-dev
+        tags: $(Build.BuildId)
 
     - task: Docker@2
       inputs:
