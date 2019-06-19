@@ -218,7 +218,7 @@ stages:
       displayName: 'Run tests'
       inputs:
         command: 'run'
-        arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionPhase) $(TESTSUITE)'
+        arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionInPhase) $(TESTSUITE)'
 
   - job: psalm_docker
     dependsOn: build_docker
