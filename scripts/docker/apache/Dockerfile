@@ -18,7 +18,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 RUN apk update && apk upgrade
 RUN apk add --virtual .build-deps \
         curl openssl bash
-RUN apk add netcat-openbsd \
+RUN apk add bash netcat-openbsd \
         #- base
         php7 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib \
