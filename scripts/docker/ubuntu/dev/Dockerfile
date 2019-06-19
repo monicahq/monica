@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update; \
-    apt-get -y install curl gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates; \
+    apt-get -y install curl gnupg2 apt-transport-https ca-certificates; \
     ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get --force-yes -y install netcat-openbsd \
@@ -25,9 +25,7 @@ RUN apt-get update; \
         #- cbor-php (webauthn)
         php7.2-gmp \
 # apache variant
-        apache2 php7.2-fpm \
-# debug packages
-        php7.2-phpdbg; \
+        apache2 php7.2-fpm; \
     dpkg-reconfigure --frontend noninteractive tzdata
 
 # Create a user to own all the code and assets and give them a working
@@ -44,7 +42,8 @@ COPY . .
 
 RUN mkdir -p bootstrap/cache; \
     mkdir -p storage; \
-    mkdir -p results; \
+    mkdir -p results/coverage; \
+    touch .sentry-release; \
     chown -R monica:www-data .; \
     chgrp -R www-data bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage;
@@ -61,11 +60,10 @@ RUN composer global require hirak/prestissimo; \
     composer clear-cache
 USER root
 
-# Install Yarn
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -; \
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list; \
-    apt-get update; \
-    apt-get install -y yarn
+# Install dev components
+RUN scripts/docker/ubuntu/install-yarn.sh; \
+# phpdbg package
+    apt-get install php7.2-phpdbg;
 
 # Cleanup
 RUN apt-get -y remove curl gnupg2; \

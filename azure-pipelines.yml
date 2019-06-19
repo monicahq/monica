@@ -166,20 +166,15 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: Docker@1
+    - task: Docker@2
       displayName: 'build docker image'
       inputs:
-        containerregistrytype: 'Container Registry'
         command: build
         dockerFile: 'scripts/docker/ubuntu/dev/Dockerfile'
-        imageName: 'monica-dev:$(Build.BuildId)'
-
-    - task: Docker@1
-      displayName: 'Tag image'
-      inputs:
-        command: 'Tag image'
-        arguments: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
-        imageName: 'monica-dev:$(Build.BuildId)'
+        buildContext: '.'
+        tags: |
+          monica-dev:$(Build.BuildId)
+          $(Jfrog.Docker)/monica-dev:$(Build.BuildId)
 
     - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-docker.ArtifactoryDocker@1
       displayName: 'Artifactory docker push'
@@ -209,27 +204,17 @@ stages:
         mysql -u root -proot monica < scripts/database.test.sql
       displayName: 'Prepare db'
 
-    - task: Docker@1
+    - task: Docker@2
       displayName: 'Prepare db'
       inputs:
-        containerregistrytype: 'Container Registry'
-        command: 'Run an image'
-        arguments: '--network="host"'
-        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
-        containerName: 'monica-dev'
-        containerCommand: scripts/ci/prepare-db.sh
-        runInBackground: false
+        command: 'run'
+        arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
 
-    - task: Docker@1
+    - task: Docker@2
       displayName: 'Run tests'
       inputs:
-        containerregistrytype: 'Container Registry'
-        command: 'Run an image'
-        arguments: '--network="host"'
-        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
-        containerName: 'monica-dev'
-        containerCommand: ./scripts/ci/runtests.sh
-        runInBackground: false
+        command: 'run'
+        arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh'
 
   - job: psalm_docker
     dependsOn: build_docker
@@ -237,15 +222,11 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/docker-pull-step.yml
-    - task: Docker@1
+    - task: Docker@2
       displayName: 'Run psalm'
       inputs:
-        containerregistrytype: 'Container Registry'
-        command: 'Run an image'
-        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
-        containerName: 'monica-dev'
-        containerCommand: 'vendor/bin/psalm --show-info=false'
-        runInBackground: false
+        command: 'run'
+        arguments: '--name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) vendor/bin/psalm --show-info=false'
 
   - job: phpstan_docker
     dependsOn: build_docker
@@ -253,15 +234,11 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - template: .azure/docker-pull-step.yml
-    - task: Docker@1
+    - task: Docker@2
       displayName: 'Run phpstan'
       inputs:
-        containerregistrytype: 'Container Registry'
-        command: 'Run an image'
-        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
-        containerName: 'monica-dev'
-        containerCommand: 'php artisan code:analyse'
-        runInBackground: false
+        command: 'run'
+        arguments: '--name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) php artisan code:analyse'
 
   - job: clean_docker
     dependsOn:

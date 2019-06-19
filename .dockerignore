@@ -11,8 +11,8 @@ database/*.sqlite
 CODE_OF_CONDUCT.md
 docker-compose.yml
 docker-compose.dev.yml
-Dockerfile
-Dockerfile.dev
+**/Dockerfile
+**/Dockerfile.dev
 .dockerignore
 docs/
 fortrabbit.yml
