@@ -205,7 +205,7 @@ stages:
       inputs:
         containerregistrytype: 'Container Registry'
         dockerRegistryEndpoint: 'docker-hub'
-        dockerComposeFile: 'scripts\ci\docker-compose-mysql.yml'
+        dockerComposeFile: 'scripts/ci/docker-compose-mysql.yml'
         action: 'Run services'
         buildImages: false
 
