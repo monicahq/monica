@@ -42,12 +42,12 @@ COPY . .
 
 RUN mkdir -p bootstrap/cache; \
     mkdir -p storage; \
-    mkdir -p results/coverage; \
-    touch .sentry-release; \
     chown -R monica:www-data .; \
     chgrp -R www-data bootstrap/cache storage; \
-    chmod -R g+w bootstrap/cache storage;
-COPY .env.dev .env
+    chmod -R g+w bootstrap/cache storage; \
+    mkdir -p results/coverage; \
+    touch .sentry-release;
+COPY scripts/tests/.env.mysql .env
 
 # Composer installation
 RUN scripts/docker/install-composer.sh

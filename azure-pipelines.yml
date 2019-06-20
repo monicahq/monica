@@ -200,12 +200,21 @@ stages:
     strategy:
       parallel: 4
     steps:
+    - task: DockerCompose@0
+      displayName: 'Run mysql'
+      inputs:
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'docker-hub'
+        dockerComposeFile: 'scripts\ci\docker-compose-mysql.yml'
+        action: 'Run services'
+        buildImages: false
+
     - template: .azure/unit-tests-select-step.yml
     - template: .azure/docker-pull-step.yml
 
     - bash: |
-        mysql --protocol=tcp -u root -proot -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        mysql -u root -proot monica < scripts/database.test.sql
+        mysql --protocol=tcp -u root -P 3307 -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        mysql -u root -P 3307 monica < scripts/database.test.sql
       displayName: 'Prepare db'
 
     - task: Docker@2
@@ -213,12 +222,16 @@ stages:
       inputs:
         command: 'run'
         arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
+      env:
+        DB_TEST_PORT: 3307
 
     - task: Docker@2
       displayName: 'Run tests'
       inputs:
         command: 'run'
         arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionInPhase) $(TESTSUITE)'
+      env:
+        DB_TEST_PORT: 3307
 
   - job: psalm_docker
     dependsOn: build_docker

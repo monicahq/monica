@@ -1,0 +1,22 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:5.6
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD='true'
+      - MYSQL_HOST=''
+      - MYSQL_ROOT_PASSWORD=''
+    volumes:
+      - data:/var/cache
+    ports:
+      - "3307:3306"
+    networks: 
+      - "host"
+ 
+volumes:
+  data:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
