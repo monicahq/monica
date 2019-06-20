@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   mysql:
     image: mysql:5.6
@@ -12,9 +13,8 @@ services:
       - data:/var/cache
     ports:
       - 3307:3306
-    networks: 
-      - host
- 
+    network_mode: host
+
 volumes:
   data:
     driver_opts:
