@@ -41,7 +41,7 @@
 
               <div class="form-group">
                 <label for="field-entry">{{ trans('journal.journal_add_date') }}</label>
-                <input type="date" id="field-date" name="date" class="form-control" value="{{ $entry->created_at->toDateString() }}" disabled>
+                <input type="date" id="field-date" name="date" class="form-control" value="{{ $date->toDateString() }}">
               </div>
 
               <div class="form-group">

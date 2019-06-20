@@ -82,6 +82,7 @@ class Entry extends Model implements IsJournalableInterface
             'month' => $entryDate->month,
             'month_name' => mb_convert_case(DateHelper::getShortMonth($entryDate), MB_CASE_UPPER, 'UTF-8'),
             'year' => $entryDate->year,
+            'date' => $entryDate,
         ];
     }
 }

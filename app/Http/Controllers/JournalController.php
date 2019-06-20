@@ -184,7 +184,9 @@ class JournalController extends Controller
      */
     public function edit(Entry $entry)
     {
+        $date = $entry->getInfoForJournalEntry()['date'];
         return view('journal.edit')
+            ->withDate($date)
             ->withEntry($entry);
     }
 
@@ -215,7 +217,7 @@ class JournalController extends Controller
 
         $entry->save();
 
-        $entry->date = $entry->created_at;
+        $entry->date = $request->input('date');
         // Log a journal entry
         (new JournalEntry)->edit($entry);
 
