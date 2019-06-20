@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Parsedown;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
@@ -197,7 +198,6 @@ class JournalController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'entry' => 'required|string',
-            'date' => 'required|date',
         ]);
 
         if ($validator->fails()) {
@@ -215,9 +215,9 @@ class JournalController extends Controller
 
         $entry->save();
 
-        $entry->date = $request->input('date');
+        $entry->date = $entry->created_at;
         // Log a journal entry
-        (new JournalEntry)->add($entry);
+        (new JournalEntry)->edit($entry);
 
         return redirect()->route('journal.index');
     }

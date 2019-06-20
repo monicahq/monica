@@ -66,6 +66,22 @@ class JournalEntry extends Model
     }
 
     /**
+     * Update an entry in the journal.
+     * @param mixed $resourceToLog
+     */
+    public function edit($resourceToLog)
+    {
+        $journalEntry = self::where(
+                'journalable_id', $resourceToLog->id
+            )->where(
+                'journalable_type', get_class($resourceToLog)
+            )->first()
+            ->touch();
+
+        return $this;
+    }
+
+    /**
      * Get the information about the object represented by the Journal Entry.
      * @return array
      */
