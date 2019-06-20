@@ -11,9 +11,9 @@ services:
     volumes:
       - data:/var/cache
     ports:
-      - "3307:3306"
+      - 3307:3306
     networks: 
-      - "host"
+      - host
  
 volumes:
   data:
