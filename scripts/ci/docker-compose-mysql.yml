@@ -6,8 +6,7 @@ services:
     container_name: mysql
     restart: unless-stopped
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD='true'
-      - MYSQL_HOST=''
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
       - MYSQL_ROOT_PASSWORD=''
     volumes:
       - data:/var/cache
