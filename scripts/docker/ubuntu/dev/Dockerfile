@@ -1,3 +1,4 @@
+#FROM php:7.2-apache
 FROM ubuntu:latest
 
 RUN apt-get update; \
