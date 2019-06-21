@@ -214,7 +214,7 @@ stages:
       displayName: 'Run mysql'
       inputs:
         command: 'run'
-        arguments: '-d --rm -p 3307:3306 --mount type=tmpfs,destination=/var/lib/mysql:rw -e MYSQL_ALLOW_EMPTY_PASSWORD=TRUE -e MYSQL_ROOT_PASSWORD= --name mysql mysql:5.7'
+        arguments: '-d --rm -p 3307:3306 --mount type=tmpfs,destination=/var/lib/mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=TRUE -e MYSQL_ROOT_PASSWORD= --name mysql mysql:5.7'
 
     - template: .azure/unit-tests-select-step.yml
     - template: .azure/docker-pull-step.yml

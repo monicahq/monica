@@ -47,7 +47,7 @@ RUN mkdir -p bootstrap/cache; \
     chmod -R g+w bootstrap/cache storage; \
     mkdir -p results/coverage; \
     touch .sentry-release;
-COPY scripts/tests/.env.mysql .env
+RUN sed 's/DB_TEST_PORT=.*/DB_TEST_PORT=3307/' scripts/tests/.env.mysql > .env
 
 # Composer installation
 RUN scripts/docker/install-composer.sh
