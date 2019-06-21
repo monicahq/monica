@@ -200,23 +200,29 @@ stages:
     strategy:
       parallel: 4
     steps:
-    - task: DockerCompose@0
+#    - task: DockerCompose@0
+#      displayName: 'Run mysql'
+#      inputs:
+#        containerregistrytype: 'Container Registry'
+#        dockerRegistryEndpoint: 'docker-hub'
+#        dockerComposeFile: 'scripts/ci/docker-compose-mysql.yml'
+#        action: 'Run services'
+#        buildImages: false
+#        projectName: mysql
+
+    - task: Docker@2
       displayName: 'Run mysql'
       inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'docker-hub'
-        dockerComposeFile: 'scripts/ci/docker-compose-mysql.yml'
-        action: 'Run services'
-        buildImages: false
-        projectName: mysql
-    - bash: |
-        mysql --protocol=tcp -u root -h 127.0.0.1 -P 3307 -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        mysql --protocol=tcp -u root -h 127.0.0.1 -P 3307 monica < scripts/database.test.sql
-      displayName: 'Prepare db'
+        command: 'run'
+        arguments: '-d --rm -p 3307:3306 --mount type=tmpfs,destination=/var/lib/mysql:rw -e MYSQL_ALLOW_EMPTY_PASSWORD=TRUE -e MYSQL_ROOT_PASSWORD= --name mysql mysql:5.7'
 
     - template: .azure/unit-tests-select-step.yml
     - template: .azure/docker-pull-step.yml
 
+    - bash: |
+        mysql --protocol=tcp -u root -h 127.0.0.1 -P 3307 -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        mysql --protocol=tcp -u root -h 127.0.0.1 -P 3307 monica < scripts/database.test.sql
+      displayName: 'Prepare db'
     - task: Docker@2
       displayName: 'Prepare db'
       inputs:
