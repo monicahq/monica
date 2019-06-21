@@ -208,14 +208,14 @@ stages:
         dockerComposeFile: 'scripts/ci/docker-compose-mysql.yml'
         action: 'Run services'
         buildImages: false
-
-    - template: .azure/unit-tests-select-step.yml
-    - template: .azure/docker-pull-step.yml
-
+        projectName: mysql
     - bash: |
         mysql --protocol=tcp -u root -h 127.0.0.1 -P 3307 -e "CREATE DATABASE IF NOT EXISTS monica CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         mysql --protocol=tcp -u root -h 127.0.0.1 -P 3307 monica < scripts/database.test.sql
       displayName: 'Prepare db'
+
+    - template: .azure/unit-tests-select-step.yml
+    - template: .azure/docker-pull-step.yml
 
     - task: Docker@2
       displayName: 'Prepare db'
