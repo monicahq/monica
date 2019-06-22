@@ -26,9 +26,8 @@ variables:
   COMPOSER_HOME: $(Agent.BuildDirectory)/.composer
 
 stages:
-- stage: docker
+- stage: build
   displayName: 'Docker'
-  dependsOn: []
   jobs:
   - job: build
     pool:
