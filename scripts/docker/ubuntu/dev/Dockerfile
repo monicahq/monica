@@ -2,7 +2,7 @@
 FROM ubuntu:latest
 
 RUN apt-get update; \
-    apt-get -y install curl gnupg2 apt-transport-https ca-certificates; \
+    apt-get -y install curl gnupg2; \
     ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt-get --force-yes -y install netcat-openbsd \
@@ -64,6 +64,7 @@ USER root
 # Install dev components
 RUN scripts/docker/ubuntu/install-yarn.sh; \
 # phpdbg package
+    yarn global add greenkeeper-lockfile@1 junit-merge; \
     apt-get install php7.2-phpdbg;
 
 # Cleanup
