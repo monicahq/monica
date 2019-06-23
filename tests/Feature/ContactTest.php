@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -564,4 +565,43 @@ class ContactTest extends FeatureTestCase
         $response->assertSee('FN:John Doe');
         $response->assertSee('N:Doe;John;;;');
     }
+
+    public function test_edit_contact_has_specialdeceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID().'/edit');
+
+        $response->assertSee('<form-specialdeceased
+          :value="false"
+          :date="\'\'"
+          :reminder="false"
+        >
+        </form-specialdeceased>');
+    }
+
+    public function test_edit_contact_with_specialdeceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id
+        ]);
+
+        $contact->is_dead = true;
+        $contact->deceased_reminder_id = $reminder->id;
+        $contact->save();
+
+
+        $response = $this->get('/people/'.$contact->hashID().'/edit');
+
+        $response->assertSee('<form-specialdeceased
+          :value="true"
+          :date="\''.$reminder->initial_date.'\'"
+          :reminder="true"
+        >
+        </form-specialdeceased>');
+    }
+
 }
