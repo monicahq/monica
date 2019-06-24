@@ -586,13 +586,12 @@ class ContactTest extends FeatureTestCase
 
         $reminder = factory(Reminder::class)->create([
             'account_id' => $contact->account_id,
-            'contact_id' => $contact->id
+            'contact_id' => $contact->id,
         ]);
 
         $contact->is_dead = true;
         $contact->deceased_reminder_id = $reminder->id;
         $contact->save();
-
 
         $response = $this->get('/people/'.$contact->hashID().'/edit');
 
