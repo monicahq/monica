@@ -644,7 +644,7 @@ class ContactTest extends FeatureTestCase
             'is_deceased' => 'true',
             'is_deceased_date_known' => 'true',
             'deceased_date' => '2012-06-22',
-            'add_reminder_deceased' => 'true'
+            'add_reminder_deceased' => 'true',
         ];
 
         $this->put('/people/'.$contact->hashID(), $data);
