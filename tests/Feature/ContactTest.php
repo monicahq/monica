@@ -604,4 +604,66 @@ class ContactTest extends FeatureTestCase
         </form-specialdeceased>');
     }
 
+    public function test_edit_contact_put_deceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $data['id'] = $contact->id;
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+        ]);
+
+        $contact->refresh();
+        $this->assertDatabaseHas('special_dates', [
+            'id' => $contact->deceased_special_date_id,
+            'date' => '2012-06-22',
+        ]);
+    }
+
+    public function test_edit_contact_put_deceased_with_reminder()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+            'add_reminder_deceased' => 'true'
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+        ]);
+
+        $contact->refresh();
+        $this->assertDatabaseHas('special_dates', [
+            'id' => $contact->deceased_special_date_id,
+            'date' => '2012-06-22',
+        ]);
+        $this->assertDatabaseHas('reminders', [
+            'id' => $contact->deceased_reminder_id,
+            'contact_id' => $contact->id,
+            'initial_date' => '2012-06-22',
+        ]);
+    }
 }
