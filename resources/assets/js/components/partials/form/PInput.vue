@@ -94,15 +94,15 @@ export default {
     select() {
       switch (this._type)
       {
-        case 'checkbox':
-          this.$refs.input.$refs.input.checked = ! this.$refs.input.$refs.input.checked;
-          this.$emit('change', this.$refs.input.$refs.input.checked);
-          break;
-        case 'radio':
-          this.$refs.input.$refs.input.checked = true;
-          this.$emit('change', this.value);
-          break;
-        case 'input':
+      case 'checkbox':
+        this.$refs.input.$refs.input.checked = ! this.$refs.input.$refs.input.checked;
+        this.$emit('change', this.$refs.input.$refs.input.checked);
+        break;
+      case 'radio':
+        this.$refs.input.$refs.input.checked = true;
+        this.$emit('change', this.value);
+        break;
+      case 'input':
           //this.$refs.input.$refs.input.focus();
       }
     },

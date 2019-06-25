@@ -1,23 +1,23 @@
 <script>
-    let input = require('./PInput').default;
+let input = require('./PInput').default;
 
-    let radio = {
-        name: "radio",
+let radio = {
+  name: 'radio',
 
-        input_type: 'radio',
-        input_iclass: 'p-round p-thick',
+  input_type: 'radio',
+  input_iclass: 'p-round p-thick',
 
-        components: input.components,
-        model: input.model,
-        props: input.props,
-        data: input.data,
-        computed: input.computed,
-        watch: input.watch,
-        mounted: input.mounted,
-        methods: input.methods,
+  components: input.components,
+  model: input.model,
+  props: input.props,
+  data: input.data,
+  computed: input.computed,
+  watch: input.watch,
+  mounted: input.mounted,
+  methods: input.methods,
 
-        render: input.render,
-    };
+  render: input.render,
+};
 
-    export default radio;
+export default radio;
 </script>
