@@ -9,22 +9,25 @@
         v-model="value"
         :name="'is_deceased'"
         :value="true"
+        :dclass="'flex mb2'"
       >
-        {{ $t('people.deceased_mark_person_deceased') }}
+        <template slot="label">
+          {{ $t('people.deceased_mark_person_deceased') }}
+        </template>
       </form-checkbox>
       <div v-show="value" :class="[ dirltr ? 'ml4' : 'mr4' ]">
         <form-checkbox
           v-model.lazy="dateKnown"
           :name="'is_deceased_date_known'"
           :value="true"
-          :dclass="'flex mb3'"
+          :dclass="'flex mb1'"
           @change="_focusDate()"
         >
           <template slot="label">
             {{ $t('people.deceased_know_date') }}
           </template>
         </form-checkbox>
-        <div v-show="dateKnown" :class="[ dirltr ? 'ml4' : 'mr4' ]" class="mt2">
+        <div v-show="dateKnown" :class="[ dirltr ? 'ml4' : 'mr4' ]">
           <form-date
             :id="'deceased_date'"
             ref="deaceasedday"
@@ -36,7 +39,7 @@
             <form-checkbox
               :name="'add_reminder_deceased'"
               :value="true"
-              :checked="reminder"
+              :model="reminder"
             >
               {{ $t('people.deceased_add_reminder') }}
             </form-checkbox>

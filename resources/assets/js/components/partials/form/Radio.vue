@@ -1,96 +1,23 @@
-<style scoped>
-</style>
-
-<template>
-  <div :class="dclass">
-    <div>
-      <p-radio
-        ref="input"
-        v-model.lazy="checked"
-        :name="name"
-        :class="inputClass"
-        :color="inputColor"
-        :value="value"
-        :disabled="disabled"
-        @change="event => { $emit('change', event) }"
-      >
-        <slot></slot>
-      </p-radio>
-    </div>
-    <div class="pointer" @click="select()">
-      <label v-if="hasSlot('label')" class="pointer" :for="formid">
-        <slot name="label"></slot>
-      </label>
-      <slot name="extra"></slot>
-    </div>
-  </div>
-</template>
-
 <script>
-import PRadio from 'pretty-checkbox-vue/radio';
+    let input = require('./PInput').default;
 
-export default {
+    let radio = {
+        name: "radio",
 
-  components: {
-    PRadio
-  },
+        input_type: 'radio',
+        input_iclass: 'p-round p-thick',
 
-  model: {
-    prop: 'checked',
-    event: 'change'
-  },
+        components: input.components,
+        model: input.model,
+        props: input.props,
+        data: input.data,
+        computed: input.computed,
+        watch: input.watch,
+        mounted: input.mounted,
+        methods: input.methods,
 
-  props: {
-    name: {
-      type: String,
-      default: '',
-    },
-    value: {
-      type: [String, Boolean],
-      default: '',
-    },
-    checked: {
-      type: [String, Boolean],
-      default: '',
-    },
-    iclass: {
-      type: [String, Array],
-      default: ''
-    },
-    dclass: {
-      type: [String, Array],
-      default: ''
-    },
-    color: {
-      type: String,
-      default: ''
-    },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
-  },
+        render: input.render,
+    };
 
-  computed: {
-    inputClass() {
-      return [this.iclass, 'p-default p-round p-thick'];
-    },
-    inputColor() {
-      return this.color != '' ? this.color : 'primary-o';
-    },
-  },
-
-  methods: {
-    formid() {
-      return this.$refs.input.id;
-    },
-    select() {
-      this.$refs.input.$refs.input.checked = true;
-      this.$emit('change', this.value);
-    },
-    hasSlot (name = 'default') {
-      return !!this.$slots[ name ] || !!this.$scopedSlots[ name ];
-    }
-  }
-};
+    export default radio;
 </script>

@@ -53,7 +53,7 @@
             <form-checkbox
               :name="'has_recipient'"
               :value="'1'"
-              :checked="{{ \Safe\json_encode($gift->hasParticularRecipient()) }}"
+              :modelValue="{{ \Safe\json_encode($gift->hasParticularRecipient()) }}"
               :dclass="'form-check form-check-label'"
               :iclass="'form-check-input'"
             >
