@@ -1,16 +1,22 @@
 <template>
   <div>
-    <datepicker :value="selectedDate"
-                :format="displayValue"
-                :parse-typed-date="formatTypedValue"
-                :language="locale"
-                :monday-first="mondayFirst"
-                :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
-                :typeable="true"
-                @input="$emit('input', exchangeValue($event))"
-                @selected="update"
+    <datepicker
+      ref="select"
+      :ref-name="'select'"
+      :value="selectedDate"
+      :format="displayValue"
+      :parse-typed-date="formatTypedValue"
+      :language="locale"
+      :monday-first="mondayFirst"
+      :input-class="'br2 f5 ba b--black-40 pa2 outline-0'"
+      :typeable="true"
+      :clear-button="true"
+      :show-calendar-on-focus="showCalendarOnFocus"
+      @input="$emit('input', exchangeValue($event))"
+      @selected="update"
+      @clearDate="update('')"
     />
-    <input :name="id" type="hidden" :value="value" />
+    <input :name="id" type="hidden" :value="exchange" />
   </div>
 </template>
 
@@ -24,8 +30,17 @@ export default {
     Datepicker
   },
 
+  model: {
+    prop: 'value',
+    event: 'input'
+  },
+
   props: {
     id: {
+      type: String,
+      default: '',
+    },
+    value: {
       type: String,
       default: '',
     },
@@ -37,6 +52,10 @@ export default {
       type: String,
       default: '',
     },
+    showCalendarOnFocus: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   data() {
@@ -44,7 +63,7 @@ export default {
       /**
        * Value of the date in exchange format
        */
-      value: '',
+      exchange: '',
 
       selectedDate: '',
       mondayFirst: false
@@ -68,7 +87,17 @@ export default {
   },
 
   mounted() {
-    this.selectedDate = moment(this.defaultDate, this.exchangeFormat).toDate();
+    this.exchange = this.value;
+    if (this.exchange === '') {
+      this.exchange = this.defaultDate;
+    }
+    if (this.exchange !== '') {
+      var mdate = moment(this.exchange, this.exchangeFormat);
+      if (! mdate.isValid()) {
+        mdate = moment();
+      }
+      this.selectedDate = mdate.toDate();
+    }
     this.mondayFirst = moment.localeData().firstDayOfWeek() == 1;
     this.update(this.selectedDate);
   },
@@ -80,7 +109,7 @@ export default {
      * @return string date in display format
      */
     displayValue(date) {
-      return moment(date).format(this.displayFormat);
+      return date !== '' && date !== null ? moment(date).format(this.displayFormat) : '';
     },
 
     /**
@@ -89,7 +118,7 @@ export default {
      * @return string date in exchange format
      */
     exchangeValue(date) {
-      return moment(date).format(this.exchangeFormat);
+      return date !== '' && date !== null ? moment(date).format(this.exchangeFormat) : '';
     },
 
     /**
@@ -97,21 +126,30 @@ export default {
      * Store it in exchange format value.
      */
     update(date) {
-      var mdate = moment(date);
-      if (! mdate.isValid()) {
-        mdate = moment();
+      if (date === '' || date === null) {
+        this.exchange = '';
+      } else {
+        var mdate = moment(date);
+        if (! mdate.isValid()) {
+          mdate = moment();
+        }
+        this.exchange = mdate.format(this.exchangeFormat);
       }
-      this.value = mdate.format(this.exchangeFormat);
+      this.$emit('input', this.exchange);
     },
 
     /**
-     * Format the typed value with the locale specicifcation.
+     * Format the typed value with the locale specification.
      * @param date string in locale format
      * @return date value
      */
     formatTypedValue(date) {
-      return moment(date, this.displayFormat).toDate();
+      return date !== '' && date !== null ? moment(date, this.displayFormat).toDate() : '';
     },
+
+    focus() {
+      this.$refs.select.$children[0].$refs.select.focus();
+    }
 
   }
 };

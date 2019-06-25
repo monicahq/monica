@@ -16,6 +16,9 @@ $htmldir: ltr !default;
 // Icon fonts
 @import "~font-awesome/scss/font-awesome";
 
+// Tooltip
+@import '~vue-directive-tooltip/css/index.css';
+
 // Radio button
 @import '~pretty-checkbox/src/pretty-checkbox';
 

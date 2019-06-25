@@ -319,10 +319,12 @@ class ContactsController extends Controller
         $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
         $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
+        $deceaseddate = ! is_null($contact->deceasedDate) ? $contact->deceasedDate->date->toDateString() : '';
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
+        $hasDeceasedReminder = ! is_null($contact->deceased_reminder_id);
 
         return view('people.edit')
             ->withContact($contact)
@@ -330,10 +332,12 @@ class ContactsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
+            ->withDeceaseddate($deceaseddate)
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
+            ->withHasDeceasedReminder($hasDeceasedReminder)
             ->withGenders(GendersHelper::getGendersInput());
     }
 
@@ -361,6 +365,17 @@ class ContactsController extends Controller
             $month = $request->get('month');
             $year = $request->get('year');
         }
+        $is_deceased_date_known = false;
+        if ($request->get('is_deceased_date_known') === 'true' && $request->input('deceased_date')) {
+            $is_deceased_date_known = true;
+            $deceased_date = $request->input('deceased_date');
+            $deceased_date = DateHelper::parseDate($deceased_date);
+            $deceased_date_day = $deceased_date->day;
+            $deceased_date_month = $deceased_date->month;
+            $deceased_date_year = $deceased_date->year;
+        } else {
+            $deceased_date_day = $deceased_date_month = $deceased_date_year = null;
+        }
 
         $data = [
             'account_id' => auth()->user()->account->id,
@@ -378,10 +393,10 @@ class ContactsController extends Controller
             'birthdate_age' => $request->get('age'),
             'birthdate_add_reminder' => ! empty($request->get('addReminder')),
             'is_deceased' => ! empty($request->get('is_deceased')),
-            'is_deceased_date_known' => ! empty($request->get('is_deceased_date_known')),
-            'deceased_date_day' => $request->get('deceased_date_day'),
-            'deceased_date_month' => $request->get('deceased_date_month'),
-            'deceased_date_year' => $request->get('deceased_date_year'),
+            'is_deceased_date_known' => $is_deceased_date_known,
+            'deceased_date_day' => $deceased_date_day,
+            'deceased_date_month' => $deceased_date_month,
+            'deceased_date_year' => $deceased_date_year,
             'deceased_date_add_reminder' => ! empty($request->get('add_reminder_deceased')),
         ];
 

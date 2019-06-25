@@ -53,12 +53,17 @@
 
                   {{-- Explicit confirmation --}}
                   <div class="warning-zone">
-                    <label class="form-check-label">
-                      <input class="form-check-input" type="checkbox" name="confirmation" value="1" v-model="accept_invite_user">
-                        {{ trans('settings.users_add_confirmation') }}
-                    </label>
+                    <form-checkbox
+                      :name="'confirmation'"
+                      :value="'1'"
+                      v-model="accept_invite_user"
+                      :iclass="'form-check-input'"
+                      :dclass="'form-check-label'"
+                    >
+                      {{ trans('settings.users_add_confirmation') }}
+                    </form-checkbox>
                   </div>
-
+                          
                   <div class="form-group actions">
                     <button type="submit" class="btn btn-primary" :disabled="!accept_invite_user">{{ trans('settings.users_add_cta') }}</button>
                     <a href="{{ route('settings.users.index') }}" class="btn btn-secondary">{{ trans('app.cancel') }}</a>
