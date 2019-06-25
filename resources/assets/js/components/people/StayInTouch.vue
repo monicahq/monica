@@ -155,11 +155,13 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
+import { ToggleButton } from 'vue-js-toggle-button';
 
 export default {
 
   components: {
-    SweetModal
+    SweetModal,
+    ToggleButton,
   },
 
   props: {
