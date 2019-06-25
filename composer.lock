@@ -1063,16 +1063,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "2.1.8",
+            "version": "2.1.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "c26463ff9241f27907112fbcd0c86fa670cfef98"
+                "reference": "128cc721d771ec2c46ce59698f4ca42b73f71b25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/c26463ff9241f27907112fbcd0c86fa670cfef98",
-                "reference": "c26463ff9241f27907112fbcd0c86fa670cfef98",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/128cc721d771ec2c46ce59698f4ca42b73f71b25",
+                "reference": "128cc721d771ec2c46ce59698f4ca42b73f71b25",
                 "shasum": ""
             },
             "require": {
@@ -1116,7 +1116,7 @@
                 "validation",
                 "validator"
             ],
-            "time": "2019-05-16T22:02:54+00:00"
+            "time": "2019-06-23T10:14:27+00:00"
         },
         {
             "name": "erusev/parsedown",
@@ -2266,16 +2266,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.8.23",
+            "version": "v5.8.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "02d242212348bddd048702f5dee8dab693ac830b"
+                "reference": "1d8ec9afdedc79314c18715056b8143d7e1fac31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/02d242212348bddd048702f5dee8dab693ac830b",
-                "reference": "02d242212348bddd048702f5dee8dab693ac830b",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/1d8ec9afdedc79314c18715056b8143d7e1fac31",
+                "reference": "1d8ec9afdedc79314c18715056b8143d7e1fac31",
                 "shasum": ""
             },
             "require": {
@@ -2409,7 +2409,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-06-13T21:08:56+00:00"
+            "time": "2019-06-25T16:20:51+00:00"
         },
         {
             "name": "laravel/passport",
@@ -2715,16 +2715,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "1.0.52",
+            "version": "1.0.53",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391"
+                "reference": "08e12b7628f035600634a5e76d95b5eb66cea674"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/c5a5097156387970e6f0ccfcdf03f752856f3391",
-                "reference": "c5a5097156387970e6f0ccfcdf03f752856f3391",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/08e12b7628f035600634a5e76d95b5eb66cea674",
+                "reference": "08e12b7628f035600634a5e76d95b5eb66cea674",
                 "shasum": ""
             },
             "require": {
@@ -2795,7 +2795,7 @@
                 "sftp",
                 "storage"
             ],
-            "time": "2019-05-20T20:21:14+00:00"
+            "time": "2019-06-18T20:09:29+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -7275,16 +7275,16 @@
         },
         {
             "name": "symfony/event-dispatcher-contracts",
-            "version": "v1.1.1",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher-contracts.git",
-                "reference": "8fa2cf2177083dd59cf8e44ea4b6541764fbda69"
+                "reference": "c61766f4440ca687de1084a5c00b08e167a2575c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/8fa2cf2177083dd59cf8e44ea4b6541764fbda69",
-                "reference": "8fa2cf2177083dd59cf8e44ea4b6541764fbda69",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher-contracts/zipball/c61766f4440ca687de1084a5c00b08e167a2575c",
+                "reference": "c61766f4440ca687de1084a5c00b08e167a2575c",
                 "shasum": ""
             },
             "require": {
@@ -7329,7 +7329,7 @@
                 "interoperability",
                 "standards"
             ],
-            "time": "2019-05-22T12:23:29+00:00"
+            "time": "2019-06-20T06:46:26+00:00"
         },
         {
             "name": "symfony/finder",
