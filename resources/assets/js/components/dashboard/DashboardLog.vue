@@ -182,10 +182,14 @@
         <div v-if="contactRelated(tasks).length != 0 && contactRelatedTasksView">
           <ul>
             <li v-for="task in contactRelated(tasks)" :key="task.id" class="pb0 mb2">
-              <label class="pointer mb1">
-                <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
+              <form-checkbox
+                v-model.lazy="task.completed"
+                :name="'todo'"
+                :dclass="'mr1'"
+                @change="updateTask(task)"
+              >
                 {{ task.title }}
-              </label>
+              </form-checkbox>
               <span class="black-50 mr1 f7">
                 <a :href="'people/' + task.contact.hash_id">
                   {{ task.contact.first_name }}
@@ -217,10 +221,14 @@
           <!-- Actual list -->
           <ul v-if="customNotCompleted(tasks).length != 0">
             <li v-for="task in customNotCompleted(tasks)" :key="task.id" class="pb0 mb2" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
-              <label class="pointer mb1">
-                <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
+              <form-checkbox
+                v-model.lazy="task.completed"
+                :name="'todo'"
+                :dclass="'mr1'"
+                @change="updateTask(task)"
+              >
                 {{ task.title }}
-              </label>
+              </form-checkbox>
               <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
@@ -241,10 +249,14 @@
 
           <ul v-if="customCompleted(tasks).length != 0 && !contactRelatedTasksView">
             <li v-for="task in customCompleted(tasks)" :key="task.id" class="pb0 mb0 f6" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
-              <label class="pointer mb1 mr1">
-                <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
+              <form-checkbox
+                v-model.lazy="task.completed"
+                :name="'todo'"
+                :dclass="'mb1 mr1'"
+                @change="updateTask(task)"
+              >
                 {{ task.title }}
-              </label>
+              </form-checkbox>
               <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
@@ -405,7 +417,6 @@ export default {
     },
 
     updateTask(task) {
-      task.completed = !task.completed;
       axios.put('tasks/' + task.id, task)
         .then(response => {
           this.$notify({

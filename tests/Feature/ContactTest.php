@@ -7,6 +7,7 @@ use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -563,5 +564,105 @@ class ContactTest extends FeatureTestCase
         $response->assertHeader('Content-type', 'text/x-vcard; charset=UTF-8');
         $response->assertSee('FN:John Doe');
         $response->assertSee('N:Doe;John;;;');
+    }
+
+    public function test_edit_contact_has_specialdeceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID().'/edit');
+
+        $response->assertSee('<form-specialdeceased
+          :value="false"
+          :date="\'\'"
+          :reminder="false"
+        >
+        </form-specialdeceased>');
+    }
+
+    public function test_edit_contact_with_specialdeceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $contact->is_dead = true;
+        $contact->deceased_reminder_id = $reminder->id;
+        $contact->save();
+
+        $response = $this->get('/people/'.$contact->hashID().'/edit');
+
+        $response->assertSee('<form-specialdeceased
+          :value="true"
+          :date="\''.$reminder->initial_date.'\'"
+          :reminder="true"
+        >
+        </form-specialdeceased>');
+    }
+
+    public function test_edit_contact_put_deceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $data['id'] = $contact->id;
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+        ]);
+
+        $contact->refresh();
+        $this->assertDatabaseHas('special_dates', [
+            'id' => $contact->deceased_special_date_id,
+            'date' => '2012-06-22',
+        ]);
+    }
+
+    public function test_edit_contact_put_deceased_with_reminder()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+            'add_reminder_deceased' => 'true',
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+        ]);
+
+        $contact->refresh();
+        $this->assertDatabaseHas('special_dates', [
+            'id' => $contact->deceased_special_date_id,
+            'date' => '2012-06-22',
+        ]);
+        $this->assertDatabaseHas('reminders', [
+            'id' => $contact->deceased_reminder_id,
+            'contact_id' => $contact->id,
+            'initial_date' => '2012-06-22',
+        ]);
     }
 }

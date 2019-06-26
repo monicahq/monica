@@ -1,11 +1,11 @@
 <script>
 let input = require('./PInput').default;
 
-let radio = {
-  name: 'radio',
+let checkbox = {
+  name: 'checkbox',
 
-  input_type: 'radio',
-  input_iclass: 'p-round p-thick',
+  input_type: 'checkbox',
+  input_iclass: 'p-curve p-thick',
 
   components: input.components,
   model: input.model,
@@ -19,5 +19,5 @@ let radio = {
   render: input.render,
 };
 
-export default radio;
+export default checkbox;
 </script>
