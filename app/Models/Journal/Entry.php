@@ -53,6 +53,18 @@ class Entry extends Model implements IsJournalableInterface
     }
 
     /**
+     * Get the Entry date.
+     *
+     * @param  string  $value
+     * @return Carbon
+     */
+    public function getDateAttribute($value)
+    {
+        // Default to created_at, but show journalEntry->date if the entry type is JournalEntry
+        return $this->journalEntry ? $this->journalEntry->date : $this->created_at;
+    }
+
+    /**
      * Get the Entry post.
      *
      * @param  string  $value
@@ -69,20 +81,17 @@ class Entry extends Model implements IsJournalableInterface
      */
     public function getInfoForJournalEntry()
     {
-        // Default to created_at, but show journalEntry->date if the entry type is JournalEntry
-        $entryDate = $this->journalEntry ? $this->journalEntry->date : $this->created_at;
-
         return [
             'type' => 'entry',
             'id' => $this->id,
             'title' => $this->title,
             'post' => $this->post,
-            'day' => $entryDate->day,
-            'day_name' => mb_convert_case(DateHelper::getShortDay($entryDate), MB_CASE_TITLE, 'UTF-8'),
-            'month' => $entryDate->month,
-            'month_name' => mb_convert_case(DateHelper::getShortMonth($entryDate), MB_CASE_UPPER, 'UTF-8'),
-            'year' => $entryDate->year,
-            'date' => $entryDate,
+            'day' => $this->date->day,
+            'day_name' => mb_convert_case(DateHelper::getShortDay($this->date), MB_CASE_TITLE, 'UTF-8'),
+            'month' => $this->date->month,
+            'month_name' => mb_convert_case(DateHelper::getShortMonth($this->date), MB_CASE_UPPER, 'UTF-8'),
+            'year' => $this->date->year,
+            'date' => $this->date,
         ];
     }
 }

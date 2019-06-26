@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Parsedown;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use Illuminate\Http\Request;
@@ -184,9 +183,7 @@ class JournalController extends Controller
      */
     public function edit(Entry $entry)
     {
-        $date = $entry->getInfoForJournalEntry()['date'];
         return view('journal.edit')
-            ->withDate($date)
             ->withEntry($entry);
     }
 
