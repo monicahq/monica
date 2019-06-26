@@ -19,7 +19,7 @@
       </p-input>
     </div>
     <div class="pointer" @click="select()">
-      <label v-if="hasSlot('label')" class="pointer" :for="formid">
+      <label v-if="hasSlot('label')" class="pointer">
         <slot name="label"></slot>
       </label>
       <slot name="extra"></slot>
@@ -88,9 +88,6 @@ export default {
   },
 
   methods: {
-    formid() {
-      return this.$refs.input.id;
-    },
     select() {
       switch (this._type)
       {

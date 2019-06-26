@@ -23,7 +23,7 @@
                 <form-radio
                   :name="'avatar'"
                   :value="'default'"
-                  :model="'{{ $contact->avatar_source }}'"
+                  :modelValue="'{{ $contact->avatar_source }}'"
                   :dclass="'flex mb1'"
                   :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
                 >
@@ -39,7 +39,7 @@
                 <form-radio
                   :name="'avatar'"
                   :value="'adorable'"
-                  :model="'{{ $contact->avatar_source }}'"
+                  :modelValue="'{{ $contact->avatar_source }}'"
                   :dclass="'flex mb1'"
                   :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
                 >
@@ -56,7 +56,7 @@
                 <form-radio
                   :name="'avatar'"
                   :value="'gravatar'"
-                  :model="'{{ $contact->avatar_source }}'"
+                  :modelValue="'{{ $contact->avatar_source }}'"
                   :dclass="'flex mb1'"
                   :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
                 >
@@ -74,7 +74,7 @@
                 <form-radio
                   :name="'avatar'"
                   :value="'photo'"
-                  :model="'{{ $contact->avatar_source }}'"
+                  :modelValue="'{{ $contact->avatar_source }}'"
                   :dclass="'flex mb1'"
                   :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
                 >
@@ -92,7 +92,7 @@
                 <form-radio
                   :name="'avatar'"
                   :value="'upload'"
-                  :model="'{{ $contact->avatar_source }}'"
+                  :modelValue="'{{ $contact->avatar_source }}'"
                   :disabled="{{ \Safe\json_encode($contact->account->hasReachedAccountStorageLimit()) }}"
                   :dclass="'flex mb1'"
                   :iclass="'{{ htmldir() == 'ltr' ? 'mr2' : 'ml2' }}'"
