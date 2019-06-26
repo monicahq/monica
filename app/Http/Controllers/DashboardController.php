@@ -8,7 +8,6 @@ use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
 use function Safe\json_encode;
 use App\Helpers\InstanceHelper;
-use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Debt\Debt as DebtResource;

@@ -18,7 +18,6 @@ use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Occupation;
 use App\Models\Contact\Conversation;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
 use App\Models\Relationship\Relationship;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
@@ -964,6 +963,8 @@ class ContactTest extends FeatureTestCase
         $this->assertNull($contact->stay_in_touch_trigger_date);
 
         $contact->setStayInTouchTriggerDate(3, 'UTC');
+
+        $this->assertNotNull($contact->stay_in_touch_trigger_date);
 
         $this->assertEquals(
             '2017-01-04',

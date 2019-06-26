@@ -1,13 +1,11 @@
-FROM alpine:3.6
-
-EXPOSE 80:80
+FROM alpine:latest
 
 RUN apk update && apk upgrade; \
     apk add --virtual .build-deps \
         curl openssl; \
-    apk add apache2 make netcat-openbsd \
+    apk add netcat-openbsd \
         #- base
-        php7 php7-apache2 php7-intl php7-openssl php7-ctype \
+        php7 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib \
         php7-redis \
         #- Authentication Guards
@@ -33,35 +31,51 @@ RUN apk update && apk upgrade; \
         #- vinkla/hashids
         php7-bcmath \
         #- sentry/sentry
-        php7-curl; \
-    # Create apache2 dir needed for httpd
-    mkdir -p /run/apache2
+        php7-curl \
+        #- cbor-php (webauthn)
+        php7-gmp \
+# apache variant
+        apache2 php7-apache2;
 
 # Create a user to own all the code and assets and give them a working
 # directory
+RUN mkdir -p /var/www/monica
+RUN grep -q apache /etc/group || addgroup -S apache
 RUN adduser -D monica apache -h /var/www/monica
 WORKDIR /var/www/monica
 
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
 # correctly
-ADD . .
-ADD .env.dev .env
-RUN chown -R monica:monica . && \
-    chgrp -R apache bootstrap/cache storage && \
-    chmod -R g+w bootstrap/cache storage && \
-    # Apache2 conf
-    cp scripts/docker/000-default.conf /etc/apache2/conf.d/; \
-    # Composer installation
-    scripts/docker/install-composer.sh; \
-    # Cleanup
-    apk del .build-deps && rm -rf /var/cache/apk/*
+COPY . .
 
+RUN mkdir -p bootstrap/cache; \
+    mkdir -p storage; \
+    chown -R monica:monica .; \
+    chgrp -R apache bootstrap/cache storage; \
+    chmod -R g+w bootstrap/cache storage;
+COPY .env.dev .env
 
-# Install composer dependencies and prepare permissions for Apache
+# Composer installation
+RUN scripts/docker/install-composer.sh
+
+# Install composer dependencies
 USER monica
-RUN composer install --no-interaction --no-suggest
+RUN composer global require hirak/prestissimo; \
+    composer install --no-interaction --no-suggest; \
+    composer global remove hirak/prestissimo; \
+    composer clear-cache
 USER root
 
-# This is the command that the container will run by default
-ENTRYPOINT ["make", "-f", "/var/www/monica/scripts/docker/Makefile"]
+# Cleanup
+RUN apk del .build-deps && \
+    rm -rf /var/cache/apk/*
+
+ENTRYPOINT ["scripts/docker/entrypoint.sh"]
+
+# Apache2
+COPY scripts/docker/apache2-foreground /usr/local/sbin/
+COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
+
+EXPOSE 80
+CMD ["apache2-foreground"]

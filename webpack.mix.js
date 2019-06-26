@@ -11,8 +11,8 @@ mix.webpackConfig({
 });
 
 let purgeCssOptions = {
-    whitelistPatterns: [/^vdp-datepicker/, /^StripeElement/, /^vgt/],
-    whitelistPatternsChildren: [/^vdp-datepicker/, /^vgt/]
+    whitelistPatterns: [/^vdp-datepicker/, /^StripeElement/, /^vgt/, /^vue-tooltip/, /^pretty/],
+    whitelistPatternsChildren: [/^vdp-datepicker/, /^vgt/, /^vue-tooltip/, /^pretty/]
 };
 
 mix.js('resources/assets/js/app.js', 'public/js')

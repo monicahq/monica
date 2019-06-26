@@ -53,7 +53,6 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",
-        "enm1989/chromedriver": "^2.36",
         "filp/whoops": "^2.0",
         "fzaninotto/faker": "^1.6",
         "khanamiryan/qrcode-detector-decoder": "1.0.2",
