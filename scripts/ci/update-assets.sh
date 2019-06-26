@@ -34,15 +34,6 @@ REPOSITORY_OWNER=monicahq/monica
 
 set -euo pipefail
 
-# Update assets
-echo -e "\033[1;32m# Build assets ...\033[0;37m"
-echo -e "\033[1;36mphp artisan lang:generate\033[0;37m"
-php artisan lang:generate
-echo ""
-echo -e "\033[1;36myarn run production\033[0;37m"
-yarn run production
-echo ""
-
 # Check if there is zero update needed
 status=$(git status --porcelain)
 if [ "$status" = "" ]; then

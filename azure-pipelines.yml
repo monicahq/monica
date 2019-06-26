@@ -67,10 +67,12 @@ stages:
     steps:
     - template: .azure/docker-pull-step.yml
     - task: Docker@2
-      displayName: 'Update assets'
+      displayName: 'Build assets'
       inputs:
         command: 'run'
         arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public $(Jfrog.Docker)/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
+    - bash: scripts/ci/update-assets.sh
+      displayName: 'Update assets'
       env:
         GH_TOKEN: $(GH_TOKEN)
         ASSETS_USERNAME: $(ASSETS_USERNAME)

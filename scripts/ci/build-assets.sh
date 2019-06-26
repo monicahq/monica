@@ -18,4 +18,12 @@ rm -f gk-lockfile-git-push.err || true
 # Update js and css assets eventually
 yarn lint
 
-${SELF_PATH}/update-assets.sh
+# Update assets
+echo -e "\033[1;32m# Build assets ...\033[0;37m"
+echo -e "\033[1;36mphp artisan lang:generate\033[0;37m"
+php artisan lang:generate
+
+echo ""
+echo -e "\033[1;36myarn run production\033[0;37m"
+yarn run production
+echo ""
