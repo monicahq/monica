@@ -38,7 +38,7 @@ stages:
       inputs:
         command: build
         containerRegistry: 'docker-artifactory'
-        Dockerfile: scripts/docker/ubuntu/dev/Dockerfile
+        Dockerfile: scripts/docker/dev/Dockerfile
         buildContext: .
         repository: 'monica-dev'
         tags: $(Build.BuildId)
