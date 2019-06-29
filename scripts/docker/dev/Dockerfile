@@ -17,5 +17,5 @@ RUN sed 's/DB_TEST_PORT=.*/DB_TEST_PORT=3307/' scripts/tests/.env.mysql > .env
 
 # Install composer dependencies
 USER monica
-RUN composer install --no-interaction --no-suggest &&
+RUN composer install --no-interaction --no-suggest && \
     composer clear-cache
