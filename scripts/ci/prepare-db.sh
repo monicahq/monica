@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -exvo pipefail
+set -evo pipefail
 
 php artisan migrate --no-interaction -vvv
 php artisan db:seed --no-interaction -vvv

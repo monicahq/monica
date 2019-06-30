@@ -101,13 +101,15 @@ stages:
         mysql --protocol=tcp -u root -h 127.0.0.1 -P 3307 monica < scripts/database.test.sql
       displayName: 'Prepare db'
     - task: Docker@2
-      displayName: 'Prepare db'
+      displayName: 'Migrate db'
       inputs:
         command: 'run'
         arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
       env:
         DB_TEST_PORT: 3307
 
+    - script: mkdir -p $(System.DefaultWorkingDirectory)/results
+      displayName: 'Prepare env'
     - task: Docker@2
       displayName: 'Run tests'
       inputs:
