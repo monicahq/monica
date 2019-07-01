@@ -34,7 +34,7 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
-      displayName: 'build docker image'
+      displayName: 'Build docker image'
       inputs:
         command: build
         containerRegistry: 'docker-artifactory'
@@ -42,8 +42,10 @@ stages:
         buildContext: .
         repository: 'monica-dev'
         tags: $(Build.BuildId)
+        addPipelineData: false
 
     - task: Docker@2
+      displayName: 'Docker images'
       inputs:
         command: images
 
