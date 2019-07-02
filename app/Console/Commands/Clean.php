@@ -48,11 +48,11 @@ class Clean extends Command
 
     /**
      * Handle TokenDeleteEvent event.
-     * 
+     *
      * @param TokenClean $token
      */
     private function handleToken($token)
     {
-        $this->info('Delete token '.$token->id.' - User '.$token->user_id.' - Type '. $token->name.' - timestamp '.$token->timestamp);
+        $this->info('Delete token '.$token->id.' - User '.$token->user_id.' - Type '.$token->name.' - timestamp '.$token->timestamp);
     }
 }
