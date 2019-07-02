@@ -1751,12 +1751,12 @@
             "version": "4.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ivanakimov/hashids.php.git",
+                "url": "https://github.com/vinkla/hashids.git",
                 "reference": "43bb2407f16a631f0128f47bcb67ff986c63dde2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ivanakimov/hashids.php/zipball/43bb2407f16a631f0128f47bcb67ff986c63dde2",
+                "url": "https://api.github.com/repos/vinkla/hashids/zipball/43bb2407f16a631f0128f47bcb67ff986c63dde2",
                 "reference": "43bb2407f16a631f0128f47bcb67ff986c63dde2",
                 "shasum": ""
             },
@@ -3344,24 +3344,25 @@
         },
         {
             "name": "monicahq/laravel-cloudflare",
-            "version": "1.1.0",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-cloudflare.git",
-                "reference": "52a26f7dd265c4c8e6b2e77162ab313f6694f685"
+                "reference": "059279a0591d914c610543fa42f6891dd49e10f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/52a26f7dd265c4c8e6b2e77162ab313f6694f685",
-                "reference": "52a26f7dd265c4c8e6b2e77162ab313f6694f685",
+                "url": "https://api.github.com/repos/monicahq/laravel-cloudflare/zipball/059279a0591d914c610543fa42f6891dd49e10f6",
+                "reference": "059279a0591d914c610543fa42f6891dd49e10f6",
                 "shasum": ""
             },
             "require": {
                 "fideloper/proxy": "~4.0",
                 "guzzlehttp/guzzle": "^6.3",
-                "illuminate/console": "^5.6",
-                "illuminate/http": "^5.6",
-                "illuminate/support": "^5.6"
+                "illuminate/console": "^5.5",
+                "illuminate/http": "^5.5",
+                "illuminate/support": "^5.5",
+                "php": ">= 7.1.0"
             },
             "require-dev": {
                 "laravel/framework": "^5.6",
@@ -3400,7 +3401,7 @@
                 "php",
                 "proxies"
             ],
-            "time": "2019-03-23T11:40:35+00:00"
+            "time": "2019-07-02T12:31:49+00:00"
         },
         {
             "name": "monicahq/laravel-sabre",
