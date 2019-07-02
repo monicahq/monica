@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\Clean;
 use App\Console\Commands\Update;
 use App\Console\Commands\ExportAll;
 use App\Console\Commands\ImportCSV;
@@ -34,6 +35,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         CalculateStatistics::class,
+        Clean::class,
         Deactivate2FA::class,
         ExportAll::class,
         GetVersion::class,
@@ -66,6 +68,7 @@ class Kernel extends ConsoleKernel
         $this->scheduleCommand($schedule, 'send:stay_in_touch', 'hourly');
         $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
         $this->scheduleCommand($schedule, 'monica:ping', 'daily');
+        $this->scheduleCommand($schedule, 'monica:clean', 'daily');
         if (config('trustedproxy.cloudflare')) {
             $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }
