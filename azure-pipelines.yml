@@ -63,7 +63,7 @@ stages:
       displayName: 'Build assets'
       inputs:
         command: run
-        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
+        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public -v $(System.DefaultWorkingDirectory)/.git:/var/www/monica/.git $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
     - bash: scripts/ci/update-assets.sh
       displayName: 'Update assets'
       env:
