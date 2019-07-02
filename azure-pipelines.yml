@@ -37,12 +37,12 @@ stages:
       displayName: 'Docker login'
       inputs:
         command: login
-        containerRegistry: 'docker-bintray-ci'
+        containerRegistry: 'docker-bintray'
     - task: Docker@2
       displayName: 'Build docker image'
       inputs:
         command: buildAndPush
-        containerRegistry: 'docker-bintray-ci'
+        containerRegistry: 'docker-bintray'
         Dockerfile: scripts/docker/dev/Dockerfile
         buildContext: .
         repository: 'monicahq/monica-dev'
@@ -51,7 +51,7 @@ stages:
       displayName: 'Docker logout'
       inputs:
         command: logout
-        containerRegistry: 'docker-bintray-ci'
+        containerRegistry: 'docker-bintray'
 
   - job: build_assets
     dependsOn: build
