@@ -7,8 +7,4 @@ set -exvo pipefail
 
 php artisan passport:keys --no-interaction -vvv
 
-
-ls -AlFd results
-
-
 phpdbg -dmemory_limit=4G -qrr vendor/bin/phpunit -c phpunit.xml --log-junit ./results/junit/unit/results${SYSTEM_JOBPOSITIONINPHASE}.xml --coverage-clover ./results/coverage${SYSTEM_JOBPOSITIONINPHASE}.xml --testsuite $TESTSUITE
