@@ -27,14 +27,17 @@ class TokenClean
     public function execute(array $data)
     {
         DB::table('synctoken')
-            ->groupBy('user_id')
+            ->groupBy(['account_id', 'user_id', 'name'])
             ->orderBy('id')
+            ->select('id', 'timestamp')
+            /*
             ->where([
                 ['timestamp', '<', 'max(timestamp)'],
                 ['timestamp', '<', now()->addDays(-7)],
             ])
-            ->chunk(200, function ($tokens) {
-                foreach ($tokens as $tokens) {
+            */
+            ->chunk(200, function ($tokens) use ($data) {
+                foreach ($tokens as $token) {
                     event(new TokenDeleteEvent($token));
                     if (! $data['dryrun']) {
                         $token->delete();

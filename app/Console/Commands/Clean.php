@@ -35,27 +35,24 @@ class Clean extends Command
      */
     public function handle(): void
     {
-        $tokens = collect();
-        Event::listen(TokenDeleteEvent::class, function ($event) use ($tokens) {
-            $tokens->push($event->token);
+        Event::listen(TokenDeleteEvent::class, function ($event) {
+            $this->handleToken($event->token);
         });
 
         if ($this->confirmToProceed()) {
             app(TokenClean::class)->execute([
-                'dryrun' => (bool) $this->option('dry-run') ?: false,
+                'dryrun' => (bool) $this->option('dry-run'),
             ]);
         }
-
-        $this->displayTokens($tokens);
     }
 
     /**
-     * @param \Illuminate\Support\Collection $tokens
+     * Handle TokenDeleteEvent event.
+     * 
+     * @param TokenClean $token
      */
-    private function displayTokens($tokens)
+    private function handleToken($token)
     {
-        foreach ($tokens as $token) {
-            $this->info('Token '.$token->id.' deleted - User '.$token->user_id.' - timestamp '.$token->timestamp);
-        }
+        $this->info('Delete token '.$token->id.' - User '.$token->user_id.' - Type '. $token->name.' - timestamp '.$token->timestamp);
     }
 }
