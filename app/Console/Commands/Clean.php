@@ -36,7 +36,7 @@ class Clean extends Command
     public function handle(): void
     {
         $tokens = collect();
-        Event::listen(TokenDeleteEvent::class, function($event) use ($tokens) {
+        Event::listen(TokenDeleteEvent::class, function ($event) use ($tokens) {
             $tokens->push($event->token);
         });
 

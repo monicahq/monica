@@ -2,7 +2,6 @@
 
 namespace App\Services\Instance;
 
-use App\Models\User\SyncToken;
 use App\Events\TokenDeleteEvent;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +21,7 @@ class TokenClean
 
     /**
      * Clean token list.
-     * 
+     *
      * @param array $data
      */
     public function execute(array $data)
@@ -32,7 +31,7 @@ class TokenClean
             ->orderBy('id')
             ->where([
                 ['timestamp', '<', 'max(timestamp)'],
-                ['timestamp', '<', now()->addDays(-7)]
+                ['timestamp', '<', now()->addDays(-7)],
             ])
             ->chunk(200, function ($tokens) {
                 foreach ($tokens as $tokens) {
