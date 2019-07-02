@@ -62,7 +62,7 @@ stages:
     - task: Docker@2
       displayName: 'Build assets'
       inputs:
-        command: 'run'
+        command: run
         arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
     - bash: scripts/ci/update-assets.sh
       displayName: 'Update assets'
@@ -82,7 +82,7 @@ stages:
     - task: Docker@2
       displayName: 'Run mysql'
       inputs:
-        command: 'run'
+        command: run
         arguments: '-d --rm -p 3307:3306 --mount type=tmpfs,destination=/var/lib/mysql -e MYSQL_ALLOW_EMPTY_PASSWORD=TRUE -e MYSQL_ROOT_PASSWORD= --name mysql mysql:5.7'
 
     - template: .azure/unit-tests-select-step.yml
@@ -96,7 +96,7 @@ stages:
     - task: Docker@2
       displayName: 'Migrate db'
       inputs:
-        command: 'run'
+        command: run
         arguments: '--network="host" --name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
       env:
         DB_TEST_PORT: 3307
@@ -106,7 +106,7 @@ stages:
     - task: Docker@2
       displayName: 'Run tests'
       inputs:
-        command: 'run'
+        command: run
         arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/results:/var/www/monica/results $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionInPhase) $(TESTSUITE)'
       env:
         DB_TEST_PORT: 3307
@@ -137,7 +137,7 @@ stages:
     - task: Docker@2
       displayName: 'Run psalm'
       inputs:
-        command: 'run'
+        command: run
         arguments: '--name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) vendor/bin/psalm --show-info=false'
 
   - job: phpstan
@@ -150,7 +150,7 @@ stages:
     - task: Docker@2
       displayName: 'Run phpstan'
       inputs:
-        command: 'run'
+        command: run
         arguments: '--name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) php artisan code:analyse'
 
   - job: reporting
