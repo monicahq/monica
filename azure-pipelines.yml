@@ -34,33 +34,24 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
+      displayName: 'Docker login'
+      inputs:
+        command: login
+        containerRegistry: 'docker-bintray-ci'
+    - task: Docker@2
       displayName: 'Build docker image'
       inputs:
-        command: build
-        containerRegistry: 'docker-artifactory'
+        command: buildAndPush
+        containerRegistry: 'docker-bintray-ci'
         Dockerfile: scripts/docker/dev/Dockerfile
         buildContext: .
-        repository: 'monica-dev'
+        repository: 'monicahq/monica-dev'
         tags: $(Build.BuildId)
-        addPipelineData: false
-
     - task: Docker@2
-      displayName: 'Docker images'
+      displayName: 'Docker logout'
       inputs:
-        command: images
-
-    - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-docker.ArtifactoryDocker@1
-      displayName: 'Artifactory docker push'
-      inputs:
-        artifactoryService: artifactory
-        targetRepo: 'docker-local'
-        imageName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
-        collectBuildInfo: true
-
-    - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-publish-build-info.ArtifactoryPublishBuildInfo@1
-      displayName: 'Artifactory Publish Build Info'
-      inputs:
-        artifactoryService: artifactory
+        command: logout
+        containerRegistry: 'docker-bintray-ci'
 
   - job: build_assets
     dependsOn: build
@@ -72,7 +63,7 @@ stages:
       displayName: 'Build assets'
       inputs:
         command: 'run'
-        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public $(Jfrog.Docker)/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
+        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
     - bash: scripts/ci/update-assets.sh
       displayName: 'Update assets'
       env:
@@ -106,7 +97,7 @@ stages:
       displayName: 'Migrate db'
       inputs:
         command: 'run'
-        arguments: '--network="host" --name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
+        arguments: '--network="host" --name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
       env:
         DB_TEST_PORT: 3307
 
@@ -116,7 +107,7 @@ stages:
       displayName: 'Run tests'
       inputs:
         command: 'run'
-        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/results:/var/www/monica/results $(Jfrog.Docker)/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionInPhase) $(TESTSUITE)'
+        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/results:/var/www/monica/results $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionInPhase) $(TESTSUITE)'
       env:
         DB_TEST_PORT: 3307
 
@@ -147,7 +138,7 @@ stages:
       displayName: 'Run psalm'
       inputs:
         command: 'run'
-        arguments: '--name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) vendor/bin/psalm --show-info=false'
+        arguments: '--name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) vendor/bin/psalm --show-info=false'
 
   - job: phpstan
     dependsOn: build
@@ -160,26 +151,7 @@ stages:
       displayName: 'Run phpstan'
       inputs:
         command: 'run'
-        arguments: '--name monica-dev --rm $(Jfrog.Docker)/monica-dev:$(Build.BuildId) php artisan code:analyse'
-
-  - job: clean
-    dependsOn:
-      - build
-      - tests
-      - psalm
-      - phpstan
-    pool:
-      vmImage: 'ubuntu-latest'
-    steps:
-    - checkout: none
-    - task: JFrog.jfrog-artifactory-vsts-extension.artifactory-discard-builds-task.ArtifactoryDiscardBuilds@1
-      displayName: 'Artifactory Discard Builds'
-      inputs:
-        artifactoryService: artifactory
-        buildName: '$(Jfrog.Docker)/monica-dev:$(Build.BuildId)'
-        deleteArtifacts: true
-#        async: true
-      continueOnError: true
+        arguments: '--name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) php artisan code:analyse'
 
   - job: reporting
     dependsOn:
