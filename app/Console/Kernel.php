@@ -68,7 +68,7 @@ class Kernel extends ConsoleKernel
         $this->scheduleCommand($schedule, 'send:stay_in_touch', 'hourly');
         $this->scheduleCommand($schedule, 'monica:calculatestatistics', 'daily');
         $this->scheduleCommand($schedule, 'monica:ping', 'daily');
-        $this->scheduleCommand($schedule, 'monica:clean', 'daily');
+        //$this->scheduleCommand($schedule, 'monica:clean', 'daily');
         if (config('trustedproxy.cloudflare')) {
             $this->scheduleCommand($schedule, 'cloudflare:reload', 'daily'); // @codeCoverageIgnore
         }

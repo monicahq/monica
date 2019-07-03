@@ -36,7 +36,7 @@ class Clean extends Command
     public function handle(): void
     {
         Event::listen(TokenDeleteEvent::class, function ($event) {
-            $this->handleToken($event->token);
+            $this->handleTokenDelete($event->token);
         });
 
         if ($this->confirmToProceed()) {
@@ -51,7 +51,7 @@ class Clean extends Command
      *
      * @param TokenClean $token
      */
-    private function handleToken($token)
+    private function handleTokenDelete($token)
     {
         $this->info('Delete token '.$token->id.' - User '.$token->user_id.' - Type '.$token->name.' - timestamp '.$token->timestamp);
     }
