@@ -51,7 +51,8 @@ class TokenClean
     {
         $tokens = SyncToken::where('user_id', $userId)
             ->where('name', $tokenName)
-            ->where('timestamp', '<', Carbon::parse($timestamp)->addDays(-7))
+            ->where('timestamp', '<', Carbon::parse($timestamp))
+            ->where('timestamp', '<', now()->addDays(-7))
             ->orderByDesc('timestamp')
             ->get();
 
