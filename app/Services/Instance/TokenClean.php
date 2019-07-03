@@ -41,7 +41,7 @@ class TokenClean
 
     /**
      * Handle tokens for a user.
-     * 
+     *
      * @param array $data
      * @param int $userId
      * @param string $tokenName
