@@ -13,7 +13,7 @@
     "inst": "yarn install --ignore-engines --frozen-lockfile",
     "lint": "eslint --ext .js,.vue resources/assets/js/",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect; yarn run snyk-protect"
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",
