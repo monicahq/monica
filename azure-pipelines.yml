@@ -34,6 +34,12 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
+      displayName: 'Docker pull'
+      inputs:
+        command: pull
+        containerRegistry: 'docker-hub'
+        arguments: monicahq/centralperk:php-7.2-apache-node
+    - task: Docker@2
       displayName: 'Docker login'
       inputs:
         command: login
