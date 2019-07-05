@@ -33,12 +33,7 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: Docker@2
-      displayName: 'Docker pull'
-      inputs:
-        command: pull
-        containerRegistry: 'docker-hub'
-        arguments: monicahq/centralperk:php-7.2-apache-node
+    - template: .azure/docker-pull-base-step.yml
     - task: Docker@2
       displayName: 'Docker login'
       inputs:
@@ -53,11 +48,6 @@ stages:
         buildContext: .
         repository: 'monicahq/monica-dev'
         tags: $(Build.BuildId)
-    - task: Docker@2
-      displayName: 'Docker logout'
-      inputs:
-        command: logout
-        containerRegistry: 'docker-bintray'
 
   - job: build_assets
     dependsOn: build
@@ -69,7 +59,7 @@ stages:
       displayName: 'Build assets'
       inputs:
         command: run
-        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public -v $(System.DefaultWorkingDirectory)/.git:/var/www/monica/.git $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
+        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/public:/var/www/monica/public -v $(System.DefaultWorkingDirectory)/.git:/var/www/monica/.git monicahq/monica-dev:$(Build.BuildId) scripts/ci/build-assets.sh'
     - bash: scripts/ci/update-assets.sh
       displayName: 'Update assets'
       env:
@@ -103,7 +93,7 @@ stages:
       displayName: 'Migrate db'
       inputs:
         command: run
-        arguments: '--network="host" --name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
+        arguments: '--network="host" --name monica-dev --rm monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/prepare-db.sh'
       env:
         DB_TEST_PORT: 3307
 
@@ -113,7 +103,7 @@ stages:
       displayName: 'Run tests'
       inputs:
         command: run
-        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/results:/var/www/monica/results $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionInPhase) $(TESTSUITE)'
+        arguments: '--network="host" --name monica-dev --rm -v $(System.DefaultWorkingDirectory)/results:/var/www/monica/results monicahq/monica-dev:$(Build.BuildId) ./scripts/ci/runtests.sh $(System.JobPositionInPhase) $(TESTSUITE)'
       env:
         DB_TEST_PORT: 3307
 
@@ -144,7 +134,7 @@ stages:
       displayName: 'Run psalm'
       inputs:
         command: run
-        arguments: '--name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) vendor/bin/psalm --show-info=false'
+        arguments: '--name monica-dev --rm monicahq/monica-dev:$(Build.BuildId) vendor/bin/psalm --show-info=false'
 
   - job: phpstan
     dependsOn: build
@@ -157,7 +147,7 @@ stages:
       displayName: 'Run phpstan'
       inputs:
         command: run
-        arguments: '--name monica-dev --rm $(Bintray.DockerCI)/monicahq/monica-dev:$(Build.BuildId) php artisan code:analyse'
+        arguments: '--name monica-dev --rm monicahq/monica-dev:$(Build.BuildId) php artisan code:analyse'
 
   - job: reporting
     dependsOn:
