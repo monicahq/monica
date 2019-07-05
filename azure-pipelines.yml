@@ -35,17 +35,24 @@ stages:
     steps:
     - template: .azure/docker-pull-base-step.yml
     - task: Docker@2
+      displayName: 'Build docker image'
+      inputs:
+        command: build
+        containerRegistry: 'docker-bintray'
+        Dockerfile: scripts/docker/dev/Dockerfile
+        buildContext: .
+        repository: 'monicahq/monica-dev'
+        tags: $(Build.BuildId)
+    - task: Docker@2
       displayName: 'Docker login'
       inputs:
         command: login
         containerRegistry: 'docker-bintray'
     - task: Docker@2
-      displayName: 'Build docker image'
+      displayName: 'Docker push'
       inputs:
-        command: buildAndPush
+        command: push
         containerRegistry: 'docker-bintray'
-        Dockerfile: scripts/docker/dev/Dockerfile
-        buildContext: .
         repository: 'monicahq/monica-dev'
         tags: $(Build.BuildId)
 
