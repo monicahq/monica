@@ -13,7 +13,7 @@
     "inst": "yarn install --ignore-engines --frozen-lockfile",
     "lint": "eslint --ext .js,.vue resources/assets/js/",
     "snyk-protect": "snyk protect",
-    "prepublish": "yarn run snyk-protect"
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "cross-env": "^5.1.4",
@@ -51,7 +51,7 @@
     "popper.js": "^1.15.0",
     "pretty-checkbox-vue": "^1.1.8",
     "sass": "^1.15.2",
-    "snyk": "^1.163.3",
+    "snyk": "^1.189.0",
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
     "v-selectmenu": "^1.0.5",
