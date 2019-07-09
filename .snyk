@@ -1,8 +1,89 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.13.5
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
   SNYK-JS-AXIOS-174505:
     - axios:
         patched: '2019-05-06T05:47:15.257Z'
+  SNYK-JS-LODASH-450202:
+    - snyk > @snyk/dep-graph > graphlib > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - cypress > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - eslint-plugin-import > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - eslint > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - mocha > yargs-unparser > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - eslint > table > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > snyk-nuget-plugin > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > snyk-nodejs-lockfile-parser > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > snyk-mvn-plugin > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > snyk-config > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > @snyk/dep-graph > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > snyk-php-plugin > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - eslint > inquirer > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > inquirer > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > webpack-merge > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > css-loader > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - eslint-plugin-vue > vue-eslint-parser > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/core > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > webpack-dev-server > http-proxy-middleware > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > optimize-css-assets-webpack-plugin > last-call-webpack-plugin > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > extract-text-webpack-plugin > async > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - cypress > getos > async > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-block-scoping > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > snyk-nodejs-lockfile-parser > graphlib > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > babel-merge > @babel/core > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - snyk > snyk-go-plugin > graphlib > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/core > @babel/traverse > @babel/generator > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helpers > @babel/traverse > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-exponentiation-operator > @babel/helper-builder-binary-assignment-operator-visitor > @babel/helper-explode-assignable-expression > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-classes > @babel/helper-replace-supers > @babel/traverse > @babel/generator > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/traverse > @babel/helper-function-name > @babel/template > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-proposal-async-generator-functions > @babel/helper-remap-async-to-generator > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > babel-merge > @babel/core > @babel/helpers > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
+    - laravel-mix > @babel/preset-env > @babel/plugin-transform-async-to-generator > @babel/helper-remap-async-to-generator > @babel/helper-wrap-function > @babel/traverse > @babel/helper-function-name > @babel/helper-get-function-arity > @babel/types > lodash:
+        patched: '2019-07-04T05:47:53.419Z'
