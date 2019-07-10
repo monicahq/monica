@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\OneTime;
 
-use Illuminate\Console\Command;
 use App\Models\Contact\Contact;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Console\ConfirmableTrait;
 use App\Exceptions\FileNotFoundException;
@@ -65,8 +65,7 @@ class MoveAvatarsToPhotosDirectory extends Command
             } else {
                 dispatch(new MoveContactAvatarToPhotosDirectory($contact, false));
             }
-        }
-        catch (FileNotFoundException $e) {
+        } catch (FileNotFoundException $e) {
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
                 $this->warn('  ! File not found: '.$e->fileName);
             }

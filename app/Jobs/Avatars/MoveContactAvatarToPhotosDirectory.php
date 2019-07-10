@@ -2,9 +2,8 @@
 
 namespace App\Jobs\Avatars;
 
-
-use Illuminate\Bus\Queueable;
 use App\Models\Account\Photo;
+use Illuminate\Bus\Queueable;
 use App\Events\MoveAvatarEvent;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Event;

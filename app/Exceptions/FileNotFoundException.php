@@ -13,7 +13,7 @@ class FileNotFoundException extends FileNotFoundExceptionBase
 
     /**
      * Create a new instance.
-     * 
+     *
      * @param string $fileName
      * @return void
      */
