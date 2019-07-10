@@ -59,7 +59,7 @@ class GenerateDefaultAvatar extends BaseService
     private function generateContactUUID(Contact $contact)
     {
         if (! $contact->uuid) {
-            $contact->uuid = Str::uuid();
+            $contact->uuid = Str::uuid()->toString();
             $contact->save();
         }
 

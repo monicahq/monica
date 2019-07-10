@@ -96,7 +96,7 @@ class CreateContact extends BaseService
      */
     private function generateUUID(Contact $contact)
     {
-        $contact->uuid = Str::uuid();
+        $contact->uuid = Str::uuid()->toString();
         $contact->save();
     }
 

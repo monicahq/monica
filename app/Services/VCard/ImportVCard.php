@@ -435,7 +435,7 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
-            $contact->uuid = Str::uuid();
+            $contact->uuid = Str::uuid()->toString();
             $contact->save();
         }
 

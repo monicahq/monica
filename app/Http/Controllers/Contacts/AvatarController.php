@@ -37,7 +37,7 @@ class AvatarController extends Controller
         ];
 
         // if it's a new photo, we need to upload it
-        if ($request->get('avatar') == 'upload') {
+        if ($request->get('avatar') === 'upload') {
             $validator = Validator::make($request->all(), [
                 'file' => 'max:10240',
             ]);
