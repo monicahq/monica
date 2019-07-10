@@ -17,7 +17,7 @@ class DestroyPhoto extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'photo_id' => 'required|integer',
+            'photo_id' => 'required|integer|exists:photos,id',
         ];
     }
 
