@@ -2,14 +2,13 @@
 
 namespace App\Console\Commands\OneTime;
 
-use App\Models\Account\Photo;
-use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Console\ConfirmableTrait;
-use App\Services\Contact\Avatar\UpdateAvatar;
+use App\Exceptions\FileNotFoundException;
 use Symfony\Component\Console\Output\OutputInterface;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use App\Jobs\Avatars\MoveContactAvatarToPhotosDirectory;
 
 /**
  * This command moves current avatars to the new Photos directory and converts
@@ -46,136 +45,36 @@ class MoveAvatarsToPhotosDirectory extends Command
             return;
         }
 
+        Event::listen(MoveAvatarEvent::class, function ($event) {
+            $this->handleEvent($event->contact);
+        });
+
         Contact::where('has_avatar', true)
-            ->chunk(200, function ($contacts) {
-                $this->handleContacts($contacts);
+            ->chunk(500, function ($contacts) {
+                foreach ($contacts as $contact) {
+                    $this->handleContact($contact);
+                }
             });
     }
 
-    private function handleContacts($contacts)
+    private function handleContact($contact)
     {
-        foreach ($contacts as $contact) {
-            try {
-                $this->handleOneContact($contact);
-            } catch (FileNotFoundException $e) {
-                continue;
+        try {
+            if ($this->option('dryrun')) {
+                dispatch_now(new MoveContactAvatarToPhotosDirectory($contact, true));
+            } else {
+                dispatch(new MoveContactAvatarToPhotosDirectory($contact, false));
             }
         }
-    }
-
-    private function handleOneContact($contact)
-    {
-        // move avatars to new location
-        $this->moveContactAvatars($contact);
-
-        // create a Photo object for this avatar
-        $photo = $this->createPhotoObject($contact);
-
-        // associate the Photo object to the contact
-        $this->associatePhotoAsAvatar($contact, $photo);
-
-        // delete original avatar
-        $this->deleteOriginalAvatar($contact);
-
-        // delete thumbnails of avatars
-        $this->deleteThumbnails($contact);
-    }
-
-    private function moveContactAvatars($contact)
-    {
-        $this->line('Contact id:'.$contact->id.' | Avatar location:'.$contact->avatar_location.' | File name:'.$contact->avatar_file_name);
-
-        $storage = Storage::disk($contact->avatar_location);
-        $avatarFileName = $this->getAvatarFileName($contact);
-
-        // $avatarFileName has the format `avatars/XXX.jpg`. We need to remove
-        // the `avatars/` string to store the new file.
-        $newAvatarFilename = str_replace('avatars/', 'photos/', $avatarFileName);
-
-        if ($storage->exists('photos/'.$avatarFileName)) {
-            return;
-        }
-
-        if (! $this->option('dryrun')) {
-            $avatarFile = $storage->get($avatarFileName);
-            $storage->put($newAvatarFilename, $avatarFile, 'public');
-        }
-    }
-
-    private function createPhotoObject($contact)
-    {
-        $newAvatarFilename = str_replace('avatars/', '', $this->getAvatarFileName($contact));
-
-        $photo = new Photo;
-        $photo->account_id = $contact->account_id;
-        $photo->original_filename = $newAvatarFilename;
-        $photo->new_filename = 'photos/'.$newAvatarFilename;
-        $photo->filesize = Storage::size('/photos/'.$newAvatarFilename);
-        $photo->mime_type = 'adfad';
-        $photo->save();
-
-        return $photo;
-    }
-
-    private function associatePhotoAsAvatar($contact, $photo)
-    {
-        $data = [
-            'account_id' => $contact->account_id,
-            'contact_id' => $contact->id,
-            'source' => 'photo',
-            'photo_id' => $photo->id,
-        ];
-        app(UpdateAvatar::class)->execute($data);
-    }
-
-    private function deleteThumbnails($contact)
-    {
-        $smallThumbnail = $this->getAvatarFileName($contact, 110);
-        if (! $this->fileExists($contact->avatar_location, $smallThumbnail)) {
-            return;
-        }
-
-        $bigThumbnail = $this->getAvatarFileName($contact, 174);
-        if (! $this->fileExists($contact->avatar_location, $bigThumbnail)) {
-            return;
-        }
-
-        Storage::delete($smallThumbnail);
-        Storage::delete($bigThumbnail);
-    }
-
-    private function deleteOriginalAvatar($contact)
-    {
-        $avatar = $this->getAvatarFileName($contact);
-        Storage::delete($avatar);
-    }
-
-    private function getAvatarFileName($contact, $size = null)
-    {
-        $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME);
-        $extension = pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
-
-        $avatarFileName = 'avatars/'.$filename.'.'.$extension;
-        if (! is_null($size)) {
-            $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
-        }
-
-        if ($this->fileExists($contact->avatar_location, $avatarFileName)) {
-            return $avatarFileName;
-        }
-    }
-
-    private function fileExists($storage, $avatarFileName) : bool
-    {
-        $storage = Storage::disk($storage);
-
-        if (! $storage->exists($avatarFileName)) {
+        catch (FileNotFoundException $e) {
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  ! File not found: '.$avatarFileName);
+                $this->warn('  ! File not found: '.$e->fileName);
             }
-            throw new FileNotFoundException();
         }
+    }
 
-        return true;
+    private function handleEvent($contact)
+    {
+        $this->info('Contact id:'.$contact->id.' | Avatar location:'.$contact->avatar_location.' | File name:'.$contact->avatar_file_name);
     }
 }
