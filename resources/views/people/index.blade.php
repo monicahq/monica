@@ -108,7 +108,7 @@
                 <li class="people-list-item bg-white pointer"
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
-                  <img src="{{ $contact->getAvatarURL() }}" width="43" class="br4 h3 w3 dib tc">
+                  <img alt={{ $contact->initials }} src="{{ $contact->getAvatarURL() }}" width="43" class="br4 h3 w3 dib tc">
                   <span>
                     <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
                     <svg class="relative" style="top: 5px" width="23" height="22" viewBox="0 0 23 22" fill="none"
@@ -127,7 +127,7 @@
                 <li class="people-list-item bg-white pointer"
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
-                  <img src="{{ $contact->getAvatarURL() }}" width="43" class="br4 h3 w3 dib tc">
+                  <img alt={{ $contact->initials }} src="{{ $contact->getAvatarURL() }}" width="43" class="br4 h3 w3 dib tc">
                   <span>
                     {{ $contact->name }}
                   </span>
