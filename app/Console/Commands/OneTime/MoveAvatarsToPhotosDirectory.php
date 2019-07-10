@@ -4,6 +4,7 @@ namespace App\Console\Commands\OneTime;
 
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
+use App\Events\MoveAvatarEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Console\ConfirmableTrait;
 use App\Exceptions\FileNotFoundException;
@@ -49,21 +50,26 @@ class MoveAvatarsToPhotosDirectory extends Command
             $this->handleEvent($event->contact);
         });
 
+        $delay = now();
+
         Contact::where('has_avatar', true)
-            ->chunk(500, function ($contacts) {
+            ->chunk(200, function ($contacts) use ($delay) {
                 foreach ($contacts as $contact) {
-                    $this->handleContact($contact);
+                    $this->handleContact($contact, $delay);
                 }
+                // add some delay, so we treat 200 contacts each 10 minutes
+                $delay = $delay->addMinutes(10);
             });
     }
 
-    private function handleContact($contact)
+    private function handleContact($contact, $delay)
     {
         try {
             if ($this->option('dryrun')) {
-                dispatch_now(new MoveContactAvatarToPhotosDirectory($contact, true));
+                MoveContactAvatarToPhotosDirectory::dispatchNow($contact, true);
             } else {
-                dispatch(new MoveContactAvatarToPhotosDirectory($contact, false));
+                MoveContactAvatarToPhotosDirectory::dispatch($contact, false)
+                    ->delay($delay);
             }
         } catch (FileNotFoundException $e) {
             if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
