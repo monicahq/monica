@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services\Contact\Conversation;
+namespace Tests\Unit\Services\Contact\Avatar;
 
 use Tests\TestCase;
 use App\Models\Account\Photo;
@@ -127,11 +127,12 @@ class UpdateAvatarTest extends TestCase
 
     public function test_it_throws_an_exception_if_contact_not_linked_to_account()
     {
+        $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
-            'contact_id' => 123456,
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
             'source' => 'adorable',
         ];
 

@@ -20,5 +20,6 @@ class FileNotFoundException extends FileNotFoundExceptionBase
     public function __construct($fileName)
     {
         $this->fileName = $fileName;
+        parent::__construct();
     }
 }

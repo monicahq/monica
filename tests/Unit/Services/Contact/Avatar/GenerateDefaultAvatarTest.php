@@ -25,7 +25,7 @@ class GenerateDefaultAvatarTest extends TestCase
 
         $contact = app(GenerateDefaultAvatar::class)->execute($request);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'avatars/',
             $contact->avatar_default_url
         );
@@ -56,7 +56,7 @@ class GenerateDefaultAvatarTest extends TestCase
 
         $contact = app(GenerateDefaultAvatar::class)->execute($request);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'avatars/',
             $contact->avatar_default_url
         );

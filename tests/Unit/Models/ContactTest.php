@@ -532,7 +532,7 @@ class ContactTest extends FeatureTestCase
             'avatar_source' => 'default',
         ]);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'storage/defaultURL',
             $contact->getAvatarURL()
         );
@@ -640,7 +640,6 @@ class ContactTest extends FeatureTestCase
         ]));
 
         $this->assertEquals(100, $contact->totalOutstandingDebtAmount());
-        $this->assertNotNull($contact->first_met_special_date_id);
     }
 
     public function test_set_special_date_with_age_creates_a_date_and_saves_the_id()
@@ -1048,7 +1047,7 @@ class ContactTest extends FeatureTestCase
 
         config(['filesystems.default' => 'public']);
 
-        $this->assertContains(
+        $this->assertStringContainsString(
             'avatars/image.jpg',
             $contact->avatar_default_url
         );

@@ -55,7 +55,7 @@ class GetAvatarsFromInternet extends BaseService
     private function generateUUID(Contact $contact)
     {
         if (empty($contact->avatar_adorable_uuid)) {
-            $contact->avatar_adorable_uuid = (string) Str::uuid();
+            $contact->avatar_adorable_uuid = Str::uuid()->toString();
             $contact->save();
         }
 
