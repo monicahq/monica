@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use App\Models\Contact\Note;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
@@ -39,7 +38,7 @@ class AvatarTest extends FeatureTestCase
 
         $params = [
             'avatar' => 'upload',
-            'photo' => $file
+            'photo' => $file,
         ];
 
         $response = $this->post('/people/'.$contact->hashID().'/avatar', $params);
@@ -92,7 +91,7 @@ class AvatarTest extends FeatureTestCase
 
         $params = [
             'avatar' => 'upload',
-            'photo' => $file
+            'photo' => $file,
         ];
 
         $response = $this->post('/people/'.$contact->hashID().'/avatar', $params);
