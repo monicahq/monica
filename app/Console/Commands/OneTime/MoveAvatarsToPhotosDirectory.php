@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands\OneTime;
 
+use App\Events\MoveAvatarEvent;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
-use App\Events\MoveAvatarEvent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Console\ConfirmableTrait;
 use App\Exceptions\FileNotFoundException;
