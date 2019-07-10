@@ -76,7 +76,7 @@ class JournalEntry extends Model
             'journalable_type' => get_class($resourceToLog),
         ])->first();
         if ($resourceToLog instanceof \App\Models\Journal\Entry) {
-            $journalEntry->date = $resourceToLog->date;
+            $journalEntry->date = $resourceToLog->newDate;
         }
         $journalEntry->save();
 

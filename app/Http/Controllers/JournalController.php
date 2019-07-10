@@ -212,9 +212,8 @@ class JournalController extends Controller
             $entry->title = $request->input('title');
         }
 
-        $entry->save();
-
-        $entry->date = $request->input('date');
+        $entry->save();       
+        $entry->newDate = $request->input('date');
         // Log a journal entry
         (new JournalEntry)->edit($entry);
 
