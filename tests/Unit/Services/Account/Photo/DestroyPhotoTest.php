@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\Document;
 
 use Tests\TestCase;
 use App\Models\Account\Photo;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -53,11 +54,12 @@ class DestroyPhotoTest extends TestCase
 
     public function test_it_throws_a_photo_doesnt_exist()
     {
+        $account = factory(Account::class)->create([]);
         $photo = factory(Photo::class)->create([]);
 
         $request = [
-            'account_id' => $photo->account->id,
-            'photo_id' => 3,
+            'account_id' => $account->id,
+            'photo_id' => $photo->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);
