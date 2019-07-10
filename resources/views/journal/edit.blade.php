@@ -41,7 +41,11 @@
 
               <div class="form-group">
                 <label for="field-entry">{{ trans('journal.journal_add_date') }}</label>
-                <input type="date" id="field-date" name="date" class="form-control" value="{{ $entry->date->toDateString() }}">
+                <form-date
+                  :id="'field-date'"
+                  :default-date="'{{ $entry->date->toDateString() }}'"
+                  :locale="'{{ \App::getLocale() }}'">
+                </form-date>
               </div>
 
               <div class="form-group">

@@ -197,7 +197,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/journal/add', 'JournalController@create')->name('create');
         Route::post('/journal/create', 'JournalController@save')->name('save');
         Route::get('/journal/entries/{entry}/edit', 'JournalController@edit')->name('edit');
-        Route::put('/journal/{entryId}', 'JournalController@update')->name('update');
+        Route::put('/journal/entries/{entryId}', 'JournalController@update')->name('update');
         Route::delete('/journal/{entryId}', 'JournalController@deleteEntry');
     });
 

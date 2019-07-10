@@ -71,12 +71,10 @@ class JournalEntry extends Model
      */
     public function edit($resourceToLog)
     {
-        
-        $journalEntry = self::where(
-                'journalable_id', $resourceToLog->id
-            )->where(
-                'journalable_type', get_class($resourceToLog)
-            )->first();
+        $journalEntry = self::where([
+            'journalable_id' => $resourceToLog->id,
+            'journalable_type' => get_class($resourceToLog),
+        ])->first();
         if ($resourceToLog instanceof \App\Models\Journal\Entry) {
             $journalEntry->date = $resourceToLog->date;
         }
