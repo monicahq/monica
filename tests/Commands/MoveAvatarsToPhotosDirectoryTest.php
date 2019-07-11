@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
