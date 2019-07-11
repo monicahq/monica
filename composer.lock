@@ -10843,16 +10843,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.2.0",
+            "version": "v5.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "4339d153abc18c536616beb8b1c674c67c5720ca"
+                "reference": "17bcb092516805e68d598035f6315bcb9845bbe7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/4339d153abc18c536616beb8b1c674c67c5720ca",
-                "reference": "4339d153abc18c536616beb8b1c674c67c5720ca",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/17bcb092516805e68d598035f6315bcb9845bbe7",
+                "reference": "17bcb092516805e68d598035f6315bcb9845bbe7",
                 "shasum": ""
             },
             "require": {
@@ -10904,7 +10904,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-06-25T15:14:19+00:00"
+            "time": "2019-07-11T21:05:48+00:00"
         },
         {
             "name": "laravel/slack-notification-channel",
