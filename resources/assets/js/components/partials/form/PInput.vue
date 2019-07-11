@@ -89,6 +89,9 @@ export default {
 
   methods: {
     select() {
+      if (this.disabled) {
+        return;
+      }
       switch (this._type)
       {
       case 'checkbox':

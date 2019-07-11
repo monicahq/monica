@@ -123,6 +123,10 @@ Vue.component(
 );
 
 Vue.component(
+  'contact-avatar',
+  require('./components/people/SetAvatar.vue').default
+);
+Vue.component(
   'contact-favorite',
   require('./components/people/SetFavorite.vue').default
 );

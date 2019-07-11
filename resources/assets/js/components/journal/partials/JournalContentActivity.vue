@@ -92,8 +92,8 @@
             <span class="f6 gray">
               {{ $t('app.with') }}
             </span>
-            <div v-for="attendees in activity.attendees" class="dib pointer ml2" v-bind:key="attendees.id" @click="redirect(attendees)">
-              <img :src="attendees.information.avatar.avatar_url" v-tooltip.bottom="attendees.complete_name" class="br3 journal-avatar-small" />
+            <div v-for="attendees in activity.attendees" :key="attendees.id" class="dib pointer ml2" @click="redirect(attendees)">
+              <img v-tooltip.bottom="attendees.complete_name" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" />
             </div>
           </div>
         </div>

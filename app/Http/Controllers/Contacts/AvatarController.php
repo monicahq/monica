@@ -36,25 +36,30 @@ class AvatarController extends Controller
             'source' => $request->get('avatar'),
         ];
 
-        // if it's a new photo, we need to upload it
-        if ($request->get('avatar') === 'upload') {
-            $validator = Validator::make($request->all(), [
-                'file' => 'max:10240',
-            ]);
+        switch ($request->get('avatar')) {
+            case 'upload':
+            // if it's a new photo, we need to upload it
+                $validator = Validator::make($request->all(), [
+                    'file' => 'max:10240',
+                ]);
 
-            if ($validator->fails()) {
-                return back()
-                    ->withInput()
-                    ->withErrors($validator);
-            }
+                if ($validator->fails()) {
+                    return back()
+                        ->withInput()
+                        ->withErrors($validator);
+                }
 
-            $photo = app(UploadPhoto::class)->execute([
-                'account_id' => auth()->user()->account->id,
-                'photo' => $request->photo,
-            ]);
+                $photo = app(UploadPhoto::class)->execute([
+                    'account_id' => auth()->user()->account->id,
+                    'photo' => $request->photo,
+                ]);
 
-            $data['photo_id'] = $photo->id;
-            $data['source'] = 'photo';
+                $data['photo_id'] = $photo->id;
+                $data['source'] = 'photo';
+            break;
+            case 'photo':
+                $data['photo_id'] = $contact->avatar_photo_id;
+            break;
         }
 
         app(UpdateAvatar::class)->execute($data);
