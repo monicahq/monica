@@ -109,5 +109,11 @@
             </errorLevel>
         </UndefinedPropertyAssignment>
 
+        <UndefinedPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="app/Services/VCalendar/ImportTask.php" />
+            </errorLevel>
+        </UndefinedPropertyFetch>
+
     </issueHandlers>
 </psalm>

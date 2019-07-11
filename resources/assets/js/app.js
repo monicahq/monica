@@ -21,28 +21,13 @@ Vue.use(Notifications);
 
 // Tooltip
 import Tooltip from 'vue-directive-tooltip';
-import 'vue-directive-tooltip/css/index.css';
-Vue.use(Tooltip, {
-  delay: 0,
-});
-
-// Toggle Buttons
-import ToggleButton from 'vue-js-toggle-button';
-Vue.use(ToggleButton);
-
-// Radio buttons
-import PrettyCheckbox from 'pretty-checkbox-vue';
-Vue.use(PrettyCheckbox);
+Vue.use(Tooltip, { delay: 0 });
 
 // Select used on list items to display edit and delete buttons
-import vSelectMenu from 'v-selectmenu';
-Vue.use(vSelectMenu);
+//import vSelectMenu from 'v-selectmenu';
+//Vue.use(vSelectMenu);
 
-// Tables
-import VueGoodTablePlugin from 'vue-good-table';
-import 'vue-good-table/dist/vue-good-table.css';
-Vue.use(VueGoodTablePlugin);
-
+// Copy text from clipboard
 import VueClipboard from 'vue-clipboard2';
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard);
@@ -93,12 +78,12 @@ Vue.component(
   require('./components/partials/form/Select.vue').default
 );
 Vue.component(
-  'form-specialdate',
-  require('./components/partials/form/SpecialDate.vue').default
-);
-Vue.component(
   'form-date',
   require('./components/partials/form/Date.vue').default
+);
+Vue.component(
+  'form-checkbox',
+  require('./components/partials/form/Checkbox.vue').default
 );
 Vue.component(
   'form-radio',
@@ -111,6 +96,14 @@ Vue.component(
 Vue.component(
   'form-toggle',
   require('./components/partials/form/Toggle.vue').default
+);
+Vue.component(
+  'form-specialdate',
+  require('./components/partials/SpecialDate.vue').default
+);
+Vue.component(
+  'form-specialdeceased',
+  require('./components/partials/SpecialDeceased.vue').default
 );
 Vue.component(
   'emotion',
@@ -346,7 +339,7 @@ export function loadLanguageAsync (lang, set) {
 }
 
 loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
-  moment.locale(lang);
+  moment.locale(lang === 'zh' ? 'zh-cn' : lang);
 
   // the Vue appplication
   const app = new Vue({

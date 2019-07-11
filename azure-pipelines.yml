@@ -1,0 +1,159 @@
+# PHP
+# Test and package your PHP project.
+# Add steps that run tests, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/php
+
+trigger:
+  batch: 'true'
+  branches:
+    include:
+    - master
+    exclude:
+    - 'l10n_master*'
+  tags:
+    include:
+    - '*'
+pr:
+  autoCancel: 'true'
+  branches:
+    include:
+    - '*'
+    exclude:
+    - 'l10n_master*'
+
+variables:
+  phpVersion: 7.2
+  COMPOSER_HOME: $(Agent.BuildDirectory)/.composer
+
+stages:
+- stage: build
+  displayName: 'Build'
+  jobs:
+  - template: .azure/build-job.yml
+
+  - job: tests
+    pool:
+      vmImage: 'ubuntu-latest'
+    strategy:
+      parallel: 4
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/composer-install-step.yml
+    - template: .azure/remove-xdebug-step.yml
+    - template: .azure/prepare-db-step.yml
+    - template: .azure/seed-test-db-step.yml
+    - template: .azure/unit-tests-step.yml
+    
+  - job: psalm
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/composer-install-step.yml
+    - bash: vendor/bin/psalm --show-info=false
+      displayName: 'Run psalm'
+
+  - job: phpstan
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/composer-install-step.yml
+    - bash: php artisan code:analyse
+      displayName: 'Run phpstan'
+
+  - template: .azure/test-browser-job.yml
+
+  - job: reporting
+    dependsOn:
+    - tests
+    - tests_browser
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/composer-install-step.yml
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results1'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results2'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results3'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - task: DownloadPipelineArtifact@1
+      inputs:
+        artifactName: 'results4'
+        downloadPath: $(System.DefaultWorkingDirectory)/results
+    - bash: |
+        yarn global add junit-merge
+        $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
+        ls results/results.xml
+      displayName: 'Merge junit files'
+    - template: .azure/runsonar-step.yml
+
+- stage: deploy
+  displayName: 'Deploy'
+  dependsOn: build
+  condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
+  jobs:
+  - job: deployAssets
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - bash: make assets
+    - bash: make push_bintray_assets
+      env:
+        BINTRAY_USER: $(BINTRAY_USER)
+        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+
+  - job: deploy_dist
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/composer-install-step.yml
+      parameters:
+        no_dev: 'true'
+    - bash: make dist
+    - bash: make push_bintray_dist
+      env:
+        BINTRAY_USER: $(BINTRAY_USER)
+        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+
+  - job: deploy_docker_master
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/docker-build-step.yml
+    - template: .azure/docker-push-bintray-step.yml
+
+  - job: deploy_docker
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/prepare-environment-step.yml
+    - template: .azure/docker-build-step.yml
+    - template: .azure/docker-push-bintray-step.yml
+    - bash: |
+        echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
+        make docker_tag
+        make docker_push
+        # notify microbadger to update
+        # https://microbadger.com/images/monicahq/monicahq
+        curl -X POST $MICROBADGER_WEBHOOK
+      displayName: 'Publish docker image'
+      env:
+        MICROBADGER_WEBHOOK: $(MICROBADGER_WEBHOOK)
+        DOCKER_LOGIN: $(DOCKER_LOGIN)

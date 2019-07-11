@@ -71,8 +71,8 @@ export default {
 
   methods: {
     /**
-          * Get all of the authorized tokens for the user.
-          */
+     * Get all of the authorized tokens for the user.
+     */
     getTokens() {
       axios.get('oauth/tokens')
         .then(response => {
@@ -81,8 +81,8 @@ export default {
     },
 
     /**
-          * Revoke the given token.
-          */
+     * Revoke the given token.
+     */
     revoke(token) {
       axios.delete('oauth/tokens/' + token.id)
         .then(response => {

@@ -24,7 +24,13 @@
 </template>
 
 <script>
+import { ToggleButton } from 'vue-js-toggle-button';
+
 export default {
+
+  components: {
+    ToggleButton
+  },
 
   props: {
     value: {

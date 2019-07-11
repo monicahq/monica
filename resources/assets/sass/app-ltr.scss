@@ -16,11 +16,17 @@ $htmldir: ltr !default;
 // Icon fonts
 @import "~font-awesome/scss/font-awesome";
 
+// Tooltip
+@import '~vue-directive-tooltip/css/index.css';
+
 // Radio button
 @import '~pretty-checkbox/src/pretty-checkbox';
 
 // datepicker
 @import "~@hokify/vuejs-datepicker/dist/vuejs-datepicker.css";
+
+// Tables
+@import '~vue-good-table/dist/vue-good-table.css';
 
 @import "buttons";
 @import "header";

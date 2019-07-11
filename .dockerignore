@@ -10,7 +10,9 @@ database/*.sqlite
 .env
 CODE_OF_CONDUCT.md
 docker-compose.yml
+docker-compose.dev.yml
 Dockerfile
+Dockerfile.dev
 .dockerignore
 docs/
 fortrabbit.yml
@@ -19,6 +21,7 @@ node_modules/
 npm-debug.log*
 persist/
 phpunit*
+.phpunit.result.cache
 Procfile
 public/storage
 resources/vendor/
@@ -37,3 +40,6 @@ storage/logs/*
 .styleci.yml
 .travis.yml*
 vendor/
+yarn-error.log
+.sonarlint/
+cypress.env.json
