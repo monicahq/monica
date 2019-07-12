@@ -15,4 +15,5 @@ elif [ -n "$SYSTEM_PULLREQUEST_SOURCEBRANCH" ]; then
   git checkout -q -B "$SYSTEM_PULLREQUEST_SOURCEBRANCH"
 fi
 
-git reset --hard "$GIT_COMMIT"
+#git reset --hard "$GIT_COMMIT"
+git log -n1
