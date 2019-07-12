@@ -7,6 +7,7 @@ export GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_S
 echo -e "GIT_COMMIT=$GIT_COMMIT"
 echo -e "##vso[task.setvariable variable=GIT_COMMIT]$GIT_COMMIT"
 
+git config checkout.defaultRemote origin
 git reset --hard "$GIT_COMMIT"
 
 if [[ $BUILD_SOURCEBRANCH == refs/tags/* ]]; then
