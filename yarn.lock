@@ -672,12 +672,12 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@snyk/composer-lockfile-parser@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@snyk/composer-lockfile-parser/-/composer-lockfile-parser-1.0.2.tgz#d748e56076bc1c25b130c1f13ed705fa285a1994"
-  integrity sha512-kFzMajJLgWYsRTD+j1B79RckP1nYolM3UU9wJAo6VjvaBJ1R8E6IXmz0lEJBwK2zXM4EPrgk41ZqmoQS3hselQ==
+"@snyk/composer-lockfile-parser@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@snyk/composer-lockfile-parser/-/composer-lockfile-parser-1.0.3.tgz#4b703883ec36f3cec63c64355031e06698c771f5"
+  integrity sha512-hb+6E7kMzWlcwfe//ILDoktBPKL2a3+RnJT/CXnzRXaiLQpsdkf5li4q2v0fmvd+4v7L3tTN8KM+//lJyviEkg==
   dependencies:
-    lodash "4.17.11"
+    lodash "^4.17.13"
 
 "@snyk/dep-graph@1.8.1":
   version "1.8.1"
@@ -1735,11 +1735,6 @@ charenc@~0.0.1:
 check-more-types@2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/check-more-types/-/check-more-types-2.24.0.tgz#1420ffb10fd444dcfc79b43891bbfffd32a84600"
-
-child_process@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/child_process/-/child_process-1.0.2.tgz#b1f7e7fc73d25e7fd1d455adc94e143830182b5a"
-  integrity sha1-sffn/HPSXn/R1FWtyU4UODAYK1o=
 
 chokidar@^2.0.0, chokidar@^2.0.2, chokidar@^2.0.3, chokidar@^2.1.5:
   version "2.1.5"
@@ -3677,11 +3672,6 @@ fs.realpath@^1.0.0:
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
 
-fs@0.0.1-security:
-  version "0.0.1-security"
-  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
-  integrity sha1-invTcYa23d84E/I4WLV+yq9eQdQ=
-
 fsevents@^1.2.7:
   version "1.2.9"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.2.9.tgz#3f5ed66583ccd6f400b5a00db6f7e861363e388f"
@@ -5289,7 +5279,7 @@ lodash@^4, lodash@^4.16.4, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.5:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.13.tgz#0bdc3a6adc873d2f4e0c4bac285df91b64fc7b93"
   integrity sha512-vm3/XWXfWtRua0FkUyEHBZy8kCPjErNBT9fJx8Zvs+U6zjqPbTUOpkaoum3O5uiA8sm+yNMHXfYkTUHFoMxFNA==
 
-lodash@^4.17.14:
+lodash@^4.17.13, lodash@^4.17.14:
   version "4.17.14"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
   integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
@@ -6438,14 +6428,6 @@ path-type@^3.0.0:
   dependencies:
     pify "^3.0.0"
 
-path@0.12.7:
-  version "0.12.7"
-  resolved "https://registry.yarnpkg.com/path/-/path-0.12.7.tgz#d4dc2a506c4ce2197eb481ebfcd5b36c0140b10f"
-  integrity sha1-1NwqUGxM4hl+tIHr/NWzbAFAsQ8=
-  dependencies:
-    process "^0.11.1"
-    util "^0.10.3"
-
 pbkdf2@^3.0.3:
   version "3.0.17"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.0.17.tgz#976c206530617b14ebb32114239f7b09336e93a6"
@@ -6905,7 +6887,7 @@ process-nextick-args@~2.0.0:
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.0.tgz#a37d732f4271b4ab1ad070d35508e8290788ffaa"
   integrity sha512-MtEC1TqN0EU5nephaJ4rAtThHtC86dNN9qCuEhtshvpVBkAW5ZO7BASN9REnF9eoXGcRub+pFuKEpOHE+HbEMw==
 
-process@^0.11.1, process@^0.11.10:
+process@^0.11.10:
   version "0.11.10"
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
@@ -7901,12 +7883,12 @@ snyk-module@1.9.1, snyk-module@^1.6.0, snyk-module@^1.9.1:
     debug "^3.1.0"
     hosted-git-info "^2.7.1"
 
-snyk-mvn-plugin@2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/snyk-mvn-plugin/-/snyk-mvn-plugin-2.3.0.tgz#a76cfc0041ecc4333f2c6f6f72138f1e4621da24"
-  integrity sha512-LOSiJu+XUPVqKCXcnQPLhlyTGm3ikDwjvYw5fpiEnvjMWkMDd8IfzZqulqreebJDmadUpP7Cn0fabfx7TszqxA==
+snyk-mvn-plugin@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/snyk-mvn-plugin/-/snyk-mvn-plugin-2.3.1.tgz#5897dd56c1aa8042158106813025825df749bd23"
+  integrity sha512-2RgBnYe3Upc7SL+sL7MmnoCoJV/TZZ7q2L0J1BAbjoD/4cca4q0TCR6QVLzytHf4fSqc6QjSMjTUfmAo0kgsBg==
   dependencies:
-    lodash "4.17.11"
+    lodash "^4.17.13"
     tslib "1.9.3"
 
 snyk-nodejs-lockfile-parser@1.13.0:
@@ -7939,12 +7921,12 @@ snyk-paket-parser@1.4.3:
   dependencies:
     tslib "^1.9.3"
 
-snyk-php-plugin@1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/snyk-php-plugin/-/snyk-php-plugin-1.6.2.tgz#f5ad6f081d2afc6dfc496cbce68165bdcd2e87ed"
-  integrity sha512-6QM7HCmdfhuXSNGFgNOVC+GVT1Y2UfBoO+TAeV1uM1CdRGPJziz12F79a1Qyc9YGuiAwmm5DtdatUgKraC8gdA==
+snyk-php-plugin@1.6.3:
+  version "1.6.3"
+  resolved "https://registry.yarnpkg.com/snyk-php-plugin/-/snyk-php-plugin-1.6.3.tgz#a47ff8d8e46edc709a9e90d25f9dad44e2c64178"
+  integrity sha512-S9GAVnL2ieaS/wvhq+ywUDrOlt477+em//XkqIqdJEFNUgFyxwrXjQgB0paehP8PBQQ+RySIV/MMgIFb3+6IwA==
   dependencies:
-    "@snyk/composer-lockfile-parser" "1.0.2"
+    "@snyk/composer-lockfile-parser" "1.0.3"
 
 snyk-policy@1.13.5:
   version "1.13.5"
@@ -7997,14 +7979,11 @@ snyk-resolve@1.0.1, snyk-resolve@^1.0.0, snyk-resolve@^1.0.1:
     debug "^3.1.0"
     then-fs "^2.0.0"
 
-snyk-sbt-plugin@2.5.5:
-  version "2.5.5"
-  resolved "https://registry.yarnpkg.com/snyk-sbt-plugin/-/snyk-sbt-plugin-2.5.5.tgz#b7839bc297f41aadc64b32d61e8dbaa609303967"
-  integrity sha512-oSybTDLw8VF2nOdlbL7GRHafCxsM6ydTH6hKacvpN6mYDbNaohscAWB/FjLIPCCimVorWldEdSdotSCukq2eYg==
+snyk-sbt-plugin@2.5.6:
+  version "2.5.6"
+  resolved "https://registry.yarnpkg.com/snyk-sbt-plugin/-/snyk-sbt-plugin-2.5.6.tgz#fe96cb75ef7542092c045cdbf6397f2524b61c00"
+  integrity sha512-ioZW6WxN0lYnVkUHxSXR+6DBeA1Jlah/r3mMwEhnCwp1um2pE9O9F+piQzbuQi1+q64ZDb7EzBnvmL/aqJdwdA==
   dependencies:
-    child_process "1.0.2"
-    fs "0.0.1-security"
-    path "0.12.7"
     semver "^6.1.2"
     tmp "^0.1.0"
     tree-kill "^1.2.1"
@@ -8026,10 +8005,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.192.4:
-  version "1.192.4"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.192.4.tgz#ed1d484d42525cef7e7520ffd21c32182c2b4b50"
-  integrity sha512-5gXOqNl2ehyt5LDP3sh10vObCboNlQ38dkmMAOdYKqE2ZojpOUYk8OQdL8tK5MEPgEWt76FeGv1nFNg5XTLUSQ==
+snyk@^1.192.5:
+  version "1.193.1"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.193.1.tgz#73e4b133b59c785a23b88ece499dd06c8d9e1e34"
+  integrity sha512-bwxrpR8T5tOQgLGwBMq7BYKDvLQRVsB3znMJpdZpYnMCY34MpmkuDhU+546TA8kmp5cLPCg+0BlaO7Yrj3Ouag==
   dependencies:
     "@snyk/dep-graph" "1.8.1"
     "@snyk/gemfile" "1.2.0"
@@ -8043,7 +8022,7 @@ snyk@^1.192.4:
     git-url-parse "11.1.2"
     glob "^7.1.3"
     inquirer "^6.2.2"
-    lodash "^4.17.11"
+    lodash "^4.17.13"
     needle "^2.2.4"
     opn "^5.5.0"
     os-name "^3.0.0"
@@ -8055,15 +8034,15 @@ snyk@^1.192.4:
     snyk-go-plugin "1.10.2"
     snyk-gradle-plugin "2.12.5"
     snyk-module "1.9.1"
-    snyk-mvn-plugin "2.3.0"
+    snyk-mvn-plugin "2.3.1"
     snyk-nodejs-lockfile-parser "1.13.0"
     snyk-nuget-plugin "1.10.0"
-    snyk-php-plugin "1.6.2"
+    snyk-php-plugin "1.6.3"
     snyk-policy "1.13.5"
     snyk-python-plugin "1.10.2"
     snyk-resolve "1.0.1"
     snyk-resolve-deps "4.0.3"
-    snyk-sbt-plugin "2.5.5"
+    snyk-sbt-plugin "2.5.6"
     snyk-tree "^1.0.0"
     snyk-try-require "1.3.1"
     source-map-support "^0.5.11"
@@ -8902,13 +8881,6 @@ util@0.10.3:
   integrity sha1-evsa/lCAUkZInj23/g7TeTNqwPk=
   dependencies:
     inherits "2.0.1"
-
-util@^0.10.3:
-  version "0.10.4"
-  resolved "https://registry.yarnpkg.com/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
-  integrity sha512-0Pm9hTQ3se5ll1XihRic3FDIku70C+iHUdT/W926rSgHV5QgXsYbKZN8MSC3tJtSkhuROzvsQjAaFENRXr+19A==
-  dependencies:
-    inherits "2.0.3"
 
 util@^0.11.0:
   version "0.11.1"
