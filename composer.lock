@@ -2188,16 +2188,16 @@
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
-            "version": "1.5.1",
+            "version": "1.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
-                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9"
+                "reference": "219cf0a7e7da350d1bd0b4e992f45dff62e6b2c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/650895fec188fb8ef92d3304a293c655ed5af0d9",
-                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9",
+                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/219cf0a7e7da350d1bd0b4e992f45dff62e6b2c6",
+                "reference": "219cf0a7e7da350d1bd0b4e992f45dff62e6b2c6",
                 "shasum": ""
             },
             "require": {
@@ -2251,7 +2251,7 @@
                 "security",
                 "u2f"
             ],
-            "time": "2019-03-24T19:37:08+00:00"
+            "time": "2019-07-15T04:54:55+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -12707,12 +12707,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "a53a6f855cbff7edb078f87c72bb808c89443a00"
+                "reference": "2e50fc5a89e1e77b68c7e3c3aa6d87da0b8d4c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/a53a6f855cbff7edb078f87c72bb808c89443a00",
-                "reference": "a53a6f855cbff7edb078f87c72bb808c89443a00",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/2e50fc5a89e1e77b68c7e3c3aa6d87da0b8d4c6d",
+                "reference": "2e50fc5a89e1e77b68c7e3c3aa6d87da0b8d4c6d",
                 "shasum": ""
             },
             "conflict": {
@@ -12815,7 +12815,7 @@
                 "silverstripe/userforms": "<3",
                 "simple-updates/phpwhois": "<=1",
                 "simplesamlphp/saml2": "<1.10.6|>=2,<2.3.8|>=3,<3.1.4",
-                "simplesamlphp/simplesamlphp": "<1.15.2|>=1.16,<1.16.3",
+                "simplesamlphp/simplesamlphp": "<1.17.3",
                 "simplesamlphp/simplesamlphp-module-infocard": "<1.0.1",
                 "slim/slim": "<2.6",
                 "smarty/smarty": "<3.1.33",
@@ -12914,7 +12914,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-06-25T10:37:35+00:00"
+            "time": "2019-07-14T14:21:52+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
