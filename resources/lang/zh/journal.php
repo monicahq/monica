@@ -10,7 +10,7 @@ return [
     'journal_entry_type_activity' => '活动',
     'journal_entry_rate' => '评价你的一天。',
     'journal_add_comment' => '是否要添加注释 (可选)？',
-    'journal_show_comment' => 'Show comment',
+    'journal_show_comment' => '显示评论',
     'entry_delete_success' => '记录条目已成功删除。',
     'journal_add_title' => '标题 (可选)',
     'journal_add_date' => '日期',
