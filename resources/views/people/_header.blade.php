@@ -61,10 +61,12 @@
         @endif
 
         {{-- STAY IN TOUCH --}}
-        <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
-          @include('partials.icons.header_stayintouch')
-          <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" :limited="{{ \Safe\json_encode(auth()->user()->account->hasLimitations()) }}"></stay-in-touch>
-        </li>
+        @if(!$contact->is_dead)
+          <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+            @include('partials.icons.header_stayintouch')
+            <stay-in-touch :contact="{{ $contact }}" hash="{{ $contact->hashID() }}" :limited="{{ \Safe\json_encode(auth()->user()->account->hasLimitations()) }}"></stay-in-touch>
+          </li>
+        @endif
       </ul>
 
       <tags hash="{{ $contact->hashID() }}" class="mb3 mb0-ns"></tags>
