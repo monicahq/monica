@@ -2188,16 +2188,16 @@
         },
         {
             "name": "lahaxearnaud/laravel-u2f",
-            "version": "1.5.1",
+            "version": "1.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lahaxearnaud/laravel-u2f.git",
-                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9"
+                "reference": "5121e7bf47479dadbe5599761ae422425ea903b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/650895fec188fb8ef92d3304a293c655ed5af0d9",
-                "reference": "650895fec188fb8ef92d3304a293c655ed5af0d9",
+                "url": "https://api.github.com/repos/lahaxearnaud/laravel-u2f/zipball/5121e7bf47479dadbe5599761ae422425ea903b1",
+                "reference": "5121e7bf47479dadbe5599761ae422425ea903b1",
                 "shasum": ""
             },
             "require": {
@@ -2251,7 +2251,7 @@
                 "security",
                 "u2f"
             ],
-            "time": "2019-03-24T19:37:08+00:00"
+            "time": "2019-07-20T14:05:51+00:00"
         },
         {
             "name": "laravel/cashier",
