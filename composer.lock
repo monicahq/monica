@@ -2468,30 +2468,30 @@
         },
         {
             "name": "laravel/passport",
-            "version": "v7.3.3",
+            "version": "v7.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/passport.git",
-                "reference": "609b5e829bf65dbeffb83dc8c324275fe0ebf30c"
+                "reference": "f75c95abc211a06fbe3cd566c2ca4abea44dd537"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/passport/zipball/609b5e829bf65dbeffb83dc8c324275fe0ebf30c",
-                "reference": "609b5e829bf65dbeffb83dc8c324275fe0ebf30c",
+                "url": "https://api.github.com/repos/laravel/passport/zipball/f75c95abc211a06fbe3cd566c2ca4abea44dd537",
+                "reference": "f75c95abc211a06fbe3cd566c2ca4abea44dd537",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "firebase/php-jwt": "~3.0|~4.0|~5.0",
                 "guzzlehttp/guzzle": "~6.0",
-                "illuminate/auth": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
-                "illuminate/console": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
-                "illuminate/container": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
-                "illuminate/contracts": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
-                "illuminate/database": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
-                "illuminate/encryption": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
-                "illuminate/http": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
-                "illuminate/support": "~5.6.0|~5.7.0|~5.8.0|~5.9.0|^6.0",
+                "illuminate/auth": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/console": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/container": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/contracts": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/database": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/encryption": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/http": "~5.6.0|~5.7.0|~5.8.0|^6.0",
+                "illuminate/support": "~5.6.0|~5.7.0|~5.8.0|^6.0",
                 "league/oauth2-server": "^7.0",
                 "php": ">=7.1",
                 "phpseclib/phpseclib": "^2.0",
@@ -2534,7 +2534,7 @@
                 "oauth",
                 "passport"
             ],
-            "time": "2019-07-29T18:04:19+00:00"
+            "time": "2019-07-30T15:55:16+00:00"
         },
         {
             "name": "laravel/socialite",
