@@ -4,7 +4,7 @@ use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Migrations\Migration;
 
-class AddStepparentRelationship extends Migration
+class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
 {
     /**
      * Run the migrations.
