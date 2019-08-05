@@ -173,15 +173,15 @@ return [
     'relationship_type_child_with_name' => 'בן של :name',
     'relationship_type_child_female_with_name' => 'בת של :name',
 
-    'relationship_type_stepparent' => 'stepfather',
-    'relationship_type_stepparent_female' => 'stepmother',
-    'relationship_type_stepparent_with_name' => ':name’s stepfather',
-    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+    'relationship_type_stepparent' => 'אב חורג',
+    'relationship_type_stepparent_female' => 'אם חורגת',
+    'relationship_type_stepparent_with_name' => 'אב חורג של :name',
+    'relationship_type_stepparent_female_with_name' => 'אם חורגת של :name',
 
-    'relationship_type_stepchild' => 'stepson',
-    'relationship_type_stepchild_female' => 'stepdaughter',
-    'relationship_type_stepchild_with_name' => ':name’s stepson',
-    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
+    'relationship_type_stepchild' => 'בן חורג',
+    'relationship_type_stepchild_female' => 'בת חורגת',
+    'relationship_type_stepchild_with_name' => 'בן חורג של :name',
+    'relationship_type_stepchild_female_with_name' => 'בת חורגת של :name',
 
     'relationship_type_sibling' => 'אח',
     'relationship_type_sibling_female' => 'אחות',
