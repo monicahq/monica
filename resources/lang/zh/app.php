@@ -173,15 +173,15 @@ return [
     'relationship_type_child_with_name' => ':name的儿子',
     'relationship_type_child_female_with_name' => ':name的女人',
 
-    'relationship_type_stepparent' => 'stepfather',
-    'relationship_type_stepparent_female' => 'stepmother',
-    'relationship_type_stepparent_with_name' => ':name’s stepfather',
-    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+    'relationship_type_stepparent' => '继父',
+    'relationship_type_stepparent_female' => '继母',
+    'relationship_type_stepparent_with_name' => ':name的继父',
+    'relationship_type_stepparent_female_with_name' => ':name的继母',
 
-    'relationship_type_stepchild' => 'stepson',
-    'relationship_type_stepchild_female' => 'stepdaughter',
-    'relationship_type_stepchild_with_name' => ':name’s stepson',
-    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
+    'relationship_type_stepchild' => '继子',
+    'relationship_type_stepchild_female' => '继女',
+    'relationship_type_stepchild_with_name' => ':name的继子',
+    'relationship_type_stepchild_female_with_name' => ':name的继女',
 
     'relationship_type_sibling' => '兄弟',
     'relationship_type_sibling_female' => '姐妹',
