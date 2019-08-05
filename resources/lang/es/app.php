@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'yes' => 'Yes',
+    'yes' => 'Si',
     'no' => 'No',
     'update' => 'Actualizar',
     'save' => 'Guardar',
@@ -86,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'Añadir una nota',
     'breadcrumb_edit_note' => 'Editar una nota',
     'breadcrumb_api' => 'API',
-    'breadcrumb_dav' => 'DAV Resources',
+    'breadcrumb_dav' => 'Recursos DAV',
     'breadcrumb_edit_introductions' => 'Cómo os conocisteis',
     'breadcrumb_settings_personalization' => 'Personalización',
     'breadcrumb_settings_security' => 'Seguridad',
@@ -96,7 +96,7 @@ return [
     'gender_male' => 'Hombre',
     'gender_female' => 'Mujer',
     'gender_none' => 'Prefiero no decirlo',
-    'gender_no_gender' => 'No gender',
+    'gender_no_gender' => 'Sin género',
 
     'error_title' => '¡Ups! algo ha fallado.',
     'error_unauthorized' => 'No tienes permisos para editar este recurso.',
