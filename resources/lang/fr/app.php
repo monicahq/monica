@@ -173,15 +173,15 @@ return [
     'relationship_type_child_with_name' => 'fils de :name',
     'relationship_type_child_female_with_name' => 'fille de :name',
 
-    'relationship_type_stepparent' => 'stepfather',
-    'relationship_type_stepparent_female' => 'stepmother',
-    'relationship_type_stepparent_with_name' => ':name’s stepfather',
-    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+    'relationship_type_stepparent' => 'beau père',
+    'relationship_type_stepparent_female' => 'belle mère',
+    'relationship_type_stepparent_with_name' => 'beau père de :name',
+    'relationship_type_stepparent_female_with_name' => 'belle mère de :name',
 
-    'relationship_type_stepchild' => 'stepson',
-    'relationship_type_stepchild_female' => 'stepdaughter',
-    'relationship_type_stepchild_with_name' => ':name’s stepson',
-    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
+    'relationship_type_stepchild' => 'beau fils',
+    'relationship_type_stepchild_female' => 'belle fille',
+    'relationship_type_stepchild_with_name' => 'beau fils de :name',
+    'relationship_type_stepchild_female_with_name' => 'belle fille de :name',
 
     'relationship_type_sibling' => 'frère',
     'relationship_type_sibling_female' => 'sœur',
