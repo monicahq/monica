@@ -1,14 +1,14 @@
-UNRELEASED CHANGES:
+# UNRELEASED CHANGES:
 
-New features:
+### New features:
 
 * Add stepparent/stepchild relationship
 
-Enhancements:
+### Enhancements:
 
 * Use pretty-radio and optimize vue.js components
 
-Fixes:
+### Fixes:
 
 * Fix touch contact's updated_at on stay in touch trigger job
 * Fix relationship list view
@@ -17,17 +17,17 @@ Fixes:
 * Fix stripe payment UI
 * Fix datepicker for locale usage
 
-RELEASED VERSIONS:
 
-v2.14.0 - 2019-05-16
---------------------
+# RELEASED VERSIONS:
 
-New features:
+## v2.14.0 - 2019-05-16
+
+### New features:
 
 * Add WebAuthn Multi-factor authentication
 * Add multi factor auth on oauth
 
-Enhancements:
+### Enhancements:
 
 * Add Swiss CHF currency
 * Add ability to enable DAV for some users
@@ -35,7 +35,7 @@ Enhancements:
 * Rewrite contact search fields
 * Use string and array classes instead of helpers
 
-Fixes:
+### Fixes:
 
 * Fix dav url on dav settings page
 * Fix debt direction on debt edit
@@ -47,17 +47,17 @@ Fixes:
 * Fix register request validate
 * Fix relationship create
 
-v2.13.0 - 2019-04-07
---------------------
 
-Enhancements:
+## v2.13.0 - 2019-04-07
+
+### Enhancements:
 
 * Add ability to update a relationship
 * Add a sex type behind the gender
 * Make gender optional on a contact profile
 * Add a Collection::sortByCollator macro
 
-Fixes:
+### Fixes:
 
 * Fix destroy relationship
 * Fix event dispatch for login (google2fa, u2f) events handle
@@ -68,14 +68,14 @@ Fixes:
 * Fix contact missing create form
 * Fix money format for non two "2" minor unit currencies
 
-v2.12.1 - 2019-03-09
---------------------
 
-Enhancements:
+## v2.12.1 - 2019-03-09
+
+### Enhancements:
 
 * Add eloquent relationships touches
 
-Fixes:
+### Fixes:
 
 * Fix reminders not being sent
 * Fix setting deceased information with removing date and reminder
@@ -86,10 +86,10 @@ Fixes:
 * Fix Journal view now includes Activities as intended
 * Fix deleting a LifeEvent no longer deletes the associated Contact
 
-v2.12.0 - 2019-02-09
---------------------
 
-New features:
+## v2.12.0 - 2019-02-09
+
+### New features:
 
 * Support CalDAV to export the collection of birthdays (breaking change: url of CardDAV is '/dav' now)
 * Add a page in settings to display all DAV resources
@@ -99,7 +99,7 @@ New features:
 * Add API methods to manage genders
 * Breaking change: rewrite API methods to manage contacts
 
-Enhancements:
+### Enhancements:
 
 * Don't change timestamps on contact number_of_views update
 * Redirect to the related real contact when trying to display a partial contact
@@ -116,7 +116,7 @@ Enhancements:
 * Refactor activity types with services
 * Refactor activity type categories with services
 
-Fixes:
+### Fixes:
 
 * Fix addresses and contact fields imports on VCard import
 * Remove users without an existing account in the accounts table
@@ -140,8 +140,8 @@ Fixes:
 * Fix activity date viewed as one day before the event happened
 * Fix settags api call with an empty tag
 
-v2.11.2 - 2019-01-01
---------------------
+
+## v2.11.2 - 2019-01-01
 
 * Carddav: support sync-token (rfc6578)
 * Fix premium feature flag appearing on self-hosted version
@@ -150,8 +150,8 @@ v2.11.2 - 2019-01-01
 * Fix contacts view in case birthdate returns null
 * Fix conversation without message
 
-v2.11.1 - 2018-12-26
---------------------
+
+## v2.11.1 - 2018-12-26
 
 * Migrate LinkedIn url from the Contact object to a ContactFieldType object
 * Activate eslint to check vue and javascript formatting
@@ -164,8 +164,8 @@ v2.11.1 - 2018-12-26
 * Fix contact getIncompleteName to work with UTF-8 last_name characters
 * Fix associate null tags
 
-v2.11.0 - 2018-12-23
---------------------
+
+## v2.11.0 - 2018-12-23
 
 * Add ability to indicate temperature scale (Fahrenheit/Celsius) on the Settings page
 * Add ability to see the current weather on the contact profile page
@@ -187,21 +187,21 @@ v2.11.0 - 2018-12-23
 * Refactor how contacts are managed
 * Add the notion of places
 
-v2.10.2 - 2018-11-14
---------------------
+
+## v2.10.2 - 2018-11-14
 
 * Fix composer install problems
 * Fix editing conversations not working
 * Fix deletion of relationships not working
 
-v2.10.1 - 2018-11-13
---------------------
+
+## v2.10.1 - 2018-11-13
 
 * Fix work information not being able to be edited
 * Display contacts for each tag in the Tags view on the Settings page
 
-v2.10.0 - 2018-11-11
---------------------
+
+## v2.10.0 - 2018-11-11
 
 * Add ability to upload documents
 * Add ability to archive a contact
@@ -230,8 +230,8 @@ v2.10.0 - 2018-11-11
 * Prevent submitting an empty form when pressing enter
 * Remove Antiflood package on oauth/login and use Laravel throttle
 
-v2.9.0 - 2018-10-14
--------------------
+
+## v2.9.0 - 2018-10-14
 
 * Allow to define a max file size for uploaded document in an ENV variable (default to 10240kb)
 * Add description field for a contact
@@ -239,16 +239,16 @@ v2.9.0 - 2018-10-14
 * Add all tasks not yet completed on the dashboard
 * Fix gravatar not displayed on dashboard view
 
-v2.8.1 - 2018-10-08
--------------------
+
+## v2.8.1 - 2018-10-08
 
 * Add ability to set a reminder for a life event
 * Stop reporting OAuth exceptions
 * Replace karakus/laravel-cloudflare with monicahq/laravel-cloudflare to fix dependencies issues
 * Fix use of 'json' mysql column type
 
-v2.8.0 - 2018-09-28
--------------------
+
+## v2.8.0 - 2018-09-28
 
 * Add ability to track life events
 * Add ability to define the default email address used for support
@@ -265,13 +265,13 @@ v2.8.0 - 2018-09-28
 * Remove notion of events
 * Support papertrail logging
 
-v2.7.1 - 2018-09-05
--------------------
+
+## v2.7.1 - 2018-09-05
 
 * Fix duplication of modules in the Settings page
 
-v2.7.0 - 2018-09-04
--------------------
+
+## v2.7.0 - 2018-09-04
 
 * Add ability to log conversations made on social networks or SMS
 * Add language selector on register page
@@ -290,8 +290,8 @@ v2.7.0 - 2018-09-04
 * Fix email maximum size on settings
 * Fix reminder link in email sent
 
-v2.6.0 - 2018-08-17
--------------------
+
+## v2.6.0 - 2018-08-17
 
 * Add ability to set a contact as favorite
 * Add ability to search for a contact in the dropdown when creating a relationship
@@ -306,8 +306,8 @@ v2.6.0 - 2018-08-17
 * Get first existing gravatar if contact has multiple emails
 * Display the date and time of the next reminder sent in settings page
 
-v2.5.0 - 2018-08-08
--------------------
+
+## v2.5.0 - 2018-08-08
 
 * Add ability to define custom activity types and activity type categories
 * Add ability to search a contact by job title
@@ -318,8 +318,8 @@ v2.5.0 - 2018-08-08
 * Fix idHasher decode function
 * Fix storage folder not being linked to public if migrations fail
 
-v2.4.2 - 2018-07-26
--------------------
+
+## v2.4.2 - 2018-07-26
 
 * Add functional tests for account deletion and account reset
 * Fix activities not being displayed in the journal
@@ -327,16 +327,16 @@ v2.4.2 - 2018-07-26
 * Add functional test for account exporting
 * Fix fake content seeder for testing purposes
 
-v2.4.1 - 2018-07-25
--------------------
+
+## v2.4.1 - 2018-07-25
 
 * Add ability to discover Cloudflare trusted proxies automatically. This adds a new ENV variable.
 * Fix avatar link in journal page
 * Fix broken migration
 * Fix Settings not displaying under some conditions
 
-v2.4.0 - 2018-07-23
--------------------
+
+## v2.4.0 - 2018-07-23
 
 * Fix account deletion, reset and export
 * Fix export feature which exported 'changelog_user' table, which it shouldn't
@@ -348,16 +348,16 @@ v2.4.0 - 2018-07-23
 * Fix sonar run for pull requests
 * Improve date and datetime parsing
 
-v2.3.1 - 2018-06-21
--------------------
+
+## v2.3.1 - 2018-06-21
 
 * Fix journal entries not being displayed
 * Add ability to click on entire row on the contact list
 * Fix first name of a relation which could not be saved
 * Fix last name not being reset when set empty
 
-v2.3.0 - 2018-06-13
--------------------
+
+## v2.3.0 - 2018-06-13
 
 * Add a new variable DB_USE_UTF8MB4. Please read instructions carefully for this one.
 * Add support for nicknames
@@ -369,15 +369,15 @@ v2.3.0 - 2018-06-13
 * Set the default_avatar_color property before saving a contact model.
 * Move docs folder back to the repository
 
-v2.2.1 - 2018-05-31
--------------------
+
+## v2.2.1 - 2018-05-31
 
 * Fix url of confirmation email resend
 * Update translations
 * Fix sonar run on release version
 
-v2.2.0 - 2018-05-30
--------------------
+
+## v2.2.0 - 2018-05-30
 
 * Add debts on the dashboard
 * Add support for User and Currency objects in the API
@@ -393,8 +393,8 @@ v2.2.0 - 2018-05-30
 * Add email address verification on register, and email change
 * Change table structure to support emojis in texts
 
-v2.1.1 - 2018-05-13
--------------------
+
+## v2.1.1 - 2018-05-13
 
 * Change file structure inside the People folder (backend change)
 * Remove automatic birthday reminder creation when editing a contact
@@ -410,8 +410,8 @@ v2.1.1 - 2018-05-13
 * Fix API locale
 * Fix update command (backend)
 
-v2.1.0 - 2018-05-03
--------------------
+
+## v2.1.0 - 2018-05-03
 
 * Refactor vCard import
 * Add support for markdown on the Journal
@@ -422,8 +422,8 @@ v2.1.0 - 2018-05-03
 * Add secure Oauth route for the API login
 * Fix removal of tags
 
-v2.0.1 - 2018-04-17
--------------------
+
+## v2.0.1 - 2018-04-17
 
 * Add ability to set relationships through the API
 * Fix ordering of activites in journal
@@ -431,8 +431,8 @@ v2.0.1 - 2018-04-17
 * Add a changelog inside the application
 * Fix monica:calculatestatistics command
 
-v2.0.0 - 2018-04-12
--------------------
+
+## v2.0.0 - 2018-04-12
 
 * Add ability to set a journal entry date
 * Use UUID instead of actual ID to identify contacts
@@ -449,8 +449,8 @@ v2.0.0 - 2018-04-12
 * Remove old documentation from sources
 * Fix Bug when editing gift
 
-v1.8.2 - 2018-03-20
--------------------
+
+## v1.8.2 - 2018-03-20
 
 * Add a Vagrantfile to run Monica on Vagrant
 * Add support for Hebrew and Chinese Simplified
@@ -464,8 +464,8 @@ v1.8.2 - 2018-03-20
 * Fix docker image creating wrong storage directories
 * Fix notification messages
 
-v1.8.1 - 2018-03-02
--------------------
+
+## v1.8.1 - 2018-03-02
 
 * Fix message in contact edit page
 * Fix months list for non english languages  in contact edit page
@@ -476,8 +476,8 @@ v1.8.1 - 2018-03-02
 * Fix notifications not working with aysnchronous queue
 * Support mysql unix socket
 
-v1.8.0 - 2018-02-26
--------------------
+
+## v1.8.0 - 2018-02-26
 
 * Add ability to search and sort in the API
 * Add ability to define the hour the reminder should be sent
@@ -489,19 +489,19 @@ v1.8.0 - 2018-02-26
 * Docker image: use rewrite rules in .htaccess from public directory instead of apache conf file
 * Remove trailing slash from routes
 
-v1.7.2 - 2018-02-20
--------------------
+
+## v1.7.2 - 2018-02-20
 
 * Fix a bug where POST requests were not working with Apache
 * Fix a bug preventing to delete a contact
 
-v1.7.1 - 2018-02-17
--------------------
+
+## v1.7.1 - 2018-02-17
 
 * Fix a bug that occured when running setup:production command
 
-v1.7.0 - 2018-02-16
--------------------
+
+## v1.7.0 - 2018-02-16
 
 * Add ability to create custom genders
 * Add Annual plan for the .com site
@@ -509,8 +509,8 @@ v1.7.0 - 2018-02-16
 * DB_PREFIX is now blank in .env.example
 * Fix empty message after updating a gift
 
-v1.6.2 - 2018-01-25
--------------------
+
+## v1.6.2 - 2018-01-25
 
 * Add support for pets in the API
 * Add ability to export a contact to vCard
@@ -518,8 +518,8 @@ v1.6.2 - 2018-01-25
 * Add translation for "preferences updated" message in the Settings page
 * Add a lot of unit tests
 
-v1.6.1 - 2018-01-14
--------------------
+
+## v1.6.1 - 2018-01-14
 
 * Add missing journal link to the mobile main menu
 * Remove list of events being loaded in the dashboard for no reason
@@ -528,8 +528,8 @@ v1.6.1 - 2018-01-14
 * Fix avatars not being displayed in an activity on the journal
 * Fix filtering of contacts by tags not taking into account the selected tag from the profile page
 
-v1.6.0 - 2018-01-09
--------------------
+
+## v1.6.0 - 2018-01-09
 
 * Change the structure of the dashboard
 * Add two factor authentication ability
@@ -542,8 +542,8 @@ v1.6.0 - 2018-01-09
 * Add two factor authentication ability
 * Add pet support to API
 
-v1.5.0 - 2018-01-02
--------------------
+
+## v1.5.0 - 2018-01-02
 
 * Add Webmanifest to create bookmarks on phones
 * Add pets management
@@ -554,13 +554,13 @@ v1.5.0 - 2018-01-02
 * Show a user's avatar when searching
 * Fix timezone not being saved in the Settings tab
 
-v1.4.1 - 2017-12-13
--------------------
+
+## v1.4.1 - 2017-12-13
 
 * Add default user account on setup
 
-v1.4.0 - 2017-12-13
--------------------
+
+## v1.4.0 - 2017-12-13
 
 * Add ability to add a birthday (or any date) without knowing the year
 * Add the artisan command (CLI) `php artisan setup:test` to setup the development environment
@@ -568,8 +568,8 @@ v1.4.0 - 2017-12-13
 * Change how resetting an account is achieved
 * Add progress bar when generating fake data to populate the dev environment
 
-v1.3.0 - 2017-12-04
--------------------
+
+## v1.3.0 - 2017-12-04
 
 * Notes can be set as favorites
 * Favorite notes are shown on the dashboard
@@ -577,21 +577,21 @@ v1.3.0 - 2017-12-04
 * Add dynamic notifications when adding/updating/deleting data from Vue files
 * Add ability to change account's owner first and last names
 
-v1.2.0 - 2017-11-29
--------------------
+
+## v1.2.0 - 2017-11-29
 
 * Add a much better way to manage tasks of a contact
 * Tasks can now be mark as completed and can now be edited
 * Add more usage statistics to reflect latest changes in the DB
 
-v1.1.0 - 2017-11-26
--------------------
+
+## v1.1.0 - 2017-11-26
 
 * Add the ability to add multiple contact fields and addresses per contact
 * Add a new Personalization tab under Settings
 
-v1.0.0 - 2017-11-09
--------------------
+
+## v1.0.0 - 2017-11-09
 
 * Add the ability to mark a contact as deceased
 * Add a button to `Save and add another contact` straight from the Add contact screen
@@ -602,13 +602,13 @@ v1.0.0 - 2017-11-09
 * Add security.txt file
 * Upgrade codebase to Laravel 5.5
 
-v0.7.1 - 2017-10-21
--------------------
+
+## v0.7.1 - 2017-10-21
 
 * Fix an error in the JS that broke the application
 
-v0.7.0 - 2017-10-21
--------------------
+
+## v0.7.0 - 2017-10-21
 
 * Add ability to assign a single activity to multiple people
 * Improve german translations
@@ -617,15 +617,15 @@ v0.7.0 - 2017-10-21
 * Replace the custom RandomHelper by str_random
 * Multiple small fixes
 
-v0.6.5 - 2017-08-28
--------------------
+
+## v0.6.5 - 2017-08-28
 
 * Add a new welcome screen for new users
 * Fix typo when displaying message of no existing contact to link when adding a child
 * Monicahq.com only: add limitations to free accounts
 
-v0.6.4 - 2017-08-23
--------------------
+
+## v0.6.4 - 2017-08-23
 
 * Add restriction of 50 characters for a first name, and 100 characters for a last name
 * Add support for storing uploaded files on s3
@@ -635,26 +635,26 @@ v0.6.4 - 2017-08-23
 * Fix birthday reminder creation bug on vCard import
 * Fix search bar being hard to use
 
-v0.6.3 - 2017-08-16
--------------------
+
+## v0.6.3 - 2017-08-16
 
 * Fix kids not being able to be removed
 * Fix some CSRF potential vulnerabilities
 
-v0.6.2 - 2017-08-16
--------------------
+
+## v0.6.2 - 2017-08-16
 
 * Add support for Markdown for the notes and call logs
 
-v0.6.1 - 2017-08-15
--------------------
+
+## v0.6.1 - 2017-08-15
 
 * Fix delete account bug
 * Fix kid deletion bug
 * Fix gift creation
 
-v0.6.0 - 2017-08-14
--------------------
+
+## v0.6.0 - 2017-08-14
 
 * Add ability to set significant other and kids as contact.
 * Add Italian translation
@@ -662,199 +662,199 @@ v0.6.0 - 2017-08-14
 * Add world currencies
 * Add German translation
 
-v0.5.0 - 2017-07-24
--------------------
+
+## v0.5.0 - 2017-07-24
 
 * Add version checking.
 * Add ability to search various fields in contacts through the top-nav search.
 * Fix gift view not being shown.
 
-v0.4.2 - 2017-07-18
--------------------
 
-New features:
+## v0.4.2 - 2017-07-18
+
+### New features:
 * Add Indian rupee currency.
 * Add Danish krone currency.
 * Add Czech translation.
 
-Improvements:
+### Improvements:
 * Fix https issue on password reset.
 
-v0.4.1 - 2017-07-13
--------------------
+
+## v0.4.1 - 2017-07-13
 
 * Fix reminders not being sent introduced by previous version.
 
-v0.4.0 - 2017-07-13
--------------------
 
-New features:
+## v0.4.0 - 2017-07-13
+
+### New features:
 * Add ability to keep track of phone calls.
 
-Improvements:
+### Improvements:
 * Fix Google Contact instructions link on the Import screen.
 * Input field are now automatically selected when a radio button is checked.
 * Many small bug fixes.
 
-v0.3.0 - 2017-07-04
--------------------
 
-New features:
+## v0.3.0 - 2017-07-04
+
+### New features:
 * Add support for organizing people into tags (requires `bower update` for dev environment).
 * Add ability to filter contacts per tags on the contact list.
 
-Improvements:
+### Improvements:
 * Fix import translation key on the import reports.
 * Settings' sidebar now has better icons.
 
-v0.2.1 - 2017-07-02
--------------------
 
-Improvements:
+## v0.2.1 - 2017-07-02
+
+### Improvements:
 * Update the design of the latest actions on the dashboard.
 * Change order of first and last names fields on contact add/edit, if the name order is defined as "last name, first name".
 * Speed up the display of the contact lists when there is a lot of contacts in the account.
 * Remove the search on the list of contacts, which was broken for a while, until a proper solution is found.
 * Bug fixes.
 
-v0.2.0 - 2017-06-29
--------------------
 
-New features:
+## v0.2.0 - 2017-06-29
+
+### New features:
 * Add import from vCard (or .vcf) in the Settings panel.
 * Add ability to reset account. Resetting an account will remove everything - but won't close the account like deletion would.
 
-Improvements:
+### Improvements:
 * Journal entries now respect new lines.
 * Fix name not appearing in the latest actions tab on the dashboard.
 
-v0.1.0 - 2017-06-26
--------------------
+
+## v0.1.0 - 2017-06-26
 
 * First official release. We'll now follow this structure. If you self host, we highly recommend that you check the latest tag instead of pulling from master.
 
-2017-06-24
-----------
 
-Improvements:
+## 2017-06-24
+
+### Improvements:
 * On the people's tab, filters are now placed above the table.
 
-2017-06-22
-----------
 
-New features:
+## 2017-06-22
+
+### New features:
 * Add ability to define name order (Firstname Lastname or Lastname Firstname) in the Settings panel.
 
-Improvements:
+### Improvements:
 * Fix the order of the address fields.
 * Env variables are now read from config files rather than directly from the .env file.
 * Some US typos fix.
 
-2017-06-20
-----------
 
-New features:
+## 2017-06-20
+
+### New features:
 * Add support for mutiple users in one account.
 * Add subscriptions on .com. This has no effect on self hosted versions.
 
-2017-06-16
-----------
 
-Improvements:
+## 2017-06-16
+
+### Improvements:
 * Add automatic reminders when setting a birthdate When adding a birthdate (contact, kid, significant other). When updating or deleting the person, the reminder will be changed accordingly.
 
-2017-06-15
-----------
 
-New features:
+## 2017-06-15
+
+### New features:
 * Add reminder automatically when you set the birthdate of a contact.
 
-Improvements:
+### Improvements:
 * Add timezone for Switzerland.
 * Major refactoring of how contacts are managed in the codebase.
 
-2017-06-14
-----------
 
-New features:
+## 2017-06-14
+
+### New features:
 * Timezone can now be defined in a new ENV variable so every new user of the instance will have this timezone. Set to America/New_York by default.
 * Add ability to edit a note.
 * Add ability to edit a debt.
 * Add support for South African ZAR currency.
 
-Improvements:
+### Improvements:
 * Fix Deploy to Heroku button.
 * Fix Bern timezone by actually removing it. The Carbon library does not support this timezone.
 
-2017-06-13
-----------
 
-New features:
+## 2017-06-13
+
+### New features:
 * You can now add job information and company name for your contacts.
 
-Improvements:
+### Improvements:
 * Gifts table now display comments if defined, as well as who the gift is for.
 
-2017-06-12
-----------
 
-New features:
+## 2017-06-12
+
+### New features:
 * Add instructions to setup Monica from scratch on Debian Stretch.
 * Add Export to SQL feature, under Settings > Export data.
 * Add Deploy to Heroku button. Only caveat: you can't upload photos to contacts (Heroku has ephemeral storage).
 
-2017-06-11
-----------
 
-New features:
+## 2017-06-11
+
+### New features:
 * Add command line vCard importer
 
-Improvements:
+### Improvements:
 * Email address of a contact is now a mailto:// field.
 * Phone number of a contact is now a tel:// field.
 * Fix debt description on the dashboard
 * Fix typos
 * Fix Bootstrap tabs on the dashboard
 
-2017-06-10
-----------
 
-New features:
+## 2017-06-10
+
+### New features:
 * Add support for other currencies (CAD $, EUR €, GBP £, RUB ₽) for the gifts and debts section. This is set in the User setting. Default is USD $.
 * Add ability to define main social network accounts to a contact (Facebook, Twitter, LinkedIn)
 
-Improvements:
+### Improvements:
 * Fix counter showing number of gifts on the dashboard
 * Docker image now runs the cron to send emails
 * Fix Russian translations
 * Fix the wrong route after password change
 
-2017-06-09
-----------
 
-New features:
+## 2017-06-09
+
+### New features:
 * Add Docker support
 * Add Russian language
 * Add Portuguese (Brazil) language
 
-Improvements:
+### Improvements:
 * Fix emails being sent too often
 * Breaking change: Email name and address of the user who sends reminders are now ENV variables (MAIL_FROM_ADDRESS and MAIL_FROM_NAME).
 
-2017-06-08
-----------
 
-New features:
+## 2017-06-08
+
+### New features:
 * Add Gravatar automatically when adding an email address to a contact. If no gravatar found, defaults to the initials.
 
-Improvements:
+### Improvements:
 * Dramatically reduce the number of queries necessary to load the list of contacts on the People's tab.
 * Phone number are now treated like a string and not integers on the front-end side.
 * Breaking change: Add a new env variable to define which email address should be used when sending notifications about new user signups. You need to add this new env variable (APP_EMAIL_NEW_USERS_NOTIFICATION) to your `.env` file.
 * Fix typos and small bugs
 
-2017-06-07
-----------
+
+## 2017-06-07
 
 * Add ability to delete a contact
 * Add a changelog
