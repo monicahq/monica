@@ -206,9 +206,9 @@
 
               @if ($deceasedCount > 0)
                 @if ($hidingDeceased)
-                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=true">{{ trans('people.people_list_show_dead', ['count' => $deceasedCount]) }}</a></li>
+                    <li class="f7 mt3"><a href="{{ $active ? route('people.index') : route('people.archived') }}?show_dead=true">{{ trans('people.people_list_show_dead', ['count' => $deceasedCount]) }}</a></li>
                 @else
-                  <li class="f7 mt3"><a href="{{ route('people.index') }}?show_dead=false">{{ trans('people.people_list_hide_dead', ['count' => $deceasedCount]) }}</a></li>
+                    <li class="f7 mt3"><a href="{{ $active ? route('people.index') : route('people.archived') }}?show_dead=false">{{ trans('people.people_list_hide_dead', ['count' => $deceasedCount]) }}</a></li>
                 @endif
               @endif
               </ul>
