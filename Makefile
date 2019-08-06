@@ -163,7 +163,7 @@ $(DESTDIR):
 	mkdir -p $@
 	ln -s ../readme.md $@/
 	ln -s ../CONTRIBUTING.md $@/
-	ln -s ../CHANGELOG $@/
+	ln -s ../CHANGELOG.md $@/
 	ln -s ../CONTRIBUTORS $@/
 	ln -s ../LICENSE $@/
 	ln -s ../.env.example $@/
