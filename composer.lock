@@ -3132,30 +3132,30 @@
             "authors": [
                 {
                     "name": "Rubens Mariuzzo",
-                    "role": "Developer",
                     "email": "rubens@mariuzzo.com",
-                    "homepage": "https://github.com/rmariuzzo"
+                    "homepage": "https://github.com/rmariuzzo",
+                    "role": "Developer"
                 },
                 {
                     "name": "German Popoter",
-                    "role": "Developer",
                     "email": "me@gpopoteur.com",
-                    "homepage": "https://github.com/gpopoteur"
+                    "homepage": "https://github.com/gpopoteur",
+                    "role": "Developer"
                 },
                 {
                     "name": "Galievskiy Dmitriy",
-                    "role": "Developer",
-                    "homepage": "https://github.com/xAockd"
+                    "homepage": "https://github.com/xAockd",
+                    "role": "Developer"
                 },
                 {
                     "name": "Ramon Ackermann",
-                    "role": "Developer",
-                    "homepage": "https://github.com/sboo"
+                    "homepage": "https://github.com/sboo",
+                    "role": "Developer"
                 },
                 {
                     "name": "Pe Ell",
-                    "role": "Developer",
-                    "homepage": "https://github.com/a-komarev"
+                    "homepage": "https://github.com/a-komarev",
+                    "role": "Developer"
                 }
             ],
             "description": "Laravel Localization in JavaScript",
@@ -3462,16 +3462,16 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "54ddeccaa3c6cf427cb50d23e8f079a809185292"
+                "reference": "731a156e0ff79d3093d46bcb2f5b279327ba0417"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/54ddeccaa3c6cf427cb50d23e8f079a809185292",
-                "reference": "54ddeccaa3c6cf427cb50d23e8f079a809185292",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/731a156e0ff79d3093d46bcb2f5b279327ba0417",
+                "reference": "731a156e0ff79d3093d46bcb2f5b279327ba0417",
                 "shasum": ""
             },
             "require": {
@@ -3514,7 +3514,7 @@
                 "php",
                 "sabre"
             ],
-            "time": "2019-08-05T17:18:29+00:00"
+            "time": "2019-08-07T18:23:35+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -4968,8 +4968,8 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator",
-                    "email": "acr@antoniocarlosribeiro.com"
+                    "email": "acr@antoniocarlosribeiro.com",
+                    "role": "Creator"
                 }
             ],
             "description": "PHP Countries and Currencies",
@@ -8830,8 +8830,8 @@
             "authors": [
                 {
                     "name": "Tijs Verkoyen",
-                    "role": "Developer",
-                    "email": "css_to_inline_styles@verkoyen.eu"
+                    "email": "css_to_inline_styles@verkoyen.eu",
+                    "role": "Developer"
                 }
             ],
             "description": "CssToInlineStyles is a class that enables you to convert HTML-pages/files into HTML-pages/files with inline styles. This is very useful when you're sending emails.",
@@ -10612,8 +10612,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "role": "Developer",
-                    "homepage": "https://github.com/filp"
+                    "homepage": "https://github.com/filp",
+                    "role": "Developer"
                 }
             ],
             "description": "php error handling for cool kids",
@@ -11210,9 +11210,9 @@
             "authors": [
                 {
                     "name": "Christian Weiske",
-                    "role": "Developer",
                     "email": "cweiske@cweiske.de",
-                    "homepage": "http://github.com/cweiske/jsonmapper/"
+                    "homepage": "http://github.com/cweiske/jsonmapper/",
+                    "role": "Developer"
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
@@ -12373,8 +12373,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "FilterIterator implementation that filters files based on a list of suffixes.",
@@ -12415,8 +12415,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Simple template engine.",
@@ -12464,8 +12464,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Utility class for timing",
@@ -12568,8 +12568,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "CLI frontend for php-code-coverage",
@@ -13233,8 +13233,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "FinderFacade is a convenience wrapper for Symfony's Finder component.",
@@ -13520,8 +13520,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Collection of value objects that represent the types of the PHP type system",
@@ -13563,8 +13563,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "lead",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "lead"
                 }
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
