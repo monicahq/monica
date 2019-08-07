@@ -1,4 +1,6 @@
 .circleci/
+.azure/
+.composer/
 .git/
 .gitattributes
 .github/
@@ -20,7 +22,6 @@ Homestead.*
 node_modules/
 npm-debug.log*
 persist/
-phpunit*
 .phpunit.result.cache
 Procfile
 public/storage
@@ -29,7 +30,6 @@ results/
 .sass-lint.yml
 scripts/tests
 scripts/vagrant
-server.php
 sonar-project.properties
 storage/app/public/*
 storage/debugbar/*

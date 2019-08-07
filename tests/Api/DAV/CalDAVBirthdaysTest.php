@@ -26,6 +26,8 @@ class CalDAVBirthdaysTest extends ApiTestCase
 
         $response = $this->call('PROPFIND', "/dav/calendars/{$user->email}/birthdays");
 
+        $response->dump();
+
         $response->assertStatus(207);
         $response->assertHeader('X-Sabre-Version');
 
