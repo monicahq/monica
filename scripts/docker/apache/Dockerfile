@@ -64,7 +64,7 @@ WORKDIR /var/www/monica
 # correctly
 COPY readme.md \
     CONTRIBUTING.md \
-    CHANGELOG \
+    CHANGELOG.md \
     CONTRIBUTORS \
     LICENSE \
     artisan \
