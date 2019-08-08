@@ -10,7 +10,7 @@ Monica depends on the following:
 
 * [Apache httpd webserver](https://httpd.apache.org/) 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* PHP 7.2+
+* PHP 7.3+
 * [Composer](https://getcomposer.org/)
 * [MySQL](https://support.rackspace.com/how-to/installing-mysql-server-on-ubuntu/)
 
@@ -23,13 +23,20 @@ sudo apt update
 sudo apt install -y git
 ```
 
-**PHP 7.2+:** Install php 7.2 with these extensions:
+**PHP 7.3+:**
 
+First add this PPA repository:
+```sh
+sudo apt-get install -y software-properties-common
+sudo add-apt-repository ppa:ondrej/php
+```
+
+Then install php 7.3 with these extensions:
 ```sh
 sudo apt update
-sudo apt install -y php7.2 php7.2-cli php7.2-common php7.2-fpm \
-    php7.2-json php7.2-opcache php7.2-mysql php7.2-mbstring php7.2-zip \
-    php7.2-bcmath php7.2-intl php7.2-xml php7.2-curl php7.2-gd php7.2-gmp
+sudo apt install -y php7.3 php7.3-cli php7.3-common php7.3-fpm \
+    php7.3-json php7.3-opcache php7.3-mysql php7.3-mbstring php7.3-zip \
+    php7.3-bcmath php7.3-intl php7.3-xml php7.3-curl php7.3-gd php7.3-gmp
 ```
 
 **Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
@@ -170,10 +177,10 @@ Then, in the `nano` text editor window you just opened, copy the following - swa
 sudo a2dissite 000-default.conf
 sudo a2ensite monica.conf
 
-# Enable php7.2 fpm, and restart apache
+# Enable php7.3 fpm, and restart apache
 sudo a2enmod proxy_fcgi setenvif
-sudo a2enconf php7.2-fpm
-sudo service php7.2-fpm restart
+sudo a2enconf php7.3-fpm
+sudo service php7.3-fpm restart
 sudo service apache2 restart
 ```
 

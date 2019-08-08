@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Arr;
 use LaravelSabre\LaravelSabre;
 use Sabre\CalDAV\CalendarRoot;
-use Sabre\CalDAV\ICSExportPlugin;
+//use Sabre\CalDAV\ICSExportPlugin;
 use Sabre\CardDAV\VCFExportPlugin;
 use Illuminate\Support\Facades\App;
 use Sabre\DAVACL\Plugin as AclPlugin;
@@ -85,7 +85,7 @@ class DAVServiceProvider extends ServiceProvider
 
         // CalDAV plugin
         yield new CalDAVPlugin();
-        yield new ICSExportPlugin();
+        //yield new ICSExportPlugin();
 
         // Sync Plugin - rfc6578
         yield new SyncPlugin();
