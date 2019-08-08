@@ -8,6 +8,7 @@
 
 * Depends on php7.3+
 * Use pretty-radio and optimize vue.js components
+* Hide stay-in-touch for deceased contacts
 
 ### Fixes:
 

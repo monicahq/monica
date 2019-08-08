@@ -376,6 +376,11 @@ class ContactsController extends Controller
         } else {
             $deceased_date_day = $deceased_date_month = $deceased_date_year = null;
         }
+        if (! empty($request->get('is_deceased'))) {
+            //if the contact has died, disable StayInTouch
+            $contact->updateStayInTouchFrequency(0);
+            $contact->setStayInTouchTriggerDate(0);
+        }
 
         $data = [
             'account_id' => auth()->user()->account->id,
