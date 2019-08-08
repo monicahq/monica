@@ -26,13 +26,4 @@ class SyncToken extends Model
         'name',
         'timestamp',
     ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'timestamp' => 'timestamp',
-    ];
 }

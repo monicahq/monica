@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\User\SyncToken;
 use Illuminate\Console\Command;
 use App\Events\TokenDeleteEvent;
 use App\Services\Instance\TokenClean;
@@ -49,7 +50,7 @@ class Clean extends Command
     /**
      * Handle TokenDeleteEvent event.
      *
-     * @param TokenClean $token
+     * @param SyncToken $token
      */
     private function handleTokenDelete($token)
     {
