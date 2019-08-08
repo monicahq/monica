@@ -38,23 +38,23 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password_again passwo
 apt-get install -y mysql-server mysql-client >/dev/null
 
 echo -e "\n\033[4;32mInstalling PHP 7.2\033[0;40m"
-#apt install -y curl gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates
-#curl -s https://packages.sury.org/php/apt.gpg -o /etc/apt/trusted.gpg.d/php.gpg 
-#echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
+apt install -y curl gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates
+curl -s https://packages.sury.org/php/apt.gpg -o /etc/apt/trusted.gpg.d/php.gpg 
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list
 apt-get update >/dev/null
-apt-get install -y php7.2 >/dev/null
+apt-get install -y php7.3 >/dev/null
 
 echo -e "\n\033[4;32mInstalling git\033[0;40m"
 apt-get install -y git >/dev/null
 
 echo -e "\n\033[4;32mInstalling composer\033[0;40m"
-apt-get install -y curl php7.2-cli >/dev/null
+apt-get install -y curl php7.3-cli >/dev/null
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 echo -e "\n\033[4;32mInstalling packages for Monica\033[0;40m"
-apt-get install -y php7.2-common php7.2-fpm \
-    php7.2-json php7.2-opcache php7.2-mysql php7.2-mbstring php7.2-zip \
-    php7.2-bcmath php7.2-intl php7.2-xml php7.2-curl php7.2-gd php7.2-gmp >/dev/null
+apt-get install -y php7.3-common php7.3-fpm \
+    php7.3-json php7.3-opcache php7.3-mysql php7.3-mbstring php7.3-zip \
+    php7.3-bcmath php7.3-intl php7.3-xml php7.3-curl php7.3-gd php7.3-gmp >/dev/null
 
 echo -e "\n\033[4;32mGetting database ready\033[0;40m"
 mysql -uroot -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE $MYSQL_DB_DATABASE;
