@@ -74,10 +74,10 @@ class TokenCleanTest extends TestCase
             'id' => $s1->id,
         ]);
         $this->assertDatabaseMissing('synctoken', [
-            'id' => $s2->id
+            'id' => $s2->id,
         ]);
         $this->assertDatabaseMissing('synctoken', [
-            'id' => $s3->id
+            'id' => $s3->id,
         ]);
         $this->assertDatabaseHas('synctoken', [
             'id' => $s4->id,

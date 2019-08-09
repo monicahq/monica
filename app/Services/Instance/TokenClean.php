@@ -60,7 +60,7 @@ class TokenClean
             ['user_id', $userId],
             ['name', $tokenName],
             ['timestamp', '<', Carbon::parse($timestamp)],
-            ['timestamp', '<', $this->timefix]
+            ['timestamp', '<', $this->timefix],
         ])
             ->orderByDesc('timestamp')
             ->get();
