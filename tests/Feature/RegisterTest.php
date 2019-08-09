@@ -4,8 +4,6 @@ namespace Tests\Feature;
 
 use App\Models\User\User;
 use Tests\FeatureTestCase;
-use App\Models\Contact\Note;
-use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RegisterTest extends FeatureTestCase
@@ -49,7 +47,7 @@ class RegisterTest extends FeatureTestCase
         ];
 
         $response = $this->post('/register', $params, [
-            'HTTP_REFERER' => '/register'
+            'HTTP_REFERER' => '/register',
         ]);
 
         $response->assertStatus(302);
