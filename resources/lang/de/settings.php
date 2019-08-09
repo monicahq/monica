@@ -144,7 +144,7 @@ return [
     'users_list_invitations_explanation' => 'Unten stehen Personen, die du als Mithelfer eingeladen hast.',
     'users_list_invitations_invited_by' => 'eingeladen von :name',
     'users_list_invitations_sent_date' => 'versendet :date',
-    'users_blank_title' => 'Zu bist der Einzige mit Zugriff auf dieses Konto.',
+    'users_blank_title' => 'Du bist der Einzige mit Zugriff auf dieses Konto.',
     'users_blank_add_title' => 'Möchtest du jemand anderes einladen?',
     'users_blank_description' => 'Diese Person wird den gleichen Zugriff auf das System haben wie du und wird Kontakte hinzufügen, ändern und löschen können.',
     'users_blank_cta' => 'Jemanden einladen',
