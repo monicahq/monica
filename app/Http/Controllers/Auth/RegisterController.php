@@ -86,18 +86,23 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $this->validator($data)->validate();
+        try {
+            $this->validator($data)->validate();
 
-        $first = ! Account::hasAny();
-        $account = Account::createDefault(
-            $data['first_name'],
-            $data['last_name'],
-            $data['email'],
-            $data['password'],
-            RequestHelper::ip(),
-            $data['lang']
-        );
-        $user = $account->users()->first();
+            $first = ! Account::hasAny();
+            $account = Account::createDefault(
+                $data['first_name'],
+                $data['last_name'],
+                $data['email'],
+                $data['password'],
+                RequestHelper::ip(),
+                $data['lang']
+            );
+            $user = $account->users()->first();
+        } catch (\Exception $e) {
+            return redirect()->route('login')
+                ->withErrors(trans('app.error_try_again'));
+        }
 
         if (! $first) {
             // send me an alert
