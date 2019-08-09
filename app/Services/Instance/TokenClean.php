@@ -22,12 +22,19 @@ class TokenClean
     }
 
     /**
+     * @var Carbon
+     */
+    private $timefix;
+
+    /**
      * Clean token list.
      *
      * @param array $data
      */
     public function execute(array $data)
     {
+        $this->timefix = now()->addDays(-7);
+
         DB::table('synctoken')
             ->orderBy('user_id')
             ->groupBy('user_id', 'name')
@@ -49,10 +56,12 @@ class TokenClean
      */
     private function handleUserToken(array $data, int $userId, string $tokenName, string $timestamp)
     {
-        $tokens = SyncToken::where('user_id', $userId)
-            ->where('name', $tokenName)
-            ->where('timestamp', '<', Carbon::parse($timestamp))
-            ->where('timestamp', '<', now()->addDays(-7))
+        $tokens = SyncToken::where([
+            ['user_id', $userId],
+            ['name', $tokenName],
+            ['timestamp', '<', Carbon::parse($timestamp)],
+            ['timestamp', '<', $this->timefix]
+        ])
             ->orderByDesc('timestamp')
             ->get();
 
