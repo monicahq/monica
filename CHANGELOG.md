@@ -12,6 +12,7 @@
 
 ### Fixes:
 
+* Fix vcard export with empty gender
 * Fix touch contact's updated_at on stay in touch trigger job
 * Fix relationship list view
 * Fix relationship id with no gender
