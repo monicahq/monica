@@ -82,27 +82,20 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array $data
-     * @return User|\Illuminate\Http\RedirectResponse
+     * @return User
      */
     protected function create(array $data)
     {
-        try {
-            $this->validator($data)->validate();
-
-            $first = ! Account::hasAny();
-            $account = Account::createDefault(
-                $data['first_name'],
-                $data['last_name'],
-                $data['email'],
-                $data['password'],
-                RequestHelper::ip(),
-                $data['lang']
-            );
-            $user = $account->users()->first();
-        } catch (\Exception $e) {
-            return redirect()->route('login')
-                ->withErrors(trans('app.error_try_again'));
-        }
+        $first = ! Account::hasAny();
+        $account = Account::createDefault(
+            $data['first_name'],
+            $data['last_name'],
+            $data['email'],
+            $data['password'],
+            RequestHelper::ip(),
+            $data['lang']
+        );
+        $user = $account->users()->first();
 
         if (! $first) {
             // send me an alert
@@ -125,10 +118,6 @@ class RegisterController extends Controller
         if (! config('monica.signup_double_optin') || $first) {
             // if signup_double_optin is disabled, skip the confirm email part
             $user->markEmailAsVerified();
-
-            $this->guard()->login($user);
-
-            return redirect()->route('login');
         }
     }
 }
