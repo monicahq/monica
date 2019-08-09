@@ -110,7 +110,6 @@ class RegisterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
-     * @return mixed
      */
     protected function registered(Request $request, $user)
     {

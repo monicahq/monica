@@ -24,6 +24,7 @@ class RegisterTest extends FeatureTestCase
 
         $response = $this->post('/register', $params);
 
+        $response->dump();
         $response->assertStatus(302);
         $response->assertRedirect('/dashboard');
 
