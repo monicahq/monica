@@ -27,6 +27,7 @@ trait Subscription
                         ->create($stripeToken, [
                             'email' => auth()->user()->email,
                         ]);
+            return true;
         });
     }
 
@@ -72,6 +73,7 @@ trait Subscription
         if (! is_null($plan)) {
             return $this->stripeCall(function () use ($plan) {
                 $plan->cancelNow();
+                return true;
             });
         }
 
@@ -101,27 +103,27 @@ trait Subscription
     {
         // Weird method to get the next billing date from Laravel Cashier
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $subscriptions = $this->asStripeCustomer()['subscriptions'];
-        if (count($subscriptions->data) <= 0) {
-            return '';
-        }
-        $timestamp = $subscriptions->data[0]['current_period_end'];
-
-        return DateHelper::getShortDate($timestamp);
+        $this->stripeCall(function () {
+            $subscriptions = $this->asStripeCustomer()['subscriptions'];
+            if (count($subscriptions->data) <= 0) {
+                return '';
+            }
+            $timestamp = $subscriptions->data[0]['current_period_end'];
+    
+            return DateHelper::getShortDate($timestamp);
+        });
     }
 
     /**
      * Call stripe.
      *
      * @param callable callback
-     * @return bool|string
+     * @return mixed
      */
     private function stripeCall($callback)
     {
         try {
-            $callback();
-
-            return true;
+            return $callback();
         } catch (\Stripe\Error\Card $e) {
             // Since it's a decline, \Stripe\Error\Card will be caught
             $body = $e->getJsonBody();
