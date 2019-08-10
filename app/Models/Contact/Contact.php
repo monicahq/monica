@@ -478,6 +478,17 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to only include contacts who are alive.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAlive($query)
+    {
+        return $query->where('is_dead', 0);
+    }
+
+    /**
      * Scope a query to only include contacts who are not active.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
