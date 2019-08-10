@@ -154,7 +154,7 @@ class CreateReminderTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'initial_date' => Carbon::now(),
+            'initial_date' => now(),
         ];
 
         $this->expectException(ValidationException::class);

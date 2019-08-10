@@ -68,15 +68,13 @@ docker-compose pull
 docker-compose up
 ```
 
-Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, shut down the instance and add your first user account.
+Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, add your first user account.
 
 ```sh
-docker-compose run monicahq sh
-php artisan setup:production
-exit
+docker-compose exec monicahq php artisan setup:production
 ```
 
-Start your instance again with `docker-compose up` and login.
+Now login.
 
 #### Use docker-compose to build and run your own image
 

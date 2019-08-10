@@ -632,6 +632,36 @@ class ContactTest extends FeatureTestCase
         ]);
     }
 
+    public function test_edit_contact_put_deceased_dont_stay_in_touch()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+            'stay_in_touch_frequency' => 11,
+            'stay_in_touch_trigger_date' => '2012-06-22',
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $contact->updateStayInTouchFrequency(0);
+        $contact->setStayInTouchTriggerDate(0);
+
+        $data['id'] = $contact->id;
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+            'stay_in_touch_frequency' => null,
+            'stay_in_touch_trigger_date' => null,
+        ]);
+    }
+
     public function test_edit_contact_put_deceased_with_reminder()
     {
         [$user, $contact] = $this->fetchUser();

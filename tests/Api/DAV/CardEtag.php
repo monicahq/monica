@@ -37,7 +37,6 @@ UID:{$contact->uuid}
 SOURCE:{$url}
 FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
-GENDER:{$contact->gender->type}
 ";
 
         $picture = $contact->getAvatarURL();
@@ -45,6 +44,10 @@ GENDER:{$contact->gender->type}
             $data .= "PHOTO;VALUE=URI:{$picture}\n";
         }
 
+        if ($contact->gender) {
+            $data .= "GENDER:{$contact->gender->type}";
+            $data .= "\n";
+        }
         foreach ($contact->addresses as $address) {
             $data .= 'ADR:;;';
             $data .= $address->place->street.';';
