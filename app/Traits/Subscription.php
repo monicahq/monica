@@ -27,6 +27,7 @@ trait Subscription
                         ->create($stripeToken, [
                             'email' => auth()->user()->email,
                         ]);
+
             return true;
         });
     }
@@ -73,6 +74,7 @@ trait Subscription
         if (! is_null($plan)) {
             return $this->stripeCall(function () use ($plan) {
                 $plan->cancelNow();
+
                 return true;
             });
         }
@@ -109,7 +111,7 @@ trait Subscription
                 return '';
             }
             $timestamp = $subscriptions->data[0]['current_period_end'];
-    
+
             return DateHelper::getShortDate($timestamp);
         });
     }
