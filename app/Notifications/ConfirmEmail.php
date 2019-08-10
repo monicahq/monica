@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;

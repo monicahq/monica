@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
