@@ -17,7 +17,7 @@
           {{ $t('people.avatar_default_avatar') }}
         </template>
         <div slot="extra">
-          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="default_url" alt="" />
+          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="defaultUrl" alt="" />
         </div>
       </form-radio>
 
@@ -33,13 +33,13 @@
           {{ $t('people.avatar_adorable_avatar') }}
         </template>
         <div slot="extra">
-          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="adorable_url" alt="" />
+          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="adorableUrl" alt="" />
         </div>
       </form-radio>
 
       <!-- Gravatar -->
       <form-radio
-        v-if="gravatar_url"
+        v-if="gravatarUrl"
         v-model="avatar"
         :name="'avatar'"
         :value="'gravatar'"
@@ -47,10 +47,10 @@
         :iclass="dirltr ? 'mr2' : 'ml2'"
       >
         <template slot="label">
-          {{ $t('people.avatar_gravatar') }}
+          <span v-html="$t('people.avatar_gravatar')"></span>
         </template>
         <div slot="extra">
-          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="gravatar_url" alt="" />
+          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="gravatarUrl" alt="" />
         </div>
       </form-radio>
 
@@ -67,7 +67,7 @@
           {{ $t('people.avatar_current') }}
         </template>
         <div slot="extra">
-          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="photo_url" alt="" />
+          <img class="mb4 pa2 ba b--gray-monica br3" style="width: 150px" :src="photoUrl" alt="" />
         </div>
       </form-radio>
 
@@ -78,20 +78,20 @@
         :value="'upload'"
         :dclass="'flex mb1'"
         :iclass="dirltr ? 'mr2' : 'ml2'"
-        :disabled="has_reached_account_storage_limit"
+        :disabled="hasReachedAccountStorageLimit"
       >
         <template slot="label">
           {{ $t('people.avatar_photo') }}
-          <span v-if="has_reached_account_storage_limit">
+          <span v-if="hasReachedAccountStorageLimit">
             <a href="/settings/subscriptions">
               {{ $t('app.upgrade') }}
             </a>
           </span>
         </template>
         <div slot="extra">
-          <input type="file" class="form-control-file" name="photo" :disabled="has_reached_account_storage_limit" />
+          <input type="file" class="form-control-file" name="photo" :disabled="hasReachedAccountStorageLimit" />
           <small class="form-text text-muted">
-            {{ $t('people.information_edit_max_size', { size: max_upload_size }) }}
+            {{ $t('people.information_edit_max_size2', { size: maxUploadSize }) }}
           </small>
         </div>
       </form-radio>
@@ -136,7 +136,6 @@ export default {
   data() {
     return {
       initialAvatar: '',
-      information_edit_max_size: '',
     };
   },
 
