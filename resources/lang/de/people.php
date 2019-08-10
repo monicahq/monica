@@ -205,7 +205,7 @@ return [
     'relationship_form_associate_dropdown' => 'Wählen Sie einen vorhandenen Kontakt aus der Dropdown-Liste unten aus',
     'relationship_form_associate_dropdown_placeholder' => 'Suche und wähle einen bestehenden Kontakt',
     'relationship_form_also_create_contact' => 'Erstellen Sie einen Kontakt-Eintrag für diese Person.',
-    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
+    'relationship_form_add_description' => 'Dies erlaubt dir diese Person wie jeden anderen Kontakt zu verwalten.',
     'relationship_form_add_no_existing_contact' => 'Sie haben zur Zeit keine Kontakte, die mit :name in Verbindung gebracht werden können.',
     'relationship_delete_confirmation' => 'Sind Sie sicher, dass Sie diese Beziehung löschen wollen? Das Löschen ist dauerhaft.',
     'relationship_unlink_confirmation' => 'Sind Sie sicher, dass Sie diese Beziehung löschen wollen? Diese Person wird nicht gelöscht - nur die Beziehung zwischen den beiden.',
