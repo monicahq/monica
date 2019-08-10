@@ -16,6 +16,7 @@ use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -85,6 +86,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
+        if (self::where('email', $email)->count() > 0) {
+            throw new UnauthorizedException();
+        }
+
         // create the user
         $user = new self;
         $user->account_id = $account_id;

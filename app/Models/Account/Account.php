@@ -869,8 +869,13 @@ class Account extends Model
         $account->created_at = now();
         $account->save();
 
-        // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+        try {
+            // create the first user for this account
+            User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+        } catch (\Exception $e) {
+            $account->delete();
+            throw $e;
+        }
 
         $account->populateDefaultFields();
 
