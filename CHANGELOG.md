@@ -12,6 +12,7 @@
 
 ### Fixes:
 
+* Fix exception in case a user register twice
 * Fix vcard export with empty gender
 * Fix touch contact's updated_at on stay in touch trigger job
 * Fix relationship list view

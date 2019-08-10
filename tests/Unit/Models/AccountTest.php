@@ -769,6 +769,21 @@ class AccountTest extends FeatureTestCase
         ]);
     }
 
+    public function test_it_throw_an_exception_if_user_already_exist()
+    {
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'account_id' => $account->id,
+        ]);
+
+        $this->expectException(\Illuminate\Validation\UnauthorizedException::class);
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+    }
+
     public function test_account_has_reached_contact_limit_on_free_plan()
     {
         $account = factory(Account::class)->create();
