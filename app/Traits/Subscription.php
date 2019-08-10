@@ -14,8 +14,8 @@ trait Subscription
     /**
      * Process the upgrade payment.
      *
-     * @param string stripeToken
-     * @param string planName
+     * @param string $stripeToken
+     * @param string $planName
      * @return bool|string
      */
     public function subscribe(string $stripeToken, string $planName)
@@ -105,7 +105,7 @@ trait Subscription
     {
         // Weird method to get the next billing date from Laravel Cashier
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $this->stripeCall(function () {
+        return $this->stripeCall(function () {
             $subscriptions = $this->asStripeCustomer()['subscriptions'];
             if (count($subscriptions->data) <= 0) {
                 return '';
@@ -119,7 +119,7 @@ trait Subscription
     /**
      * Call stripe.
      *
-     * @param callable callback
+     * @param callable $callback
      * @return mixed
      */
     private function stripeCall($callback)
