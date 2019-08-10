@@ -62,7 +62,7 @@ trait Subscription
 
     /**
      * Cancel the plan the account is subscribed to.
-     * 
+     *
      * @return bool|string
      */
     public function subscriptionCancel()
