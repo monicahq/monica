@@ -153,7 +153,7 @@ return [
     'work_information' => 'İş bilgisi',
 
     // food preferences
-    'food_preferences_add_success' => 'Food preferences have been saved',
+    'food_preferences_add_success' => 'Yiyecek tercihleri kaydedildi',
     'food_preferences_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferences_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
     'food_preferences_edit_title' => 'Indicate food preferences',
