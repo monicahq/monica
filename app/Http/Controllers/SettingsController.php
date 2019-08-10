@@ -178,7 +178,11 @@ class SettingsController
         $account = auth()->user()->account;
 
         if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            $account->subscriptionCancel();
+            $result = $account->subscriptionCancel();
+            if ($result !== true) {
+                return redirect()->route('settings.index')
+                    ->withErrors($result);
+            }
         }
 
         DB::table('accounts')->where('id', $account->id)->delete();
