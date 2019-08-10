@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'איש הקשר לא נמצא',
     'people_list_number_kids' => 'ילד אחד|:count ילדים',
     'people_list_last_updated' => 'יעוץ אחרון:',
     'people_list_number_reminders' => 'תזכורת אחת|:count תזכורות',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'הצגת מנוחים (:count)',
     'people_list_hide_dead' => 'הסתרת מנוחים (:count)',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
-    'people_search_no_results' => 'לא נמצאי אנשי קשר מתאימים :(',
+    'people_search_no_results' => 'לא נמצאו תוצאות',
+    'people_add_new' => 'הוספת אדם חדש',
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
     'people_list_account_upgrade_title' => 'ניתן לשדרג את החשבון שלך כדי ליהנות משפע התכונות שיש לנו להציע.',
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
@@ -196,7 +198,7 @@ return [
     'relationship_form_add' => 'הוספת קשר חדש',
     'relationship_form_edit' => 'עריכת קשר קיים',
     'relationship_form_is_with' => 'איש הקשר הוא…',
-    'relationship_form_is_with_name' => ':name is...',
+    'relationship_form_is_with_name' => ':name…',
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',

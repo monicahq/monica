@@ -45,7 +45,7 @@
         />
       </div>
       <p class="tc mb0">
-        <a class="btn btn-secondary pointer" @click="addMessage">
+        <a class="btn btn-secondary pointer" href="" @click.prevent="addMessage">
           {{ $t('people.conversation_add_another') }}
         </a>
       </p>

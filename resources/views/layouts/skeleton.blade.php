@@ -18,7 +18,6 @@
     <link rel="shortcut icon" href="img/favicon.png">
     <script>
       window.Laravel = {!! \Safe\json_encode([
-          'csrfToken' => csrf_token(),
           'locale' => \App::getLocale(),
           'htmldir' => htmldir(),
           'profileDefaultView' => auth()->user()->profile_active_tab,
@@ -35,21 +34,16 @@
     @include('partials.footer')
 
     {{-- THE JS FILE OF THE APP --}}
+    @push('scripts')
+      <script src="{{ asset(mix('js/manifest.js')) }}"></script>
+    @endpush
+
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
-      <script src="{{ asset(mix('js/manifest.js')) }}"></script>
-      <script src="{{ asset(mix('js/vendor.js')) }}"></script>
-      <script src="{{ asset(mix('js/app.js')) }}"></script>
-    @endif
-
-    {{-- Required only for the Upgrade account page --}}
-    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
-      <script async src="https://js.stripe.com/v3/"></script>
-      <script>
-        var stripe = Stripe('{{config('services.stripe.key')}}');
-      </script>
-      <script src="{{ asset(mix('js/manifest.js')) }}"></script>
-      <script src="{{ asset(mix('js/stripe.js')) }}"></script>
+      @push('scripts')
+        <script src="{{ asset(mix('js/vendor.js')) }}"></script>
+        <script src="{{ asset(mix('js/app.js')) }}"></script>
+      @endpush
     @endif
 
     @stack('scripts')

@@ -21,6 +21,14 @@ elif [ "$TRAVIS" == "true" ]; then
   PR_NUMBER=$TRAVIS_PULL_REQUEST
   BUILD_NUMBER=$TRAVIS_BUILD_NUMBER
   GIT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
+elif [ "$TF_BUILD" == "True" ]; then
+  REPO=$BUILD_REPOSITORY_NAME
+  BRANCH=${SYSTEM_PULLREQUEST_SOURCEBRANCH:-$BUILD_SOURCEBRANCHNAME}
+  PR_NUMBER=${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER:-false}
+  BUILD_NUMBER=$BUILD_BUILDNUMBER
+  if [[ -z $GIT_COMMIT ]]; then
+    GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_SOURCEVERSION)
+  fi
 elif [[ -n $BUILD_NUMBER ]]; then
   echo "CHANGE_ID=$CHANGE_ID"
   echo "CHANGE_URL=$CHANGE_URL"
@@ -49,7 +57,7 @@ function installSonar {
   # set version of sonar scanner to use :
   sonarversion=${SONAR_VERSION:-}
   if [ -z "${sonarversion:-}" ]; then
-    sonarversion=3.2.0.1227
+    sonarversion=3.3.0.1492
   fi
   echo "== Using sonarscanner $sonarversion"
 
@@ -100,7 +108,7 @@ function gitFetch {
   if [ "$RUNREVPARSE" == "true" ]; then
     if [ -n "${PULL_REQUEST_BASEBRANCH:-}" ]; then
       echo "# git branch -D $PULL_REQUEST_BASEBRANCH"
-      git branch -D $PULL_REQUEST_BASEBRANCH
+      git branch -D $PULL_REQUEST_BASEBRANCH || true
       echo "# git rev-parse origin/$PULL_REQUEST_BASEBRANCH"
       git rev-parse origin/$PULL_REQUEST_BASEBRANCH
     fi
@@ -109,7 +117,7 @@ function gitFetch {
 }
 
 function getSonarlauncher {
-  sonarlauncherversion=0.5.0
+  sonarlauncherversion=0.6.0
   mkdir -p ~/sonarlauncher
   pushd ~/sonarlauncher > /dev/null
   if [ ! -d "$sonarlauncherversion" ]; then

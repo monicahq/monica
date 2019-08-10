@@ -517,7 +517,7 @@ class SettingsController
 
     public function dav()
     {
-        $davroute = route('settings.dav');
+        $davroute = route('sabre.dav');
         $email = auth()->user()->email;
 
         return view('settings.dav.index')

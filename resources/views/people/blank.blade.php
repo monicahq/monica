@@ -1,7 +1,7 @@
 <div class="blank-people-state">
     <div class="{{ Auth::user()->getFluidLayout() }}">
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             @if (! is_null($tags))
                 <p class="clear-filter">
                 {{ trans('people.people_list_filter_tag') }}

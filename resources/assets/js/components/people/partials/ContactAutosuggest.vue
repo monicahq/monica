@@ -15,13 +15,13 @@
     overflow: scroll;
     max-height: 361px;
   }
-  .autosuggest__results_item {
+  .autosuggest__results-item {
     background: white;
   }
-  .autosuggest__results_item:active,
-  .autosuggest__results_item:hover,
-  .autosuggest__results_item:focus,
-  .autosuggest__results_item.autosuggest__results_item-highlighted {
+  .autosuggest__results-item:active,
+  .autosuggest__results-item:hover,
+  .autosuggest__results-item:focus,
+  .autosuggest__results-item--highlighted {
     background: #f5f5f5;
   }
 </style>
@@ -45,6 +45,7 @@
       @selected="selectHandler"
       @click="clickHandler"
       @blur="blurHandler"
+      @input="updateItems"
     >
       <template slot-scope="{suggestion}">
         <component :is="componentItem" :item="suggestion.item" />
@@ -124,7 +125,6 @@ export default {
     inputProps() {
       return {
         id: this.realid,
-        onInputChange: this.updateItems,
         placeholder: this.placeholder,
         class: ['form-control', this.inputClass],
       };
@@ -144,7 +144,7 @@ export default {
   methods: {
 
     updateItems (text) {
-      if (text === null) {
+      if (text === null || text === undefined) {
         return;
       }
       if (text.length < this.minLen) {
@@ -215,7 +215,7 @@ export default {
 
     clickHandler(e) {
       this.loading = false;
-      this.updateItems(e ? e.item.name : this.$refs.autosuggest.searchInput);
+      this.updateItems(this.value);
     },
 
     selectHandler(suggestion) {

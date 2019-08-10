@@ -110,15 +110,22 @@
         <form-specialdate
           :months="{{ $months }}"
           :days="{{ $days }}"
-          :default-date="'{{ $birthdate }}'"
+          :birthdate="'{{ $birthdate }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <label class="pa0 ma0 lh-copy pointer" for="realContact">
-              <input type="checkbox" id="realContact" name="realContact"> {{ trans('people.relationship_form_also_create_contact') }} <span class="silver">{{ trans('people.relationship_form_add_description') }}</span>
-            </label>
-          </div>
+          <form-checkbox
+            :name="'realContact'"
+            :iclass="'pa0 ma0 lh-copy'"
+            :dclass="'mb3 mb0-ns flex'"
+          >
+            <template slot="label">
+              {{ trans('people.relationship_form_also_create_contact') }}
+            </template>
+            <span slot="extra" class="silver">
+              {{ trans('people.relationship_form_add_description') }}
+            </span>
+          </form-checkbox>
         </div>
       </div>
 

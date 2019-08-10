@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => 'طفل واحد|:count أطفال',
     'people_list_last_updated' => 'آخر استشارة:',
     'people_list_number_reminders' => 'تذكير واحد|:count تذكيرات',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Show deceased people (:count)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'البحث في جهات الاتصال الخاصة بك...',
-    'people_search_no_results' => 'لم يتم العثور على جهات اتصال ذات صلة :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'استخدام حسابك: :current/:limit جهة اتصال',
     'people_list_account_upgrade_title' => 'قم بترقية حسابك لتفعيل كامل إمكانياته.',
     'people_list_account_upgrade_cta' => 'قم بالترقية الان',

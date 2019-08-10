@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

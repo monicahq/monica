@@ -13,7 +13,7 @@
           {{ csrf_field() }}
 
           <div class="form-group">
-            <label for="content" class="form-control-label b">{{ trans('people.modal_call_comment') }}</label>
+            <label for="content" class="col-form-label b">{{ trans('people.modal_call_comment') }}</label>
             <textarea class="form-control mb3" name="content" id="content" maxlength="2500" autofocus>
             </textarea>
 

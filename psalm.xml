@@ -9,7 +9,6 @@
         <directory name="database/migrations" />
         <directory name="app" />
         <directory name="routes" />
-        <directory name="tests" />
         <ignoreFiles>
             <directory name="vendor" />
             <file name="app/Helpers/helpers.php" />
@@ -108,6 +107,12 @@
                 <file name="tests/Unit/Models/Google2FATest.php" />
             </errorLevel>
         </UndefinedPropertyAssignment>
+
+        <UndefinedPropertyFetch>
+            <errorLevel type="suppress">
+                <file name="app/Services/VCalendar/ImportTask.php" />
+            </errorLevel>
+        </UndefinedPropertyFetch>
 
     </issueHandlers>
 </psalm>

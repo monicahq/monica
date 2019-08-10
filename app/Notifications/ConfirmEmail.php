@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Support\Carbon;
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
@@ -75,7 +74,7 @@ class ConfirmEmail extends LaravelNotification implements ShouldQueue, MailNotif
     protected function verificationUrl($notifiable)
     {
         return URL::temporarySignedRoute(
-            'verification.verify', Carbon::now()->addMinutes(60), ['id' => $notifiable->getKey()]
+            'verification.verify', now()->addMinutes(60), ['id' => $notifiable->getKey()]
         );
     }
 }

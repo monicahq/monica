@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Message;
@@ -34,7 +33,7 @@ class UpdateMessageTest extends TestCase
             'contact_id' => $conversation->contact->id,
             'conversation_id' => $conversation->id,
             'message_id' => $message->id,
-            'written_at' => Carbon::now(),
+            'written_at' => now(),
             'written_by_me' => true,
             'content' => 'lorem',
         ];
@@ -62,7 +61,7 @@ class UpdateMessageTest extends TestCase
             'account_id' => 1,
             'conversation_id' => 2,
             'message_id' => 3,
-            'written_at' => Carbon::now(),
+            'written_at' => now(),
             'written_by_me' => true,
             'content' => 'lorem',
         ];
@@ -82,7 +81,7 @@ class UpdateMessageTest extends TestCase
             'contact_id' => 123,
             'conversation_id' => 123,
             'message_id' => $message->id,
-            'written_at' => Carbon::now(),
+            'written_at' => now(),
             'written_by_me' => true,
             'content' => 'lorem',
         ];

@@ -54,9 +54,9 @@ RUN apk add netcat-openbsd \
 
 # Create a user to own all the code and assets and give them a working
 # directory
-RUN mkdir -p /var/www/monica
-RUN grep -q apache /etc/group || addgroup -S apache
-RUN adduser -D monica apache -h /var/www/monica
+RUN mkdir -p /var/www/monica; \
+    grep -q apache /etc/group || addgroup -S apache; \
+    adduser -D monica apache -h /var/www/monica
 WORKDIR /var/www/monica
 
 # Copy the local (outside Docker) source into the working directory,
@@ -64,7 +64,7 @@ WORKDIR /var/www/monica
 # correctly
 COPY readme.md \
     CONTRIBUTING.md \
-    CHANGELOG \
+    CHANGELOG.md \
     CONTRIBUTORS \
     LICENSE \
     artisan \
@@ -79,18 +79,17 @@ COPY public ./public
 COPY resources ./resources
 COPY routes ./routes
 
-RUN mkdir -p bootstrap/cache && \
-    mkdir -p storage
+RUN mkdir -p bootstrap/cache; \
+    mkdir -p storage; \
+    chown -R monica:monica .; \
+    chgrp -R apache bootstrap/cache storage; \
+    chmod -R g+w bootstrap/cache storage
 COPY .env.example .env
 
-RUN chown -R monica:monica .
-RUN chgrp -R apache bootstrap/cache storage
-RUN chmod -R g+w bootstrap/cache storage
-
 # Sentry
-RUN echo $VCS_REF > .sentry-release
-RUN echo $COMMIT > .sentry-commit
-RUN mkdir -p /root/.local/bin && \
+RUN echo $VCS_REF > .sentry-release; \
+    echo $COMMIT > .sentry-commit; \
+    mkdir -p /root/.local/bin && \
     curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=/root/.local/bin bash
 
 # Composer installation
@@ -99,8 +98,10 @@ RUN install-composer.sh
 
 # Install composer dependencies
 USER monica
-RUN composer install --no-interaction --no-suggest --no-dev
-RUN composer clear-cache
+RUN composer global require hirak/prestissimo; \
+    composer install --no-interaction --no-suggest --no-progress --no-dev; \
+    composer global remove hirak/prestissimo; \
+    composer clear-cache
 USER root
 
 # Set crontab for schedules

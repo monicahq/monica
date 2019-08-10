@@ -27,7 +27,7 @@ class EntryTest extends TestCase
             'day' => 1,
             'day_name' => 'Sun',
             'month' => 1,
-            'month_name' => 'Jan',
+            'month_name' => 'JAN',
             'year' => 2017,
         ];
 

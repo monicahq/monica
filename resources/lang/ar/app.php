@@ -86,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'أضف ملاحظة',
     'breadcrumb_edit_note' => 'حرر ملاحظة',
     'breadcrumb_api' => 'API (واجهة برمجة التطبيق)',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'كيف تقابلتما',
     'breadcrumb_settings_personalization' => 'التخصيص',
     'breadcrumb_settings_security' => 'الأمن',

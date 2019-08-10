@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contactpersoon niet gevonden',
     'people_list_number_kids' => '1 kind|:count kids',
     'people_list_last_updated' => 'Laatst bekeken:',
     'people_list_number_reminders' => '1 herinnering|:count reminders',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Toon overleden personen (:count)',
     'people_list_hide_dead' => 'Verberg overleden personen (:count)',
     'people_search' => 'Zoek in je contacten...',
-    'people_search_no_results' => 'Geen relevante contacten gevonden :(',
+    'people_search_no_results' => 'Geen resultaten gevonden',
+    'people_add_new' => 'Voeg nieuw persoon toe',
     'people_list_account_usage' => 'Je huidige gebruik: :current/:limit contacten',
     'people_list_account_upgrade_title' => 'Upgrade je account om alle functies te kunnen gebruiken.',
     'people_list_account_upgrade_cta' => 'Nu upgraden',

@@ -86,7 +86,7 @@ return [
     'breadcrumb_add_note' => 'Notiz hinzufügen',
     'breadcrumb_edit_note' => 'Notiz bearbeiten',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'Wie habt ihr euch getroffen',
     'breadcrumb_settings_personalization' => 'Personalisierung',
     'breadcrumb_settings_security' => 'Sicherheit',

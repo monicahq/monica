@@ -1,4 +1,4 @@
-<div class="col-xs-12 section-title">
+<div class="col-12 section-title">
   <img src="img/people/reminders.svg" class="icon-section icon-reminders">
   <h3>
     {{ trans('people.section_personal_reminders') }}
@@ -12,7 +12,7 @@
 
 @if ($reminders->count() === 0)
 
-  <div class="col-xs-12">
+  <div class="col-12">
     <div class="section-blank">
       <h3>{{ trans('people.reminders_blank_title', ['name' => $contact->first_name]) }}</h3>
       <a href="{{ route('people.reminders.create', $contact) }}">{{ trans('people.reminders_blank_add_activity') }}</a>
@@ -21,7 +21,7 @@
 
 @else
 
-  <div class="col-xs-12 reminders-list">
+  <div class="col-12 reminders-list">
 
     @if (! auth()->user()->account->hasLimitations())
     <p>{{ trans('people.reminders_description') }}</p>

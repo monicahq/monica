@@ -42,28 +42,32 @@ heroku run bash -a <APP-ID>
 * Run
 ```sh
 php artisan passport:keys
+php artisan passport:client --personal --no-interaction
 ```
+
 This command will generate encryption keys in the `storage` directory.
 The two keys `oauth-private.key` and `oauth-public.key` cannot be backup and recreate in heroku directly.
 
 * Still in the Heroku CLI, run this command to output the private key:
-```
+```sh
 sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-private.key
 ```
   Copy the output to a new Heroku environment variable called `PASSPORT_PRIVATE_KEY`
+
 * Do the same thing with the contents of the public key:
-```
+```sh
 sed ':a;N;$!ba;s/\n/\\n/g' ~/storage/oauth-public.key
 ```
-  Copy its contents to an environment variable called `PASSPORT_PUBLIC_KEY`
+  Copy its contents to a new Heroku environment variable called `PASSPORT_PUBLIC_KEY`
 
 
 Once Heroku is re-deploy, you should be able to use the 'Create new token' function in https://XXX.herokuapp.com/settings/api
 
 Once you have the token, you can use the API with a command line:
 ```
-curl -H "Authorization: Bearer eyJ0eXIh7ARV1Xjcf4qNo" https://XXX.herokuapp.com/api
+curl -H "Authorization: Bearer API_TOKEN" https://XXX.herokuapp.com/api
 ```
+
 If everything is well, this call will return:
 ```json
 {"success":{"message":"Welcome to Monica"}}
@@ -92,6 +96,10 @@ Client secret: zsfOHGnEbadlBP8kLsjOV8hMpHAxb0oAhenfmSqq
 * No upload of photos for your contacts. Heroku doesn't support storage.
 * No email by default - email configuration isn't required to use Monica on Heroku, but it's recommended. The easiest way to go about this is to use Mailgun's [free email add-on on Heroku](https://elements.heroku.com/addons/mailgun):
   * [Sign up for Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
+  * Add a custom domain in mailgun.
+  * Add the "To" and "From" e-mail addresses you're going to use as verified e-mail addresses on mailgun, and then actually verifying them.
+  * Upgrade mailgun by entering a credit card (there is no charge, but they do require you enter it so you'll be upgraded to some other   tier that enables you to actually send messages).
+  * Verify the custom domain via DNS (there are instructions on their site)
   * In Heroku, go to your app, then to the Settings tab. In it, you will have a button that reads "Reveal Config Vars". Click it, and change the following vars:
     * `MAIL_DRIVER`: `mailgun`
     * `MAILGUN_DOMAIN`: your Mailgun domain

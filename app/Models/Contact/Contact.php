@@ -1468,6 +1468,10 @@ class Contact extends Model
      */
     public function setStayInTouchTriggerDate($frequency)
     {
+        // prevent timestamp update
+        $timestamps = $this->timestamps;
+        $this->timestamps = false;
+
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
         } else {
@@ -1477,6 +1481,8 @@ class Contact extends Model
         }
 
         $this->save();
+
+        $this->timestamps = $timestamps;
     }
 
     /**
@@ -1492,12 +1498,12 @@ class Contact extends Model
 
     public function updateConsulted()
     {
-        $this->last_consulted_at = now();
-        $this->number_of_views = $this->number_of_views + 1;
-
         // prevent timestamp update
         $timestamps = $this->timestamps;
         $this->timestamps = false;
+
+        $this->last_consulted_at = now();
+        $this->number_of_views = $this->number_of_views + 1;
 
         $this->save();
 

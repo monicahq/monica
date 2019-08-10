@@ -12,7 +12,9 @@ class Deactivate2FA extends Command
      *
      * @var string
      */
-    protected $signature = '2fa:deactivate {--email= : The email of the user to deactivate 2FA} {--force : run without asking for confirmation}';
+    protected $signature = '2fa:deactivate
+                            {--force : Force the operation to run when in production.}
+                            {--email= : The email of the user to deactivate 2FA.}';
 
     /**
      * The console command description.

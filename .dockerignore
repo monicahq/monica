@@ -1,4 +1,6 @@
 .circleci/
+.azure/
+.composer/
 .git/
 .gitattributes
 .github/
@@ -10,7 +12,9 @@ database/*.sqlite
 .env
 CODE_OF_CONDUCT.md
 docker-compose.yml
+docker-compose.dev.yml
 Dockerfile
+Dockerfile.dev
 .dockerignore
 docs/
 fortrabbit.yml
@@ -18,7 +22,7 @@ Homestead.*
 node_modules/
 npm-debug.log*
 persist/
-phpunit*
+.phpunit.result.cache
 Procfile
 public/storage
 resources/vendor/
@@ -26,7 +30,6 @@ results/
 .sass-lint.yml
 scripts/tests
 scripts/vagrant
-server.php
 sonar-project.properties
 storage/app/public/*
 storage/debugbar/*
@@ -37,3 +40,6 @@ storage/logs/*
 .styleci.yml
 .travis.yml*
 vendor/
+yarn-error.log
+.sonarlint/
+cypress.env.json

@@ -4,7 +4,7 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+        <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
           <div class="tc">
             <ul class="horizontal f6 relative mb3 light-silver">
               <li class="mr2">
@@ -22,7 +22,7 @@
                 @if (App::isLocale($locale['lang']))
                   {{ $locale['lang'] }}
                 @else
-                  <a href="?lang={{ $locale['lang'] }}" title="{{ trans('auth.change_language', ['lang' => $locale['name']]) }}">{{ $locale['lang'] }}</a>
+                <a href="{{ route('register') }}?lang={{ $locale['lang'] }}" title="{{ trans('auth.change_language', ['lang' => $locale['name']]) }}">{{ $locale['lang'] }}</a>
                 @endif
               </li>
             @endforeach
@@ -59,13 +59,13 @@
               </div>
 
               <div class="row">
-                <div class="col-xs-12 col-sm-6">
+                <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="first_name">{{ trans('auth.register_firstname') }}</label>
                     <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ trans('auth.register_firstname_example') }}" value="{{ old('first_name') }}">
                   </div>
                 </div>
-                <div class="col-xs-12 col-sm-6">
+                <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="last_name">{{ trans('auth.register_lastname') }}</label>
                     <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ trans('auth.register_lastname_example') }}" value="{{ old('last_name') }}">
