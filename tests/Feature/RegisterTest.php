@@ -39,7 +39,7 @@ class RegisterTest extends FeatureTestCase
     public function test_user_cannot_register_twice()
     {
         Mail::fake();
-        
+
         $user = factory(User::class)->create();
 
         $params = [
