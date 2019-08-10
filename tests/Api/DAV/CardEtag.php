@@ -39,15 +39,16 @@ FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
 ";
 
+        if ($contact->gender) {
+            $data .= "GENDER:{$contact->gender->type}";
+            $data .= "\n";
+        }
+
         $picture = $contact->getAvatarURL();
         if (! empty($picture)) {
             $data .= "PHOTO;VALUE=URI:{$picture}\n";
         }
 
-        if ($contact->gender) {
-            $data .= "GENDER:{$contact->gender->type}";
-            $data .= "\n";
-        }
         foreach ($contact->addresses as $address) {
             $data .= 'ADR:;;';
             $data .= $address->place->street.';';
