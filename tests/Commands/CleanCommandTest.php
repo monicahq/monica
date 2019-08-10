@@ -6,7 +6,6 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\User\SyncToken;
 use App\Models\Account\Account;
-use App\Console\Commands\Update;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CleanCommandTest extends TestCase
