@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
-use App\Models\Account\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ActivityTest extends FeatureTestCase
