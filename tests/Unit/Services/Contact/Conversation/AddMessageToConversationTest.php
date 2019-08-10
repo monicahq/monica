@@ -21,7 +21,7 @@ class AddMessageToConversationTest extends TestCase
     {
         $request = [
             'contact_id' => 1,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -38,7 +38,7 @@ class AddMessageToConversationTest extends TestCase
             'contact_id' => $conversation->contact->id,
             'conversation_id' => $conversation->id,
             'written_by_me' => true,
-            'written_at' => Carbon::now(),
+            'written_at' => now(),
             'content' => 'lorem ipsum',
         ];
 
@@ -68,7 +68,7 @@ class AddMessageToConversationTest extends TestCase
             'contact_id' => $contact->id,
             'account_id' => $account->id,
             'written_by_me' => true,
-            'written_at' => Carbon::now(),
+            'written_at' => now(),
             'content' => 'lorem ipsum',
         ];
 
@@ -92,7 +92,7 @@ class AddMessageToConversationTest extends TestCase
             'contact_id' => $contact->id,
             'account_id' => $account->id,
             'written_by_me' => true,
-            'written_at' => Carbon::now(),
+            'written_at' => now(),
             'content' => 'lorem ipsum',
         ];
 

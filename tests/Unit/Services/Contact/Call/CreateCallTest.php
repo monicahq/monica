@@ -24,7 +24,7 @@ class CreateCallTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
         ];
 
@@ -51,7 +51,7 @@ class CreateCallTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => true,
         ];
@@ -80,7 +80,7 @@ class CreateCallTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => true,
             'emotions' => $emotionArray,
@@ -120,7 +120,7 @@ class CreateCallTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => true,
             'emotions' => $emotionArray,
@@ -138,7 +138,7 @@ class CreateCallTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         $call = app(CreateCall::class)->execute($request);
@@ -157,7 +157,7 @@ class CreateCallTest extends TestCase
             'last_talked_to' => '1900-01-01 00:00:00',
         ]);
 
-        $date = Carbon::now();
+        $date = now();
 
         $request = [
             'contact_id' => $contact->id,
@@ -179,7 +179,7 @@ class CreateCallTest extends TestCase
             'last_talked_to' => '2200-01-01 00:00:00',
         ]);
 
-        $date = Carbon::now();
+        $date = now();
 
         $request = [
             'contact_id' => $contact->id,
@@ -201,7 +201,7 @@ class CreateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -216,7 +216,7 @@ class CreateCallTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $account->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
         ];
 

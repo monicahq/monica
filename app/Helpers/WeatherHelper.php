@@ -28,7 +28,7 @@ class WeatherHelper
         if (is_null($weather)) {
             $weather = self::callWeatherAPI($address);
         } else {
-            if (! $weather->created_at->between(Carbon::now()->subHour(6), Carbon::now())) {
+            if (! $weather->created_at->between(now()->subHours(6), now())) {
                 $weather = self::callWeatherAPI($address);
             }
         }

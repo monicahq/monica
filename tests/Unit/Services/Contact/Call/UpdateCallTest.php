@@ -29,7 +29,7 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
         ];
 
@@ -60,7 +60,7 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => 1,
         ];
@@ -87,7 +87,7 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         $call = app(UpdateCall::class)->execute($request);
@@ -126,7 +126,7 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => 1,
             'emotions' => $emotionArray,
@@ -184,7 +184,7 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => 1,
             'emotions' => $emotionArray,
@@ -231,12 +231,12 @@ class UpdateCallTest extends TestCase
             'account_id' => $contact->account->id,
         ]);
 
-        $date = Carbon::now();
+        $date = now();
 
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         app(UpdateCall::class)->execute($request);
@@ -257,12 +257,12 @@ class UpdateCallTest extends TestCase
             'account_id' => $contact->account->id,
         ]);
 
-        $date = Carbon::now();
+        $date = now();
 
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         app(UpdateCall::class)->execute($request);
@@ -279,7 +279,7 @@ class UpdateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -294,7 +294,7 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         $this->expectException(ModelNotFoundException::class);

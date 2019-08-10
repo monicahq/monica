@@ -75,7 +75,7 @@ class ConfirmEmail extends LaravelNotification implements ShouldQueue, MailNotif
     protected function verificationUrl($notifiable)
     {
         return URL::temporarySignedRoute(
-            'verification.verify', Carbon::now()->addMinutes(60), ['id' => $notifiable->getKey()]
+            'verification.verify', now()->addMinutes(60), ['id' => $notifiable->getKey()]
         );
     }
 }

@@ -48,7 +48,7 @@ class UpdateTask extends BaseService
             'title' => $data['title'],
             'description' => (! empty($data['description']) ? $data['description'] : null),
             'completed' => $data['completed'],
-            'completed_at' => ($data['completed'] == true ? Carbon::now() : null),
+            'completed_at' => ($data['completed'] == true ? now() : null),
         ]);
 
         return $task;

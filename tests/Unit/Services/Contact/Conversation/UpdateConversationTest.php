@@ -53,7 +53,7 @@ class UpdateConversationTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);

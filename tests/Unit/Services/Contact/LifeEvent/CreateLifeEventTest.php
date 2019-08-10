@@ -28,7 +28,7 @@ class CreateLifeEventTest extends TestCase
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
             'life_event_type_id' => $lifeEventType->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
             'name' => 'This is a name',
             'note' => 'This is a note',
             'has_reminder' => false,
@@ -65,7 +65,7 @@ class CreateLifeEventTest extends TestCase
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
             'life_event_type_id' => $lifeEventType->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
             'name' => 'This is a name',
             'note' => 'This is a note',
             'has_reminder' => true,
@@ -90,7 +90,7 @@ class CreateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -112,7 +112,7 @@ class CreateLifeEventTest extends TestCase
             'has_reminder' => false,
             'happened_at_day_unknown' => false,
             'happened_at_month_unknown' => false,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ModelNotFoundException::class);
@@ -134,7 +134,7 @@ class CreateLifeEventTest extends TestCase
             'has_reminder' => false,
             'happened_at_day_unknown' => false,
             'happened_at_month_unknown' => false,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ModelNotFoundException::class);
