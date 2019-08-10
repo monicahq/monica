@@ -473,7 +473,7 @@ class ContactTest extends FeatureTestCase
         $this->post('/people/'.$contact->hashID().'/food/save', $food);
 
         $food['id'] = $contact->id;
-        $this->changeArrayKey('food', 'food_preferencies', $food);
+        $this->changeArrayKey('food', 'food_preferences', $food);
 
         $this->assertDatabaseHas('contacts', $food);
     }

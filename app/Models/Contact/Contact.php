@@ -93,7 +93,7 @@ class Contact extends Model
         'is_partial',
         'job',
         'company',
-        'food_preferencies',
+        'food_preferences',
         'birthday_reminder_id',
         'birthday_special_date_id',
         'is_dead',
@@ -937,15 +937,15 @@ class Contact extends Model
     /**
      * Update the name of the contact.
      *
-     * @param  string $foodPreferencies
+     * @param  string $foodPreferences
      * @return void
      */
-    public function updateFoodPreferencies($foodPreferencies)
+    public function updateFoodPreferences($foodPreferences)
     {
-        if ($foodPreferencies == '') {
-            $this->food_preferencies = null;
+        if ($foodPreferences == '') {
+            $this->food_preferences = null;
         } else {
-            $this->food_preferencies = $foodPreferencies;
+            $this->food_preferences = $foodPreferences;
         }
 
         $this->save();

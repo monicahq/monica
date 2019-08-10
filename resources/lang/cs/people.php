@@ -153,13 +153,13 @@ return [
     'work_information' => 'Work information',
 
     // food preferences
-    'food_preferencies_add_success' => 'Informace o oblíbených potravinách uloženy',
-    'food_preferencies_edit_description' => 'Možná má :firstname nebo někdo z rodiny :family alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
-    'food_preferencies_edit_description_no_last_name' => 'Možná má :firstname alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
-    'food_preferencies_edit_title' => 'Zapsat upřednostňované potraviny',
-    'food_preferencies_edit_cta' => 'Uložit informace o potravinách',
-    'food_preferencies_title' => 'Upřednostňované potraviny',
-    'food_preferencies_cta' => 'Přidat upřednostňované potraviny',
+    'food_preferences_add_success' => 'Informace o oblíbených potravinách uloženy',
+    'food_preferences_edit_description' => 'Možná má :firstname nebo někdo z rodiny :family alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
+    'food_preferences_edit_description_no_last_name' => 'Možná má :firstname alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
+    'food_preferences_edit_title' => 'Zapsat upřednostňované potraviny',
+    'food_preferences_edit_cta' => 'Uložit informace o potravinách',
+    'food_preferences_title' => 'Upřednostňované potraviny',
+    'food_preferences_cta' => 'Přidat upřednostňované potraviny',
 
     // reminders
     'reminders_blank_title' => 'Je něco na co chcete být upozorňováni pro osobu :name?',
