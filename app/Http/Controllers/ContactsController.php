@@ -492,36 +492,36 @@ class ContactsController extends Controller
     }
 
     /**
-     * Show the Edit food preferencies view.
+     * Show the Edit food preferences view.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\View\View
      */
-    public function editFoodPreferencies(Request $request, Contact $contact)
+    public function editFoodPreferences(Request $request, Contact $contact)
     {
-        return view('people.food-preferencies.edit')
+        return view('people.food-preferences.edit')
             ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact);
     }
 
     /**
-     * Save the food preferencies.
+     * Save the food preferences.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateFoodPreferencies(Request $request, Contact $contact)
+    public function updateFoodPreferences(Request $request, Contact $contact)
     {
         $food = ! empty($request->get('food')) ? $request->get('food') : null;
 
-        $contact->updateFoodPreferencies($food);
+        $contact->updateFoodPreferences($food);
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.food_preferencies_add_success'));
+            ->with('success', trans('people.food_preferences_add_success'));
     }
 
     /**

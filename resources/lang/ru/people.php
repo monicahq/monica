@@ -153,13 +153,13 @@ return [
     'work_information' => 'Work information',
 
     // food preferences
-    'food_preferencies_add_success' => 'Предпочтения в еде были сохранены',
-    'food_preferencies_edit_description' => 'Возможно у :firstname или кого-то из его(её) семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
-    'food_preferencies_edit_description_no_last_name' => 'Возможно у :firstname или кого-то из её семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
-    'food_preferencies_edit_title' => 'Укажите предпочтения в еде',
-    'food_preferencies_edit_cta' => 'Сохранить предпочтения в еде',
-    'food_preferencies_title' => 'Предпочтения в еде',
-    'food_preferencies_cta' => 'Добавить предпочтения в еде',
+    'food_preferences_add_success' => 'Предпочтения в еде были сохранены',
+    'food_preferences_edit_description' => 'Возможно у :firstname или кого-то из его(её) семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
+    'food_preferences_edit_description_no_last_name' => 'Возможно у :firstname или кого-то из её семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
+    'food_preferences_edit_title' => 'Укажите предпочтения в еде',
+    'food_preferences_edit_cta' => 'Сохранить предпочтения в еде',
+    'food_preferences_title' => 'Предпочтения в еде',
+    'food_preferences_cta' => 'Добавить предпочтения в еде',
 
     // reminders
     'reminders_blank_title' => 'Есть ли что-то связанное с :name, о чём вы хотите получить напоминание?',

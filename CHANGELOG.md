@@ -328,7 +328,7 @@
 
 * Add functional tests for account deletion and account reset
 * Fix activities not being displayed in the journal
-* Fix food preferencies not being able to be updated
+* Fix food preferences not being able to be updated
 * Add functional test for account exporting
 * Fix fake content seeder for testing purposes
 

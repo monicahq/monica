@@ -153,13 +153,13 @@ return [
     'work_information' => 'Werk informatie',
 
     // food preferences
-    'food_preferencies_add_success' => 'Voedsel voorkeuren zijn opgeslagen',
-    'food_preferencies_edit_description' => 'Misschien heeft :firstname of iemand in de :familiy\'s familie een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
-    'food_preferencies_edit_description_no_last_name' => 'Misschien heeft :firstname een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
-    'food_preferencies_edit_title' => 'Voedselvoorkeuren',
-    'food_preferencies_edit_cta' => 'Bewaar voedselvoorkeuren',
-    'food_preferencies_title' => 'Voedselvoorkeuren',
-    'food_preferencies_cta' => 'Voeg voedsel voorkeur toe',
+    'food_preferences_add_success' => 'Voedsel voorkeuren zijn opgeslagen',
+    'food_preferences_edit_description' => 'Misschien heeft :firstname of iemand in de :familiy\'s familie een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
+    'food_preferences_edit_description_no_last_name' => 'Misschien heeft :firstname een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
+    'food_preferences_edit_title' => 'Voedselvoorkeuren',
+    'food_preferences_edit_cta' => 'Bewaar voedselvoorkeuren',
+    'food_preferences_title' => 'Voedselvoorkeuren',
+    'food_preferences_cta' => 'Voeg voedsel voorkeur toe',
 
     // reminders
     'reminders_blank_title' => 'Is er iets over :name waar je aan herinnert wilt worden?',

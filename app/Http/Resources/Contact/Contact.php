@@ -74,7 +74,7 @@ class Contact extends Resource
                     'source' => $this->getAvatarSource(),
                     'default_avatar_color' => $this->default_avatar_color,
                 ]),
-                'food_preferencies' => $this->when(! $this->is_partial, $this->food_preferencies),
+                'food_preferences' => $this->when(! $this->is_partial, $this->food_preferences),
                 'how_you_met' => $this->when(! $this->is_partial, [
                     'general_information' => $this->first_met_additional_info,
                     'first_met_date' => [

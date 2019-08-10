@@ -153,13 +153,13 @@ return [
     'work_information' => 'פרטי תעסוקה',
 
     // food preferences
-    'food_preferencies_add_success' => 'העדפות המזון נשמרו',
-    'food_preferencies_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
-    'food_preferencies_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
-    'food_preferencies_edit_title' => 'ציון העדפות מזון',
-    'food_preferencies_edit_cta' => 'שמירת העדפות מזון',
-    'food_preferencies_title' => 'העדפות מזון',
-    'food_preferencies_cta' => 'הוספת העדפות מזון',
+    'food_preferences_add_success' => 'העדפות המזון נשמרו',
+    'food_preferences_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
+    'food_preferences_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
+    'food_preferences_edit_title' => 'ציון העדפות מזון',
+    'food_preferences_edit_cta' => 'שמירת העדפות מזון',
+    'food_preferences_title' => 'העדפות מזון',
+    'food_preferences_cta' => 'הוספת העדפות מזון',
 
     // reminders
     'reminders_blank_title' => 'יש משהו שברצונך לקבל עליו תזכורת בנוגע ל־:name?',
