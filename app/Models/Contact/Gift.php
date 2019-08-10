@@ -109,18 +109,6 @@ class Gift extends Model
     }
 
     /**
-     * Set the recipient for the gift.
-     *
-     * @param int $value
-     *
-     * @return void
-     */
-    public function setRecipientAttribute($value): void
-    {
-        $this->attributes['is_for'] = $value;
-    }
-
-    /**
      * Get the name of the recipient for this gift.
      *
      * @return string
