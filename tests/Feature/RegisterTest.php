@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User\User;
 use Tests\FeatureTestCase;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RegisterTest extends FeatureTestCase
@@ -12,6 +13,8 @@ class RegisterTest extends FeatureTestCase
 
     public function test_user_can_register()
     {
+        Mail::fake();
+
         $params = [
             'email' => 'john.mike@doe.com',
             'first_name' => 'john',
@@ -35,6 +38,8 @@ class RegisterTest extends FeatureTestCase
 
     public function test_user_cannot_register_twice()
     {
+        Mail::fake();
+        
         $user = factory(User::class)->create();
 
         $params = [
