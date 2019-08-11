@@ -71,7 +71,7 @@ class AccountTest extends FeatureTestCase
             'monica.requires_subscription' => true,
             'monica.paid_plan_annual_friendly_name' => 'Annual',
             'monica.paid_plan_annual_id' => 'annual',
-            'monica.paid_plan_annual_price' => 4500
+            'monica.paid_plan_annual_price' => 4500,
         ]);
 
         $user = $this->signin();
