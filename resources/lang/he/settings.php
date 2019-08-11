@@ -227,7 +227,7 @@ return [
     'stripe_error_card' => 'הכרטיס שלך נדחה. הודעה הדחייה היא: :message',
     'stripe_error_api_connection' => 'התקשורת עם Stripe נכשלה. נא לנסות שוב מאוחר יותר.',
     'stripe_error_rate_limit' => 'הגיעו יותר מדי בקשות אל Stripe כרגע. נא לנסות שוב מאוחר יותר.',
-    'stripe_error_invalid_request' => 'Invalid parameters. Try again later.',
+    'stripe_error_invalid_request' => 'משתנים שגויים. נא לנסות שוב מאוחר יותר.',
     'stripe_error_authentication' => 'אימות שגוי מול Stripe',
 
     'import_title' => 'יבוא אנשי קשר לחשבון שלך',
