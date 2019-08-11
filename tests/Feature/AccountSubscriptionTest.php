@@ -190,7 +190,7 @@ class AccountSubscriptionTest extends FeatureTestCase
             'stripeToken' => 'bad',
             'plan' => 'annual',
         ], [
-            'HTTP_REFERER' => 'back'
+            'HTTP_REFERER' => 'back',
         ]);
 
         $response->assertRedirect('/back');
@@ -204,6 +204,7 @@ class AccountSubscriptionTest extends FeatureTestCase
             $user->account->subscribe($this->getTestTokenError(), 'annual');
         } catch (\App\Exceptions\StripeException $e) {
             $this->assertEquals('Your card was declined. Decline message is: Your card was declined.', $e->getMessage());
+
             return;
         }
         $this->fails();
