@@ -227,6 +227,7 @@ return [
     'stripe_error_card' => 'تم رفض بطاقتك. الرسالة المنحدرة: :message',
     'stripe_error_api_connection' => 'فشل الإتصال مع Stripe. حاول مجدداً لاحقاً.',
     'stripe_error_rate_limit' => 'يوجد عدد كبير من الطلبات على Stripe الآن. حاول مجدداً لاحقاً.',
+    'stripe_error_invalid_request' => 'Invalid parameters. Try again later.',
     'stripe_error_authentication' => 'خطأ مصادقة مع Stripe',
 
     'import_title' => 'استيراد جهات الاتصال إلى حسابك',
