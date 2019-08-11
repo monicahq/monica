@@ -153,13 +153,13 @@ return [
     'work_information' => 'Arbeitsinformationen',
 
     // food preferences
-    'food_preferencies_add_success' => 'Essensvorlieben gespeichert',
-    'food_preferencies_edit_description' => 'Vielleicht hat :firstname oder jemand in der :family Familie eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich bei der nächsten Einladung zum Abendessen daran erinnerst',
-    'food_preferencies_edit_description_no_last_name' => 'Vielleicht hat :firstname eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich bei der nächsten Einladung zum Abendessen daran erinnerst',
-    'food_preferencies_edit_title' => 'Gib Essensvorlieben an',
-    'food_preferencies_edit_cta' => 'Speichere Essensvorlieben',
-    'food_preferencies_title' => 'Essensvorlieben',
-    'food_preferencies_cta' => 'Essensvorlieben hinzufügen',
+    'food_preferences_add_success' => 'Essensvorlieben gespeichert',
+    'food_preferences_edit_description' => 'Vielleicht hat :firstname oder jemand in der :family Familie eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich bei der nächsten Einladung zum Abendessen daran erinnerst',
+    'food_preferences_edit_description_no_last_name' => 'Vielleicht hat :firstname eine Allergie oder mag einen bestimmten Wein nicht. Vermerke so etwas hier, damit du dich bei der nächsten Einladung zum Abendessen daran erinnerst',
+    'food_preferences_edit_title' => 'Gib Essensvorlieben an',
+    'food_preferences_edit_cta' => 'Speichere Essensvorlieben',
+    'food_preferences_title' => 'Essensvorlieben',
+    'food_preferences_cta' => 'Essensvorlieben hinzufügen',
 
     // reminders
     'reminders_blank_title' => 'Gibt es etwas, an das du über :name erinnert werden willst?',

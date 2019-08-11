@@ -7,12 +7,15 @@
 
 ### Enhancements:
 
+* Add stripe webhook
 * Depends on php7.3+
 * Use pretty-radio and optimize vue.js components
 * Hide stay-in-touch for deceased contacts
 
 ### Fixes:
 
+* Fix subscription cancel
+* Fix last consulted contact list
 * Fix exception in case a user register twice
 * Fix vcard export with empty gender
 * Fix touch contact's updated_at on stay in touch trigger job
@@ -328,7 +331,7 @@
 
 * Add functional tests for account deletion and account reset
 * Fix activities not being displayed in the journal
-* Fix food preferencies not being able to be updated
+* Fix food preferences not being able to be updated
 * Add functional test for account exporting
 * Fix fake content seeder for testing purposes
 

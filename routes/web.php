@@ -21,6 +21,9 @@ Auth::routes(['verify' => true]);
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
 
+// stripe webhook
+Route::post('stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
     Route::get('/auth/login-recovery', 'Auth\RecoveryLoginController@get')->name('recovery.login');
@@ -118,10 +121,10 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         ]);
         Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
 
-        // Food preferencies
+        // Food preferences
         Route::name('food.')->group(function () {
-            Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('index');
-            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('update');
+            Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferences')->name('index');
+            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferences')->name('update');
         });
 
         // Relationships

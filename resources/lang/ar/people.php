@@ -153,13 +153,13 @@ return [
     'work_information' => 'معلومات العمل',
 
     // food preferences
-    'food_preferencies_add_success' => 'تم حفظ التفضيلات الغذائية',
-    'food_preferencies_edit_description' => 'قد يكون :firstname أو شخص في عائلة :family مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
-    'food_preferencies_edit_description_no_last_name' => 'قد يكون :firstname مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
-    'food_preferencies_edit_title' => 'حدد التفضيلات الغذائية',
-    'food_preferencies_edit_cta' => 'حفظ التفضيلات الغذائية',
-    'food_preferencies_title' => 'التفضيلات الغذائية',
-    'food_preferencies_cta' => 'أضف تفضيلات غذائية',
+    'food_preferences_add_success' => 'تم حفظ التفضيلات الغذائية',
+    'food_preferences_edit_description' => 'قد يكون :firstname أو شخص في عائلة :family مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
+    'food_preferences_edit_description_no_last_name' => 'قد يكون :firstname مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
+    'food_preferences_edit_title' => 'حدد التفضيلات الغذائية',
+    'food_preferences_edit_cta' => 'حفظ التفضيلات الغذائية',
+    'food_preferences_title' => 'التفضيلات الغذائية',
+    'food_preferences_cta' => 'أضف تفضيلات غذائية',
 
     // reminders
     'reminders_blank_title' => 'هل هناك شيء ما كنت ترغب أن يتم تذكيرك به بخصوص :name؟',

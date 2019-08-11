@@ -88,7 +88,7 @@ class Contact extends Model
         'is_partial',
         'job',
         'company',
-        'food_preferencies',
+        'food_preferences',
         'birthday_reminder_id',
         'birthday_special_date_id',
         'is_dead',
@@ -472,6 +472,17 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to only include contacts who are alive.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAlive($query)
+    {
+        return $query->where('is_dead', 0);
+    }
+
+    /**
      * Scope a query to only include contacts who are not active.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
@@ -483,16 +494,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the first name of the contact.
-     *
-     * @return string
-     */
-    public function getFirstNameAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Mutator first_name.
      *
      * @param string|null $value
@@ -500,16 +501,6 @@ class Contact extends Model
     public function setFirstNameAttribute($value)
     {
         $this->attributes['first_name'] = trim($value);
-    }
-
-    /**
-     * Get the last name of the contact.
-     *
-     * @return string
-     */
-    public function getLastNameAttribute($value)
-    {
-        return $value;
     }
 
     /**
@@ -537,16 +528,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the nickname of the contact.
-     *
-     * @return string
-     */
-    public function getNicknameAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Mutator last_name.
      *
      * @param string|null $value
@@ -568,26 +549,6 @@ class Contact extends Model
         preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $name, $initials);
 
         return implode('', $initials[0]);
-    }
-
-    /**
-     * Mutator last_consulted_at.
-     *
-     * @param \DateTime $value
-     */
-    public function setLastConsultedAtAttribute($value)
-    {
-        $this->attributes['last_consulted_at'] = $value;
-    }
-
-    /**
-     * Get the last consulted at date of the contact.
-     *
-     * @return string
-     */
-    public function getLastConsultedAtAttribute($value)
-    {
-        return $value;
     }
 
     /**
@@ -774,26 +735,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the job of the contact.
-     *
-     * @return string
-     */
-    public function getJobAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the company the contact works at.
-     *
-     * @return string
-     */
-    public function getCompanyAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Get all the contacts related to the current contact by a specific
      * relationship type group.
      *
@@ -910,15 +851,15 @@ class Contact extends Model
     /**
      * Update the name of the contact.
      *
-     * @param  string $foodPreferencies
+     * @param  string $foodPreferences
      * @return void
      */
-    public function updateFoodPreferencies($foodPreferencies)
+    public function updateFoodPreferences($foodPreferences)
     {
-        if ($foodPreferencies == '') {
-            $this->food_preferencies = null;
+        if ($foodPreferences == '') {
+            $this->food_preferences = null;
         } else {
-            $this->food_preferencies = $foodPreferencies;
+            $this->food_preferences = $foodPreferences;
         }
 
         $this->save();

@@ -34,6 +34,10 @@ return [
         'model' => App\Models\Account\Account::class,
         'key' => env('STRIPE_KEY', null),
         'secret' => env('STRIPE_SECRET', null),
+        'webhook' => [
+            'secret' => env('STRIPE_WEBHOOK_SECRET', null),
+            'tolerance' => env('STRIPE_WEBHOOK_TOLERANCE', 300),
+        ],
     ],
 
 ];

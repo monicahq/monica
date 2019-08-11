@@ -25,5 +25,5 @@
 
 {{-- Food preferences --}}
 @if ($modules->contains('key', 'food_preferences'))
-@include('people.food-preferencies.index')
+@include('people.food-preferences.index')
 @endif

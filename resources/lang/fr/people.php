@@ -153,13 +153,13 @@ return [
     'work_information' => 'Information sur le travail',
 
     // food preferences
-    'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
-    'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu’un dans la famille :family a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
-    'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
-    'food_preferencies_edit_title' => 'Modification des préférences alimentaires',
-    'food_preferencies_edit_cta' => 'Enregistrer les préférences alimentaires',
-    'food_preferencies_title' => 'Préférences alimentaires',
-    'food_preferencies_cta' => 'Ajouter',
+    'food_preferences_add_success' => 'Les préférences alimentaires ont été mises à jour.',
+    'food_preferences_edit_description' => 'Peut-être que :firstname ou quelqu’un dans la famille :family a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
+    'food_preferences_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
+    'food_preferences_edit_title' => 'Modification des préférences alimentaires',
+    'food_preferences_edit_cta' => 'Enregistrer les préférences alimentaires',
+    'food_preferences_title' => 'Préférences alimentaires',
+    'food_preferences_cta' => 'Ajouter',
 
     // reminders
     'reminders_blank_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',

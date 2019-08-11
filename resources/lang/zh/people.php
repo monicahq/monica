@@ -153,13 +153,13 @@ return [
     'work_information' => '工作信息',
 
     // food preferences
-    'food_preferencies_add_success' => '食品偏好已被保存',
-    'food_preferencies_edit_description' => '也许:firstname或:family的家庭有过敏，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
-    'food_preferencies_edit_description_no_last_name' => '也许:firstname有过敏情况，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
-    'food_preferencies_edit_title' => '注明食物偏好',
-    'food_preferencies_edit_cta' => '保存食物偏好',
-    'food_preferencies_title' => '食物偏好',
-    'food_preferencies_cta' => '添加食物偏好',
+    'food_preferences_add_success' => '食品偏好已被保存',
+    'food_preferences_edit_description' => '也许:firstname或:family的家庭有过敏，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
+    'food_preferences_edit_description_no_last_name' => '也许:firstname有过敏情况，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
+    'food_preferences_edit_title' => '注明食物偏好',
+    'food_preferences_edit_cta' => '保存食物偏好',
+    'food_preferences_title' => '食物偏好',
+    'food_preferences_cta' => '添加食物偏好',
 
     // reminders
     'reminders_blank_title' => '您有什么关于:name的提醒吗？',
