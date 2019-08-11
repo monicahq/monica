@@ -16,6 +16,6 @@ $factory->define(\Laravel\Cashier\Subscription::class, function (Faker\Generator
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'name' => 'Annual',
         'stripe_plan' => 'annual',
-        'quantity' => 1
+        'quantity' => 1,
     ];
 });

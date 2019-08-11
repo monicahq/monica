@@ -36,7 +36,7 @@ return [
         'secret' => env('STRIPE_SECRET', null),
         'webhook' => [
             'secret' => env('STRIPE_WEBHOOK_SECRET', null),
-        ]
+        ],
     ],
 
 ];
