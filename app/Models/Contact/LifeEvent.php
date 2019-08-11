@@ -86,24 +86,4 @@ class LifeEvent extends Model
     {
         return $this->belongsTo(Reminder::class);
     }
-
-    /**
-     * Get the life event name's attribute.
-     *
-     * @return string
-     */
-    public function getNameAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the life event note's attribute.
-     *
-     * @return string
-     */
-    public function getNoteAttribute($value)
-    {
-        return $value;
-    }
 }
