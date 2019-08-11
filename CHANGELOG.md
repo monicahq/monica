@@ -13,6 +13,7 @@
 
 ### Fixes:
 
+* Fix conversation creation
 * Fix phone call update
 * Fix conversation list show
 * Fix subscription cancel

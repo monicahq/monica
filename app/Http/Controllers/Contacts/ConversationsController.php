@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Contact\Conversation;
 use App\Traits\JsonRespondController;
+use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Conversation\DestroyMessage;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Conversation\UpdateConversation;
@@ -71,6 +72,20 @@ class ConversationsController extends Controller
      */
     public function store(Request $request, Contact $contact)
     {
+        $validator = Validator::make($request->all(), [
+            'conversationDateRadio' => 'required',
+            'messages' => 'required',
+            'contactFieldTypeId' => 'required|integer|exists:contact_field_types,id',
+        ],[
+            'messages.required' => trans('people.conversation_add_error'),
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
         // find out what the date is
         $chosenDate = $request->get('conversationDateRadio');
         if ($chosenDate == 'today') {
@@ -80,7 +95,7 @@ class ConversationsController extends Controller
         } else {
             $date = $request->get('conversationDate');
         }
-
+        
         $data = [
             'happened_at' => $date,
             'account_id' => auth()->user()->account->id,
@@ -105,7 +120,7 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me'),
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) === 'me'),
                 'content' => $request->get('content_'.$messageId),
             ];
 
