@@ -75,14 +75,14 @@ class AccountTest extends FeatureTestCase
         ]);
 
         $user = $this->signin();
+        $user->account->update(['stripe_id' => 'cus_X']);
 
         factory(Subscription::class)->create([
             'account_id' => $user->account_id,
             'name' => 'Annual',
             'stripe_plan' => 'annual',
-            'stripe_id' => '1',
+            'stripe_id' => 'sub_X',
             'quantity' => 1,
-            'ends_at' => now()->addDays(1),
         ]);
 
         $response = $this->get('/settings/subscriptions');
