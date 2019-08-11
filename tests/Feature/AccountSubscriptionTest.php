@@ -36,7 +36,7 @@ class AccountSubscriptionTest extends FeatureTestCase
         parent::setUp();
 
         if (! static::$productId) {
-            $this->markTestSkipped("Set STRIPE_SECRET to run this test.");
+            $this->markTestSkipped('Set STRIPE_SECRET to run this test.');
         } else {
             config([
                 'services.stripe.secret' => env('STRIPE_SECRET'),
@@ -44,7 +44,7 @@ class AccountSubscriptionTest extends FeatureTestCase
                 'monica.paid_plan_annual_friendly_name' => 'Annual',
                 'monica.paid_plan_annual_id' => 'annual',
                 'monica.paid_plan_annual_price' => 4500,
-            ]);    
+            ]);
         }
     }
 
