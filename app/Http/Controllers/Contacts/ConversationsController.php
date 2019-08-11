@@ -76,7 +76,7 @@ class ConversationsController extends Controller
             'conversationDateRadio' => 'required',
             'messages' => 'required',
             'contactFieldTypeId' => 'required|integer|exists:contact_field_types,id',
-        ],[
+        ], [
             'messages.required' => trans('people.conversation_add_error'),
         ]);
 
@@ -95,7 +95,7 @@ class ConversationsController extends Controller
         } else {
             $date = $request->get('conversationDate');
         }
-        
+
         $data = [
             'happened_at' => $date,
             'account_id' => auth()->user()->account->id,
