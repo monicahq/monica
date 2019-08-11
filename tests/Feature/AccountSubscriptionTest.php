@@ -182,11 +182,50 @@ class AccountSubscriptionTest extends FeatureTestCase
         $response->assertRedirect('/settings/subscriptions/upgrade/success');
     }
 
+    public function test_it_subscribe_with_error()
+    {
+        $user = $this->signin();
+
+        $response = $this->post('/settings/subscriptions/processPayment', [
+            'stripeToken' => 'bad',
+            'plan' => 'annual',
+        ], [
+            'HTTP_REFERER' => 'back'
+        ]);
+
+        $response->assertRedirect('/back');
+    }
+
+    public function test_it_does_not_subscribe()
+    {
+        $user = $this->signin();
+
+        try {
+            $user->account->subscribe($this->getTestTokenError(), 'annual');
+        } catch (\App\Exceptions\StripeException $e) {
+            $this->assertEquals('Your card was declined. Decline message is: Your card was declined.', $e->getMessage());
+            return;
+        }
+        $this->fails();
+    }
+
     protected function getTestToken()
     {
         return Token::create([
             'card' => [
                 'number' => '4242424242424242',
+                'exp_month' => 5,
+                'exp_year' => date('Y') + 1,
+                'cvc' => '123',
+            ],
+        ])->id;
+    }
+
+    protected function getTestTokenError()
+    {
+        return Token::create([
+            'card' => [
+                'number' => '4000000000009979',
                 'exp_month' => 5,
                 'exp_year' => date('Y') + 1,
                 'cvc' => '123',
