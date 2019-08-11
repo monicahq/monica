@@ -227,6 +227,7 @@ return [
     'stripe_error_card' => 'La tua carta è stata declinata. Il messaggio ricevuto è: :message',
     'stripe_error_api_connection' => 'Comunicazione con Stripe fallita. Riprova tra poco.',
     'stripe_error_rate_limit' => 'Troppe richieste a Stripe in questo momento. Riprova tra poco.',
+    'stripe_error_invalid_request' => 'Invalid parameters. Try again later.',
     'stripe_error_authentication' => 'Autenticazione con Stripe non valida',
 
     'import_title' => 'Importa contatti nel tuo account',
