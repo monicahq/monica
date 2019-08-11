@@ -13,6 +13,7 @@
 
 ### Fixes:
 
+* Fix conversation list show
 * Fix subscription cancel
 * Fix last consulted contact list
 * Fix exception in case a user register twice

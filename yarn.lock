@@ -2492,14 +2492,14 @@ data-uri-to-buffer@2:
   dependencies:
     "@types/node" "^8.0.7"
 
-date-fns@2.0.0-alpha.7:
-  version "2.0.0-alpha.7"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-alpha.7.tgz#245ad16f95764eababfb2c0a41fd5d033c20e57a"
-  integrity sha1-JFrRb5V2Tqur+ywKQf1dAzwg5Xo=
-
 date-fns@^1.27.2:
   version "1.29.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-1.29.0.tgz#12e609cdcb935127311d04d33334e2960a2a54e6"
+
+date-fns@^2.0.0-beta.4:
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.0.0-beta.4.tgz#3e1bf33a15da69481f81972c4a50aad762a81f2c"
+  integrity sha512-xekjYm7ZDBuzePM/GBodhi3hW3P8dd2RbuIOLBjet2E6EGFR82wHTTXCSGuDEoapqlDvsx88ymRsq85lbM7dDw==
 
 date-now@^0.1.4:
   version "0.1.4"
@@ -9003,11 +9003,11 @@ vue-eslint-parser@^5.0.0:
     lodash "^4.17.11"
 
 vue-good-table@^2.13.0:
-  version "2.16.4"
-  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.16.4.tgz#42b39014e8cfbc09537835b18ffd86b3d8bd9b0e"
-  integrity sha512-sJOSGYGVrgcbbeALPYXfVIKIyGA4cDpRxeVIRRLq2/Z5aRkTC9ER5OOz1oPbV2NtlQkrs2+BmHykPKpUAsH85g==
+  version "2.18.0"
+  resolved "https://registry.yarnpkg.com/vue-good-table/-/vue-good-table-2.18.0.tgz#707c806cf5496e072cb3e0cb39bc6b6322403e89"
+  integrity sha512-wC0I9D7TyfSf0zrYwIpNtXdbSPRir//q7TNpGZ8/MfgW5mLMspk9I0MVq856M3ecgwTqgqXXtO87+i0sgQxALg==
   dependencies:
-    date-fns "2.0.0-alpha.7"
+    date-fns "^2.0.0-beta.4"
     diacriticless "1.0.1"
     lodash.assign "^4.2.0"
     lodash.clonedeep "^4.5.0"
