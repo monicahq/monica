@@ -82,5 +82,15 @@ export default {
       return this.width >= 0 ? 'width:' + this.width + 'px' : '';
     }
   },
+
+  watch: {
+    value: function (newValue) {
+      this.buffer = newValue;
+    }
+  },
+
+  mounted() {
+    this.buffer = this.value;
+  },
 };
 </script>
