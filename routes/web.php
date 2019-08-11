@@ -21,6 +21,9 @@ Auth::routes(['verify' => true]);
 Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
 Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
 
+// stripe webhook
+Route::post('stripe/webhook', '\Laravel\Cashier\Http\Controllers\WebhookController@handleWebhook');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');
     Route::get('/auth/login-recovery', 'Auth\RecoveryLoginController@get')->name('recovery.login');

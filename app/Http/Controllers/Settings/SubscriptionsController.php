@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\InstanceHelper;
+use App\Exceptions\StripeException;
 use App\Http\Controllers\Controller;
 
 class SubscriptionsController extends Controller
@@ -27,10 +28,15 @@ class SubscriptionsController extends Controller
         }
 
         $planId = auth()->user()->account->getSubscribedPlanId();
+        try {
+            $nextBillingDate = auth()->user()->account->getNextBillingDate();
+        } catch (StripeException $e) {
+            $nextBillingDate = trans('app.unknown');
+        }
 
         return view('settings.subscriptions.account', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
-            'nextBillingDate' => auth()->user()->account->getNextBillingDate(),
+            'nextBillingDate' => $nextBillingDate,
         ]);
     }
 
@@ -134,15 +140,16 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        $result = auth()->user()->account->subscribe($request->input('stripeToken'), $request->input('plan'));
-
-        if ($result === true) {
-            return redirect()->route('settings.subscriptions.upgrade.success');
+        try {
+            auth()->user()->account
+                ->subscribe($request->input('stripeToken'), $request->input('plan'));
+        } catch (StripeException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
         }
 
-        return back()
-            ->withInput()
-            ->withErrors($result);
+        return redirect()->route('settings.subscriptions.upgrade.success');
     }
 
     /**

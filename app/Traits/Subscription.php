@@ -6,6 +6,8 @@ use App\Helpers\DateHelper;
 use Laravel\Cashier\Billable;
 use App\Helpers\InstanceHelper;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\StripeException;
+use Illuminate\Support\Facades\Log;
 
 trait Subscription
 {
@@ -51,7 +53,7 @@ trait Subscription
     /**
      * Get the friendly name of the plan the account is subscribed to.
      *
-     * @return string
+     * @return string|null
      */
     public function getSubscribedPlanName()
     {
@@ -131,23 +133,29 @@ trait Subscription
             $body = $e->getJsonBody();
             $err = $body['error'];
             $errorMessage = trans('settings.stripe_error_card', ['message' => $err['message']]);
+            Log::error('Stripe card decline error: '. (string) $e, $e->getJsonBody() ?: []);
         } catch (\Stripe\Error\RateLimit $e) {
             // Too many requests made to the API too quickly
             $errorMessage = trans('settings.stripe_error_rate_limit');
+            Log::error('Stripe RateLimit error: '. (string) $e, $e->getJsonBody() ?: []);
         } catch (\Stripe\Error\InvalidRequest $e) {
             // Invalid parameters were supplied to Stripe's API
             $errorMessage = trans('settings.stripe_error_invalid_request');
+            Log::error('Stripe InvalidRequest error: '. (string) $e, $e->getJsonBody() ?: []);
         } catch (\Stripe\Error\Authentication $e) {
             // Authentication with Stripe's API failed
             // (maybe you changed API keys recently)
             $errorMessage = trans('settings.stripe_error_authentication');
+            Log::error('Stripe Authentication error: '. (string) $e, $e->getJsonBody() ?: []);
         } catch (\Stripe\Error\ApiConnection $e) {
             // Network communication with Stripe failed
             $errorMessage = trans('settings.stripe_error_api_connection_error');
+            Log::error('Stripe ApiConnection error: '. (string) $e, $e->getJsonBody() ?: []);
         } catch (\Stripe\Error\Base $e) {
             $errorMessage = $e->getMessage();
+            Log::error('Stripe error: '. (string) $e, $e->getJsonBody() ?: []);
         }
 
-        return $errorMessage;
+        throw new StripeException($errorMessage);
     }
 }
