@@ -80,7 +80,7 @@ class AccountTest extends FeatureTestCase
             'account_id' => $user->account_id,
             'name' => 'Annual',
             'stripe_plan' => 'annual',
-            'stripe_id' => 'test',
+            'stripe_id' => '1',
             'quantity' => 1,
             'ends_at' => now()->addDays(1),
         ]);
