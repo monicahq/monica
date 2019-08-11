@@ -40,7 +40,7 @@ class AvatarController extends Controller
             case 'upload':
             // if it's a new photo, we need to upload it
                 $validator = Validator::make($request->all(), [
-                    'file' => 'image|size:'.config('monica.max_upload_size'),
+                    'file' => 'image|max:'.config('monica.max_upload_size'),
                 ]);
 
                 if ($validator->fails()) {
