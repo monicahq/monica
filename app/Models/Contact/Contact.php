@@ -500,16 +500,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the first name of the contact.
-     *
-     * @return string
-     */
-    public function getFirstNameAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Mutator first_name.
      *
      * @param string|null $value
@@ -517,16 +507,6 @@ class Contact extends Model
     public function setFirstNameAttribute($value)
     {
         $this->attributes['first_name'] = trim($value);
-    }
-
-    /**
-     * Get the last name of the contact.
-     *
-     * @return string
-     */
-    public function getLastNameAttribute($value)
-    {
-        return $value;
     }
 
     /**
@@ -554,16 +534,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the nickname of the contact.
-     *
-     * @return string
-     */
-    public function getNicknameAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Mutator last_name.
      *
      * @param string|null $value
@@ -585,26 +555,6 @@ class Contact extends Model
         preg_match_all('/(?<=\s|^)[a-zA-Z0-9]/i', $name, $initials);
 
         return implode('', $initials[0]);
-    }
-
-    /**
-     * Mutator last_consulted_at.
-     *
-     * @param \DateTime $value
-     */
-    public function setLastConsultedAtAttribute($value)
-    {
-        $this->attributes['last_consulted_at'] = $value;
-    }
-
-    /**
-     * Get the last consulted at date of the contact.
-     *
-     * @return string
-     */
-    public function getLastConsultedAtAttribute($value)
-    {
-        return $value;
     }
 
     /**
@@ -788,26 +738,6 @@ class Contact extends Model
         }
 
         return $this->last_talked_to;
-    }
-
-    /**
-     * Get the job of the contact.
-     *
-     * @return string
-     */
-    public function getJobAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the company the contact works at.
-     *
-     * @return string
-     */
-    public function getCompanyAttribute($value)
-    {
-        return $value;
     }
 
     /**

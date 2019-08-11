@@ -53,16 +53,6 @@ class ContactField extends Model
     }
 
     /**
-     * Get the data field of the contact field.
-     *
-     * @return string
-     */
-    public function getDataAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Scope a query to only include contact field of email type.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
