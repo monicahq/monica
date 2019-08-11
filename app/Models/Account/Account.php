@@ -13,8 +13,8 @@ use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
+use App\Traits\Subscription;
 use App\Models\Journal\Entry;
-use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -45,7 +45,7 @@ use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class Account extends Model
 {
-    use Billable;
+    use Subscription;
 
     /**
      * The attributes that are mass assignable.
@@ -533,38 +533,6 @@ class Account extends Model
     }
 
     /**
-     * Check if the account has invoices linked to this account.
-     * This was created because Laravel Cashier doesn't know how to properly
-     * handled the case when a user doesn't have invoices yet. This sucks balls.
-     *
-     * @return bool
-     */
-    public function hasInvoices()
-    {
-        $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-
-        return $query > 0;
-    }
-
-    /**
-     * Get the next billing date for the account.
-     *
-     * @return string $timestamp
-     */
-    public function getNextBillingDate()
-    {
-        // Weird method to get the next billing date from Laravel Cashier
-        // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $subscriptions = $this->asStripeCustomer()['subscriptions'];
-        if (count($subscriptions->data) <= 0) {
-            return;
-        }
-        $timestamp = $subscriptions->data[0]['current_period_end'];
-
-        return DateHelper::getShortDate($timestamp);
-    }
-
-    /**
      * Indicates whether the current account has limitations with her current
      * plan.
      *
@@ -738,48 +706,6 @@ class Account extends Model
                      ->where('nature', 'reminder')
                      ->orderBy('planned_date', 'asc')
                      ->get();
-    }
-
-    /**
-     * Get the id of the plan the account is subscribed to.
-     *
-     * @return string
-     */
-    public function getSubscribedPlanId()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->stripe_plan;
-        }
-
-        return '';
-    }
-
-    /**
-     * Get the friendly name of the plan the account is subscribed to.
-     *
-     * @return string
-     */
-    public function getSubscribedPlanName()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->name;
-        }
-    }
-
-    /**
-     * Cancel the plan the account is subscribed to.
-     */
-    public function subscriptionCancel()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->cancelNow();
-        }
     }
 
     /**

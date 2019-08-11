@@ -37,11 +37,11 @@
 
             <h3>{{ trans('settings.subscriptions_account_current_plan') }}</h3>
 
-            <p>{!! trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation['name']]) !!}</p>
-            <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate, 'url' => 'settings/subscriptions/downgrade']) !!}</p>
+            <p>{{ trans('settings.subscriptions_account_current_paid_plan', ['name' => $planInformation['name']]) }}</p>
+            <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate, 'url' => route('settings.subscriptions.downgrade')]) !!}</p>
 
             {{-- Only display invoices if the subscription exists or existed --}}
-            @if (auth()->user()->account->hasInvoices())
+            @if (auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices())
               <div class="invoices">
                 <h3>{{ trans('settings.subscriptions_account_invoices') }}</h3>
                 <ul class="table">

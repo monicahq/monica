@@ -13,6 +13,7 @@
 
 ### Fixes:
 
+* Fix subscription cancel
 * Fix last consulted contact list
 * Fix exception in case a user register twice
 * Fix vcard export with empty gender
