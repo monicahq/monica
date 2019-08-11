@@ -77,6 +77,7 @@ class AccountTest extends FeatureTestCase
             'stripe_plan' => 'annual',
             'stripe_id' => 'test',
             'quantity' => 1,
+            'ends_at' => now()->addDays(1),
         ]);
 
         $response = $this->get('/settings/subscriptions');
