@@ -479,28 +479,6 @@ class Account extends Model
     }
 
     /**
-     * Get the default time reminder is sent.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getDefaultTimeReminderIsSentAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Set the default time a reminder is sent.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDefaultTimeReminderIsSentAttribute($value)
-    {
-        $this->attributes['default_time_reminder_is_sent'] = $value;
-    }
-
-    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return bool

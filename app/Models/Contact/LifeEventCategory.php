@@ -41,14 +41,4 @@ class LifeEventCategory extends Model
     {
         return $this->hasMany(LifeEventType::class);
     }
-
-    /**
-     * Get the life event category's attribute.
-     *
-     * @return string
-     */
-    public function getNameAttribute($value)
-    {
-        return $value;
-    }
 }

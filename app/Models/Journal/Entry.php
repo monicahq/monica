@@ -42,17 +42,6 @@ class Entry extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the Entry title.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getTitleAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Get the Entry post.
      *
      * @param  string  $value
