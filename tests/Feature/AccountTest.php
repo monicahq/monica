@@ -24,6 +24,10 @@ class AccountTest extends FeatureTestCase
 
         factory(Subscription::class)->create([
             'account_id' => $user->account_id,
+            'name' => 'Annual',
+            'stripe_plan' => 'annual',
+            'stripe_id' => 'test',
+            'quantity' => 1,
         ]);
 
         $this->assertEquals('Annual', $user->account->getSubscribedPlanName());
@@ -35,6 +39,10 @@ class AccountTest extends FeatureTestCase
 
         factory(Subscription::class)->create([
             'account_id' => $user->account_id,
+            'name' => 'Annual',
+            'stripe_plan' => 'annual',
+            'stripe_id' => 'test',
+            'quantity' => 1,
         ]);
 
         $this->expectException(\App\Exceptions\StripeException::class);
