@@ -67,7 +67,12 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_get_subscription_page()
     {
-        config(['monica.requires_subscription' => true]);
+        config([
+            'monica.requires_subscription' => true,
+            'monica.paid_plan_annual_friendly_name' => 'Annual',
+            'monica.paid_plan_annual_id' => 'annual',
+            'monica.paid_plan_annual_price' => 4500
+        ]);
 
         $user = $this->signin();
 
