@@ -227,6 +227,7 @@ return [
     'stripe_error_card' => 'Je creditcard is geweigerd met de volgende mededeling: :message',
     'stripe_error_api_connection' => 'Netwerkcommunicatie met Stripe is mislukt. Probeer het later opnieuw.',
     'stripe_error_rate_limit' => 'Teveel verzoeken met Stripe op dit moment. Probeer het later opnieuw.',
+    'stripe_error_invalid_request' => 'Invalid parameters. Try again later.',
     'stripe_error_authentication' => 'Verkeerde authenticatie met Stripe',
 
     'import_title' => 'Contacten importeren in jouw account',
