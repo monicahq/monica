@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import VueGoodTable from 'vue-good-table';
+import { VueGoodTable } from 'vue-good-table';
 
 export default {
 
