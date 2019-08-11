@@ -227,6 +227,7 @@ return [
     'stripe_error_card' => '您的卡被拒，原因是：:message',
     'stripe_error_api_connection' => '与Stripe的通信失败，请稍候重试。',
     'stripe_error_rate_limit' => '与Stripe的通信次数过多，请稍候再试。',
+    'stripe_error_invalid_request' => 'Invalid parameters. Try again later.',
     'stripe_error_authentication' => 'Stripe授权失败',
 
     'import_title' => '在您的帐户中导入联系人',
