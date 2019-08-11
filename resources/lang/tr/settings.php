@@ -227,6 +227,7 @@ return [
     'stripe_error_card' => 'Your card was declined. Decline message is: :message',
     'stripe_error_api_connection' => 'Network communication with Stripe failed. Try again later.',
     'stripe_error_rate_limit' => 'Too many requests with Stripe right now. Try again later.',
+    'stripe_error_invalid_request' => 'Invalid parameters. Try again later.',
     'stripe_error_authentication' => 'Wrong authentication with Stripe',
 
     'import_title' => 'Import contacts in your account',
