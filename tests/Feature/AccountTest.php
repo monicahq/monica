@@ -83,6 +83,4 @@ class AccountTest extends FeatureTestCase
 
         $response->assertSee('You are on the Annual plan. Thanks so much for being a subscriber.');
     }
-
-
 }
