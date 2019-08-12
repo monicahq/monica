@@ -113,6 +113,7 @@ return [
     'conversation_add_content' => 'Escribe lo que se dijo',
     'conversation_add_what_was_said' => '¿Qué fue lo que dijiste?',
     'conversation_add_another' => 'Añade otro mensaje',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Mensajes',
     'conversation_list_table_content' => 'Contenido parcial (último mensaje)',
     'conversation_list_title' => 'Conversaciones',
