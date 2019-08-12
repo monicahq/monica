@@ -113,6 +113,7 @@ return [
     'conversation_add_content' => 'Zapišite ono što je rečeno',
     'conversation_add_what_was_said' => 'Što ste vi rekli?',
     'conversation_add_another' => 'Dodajte još jednu poruku',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Poruke',
     'conversation_list_table_content' => 'Djelomični sadržaj (zadnja poruka)',
     'conversation_list_title' => 'Razgovori',
