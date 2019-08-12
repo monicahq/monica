@@ -53,11 +53,11 @@ class MoveAvatarsToPhotosDirectory extends Command
         $delay = now();
 
         Contact::where('has_avatar', true)
-            ->chunk(400, function ($contacts) use ($delay) {
+            ->chunk(100, function ($contacts) use ($delay) {
                 foreach ($contacts as $contact) {
                     $this->handleContact($contact, $delay);
                 }
-                // add some delay, so we treat 400 contacts each minutes
+                // add some delay, so we treat 100 contacts each minutes
                 $delay = $delay->addMinutes(1);
             });
     }
