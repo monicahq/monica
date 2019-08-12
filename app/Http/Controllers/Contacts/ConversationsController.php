@@ -74,6 +74,7 @@ class ConversationsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'conversationDateRadio' => 'required',
+            'conversationDate' => 'required_unless:conversationDateRadio,today,yesterday',
             'messages' => 'required',
             'contactFieldTypeId' => 'required|integer|exists:contact_field_types,id',
         ], [
@@ -174,6 +175,21 @@ class ConversationsController extends Controller
      */
     public function update(Request $request, Contact $contact, Conversation $conversation)
     {
+        $validator = Validator::make($request->all(), [
+            'conversationDateRadio' => 'required',
+            'conversationDate' => 'required_unless:conversationDateRadio,today,yesterday',
+            'messages' => 'required',
+            'contactFieldTypeId' => 'required|integer|exists:contact_field_types,id',
+        ], [
+            'messages.required' => trans('people.conversation_add_error'),
+        ]);
+
+        if ($validator->fails()) {
+            return back()
+                ->withInput()
+                ->withErrors($validator);
+        }
+
         // find out what the date is
         $chosenDate = $request->get('conversationDateRadio');
         if ($chosenDate == 'today') {
@@ -218,7 +234,7 @@ class ConversationsController extends Controller
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_'.$messageId) == 'me'),
+                'written_by_me' => ($request->get('who_wrote_'.$messageId) === 'me'),
                 'content' => $request->get('content_'.$messageId),
             ];
 
