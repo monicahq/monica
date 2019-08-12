@@ -64,9 +64,7 @@ export default {
     },
     existingMessages: {
       type: Array,
-      default: function () {
-        return [];
-      }
+      default: () => [],
     },
   },
 
@@ -79,23 +77,18 @@ export default {
   },
 
   mounted() {
-    this.prepareComponent();
+    if (this.existingMessages.length > 0) {
+      this.messages = this.existingMessages;
+      this.uid = this.messages[this.messages.length - 1].uid + 1;
+    } else {
+      var me = this;
+      setTimeout(function () {
+        me.addMessage();
+      }, 10);
+    }
   },
 
   methods: {
-    prepareComponent() {
-      if (this.existingMessages) {
-        this.messages = this.existingMessages;
-        this.uid = this.messages[this.messages.length - 1].uid + 1;
-      } else {
-        this.messages.push({
-          uid: this.uid++,
-          content: '',
-          author: 'me'
-        });
-      }
-    },
-
     addMessage() {
       this.messages.push({
         uid: this.uid++,
