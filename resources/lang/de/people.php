@@ -113,6 +113,7 @@ return [
     'conversation_add_content' => 'Schreibe hier, was gesagt wurde',
     'conversation_add_what_was_said' => 'Was war der Gesprächsinhalt?',
     'conversation_add_another' => 'Eine weitere Nachricht hinzufügen',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Nachrichten',
     'conversation_list_table_content' => 'Teilinhalt (letzte Nachricht)',
     'conversation_list_title' => 'Unterhaltungen',
