@@ -113,6 +113,7 @@ return [
     'conversation_add_content' => 'Söyleneni yazın',
     'conversation_add_what_was_said' => 'Siz ne dediniz?',
     'conversation_add_another' => 'Başka bir mesaj ekle',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Mesajlar',
     'conversation_list_table_content' => 'Kısmi içerik (en son mesaj)',
     'conversation_list_title' => 'Sohbetler',
