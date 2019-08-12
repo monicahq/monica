@@ -113,6 +113,7 @@ return [
     'conversation_add_content' => 'Schrijf hier wat er is gezegd',
     'conversation_add_what_was_said' => 'Wat was de gespreksinhoud?',
     'conversation_add_another' => 'Nog een bericht toevoegen',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Berichten',
     'conversation_list_table_content' => 'Gedeeltelijke inhoud(laatste bericht)',
     'conversation_list_title' => 'Gesprekken',
