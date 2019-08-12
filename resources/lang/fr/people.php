@@ -113,6 +113,7 @@ return [
     'conversation_add_content' => 'Écrivez ce que vous avez dit',
     'conversation_add_what_was_said' => 'Qu’avez-vous dit ?',
     'conversation_add_another' => 'Ajoutez un nouveau message',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Contenu partiel (dernier message)',
     'conversation_list_title' => 'Discussions',
