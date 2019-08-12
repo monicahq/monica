@@ -113,6 +113,7 @@ return [
     'conversation_add_content' => 'قم بتدوين ما قيل',
     'conversation_add_what_was_said' => 'ماذا قلت؟',
     'conversation_add_another' => 'إضافة رسالة أخرى',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'الرسائل',
     'conversation_list_table_content' => 'محتوى جزئي (آخر رسالة)',
     'conversation_list_title' => 'المحادثات',
