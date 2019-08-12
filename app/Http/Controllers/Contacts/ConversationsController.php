@@ -232,7 +232,7 @@ class ConversationsController extends Controller
 
     /**
      * Update messages for conversation.
-     * 
+     *
      * @param Request $request
      * @param Conversation $conversation
      * @param string $date
