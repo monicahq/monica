@@ -76,7 +76,7 @@ class ConversationTest extends FeatureTestCase
         ];
 
         $response = $this->post('/people/'.$contact->hashID().'/conversations', $params, [
-            'HTTP_REFERER' => 'back'
+            'HTTP_REFERER' => 'back',
         ]);
 
         $response->assertStatus(302);
@@ -156,7 +156,7 @@ class ConversationTest extends FeatureTestCase
         ];
 
         $response = $this->put('/people/'.$contact->hashID().'/conversations/'.$conversation->hashID(), $params, [
-            'HTTP_REFERER' => 'back'
+            'HTTP_REFERER' => 'back',
         ]);
 
         $response->assertStatus(302);
