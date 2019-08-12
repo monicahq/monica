@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
 use Illuminate\Validation\ValidationException;
@@ -74,12 +75,19 @@ class UpdateMessageTest extends TestCase
     public function test_it_throws_an_exception_if_message_does_not_exist()
     {
         $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $conversation = factory(Conversation::class)->create([
+            'account_id' => $account->id,
+            'contact_id' => $contact->id,
+        ]);
         $message = factory(Message::class)->create([]);
 
         $request = [
             'account_id' => $account->id,
-            'contact_id' => 123,
-            'conversation_id' => 123,
+            'contact_id' => $contact->id,
+            'conversation_id' => $conversation->id,
             'message_id' => $message->id,
             'written_at' => now(),
             'written_by_me' => true,
