@@ -107,7 +107,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     private function createPhotoObject($avatarFileName)
     {
         if (is_null($avatarFileName)) {
-            return null;
+            return;
         }
 
         $newAvatarFilename = str_replace('avatars/', '', $avatarFileName);
@@ -128,7 +128,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         if (is_null($photo)) {
             return;
         }
-        
+
         $data = [
             'account_id' => $this->contact->account_id,
             'contact_id' => $this->contact->id,
