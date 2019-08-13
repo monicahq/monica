@@ -8,6 +8,7 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Helpers\RequestHelper;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -180,11 +182,11 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the contact record associated with the 'me' contact.
      *
-     * @return BelongsTo
+     * @return HasOne
      */
     public function me()
     {
-        return $this->belongsTo(Contact::class, 'me_contact_id');
+        return $this->hasOne(Contact::class, 'id', 'me_contact_id');
     }
 
     /**
