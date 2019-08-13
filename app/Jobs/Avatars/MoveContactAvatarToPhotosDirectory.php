@@ -81,27 +81,35 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     {
         Event::dispatch(new MoveAvatarEvent($this->contact));
 
-        $storage = Storage::disk($this->contact->avatar_location);
+        $oldStorage = Storage::disk($this->contact->avatar_location);
+        $newStorage = Storage::disk(config('filesystems.default'));
         $avatarFileName = $this->getAvatarFileName();
 
         // $avatarFileName has the format `avatars/XXX.jpg`. We need to remove
         // the `avatars/` string to store the new file.
         $newAvatarFilename = str_replace('avatars/', 'photos/', $avatarFileName);
 
-        if ($storage->exists($newAvatarFilename)) {
+        if ($newStorage->exists($newAvatarFilename)) {
             return null;
         }
 
         if (! $this->dryrun) {
-            $avatarFile = $storage->get($avatarFileName);
-            $storage->put($newAvatarFilename, $avatarFile, 'public');
+            $newStorage->put($newAvatarFilename, $avatarFile, 'public');
         }
 
         return $avatarFileName;
     }
 
+    /**
+     * @param string $avatarFileName
+     * @return Photo|null
+     */
     private function createPhotoObject($avatarFileName)
     {
+        if (is_null($avatarFileName)) {
+            return null;
+        }
+
         $newAvatarFilename = str_replace('avatars/', '', $avatarFileName);
 
         $photo = new Photo;
@@ -117,6 +125,10 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 
     private function associatePhotoAsAvatar($photo)
     {
+        if (is_null($photo)) {
+            return;
+        }
+        
         $data = [
             'account_id' => $this->contact->account_id,
             'contact_id' => $this->contact->id,
@@ -167,8 +179,6 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 
     private function fileExists($storage, $avatarFileName) : bool
     {
-        $storage = Storage::disk($storage);
-
-        return $storage->exists($avatarFileName);
+        return Storage::disk($storage)->exists($avatarFileName);
     }
 }
