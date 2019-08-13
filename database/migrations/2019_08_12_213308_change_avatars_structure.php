@@ -14,7 +14,7 @@ class ChangeAvatarsStructure extends Migration
     public function up()
     {
         Schema::table('contacts', function (Blueprint $table) {
-            $table->string('avatar_source')->after('food_preferencies')->default('default');
+            $table->string('avatar_source')->after('food_preferences')->default('default');
             $table->string('avatar_gravatar_url', 250)->after('avatar_source')->nullable();
             $table->uuid('avatar_adorable_uuid')->after('avatar_gravatar_url')->nullable();
             $table->string('avatar_adorable_url', 250)->after('avatar_adorable_uuid')->nullable();
