@@ -113,7 +113,7 @@ return [
     'conversation_add_content' => '写下你们说的话',
     'conversation_add_what_was_said' => '您说了什么？',
     'conversation_add_another' => '添加另一条消息',
-    'conversation_add_error' => 'You must add at least one message.',
+    'conversation_add_error' => '您必须至少添加一条信息',
     'conversation_list_table_messages' => '消息',
     'conversation_list_table_content' => '部分内容(最新消息)',
     'conversation_list_title' => '对话',
