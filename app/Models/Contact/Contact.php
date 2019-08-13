@@ -419,7 +419,7 @@ class Contact extends Model
     }
 
     /**
-     * Test if this is the 'me' contact
+     * Test if this is the 'me' contact.
      *
      * @return bool
      */
