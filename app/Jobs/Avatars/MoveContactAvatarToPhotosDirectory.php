@@ -20,6 +20,13 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 1;
+
+    /**
      * @var Contact
      */
     private $contact;
@@ -30,11 +37,9 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     private $dryrun;
 
     /**
-     * The number of times the job may be attempted.
-     *
-     * @var int
+     * @var \Illuminate\Contracts\Filesystem\Filesystem
      */
-    public $tries = 1;
+    private $storage;
 
     /**
      * Create a new job instance.
@@ -54,7 +59,9 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
      */
     public function handle()
     {
-        // move avatars to new location
+        $this->storage = Storage::disk($this->contact->avatar_location);
+
+        // move avatar to new location
         $avatarFileName = $this->moveContactAvatars();
 
         if ($this->dryrun) {
@@ -81,7 +88,6 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     {
         Event::dispatch(new MoveAvatarEvent($this->contact));
 
-        $oldStorage = Storage::disk($this->contact->avatar_location);
         $newStorage = Storage::disk(config('filesystems.default'));
         $avatarFileName = $this->getAvatarFileName();
 
@@ -94,20 +100,24 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         }
 
         if (! $this->dryrun) {
+            $avatarFile = $this->storage->get($avatarFileName);
             $newStorage->put($newAvatarFilename, $avatarFile, 'public');
+            $this->contact->update([
+                'avatar_location' => config('filesystems.default')
+            ]);
         }
 
         return $avatarFileName;
     }
 
     /**
-     * @param string $avatarFileName
+     * @param string|null $avatarFileName
      * @return Photo|null
      */
     private function createPhotoObject($avatarFileName)
     {
         if (is_null($avatarFileName)) {
-            return;
+            return null;
         }
 
         $newAvatarFilename = str_replace('avatars/', '', $avatarFileName);
@@ -116,7 +126,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         $photo->account_id = $this->contact->account_id;
         $photo->original_filename = $newAvatarFilename;
         $photo->new_filename = 'photos/'.$newAvatarFilename;
-        $photo->filesize = Storage::size('/photos/'.$newAvatarFilename);
+        $photo->filesize = Storage::disk($this->contact->avatar_location)->size('/photos/'.$newAvatarFilename);
         $photo->mime_type = 'adfad';
         $photo->save();
 
@@ -128,7 +138,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         if (is_null($photo)) {
             return;
         }
-
+        
         $data = [
             'account_id' => $this->contact->account_id,
             'contact_id' => $this->contact->id,
@@ -142,14 +152,14 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     {
         try {
             $smallThumbnail = $this->getAvatarFileName(110);
-            Storage::delete($smallThumbnail);
+            $this->storage->delete($smallThumbnail);
         } catch (FileNotFoundException $e) {
             // ignore
         }
 
         try {
             $bigThumbnail = $this->getAvatarFileName(174);
-            Storage::delete($bigThumbnail);
+            $this->storage->delete($bigThumbnail);
         } catch (FileNotFoundException $e) {
             // ignore
         }
@@ -157,7 +167,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
 
     private function deleteOriginalAvatar($avatarFileName)
     {
-        Storage::delete($avatarFileName);
+        $this->storage->delete($avatarFileName);
     }
 
     private function getAvatarFileName($size = null)
@@ -170,15 +180,15 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
             $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
         }
 
-        if (! $this->fileExists($this->contact->avatar_location, $avatarFileName)) {
+        if (! $this->fileExists($avatarFileName)) {
             throw new FileNotFoundException($avatarFileName);
         }
 
         return $avatarFileName;
     }
 
-    private function fileExists($storage, $avatarFileName) : bool
+    private function fileExists($avatarFileName) : bool
     {
-        return Storage::disk($storage)->exists($avatarFileName);
+        return $this->storage->exists($avatarFileName);
     }
 }
