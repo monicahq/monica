@@ -30,6 +30,13 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     private $dryrun;
 
     /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 1;
+
+    /**
      * Create a new job instance.
      *
      * @return void
