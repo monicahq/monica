@@ -113,7 +113,7 @@ return [
     'conversation_add_content' => 'נא לכתוב את מה שאמרת',
     'conversation_add_what_was_said' => 'מה אמרת?',
     'conversation_add_another' => 'הוספת הודעה נוספת',
-    'conversation_add_error' => 'You must add at least one message.',
+    'conversation_add_error' => 'עליך להוסיף הודעה אחת לפחות.',
     'conversation_list_table_messages' => 'הודעות',
     'conversation_list_table_content' => 'תוכן חלקי (הודעה אחרונה)',
     'conversation_list_title' => 'דיונים',
