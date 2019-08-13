@@ -227,7 +227,7 @@ return [
     'stripe_error_card' => 'Votre carte est refusée. Le message de refus est : :message',
     'stripe_error_api_connection' => 'Problèmes de communication avec Stripe. Veuillez réessayer plus tard.',
     'stripe_error_rate_limit' => 'Trop de requêtes avec Stripe actuellement. Veuillez réessayer plus tard.',
-    'stripe_error_invalid_request' => 'Invalid parameters. Try again later.',
+    'stripe_error_invalid_request' => 'Paramètres invalides. Réessayez plus tard.',
     'stripe_error_authentication' => 'Mauvaise authentification avec Stripe',
 
     'import_title' => 'Importer les contacts dans votre compte',
