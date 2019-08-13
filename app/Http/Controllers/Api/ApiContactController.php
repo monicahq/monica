@@ -8,6 +8,7 @@ use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Contact\SetMeContact;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
@@ -174,5 +175,25 @@ class ApiContactController extends ApiController
         }
 
         return ContactResource::collection($contacts);
+    }
+
+    /**
+     * Set a contact as 'me'.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return string
+     */
+    public function setMe(Request $request, $contactId)
+    {
+        $data = [
+            'contact_id' => $contactId,
+            'account_id' => auth()->user()->account->id,
+            'user_id' => auth()->user()->id,
+        ];
+        app(SetMeContact::class)->execute($data);
+
+        return 'true';
     }
 }

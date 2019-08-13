@@ -178,6 +178,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the contact record associated with the 'me' contact.
+     *
+     * @return BelongsTo
+     */
+    public function me()
+    {
+        return $this->belongsTo(Contact::class, 'me_contact_id');
+    }
+
+    /**
      * Get the term records associated with the user.
      *
      * @return BelongsToMany
