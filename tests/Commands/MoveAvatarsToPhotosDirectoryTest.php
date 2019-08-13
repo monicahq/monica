@@ -37,6 +37,8 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
         Storage::fake('public');
 
         Storage::disk('public')->put('avatars/avatar.jpg', 'content');
+        Storage::disk('public')->put('avatars/avatar_110.jpg', 'content');
+        Storage::disk('public')->put('avatars/avatar_174.jpg', 'content');
 
         $contact->avatar_file_name = 'avatars/avatar.jpg';
         $contact->avatar_location = 'public';
@@ -48,6 +50,8 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
         $exitCode = Artisan::call('monica:moveavatarstophotosdirectory');
 
         Storage::disk('public')->assertMissing('avatars/avatar.jpg');
+        Storage::disk('public')->assertMissing('avatars/avatar_110.jpg');
+        Storage::disk('public')->assertMissing('avatars/avatar_174.jpg');
 
         $contact->refresh();
         $photo = Photo::find($contact->avatar_photo_id);
@@ -59,5 +63,28 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
         $this->assertStringContainsString('photos/', $photo->new_filename);
 
         Storage::disk('public')->assertExists($photo->new_filename);
+    }
+
+    public function test_it_handles_missing_avatar()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        Storage::fake('public');
+
+        $contact->avatar_file_name = 'avatars/avatar.jpg';
+        $contact->avatar_location = 'public';
+        $contact->has_avatar = true;
+        $contact->save();
+
+        $exitCode = Artisan::call('monica:moveavatarstophotosdirectory');
+
+        Storage::disk('public')->assertMissing('avatars/avatar.jpg');
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'avatar_source' => 'default',
+            'avatar_file_name' => 'avatars/avatar.jpg',
+            'avatar_location' => 'public',
+        ]);
     }
 }
