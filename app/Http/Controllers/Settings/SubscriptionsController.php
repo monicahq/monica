@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
 use App\Http\Controllers\Controller;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionsController extends Controller
 {
@@ -143,6 +144,11 @@ class SubscriptionsController extends Controller
         try {
             auth()->user()->account
                 ->subscribe($request->input('stripeToken'), $request->input('plan'));
+        } catch (IncompletePayment $e) {
+            return redirect()->route(
+                'cashier.payment',
+                [$e->payment->id, 'redirect' => route('settings.subscriptions.upgrade.success')]
+            );
         } catch (StripeException $e) {
             return back()
                 ->withInput()

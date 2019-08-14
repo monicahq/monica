@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Helpers\DBHelper;
+use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
@@ -43,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Cashier::ignoreMigrations();
     }
 
     /**
