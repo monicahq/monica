@@ -16,17 +16,17 @@ trait Subscription
     /**
      * Process the upgrade payment.
      *
-     * @param string $stripeToken
+     * @param string $payment_method
      * @param string $planName
      * @return bool|string
      */
-    public function subscribe(string $stripeToken, string $planName)
+    public function subscribe(string $payment_method, string $planName)
     {
         $plan = InstanceHelper::getPlanInformationFromConfig($planName);
 
-        return $this->stripeCall(function () use ($stripeToken, $plan) {
+        return $this->stripeCall(function () use ($payment_method, $plan) {
             $this->newSubscription($plan['name'], $plan['id'])
-                        ->create($stripeToken, [
+                        ->create($payment_method, [
                             'email' => auth()->user()->email,
                         ]);
 

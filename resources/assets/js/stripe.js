@@ -1,8 +1,8 @@
-var elements = stripe.elements();
+const elements = stripe.elements();
 
 // Custom styling can be passed to options when creating an Element.
 // (Note that this demo uses a wider set of styles than the guide below.)
-var style = {
+const style = {
   base: {
     color: '#32325d',
     lineHeight: '18px',
@@ -20,7 +20,7 @@ var style = {
 };
 
 // Create an instance of the card Element
-var card = elements.create('card', {
+const card = elements.create('card', {
   hidePostalCode: true,
   style: style
 });
@@ -30,7 +30,7 @@ card.mount('#card-element');
 
 // Handle real-time validation errors from the card Element.
 card.addEventListener('change', function(event) {
-  var displayError = document.getElementById('card-errors');
+  const displayError = document.getElementById('card-errors');
   if (event.error) {
     displayError.textContent = event.error.message;
   } else {
@@ -39,34 +39,41 @@ card.addEventListener('change', function(event) {
 });
 
 // Handle form submission
-var form = document.getElementById('payment-form');
-form.addEventListener('submit', function(event) {
-  event.preventDefault();
+const cardButton = document.getElementById('card-button');
+const clientSecret = cardButton.dataset.secret;
 
-  var extraDetails = {
+cardButton.addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  const extraDetails = {
     name: this.querySelector('input[name=cardholder-name]').value,
     address_zip: this.querySelector('input[name=address-zip]').value,
   };
-
-  stripe.createToken(card, extraDetails).then(function(result) {
-    if (result.error) {
-      // Inform the user if there was an error
-      var errorElement = document.getElementById('card-errors');
-      errorElement.textContent = result.error.message;
-    } else {
-      // Send the token to your server
-      stripeTokenHandler(result.token);
+  const { setupIntent, error } = await stripe.handleCardSetup(
+    clientSecret, card, {
+      payment_method_data: {
+        billing_details: extraDetails
+      }
     }
-  });
+  );
+
+  if (error) {
+    // Inform the user if there was an error
+    const displayError = document.getElementById('card-errors');
+    displayError.textContent = error;
+  } else {
+    // The card has been verified successfully...
+    stripeSubmitForm(setupIntent);
+  }
 });
 
-function stripeTokenHandler(token) {
+function stripeSubmitForm(setupIntent) {
   // Insert the token ID into the form so it gets submitted to the server
-  var form = document.getElementById('payment-form');
-  var hiddenInput = document.createElement('input');
+  const form = document.getElementById('payment-form');
+  const hiddenInput = document.createElement('input');
   hiddenInput.setAttribute('type', 'hidden');
-  hiddenInput.setAttribute('name', 'stripeToken');
-  hiddenInput.setAttribute('value', token.id);
+  hiddenInput.setAttribute('name', 'payment_method');
+  hiddenInput.setAttribute('value', setupIntent.payment_method);
   form.appendChild(hiddenInput);
 
   // Submit the form

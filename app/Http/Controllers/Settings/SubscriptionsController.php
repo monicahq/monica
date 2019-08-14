@@ -61,6 +61,7 @@ class SubscriptionsController extends Controller
         return view('settings.subscriptions.upgrade', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
             'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+            'intent' => auth()->user()->account->createSetupIntent(),
         ]);
     }
 
@@ -143,7 +144,7 @@ class SubscriptionsController extends Controller
 
         try {
             auth()->user()->account
-                ->subscribe($request->input('stripeToken'), $request->input('plan'));
+                ->subscribe($request->input('payment_method'), $request->input('plan'));
         } catch (IncompletePayment $e) {
             return redirect()->route(
                 'cashier.payment',

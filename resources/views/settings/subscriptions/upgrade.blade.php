@@ -59,7 +59,9 @@
           </div>
         </div>
 
-        <button class="btn btn-primary w-100">{{ trans('settings.subscriptions_upgrade_submit') }}</button>
+        <button class="btn btn-primary w-100" id="card-button" data-secret="{{ $intent->client_secret }}">
+          {{ trans('settings.subscriptions_upgrade_submit') }}
+        </button>
       </form>
 
       <p>{{ trans('settings.subscriptions_upgrade_charge', ['price' => $planInformation['friendlyPrice'], 'date' => $nextTheoriticalBillingDate]) }}</p>
@@ -73,7 +75,7 @@
 @push('scripts')
   <script src="https://js.stripe.com/v3/"></script>
   <script>
-    var stripe = Stripe('{{config('services.stripe.key')}}');
+    var stripe = Stripe('{{config('cashier.key')}}');
   </script>
   <script src="{{ asset(mix('js/stripe.js')) }}"></script>
 @endpush
