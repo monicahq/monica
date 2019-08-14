@@ -1,0 +1,22 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@master
+    - name: Composer install
+      run: |
+        sudo composer self-update
+        composer global require hirak/prestissimo
+        composer install --no-interaction --no-suggest --no-progress --ignore-platform-reqs
+    - name: Yarn install
+      run: yarn inst
+    - name: Check js and vue lint
+      run: yarn lint
+    - name: Update assets
+      run: scripts/ci/update-assets.sh
