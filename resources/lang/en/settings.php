@@ -165,7 +165,8 @@ return [
 
     'subscriptions_account_current_plan' => 'Your current plan',
     'subscriptions_account_current_paid_plan' => 'You are on the :name plan. Thanks so much for being a subscriber.',
-    'subscriptions_account_next_billing' => 'Your subscription will auto-renew on <strong>:date</strong>. You can <a href=":url">cancel subscription</a> anytime.',
+    'subscriptions_account_next_billing' => 'Your subscription will auto-renew on <strong>:date</strong>.',
+    'subscriptions_account_cancel' => 'You can <a href=":url">cancel subscription</a> anytime.',
     'subscriptions_account_free_plan' => 'You are on the free plan.',
     'subscriptions_account_free_plan_upgrade' => 'You can upgrade your account to the :name plan, which costs $:price per month. Here are the advantages:',
     'subscriptions_account_free_plan_benefits_users' => 'Unlimited number of users',
@@ -178,6 +179,7 @@ return [
     'subscriptions_account_invoices' => 'Invoices',
     'subscriptions_account_invoices_download' => 'Download',
     'subscriptions_account_payment' => 'Which payment option fits you best?',
+    'subscriptions_account_confirm_payment' => 'You payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Downgrade your account to the free plan',
     'subscriptions_downgrade_limitations' => 'The free plan has limitations. In order to be able to downgrade, you need to pass the checklist below:',
     'subscriptions_downgrade_rule_users' => 'You must have only 1 user in your account',

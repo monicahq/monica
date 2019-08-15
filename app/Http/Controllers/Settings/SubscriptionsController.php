@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Settings;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\InstanceHelper;
+use Illuminate\Support\Facades\App;
 use App\Exceptions\StripeException;
 use App\Http\Controllers\Controller;
 use Laravel\Cashier\Exceptions\IncompletePayment;
@@ -22,7 +23,8 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        if (! auth()->user()->account->isSubscribed()) {
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        if (! auth()->user()->account->isSubscribed() && (! $subscription || $subscription->ended())) {
             return view('settings.subscriptions.blank', [
                 'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
             ]);
@@ -38,6 +40,7 @@ class SubscriptionsController extends Controller
         return view('settings.subscriptions.account', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
             'nextBillingDate' => $nextBillingDate,
+            'subscription' => $subscription,
         ]);
     }
 
@@ -104,7 +107,8 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        if (! auth()->user()->account->isSubscribed()) {
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
@@ -122,11 +126,18 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.subscriptions.downgrade');
         }
 
-        if (! auth()->user()->account->isSubscribed()) {
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
-        auth()->user()->account->subscriptionCancel();
+        try {
+            auth()->user()->account->subscriptionCancel();
+        } catch (StripeException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
+        }
 
         return redirect()->route('settings.subscriptions.downgrade.success');
     }
@@ -148,7 +159,7 @@ class SubscriptionsController extends Controller
         } catch (IncompletePayment $e) {
             return redirect()->route(
                 'cashier.payment',
-                [$e->payment->id, 'redirect' => route('settings.subscriptions.upgrade.success')]
+                [$e->payment->asStripePaymentIntent()->id, 'redirect' => route('settings.subscriptions.upgrade.success')]
             );
         } catch (StripeException $e) {
             return back()
@@ -170,5 +181,23 @@ class SubscriptionsController extends Controller
             'vendor'  => 'Monica',
             'product' => trans('settings.subscriptions_pdf_title', ['name' => config('monica.paid_plan_monthly_friendly_name')]),
         ]);
+    }
+
+    /**
+     * Download the invoice as PDF.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function forceCompletePaymentOnTesting(Request $request)
+    {
+        if (App::environment('production')) {
+            return;
+        }
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        $subscription->stripe_status = 'active';
+        $subscription->save();
+
+        return redirect()->route('settings.subscriptions.index');
     }
 }

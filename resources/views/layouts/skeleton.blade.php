@@ -28,6 +28,7 @@
 
     <div id="app">
       @include('partials.header')
+      @include('partials.subscription')
       @yield('content')
     </div>
 
@@ -36,12 +37,12 @@
     {{-- THE JS FILE OF THE APP --}}
     @push('scripts')
       <script src="{{ asset(mix('js/manifest.js')) }}"></script>
+      <script src="{{ asset(mix('js/vendor.js')) }}"></script>
     @endpush
 
     {{-- Load everywhere except on the Upgrade account page --}}
     @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
       @push('scripts')
-        <script src="{{ asset(mix('js/vendor.js')) }}"></script>
         <script src="{{ asset(mix('js/app.js')) }}"></script>
       @endpush
     @endif
