@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Stripe\Plan;
-use Stripe\Token;
 use Stripe\Stripe;
 use Stripe\Product;
 use Stripe\ApiResource;

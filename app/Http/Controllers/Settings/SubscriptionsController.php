@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Settings;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\InstanceHelper;
-use Illuminate\Support\Facades\App;
 use App\Exceptions\StripeException;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 
