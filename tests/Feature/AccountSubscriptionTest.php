@@ -196,7 +196,7 @@ class AccountSubscriptionTest extends FeatureTestCase
             'plan' => 'annual',
         ]);
 
-        $response->assertSee('Payment Confirmation - Monica');
+        $response->assertSee('Confirm your $45.00 payment');
     }
 
     public function test_it_subscribe_with_error()
