@@ -33,8 +33,10 @@
       @include('partials.errors')
       <stripe-subscription
         :name="'{{ auth()->user()->name }}'"
+        :stripe-key="'{{ config('cashier.key') }}'"
         :client-secret="'{{ $intent->client_secret }}'"
         :plan="'{{ $planInformation['type'] }}'"
+        :amount="'{{ $planInformation['friendlyPrice'] }}'"
         :callback="'{{ route('settings.subscriptions.payment') }}'"
       ></stripe-subscription>
 
@@ -48,8 +50,5 @@
 
 @push('scripts')
   <script src="https://js.stripe.com/v3/"></script>
-  <script>
-    var stripe = Stripe('{{config('cashier.key')}}');
-  </script>
   <script src="{{ asset(mix('js/stripe.js')) }}"></script>
 @endpush

@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Settings;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use Laravel\Cashier\Cashier;
+use Laravel\Cashier\Payment;
 use App\Helpers\InstanceHelper;
 use App\Exceptions\StripeException;
 use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Stripe\PaymentIntent as StripePaymentIntent;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionsController extends Controller
@@ -65,6 +68,21 @@ class SubscriptionsController extends Controller
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
             'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
             'intent' => auth()->user()->account->createSetupIntent(),
+        ]);
+    }
+
+    /**
+     * Display the confirm view page.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    public function confirmPayment($id)
+    {
+        return view('settings.subscriptions.confirm', [
+            'payment' => new Payment(
+                StripePaymentIntent::retrieve($id, Cashier::stripeOptions())
+            ),
+            'redirect' => request('redirect'),
         ]);
     }
 
@@ -158,7 +176,7 @@ class SubscriptionsController extends Controller
                 ->subscribe($request->input('payment_method'), $request->input('plan'));
         } catch (IncompletePayment $e) {
             return redirect()->route(
-                'cashier.payment',
+                'settings.subscriptions.confirm',
                 [$e->payment->asStripePaymentIntent()->id, 'redirect' => route('settings.subscriptions.upgrade.success')]
             );
         } catch (StripeException $e) {

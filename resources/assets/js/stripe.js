@@ -15,6 +15,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+// Notifications
+import Notifications from 'vue-notification';
+Vue.use(Notifications);
+
 // Custom components
 Vue.component(
   'stripe-subscription',
@@ -32,7 +36,7 @@ Vue.component(
   require('./components/people/ContactSearch.vue').default
 );
 
-var common = require('./common');
+var common = require('./common').default;
 
 common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
   // the Vue appplication

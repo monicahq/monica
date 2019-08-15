@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
     {{-- Required only for the Upgrade account page --}}
-    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade')
+    @if (Route::currentRouteName() == 'settings.subscriptions.upgrade' || Route::currentRouteName() == 'settings.subscriptions.confirm')
       <link rel="stylesheet" href="{{ asset(mix('css/stripe.css')) }}">
     @endif
 
@@ -27,8 +27,10 @@
   <body data-account-id="{{ auth()->user()->account_id }}" class="bg-gray-monica">
 
     <div id="app">
-      @include('partials.header')
-      @include('partials.subscription')
+      @if (Route::currentRouteName() != 'settings.subscriptions.confirm')
+        @include('partials.header')
+        @include('partials.subscription')
+      @endif
       @yield('content')
     </div>
 
@@ -41,7 +43,7 @@
     @endpush
 
     {{-- Load everywhere except on the Upgrade account page --}}
-    @if (Route::currentRouteName() != 'settings.subscriptions.upgrade')
+    @if (Route::currentRouteName() != 'settings.subscriptions.upgrade' && Route::currentRouteName() != 'settings.subscriptions.confirm')
       @push('scripts')
         <script src="{{ asset(mix('js/app.js')) }}"></script>
       @endpush
