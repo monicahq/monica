@@ -2,7 +2,7 @@
 </style>
 
 <template>
-  <form class="mb4" :action="callback" @submit.prevent="subscribe()" ref="form" method="post">
+  <form ref="form" class="mb4" :action="callback" method="post" @submit.prevent="subscribe()">
     <div class="form-group">
       <div class="b--gray-monica ba pa4 br2 mb3 bg-black-05">
         <div class="form-row">
@@ -33,18 +33,18 @@
             </label>
           </div>
 
-          <div ref="card-element" id="card-element">
+          <div id="card-element" ref="card-element">
             <!-- a Stripe Element will be inserted here. -->
           </div>
 
           <!-- Used to display Element errors -->
-          <div role="alert" class="alert alert-danger w-100" v-if="errors">
+          <div v-if="errors" role="alert" class="alert alert-danger w-100">
             {{ errors }}
           </div>
         </div>
       </div>
 
-      <button class="btn btn-primary w-100" id="card-button" @click.prevent="subscribe()">
+      <button id="card-button" class="btn btn-primary w-100" @click.prevent="subscribe()">
         {{ $t('settings.subscriptions_upgrade_submit') }}
       </button>
     </div>
@@ -166,7 +166,7 @@ export default {
       this.paymentMethod = setupIntent.payment_method;
       setTimeout(function () {
         self.$refs.form.submit();
-      })
+      });
     }
   }
 };
