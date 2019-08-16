@@ -37,6 +37,7 @@ return [
     'upgrade' => 'יש לשדרג כדי לשחרר',
     'percent_uploaded' => '{percent}% נשלחו',
     'retry' => 'לנסות שוב',
+    'go_back' => 'Go back',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
