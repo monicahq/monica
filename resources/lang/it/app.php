@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Effettua l\'upgrade per sbloccare',
     'percent_uploaded' => '{percent}% caricato',
     'retry' => 'Riprova',
+    'go_back' => 'Go back',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica è uno strumento per gestire le interazioni con i vostri cari, amici e familiari.',
