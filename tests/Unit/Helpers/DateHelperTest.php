@@ -51,7 +51,7 @@ class DateHelperTest extends FeatureTestCase
         DateHelper::setLocale('en');
 
         $this->assertEquals(
-            'Januar 22, 2017',
+            'January 22, 2017',
             DateHelper::getFullDate($date)
         );
     }
@@ -73,7 +73,7 @@ class DateHelperTest extends FeatureTestCase
         DateHelper::setLocale('jp');
 
         $this->assertEquals(
-            'Januar 22, 2017',
+            'January 22, 2017',
             DateHelper::getFullDate($date)
         );
     }

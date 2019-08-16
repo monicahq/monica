@@ -21,9 +21,9 @@ return [
     'short_month' => 'M',
     'short_month_year' => 'M Y',
     'short_day' => 'D',
+    'full_date_year' => 'F d, Y',
     'full_month' => 'F',
     'full_month_year' => 'F Y',
-    'full_date_year' => 'F d, Y',
     'full_hour' => 'h.i A',
 
     'short_text' => '{text}…',
