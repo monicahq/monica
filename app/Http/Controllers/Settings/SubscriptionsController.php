@@ -40,12 +40,17 @@ class SubscriptionsController extends Controller
             $nextBillingDate = trans('app.unknown');
         }
 
+        $hasInvoices = auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices();
+        if ($hasInvoices) {
+            $invoices = auth()->user()->account->invoices();
+        }
+
         return view('settings.subscriptions.account', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
             'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
-            'hasInvoices' => auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices(),
-            'invoices' => auth()->user()->account->invoices(),
+            'hasInvoices' => $hasInvoices,
+            'invoices' => $invoices,
         ]);
     }
 
