@@ -66,7 +66,7 @@ class SubscriptionsController extends Controller
 
         return view('settings.subscriptions.upgrade', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
-            'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+            'nextTheoriticalBillingDate' => DateHelper::getFullDate(DateHelper::getNextTheoriticalBillingDate($plan)),
             'intent' => auth()->user()->account->createSetupIntent(),
         ]);
     }

@@ -107,6 +107,15 @@ class AccountSubscriptionTest extends FeatureTestCase
         $user->account->subscribe('xxx', 'annual');
     }
 
+    public function test_it_sees_the_plan_names()
+    {
+        $user = $this->signin();
+
+        $response = $this->get('/settings/subscriptions');
+
+        $response->assertSee('Pick a plan below and join over 0 persons who upgraded their Monica.');
+    }
+
     public function test_it_get_the_plan_name()
     {
         $user = $this->signin();
@@ -169,6 +178,15 @@ class AccountSubscriptionTest extends FeatureTestCase
         $response = $this->get('/settings/subscriptions');
 
         $response->assertSee('You are on the Annual plan. Thanks so much for being a subscriber.');
+    }
+
+    public function test_it_get_upgrade_page()
+    {
+        $user = $this->signin();
+
+        $response = $this->get('/settings/subscriptions/upgrade?plan=annual');
+
+        $response->assertSee('You picked the annual plan.');
     }
 
     public function test_it_subscribe()
