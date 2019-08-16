@@ -5,7 +5,6 @@ namespace App\Traits;
 use App\Helpers\DateHelper;
 use Laravel\Cashier\Billable;
 use App\Helpers\InstanceHelper;
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\StripeException;
 use Illuminate\Support\Facades\Log;
 
