@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Helpers\DBHelper;
+use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
@@ -43,6 +44,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        Cashier::ignoreMigrations();
+        Cashier::formatCurrencyUsing(function ($amount, $currency) {
+            $currency = \App\Models\Settings\Currency::where('iso', strtoupper($currency ?? config('cashier.currency')))->first();
+
+            return \App\Helpers\MoneyHelper::format($amount / 100, $currency);
+        });
     }
 
     /**
