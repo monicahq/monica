@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Upgrade om te ontgrendelen',
     'percent_uploaded' => '{percent}% geüpload',
     'retry' => 'Opnieuw Proberen',
+    'go_back' => 'Go back',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
