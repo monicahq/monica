@@ -178,6 +178,7 @@ return [
     'subscriptions_account_upgrade_choice' => 'Pick a plan below and join over :customers persons who upgraded their Monica.',
     'subscriptions_account_invoices' => 'Invoices',
     'subscriptions_account_invoices_download' => 'Download',
+    'subscriptions_account_invoices_subscription' => 'Subscription from :startDate to :endDate',
     'subscriptions_account_payment' => 'Which payment option fits you best?',
     'subscriptions_account_confirm_payment' => 'You payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Downgrade your account to the free plan',

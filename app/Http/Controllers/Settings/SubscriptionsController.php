@@ -44,6 +44,8 @@ class SubscriptionsController extends Controller
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
             'nextBillingDate' => $nextBillingDate,
             'subscription' => $subscription,
+            'hasInvoices' => auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices(),
+            'invoices' => auth()->user()->account->invoices(),
         ]);
     }
 

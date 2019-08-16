@@ -37,7 +37,7 @@ trait Subscription
     /**
      * Check if the account is currently subscribed to a plan.
      *
-     * @return bool $isSubscribed
+     * @return bool
      */
     public function isSubscribed()
     {
@@ -117,22 +117,18 @@ trait Subscription
 
     /**
      * Check if the account has invoices linked to this account.
-     * This was created because Laravel Cashier doesn't know how to properly
-     * handled the case when a user doesn't have invoices yet. This sucks balls.
      *
      * @return bool
      */
     public function hasInvoices()
     {
-        $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-
-        return $query > 0;
+        return $this->subscriptions()->count() > 0;
     }
 
     /**
      * Get the next billing date for the account.
      *
-     * @return string $timestamp
+     * @return string
      */
     public function getNextBillingDate()
     {
@@ -145,7 +141,7 @@ trait Subscription
             }
             $timestamp = $subscriptions->data[0]['current_period_end'];
 
-            return DateHelper::getShortDate($timestamp);
+            return DateHelper::getFullDate($timestamp);
         });
     }
 
