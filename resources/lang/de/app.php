@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Zum Freischalten aktualisieren',
     'percent_uploaded' => '{percent}% hochgeladen',
     'retry' => 'Wiederholen',
+    'go_back' => 'Go back',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
     'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
