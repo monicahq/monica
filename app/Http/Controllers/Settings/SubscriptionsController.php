@@ -41,6 +41,7 @@ class SubscriptionsController extends Controller
         }
 
         $hasInvoices = auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices();
+        $invoices = null;
         if ($hasInvoices) {
             $invoices = auth()->user()->account->invoices();
         }
