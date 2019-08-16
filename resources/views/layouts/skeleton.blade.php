@@ -34,7 +34,9 @@
       @yield('content')
     </div>
 
-    @include('partials.footer')
+    @if (Route::currentRouteName() != 'settings.subscriptions.confirm')
+      @include('partials.footer')
+    @endif
 
     {{-- THE JS FILE OF THE APP --}}
     @push('scripts')
