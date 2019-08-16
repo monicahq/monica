@@ -5,7 +5,6 @@ namespace App\Traits;
 use App\Helpers\DateHelper;
 use Laravel\Cashier\Billable;
 use App\Helpers\InstanceHelper;
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\StripeException;
 use Illuminate\Support\Facades\Log;
 
@@ -16,22 +15,53 @@ trait Subscription
     /**
      * Process the upgrade payment.
      *
-     * @param string $stripeToken
+     * @param string $payment_method
      * @param string $planName
      * @return bool|string
      */
-    public function subscribe(string $stripeToken, string $planName)
+    public function subscribe(string $payment_method, string $planName)
     {
         $plan = InstanceHelper::getPlanInformationFromConfig($planName);
 
-        return $this->stripeCall(function () use ($stripeToken, $plan) {
+        return $this->stripeCall(function () use ($payment_method, $plan) {
             $this->newSubscription($plan['name'], $plan['id'])
-                        ->create($stripeToken, [
+                        ->create($payment_method, [
                             'email' => auth()->user()->email,
                         ]);
 
             return true;
         });
+    }
+
+    /**
+     * Check if the account is currently subscribed to a plan.
+     *
+     * @return bool
+     */
+    public function isSubscribed()
+    {
+        if ($this->has_access_to_paid_version_for_free) {
+            return true;
+        }
+
+        return $this->subscribed(config('monica.paid_plan_monthly_friendly_name'))
+            || $this->subscribed(config('monica.paid_plan_annual_friendly_name'));
+    }
+
+    /**
+     * Get the subscription the account is subscribed to.
+     *
+     * @return \Laravel\Cashier\Subscription|null
+     */
+    public function getSubscribedPlan()
+    {
+        $subscription = $this->subscription(config('monica.paid_plan_monthly_friendly_name'));
+
+        if (! $subscription) {
+            $subscription = $this->subscription(config('monica.paid_plan_annual_friendly_name'));
+        }
+
+        return $subscription;
     }
 
     /**
@@ -41,7 +71,7 @@ trait Subscription
      */
     public function getSubscribedPlanId()
     {
-        $plan = $this->subscriptions()->first();
+        $plan = $this->getSubscribedPlan();
 
         if (! is_null($plan)) {
             return $plan->stripe_plan;
@@ -57,7 +87,7 @@ trait Subscription
      */
     public function getSubscribedPlanName()
     {
-        $plan = $this->subscriptions()->first();
+        $plan = $this->getSubscribedPlan();
 
         if (! is_null($plan)) {
             return $plan->name;
@@ -71,7 +101,7 @@ trait Subscription
      */
     public function subscriptionCancel()
     {
-        $plan = $this->subscriptions()->first();
+        $plan = $this->getSubscribedPlan();
 
         if (! is_null($plan)) {
             return $this->stripeCall(function () use ($plan) {
@@ -86,22 +116,18 @@ trait Subscription
 
     /**
      * Check if the account has invoices linked to this account.
-     * This was created because Laravel Cashier doesn't know how to properly
-     * handled the case when a user doesn't have invoices yet. This sucks balls.
      *
      * @return bool
      */
     public function hasInvoices()
     {
-        $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-
-        return $query > 0;
+        return $this->subscriptions()->count() > 0;
     }
 
     /**
      * Get the next billing date for the account.
      *
-     * @return string $timestamp
+     * @return string
      */
     public function getNextBillingDate()
     {
@@ -109,12 +135,12 @@ trait Subscription
         // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
         return $this->stripeCall(function () {
             $subscriptions = $this->asStripeCustomer()['subscriptions'];
-            if (count($subscriptions->data) <= 0) {
+            if (! $subscriptions || count($subscriptions->data) <= 0) {
                 return '';
             }
             $timestamp = $subscriptions->data[0]['current_period_end'];
 
-            return DateHelper::getShortDate($timestamp);
+            return DateHelper::getFullDate($timestamp);
         });
     }
 

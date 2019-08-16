@@ -509,30 +509,6 @@ class Account extends Model
     }
 
     /**
-     * Check if the account is currently subscribed to a plan.
-     *
-     * @return bool $isSubscribed
-     */
-    public function isSubscribed()
-    {
-        if ($this->has_access_to_paid_version_for_free) {
-            return true;
-        }
-
-        $isSubscribed = false;
-
-        if ($this->subscribed(config('monica.paid_plan_monthly_friendly_name'))) {
-            $isSubscribed = true;
-        }
-
-        if ($this->subscribed(config('monica.paid_plan_annual_friendly_name'))) {
-            $isSubscribed = true;
-        }
-
-        return $isSubscribed;
-    }
-
-    /**
      * Indicates whether the current account has limitations with her current
      * plan.
      *

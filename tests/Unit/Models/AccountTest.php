@@ -476,6 +476,11 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_gets_the_id_of_the_subscribed_plan()
     {
+        config([
+            'monica.paid_plan_annual_friendly_name' => 'fakePlan',
+            'monica.paid_plan_annual_id' => 'chandler_5',
+        ]);
+
         $user = $this->signIn();
 
         $account = $user->account;
@@ -495,6 +500,11 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_gets_the_friendly_name_of_the_subscribed_plan()
     {
+        config([
+            'monica.paid_plan_annual_friendly_name' => 'fakePlan',
+            'monica.paid_plan_annual_id' => 'chandler_5',
+        ]);
+
         $user = $this->signIn();
 
         $account = $user->account;

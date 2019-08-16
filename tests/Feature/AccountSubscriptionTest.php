@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Stripe\Plan;
-use Stripe\Token;
 use Stripe\Stripe;
 use Stripe\Product;
 use Stripe\ApiResource;
@@ -43,7 +42,7 @@ class AccountSubscriptionTest extends FeatureTestCase
                 'monica.requires_subscription' => true,
                 'monica.paid_plan_annual_friendly_name' => 'Annual',
                 'monica.paid_plan_annual_id' => 'annual',
-                'monica.paid_plan_annual_price' => 4500,
+                'monica.paid_plan_annual_price' => 100,
             ]);
         }
     }
@@ -72,7 +71,7 @@ class AccountSubscriptionTest extends FeatureTestCase
             'currency' => 'USD',
             'interval' => 'year',
             'billing_scheme' => 'per_unit',
-            'amount' => 4500,
+            'amount' => 100,
             'product' => static::$productId,
         ]);
     }
@@ -101,9 +100,20 @@ class AccountSubscriptionTest extends FeatureTestCase
     public function test_it_throw_an_error_on_subscribe()
     {
         $user = $this->signin();
+        $user->email = 'test_it_throw_an_error_on_subscribe@monica-test.com';
+        $user->save();
 
         $this->expectException(\App\Exceptions\StripeException::class);
         $user->account->subscribe('xxx', 'annual');
+    }
+
+    public function test_it_sees_the_plan_names()
+    {
+        $user = $this->signin();
+
+        $response = $this->get('/settings/subscriptions');
+
+        $response->assertSee('Pick a plan below and join over 0 persons who upgraded their Monica.');
     }
 
     public function test_it_get_the_plan_name()
@@ -170,24 +180,51 @@ class AccountSubscriptionTest extends FeatureTestCase
         $response->assertSee('You are on the Annual plan. Thanks so much for being a subscriber.');
     }
 
-    public function test_it_subscribe()
+    public function test_it_get_upgrade_page()
     {
         $user = $this->signin();
 
+        $response = $this->get('/settings/subscriptions/upgrade?plan=annual');
+
+        $response->assertSee('You picked the annual plan.');
+    }
+
+    public function test_it_subscribe()
+    {
+        $user = $this->signin();
+        $user->email = 'test_it_subscribe@monica-test.com';
+        $user->save();
+
         $response = $this->post('/settings/subscriptions/processPayment', [
-            'stripeToken' => $this->getTestToken(),
+            'payment_method' => 'pm_card_visa',
             'plan' => 'annual',
         ]);
 
         $response->assertRedirect('/settings/subscriptions/upgrade/success');
     }
 
+    public function test_it_subscribe_with_2nd_auth()
+    {
+        $user = $this->signin();
+        $user->email = 'test_it_subscribe_with_2nd_auth@monica-test.com';
+        $user->save();
+
+        $response = $this->followingRedirects()->post('/settings/subscriptions/processPayment', [
+            'payment_method' => 'pm_card_threeDSecure2Required',
+            'plan' => 'annual',
+        ]);
+
+        $response->assertSee('Confirm your $45.00 payment');
+    }
+
     public function test_it_subscribe_with_error()
     {
         $user = $this->signin();
+        $user->email = 'test_it_subscribe_with_error@monica-test.com';
+        $user->save();
 
         $response = $this->post('/settings/subscriptions/processPayment', [
-            'stripeToken' => 'bad',
+            'payment_method' => 'error',
             'plan' => 'annual',
         ], [
             'HTTP_REFERER' => 'back',
@@ -199,38 +236,16 @@ class AccountSubscriptionTest extends FeatureTestCase
     public function test_it_does_not_subscribe()
     {
         $user = $this->signin();
+        $user->email = 'test_it_does_not_subscribe@monica-test.com';
+        $user->save();
 
         try {
-            $user->account->subscribe($this->getTestTokenError(), 'annual');
+            $user->account->subscribe('pm_card_chargeDeclined', 'annual');
         } catch (\App\Exceptions\StripeException $e) {
             $this->assertEquals('Your card was declined. Decline message is: Your card was declined.', $e->getMessage());
 
             return;
         }
         $this->fails();
-    }
-
-    protected function getTestToken()
-    {
-        return Token::create([
-            'card' => [
-                'number' => '4242424242424242',
-                'exp_month' => 5,
-                'exp_year' => date('Y') + 1,
-                'cvc' => '123',
-            ],
-        ])->id;
-    }
-
-    protected function getTestTokenError()
-    {
-        return Token::create([
-            'card' => [
-                'number' => '4000000000009979',
-                'exp_month' => 5,
-                'exp_year' => date('Y') + 1,
-                'cvc' => '123',
-            ],
-        ])->id;
     }
 }

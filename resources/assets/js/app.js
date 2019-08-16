@@ -289,68 +289,19 @@ Vue.component(
   require('./components/settings/DAVResources.vue').default
 );
 
-// axios
-import axios from 'axios';
+var common = require('./common').default;
 
-// i18n
-import VueI18n from 'vue-i18n';
-Vue.use(VueI18n);
-
-// Moments
-import moment from 'moment';
-Vue.filter('formatDate', function(value) {
-  if (value) {
-    return moment(String(value)).format('LL');
-  }
-});
-
-// Markdown
-window.marked = require('marked');
-
-// i18n
-import messages from '../../../public/js/langs/en.json';
-
-export const i18n = new VueI18n({
-  locale: 'en', // set locale
-  fallbackLocale: 'en',
-  messages: {'en': messages}
-});
-
-const loadedLanguages = ['en']; // our default language that is prelaoded
-
-function setI18nLanguage (lang) {
-  i18n.locale = lang;
-  axios.defaults.headers.common['Accept-Language'] = lang;
-  document.querySelector('html').setAttribute('lang', lang);
-  return lang;
-}
-
-export function loadLanguageAsync (lang, set) {
-  if (i18n.locale !== lang) {
-    if (!loadedLanguages.includes(lang)) {
-      return axios.get(`js/langs/${lang}.json`).then(msgs => {
-        i18n.setLocaleMessage(lang, msgs.data);
-        loadedLanguages.push(lang);
-        return set ? setI18nLanguage(lang) : lang;
-      });
-    }
-  }
-  return Promise.resolve(set ? setI18nLanguage(lang) : lang);
-}
-
-loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
-  moment.locale(lang === 'zh' ? 'zh-cn' : lang);
-
+common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
   // the Vue appplication
   const app = new Vue({
     i18n,
     data: {
+      htmldir: window.Laravel.htmldir,
+      locale: i18n.locale,
       reminders_frequency: 'once',
       accept_invite_user: false,
       date_met_the_contact: 'known',
       global_relationship_form_new_contact: true,
-      htmldir: window.Laravel.htmldir,
-      locale: lang,
       global_profile_default_view: window.Laravel.profileDefaultView,
     },
     mounted: function() {
@@ -361,7 +312,7 @@ loadLanguageAsync(window.Laravel.locale, true).then((lang) => {
     },
     methods: {
       updateDefaultProfileView(view) {
-        axios.post('settings/updateDefaultProfileView', { 'name': view })
+        axios.post('settings/updateDefaultProfileView', { name: view })
           .then(response => {
             this.global_profile_default_view = view;
           });

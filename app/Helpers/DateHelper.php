@@ -267,10 +267,10 @@ class DateHelper
     public static function getNextTheoriticalBillingDate(string $interval) : Carbon
     {
         if ($interval == 'monthly') {
-            return now(static::getTimezone())->addMonth();
+            return now()->addMonth();
         }
 
-        return now(static::getTimezone())->addYear();
+        return now()->addYear();
     }
 
     /**
