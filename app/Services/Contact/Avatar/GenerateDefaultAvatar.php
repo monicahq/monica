@@ -82,9 +82,10 @@ class GenerateDefaultAvatar extends BaseService
                 ->encode('jpg');
 
             $filename = 'avatars/'.$contact->uuid.'.jpg';
-            Storage::put($filename, $img);
+            Storage::disk(config('filesystems.default'))->put($filename, $img, 'public');
 
-            return $filename;
+            // This will force the browser to reload the new avatar
+            return $filename.'?'.now()->format('U');
         } finally {
             if ($img) {
                 $img->destroy();
