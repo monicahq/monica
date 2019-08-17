@@ -70,6 +70,12 @@ class Contact extends Model
         'created_at',
         'updated_at',
         'is_partial',
+        'avatar_source',
+        'avatar_adorable_url',
+        'avatar_gravatar_url',
+        'avatar_default_url',
+        'avatar_photo_id',
+        'default_avatar_color',
     ];
 
     /**
