@@ -210,9 +210,9 @@ return [
     'subscriptions_payment_succeeded_title' => '支付成功',
     'subscriptions_payment_succeeded' => '此交易已经完成。',
     'subscriptions_payment_cancelled_title' => '付款已取消',
-    'subscriptions_payment_cancelled' => 'This payment was cancelled.',
+    'subscriptions_payment_cancelled' => '您的付款已被取消。',
     'subscriptions_payment_error_name' => '请提供您的姓名',
-    'subscriptions_payment_success' => 'The payment was successful.',
+    'subscriptions_payment_success' => '您的付款已成功',
 
     'subscriptions_pdf_title' => '您的:name每月订阅',
     'subscriptions_plan_choose' => '选择此计划',
