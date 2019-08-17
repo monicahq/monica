@@ -1,4 +1,7 @@
 <div class="ph3 ph5-ns pv2 cf w-100 mt4 mt0-ns">
+    <div class="alert alert-success tc">
+      {{ trans('people.me') }}
+    </div>
     <div class="mw9 center dt w-100 box-shadow pa4 relative">
 
       {{-- AVATAR --}}

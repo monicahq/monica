@@ -19,6 +19,16 @@ use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFie
 class ApiContactController extends ApiController
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('setMe');
+    }
+
+    /**
      * Get the list of the contacts.
      * We will only retrieve the contacts that are "real", not the partials
      * ones.
@@ -192,8 +202,9 @@ class ApiContactController extends ApiController
             'account_id' => auth()->user()->account->id,
             'user_id' => auth()->user()->id,
         ];
+
         app(SetMeContact::class)->execute($data);
 
-        return 'true';
+        return $this->respond('true');
     }
 }
