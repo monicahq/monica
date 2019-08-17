@@ -15,6 +15,7 @@
 
 ### Fixes:
 
+* Fix same contact selection in multi-search
 * Fix conversation creation
 * Fix phone call update
 * Fix conversation list show
