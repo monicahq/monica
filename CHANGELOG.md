@@ -2,10 +2,12 @@
 
 ### New features:
 
+* Add the ablity to set a 'me' contact (only API for now)
 * Add stepparent/stepchild relationship
 
 ### Enhancements:
 
+* Update to laravel cashier 10.0, and get ready with SCA/PSD2
 * Add stripe webhook
 * Depends on php7.3+
 * Use pretty-radio and optimize vue.js components
