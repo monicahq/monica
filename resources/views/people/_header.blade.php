@@ -17,7 +17,7 @@
                  style="height: 115px; width: 115px;"
                  v-on:error="fixAvatarDisplay"
             />
-            <div class="hidden dib white tc f1"
+            <div class="hidden br3 dib white tc f1"
                  style="padding-top: 21px; height: 115px; width: 115px; background-color: {{ $contact->default_avatar_color }}"
             >
               {{ $contact->initials }}
