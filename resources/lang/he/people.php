@@ -135,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'הפרופיל עודכן בהצלחה',
     'information_edit_title' => 'עריכת הפרטים האישיים של :name',
-    'information_edit_avatar' => 'תמונה/ציור של איש הקשר',
     'information_edit_max_size' => ':size ק״ב לכל היותר.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'שם פרטי',
     'information_edit_lastname' => 'שם משפחה (רשות)',
     'information_edit_description' => 'תיאור (רשות)',
@@ -463,7 +463,18 @@ return [
     'photo_list_cta' => 'העלאת תמונה',
     'photo_list_blank_desc' => 'ניתן לאחסן תמונות של איש הקשר הזה. אפילו ממש ברגע זה!',
     'photo_upload_zone_cta' => 'העלאת תמונה',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'מחיקת תמונה',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
