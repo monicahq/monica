@@ -37,7 +37,7 @@ return [
     'upgrade' => 'Mettre à jour pour débloquer',
     'percent_uploaded' => '{percent}% téléchargés',
     'retry' => 'Réessayer',
-    'go_back' => 'Go back',
+    'go_back' => 'Revenir en arrière',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
     'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
