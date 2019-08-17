@@ -26,6 +26,7 @@ class ApiContactController extends ApiController
     public function __construct()
     {
         $this->middleware('limitations')->only('setMe');
+        parent::__construct();
     }
 
     /**
@@ -205,6 +206,6 @@ class ApiContactController extends ApiController
 
         app(SetMeContact::class)->execute($data);
 
-        return $this->respond('true');
+        return $this->respond(['true']);
     }
 }
