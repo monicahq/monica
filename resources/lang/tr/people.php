@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'Arşivlenmiş kişilerin listesi',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'İletişim bilgilerini düzenle',
     'contact_archive' => 'Kişiyi arşivle',
     'contact_unarchive' => 'Kişiyi arşivden kaldır',
