@@ -1,4 +1,7 @@
 <div class="ph3 ph5-ns pv2 cf w-100 mt4 mt0-ns">
+    <div class="alert alert-success tc">
+      {{ trans('people.me') }}
+    </div>
     <div class="mw9 center dt w-100 box-shadow pa4 relative">
 
       {{-- AVATAR --}}
@@ -33,6 +36,7 @@
         </li>
 
         {{-- LAST ACTIVITY --}}
+        @if (! $contact->isMe())
         <li class="mb2 mb0-ns dn di-ns tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_people')</span>
           @if (is_null($contact->getLastActivityDate()))
@@ -41,8 +45,10 @@
             {{ trans('people.last_activity_date', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastActivityDate())]) }}
           @endif
         </li>
+        @endif
 
         {{-- LAST CALLED --}}
+        @if (! $contact->isMe())
         <li class="mb2 mb0-ns dn di-ns tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_call')</span>
           @if (is_null($contact->getLastCalled()))
@@ -51,6 +57,7 @@
             {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->getLastCalled())]) }}
           @endif
         </li>
+        @endif
 
         {{-- DESCRIPTION --}}
         @if ($contact->description)

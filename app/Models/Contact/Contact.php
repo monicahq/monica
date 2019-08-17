@@ -419,6 +419,16 @@ class Contact extends Model
     }
 
     /**
+     * Test if this is the 'me' contact.
+     *
+     * @return bool
+     */
+    public function isMe()
+    {
+        return $this->id == auth()->user()->me_contact_id;
+    }
+
+    /**
      * Sort the contacts according a given criteria.
      * @param Builder $builder
      * @param string $criteria
