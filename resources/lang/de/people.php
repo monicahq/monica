@@ -64,7 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'Liste der archivierten Kontakte',
 
     // Header
-    'me' => 'This is you',
+    'me' => 'Das bist du',
     'edit_contact_information' => 'Kontaktinformationen bearbeiten',
     'contact_archive' => 'Kontakt archivieren',
     'contact_unarchive' => 'Nicht gespeicherter Kontakt',
@@ -464,7 +464,7 @@ return [
     'photo_list_blank_desc' => 'Sie können Bilder zu diesem Kontakt speichern. Jetzt hochladen!',
     'photo_upload_zone_cta' => 'Foto hochladen',
     'photo_current_profile_pic' => 'Current profile picture',
-    'photo_make_profile_pic' => 'Make profile picture',
+    'photo_make_profile_pic' => 'Zu Profilbild machen',
     'photo_delete' => 'Bild löschen',
 
     // Avatars
