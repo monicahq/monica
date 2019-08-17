@@ -1,7 +1,11 @@
 <div class="ph3 ph5-ns pv2 cf w-100 mt4 mt0-ns">
+
+    @if ($contact->isMe())
     <div class="alert alert-success tc">
       {{ trans('people.me') }}
     </div>
+    @endif
+
     <div class="mw9 center tc w-100 avatar-header relative">
       {{-- AVATAR --}}
       <div class="relative center dib z-3">
