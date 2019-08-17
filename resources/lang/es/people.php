@@ -135,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'El perfil ha sido actualizado exitosamente',
     'information_edit_title' => 'Editar la información personal de :name',
-    'information_edit_avatar' => 'Foto/avatar del contacto',
     'information_edit_max_size' => 'Máximo :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Nombre',
     'information_edit_lastname' => 'Apellido (Opcional)',
     'information_edit_description' => 'Descripción (opcional)',
@@ -463,7 +463,18 @@ return [
     'photo_list_cta' => 'Subir foto',
     'photo_list_blank_desc' => 'Puede almacenar imágenes acerca de este contacto. ¡Suba una ahora!',
     'photo_upload_zone_cta' => 'Carga una foto',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Eliminar foto',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'Esto te hizo sentir…',
