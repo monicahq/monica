@@ -108,7 +108,17 @@
                 <li class="people-list-item bg-white pointer"
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
-                  <img alt={{ $contact->initials }} src="{{ $contact->getAvatarURL() }}" width="43" class="br4 h3 w3 dib tc">
+                  <img class="br4 h3 w3 dib tc"
+                       alt={{ $contact->initials }}
+                       src="{{ $contact->getAvatarURL() }}"
+                       v-on:error="(e) => { fixAvatarDisplay(e); }"
+                  />
+                  <div class="hidden br4 h3 w3 dib tc white f3"
+                       style="padding-top: 12px; background-color: {{ $contact->default_avatar_color }}"
+                  >
+                    {{ $contact->initials }}
+                  </div>
+    
                   <span>
                     <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
                     <svg class="relative" style="top: 5px" width="23" height="22" viewBox="0 0 23 22" fill="none"
@@ -127,7 +137,16 @@
                 <li class="people-list-item bg-white pointer"
                     @click="window.location.href='{{ route('people.show', $contact) }}'">
                  <a href="{{ route('people.show', $contact) }}">
-                  <img alt={{ $contact->initials }} src="{{ $contact->getAvatarURL() }}" width="43" class="br4 h3 w3 dib tc">
+                  <img class="br4 h3 w3 dib tc"
+                       alt={{ $contact->initials }}
+                       src="{{ $contact->getAvatarURL() }}"
+                       v-on:error="fixAvatarDisplay"
+                  />
+                  <div class="hidden br4 h3 w3 dib tc white f3"
+                       style="padding-top: 12px; background-color: {{ $contact->default_avatar_color }}"
+                  >
+                    {{ $contact->initials }}
+                  </div>
                   <span>
                     {{ $contact->name }}
                   </span>

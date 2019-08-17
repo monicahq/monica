@@ -10,8 +10,17 @@
       {{-- AVATAR --}}
       <div class="relative center dib z-3">
         <div class="relative hide-child">
-          <div class="image-header">
-            <div class="cover br3 bb b--gray-monica" style="background-image: url('{{ $contact->getAvatarURL() }}'); height: 115px; width: 115px;">
+          <div class="image-header top-0 left-0">
+            <img class="cover br3 bb b--gray-monica"
+                 alt={{ $contact->initials }}
+                 src="{{ $contact->getAvatarURL() }}"
+                 style="height: 115px; width: 115px;"
+                 v-on:error="fixAvatarDisplay"
+            />
+            <div class="hidden dib white tc f1"
+                 style="padding-top: 21px; height: 115px; width: 115px; background-color: {{ $contact->default_avatar_color }}"
+            >
+              {{ $contact->initials }}
             </div>
           </div>
           <div class="child absolute top-0 left-0 h-100 w-100 br3">
