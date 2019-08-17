@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'Lista de contactos archivados',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Editar información de contacto',
     'contact_archive' => 'Archivar contacto',
     'contact_unarchive' => 'Des-archivar contacto',
