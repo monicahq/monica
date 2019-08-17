@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'הצגת אנשי קשר בארכיון',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'contact_archive' => 'העברת איש קשר לארכיון',
     'contact_unarchive' => 'הוצאת איש קשר מהארכיון',
