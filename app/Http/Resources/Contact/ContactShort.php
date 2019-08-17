@@ -27,6 +27,7 @@ class ContactShort extends Contact
             'gender_type' => is_null($this->gender) ? null : $this->gender->type,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
+            'is_me' => $this->isMe(),
             'information' => [
                 'birthdate' => [
                     'is_age_based' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_age_based),

@@ -17,6 +17,7 @@ use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CardDAV\Backend\AbstractBackend;
 use Sabre\CardDAV\Plugin as CardDAVPlugin;
 use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
+use App\Services\Contact\Contact\SetMeContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
@@ -68,6 +69,13 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
                 '{DAV:}sync-token'  => $token->id,
                 '{'.SabreServer::NS_SABREDAV.'}sync-token' => $token->id,
                 '{'.CalDAVPlugin::NS_CALENDARSERVER.'}getctag' => DAVSyncPlugin::SYNCTOKEN_PREFIX.$token->id,
+            ];
+        }
+
+        $me = auth()->user()->me;
+        if ($me) {
+            $des += [
+                '{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card' => '/'.config('laravelsabre.path').'/addressbooks/'.Auth::user()->email.'/contacts/'.$this->encodeUri($me),
             ];
         }
 
@@ -373,7 +381,19 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
      */
     public function updateAddressBook($addressBookId, DAV\PropPatch $propPatch)
     {
-        return false;
+        $propPatch->handle('{'.CalDAVPlugin::NS_CALENDARSERVER.'}me-card', function ($props) {
+            $contact = $this->getObject($props->getHref());
+
+            $data = [
+                'contact_id' => $contact->id,
+                'account_id' => auth()->user()->account->id,
+                'user_id' => auth()->user()->id,
+            ];
+
+            app(SetMeContact::class)->execute($data);
+
+            return true;
+        });
     }
 
     /**

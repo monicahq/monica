@@ -177,6 +177,82 @@ class CardDAVTest extends ApiTestCase
         );
     }
 
+    public function test_carddav_get_me_card()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+        $user->me_contact_id = $contact->id;
+        $user->save();
+
+        $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}", [], [], [],
+            [
+                'HTTP_DEPTH' => '1',
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<propfind xmlns='DAV:' xmlns:cs='http://calendarserver.org/ns/'>
+                <prop>
+                    <cs:me-card />
+                </prop>
+            </propfind>"
+        );
+
+        $response->assertStatus(207);
+        $response->assertHeader('X-Sabre-Version');
+
+        $response->assertSee('<d:response>'.
+            "<d:href>/dav/addressbooks/{$user->email}/contacts/</d:href>".
+            '<d:propstat>'.
+                '<d:prop>'.
+                    "<cs:me-card>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</cs:me-card>".
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'
+        );
+    }
+
+    public function test_carddav_set_me_card()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
+
+        $response = $this->call('PROPPATCH', "/dav/addressbooks/{$user->email}/contacts", [], [], [],
+            [
+                'content-type' => 'application/xml; charset=utf-8',
+            ],
+            "<propertyupdate xmlns='DAV:' xmlns:cs='http://calendarserver.org/ns/'>
+                <set>
+                    <prop>
+                        <cs:me-card>
+                            <href>/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf</href>
+                        </cs:me-card>
+                    </prop>
+                </set>
+            </propertyupdate>"
+        );
+
+        $response->assertSee('<d:multistatus xmlns:d="DAV:" xmlns:s="http://sabredav.org/ns" xmlns:card="urn:ietf:params:xml:ns:carddav" xmlns:cal="urn:ietf:params:xml:ns:caldav" xmlns:cs="http://calendarserver.org/ns/">');
+        $response->assertSee('<d:response>'.
+            "<d:href>/dav/addressbooks/{$user->email}/contacts</d:href>".
+            '<d:propstat>'.
+                '<d:prop>'.
+                    '<cs:me-card/>'.
+                '</d:prop>'.
+                '<d:status>HTTP/1.1 200 OK</d:status>'.
+            '</d:propstat>'.
+        '</d:response>'
+        );
+
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'me_contact_id' => $contact->id,
+        ]);
+    }
+
     public function test_carddav_getctag_contacts()
     {
         $user = $this->signin();
