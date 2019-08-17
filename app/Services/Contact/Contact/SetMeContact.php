@@ -34,7 +34,7 @@ class SetMeContact extends BaseService
 
         $user = User::where('account_id', $data['account_id'])
             ->findOrFail($data['user_id']);
-        
+
         if ($user->account->hasLimitations()) {
             abort(402);
         }
