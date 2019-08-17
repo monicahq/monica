@@ -37,7 +37,7 @@ return [
     'upgrade' => '升级解锁',
     'percent_uploaded' => '已上传 {percent}%',
     'retry' => '重试',
-    'go_back' => 'Go back',
+    'go_back' => '后退',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
