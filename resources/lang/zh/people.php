@@ -64,7 +64,7 @@ return [
     'list_link_to_archived_contacts' => '已存档联系人列表',
 
     // Header
-    'me' => 'This is you',
+    'me' => '这是你',
     'edit_contact_information' => '编辑联系人信息',
     'contact_archive' => '存档联系人',
     'contact_unarchive' => '取消存档',
