@@ -18,7 +18,7 @@ return [
     'not_authorized' => 'Du hast keine Berechtigung diese Aktion auszuführen',
     'signup_disabled' => 'Neue Registrierungen sind zur Zeit nicht möglich',
     'back_homepage' => 'Zurück zur Seite',
-    'mfa_auth_otp' => 'Authenticate with your two factor device',
+    'mfa_auth_otp' => 'Authentifizieren Sie sich mit Ihrem Zwei-Faktor-Gerät',
     'mfa_auth_u2f' => 'Authentifizieren Sie sich mit einem U2F Gerät',
     'mfa_auth_webauthn' => 'Authentifizieren mit einem Sicherheitsschlüssel (WebAuthn)',
     '2fa_title' => 'Zwei-Faktor-Authentifizierung',
