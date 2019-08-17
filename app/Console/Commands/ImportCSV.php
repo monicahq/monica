@@ -14,6 +14,7 @@ use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Reminder\CreateReminder;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class ImportCSV extends Command
 {
@@ -214,7 +215,9 @@ class ImportCSV extends Command
             ]);
         }
 
-        $contact->updateGravatar();
+        app(GetAvatarsFromInternet::class)->execute([
+            'contact_id' => $contact->id,
+        ]);
     }
 
     /**

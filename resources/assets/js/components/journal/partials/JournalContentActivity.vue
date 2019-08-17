@@ -93,11 +93,7 @@
               {{ $t('app.with') }}
             </span>
             <div v-for="attendees in activity.attendees" :key="attendees.id" class="dib pointer ml2" @click="redirect(attendees)">
-              <img v-if="attendees.information.avatar.has_avatar" v-tooltip="attendees.complete_name" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" />
-              <img v-else-if="attendees.information.avatar.gravatar_url" v-tooltip.bottom="attendees.complete_name" :src="attendees.information.avatar.gravatar_url" class="br3 journal-avatar-small" />
-              <div v-else v-tooltip.bottom="attendees.complete_name" :style="{ 'background-color': attendees.information.avatar.default_avatar_color }" class="br3 white tc journal-initial-small">
-                {{ attendees.initials }}
-              </div>
+              <img v-tooltip.bottom="attendees.complete_name" :src="attendees.information.avatar.avatar_url" class="br3 journal-avatar-small" />
             </div>
           </div>
         </div>

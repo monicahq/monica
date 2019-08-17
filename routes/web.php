@@ -63,6 +63,11 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::put('/people/{contact}', 'ContactsController@update')->name('update');
         Route::delete('/people/{contact}', 'ContactsController@destroy')->name('destroy');
 
+        // Avatar
+        Route::get('/people/{contact}/avatar', 'Contacts\\AvatarController@edit')->name('avatar.edit');
+        Route::post('/people/{contact}/avatar', 'Contacts\\AvatarController@update')->name('avatar.update');
+        Route::post('/people/{contact}/makeProfilePicture/{photo}', 'Contacts\\AvatarController@photo')->name('avatar.photo');
+
         // Life events
         Route::name('lifeevent.')->group(function () {
             Route::get('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@index')->name('index');

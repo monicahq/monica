@@ -25,6 +25,7 @@ use App\Console\Commands\CalculateStatistics;
 use App\Console\Commands\OneTime\MoveAvatars;
 use App\Console\Commands\MigrateDatabaseCollation;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\OneTime\MoveAvatarsToPhotosDirectory;
 
 class Kernel extends ConsoleKernel
 {
@@ -44,6 +45,7 @@ class Kernel extends ConsoleKernel
         LangGenerate::class,
         MigrateDatabaseCollation::class,
         MoveAvatars::class,
+        MoveAvatarsToPhotosDirectory::class,
         PingVersionServer::class,
         SendReminders::class,
         SendStayInTouch::class,

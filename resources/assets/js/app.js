@@ -123,6 +123,10 @@ Vue.component(
 );
 
 Vue.component(
+  'contact-avatar',
+  require('./components/people/SetAvatar.vue').default
+);
+Vue.component(
   'contact-favorite',
   require('./components/people/SetFavorite.vue').default
 );
@@ -316,7 +320,12 @@ common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
           .then(response => {
             this.global_profile_default_view = view;
           });
-      }
+      },
+
+      fixAvatarDisplay(event) {
+        event.srcElement.classList = ['hidden'];
+        event.srcElement.nextElementSibling.classList.remove('hidden');
+      },
     }
   }).$mount('#app');
 

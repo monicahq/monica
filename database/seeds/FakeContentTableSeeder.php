@@ -82,17 +82,6 @@ class FakeContentTableSeeder extends Seeder
                 'is_deceased_date_known' => false,
             ]);
 
-            $this->contact->setAvatarColor();
-            $this->contact->save();
-
-            // set an external avatar
-            if (rand(1, 2) == 1) {
-                $this->contact->has_avatar = true;
-                $this->contact->avatar_location = 'external';
-                $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
-                $this->contact->save();
-            }
-
             $this->populateTags();
             $this->populateFoodPreferences();
             $this->populateDeceasedDate();
@@ -249,10 +238,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_deceased_date_known' => false,
                 ]);
 
-                $relatedContact->setAvatarColor();
-                $relatedContact->save();
-
-                // birthdate
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $this->contact->account_id,

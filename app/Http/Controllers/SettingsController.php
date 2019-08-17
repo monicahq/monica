@@ -42,6 +42,7 @@ class SettingsController
         'api_usage',
         'cache',
         'countries',
+        'contact_photo',
         'crons',
         'currencies',
         'contact_photo',

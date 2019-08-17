@@ -25,6 +25,7 @@ trait CardEtag
 
     protected function getCard(Contact $contact, bool $realFormat = false): string
     {
+        $contact = $contact->refresh();
         $url = route('people.show', $contact);
         $sabreversion = \Sabre\VObject\Version::VERSION;
         $timestamp = $contact->updated_at->format('Ymd\THis\Z');
@@ -37,10 +38,17 @@ SOURCE:{$url}
 FN:{$contact->name}
 N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
 ";
+
         if ($contact->gender) {
             $data .= "GENDER:{$contact->gender->type}";
             $data .= "\n";
         }
+
+        $picture = $contact->getAvatarURL();
+        if (! empty($picture)) {
+            $data .= "PHOTO;VALUE=URI:{$picture}\n";
+        }
+
         foreach ($contact->addresses as $address) {
             $data .= 'ADR:;;';
             $data .= $address->place->street.';';

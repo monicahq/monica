@@ -71,8 +71,8 @@ class Contact extends Resource
                     'company' => $this->company,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
-                    'url' => $this->getAvatarUrl(110),
-                    'source' => $this->getAvatarSource(),
+                    'url' => $this->getAvatarUrl(),
+                    'source' => $this->avatar_source,
                     'default_avatar_color' => $this->default_avatar_color,
                 ]),
                 'food_preferences' => $this->when(! $this->is_partial, $this->food_preferences),

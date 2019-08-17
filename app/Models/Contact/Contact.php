@@ -65,16 +65,17 @@ class Contact extends Model
         'middle_name',
         'last_name',
         'nickname',
-        'has_avatar',
-        'avatar_file_name',
-        'gravatar_url',
-        'avatar_external_url',
-        'default_avatar_color',
         'gender_id',
         'account_id',
         'created_at',
         'updated_at',
         'is_partial',
+        'avatar_source',
+        'avatar_adorable_url',
+        'avatar_gravatar_url',
+        'avatar_default_url',
+        'avatar_photo_id',
+        'default_avatar_color',
     ];
 
     /**
@@ -97,7 +98,6 @@ class Contact extends Model
         'birthday_reminder_id',
         'birthday_special_date_id',
         'is_dead',
-        'avatar_external_url',
         'last_consulted_at',
         'created_at',
         'first_met_additional_info',
@@ -797,16 +797,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the default color of the avatar if no picture is present.
-     *
-     * @return string
-     */
-    public function getAvatarColor()
-    {
-        return $this->default_avatar_color;
-    }
-
-    /**
      * Set the default avatar color for this object.
      *
      * @param string|null $color
@@ -946,28 +936,46 @@ class Contact extends Model
     }
 
     /**
-     * Returns the URL of the avatar with the given size.
+     * Get the default avatar URL.
      *
-     * @param  int $size
+     * @return string
+     */
+    public function getAvatarDefaultURL()
+    {
+        return asset(Storage::disk(config('filesystems.default'))->url($this->avatar_default_url));
+    }
+
+    /**
+     * Returns the URL of the avatar, properly sized.
+     * The avatar can come from 4 sources:
+     *  - default,
+     *  - Adorable avatar,
+     *  - Gravatar
+     *  - or a photo that has been uploaded.
+     *
      * @return string|null
      */
-    public function getAvatarURL($size = 110)
+    public function getAvatarURL()
     {
-        // it either returns null or the gravatar url if it's defined
-        if (! $this->has_avatar) {
-            return $this->gravatar_url;
+        $avatarURL = '';
+
+        switch ($this->avatar_source) {
+            case 'adorable':
+                $avatarURL = $this->avatar_adorable_url;
+                break;
+            case 'gravatar':
+                $avatarURL = $this->avatar_gravatar_url;
+                break;
+            case 'photo':
+                $avatarURL = Photo::find($this->avatar_photo_id)->url();
+                break;
+            case 'default':
+            default:
+                $avatarURL = $this->getAvatarDefaultURL();
+                break;
         }
 
-        if ($this->avatar_location == 'external') {
-            return $this->avatar_external_url;
-        }
-
-        $originalAvatarUrl = $this->avatar_file_name;
-        $avatarFilename = pathinfo($originalAvatarUrl, PATHINFO_FILENAME);
-        $avatarExtension = pathinfo($originalAvatarUrl, PATHINFO_EXTENSION);
-        $resizedAvatar = 'avatars/'.$avatarFilename.'_'.$size.'.'.$avatarExtension;
-
-        return asset(Storage::disk($this->avatar_location)->url($resizedAvatar));
+        return $avatarURL;
     }
 
     /**
@@ -1009,74 +1017,6 @@ class Contact extends Model
         } catch (FileNotFoundException $e) {
             return;
         }
-    }
-
-    /**
-     * Returns the source of the avatar, or null if avatar is undefined.
-     */
-    public function getAvatarSource()
-    {
-        if (! $this->has_avatar) {
-            return;
-        }
-
-        if ($this->avatar_location == 'external') {
-            return 'external';
-        }
-
-        return 'internal';
-    }
-
-    /**
-     * Update the gravatar, using the firt email found.
-     */
-    public function updateGravatar()
-    {
-        // for performance reasons, we check if a gravatar exists for this email
-        // address. if it does, we store the gravatar url in the database.
-        // while this is not ideal because the gravatar can change, at least we
-        // won't make constant call to gravatar to load the avatar on every
-        // page load.
-        $response = $this->getGravatar(250);
-        if ($response !== false && is_string($response)) {
-            $this->gravatar_url = $response;
-        } else {
-            $this->gravatar_url = null;
-        }
-        $this->save();
-    }
-
-    /**
-     * Get the first gravatar of all emails, if found.
-     *
-     * @param  int $size
-     * @return string|bool
-     */
-    public function getGravatar($size)
-    {
-        $emails = $this->contactFields()->email()->get();
-
-        foreach ($emails as $email) {
-            if (empty($email) || empty($email->data)) {
-                continue;
-            }
-
-            try {
-                if (! app('gravatar')->exists($email->data)) {
-                    continue;
-                }
-            } catch (\Creativeorange\Gravatar\Exceptions\InvalidEmailException $e) {
-                // catch invalid email
-                continue;
-            }
-
-            return app('gravatar')->get($email->data, [
-                'size' => $size,
-                'secure' => config('app.env') === 'production',
-            ]);
-        }
-
-        return false;
     }
 
     /**

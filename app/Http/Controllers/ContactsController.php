@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
@@ -299,7 +297,6 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withWeather($contact->getWeather())
             ->withDays($days)
@@ -424,8 +421,6 @@ class ContactsController extends Controller
             $contact->save();
         }
 
-        dispatch(new ResizeAvatars($contact));
-
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
     }
@@ -502,7 +497,6 @@ class ContactsController extends Controller
     public function editFoodPreferences(Request $request, Contact $contact)
     {
         return view('people.food-preferences.edit')
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact);
     }
 

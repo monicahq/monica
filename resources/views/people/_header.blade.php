@@ -6,14 +6,37 @@
     </div>
     @endif
 
+    <div class="mw9 center tc w-100 avatar-header relative">
+      {{-- AVATAR --}}
+      <div class="relative center dib z-3">
+        <div class="relative hide-child">
+          <div class="image-header top-0 left-0">
+            <img class="cover br3 bb b--gray-monica"
+                 alt={{ $contact->initials }}
+                 src="{{ $contact->getAvatarURL() }}"
+                 style="height: 115px; width: 115px;"
+                 v-on:error="fixAvatarDisplay"
+            />
+            <div class="hidden dib white tc f1"
+                 style="padding-top: 21px; height: 115px; width: 115px; background-color: {{ $contact->default_avatar_color }}"
+            >
+              {{ $contact->initials }}
+            </div>
+          </div>
+          <div class="child absolute top-0 left-0 h-100 w-100 br3">
+            <div class="db w-100 h-100 center tc pt5">
+              <a class="no-underline white" href="{{ route('people.avatar.edit', $contact) }}">
+                📷 {{ trans('app.update' )}}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="mw9 center dt w-100 box-shadow pa4 relative">
 
-      {{-- AVATAR --}}
-      <div class="relative">
-        {!! $avatar !!}
-      </div>
-
-      <h1 class="tc mb2 mt0">
+      <h1 class="tc mb2 mt4">
         <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">{{ $contact->name }}</span>
         <contact-favorite hash="{{ $contact->hashID() }}" :starred="{{ \Safe\json_encode($contact->is_starred) }}"></contact-favorite>
       </h1>
