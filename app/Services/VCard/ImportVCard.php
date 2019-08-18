@@ -628,7 +628,8 @@ class ImportVCard extends BaseService
 
                 $storage = Storage::disk('local');
                 $filename = $contact->uuid.'_'.now()->format('U');
-                $storagePath = $storage->getDriver()->getAdapter()->getPathPrefix();
+
+                $storagePath = disk_adapter('local')->getPathPrefix();
                 try {
                     $image = Image::make((string) $entry->PHOTO);
                     $storage->put('temp/'.$filename, (string) $image->stream());
