@@ -648,7 +648,9 @@ class ImportVCard extends BaseService
                         'photo_id' => $photo->id,
                     ]);
                 } finally {
-                    $storage->delete('temp/'.$filename);
+                    if ($storage->exists('temp/'.$filename)) {
+                        $storage->delete('temp/'.$filename);
+                    }
                 }
             }
         }
