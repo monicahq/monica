@@ -470,11 +470,11 @@ return [
     // Avatars
     'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',
     'avatar_question' => 'באיזו תמונה ייצוגית להשתמש?',
-    'avatar_default_avatar' => 'The default avatar',
-    'avatar_adorable_avatar' => 'The Adorable avatar',
-    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
-    'avatar_current' => 'Keep the current avatar',
-    'avatar_photo' => 'From a photo that you upload',
+    'avatar_default_avatar' => 'התמונה הייצוגית כבררת מחדל',
+    'avatar_adorable_avatar' => 'התמונה הייצוגית המקסימה',
+    'avatar_gravatar' => 'ה־Gravatar שמשויך לכתובת הדוא״ל של משתמש זה. <a href="https://gravatar.com/">Gravatar</a> היא מערכת גלובלית שמאפשרת למשתמשים לשייך כתובות דוא״ל לתמונות.',
+    'avatar_current' => 'להשאיר את התמונה הייצוגית הנוכחית',
+    'avatar_photo' => 'מתמונה שהעלית',
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',
