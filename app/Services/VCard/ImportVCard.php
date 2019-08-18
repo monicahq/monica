@@ -628,12 +628,12 @@ class ImportVCard extends BaseService
 
                 $storage = Storage::disk('local');
                 $filename = $contact->uuid.'_'.now()->format('U');
-                $storagePath  = $storage->getDriver()->getAdapter()->getPathPrefix();
+                $storagePath = $storage->getDriver()->getAdapter()->getPathPrefix();
                 try {
                     $image = Image::make((string) $entry->PHOTO);
                     $storage->put('temp/'.$filename, (string) $image->stream());
 
-                    // Forcing UploadedFile as a test file, because we 
+                    // Forcing UploadedFile as a test file, because we
                     $uploadedFile = new \Illuminate\Http\UploadedFile($storagePath.'temp/'.$filename, $filename, null, null, true);
 
                     $photo = app(UploadPhoto::class)->execute([
