@@ -252,6 +252,7 @@ class SettingsController
         $path = dispatch_now(new ExportAccountAsSQL());
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
+
         return response()
             ->download($adapter->getPathPrefix().$path, 'monica.sql')
             ->deleteFileAfterSend(true);
