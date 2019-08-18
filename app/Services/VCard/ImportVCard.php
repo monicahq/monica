@@ -22,7 +22,11 @@ use App\Helpers\CountriesHelper;
 use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Account\Photo\UploadPhoto;
+use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
@@ -612,15 +616,39 @@ class ImportVCard extends BaseService
     private function importPhoto(Contact $contact, VCard $entry): void
     {
         if ($entry->PHOTO) {
-            if ($entry->PHOTO instanceof \Sabre\VObject\Property\Uri) {
+            if ($entry->PHOTO instanceof \Sabre\VObject\Property\Uri && ! Str::startsWith((string) $entry->PHOTO, 'data:')) {
                 if (Str::startsWith((string) $entry->PHOTO, 'https://secure.gravatar.com') || Str::startsWith((string) $entry->PHOTO, 'https://www.gravatar.com')) {
                     // Gravatar
                     $contact->avatar_gravatar_url = (string) $entry->PHOTO;
                 } else {
                     // assume monica asset
                 }
-            } elseif (Str::startsWith($entry->PHOTO, 'data:')) {
+            } else {
                 // Import photo image
+
+                $storage = Storage::disk('local');
+                $filename = $contact->uuid.'_'.now()->format('U');
+                $storagePath  = $storage->getDriver()->getAdapter()->getPathPrefix();
+                try {
+                    $image = Image::make((string) $entry->PHOTO);
+                    $storage->put('temp/'.$filename, (string) $image->stream());
+
+                    // Forcing UploadedFile as a test file, because we 
+                    $uploadedFile = new \Illuminate\Http\UploadedFile($storagePath.'temp/'.$filename, $filename, null, null, true);
+
+                    $photo = app(UploadPhoto::class)->execute([
+                        'account_id' => $contact->account_id,
+                        'photo' => $uploadedFile,
+                    ]);
+                    app(UpdateAvatar::class)->execute([
+                        'account_id' => $contact->account_id,
+                        'contact_id' => $contact->id,
+                        'source' => 'photo',
+                        'photo_id' => $photo->id,
+                    ]);
+                } finally {
+                    $storage->delete('temp/'.$filename);
+                }
             }
         }
     }
