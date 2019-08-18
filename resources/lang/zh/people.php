@@ -463,16 +463,16 @@ return [
     'photo_list_cta' => '上传照片',
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
     'photo_upload_zone_cta' => '上传照片',
-    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_current_profile_pic' => '目前头像',
     'photo_make_profile_pic' => '制作头像',
     'photo_delete' => '删除照片',
 
     // Avatars
     'avatar_change_title' => '更换头像',
-    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_question' => '您想使用哪个头像？',
     'avatar_default_avatar' => '默认头像',
-    'avatar_adorable_avatar' => 'The Adorable avatar',
-    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_adorable_avatar' => '喜爱头像',
+    'avatar_gravatar' => '此用户的电子邮件地址 与Gravatar关联 。 <a href="https://gravatar.com/">Gravatar</a> 是全球通用的头像服务。',
     'avatar_current' => '保持当前头像',
     'avatar_photo' => '从您上传的照片',
 
