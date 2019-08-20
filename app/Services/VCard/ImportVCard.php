@@ -617,7 +617,7 @@ class ImportVCard extends BaseService
             if (Str::startsWith((string) $entry->PHOTO, 'https://secure.gravatar.com') || Str::startsWith((string) $entry->PHOTO, 'https://www.gravatar.com')) {
                 // Gravatar
                 $contact->avatar_gravatar_url = (string) $entry->PHOTO;
-            } else if (! Str::startsWith((string) $entry->PHOTO, 'https://')
+            } elseif (! Str::startsWith((string) $entry->PHOTO, 'https://')
                 && ! Str::startsWith((string) $entry->PHOTO, 'http://')) {
                 // Import photo image
 

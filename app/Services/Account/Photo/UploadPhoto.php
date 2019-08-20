@@ -6,12 +6,10 @@ use function Safe\substr;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Models\Account\Photo;
-use function Safe\preg_match;
-use function Safe\finfo_open;
 use App\Services\BaseService;
-use App\Models\Contact\Contact;
+use function Safe\finfo_open;
+use function Safe\preg_match;
 use function Safe\base64_decode;
-use Illuminate\Http\UploadedFile;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -22,7 +20,7 @@ class UploadPhoto extends BaseService
     {
         Validator::extend('photo', function ($attribute, $value, $parameters, $validator) {
             return $this->isValidPhoto($value);
-        });        
+        });
     }
 
     /**
@@ -117,13 +115,13 @@ class UploadPhoto extends BaseService
                 $storage->delete($tempfile);
             }
         }
-        
+
         return $array;
     }
 
     /**
      * Store the decoded image in the temp file.
-     * 
+     *
      * @param string $disk
      * @param \Intervention\Image\Image $image
      * @param string $filename
@@ -139,7 +137,7 @@ class UploadPhoto extends BaseService
 
     /**
      * Get mime type for extension.
-     * 
+     *
      * @param string $extension
      * @return string
      */
@@ -169,7 +167,8 @@ class UploadPhoto extends BaseService
     {
         if (is_string($data)) {
             $mime = finfo_buffer(finfo_open(FILEINFO_MIME_TYPE), $data);
-            return (substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty');
+
+            return substr($mime, 0, 4) != 'text' && $mime != 'application/x-empty';
         }
 
         return false;
@@ -183,7 +182,7 @@ class UploadPhoto extends BaseService
      */
     private function isDataUrl(string $data) : bool
     {
-        if (!is_string($data)) {
+        if (! is_string($data)) {
             return false;
         }
 
@@ -205,7 +204,7 @@ class UploadPhoto extends BaseService
      */
     private function isBase64(string $data) : bool
     {
-        if (!is_string($data)) {
+        if (! is_string($data)) {
             return false;
         }
 
