@@ -91,7 +91,7 @@ class UploadPhoto extends BaseService
 
         try {
             $storagePath = disk_adapter('local')->getPathPrefix();
-            // This set the basePath to get the filesize later
+            // This sets the basePath to get the filesize later
             $image = $image->setFileInfoFromPath($storagePath.$tempfile);
             $extension = (new \Mimey\MimeTypes)->getExtension($image->mime());
             if (empty($extension)) {
@@ -164,7 +164,7 @@ class UploadPhoto extends BaseService
     }
 
     /**
-     * Determines if source data is data-url.
+     * Determines if source data is data-url format.
      *
      * @param string $data
      * @return bool
@@ -178,7 +178,7 @@ class UploadPhoto extends BaseService
         $pattern = "/^data:(?:image\/[a-zA-Z\-\.]+)(?:charset=\".+\")?;base64,(?P<data>.+)$/";
         preg_match($pattern, $data, $matches);
 
-        if (is_array($matches) && array_key_exists('data', $matches)) {
+        if (is_array($matches) && Arr::has($matches, 'data')) {
             return ! empty(base64_decode($matches['data']));
         }
 
