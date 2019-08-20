@@ -625,9 +625,9 @@ class ImportVCard extends BaseService
                     'account_id' => $contact->account_id,
                     'data' => (string) $entry->PHOTO,
                 ];
-                /** @var \Sabre\VObject\Parameter */
-                $type = $entry->PHOTO['TYPE'];
-                if (! is_null($type)) {
+                if (! is_null($entry->PHOTO['TYPE'])) {
+                    /** @var \Sabre\VObject\Parameter */
+                    $type = $entry->PHOTO['TYPE'];
                     $array['extension'] = $type->getValue();
                 }
 
