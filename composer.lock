@@ -2269,16 +2269,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.0.0",
+            "version": "v10.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "96aeb8367a6f4180ec6154ae2f6855d896a1c6c8"
+                "reference": "0bd631b32b867a0300f71b1afad3461297420f01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/96aeb8367a6f4180ec6154ae2f6855d896a1c6c8",
-                "reference": "96aeb8367a6f4180ec6154ae2f6855d896a1c6c8",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/0bd631b32b867a0300f71b1afad3461297420f01",
+                "reference": "0bd631b32b867a0300f71b1afad3461297420f01",
                 "shasum": ""
             },
             "require": {
@@ -2300,8 +2300,8 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^3.8",
-                "phpunit/phpunit": "^7.5"
+                "orchestra/testbench": "^3.8|^4.0",
+                "phpunit/phpunit": "^7.5|^8.0"
             },
             "suggest": {
                 "ext-intl": "Allows for more locales besides the default \"en\" when formatting money values."
@@ -2338,7 +2338,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2019-08-13T14:21:56+00:00"
+            "time": "2019-08-20T17:58:22+00:00"
         },
         {
             "name": "laravel/framework",
