@@ -181,6 +181,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             ];
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' prepareCard: '.(string) $e);
+            throw $e;
         }
     }
 
@@ -348,6 +349,7 @@ class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
             }
         } catch (\Exception $e) {
             Log::debug(__CLASS__.' updateCard: '.(string) $e);
+            throw $e;
         }
     }
 
