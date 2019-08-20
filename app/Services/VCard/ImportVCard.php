@@ -621,13 +621,18 @@ class ImportVCard extends BaseService
                 && ! Str::startsWith((string) $entry->PHOTO, 'http://')) {
                 // Import photo image
 
-                /** @var \Sabre\VObject\Parameter */
-                $type = $entry->PHOTO['TYPE'];
-                $photo = app(UploadPhoto::class)->execute([
+                $array = [
                     'account_id' => $contact->account_id,
                     'data' => (string) $entry->PHOTO,
-                    'extension' => $type->getValue(),
-                ]);
+                ];
+                /** @var \Sabre\VObject\Parameter */
+                $type = $entry->PHOTO['TYPE'];
+                if (! is_null($type)) {
+                    $array['extension'] = $type->getValue();
+                }
+
+                $photo = app(UploadPhoto::class)->execute($array);
+
                 app(UpdateAvatar::class)->execute([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,

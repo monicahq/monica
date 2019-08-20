@@ -125,14 +125,14 @@ class UploadPhoto extends BaseService
      * @param string $disk
      * @param \Intervention\Image\Image $image
      * @param string $filename
-     * @return string|bool
+     * @return string|null
      */
     private function storeImage(string $disk, $image, string $filename) : ? string
     {
         $result = Storage::disk($disk)
             ->put($path = $filename, (string) $image->stream(), 'public');
 
-        return $result ? $path : $result;
+        return $result ? $path : null;
     }
 
     /**
