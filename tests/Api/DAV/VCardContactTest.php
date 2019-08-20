@@ -94,6 +94,40 @@ class VCardContactTest extends ApiTestCase
     /**
      * @group dav
      */
+    public function test_carddav_put_one_contact_with_photo_and_attributes()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+
+        $image = base64_encode(Image::canvas(1, 1, '#fff')->encode('jpg'));
+
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nN:Doe;John;;;\nPHOTO;ENCODING=B;TYPE=JPEG:$image\nEND:VCARD"
+        );
+
+        $response->assertStatus(201);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+        $this->assertDatabaseHas('photos', [
+            'account_id' => $user->account->id,
+        ]);
+
+        $photo = Photo::where(['account_id' => $user->account->id])->first();
+
+        Storage::disk('public')->assertExists($photo->new_filename);
+    }
+
+    /**
+     * @group dav
+     */
     public function test_carddav_update_existing_contact()
     {
         $user = $this->signin();
