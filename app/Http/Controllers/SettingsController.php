@@ -251,15 +251,11 @@ class SettingsController
     {
         $path = dispatch_now(new ExportAccountAsSQL());
 
-        $driver = Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver();
-        if ($driver instanceof \League\Flysystem\Filesystem) {
-            $adapter = $driver->getAdapter();
-            if ($adapter instanceof \League\Flysystem\Adapter\AbstractAdapter) {
-                return response()
-                    ->download($adapter->getPathPrefix().$path, 'monica.sql')
-                    ->deleteFileAfterSend(true);
-            }
-        }
+        $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
+
+        return response()
+            ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->deleteFileAfterSend(true);
     }
 
     /**
