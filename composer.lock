@@ -11403,19 +11403,23 @@
         },
         {
             "name": "netresearch/jsonmapper",
-            "version": "v1.5.2",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cweiske/jsonmapper.git",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c"
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
-                "reference": "caf41ab74ac7252f5f46db6c16ab0a8358e2e55c",
+                "url": "https://api.github.com/repos/cweiske/jsonmapper/zipball/0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
+                "reference": "0d4d1b48d682a93b6bfedf60b88c7750e9cb0b06",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
+                "ext-pcre": "*",
+                "ext-reflection": "*",
+                "ext-spl": "*",
                 "php": ">=5.6"
             },
             "require-dev": {
@@ -11441,7 +11445,7 @@
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
-            "time": "2019-08-04T19:56:28+00:00"
+            "time": "2019-08-15T19:41:25+00:00"
         },
         {
             "name": "nette/bootstrap",
@@ -14130,16 +14134,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.4.11",
+            "version": "3.4.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "85c9b6bb442039c773120059ae35a31f8ef9d488"
+                "reference": "86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/85c9b6bb442039c773120059ae35a31f8ef9d488",
-                "reference": "85c9b6bb442039c773120059ae35a31f8ef9d488",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2",
+                "reference": "86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2",
                 "shasum": ""
             },
             "require": {
@@ -14213,7 +14217,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-08-09T15:40:46+00:00"
+            "time": "2019-08-20T18:26:32+00:00"
         },
         {
             "name": "webmozart/assert",
