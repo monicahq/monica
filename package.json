@@ -19,7 +19,7 @@
     "cross-env": "^5.1.4",
     "cypress": "3.3.2",
     "eslint": "^6.0.1",
-    "eslint-config-standard": "^13.0.1",
+    "eslint-config-standard": "^14.0.0",
     "eslint-plugin-import": ">=2.13.0",
     "eslint-plugin-node": ">=7.0.0",
     "eslint-plugin-promise": ">=4.0.0",
