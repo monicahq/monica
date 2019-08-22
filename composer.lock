@@ -6288,16 +6288,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "a4959bf2b9b175aef6fd91c9006b1ca7a56f9bb0"
+                "reference": "e06e6202768babaab053e7ab260d1e43139a7753"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/a4959bf2b9b175aef6fd91c9006b1ca7a56f9bb0",
-                "reference": "a4959bf2b9b175aef6fd91c9006b1ca7a56f9bb0",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/e06e6202768babaab053e7ab260d1e43139a7753",
+                "reference": "e06e6202768babaab053e7ab260d1e43139a7753",
                 "shasum": ""
             },
             "require": {
@@ -6363,7 +6363,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2019-07-01T10:03:18+00:00"
+            "time": "2019-08-20T08:21:08+00:00"
         },
         {
             "name": "sabre/event",
@@ -6629,16 +6629,16 @@
         },
         {
             "name": "sabre/xml",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/xml.git",
-                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7"
+                "reference": "f08a58f57e2b0d7df769a432756aa371417ab9eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/xml/zipball/e15454e68805e3713271ea58c0b2d6a82dac56b7",
-                "reference": "e15454e68805e3713271ea58c0b2d6a82dac56b7",
+                "url": "https://api.github.com/repos/sabre-io/xml/zipball/f08a58f57e2b0d7df769a432756aa371417ab9eb",
+                "reference": "f08a58f57e2b0d7df769a432756aa371417ab9eb",
                 "shasum": ""
             },
             "require": {
@@ -6650,7 +6650,7 @@
                 "sabre/uri": ">=1.0,<3.0.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "^6"
             },
             "type": "library",
             "autoload": {
@@ -6687,7 +6687,7 @@
                 "dom",
                 "xml"
             ],
-            "time": "2019-01-09T13:50:52+00:00"
+            "time": "2019-08-14T15:41:34+00:00"
         },
         {
             "name": "sentry/sdk",
