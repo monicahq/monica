@@ -618,8 +618,10 @@ class ImportVCard extends BaseService
                 // Gravatar
                 $contact->avatar_gravatar_url = (string) $entry->PHOTO;
             } elseif (! Str::startsWith((string) $entry->PHOTO, 'https://')
-                && ! Str::startsWith((string) $entry->PHOTO, 'http://')) {
+                && ! Str::startsWith((string) $entry->PHOTO, 'http://')
+                && ($contact->avatar_source != 'photo' || empty($contact->avatar_photo_id))) {
                 // Import photo image
+                // Skipping in case a photo avatar is already set
 
                 $array = [
                     'account_id' => $contact->account_id,
