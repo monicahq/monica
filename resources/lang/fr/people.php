@@ -472,7 +472,7 @@ return [
     'avatar_question' => 'Quelle photo de profil souhaitez-vous utiliser ?',
     'avatar_default_avatar' => 'La photo de profil par défaut',
     'avatar_adorable_avatar' => 'La photo de profil Adorable',
-    'avatar_gravatar' => 'Le Gravatar associé à l\'adresse couriel de cette personne. <a href="https://gravatar.com/">Gravatar</a> est un système global qui permet aux utilisateurs d\'associer des adresses couriel avec des photos.',
+    'avatar_gravatar' => 'Le Gravatar associé à l\'adresse courriel de cette personne. <a href="https://gravatar.com/">Gravatar</a> est un système global qui permet aux utilisateurs d\'associer des adresses courriel avec des photos.',
     'avatar_current' => 'Conserver la photo de profil actuelle',
     'avatar_photo' => 'À partir d\'une photo que vous téléchargez',
 
