@@ -79,7 +79,7 @@ class ActivitiesController extends Controller
         }
 
         // Log a journal entry
-        (new JournalEntry)->add($activity);
+        JournalEntry::add($activity);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_add_success'));

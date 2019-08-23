@@ -81,14 +81,6 @@ class Activity extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get all of the activities journal entries.
-     */
-    public function journalEntries()
-    {
-        return $this->morphMany(JournalEntry::class, 'journalable');
-    }
-
-    /**
      * Return the markdown parsed body.
      *
      * @return string|null
