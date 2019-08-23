@@ -5,6 +5,7 @@ return [
     'journal_come_back' => 'Grazie. Ritorna domani per valutare di nuovo la tua giornata.',
     'journal_description' => 'Nota: il diario mostra sia voci inserite manualmente che voci generate automaticamente come le Attività svolte con i tuoi contatti. Puoi eliminare le voci manuali, ma per quelle automatiche devi eliminarla direttamente dalla pagina del contatto.',
     'journal_add' => 'Scrivi nel diario',
+    'journal_edit' => 'Edit a journal entry',
     'journal_created_automatically' => 'Creata automaticamente',
     'journal_entry_type_journal' => 'Voce del diario',
     'journal_entry_type_activity' => 'Attività',
