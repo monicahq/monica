@@ -29,6 +29,7 @@
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
         <div class="col-12 col-sm-6 offset-sm-3 offset-sm-3-right downgrade">
+          @include('partials.errors')
 
           <h2>{{ trans('settings.subscriptions_downgrade_title') }}</h2>
 

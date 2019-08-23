@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
@@ -299,7 +297,6 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withWeather($contact->getWeather())
             ->withDays($days)
@@ -319,10 +316,12 @@ class ContactsController extends Controller
         $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
         $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
+        $deceaseddate = ! is_null($contact->deceasedDate) ? $contact->deceasedDate->date->toDateString() : '';
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
+        $hasDeceasedReminder = ! is_null($contact->deceased_reminder_id);
 
         return view('people.edit')
             ->withContact($contact)
@@ -330,10 +329,12 @@ class ContactsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
+            ->withDeceaseddate($deceaseddate)
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
+            ->withHasDeceasedReminder($hasDeceasedReminder)
             ->withGenders(GendersHelper::getGendersInput());
     }
 
@@ -361,6 +362,22 @@ class ContactsController extends Controller
             $month = $request->get('month');
             $year = $request->get('year');
         }
+        $is_deceased_date_known = false;
+        if ($request->get('is_deceased_date_known') === 'true' && $request->input('deceased_date')) {
+            $is_deceased_date_known = true;
+            $deceased_date = $request->input('deceased_date');
+            $deceased_date = DateHelper::parseDate($deceased_date);
+            $deceased_date_day = $deceased_date->day;
+            $deceased_date_month = $deceased_date->month;
+            $deceased_date_year = $deceased_date->year;
+        } else {
+            $deceased_date_day = $deceased_date_month = $deceased_date_year = null;
+        }
+        if (! empty($request->get('is_deceased'))) {
+            //if the contact has died, disable StayInTouch
+            $contact->updateStayInTouchFrequency(0);
+            $contact->setStayInTouchTriggerDate(0);
+        }
 
         $data = [
             'account_id' => auth()->user()->account->id,
@@ -378,10 +395,10 @@ class ContactsController extends Controller
             'birthdate_age' => $request->get('age'),
             'birthdate_add_reminder' => ! empty($request->get('addReminder')),
             'is_deceased' => ! empty($request->get('is_deceased')),
-            'is_deceased_date_known' => ! empty($request->get('is_deceased_date_known')),
-            'deceased_date_day' => $request->get('deceased_date_day'),
-            'deceased_date_month' => $request->get('deceased_date_month'),
-            'deceased_date_year' => $request->get('deceased_date_year'),
+            'is_deceased_date_known' => $is_deceased_date_known,
+            'deceased_date_day' => $deceased_date_day,
+            'deceased_date_month' => $deceased_date_month,
+            'deceased_date_year' => $deceased_date_year,
             'deceased_date_add_reminder' => ! empty($request->get('add_reminder_deceased')),
         ];
 
@@ -403,8 +420,6 @@ class ContactsController extends Controller
             $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
             $contact->save();
         }
-
-        dispatch(new ResizeAvatars($contact));
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
@@ -472,36 +487,35 @@ class ContactsController extends Controller
     }
 
     /**
-     * Show the Edit food preferencies view.
+     * Show the Edit food preferences view.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\View\View
      */
-    public function editFoodPreferencies(Request $request, Contact $contact)
+    public function editFoodPreferences(Request $request, Contact $contact)
     {
-        return view('people.food-preferencies.edit')
-            ->withAvatar(AvatarHelper::get($contact, 87))
+        return view('people.food-preferences.edit')
             ->withContact($contact);
     }
 
     /**
-     * Save the food preferencies.
+     * Save the food preferences.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateFoodPreferencies(Request $request, Contact $contact)
+    public function updateFoodPreferences(Request $request, Contact $contact)
     {
         $food = ! empty($request->get('food')) ? $request->get('food') : null;
 
-        $contact->updateFoodPreferencies($food);
+        $contact->updateFoodPreferences($food);
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.food_preferencies_add_success'));
+            ->with('success', trans('people.food_preferences_add_success'));
     }
 
     /**

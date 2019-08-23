@@ -46,7 +46,7 @@ class ApiLifeEventControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'life_event_type_id' => $lifeEventType->id,
-            'happened_at' => \Carbon\Carbon::now(),
+            'happened_at' => now(),
             'name' => 'This is a text',
             'note' => 'This is a text',
         ]);

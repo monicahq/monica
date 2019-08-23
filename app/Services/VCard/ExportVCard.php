@@ -102,6 +102,10 @@ class ExportVCard extends BaseService
      */
     private function exportGender(Contact $contact, VCard $vcard)
     {
+        if (is_null($contact->gender)) {
+            return;
+        }
+
         $gender = $contact->gender->type;
         if (empty($gender)) {
             switch ($contact->gender->name) {
@@ -126,7 +130,8 @@ class ExportVCard extends BaseService
     private function exportPhoto(Contact $contact, VCard $vcard)
     {
         $picture = $contact->getAvatarURL();
-        if (! is_null($picture)) {
+
+        if (! empty($picture)) {
             $vcard->add('PHOTO', $picture);
         }
     }

@@ -36,18 +36,15 @@ class DashboardController extends Controller
         $lastUpdatedContacts = $account->contacts()
             ->real()
             ->active()
-            ->latest('updated_at')
+            ->alive()
+            ->latest('last_consulted_at')
             ->limit(10)
             ->get();
         foreach ($lastUpdatedContacts as $contact) {
-            if ($contact->is_dead) {
-                continue;
-            }
-
             $data = [
                 'id' => $contact->hashID(),
                 'has_avatar' => $contact->has_avatar,
-                'avatar_url' => $contact->getAvatarURL(110),
+                'avatar_url' => $contact->getAvatarURL(),
                 'initials' => $contact->getInitials(),
                 'default_avatar_color' => $contact->default_avatar_color,
                 'complete_name' => $contact->name,
@@ -141,7 +138,7 @@ class DashboardController extends Controller
                 'contact' => [
                     'id' => $note->contact->hashID(),
                     'has_avatar' => $note->contact->has_avatar,
-                    'avatar_url' => $note->contact->getAvatarURL(110),
+                    'avatar_url' => $note->contact->getAvatarURL(),
                     'initials' => $note->contact->getInitials(),
                     'default_avatar_color' => $note->contact->default_avatar_color,
                     'complete_name' => $note->contact->name,

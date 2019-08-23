@@ -33,12 +33,18 @@
       <!-- LIST OF IN PROGRESS TASKS -->
       <ul>
         <li v-for="(task, i) in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
-          <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
-          {{ task.title }}
-          <span v-if="task.description" class="silver ml3">
-            {{ task.description }}
-          </span>
-
+          <form-checkbox
+            v-model.lazy="task.completed"
+            :name="'task'"
+            :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
+            @change="toggleComplete(task)"
+          >
+            {{ task.title }}
+            <span v-if="task.description" slot="extra" class="silver ml3">
+              {{ task.description }}
+            </span>
+          </form-checkbox>
+          
           <div v-if="editMode" class="di">
             <i class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(task)"></i>
             <i class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + task.id" @click="trash(task)"></i>
@@ -114,7 +120,12 @@
       <!-- LIST OF COMPLETED TASKS -->
       <ul>
         <li v-for="task in completed(tasks)" :key="task.id" class="f6" :cy-name="'task-item-completed-' + task.id">
-          <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
+          <form-checkbox
+            v-model.lazy="task.completed"
+            :name="'checkbox'"
+            :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
+            @change="toggleComplete(task)"
+          />
           <span class="light-silver mr1">
             {{ task.completed_at }}
           </span>

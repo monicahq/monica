@@ -53,9 +53,10 @@
 <template>
   <div v-if="item.id > 0" class="item-search-result" :data-contact="item.id" :data-name="item.name">
     <a :href="'/people/'+item.hash_id">
-      <img v-if="item.information.avatar.has_avatar"
-           :src="item.information.avatar.avatar_url"
+      <img v-if="check"
            class="avatar"
+           :src="item.information.avatar.url"
+           @error="check=false"
       />
       <div v-else
            class="avatar avatar-initials"
@@ -84,6 +85,11 @@ export default {
       required: true,
       default: null,
     },
-  }
+  },
+  data() {
+    return {
+      check: true,
+    };
+  },
 };
 </script>

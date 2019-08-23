@@ -93,7 +93,7 @@ export default {
     },
 
     select(contact) {
-      if (contact.item && contact.item.id > 0) {
+      if (contact.item && contact.item.id > 0 && this.filter(contact.item)) {
         this.items.push(contact.item);
       }
     },

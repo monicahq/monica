@@ -59,11 +59,12 @@ class DestroyMessageTest extends TestCase
     public function test_it_throws_an_exception_if_message_doesnt_exist()
     {
         $conversation = factory(Conversation::class)->create([]);
+        $message = factory(Message::class)->create([]);
 
         $request = [
             'account_id' => $conversation->account->id,
             'conversation_id' => $conversation->id,
-            'message_id' => -1,
+            'message_id' => $message->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);

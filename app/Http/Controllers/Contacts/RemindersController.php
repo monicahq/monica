@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
@@ -24,7 +23,6 @@ class RemindersController extends Controller
     {
         return view('people.reminders.add')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withReminder(new Reminder);
     }
 
@@ -66,7 +64,6 @@ class RemindersController extends Controller
     {
         return view('people.reminders.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withReminder($reminder);
     }
 

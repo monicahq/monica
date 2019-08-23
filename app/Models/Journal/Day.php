@@ -32,28 +32,6 @@ class Day extends Model implements IsJournalableInterface
     }
 
     /**
-     * Get the day's rate.
-     *
-     * @param  int  $value
-     * @return int
-     */
-    public function getRateAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Get the day's comment.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getCommentAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Get all the information of the Entry for the journal.
      * @return array
      */

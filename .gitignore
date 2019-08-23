@@ -21,3 +21,4 @@ monicadump.sql
 .scannerwork/
 .sentry-release
 .phpunit.result.cache
+.composer
