@@ -202,7 +202,9 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
 
         Route::get('/journal/add', 'JournalController@create')->name('create');
         Route::post('/journal/create', 'JournalController@save')->name('save');
-        Route::delete('/journal/{entryId}', 'JournalController@deleteEntry');
+        Route::get('/journal/entries/{entry}/edit', 'JournalController@edit')->name('edit');
+        Route::put('/journal/entries/{entry}', 'JournalController@update')->name('update');
+        Route::delete('/journal/{entry}', 'JournalController@deleteEntry');
     });
 
     Route::name('settings.')->group(function () {

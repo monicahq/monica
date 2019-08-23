@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Add ability to edit a Journal entry
 * Add vcard photo/avatar import
 * Add ability to change the avatar of your contacts
 * Add the ablity to set a 'me' contact (only API for now)

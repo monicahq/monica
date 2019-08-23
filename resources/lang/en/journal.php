@@ -5,6 +5,7 @@ return [
     'journal_come_back' => 'Thanks. Come back tomorrow to rate your day again.',
     'journal_description' => 'Note: the journal lists both manual journal entries, and automatic entries like Activities done with your contacts. While you can delete journal entries manually, you’ll have to delete the activity directly on the contact page.',
     'journal_add' => 'Add a journal entry',
+    'journal_edit' => 'Edit a journal entry',
     'journal_created_automatically' => 'Created automatically',
     'journal_entry_type_journal' => 'Journal entry',
     'journal_entry_type_activity' => 'Activity',
