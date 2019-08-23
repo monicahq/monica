@@ -18,7 +18,7 @@ class ApiOccupationController extends ApiController
     /**
      * Get the list of occupations.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,9 @@ class ApiOccupationController extends ApiController
     /**
      * Get the detail of a given occupation.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return OccupationResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $occupationId)
     {
@@ -55,13 +56,14 @@ class ApiOccupationController extends ApiController
     /**
      * Store the occupation.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return OccupationResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $occupation = (new CreateOccupation)->execute(
+            $occupation = app(CreateOccupation::class)->execute(
                 $request->all()
                     +
                     [
@@ -82,14 +84,15 @@ class ApiOccupationController extends ApiController
     /**
      * Update an occupation.
      *
-     * @param  Request $request
-     * @param  int $occupationId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $occupationId
+     *
+     * @return OccupationResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $occupationId)
     {
         try {
-            $occupation = (new UpdateOccupation)->execute(
+            $occupation = app(UpdateOccupation::class)->execute(
                 $request->all()
                     +
                     [
@@ -111,13 +114,14 @@ class ApiOccupationController extends ApiController
     /**
      * Delete an occupation.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $occupationId)
     {
         try {
-            (new DestroyOccupation)->execute([
+            app(DestroyOccupation::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'occupation_id' => $occupationId,
             ]);

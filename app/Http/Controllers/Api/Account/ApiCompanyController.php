@@ -18,7 +18,7 @@ class ApiCompanyController extends ApiController
     /**
      * Get the list of companies.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,9 @@ class ApiCompanyController extends ApiController
     /**
      * Get the detail of a given company.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return CompanyResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $companyId)
     {
@@ -55,13 +56,14 @@ class ApiCompanyController extends ApiController
     /**
      * Store the company.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return CompanyResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $company = (new CreateCompany)->execute(
+            $company = app(CreateCompany::class)->execute(
                 $request->all()
                     +
                     [
@@ -82,14 +84,15 @@ class ApiCompanyController extends ApiController
     /**
      * Update a company.
      *
-     * @param  Request $request
-     * @param  int $companyId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $companyId
+     *
+     * @return CompanyResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $companyId)
     {
         try {
-            $company = (new UpdateCompany)->execute(
+            $company = app(UpdateCompany::class)->execute(
                 $request->all()
                     +
                     [
@@ -111,13 +114,14 @@ class ApiCompanyController extends ApiController
     /**
      * Delete a company.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $companyId)
     {
         try {
-            (new DestroyCompany)->execute([
+            app(DestroyCompany::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'company_id' => $companyId,
             ]);

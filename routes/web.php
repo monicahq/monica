@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -28,10 +29,10 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::middleware(['auth', '2fa'])->group(function () {
-    Route::post('/validate2fa', 'Auth\Validate2faController@index');
+    Route::post('/validate2fa', 'Auth\Validate2faController@index')->name('validate2fa');
 });
 
-Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
+Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
     Route::name('dashboard.')->group(function () {
         Route::get('/dashboard', 'DashboardController@index')->name('index');
         Route::get('/dashboard/calls', 'DashboardController@calls');
@@ -63,13 +64,18 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         Route::put('/people/{contact}', 'ContactsController@update')->name('update');
         Route::delete('/people/{contact}', 'ContactsController@destroy')->name('destroy');
 
+        // Avatar
+        Route::get('/people/{contact}/avatar', 'Contacts\\AvatarController@edit')->name('avatar.edit');
+        Route::post('/people/{contact}/avatar', 'Contacts\\AvatarController@update')->name('avatar.update');
+        Route::post('/people/{contact}/makeProfilePicture/{photo}', 'Contacts\\AvatarController@photo')->name('avatar.photo');
+
         // Life events
         Route::name('lifeevent.')->group(function () {
             Route::get('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@index')->name('index');
             Route::get('/lifeevents/categories', 'Contacts\\LifeEventsController@categories')->name('categories');
             Route::get('/lifeevents/categories/{lifeEventCategory}/types', 'Contacts\\LifeEventsController@types')->name('types');
             Route::post('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@store')->name('store');
-            Route::delete('/lifeevents/{lifeevent}', 'Contacts\\LifeEventsController@destroy')->name('destroy');
+            Route::delete('/lifeevents/{lifeEvent}', 'Contacts\\LifeEventsController@destroy')->name('destroy');
         });
 
         // Contact information
@@ -114,19 +120,16 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         ]);
         Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
 
-        // Food preferencies
+        // Food preferences
         Route::name('food.')->group(function () {
-            Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('index');
-            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('update');
+            Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferences')->name('index');
+            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferences')->name('update');
         });
 
         // Relationships
-        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only(['create', 'store']);
-        Route::name('relationships.')->group(function () {
-            Route::get('/people/{contact}/relationships/{otherContact}/edit', 'Contacts\\RelationshipsController@edit')->name('edit');
-            Route::put('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@update')->name('update');
-            Route::delete('/people/{contact}/relationships/{otherContact}', 'Contacts\\RelationshipsController@destroy')->name('destroy');
-        });
+        Route::resource('people/{contact}/relationships', 'Contacts\\RelationshipsController')->only([
+            'create', 'store', 'edit', 'update', 'destroy',
+        ]);
 
         // Pets
         Route::resource('people/{contact}/pets', 'Contacts\\PetsController')->only([
@@ -200,7 +203,9 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
         Route::get('/journal/add', 'JournalController@create')->name('create');
         Route::post('/journal/create', 'JournalController@save')->name('save');
-        Route::delete('/journal/{entryId}', 'JournalController@deleteEntry');
+        Route::get('/journal/entries/{entry}/edit', 'JournalController@edit')->name('edit');
+        Route::put('/journal/entries/{entry}', 'JournalController@update')->name('update');
+        Route::delete('/journal/{entry}', 'JournalController@deleteEntry');
     });
 
     Route::name('settings.')->group(function () {
@@ -218,6 +223,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
 
             Route::apiResource('settings/personalization/genders', 'Settings\\GendersController');
             Route::delete('/settings/personalization/genders/{gender}/replaceby/{genderToReplaceWith}', 'Settings\\GendersController@destroyAndReplaceGender');
+            Route::get('/settings/personalization/genderTypes', 'Settings\\GendersController@types');
+            Route::put('/settings/personalization/genders/default/{gender}', 'Settings\\GendersController@updateDefault');
 
             Route::get('/settings/personalization/reminderrules', 'Settings\\ReminderRulesController@index');
             Route::post('/settings/personalization/reminderrules/{reminderRule}', 'Settings\\ReminderRulesController@toggle');
@@ -225,8 +232,8 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/personalization/modules', 'Settings\\ModulesController@index');
             Route::post('/settings/personalization/modules/{module}', 'Settings\\ModulesController@toggle');
 
-            Route::apiResource('settings/personalization/activitytypecategories', 'Settings\\ActivityTypeCategoriesController');
-            Route::apiResource('settings/personalization/activitytypes', 'Settings\\ActivityTypesController', ['except' => ['index']]);
+            Route::apiResource('settings/personalization/activitytypecategories', 'Account\\Activity\\ActivityTypeCategoriesController');
+            Route::apiResource('settings/personalization/activitytypes', 'Account\\Activity\\ActivityTypesController', ['except' => ['index']]);
         });
 
         Route::get('/settings/export', 'SettingsController@export')->name('export');
@@ -252,11 +259,15 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
             Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('index');
             Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('upgrade');
             Route::get('/settings/subscriptions/upgrade/success', 'Settings\\SubscriptionsController@upgradeSuccess')->name('upgrade.success');
+            Route::get('/settings/subscriptions/confirmPayment/{id}', 'Settings\\SubscriptionsController@confirmPayment')->name('confirm');
             Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment')->name('payment');
             Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice')->name('invoice');
             Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('downgrade');
             Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
             Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('downgrade.success');
+            if (! App::environment('production')) {
+                Route::get('/settings/subscriptions/forceCompletePaymentOnTesting', 'Settings\\SubscriptionsController@forceCompletePaymentOnTesting')->name('forceCompletePaymentOnTesting');
+            }
         });
 
         Route::name('tags.')->group(function () {
@@ -266,6 +277,7 @@ Route::middleware(['auth', 'verified', 'u2f', '2fa'])->group(function () {
         });
 
         Route::get('/settings/api', 'SettingsController@api')->name('api');
+        Route::get('/settings/dav', 'SettingsController@dav')->name('dav');
 
         Route::post('/settings/updateDefaultProfileView', 'SettingsController@updateDefaultProfileView');
 

@@ -14,7 +14,7 @@
             {{ $t('settings.api_oauth_title') }}
           </span>
 
-          <a class="btn" @click="showCreateClientForm">
+          <a class="btn" href="" @click.prevent="showCreateClientForm">
             {{ $t('settings.api_oauth_create_new') }}
           </a>
         </div>
@@ -58,14 +58,14 @@
 
               <!-- Edit Button -->
               <td style="vertical-align: middle;">
-                <a class="action-link" @click="edit(client)">
+                <a class="action-link" href="" @click.prevent="edit(client)">
                   {{ $t('app.edit') }}
                 </a>
               </td>
 
               <!-- Delete Button -->
               <td style="vertical-align: middle;">
-                <a class="action-link text-danger" @click="destroy(client)">
+                <a class="action-link text-danger" href="" @click.prevent="destroy(client)">
                   {{ $t('app.delete') }}
                 </a>
               </td>
@@ -97,7 +97,7 @@
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label for="create-client-name" class="col-md-3 control-label">
+                <label for="create-client-name" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -114,7 +114,7 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label for="create-redirect-url" class="col-md-3 control-label">
+                <label for="create-redirect-url" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 
@@ -167,7 +167,7 @@
             <form class="form-horizontal" role="form">
               <!-- Name -->
               <div class="form-group">
-                <label for="edit-client-name" class="col-md-3 control-label">
+                <label for="edit-client-name" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_name') }}
                 </label>
 
@@ -184,7 +184,7 @@
 
               <!-- Redirect URL -->
               <div class="form-group">
-                <label for="edit-redirect-url" class="col-md-3 control-label">
+                <label for="edit-redirect-url" class="col-md-3 col-form-label">
                   {{ $t('settings.api_oauth_redirecturl') }}
                 </label>
 
@@ -271,7 +271,7 @@ export default {
       * Get all of the OAuth clients for the user.
       */
     getClients() {
-      axios.get('/oauth/clients')
+      axios.get('oauth/clients')
         .then(response => {
           this.clients = response.data;
         });
@@ -289,7 +289,7 @@ export default {
       */
     store() {
       this.persistClient(
-        'post', '/oauth/clients',
+        'post', 'oauth/clients',
         this.createForm, '#modal-create-client'
       );
     },
@@ -310,7 +310,7 @@ export default {
       */
     update() {
       this.persistClient(
-        'put', '/oauth/clients/' + this.editForm.id,
+        'put', 'oauth/clients/' + this.editForm.id,
         this.editForm, '#modal-edit-client'
       );
     },
@@ -344,7 +344,7 @@ export default {
       * Destroy the given client.
       */
     destroy(client) {
-      axios.delete('/oauth/clients/' + client.id)
+      axios.delete('oauth/clients/' + client.id)
         .then(response => {
           this.getClients();
         });

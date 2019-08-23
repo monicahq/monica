@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => '联系人未找到',
     'people_list_number_kids' => ':count 个孩子',
     'people_list_last_updated' => '最近更新:',
     'people_list_number_reminders' => ':count 个提醒',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => '显示已故人员 (:count)',
     'people_list_hide_dead' => '隐藏已故人员 (:count)',
     'people_search' => '搜索联系人...',
-    'people_search_no_results' => '未找到相关联系人:(',
+    'people_search_no_results' => '未找到任何结果',
+    'people_add_new' => '添加新的联系人',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
     'people_list_account_upgrade_title' => '升级您的帐户, 以打开全部功能。',
     'people_list_account_upgrade_cta' => '立即升级',
@@ -150,14 +152,14 @@ return [
     'work_edit_company' => '公司 (可选)',
     'work_information' => '工作信息',
 
-    // food preferencies
-    'food_preferencies_add_success' => '食品偏好已被保存',
-    'food_preferencies_edit_description' => '也许:firstname或:family的家庭有过敏，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
-    'food_preferencies_edit_description_no_last_name' => '也许:firstname有过敏情况，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
-    'food_preferencies_edit_title' => '注明食物偏好',
-    'food_preferencies_edit_cta' => '保存食物偏好',
-    'food_preferencies_title' => '食物偏好',
-    'food_preferencies_cta' => '添加食物偏好',
+    // food preferences
+    'food_preferences_add_success' => '食品偏好已被保存',
+    'food_preferences_edit_description' => '也许:firstname或:family的家庭有过敏，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
+    'food_preferences_edit_description_no_last_name' => '也许:firstname有过敏情况，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
+    'food_preferences_edit_title' => '注明食物偏好',
+    'food_preferences_edit_cta' => '保存食物偏好',
+    'food_preferences_title' => '食物偏好',
+    'food_preferences_cta' => '添加食物偏好',
 
     // reminders
     'reminders_blank_title' => '您有什么关于:name的提醒吗？',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => '添加一个新的关系',
     'relationship_form_edit' => '修改一个已有关系',
     'relationship_form_is_with' => '这个人是...',
+    'relationship_form_is_with_name' => ':name 是...',
     'relationship_form_add_choice' => '这是与谁的关系？',
     'relationship_form_create_contact' => '添加一个新的人',
     'relationship_form_associate_contact' => '导入一位已存在的联系人',

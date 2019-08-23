@@ -9,7 +9,7 @@
   <div>
     <notifications group="archive" position="bottom right" :duration="5000" width="400" />
 
-    <a class="pointer" :title="$t('people.contact_archive_help')" @click="toggle">
+    <a class="pointer" :title="$t('people.contact_archive_help')" href="" @click.prevent="toggle">
       {{ isActive ? $t('people.contact_archive') : $t('people.contact_unarchive') }}
     </a>
 
@@ -49,7 +49,7 @@ export default {
     },
 
     toggle() {
-      axios.put('/people/' + this.hash + '/archive')
+      axios.put('people/' + this.hash + '/archive')
         .then(response => {
           this.isActive = response.data.is_active;
 

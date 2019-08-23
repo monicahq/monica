@@ -16,9 +16,10 @@ class ApiContactFieldController extends ApiController
     /**
      * Get the detail of a given contactField.
      *
-     * @param  Request $request
-     * @param  int $contactFieldId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $contactFieldId
+     *
+     * @return ContactFieldResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $contactFieldId)
     {
@@ -35,8 +36,9 @@ class ApiContactFieldController extends ApiController
     /**
      * Store the contactField.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return ContactFieldResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -60,9 +62,10 @@ class ApiContactFieldController extends ApiController
     /**
      * Update the contactField.
      *
-     * @param  Request $request
-     * @param  int $contactFieldId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $contactFieldId
+     *
+     * @return ContactFieldResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $contactFieldId)
     {
@@ -91,7 +94,7 @@ class ApiContactFieldController extends ApiController
      * Validate the request for update.
      *
      * @param  Request $request
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateUpdate(Request $request)
     {
@@ -126,9 +129,10 @@ class ApiContactFieldController extends ApiController
     /**
      * Delete a contactField.
      *
-     * @param  Request $request
-     * @param  int $contactFieldId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $contactFieldId
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $contactFieldId)
     {
@@ -148,9 +152,10 @@ class ApiContactFieldController extends ApiController
     /**
      * Get the list of contact fields for the given contact.
      *
-     * @param  Request $request
-     * @param  int $contactFieldId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function contactFields(Request $request, $contactId)
     {

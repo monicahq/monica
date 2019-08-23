@@ -2,7 +2,7 @@
 <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
   <div class="w-100 dt">
     <div class="dtc">
-      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_'.auth()->user()->account->getRelationshipTypeGroupByType('love')->name) }}</h3>
+      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_love') }}</h3>
     </div>
   </div>
 
@@ -19,7 +19,7 @@
 <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
   <div class="w-100 dt">
     <div class="dtc">
-      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_'.auth()->user()->account->getRelationshipTypeGroupByType('family')->name) }}</h3>
+      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_family') }}</h3>
     </div>
   </div>
 

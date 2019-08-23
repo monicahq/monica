@@ -4,6 +4,7 @@ namespace App\Services\Account\Gender;
 
 use App\Services\BaseService;
 use App\Models\Contact\Gender;
+use Illuminate\Validation\Rule;
 
 class UpdateGender extends BaseService
 {
@@ -18,6 +19,10 @@ class UpdateGender extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'gender_id' => 'required|integer|exists:genders,id',
             'name' => 'required|string|max:255',
+            'type' => [
+                'required',
+                Rule::in([Gender::MALE, Gender::FEMALE, Gender::OTHER]),
+            ],
         ];
     }
 
@@ -36,6 +41,7 @@ class UpdateGender extends BaseService
 
         $gender->update([
             'name' => $data['name'],
+            'type' => $data['type'],
         ]);
 
         return $gender;

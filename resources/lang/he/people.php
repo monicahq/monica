@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'איש הקשר לא נמצא',
     'people_list_number_kids' => 'ילד אחד|:count ילדים',
     'people_list_last_updated' => 'יעוץ אחרון:',
     'people_list_number_reminders' => 'תזכורת אחת|:count תזכורות',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'הצגת מנוחים (:count)',
     'people_list_hide_dead' => 'הסתרת מנוחים (:count)',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
-    'people_search_no_results' => 'לא נמצאי אנשי קשר מתאימים :(',
+    'people_search_no_results' => 'לא נמצאו תוצאות',
+    'people_add_new' => 'הוספת אדם חדש',
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
     'people_list_account_upgrade_title' => 'ניתן לשדרג את החשבון שלך כדי ליהנות משפע התכונות שיש לנו להציע.',
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
@@ -150,14 +152,14 @@ return [
     'work_edit_company' => 'חברה (רשות)',
     'work_information' => 'פרטי תעסוקה',
 
-    // food preferencies
-    'food_preferencies_add_success' => 'העדפות המזון נשמרו',
-    'food_preferencies_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
-    'food_preferencies_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
-    'food_preferencies_edit_title' => 'ציון העדפות מזון',
-    'food_preferencies_edit_cta' => 'שמירת העדפות מזון',
-    'food_preferencies_title' => 'העדפות מזון',
-    'food_preferencies_cta' => 'הוספת העדפות מזון',
+    // food preferences
+    'food_preferences_add_success' => 'העדפות המזון נשמרו',
+    'food_preferences_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
+    'food_preferences_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
+    'food_preferences_edit_title' => 'ציון העדפות מזון',
+    'food_preferences_edit_cta' => 'שמירת העדפות מזון',
+    'food_preferences_title' => 'העדפות מזון',
+    'food_preferences_cta' => 'הוספת העדפות מזון',
 
     // reminders
     'reminders_blank_title' => 'יש משהו שברצונך לקבל עליו תזכורת בנוגע ל־:name?',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'הוספת קשר חדש',
     'relationship_form_edit' => 'עריכת קשר קיים',
     'relationship_form_is_with' => 'איש הקשר הוא…',
+    'relationship_form_is_with_name' => ':name…',
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',
@@ -244,7 +247,7 @@ return [
     'activities_add_title' => 'מה עשית עם :name?',
     'activities_summary' => 'נא לתאר את אופן הפעילות',
     'activities_add_pick_activity' => '(רשות) האם ברצונך לסווג את הפעילות הזאת? לא חובה אך סיווג יאפשר לך לערוך סטטיסטיקה בהמשך',
-    'activities_add_date_occured' => 'המועד בו הפעילות קרתה',
+    'activities_add_date_occured' => 'המועד בו התרחש האירוע',
     'activities_add_optional_comment' => 'הערת רשות',
     'activities_add_cta' => 'תיעוד פעילות',
     'activities_blank_title' => 'מעקב אחר מה שעשית עם :name בעבר ועל מה דיברתם',
@@ -423,7 +426,7 @@ return [
     'life_event_sentence_home_improvement' => 'עריכת שיפוץ',
     'life_event_sentence_holidays' => 'יציאה לחופש',
     'life_event_sentence_new_vehicle' => 'קבלת כלי רכב חדש',
-    'life_event_sentence_new_roommate' => 'התווספות שותפות',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
     'life_event_sentence_overcame_an_illness' => 'החלמה ממחלה',
     'life_event_sentence_quit_a_habit' => 'גמילה',
     'life_event_sentence_new_eating_habits' => 'אימוץ הרגלי אכילה חדשים',

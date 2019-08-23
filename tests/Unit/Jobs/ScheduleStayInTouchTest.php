@@ -7,7 +7,6 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Mail;
 use App\Notifications\StayInTouchEmail;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -50,7 +49,7 @@ class ScheduleStayInTouchTest extends TestCase
         $notifications = NotificationFacade::sent($user, StayInTouchEmail::class);
         $message = $notifications[0]->toMail($user);
 
-        $this->assertArraySubset(['You asked to be reminded to stay in touch with John Doe every 5 days.'], $message->introLines);
+        $this->assertStringContainsString('You asked to be reminded to stay in touch with John Doe every 5 days.', implode('', $message->introLines));
 
         $this->assertDatabaseHas('contacts', [
             'stay_in_touch_trigger_date' => '2017-01-06 07:00:00',

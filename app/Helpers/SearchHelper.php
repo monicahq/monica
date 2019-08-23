@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use function Safe\preg_match;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contact\ContactFieldType;
@@ -13,7 +14,7 @@ class SearchHelper
      *
      * @param  string $query
      * @param  int $limitPerPage
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return mixed
      */
     public static function searchContacts($query, $limitPerPage, $order)
     {

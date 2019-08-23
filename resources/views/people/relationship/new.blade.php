@@ -99,9 +99,10 @@
         <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
           <form-select
             :options="{{ $genders }}"
-            :required="true"
+            :required="false"
             :title="'{{ trans('people.people_add_gender') }}'"
-            :id="'gender_id'">
+            :id="'gender_id'"
+            :value="'{{ $defaultGender }}'">
           </form-select>
         </div>
 
@@ -109,16 +110,22 @@
         <form-specialdate
           :months="{{ $months }}"
           :days="{{ $days }}"
-          :default-date="'{{ $birthdate }}'"
-          :locale="'{{ auth()->user()->locale }}'"
+          :birthdate="'{{ $birthdate }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <label class="pa0 ma0 lh-copy pointer" for="realContact">
-              <input type="checkbox" id="realContact" name="realContact"> {{ trans('people.relationship_form_also_create_contact') }} <span class="silver">{{ trans('people.relationship_form_add_description') }}</span>
-            </label>
-          </div>
+          <form-checkbox
+            :name="'realContact'"
+            :iclass="'pa0 ma0 lh-copy'"
+            :dclass="'mb3 mb0-ns flex'"
+          >
+            <template slot="label">
+              {{ trans('people.relationship_form_also_create_contact') }}
+            </template>
+            <span slot="extra" class="silver">
+              {{ trans('people.relationship_form_add_description') }}
+            </span>
+          </form-checkbox>
         </div>
       </div>
 
@@ -126,7 +133,7 @@
         <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
           @if ($existingContacts->count() == 0)
             <div class="mb1 mt2 tc">
-              <img src="/img/people/no_record_found.svg">
+              <img src="img/people/no_record_found.svg">
               <p>{{ trans('people.relationship_form_add_no_existing_contact', ['name' => $contact->first_name]) }}</p>
             </div>
           @else
@@ -135,7 +142,7 @@
               :title="'{{ trans('people.relationship_form_associate_dropdown') }}'"
               :name="'existing_contact_id'"
               :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
-              :default-options="{{ $existingContacts }}"
+              :default-options="{{ json_encode($existingContacts) }}"
               :user-contact-id="'{{ $contact->id }}'">
             </contact-select>
           @endif
@@ -148,7 +155,7 @@
           :options="{{ $relationshipTypes }}"
           value="{{ $type }}"
           :required="true"
-          :title="'{{ trans('people.relationship_form_is_with', ['name' => $contact->name]) }}'"
+          :title="'{{ trans('people.relationship_form_is_with') }}'"
           :id="'relationship_type_id'">
         </form-select>
       </div>
@@ -157,7 +164,7 @@
       <div class="ph4-ns ph3 pv3 bb b--gray-monica">
         <div class="flex-ns justify-between">
           <div>
-            <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns">{{ trans('app.cancel') }}</a>
+            <a href="{{ route('people.show', $contact) }}" class="btn btn-secondary w-auto-ns w-100 mb2 pb0-ns" style="text-align: center;">{{ trans('app.cancel') }}</a>
           </div>
           <div>
             @if ($existingContacts->count() == 0)

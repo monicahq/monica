@@ -32,7 +32,7 @@ class CreatePlace extends BaseService
      * Create a place.
      *
      * @param array $data
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place
      */
     public function execute(array $data, GuzzleClient $client = null) : Place
@@ -61,12 +61,12 @@ class CreatePlace extends BaseService
      * Get geocoding information about the place (lat/longitude).
      *
      * @param Place $place
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
-     * @return void|null
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
+     * @return void
      */
     private function getGeocodingInfo(Place $place, GuzzleClient $client = null)
     {
-        (new GetGPSCoordinate)->execute([
+        app(GetGPSCoordinate::class)->execute([
             'account_id' => $place->account_id,
             'place_id' => $place->id,
         ], $client);

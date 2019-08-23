@@ -21,14 +21,14 @@ class PopulateContactFieldTypesTableTest extends TestCase
         ];
 
         $this->expectException(\Exception::class);
-        (new PopulateContactFieldTypesTable)->execute($request);
+        app(PopulateContactFieldTypesTable::class)->execute($request);
 
         $request = [
             'migrate_existing_data' => false,
         ];
 
         $this->expectException(ValidationException::class);
-        (new PopulateContactFieldTypesTable)->execute($request);
+        app(PopulateContactFieldTypesTable::class)->execute($request);
     }
 
     public function test_it_populate_contact_field_types_tables()
@@ -51,7 +51,7 @@ class PopulateContactFieldTypesTableTest extends TestCase
             'migrate_existing_data' => false,
         ];
 
-        (new PopulateContactFieldTypesTable)->execute($request);
+        app(PopulateContactFieldTypesTable::class)->execute($request);
 
         $this->assertEquals(
             $number + 1,
@@ -81,7 +81,7 @@ class PopulateContactFieldTypesTableTest extends TestCase
             'migrate_existing_data' => true,
         ];
 
-        (new PopulateContactFieldTypesTable)->execute($request);
+        app(PopulateContactFieldTypesTable::class)->execute($request);
 
         $this->assertEquals(
             $numberOfContactFieldTypesAssociatedWithAccount + $numberOfDefault,

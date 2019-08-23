@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -28,7 +27,7 @@ class CreateLifeEventTest extends TestCase
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
             'life_event_type_id' => $lifeEventType->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
             'name' => 'This is a name',
             'note' => 'This is a note',
             'has_reminder' => false,
@@ -36,8 +35,7 @@ class CreateLifeEventTest extends TestCase
             'happened_at_month_unknown' => false,
         ];
 
-        $lifeEventService = new CreateLifeEvent;
-        $lifeEvent = $lifeEventService->execute($request);
+        $lifeEvent = app(CreateLifeEvent::class)->execute($request);
 
         $this->assertDatabaseHas('life_events', [
             'id' => $lifeEvent->id,
@@ -66,7 +64,7 @@ class CreateLifeEventTest extends TestCase
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
             'life_event_type_id' => $lifeEventType->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
             'name' => 'This is a name',
             'note' => 'This is a note',
             'has_reminder' => true,
@@ -74,8 +72,7 @@ class CreateLifeEventTest extends TestCase
             'happened_at_month_unknown' => false,
         ];
 
-        $lifeEventService = new CreateLifeEvent;
-        $lifeEvent = $lifeEventService->execute($request);
+        $lifeEvent = app(CreateLifeEvent::class)->execute($request);
 
         $this->assertDatabaseHas('reminders', [
             'id' => $lifeEvent->reminder->id,
@@ -92,13 +89,12 @@ class CreateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
 
-        $createLifeEvent = new CreateLifeEvent;
-        $lifeEvent = $createLifeEvent->execute($request);
+        app(CreateLifeEvent::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
@@ -115,12 +111,12 @@ class CreateLifeEventTest extends TestCase
             'has_reminder' => false,
             'happened_at_day_unknown' => false,
             'happened_at_month_unknown' => false,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createLifeEvent = (new CreateLifeEvent)->execute($request);
+        app(CreateLifeEvent::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_life_event_type_is_not_linked_to_account()
@@ -137,12 +133,11 @@ class CreateLifeEventTest extends TestCase
             'has_reminder' => false,
             'happened_at_day_unknown' => false,
             'happened_at_month_unknown' => false,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $createLifeEvent = new CreateLifeEvent;
-        $lifeEvent = $createLifeEvent->execute($request);
+        app(CreateLifeEvent::class)->execute($request);
     }
 }

@@ -41,8 +41,7 @@ class DestroyTagTest extends TestCase
             'tag_id' => $tag->id,
         ];
 
-        $destroyTagService = new DestroyTag;
-        $destroyTagService->execute($request);
+        app(DestroyTag::class)->execute($request);
 
         $this->assertDatabaseMissing('contact_tag', [
             'account_id' => $contact->account->id,
@@ -63,8 +62,7 @@ class DestroyTagTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $destroyTagService = new DestroyTag;
-        $tag = $destroyTagService->execute($request);
+        app(DestroyTag::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_tag_does_not_exist()
@@ -77,6 +75,6 @@ class DestroyTagTest extends TestCase
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        $destroyTagService = (new DestroyTag)->execute($request);
+        app(DestroyTag::class)->execute($request);
     }
 }

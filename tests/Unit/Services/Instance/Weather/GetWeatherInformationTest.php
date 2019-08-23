@@ -37,7 +37,7 @@ class GetWeatherInformationTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $weather = (new GetWeatherInformation)->execute($request, $client);
+        $weather = app(GetWeatherInformation::class)->execute($request, $client);
 
         $this->assertDatabaseHas('weather', [
             'id' => $weather->id,
@@ -70,7 +70,7 @@ class GetWeatherInformationTest extends TestCase
         ];
 
         $this->expectException(MissingEnvVariableException::class);
-        (new GetWeatherInformation)->execute($request);
+        app(GetWeatherInformation::class)->execute($request);
     }
 
     public function test_it_cant_get_weather_info_if_darksky_api_key_not_provided()
@@ -88,7 +88,7 @@ class GetWeatherInformationTest extends TestCase
         ];
 
         $this->expectException(MissingEnvVariableException::class);
-        (new GetWeatherInformation)->execute($request);
+        app(GetWeatherInformation::class)->execute($request);
     }
 
     public function test_it_cant_get_weather_info_if_latitude_longitude_are_null()
@@ -103,7 +103,7 @@ class GetWeatherInformationTest extends TestCase
             'place_id' => $place->id,
         ];
 
-        $this->assertNull((new GetWeatherInformation)->execute($request));
+        $this->assertNull(app(GetWeatherInformation::class)->execute($request));
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -114,6 +114,6 @@ class GetWeatherInformationTest extends TestCase
         $request = [];
 
         $this->expectException(ValidationException::class);
-        (new GetWeatherInformation)->execute($request);
+        app(GetWeatherInformation::class)->execute($request);
     }
 }

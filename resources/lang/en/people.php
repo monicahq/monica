@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 kid|:count kids',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '1 reminder|:count reminders',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Show deceased people (:count)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Search your contacts...',
-    'people_search_no_results' => 'No relevant contacts found :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
@@ -62,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Edit contact information',
     'contact_archive' => 'Archive contact',
     'contact_unarchive' => 'Unarchive contact',
@@ -111,6 +114,7 @@ return [
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Add another message',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Conversations',
@@ -131,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'The profile has been updated successfully',
     'information_edit_title' => 'Edit :name’s personal information',
-    'information_edit_avatar' => 'Photo/avatar of the contact',
     'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'First name',
     'information_edit_lastname' => 'Last name (Optional)',
     'information_edit_description' => 'Description (Optional)',
@@ -150,14 +154,14 @@ return [
     'work_edit_company' => 'Company (optional)',
     'work_information' => 'Work information',
 
-    // food preferencies
-    'food_preferencies_add_success' => 'Food preferences have been saved',
-    'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_title' => 'Indicate food preferences',
-    'food_preferencies_edit_cta' => 'Save food preferences',
-    'food_preferencies_title' => 'Food preferences',
-    'food_preferencies_cta' => 'Add food preferences',
+    // food preferences
+    'food_preferences_add_success' => 'Food preferences have been saved',
+    'food_preferences_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferences_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferences_edit_title' => 'Indicate food preferences',
+    'food_preferences_edit_cta' => 'Save food preferences',
+    'food_preferences_title' => 'Food preferences',
+    'food_preferences_cta' => 'Add food preferences',
 
     // reminders
     'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
@@ -196,6 +200,7 @@ return [
     'relationship_form_add' => 'Add a new relationship',
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
@@ -244,7 +249,7 @@ return [
     'activities_add_title' => 'What did you do with :name?',
     'activities_summary' => 'Describe what you did',
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
-    'activities_add_date_occured' => 'Date this activity occured',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'Optional comment',
     'activities_add_cta' => 'Record activity',
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
@@ -367,7 +372,7 @@ return [
     // Pets
     'pets_kind' => 'Kind of pet',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
     'pets_title' => 'Pets',
@@ -423,8 +428,8 @@ return [
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'Went on holidays',
     'life_event_sentence_new_vehicle' => 'Got a new vehicle',
-    'life_event_sentence_new_roommate' => 'Got a roomate',
-    'life_event_sentence_overcame_an_illness' => 'Overcam an illness',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'Quit a habit',
     'life_event_sentence_new_eating_habits' => 'Started new eating habits',
     'life_event_sentence_weight_loss' => 'Lost weight',
@@ -458,7 +463,18 @@ return [
     'photo_list_cta' => 'Upload photo',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
     'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',

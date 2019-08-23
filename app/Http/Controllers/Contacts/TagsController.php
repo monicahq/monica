@@ -15,7 +15,8 @@ class TagsController extends Controller
      * Get the list of all the tags in the account.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -28,7 +29,8 @@ class TagsController extends Controller
      * Get the list of all the tags for this contact.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function get(Request $request, Contact $contact)
     {
@@ -43,16 +45,16 @@ class TagsController extends Controller
      * @param Request $request
      * @param Contact $contact
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function update(Request $request, Contact $contact)
+    public function update(Request $request, Contact $contact): void
     {
         $tags = $request->all();
 
         // detaching all the tags
         $contactTags = $contact->tags()->get();
         foreach ($contactTags as $tag) {
-            (new DetachTag)->execute([
+            app(DetachTag::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'contact_id' => $contact->id,
                 'tag_id' => $tag->id,
@@ -62,7 +64,7 @@ class TagsController extends Controller
         // attach all the new/updated tags
         foreach ($tags as $tag) {
             if (! empty($tag['name'])) {
-                (new AssociateTag)->execute([
+                app(AssociateTag::class)->execute([
                     'account_id' => auth()->user()->account->id,
                     'contact_id' => $contact->id,
                     'name' => $tag['name'],

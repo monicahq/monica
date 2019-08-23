@@ -15,7 +15,7 @@ class ApiDocumentController extends ApiController
     /**
      * Get the list of documents.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -33,7 +33,7 @@ class ApiDocumentController extends ApiController
     /**
      * Get the list of documents for a specific contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function documents(Request $request, $contactId)
     {
@@ -60,8 +60,9 @@ class ApiDocumentController extends ApiController
     /**
      * Get the detail of a given document.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return DocumentResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $documentId)
     {

@@ -2,8 +2,10 @@
 
 namespace App\Services\Instance\Geolocalization;
 
+use Illuminate\Support\Str;
 use App\Models\Account\Place;
 use App\Services\BaseService;
+use function Safe\json_decode;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ClientException;
@@ -30,7 +32,7 @@ class GetGPSCoordinate extends BaseService
      * This method uses LocationIQ to process the geocoding.
      *
      * @param array $data
-     * @param GuzzleClient the Guzzle client, only needed when unit testing
+     * @param GuzzleClient $client the Guzzle client, only needed when unit testing
      * @return Place|null
      */
     public function execute(array $data, GuzzleClient $client = null)
@@ -71,7 +73,7 @@ class GetGPSCoordinate extends BaseService
             'q' => $place->getAddressAsString(),
         ]);
 
-        return str_finish(config('location.location_iq_url'), '/').'search.php?'.$query;
+        return Str::finish(config('location.location_iq_url'), '/').'search.php?'.$query;
     }
 
     /**

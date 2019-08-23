@@ -32,7 +32,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        (new UpdateBirthdayInformation)->execute($request);
+        app(UpdateBirthdayInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -55,7 +55,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'is_date_known' => false,
         ];
 
-        (new UpdateBirthdayInformation)->execute($request);
+        $contact = app(UpdateBirthdayInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -76,8 +76,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'age' => 10,
         ];
 
-        $birthdayService = new UpdateBirthdayInformation;
-        $contact = $birthdayService->execute($request);
+        $contact = app(UpdateBirthdayInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -109,8 +108,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => false,
         ];
 
-        $birthdayService = new UpdateBirthdayInformation;
-        $contact = $birthdayService->execute($request);
+        $contact = app(UpdateBirthdayInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
@@ -143,8 +141,9 @@ class UpdateBirthdayInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        $birthdayService = new UpdateBirthdayInformation;
-        $contact = $birthdayService->execute($request);
+        $contact = app(UpdateBirthdayInformation::class)->execute($request);
+
+        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
         $this->assertNotNull($contact->birthday_reminder_id);
     }
@@ -165,8 +164,7 @@ class UpdateBirthdayInformationTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $updateContact = new UpdateBirthdayInformation;
-        $updateContact->execute($request);
+        app(UpdateBirthdayInformation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
@@ -186,6 +184,6 @@ class UpdateBirthdayInformationTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        (new UpdateBirthdayInformation)->execute($request);
+        app(UpdateBirthdayInformation::class)->execute($request);
     }
 }

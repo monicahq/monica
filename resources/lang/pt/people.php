@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 criança|:count crianças',
     'people_list_last_updated' => 'Última consulta:',
     'people_list_number_reminders' => '1 lembrete|:count lembretes',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Show deceased people (:count)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Procurar nos seus contactos...',
-    'people_search_no_results' => 'No relevant contact found :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Consumo da sua conta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
@@ -150,14 +152,14 @@ return [
     'work_edit_company' => 'Empresa (opcional)',
     'work_information' => 'Work information',
 
-    // food preferencies
-    'food_preferencies_add_success' => 'As preferências de alimentos foram salvas',
-    'food_preferencies_edit_description' => 'Talvez :firstname ou alguém na família de :family tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
-    'food_preferencies_edit_description_no_last_name' => 'Talvez :firstname tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
-    'food_preferencies_edit_title' => 'Indique preferências de alimentos',
-    'food_preferencies_edit_cta' => 'Guardar preferências de alimentos',
-    'food_preferencies_title' => 'Preferências alimentares',
-    'food_preferencies_cta' => 'Adicione preferências de alimentos',
+    // food preferences
+    'food_preferences_add_success' => 'As preferências de alimentos foram salvas',
+    'food_preferences_edit_description' => 'Talvez :firstname ou alguém na família de :family tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
+    'food_preferences_edit_description_no_last_name' => 'Talvez :firstname tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
+    'food_preferences_edit_title' => 'Indique preferências de alimentos',
+    'food_preferences_edit_cta' => 'Guardar preferências de alimentos',
+    'food_preferences_title' => 'Preferências alimentares',
+    'food_preferences_cta' => 'Adicione preferências de alimentos',
 
     // reminders
     'reminders_blank_title' => 'Há algo sobre o qual você quer se lembrar :name?',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'Add a new relationship',
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
@@ -244,7 +247,7 @@ return [
     'activities_add_title' => 'O que você fez com :name?',
     'activities_summary' => 'Descreva o que você fez',
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
-    'activities_add_date_occured' => 'Data em que ocorreu esta atividade',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'Comentário opcional',
     'activities_add_cta' => 'Adicionar essa atividade',
     'activities_blank_title' => 'Acompanhe o que você fez com :name no passado, sobre o que você falou',
@@ -367,7 +370,7 @@ return [
     // Pets
     'pets_kind' => 'Kind of pet',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
     'pets_title' => 'Pets',
@@ -423,8 +426,8 @@ return [
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'Went on holidays',
     'life_event_sentence_new_vehicle' => 'Got a new vehicle',
-    'life_event_sentence_new_roommate' => 'Got a roomate',
-    'life_event_sentence_overcame_an_illness' => 'Overcam an illness',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'Quit a habit',
     'life_event_sentence_new_eating_habits' => 'Started new eating habits',
     'life_event_sentence_weight_loss' => 'Lost weight',

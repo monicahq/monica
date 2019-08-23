@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Contact\Document;
 
 use Tests\TestCase;
 use App\Models\Account\Photo;
+use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -31,8 +32,7 @@ class DestroyPhotoTest extends TestCase
             'id' => $photo->id,
         ]);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $bool = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
 
         $this->assertDatabaseMissing('photos', [
             'id' => $photo->id,
@@ -49,23 +49,22 @@ class DestroyPhotoTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $result = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
     }
 
     public function test_it_throws_a_photo_doesnt_exist()
     {
+        $account = factory(Account::class)->create([]);
         $photo = factory(Photo::class)->create([]);
 
         $request = [
-            'account_id' => $photo->account->id,
-            'photo_id' => 3,
+            'account_id' => $account->id,
+            'photo_id' => $photo->id,
         ];
 
         $this->expectException(ModelNotFoundException::class);
 
-        $destroyPhotoService = new DestroyPhoto;
-        $photo = $destroyPhotoService->execute($request);
+        app(DestroyPhoto::class)->execute($request);
     }
 
     private function uploadPhoto($contact)

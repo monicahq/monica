@@ -2,9 +2,15 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Matriphe\ISO639\ISO639;
+use function Safe\preg_match;
+use function Safe\preg_split;
+use Illuminate\Support\Facades\App;
+use libphonenumber\PhoneNumberUtil;
 use Illuminate\Support\Facades\Auth;
 use libphonenumber\PhoneNumberFormat;
+use libphonenumber\NumberParseException;
 
 class LocaleHelper
 {
@@ -34,7 +40,7 @@ class LocaleHelper
     public static function getLang($locale = null)
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[0];
@@ -69,7 +75,7 @@ class LocaleHelper
     public static function extractCountry($locale = null)
     {
         if (is_null($locale)) {
-            $locale = self::getLocale();
+            $locale = App::getLocale();
         }
         if (preg_match(self::LANG_SPLIT, $locale)) {
             $locale = preg_split(self::LANG_SPLIT, $locale, 2)[1];
@@ -98,7 +104,7 @@ class LocaleHelper
             ]);
         }
 
-        return CollectionHelper::sortByCollator($locales, 'name');
+        return $locales->sortByCollator('name');
     }
 
     /**
@@ -137,13 +143,13 @@ class LocaleHelper
     /**
      * Get ISO-639-2/t (three-letter codes) from ISO-639-1 (two-letters code).
      *
-     * @param string
+     * @param  string $locale
      * @return string
      */
     public static function getLocaleAlpha($locale)
     {
-        if (array_has(static::$locales, $locale)) {
-            return array_get(static::$locales, $locale);
+        if (Arr::has(static::$locales, $locale)) {
+            return Arr::get(static::$locales, $locale);
         }
         $locale = mb_strtolower($locale);
         $languages = (new ISO639)->allLanguages();
@@ -163,24 +169,23 @@ class LocaleHelper
      * Format phone number by country.
      *
      * @param string $tel
-     * @param $iso
+     * @param string|null $iso
      * @param int $format
-     *
-     * @return null | string
+     * @return string
      */
-    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL)
+    public static function formatTelephoneNumberByISO(string $tel, $iso, int $format = PhoneNumberFormat::INTERNATIONAL) : string
     {
         if (empty($iso)) {
             return $tel;
         }
 
         try {
-            $phoneUtil = \libphonenumber\PhoneNumberUtil::getInstance();
+            $phoneUtil = PhoneNumberUtil::getInstance();
 
-            $phoneInstance = $phoneUtil->parse($tel, strtoupper($iso));
+            $phoneInstance = $phoneUtil->parse($tel, mb_strtoupper($iso));
 
             $tel = $phoneUtil->format($phoneInstance, $format);
-        } catch (\libphonenumber\NumberParseException $e) {
+        } catch (NumberParseException $e) {
             // Do nothing if the number cannot be parsed successfully
         }
 

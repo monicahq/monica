@@ -28,7 +28,7 @@
               {{ $t('settings.api_personal_access_tokens') }}
             </span>
 
-            <a class="btn" @click="showCreateTokenForm">
+            <a class="btn" href="" @click.prevent="showCreateTokenForm">
               {{ $t('settings.api_token_create_new') }}
             </a>
           </div>
@@ -58,7 +58,7 @@
 
                 <!-- Delete Button -->
                 <td style="vertical-align: middle;">
-                  <a class="action-link text-danger" @click="revoke(token)">
+                  <a class="action-link text-danger" href="" @click.prevent="revoke(token)">
                     {{ $t('settings.api_token_delete') }}
                   </a>
                 </td>
@@ -91,22 +91,22 @@
             <form class="form-horizontal" role="form" @submit.prevent="store">
               <!-- Name -->
               <div class="form-group">
-                <label for="create-token-name" class="col-md-4 control-label">
+                <label for="create-token-name" class="col-md-4 col-form-label">
                   {{ $t('settings.api_token_name') }}
                 </label>
 
-                <div class="col-md-6">
+                <div class="col-md-auto">
                   <input id="create-token-name" v-model="form.name" type="text" class="form-control" name="name" />
                 </div>
               </div>
 
               <!-- Scopes -->
               <div v-if="scopes.length > 0" class="form-group">
-                <label class="col-md-4 control-label">
+                <label class="col-md-4 col-form-label">
                   {{ $t('settings.api_token_scopes') }}
                 </label>
 
-                <div class="col-md-6">
+                <div class="col-md-auto">
                   <div v-for="scope in scopes" :key="scope.id">
                     <div class="checkbox">
                       <label>
@@ -220,7 +220,7 @@ export default {
       * Get all of the personal access tokens for the user.
       */
     getTokens() {
-      axios.get('/oauth/personal-access-tokens')
+      axios.get('oauth/personal-access-tokens')
         .then(response => {
           this.tokens = response.data;
         });
@@ -230,7 +230,7 @@ export default {
       * Get all of the available scopes.
       */
     getScopes() {
-      axios.get('/oauth/scopes')
+      axios.get('oauth/scopes')
         .then(response => {
           this.scopes = response.data;
         });
@@ -251,7 +251,7 @@ export default {
 
       this.form.errors = [];
 
-      axios.post('/oauth/personal-access-tokens', this.form)
+      axios.post('oauth/personal-access-tokens', this.form)
         .then(response => {
           this.form.name = '';
           this.form.scopes = [];
@@ -303,7 +303,7 @@ export default {
       * Revoke the given token.
       */
     revoke(token) {
-      axios.delete('/oauth/personal-access-tokens/' + token.id)
+      axios.delete('oauth/personal-access-tokens/' + token.id)
         .then(response => {
           this.getTokens();
         });

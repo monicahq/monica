@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use function Safe\substr;
 use Illuminate\Http\Request;
+use function Safe\json_decode;
 use App\Models\Account\ApiUsage;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
@@ -40,7 +42,7 @@ class ApiController extends Controller
                 $this->setSortCriteria($request->get('sort'));
 
                 // It has a sort criteria, but is it a valid one?
-                if (is_null($this->getSortCriteria())) {
+                if (empty($this->getSortCriteria())) {
                     return $this->setHTTPStatusCode(400)
                               ->setErrorCode(39)
                               ->respondWithError();
@@ -65,11 +67,15 @@ class ApiController extends Controller
             // if the call contains a JSON, the call must not be a GET or
             // a DELETE
             // TODO: there is probably a much better way to do that
-            if ($request->method() != 'GET' && $request->method() != 'DELETE'
-                && is_null(json_decode($request->getContent()))) {
-                return $this->setHTTPStatusCode(400)
-                            ->setErrorCode(37)
-                            ->respondWithError();
+            try {
+                if ($request->method() != 'GET' && $request->method() != 'DELETE'
+                    && is_null(json_decode($request->getContent()))) {
+                    return $this->setHTTPStatusCode(400)
+                                ->setErrorCode(37)
+                                ->respondWithError();
+                }
+            } catch (\Safe\Exceptions\JsonException $e) {
+                // no error
             }
 
             return $next($request);
@@ -99,7 +105,7 @@ class ApiController extends Controller
 
     /**
      * @param string $with
-     * @return $this
+     * @return self
      */
     public function setWithParameter($with)
     {
@@ -118,7 +124,7 @@ class ApiController extends Controller
 
     /**
      * @param int $limit
-     * @return $this
+     * @return self
      */
     public function setLimitPerPage($limit)
     {
@@ -146,7 +152,7 @@ class ApiController extends Controller
 
     /**
      * @param string $criteria
-     * @return $this
+     * @return self
      */
     public function setSortCriteria($criteria)
     {
@@ -169,7 +175,7 @@ class ApiController extends Controller
             return $this;
         }
 
-        $this->sort = null;
+        $this->sort = '';
 
         return $this;
     }

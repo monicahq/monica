@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'Atualizar',
     'save' => 'Salvar',
     'add' => 'Adicionar',
@@ -34,6 +36,7 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
+    'retry' => 'Retry',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -83,6 +86,7 @@ return [
     'breadcrumb_add_note' => 'Adicionar uma nota',
     'breadcrumb_edit_note' => 'Editar nota',
     'breadcrumb_api' => 'API',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'Como se conheceram',
     'breadcrumb_settings_personalization' => 'Personalização',
     'breadcrumb_settings_security' => 'Segurança',
@@ -92,6 +96,7 @@ return [
     'gender_male' => 'Homem',
     'gender_female' => 'Mulher',
     'gender_none' => 'Prefiro não dizer',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Ups! Algo correu mal.',
     'error_unauthorized' => 'Não tem permissões para editar este recurso.',
@@ -325,7 +330,7 @@ return [
     'emotion_pride' => 'Pride',
     'emotion_eagerness' => 'Eagerness',
     'emotion_hope' => 'Hope',
-    'emotion_optimism' => 'optimism',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => 'Enthrallment',
     'emotion_rapture' => 'Rapture',
     'emotion_relief' => 'Relief',
@@ -429,4 +434,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Current weather',
+
+    // dav
+    'dav_contacts' => 'Contacts',
+    'dav_contacts_description' => ':name’s contacts',
+    'dav_birthdays' => 'Birthdays',
+    'dav_birthdays_description' => ':name’s contact’s birthdays',
+    'dav_tasks' => 'Tasks',
+    'dav_tasks_description' => ':name’s tasks',
 ];

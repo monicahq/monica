@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ Auth::user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -62,7 +62,7 @@
 
       <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_downgrade_success') }}</h2>
       <p class="tc mb4">{{ trans('settings.subscriptions_downgrade_thanks') }}</p>
-      <p class="tc"><a href="{{ url('/settings/subscriptions') }}" class="btn btn-primary">{{trans('settings.subscriptions_back') }}</a></p>
+      <p class="tc"><a href="settings/subscriptions" class="btn btn-primary">{{trans('settings.subscriptions_back') }}</a></p>
     </div>
   </div>
 </div>

@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => 'طفل واحد|:count أطفال',
     'people_list_last_updated' => 'آخر استشارة:',
     'people_list_number_reminders' => 'تذكير واحد|:count تذكيرات',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Show deceased people (:count)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'البحث في جهات الاتصال الخاصة بك...',
-    'people_search_no_results' => 'لم يتم العثور على جهات اتصال ذات صلة :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'استخدام حسابك: :current/:limit جهة اتصال',
     'people_list_account_upgrade_title' => 'قم بترقية حسابك لتفعيل كامل إمكانياته.',
     'people_list_account_upgrade_cta' => 'قم بالترقية الان',
@@ -150,14 +152,14 @@ return [
     'work_edit_company' => 'الشركة (اختياري)',
     'work_information' => 'معلومات العمل',
 
-    // food preferencies
-    'food_preferencies_add_success' => 'تم حفظ التفضيلات الغذائية',
-    'food_preferencies_edit_description' => 'قد يكون :firstname أو شخص في عائلة :family مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
-    'food_preferencies_edit_description_no_last_name' => 'قد يكون :firstname مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
-    'food_preferencies_edit_title' => 'حدد التفضيلات الغذائية',
-    'food_preferencies_edit_cta' => 'حفظ التفضيلات الغذائية',
-    'food_preferencies_title' => 'التفضيلات الغذائية',
-    'food_preferencies_cta' => 'أضف تفضيلات غذائية',
+    // food preferences
+    'food_preferences_add_success' => 'تم حفظ التفضيلات الغذائية',
+    'food_preferences_edit_description' => 'قد يكون :firstname أو شخص في عائلة :family مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
+    'food_preferences_edit_description_no_last_name' => 'قد يكون :firstname مصاب بالحساسية، أو لا يريد نوع معين من النبيذ. حدد ذلك هنا لكي تتذكر ذلك في المرة القادمة عندما تدعوهم للعشاء',
+    'food_preferences_edit_title' => 'حدد التفضيلات الغذائية',
+    'food_preferences_edit_cta' => 'حفظ التفضيلات الغذائية',
+    'food_preferences_title' => 'التفضيلات الغذائية',
+    'food_preferences_cta' => 'أضف تفضيلات غذائية',
 
     // reminders
     'reminders_blank_title' => 'هل هناك شيء ما كنت ترغب أن يتم تذكيرك به بخصوص :name؟',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'إضافة علاقة جديدة',
     'relationship_form_edit' => 'تعديل علاقة حالية',
     'relationship_form_is_with' => 'هذا الشخص...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'مع من هذه العلاقة؟',
     'relationship_form_create_contact' => 'إضافة شخص جديد',
     'relationship_form_associate_contact' => 'جهة اتصال موجودة',
@@ -244,7 +247,7 @@ return [
     'activities_add_title' => 'ماذا فعلت مع :name؟',
     'activities_summary' => 'صف ما فعلته',
     'activities_add_pick_activity' => '(اختياري) هل ترغب في تصنيف هذا النشاط؟ لا يجب عليك، ولكن سوف توفر لك إحصاءات في لاحقا',
-    'activities_add_date_occured' => 'تاريخ حدوث هذا النشاط',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'تعليق اختياري',
     'activities_add_cta' => 'سجل النشاط',
     'activities_blank_title' => 'تابع ما فعلته مع :name في الماضي وعما تحدثتم',
@@ -367,7 +370,7 @@ return [
     // Pets
     'pets_kind' => 'نوع الحيوان الأليف',
     'pets_name' => 'الاسم (اختيارى)',
-    'pets_create_success' => 'تم إضافة الحيوان الأليف بنجاح',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'تم تحديث الحيوان الأليف',
     'pets_delete_success' => 'تم حذف الحيوان الأليف',
     'pets_title' => 'الحيوانات الأليفة',
@@ -423,8 +426,8 @@ return [
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'ذهبت في عطلة',
     'life_event_sentence_new_vehicle' => 'Got a new vehicle',
-    'life_event_sentence_new_roommate' => 'Got a roomate',
-    'life_event_sentence_overcame_an_illness' => 'التغلب على المرض',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'أقلعت عن عادة',
     'life_event_sentence_new_eating_habits' => 'Started new eating habits',
     'life_event_sentence_weight_loss' => 'فقدت الوزن',

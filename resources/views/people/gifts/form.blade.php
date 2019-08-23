@@ -13,14 +13,14 @@
             {{ trans('people.gifts_add_gift_idea') }}
         </label>
 
-        <label class="form-check-inline" for="received">
-            <input type="radio" class="form-check-input" name="offered" id="received" value="received" @if(old('received') === true || $gift->has_been_received) checked @endif>
-            {{ trans('people.gifts_add_gift_received') }}
-        </label>
-
         <label class="form-check-inline" for="offered">
             <input type="radio" class="form-check-input" name="offered" id="offered" value="offered" @if(old('offered') === true || $gift->has_been_offered) checked @endif>
             {{ trans('people.gifts_add_gift_already_offered') }}
+        </label>
+
+        <label class="form-check-inline" for="received">
+            <input type="radio" class="form-check-input" name="offered" id="received" value="received" @if(old('received') === true || $gift->has_been_received) checked @endif>
+            {{ trans('people.gifts_add_gift_received') }}
         </label>
     </fieldset>
 
@@ -50,12 +50,15 @@
 
     @if ($familyRelationships->count() !== 0)
         <div class="form-group">
-            <div class="form-check">
-                <label class="form-check-label" id="has_recipient">
-                    <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1" {{ $gift->hasParticularRecipient() ? 'checked' : '' }}>
-                    {{ trans('people.gifts_add_someone', ['name' => $contact->first_name]) }}
-                </label>
-            </div>
+            <form-checkbox
+              :name="'has_recipient'"
+              :value="'1'"
+              :modelValue="{{ \Safe\json_encode($gift->hasParticularRecipient()) }}"
+              :dclass="'form-check form-check-label'"
+              :iclass="'form-check-input'"
+            >
+                {{ trans('people.gifts_add_someone', ['name' => $contact->first_name]) }}
+            </form-checkbox>
             <select id="recipient" name="recipient" class="form-control">
                 @foreach($familyRelationships as $familyRelationship)
                     <option value="{{ $familyRelationship->ofContact->id }}"

@@ -10,7 +10,7 @@ class Gender extends Resource
     /**
      * Transform the resource into an array.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     public function toArray($request)
@@ -19,6 +19,7 @@ class Gender extends Resource
             'id' => $this->id,
             'object' => 'gender',
             'name' => $this->name,
+            'type' => $this->type,
             'account' => [
                 'id' => $this->account->id,
             ],

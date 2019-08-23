@@ -49,7 +49,7 @@ class ApiMessageControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'contact_field_type_id' => $contactFieldType->id,
-            'happened_at' => \Carbon\Carbon::now(),
+            'happened_at' => now(),
         ]);
 
         return $conversation;

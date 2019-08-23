@@ -17,7 +17,6 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
         \Illuminate\Foundation\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \App\Http\Middleware\TrustProxies::class,
         \Monicahq\Cloudflare\Http\Middleware\TrustProxies::class,
     ];
 
@@ -43,8 +42,23 @@ class Kernel extends HttpKernel
         'api' => [
             'throttle:60,1',
             'sentry.context',
-            //'bindings',
             'locale',
+        ],
+
+        'oauth' => [
+            'throttle:5,1',
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            'sentry.context',
+            'locale',
+        ],
+
+        'mfa' => [
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            'webauthn',
+            'u2f',
+            '2fa',
         ],
     ];
 
@@ -66,6 +80,7 @@ class Kernel extends HttpKernel
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         '2fa' => \PragmaRX\Google2FALaravel\Middleware::class,
         'u2f' => \Lahaxearnaud\U2f\Http\Middleware\U2f::class,
+        'webauthn' => \LaravelWebauthn\Http\Middleware\WebauthnMiddleware::class,
         'limitations' => \App\Http\Middleware\CheckAccountLimitations::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
         'sentry.context' => \App\Http\Middleware\SentryContext::class,
@@ -84,8 +99,10 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\Authenticate::class,
+        \App\Http\Middleware\AuthenticateWithTokenOnBasicAuth::class,
         \Illuminate\Session\Middleware\AuthenticateSession::class,
         \Illuminate\Routing\Middleware\SubstituteBindings::class,
         \Illuminate\Auth\Middleware\Authorize::class,
+        \App\Http\Middleware\CheckLocale::class,
     ];
 }

@@ -8,10 +8,10 @@
     <h3>{{ $t('settings.2fa_otp_title') }}</h3>
 
     <div class="form-group">
-      <a v-if="activated" class="btn btn-warning" @click="showDisableModal">
+      <a v-if="activated" class="btn btn-warning" href="" @click.prevent="showDisableModal">
         {{ $t('settings.2fa_disable_title') }}
       </a>
-      <a v-else class="btn btn-primary" @click="showEnableModal">
+      <a v-else class="btn btn-primary" href="" @click.prevent="showEnableModal">
         {{ $t('settings.2fa_enable_title') }}
       </a>
     </div>
@@ -48,10 +48,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a id="verify1" class="btn btn-primary" @click="register()">
+          <a id="verify1" class="btn btn-primary" href="" @click.prevent="register()">
             {{ $t('app.verify') }}
           </a>
-          <a class="btn" @click="closeEnableModal()">
+          <a class="btn" href="" @click.prevent="closeEnableModal()">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -75,10 +75,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a id="verify2" class="btn btn-primary" @click="unregister()">
+          <a id="verify2" class="btn btn-primary" href="" @click.prevent="unregister()">
             {{ $t('app.verify') }}
           </a>
-          <a class="btn" @click="closeDisableModal()">
+          <a class="btn" href="" @click.prevent="closeDisableModal()">
             {{ $t('app.cancel') }}
           </a>
         </span>
@@ -116,7 +116,7 @@ export default {
 
   methods: {
     register() {
-      axios.post('/settings/security/2fa-enable', { one_time_password: this.one_time_password })
+      axios.post('settings/security/2fa-enable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeEnableModal();
           this.activated = response.data.success;
@@ -132,7 +132,7 @@ export default {
     },
 
     unregister() {
-      axios.post('/settings/security/2fa-disable', { one_time_password: this.one_time_password })
+      axios.post('settings/security/2fa-disable', { one_time_password: this.one_time_password })
         .then(response => {
           this.closeDisableModal();
           this.activated = ! response.data.success;
@@ -149,7 +149,7 @@ export default {
 
     showEnableModal() {
       this.one_time_password = '';
-      axios.get('/settings/security/2fa-enable')
+      axios.get('settings/security/2fa-enable')
         .then(response => {
           this.image = response.data.image;
           this.secret = response.data.secret;

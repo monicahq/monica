@@ -18,7 +18,7 @@ class ApiPlaceController extends ApiController
     /**
      * Get the list of places.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -36,8 +36,9 @@ class ApiPlaceController extends ApiController
     /**
      * Get the detail of a given place.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return PlaceResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $placeId)
     {
@@ -55,13 +56,14 @@ class ApiPlaceController extends ApiController
     /**
      * Store the place.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return PlaceResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $place = (new CreatePlace)->execute(
+            $place = app(CreatePlace::class)->execute(
                 $request->all()
                     +
                     [
@@ -82,14 +84,15 @@ class ApiPlaceController extends ApiController
     /**
      * Update a place.
      *
-     * @param  Request $request
-     * @param  int $placeId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $placeId
+     *
+     * @return PlaceResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $placeId)
     {
         try {
-            $place = (new UpdatePlace)->execute(
+            $place = app(UpdatePlace::class)->execute(
                 $request->all()
                     +
                     [
@@ -111,13 +114,14 @@ class ApiPlaceController extends ApiController
     /**
      * Delete a place.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $placeId)
     {
         try {
-            (new DestroyPlace)->execute([
+            app(DestroyPlace::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'place_id' => $placeId,
             ]);

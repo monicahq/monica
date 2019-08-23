@@ -9,9 +9,11 @@
     <notifications group="u2f" position="top middle" :duration="5000" width="400" />
 
     <div v-if="method == 'register-modal'">
-      <h3>{{ $t('settings.u2f_title') }}</h3>
+      <h3 v-if="enableRegister || keys.count > 0">
+        {{ $t('settings.u2f_title') }}
+      </h3>
 
-      <div v-if="keys != null">
+      <div v-if="keys != null && keys.count > 0">
         <ul class="table">
           <li v-for="key in keys"
               :key="key.id"
@@ -37,7 +39,7 @@
           </li>
         </ul>
       </div>
-      <a class="btn btn-primary" @click="showRegisterModal">
+      <a v-if="enableRegister" class="btn btn-primary" href="" @click.prevent="showRegisterModal">
         {{ $t('settings.u2f_enable_description') }}
       </a>
 
@@ -63,8 +65,8 @@
           />
           <div class="relative">
             <span class="fr">
-              <a class="btn" @click.prevent="showRegisterModalTab('2');startRegister();">
-                {{ $t('app.next') }}
+              <a class="btn" href="" @click.prevent="showRegisterModalTab('2');startRegister();">
+                {{ $t('pagination.next') }}
               </a>
             </span>
           </div>
@@ -76,7 +78,7 @@
                 {{ errorMessage }}
               </p>
               <p>
-                <a @click.prevent="startRegister()">
+                <a href="" @click.prevent="startRegister()">
                   {{ $t('app.retry') }}
                 </a>
               </p>
@@ -112,15 +114,15 @@
           </div>
           <div class="relative">
             <span class="fr">
-              <a class="btn" @click.prevent="showRegisterModalTab('1')">
-                {{ $t('app.previous') }}
+              <a class="btn" href="" @click.prevent="showRegisterModalTab('1')">
+                {{ $t('pagination.previous') }}
               </a>
             </span>
           </div>
         </div>
         <div class="relative">
           <span class="fr">
-            <a class="btn" @click="closeRegisterModal()">
+            <a class="btn" href="" @click.prevent="closeRegisterModal()">
               {{ $t('app.cancel') }}
             </a>
           </span>
@@ -134,7 +136,7 @@
             {{ errorMessage }}
           </p>
           <p>
-            <a @click.prevent="start()">
+            <a href="" @click.prevent="start()">
               {{ $t('app.retry') }}
             </a>
           </p>
@@ -178,12 +180,14 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn" @click="closeDeleteModal()">
+          <a class="btn" href="" @click.prevent="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a class="btn"
-             :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
-             @click.prevent="u2fRemove(keyToTrash)"
+          <a
+            class="btn"
+            href=""
+            :cy-name="'modal-delete-u2fkey-button-' + keyToTrash"
+            @click.prevent="u2fRemove(keyToTrash)"
           >
             {{ $t('app.delete') }}
           </a>
@@ -230,6 +234,10 @@ export default {
     timezone: {
       type: String,
       default: '',
+    },
+    enableRegister: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -308,7 +316,7 @@ export default {
 
     startRegister() {
       var self = this;
-      axios.get('/settings/security/u2f/register')
+      axios.get('settings/security/u2f/register')
         .then(response => {
           if (self.registerTab == '2') {
             var keys = response.data.currentKeys;
@@ -338,7 +346,7 @@ export default {
         return;
       }
       var self = this;
-      axios.post('/settings/security/u2f/register', {
+      axios.post('settings/security/u2f/register', {
         register: JSON.stringify(data),
         name: self.keyName,
       })
@@ -367,7 +375,7 @@ export default {
       }
 
       var self = this;
-      axios.post('/u2f/auth', { authentication: JSON.stringify(data) })
+      axios.post('u2f/auth', { authentication: JSON.stringify(data) })
         .catch(error => {
           self.errorMessage = error.response.data.message;
         })
@@ -382,7 +390,7 @@ export default {
 
     u2fRemove(id) {
       var self = this;
-      axios.delete('/settings/security/u2f/remove/'+id)
+      axios.delete('settings/security/u2f/remove/'+id)
         .catch(error => {
           self.errorMessage = error.response.data.message;
         })

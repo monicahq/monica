@@ -14,10 +14,10 @@
           <textarea v-model="newNote.body" class="w-100 br2 pa2 b--light-gray" cy-name="add-note-textarea" :placeholder="$t('people.notes_add_cta')" @focus="addMode = true"
                     @keyup.esc="addMode = false"
           ></textarea>
-          <a v-if="addMode" class="pointer btn btn-primary" cy-name="add-note-button" @click.prevent="store">
+          <a v-if="addMode" class="pointer btn btn-primary" cy-name="add-note-button" href="" @click.prevent="store">
             {{ $t('app.add') }}
           </a>
-          <a v-if="addMode" class="pointer btn btn-secondary" cy-name="cancel-note-button" @click="addMode = false">
+          <a v-if="addMode" class="pointer btn btn-secondary" cy-name="cancel-note-button" href="" @click.prevent="addMode = false">
             {{ $t('app.cancel') }}
           </a>
         </form>
@@ -38,11 +38,11 @@
                 {{ note.created_at_short }}
               </div>
               <div class="fl w-50 tr">
-                <a class="pointer" :cy-name="'edit-note-button-' + note.id" @click="toggleEditMode(note)">
+                <a class="pointer" :cy-name="'edit-note-button-' + note.id" href="" @click.prevent="toggleEditMode(note)">
                   {{ $t('app.edit') }}
                 </a>
                 |
-                <a class="pointer" :cy-name="'delete-note-button-' + note.id" @click.prevent="showDelete(note)">
+                <a class="pointer" :cy-name="'delete-note-button-' + note.id" href="" @click.prevent="showDelete(note)">
                   {{ $t('app.delete') }}
                 </a>
               </div>
@@ -52,7 +52,7 @@
           <!-- EDIT MODE -->
           <form v-show="note.edit" class="bg-near-white pa2 br2 mt3 mb3">
             <textarea v-model="note.body" class="w-100 br2 pa2 b--light-gray" :cy-name="'edit-note-body-' + note.id" @keyup.esc="note.edit = false"></textarea>
-            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + note.id" @click.prevent="update(note)">
+            <a class="pointer btn btn-primary" :cy-name="'edit-mode-note-button-' + note.id" href="" @click.prevent="update(note)">
               {{ $t('app.update') }}
             </a>
           </form>
@@ -157,14 +157,14 @@ export default {
     },
 
     getNotes() {
-      axios.get('/people/' + this.hash + '/notes')
+      axios.get('people/' + this.hash + '/notes')
         .then(response => {
           this.notes = response.data;
         });
     },
 
     store() {
-      axios.post('/people/' + this.hash + '/notes', this.newNote)
+      axios.post('people/' + this.hash + '/notes', this.newNote)
         .then(response => {
           this.newNote.body = '';
           this.getNotes();
@@ -180,14 +180,14 @@ export default {
     },
 
     toggleFavorite(note) {
-      axios.post('/people/' + this.hash + '/notes/' + note.id + '/toggle')
+      axios.post('people/' + this.hash + '/notes/' + note.id + '/toggle')
         .then(response => {
           this.getNotes();
         });
     },
 
     update(note) {
-      axios.put('/people/' + this.hash + '/notes/' + note.id, note)
+      axios.put('people/' + this.hash + '/notes/' + note.id, note)
         .then(response => {
           Vue.set(note, 'edit', note.edit);
           this.getNotes();
@@ -208,7 +208,7 @@ export default {
     },
 
     trash(note) {
-      axios.delete('/people/' + this.hash + '/notes/' + note.id)
+      axios.delete('people/' + this.hash + '/notes/' + note.id)
         .then(response => {
           this.getNotes();
 

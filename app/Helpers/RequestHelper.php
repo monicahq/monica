@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Vectorface\Whip\Whip;
+use Illuminate\Support\Arr;
 use OK\Ipstack\Client as Ipstack;
 use Illuminate\Support\Facades\Request;
 use Stevebauman\Location\Facades\Location;
@@ -12,7 +13,7 @@ class RequestHelper
     /**
      * Get client ip.
      *
-     * @return string
+     * @return array|string
      */
     public static function ip()
     {
@@ -30,7 +31,8 @@ class RequestHelper
 
     /**
      * Get client country.
-     * @return string
+     *
+     * @return string|null
      */
     public static function country()
     {
@@ -55,11 +57,11 @@ class RequestHelper
             $ipstack = new Ipstack(config('location.ipstack_apikey'));
             $position = $ipstack->get($ip ?? static::ip(), true);
 
-            if (! is_null($position) && array_get($position, 'country_code', null)) {
+            if (! is_null($position) && Arr::get($position, 'country_code', null)) {
                 return [
-                    'country' => array_get($position, 'country_code', null),
-                    'currency' => array_get($position, 'currency.code', null),
-                    'timezone' => array_get($position, 'time_zone.id', null),
+                    'country' => Arr::get($position, 'country_code', null),
+                    'currency' => Arr::get($position, 'currency.code', null),
+                    'timezone' => Arr::get($position, 'time_zone.id', null),
                 ];
             }
         }

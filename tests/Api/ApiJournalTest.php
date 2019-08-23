@@ -4,7 +4,6 @@ namespace Tests\Api;
 
 use Tests\ApiTestCase;
 use App\Models\Journal\Entry;
-use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiJournalTest extends ApiTestCase

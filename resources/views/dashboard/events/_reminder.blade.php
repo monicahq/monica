@@ -1,5 +1,5 @@
 <div class="event-icon">
-  <img src="/img/dashboard/reminder.png">
+  <img src="img/dashboard/reminder.png">
 </div>
 
 <div class="event-description">

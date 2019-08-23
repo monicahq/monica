@@ -31,8 +31,7 @@ class PopulateModulesTableTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        $populateModulesService = new PopulateModulesTable;
-        $populateModulesService->execute($request);
+        app(PopulateModulesTable::class)->execute($request);
     }
 
     public function test_it_populate_modules_tables()
@@ -51,8 +50,7 @@ class PopulateModulesTableTest extends TestCase
             'migrate_existing_data' => 1,
         ];
 
-        $populateModulesService = new PopulateModulesTable;
-        $populateModulesService->execute($request);
+        app(PopulateModulesTable::class)->execute($request);
 
         // by defauult there is 18 columns in the default table.
         // therefore, we need 18 entries for the new account.
@@ -87,8 +85,7 @@ class PopulateModulesTableTest extends TestCase
             'migrate_existing_data' => 0,
         ];
 
-        $populateModulesService = new PopulateModulesTable;
-        $populateModulesService->execute($request);
+        app(PopulateModulesTable::class)->execute($request);
 
         // by defauult there is 18 columns in the default table.
         // therefore, we need 17 entries for the new account.

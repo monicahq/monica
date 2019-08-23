@@ -37,10 +37,10 @@
         </ul>
       </div>
 
-      <a class="pointer" @click="editMode = false">
+      <a class="pointer" href="" @click.prevent="editMode = false">
         {{ $t('app.cancel') }}
       </a>
-      <a class="pointer" @click="store()">
+      <a class="pointer" href="" @click.prevent="store()">
         {{ $t('app.save_close') }}
       </a>
     </div>
@@ -60,7 +60,7 @@
         </span>
       </li>
       <li v-show="contactTags.length > 0" class="di">
-        <a v-show="!editMode" class="pointer" @click="editMode = true">
+        <a v-show="!editMode" class="pointer" href="" @click.prevent="editMode = true">
           {{ $t('app.edit') }}
         </a>
       </li>
@@ -68,7 +68,7 @@
         <span class="i mr2">
           {{ $t('people.tag_no_tags') }}
         </span>
-        <a v-show="!editMode" class="pointer" @click="editMode = true">
+        <a v-show="!editMode" class="pointer" href="" @click.prevent="editMode = true">
           {{ $t('people.tag_add') }}
         </a>
       </li>
@@ -122,14 +122,14 @@ export default {
     },
 
     getExistingTags() {
-      axios.get('/tags')
+      axios.get('tags')
         .then(response => {
           this.allTags = response.data.data;
         });
     },
 
     getContactTags() {
-      axios.get('/people/' + this.hash + '/tags')
+      axios.get('people/' + this.hash + '/tags')
         .then(response => {
           this.contactTags = response.data.data;
         });
@@ -195,14 +195,14 @@ export default {
 
     store() {
       this.editMode = false;
-      axios.post('/people/' + this.hash + '/tags/update', this.contactTags)
+      axios.post('people/' + this.hash + '/tags/update', this.contactTags)
         .then(response => {
           this.getExistingTags();
         });
     },
 
     navigateTo(tag) {
-      window.location.href = '/people?tag1=' + tag.name_slug;
+      window.location.href = 'people?tag1=' + tag.name_slug;
     },
 
     handleClickOutside(evt) {

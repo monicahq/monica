@@ -19,7 +19,7 @@ class ApiCallController extends ApiController
     /**
      * Get the list of calls.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
@@ -38,8 +38,10 @@ class ApiCallController extends ApiController
 
     /**
      * Get the detail of a given call.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function show(Request $request, $callId)
     {
@@ -56,13 +58,15 @@ class ApiCallController extends ApiController
 
     /**
      * Store the call.
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @param Request $request
+     *
+     * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
         try {
-            $call = (new CreateCall)->execute(
+            $call = app(CreateCall::class)->execute(
                 $request->all()
                     +
                     [
@@ -83,14 +87,15 @@ class ApiCallController extends ApiController
     /**
      * Update a call.
      *
-     * @param  Request $request
-     * @param  int $callId
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param int $callId
+     *
+     * @return CallResource|\Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $callId)
     {
         try {
-            $call = (new UpdateCall)->execute(
+            $call = app(UpdateCall::class)->execute(
                 $request->all()
                     +
                     [
@@ -112,13 +117,14 @@ class ApiCallController extends ApiController
     /**
      * Delete a call.
      *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(Request $request, $callId)
     {
         try {
-            (new DestroyCall)->execute([
+            app(DestroyCall::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'call_id' => $callId,
             ]);
@@ -136,7 +142,7 @@ class ApiCallController extends ApiController
     /**
      * Get the list of calls for a given contact.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
      */
     public function calls(Request $request, $contactId)
     {

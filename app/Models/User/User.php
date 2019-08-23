@@ -8,6 +8,7 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Helpers\RequestHelper;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,8 @@ use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -68,6 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'profile_new_life_event_badge_seen' => 'boolean',
+        'admin' => 'boolean',
     ];
 
     /**
@@ -80,10 +84,14 @@ class User extends Authenticatable implements MustVerifyEmail
      * @param string $password
      * @param string $ipAddress
      * @param string $lang
-     * @return $this
+     * @return self
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
+        if (self::where('email', $email)->count() > 0) {
+            throw new UnauthorizedException();
+        }
+
         // create the user
         $user = new self;
         $user->account_id = $account_id;
@@ -172,6 +180,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the contact record associated with the 'me' contact.
+     *
+     * @return HasOne
+     */
+    public function me()
+    {
+        return $this->hasOne(Contact::class, 'id', 'me_contact_id');
+    }
+
+    /**
      * Get the term records associated with the user.
      *
      * @return BelongsToMany
@@ -225,17 +243,6 @@ class User extends Authenticatable implements MustVerifyEmail
         } else {
             return 'C';
         }
-    }
-
-    /**
-     * Get the user's locale.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getLocaleAttribute($value)
-    {
-        return $value;
     }
 
     /**
@@ -306,10 +313,11 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Ecrypt the user's google_2fa secret.
      *
-     * @param  string  $value
-     * @return string
+     * @param string  $value
+     *
+     * @return void
      */
-    public function setGoogle2faSecretAttribute($value)
+    public function setGoogle2faSecretAttribute($value): void
     {
         $this->attributes['google2fa_secret'] = encrypt($value);
     }
@@ -334,11 +342,15 @@ class User extends Authenticatable implements MustVerifyEmail
      * This is affected by the user settings regarding the hour of the day he
      * wants to be reminded.
      *
-     * @param Carbon $date
+     * @param Carbon|null $date
      * @return bool
      */
-    public function isTheRightTimeToBeReminded(Carbon $date)
+    public function isTheRightTimeToBeReminded($date)
     {
+        if (is_null($date)) {
+            return false;
+        }
+
         $isTheRightTime = true;
 
         // compare date with current date for the user
@@ -428,7 +440,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the list of all the policies the user has signed.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
     public function getAllCompliances()
     {

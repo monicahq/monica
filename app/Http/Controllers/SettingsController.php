@@ -6,6 +6,7 @@ use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
@@ -18,16 +19,19 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\StripeException;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
+use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
-use PragmaRX\Google2FALaravel\Google2FA;
 use App\Services\Account\DestroyAllDocuments;
+use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
+use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 
 class SettingsController
 {
@@ -38,6 +42,8 @@ class SettingsController
         'api_usage',
         'cache',
         'countries',
+        'contact_photo',
+        'crons',
         'currencies',
         'contact_photo',
         'default_activity_types',
@@ -65,15 +71,19 @@ class SettingsController
         'sessions',
         'statistics',
         'subscriptions',
+        'telescope_entries',
+        'telescope_entries_tags',
+        'telescope_monitoring',
         'terms',
         'u2f_key',
         'users',
+        'webauthn_keys',
     ];
 
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -102,7 +112,8 @@ class SettingsController
      * Save user settings.
      *
      * @param SettingsRequest $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function save(SettingsRequest $request)
     {
@@ -123,7 +134,7 @@ class SettingsController
         );
 
         if ($user->email != $request->get('email')) {
-            (new EmailChange)->execute([
+            app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
                 'email' => $request->get('email'),
                 'user_id' => $user->id,
@@ -141,14 +152,15 @@ class SettingsController
      * Delete user account.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function delete(Request $request)
     {
         $user = $request->user();
         $account = $user->account;
 
-        (new DestroyAllDocuments)->execute([
+        app(DestroyAllDocuments::class)->execute([
             'account_id' => $account->id,
         ]);
 
@@ -168,7 +180,12 @@ class SettingsController
         $account = auth()->user()->account;
 
         if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            $account->subscriptionCancel();
+            try {
+                $account->subscriptionCancel();
+            } catch (StripeException $e) {
+                return redirect()->route('settings.index')
+                    ->withErrors($e->getMessage());
+            }
         }
 
         DB::table('accounts')->where('id', $account->id)->delete();
@@ -182,14 +199,15 @@ class SettingsController
      * Reset user account.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function reset(Request $request)
     {
         $user = $request->user();
         $account = $user->account;
 
-        (new DestroyAllDocuments)->execute([
+        app(DestroyAllDocuments::class)->execute([
             'account_id' => $account->id,
         ]);
 
@@ -217,7 +235,7 @@ class SettingsController
     /**
      * Display the export view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function export()
     {
@@ -227,21 +245,23 @@ class SettingsController
     /**
      * Exports the data of the account in SQL format.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response|null
      */
     public function exportToSql()
     {
         $path = dispatch_now(new ExportAccountAsSQL());
 
+        $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
+
         return response()
-            ->download(Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver()->getAdapter()->getPathPrefix().$path, 'monica.sql')
+            ->download($adapter->getPathPrefix().$path, 'monica.sql')
             ->deleteFileAfterSend(true);
     }
 
     /**
      * Display the import view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function import()
     {
@@ -255,7 +275,7 @@ class SettingsController
     /**
      * Display the Import people's view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function upload()
     {
@@ -284,7 +304,7 @@ class SettingsController
     /**
      * Display the import report view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function report($importJobId)
     {
@@ -297,7 +317,7 @@ class SettingsController
     /**
      * Display the users view.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function users()
     {
@@ -313,7 +333,7 @@ class SettingsController
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function addUser()
     {
@@ -328,7 +348,8 @@ class SettingsController
      * Store a newly created resource in storage.
      *
      * @param InvitationRequest $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function inviteUser(InvitationRequest $request)
     {
@@ -356,7 +377,7 @@ class SettingsController
             + [
                 'invited_by_user_id' => auth()->user()->id,
                 'account_id' => auth()->user()->account_id,
-                'invitation_key' => str_random(100),
+                'invitation_key' => Str::random(100),
             ]
         );
 
@@ -374,7 +395,8 @@ class SettingsController
      * Remove the specified resource from storage.
      *
      * @param Invitation $invitation
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroyInvitation(Invitation $invitation)
     {
@@ -388,7 +410,8 @@ class SettingsController
      * Display the specified resource.
      *
      * @param string $key
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function acceptInvitation($key)
     {
@@ -407,7 +430,8 @@ class SettingsController
      *
      * @param Request $request
      * @param string $key
-     * @return \Illuminate\Http\Response
+     *
+     * @return null|\Illuminate\Http\RedirectResponse
      */
     public function storeAcceptedInvitation(Request $request, $key)
     {
@@ -443,8 +467,9 @@ class SettingsController
     /**
      * Delete additional user account.
      *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @param int $userID
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteAdditionalUser($userID)
     {
@@ -474,11 +499,12 @@ class SettingsController
      * Destroy the tag.
      *
      * @param int $tagId
-     * @return void
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function deleteTag($tagId)
     {
-        (new DestroyTag)->execute([
+        app(DestroyTag::class)->execute([
             'tag_id' => $tagId,
             'account_id' => auth()->user()->account->id,
         ]);
@@ -492,14 +518,29 @@ class SettingsController
         return view('settings.api.index');
     }
 
+    public function dav()
+    {
+        $davroute = route('sabre.dav');
+        $email = auth()->user()->email;
+
+        return view('settings.dav.index')
+                ->withDavRoute($davroute)
+                ->withCardDavRoute("{$davroute}/addressbooks/{$email}/contacts")
+                ->withCalDavBirthdaysRoute("{$davroute}/calendars/{$email}/birthdays")
+                ->withCalDavTasksRoute("{$davroute}/calendars/{$email}/tasks");
+    }
+
     public function security()
     {
         $u2fKeys = U2fKey::where('user_id', auth()->id())
                         ->get();
 
+        $webauthnKeys = WebauthnKey::where('user_id', auth()->id())->get();
+
         return view('settings.security.index')
-            ->with('is2FAActivated', app('pragmarx.google2fa')->isActivated())
-            ->with('currentkeys', U2fKeyResource::collection($u2fKeys));
+            ->with('is2FAActivated', Google2FA::isActivated())
+            ->with('currentkeys', U2fKeyResource::collection($u2fKeys))
+            ->withWebauthnKeys(WebauthnKeyResource::collection($webauthnKeys));
     }
 
     /**
@@ -509,7 +550,7 @@ class SettingsController
      * Possible values: life-events | notes.
      *
      * @param  Request $request
-     * @return bool
+     * @return string
      */
     public function updateDefaultProfileView(Request $request)
     {

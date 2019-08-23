@@ -43,7 +43,7 @@ class AddressTest extends FeatureTestCase
 
     public function test_users_can_get_addresses()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $address = factory(Address::class)->create([
             'contact_id' => $contact->id,
@@ -60,7 +60,7 @@ class AddressTest extends FeatureTestCase
 
     public function test_users_can_add_addresses()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $params = [
             'name' => 'test',
@@ -85,7 +85,7 @@ class AddressTest extends FeatureTestCase
 
     public function test_users_can_edit_addresses()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $params = [
             'name' => 'test2',
@@ -115,7 +115,7 @@ class AddressTest extends FeatureTestCase
 
     public function test_users_can_delete_addresses()
     {
-        list($user, $contact) = $this->fetchUser();
+        [$user, $contact] = $this->fetchUser();
 
         $address = factory(Address::class)->create([
             'contact_id' => $contact->id,

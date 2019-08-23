@@ -6,7 +6,7 @@
 
     <h2>{{ trans('people.debt_add_title') }}</h2>
 
-    {{-- Gender --}}
+    {{-- Debt direction --}}
     <fieldset class="form-group">
         <label class="form-check-inline" for="youowe">
             <input type="radio" class="form-check-input" name="in_debt" id="youowe" value="yes" @if(old('in_debt') !== 'no' || $debt->in_debt !== 'no') checked @endif>
@@ -14,7 +14,7 @@
         </label>
 
         <label class="form-check-inline" for="theyowe">
-            <input type="radio" class="form-check-input" name="in_debt" id="theyowe" value="no">
+            <input type="radio" class="form-check-input" name="in_debt" id="theyowe" value="no" @if(old('in_debt') === 'no' || $debt->in_debt === 'no') checked @endif>
             {{ trans('people.debt_add_they_owe', ['name' => $contact->first_name]) }}
         </label>
     </fieldset>

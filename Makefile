@@ -16,6 +16,15 @@ else ifeq ($(TRAVIS),true)
   GIT_COMMIT := $(if $(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_PULL_REQUEST_SHA),$(TRAVIS_COMMIT))
   GIT_TAG := $(TRAVIS_TAG)
   COMMIT_MESSAGE := $(TRAVIS_COMMIT_MESSAGE)
+else ifeq ($(TF_BUILD),True)
+  REPO := $(BUILD_REPOSITORY_NAME)
+  BRANCH := $(if $(SYSTEM_PULLREQUEST_SOURCEBRANCH),$(SYSTEM_PULLREQUEST_SOURCEBRANCH),$(BUILD_SOURCEBRANCHNAME))
+  PR_NUMBER := $(if $(SYSTEM_PULLREQUEST_PULLREQUESTNUMBER),$(SYSTEM_PULLREQUEST_PULLREQUESTNUMBER),false)
+  BUILD_NUMBER := $(BUILD_BUILDNUMBER)
+  GIT_COMMIT := $(shell git rev-parse --verify "HEAD^2" 2>/dev/null)
+  ifeq ($(GIT_COMMIT),)
+    GIT_COMMIT ?= $(BUILD_SOURCEVERSION)
+  endif
 else
   REPO := $(subst https://github.com/,,$(CHANGE_URL))
   ifneq ($(CHANGE_ID),)
@@ -30,9 +39,11 @@ $(info BRANCH=$(BRANCH))
 $(info BUILD_NUMBER=$(BUILD_NUMBER))
 
 ifeq ($(GIT_COMMIT),)
-  GIT_COMMIT := $(shell git log --format="%h" -n 1)
+  GIT_COMMIT := $(shell git log --format="%H" -n 1)
+  GIT_REF := $(shell git log --format="%h" -n 1)
 else
-  GIT_COMMIT := $(shell git rev-parse --short=8 ${GIT_COMMIT})
+  GIT_COMMIT := $(shell git rev-parse ${GIT_COMMIT})
+  GIT_REF := $(shell git rev-parse --short ${GIT_COMMIT})
 endif
 $(info GIT_COMMIT=$(GIT_COMMIT))
 ifeq ($(GIT_TAG),)
@@ -48,7 +59,7 @@ BUILD := $(GIT_TAG)
 ifeq ($(BUILD),)
   ifeq ($(BRANCH),)
     # If we are not on CI or it's not a TAG build, we add "-dev" to the name
-    BUILD := $(GIT_COMMIT)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null); then echo "-dev"; fi)
+    BUILD := $(GIT_REF)$(shell if ! $$(git describe --abbrev=0 --tags --exact-match ${GIT_COMMIT} 2>/dev/null >/dev/null); then echo "-dev"; fi)
   else
     BUILD := $(BRANCH)
   endif
@@ -70,12 +81,26 @@ docker:
 	$(MAKE) docker_tag
 	$(MAKE) docker_push
 
-docker_build:
+docker_build: docker_build_apache docker_build_fpm
+
+docker_build_apache:
 	docker build \
 		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
-		--build-arg VCS_REF=$(GIT_COMMIT) \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/apache/Dockerfile \
 		-t $(DOCKER_IMAGE) .
+	docker images
+
+docker_build_fpm:
+	docker build \
+		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
+		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/fpm/Dockerfile \
+		-t $(DOCKER_IMAGE):fpm .
 	docker images
 
 DOCKER_SQUASH := $(shell which docker-squash)
@@ -84,14 +109,23 @@ ifeq ($(DOCKER_SQUASH),)
 endif
 
 docker_squash:
-	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/apache/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):latest
+	$(DOCKER_SQUASH) -f $(shell docker image ls -q `head -n 1 scripts/docker/fpm/Dockerfile | cut -d ' ' -f 2`) -t $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):fpm
 	docker images
 
 docker_tag:
-	docker tag $(DOCKER_IMAGE) $(DOCKER_IMAGE):$(BUILD)
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-apache
+	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker images
 
 docker_push: docker_tag
 	docker push $(DOCKER_IMAGE):$(BUILD)
+	docker push $(DOCKER_IMAGE):$(BUILD)-apache
+	docker push $(DOCKER_IMAGE):apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push $(DOCKER_IMAGE):fpm
 	docker push $(DOCKER_IMAGE):latest
 
 docker_push_bintray: .deploy.json
@@ -99,7 +133,7 @@ docker_push_bintray: .deploy.json
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
-.PHONY: docker docker_build docker_tag docker_push docker_push_bintray
+.PHONY: docker docker_build docker_build_apache docker_build_fpm docker_tag docker_push docker_push_bintray
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
@@ -129,7 +163,7 @@ $(DESTDIR):
 	mkdir -p $@
 	ln -s ../readme.md $@/
 	ln -s ../CONTRIBUTING.md $@/
-	ln -s ../CHANGELOG $@/
+	ln -s ../CHANGELOG.md $@/
 	ln -s ../CONTRIBUTORS $@/
 	ln -s ../LICENSE $@/
 	ln -s ../.env.example $@/

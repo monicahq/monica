@@ -4,15 +4,15 @@
 <template>
   <div>
     <div>
-      <img src="/img/people/tasks.svg" class="icon-section icon-tasks" />
+      <img src="img/people/tasks.svg" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
         <span v-if="tasks.length != 0" class="f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
-          <a v-if="!editMode" class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = true">
+          <a v-if="!editMode" class="pointer" cy-name="task-toggle-edit-mode" href="" @click.prevent="editMode = true">
             {{ $t('app.edit') }}
           </a>
-          <a v-else class="pointer" cy-name="task-toggle-edit-mode" @click="editMode = false">
+          <a v-else class="pointer" cy-name="task-toggle-edit-mode" href="" @click.prevent="editMode = false">
             {{ $t('app.done') }}
           </a>
         </span>
@@ -24,7 +24,7 @@
       <div v-if="tasks.length == 0 && !addMode" class="tc bg-near-white b--moon-gray pa3" cy-name="task-blank-state">
         <p>{{ $t('people.tasks_blank_title') }}</p>
         <p>
-          <a class="pointer" cy-name="add-task-button" @click="toggleAddMode">
+          <a class="pointer" cy-name="add-task-button" href="" @click.prevent="toggleAddMode">
             {{ $t('people.tasks_add_task') }}
           </a>
         </p>
@@ -33,12 +33,18 @@
       <!-- LIST OF IN PROGRESS TASKS -->
       <ul>
         <li v-for="(task, i) in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
-          <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
-          {{ task.title }}
-          <span v-if="task.description" class="silver ml3">
-            {{ task.description }}
-          </span>
-
+          <form-checkbox
+            v-model.lazy="task.completed"
+            :name="'task'"
+            :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
+            @change="toggleComplete(task)"
+          >
+            {{ task.title }}
+            <span v-if="task.description" slot="extra" class="silver ml3">
+              {{ task.description }}
+            </span>
+          </form-checkbox>
+          
           <div v-if="editMode" class="di">
             <i class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(task)"></i>
             <i class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + task.id" @click="trash(task)"></i>
@@ -65,10 +71,10 @@
               </textarea>
             </div>
             <div class="lh-copy mt3">
-              <a class="btn btn-primary" @click.prevent="update(task, true)">
+              <a class="btn btn-primary" href="" @click.prevent="update(task, true)">
                 {{ $t('app.update') }}
               </a>
-              <a class="btn" @click="toggleEditMode(task)">
+              <a class="btn" href="" @click.prevent="toggleEditMode(task)">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -78,7 +84,7 @@
 
       <!-- ADD TASK TO ENTER ADD MODE -->
       <div v-if="!updateMode && !addMode && tasks.length != 0" class="bg-near-white pa2 br2 mt3 mb3">
-        <a class="pointer" @click="toggleAddMode">
+        <a class="pointer" href="" @click.prevent="toggleAddMode">
           {{ $t('people.tasks_add_task') }}
         </a>
       </div>
@@ -101,10 +107,10 @@
             <textarea id="add-description" v-model="newTask.description" class="pa2 db w-100" type="text" @keyup.esc="addMode = false"></textarea>
           </div>
           <div class="lh-copy mt3">
-            <a class="btn btn-primary" cy-name="save-task-button" @click.prevent="store">
+            <a class="btn btn-primary" cy-name="save-task-button" href="" @click.prevent="store">
               {{ $t('app.add') }}
             </a>
-            <a class="btn" @click="addMode = false">
+            <a class="btn" href="" @click.prevent="addMode = false">
               {{ $t('app.cancel') }}
             </a>
           </div>
@@ -114,7 +120,12 @@
       <!-- LIST OF COMPLETED TASKS -->
       <ul>
         <li v-for="task in completed(tasks)" :key="task.id" class="f6" :cy-name="'task-item-completed-' + task.id">
-          <input id="checkbox" v-model="task.completed" type="checkbox" class="mr1" @click="toggleComplete(task)" />
+          <form-checkbox
+            v-model.lazy="task.completed"
+            :name="'checkbox'"
+            :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
+            @change="toggleComplete(task)"
+          />
           <span class="light-silver mr1">
             {{ task.completed_at }}
           </span>
@@ -208,14 +219,14 @@ export default {
     },
 
     index() {
-      axios.get('/people/' + this.hash + '/tasks')
+      axios.get('people/' + this.hash + '/tasks')
         .then(response => {
           this.tasks = response.data;
         });
     },
 
     store() {
-      axios.post('/tasks', this.newTask)
+      axios.post('tasks', this.newTask)
         .then(response => {
           this.addMode = false;
           this.reinitialize();
@@ -235,7 +246,7 @@ export default {
     },
 
     update(task, toggleEdit) {
-      axios.put('/tasks/' + task.id, task)
+      axios.put('tasks/' + task.id, task)
         .then(response => {
           this.updateMode = false;
           if (toggleEdit) {
@@ -251,7 +262,7 @@ export default {
     },
 
     trash(task) {
-      axios.delete('/tasks/' + task.id)
+      axios.delete('tasks/' + task.id)
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1);
         });

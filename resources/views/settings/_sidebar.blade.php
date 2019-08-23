@@ -1,4 +1,4 @@
-<div class="col-xs-12 col-sm-3 sidebar-menu">
+<div class="col-12 col-sm-3 sidebar-menu">
   <ul class="mb4">
 
     @component('components.sidebar', [
@@ -56,6 +56,14 @@
       'icon' => 'fa fa-random',
       'title' => 'settings.sidebar_settings_api'])
     @endcomponent
+
+    @if (config('laravelsabre.enabled') && ! auth()->user()->account->hasLimitations())
+      @component('components.sidebar', [
+        'route' => 'settings.dav',
+        'icon' => 'fa fa-calendar',
+        'title' => 'settings.sidebar_settings_dav'])
+      @endcomponent
+    @endif
 
     @component('components.sidebar', [
       'route' => 'settings.security.index',

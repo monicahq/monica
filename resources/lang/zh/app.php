@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => '是',
+    'no' => '否',
     'update' => '更新',
     'save' => '保存',
     'add' => '添加',
@@ -33,7 +35,8 @@ return [
     'type' => '类型',
     'zoom' => '放大',
     'upgrade' => '升级解锁',
-    'percent_uploaded' => '已上传 {percent}% ',
+    'percent_uploaded' => '已上传 {percent}%',
+    'retry' => '重试',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
@@ -83,6 +86,7 @@ return [
     'breadcrumb_add_note' => '添加注释',
     'breadcrumb_edit_note' => '编辑注释',
     'breadcrumb_api' => 'API',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => '你是怎么知道的',
     'breadcrumb_settings_personalization' => '个性化',
     'breadcrumb_settings_security' => '安全',
@@ -92,6 +96,7 @@ return [
     'gender_male' => '男',
     'gender_female' => '女',
     'gender_none' => '保密',
+    'gender_no_gender' => '无性别',
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
@@ -429,4 +434,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => '当前天气',
+
+    // dav
+    'dav_contacts' => '名片',
+    'dav_contacts_description' => ':name的名片',
+    'dav_birthdays' => '生日',
+    'dav_birthdays_description' => ':name的名片生日',
+    'dav_tasks' => '任务',
+    'dav_tasks_description' => ':name的任务',
 ];

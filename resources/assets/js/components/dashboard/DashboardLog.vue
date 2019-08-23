@@ -44,7 +44,7 @@
             <span class="mr1 black-50">
               •
             </span>
-            <a :href="'/people/' + call.contact_id">
+            <a :href="'people/' + call.contact_id">
               {{ call.name }}
             </a>
           </li>
@@ -99,7 +99,7 @@
               <span class="mr1 black-50">
                 •
               </span>
-              <a :href="'/people/' + note.contact.id">
+              <a :href="'people/' + note.contact.id">
                 {{ note.name }}
               </a>
               <p>
@@ -125,7 +125,7 @@
             <span class="mr1 black-50">
               •
             </span>
-            <a :href="'/people/' + debt.contact.hash_id">
+            <a :href="'people/' + debt.contact.hash_id">
               {{ debt.contact.first_name }}
             </a>
             <span class="mr1 black-50">
@@ -169,7 +169,7 @@
             <input v-model="newTask.title" type="text" class="bt-0 br-0 bl-0 w-100 di bb b--gray-monica pt2 pb2" :placeholder="$t('dashboard.tasks_add_task_placeholder')" @keyup.enter="saveTask()"
                    @keyup.esc="taskAddMode = false"
             />
-            <a class="pointer" @click.prevent="taskAddMode = false; newTask.title=''">
+            <a class="pointer" href="" @click.prevent="taskAddMode = false; newTask.title=''">
               {{ $t('app.cancel') }}
             </a>
           </div>
@@ -182,12 +182,16 @@
         <div v-if="contactRelated(tasks).length != 0 && contactRelatedTasksView">
           <ul>
             <li v-for="task in contactRelated(tasks)" :key="task.id" class="pb0 mb2">
-              <label class="pointer mb1">
-                <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
+              <form-checkbox
+                v-model.lazy="task.completed"
+                :name="'todo'"
+                :dclass="'mr1'"
+                @change="updateTask(task)"
+              >
                 {{ task.title }}
-              </label>
+              </form-checkbox>
               <span class="black-50 mr1 f7">
-                <a :href="'/people/' + task.contact.hash_id">
+                <a :href="'people/' + task.contact.hash_id">
                   {{ task.contact.first_name }}
                 </a>
               </span>
@@ -200,16 +204,16 @@
           <!-- Your tasks: Blank state -->
           <div v-if="customNotCompleted(tasks).length == 0" class="tc mt4 mb4">
             <p class="mb4">
-              <a v-show="!taskAddMode" class="btn pointer" @click.prevent="taskAddMode = true">
+              <a v-show="!taskAddMode" class="btn pointer" href="" @click.prevent="taskAddMode = true">
                 {{ $t('dashboard.task_add_cta') }}
               </a>
             </p>
-            <img src="/img/dashboard/blank_your_tasks.svg" />
+            <img src="img/dashboard/blank_your_tasks.svg" />
           </div>
 
           <!-- Add a task -->
           <p v-if="customNotCompleted(tasks).length != 0">
-            <a v-show="!taskAddMode" class="pointer" @click.prevent="taskAddMode = true">
+            <a v-show="!taskAddMode" class="pointer" href="" @click.prevent="taskAddMode = true">
               {{ $t('dashboard.task_add_cta') }}
             </a>
           </p>
@@ -217,21 +221,25 @@
           <!-- Actual list -->
           <ul v-if="customNotCompleted(tasks).length != 0">
             <li v-for="task in customNotCompleted(tasks)" :key="task.id" class="pb0 mb2" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
-              <label class="pointer mb1">
-                <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
+              <form-checkbox
+                v-model.lazy="task.completed"
+                :name="'todo'"
+                :dclass="'mr1'"
+                @change="updateTask(task)"
+              >
                 {{ task.title }}
-              </label>
-              <a v-show="showTaskAction == task.id" class="pointer mr1" @click.prevent="confirmDestroyTask = task.id">
+              </form-checkbox>
+              <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
               <ul v-show="confirmDestroyTask == task.id" class="di">
                 <li class="di">
-                  <a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">
+                  <a class="pointer mr1" href="" @click.prevent="confirmDestroyTask = 0">
                     {{ $t('app.cancel') }}
                   </a>
                 </li>
                 <li class="di">
-                  <a class="pointer red" @click.prevent="destroyTask(task)">
+                  <a class="pointer red" href="" @click.prevent="destroyTask(task)">
                     {{ $t('app.delete_confirm') }}
                   </a>
                 </li>
@@ -241,21 +249,25 @@
 
           <ul v-if="customCompleted(tasks).length != 0 && !contactRelatedTasksView">
             <li v-for="task in customCompleted(tasks)" :key="task.id" class="pb0 mb0 f6" @mouseover="showTaskAction = task.id" @mouseleave="showTaskAction = 0; confirmDestroyTask = 0">
-              <label class="pointer mb1 mr1">
-                <input v-model="task.completed" type="checkbox" class="mr1" @click="updateTask(task)" />
+              <form-checkbox
+                v-model.lazy="task.completed"
+                :name="'todo'"
+                :dclass="'mb1 mr1'"
+                @change="updateTask(task)"
+              >
                 {{ task.title }}
-              </label>
-              <a v-show="showTaskAction == task.id" class="pointer mr1" @click.prevent="confirmDestroyTask = task.id">
+              </form-checkbox>
+              <a v-show="showTaskAction == task.id" class="pointer mr1" href="" @click.prevent="confirmDestroyTask = task.id">
                 {{ $t('app.delete') }}
               </a>
               <ul v-show="confirmDestroyTask == task.id" class="di">
                 <li class="di">
-                  <a class="pointer mr1" @click.prevent="confirmDestroyTask = 0">
+                  <a class="pointer mr1" href="" @click.prevent="confirmDestroyTask = 0">
                     {{ $t('app.cancel') }}
                   </a>
                 </li>
                 <li class="di">
-                  <a class="pointer red" @click.prevent="destroyTask(task)">
+                  <a class="pointer red" href="" @click.prevent="destroyTask(task)">
                     {{ $t('app.delete_confirm') }}
                   </a>
                 </li>
@@ -350,34 +362,34 @@ export default {
     },
 
     saveTab(view) {
-      axios.post('/dashboard/setTab', {'tab':view})
+      axios.post('dashboard/setTab', {'tab':view})
         .then(response => {
         });
     },
 
     getCalls() {
-      axios.get('/dashboard/calls')
+      axios.get('dashboard/calls')
         .then(response => {
           this.calls = response.data;
         });
     },
 
     getNotes() {
-      axios.get('/dashboard/notes')
+      axios.get('dashboard/notes')
         .then(response => {
           this.notes = response.data;
         });
     },
 
     getDebts() {
-      axios.get('/dashboard/debts')
+      axios.get('dashboard/debts')
         .then(response => {
           this.debts = response.data;
         });
     },
 
     getTasks() {
-      axios.get('/tasks')
+      axios.get('tasks')
         .then(response => {
           this.tasks = response.data.data;
         });
@@ -405,8 +417,7 @@ export default {
     },
 
     updateTask(task) {
-      task.completed = !task.completed;
-      axios.put('/tasks/' + task.id, task)
+      axios.put('tasks/' + task.id, task)
         .then(response => {
           this.$notify({
             group: 'main',
@@ -418,7 +429,7 @@ export default {
     },
 
     saveTask() {
-      axios.post('/tasks', this.newTask)
+      axios.post('tasks', this.newTask)
         .then(response => {
           this.newTask.title = '';
           this.taskAddMode = false;
@@ -433,7 +444,7 @@ export default {
     },
 
     destroyTask(task) {
-      axios.delete('/tasks/' + task.id)
+      axios.delete('tasks/' + task.id)
         .then(response => {
           this.tasks.splice(this.tasks.indexOf(task), 1);
         });

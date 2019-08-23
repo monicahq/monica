@@ -3,6 +3,7 @@
 namespace App\Models\Account;
 
 use App\Models\Contact\Contact;
+use function Safe\preg_replace;
 use App\Helpers\CountriesHelper;
 use App\Models\ModelBinding as Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -52,7 +53,7 @@ class Place extends Model
     /**
      * Get the address as a sentence.
      *
-     * @return string
+     * @return string|null
      */
     public function getAddressAsString()
     {
@@ -78,12 +79,15 @@ class Place extends Model
             $address .= ' '.$this->getCountryName();
         }
 
-        if (is_null($address)) {
+        if (empty($address)) {
             return;
         }
 
         // trim extra whitespaces inside the address
-        return preg_replace('/\s+/', ' ', $address);
+        $address = preg_replace('/\s+/', ' ', $address);
+        if (is_string($address)) {
+            return $address;
+        }
     }
 
     /**

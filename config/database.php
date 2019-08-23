@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 $db = [
 
     /*
@@ -70,6 +72,7 @@ $db = [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => env('DB_PREFIX', ''),
+            'foreign_key_constraints' => true,
         ],
 
         'mysql' => [
@@ -176,7 +179,7 @@ if (env('HEROKU')) {
     $db['connections']['heroku'] = [
         'driver' => 'mysql',
         'host' => $url['host'],
-        'database' => starts_with($url['path'], '/') ? str_after($url['path'], '/') : $url['path'],
+        'database' => Str::startsWith($url['path'], '/') ? Str::after($url['path'], '/') : $url['path'],
         'username' => $url['user'],
         'password' => $url['pass'],
         'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',

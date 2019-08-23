@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Contact\Call;
 use App\Models\Account\Account;
@@ -29,12 +28,11 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
         ];
 
-        $callService = new UpdateCall;
-        $call = $callService->execute($request);
+        $call = app(UpdateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
@@ -61,13 +59,12 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => 1,
         ];
 
-        $callService = new UpdateCall;
-        $call = $callService->execute($request);
+        $call = app(UpdateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
@@ -89,11 +86,10 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
-        $callService = new UpdateCall;
-        $call = $callService->execute($request);
+        $call = app(UpdateCall::class)->execute($request);
 
         $this->assertDatabaseHas('calls', [
             'id' => $call->id,
@@ -129,14 +125,13 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => 1,
             'emotions' => $emotionArray,
         ];
 
-        $callService = new UpdateCall;
-        $call = $callService->execute($request);
+        $call = app(UpdateCall::class)->execute($request);
 
         $this->assertDatabaseHas('emotion_call', [
             'contact_id' => $call->contact_id,
@@ -188,14 +183,13 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
             'content' => 'this is the content',
             'contact_called' => 1,
             'emotions' => $emotionArray,
         ];
 
-        $callService = new UpdateCall;
-        $call = $callService->execute($request);
+        $call = app(UpdateCall::class)->execute($request);
 
         $this->assertDatabaseHas('emotion_call', [
             'contact_id' => $call->contact_id,
@@ -236,16 +230,15 @@ class UpdateCallTest extends TestCase
             'account_id' => $contact->account->id,
         ]);
 
-        $date = Carbon::now();
+        $date = now();
 
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
-        $callService = new UpdateCall;
-        $call = $callService->execute($request);
+        app(UpdateCall::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -263,16 +256,15 @@ class UpdateCallTest extends TestCase
             'account_id' => $contact->account->id,
         ]);
 
-        $date = Carbon::now();
+        $date = now();
 
         $request = [
             'account_id' => $call->account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
-        $callService = new UpdateCall;
-        $call = $callService->execute($request);
+        app(UpdateCall::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -286,13 +278,11 @@ class UpdateCallTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
-
-        $createConversation = new UpdateCall;
-        $call = $createConversation->execute($request);
+        app(UpdateCall::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_call_is_not_linked_to_account()
@@ -303,11 +293,10 @@ class UpdateCallTest extends TestCase
         $request = [
             'account_id' => $account->id,
             'call_id' => $call->id,
-            'called_at' => Carbon::now(),
+            'called_at' => now(),
         ];
 
         $this->expectException(ModelNotFoundException::class);
-
-        $createConversation = (new UpdateCall)->execute($request);
+        app(UpdateCall::class)->execute($request);
     }
 }

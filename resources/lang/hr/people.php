@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 dijete|:count djece',
     'people_list_last_updated' => 'Posljednji ažurirani:',
     'people_list_number_reminders' => '1 podsjetnik|:count podsjetnika',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Pokaži umrle osobe (:count)',
     'people_list_hide_dead' => 'Sakrij umrle osobe (:count)',
     'people_search' => 'Pretraži svoje kontakte...',
-    'people_search_no_results' => 'Nisu pronađeni odgovarajući kontakti :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Nadogradi sada',
@@ -150,14 +152,14 @@ return [
     'work_edit_company' => 'Company (optional)',
     'work_information' => 'Work information',
 
-    // food preferencies
-    'food_preferencies_add_success' => 'Food preferences have been saved',
-    'food_preferencies_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferencies_edit_title' => 'Indicate food preferences',
-    'food_preferencies_edit_cta' => 'Save food preferences',
-    'food_preferencies_title' => 'Food preferences',
-    'food_preferencies_cta' => 'Add food preferences',
+    // food preferences
+    'food_preferences_add_success' => 'Food preferences have been saved',
+    'food_preferences_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferences_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferences_edit_title' => 'Indicate food preferences',
+    'food_preferences_edit_cta' => 'Save food preferences',
+    'food_preferences_title' => 'Food preferences',
+    'food_preferences_cta' => 'Add food preferences',
 
     // reminders
     'reminders_blank_title' => 'Is there something you want to be reminded of about :name?',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'Dodaj novi odnos',
     'relationship_form_edit' => 'Uredi postojeći odnos',
     'relationship_form_is_with' => 'Ova osoba je...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Dodajte novu osobu',
     'relationship_form_associate_contact' => 'Dodaj postojeći kontakt',
@@ -244,7 +247,7 @@ return [
     'activities_add_title' => 'What did you do with :name?',
     'activities_summary' => 'Describe what you did',
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
-    'activities_add_date_occured' => 'Date this activity occured',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'Optional comment',
     'activities_add_cta' => 'Record activity',
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
@@ -367,7 +370,7 @@ return [
     // Pets
     'pets_kind' => 'Kind of pet',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
     'pets_title' => 'Pets',
@@ -423,8 +426,8 @@ return [
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'Went on holidays',
     'life_event_sentence_new_vehicle' => 'Got a new vehicle',
-    'life_event_sentence_new_roommate' => 'Got a roomate',
-    'life_event_sentence_overcame_an_illness' => 'Overcam an illness',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'Quit a habit',
     'life_event_sentence_new_eating_habits' => 'Started new eating habits',
     'life_event_sentence_weight_loss' => 'Lost weight',

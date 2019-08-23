@@ -35,7 +35,12 @@
 
             <ul class="f7">
               <li class="di">
-                <a class="pointer" :cy-name="'entry-delete-button-' + entry.id" @click="trash()">
+                <a class="pointer" :cy-name="'entry-edit-button-' + entry.id" :href="'/journal/entries/' + entry.id + '/edit'">
+                  {{ $t('app.edit') }}
+                </a>
+              </li>
+              <li class="di">
+                <a class="pointer" :cy-name="'entry-delete-button-' + entry.id" href="" @click.prevent="trash()">
                   {{ $t('app.delete') }}
                 </a>
               </li>
@@ -80,7 +85,7 @@ export default {
     },
 
     trash() {
-      axios.delete('/journal/' + this.entry.id)
+      axios.delete('journal/' + this.entry.id)
         .then(response => {
           this.$emit('deleteJournalEntry', this.journalEntry.id);
         });

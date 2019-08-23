@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Http\Controllers\Controller;
@@ -17,13 +16,13 @@ class RemindersController extends Controller
      * Show the form for creating a new reminder.
      *
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function create(Contact $contact)
     {
         return view('people.reminders.add')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withReminder(new Reminder);
     }
 
@@ -32,7 +31,8 @@ class RemindersController extends Controller
      *
      * @param Request $request
      * @param Contact $contact
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Contact $contact)
     {
@@ -46,7 +46,7 @@ class RemindersController extends Controller
             'description' => $request->get('description'),
         ];
 
-        (new CreateReminder)->execute($data);
+        app(CreateReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_create_success'));
@@ -57,13 +57,13 @@ class RemindersController extends Controller
      *
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View
      */
     public function edit(Contact $contact, Reminder $reminder)
     {
         return view('people.reminders.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withReminder($reminder);
     }
 
@@ -73,7 +73,8 @@ class RemindersController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, Contact $contact, Reminder $reminder)
     {
@@ -88,7 +89,7 @@ class RemindersController extends Controller
             'description' => $request->get('description'),
         ];
 
-        (new UpdateReminder)->execute($data);
+        app(UpdateReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_update_success'));
@@ -100,7 +101,8 @@ class RemindersController extends Controller
      * @param Request $request
      * @param Contact $contact
      * @param Reminder $reminder
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request, Contact $contact, Reminder $reminder)
     {
@@ -109,7 +111,7 @@ class RemindersController extends Controller
             'reminder_id' => $reminder->id,
         ];
 
-        (new DestroyReminder)->execute($data);
+        app(DestroyReminder::class)->execute($data);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.reminders_delete_success'));

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -33,8 +32,7 @@ class UpdateConversationTest extends TestCase
             'contact_field_type_id' => $contactFieldType->id,
         ];
 
-        $conversationService = new UpdateConversation;
-        $conversation = $conversationService->execute($request);
+        $conversation = app(UpdateConversation::class)->execute($request);
 
         $this->assertDatabaseHas('conversations', [
             'id' => $conversation->id,
@@ -54,13 +52,12 @@ class UpdateConversationTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
 
-        $updateConversation = new UpdateConversation;
-        $conversation = $updateConversation->execute($request);
+        app(UpdateConversation::class)->execute($request);
     }
 
     public function test_it_throws_an_exception_if_conversation_doesnt_exist()
@@ -80,7 +77,6 @@ class UpdateConversationTest extends TestCase
 
         $this->expectException(ModelNotFoundException::class);
 
-        $updateConversation = new UpdateConversation;
-        $conversation = $updateConversation->execute($request);
+        app(UpdateConversation::class)->execute($request);
     }
 }

@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact not found',
     'people_list_number_kids' => '1 dítě|:count děti',
     'people_list_last_updated' => 'Naposledy konzultováno:',
     'people_list_number_reminders' => '1 připomínka|:count připomínek',
@@ -22,7 +23,8 @@ return [
     'people_list_show_dead' => 'Show deceased people (:count)',
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Prohledat kontakty...',
-    'people_search_no_results' => 'Nebyly nalezeny žádné odpovídající kontakty :(',
+    'people_search_no_results' => 'No results found',
+    'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Your account usage: :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
     'people_list_account_upgrade_cta' => 'Upgrade now',
@@ -150,14 +152,14 @@ return [
     'work_edit_company' => 'Společnost (volitelné)',
     'work_information' => 'Work information',
 
-    // food preferencies
-    'food_preferencies_add_success' => 'Informace o oblíbených potravinách uloženy',
-    'food_preferencies_edit_description' => 'Možná má :firstname nebo někdo z rodiny :family alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
-    'food_preferencies_edit_description_no_last_name' => 'Možná má :firstname alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
-    'food_preferencies_edit_title' => 'Zapsat upřednostňované potraviny',
-    'food_preferencies_edit_cta' => 'Uložit informace o potravinách',
-    'food_preferencies_title' => 'Upřednostňované potraviny',
-    'food_preferencies_cta' => 'Přidat upřednostňované potraviny',
+    // food preferences
+    'food_preferences_add_success' => 'Informace o oblíbených potravinách uloženy',
+    'food_preferences_edit_description' => 'Možná má :firstname nebo někdo z rodiny :family alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
+    'food_preferences_edit_description_no_last_name' => 'Možná má :firstname alergii. Nebo nemusí nějaké specifické víno. Poznačte si to zde, abyste si vzpoměli před příštím pozváním na večeři',
+    'food_preferences_edit_title' => 'Zapsat upřednostňované potraviny',
+    'food_preferences_edit_cta' => 'Uložit informace o potravinách',
+    'food_preferences_title' => 'Upřednostňované potraviny',
+    'food_preferences_cta' => 'Přidat upřednostňované potraviny',
 
     // reminders
     'reminders_blank_title' => 'Je něco na co chcete být upozorňováni pro osobu :name?',
@@ -196,6 +198,7 @@ return [
     'relationship_form_add' => 'Add a new relationship',
     'relationship_form_edit' => 'Edit an existing relationship',
     'relationship_form_is_with' => 'This person is...',
+    'relationship_form_is_with_name' => ':name is...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
@@ -244,7 +247,7 @@ return [
     'activities_add_title' => 'Společná aktivita s :name?',
     'activities_summary' => 'Popište co jste dělali',
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
-    'activities_add_date_occured' => 'Datum, kdy došlo k aktivitě',
+    'activities_add_date_occured' => 'Date this activity occurred',
     'activities_add_optional_comment' => 'Volitelný komentář',
     'activities_add_cta' => 'Zaznamenat aktivitu',
     'activities_blank_title' => 'Keep track of what you’ve done with :name in the past, and what you’ve talked about',
@@ -367,7 +370,7 @@ return [
     // Pets
     'pets_kind' => 'Kind of pet',
     'pets_name' => 'Name (optional)',
-    'pets_create_success' => 'The pet has been sucessfully added',
+    'pets_create_success' => 'The pet has been successfully added',
     'pets_update_success' => 'The pet has been updated',
     'pets_delete_success' => 'The pet has been deleted',
     'pets_title' => 'Pets',
@@ -423,8 +426,8 @@ return [
     'life_event_sentence_home_improvement' => 'Made a home improvement',
     'life_event_sentence_holidays' => 'Went on holidays',
     'life_event_sentence_new_vehicle' => 'Got a new vehicle',
-    'life_event_sentence_new_roommate' => 'Got a roomate',
-    'life_event_sentence_overcame_an_illness' => 'Overcam an illness',
+    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_overcame_an_illness' => 'Overcame an illness',
     'life_event_sentence_quit_a_habit' => 'Quit a habit',
     'life_event_sentence_new_eating_habits' => 'Started new eating habits',
     'life_event_sentence_weight_loss' => 'Lost weight',

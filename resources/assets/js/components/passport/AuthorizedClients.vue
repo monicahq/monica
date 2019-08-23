@@ -43,7 +43,7 @@
 
                 <!-- Revoke Button -->
                 <td style="vertical-align: middle;">
-                  <a class="action-link text-danger" @click="revoke(token)">
+                  <a class="action-link text-danger" href="" @click.prevent="revoke(token)">
                     {{ $t('app.revoke') }}
                   </a>
                 </td>
@@ -71,20 +71,20 @@ export default {
 
   methods: {
     /**
-          * Get all of the authorized tokens for the user.
-          */
+     * Get all of the authorized tokens for the user.
+     */
     getTokens() {
-      axios.get('/oauth/tokens')
+      axios.get('oauth/tokens')
         .then(response => {
           this.tokens = response.data;
         });
     },
 
     /**
-          * Revoke the given token.
-          */
+     * Revoke the given token.
+     */
     revoke(token) {
-      axios.delete('/oauth/tokens/' + token.id)
+      axios.delete('oauth/tokens/' + token.id)
         .then(response => {
           this.getTokens();
         });

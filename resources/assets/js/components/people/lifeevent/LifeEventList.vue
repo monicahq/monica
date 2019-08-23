@@ -462,7 +462,7 @@
           {{ $t('people.life_event_blank', { name: contactName }) }}
         </p>
         <div class="tc">
-          <a class="mb4 btn" @click="showAdd = true">
+          <a class="mb4 btn" href="" @click.prevent="showAdd = true">
             {{ $t('people.life_event_list_cta') }}
           </a>
         </div>
@@ -475,10 +475,10 @@
         🎭 {{ $t('people.life_event_list_title') }}
 
         <span class="absolute" style="top: -5px; right: 0;">
-          <a v-if="showAdd" class="btn edit-information" @click="showAdd = false">
+          <a v-if="showAdd" class="btn edit-information" href="" @click.prevent="showAdd = false">
             {{ $t('app.cancel') }}
           </a>
-          <a v-else class="btn edit-information" @click="showAdd = true">
+          <a v-else class="btn edit-information" href="" @click.prevent="showAdd = true">
             {{ $t('people.life_event_list_cta') }}
           </a>
         </span>
@@ -501,7 +501,7 @@
         <div v-for="lifeEvent in lifeEvents" :key="lifeEvent.id">
           <div :id="'lifeEvent' + lifeEvent.id" class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
             <div class="absolute life-event-list-icon">
-              <img class="relative" :src="'/img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'" />
+              <img class="relative" :src="'img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'" />
             </div>
             <div class="absolute life-event-list-actions f7">
               <span>{{ lifeEvent.happened_at }}</span>
@@ -514,7 +514,7 @@
             </p>
             <p>{{ lifeEvent.note }}</p>
             <p class="f7">
-              <a class="pointer" @click="showDeleteModal(lifeEvent)">
+              <a class="pointer" href="" @click.prevent="showDeleteModal(lifeEvent)">
                 {{ $t('app.delete') }}
               </a>
             </p>
@@ -534,10 +534,10 @@
       </form>
       <div class="relative">
         <span class="fr">
-          <a class="btn center" @click="closeDeleteModal()">
+          <a class="btn center" href="" @click.prevent="closeDeleteModal()">
             {{ $t('app.cancel') }}
           </a>
-          <a :cy-name="'delete-life-event-button'" class="btn btn-primary" @click="destroy(lifeEventToDelete)">
+          <a :cy-name="'delete-life-event-button'" class="btn btn-primary" href="" @click.prevent="destroy(lifeEventToDelete)">
             {{ $t('app.delete') }}
           </a>
         </span>
@@ -602,7 +602,7 @@ export default {
     },
 
     getLifeEvents() {
-      axios.get('/people/' + this.hash + '/lifeevents')
+      axios.get('people/' + this.hash + '/lifeevents')
         .then(response => {
           this.showAdd = false;
           this.lifeEvents = response.data;
@@ -615,11 +615,11 @@ export default {
           */
     updateLifeEventsList(updatedLifeEvent) {
       this.getLifeEvents();
-      window.location.href='/people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id;
+      window.location.href='people/' + this.hash + '#lifeEvent'  + updatedLifeEvent.id;
     },
 
     destroy(lifeEvent) {
-      axios.delete('/lifeevents/' + lifeEvent.id)
+      axios.delete('lifeevents/' + lifeEvent.id)
         .then(response => {
           this.closeDeleteModal();
           this.getLifeEvents();

@@ -8,9 +8,7 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Models\Account\Account;
-use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -49,7 +47,7 @@ class RegisterController extends Controller
     /**
      * Show the application registration form.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function showRegistrationForm(Request $request)
     {
@@ -60,7 +58,7 @@ class RegisterController extends Controller
 
         return view('auth.register')
             ->withFirst($first)
-            ->withLocales(CollectionHelper::sortByCollator(LocaleHelper::getLocaleList(), 'lang'));
+            ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('lang'));
     }
 
     /**
@@ -83,7 +81,7 @@ class RegisterController extends Controller
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array
+     * @param  array $data
      * @return User
      */
     protected function create(array $data)
@@ -112,7 +110,6 @@ class RegisterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
-     * @return mixed
      */
     protected function registered(Request $request, $user)
     {
@@ -120,10 +117,6 @@ class RegisterController extends Controller
         if (! config('monica.signup_double_optin') || $first) {
             // if signup_double_optin is disabled, skip the confirm email part
             $user->markEmailAsVerified();
-
-            $this->guard()->login($user);
-
-            return redirect()->route('login');
         }
     }
 }

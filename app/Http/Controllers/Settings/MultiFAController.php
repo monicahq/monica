@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
-use PragmaRX\Google2FA\Google2FA;
+use function Safe\json_decode;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +11,7 @@ use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Event;
 use Lahaxearnaud\U2f\U2fFacade as U2f;
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use PragmaRX\Google2FALaravel\Support\Authenticator;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 
@@ -26,16 +27,6 @@ class MultiFAController extends Controller
     private $SESSION_TFA_SECRET = '2FA_secret';
 
     /**
-     * Create a new authentication controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('web');
-    }
-
-    /**
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
@@ -47,7 +38,7 @@ class MultiFAController extends Controller
         $user = $request->user();
 
         //generate image for QR barcode
-        $imageDataUri = app('pragmarx.google2fa')->getQRCodeInline(
+        $imageDataUri = Google2FA::getQRCodeInline(
             $request->getHttpHost(),
             $user->email,
             $secret,
@@ -98,7 +89,8 @@ class MultiFAController extends Controller
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory
      */
     public function disableTwoFactor(Request $request)
     {
@@ -143,18 +135,17 @@ class MultiFAController extends Controller
      */
     private function generateSecret()
     {
-        $google2fa = app('pragmarx.google2fa');
-
-        return $google2fa->generateSecretKey(32);
+        return Google2FA::generateSecretKey(32);
     }
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function u2fRegisterData(Request $request)
     {
-        list($req, $sigs) = app('u2f')->getRegisterData($request->user());
+        [$req, $sigs] = app('u2f')->getRegisterData($request->user());
         session(['u2f.registerData' => $req]);
 
         return $this->respond([
@@ -172,7 +163,7 @@ class MultiFAController extends Controller
                 $key->save();
             }
 
-            Event::fire('u2f.register', ['u2fKey' => $key, 'user' => Auth::user()]);
+            Event::dispatch('u2f.register', ['u2fKey' => $key, 'user' => Auth::user()]);
             session()->forget('u2f.registerData');
 
             session([config('u2f.sessionU2fName') => true]);
@@ -187,7 +178,8 @@ class MultiFAController extends Controller
      * Remove an existing security key.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function u2fRemove(Request $request, int $u2fKeyId)
     {

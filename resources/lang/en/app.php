@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'Update',
     'save' => 'Save',
     'add' => 'Add',
@@ -34,9 +36,8 @@ return [
     'zoom' => 'Zoom',
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
-    'next' => 'Next ❯',
-    'previous' => '❮ Previous',
     'retry' => 'Retry',
+    'go_back' => 'Go back',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -86,6 +87,7 @@ return [
     'breadcrumb_add_note' => 'Add a note',
     'breadcrumb_edit_note' => 'Edit a note',
     'breadcrumb_api' => 'API',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'How did you meet',
     'breadcrumb_settings_personalization' => 'Personalization',
     'breadcrumb_settings_security' => 'Security',
@@ -95,6 +97,7 @@ return [
     'gender_male' => 'Man',
     'gender_female' => 'Woman',
     'gender_none' => 'Rather not say',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'Whoops! Something went wrong.',
     'error_unauthorized' => 'You don’t have the right to edit this resource.',
@@ -170,6 +173,16 @@ return [
     'relationship_type_child_female' => 'daughter',
     'relationship_type_child_with_name' => ':name’s son',
     'relationship_type_child_female_with_name' => ':name’s daughter',
+
+    'relationship_type_stepparent' => 'stepfather',
+    'relationship_type_stepparent_female' => 'stepmother',
+    'relationship_type_stepparent_with_name' => ':name’s stepfather',
+    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+
+    'relationship_type_stepchild' => 'stepson',
+    'relationship_type_stepchild_female' => 'stepdaughter',
+    'relationship_type_stepchild_with_name' => ':name’s stepson',
+    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
 
     'relationship_type_sibling' => 'brother',
     'relationship_type_sibling_female' => 'sister',
@@ -328,7 +341,7 @@ return [
     'emotion_pride' => 'Pride',
     'emotion_eagerness' => 'Eagerness',
     'emotion_hope' => 'Hope',
-    'emotion_optimism' => 'optimism',
+    'emotion_optimism' => 'Optimism',
     'emotion_enthrallment' => 'Enthrallment',
     'emotion_rapture' => 'Rapture',
     'emotion_relief' => 'Relief',
@@ -432,4 +445,12 @@ return [
     'weather_current_temperature_celsius' => ':temperature °C',
     'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Current weather',
+
+    // dav
+    'dav_contacts' => 'Contacts',
+    'dav_contacts_description' => ':name’s contacts',
+    'dav_birthdays' => 'Birthdays',
+    'dav_birthdays_description' => ':name’s contact’s birthdays',
+    'dav_tasks' => 'Tasks',
+    'dav_tasks_description' => ':name’s tasks',
 ];

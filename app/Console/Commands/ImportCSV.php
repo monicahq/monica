@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use function Safe\fopen;
 use App\Models\User\User;
+use function Safe\fclose;
+use App\Helpers\DateHelper;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -11,6 +14,7 @@ use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Reminder\CreateReminder;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class ImportCSV extends Command
 {
@@ -51,7 +55,7 @@ class ImportCSV extends Command
     {
         $file = $this->argument('file');
 
-        if (is_int($this->argument('user'))) {
+        if (is_numeric($this->argument('user'))) {
             $user = User::find($this->argument('user'));
         } else {
             $user = User::where('email', $this->argument('user'))->first();
@@ -69,42 +73,43 @@ class ImportCSV extends Command
             return -1;
         }
 
-        $this->info("Importing CSV file $file to user {$user->id}");
+        if (is_string($file)) {
+            $this->info("Importing CSV file {$file} to user {$user->id}");
+        }
 
         // create special gender for this import
         // we don't know which gender all the contacts are, so we need to create a special status for them, as we
         // can't guess whether they are men, women or else.
-        $gender = Gender::where('name', 'vCard')->first();
+        $gender = Gender::where('name', config('dav.default_gender'))->first();
         if (! $gender) {
             $gender = new Gender;
             $gender->account_id = $user->account_id;
-            $gender->name = 'vCard';
+            $gender->name = config('dav.default_gender');
             $gender->save();
         }
 
         $first = true;
         $imported = 0;
-        if (($handle = fopen($file, 'r')) !== false) {
-            try {
-                while (($data = fgetcsv($handle)) !== false) {
-                    // don't import the columns
-                    if ($first) {
-                        $first = false;
-                        continue;
-                    }
-
-                    // if first & last name do not exist skip row
-                    if (empty($data[1]) && empty($data[3])) {
-                        continue;
-                    }
-
-                    $this->csvToContact($data, $user->account_id, $gender->id);
-
-                    $imported++;
+        try {
+            $handle = fopen($file, 'r');
+            while (($data = fgetcsv($handle)) !== false) {
+                // don't import the columns
+                if ($first) {
+                    $first = false;
+                    continue;
                 }
-            } finally {
-                fclose($handle);
+
+                // if first & last name do not exist skip row
+                if (empty($data[1]) && empty($data[3])) {
+                    continue;
+                }
+
+                $this->csvToContact($data, $user->account_id, $gender->id);
+
+                $imported++;
             }
+        } finally {
+            fclose($handle);
         }
 
         $this->info("Imported {$imported} Contacts");
@@ -178,7 +183,7 @@ class ImportCSV extends Command
                 'postal_code' => $postalCode,
             ];
 
-            (new CreateAddress)->execute($request);
+            app(CreateAddress::class)->execute($request);
         }
 
         if (! empty($data[42])) {
@@ -192,11 +197,11 @@ class ImportCSV extends Command
         }
 
         if (! empty($data[14])) {
-            $birthdate = new \DateTime(strtotime($data[14]));
+            $birthdate = DateHelper::parseDate($data[14]);
 
-            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->format('Y'), $birthdate->format('m'), $birthdate->format('d'));
+            $specialDate = $contact->setSpecialDate('birthdate', $birthdate->year, $birthdate->month, $birthdate->day);
 
-            (new CreateReminder)->execute([
+            app(CreateReminder::class)->execute([
                 'account_id' => $contact->account_id,
                 'contact_id' => $contact->id,
                 'initial_date' => $specialDate->date->toDateString(),
@@ -210,7 +215,9 @@ class ImportCSV extends Command
             ]);
         }
 
-        $contact->updateGravatar();
+        app(GetAvatarsFromInternet::class)->execute([
+            'contact_id' => $contact->id,
+        ]);
     }
 
     /**
@@ -231,7 +238,7 @@ class ImportCSV extends Command
     /**
      * Get the default contact field phone id for the account.
      *
-     * @return void
+     * @return int
      */
     private function contactFieldPhoneId()
     {

@@ -2,7 +2,7 @@
   "name": "Monica",
   "description": "Personal Relationship Manager - a new kind of CRM to manage your friends and family.",
   "repository": "https://github.com/monicahq/monica",
-  "logo": "https://app.monicahq.com/img/monica.svg",
+  "logo": "https://raw.githubusercontent.com/monicahq/monica/master/public/img/monica_60.png",
   "keywords": [
     "CRM",
     "family",
@@ -19,12 +19,16 @@
     }
   ],
   "scripts": {
-    "postdeploy": "php artisan monica:update --force -vvv"
+    "postdeploy": "php artisan setup:production --force -vvv"
   },
   "env": {
     "APP_KEY": {
-      "description": "Please change this to a 32-character string.",
+      "description": "Please change this to a 32-character string. For example run `pwgen -s 32 1` and copy/paste the value.",
       "value": "change-me-to-a-random-string----"
+    },
+    "APP_ENV": {
+      "description": "Use monica in 'production' mode, or set it to 'local' if you want to install Monica as a development version.",
+      "value": "production"
     },
     "APP_DISABLE_SIGNUP": {
       "description": "Disable user signup.",

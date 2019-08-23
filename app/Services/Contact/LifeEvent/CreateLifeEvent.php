@@ -86,7 +86,7 @@ class CreateLifeEvent extends BaseService
                 'description' => null,
             ];
 
-            $reminder = (new CreateReminder)->execute($data);
+            $reminder = app(CreateReminder::class)->execute($data);
 
             $lifeEvent->reminder_id = $reminder->id;
             $lifeEvent->save();

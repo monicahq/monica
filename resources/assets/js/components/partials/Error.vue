@@ -5,11 +5,13 @@
     <p v-if="errors[0] != 'The given data was invalid.'">
       {{ errors[0] }}
     </p>
-    <ul v-for="errorsList in errors[1]" :key="errorsList.id">
-      <li v-for="error in errorsList" :key="error.id">
-        ▪️ {{ error }}
-      </li>
-    </ul>
+    <template v-if="display(errors[1])">
+      <ul v-for="errorsList in errors[1]" :key="errorsList.id">
+        <li v-for="error in errorsList" :key="error.id">
+          ▪️ {{ error }}
+        </li>
+      </ul>
+    </template>
   </div>
 </template>
 
@@ -23,5 +25,10 @@ export default {
       }
     },
   },
+  methods: {
+    display($val) {
+      return _.isObject($val);
+    },
+  }
 };
 </script>

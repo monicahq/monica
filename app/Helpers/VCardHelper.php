@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Sabre\VObject\Component\VCard;
 
 class VCardHelper
@@ -9,17 +10,20 @@ class VCardHelper
     /**
      * Get country model object from given VCard file.
      *
-     * @param VCard $VCard
-     * @return null | string
+     * @param VCard $vCard
+     * @return string|null
      */
-    public static function getCountryISOFromSabreVCard(VCard $VCard)
+    public static function getCountryISOFromSabreVCard(VCard $vCard)
     {
-        $VCardAddress = $VCard->ADR;
+        $vCardAddress = $vCard->ADR;
 
-        if (empty($VCardAddress)) {
+        if (empty($vCardAddress)) {
             return;
         }
 
-        return CountriesHelper::find($VCardAddress->getParts()[6]);
+        $country = Arr::get($vCardAddress->getParts(), '6');
+        if (! empty($country)) {
+            return CountriesHelper::find($country);
+        }
     }
 }

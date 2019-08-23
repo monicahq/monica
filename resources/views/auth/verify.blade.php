@@ -4,12 +4,12 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+        <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
           <div class="signup-box">
 
             <div class="dt w-100">
               <div class="dtc tc">
-                <img src="/img/monica.svg" width="97" height="88" alt="">
+                <img src="img/monica.svg" width="97" height="88" alt="">
               </div>
             </div>
             <h2>{{ trans('auth.confirmation_title') }}</h2>
@@ -23,7 +23,7 @@
 
               {{ trans('auth.confirmation_check') }}<br/>
               {!! trans('auth.confirmation_request_another', ['url' => route('verification.resend')]) !!}<br/>
-              {!! trans('auth.confirmation_again', ['url' => url('settings/emailchange1')]) !!}
+              {!! trans('auth.confirmation_again', ['url' => 'settings/emailchange1']) !!}
             </div>
           </div>
         </div>

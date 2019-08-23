@@ -60,7 +60,13 @@
 </template>
 
 <script>
+import { ToggleButton } from 'vue-js-toggle-button';
+
 export default {
+
+  components: {
+    ToggleButton
+  },
 
   props: {
     limited: {
@@ -89,19 +95,19 @@ export default {
     prepareComponent() {
       this.getModules();
       if (!this.limited) {
-        this.limited = 0;
+        this.limited = false;
       }
     },
 
     getModules() {
-      axios.get('/settings/personalization/modules')
+      axios.get('settings/personalization/modules')
         .then(response => {
           this.modules = response.data;
         });
     },
 
     toggle(module) {
-      axios.post('/settings/personalization/modules/' + module.id)
+      axios.post('settings/personalization/modules/' + module.id)
         .then(response => {
           this.$notify({
             group: 'main',
