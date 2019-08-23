@@ -6,7 +6,6 @@ use Parsedown;
 use App\Helpers\DateHelper;
 use App\Traits\Journalable;
 use App\Models\Contact\Contact;
-use App\Models\Journal\JournalEntry;
 use App\Interfaces\IsJournalableInterface;
 use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
