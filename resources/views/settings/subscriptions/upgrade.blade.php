@@ -29,38 +29,16 @@
     <div class="br3 ba b--gray-monica bg-white pa4">
       <h2 class="tc mt2 fw4">{{ trans('settings.subscriptions_upgrade_choose', ['plan' => $planInformation['type']]) }}</h2>
       <p class="tc mb4">{{ trans('settings.subscriptions_upgrade_infos') }}</p>
-      <form action="{{ route('settings.subscriptions.payment') }}" method="post" id="payment-form" class="mb4">
-        {{ csrf_field() }}
 
-        <input type="hidden" name="plan" value="{{ $planInformation['type'] }}">
-        <div class="b--gray-monica ba pa4 br2 mb3 bg-black-05">
-          @include('partials.errors')
-          <div class="form-row">
-            <div class="mb3">
-              <span>{{ trans('settings.subscriptions_upgrade_name') }}</span>
-              <input name="cardholder-name" class="br3 b--black-30 ba pa3 w-100 f4" value="{{ auth()->user()->name }}" />
-            </div>
-
-            <div class="mb3">
-              <span>{{ trans('settings.subscriptions_upgrade_zip') }}</span>
-              <input name="address-zip" class="br3 b--black-30 ba pa3 w-100 f4" />
-            </div>
-
-            <div class="mb3" for="card-element">
-                {{ trans('settings.subscriptions_upgrade_credit') }}
-            </div>
-
-            <div id="card-element">
-              <!-- a Stripe Element will be inserted here. -->
-            </div>
-
-            <!-- Used to display Element errors -->
-            <div id="card-errors" role="alert"></div>
-          </div>
-        </div>
-
-        <button class="btn btn-primary w-100">{{ trans('settings.subscriptions_upgrade_submit') }}</button>
-      </form>
+      @include('partials.errors')
+      <stripe-subscription
+        :name="'{{ auth()->user()->name }}'"
+        :stripe-key="'{{ config('cashier.key') }}'"
+        :client-secret="'{{ $intent->client_secret }}'"
+        :plan="'{{ $planInformation['type'] }}'"
+        :amount="'{{ $planInformation['friendlyPrice'] }}'"
+        :callback="'{{ route('settings.subscriptions.payment') }}'"
+      ></stripe-subscription>
 
       <p>{{ trans('settings.subscriptions_upgrade_charge', ['price' => $planInformation['friendlyPrice'], 'date' => $nextTheoriticalBillingDate]) }}</p>
       <p>{!! trans('settings.subscriptions_upgrade_charge_handled', ['url' => 'https://stripe.com']) !!}</p>
@@ -72,8 +50,5 @@
 
 @push('scripts')
   <script src="https://js.stripe.com/v3/"></script>
-  <script>
-    var stripe = Stripe('{{config('services.stripe.key')}}');
-  </script>
   <script src="{{ asset(mix('js/stripe.js')) }}"></script>
 @endpush

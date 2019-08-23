@@ -7,6 +7,7 @@ export GIT_COMMIT=$(git rev-parse --verify "HEAD^2" 2>/dev/null || echo $BUILD_S
 echo -e "GIT_COMMIT=$GIT_COMMIT"
 echo -e "##vso[task.setvariable variable=GIT_COMMIT]$GIT_COMMIT"
 
+git config checkout.defaultRemote origin
 git reset --hard "$GIT_COMMIT"
 
 if [[ $BUILD_SOURCEBRANCH == refs/tags/* ]]; then
@@ -15,4 +16,5 @@ elif [ -n "$SYSTEM_PULLREQUEST_SOURCEBRANCH" ]; then
   git checkout -q -B "$SYSTEM_PULLREQUEST_SOURCEBRANCH"
 fi
 
-git reset --hard "$GIT_COMMIT"
+#git reset --hard "$GIT_COMMIT"
+git log -n1

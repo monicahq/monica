@@ -476,6 +476,11 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_gets_the_id_of_the_subscribed_plan()
     {
+        config([
+            'monica.paid_plan_annual_friendly_name' => 'fakePlan',
+            'monica.paid_plan_annual_id' => 'chandler_5',
+        ]);
+
         $user = $this->signIn();
 
         $account = $user->account;
@@ -495,6 +500,11 @@ class AccountTest extends FeatureTestCase
 
     public function test_it_gets_the_friendly_name_of_the_subscribed_plan()
     {
+        config([
+            'monica.paid_plan_annual_friendly_name' => 'fakePlan',
+            'monica.paid_plan_annual_id' => 'chandler_5',
+        ]);
+
         $user = $this->signIn();
 
         $account = $user->account;
@@ -767,6 +777,21 @@ class AccountTest extends FeatureTestCase
         $this->assertDatabaseHas('users', [
             'account_id' => $account->id,
         ]);
+    }
+
+    public function test_it_throw_an_exception_if_user_already_exist()
+    {
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
+
+        $this->assertDatabaseHas('accounts', [
+            'id' => $account->id,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'account_id' => $account->id,
+        ]);
+
+        $this->expectException(\Illuminate\Validation\UnauthorizedException::class);
+        $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
     }
 
     public function test_account_has_reached_contact_limit_on_free_plan()

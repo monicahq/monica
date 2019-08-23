@@ -12,7 +12,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Helpers\VCardHelper;
 use App\Helpers\LocaleHelper;
-use App\Helpers\RandomHelper;
 use App\Services\BaseService;
 use function Safe\preg_split;
 use App\Models\Contact\Gender;
@@ -24,6 +23,8 @@ use Sabre\VObject\ParseException;
 use Sabre\VObject\Component\VCard;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Account\Photo\UploadPhoto;
+use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Address\UpdateAddress;
 use App\Services\Contact\Address\DestroyAddress;
@@ -436,7 +437,7 @@ class ImportVCard extends BaseService
             $contact->account_id = $this->accountId;
             $contact->gender_id = $this->getGender('O')->id;
             $contact->setAvatarColor();
-            $contact->uuid = RandomHelper::uuid();
+            $contact->uuid = Str::uuid()->toString();
             $contact->save();
         }
 
@@ -613,15 +614,33 @@ class ImportVCard extends BaseService
     private function importPhoto(Contact $contact, VCard $entry): void
     {
         if ($entry->PHOTO) {
-            if ($entry->PHOTO instanceof \Sabre\VObject\Property\Uri) {
-                if (Str::startsWith((string) $entry->PHOTO, 'https://secure.gravatar.com') || Str::startsWith((string) $entry->PHOTO, 'https://www.gravatar.com')) {
-                    // Gravatar
-                    $contact->gravatar_url = (string) $entry->PHOTO;
-                } else {
-                    // assume monica asset
-                }
-            } elseif (Str::startsWith($entry->PHOTO, 'data:')) {
+            if (Str::startsWith((string) $entry->PHOTO, 'https://secure.gravatar.com') || Str::startsWith((string) $entry->PHOTO, 'https://www.gravatar.com')) {
+                // Gravatar
+                $contact->avatar_gravatar_url = (string) $entry->PHOTO;
+            } elseif (! Str::startsWith((string) $entry->PHOTO, 'https://')
+                && ! Str::startsWith((string) $entry->PHOTO, 'http://')
+                && ($contact->avatar_source != 'photo' || empty($contact->avatar_photo_id))) {
                 // Import photo image
+                // Skipping in case a photo avatar is already set
+
+                $array = [
+                    'account_id' => $contact->account_id,
+                    'data' => (string) $entry->PHOTO,
+                ];
+                if (! is_null($entry->PHOTO['TYPE'])) {
+                    /** @var \Sabre\VObject\Parameter */
+                    $type = $entry->PHOTO['TYPE'];
+                    $array['extension'] = $type->getValue();
+                }
+
+                $photo = app(UploadPhoto::class)->execute($array);
+
+                app(UpdateAvatar::class)->execute([
+                    'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
+                    'source' => 'photo',
+                    'photo_id' => $photo->id,
+                ]);
             }
         }
     }

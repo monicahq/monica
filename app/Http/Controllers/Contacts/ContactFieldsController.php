@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Contact\ContactField;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\People\ContactFieldsRequest;
+use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 class ContactFieldsController extends Controller
 {
@@ -57,7 +58,9 @@ class ContactFieldsController extends Controller
             ]
         );
 
-        $contact->updateGravatar();
+        app(GetAvatarsFromInternet::class)->execute([
+            'contact_id' => $contact->id,
+        ]);
 
         return $contactField;
     }
@@ -77,7 +80,9 @@ class ContactFieldsController extends Controller
             ]
         );
 
-        $contact->updateGravatar();
+        app(GetAvatarsFromInternet::class)->execute([
+            'contact_id' => $contact->id,
+        ]);
 
         return $contactField;
     }
@@ -86,6 +91,8 @@ class ContactFieldsController extends Controller
     {
         $contactField->delete();
 
-        $contact->updateGravatar();
+        app(GetAvatarsFromInternet::class)->execute([
+            'contact_id' => $contact->id,
+        ]);
     }
 }

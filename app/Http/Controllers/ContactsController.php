@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
@@ -299,7 +297,6 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withWeather($contact->getWeather())
             ->withDays($days)
@@ -376,6 +373,11 @@ class ContactsController extends Controller
         } else {
             $deceased_date_day = $deceased_date_month = $deceased_date_year = null;
         }
+        if (! empty($request->get('is_deceased'))) {
+            //if the contact has died, disable StayInTouch
+            $contact->updateStayInTouchFrequency(0);
+            $contact->setStayInTouchTriggerDate(0);
+        }
 
         $data = [
             'account_id' => auth()->user()->account->id,
@@ -418,8 +420,6 @@ class ContactsController extends Controller
             $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
             $contact->save();
         }
-
-        dispatch(new ResizeAvatars($contact));
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
@@ -487,36 +487,35 @@ class ContactsController extends Controller
     }
 
     /**
-     * Show the Edit food preferencies view.
+     * Show the Edit food preferences view.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\View\View
      */
-    public function editFoodPreferencies(Request $request, Contact $contact)
+    public function editFoodPreferences(Request $request, Contact $contact)
     {
-        return view('people.food-preferencies.edit')
-            ->withAvatar(AvatarHelper::get($contact, 87))
+        return view('people.food-preferences.edit')
             ->withContact($contact);
     }
 
     /**
-     * Save the food preferencies.
+     * Save the food preferences.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateFoodPreferencies(Request $request, Contact $contact)
+    public function updateFoodPreferences(Request $request, Contact $contact)
     {
         $food = ! empty($request->get('food')) ? $request->get('food') : null;
 
-        $contact->updateFoodPreferencies($food);
+        $contact->updateFoodPreferences($food);
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.food_preferencies_add_success'));
+            ->with('success', trans('people.food_preferences_add_success'));
     }
 
     /**

@@ -119,15 +119,6 @@
           </div>
         </div>
 
-        {{-- Avatar --}}
-        <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <label for="avatar">{{ trans('people.information_edit_avatar') }}</label>
-            <input type="file" class="form-control-file" name="avatar" id="avatar">
-            <small id="fileHelp" class="form-text text-muted">{{ trans('people.information_edit_max_size', ['size' => config('monica.max_upload_size')]) }}</small>
-          </div>
-        </div>
-
         {{-- Birthdate --}}
         <form-specialdate
           :months="{{ $months }}"

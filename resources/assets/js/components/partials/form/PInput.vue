@@ -19,7 +19,7 @@
       </p-input>
     </div>
     <div class="pointer" @click="select()">
-      <label v-if="hasSlot('label')" class="pointer" :for="formid">
+      <label v-if="hasSlot('label')" class="pointer">
         <slot name="label"></slot>
       </label>
       <slot name="extra"></slot>
@@ -88,10 +88,10 @@ export default {
   },
 
   methods: {
-    formid() {
-      return this.$refs.input.id;
-    },
     select() {
+      if (this.disabled) {
+        return;
+      }
       switch (this._type)
       {
       case 'checkbox':

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -62,6 +63,11 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::put('/people/{contact}', 'ContactsController@update')->name('update');
         Route::delete('/people/{contact}', 'ContactsController@destroy')->name('destroy');
 
+        // Avatar
+        Route::get('/people/{contact}/avatar', 'Contacts\\AvatarController@edit')->name('avatar.edit');
+        Route::post('/people/{contact}/avatar', 'Contacts\\AvatarController@update')->name('avatar.update');
+        Route::post('/people/{contact}/makeProfilePicture/{photo}', 'Contacts\\AvatarController@photo')->name('avatar.photo');
+
         // Life events
         Route::name('lifeevent.')->group(function () {
             Route::get('/people/{contact}/lifeevents', 'Contacts\\LifeEventsController@index')->name('index');
@@ -113,10 +119,10 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         ]);
         Route::post('/people/{contact}/notes/{note}/toggle', 'Contacts\\NotesController@toggle');
 
-        // Food preferencies
+        // Food preferences
         Route::name('food.')->group(function () {
-            Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferencies')->name('index');
-            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferencies')->name('update');
+            Route::get('/people/{contact}/food', 'ContactsController@editFoodPreferences')->name('index');
+            Route::post('/people/{contact}/food/save', 'ContactsController@updateFoodPreferences')->name('update');
         });
 
         // Relationships
@@ -252,11 +258,15 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::get('/settings/subscriptions', 'Settings\\SubscriptionsController@index')->name('index');
             Route::get('/settings/subscriptions/upgrade', 'Settings\\SubscriptionsController@upgrade')->name('upgrade');
             Route::get('/settings/subscriptions/upgrade/success', 'Settings\\SubscriptionsController@upgradeSuccess')->name('upgrade.success');
+            Route::get('/settings/subscriptions/confirmPayment/{id}', 'Settings\\SubscriptionsController@confirmPayment')->name('confirm');
             Route::post('/settings/subscriptions/processPayment', 'Settings\\SubscriptionsController@processPayment')->name('payment');
             Route::get('/settings/subscriptions/invoice/{invoice}', 'Settings\\SubscriptionsController@downloadInvoice')->name('invoice');
             Route::get('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@downgrade')->name('downgrade');
             Route::post('/settings/subscriptions/downgrade', 'Settings\\SubscriptionsController@processDowngrade');
             Route::get('/settings/subscriptions/downgrade/success', 'Settings\\SubscriptionsController@downgradeSuccess')->name('downgrade.success');
+            if (! App::environment('production')) {
+                Route::get('/settings/subscriptions/forceCompletePaymentOnTesting', 'Settings\\SubscriptionsController@forceCompletePaymentOnTesting')->name('forceCompletePaymentOnTesting');
+            }
         });
 
         Route::name('tags.')->group(function () {
