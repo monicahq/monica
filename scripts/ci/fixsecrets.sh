@@ -16,3 +16,7 @@ if [ "$ASSETS_GITHUB_TOKEN" == "\$(ASSETS_GITHUB_TOKEN)" ]; then
     echo -e "\033[0;36mFix ASSETS_GITHUB_TOKEN\033[0;37m"
     export ASSETS_GITHUB_TOKEN=
 fi
+if [ "$STRIPE_SECRET" == "\$(STRIPE_SECRET)" ]; then
+    echo -e "\033[0;36mFix STRIPE_SECRET\033[0;37m"
+    export STRIPE_SECRET=
+fi
