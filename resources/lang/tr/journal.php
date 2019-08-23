@@ -5,6 +5,7 @@ return [
     'journal_come_back' => 'Teşekkürler. Gününü değerlendirmek için yarın tekrar gel.',
     'journal_description' => 'Not: günlük içerikleri hem sizin tarafınızdan hem de bağlantılarınızla olan etkinliklerden otomatik oluşturulur. Günlük girdilerini silebilirsiniz, etkinlikleri bağlantı sayfalarından silmeniz gerekir.',
     'journal_add' => 'Bir günlük girdisi ekle',
+    'journal_edit' => 'Edit a journal entry',
     'journal_created_automatically' => 'Otomatik olarak oluşturuldu',
     'journal_entry_type_journal' => 'Günlük girdisi',
     'journal_entry_type_activity' => 'Faaliyet',
