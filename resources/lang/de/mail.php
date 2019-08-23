@@ -9,7 +9,7 @@ return [
     'comment' => 'Kommentar: :comment',
     'footer_contact_info' => 'Ergänze, betrachte, vervollständige und ändere Informationen zu diesem Kontakt:',
     'footer_contact_info2' => 'Siehe :name’s profile',
-    'footer_contact_info2_link' => 'See :name’s profile: :url',
+    'footer_contact_info2_link' => 'Siehe :name Profil',
 
     'notification_subject_line' => 'Du hast ein bevorstehendes Ereignis',
     'notification_description' => 'In :count Tagen (am :date), findet folgendes Ereignis statt:',

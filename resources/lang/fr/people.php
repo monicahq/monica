@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'Liste de contacts archivés',
 
     // Header
+    'me' => 'C\'est vous',
     'edit_contact_information' => 'Mettre à jour les informations',
     'contact_archive' => 'Archiver le contact',
     'contact_unarchive' => 'Désarchiver le contact',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => 'Écrivez ce que vous avez dit',
     'conversation_add_what_was_said' => 'Qu’avez-vous dit ?',
     'conversation_add_another' => 'Ajoutez un nouveau message',
+    'conversation_add_error' => 'Vous devez ajouter au moins un message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Contenu partiel (dernier message)',
     'conversation_list_title' => 'Discussions',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
-    'information_edit_avatar' => 'Photo/avatar du contact',
     'information_edit_max_size' => 'Maximum :size Ko.',
+    'information_edit_max_size2' => 'Maximum {size} Ko.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
     'information_edit_description' => 'Description (facultatif)',
@@ -159,7 +161,7 @@ return [
     'food_preferences_edit_title' => 'Modification des préférences alimentaires',
     'food_preferences_edit_cta' => 'Enregistrer les préférences alimentaires',
     'food_preferences_title' => 'Préférences alimentaires',
-    'food_preferences_cta' => 'Ajouter',
+    'food_preferences_cta' => 'Ajouter des préférences alimentaires',
 
     // reminders
     'reminders_blank_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => 'Télécharger une photo',
     'photo_list_blank_desc' => 'Vous pouvez enregistrer des images sur ce contact. Téléchargez-en une maintenant !',
     'photo_upload_zone_cta' => 'Télécharger une photo',
+    'photo_current_profile_pic' => 'Photo de profil actuelle',
+    'photo_make_profile_pic' => 'Utiliser comme photo de profil',
     'photo_delete' => 'Supprimer la photo',
+
+    // Avatars
+    'avatar_change_title' => 'Changer de photo de profil',
+    'avatar_question' => 'Quelle photo de profil souhaitez-vous utiliser ?',
+    'avatar_default_avatar' => 'La photo de profil par défaut',
+    'avatar_adorable_avatar' => 'La photo de profil Adorable',
+    'avatar_gravatar' => 'Le Gravatar associé à l\'adresse courriel de cette personne. <a href="https://gravatar.com/">Gravatar</a> est un système global qui permet aux utilisateurs d\'associer des adresses courriel avec des photos.',
+    'avatar_current' => 'Conserver la photo de profil actuelle',
+    'avatar_photo' => 'À partir d\'une photo que vous téléchargez',
 
     // emotions
     'emotion_this_made_me_feel' => 'Cela vous fait sentir …',

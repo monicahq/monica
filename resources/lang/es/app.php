@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'yes' => 'Yes',
+    'yes' => 'Si',
     'no' => 'No',
     'update' => 'Actualizar',
     'save' => 'Guardar',
@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Actualiza para desbloquear',
     'percent_uploaded' => '{percent}% cargado',
     'retry' => 'Reintentar',
+    'go_back' => 'Go back',
 
     'application_title' => 'Monica – gestor de relaciones personales',
     'application_description' => 'Monica es una herramienta para gestionar las interacciones con sus seres queridos, amigos y familiares.',
@@ -86,7 +87,7 @@ return [
     'breadcrumb_add_note' => 'Añadir una nota',
     'breadcrumb_edit_note' => 'Editar una nota',
     'breadcrumb_api' => 'API',
-    'breadcrumb_dav' => 'DAV Resources',
+    'breadcrumb_dav' => 'Recursos DAV',
     'breadcrumb_edit_introductions' => 'Cómo os conocisteis',
     'breadcrumb_settings_personalization' => 'Personalización',
     'breadcrumb_settings_security' => 'Seguridad',
@@ -96,7 +97,7 @@ return [
     'gender_male' => 'Hombre',
     'gender_female' => 'Mujer',
     'gender_none' => 'Prefiero no decirlo',
-    'gender_no_gender' => 'No gender',
+    'gender_no_gender' => 'Sin género',
 
     'error_title' => '¡Ups! algo ha fallado.',
     'error_unauthorized' => 'No tienes permisos para editar este recurso.',
@@ -146,7 +147,7 @@ return [
     'relationship_type_lover' => 'amante',
     'relationship_type_lover_female' => 'amante',
     'relationship_type_lover_with_name' => ':nombre de amante',
-    'relationship_type_lover_female_with_name' => ':name’s lover',
+    'relationship_type_lover_female_with_name' => ':nombre de amante',
 
     'relationship_type_inlovewith' => 'enamorado de',
     'relationship_type_inlovewith_female' => 'enamorado de',
@@ -172,6 +173,16 @@ return [
     'relationship_type_child_female' => 'hija',
     'relationship_type_child_with_name' => 'hijo de :name',
     'relationship_type_child_female_with_name' => 'hija de :name',
+
+    'relationship_type_stepparent' => 'padrastro',
+    'relationship_type_stepparent_female' => 'madrastra',
+    'relationship_type_stepparent_with_name' => 'padrastro de :name',
+    'relationship_type_stepparent_female_with_name' => 'madre de :name',
+
+    'relationship_type_stepchild' => 'hijastro',
+    'relationship_type_stepchild_female' => 'hijastra',
+    'relationship_type_stepchild_with_name' => 'hijastro de :name',
+    'relationship_type_stepchild_female_with_name' => 'hijastra de :name',
 
     'relationship_type_sibling' => 'hermano',
     'relationship_type_sibling_female' => 'hermana',
@@ -257,13 +268,13 @@ return [
     'emotion_primary_love' => 'Amor',
     'emotion_primary_joy' => 'Alegría',
     'emotion_primary_surprise' => 'Sorpresa',
-    'emotion_primary_anger' => 'Anger',
-    'emotion_primary_sadness' => 'Sadness',
-    'emotion_primary_fear' => 'Fear',
+    'emotion_primary_anger' => 'Enfado',
+    'emotion_primary_sadness' => 'Tristeza',
+    'emotion_primary_fear' => 'Miedo',
 
-    'emotion_secondary_affection' => 'Affection',
-    'emotion_secondary_lust' => 'Lust',
-    'emotion_secondary_longing' => 'Longing',
+    'emotion_secondary_affection' => 'Afecto',
+    'emotion_secondary_lust' => 'Lujuria',
+    'emotion_secondary_longing' => 'Nostalgia',
     'emotion_secondary_cheerfulness' => 'Cheerfulness',
     'emotion_secondary_zest' => 'Zest',
     'emotion_secondary_contentment' => 'Contentment',

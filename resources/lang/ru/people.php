@@ -15,13 +15,13 @@ return [
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
     'people_list_lastnameZA' => 'Сортировать по фамилии Я → А',
-    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
-    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Showing all the contacts tagged with',
+    'people_list_lastactivitydateNewtoOld' => 'Сортировать по дате последней активности (новые сверху)',
+    'people_list_lastactivitydateOldtoNew' => 'Сортировать по дате последней активности (новые снизу)',
+    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
-    'people_list_show_dead' => 'Show deceased people (:count)',
-    'people_list_hide_dead' => 'Hide deceased people (:count)',
+    'people_list_show_dead' => 'Показать умерших людей (:count)',
+    'people_list_hide_dead' => 'Скрыть умерших людей (:count)',
     'people_search' => 'Поиск по контактам...',
     'people_search_no_results' => 'No results found',
     'people_add_new' => 'Add new person',
@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Редактировать контакты',
     'contact_archive' => 'Архивировать контакт',
     'contact_unarchive' => 'Разархивировать контакт',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Add another message',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Сообщения',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Conversations',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'Профиль был успешно обновлён',
     'information_edit_title' => 'Редактировать данные :name',
-    'information_edit_avatar' => 'Фото/Аватар контакта',
     'information_edit_max_size' => 'До :size Кб.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обяз.)',
     'information_edit_description' => 'Описание (необязательно)',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => 'Upload photo',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
     'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',

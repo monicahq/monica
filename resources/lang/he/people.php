@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'הצגת אנשי קשר בארכיון',
 
     // Header
+    'me' => 'מדובר בך',
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'contact_archive' => 'העברת איש קשר לארכיון',
     'contact_unarchive' => 'הוצאת איש קשר מהארכיון',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => 'נא לכתוב את מה שאמרת',
     'conversation_add_what_was_said' => 'מה אמרת?',
     'conversation_add_another' => 'הוספת הודעה נוספת',
+    'conversation_add_error' => 'עליך להוסיף הודעה אחת לפחות.',
     'conversation_list_table_messages' => 'הודעות',
     'conversation_list_table_content' => 'תוכן חלקי (הודעה אחרונה)',
     'conversation_list_title' => 'דיונים',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'הפרופיל עודכן בהצלחה',
     'information_edit_title' => 'עריכת הפרטים האישיים של :name',
-    'information_edit_avatar' => 'תמונה/ציור של איש הקשר',
     'information_edit_max_size' => ':size ק״ב לכל היותר.',
+    'information_edit_max_size2' => '{size} קילוסיביות לכל היותר.',
     'information_edit_firstname' => 'שם פרטי',
     'information_edit_lastname' => 'שם משפחה (רשות)',
     'information_edit_description' => 'תיאור (רשות)',
@@ -296,7 +298,7 @@ return [
     'gifts_offered' => 'מתנות שהוצעו',
     'gifts_offered_as_an_idea' => 'סימון כרעיון',
     'gifts_received' => 'מתנות שהתקבלו',
-    'gifts_view_comment' => 'צפייה בתגובה',
+    'gifts_view_comment' => 'צפייה בהערה',
     'gifts_mark_offered' => 'סימון כהוצעה',
     'gifts_update_success' => 'המתנה עודכנה בהצלחה',
 
@@ -426,7 +428,7 @@ return [
     'life_event_sentence_home_improvement' => 'עריכת שיפוץ',
     'life_event_sentence_holidays' => 'יציאה לחופש',
     'life_event_sentence_new_vehicle' => 'קבלת כלי רכב חדש',
-    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_new_roommate' => 'התווספות שותפות',
     'life_event_sentence_overcame_an_illness' => 'החלמה ממחלה',
     'life_event_sentence_quit_a_habit' => 'גמילה',
     'life_event_sentence_new_eating_habits' => 'אימוץ הרגלי אכילה חדשים',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => 'העלאת תמונה',
     'photo_list_blank_desc' => 'ניתן לאחסן תמונות של איש הקשר הזה. אפילו ממש ברגע זה!',
     'photo_upload_zone_cta' => 'העלאת תמונה',
+    'photo_current_profile_pic' => 'תמונת פרופיל נוכחית',
+    'photo_make_profile_pic' => 'הכנת תמונת פרופיל',
     'photo_delete' => 'מחיקת תמונה',
+
+    // Avatars
+    'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',
+    'avatar_question' => 'באיזו תמונה ייצוגית להשתמש?',
+    'avatar_default_avatar' => 'התמונה הייצוגית כבררת מחדל',
+    'avatar_adorable_avatar' => 'התמונה הייצוגית המקסימה',
+    'avatar_gravatar' => 'ה־Gravatar שמשויך לכתובת הדוא״ל של משתמש זה. <a href="https://gravatar.com/">Gravatar</a> היא מערכת גלובלית שמאפשרת למשתמשים לשייך כתובות דוא״ל לתמונות.',
+    'avatar_current' => 'להשאיר את התמונה הייצוגית הנוכחית',
+    'avatar_photo' => 'מתמונה שהעלית',
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',

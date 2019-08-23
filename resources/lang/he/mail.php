@@ -6,7 +6,7 @@ return [
     'greetings' => 'היי :username',
     'want_reminded_of' => 'רצית שאזכיר לך את :reason',
     'for' => 'עבור: :name',
-    'comment' => 'תגובה: :comment',
+    'comment' => 'הערה: :comment',
     'footer_contact_info' => 'הוספה, צפייה, השלמה ושינוי מידע על איש הקשר הזה:',
     'footer_contact_info2' => 'הצגת הפרופיל של :profile',
     'footer_contact_info2_link' => 'הצגת הפרופיל של :name‏ :url',
