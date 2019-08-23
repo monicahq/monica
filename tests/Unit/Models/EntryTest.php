@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Models;
 
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Journal\Entry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -29,6 +30,7 @@ class EntryTest extends TestCase
             'month' => 1,
             'month_name' => 'JAN',
             'year' => 2017,
+            'date' => new Carbon(2017, 1, 1),
         ];
 
         $this->assertEquals(

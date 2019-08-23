@@ -45,7 +45,7 @@ class Entry extends Model implements IsJournalableInterface
      * Get the Entry date.
      *
      * @param  string  $value
-     * @return Carbon
+     * @return \Carbon\Carbon
      */
     public function getDateAttribute($value)
     {
