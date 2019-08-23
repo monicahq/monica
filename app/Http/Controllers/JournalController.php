@@ -178,7 +178,7 @@ class JournalController extends Controller
      * Display the Edit journal entry screen.
      *
      * @param Entry $entry
-     * 
+     *
      * @return \Illuminate\View\View
      */
     public function edit(Entry $entry)
@@ -212,7 +212,7 @@ class JournalController extends Controller
             $entry->title = $request->input('title');
         }
 
-        $entry->save();       
+        $entry->save();
         $entry->newDate = $request->input('date');
         // Log a journal entry
         (new JournalEntry)->edit($entry);
