@@ -8,6 +8,7 @@ use App\Traits\Journalable;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Entry extends Model implements IsJournalableInterface
 {
@@ -35,6 +36,8 @@ class Entry extends Model implements IsJournalableInterface
 
     /**
      * Get the account record associated with the entry.
+     *
+     * @return BelongsTo
      */
     public function account()
     {

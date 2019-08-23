@@ -6,6 +6,7 @@ use App\Models\Contact\Entry;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
 use App\Interfaces\IsJournalableInterface;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -29,6 +30,8 @@ class JournalEntry extends Model
 
     /**
      * Get all of the owning "journal-able" models.
+     *
+     * @return MorphTo
      */
     public function journalable()
     {
@@ -36,7 +39,7 @@ class JournalEntry extends Model
     }
 
     /**
-     * Get the account record associated with the invitation.
+     * Get the account record associated with the journal entry.
      *
      * @return BelongsTo
      */
@@ -51,14 +54,14 @@ class JournalEntry extends Model
      * @param \App\Interfaces\IsJournalableInterface $resourceToLog
      * @return self
      */
-    public static function add($resourceToLog) : self
+    public static function add(IsJournalableInterface $resourceToLog) : self
     {
         $journal = new self;
         $journal->account_id = $resourceToLog->account_id;
         $journal->date = now();
         if ($resourceToLog instanceof \App\Models\Account\Activity) {
             $journal->date = $resourceToLog->date_it_happened;
-        }  else if ($resourceToLog instanceof \App\Models\Journal\Entry) {
+        } else if ($resourceToLog instanceof \App\Models\Journal\Entry) {
             $journal->date = $resourceToLog->attributes['date'];
         }
         $journal->save();
@@ -73,7 +76,7 @@ class JournalEntry extends Model
      * @param \App\Interfaces\IsJournalableInterface $resourceToLog
      * @return self
      */
-    public function edit($resourceToLog) : self
+    public function edit(IsJournalableInterface $resourceToLog) : self
     {
         if ($resourceToLog instanceof \App\Models\Journal\Entry) {
             $this->date = $resourceToLog->attributes['date'];

@@ -109,6 +109,7 @@ class ApiActivityController extends ApiController
     public function update(Request $request, $activityId)
     {
         try {
+            /** @var Activity */
             $activity = Activity::where('account_id', auth()->user()->account_id)
                 ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {

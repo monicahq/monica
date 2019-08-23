@@ -29,6 +29,10 @@ parameters:
         # Level 3
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return [a-zA-Z0-9\\_\|]+ but empty return statement found\.#'
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return Illuminate\\Http\\Response but returns [a-zA-Z0-9\\_]+\.#'
+
+        -
+            message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
+            path: */app/Models/Journal/JournalEntry.php
     excludes_analyse:
         - */app/Helpers/ComposerScripts.php
         - */app/Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
