@@ -13,6 +13,9 @@ trigger:
     - '*'
 pr:
   autoCancel: 'true'
+  branches:
+    include:
+    - '*'
 
 variables:
   phpVersion: 7.3
