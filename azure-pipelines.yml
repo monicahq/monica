@@ -8,8 +8,6 @@ trigger:
   branches:
     include:
     - master
-    exclude:
-    - 'l10n_master*'
   tags:
     include:
     - '*'
@@ -18,8 +16,6 @@ pr:
   branches:
     include:
     - '*'
-    exclude:
-    - 'l10n_master*'
 
 variables:
   phpVersion: 7.3
