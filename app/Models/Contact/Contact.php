@@ -117,6 +117,7 @@ class Contact extends Model
     protected $with = [
         'account',
         'avatarPhoto',
+        'gender',
     ];
 
     /**
