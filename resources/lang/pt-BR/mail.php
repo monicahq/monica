@@ -2,13 +2,13 @@
 
 return [
 
-    'subject_line' => 'Reminder for :contact',
-    'greetings' => 'Hi :username',
-    'want_reminded_of' => 'You wanted to be reminded of :reason',
-    'for' => 'For: :name',
-    'comment' => 'Comment: :comment',
+    'subject_line' => 'Lembrete para :contact',
+    'greetings' => 'Olá :username',
+    'want_reminded_of' => 'Você queria ser lembrado de :reason',
+    'for' => 'Para: :name',
+    'comment' => 'Comentário: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
-    'footer_contact_info2' => 'See :name’s profile',
+    'footer_contact_info2' => 'Ver o perfil de :name',
     'footer_contact_info2_link' => 'See :name’s profile: :url',
 
     'notification_subject_line' => 'You have an upcoming event',

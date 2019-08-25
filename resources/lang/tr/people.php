@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'Arşivlenmiş kişilerin listesi',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'İletişim bilgilerini düzenle',
     'contact_archive' => 'Kişiyi arşivle',
     'contact_unarchive' => 'Kişiyi arşivden kaldır',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => 'Söyleneni yazın',
     'conversation_add_what_was_said' => 'Siz ne dediniz?',
     'conversation_add_another' => 'Başka bir mesaj ekle',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Mesajlar',
     'conversation_list_table_content' => 'Kısmi içerik (en son mesaj)',
     'conversation_list_title' => 'Sohbetler',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'Profil başarıyla güncellendi',
     'information_edit_title' => ':name kişisinin kişisel bilgilerini düzenle',
-    'information_edit_avatar' => 'Kişinin fotoğrafı/avatarı',
     'information_edit_max_size' => 'En fazla :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Ad',
     'information_edit_lastname' => 'Soyad (isteğe bağlı)',
     'information_edit_description' => 'Açıklama (İsteğe Bağlı)',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => 'Fotoğraf yükle',
     'photo_list_blank_desc' => 'Bu kişiyle ilgili görüntüleri saklayabilirsiniz. Şimdi bir tane yükle!',
     'photo_upload_zone_cta' => 'Bir fotoğraf yükle',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Fotoğrafı sil',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',

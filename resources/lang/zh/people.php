@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => '已存档联系人列表',
 
     // Header
+    'me' => '这是你',
     'edit_contact_information' => '编辑联系人信息',
     'contact_archive' => '存档联系人',
     'contact_unarchive' => '取消存档',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => '写下你们说的话',
     'conversation_add_what_was_said' => '您说了什么？',
     'conversation_add_another' => '添加另一条消息',
+    'conversation_add_error' => '您必须至少添加一条信息',
     'conversation_list_table_messages' => '消息',
     'conversation_list_table_content' => '部分内容(最新消息)',
     'conversation_list_title' => '对话',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => '记录更新成功',
     'information_edit_title' => '编辑 :name的个人信息',
-    'information_edit_avatar' => '联系人照片/头像',
     'information_edit_max_size' => '最大值 :size Kb',
+    'information_edit_max_size2' => '最大 {size} Kb',
     'information_edit_firstname' => '名字',
     'information_edit_lastname' => '姓氏（可选）',
     'information_edit_description' => '说明 (可选)',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => '上传照片',
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
     'photo_upload_zone_cta' => '上传照片',
+    'photo_current_profile_pic' => '目前头像',
+    'photo_make_profile_pic' => '制作头像',
     'photo_delete' => '删除照片',
+
+    // Avatars
+    'avatar_change_title' => '更换头像',
+    'avatar_question' => '您想使用哪个头像？',
+    'avatar_default_avatar' => '默认头像',
+    'avatar_adorable_avatar' => '喜爱头像',
+    'avatar_gravatar' => '此用户的电子邮件地址 与Gravatar关联 。 <a href="https://gravatar.com/">Gravatar</a> 是全球通用的头像服务。',
+    'avatar_current' => '保持当前头像',
+    'avatar_photo' => '从您上传的照片',
 
     // emotions
     'emotion_this_made_me_feel' => '这让你觉得...',

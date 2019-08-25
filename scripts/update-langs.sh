@@ -10,10 +10,12 @@ git checkout master
 git branch -D $l10nbranch || true
 git branch -D $origin/$l10nbranch || true
 git branch -D $newbranch || true
+git branch -D $origin/$newbranch || true
 
 # Create new branch
 git fetch $origin
-git checkout -b $newbranch $origin/$l10nbranch
+git checkout $origin/$l10nbranch
+git branch --set-upstream-to=$newbranch $newbranch
 
 # Merge from master
 git merge $origin/master

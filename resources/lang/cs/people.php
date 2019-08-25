@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Upravit informace kontaktu',
     'contact_archive' => 'Archive contact',
     'contact_unarchive' => 'Unarchive contact',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Add another message',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Conversations',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'Profil byl úspěšně aktualizován',
     'information_edit_title' => 'Upravit osobní informace o :name',
-    'information_edit_avatar' => 'Fotografie/avatar kontaktu',
     'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Jméno',
     'information_edit_lastname' => 'Příjmení (volitelné)',
     'information_edit_description' => 'Description (Optional)',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => 'Upload photo',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
     'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',

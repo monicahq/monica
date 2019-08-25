@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'Lijst van gearchiveerde contacten',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Bewerk contactinformatie',
     'contact_archive' => 'Archiveer contact',
     'contact_unarchive' => 'Dearchiveer contact',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => 'Schrijf hier wat er is gezegd',
     'conversation_add_what_was_said' => 'Wat was de gespreksinhoud?',
     'conversation_add_another' => 'Nog een bericht toevoegen',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Berichten',
     'conversation_list_table_content' => 'Gedeeltelijke inhoud(laatste bericht)',
     'conversation_list_title' => 'Gesprekken',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
-    'information_edit_avatar' => 'Foto/avatar van het contact',
     'information_edit_max_size' => 'Maximaal :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
     'information_edit_description' => 'Beschrijving (optioneel)',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => 'Foto uploaden',
     'photo_list_blank_desc' => 'Je kan afbeeldingen van dit contact opslaan. Upload er nu eentje!',
     'photo_upload_zone_cta' => 'Upload een foto',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Foto verwijderen',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',
