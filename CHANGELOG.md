@@ -11,6 +11,7 @@
 
 ### Enhancements:
 
+* Reduce a lot of queries
 * Update to laravel cashier 10.0, and get ready with SCA/PSD2
 * Add stripe webhook
 * Depends on php7.3+

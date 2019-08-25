@@ -38,7 +38,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
         Route::get('/dashboard/debts', 'DashboardController@debts');
-        Route::get('/dashboard/tasks', 'DashboardController@tasks');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
 

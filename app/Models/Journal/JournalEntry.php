@@ -29,6 +29,13 @@ class JournalEntry extends Model
     ];
 
     /**
+     * Eager load with every entry.
+     */
+    protected $with = [
+        'journalable',
+    ];
+
+    /**
      * Get all of the owning "journal-able" models.
      *
      * @return MorphTo
