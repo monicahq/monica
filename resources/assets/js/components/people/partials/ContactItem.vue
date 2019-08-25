@@ -52,19 +52,21 @@
 
 <template>
   <div v-if="item.id > 0" class="item-search-result" :data-contact="item.id" :data-name="item.name">
-    <a :href="'/people/'+item.hash_id">
+    <a :href="item.route">
       <img v-if="check"
-           class="avatar"
+           :class="className"
            :src="item.information.avatar.url"
            @error="check=false"
       />
       <div v-else
-           class="avatar avatar-initials"
+           :class="[className, 'avatar-initials']"
            :style="'background-color: '+item.information.avatar.default_avatar_color"
       >
         {{ item.initials }}
       </div>
-      {{ item.complete_name }}
+      <template v-if="withName">
+        {{ item.complete_name }}
+      </template>
       <span></span>
     </a>
   </div>
@@ -85,6 +87,14 @@ export default {
       required: true,
       default: null,
     },
+    withName: {
+      type: Boolean,
+      default: true,
+    },
+    className: {
+      type: String,
+      default: 'avatar',
+    }
   },
   data() {
     return {

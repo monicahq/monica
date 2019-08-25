@@ -70,6 +70,7 @@ class Contact extends Model
         'created_at',
         'updated_at',
         'is_partial',
+        'is_starred',
         'avatar_source',
         'avatar_adorable_url',
         'avatar_gravatar_url',
@@ -115,6 +116,7 @@ class Contact extends Model
      */
     protected $with = [
         'account',
+        'avatarPhoto',
     ];
 
     /**
@@ -419,6 +421,16 @@ class Contact extends Model
     }
 
     /**
+     * Get the Avatar Photo records associated with the contact.
+     *
+     * @return HasOne
+     */
+    public function avatarPhoto()
+    {
+        return $this->hasOne(Photo::class, 'id', 'avatar_photo_id');
+    }
+
+    /**
      * Test if this is the 'me' contact.
      *
      * @return bool
@@ -499,6 +511,17 @@ class Contact extends Model
     }
 
     /**
+     * Scope a query to only include contacts who are dead.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeDead($query)
+    {
+        return $query->where('is_dead', 1);
+    }
+
+    /**
      * Scope a query to only include contacts who are not active.
      *
      * @param  \Illuminate\Database\Eloquent\Builder $query
@@ -511,6 +534,7 @@ class Contact extends Model
 
     /**
      * Mutator first_name.
+     * Get the first name of the contact.
      *
      * @param string|null $value
      */
@@ -967,7 +991,7 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = Photo::find($this->avatar_photo_id)->url();
+                $avatarURL = $this->avatarPhoto->url();
                 break;
             case 'default':
             default:

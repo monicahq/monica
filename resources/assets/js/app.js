@@ -147,6 +147,11 @@ Vue.component(
 );
 
 Vue.component(
+  'contact-list',
+  require('./components/people/ContactList.vue').default
+);
+
+Vue.component(
   'contact-task',
   require('./components/people/Tasks.vue').default
 );

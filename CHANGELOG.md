@@ -2,6 +2,7 @@
 
 ### New features:
 
+* Paginate the Contacts page and improve database performance
 * Add ability to edit a Journal entry
 * Add vcard photo/avatar import
 * Add ability to change the avatar of your contacts
