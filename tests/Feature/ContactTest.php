@@ -174,6 +174,26 @@ class ContactTest extends FeatureTestCase
         ]);
     }
 
+    public function test_user_can_list_one_contact_firstname()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $randomContact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $response = $this->get('/people/list?search='. $randomContact->first_name);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $randomContact->id,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
+        ]);
+    }
+
     public function test_user_can_be_reminded_about_an_event_once()
     {
         [$user, $contact] = $this->fetchUser();

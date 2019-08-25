@@ -615,8 +615,6 @@ class ContactsController extends Controller
      */
     public function list(Request $request)
     {
-        $contactsCollection = collect([]);
-
         $accountId = auth()->user()->account_id;
 
         $user = $request->user();
