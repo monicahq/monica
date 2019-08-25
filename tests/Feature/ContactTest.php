@@ -86,8 +86,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -109,8 +108,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -132,8 +130,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -155,8 +152,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -176,17 +172,6 @@ class ContactTest extends FeatureTestCase
         $response->assertJsonFragment([
             'noResults' => 'No results found',
         ]);
-    }
-
-    public function test_user_can_see_contacts()
-    {
-        [$user, $contact] = $this->fetchUser();
-
-        $response = $this->get('/people');
-
-        $response->assertSee(
-            $contact->name
-        );
     }
 
     public function test_user_can_be_reminded_about_an_event_once()

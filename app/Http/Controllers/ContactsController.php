@@ -8,7 +8,6 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
-use App\Helpers\StringHelper;
 use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
@@ -98,8 +97,10 @@ class ContactsController extends Controller
                 }
                 $count++;
             }
-            if ($tags->count() == 0) {
+            if ($tags->count() === 0) {
                 return redirect()->route('people.index');
+            } else {
+                $contacts = $contacts->tags($tags);
             }
         }
 
@@ -663,7 +664,7 @@ class ContactsController extends Controller
 
                 $count++;
             }
-            if (! is_null($tags)) {
+            if ($tags->count() > 0) {
                 $contacts = $contacts->tags($tags);
             }
         }
@@ -676,7 +677,7 @@ class ContactsController extends Controller
 
         return [
             'totalRecords' => $contacts->total(),
-            'contacts' => ContactResource::collection($contacts)
+            'contacts' => ContactResource::collection($contacts),
         ];
     }
 }
