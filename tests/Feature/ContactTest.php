@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use App\Models\Contact\Tag;
 use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
@@ -192,6 +193,42 @@ class ContactTest extends FeatureTestCase
             'id' => $randomContact->id,
             'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
+    }
+
+    public function test_user_can_list_contacts_with_tag()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact->tags()->sync([
+            $tag->id => [
+                'account_id' => $user->account_id,
+            ]
+        ]);
+
+        $response = $this->get('/people/list?tag1='. $tag->name_slug);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $contact->id,
+            'complete_name' => $contact->first_name.' '.$contact->last_name,
+        ]);
+    }
+
+    public function test_user_can_see_contacts()
+    {
+        [$user, $contact] = $this->fetchUser();
+        $response = $this->get('/people');
+        $response->assertSee('1 contact');
     }
 
     public function test_user_can_be_reminded_about_an_event_once()
