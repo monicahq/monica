@@ -70,6 +70,7 @@ class Contact extends Model
         'created_at',
         'updated_at',
         'is_partial',
+        'is_starred',
         'avatar_source',
         'avatar_adorable_url',
         'avatar_gravatar_url',
@@ -115,6 +116,7 @@ class Contact extends Model
      */
     protected $with = [
         'account',
+        'avatarPhoto',
     ];
 
     /**
@@ -416,6 +418,16 @@ class Contact extends Model
     public function occupations()
     {
         return $this->hasMany(Occupation::class);
+    }
+
+    /**
+     * Get the Avatar Photo records associated with the contact.
+     *
+     * @return HasOne
+     */
+    public function avatarPhoto()
+    {
+        return $this->hasOne(Photo::class, 'id', 'avatar_photo_id');
     }
 
     /**
@@ -979,7 +991,7 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = Photo::find($this->avatar_photo_id)->url();
+                $avatarURL = $this->avatarPhoto->url();
                 break;
             case 'default':
             default:

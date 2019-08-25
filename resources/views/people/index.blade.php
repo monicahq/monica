@@ -106,7 +106,9 @@
 
                 <div class="{{ htmldir() == 'ltr' ? 'fl' : 'fr' }} w-100">
                     <div class="br2 bg-white mb4">
-                        <contact-list></contact-list>
+                        <contact-list
+                          :show-archived="{{ \Safe\json_encode(! $active) }}"
+                        ></contact-list>
                     </div>
                 </div>
 
@@ -139,7 +141,7 @@
                 @endif
               @endforeach
 
-              @if ($userTags->count() != 0)
+              @if ($tagsCount->count() != 0)
                 <li class="f7 mt3">
                     <a href="{{ route('people.index') }}?no_tag=true">{{ trans('people.people_list_untagged') }}</a>
                 </li>

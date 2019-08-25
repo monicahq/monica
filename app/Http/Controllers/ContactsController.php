@@ -20,7 +20,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Http\Resources\Contact\ContactSearch as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -103,10 +103,12 @@ class ContactsController extends Controller
             }
         }
 
-        $tagsCount = Tag::contactsCount();
+        $contactsCount = (clone $contacts)->alive()->count();
+        $deceasedCount = (clone $contacts)->dead()->count();
 
-        $contactsCount = $contacts->alive()->count();
-        $deceasedCount = $contacts->dead()->count();
+        if ($showDeceased === 'true') {
+            $contactsCount += $deceasedCount;
+        }
 
         return view('people.index')
             ->with('hidingDeceased', $showDeceased != 'true')
@@ -114,10 +116,9 @@ class ContactsController extends Controller
             ->withActive($active)
             ->withContactsCount($contactsCount)
             ->withHasArchived($nbArchived > 0)
-            ->withArchivedCOntacts($nbArchived)
+            ->withArchivedContacts($nbArchived)
             ->withTags($tags)
-            ->withTagsCount($tagsCount)
-            ->withUserTags(auth()->user()->account->tags)
+            ->withTagsCount(Tag::contactsCount())
             ->withUrl($url)
             ->withTagCount($count)
             ->withTagLess($request->get('no_tag') ?? false);
@@ -619,7 +620,6 @@ class ContactsController extends Controller
 
         $user = $request->user();
         $sort = $request->get('sort') ?? $user->contacts_sort_order;
-        $showDeceased = $request->get('show_dead');
 
         if ($user->contacts_sort_order !== $sort) {
             $user->updateContactViewPreference($sort);
@@ -629,7 +629,19 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        $contacts = $user->account->contacts()->real()->active();
+        $contacts = $user->account->contacts()->real();
+
+        // filter out archived contacts if necessary
+        if ($request->get('show_archived') != 'true') {
+            $contacts = $contacts->active();
+        } else {
+            $contacts = $contacts->notActive();
+        }
+
+        // filter out deceased if necessary
+        if ($request->get('show_dead') != 'true') {
+            $contacts = $contacts->alive();
+        }
 
         if ($request->get('no_tag')) {
             // get tag less contacts
@@ -656,38 +668,15 @@ class ContactsController extends Controller
             }
         }
 
-        // filter out deceased if necessary
-        if ($showDeceased != 'true') {
-            $contacts = $contacts->alive();
-        }
-
-        // search contacts
-        if ($request->has('search') && $request->get('search') != '') {
-            $searchable_columns = [
-                'contacts.first_name',
-                'contacts.middle_name',
-                'contacts.last_name',
-                'contacts.nickname',
-                'contacts.description',
-                'contacts.job',
-            ];
-            $queryString = StringHelper::buildQuery($searchable_columns, $request->get('search'));
-            $contacts = $contacts->whereRaw($queryString);
-        }
-
         // get the number of contacts per page
         $perPage = $request->has('perPage') ? $request->get('perPage') : config('monica.number_of_contacts_pagination');
 
-        $totalRecords = $contacts->count();
-        $contacts = $contacts->orderBy('is_starred', 'desc')->sortedBy($sort);
+        // search contacts
+        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, 'is_starred desc', null, $sort);
 
-        // Display all the contacts
-        if ($perPage == $totalRecords) {
-            $contacts = $contacts->get();
-        } else {
-            $contacts = $contacts->paginate($perPage);
-        }
-
-        return ['totalRecords' => $totalRecords, 'contacts' => ContactResource::collection($contacts)];
+        return [
+            'totalRecords' => $contacts->total(),
+            'contacts' => ContactResource::collection($contacts)
+        ];
     }
 }
