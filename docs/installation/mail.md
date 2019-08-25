@@ -4,6 +4,7 @@ The Monica registration flow will send a validation email to the user who sent i
 
 For this, you will require an SMTP server. If you don't have one of these, your options include (but are not limited to):
 
+* [Mailtrap](https://mailtrap.io/)
 * [Postmark](https://postmarkapp.com/)
 * [Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
 * [Amazon Simple Email Service](https://aws.amazon.com/ses/)
@@ -63,4 +64,4 @@ APP_EMAIL_NEW_USERS_NOTIFICATION=
 
 
 
-Now you're all done! If you've changed your `.env` file since you last started Monica, use ``php artisan setup:production -v` so that Monica reads your new configuration.
+Now you're all done! If you've changed your `.env` file since you last started Monica, use `php artisan setup:production -v` so that Monica reads your new configuration.
