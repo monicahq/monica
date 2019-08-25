@@ -186,7 +186,7 @@ class ContactTest extends FeatureTestCase
                             ->inRandomOrder()
                             ->first();
 
-        $response = $this->get('/people/list?search='. $randomContact->first_name);
+        $response = $this->get('/people/list?search='.$randomContact->first_name);
 
         $response->assertSuccessful();
         $response->assertJsonFragment([
@@ -212,10 +212,10 @@ class ContactTest extends FeatureTestCase
         $contact->tags()->sync([
             $tag->id => [
                 'account_id' => $user->account_id,
-            ]
+            ],
         ]);
 
-        $response = $this->get('/people/list?tag1='. $tag->name_slug);
+        $response = $this->get('/people/list?tag1='.$tag->name_slug);
 
         $response->assertSuccessful();
         $response->assertJsonFragment([
