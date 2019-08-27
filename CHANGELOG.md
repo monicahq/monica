@@ -11,6 +11,7 @@
 
 ### Enhancements:
 
+* Docker image: create passport keys for OAuth access
 * Reduce a lot of queries
 * Update to laravel cashier 10.0, and get ready with SCA/PSD2
 * Add stripe webhook
