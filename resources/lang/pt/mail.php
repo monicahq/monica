@@ -5,7 +5,7 @@ return [
     'subject_line' => 'Lembrete para :contact',
     'greetings' => 'Olá :username',
     'want_reminded_of' => 'You wanted to be reminded of :reason',
-    'for' => 'For: :name',
+    'for' => 'Para: :name',
     'comment' => 'Comment: :comment',
     'footer_contact_info' => 'Adicionar, visualizar, completar e alterar informações sobre este contato:',
     'footer_contact_info2' => 'See :name’s profile',
@@ -17,13 +17,13 @@ return [
     'stay_in_touch_subject_line' => 'Stay in touch with :name',
     'stay_in_touch_subject_description' => 'You asked to be reminded to stay in touch with :name every :frequency day.|You asked to be reminded to stay in touch with :name every :frequency days.',
 
-    'notifications_whoops' => 'Whoops!',
-    'notifications_hello' => 'Hello!',
+    'notifications_whoops' => 'Oops!',
+    'notifications_hello' => 'Olá!',
     'notifications_regards' => 'Regards',
     'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
-    'notifications_rights' => 'All rights reserved',
+    'notifications_rights' => 'Todos os direitos reservados',
 
-    'confirmation_email_title' => 'Monica – Email verification',
+    'confirmation_email_title' => 'Monica - Verificação de e-mail',
     'confirmation_email_intro'=> 'To validate your email click on the button below',
     'confirmation_email_button' => 'Verify email address',
 ];
