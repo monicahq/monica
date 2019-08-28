@@ -83,7 +83,7 @@
         <template slot="label">
           {{ $t('people.avatar_photo') }}
           <span v-if="hasReachedAccountStorageLimit">
-            <a href="/settings/subscriptions">
+            <a href="settings/subscriptions">
               {{ $t('app.upgrade') }}
             </a>
           </span>

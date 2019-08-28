@@ -49,7 +49,7 @@ export default {
       if (contact.item.id > 0) {
         window.location = contact.item.route;
       } else {
-        window.location = '/people/add';
+        window.location = 'people/add';
       }
     },
 
