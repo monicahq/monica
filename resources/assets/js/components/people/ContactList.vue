@@ -179,7 +179,7 @@ export default {
         urlParam += '&show_archived=true';
       }
 
-      axios.get('/people/list'+urlParam)
+      axios.get('people/list'+urlParam)
         .then(response => {
           this.contacts = response.data.contacts;
           this.totalRecords = response.data.totalRecords;
