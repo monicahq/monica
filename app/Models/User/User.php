@@ -419,7 +419,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $termUser = DB::table('term_user')->where([
             'user_id' => $this->id,
             'account_id' => $this->account_id,
-            'term_id' => $termId
+            'term_id' => $termId,
         ])->first();
 
         if (! $termUser) {

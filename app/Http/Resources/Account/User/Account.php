@@ -4,7 +4,6 @@ namespace App\Http\Resources\Account\User;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
-use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
 
 class Account extends Resource
 {

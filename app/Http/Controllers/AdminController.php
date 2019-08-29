@@ -6,7 +6,6 @@ use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\StringHelper;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Account\User\UserShort as UserResource;
 
 class AdminController extends Controller
@@ -26,7 +25,7 @@ class AdminController extends Controller
             return $next($request);
         });
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -71,12 +70,13 @@ class AdminController extends Controller
                 'is_policy_compliant' => $user->isPolicyCompliant(),
                 'account' => [
                     'id' => $user->account->id,
-                    'has_access_to_paid_version_for_free' => $user->account->has_access_to_paid_version_for_free
+                    'has_access_to_paid_version_for_free' => $user->account->has_access_to_paid_version_for_free,
                 ],
                 'created_at' => DateHelper::getTimestamp($user->created_at),
                 'updated_at' => DateHelper::getTimestamp($user->updated_at),
             ]);
         }
+
         return [
             'total' => $users->total(),
             'entries' => UserResource::collection($users),
