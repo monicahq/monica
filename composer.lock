@@ -244,13 +244,13 @@
             "authors": [
                 {
                     "name": "Benjamin Eberlei",
-                    "role": "Lead Developer",
-                    "email": "kontakt@beberlei.de"
+                    "email": "kontakt@beberlei.de",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Richard Quadling",
-                    "role": "Collaborator",
-                    "email": "rquadling@gmail.com"
+                    "email": "rquadling@gmail.com",
+                    "role": "Collaborator"
                 }
             ],
             "description": "Thin assertion library for input validation in business models.",
@@ -2269,28 +2269,28 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.1.0",
+            "version": "v10.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "0bd631b32b867a0300f71b1afad3461297420f01"
+                "reference": "1a566668e8ed378b7a9f6c9a360bea182cd89151"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/0bd631b32b867a0300f71b1afad3461297420f01",
-                "reference": "0bd631b32b867a0300f71b1afad3461297420f01",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/1a566668e8ed378b7a9f6c9a360bea182cd89151",
+                "reference": "1a566668e8ed378b7a9f6c9a360bea182cd89151",
                 "shasum": ""
             },
             "require": {
                 "dompdf/dompdf": "^0.8.0",
                 "ext-json": "*",
-                "illuminate/contracts": "~5.8.0|^6.0",
-                "illuminate/database": "~5.8.0|^6.0",
-                "illuminate/http": "~5.8.0|^6.0",
-                "illuminate/notifications": "~5.8.0|^6.0",
-                "illuminate/routing": "~5.8.0|^6.0",
-                "illuminate/support": "~5.8.0|^6.0",
-                "illuminate/view": "~5.8.0|^6.0",
+                "illuminate/contracts": "~5.8.0|^6.0|^7.0",
+                "illuminate/database": "~5.8.0|^6.0|^7.0",
+                "illuminate/http": "~5.8.0|^6.0|^7.0",
+                "illuminate/notifications": "~5.8.0|^6.0|^7.0",
+                "illuminate/routing": "~5.8.0|^6.0|^7.0",
+                "illuminate/support": "~5.8.0|^6.0|^7.0",
+                "illuminate/view": "~5.8.0|^6.0|^7.0",
                 "moneyphp/money": "^3.2",
                 "nesbot/carbon": "^2.0",
                 "php": "^7.1.3",
@@ -2300,7 +2300,7 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^3.8|^4.0",
+                "orchestra/testbench": "^3.8|^4.0|^5.0",
                 "phpunit/phpunit": "^7.5|^8.0"
             },
             "suggest": {
@@ -2338,7 +2338,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2019-08-20T17:58:22+00:00"
+            "time": "2019-08-27T14:25:39+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7678,16 +7678,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v4.3.3",
+            "version": "v4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "741376a9127841ffae39f197f8bd0ab2d4772157"
+                "reference": "8db5505703c5bdb23d524fd994dad2f781966538"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/741376a9127841ffae39f197f8bd0ab2d4772157",
-                "reference": "741376a9127841ffae39f197f8bd0ab2d4772157",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/8db5505703c5bdb23d524fd994dad2f781966538",
+                "reference": "8db5505703c5bdb23d524fd994dad2f781966538",
                 "shasum": ""
             },
             "require": {
@@ -7749,7 +7749,7 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2019-07-24T14:47:54+00:00"
+            "time": "2019-08-26T08:26:39+00:00"
         },
         {
             "name": "symfony/mime",
