@@ -296,4 +296,12 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
             Route::post('/settings/security/recovery-codes', 'Settings\\RecoveryCodesController@index');
         });
     });
+
+    Route::name('admin.')->group(function () {
+        Route::get('/admin-api/user/{user}', 'AdminController@user');
+        Route::post('/admin-api/users', 'AdminController@users')->name('users');
+        Route::put('/admin-api/user/{user}/adminToggle', 'AdminController@userAdminToggle');
+
+        Route::get('/admin/{view?}', 'AdminController@index')->where('view', '(.*)');
+    });
 });

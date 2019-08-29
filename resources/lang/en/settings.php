@@ -478,4 +478,12 @@ return [
     'dav_carddav_export' => 'Export all contacts in one file',
     'dav_caldav_birthdays_export' => 'Export all birthdays in one file',
     'dav_caldav_tasks_export' => 'Export all tasks in one file',
+
+    'admin_users_title' => 'Users list',
+    'admin_users_desc' => '',
+    'admin_users_admin' => 'Admin',
+    'admin_users_free_account' => 'Free account',
+    'admin_edit_user' => 'Edit user',
+    'admin_switch_admin_confirmation_true' => 'Are you sure to switch user {user} as an Adminitrator?',
+    'admin_switch_admin_confirmation_false' => 'Are you sure to remove user {user} from the Adminitrators?',
 ];

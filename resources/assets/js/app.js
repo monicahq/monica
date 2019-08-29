@@ -23,6 +23,11 @@ Vue.use(Notifications);
 import Tooltip from 'vue-directive-tooltip';
 Vue.use(Tooltip, { delay: 0 });
 
+// VueRouter
+import VueRouter from 'vue-router'
+import Routes from './routes';
+Vue.use(VueRouter)
+
 // Select used on list items to display edit and delete buttons
 //import vSelectMenu from 'v-selectmenu';
 //Vue.use(vSelectMenu);
@@ -298,6 +303,12 @@ Vue.component(
   require('./components/settings/DAVResources.vue').default
 );
 
+const router = new VueRouter({
+  mode: 'history',
+  routes: Routes,
+  base: '/admin'
+});
+
 var common = require('./common').default;
 
 common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
@@ -313,6 +324,7 @@ common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
       global_relationship_form_new_contact: true,
       global_profile_default_view: window.Laravel.profileDefaultView,
     },
+    router,
     mounted: function() {
 
       // required modules

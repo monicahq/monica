@@ -93,6 +93,7 @@ return [
     'breadcrumb_settings_security' => 'Security',
     'breadcrumb_settings_security_2fa' => 'Two Factor Authentication',
     'breadcrumb_profile' => 'Profile of :name',
+    'breadcrumb_admin' => 'Administration',
 
     'gender_male' => 'Man',
     'gender_female' => 'Woman',

@@ -416,10 +416,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getStatusForCompliance($termId)
     {
         // @TODO: use eloquent to do this instead
-        $termUser = DB::table('term_user')->where('user_id', $this->id)
-                                            ->where('account_id', $this->account_id)
-                                            ->where('term_id', $termId)
-                                            ->first();
+        $termUser = DB::table('term_user')->where([
+            'user_id' => $this->id,
+            'account_id' => $this->account_id,
+            'term_id' => $termId
+        ])->first();
 
         if (! $termUser) {
             return false;
