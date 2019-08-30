@@ -200,9 +200,9 @@ export default {
       }
 
       this._loadNewItems(urlParam, (entries, total) => {
-          this.contacts = entries;
-          this.totalRecords = total;
-          this.ready = true;
+        this.contacts = entries;
+        this.totalRecords = total;
+        this.ready = true;
       });
     },
 
