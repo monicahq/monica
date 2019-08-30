@@ -435,20 +435,20 @@
         },
         {
             "name": "creativeorange/gravatar",
-            "version": "v1.0.12",
+            "version": "v1.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/creativeorange/gravatar.git",
-                "reference": "865c8f20b1a20c5de105f90deeea596f7e060e25"
+                "reference": "c757291f791bf169e614b98b2ac3dad189bba2c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/865c8f20b1a20c5de105f90deeea596f7e060e25",
-                "reference": "865c8f20b1a20c5de105f90deeea596f7e060e25",
+                "url": "https://api.github.com/repos/creativeorange/gravatar/zipball/c757291f791bf169e614b98b2ac3dad189bba2c9",
+                "reference": "c757291f791bf169e614b98b2ac3dad189bba2c9",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.*",
+                "illuminate/support": "^5.0|^6",
                 "php": ">=5.4.0"
             },
             "type": "library",
@@ -474,18 +474,18 @@
             "authors": [
                 {
                     "name": "Jaco Tijssen",
-                    "role": "Developer",
                     "email": "jaco@creativeorange.nl",
-                    "homepage": "https://www.creativeorange.nl"
+                    "homepage": "https://www.creativeorange.nl",
+                    "role": "Developer"
                 }
             ],
-            "description": "Gravatar for Laravel 5.0.x through 5.5.x package for retrieving gravatar image URLs or checking the existance of an image.",
+            "description": "A Laravel Gravatar package for retrieving gravatar image URLs or checking the existance of an image.",
             "keywords": [
                 "avatar",
                 "gravatar",
                 "laravel"
             ],
-            "time": "2019-06-03T08:45:09+00:00"
+            "time": "2019-08-29T20:00:13+00:00"
         },
         {
             "name": "danielstjules/stringy",
@@ -1266,9 +1266,9 @@
             "authors": [
                 {
                     "name": "Friedrich Große",
-                    "role": "Author",
                     "email": "friedrich.grosse@gmail.com",
-                    "homepage": "https://github.com/FGrosse"
+                    "homepage": "https://github.com/FGrosse",
+                    "role": "Author"
                 },
                 {
                     "name": "All contributors",
@@ -3144,15 +3144,15 @@
             "authors": [
                 {
                     "name": "Alex Bilbie",
-                    "role": "Developer",
                     "email": "hello@alexbilbie.com",
-                    "homepage": "http://www.alexbilbie.com"
+                    "homepage": "http://www.alexbilbie.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Andy Millington",
-                    "role": "Developer",
                     "email": "andrew@noexceptions.io",
-                    "homepage": "https://www.noexceptions.io"
+                    "homepage": "https://www.noexceptions.io",
+                    "role": "Developer"
                 }
             ],
             "description": "A lightweight and powerful OAuth 2.0 authorization and resource server library with support for all the core specification grants. This library will allow you to secure your API with OAuth and allow your applications users to approve apps that want to access their data from your API.",
