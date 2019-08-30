@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f31dcc2eea2046360d1ff08a8fb2fd4b",
+    "content-hash": "1e6460d33f2d3d91121d75b75c7bc2b5",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -474,9 +474,9 @@
             "authors": [
                 {
                     "name": "Jaco Tijssen",
-                    "role": "Developer",
                     "email": "jaco@creativeorange.nl",
-                    "homepage": "https://www.creativeorange.nl"
+                    "homepage": "https://www.creativeorange.nl",
+                    "role": "Developer"
                 }
             ],
             "description": "Gravatar for Laravel 5.0.x through 5.5.x package for retrieving gravatar image URLs or checking the existance of an image.",
@@ -1266,9 +1266,9 @@
             "authors": [
                 {
                     "name": "Friedrich Große",
-                    "role": "Author",
                     "email": "friedrich.grosse@gmail.com",
-                    "homepage": "https://github.com/FGrosse"
+                    "homepage": "https://github.com/FGrosse",
+                    "role": "Author"
                 },
                 {
                     "name": "All contributors",
@@ -3144,15 +3144,15 @@
             "authors": [
                 {
                     "name": "Alex Bilbie",
-                    "role": "Developer",
                     "email": "hello@alexbilbie.com",
-                    "homepage": "http://www.alexbilbie.com"
+                    "homepage": "http://www.alexbilbie.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Andy Millington",
-                    "role": "Developer",
                     "email": "andrew@noexceptions.io",
-                    "homepage": "https://www.noexceptions.io"
+                    "homepage": "https://www.noexceptions.io",
+                    "role": "Developer"
                 }
             ],
             "description": "A lightweight and powerful OAuth 2.0 authorization and resource server library with support for all the core specification grants. This library will allow you to secure your API with OAuth and allow your applications users to approve apps that want to access their data from your API.",
@@ -11522,16 +11522,16 @@
         },
         {
             "name": "nette/di",
-            "version": "v3.0.0",
+            "version": "v3.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/di.git",
-                "reference": "19d83539245aaacb59470828919182411061841f"
+                "reference": "4aff517a1c6bb5c36fa09733d4cea089f529de6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/di/zipball/19d83539245aaacb59470828919182411061841f",
-                "reference": "19d83539245aaacb59470828919182411061841f",
+                "url": "https://api.github.com/repos/nette/di/zipball/4aff517a1c6bb5c36fa09733d4cea089f529de6d",
+                "reference": "4aff517a1c6bb5c36fa09733d4cea089f529de6d",
                 "shasum": ""
             },
             "require": {
@@ -11591,7 +11591,7 @@
                 "nette",
                 "static"
             ],
-            "time": "2019-04-03T19:35:46+00:00"
+            "time": "2019-08-07T12:11:33+00:00"
         },
         {
             "name": "nette/neon",
@@ -11656,16 +11656,16 @@
         },
         {
             "name": "nette/php-generator",
-            "version": "v3.2.2",
+            "version": "v3.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nette/php-generator.git",
-                "reference": "acff8b136fad84b860a626d133e791f95781f9f5"
+                "reference": "aea6e81437bb238e5f0e5b5ce06337433908e63b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nette/php-generator/zipball/acff8b136fad84b860a626d133e791f95781f9f5",
-                "reference": "acff8b136fad84b860a626d133e791f95781f9f5",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/aea6e81437bb238e5f0e5b5ce06337433908e63b",
+                "reference": "aea6e81437bb238e5f0e5b5ce06337433908e63b",
                 "shasum": ""
             },
             "require": {
@@ -11711,7 +11711,7 @@
                 "php",
                 "scaffolding"
             ],
-            "time": "2019-03-15T03:41:13+00:00"
+            "time": "2019-07-05T13:01:56+00:00"
         },
         {
             "name": "nette/robot-loader",
@@ -11834,34 +11834,37 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.3.17",
+            "version": "v0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "a123a601a7796aa6f7793e87feb91a8affc95a80"
+                "reference": "205986fa7c8c86c05e70b0324a64c722c95bd712"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/a123a601a7796aa6f7793e87feb91a8affc95a80",
-                "reference": "a123a601a7796aa6f7793e87feb91a8affc95a80",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/205986fa7c8c86c05e70b0324a64c722c95bd712",
+                "reference": "205986fa7c8c86c05e70b0324a64c722c95bd712",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "5.6.*|5.7.*|5.8.*",
-                "illuminate/container": "5.6.*|5.7.*|5.8.*",
-                "illuminate/contracts": "5.6.*|5.7.*|5.8.*",
-                "illuminate/database": "5.6.*|5.7.*|5.8.*",
-                "illuminate/http": "5.6.*|5.7.*|5.8.*",
-                "illuminate/pipeline": "5.6.*|5.7.*|5.8.*",
-                "illuminate/support": "5.6.*|5.7.*|5.8.*",
+                "illuminate/console": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/container": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/contracts": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/database": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/http": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/pipeline": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/support": "5.6.*|5.7.*|5.8.*|^6.0",
                 "mockery/mockery": "^1.0|0.9.*",
-                "orchestra/testbench": "^3.6",
                 "php": "^7.1.3",
-                "phpstan/phpstan": "^0.11.8",
+                "phpstan/phpstan": "^0.11.15",
                 "symfony/process": "^4.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "^7.3"
+                "orchestra/testbench": "^3.8",
+                "phpunit/phpunit": "^7.3 || ^8.2"
+            },
+            "suggest": {
+                "orchestra/testbench": "^3.6"
             },
             "type": "library",
             "extra": {
@@ -11897,7 +11900,7 @@
                 "php",
                 "static analysis"
             ],
-            "time": "2019-05-29T12:53:31+00:00"
+            "time": "2019-08-28T08:22:36+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
@@ -11950,22 +11953,22 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v3.8.3",
+            "version": "v3.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "171b29bb9dbd754dc1eb8d9ba0ff05b914b8db1d"
+                "reference": "d1248e014d4d782dd5ad92cf772aeddf3abe84a2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/171b29bb9dbd754dc1eb8d9ba0ff05b914b8db1d",
-                "reference": "171b29bb9dbd754dc1eb8d9ba0ff05b914b8db1d",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/d1248e014d4d782dd5ad92cf772aeddf3abe84a2",
+                "reference": "d1248e014d4d782dd5ad92cf772aeddf3abe84a2",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "~5.8.19",
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench-core": "~3.8.4",
+                "orchestra/testbench-core": "~3.8.6",
                 "php": ">=7.1",
                 "phpunit/phpunit": "^7.5 || ^8.0"
             },
@@ -11996,20 +11999,20 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2019-05-29T23:14:15+00:00"
+            "time": "2019-08-04T04:14:12+00:00"
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v3.8.4",
+            "version": "v3.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "27923e6e44d73474deac5d8d1be673524d60dceb"
+                "reference": "fbdca0c5106ebf6d060c7f1fbdbbeeb3f4a5a725"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/27923e6e44d73474deac5d8d1be673524d60dceb",
-                "reference": "27923e6e44d73474deac5d8d1be673524d60dceb",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/fbdca0c5106ebf6d060c7f1fbdbbeeb3f4a5a725",
+                "reference": "fbdca0c5106ebf6d060c7f1fbdbbeeb3f4a5a725",
                 "shasum": ""
             },
             "require": {
@@ -12061,7 +12064,7 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2019-05-29T22:54:52+00:00"
+            "time": "2019-08-04T02:31:04+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -12382,16 +12385,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "0.3.4",
+            "version": "0.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "ab518a5fc8f1d90f58bd2c5552ba915e2c477b66"
+                "reference": "8c4ef2aefd9788238897b678a985e1d5c8df6db4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/ab518a5fc8f1d90f58bd2c5552ba915e2c477b66",
-                "reference": "ab518a5fc8f1d90f58bd2c5552ba915e2c477b66",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/8c4ef2aefd9788238897b678a985e1d5c8df6db4",
+                "reference": "8c4ef2aefd9788238897b678a985e1d5c8df6db4",
                 "shasum": ""
             },
             "require": {
@@ -12425,20 +12428,20 @@
                 "MIT"
             ],
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
-            "time": "2019-05-28T11:40:00+00:00"
+            "time": "2019-06-07T19:13:52+00:00"
         },
         {
             "name": "phpstan/phpstan",
-            "version": "0.11.8",
+            "version": "0.11.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "fcf0081bf3a254ddacffa03e78be87842d0c09c9"
+                "reference": "1be5b3a706db16ac472a4c40ec03cf4c810b118d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/fcf0081bf3a254ddacffa03e78be87842d0c09c9",
-                "reference": "fcf0081bf3a254ddacffa03e78be87842d0c09c9",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/1be5b3a706db16ac472a4c40ec03cf4c810b118d",
+                "reference": "1be5b3a706db16ac472a4c40ec03cf4c810b118d",
                 "shasum": ""
             },
             "require": {
@@ -12449,9 +12452,9 @@
                 "nette/robot-loader": "^3.0.1",
                 "nette/schema": "^1.0",
                 "nette/utils": "^2.4.5 || ^3.0",
-                "nikic/php-parser": "^4.0.2",
+                "nikic/php-parser": "^4.2.3",
                 "php": "~7.1",
-                "phpstan/phpdoc-parser": "^0.3.4",
+                "phpstan/phpdoc-parser": "^0.3.5",
                 "symfony/console": "~3.2 || ~4.0",
                 "symfony/finder": "~3.2 || ~4.0"
             },
@@ -12459,11 +12462,12 @@
                 "symfony/console": "3.4.16 || 4.1.5"
             },
             "require-dev": {
-                "brianium/paratest": "^2.0",
+                "brianium/paratest": "^2.0 || ^3.0",
                 "consistence/coding-standard": "^3.5",
                 "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
                 "ext-intl": "*",
                 "ext-mysqli": "*",
+                "ext-simplexml": "*",
                 "ext-soap": "*",
                 "ext-zip": "*",
                 "jakub-onderka/php-parallel-lint": "^1.0",
@@ -12473,7 +12477,7 @@
                 "phpstan/phpstan-php-parser": "^0.11",
                 "phpstan/phpstan-phpunit": "^0.11",
                 "phpstan/phpstan-strict-rules": "^0.11",
-                "phpunit/phpunit": "^7.0",
+                "phpunit/phpunit": "^7.5.14 || ^8.0",
                 "slevomat/coding-standard": "^4.7.2",
                 "squizlabs/php_codesniffer": "^3.3.2"
             },
@@ -12499,7 +12503,7 @@
                 "MIT"
             ],
             "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-05-28T19:58:33+00:00"
+            "time": "2019-08-18T20:51:53+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
