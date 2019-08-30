@@ -21,6 +21,7 @@
 
 ### Fixes:
 
+* Fix partial/real contact edit on relationship
 * Fix same contact selection in multi-search
 * Fix conversation creation
 * Fix phone call update
