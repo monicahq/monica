@@ -42,7 +42,7 @@ class DBHelper
                 WHERE table_schema = :table_schema
                 AND table_name LIKE :table_prefix', [
             'table_schema' => DB::connection()->getDatabaseName(),
-            'table_prefix' => '%'.DB::connection()->getTablePrefix().'%'
+            'table_prefix' => '%'.DB::connection()->getTablePrefix().'%',
         ]);
     }
 }
