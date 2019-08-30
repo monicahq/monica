@@ -37,9 +37,12 @@ class DBHelper
      */
     public static function getTables()
     {
-        return DB::table('information_schema.tables')
-            ->select('table_name')
-            ->where('table_schema', '=', DB::connection()->getDatabaseName())
-            ->get();
+        return DB::select('SELECT table_name
+                FROM information_schema.tables
+                WHERE table_schema = :table_schema
+                AND table_name LIKE :table_prefix', [
+            'table_schema' => DB::connection()->getDatabaseName(),
+            'table_prefix' => '%'.DB::connection()->getTablePrefix().'%'
+        ]);
     }
 }

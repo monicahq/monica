@@ -21,6 +21,7 @@
 
 ### Fixes:
 
+* Fix migration and contact delete in case a DB prefix is used
 * Fix same contact selection in multi-search
 * Fix conversation creation
 * Fix phone call update
