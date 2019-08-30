@@ -33,7 +33,9 @@ class DBHelper
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * Get list of tables on this instance.
+     *
+     * @return array
      */
     public static function getTables()
     {
