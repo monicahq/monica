@@ -46,9 +46,15 @@
         {{-- AGE --}}
         <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @if ($contact->birthdate && !($contact->is_dead))
-            @if ($contact->birthdate->getAge())
+            @if ($contact->getBirthdayState() !== 'unknown')
               <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_birthday')</span>
-              <span>{{$contact->birthdate->toShortString()}} ({{ $contact->birthdate->getAge() }})</span>
+              @if($contact->getBirthdayState() === 'approximate')
+                <span>{{ trans('people.age_approximate_in_years', ['age' => $contact->birthdate->getAge()]) }}</span>
+              @elseif($contact->getBirthdayState() === 'almost')
+                <span>{{$contact->birthdate->toShortString()}}</span>
+              @else
+                <span>{{$contact->birthdate->toShortString()}} ({{ $contact->birthdate->getAge() }})</span>
+              @endif
             @endif
           @elseif ($contact->is_dead)
               @if (! is_null($contact->deceasedDate))
