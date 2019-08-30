@@ -48,6 +48,14 @@
       <div slot="emptystate" class="tc">
         {{ $t('people.people_search_no_results') }}
       </div>
+      <template v-slot:emptystate>
+        <div v-if="!ready" class="vgt-center-align vgt-text-disabled h3">
+          {{ $t('app.loading') }}
+        </div>
+        <div v-else class="vgt-center-align vgt-text-disabled h3">
+          {{ $t('people.people_search_no_results') }}
+        </div>
+      </template>
       <template slot="table-row" slot-scope="props">
         <template v-if="props.column.field === 'avatar'">
           <contact-item
@@ -56,7 +64,7 @@
             :class-name="'avatar-search'"
           />
         </template>
-        <template v-if="props.column.field === 'name'">
+        <template v-else-if="props.column.field === 'name'">
           <template v-if="props.row.is_starred">
             <span :class="[dirltr === 'ltr' ? 'ml3' : 'mr3']">
               {{ props.row.complete_name }}
@@ -74,7 +82,7 @@
             {{ props.row.complete_name }}
           </span>
         </template>
-        <template v-if="props.column.field === 'description'">
+        <template v-else-if="props.column.field === 'description'">
           <span v-if="props.row.description" :class="['i', dirltr === 'ltr' ? 'ml3' : 'mr3']">
             {{ props.row.description }}
           </span>
@@ -98,11 +106,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    debounceWait: {
+      type: Number,
+      default: 200,
+    },
   },
 
   data() {
     return {
       contacts: [],
+      searchEntries: null,
+      ready: false,
 
       totalRecords: 0,
       perPageDropdown: [30, 50, 100],
@@ -135,7 +149,13 @@ export default {
   },
 
   mounted() {
-    this.loadItems();
+    this.searchEntries = _.debounce(() => {
+      this.ready = false;
+      this.contacts = [];
+      this._loadItems();
+    }, this.debounceWait);
+
+    this._loadItems();
   },
 
   methods: {
@@ -149,21 +169,21 @@ export default {
 
     onPageChange(params) {
       this.updateParams({page: params.currentPage});
-      this.loadItems();
+      this.searchEntries();
     },
 
     onPerPageChange(params) {
       this.updateParams({perPage: params.currentPerPage, page: 1});
-      this.loadItems();
+      this.searchEntries();
     },
 
     onSearch(params) {
       this.updateParams({search: params.searchTerm});
-      this.loadItems();
+      this.searchEntries();
     },
 
     // load items is what brings back the rows from server
-    loadItems() {
+    _loadItems() {
       let urlParam = window.location.search;
 
       if (urlParam) {
@@ -179,10 +199,22 @@ export default {
         urlParam += '&show_archived=true';
       }
 
+      this._loadNewItems(urlParam, (entries, total) => {
+        this.contacts = entries;
+        this.totalRecords = total;
+        this.ready = true;
+      });
+    },
+
+    _loadNewItems(urlParam, after) {
       axios.get('people/list'+urlParam)
         .then(response => {
-          this.contacts = response.data.contacts;
-          this.totalRecords = response.data.totalRecords;
+          if (_.isFunction(after)) {
+            after(
+              _.uniqBy(response.data.contacts, entry => _.uniqueId()),
+              response.data.totalRecords
+            );
+          }
         });
     },
 

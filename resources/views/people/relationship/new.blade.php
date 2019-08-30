@@ -114,10 +114,13 @@
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
+          {{-- Real or partial contact (default true) --}}
           <form-checkbox
             :name="'realContact'"
             :iclass="'pa0 ma0 lh-copy'"
             :dclass="'mb3 mb0-ns flex'"
+            value="1"
+            :model-value="true"
           >
             <template slot="label">
               {{ trans('people.relationship_form_also_create_contact') }}
