@@ -89,7 +89,7 @@
             @contentChange="updateContent($event)"
           />
           <p class="f6">
-            {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+            {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">
               {{ $t('app.markdown_link') }}
             </a>
           </p>

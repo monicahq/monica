@@ -22,7 +22,7 @@
               <h3>{{ trans('auth.mfa_auth_webauthn') }}</h3>
               <webauthn-connector
                 :method="'login'"
-                :public-key="{{ json_encode($publicKey) }}"
+                :public-key="{{ \Safe\json_encode($publicKey) }}"
               >
               </webauthn-connector>
 
