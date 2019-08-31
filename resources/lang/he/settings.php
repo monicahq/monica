@@ -252,7 +252,7 @@ return [
     'import_upload_rules_desc' => 'עם זאת, חלים כאן חוקים כלשהם:',
     'import_upload_rule_format' => 'אנו תומכים בקבצים מהסוגים <code>.vcard</code> ו־<code>.vcf</code>',
     'import_upload_rule_vcard' => 'אנו תומכים ב־vCard גרסה 3.0, שהיא גרסת בררת המחדל עבור Contacts.app (macOS) עבור Google Contacts.',
-    'import_upload_rule_instructions' => 'Export instructions for <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> and <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
+    'import_upload_rule_instructions' => 'הנחיות יצוא עבור <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> ועבור <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'לעת עתה, אם לאנשי הקשר שלך יש מגוון כתובות דוא״ל או מספרי טלפון רק הרשומה הראשונה תיקלט.',
     'import_upload_rule_limit' => 'קבצים מוגבלים ל־10 מ״ב.',
     'import_upload_rule_time' => 'ההעלאה ועיבוד אנשי הקשר עשויים לארוך עד דקה. נא להתאזר בסבלנות.',
