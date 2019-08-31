@@ -252,7 +252,7 @@ return [
     'import_upload_rules_desc' => 'Ci sono alcune regole:',
     'import_upload_rule_format' => 'Supportiamo file <code>.vcard</code> e <code>.vcf</code>.',
     'import_upload_rule_vcard' => 'Supportiamo il formato vCard 3.0, che è il formato predefinito per Contacts.app (macOS) e Google Contacts.',
-    'import_upload_rule_instructions' => 'Export instructions for <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> and <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
+    'import_upload_rule_instructions' => 'Istruzioni per esportare da <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> e <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'Per il momento, se i tuoi contatti hanno più di un numero di telefono o più di una email, solo il primo di ogni tipo verrà importato.',
     'import_upload_rule_limit' => 'I file hanno un limite di 10MB.',
     'import_upload_rule_time' => 'Potrebbe volerci fino a un minuto per caricare i contatti e processarli. Porta pazienza.',
