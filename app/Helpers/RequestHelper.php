@@ -32,11 +32,12 @@ class RequestHelper
     /**
      * Get client country.
      *
+     * @param string $ip
      * @return string|null
      */
-    public static function country()
+    public static function country($ip)
     {
-        $position = Location::get();
+        $position = Location::get($ip);
 
         if (! $position) {
             return;
@@ -67,7 +68,7 @@ class RequestHelper
         }
 
         return [
-            'country' => static::country(),
+            'country' => static::country($ip),
             'currency' => null,
             'timezone' => null,
         ];
