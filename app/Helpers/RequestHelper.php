@@ -39,11 +39,9 @@ class RequestHelper
     {
         $position = Location::get($ip);
 
-        if (! $position) {
-            return;
+        if ($position) {
+            return $position->countryCode;
         }
-
-        return $position->countryCode;
     }
 
     /**
