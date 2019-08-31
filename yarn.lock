@@ -8910,20 +8910,17 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
 
-v-dropdown@1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/v-dropdown/-/v-dropdown-1.0.5.tgz#54803dc2d801710a05b2da63c694e68c24268326"
-  integrity sha512-8FgTkKd5p2Wt/DmoLVECJGQZym4oZJLzTfD046x2Fosao0rokAqc+M6nSwLBppV/Qg7oj6Ymuz5rY3TGrG98OQ==
-  dependencies:
-    vue "^2.5.11"
+v-dropdown@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/v-dropdown/-/v-dropdown-2.1.1.tgz#5e1a49d61c2913a6abdda3ccb462e2647f9d69ed"
+  integrity sha512-Rc+LairgIJENvLQCBpl4QAcen8h0EIffKaLeb+W5G2dPrW8HbPLDqQhxKOdXPQB4dcCIePie/Os6TN4K5i0a0Q==
 
-v-selectmenu@^1.0.5:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/v-selectmenu/-/v-selectmenu-1.0.8.tgz#c048a86453d45c114f6fc2ab61f7e7d1fef73bd2"
-  integrity sha512-F6EnGUue0GcOzx3kBD7cK5/uBpszsI8arf4F/YDNA4Z0J6fy2c0+u4r6t4Ocx1UwiqCNmycpViGizY40E7L/Rw==
+v-selectmenu@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/v-selectmenu/-/v-selectmenu-2.0.1.tgz#f649b01443e18ad2a5e816b8d519f3ac227f8053"
+  integrity sha512-Sk2NzG5uWZCsFSzI2biIObkhyrrveUiVu9NP2uwirUzofwpU3YjiELpldMXyc/ppAJAq4/tWPYE/mVH0WD++UQ==
   dependencies:
-    v-dropdown "1.0.5"
-    vue "^2.5.11"
+    v-dropdown "2.1.1"
 
 v8-compile-cache@^2.0.2:
   version "2.0.3"
@@ -9074,7 +9071,7 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-vue@^2.5.11, vue@^2.5.21:
+vue@^2.5.21:
   version "2.6.10"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
