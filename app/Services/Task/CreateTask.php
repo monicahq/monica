@@ -38,8 +38,6 @@ class CreateTask extends BaseService
                 ->findOrFail($data['contact_id']);
         }
 
-        $task = Task::create($data);
-
-        return Task::find($task->id);
+        return Task::create($data);
     }
 }
