@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\User\User;
 use App\Traits\JsonRespondController;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
-use function Safe\json_decode;
 
 class OAuthController extends Controller
 {
@@ -68,6 +68,30 @@ class OAuthController extends Controller
     }
 
     /**
+     * Validate the request.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|true
+     */
+    private function validateRequest(Request $request)
+    {
+        $validator = Validator::make($request->all(), ['email' => 'email|required', 'password' => 'required',]);
+
+        if ($validator->fails()) {
+            return $this->respondValidatorFailed($validator);
+        }
+
+        // Check if email exists. If not respond with an Unauthorized, this way a hacker
+        // doesn't know if the login email exist or not, or if the password os wrong
+        $count = User::where('email', $request->input('email'))->count();
+        if ($count === 0) {
+            return $this->respondUnauthorized();
+        }
+
+        return true;
+    }
+
+    /**
      * Log in a user and returns an accessToken.
      *
      * @param Request $request
@@ -84,44 +108,12 @@ class OAuthController extends Controller
         }
 
         try {
-            $token = $this->proxy([
-                'username' => $request->input('email'),
-                'password' => $request->input('password'),
-                'grantType' => 'password',
-            ]);
+            $token = $this->proxy(['username' => $request->input('email'), 'password' => $request->input('password'), 'grantType' => 'password',]);
 
             return $this->respond($token);
         } catch (\Exception $e) {
             return $this->respondUnauthorized();
         }
-    }
-
-    /**
-     * Validate the request.
-     *
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse|true
-     */
-    private function validateRequest(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'email|required',
-            'password' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        // Check if email exists. If not respond with an Unauthorized, this way a hacker
-        // doesn't know if the login email exist or not, or if the password os wrong
-        $count = User::where('email', $request->input('email'))
-                    ->count();
-        if ($count === 0) {
-            return $this->respondUnauthorized();
-        }
-
-        return true;
     }
 
     /**
@@ -134,27 +126,19 @@ class OAuthController extends Controller
      */
     private function proxy(array $data = [])
     {
-        $http = app(\Illuminate\Contracts\Http\Kernel::class);
-        $response = $http->handle(
-            \Illuminate\Http\Request::create(
-                '/oauth/token',
-                'POST',
-                [
-                    'grant_type' => $data['grantType'],
-                    'client_id' => config('monica.mobile_client_id'),
-                    'client_secret' => config('monica.mobile_client_secret'),
-                    'username' => $data['username'],
-                    'password' => $data['password'],
-                    'scope' => '',
-                ]
-            )
-        );
+        $url = App::runningUnitTests() ? config('app.url') . '/oauth/token' : route('passport.token');
+        $http = app(Kernel::class);
+        $response = $http->handle(Request::create($url, 'POST', [
+            'grant_type' => $data['grantType'],
+            'client_id' => config('monica.mobile_client_id'),
+            'client_secret' => config('monica.mobile_client_secret'),
+            'username' => $data['username'],
+            'password' => $data['password'],
+            'scope' => ''
+        ]));
 
         $data = json_decode($response->content());
 
-        return [
-            'access_token' => $data->access_token,
-            'expires_in' => $data->expires_in,
-        ];
+        return ['access_token' => $data->access_token, 'expires_in' => $data->expires_in,];
     }
 }
