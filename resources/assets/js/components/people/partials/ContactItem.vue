@@ -56,6 +56,7 @@
       <img v-if="check"
            :class="className"
            :src="item.information.avatar.url"
+           :alt="item.complete_name"
            @error="check=false"
       />
       <div v-else
@@ -71,7 +72,7 @@
     </a>
   </div>
   <div v-else class="item-search-result">
-    <a href="/people/add">
+    <a href="people/add">
       <div class="avatar avatar-initials avatar-new">+</div>
       {{ $t('people.people_add_new') }}
       <span></span>

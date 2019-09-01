@@ -55,6 +55,7 @@
       <img v-if="check"
            class="avatar"
            :src="item.information.avatar.url"
+           :alt="item.complete_name"
            @error="check=false"
       />
       <div v-else

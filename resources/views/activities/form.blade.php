@@ -10,7 +10,7 @@
             :title="'{{ trans('people.activities_who_was_involved') }}'"
             :user-contact-id="{{ $contact->id }}"
             :placeholder="'{{ trans('people.people_search') }}'"
-            :contacts="{{ json_encode(\App\Http\Resources\Contact\ContactShort::collection($contact && $method == 'POST' ? collect([$contact]) : $activity->contacts)) }}"
+            :contacts="{{ \Safe\json_encode(\App\Http\Resources\Contact\ContactShort::collection($contact && $method == 'POST' ? collect([$contact]) : $activity->contacts)) }}"
         ></contact-multi-search>
     </div>
 

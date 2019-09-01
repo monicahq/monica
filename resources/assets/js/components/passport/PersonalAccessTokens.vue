@@ -44,8 +44,10 @@
           <table v-else class="table table-borderless m-b-none">
             <thead>
               <tr>
-                <th>{{ $t('settings.api_token_name') }}</th>
-                <th></th>
+                <th scope="col">
+                  {{ $t('settings.api_token_name') }}
+                </th>
+                <th scope="col"></th>
               </tr>
             </thead>
 
