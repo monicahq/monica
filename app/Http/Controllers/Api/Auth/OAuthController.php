@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use GuzzleHttp\Client;
-use App\Models\User\User;
-use Illuminate\Http\Request;
-use function Safe\json_decode;
-use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User\User;
 use App\Traits\JsonRespondController;
-use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Validator;
+use function Safe\json_decode;
 
 class OAuthController extends Controller
 {
@@ -129,26 +128,29 @@ class OAuthController extends Controller
      * Proxy a request to the OAuth server.
      *
      * @param array $data the data to send to the server
+     *
      * @return array
+     * @throws \Safe\Exceptions\JsonException
      */
     private function proxy(array $data = [])
     {
-        $http = new Client([
-            'timeout' => 20,
-        ]);
-        $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
-        $response = $http->post($url, [
-            'form_params' => [
-                'grant_type' => $data['grantType'],
-                'client_id' => config('monica.mobile_client_id'),
-                'client_secret' => config('monica.mobile_client_secret'),
-                'username' => $data['username'],
-                'password' => $data['password'],
-                'scope' => '',
-            ],
-        ]);
+        $http = app(\Illuminate\Contracts\Http\Kernel::class);
+        $response = $http->handle(
+            \Illuminate\Http\Request::create(
+                '/oauth/token',
+                'POST',
+                [
+                    'grant_type' => $data['grantType'],
+                    'client_id' => config('monica.mobile_client_id'),
+                    'client_secret' => config('monica.mobile_client_secret'),
+                    'username' => $data['username'],
+                    'password' => $data['password'],
+                    'scope' => '',
+                ]
+            )
+        );
 
-        $data = json_decode($response->getBody());
+        $data = json_decode($response->content());
 
         return [
             'access_token' => $data->access_token,
