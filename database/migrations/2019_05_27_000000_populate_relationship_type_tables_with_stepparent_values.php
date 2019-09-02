@@ -38,7 +38,7 @@ class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
                 /* @var Account $account */
                 foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
                     $relationshipTypeGroup = $account->getRelationshipTypeGroupByType('family');
-        
+
                     if ($relationshipTypeGroup) {
                         RelationshipType::create([
                             'account_id' => $account->id,
@@ -51,7 +51,6 @@ class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
                 }
             }
         });
-
 
         DB::table('default_relationship_types')
             ->update(['migrated' => 1]);
