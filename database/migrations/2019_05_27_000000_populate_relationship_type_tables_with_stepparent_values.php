@@ -13,7 +13,15 @@ class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
      */
     public function up()
     {
-        $id = DB::table('default_relationship_type_groups')
+        // Add some indexes
+        DB::schema('relationship_type_groups', function ($table) {
+            $table->index(['name']);
+        });
+        DB::schema('default_relationship_types', function ($table) {
+            $table->index(['migrated']);
+        });
+
+        $defaultRelationshipTypeGroupId = DB::table('default_relationship_type_groups')
             ->where([
                 'name' => 'family',
             ])
@@ -22,12 +30,12 @@ class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
         DB::table('default_relationship_types')->insert([
             'name' => 'stepparent',
             'name_reverse_relationship' => 'stepchild',
-            'relationship_type_group_id' => $id,
+            'relationship_type_group_id' => $defaultRelationshipTypeGroupId,
         ],
         [
             'name' => 'stepchild',
             'name_reverse_relationship' => 'stepparent',
-            'relationship_type_group_id' => $id,
+            'relationship_type_group_id' => $defaultRelationshipTypeGroupId,
         ]);
 
         // Add the default relationship type to the account relationship types
