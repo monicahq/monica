@@ -2,6 +2,8 @@
 
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
@@ -14,10 +16,10 @@ class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
     public function up()
     {
         // Add some indexes
-        DB::schema('relationship_type_groups', function ($table) {
+        Schema::table('relationship_type_groups', function (Blueprint $table) {
             $table->index(['name']);
         });
-        DB::schema('default_relationship_types', function ($table) {
+        Schema::table('default_relationship_types', function (Blueprint $table) {
             $table->index(['migrated']);
         });
 
