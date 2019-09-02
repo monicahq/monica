@@ -2,6 +2,7 @@
 
 use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
+use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Migrations\Migration;
 
 class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
