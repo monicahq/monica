@@ -25,9 +25,9 @@
       ]); !!}
     </script>
   </head>
-  <body data-account-id="{{ auth()->user()->account_id }}" class="bg-gray-monica">
+  <body data-account-id="{{ auth()->user()->account_id }}" class="bg-gray-monica min-vh-100 flex flex-column">
 
-    <div id="app">
+    <div id="app" class="flex-grow-1">
       @if (Route::currentRouteName() != 'settings.subscriptions.confirm')
         @include('partials.header')
         @include('partials.subscription')
