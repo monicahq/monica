@@ -6803,28 +6803,28 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.1.1",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "86b4549d8c388c5237bcfdd2eb99673d4c645ff9"
+                "reference": "1e351d2257de312dfa3bdb5544b55e587bd4c00a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/86b4549d8c388c5237bcfdd2eb99673d4c645ff9",
-                "reference": "86b4549d8c388c5237bcfdd2eb99673d4c645ff9",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/1e351d2257de312dfa3bdb5544b55e587bd4c00a",
+                "reference": "1e351d2257de312dfa3bdb5544b55e587bd4c00a",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.0 - 5.8",
+                "illuminate/support": "5.0 - 5.8 | ^6.0",
                 "php": "^7.1",
                 "sentry/sdk": "^2.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "2.14.*",
-                "laravel/framework": "5.8.*",
-                "orchestra/testbench": "3.8.*",
-                "phpunit/phpunit": "7.5.*"
+                "laravel/framework": "^6.0",
+                "orchestra/testbench": "^3.9",
+                "phpunit/phpunit": "^8.0"
             },
             "type": "library",
             "extra": {
@@ -6867,7 +6867,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-08-23T07:11:58+00:00"
+            "time": "2019-09-03T07:39:44+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -7812,16 +7812,16 @@
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.3.3",
+            "version": "v4.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "40762ead607c8f792ee4516881369ffa553fee6f"
+                "reference": "81c2e120522a42f623233968244baebd6b36cb6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/40762ead607c8f792ee4516881369ffa553fee6f",
-                "reference": "40762ead607c8f792ee4516881369ffa553fee6f",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/81c2e120522a42f623233968244baebd6b36cb6a",
+                "reference": "81c2e120522a42f623233968244baebd6b36cb6a",
                 "shasum": ""
             },
             "require": {
@@ -7862,7 +7862,7 @@
                 "configuration",
                 "options"
             ],
-            "time": "2019-06-13T11:01:17+00:00"
+            "time": "2019-08-08T09:29:19+00:00"
         },
         {
             "name": "symfony/polyfill-ctype",
