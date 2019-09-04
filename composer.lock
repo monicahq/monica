@@ -2269,16 +2269,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.1.1",
+            "version": "v10.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "1a566668e8ed378b7a9f6c9a360bea182cd89151"
+                "reference": "f0b5bf36323422d811b95a9881c3d97c85ddeb84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/1a566668e8ed378b7a9f6c9a360bea182cd89151",
-                "reference": "1a566668e8ed378b7a9f6c9a360bea182cd89151",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/f0b5bf36323422d811b95a9881c3d97c85ddeb84",
+                "reference": "f0b5bf36323422d811b95a9881c3d97c85ddeb84",
                 "shasum": ""
             },
             "require": {
@@ -2338,7 +2338,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2019-08-27T14:25:39+00:00"
+            "time": "2019-09-03T19:00:40+00:00"
         },
         {
             "name": "laravel/framework",
@@ -3218,30 +3218,30 @@
             "authors": [
                 {
                     "name": "Rubens Mariuzzo",
-                    "role": "Developer",
                     "email": "rubens@mariuzzo.com",
-                    "homepage": "https://github.com/rmariuzzo"
+                    "homepage": "https://github.com/rmariuzzo",
+                    "role": "Developer"
                 },
                 {
                     "name": "German Popoter",
-                    "role": "Developer",
                     "email": "me@gpopoteur.com",
-                    "homepage": "https://github.com/gpopoteur"
+                    "homepage": "https://github.com/gpopoteur",
+                    "role": "Developer"
                 },
                 {
                     "name": "Galievskiy Dmitriy",
-                    "role": "Developer",
-                    "homepage": "https://github.com/xAockd"
+                    "homepage": "https://github.com/xAockd",
+                    "role": "Developer"
                 },
                 {
                     "name": "Ramon Ackermann",
-                    "role": "Developer",
-                    "homepage": "https://github.com/sboo"
+                    "homepage": "https://github.com/sboo",
+                    "role": "Developer"
                 },
                 {
                     "name": "Pe Ell",
-                    "role": "Developer",
-                    "homepage": "https://github.com/a-komarev"
+                    "homepage": "https://github.com/a-komarev",
+                    "role": "Developer"
                 }
             ],
             "description": "Laravel Localization in JavaScript",
@@ -3737,16 +3737,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.23.1",
+            "version": "2.24.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02"
+                "reference": "934459c5ac0658bc765ad1e53512c7c77adcac29"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/767617a047e5b8b8b3b0b6023a2650847ed7df02",
-                "reference": "767617a047e5b8b8b3b0b6023a2650847ed7df02",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/934459c5ac0658bc765ad1e53512c7c77adcac29",
+                "reference": "934459c5ac0658bc765ad1e53512c7c77adcac29",
                 "shasum": ""
             },
             "require": {
@@ -3800,7 +3800,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2019-08-17T13:57:34+00:00"
+            "time": "2019-08-31T16:37:55+00:00"
         },
         {
             "name": "nette/caching",
@@ -7052,16 +7052,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v6.43.0",
+            "version": "v6.43.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "c06eb0da0e73750cab75948dd9ca4a15cf829e68"
+                "reference": "42fcdaf99c44bb26937223f8eae1f263491d5ab8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/c06eb0da0e73750cab75948dd9ca4a15cf829e68",
-                "reference": "c06eb0da0e73750cab75948dd9ca4a15cf829e68",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/42fcdaf99c44bb26937223f8eae1f263491d5ab8",
+                "reference": "42fcdaf99c44bb26937223f8eae1f263491d5ab8",
                 "shasum": ""
             },
             "require": {
@@ -7104,7 +7104,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-08-09T20:54:08+00:00"
+            "time": "2019-08-29T16:56:12+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
