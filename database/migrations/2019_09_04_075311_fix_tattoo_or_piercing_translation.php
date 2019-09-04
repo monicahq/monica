@@ -20,11 +20,11 @@ class FixTattooOrPiercingTranslation extends Migration
                 DB::table('life_event_types')
                 ->where([
                     'account_id' => $account->id,
-                    'default_life_event_type_key' => 'tattoo_or_piercing'
+                    'default_life_event_type_key' => 'tattoo_or_piercing',
                 ])
                 ->update([
                     'name' => trans('settings.personalization_life_event_type_tattoo_or_piercing', [], $locale),
-                ]);    
+                ]);
             }
         });
     }
