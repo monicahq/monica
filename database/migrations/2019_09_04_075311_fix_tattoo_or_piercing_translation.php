@@ -13,7 +13,9 @@ class FixTattooOrPiercingTranslation extends Migration
      */
     public function up()
     {
-        Account::chunk(200, function ($accounts) {
+        $appLocale = config('app.locale');
+
+        Account::chunk(200, function ($accounts) use ($appLocale) {
             foreach ($accounts as $account) {
                 $locale = $account->getFirstLocale() ?: $appLocale;
 
