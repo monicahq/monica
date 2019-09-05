@@ -109,6 +109,7 @@ class GenerateDefaultAvatar extends BaseService
         } catch (FileNotFoundException $e) {
             // ignore
         }
+
         return $contact;
     }
 }
