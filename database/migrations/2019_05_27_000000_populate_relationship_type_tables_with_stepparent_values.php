@@ -34,18 +34,24 @@ class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
             ->get();
 
         // Add the default relationship type to the account relationship types
-        Account::chunk(200, function ($accounts) use ($defaultRelationshipTypes) {
+        Account::chunk(500, function ($accounts) use ($defaultRelationshipTypes) {
             foreach ($accounts as $account) {
                 /* @var Account $account */
-                foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
-                    $relationshipTypeGroup = $account->getRelationshipTypeGroupByType('family');
 
-                    if ($relationshipTypeGroup) {
+                $relationshipTypeGroupId = DB::table('relationship_type_groups')
+                    ->where([
+                        'account_id' => $account->id,
+                        'name' => 'family',
+                    ])
+                    ->value('id');
+
+                if ($relationshipTypeGroupId) {
+                    foreach ($defaultRelationshipTypes as $defaultRelationshipType) {
                         RelationshipType::create([
                             'account_id' => $account->id,
                             'name' => $defaultRelationshipType->name,
                             'name_reverse_relationship' => $defaultRelationshipType->name_reverse_relationship,
-                            'relationship_type_group_id' => $relationshipTypeGroup->id,
+                            'relationship_type_group_id' => $relationshipTypeGroupId,
                             'delible' => $defaultRelationshipType->delible,
                         ]);
                     }
