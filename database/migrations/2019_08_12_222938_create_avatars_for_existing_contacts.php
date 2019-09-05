@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Database\Migrations\Migration;
 use App\Services\Contact\Avatar\GenerateDefaultAvatar;
@@ -18,8 +19,12 @@ class CreateAvatarsForExistingContacts extends Migration
      */
     public function up()
     {
-        Contact::chunk(200, function ($contacts) {
+        Contact::with('contactFields')->chunk(500, function ($contacts) {
             foreach ($contacts as $contact) {
+                if (StringHelper::isNullOrWhitespace($contact->default_avatar_color)) {
+                    $contact->setAvatarColor();
+                    $contact->save();
+                }
                 $request = [
                     'contact_id' => $contact->id,
                 ];
