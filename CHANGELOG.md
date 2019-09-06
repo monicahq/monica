@@ -21,6 +21,7 @@
 
 ### Fixes:
 
+* Fix tattoo or piercing activity locale title
 * Fix getting infos about country without providing ip
 * Fix migration and contact delete in case a DB prefix is used
 * Fix partial/real contact edit on relationship
