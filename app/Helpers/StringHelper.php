@@ -37,7 +37,7 @@ class StringHelper
     /**
      * Test if string is null or whitespace.
      *
-     * @param  string $test
+     * @param  string $text
      * @return bool
      */
     public static function isNullOrWhitespace($text) : bool
