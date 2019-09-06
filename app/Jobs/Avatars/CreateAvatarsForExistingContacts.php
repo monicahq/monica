@@ -34,7 +34,8 @@ class CreateAvatarsForExistingContacts implements ShouldQueue
         $totalContact = Contact::whereNull('avatar_adorable_url')
             ->orWhere('avatar_default_url', 'not like', 'avatars/%')
             ->count();
-        return now()->addSeconds($totalContact/100);
+
+        return now()->addSeconds($totalContact / 100);
     }
 
     /**
