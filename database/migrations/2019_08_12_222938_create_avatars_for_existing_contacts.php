@@ -1,10 +1,9 @@
 <?php
 
-use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
 use Illuminate\Database\Migrations\Migration;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 
 /**
  * This creates all the avatars (default, adorable and gravatars) for existing
@@ -19,19 +18,17 @@ class CreateAvatarsForExistingContacts extends Migration
      */
     public function up()
     {
-        Contact::with('contactFields')->chunk(500, function ($contacts) {
-            foreach ($contacts as $contact) {
-                if (StringHelper::isNullOrWhitespace($contact->default_avatar_color)) {
-                    $contact->setAvatarColor();
-                    $contact->save();
-                }
-                $request = [
-                    'contact_id' => $contact->id,
-                ];
+        $delay = now();
 
-                app(GetAvatarsFromInternet::class)->execute($request);
-                app(GenerateDefaultAvatar::class)->execute($request);
+        Contact::without(['account','avatarPhoto','gender'])
+            ->chunk(400, function ($contacts) use ($delay) {
+            foreach ($contacts as $contact) {
+                GetAvatarsFromInternet::dispatch($contact->id)
+                    ->delay($delay);
+                GenerateDefaultAvatar::dispatch($contact)
+                    ->delay($delay);
             }
+            $delay = $delay->addMinutes(1);
         });
     }
 }
