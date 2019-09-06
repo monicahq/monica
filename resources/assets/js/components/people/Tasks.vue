@@ -128,15 +128,15 @@
             :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
             @change="toggleComplete(task)"
           >
-          <span class="light-silver mr1">
-            {{ task.completed_at }}
-          </span>
-          <span class="moon-gray">
-            {{ task.title }}
-          </span>
-          <span v-if="task.description" class="silver ml3">
-            {{ task.description }}
-          </span>
+            <span class="light-silver mr1">
+              {{ task.completed_at }}
+            </span>
+            <span class="moon-gray">
+              {{ task.title }}
+            </span>
+            <span v-if="task.description" class="silver ml3">
+              {{ task.description }}
+            </span>
           </form-checkbox>
           <div v-if="editMode" class="di">
             <i class="fa fa-trash-o pointer pr2 ml3 dark-blue" @click="trash(task)"></i>
@@ -187,8 +187,8 @@ export default {
   },
 
   mounted() {
-      this.newTask.contact_id = this.contactId;
-      this.index();
+    this.newTask.contact_id = this.contactId;
+    this.index();
   },
 
   methods: {
