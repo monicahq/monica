@@ -42,6 +42,6 @@ class StringHelper
      */
     public static function isNullOrWhitespace($text) : bool
     {
-        return ctype_space($text) || $text === '' || $text === null;
+        return ctype_space($text) || $text === '' || is_null($text);
     }
 }
