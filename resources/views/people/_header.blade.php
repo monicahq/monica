@@ -59,7 +59,7 @@
           @elseif ($contact->is_dead)
               @if (! is_null($contact->deceasedDate))
                 {{ trans('people.deceased_label_with_date', ['date' => $contact->deceasedDate->toShortString()]) }}
-                @if ($contact->deceasedDate->is_year_unknown == 0)
+                @if ($contact->deceasedDate->is_year_unknown == 0 && $contact->getBirthdayState() !== 'almost')
                   <span>({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
                 @endif
               @else

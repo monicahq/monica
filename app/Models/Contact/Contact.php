@@ -1342,7 +1342,7 @@ class Contact extends Model
             return;
         }
 
-        if ($this->deceasedDate->is_year_unkown == 1) {
+        if ($this->deceasedDate->is_year_unknown == 1) {
             return;
         }
 
