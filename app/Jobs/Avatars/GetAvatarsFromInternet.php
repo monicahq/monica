@@ -6,8 +6,8 @@ use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use App\Services\Contact\Avatar\GetAvatarsFromInternet as GetAvatarsFromInternetService;
 
 class GetAvatarsFromInternet implements ShouldQueue

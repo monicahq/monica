@@ -20,15 +20,15 @@ class CreateAvatarsForExistingContacts extends Migration
     {
         $delay = now();
 
-        Contact::without(['account','avatarPhoto','gender'])
+        Contact::without(['account', 'avatarPhoto', 'gender'])
             ->chunk(400, function ($contacts) use ($delay) {
-            foreach ($contacts as $contact) {
-                GetAvatarsFromInternet::dispatch($contact->id)
+                foreach ($contacts as $contact) {
+                    GetAvatarsFromInternet::dispatch($contact->id)
                     ->delay($delay);
-                GenerateDefaultAvatar::dispatch($contact)
+                    GenerateDefaultAvatar::dispatch($contact)
                     ->delay($delay);
-            }
-            $delay = $delay->addMinutes(1);
-        });
+                }
+                $delay = $delay->addMinutes(1);
+            });
     }
 }
