@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Jobs;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Queue;
