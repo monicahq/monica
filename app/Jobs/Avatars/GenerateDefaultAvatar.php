@@ -27,7 +27,7 @@ class GenerateDefaultAvatar implements ShouldQueue
      *
      * @var Contact
      */
-    private $contact;
+    public $contact;
 
     /**
      * Create a new job instance.
