@@ -27,7 +27,7 @@ class CreateAvatarsForExistingContacts implements ShouldQueue
     /**
      * Determine the time at which this job should timeout.
      *
-     * @return \DateTime
+     * @return \Illuminate\Support\Carbon
      */
     public function retryUntil()
     {
