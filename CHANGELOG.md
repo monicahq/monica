@@ -40,6 +40,7 @@
 * Fix some UX errors
 * Fix stripe payment UI
 * Fix datepicker for locale usage
+* Fix currencies seeder by accounting for defaults
 
 
 # RELEASED VERSIONS:
