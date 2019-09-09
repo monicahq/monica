@@ -15,7 +15,7 @@ class AddRelationshipTableIndexes extends Migration
     {
         // Add some indexes
         Schema::table('relationship_type_groups', function (Blueprint $table) {
-            $table->index(['name']);
+            $table->index(['account_id', 'name']);
         });
         Schema::table('default_relationship_types', function (Blueprint $table) {
             $table->index(['migrated']);
