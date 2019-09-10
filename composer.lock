@@ -12050,18 +12050,18 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "Developer",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Heuer",
-                    "role": "Developer",
-                    "email": "sebastian@phpeople.de"
+                    "email": "sebastian@phpeople.de",
+                    "role": "Developer"
                 },
                 {
                     "name": "Sebastian Bergmann",
-                    "role": "Developer",
-                    "email": "sebastian@phpunit.de"
+                    "email": "sebastian@phpunit.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Component for reading phar.io manifest information from a PHP Archive (PHAR)",
@@ -14083,16 +14083,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.5.0",
+            "version": "3.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "f8b8f35c031e2fad6754a961a9fad2708649d8da"
+                "reference": "deb36e8b273d4b25601f1991482a69d412e3169f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/f8b8f35c031e2fad6754a961a9fad2708649d8da",
-                "reference": "f8b8f35c031e2fad6754a961a9fad2708649d8da",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/deb36e8b273d4b25601f1991482a69d412e3169f",
+                "reference": "deb36e8b273d4b25601f1991482a69d412e3169f",
                 "shasum": ""
             },
             "require": {
@@ -14166,7 +14166,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-09-08T19:25:12+00:00"
+            "time": "2019-09-10T01:28:56+00:00"
         },
         {
             "name": "webmozart/assert",
