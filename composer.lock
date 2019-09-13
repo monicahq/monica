@@ -4947,9 +4947,9 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator",
                     "email": "acr@antoniocarlosribeiro.com",
-                    "homepage": "https://antoniocarlosribeiro.com"
+                    "homepage": "https://antoniocarlosribeiro.com",
+                    "role": "Creator"
                 }
             ],
             "description": "Laravel Illuminate collection with objectified properties",
@@ -5074,8 +5074,8 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator",
-                    "email": "acr@antoniocarlosribeiro.com"
+                    "email": "acr@antoniocarlosribeiro.com",
+                    "role": "Creator"
                 }
             ],
             "description": "Countries for Laravel",
@@ -5137,8 +5137,8 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator & Designer",
-                    "email": "acr@antoniocarlosribeiro.com"
+                    "email": "acr@antoniocarlosribeiro.com",
+                    "role": "Creator & Designer"
                 }
             ],
             "description": "A One Time Password Authentication package, compatible with Google Authenticator.",
@@ -5208,8 +5208,8 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator & Designer",
-                    "email": "acr@antoniocarlosribeiro.com"
+                    "email": "acr@antoniocarlosribeiro.com",
+                    "role": "Creator & Designer"
                 }
             ],
             "description": "A One Time Password Authentication package, compatible with Google Authenticator.",
@@ -5329,9 +5329,9 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator",
                     "email": "acr@antoniocarlosribeiro.com",
-                    "homepage": "https://antoniocarlosribeiro.com"
+                    "homepage": "https://antoniocarlosribeiro.com",
+                    "role": "Creator"
                 }
             ],
             "description": "Laravel Illuminate Agnostic Arr",
@@ -5394,9 +5394,9 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator",
                     "email": "acr@antoniocarlosribeiro.com",
-                    "homepage": "https://antoniocarlosribeiro.com"
+                    "homepage": "https://antoniocarlosribeiro.com",
+                    "role": "Creator"
                 }
             ],
             "description": "Laravel Illuminate Agnostic Collection",
@@ -5465,9 +5465,9 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator",
                     "email": "acr@antoniocarlosribeiro.com",
-                    "homepage": "https://antoniocarlosribeiro.com"
+                    "homepage": "https://antoniocarlosribeiro.com",
+                    "role": "Creator"
                 }
             ],
             "description": "Laravel Illuminate Agnostic Str",
@@ -6293,9 +6293,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 }
             ],
             "description": "WebDAV Framework for PHP",
@@ -6413,9 +6413,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 }
             ],
             "description": "The sabre/http library provides utilities for dealing with http requests and responses. ",
@@ -6522,21 +6522,21 @@
             "authors": [
                 {
                     "name": "Evert Pot",
-                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/"
+                    "homepage": "http://evertpot.com/",
+                    "role": "Developer"
                 },
                 {
                     "name": "Dominik Tobschall",
-                    "role": "Developer",
                     "email": "dominik@fruux.com",
-                    "homepage": "http://tobschall.de/"
+                    "homepage": "http://tobschall.de/",
+                    "role": "Developer"
                 },
                 {
                     "name": "Ivan Enderlin",
-                    "role": "Developer",
                     "email": "ivan.enderlin@hoa-project.net",
-                    "homepage": "http://mnt.io/"
+                    "homepage": "http://mnt.io/",
+                    "role": "Developer"
                 }
             ],
             "description": "The VObject library for PHP allows you to easily parse and manipulate iCalendar and vCard objects",
@@ -9045,13 +9045,13 @@
             "authors": [
                 {
                     "name": "Daniel Bruce",
-                    "role": "Developer",
-                    "email": "dbruce@vectorface.com"
+                    "email": "dbruce@vectorface.com",
+                    "role": "Developer"
                 },
                 {
                     "name": "Cory Darby",
-                    "role": "Developer",
-                    "email": "ckdarby@vectorface.com"
+                    "email": "ckdarby@vectorface.com",
+                    "role": "Developer"
                 }
             ],
             "description": "A PHP class for retrieving accurate IP address information for the client.",
@@ -9137,16 +9137,16 @@
         },
         {
             "name": "vlucas/phpdotenv",
-            "version": "v3.5.0",
+            "version": "v3.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vlucas/phpdotenv.git",
-                "reference": "95cb0fa6c025f7f0db7fc60f81e9fb231eb2d222"
+                "reference": "1bdf24f065975594f6a117f0f1f6cabf1333b156"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/95cb0fa6c025f7f0db7fc60f81e9fb231eb2d222",
-                "reference": "95cb0fa6c025f7f0db7fc60f81e9fb231eb2d222",
+                "url": "https://api.github.com/repos/vlucas/phpdotenv/zipball/1bdf24f065975594f6a117f0f1f6cabf1333b156",
+                "reference": "1bdf24f065975594f6a117f0f1f6cabf1333b156",
                 "shasum": ""
             },
             "require": {
@@ -9155,12 +9155,12 @@
                 "symfony/polyfill-ctype": "^1.9"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8.35 || ^5.0 || ^6.0"
+                "phpunit/phpunit": "^4.8.35 || ^5.0 || ^6.0 || ^7.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.5-dev"
+                    "dev-master": "3.6-dev"
                 }
             },
             "autoload": {
@@ -9190,7 +9190,7 @@
                 "env",
                 "environment"
             ],
-            "time": "2019-08-27T17:00:38+00:00"
+            "time": "2019-09-10T21:37:39+00:00"
         },
         {
             "name": "vluzrmos/language-detector",
@@ -11018,24 +11018,24 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.5.0",
+            "version": "v5.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "525076aa34f6935b1f54d4c5a155f84182194bbb"
+                "reference": "9d2a643dbeb27fafd7f7d3961b74ee62eb5081bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/525076aa34f6935b1f54d4c5a155f84182194bbb",
-                "reference": "525076aa34f6935b1f54d4c5a155f84182194bbb",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/9d2a643dbeb27fafd7f7d3961b74ee62eb5081bf",
+                "reference": "9d2a643dbeb27fafd7f7d3961b74ee62eb5081bf",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-zip": "*",
                 "facebook/webdriver": "^1.7",
-                "illuminate/console": "~5.7.0|~5.8.0|^6.0",
-                "illuminate/support": "~5.7.0|~5.8.0|^6.0",
+                "illuminate/console": "~5.7.0|~5.8.0|^6.0|^7.0",
+                "illuminate/support": "~5.7.0|~5.8.0|^6.0|^7.0",
                 "nesbot/carbon": "^1.20|^2.0",
                 "php": ">=7.1.0",
                 "symfony/console": "^4.0",
@@ -11079,7 +11079,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-08-06T17:53:56+00:00"
+            "time": "2019-09-12T07:51:16+00:00"
         },
         {
             "name": "laravel/slack-notification-channel",
