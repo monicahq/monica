@@ -5152,16 +5152,16 @@
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "v1.0.1",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
-                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882"
+                "reference": "3b14f1fa2753c7f9bb5abb6504601662d836d104"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/b5f5bc71dcc52c48720441bc01c701023bd82882",
-                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/3b14f1fa2753c7f9bb5abb6504601662d836d104",
+                "reference": "3b14f1fa2753c7f9bb5abb6504601662d836d104",
                 "shasum": ""
             },
             "require": {
@@ -5170,8 +5170,8 @@
                 "pragmarx/google2fa-qrcode": "^1.0"
             },
             "require-dev": {
-                "orchestra/testbench": "3.4.*|3.5.*|3.6.*|3.7.*",
-                "phpunit/phpunit": "~5|~6|~7"
+                "orchestra/testbench": "3.4.*|3.5.*|3.6.*|3.7.*|4.*",
+                "phpunit/phpunit": "~5|~6|~7|~8"
             },
             "suggest": {
                 "bacon/bacon-qr-code": "Required to generate inline QR Codes.",
@@ -5219,7 +5219,7 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2019-03-22T19:54:51+00:00"
+            "time": "2019-09-13T02:06:13+00:00"
         },
         {
             "name": "pragmarx/google2fa-qrcode",
