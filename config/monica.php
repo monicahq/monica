@@ -173,6 +173,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Number of contacts to paginate
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the number of contacts to paginate on the contacts page by default.
+    |
+     */
+    'number_of_contacts_pagination' => env('NUMBER_OF_CONTACTS_PAGINATION', 30),
+
+    /*
+    |--------------------------------------------------------------------------
     | Email address to contact for support
     |--------------------------------------------------------------------------
     |

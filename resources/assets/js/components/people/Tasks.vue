@@ -35,12 +35,13 @@
         <li v-for="(task, i) in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
           <form-checkbox
             v-model.lazy="task.completed"
+            :disabled="task.disabled"
             :name="'task'"
             :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
             @change="toggleComplete(task)"
           >
             {{ task.title }}
-            <span v-if="task.description" slot="extra" class="silver ml3">
+            <span v-if="task.description" class="silver ml3">
               {{ task.description }}
             </span>
           </form-checkbox>
@@ -122,19 +123,21 @@
         <li v-for="task in completed(tasks)" :key="task.id" class="f6" :cy-name="'task-item-completed-' + task.id">
           <form-checkbox
             v-model.lazy="task.completed"
+            :disabled="task.disabled"
             :name="'checkbox'"
             :dclass="[ dirltr ? 'mr1' : 'ml1' ]"
             @change="toggleComplete(task)"
-          />
-          <span class="light-silver mr1">
-            {{ task.completed_at }}
-          </span>
-          <span class="moon-gray">
-            {{ task.title }}
-          </span>
-          <span v-if="task.description" class="silver ml3">
-            {{ task.description }}
-          </span>
+          >
+            <span class="light-silver mr1">
+              {{ task.completed_at }}
+            </span>
+            <span class="moon-gray">
+              {{ task.title }}
+            </span>
+            <span v-if="task.description" class="silver ml3">
+              {{ task.description }}
+            </span>
+          </form-checkbox>
           <div v-if="editMode" class="di">
             <i class="fa fa-trash-o pointer pr2 ml3 dark-blue" @click="trash(task)"></i>
           </div>
@@ -145,6 +148,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 
 export default {
 
@@ -183,15 +187,11 @@ export default {
   },
 
   mounted() {
-    this.prepareComponent();
+    this.newTask.contact_id = this.contactId;
+    this.index();
   },
 
   methods: {
-    prepareComponent() {
-      this.newTask.contact_id = this.contactId;
-      this.index();
-    },
-
     reinitialize() {
       this.newTask.title = '';
       this.newTask.description = '';
@@ -221,7 +221,9 @@ export default {
     index() {
       axios.get('people/' + this.hash + '/tasks')
         .then(response => {
-          this.tasks = response.data;
+          this.tasks = _.map(response.data, function (task) {
+            return _.assign({}, task, {disabled: false});
+          });
         });
     },
 
@@ -241,7 +243,8 @@ export default {
     },
 
     toggleComplete(task) {
-      task.completed = !task.completed;
+      this.updateMode = true;
+      Vue.set(task, 'disabled', true);
       this.update(task, false);
     },
 
@@ -249,6 +252,8 @@ export default {
       axios.put('tasks/' + task.id, task)
         .then(response => {
           this.updateMode = false;
+          Vue.set(task, 'disabled', false);
+          Vue.set(task, 'completed_at', response.data.completed_at ? this.formatDate(response.data.completed_at): null);
           if (toggleEdit) {
             this.toggleEditMode(task);
           }
@@ -259,6 +264,16 @@ export default {
             type: 'success'
           });
         });
+    },
+
+    formatDate(dateAsString) {
+      var moment = require('moment-timezone');
+      moment.locale(this._i18n.locale);
+      moment.tz.setDefault('UTC');
+
+      var date = moment.tz(moment(dateAsString), this.$root.timezone);
+
+      return date.format('ll');
     },
 
     trash(task) {

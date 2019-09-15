@@ -21,6 +21,7 @@
           'locale' => \App::getLocale(),
           'htmldir' => htmldir(),
           'profileDefaultView' => auth()->user()->profile_active_tab,
+          'timezone' => auth()->user()->timezone,
       ]); !!}
     </script>
   </head>

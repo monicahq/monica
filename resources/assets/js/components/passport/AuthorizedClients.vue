@@ -21,9 +21,13 @@
           <table class="table table-borderless m-b-none">
             <thead>
               <tr>
-                <th>{{ $t('settings.api_authorized_clients_name') }}</th>
-                <th>{{ $t('settings.api_authorized_clients_scopes') }}</th>
-                <th></th>
+                <th scope="col">
+                  {{ $t('settings.api_authorized_clients_name') }}
+                </th>
+                <th scope="col">
+                  {{ $t('settings.api_authorized_clients_scopes') }}
+                </th>
+                <th scope="col"></th>
               </tr>
             </thead>
 

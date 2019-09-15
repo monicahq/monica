@@ -38,7 +38,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/dashboard/calls', 'DashboardController@calls');
         Route::get('/dashboard/notes', 'DashboardController@notes');
         Route::get('/dashboard/debts', 'DashboardController@debts');
-        Route::get('/dashboard/tasks', 'DashboardController@tasks');
         Route::post('/dashboard/setTab', 'DashboardController@setTab');
     });
 
@@ -57,6 +56,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         // Dashboard
         Route::get('/people', 'ContactsController@index')->name('index');
         Route::get('/people/add', 'ContactsController@create')->name('create');
+        Route::get('/people/list', 'ContactsController@list')->name('list');
         Route::post('/people', 'ContactsController@store')->name('store');
         Route::get('/people/{contact}', 'ContactsController@show')->name('show');
         Route::get('/people/{contact}/edit', 'ContactsController@edit')->name('edit');

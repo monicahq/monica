@@ -2,14 +2,17 @@
 
 ### New features:
 
+* Paginate the Contacts page and improve database performance
 * Add ability to edit a Journal entry
 * Add vcard photo/avatar import
 * Add ability to change the avatar of your contacts
-* Add the ablity to set a 'me' contact (only API for now)
+* Add the ability to set a 'me' contact (only API for now)
 * Add stepparent/stepchild relationship
 
 ### Enhancements:
 
+* Docker image: create passport keys for OAuth access
+* Reduce a lot of queries
 * Update to laravel cashier 10.0, and get ready with SCA/PSD2
 * Add stripe webhook
 * Depends on php7.3+
@@ -18,6 +21,11 @@
 
 ### Fixes:
 
+* Fix tasks 'mark as done' UX
+* Fix tattoo or piercing activity locale title
+* Fix getting infos about country without providing ip
+* Fix migration and contact delete in case a DB prefix is used
+* Fix partial/real contact edit on relationship
 * Fix same contact selection in multi-search
 * Fix conversation creation
 * Fix phone call update

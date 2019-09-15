@@ -49,6 +49,14 @@ class Note extends Model
     ];
 
     /**
+     * Eager load with every note.
+     */
+    protected $with = [
+        'account',
+        'contact',
+    ];
+
+    /**
      * Get the account record associated with the note.
      *
      * @return BelongsTo

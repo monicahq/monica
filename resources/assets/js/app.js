@@ -147,6 +147,11 @@ Vue.component(
 );
 
 Vue.component(
+  'contact-list',
+  require('./components/people/ContactList.vue').default
+);
+
+Vue.component(
   'contact-task',
   require('./components/people/Tasks.vue').default
 );
@@ -301,6 +306,7 @@ common.loadLanguage(window.Laravel.locale, true).then((i18n) => {
     i18n,
     data: {
       htmldir: window.Laravel.htmldir,
+      timezone: window.Laravel.timezone,
       locale: i18n.locale,
       reminders_frequency: 'once',
       accept_invite_user: false,

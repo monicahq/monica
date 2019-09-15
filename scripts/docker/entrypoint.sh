@@ -46,12 +46,19 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
 
     # Run migrations
     waitfordb
-    ${ARTISAN} monica:update --force -v
+    ${ARTISAN} monica:update --force -vv
 
     if [[ -n "${SENTRY_SUPPORT:-}" && "$SENTRY_SUPPORT" == "true" && -z "${SENTRY_NORELEASE:-}" && -n "${SENTRY_ENV:-}" ]]; then
         commit=$(cat .sentry-commit)
         release=$(cat .sentry-release)
         ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" -v || true
+    fi
+
+    if [[ ! -f "${STORAGE}/oauth-public.key" || ! -f "${STORAGE}/oauth-private.key" ]]; then
+        echo "Passport keys creation ..."
+        ${ARTISAN} passport:keys
+        ${ARTISAN} passport:client --personal --no-interaction
+        echo "! Please be careful to backup /var/www/monica/storage/oauth-public.key and /var/www/monica/storage/oauth-private.key files !"
     fi
 
     # Run cron

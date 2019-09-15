@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ \App::getLocale() }}" dir="{{ htmldir() }}">
     <head>
         <base href="{{ url('/') }}/" />
         <title>@yield('title')</title>
