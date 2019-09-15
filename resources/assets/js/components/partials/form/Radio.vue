@@ -1,32 +1,23 @@
-<style scoped>
-</style>
-
-<template>
-  <div>
-    <p-radio :name="name" class="p-default p-round p-thick" color="primary-o">
-      {{ label }}
-    </p-radio>
-  </div>
-</template>
-
 <script>
-export default {
+let input = require('./PInput').default;
 
-  props: {
-    name: {
-      type: String,
-      default: '',
-    },
-    label: {
-      type: String,
-      default: '',
-    }
-  },
+let radio = {
+  name: 'radio',
 
-  methods: {
-    updateInput(text) {
-      //this.$emit('input', text)
-    }
-  }
+  input_type: 'radio',
+  input_iclass: 'p-round p-thick',
+
+  components: input.components,
+  model: input.model,
+  props: input.props,
+  data: input.data,
+  computed: input.computed,
+  watch: input.watch,
+  mounted: input.mounted,
+  methods: input.methods,
+
+  render: input.render,
 };
+
+export default radio;
 </script>

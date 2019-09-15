@@ -26,8 +26,10 @@ class PhotoTest extends TestCase
         $contact = factory(Contact::class)->create();
         $photo = factory(Photo::class)->create();
         $contact->photos()->sync([$photo->id]);
+
         $photo = factory(Photo::class)->create();
         $contact->photos()->sync([$photo->id]);
+
         $this->assertTrue($photo->contacts()->exists());
     }
 

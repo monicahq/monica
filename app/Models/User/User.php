@@ -8,6 +8,7 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Helpers\RequestHelper;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,8 @@ use App\Notifications\ConfirmEmail;
 use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -85,6 +88,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
     {
+        if (self::where('email', $email)->count() > 0) {
+            throw new UnauthorizedException();
+        }
+
         // create the user
         $user = new self;
         $user->account_id = $account_id;
@@ -173,6 +180,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * Get the contact record associated with the 'me' contact.
+     *
+     * @return HasOne
+     */
+    public function me()
+    {
+        return $this->hasOne(Contact::class, 'id', 'me_contact_id');
+    }
+
+    /**
      * Get the term records associated with the user.
      *
      * @return BelongsToMany
@@ -226,17 +243,6 @@ class User extends Authenticatable implements MustVerifyEmail
         } else {
             return 'C';
         }
-    }
-
-    /**
-     * Get the user's locale.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getLocaleAttribute($value)
-    {
-        return $value;
     }
 
     /**

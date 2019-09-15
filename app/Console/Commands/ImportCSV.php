@@ -12,6 +12,7 @@ use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Reminder\CreateReminder;
 
@@ -214,7 +215,7 @@ class ImportCSV extends Command
             ]);
         }
 
-        $contact->updateGravatar();
+        GetAvatarsFromInternet::dispatch($contact);
     }
 
     /**

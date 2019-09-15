@@ -9,16 +9,29 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Api-and-Feature">
+        <testsuite name="Api">
             <directory suffix="Test.php">./tests/Api</directory>
+        </testsuite>
+
+        <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Commands</directory>
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
 
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+        <testsuite name="Unit-Models">
+            <directory suffix="Test.php">./tests/Unit/Controllers</directory>
+            <directory suffix="Test.php">./tests/Unit/Events</directory>
+            <directory suffix="Test.php">./tests/Unit/Helpers</directory>
+            <directory suffix="Test.php">./tests/Unit/Models</directory>
+        </testsuite>
+
+        <testsuite name="Unit-Services">
+            <directory suffix="Test.php">./tests/Unit/Services</directory>
+            <directory suffix="Test.php">./tests/Unit/Traits</directory>
+            <directory suffix="Test.php">./tests/Unit/Jobs</directory>
         </testsuite>
     </testsuites>
+
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./app</directory>
@@ -27,6 +40,7 @@
             </exclude>
         </whitelist>
     </filter>
+
     <php>
         <server name="APP_ENV" value="testing"/>
         <server name="APP_KEY" value="base64:NTrXToqFZJlv48dgPc+kNpc3SBt333TfDnF1mDShsBg="/>

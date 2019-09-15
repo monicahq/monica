@@ -86,36 +86,6 @@ class Reminder extends Model
     }
 
     /**
-     * Get the title of a reminder.
-     *
-     * @return string
-     */
-    public function getTitleAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Set the title of a reminder.
-     *
-     * @return void
-     */
-    public function setTitleAttribute($title): void
-    {
-        $this->attributes['title'] = $title;
-    }
-
-    /**
-     * Get the description of a reminder.
-     *
-     * @return string
-     */
-    public function getDescriptionAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
      * Calculate the next expected date for this reminder.
      *
      * @return Carbon

@@ -53,21 +53,27 @@
             <p class="mb2 b">
               {{ $t('people.modal_call_who_called') }}
             </p>
-            <div class="di mr3">
-              <input id="you" v-model="newCall.contact_called" type="radio" class="mr1" name="contact_called"
-                     :value="false"
-              />
-              <label for="you" class="pointer">
-                {{ $t('people.call_you_called') }}
-              </label>
-            </div>
-            <div class="di mr3">
-              <input id="contact" v-model="newCall.contact_called" type="radio" class="mr1" name="contact_called"
-                     :value="true"
-              />
-              <label for="contact" class="pointer">
-                {{ $t('people.call_he_called', { name : name }) }}
-              </label>
+            <div class="dt">
+              <div class="dt-row">
+                <form-radio
+                  v-model="newCall.contact_called"
+                  :name="'contact_called'"
+                  :value="false"
+                  :iclass="'mr1'"
+                  :dclass="'dtc mr3'"
+                >
+                  {{ $t('people.call_you_called') }}
+                </form-radio>
+                <form-radio
+                  v-model="newCall.contact_called"
+                  :name="'contact_called'"
+                  :value="true"
+                  :iclass="'mr1'"
+                  :dclass="'dtc mr3'"
+                >
+                  {{ $t('people.call_he_called', { name : name }) }}
+                </form-radio>
+              </div>
             </div>
           </div>
         </div>
@@ -83,7 +89,7 @@
             @contentChange="updateContent($event)"
           />
           <p class="f6">
-            {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+            {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">
               {{ $t('app.markdown_link') }}
             </a>
           </p>
@@ -131,7 +137,7 @@
             <form-textarea
               v-model="editCall.content"
               :label="$t('people.modal_call_comment')"
-              rows="4"
+              :rows="4"
               iclass="br2 f5 w-100 ba b--black-40 pa2 outline-0"
               @contentChange="updateEditCallContent($event)"
             />

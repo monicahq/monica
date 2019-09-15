@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use GuzzleHttp\Client;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use function Safe\json_decode;
@@ -10,6 +9,7 @@ use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
@@ -69,6 +69,33 @@ class OAuthController extends Controller
     }
 
     /**
+     * Validate the request.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse|true
+     */
+    private function validateRequest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'email|required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->respondValidatorFailed($validator);
+        }
+
+        // Check if email exists. If not respond with an Unauthorized, this way a hacker
+        // doesn't know if the login email exist or not, or if the password is wrong
+        $count = User::where('email', $request->input('email'))->count();
+        if ($count === 0) {
+            return $this->respondUnauthorized();
+        }
+
+        return true;
+    }
+
+    /**
      * Log in a user and returns an accessToken.
      *
      * @param Request $request
@@ -98,57 +125,26 @@ class OAuthController extends Controller
     }
 
     /**
-     * Validate the request.
-     *
-     * @param  Request $request
-     * @return \Illuminate\Http\JsonResponse|true
-     */
-    private function validateRequest(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'email' => 'email|required',
-            'password' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->respondValidatorFailed($validator);
-        }
-
-        // Check if email exists. If not respond with an Unauthorized, this way a hacker
-        // doesn't know if the login email exist or not, or if the password os wrong
-        $count = User::where('email', $request->input('email'))
-                    ->count();
-        if ($count === 0) {
-            return $this->respondUnauthorized();
-        }
-
-        return true;
-    }
-
-    /**
      * Proxy a request to the OAuth server.
      *
      * @param array $data the data to send to the server
+     *
      * @return array
+     * @throws \Safe\Exceptions\JsonException
      */
     private function proxy(array $data = [])
     {
-        $http = new Client([
-            'timeout' => 20,
-        ]);
         $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
-        $response = $http->post($url, [
-            'form_params' => [
-                'grant_type' => $data['grantType'],
-                'client_id' => config('monica.mobile_client_id'),
-                'client_secret' => config('monica.mobile_client_secret'),
-                'username' => $data['username'],
-                'password' => $data['password'],
-                'scope' => '',
-            ],
-        ]);
+        $response = app(Kernel::class)->handle(Request::create($url, 'POST', [
+            'grant_type' => $data['grantType'],
+            'client_id' => config('monica.mobile_client_id'),
+            'client_secret' => config('monica.mobile_client_secret'),
+            'username' => $data['username'],
+            'password' => $data['password'],
+            'scope' => '',
+        ]));
 
-        $data = json_decode($response->getBody());
+        $data = json_decode($response->content());
 
         return [
             'access_token' => $data->access_token,

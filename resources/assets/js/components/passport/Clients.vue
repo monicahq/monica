@@ -29,11 +29,17 @@
         <table v-else class="table table-borderless m-b-none">
           <thead>
             <tr>
-              <th>{{ $t('settings.api_oauth_clientid') }}</th>
-              <th>{{ $t('settings.api_oauth_name') }}</th>
-              <th>{{ $t('settings.api_oauth_secret') }}</th>
-              <th></th>
-              <th></th>
+              <th scope="col">
+                {{ $t('settings.api_oauth_clientid') }}
+              </th>
+              <th scope="col">
+                {{ $t('settings.api_oauth_name') }}
+              </th>
+              <th scope="col">
+                {{ $t('settings.api_oauth_secret') }}
+              </th>
+              <th scope="col"></th>
+              <th scope="col"></th>
             </tr>
           </thead>
 

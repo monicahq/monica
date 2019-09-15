@@ -21,9 +21,13 @@
           <table class="table table-borderless m-b-none">
             <thead>
               <tr>
-                <th>{{ $t('settings.api_authorized_clients_name') }}</th>
-                <th>{{ $t('settings.api_authorized_clients_scopes') }}</th>
-                <th></th>
+                <th scope="col">
+                  {{ $t('settings.api_authorized_clients_name') }}
+                </th>
+                <th scope="col">
+                  {{ $t('settings.api_authorized_clients_scopes') }}
+                </th>
+                <th scope="col"></th>
               </tr>
             </thead>
 
@@ -71,8 +75,8 @@ export default {
 
   methods: {
     /**
-          * Get all of the authorized tokens for the user.
-          */
+     * Get all of the authorized tokens for the user.
+     */
     getTokens() {
       axios.get('oauth/tokens')
         .then(response => {
@@ -81,8 +85,8 @@ export default {
     },
 
     /**
-          * Revoke the given token.
-          */
+     * Revoke the given token.
+     */
     revoke(token) {
       axios.delete('oauth/tokens/' + token.id)
         .then(response => {

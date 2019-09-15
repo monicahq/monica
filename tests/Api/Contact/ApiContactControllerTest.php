@@ -27,6 +27,7 @@ class ApiContactControllerTest extends ApiTestCase
         'is_starred',
         'is_partial',
         'is_dead',
+        'is_me',
         'last_called',
         'last_activity_together',
         'stay_in_touch_frequency',
@@ -64,7 +65,7 @@ class ApiContactControllerTest extends ApiTestCase
             ],
             'career',
             'avatar',
-            'food_preferencies',
+            'food_preferences',
             'how_you_met',
         ],
         'addresses',
@@ -132,7 +133,7 @@ class ApiContactControllerTest extends ApiTestCase
                 'source',
                 'default_avatar_color',
             ],
-            'food_preferencies',
+            'food_preferences',
             'how_you_met' => [
                 'general_information',
                 'first_met_date' => [
@@ -1350,6 +1351,46 @@ class ApiContactControllerTest extends ApiTestCase
         $this->assertDatabaseMissing('contacts', [
             'account_id' => $user->account_id,
             'id' => $contact->id,
+        ]);
+    }
+
+    public function test_it_sets_me_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/setMe');
+
+        $response->assertStatus(200);
+
+        $this->assertDatabaseHas('users', [
+            'account_id' => $user->account_id,
+            'me_contact_id' => $contact->id,
+        ]);
+    }
+
+    public function test_it_gets_me_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $user->me_contact_id = $contact->id;
+        $user->save();
+
+        $response = $this->json('GET', '/api/contacts/'.$contact->id);
+
+        $response->assertOk();
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonStructureContactShort,
+        ]);
+
+        $response->assertJsonFragment([
+            'id' => $contact->id,
+            'is_me' => true,
         ]);
     }
 }

@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
+use App\Models\Contact\Tag;
 use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -85,8 +87,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -108,8 +109,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -131,8 +131,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -154,8 +153,7 @@ class ContactTest extends FeatureTestCase
         $response->assertSuccessful();
         $response->assertJsonFragment([
             'id' => $randomContact->id,
-            'first_name' => $randomContact->first_name,
-            'last_name' => $randomContact->last_name,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
         ]);
     }
 
@@ -177,15 +175,60 @@ class ContactTest extends FeatureTestCase
         ]);
     }
 
+    public function test_user_can_list_one_contact_firstname()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $randomContact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $response = $this->get('/people/list?search='.$randomContact->first_name);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $randomContact->id,
+            'complete_name' => $randomContact->first_name.' '.$randomContact->last_name,
+        ]);
+    }
+
+    public function test_user_can_list_contacts_with_tag()
+    {
+        $user = $this->signIn();
+
+        factory(Contact::class, 10)->state('named')->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact = Contact::where('account_id', $user->account_id)
+                            ->inRandomOrder()
+                            ->first();
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact->tags()->sync([
+            $tag->id => [
+                'account_id' => $user->account_id,
+            ],
+        ]);
+
+        $response = $this->get('/people/list?tag1='.$tag->name_slug);
+
+        $response->assertSuccessful();
+        $response->assertJsonFragment([
+            'id' => $contact->id,
+            'complete_name' => $contact->first_name.' '.$contact->last_name,
+        ]);
+    }
+
     public function test_user_can_see_contacts()
     {
         [$user, $contact] = $this->fetchUser();
-
         $response = $this->get('/people');
-
-        $response->assertSee(
-            $contact->name
-        );
+        $response->assertSee('1 contact');
     }
 
     public function test_user_can_be_reminded_about_an_event_once()
@@ -472,7 +515,7 @@ class ContactTest extends FeatureTestCase
         $this->post('/people/'.$contact->hashID().'/food/save', $food);
 
         $food['id'] = $contact->id;
-        $this->changeArrayKey('food', 'food_preferencies', $food);
+        $this->changeArrayKey('food', 'food_preferences', $food);
 
         $this->assertDatabaseHas('contacts', $food);
     }
@@ -563,5 +606,135 @@ class ContactTest extends FeatureTestCase
         $response->assertHeader('Content-type', 'text/x-vcard; charset=UTF-8');
         $response->assertSee('FN:John Doe');
         $response->assertSee('N:Doe;John;;;');
+    }
+
+    public function test_edit_contact_has_specialdeceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID().'/edit');
+
+        $response->assertSee('<form-specialdeceased
+          :value="false"
+          :date="\'\'"
+          :reminder="false"
+        >
+        </form-specialdeceased>');
+    }
+
+    public function test_edit_contact_with_specialdeceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $reminder = factory(Reminder::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $contact->is_dead = true;
+        $contact->deceased_reminder_id = $reminder->id;
+        $contact->save();
+
+        $response = $this->get('/people/'.$contact->hashID().'/edit');
+
+        $response->assertSee('<form-specialdeceased
+          :value="true"
+          :date="\''.$reminder->initial_date.'\'"
+          :reminder="true"
+        >
+        </form-specialdeceased>');
+    }
+
+    public function test_edit_contact_put_deceased()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $data['id'] = $contact->id;
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+        ]);
+
+        $contact->refresh();
+        $this->assertDatabaseHas('special_dates', [
+            'id' => $contact->deceased_special_date_id,
+            'date' => '2012-06-22',
+        ]);
+    }
+
+    public function test_edit_contact_put_deceased_dont_stay_in_touch()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+            'stay_in_touch_frequency' => 11,
+            'stay_in_touch_trigger_date' => '2012-06-22',
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $contact->updateStayInTouchFrequency(0);
+        $contact->setStayInTouchTriggerDate(0);
+
+        $data['id'] = $contact->id;
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+            'stay_in_touch_frequency' => null,
+            'stay_in_touch_trigger_date' => null,
+        ]);
+    }
+
+    public function test_edit_contact_put_deceased_with_reminder()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $data = [
+            'firstname' => $contact->first_name,
+            'lastname' => $contact->last_name,
+            'gender' => $contact->gender_id,
+            'birthdate' => 'unknown',
+            'is_deceased' => 'true',
+            'is_deceased_date_known' => 'true',
+            'deceased_date' => '2012-06-22',
+            'add_reminder_deceased' => 'true',
+        ];
+
+        $this->put('/people/'.$contact->hashID(), $data);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'is_dead' => true,
+        ]);
+
+        $contact->refresh();
+        $this->assertDatabaseHas('special_dates', [
+            'id' => $contact->deceased_special_date_id,
+            'date' => '2012-06-22',
+        ]);
+        $this->assertDatabaseHas('reminders', [
+            'id' => $contact->deceased_reminder_id,
+            'contact_id' => $contact->id,
+            'initial_date' => '2012-06-22',
+        ]);
     }
 }
