@@ -25,15 +25,4 @@ class PetCategory extends Model
     {
         return $query->where('is_common', 1);
     }
-
-    /**
-     * Get the name of the pet's category.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getNameAttribute($value)
-    {
-        return $value;
-    }
 }

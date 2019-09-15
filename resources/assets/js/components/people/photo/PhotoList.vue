@@ -2,28 +2,33 @@
     .photo {
         height: 250px;
     }
-     .photo-upload-zone {
+
+    .photo-upload-zone {
         background: #fff;
         border: 1px solid #d6d6d6;
         border-style: dashed;
     }
-     progress {
+
+    progress {
         -webkit-appearance: none;
         border: none;
         height: 8px;
         margin-bottom: 3px;
         width: 60%;
     }
-     progress::-webkit-progress-bar {
+
+    progress::-webkit-progress-bar {
         background: #e2e7ee;
         border-radius: 3px;
     }
-     progress::-webkit-progress-value {
+
+    progress::-webkit-progress-value {
         border-radius: 3px;
         box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
         background-color: #329FF1;
     }
 </style>
+
 <template>
   <div>
     <div class="">
@@ -39,9 +44,11 @@
         </span>
       </h3>
     </div>
+
     <p v-show="reachLimit == 'true'">
       {{ $t('settings.storage_upgrade_notice') }}
     </p>
+
     <!-- EMPTY STATE -->
     <div v-if="displayUploadZone == false && displayUploadError == false && displayUploadProgress == false && photos.length == 0" class="ltr w-100 pt2">
       <div class="section-blank">
@@ -51,6 +58,7 @@
         <img src="img/people/photos/photos_empty.svg" class="w-50 center" />
       </div>
     </div>
+
     <!-- FIRST STEP OF PHOTO UPLOAD -->
     <transition name="fade">
       <div v-if="displayUploadZone" class="ba br3 photo-upload-zone mb3 pa3">
@@ -66,6 +74,7 @@
         </div>
       </div>
     </transition>
+
     <!-- LAST STEP OF PHOTO UPLOAD -->
     <div v-if="displayUploadProgress" class="ba br3 photo-upload-zone mb3 pa3">
       <p class="tc mb1">
@@ -78,6 +87,7 @@
         {{ $t('app.percent_uploaded', {percent: uploadPercentage}) }}
       </p>
     </div>
+
     <!-- ERROR STEP WHEN UPLOADING A PHOTO -->
     <transition name="fade">
       <div v-if="displayUploadError" class="ba br3 photo-upload-zone mb3 pa3">
@@ -98,6 +108,7 @@
         </p>
       </div>
     </transition>
+
     <!-- LIST OF PHOTO -->
     <div class="db mt3">
       <div class="flex flex-wrap">
@@ -107,6 +118,14 @@
             </div>
             <div class="pt2">
               <ul>
+                <li v-show="currentPhotoIdAsAvatar == photo.id">
+                  🤩 {{ $t('people.photo_current_profile_pic') }}
+                </li>
+                <li v-show="currentPhotoIdAsAvatar != photo.id">
+                  <a class="pointer" @click.prevent="makeProfilePicture(photo)">
+                    {{ $t('people.photo_make_profile_pic') }}
+                  </a>
+                </li>
                 <li v-show="confirmDestroyPhotoId != photo.id">
                   <a class="pointer" href="" @click.prevent="confirmDestroyPhotoId = photo.id">
                     {{ $t('people.photo_delete') }}
@@ -125,6 +144,7 @@
         </div>
       </div>
     </div>
+
     <!-- MODAL ZOOM PHOTO -->
     <transition v-if="showModal" name="modal">
       <div class="modal-mask">
@@ -160,7 +180,7 @@ export default {
       default: '',
     },
   },
-    
+
   data() {
     return {
       photos: [],

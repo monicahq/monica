@@ -33,7 +33,7 @@
           <div class="dtc">
             <i class="f6 light-silver fa fa-globe pr2"></i>
 
-            <a v-if="!editMode" :href="contactAddress.googleMapAddress" target="_blank">
+            <a v-if="!editMode" :href="contactAddress.googleMapAddress" target="_blank" rel="noopener noreferrer">
               {{ contactAddress.address }}
             </a>
             <span v-else>
@@ -45,7 +45,7 @@
             </span>
 
             <span v-if="!contactAddress.address">
-              <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank">
+              <a v-if="contactAddress.latitude" :href="contactAddress.googleMapAddressLatitude" target="_blank" rel="noopener noreferrer">
                 ({{ contactAddress.latitude }}, {{ contactAddress.longitude }})
               </a>
             </span>

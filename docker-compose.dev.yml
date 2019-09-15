@@ -1,17 +1,16 @@
 version: '3'
+
 services:
   monicahq:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    image: monicahq/monicahq:dev
     depends_on:
       - mysql
     ports:
       - 8080:80
     env_file: .env.dev
-    environment:
-      - PASSWORD_CLIENT_ID=10
-      - PASSWORD_CLIENT_SECRET=4eYqKmvMr1nLhRNiI30fkPARM77j90MgBTaJADgN
     volumes:
       - /var/www/monica/storage
       - ./app:/var/www/monica/app
@@ -19,7 +18,8 @@ services:
       - ./database:/var/www/monica/database
 
   mysql:
-    image: mysql:5.7
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_ROOT_PASSWORD=sekret_root_password
       - MYSQL_DATABASE=monica

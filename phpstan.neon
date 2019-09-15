@@ -25,9 +25,16 @@ parameters:
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::completed\(\)\.#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::email\(\)\.#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Relations\\HasMany::phone\(\)\.#'
+        - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder::sortedBy\(\)\.#'
+        - '#Parameter \#2 \$configGroup of static method Creativeorange\\Gravatar\\Gravatar::get\(\) expects string, array<string, bool\|int\|string> given\.#'
         # Level 3
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return [a-zA-Z0-9\\_\|]+ but empty return statement found\.#'
         - '#Method [a-zA-Z0-9\\_:]+\(\) should return Illuminate\\Http\\Response but returns [a-zA-Z0-9\\_]+\.#'
+
+        -
+            message: '#Access to an undefined property App\\Interfaces\\IsJournalableInterface::\$account_id\.#'
+            path: */app/Models/Journal/JournalEntry.php
     excludes_analyse:
+        - */app/Helpers/ComposerScripts.php
         - */app/Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
         - */app/Providers/BroadcastServiceProvider.php

@@ -51,7 +51,7 @@ class InstanceHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            10,
+            '$10.00',
             InstanceHelper::getPlanInformationFromConfig('monthly')['friendlyPrice']
         );
     }
@@ -83,7 +83,7 @@ class InstanceHelperTest extends TestCase
         );
 
         $this->assertEquals(
-            10,
+            '$10.00',
             InstanceHelper::getPlanInformationFromConfig('annual')['friendlyPrice']
         );
     }

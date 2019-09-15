@@ -19,6 +19,7 @@ use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\StripeException;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
@@ -41,6 +42,7 @@ class SettingsController
         'api_usage',
         'cache',
         'countries',
+        'contact_photo',
         'crons',
         'currencies',
         'contact_photo',
@@ -178,7 +180,12 @@ class SettingsController
         $account = auth()->user()->account;
 
         if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            $account->subscriptionCancel();
+            try {
+                $account->subscriptionCancel();
+            } catch (StripeException $e) {
+                return redirect()->route('settings.index')
+                    ->withErrors($e->getMessage());
+            }
         }
 
         DB::table('accounts')->where('id', $account->id)->delete();
@@ -244,15 +251,11 @@ class SettingsController
     {
         $path = dispatch_now(new ExportAccountAsSQL());
 
-        $driver = Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver();
-        if ($driver instanceof \League\Flysystem\Filesystem) {
-            $adapter = $driver->getAdapter();
-            if ($adapter instanceof \League\Flysystem\Adapter\AbstractAdapter) {
-                return response()
-                    ->download($adapter->getPathPrefix().$path, 'monica.sql')
-                    ->deleteFileAfterSend(true);
-            }
-        }
+        $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
+
+        return response()
+            ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->deleteFileAfterSend(true);
     }
 
     /**

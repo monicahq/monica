@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # set version of vagrant to use :
-vagrantversion=2.0.3
+vagrantversion=2.2.4
 
 mkdir -p $HOME/vagrant
 pushd $HOME/vagrant > /dev/null

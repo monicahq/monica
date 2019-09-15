@@ -9,7 +9,6 @@ use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Models\Account\Account;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -87,8 +86,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $this->validator($data)->validate();
-
         $first = ! Account::hasAny();
         $account = Account::createDefault(
             $data['first_name'],
@@ -113,7 +110,6 @@ class RegisterController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  mixed  $user
-     * @return mixed
      */
     protected function registered(Request $request, $user)
     {
@@ -121,10 +117,6 @@ class RegisterController extends Controller
         if (! config('monica.signup_double_optin') || $first) {
             // if signup_double_optin is disabled, skip the confirm email part
             $user->markEmailAsVerified();
-
-            $this->guard()->login($user);
-
-            return redirect()->route('login');
         }
     }
 }

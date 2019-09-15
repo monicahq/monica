@@ -3,9 +3,11 @@
 namespace App\Services\Contact\Contact;
 
 use Illuminate\Support\Arr;
-use App\Helpers\RandomHelper;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
+use App\Jobs\Avatars\GetAvatarsFromInternet;
 
 class CreateContact extends BaseService
 {
@@ -50,7 +52,6 @@ class CreateContact extends BaseService
     public function execute(array $data) : Contact
     {
         $this->validate($data);
-
         // filter out the data that shall not be updated here
         $dataOnly = Arr::except(
             $data,
@@ -79,8 +80,7 @@ class CreateContact extends BaseService
 
         $this->generateUUID($contact);
 
-        $contact->setAvatarColor();
-        $contact->save();
+        $this->addAvatars($contact);
 
         // we query the DB again to fill the object with all the new properties
         $contact->refresh();
@@ -96,8 +96,27 @@ class CreateContact extends BaseService
      */
     private function generateUUID(Contact $contact)
     {
-        $contact->uuid = RandomHelper::uuid();
+        $contact->uuid = Str::uuid()->toString();
         $contact->save();
+    }
+
+    /**
+     * Add the different default avatars.
+     *
+     * @param Contact $contact
+     * @return void
+     */
+    private function addAvatars(Contact $contact)
+    {
+        // set the default avatar color
+        $contact->setAvatarColor();
+        $contact->save();
+
+        // populate the avatar from Adorable and grab the Gravatar
+        GetAvatarsFromInternet::dispatch($contact);
+
+        // also generate the default avatar
+        GenerateDefaultAvatar::dispatch($contact);
     }
 
     /**

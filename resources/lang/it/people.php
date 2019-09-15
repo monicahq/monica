@@ -64,6 +64,7 @@ return [
     'list_link_to_archived_contacts' => 'Lista di contatti archiviati',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Modifica informazioni del contatto',
     'contact_archive' => 'Archivia contatto',
     'contact_unarchive' => 'Ripristina contatto',
@@ -113,6 +114,7 @@ return [
     'conversation_add_content' => 'Scrivi cos\'è stato detto',
     'conversation_add_what_was_said' => 'Che cosa hai detto?',
     'conversation_add_another' => 'Aggiungi un altro messaggio',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Messaggi',
     'conversation_list_table_content' => 'Contenuto parziale (ultimo messaggio)',
     'conversation_list_title' => 'Conversazioni',
@@ -133,8 +135,8 @@ return [
     // additional information
     'information_edit_success' => 'Il profilo è stato aggiornato',
     'information_edit_title' => 'Modifica le informazioni personali di :name',
-    'information_edit_avatar' => 'Foto/avatar del contatto',
     'information_edit_max_size' => 'Massimo :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Nome',
     'information_edit_lastname' => 'Cognome (facoltativo)',
     'information_edit_description' => 'Descrizione (facoltativo)',
@@ -153,13 +155,13 @@ return [
     'work_information' => 'Informazioni professionali',
 
     // food preferences
-    'food_preferencies_add_success' => 'Le preferenze alimentari sono state salvate',
-    'food_preferencies_edit_description' => 'Magari :firstname o qualcuno nella famiglia :family ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
-    'food_preferencies_edit_description_no_last_name' => 'Magari :firstname ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
-    'food_preferencies_edit_title' => 'Indica le preferenze alimentari',
-    'food_preferencies_edit_cta' => 'Salva preferenze alimentari',
-    'food_preferencies_title' => 'Preferenze alimentari',
-    'food_preferencies_cta' => 'Aggiunti preferenze alimentari',
+    'food_preferences_add_success' => 'Le preferenze alimentari sono state salvate',
+    'food_preferences_edit_description' => 'Magari :firstname o qualcuno nella famiglia :family ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
+    'food_preferences_edit_description_no_last_name' => 'Magari :firstname ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
+    'food_preferences_edit_title' => 'Indica le preferenze alimentari',
+    'food_preferences_edit_cta' => 'Salva preferenze alimentari',
+    'food_preferences_title' => 'Preferenze alimentari',
+    'food_preferences_cta' => 'Aggiunti preferenze alimentari',
 
     // reminders
     'reminders_blank_title' => 'C\'è qualcosa di cui ti vuoi ricordare riguardo a :name?',
@@ -461,7 +463,18 @@ return [
     'photo_list_cta' => 'Carica foto',
     'photo_list_blank_desc' => 'Qui puoi salvare foto relative a questa persona, caricane una adesso!',
     'photo_upload_zone_cta' => 'Carica una foto',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Elimina foto',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire.',

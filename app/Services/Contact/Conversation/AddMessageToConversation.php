@@ -23,8 +23,8 @@ class AddMessageToConversation extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'contact_id' => 'required|integer',
-            'conversation_id' => 'required|integer',
+            'contact_id' => 'required|integer|exists:contacts,id',
+            'conversation_id' => 'required|integer|exists:conversations,id',
             'written_at' => 'required|date',
             'written_by_me' => 'required|boolean',
             'content' => 'required|string',

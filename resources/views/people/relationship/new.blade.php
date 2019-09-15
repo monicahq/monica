@@ -110,15 +110,25 @@
         <form-specialdate
           :months="{{ $months }}"
           :days="{{ $days }}"
-          :default-date="'{{ $birthdate }}'"
+          :birthdate="'{{ $birthdate }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <label class="pa0 ma0 lh-copy pointer" for="realContact">
-              <input type="checkbox" id="realContact" name="realContact"> {{ trans('people.relationship_form_also_create_contact') }} <span class="silver">{{ trans('people.relationship_form_add_description') }}</span>
-            </label>
-          </div>
+          {{-- Real or partial contact (default true) --}}
+          <form-checkbox
+            :name="'realContact'"
+            :iclass="'pa0 ma0 lh-copy'"
+            :dclass="'mb3 mb0-ns flex'"
+            value="1"
+            :model-value="true"
+          >
+            <template slot="label">
+              {{ trans('people.relationship_form_also_create_contact') }}
+            </template>
+            <span slot="extra" class="silver">
+              {{ trans('people.relationship_form_add_description') }}
+            </span>
+          </form-checkbox>
         </div>
       </div>
 
@@ -135,7 +145,7 @@
               :title="'{{ trans('people.relationship_form_associate_dropdown') }}'"
               :name="'existing_contact_id'"
               :placeholder="'{{ trans('people.relationship_form_associate_dropdown_placeholder') }}'"
-              :default-options="{{ json_encode($existingContacts) }}"
+              :default-options="{{ \Safe\json_encode($existingContacts) }}"
               :user-contact-id="'{{ $contact->id }}'">
             </contact-select>
           @endif

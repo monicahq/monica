@@ -14,7 +14,7 @@
 @endif
 
 {{-- Introductions --}}
-@if ($modules->contains('key', 'how_you_met'))
+@if ($modules->contains('key', 'how_you_met') && ! $contact->isMe())
 @include('people.introductions.index')
 @endif
 
@@ -24,6 +24,6 @@
 @endif
 
 {{-- Food preferences --}}
-@if ($modules->contains('key', 'food_preferences'))
-@include('people.food-preferencies.index')
+@if ($modules->contains('key', 'food_preferences') && ! $contact->isMe())
+@include('people.food-preferences.index')
 @endif

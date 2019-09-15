@@ -108,7 +108,7 @@ export default {
     },
 
     getContacts: function (keyword, vm) {
-      return axios.post('/people/search', {
+      return axios.post('people/search', {
         needle: keyword
       }).then(function(response) {
         return response.data.data;

@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Aug 17, 2019",
+            "title": "New feature: you can now change avatars",
+            "description": "You can now change the avatar of your contacts. Mouse over the profile picture and have fun. ![image](/img/changelogs/2019-08-17-avatars.png)"
+        },
+        {
             "date": "May 04, 2019",
             "title": "New feature: WebAuthn two factor authentication",
             "description": "WebAuthn is the new standard for strong authentication users, and is supported by every modern browsers. It is now available as a two factor authentication in Monica. Go to [security tab of settings](settings/security) to register a new key. ![image](img/changelogs/2019-05-04-webauthn.png)"

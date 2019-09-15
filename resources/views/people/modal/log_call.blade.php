@@ -17,7 +17,7 @@
             <textarea class="form-control mb3" name="content" id="content" maxlength="2500" autofocus>
             </textarea>
 
-            <p class="f6">{{ trans('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">{{ trans('app.markdown_link') }}</a></p>
+            <p class="f6">{{ trans('app.markdown_description')}} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank" rel="noopener noreferrer">{{ trans('app.markdown_link') }}</a></p>
 
             <p class="date-it-happened">
               {{ trans('people.modal_call_date') }} <a href="#" class="change-date-happened">{{ trans('people.modal_call_change') }}</a>

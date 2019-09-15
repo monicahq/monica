@@ -42,7 +42,7 @@ class Photo extends Model
     }
 
     /**
-     * Get the contact record associated with the photo.
+     * Get the first contact record associated with the photo.
      *
      * @return Contact
      */

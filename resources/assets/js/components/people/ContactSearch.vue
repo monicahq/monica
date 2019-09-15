@@ -47,9 +47,9 @@ export default {
   methods: {
     select(contact) {
       if (contact.item.id > 0) {
-        window.location = '/people/'+contact.item.hash_id;
+        window.location = contact.item.route;
       } else {
-        window.location = '/people/add';
+        window.location = 'people/add';
       }
     },
 

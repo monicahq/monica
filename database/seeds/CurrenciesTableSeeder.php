@@ -1,6 +1,5 @@
 <?php
 
-
 use function Safe\json_decode;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

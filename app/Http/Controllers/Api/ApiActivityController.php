@@ -82,7 +82,7 @@ class ApiActivityController extends ApiController
         }
 
         // Log a journal entry
-        (new JournalEntry)->add($activity);
+        JournalEntry::add($activity);
 
         // Now we associate the activity with each one of the attendees
         $attendeesID = $request->get('contacts');
@@ -109,6 +109,7 @@ class ApiActivityController extends ApiController
     public function update(Request $request, $activityId)
     {
         try {
+            /** @var Activity */
             $activity = Activity::where('account_id', auth()->user()->account_id)
                 ->findOrFail($activityId);
         } catch (ModelNotFoundException $e) {
@@ -136,7 +137,7 @@ class ApiActivityController extends ApiController
 
         // Log a journal entry but need to delete the previous one first
         $activity->deleteJournalEntry();
-        (new JournalEntry)->add($activity);
+        JournalEntry::add($activity);
 
         // Get the attendees
         $attendeesID = $request->get('contacts');

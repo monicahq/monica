@@ -25,7 +25,7 @@ Then open `.env` in an editor and update it for your own needs:
 - Set `APP_KEY` to a random 32-character string. For example, if you
   have the `pwgen` utility installed, you could copy and paste the
   output of `pwgen -s 32 1`.
-- Edit the `MAIL_*` settings to point to your own mailserver.
+- Edit the `MAIL_*` settings to point to your own [mailserver](/docs/installation/mail.md).
 - Set `DB_*` settings to point to your database configuration. If you don't want to set a db prefix, be careful to set `DB_PREFIX=` and not `DB_PREFIX=''` as docker will not expand this as an empty string.
 
 Note for macOS: you will need to stop Apache if you wish to have Monica available on port 80.
@@ -68,15 +68,13 @@ docker-compose pull
 docker-compose up
 ```
 
-Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, shut down the instance and add your first user account.
+Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, add your first user account.
 
 ```sh
-docker-compose run monicahq sh
-php artisan setup:production
-exit
+docker-compose exec monicahq php artisan setup:production
 ```
 
-Start your instance again with `docker-compose up` and login.
+Now login.
 
 #### Use docker-compose to build and run your own image
 

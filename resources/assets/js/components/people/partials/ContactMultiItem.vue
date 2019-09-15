@@ -52,9 +52,11 @@
 <template>
   <div v-if="item.id > 0" class="item-search-result" :data-contact="item.id" :data-name="item.name">
     <div class="item-search-result-result pointer">
-      <img v-if="item.information.avatar.has_avatar"
-           :src="item.information.avatar.avatar_url"
+      <img v-if="check"
            class="avatar"
+           :src="item.information.avatar.url"
+           :alt="item.complete_name"
+           @error="check=false"
       />
       <div v-else
            class="avatar avatar-initials"
@@ -63,6 +65,7 @@
         {{ item.initials }}
       </div>
       {{ item.complete_name }}
+      <span></span>
     </div>
   </div>
   <div v-else class="item-search-result">
@@ -84,6 +87,11 @@ export default {
       required: true,
       default: null,
     },
-  }
+  },
+  data() {
+    return {
+      check: true,
+    };
+  },
 };
 </script>

@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
     'retry' => 'Retry',
+    'go_back' => 'Go back',
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
@@ -172,6 +173,16 @@ return [
     'relationship_type_child_female' => 'daughter',
     'relationship_type_child_with_name' => ':name’s son',
     'relationship_type_child_female_with_name' => ':name’s daughter',
+
+    'relationship_type_stepparent' => 'stepfather',
+    'relationship_type_stepparent_female' => 'stepmother',
+    'relationship_type_stepparent_with_name' => ':name’s stepfather',
+    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+
+    'relationship_type_stepchild' => 'stepson',
+    'relationship_type_stepchild_female' => 'stepdaughter',
+    'relationship_type_stepchild_with_name' => ':name’s stepson',
+    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
 
     'relationship_type_sibling' => 'brother',
     'relationship_type_sibling_female' => 'sister',

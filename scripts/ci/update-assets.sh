@@ -15,6 +15,10 @@ elif [ "$TRAVIS" == "true" ]; then
   REPO=$TRAVIS_REPO_SLUG
   BRANCH=${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH}
   PR_NUMBER=$TRAVIS_PULL_REQUEST
+elif [ "$TF_BUILD" == "True" ]; then
+  REPO=$BUILD_REPOSITORY_NAME
+  BRANCH=${SYSTEM_PULLREQUEST_SOURCEBRANCH:-$BUILD_SOURCEBRANCHNAME}
+  PR_NUMBER=${SYSTEM_PULLREQUEST_PULLREQUESTNUMBER:-false}
 elif [[ -n $BUILD_NUMBER ]]; then
   echo "CHANGE_ID=$CHANGE_ID"
   echo "CHANGE_URL=$CHANGE_URL"
@@ -31,11 +35,11 @@ REPOSITORY_OWNER=monicahq/monica
 set -euo pipefail
 
 # Update assets
-echo -e "\033[1;32m# Build assets ...\033[0:37m"
-echo -e "\033[1;36mphp artisan lang:generate\033[0:37m"
+echo -e "\033[1;32m# Build assets ...\033[0;37m"
+echo -e "\033[1;36mphp artisan lang:generate\033[0;37m"
 php artisan lang:generate
 echo ""
-echo -e "\033[1;36myarn run production\033[0:37m"
+echo -e "\033[1;36myarn run production\033[0;37m"
 yarn run production
 echo ""
 
@@ -57,7 +61,7 @@ git add public/fonts/*
 # Commit
 if [ -z "${ASSETS_USERNAME:-}" ]; then
   #No username
-  echo -e "\033[0;31mMonica asset are not up to date.\033[0:37m"
+  echo -e "\033[0;31mMonica asset are not up to date.\033[0;37m"
   echo "Please update the Monica assets yourself by running:"
   echo " ~ php artisan lang:generate"
   echo " ~ yarn run production"
@@ -69,7 +73,7 @@ git commit -m "chore(assets): Update assets"
 
 # Push
 if [ "$BRANCH" == "master" ] && [ "$PR_NUMBER" == "false" ]; then
-  echo -e "\033[0;31mmaster is not up to date, but we can't update it directly...\033[0:37m"
+  echo -e "\033[0;31mmaster is not up to date, but we can't update it directly...\033[0;37m"
   exit 0
 
 elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then
@@ -80,12 +84,12 @@ elif [ -n "${ASSETS_GITHUB_TOKEN:-}" ]; then
   PULL_REQUEST_HEADBRANCH=${REPOS_VALUES[1]}
 
   if [ -z "${PULL_REQUEST_REPOSITORY:-}" ] || [ "$PULL_REQUEST_REPOSITORY" == "null" ]; then
-    echo -e "\033[0;31mError with github api call\033[0:37m"
+    echo -e "\033[0;31mError with github api call\033[0;37m"
     exit 1
   elif [ "$PULL_REQUEST_REPOSITORY" == "$REPOSITORY_OWNER" ]; then
     PULL_REQUEST_BRANCH=$PULL_REQUEST_HEADBRANCH
   else
-    echo -e "\033[0;31mMonica asset are not up to date.\033[0:37m"
+    echo -e "\033[0;31mMonica asset are not up to date.\033[0;37m"
     echo "We can't commit in $PULL_REQUEST_REPOSITORY to update them directly."
     echo "Please update the Monica assets yourself by running:"
     echo " ~ php artisan lang:generate"
