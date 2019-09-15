@@ -967,7 +967,11 @@ class Contact extends Model
      */
     public function getAvatarDefaultURL()
     {
-        return asset(Storage::disk(config('filesystems.default'))->url($this->avatar_default_url));
+        try {
+            return asset(Storage::disk(config('filesystems.default'))->url($this->avatar_default_url));
+        } catch (\Exception $e) {
+            return '';
+        }
     }
 
     /**
