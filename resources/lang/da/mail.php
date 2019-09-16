@@ -25,5 +25,5 @@ return [
 
     'confirmation_email_title' => 'Monica – Email verification',
     'confirmation_email_intro'=> 'To validate your email click on the button below',
-    'confirmation_email_button' => 'Verify email address',
+    'confirmation_email_button' => 'Bekræft din e-mail adresse',
 ];
