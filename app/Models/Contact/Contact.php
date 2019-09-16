@@ -7,6 +7,7 @@ use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
+use function Safe\preg_split;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
 use App\Helpers\WeatherHelper;
@@ -968,7 +969,12 @@ class Contact extends Model
     public function getAvatarDefaultURL()
     {
         try {
-            return asset(Storage::disk(config('filesystems.default'))->url($this->avatar_default_url));
+            $matches = preg_split('/\?/', $this->avatar_default_url);
+            $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
+            if (count($matches) > 1) {
+                $url .= '?'.$matches[1];
+            }
+            return $url;
         } catch (\Exception $e) {
             return '';
         }
