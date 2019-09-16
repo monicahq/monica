@@ -1,36 +1,36 @@
 <?php
 
 return [
-    'dashboard_blank_title' => 'Welcome to your account!',
+    'dashboard_blank_title' => 'Velkommen til din konto!',
     'dashboard_blank_description' => 'Monica is the place to organize all the interactions you have with the ones you care about.',
-    'dashboard_blank_cta' => 'Add your first contact',
-    'dashboard_blank_illustration' => 'Illustration by <a href=":url">Freepik</a>',
+    'dashboard_blank_cta' => 'Tilføj din første kontakt',
+    'dashboard_blank_illustration' => 'Illustration af <a href=":url">Freepik</a>',
 
-    'notes_title' => 'You don’t have any starred notes yet.',
+    'notes_title' => 'Du har ingen foretrukne noter endnu.',
 
-    'tab_recent_calls' => 'Recent calls',
-    'tab_favorite_notes' => 'Favorite notes',
-    'tab_calls_blank' => 'You haven’t logged a call yet.',
-    'tab_debts' => 'Debts',
-    'tab_debts_blank' => 'You haven’t logged any debt yet.',
-    'tab_tasks' => 'Tasks',
-    'tab_tasks_blank' => 'You haven’t any task yet.',
+    'tab_recent_calls' => 'Seneste opkald',
+    'tab_favorite_notes' => 'Foretrukne noter',
+    'tab_calls_blank' => 'Du har ikke logget nogle opkald endnu.',
+    'tab_debts' => 'Gæld',
+    'tab_debts_blank' => 'Du har ikke registreret noget gæld endnu.',
+    'tab_tasks' => 'Opgaver',
+    'tab_tasks_blank' => 'Du har ingen opgaver endnu.',
 
-    'tasks_add_task_placeholder' => 'What is this task about?',
-    'tasks_tab_your_contacts' => 'Tasks related to your contacts',
-    'tasks_tab_your_tasks' => 'Your tasks',
-    'tasks_add_note' => 'Press <kbd>Enter</kbd> to add the task.',
-    'task_add_cta' => 'Add a task',
+    'tasks_add_task_placeholder' => 'Hvad går opgaven ud på?',
+    'tasks_tab_your_contacts' => 'Opgaver relateret til dine kontakter',
+    'tasks_tab_your_tasks' => 'Dine opgaver',
+    'tasks_add_note' => 'Tryk <kbd>Enter</kbd> for at tilføje opgaven.',
+    'task_add_cta' => 'Tilføj en opgave',
 
-    'debts_you_owe' => 'You owe',
+    'debts_you_owe' => 'Du skylder',
 
-    'statistics_contacts' => 'Contacts',
-    'statistics_activities' => 'Activities',
-    'statistics_gifts' => 'Gifts',
+    'statistics_contacts' => 'Kontakter',
+    'statistics_activities' => 'Aktiviteter',
+    'statistics_gifts' => 'Gaver',
 
-    'reminders_next_months' => 'Events in the next 3 months',
-    'reminders_none' => 'No reminder for this month',
+    'reminders_next_months' => 'Begivenheder de næste 3 måneder',
+    'reminders_none' => 'Ingen påmindelser denne måned',
 
-    'product_changes' => 'Product changes',
-    'product_view_details' => 'View details',
+    'product_changes' => 'Produktændringer',
+    'product_view_details' => 'Se detaljer',
 ];
