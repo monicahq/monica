@@ -212,12 +212,12 @@ return [
     'relationship_form_associate_contact' => 'En eksisterende kontakt',
     'relationship_form_associate_dropdown' => 'Søg efter en eksisterende kontakt og vælg nedenfor',
     'relationship_form_associate_dropdown_placeholder' => 'Søg efter en eksisterende kontakt',
-    'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
+    'relationship_form_also_create_contact' => 'Opret en kontakt for denne person.',
     'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'You don’t have any contacts who can be related to :name at the moment.',
     'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
-    'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted – only the relationship between the two.',
-    'relationship_form_add_success' => 'The relationship has been successfully set.',
+    'relationship_unlink_confirmation' => 'Er du sikker på, at du vil slette dette forhold? Personen bliver ikke slettet – kun forholdet mellem de to.',
+    'relationship_form_add_success' => 'Forholdet er blevet slettet.',
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
@@ -262,8 +262,8 @@ return [
     'activities_blank_add_activity' => 'Tilføj en aktivitet',
     'activities_add_success' => 'Aktiviteten er blevet tilføjet',
     'activities_add_error' => 'Error when adding the activity',
-    'activities_update_success' => 'The activity has been updated successfully',
-    'activities_delete_success' => 'The activity has been deleted successfully',
+    'activities_update_success' => 'Aktiviteten er blevet opdateret',
+    'activities_delete_success' => 'Aktiviteten er blevet slettet',
     'activities_who_was_involved' => 'Hvem var med?',
     'activities_activity' => 'Activity Category',
     'activities_view_activities_report' => 'Vis aktivitetsoversigt',
@@ -346,15 +346,15 @@ return [
     'introductions_update_success' => 'You’ve successfully updated the information about how you met this person',
     'introductions_met_through' => 'Met through <a href=":url">:name</a>',
     'introductions_met_date' => 'Mødtes den :date',
-    'introductions_reminder_title' => 'Anniversary of the day you first met',
+    'introductions_reminder_title' => 'Årsdag for første gang i mødtes',
 
     // Deceased
-    'deceased_reminder_title' => 'Anniversary of the death of :name',
-    'deceased_mark_person_deceased' => 'Mark this person as deceased',
-    'deceased_know_date' => 'I know the date this person died',
+    'deceased_reminder_title' => 'Dødsdag for :name',
+    'deceased_mark_person_deceased' => 'Markér denne person som afdød',
+    'deceased_know_date' => 'Jeg kender dagen, hvor denne person døde',
     'deceased_add_reminder' => 'Tilføj en påmindelse for denne dag',
     'deceased_label' => 'Afdød',
-    'deceased_label_with_date' => 'Deceased on :date',
+    'deceased_label_with_date' => 'Døde den :date',
     'deceased_age' => 'Age at death',
 
     // Contact information
