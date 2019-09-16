@@ -7,9 +7,9 @@ use App\Models\User\User;
 use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
-use function Safe\preg_split;
 use App\Models\Account\Photo;
 use App\Models\Journal\Entry;
+use function Safe\preg_split;
 use App\Helpers\WeatherHelper;
 use App\Models\Account\Account;
 use App\Models\Account\Weather;
@@ -974,6 +974,7 @@ class Contact extends Model
             if (count($matches) > 1) {
                 $url .= '?'.$matches[1];
             }
+
             return $url;
         } catch (\Exception $e) {
             return '';
