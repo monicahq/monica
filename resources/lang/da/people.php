@@ -215,10 +215,10 @@ return [
     'relationship_form_also_create_contact' => 'Opret en kontakt for denne person.',
     'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
     'relationship_form_add_no_existing_contact' => 'You don’t have any contacts who can be related to :name at the moment.',
-    'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
+    'relationship_delete_confirmation' => 'Er du sikker på, at du ønsker at slette dette forhold? Denne handling er permanent.',
     'relationship_unlink_confirmation' => 'Er du sikker på, at du vil slette dette forhold? Personen bliver ikke slettet – kun forholdet mellem de to.',
     'relationship_form_add_success' => 'Forholdet er blevet slettet.',
-    'relationship_form_deletion_success' => 'The relationship has been deleted.',
+    'relationship_form_deletion_success' => 'Forholdet er blevet slettet.',
 
     // tasks
     'tasks_blank_title' => 'Du har ingen opgaver endnu.',
@@ -418,7 +418,7 @@ return [
     'life_event_sentence_study_abroad' => 'Studied abroad',
     'life_event_sentence_volunteer_work' => 'Started volunteering',
     'life_event_sentence_published_book_or_paper' => 'Udgav en artikel',
-    'life_event_sentence_military_service' => 'Started military service',
+    'life_event_sentence_military_service' => 'Startede i militæret',
     'life_event_sentence_new_relationship' => 'Startede et forhold',
     'life_event_sentence_engagement' => 'Blev forlovet',
     'life_event_sentence_marriage' => 'Blev gift',
