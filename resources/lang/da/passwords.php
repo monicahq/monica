@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least six characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'token' => 'This password reset token is invalid.',
-    'user' => 'If the email you entered exists in our records, you’ve been sent a password reset link.',
-    'changed' => 'Password changed successfully.',
-    'invalid' => 'Current password you entered is not correct.',
+    'password' => 'Adgangskoden skal være på mindst seks tegn og matche bekræftelsen.',
+    'reset' => 'Din adgangskode er blevet nulstillet!',
+    'sent' => 'Hvis din e-mail adresse eksisterer i systemet, vil du modtage en e-mail til nulstilling af din adgangskode.',
+    'token' => 'Nulstillingsnøglen til denne adgangskode er ugyldig.',
+    'user' => 'Hvis din e-mail adresse eksisterer i systemet, vil du modtage en e-mail til nulstilling af din adgangskode.',
+    'changed' => 'Adgangskoden er ændret.',
+    'invalid' => 'Adgangskode er forkert.',
 
 ];
