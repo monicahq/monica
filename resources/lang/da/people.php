@@ -204,9 +204,9 @@ return [
 
     // relationships
     'relationship_form_add' => 'Tilføj et nyt forhold',
-    'relationship_form_edit' => 'Edit an existing relationship',
-    'relationship_form_is_with' => 'This person is...',
-    'relationship_form_is_with_name' => ':name is...',
+    'relationship_form_edit' => 'Tilføj et eksisterende forhold',
+    'relationship_form_is_with' => 'Denne person er...',
+    'relationship_form_is_with_name' => ':name er...',
     'relationship_form_add_choice' => 'Who is the relationship with?',
     'relationship_form_create_contact' => 'Add a new person',
     'relationship_form_associate_contact' => 'An existing contact',
