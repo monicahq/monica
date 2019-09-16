@@ -459,10 +459,10 @@ return [
     // documents
     'document_list_title' => 'Dokumenter',
     'document_list_cta' => 'Overfør dokument',
-    'document_list_blank_desc' => 'Here you can store documents related to this person.',
+    'document_list_blank_desc' => 'Her kan du opbevare dokumenter relateret til denne person.',
     'document_upload_zone_cta' => 'Overfør en fil',
     'document_upload_zone_progress' => 'Overfører dokumentet...',
-    'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
+    'document_upload_zone_error' => 'Der opstod en fejl under overførslen af dokumentet. Prøv venligst igen.',
 
     // Photos
     'photo_list_title' => 'Relaterede billeder',
@@ -479,7 +479,7 @@ return [
     'avatar_default_avatar' => 'The default avatar',
     'avatar_adorable_avatar' => 'The Adorable avatar',
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
-    'avatar_current' => 'Keep the current avatar',
+    'avatar_current' => 'Behold det nuværende profilbillede',
     'avatar_photo' => 'From a photo that you upload',
 
     // emotions
