@@ -968,6 +968,10 @@ class Contact extends Model
      */
     public function getAvatarDefaultURL()
     {
+        if (empty($this->avatar_default_url)) {
+            return '';
+        }
+
         try {
             $matches = preg_split('/\?/', $this->avatar_default_url);
             $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
