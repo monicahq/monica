@@ -1,10 +1,10 @@
 <?php
 
 return [
-    'message' => 'Thanks for signing up! Please check your emails to confirm your email address.',
-    'success' => 'You have successfully verified your account! You can now login.',
-    'again' => 'You must verify your email before you can access the site.
-                <br/>If you have not received the confirmation email check your spam folder.
-                <br/>To get a new confirmation email please <a href=":url" class="alert-link">click here</a>.',
-    'resend' => 'A confirmation message has been sent. Please check your mailbox.'
+    'message' => 'Tak for din tilmelding. Tjek venligst din e-mail for at bekræfte din konto.',
+    'success' => 'Du har bekræftet din konto! Du kan nu logge ind.',
+    'again' => 'Du skal bekræfte din e-mail adresse før du kan tilgå siden.
+                <br/>Hvis du ikke har modtaget bekræftelsesmailen, bør du tjekke din spam mappe.
+                <br/>For at modtage en ny bekræftelsesmail kan du <a href=":url" class="alert-link">klikke her</a>.',
+    'resend' => 'E-mail til bekræftelse er sendt. Kontrollér venligst din e-mail.'
 ];
