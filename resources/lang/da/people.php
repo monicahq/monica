@@ -210,7 +210,7 @@ return [
     'relationship_form_add_choice' => 'Hvem er forholdet med?',
     'relationship_form_create_contact' => 'Tilføj en ny person',
     'relationship_form_associate_contact' => 'En eksisterende kontakt',
-    'relationship_form_associate_dropdown' => 'Search and select an existing contact from the dropdown below',
+    'relationship_form_associate_dropdown' => 'Søg efter en eksisterende kontakt og vælg nedenfor',
     'relationship_form_associate_dropdown_placeholder' => 'Søg efter en eksisterende kontakt',
     'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
     'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
