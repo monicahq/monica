@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use Carbon\Carbon;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
@@ -1397,7 +1398,7 @@ class Contact extends Model
      * Update the date the notification about staying in touch should be sent.
      *
      * @param int $frequency
-     * @param \DateTime|null $triggerDate
+     * @param Carbon|null $triggerDate
      */
     public function setStayInTouchTriggerDate($frequency, $triggerDate = null)
     {
