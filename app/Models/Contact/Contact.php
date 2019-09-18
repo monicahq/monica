@@ -1396,8 +1396,9 @@ class Contact extends Model
      * Update the date the notification about staying in touch should be sent.
      *
      * @param int $frequency
+     * @param \DateTime|null $triggerDate
      */
-    public function setStayInTouchTriggerDate($frequency)
+    public function setStayInTouchTriggerDate($frequency, $triggerDate = null)
     {
         // prevent timestamp update
         $timestamps = $this->timestamps;
@@ -1406,8 +1407,8 @@ class Contact extends Model
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
         } else {
-            $now = now();
-            $newTriggerDate = $now->addDays($frequency);
+            $triggerDate = $triggerDate ?? now();
+            $newTriggerDate = $triggerDate->addDays($frequency);
             $this->stay_in_touch_trigger_date = $newTriggerDate;
         }
 
