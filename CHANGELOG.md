@@ -21,6 +21,7 @@
 
 ### Fixes:
 
+* Fix scope search
 * Reschedule missed stay-in-touch
 * Fix tasks 'mark as done' UX
 * Fix tattoo or piercing activity locale title
