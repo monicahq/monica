@@ -27,7 +27,7 @@ trait Searchable
 
         $queryString = StringHelper::buildQuery($this->searchable_columns, $needle);
 
-        $builder->whereRaw('account_id = '.$accountId.' and ('.$queryString.') '.$whereCondition);
+        $builder->whereRaw("`{$this->getTable()}`.`account_id` = ".$accountId.' and ('.$queryString.') '.$whereCondition);
         $builder->orderByRaw($orderBy);
         if ($sortOrder) {
             $builder->sortedBy($sortOrder);
