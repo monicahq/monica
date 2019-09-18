@@ -132,6 +132,7 @@ class Contact extends Model
         'has_avatar' => 'boolean',
         'is_starred' => 'boolean',
         'is_active' => 'boolean',
+        'stay_in_touch_frequency' => 'integer',
     ];
 
     /**
