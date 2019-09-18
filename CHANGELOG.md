@@ -14,7 +14,7 @@
 
 # RELEASED VERSIONS:
 
-## v2.15.0 - 2019-09-15
+## v2.15.0 - 2019-09-18
 
 ### New features:
 
