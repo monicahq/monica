@@ -961,7 +961,7 @@ class ContactTest extends FeatureTestCase
 
         $this->assertNull($contact->stay_in_touch_trigger_date);
 
-        $contact->setStayInTouchTriggerDate(3, 'UTC');
+        $contact->setStayInTouchTriggerDate(3);
 
         $this->assertNotNull($contact->stay_in_touch_trigger_date);
 

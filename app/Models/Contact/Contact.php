@@ -2,6 +2,7 @@
 
 namespace App\Models\Contact;
 
+use Carbon\Carbon;
 use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Traits\Searchable;
@@ -132,6 +133,7 @@ class Contact extends Model
         'has_avatar' => 'boolean',
         'is_starred' => 'boolean',
         'is_active' => 'boolean',
+        'stay_in_touch_frequency' => 'integer',
     ];
 
     /**
@@ -1396,8 +1398,9 @@ class Contact extends Model
      * Update the date the notification about staying in touch should be sent.
      *
      * @param int $frequency
+     * @param Carbon|null $triggerDate
      */
-    public function setStayInTouchTriggerDate($frequency)
+    public function setStayInTouchTriggerDate($frequency, $triggerDate = null)
     {
         // prevent timestamp update
         $timestamps = $this->timestamps;
@@ -1406,8 +1409,8 @@ class Contact extends Model
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
         } else {
-            $now = now();
-            $newTriggerDate = $now->addDays($frequency);
+            $triggerDate = $triggerDate ?? now();
+            $newTriggerDate = $triggerDate->addDays($frequency);
             $this->stay_in_touch_trigger_date = $newTriggerDate;
         }
 
