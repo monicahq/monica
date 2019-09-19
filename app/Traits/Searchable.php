@@ -25,9 +25,13 @@ trait Searchable
             return;
         }
 
-        $queryString = StringHelper::buildQuery($this->searchable_columns, $needle);
+        $columns = array_map(function ($column) {
+            return "`{$this->getTable()}`.`$column`";
+        }, $this->searchable_columns);
 
-        $builder->whereRaw("`{$this->getTable()}`.`account_id` = ".$accountId.' and ('.$queryString.') '.$whereCondition);
+        $queryString = StringHelper::buildQuery($columns, $needle);
+
+        $builder->whereRaw("`{$this->getTable()}`.`account_id` = ".$accountId.' AND ('.$queryString.') '.$whereCondition);
         $builder->orderByRaw($orderBy);
         if ($sortOrder) {
             $builder->sortedBy($sortOrder);
