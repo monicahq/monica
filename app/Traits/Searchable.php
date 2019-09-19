@@ -25,18 +25,20 @@ trait Searchable
             return;
         }
 
-        $columns = array_map(function ($column) {
+        $searchableColumns = array_map(function ($column) {
             return "`{$this->getTable()}`.`$column`";
         }, $this->searchable_columns);
 
-        $queryString = StringHelper::buildQuery($columns, $needle);
+        $queryString = StringHelper::buildQuery($searchableColumns, $needle);
 
         $builder->whereRaw("`{$this->getTable()}`.`account_id` = ".$accountId.' AND ('.$queryString.') '.$whereCondition);
         $builder->orderByRaw($orderBy);
         if ($sortOrder) {
             $builder->sortedBy($sortOrder);
         }
-        $builder->select($this->return_from_search);
+        $builder->select(array_map(function ($column) {
+            return "{$this->getTable()}.$column";
+        }, $this->return_from_search));
 
         return $builder->paginate($limitPerPage);
     }
