@@ -510,7 +510,7 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
+        $results = SearchHelper::searchContacts($needle, 20, '`contacts`.`created_at`');
 
         if (count($results) !== 0) {
             return ContactResource::collection($results);
@@ -671,7 +671,7 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->get('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, 'is_starred desc', null, $sort);
+        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, '`contacts`.`is_starred` desc', null, $sort);
 
         return [
             'totalRecords' => $contacts->total(),
