@@ -421,7 +421,7 @@ return [
     'emotion_terror' => 'Grauen',
     'emotion_panic' => 'Panik',
     'emotion_hysteria' => 'Hysterie',
-    'emotion_mortification' => 'Mortification',
+    'emotion_mortification' => 'Kränkung',
     'emotion_anxiety' => 'Beklommenheit',
     'emotion_nervousness' => 'Nervosität',
     'emotion_tenseness' => 'Anspannung',
