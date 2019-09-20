@@ -428,7 +428,7 @@ return [
     'emotion_uneasiness' => 'Unbehagen',
     'emotion_apprehension' => 'Befürchtung',
     'emotion_worry' => 'Besorgnis',
-    'emotion_distress' => 'Distress',
+    'emotion_distress' => 'Belastung',
     'emotion_dread' => 'Grauen',
 
     // weather
