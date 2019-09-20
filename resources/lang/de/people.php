@@ -398,7 +398,7 @@ return [
     'life_event_list_tab_life_events' => 'Lebensereignisse',
     'life_event_list_tab_other' => 'Notizen, Erinnerungen, ...',
     'life_event_list_title' => 'Lebensereignisse',
-    'life_event_blank' => 'Notieren Sie sich zukünftige Lebensereignisse von {name}.',
+    'life_event_blank' => 'Notiere dir zukünftige Lebensereignisse von {name}.',
     'life_event_list_cta' => 'Lebensereignis hinzufügen',
     'life_event_create_category' => 'Alle Kategorien',
     'life_event_create_life_event' => 'Lebensereignis hinzufügen',
