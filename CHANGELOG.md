@@ -2,6 +2,22 @@
 
 ### New features:
 
+*
+
+### Enhancements:
+
+*
+
+### Fixes:
+
+*
+
+# RELEASED VERSIONS:
+
+## v2.15.0 - 2019-09-22
+
+### New features:
+
 * Paginate the Contacts page and improve database performance
 * Add ability to edit a Journal entry
 * Add vcard photo/avatar import
@@ -43,8 +59,6 @@
 * Fix stripe payment UI
 * Fix datepicker for locale usage
 
-
-# RELEASED VERSIONS:
 
 ## v2.14.0 - 2019-05-16
 
