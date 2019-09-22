@@ -53,7 +53,7 @@
               v-model="slotProps.entry.account.has_access_to_paid_version_for_free"
               :labels="toggleOptions"
               :required="true"
-              @input="switchFreeAccess"
+              @input="switchPremium"
             />
           </div>
         </div>
@@ -121,9 +121,17 @@ export default {
       axios.put('admin-api/user/'+this.id+'/adminToggle')
         .then(response => {
           Vue.set(this.entry, 'is_admin', value);
-          this.entry = response.data.entry;
         }, error => {
           Vue.set(this.entry, 'is_admin', !value);
+        });
+    },
+
+    switchPremium(value) {
+      axios.put('admin-api/account/'+this.entry.account.id+'/premiumToggle')
+        .then(response => {
+          Vue.set(this.entry.account, 'has_access_to_paid_version_for_free', value);
+        }, error => {
+          Vue.set(this.entry.account, 'has_access_to_paid_version_for_free', !value);
         });
     },
   }

@@ -6,7 +6,9 @@ use App\Models\User\User;
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
 use App\Helpers\StringHelper;
+use App\Models\Account\Account;
 use App\Http\Resources\Account\User\UserShort as UserResource;
+use App\Http\Resources\Account\User\Account as AccountResource;
 
 class AdminController extends Controller
 {
@@ -99,7 +101,8 @@ class AdminController extends Controller
     /**
      * Switch admin user.
      *
-     * @param Request $request
+     * @param  Request $request
+     * @param  User $user
      * @return array
      */
     public function userAdminToggle(Request $request, User $user)
@@ -109,6 +112,23 @@ class AdminController extends Controller
 
         return [
             'entry' => new UserResource($user),
+        ];
+    }
+
+    /**
+     * Switch free access account.
+     *
+     * @param  Request $request
+     * @param  Account $account
+     * @return array
+     */
+    public function accountPremiumToggle(Request $request, Account $account)
+    {
+        $account->has_access_to_paid_version_for_free = ! $account->has_access_to_paid_version_for_free;
+        $account->save();
+
+        return [
+            'entry' => new AccountResource($account),
         ];
     }
 }

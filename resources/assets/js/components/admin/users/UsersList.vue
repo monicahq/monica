@@ -46,28 +46,6 @@
       </vue-good-table>
     </list-screen>
 
-<!--
-    <sweet-modal ref="edit" overlay-theme="dark" :title="$t('settings.admin_switch_admin_title')">
-      <form>
-        <div class="mb4" v-if="adminSwitch.toggle">
-          {{ $t('settings.admin_switch_admin_confirmation_true', { user: adminSwitch.user}) }}
-        </div>
-        <div class="mb4" v-else>
-          {{ $t('settings.admin_switch_admin_confirmation_false', { user: adminSwitch.user}) }}
-        </div>
-      </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="cancelAdmin">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn" href="" @click.prevent="switchAdmin">
-            {{ $t('app.save_close') }}
-          </a>
-        </span>
-      </div>
-    </sweet-modal>
-    -->
   </div>
 </template>
 
