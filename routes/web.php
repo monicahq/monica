@@ -301,7 +301,7 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/admin-api/user/{user}', 'AdminController@user');
         Route::post('/admin-api/users', 'AdminController@users')->name('users');
         Route::put('/admin-api/user/{user}/adminToggle', 'AdminController@userAdminToggle');
-        Route::put('/admin-api/account/{account}/premiumToggle', 'AdminController@accountPremiumToggle');        
+        Route::put('/admin-api/account/{account}/premiumToggle', 'AdminController@accountPremiumToggle');
 
         Route::get('/admin/{view?}', 'AdminController@index')->where('view', '(.*)');
     });
