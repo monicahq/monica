@@ -10,7 +10,8 @@
 
 ### Fixes:
 
-*
+* Remove monica:clean command confirmation
+
 
 # RELEASED VERSIONS:
 
