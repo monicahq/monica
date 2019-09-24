@@ -11,6 +11,7 @@
 ### Fixes:
 
 * Fix people header file
+* Fix query and scope searches with table prefix
 * Remove monica:clean command confirmation
 
 
