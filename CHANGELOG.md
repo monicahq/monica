@@ -10,12 +10,19 @@
 
 ### Fixes:
 
+*
+
+
+# RELEASED VERSIONS:
+
+## v2.15.1 - 2019-09-24
+
+### Fixes:
+
 * Fix people header file
 * Fix query and scope searches with table prefix
 * Remove monica:clean command confirmation
 
-
-# RELEASED VERSIONS:
 
 ## v2.15.0 - 2019-09-22
 
