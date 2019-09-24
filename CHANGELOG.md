@@ -10,6 +10,7 @@
 
 ### Fixes:
 
+* Fix people header file
 * Remove monica:clean command confirmation
 
 
