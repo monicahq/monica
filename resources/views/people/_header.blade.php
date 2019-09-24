@@ -12,7 +12,7 @@
         <div class="relative hide-child">
           <div class="image-header top-0 left-0">
             <img class="cover br3 bb b--gray-monica"
-                 alt={{ $contact->initials }}
+                 alt="{{ $contact->initials }}"
                  src="{{ $contact->getAvatarURL() }}"
                  style="height: 115px; width: 115px;"
                  v-on:error="fixAvatarDisplay"
