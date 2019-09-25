@@ -62,7 +62,11 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     fi
 
     # Run cron
-    crond -b -l 0 -L /dev/stdout
+    if [[ -f "/usr/sbin/crond" ]]; then
+        crond -b -l 0 -L /dev/stdout
+    elif [[ -f "/etc/init.d/cron" ]]; then
+        service cron start
+    fi
 
 fi
 

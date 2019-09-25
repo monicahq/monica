@@ -122,7 +122,9 @@ ENTRYPOINT ["entrypoint.sh"]
 
 # Apache2
 COPY scripts/docker/apache2-foreground /usr/local/sbin/
-COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
+COPY scripts/docker/000-default.conf \
+    scripts/docker/rewrite.conf \
+    /etc/apache2/conf.d/
 
 EXPOSE 80
 CMD ["apache2-foreground"]
