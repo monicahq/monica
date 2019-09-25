@@ -41,3 +41,10 @@ services:
       - "3000:80"
     volumes:
       - "/sessions"
+
+  mail:
+    container_name: fake_mail
+    image: gessnerfl/fake-smtp-server
+    ports:
+      - "5080:5080"
+      - "5025:5025"
