@@ -5,7 +5,7 @@
     "keywords": ["prm", "crm", "social"],
     "type": "project",
     "require": {
-        "php": "^7.3",
+        "php": "^7.2",
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
@@ -60,6 +60,7 @@
         "matthiasnoback/live-code-coverage": "^1.0",
         "mockery/mockery": "^1.0",
         "nunomaduro/larastan": "^0.3.15",
+        "ocramius/package-versions": "1.4.*",
         "phpunit/phpcov": "^6.0",
         "phpunit/phpunit": "^8.0",
         "psalm/plugin-laravel": "^0.4",

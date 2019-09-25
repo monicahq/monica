@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08815b584999eab99ac54240490d22eb",
+    "content-hash": "a2a77c9a26ba5656431b100aaa055d08",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -197,9 +197,9 @@
             "authors": [
                 {
                     "name": "Ben Scholzen 'DASPRiD'",
-                    "role": "Developer",
                     "email": "mail@dasprids.de",
-                    "homepage": "http://www.dasprids.de"
+                    "homepage": "http://www.dasprids.de",
+                    "role": "Developer"
                 }
             ],
             "description": "BaconQrCode is a QR code generator for PHP.",
@@ -244,13 +244,13 @@
             "authors": [
                 {
                     "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de",
-                    "role": "Lead Developer"
+                    "role": "Lead Developer",
+                    "email": "kontakt@beberlei.de"
                 },
                 {
                     "name": "Richard Quadling",
-                    "email": "rquadling@gmail.com",
-                    "role": "Collaborator"
+                    "role": "Collaborator",
+                    "email": "rquadling@gmail.com"
                 }
             ],
             "description": "Thin assertion library for input validation in business models.",
@@ -3019,9 +3019,9 @@
             "authors": [
                 {
                     "name": "Ben Corlett",
-                    "role": "Developer",
                     "email": "bencorlett@me.com",
-                    "homepage": "http://www.webcomm.com.au"
+                    "homepage": "http://www.webcomm.com.au",
+                    "role": "Developer"
                 }
             ],
             "description": "OAuth 1.0 Client Library",
@@ -4006,35 +4006,34 @@
         },
         {
             "name": "ocramius/package-versions",
-            "version": "1.5.1",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Ocramius/PackageVersions.git",
-                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c"
+                "reference": "a4d4b60d0e60da2487bd21a2c6ac089f85570dbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/1d32342b8c1eb27353c8887c366147b4c2da673c",
-                "reference": "1d32342b8c1eb27353c8887c366147b4c2da673c",
+                "url": "https://api.github.com/repos/Ocramius/PackageVersions/zipball/a4d4b60d0e60da2487bd21a2c6ac089f85570dbb",
+                "reference": "a4d4b60d0e60da2487bd21a2c6ac089f85570dbb",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.0.0",
-                "php": "^7.3.0"
+                "php": "^7.1.0"
             },
             "require-dev": {
-                "composer/composer": "^1.8.6",
-                "doctrine/coding-standard": "^6.0.0",
+                "composer/composer": "^1.6.3",
+                "doctrine/coding-standard": "^5.0.1",
                 "ext-zip": "*",
-                "infection/infection": "^0.13.4",
-                "phpunit/phpunit": "^8.2.5",
-                "vimeo/psalm": "^3.4.9"
+                "infection/infection": "^0.7.1",
+                "phpunit/phpunit": "^7.0.0"
             },
             "type": "composer-plugin",
             "extra": {
                 "class": "PackageVersions\\Installer",
                 "branch-alias": {
-                    "dev-master": "1.6.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -4053,7 +4052,7 @@
                 }
             ],
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
-            "time": "2019-07-17T15:49:50+00:00"
+            "time": "2019-02-21T12:16:21+00:00"
         },
         {
             "name": "ok/ipstack-client",
@@ -4850,28 +4849,28 @@
             "authors": [
                 {
                     "name": "Jim Wigginton",
-                    "email": "terrafrost@php.net",
-                    "role": "Lead Developer"
+                    "role": "Lead Developer",
+                    "email": "terrafrost@php.net"
                 },
                 {
                     "name": "Patrick Monnerat",
-                    "email": "pm@datasphere.ch",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "pm@datasphere.ch"
                 },
                 {
                     "name": "Andreas Fischer",
-                    "email": "bantu@phpbb.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "bantu@phpbb.com"
                 },
                 {
                     "name": "Hans-Jürgen Petrich",
-                    "email": "petrich@tronic-media.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "petrich@tronic-media.com"
                 },
                 {
                     "name": "Graham Campbell",
-                    "email": "graham@alt-three.com",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "graham@alt-three.com"
                 }
             ],
             "description": "PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.",
@@ -5264,8 +5263,8 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Creator & Designer",
-                    "email": "acr@antoniocarlosribeiro.com"
+                    "email": "acr@antoniocarlosribeiro.com",
+                    "role": "Creator & Designer"
                 }
             ],
             "description": "QR Code package for Google2FA",
@@ -5526,9 +5525,9 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Developer",
                     "email": "acr@antoniocarlosribeiro.com",
-                    "homepage": "https://antoniocarlosribeiro.com"
+                    "homepage": "https://antoniocarlosribeiro.com",
+                    "role": "Developer"
                 }
             ],
             "description": "Create random chars, numbers, strings",
@@ -5588,9 +5587,9 @@
             "authors": [
                 {
                     "name": "Antonio Carlos Ribeiro",
-                    "role": "Developer",
                     "email": "acr@antoniocarlosribeiro.com",
-                    "homepage": "https://antoniocarlosribeiro.com"
+                    "homepage": "https://antoniocarlosribeiro.com",
+                    "role": "Developer"
                 }
             ],
             "description": "Create recovery codes for two factor auth",
@@ -6293,9 +6292,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "WebDAV Framework for PHP",
@@ -6413,9 +6412,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "The sabre/http library provides utilities for dealing with http requests and responses. ",
@@ -10786,8 +10785,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "homepage": "https://github.com/filp",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "https://github.com/filp"
                 }
             ],
             "description": "php error handling for cool kids",
@@ -12498,8 +12497,8 @@
             "authors": [
                 {
                     "name": "Sebastian Bergmann",
-                    "email": "sebastian@phpunit.de",
-                    "role": "lead"
+                    "role": "lead",
+                    "email": "sebastian@phpunit.de"
                 }
             ],
             "description": "Library that provides collection, processing, and rendering functionality for PHP code coverage information.",
@@ -13086,8 +13085,8 @@
             "authors": [
                 {
                     "name": "Marco Pivetta",
-                    "role": "maintainer",
-                    "email": "ocramius@gmail.com"
+                    "email": "ocramius@gmail.com",
+                    "role": "maintainer"
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
@@ -14031,8 +14030,8 @@
             "authors": [
                 {
                     "name": "Arne Blankerts",
-                    "role": "lead",
-                    "email": "arne@blankerts.de"
+                    "email": "arne@blankerts.de",
+                    "role": "lead"
                 }
             ],
             "description": "The classes contained within this repository extend the standard DOM to use exceptions at all occasions of errors instead of PHP warnings or notices. They also add various custom methods and shortcuts for convenience and to simplify the usage of DOM.",
@@ -14318,7 +14317,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3",
+        "php": "^7.2",
         "ext-bcmath": "*",
         "ext-gd": "*",
         "ext-gmp": "*",
