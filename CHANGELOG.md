@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-* Revert depends on php7.2+
+*
 
 ### Fixes:
 
@@ -14,6 +14,13 @@
 
 
 # RELEASED VERSIONS:
+
+## v2.15.2 - 2019-09-26
+
+### Enhancements:
+
+* Revert depends on php7.2+
+
 
 ## v2.15.1 - 2019-09-24
 
