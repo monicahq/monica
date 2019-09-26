@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-*
+* Revert depends on php7.2+
 
 ### Fixes:
 
