@@ -2,6 +2,39 @@
 
 ### New features:
 
+*
+
+### Enhancements:
+
+*
+
+### Fixes:
+
+*
+
+
+# RELEASED VERSIONS:
+
+## v2.15.2 - 2019-09-26
+
+### Enhancements:
+
+* Revert depends on php7.2+
+
+
+## v2.15.1 - 2019-09-24
+
+### Fixes:
+
+* Fix people header file
+* Fix query and scope searches with table prefix
+* Remove monica:clean command confirmation
+
+
+## v2.15.0 - 2019-09-22
+
+### New features:
+
 * Paginate the Contacts page and improve database performance
 * Add ability to edit a Journal entry
 * Add vcard photo/avatar import
@@ -21,6 +54,8 @@
 
 ### Fixes:
 
+* Fix query and scope search
+* Reschedule missed stay-in-touch
 * Fix tasks 'mark as done' UX
 * Fix tattoo or piercing activity locale title
 * Fix getting infos about country without providing ip
@@ -41,8 +76,6 @@
 * Fix stripe payment UI
 * Fix datepicker for locale usage
 
-
-# RELEASED VERSIONS:
 
 ## v2.14.0 - 2019-05-16
 

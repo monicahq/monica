@@ -252,7 +252,7 @@ return [
     'import_upload_rules_desc' => 'Nous avons toutefois quelques règles :',
     'import_upload_rule_format' => 'Nous supportons les formats <code>.vcard</code> et <code>.vcf</code>.',
     'import_upload_rule_vcard' => 'Nous supportons le format vCard 3.0, qui est le format par défaut de l’application Contacts.app (macOS) et Google Contacts.',
-    'import_upload_rule_instructions' => 'Instructions d’export pour <a href="http://osxdaily.com/2015/07/14/export-contacts-mac-os-x/" target="_blank">Contacts.app (macOS)</a> et <a href="http://www.akruto.com/backup-phone-contacts-calendar/how-to-export-google-contacts-to-csv-or-vcard/" target="_blank">Google Contacts</a>.',
+    'import_upload_rule_instructions' => 'Instructions d’export pour <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> et <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'Pour le moment, si vos contacts ont plusieurs adresses courriels ou numéros de téléphone, seule la première entrée sera choisie.',
     'import_upload_rule_limit' => 'Les fichiers sont limités à 10MB.',
     'import_upload_rule_time' => 'Cela peut prendre 1 minute pour importer les contacts et les traiter. Merci de votre patience.',

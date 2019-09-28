@@ -25,6 +25,7 @@ class SendStayInTouchTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
+            'stay_in_touch_frequency' => 30,
         ]);
 
         $exitCode = Artisan::call('send:stay_in_touch', []);
@@ -42,6 +43,7 @@ class SendStayInTouchTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-03-01 07:00:00',
+            'stay_in_touch_frequency' => 30,
         ]);
 
         $exitCode = Artisan::call('send:stay_in_touch', []);
