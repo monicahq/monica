@@ -84,7 +84,7 @@ We've installed the development version with [Valet](https://laravel.com/docs/va
 **Prerequisites**:
 * Git
 * [Node](https://nodejs.org/en/)
-* PHP 7.3+
+* PHP 7.2+
 * [Composer](https://getcomposer.org/)
 * GNU Make
 

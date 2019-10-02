@@ -10,6 +10,7 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\DB;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -671,7 +672,7 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->get('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, '`contacts`.`is_starred` desc', null, $sort);
+        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, '`'.DB::connection()->getTablePrefix().'contacts`.`is_starred` desc', null, $sort);
 
         return [
             'totalRecords' => $contacts->total(),
