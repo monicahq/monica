@@ -252,7 +252,7 @@ return [
     'import_upload_rules_desc' => 'Máme ale několik pravidel:',
     'import_upload_rule_format' => 'Podporujeme <code>.vcard</code> a <code>.vcf</code> soubory.',
     'import_upload_rule_vcard' => 'Podporujeme formát vCard 3.0, který je výchozím formátem aplikací Contacts.app (macOS) a Google Contacts.',
-    'import_upload_rule_instructions' => 'Instrukce pro export z <a href="http://osxdaily.com/2015/07/14/export-contacts-mac-os-x/" target="_blank">Contacts.app (macOS)</a> a <a href="http://www.akruto.com/backup-phone-contacts-calendar/how-to-export-google-contacts-to-csv-or-vcard/" target="_blank">Google Contacts</a>.',
+    'import_upload_rule_instructions' => 'Instrukce pro export z <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> a <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'Pokud mají vaše kontakty vícero emailů nebo telefonních čísel, bude importován pouze první z těchto záznamů.',
     'import_upload_rule_limit' => 'Velikost souborů je limitována na 10MB.',
     'import_upload_rule_time' => 'Nahrání a zpracování kontaktů může zabrat až 1 minutu. Buďte trpěliví.',
