@@ -3120,16 +3120,16 @@
         },
         {
             "name": "mariuzzo/laravel-js-localization",
-            "version": "v1.4.7",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/rmariuzzo/Laravel-JS-Localization.git",
-                "reference": "e36ea8dadfa680d862262af2ea4abbe5697bc03e"
+                "reference": "9bb8e8590716f24ebe2c4813680db35f3447f763"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/e36ea8dadfa680d862262af2ea4abbe5697bc03e",
-                "reference": "e36ea8dadfa680d862262af2ea4abbe5697bc03e",
+                "url": "https://api.github.com/repos/rmariuzzo/Laravel-JS-Localization/zipball/9bb8e8590716f24ebe2c4813680db35f3447f763",
+                "reference": "9bb8e8590716f24ebe2c4813680db35f3447f763",
                 "shasum": ""
             },
             "require": {
@@ -3137,7 +3137,8 @@
                 "illuminate/console": ">=4.2",
                 "illuminate/filesystem": ">=4.2",
                 "php": ">=5.4.0",
-                "tedivm/jshrink": "1.0.*"
+                "tedivm/jshrink": "~1.0",
+                "vlucas/phpdotenv": "^3.3"
             },
             "require-dev": {
                 "phpunit/phpunit": "4.8.*"
@@ -3183,8 +3184,8 @@
                     "role": "Developer"
                 },
                 {
-                    "name": "Pe Ell",
-                    "homepage": "https://github.com/a-komarev",
+                    "name": "Anton Komarev",
+                    "homepage": "https://github.com/antonkomarev",
                     "role": "Developer"
                 }
             ],
@@ -3199,7 +3200,7 @@
                 "laravel 5",
                 "localization"
             ],
-            "time": "2017-11-23T04:07:56+00:00"
+            "time": "2019-09-10T11:39:41+00:00"
         },
         {
             "name": "matriphe/iso-639",
@@ -8787,25 +8788,25 @@
         },
         {
             "name": "tedivm/jshrink",
-            "version": "v1.0.1",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tedious/JShrink.git",
-                "reference": "7575d9d96f113bc7c1c28ec8231ee086751a9078"
+                "reference": "566e0c731ba4e372be2de429ef7d54f4faf4477a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tedious/JShrink/zipball/7575d9d96f113bc7c1c28ec8231ee086751a9078",
-                "reference": "7575d9d96f113bc7c1c28ec8231ee086751a9078",
+                "url": "https://api.github.com/repos/tedious/JShrink/zipball/566e0c731ba4e372be2de429ef7d54f4faf4477a",
+                "reference": "566e0c731ba4e372be2de429ef7d54f4faf4477a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": "^5.6|^7.0"
             },
             "require-dev": {
-                "fabpot/php-cs-fixer": "0.4.0",
-                "phpunit/phpunit": "4.0.*",
-                "satooshi/php-coveralls": "dev-master"
+                "friendsofphp/php-cs-fixer": "^2.8",
+                "php-coveralls/php-coveralls": "^1.1.0",
+                "phpunit/phpunit": "^6"
             },
             "type": "library",
             "autoload": {
@@ -8829,7 +8830,7 @@
                 "javascript",
                 "minifier"
             ],
-            "time": "2014-11-11T03:54:14+00:00"
+            "time": "2019-06-28T18:11:46+00:00"
         },
         {
             "name": "thecodingmachine/safe",
