@@ -176,13 +176,13 @@ return [
 
     'relationship_type_stepparent' => 'patrigno',
     'relationship_type_stepparent_female' => 'madrigna',
-    'relationship_type_stepparent_with_name' => ':nome del patrigno',
-    'relationship_type_stepparent_female_with_name' => ':nome della matrigna',
+    'relationship_type_stepparent_with_name' => ':name del patrigno',
+    'relationship_type_stepparent_female_with_name' => ':name della matrigna',
 
     'relationship_type_stepchild' => 'figliastro',
     'relationship_type_stepchild_female' => 'figliastra',
-    'relationship_type_stepchild_with_name' => ':nome del figliastro',
-    'relationship_type_stepchild_female_with_name' => ':nome della figliastra',
+    'relationship_type_stepchild_with_name' => ':name del figliastro',
+    'relationship_type_stepchild_female_with_name' => ':name della figliastra',
 
     'relationship_type_sibling' => 'fratello',
     'relationship_type_sibling_female' => 'sorella',
