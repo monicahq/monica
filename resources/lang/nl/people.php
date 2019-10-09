@@ -122,7 +122,7 @@ return [
     'conversation_add_another' => 'Nog een bericht toevoegen',
     'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Berichten',
-    'conversation_list_table_content' => 'Gedeeltelijke inhoud(laatste bericht)',
+    'conversation_list_table_content' => 'Gedeeltelijke inhoud (laatste bericht)',
     'conversation_list_title' => 'Gesprekken',
     'conversation_list_cta' => 'Gesprek toevoegen',
 
