@@ -442,8 +442,8 @@ return [
     'weather_cloudy' => 'Nuvoloso',
     'weather_partly-cloudy-day' => 'Giorno parzialmente nuvoloso',
     'weather_partly-cloudy-night' => 'Notte parzialmente nuvolosa',
-    'weather_current_temperature_celsius' => ':temperatura (°C)',
-    'weather_current_temperature_fahrenheit' => ':temperatura °F',
+    'weather_current_temperature_celsius' => ':temperature °C',
+    'weather_current_temperature_fahrenheit' => ':temperature °F',
     'weather_current_title' => 'Meteo attuale',
 
     // dav
