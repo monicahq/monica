@@ -48,9 +48,7 @@ RUN apk add netcat-openbsd \
         #- sentry/sentry
         php7-curl \
         #- cbor-php (webauthn)
-        php7-gmp \
-# apache variant
-        apache2 php7-apache2
+        php7-gmp
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -121,6 +119,7 @@ COPY scripts/docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
 # Apache2
+RUN apk add apache2 php7-apache2
 COPY scripts/docker/apache2-foreground /usr/local/sbin/
 COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
 RUN echo 'LoadModule rewrite_module modules/mod_rewrite.so' > /etc/apache2/conf.d/rewrite.conf

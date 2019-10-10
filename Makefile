@@ -68,6 +68,7 @@ endif
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
 DOCKER_IMAGE := monicahq/monicahq
+BUILD_DATE := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 default: build
 
@@ -85,7 +86,7 @@ docker_build: docker_build_apache docker_build_fpm docker_build_php_apache
 
 docker_build_apache:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
@@ -95,7 +96,7 @@ docker_build_apache:
 
 docker_build_php_apache:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
@@ -105,7 +106,7 @@ docker_build_php_apache:
 
 docker_build_fpm:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \

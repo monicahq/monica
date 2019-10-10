@@ -48,9 +48,7 @@ RUN apk add netcat-openbsd \
         #- sentry/sentry
         php7-curl \
         #- cbor-php (webauthn)
-        php7-gmp \
-# fpm variant
-        php7-fpm
+        php7-gmp
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -121,6 +119,7 @@ COPY scripts/docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
 # FPM
+RUN apk add php7-fpm
 RUN set -ex && \
 	cd /etc/php7/php-fpm.d && \
 	{ \
