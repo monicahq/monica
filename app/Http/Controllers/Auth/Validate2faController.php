@@ -30,7 +30,7 @@ class Validate2faController extends Controller
 
     public static function loginCallback()
     {
-        Google2FA::setStateless(false);
+        app('pragmarx.google2fa')->setStateless(false);
         Google2FA::login();
     }
 }
