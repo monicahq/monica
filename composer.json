@@ -10,7 +10,7 @@
         "ext-gd": "*",
         "ext-gmp": "*",
         "ext-intl": "*",
-        "asbiin/laravel-webauthn": "^0.5.0",
+        "asbiin/laravel-webauthn": "^0.6",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "^2.5",
