@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed10618f56db3171792cd742c1692fa0",
+    "content-hash": "5a1aa87649ca57a6953d672a0b84551c",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "0.6.1",
+            "version": "0.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "2eb5f03de0db6c1e8c01d36a148803d4a0da2126"
+                "reference": "5c9b2a2cb8c4780cbdefa1ae9de68778094ecae4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/2eb5f03de0db6c1e8c01d36a148803d4a0da2126",
-                "reference": "2eb5f03de0db6c1e8c01d36a148803d4a0da2126",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/5c9b2a2cb8c4780cbdefa1ae9de68778094ecae4",
+                "reference": "5c9b2a2cb8c4780cbdefa1ae9de68778094ecae4",
                 "shasum": ""
             },
             "require": {
@@ -76,7 +76,7 @@
                 "security",
                 "webauthn"
             ],
-            "time": "2019-09-20T09:43:16+00:00"
+            "time": "2019-10-08T19:05:19+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
@@ -2203,9 +2203,9 @@
             "authors": [
                 {
                     "name": "LAHAXE Arnaud",
+                    "role": "Developer",
                     "email": "lahaxe.arnaud@gmail.com",
-                    "homepage": "http://lahaxe.fr",
-                    "role": "Developer"
+                    "homepage": "http://lahaxe.fr"
                 }
             ],
             "description": "U2F support for laravel 5",
@@ -6410,9 +6410,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "WebDAV Framework for PHP",
@@ -6465,9 +6465,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "sabre/event is a library for lightweight event-based programming",
@@ -6530,9 +6530,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "The sabre/http library provides utilities for dealing with http requests and responses. ",
@@ -6730,14 +6730,14 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 },
                 {
                     "name": "Markus Staab",
-                    "email": "markus.staab@redaxo.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "markus.staab@redaxo.de"
                 }
             ],
             "description": "sabre/xml is an XML library that you may not hate.",
@@ -10637,8 +10637,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "homepage": "https://github.com/filp",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "https://github.com/filp"
                 }
             ],
             "description": "php error handling for cool kids",
@@ -11239,9 +11239,9 @@
             "authors": [
                 {
                     "name": "Christian Weiske",
+                    "role": "Developer",
                     "email": "cweiske@cweiske.de",
-                    "homepage": "http://github.com/cweiske/jsonmapper/",
-                    "role": "Developer"
+                    "homepage": "http://github.com/cweiske/jsonmapper/"
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
