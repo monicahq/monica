@@ -1,4 +1,4 @@
-FROM php:7.2-apache
+FROM php:7.3-apache
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
@@ -41,6 +41,7 @@ RUN apt-get update && \
                 soap \
                 mbstring && \
     apt-get -y remove libicu-dev icu-devtools && \
+    apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a user to own all the code and assets and give them a working
@@ -110,12 +111,13 @@ RUN set -ex && \
 	chmod a+x monica
 
 COPY scripts/docker/entrypoint.sh /usr/local/bin/
-RUN sed -ri -e 's!/bin/sh!/bin/bash!g' /usr/local/bin/entrypoint.sh; \
-    sed -ri -e 's!monica:apache!monica:www-data!g' /usr/local/bin/entrypoint.sh
+RUN sed -ri -e 's!monica:apache!monica:www-data!g' /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
 # Apache2
 COPY scripts/docker/000-default.conf /etc/apache2/sites-available/
+RUN echo 'ServerName "monica"' > /etc/apache2/conf-available/hostname.conf
+RUN a2enconf hostname
 RUN a2enmod rewrite cache headers
 
 EXPOSE 80

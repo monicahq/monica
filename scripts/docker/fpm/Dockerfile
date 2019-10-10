@@ -120,8 +120,6 @@ RUN apk del .build-deps && \
 COPY scripts/docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
-COPY scripts/docker/rewrite.conf /etc/apache2/conf.d/
-
 # FPM
 RUN set -ex && \
 	cd /etc/php7/php-fpm.d && \

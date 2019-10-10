@@ -122,9 +122,9 @@ ENTRYPOINT ["entrypoint.sh"]
 
 # Apache2
 COPY scripts/docker/apache2-foreground /usr/local/sbin/
-COPY scripts/docker/000-default.conf \
-    scripts/docker/rewrite.conf \
-    /etc/apache2/conf.d/
+COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
+RUN echo 'LoadModule rewrite_module modules/mod_rewrite.so' > /etc/apache2/conf.d/rewrite.conf
+RUN echo 'ServerName "monica"' > /etc/apache2/conf.d/hostname.conf
 
 EXPOSE 80
 CMD ["apache2-foreground"]
