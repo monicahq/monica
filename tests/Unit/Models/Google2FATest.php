@@ -7,6 +7,7 @@ use App\Models\User\User;
 use Illuminate\Session\Store;
 use App\Http\Requests\Request;
 use Illuminate\Session\NullSessionHandler;
+use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class Google2FATest extends TestCase
@@ -55,8 +56,7 @@ class Google2FATest extends TestCase
     {
         config(['google2fa.enabled' => true]);
 
-        $google2fa = app('pragmarx.google2fa');
-        $google2fa->stateless = false;
+        $google2fa = Google2FA::setStateless(false);
         $secret = $google2fa->generateSecretKey(32);
 
         $user = factory(User::class)->create();

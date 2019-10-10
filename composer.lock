@@ -2203,9 +2203,9 @@
             "authors": [
                 {
                     "name": "LAHAXE Arnaud",
+                    "role": "Developer",
                     "email": "lahaxe.arnaud@gmail.com",
-                    "homepage": "http://lahaxe.fr",
-                    "role": "Developer"
+                    "homepage": "http://lahaxe.fr"
                 }
             ],
             "description": "U2F support for laravel 5",
@@ -5220,16 +5220,16 @@
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "v1.0.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
-                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882"
+                "reference": "6e43058759963ac15202008f204ef8c996b6ec0d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/b5f5bc71dcc52c48720441bc01c701023bd82882",
-                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/6e43058759963ac15202008f204ef8c996b6ec0d",
+                "reference": "6e43058759963ac15202008f204ef8c996b6ec0d",
                 "shasum": ""
             },
             "require": {
@@ -5238,8 +5238,8 @@
                 "pragmarx/google2fa-qrcode": "^1.0"
             },
             "require-dev": {
-                "orchestra/testbench": "3.4.*|3.5.*|3.6.*|3.7.*",
-                "phpunit/phpunit": "~5|~6|~7"
+                "orchestra/testbench": "3.4.*|3.5.*|3.6.*|3.7.*|4.*",
+                "phpunit/phpunit": "~5|~6|~7|~8"
             },
             "suggest": {
                 "bacon/bacon-qr-code": "Required to generate inline QR Codes.",
@@ -5287,7 +5287,7 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2019-03-22T19:54:51+00:00"
+            "time": "2019-09-30T17:17:12+00:00"
         },
         {
             "name": "pragmarx/google2fa-qrcode",
@@ -6410,9 +6410,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "WebDAV Framework for PHP",
@@ -6465,9 +6465,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "sabre/event is a library for lightweight event-based programming",
@@ -6530,9 +6530,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "The sabre/http library provides utilities for dealing with http requests and responses. ",
@@ -6730,14 +6730,14 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 },
                 {
                     "name": "Markus Staab",
-                    "email": "markus.staab@redaxo.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "markus.staab@redaxo.de"
                 }
             ],
             "description": "sabre/xml is an XML library that you may not hate.",
@@ -10637,8 +10637,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "homepage": "https://github.com/filp",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "https://github.com/filp"
                 }
             ],
             "description": "php error handling for cool kids",
@@ -11239,9 +11239,9 @@
             "authors": [
                 {
                     "name": "Christian Weiske",
+                    "role": "Developer",
                     "email": "cweiske@cweiske.de",
-                    "homepage": "http://github.com/cweiske/jsonmapper/",
-                    "role": "Developer"
+                    "homepage": "http://github.com/cweiske/jsonmapper/"
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
