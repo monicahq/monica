@@ -37,7 +37,7 @@
         "ok/ipstack-client": "^1.2",
         "paragonie/constant_time_encoding": "^2.2",
         "pragmarx/countries-laravel": "^0.6.1",
-        "pragmarx/google2fa": "^5.0",
+        "pragmarx/google2fa": "^6.1",
         "pragmarx/google2fa-laravel": "^1.0",
         "pragmarx/recovery": "^0.1.0",
         "predis/predis": "^1.1",
