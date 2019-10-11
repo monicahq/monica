@@ -93,12 +93,17 @@ stages:
         vendor/bin/phpcov merge --clover=results/coverage.xml results/coverage/
         rm -rf results/coverage
       displayName: 'Merge coverage files'
+    - task: ReportGenerator@4
+      inputs:
+        reports: 'results/coverage.xml'
+        targetdir: 'coveragereport'
+        reporttypes: 'Cobertura'
+      condition: succeededOrFailed()
     - task: PublishCodeCoverageResults@1
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: cobertura
-        summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/coverage.xml'
-        reportDirectory: '$(System.DefaultWorkingDirectory)/results/cobertura'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/coveragereport/Cobertura.xml'
         failIfCoverageEmpty: false
       condition: succeededOrFailed()
     - bash: |
