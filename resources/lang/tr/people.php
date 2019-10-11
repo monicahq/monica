@@ -176,7 +176,7 @@ return [
     'reminders_add_description' => 'Lütfen bana şunu hatırlat...',
     'reminders_add_next_time' => 'Bir dahaki sefere ne zaman bunun hatırlatılmasını istersiniz?',
     'reminders_add_once' => 'Bunu sadece bir kere hatırlat',
-    'reminders_add_recurrent' => 'Remind me about this every',
+    'reminders_add_recurrent' => 'Bunu bana hatırlat',
     'reminders_add_starting_from' => 'starting from the date specified above',
     'reminders_add_cta' => 'Hatırlatıcı ekle',
     'reminders_edit_update_cta' => 'Hatırlatıcıyı güncelle',
