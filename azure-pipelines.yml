@@ -97,7 +97,8 @@ stages:
       displayName: 'Publish code coverage'
       inputs:
         codeCoverageTool: cobertura
-        summaryFileLocation: 'results/coverage.xml'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/coverage.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/results/cobertura'
       condition: succeededOrFailed()
     - bash: |
         yarn global add junit-merge

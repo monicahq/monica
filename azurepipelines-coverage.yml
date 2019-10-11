@@ -1,0 +1,4 @@
+coverage:
+  status:           #Code coverage status will be posted to pull requests based on targets defined below.
+    diff:           #diff coverage is code coverage only for the lines changed in a pull request.
+      target: 65%   #set this to a desired %. Default is 70%.
