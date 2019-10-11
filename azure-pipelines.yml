@@ -90,6 +90,16 @@ stages:
         artifactName: 'results4'
         downloadPath: $(System.DefaultWorkingDirectory)/results
     - bash: |
+        vendor/bin/phpcov merge --clover=results/coverage.xml results/coverage/
+        rm -rf results/coverage
+      displayName: 'Merge coverage files'
+    - task: PublishCodeCoverageResults@1
+      displayName: 'Publish code coverage'
+      inputs:
+        codeCoverageTool: cobertura
+        summaryFileLocation: 'results/coverage.xml'
+      condition: succeededOrFailed()
+    - bash: |
         yarn global add junit-merge
         $(yarn global bin)/junit-merge --recursive --dir results/junit --out results/results.xml
         ls results/results.xml
