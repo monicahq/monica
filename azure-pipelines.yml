@@ -99,7 +99,7 @@ stages:
         codeCoverageTool: cobertura
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/coverage.xml'
         reportDirectory: '$(System.DefaultWorkingDirectory)/results/cobertura'
-        failIfCoverageIsEmpty: false
+        failIfCoverageEmpty: false
       condition: succeededOrFailed()
     - bash: |
         yarn global add junit-merge
