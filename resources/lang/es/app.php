@@ -131,38 +131,38 @@ return [
 
     'relationship_type_partner' => 'pareja',
     'relationship_type_partner_female' => 'pareja',
-    'relationship_type_partner_with_name' => ':nombre de la pareja',
-    'relationship_type_partner_female_with_name' => ':nombre de la pareja',
+    'relationship_type_partner_with_name' => ':name de la pareja',
+    'relationship_type_partner_female_with_name' => ':name de la pareja',
 
     'relationship_type_spouse' => 'esposa',
     'relationship_type_spouse_female' => 'esposa',
-    'relationship_type_spouse_with_name' => ':nombre de la esposa',
-    'relationship_type_spouse_female_with_name' => ':nombre de la esposa',
+    'relationship_type_spouse_with_name' => ':name de la esposa',
+    'relationship_type_spouse_female_with_name' => ':name de la esposa',
 
     'relationship_type_date' => 'cita',
     'relationship_type_date_female' => 'cita',
-    'relationship_type_date_with_name' => ':nombre de la fecha',
-    'relationship_type_date_female_with_name' => ':nombre de la fecha',
+    'relationship_type_date_with_name' => ':name de la fecha',
+    'relationship_type_date_female_with_name' => ':name de la fecha',
 
     'relationship_type_lover' => 'amante',
     'relationship_type_lover_female' => 'amante',
-    'relationship_type_lover_with_name' => ':nombre de amante',
-    'relationship_type_lover_female_with_name' => ':nombre de amante',
+    'relationship_type_lover_with_name' => ':name de amante',
+    'relationship_type_lover_female_with_name' => 'amante de :name',
 
     'relationship_type_inlovewith' => 'enamorado de',
     'relationship_type_inlovewith_female' => 'enamorado de',
-    'relationship_type_inlovewith_with_name' => 'alguien :nombre está enamorado de',
-    'relationship_type_inlovewith_female_with_name' => 'alguien :nombre está enamorado de',
+    'relationship_type_inlovewith_with_name' => 'alguien :name está enamorado de',
+    'relationship_type_inlovewith_female_with_name' => 'alguien :name está enamorado de',
 
     'relationship_type_lovedby' => 'querido por',
     'relationship_type_lovedby_female' => 'querido por',
-    'relationship_type_lovedby_with_name' => ':nombre de amante secreto',
-    'relationship_type_lovedby_female_with_name' => ':nombre de amante secreto',
+    'relationship_type_lovedby_with_name' => 'amante secreto de :name',
+    'relationship_type_lovedby_female_with_name' => 'amante secreto de :name',
 
     'relationship_type_ex' => 'ex-novio',
     'relationship_type_ex_female' => 'ex-novia',
-    'relationship_type_ex_with_name' => ':nombre de ex-novio',
-    'relationship_type_ex_female_with_name' => ':nombre de ex-novia',
+    'relationship_type_ex_with_name' => 'ex-novio de :name',
+    'relationship_type_ex_female_with_name' => 'ex-novia de :name',
 
     'relationship_type_parent' => 'padre',
     'relationship_type_parent_female' => 'madre',
@@ -191,12 +191,12 @@ return [
 
     'relationship_type_grandparent' => 'abuelo',
     'relationship_type_grandparent_female' => 'abuelo',
-    'relationship_type_grandparent_with_name' => ':nombre de abuelo',
-    'relationship_type_grandparent_female_with_name' => ':nombre de abuelo',
+    'relationship_type_grandparent_with_name' => 'abuelo de :name',
+    'relationship_type_grandparent_female_with_name' => 'abuelo de :name',
 
     'relationship_type_grandchild' => 'nieto',
     'relationship_type_grandchild_female' => 'nieto',
-    'relationship_type_grandchild_with_name' => ':nombre de nieto',
+    'relationship_type_grandchild_with_name' => 'nieto de :name',
     'relationship_type_grandchild_female_with_name' => 'nieto de :name',
 
     'relationship_type_uncle' => 'tío',
