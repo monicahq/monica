@@ -80,7 +80,7 @@ return [
 
     // Stay in touch
     'stay_in_touch' => 'İrtibatta kal',
-    'stay_in_touch_frequency' => 'Her gün iletişimde kalın|Her {count} gün iletişimde kalın',
+    'stay_in_touch_frequency' => 'Her {count} gün iletişimde kalın',
     'stay_in_touch_invalid' => 'Sıklık değeri, 0\'dan daha büyük bir sayı olmalıdır.',
     'stay_in_touch_premium' => 'Bu özelliği kullanabilmek için hesabınızı yükseltmeniz gerekir',
     'stay_in_touch_modal_title' => 'İrtibatta kal',
@@ -185,10 +185,10 @@ return [
     'reminders_delete_success' => 'Hatırlatıcı başarıyla silindi',
     'reminders_update_success' => 'Hatırlatıcı başarıyla güncellendi',
 
-    'reminder_frequency_day' => ':number günde bir',
-    'reminder_frequency_week' => ':number haftada bir',
-    'reminder_frequency_month' => ':number ayda bir',
-    'reminder_frequency_year' => ':number yılda bir',
+    'reminder_frequency_day' => 'her gün|[2,*]:number günde bir',
+    'reminder_frequency_week' => 'her hafta|[2,*]:number haftada bir',
+    'reminder_frequency_month' => 'her ay|[2,*]:number ayda bir',
+    'reminder_frequency_year' => 'her yıl|[2,*]:number yılda bir',
     'reminder_frequency_one_time' => ':date tarihinde',
     'reminders_delete_confirmation' => 'Bu hatırlatıcıyı silmek ister misiniz?',
     'reminders_delete_cta' => 'Sil',
