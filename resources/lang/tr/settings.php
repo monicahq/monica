@@ -284,7 +284,7 @@ return [
 
     'tags_list_title' => 'Etiketler',
     'tags_list_description' => 'You can organize your contacts by setting up tags. Tags work like folders, but you can add more than one tag to a contact. To add a new tag, add it on the contact itself.',
-    'tags_list_contact_number' => '1 bağlantı|:count bağlantı',
+    'tags_list_contact_number' => ':count bağlantı',
     'tags_list_delete_success' => 'Etiket başarıyla silindi',
     'tags_list_delete_confirmation' => 'Etiketi silmek istediğinizden emin misiniz? Bağlantılar silinmeyecek, sadece etiket silinecektir.',
     'tags_blank_title' => 'Tags are a great way of categorizing your contacts.',
