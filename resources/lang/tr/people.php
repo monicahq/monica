@@ -268,10 +268,10 @@ return [
     'activities_activity' => 'Aktivite Kategorisi',
     'activities_view_activities_report' => 'Aktiviteler raporunu görüntüle',
     'activities_profile_title' => ':name ile sizin aranızdaki aktiviteler raporu',
-    'activities_profile_subtitle' => 'Şu ana kadar :name ile toplamda :total_activities, son 12 ayda :activities_last_twelve_months aktiviteyi kayıt altına aldınız.|Şu ana kadar :name ile toplamda :total_activities, son 12 ayda :activities_last_twelve_months aktiviteyi kayıt altına aldınız.',
+    'activities_profile_subtitle' => 'Şu ana kadar :name ile toplamda :total_activities, son 12 ayda :activities_last_twelve_months aktiviteyi kayıt altına aldınız.',
     'activities_profile_year_summary_activity_types' => 'İşte :year yılında birlikte gerçekleştirdiğiniz etkinlik türlerinin bir dökümü',
     'activities_profile_year_summary' => 'İşte :year yılında ikinizin yaptıkları',
-    'activities_profile_number_occurences' => ':value aktivite|:value aktivite',
+    'activities_profile_number_occurences' => ':value aktivite',
 
     // notes
     'notes_create_success' => 'Not başarıyla oluşturuldu',
