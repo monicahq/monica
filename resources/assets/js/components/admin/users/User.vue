@@ -3,6 +3,7 @@
 
 <template>
   <div>
+    <notifications group="main" position="top middle" width="400" />
     <item-screen title="User" resource="user" :id="id" v-slot:default="slotProps">
       <div class="dt">
         <div class="dt-row h2">
@@ -118,22 +119,28 @@ export default {
   methods: {
 
     switchAdmin(value) {
-      axios.put('admin-api/user/'+this.id+'/adminToggle')
-        .then(response => {
-          Vue.set(this.entry, 'is_admin', value);
-        }, error => {
-          Vue.set(this.entry, 'is_admin', !value);
-        });
+      this._switchToggle(value, 'admin-api/user/'+this.id+'/adminToggle', this.entry, 'is_admin');
     },
 
     switchPremium(value) {
-      axios.put('admin-api/account/'+this.entry.account.id+'/premiumToggle')
-        .then(response => {
-          Vue.set(this.entry.account, 'has_access_to_paid_version_for_free', value);
-        }, error => {
-          Vue.set(this.entry.account, 'has_access_to_paid_version_for_free', !value);
-        });
+      this._switchToggle(value, 'admin-api/account/'+this.entry.account.id+'/premiumToggle', this.entry.account, 'has_access_to_paid_version_for_free');
     },
+
+    _switchToggle(value, backendUrl, element, child) {
+      axios.put(backendUrl, { value: value })
+        .then(response => {
+          Vue.set(element, child, value);
+        }, error => {
+          Vue.set(element, child, !value);
+          this.$notify({
+            group: 'main',
+            title: this.$t('app.default_save_error'),
+            text: '',
+            type: 'error'
+          });
+
+        });
+    }
   }
 };
 </script>
