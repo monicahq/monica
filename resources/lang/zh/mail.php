@@ -15,7 +15,7 @@ return [
     'notification_description' => '在:count天后(:date),将有以下事件发生：',
 
     'stay_in_touch_subject_line' => '您的『常联系』提醒 :name',
-    'stay_in_touch_subject_description' => '您的常联系提醒： 每 :frequency 天 与 :name 联系.|您的常联系提醒： 每 :frequency 天 与 :name 联系.',
+    'stay_in_touch_subject_description' => '您的常联系提醒： 每 :frequency 天 与 :name 联系.',
 
     'notifications_whoops' => '糟了!',
     'notifications_hello' => '您好！',
