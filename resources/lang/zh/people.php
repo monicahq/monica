@@ -185,9 +185,9 @@ return [
     'reminders_delete_success' => '已成功删除提醒',
     'reminders_update_success' => '已成功更新提醒',
 
-    'reminder_frequency_day' => '每天 | 每:number天',
-    'reminder_frequency_week' => '每周 | 每:number星期',
-    'reminder_frequency_month' => '每月 | 每:number月',
+    'reminder_frequency_day' => '每:number天',
+    'reminder_frequency_week' => ' 每:number星期',
+    'reminder_frequency_month' => ' 每:number月',
     'reminder_frequency_year' => '每年 | 每:number年',
     'reminder_frequency_one_time' => '在:date',
     'reminders_delete_confirmation' => '确实要删除此提醒吗？',
