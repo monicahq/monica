@@ -131,23 +131,23 @@ return [
 
     'relationship_type_partner' => 'pareja',
     'relationship_type_partner_female' => 'pareja',
-    'relationship_type_partner_with_name' => ':name de la pareja',
-    'relationship_type_partner_female_with_name' => ':name de la pareja',
+    'relationship_type_partner_with_name' => 'la pareja de :name',
+    'relationship_type_partner_female_with_name' => 'la pareja de :name',
 
     'relationship_type_spouse' => 'esposa',
     'relationship_type_spouse_female' => 'esposa',
-    'relationship_type_spouse_with_name' => ':name de la esposa',
-    'relationship_type_spouse_female_with_name' => ':name de la esposa',
+    'relationship_type_spouse_with_name' => 'la esposa de :name',
+    'relationship_type_spouse_female_with_name' => 'la esposa de :name',
 
     'relationship_type_date' => 'cita',
     'relationship_type_date_female' => 'cita',
-    'relationship_type_date_with_name' => ':name de la fecha',
-    'relationship_type_date_female_with_name' => ':name de la fecha',
+    'relationship_type_date_with_name' => 'la fecha de :name',
+    'relationship_type_date_female_with_name' => 'la fecha de :name',
 
     'relationship_type_lover' => 'amante',
     'relationship_type_lover_female' => 'amante',
-    'relationship_type_lover_with_name' => ':name de amante',
-    'relationship_type_lover_female_with_name' => 'amante de :name',
+    'relationship_type_lover_with_name' => 'la amante de :name',
+    'relationship_type_lover_female_with_name' => 'la amante de :name',
 
     'relationship_type_inlovewith' => 'enamorado de',
     'relationship_type_inlovewith_female' => 'enamorado de',
