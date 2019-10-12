@@ -51,8 +51,8 @@ We use the [vue-i18n](https://www.npmjs.com/package/vue-i18n) package.
   - To translate: integrate the text replacement in your translation, like "{param}".
   - Example: `{name}’s birthday` => `anniversaire de {name}`
   - Other example: `{{ $t('people.stay_in_touch_frequency', { count: frequency }) }}`
-- **plural forms**: [vue-i18n doc](http://kazupon.github.io/vue-i18n/en/pluralization.html).
-  Actual version of vue-i18n can only render 2 messages separate with a pipe. Left message for 1 element, right message for 2 or more elements.
+- **plural forms**: See [vue-i18n doc](http://kazupon.github.io/vue-i18n/en/pluralization.html).
+  Pluralization is customized in the file [pluralization.js](https://github.com/monicahq/monica/blob/master/resources/assets/js/pluralization.js). This should fit your language pluralization form. Messages must be separated by a pipe, but you cannot indicate the number of occurences to which apply it.
 
 <a id="markdown-rules-for-translation" name="rules-for-translation"></a>
 ## Rules for translation
@@ -68,3 +68,4 @@ See https://en.wikipedia.org/wiki/Punctuation
 - [Quotes](https://en.wikipedia.org/wiki/Quotation_mark): use real quotation marks like `“ ”` or `« »` instead of double quote `"`
 - [Dash](https://en.wikipedia.org/wiki/Dash): use en dash `–` instead of hyphen `-` when it’s necessary
 - [Interpuct](https://en.wikipedia.org/wiki/Interpunct) for separate some lists: `·`
+- etc.
