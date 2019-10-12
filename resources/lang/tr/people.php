@@ -4,13 +4,13 @@ return [
 
     //index
     'people_not_found' => 'Kişi bulunamadı',
-    'people_list_number_kids' => '1 çocuk|:count çocuklar',
+    'people_list_number_kids' => ':count çocuklar',
     'people_list_last_updated' => 'Son görüşme:',
-    'people_list_number_reminders' => '1 hatırlatıcı|:count hatırlatıcı',
+    'people_list_number_reminders' => ':count hatırlatıcı',
     'people_list_blank_title' => 'Hesabınızda kayıtlı kişi yok',
     'people_list_blank_cta' => 'Birisini ekle',
     'people_list_sort' => 'Sırala',
-    'people_list_stats' => '1 bağlantı|:count bağlantı',
+    'people_list_stats' => ':count bağlantı',
     'people_list_firstnameAZ' => 'İsimleri A → Z göre sırala',
     'people_list_firstnameZA' => 'İsimleri Z → A göre sırala',
     'people_list_lastnameAZ' => 'Soy isimleri A → Z göre sırala',
@@ -19,7 +19,7 @@ return [
     'people_list_lastactivitydateOldtoNew' => 'Son aktivite tarihi yeniden eskiye göre sırala',
     'people_list_filter_tag' => 'Etiketlenen tüm bağlantılar listele',
     'people_list_clear_filter' => 'Filtreyi temizle',
-    'people_list_contacts_per_tags' => '1 bağlantı|:count bağlantı',
+    'people_list_contacts_per_tags' => ':count bağlantı',
     'people_list_show_dead' => 'Ölmüş kişileri göster (:count)',
     'people_list_hide_dead' => 'Ölmüş kişileri gizle (:count)',
     'people_search' => 'Bağlantılarda ara...',
@@ -477,11 +477,11 @@ return [
     'avatar_change_title' => 'Avatarınızı değiştirin',
     'avatar_question' => 'Hangi avatarı kullanmak istersiniz?',
     'avatar_default_avatar' => 'Varsayılan avatar',
-    'avatar_adorable_avatar' => 'The Adorable avatar',
-    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
-    'avatar_current' => 'Keep the current avatar',
-    'avatar_photo' => 'From a photo that you upload',
+    'avatar_adorable_avatar' => 'Adorable avatarı',
+    'avatar_gravatar' => 'Bu kişinin e-posta adresiyle ilişkili Gravatar.<a href="https://gravatar.com/">Gravatar</a>, kullanıcıların e-posta adreslerini fotoğraflarla ilişkilendirmelerini sağlayan global bir sistemdir.',
+    'avatar_current' => 'Mevcut avatarı kullanın',
+    'avatar_photo' => 'Yüklediğiniz bir fotoğraftan',
 
     // emotions
-    'emotion_this_made_me_feel' => 'This made you feel…',
+    'emotion_this_made_me_feel' => 'Bu size … hissettirdi',
 ];
