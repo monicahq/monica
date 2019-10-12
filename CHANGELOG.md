@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-*
+* Add pluralization forms for non-english-like-plural languages, for vue.js translations
 
 ### Fixes:
 
