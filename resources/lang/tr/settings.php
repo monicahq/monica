@@ -55,7 +55,7 @@ return [
     'settings_success' => 'Preferences updated!',
     'locale' => 'Language used in the app',
     'locale_ar' => 'Arapça',
-    'locale_cs' => 'Çekce',
+    'locale_cs' => 'Çekçe',
     'locale_de' => 'Almanca',
     'locale_en' => 'İngilizce',
     'locale_es' => 'İspanyolca',
