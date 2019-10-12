@@ -268,7 +268,7 @@ return [
     'activities_activity' => 'Aktivite Kategorisi',
     'activities_view_activities_report' => 'Aktiviteler raporunu görüntüle',
     'activities_profile_title' => ':name ile sizin aranızdaki aktiviteler raporu',
-    'activities_profile_subtitle' => 'You’ve logged :total_activities activity with :name in total and :activities_last_twelve_months in the last 12 months so far.|You’ve logged :total_activities activities with :name in total and :activities_last_twelve_months in the last 12 months so far.',
+    'activities_profile_subtitle' => 'Şu ana kadar :name ile toplamda :total_activities, son 12 ayda :activities_last_twelve_months aktiviteyi kayıt altına aldınız.|Şu ana kadar :name ile toplamda :total_activities, son 12 ayda :activities_last_twelve_months aktiviteyi kayıt altına aldınız.',
     'activities_profile_year_summary_activity_types' => 'Here is a breakdown of the type of activities you’ve done together in :year',
     'activities_profile_year_summary' => 'Here is what you two have done in :year',
     'activities_profile_number_occurences' => ':value activity|:value activities',
