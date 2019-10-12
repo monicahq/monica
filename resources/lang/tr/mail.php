@@ -8,7 +8,7 @@ return [
     'for' => 'For: :name',
     'comment' => 'Comment: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
-    'footer_contact_info2' => 'See :name’s profile',
+    'footer_contact_info2' => ':name adlı kişinin profilini gör',
     'footer_contact_info2_link' => 'See :name’s profile: :url',
 
     'notification_subject_line' => 'Yaklaşan etkinliğiniz var',
@@ -21,7 +21,7 @@ return [
     'notifications_hello' => 'Merhaba!',
     'notifications_regards' => 'Saygılarımızla',
     'notifications_footer' => 'If you’re having trouble clicking the ":actionText" button, copy and paste the URL below into your web browser: [:actionURL](:actionURL)',
-    'notifications_rights' => 'All rights reserved',
+    'notifications_rights' => 'Tüm Hakları Saklıdır',
 
     'confirmation_email_title' => 'Monica – E-posta Adresi Onayı',
     'confirmation_email_intro'=> 'To validate your email click on the button below',
