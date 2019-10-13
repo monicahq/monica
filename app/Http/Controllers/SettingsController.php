@@ -32,6 +32,7 @@ use App\Services\Account\DestroyAllDocuments;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
+use App\Services\Account\Settings\ExportAccount;
 
 class SettingsController
 {
@@ -252,6 +253,11 @@ class SettingsController
         $path = dispatch_now(new ExportAccountAsSQL());
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
+
+        return (new ExportAccount)->execute([
+            'account_id' => auth()->user()->account_id,
+            'user_id' => auth()->user()->id,
+        ]);
 
         return response()
             ->download($adapter->getPathPrefix().$path, 'monica.sql')
