@@ -105,6 +105,8 @@ class ExportAccountAsSQL
 
         // Looping over the tables
         foreach ($tables as $table) {
+            \Log::info('Table processed: '.$table->table_name);
+
             $tableName = $table->table_name;
 
             if (in_array($tableName, $this->ignoredTables)) {
