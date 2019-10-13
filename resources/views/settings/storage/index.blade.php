@@ -42,32 +42,36 @@
             <p>{{ trans('settings.storage_description') }}</p>
 
             <ul class="table">
-                @foreach($documents as $document)
-                  <li class="table-row">
-                    <div class="table-cell">
-                        {{ $document->created_at }}
-                    </div>
-                    <div class="table-cell">
-                        {{ $document->original_filename }} ({{ round($document->filesize / 1000) }} Kb)
-                    </div>
-                    <div class="table-cell">
-                        <a href="people/{{ $document->contact->hashID() }}">{{ $document->contact->name }}</a>
-                    </div>
-                  </li>
-                @endforeach
-                @foreach($photos as $photo)
-                  <li class="table-row">
-                    <div class="table-cell">
-                        {{ $photo->created_at }}
-                    </div>
-                    <div class="table-cell">
-                        {{ $photo->original_filename }} ({{ round($photo->filesize / 1000) }} Kb)
-                    </div>
-                    <div class="table-cell">
-                        <a href="people/{{ $photo->contact()->hashID() }}">{{ $photo->contact()->name }}</a>
-                    </div>
-                  </li>
-                @endforeach
+              @foreach($documents as $document)
+                @if (!is_null($document->contact()))
+                <li class="table-row">
+                  <div class="table-cell">
+                    {{ $document->created_at }}
+                  </div>
+                  <div class="table-cell">
+                    {{ $document->original_filename }} ({{ round($document->filesize / 1000) }} Kb)
+                  </div>
+                  <div class="table-cell">
+                    <a href="{{ $document->contact()->getLink() }}">{{ $document->contact->name }}</a>
+                  </div>
+                </li>
+                @endif
+              @endforeach
+              @foreach($photos as $photo)
+                @if (!is_null($photo->contact()))
+                <li class="table-row">
+                  <div class="table-cell">
+                    {{ $photo->created_at }}
+                  </div>
+                  <div class="table-cell">
+                    {{ $photo->original_filename }} ({{ round($photo->filesize / 1000) }} Kb)
+                  </div>
+                  <div class="table-cell">
+                    <a href="{{ $photo->contact()->getLink() }}">{{ $photo->contact()->name }}</a>
+                  </div>
+                </li>
+                @endif
+              @endforeach
             </ul>
           </div>
         </div>
