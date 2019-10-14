@@ -102,7 +102,7 @@ stages:
     - task: PublishCodeCoverageResults@2
       displayName: 'Publish code coverage'
       inputs:
-        summaryFileLocation: '$(System.DefaultWorkingDirectory)/coveragereport/Cobertura.xml'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/results/coverage.xml'
         failIfCoverageEmpty: false
       condition: succeededOrFailed()
     - bash: |
