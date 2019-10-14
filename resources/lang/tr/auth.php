@@ -62,7 +62,7 @@ return [
     'register_firstname' => 'Ad',
     'register_firstname_example' => 'örn: John',
     'register_lastname' => 'Soyad',
-    'register_lastname_example' => 'örn. Doe',
+    'register_lastname_example' => 'örn: Ağa',
     'register_password' => 'Şifre',
     'register_password_example' => 'Güçlü bir şifre girin',
     'register_password_confirmation' => 'Şifre doğrulama',
