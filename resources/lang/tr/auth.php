@@ -60,7 +60,7 @@ return [
     'register_email' => 'Geçerli bir e-posta adresi girin',
     'register_email_example' => 'mail@mail',
     'register_firstname' => 'Ad',
-    'register_firstname_example' => 'örn: John',
+    'register_firstname_example' => 'örn: Mehmet',
     'register_lastname' => 'Soyad',
     'register_lastname_example' => 'örn: Ağa',
     'register_password' => 'Şifre',
