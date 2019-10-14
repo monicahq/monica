@@ -11,7 +11,7 @@
     "e2e": "$(yarn bin)/cypress run",
     "e2e-gui": "$(yarn bin)/cypress open",
     "inst": "yarn install --ignore-engines --frozen-lockfile",
-    "lint": "eslint --ext .js,.vue resources/assets/js/",
+    "lint": "eslint --ext .js,.vue resources/js/",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect"
   },
