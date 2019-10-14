@@ -4,7 +4,7 @@ return [
 
     'subject_line' => ':contact için hatırlatıcı',
     'greetings' => 'Merhaba :username',
-    'want_reminded_of' => 'You wanted to be reminded of :reason',
+    'want_reminded_of' => ':reason için hatırlatma istediniz',
     'for' => 'For: :name',
     'comment' => 'Comment: :comment',
     'footer_contact_info' => 'Add, view, complete, and change information about this contact:',
