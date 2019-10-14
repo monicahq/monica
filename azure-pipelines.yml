@@ -99,10 +99,9 @@ stages:
         targetdir: 'coveragereport'
         reporttypes: 'Cobertura'
       condition: succeededOrFailed()
-    - task: PublishCodeCoverageResults@1
+    - task: PublishCodeCoverageResults@2
       displayName: 'Publish code coverage'
       inputs:
-        codeCoverageTool: cobertura
         summaryFileLocation: '$(System.DefaultWorkingDirectory)/coveragereport/Cobertura.xml'
         failIfCoverageEmpty: false
       condition: succeededOrFailed()
