@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relación ha sido eliminada.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Aún no tienes tareas.',
     'tasks_form_title' => 'Título',
     'tasks_form_description' => 'Descripción (opcional)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'Se produjo un error al subir el archivo. Por favor inténtelo de nuevo.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Fotos relacionadas',
     'photo_list_cta' => 'Subir foto',
     'photo_list_blank_desc' => 'Puede almacenar imágenes acerca de este contacto. ¡Suba una ahora!',
