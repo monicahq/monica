@@ -221,7 +221,7 @@ return [
     'relationship_form_deletion_success' => 'İlişki silindi.',
 
     // tasks
-    'tasks_title' => 'Tasks',
+    'tasks_title' => 'Görevler',
     'tasks_blank_title' => 'Henüz bir göreviniz yok.',
     'tasks_form_title' => 'Başlık',
     'tasks_form_description' => 'Açıklama (isteğe bağlı)',
@@ -466,7 +466,7 @@ return [
     'document_upload_zone_error' => 'Dosya karşıya yüklenirken bir hata oluştu. Lütfen aşağıdan tekrar deneyin.',
 
     // Photos
-    'photo_title' => 'Photos',
+    'photo_title' => 'Fotoğraflar',
     'photo_list_title' => 'İlgili fotoğraflar',
     'photo_list_cta' => 'Fotoğraf yükle',
     'photo_list_blank_desc' => 'Bu kişiyle ilgili görüntüleri saklayabilirsiniz. Şimdi bir tane yükle!',
