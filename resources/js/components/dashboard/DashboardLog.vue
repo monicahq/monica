@@ -208,7 +208,7 @@
                 {{ $t('dashboard.task_add_cta') }}
               </a>
             </p>
-            <img src="img/dashboard/blank_your_tasks.svg" />
+            <img src="img/dashboard/blank_your_tasks.svg" :alt="$t('dashboard.tasks_tab_your_tasks')" />
           </div>
 
           <!-- Add a task -->

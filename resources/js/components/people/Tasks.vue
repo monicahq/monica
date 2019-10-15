@@ -4,7 +4,7 @@
 <template>
   <div>
     <div>
-      <img src="img/people/tasks.svg" class="icon-section icon-tasks" />
+      <img src="img/people/tasks.svg" :alt="$t('people.tasks_title')" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.section_personal_tasks') }}
 
