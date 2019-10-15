@@ -187,7 +187,7 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
-import * as WebAuthn from '../../../../../vendor/asbiin/laravel-webauthn/resources/js/webauthn.js';
+import * as WebAuthn from '../../../../vendor/asbiin/laravel-webauthn/resources/js/webauthn.js';
 
 export default {
 
