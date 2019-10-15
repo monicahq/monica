@@ -6,7 +6,7 @@ return [
     'journal_description' => 'Note : le journal liste les entrées manuelles, ainsi que les entrées automatiques comme les activités que vous faites avec vos contacts. Bien que vous puissiez supprimer les entrées manuelles, vous devrez supprimer les activités directement de la page du contact pour les supprimer du journal.',
     'journal_add' => 'Ajouter une entrée',
     'journal_edit' => 'Éditer une entrée de journal',
-    'journal_empty' => 'Empty journal',
+    'journal_empty' => 'Journal vide',
     'journal_created_automatically' => 'Créée automatiquement',
     'journal_entry_type_journal' => 'Note de journal',
     'journal_entry_type_activity' => 'Activité',
