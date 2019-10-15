@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'Die Beziehung wurde gelöscht.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Du hast noch keine Aufgaben.',
     'tasks_form_title' => 'Titel',
     'tasks_form_description' => 'Beschreibung (optional)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'Es ist ein Fehler beim hochladen des Dokumentes aufgetreten, bitte versuchen sie es erneut.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Zugehörige Fotos',
     'photo_list_cta' => 'Foto hochladen',
     'photo_list_blank_desc' => 'Sie können Bilder zu diesem Kontakt speichern. Jetzt hochladen!',
