@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'Forholdet er blevet slettet.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Du har ingen opgaver endnu.',
     'tasks_form_title' => 'Titel',
     'tasks_form_description' => 'Beskrivelse (valgfrit)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'Der opstod en fejl under overførslen af dokumentet. Prøv venligst igen.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Relaterede billeder',
     'photo_list_cta' => 'Upload billede',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
