@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'De relatie is verwijdert.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Je hebt nog geen taken.',
     'tasks_form_title' => 'Titel',
     'tasks_form_description' => 'Beschrijving (optioneel)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'Er is een fout opgetreden tijdens uploaden van het document, probeer het a.u.b. opnieuw.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Gerelateerde foto\'s',
     'photo_list_cta' => 'Foto uploaden',
     'photo_list_blank_desc' => 'Je kan afbeeldingen van dit contact opslaan. Upload er nu eentje!',
