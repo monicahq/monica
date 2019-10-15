@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relazione è stata eliminata.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Nulla da fare.',
     'tasks_form_title' => 'Titolo',
     'tasks_form_description' => 'Descrizione (facoltativa)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'Si è verificato un errore. Per favore, riprova a caricare il documento.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Foto',
     'photo_list_cta' => 'Carica foto',
     'photo_list_blank_desc' => 'Qui puoi salvare foto relative a questa persona, caricane una adesso!',
