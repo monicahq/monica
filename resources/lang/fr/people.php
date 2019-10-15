@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relation a été supprimée.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Vous n’avez aucune tâche pour le moment.',
     'tasks_form_title' => 'Titre',
     'tasks_form_description' => 'Description (optionnel)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Photos associées',
     'photo_list_cta' => 'Télécharger une photo',
     'photo_list_blank_desc' => 'Vous pouvez enregistrer des images sur ce contact. Téléchargez-en une maintenant !',
