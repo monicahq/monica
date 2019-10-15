@@ -90,7 +90,7 @@ return [
     'breadcrumb_dav' => 'DAV Kaynakları',
     'breadcrumb_edit_introductions' => 'Nasıl tanıştınız',
     'breadcrumb_settings_personalization' => 'Kişiselleştirme',
-    'breadcrumb_settings_security' => 'Security',
+    'breadcrumb_settings_security' => 'Güvenlik',
     'breadcrumb_settings_security_2fa' => 'İki Aşamalı Doğrulama',
     'breadcrumb_profile' => ':name kişisinin Profili',
 
@@ -100,16 +100,16 @@ return [
     'gender_no_gender' => 'Cinsiyetsiz',
 
     'error_title' => 'Amanın! Bir şeyler ters gitti.',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
+    'error_unauthorized' => 'Bu kaynağı düzenlemeye yetkiniz yok.',
     'error_save' => 'We had an error trying to save the data.',
-    'error_try_again' => 'Something went wrong. Please try again.',
-    'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service Unavailable',
+    'error_try_again' => 'Bir şeyler ters gitti. Lütfen tekrar deneyin.',
+    'error_id' => 'Hata kimliği: :id',
+    'error_unavailable' => 'Servis Mevcut Değil',
     'error_maintenance' => 'Maintenance in progress. Be right back.',
     'error_help' => 'Kısa süre sonra geri döneceğiz.',
     'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => 'Veri kaydedildi.',
 
     'compliance_title' => 'Rahatsız ettiğimiz için üzgünüz.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
@@ -123,10 +123,10 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
+    'relationship_type_group_love' => 'Aşk İlişkileri',
+    'relationship_type_group_family' => 'Aile İlişkileri',
+    'relationship_type_group_friend' => 'Arkadaşlık İlişkileri',
+    'relationship_type_group_work' => 'İş İlişkileri',
     'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'significant other',
