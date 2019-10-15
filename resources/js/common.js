@@ -19,7 +19,7 @@ Vue.filter('formatDate', function(value) {
 window.marked = require('marked');
 
 // i18n
-import messages from '../../../public/js/langs/en.json';
+import messages from '../../public/js/langs/en.json';
 
 export default {
   i18n: new VueI18n({

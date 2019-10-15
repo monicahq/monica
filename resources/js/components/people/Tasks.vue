@@ -47,8 +47,8 @@
           </form-checkbox>
           
           <div v-if="editMode" class="di">
-            <i class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(task)"></i>
-            <i class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + task.id" @click="trash(task)"></i>
+            <em class="fa fa-pencil-square-o pointer pr2 ml3 dark-blue" @click="toggleEditMode(task)"></em>
+            <em class="fa fa-trash-o pointer pr2 dark-blue" :cy-name="'task-delete-button-' + task.id" @click="trash(task)"></em>
           </div>
 
           <!-- EDIT BOX -->
@@ -139,7 +139,7 @@
             </span>
           </form-checkbox>
           <div v-if="editMode" class="di">
-            <i class="fa fa-trash-o pointer pr2 ml3 dark-blue" @click="trash(task)"></i>
+            <em class="fa fa-trash-o pointer pr2 ml3 dark-blue" @click="trash(task)"></em>
           </div>
         </li>
       </ul>
@@ -148,8 +148,6 @@
 </template>
 
 <script>
-import moment from 'moment';
-
 export default {
 
   props: {
@@ -267,7 +265,7 @@ export default {
     },
 
     formatDate(dateAsString) {
-      var moment = require('moment-timezone');
+      let moment = require('moment-timezone');
       moment.locale(this._i18n.locale);
       moment.tz.setDefault('UTC');
 
