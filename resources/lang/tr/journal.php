@@ -6,7 +6,7 @@ return [
     'journal_description' => 'Not: günlük içerikleri hem sizin tarafınızdan hem de bağlantılarınızla olan etkinliklerden otomatik oluşturulur. Günlük girdilerini silebilirsiniz, etkinlikleri bağlantı sayfalarından silmeniz gerekir.',
     'journal_add' => 'Bir günlük girdisi ekle',
     'journal_edit' => 'Bir günlük girdisini düzenle',
-    'journal_empty' => 'Empty journal',
+    'journal_empty' => 'Boş günlük',
     'journal_created_automatically' => 'Otomatik olarak oluşturuldu',
     'journal_entry_type_journal' => 'Günlük girdisi',
     'journal_entry_type_activity' => 'Faaliyet',
