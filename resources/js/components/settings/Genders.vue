@@ -62,8 +62,8 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="showEdit(gender)"></i>
-            <i v-if="genders.length > 1" class="fa fa-trash-o pointer" @click="showDelete(gender)"></i>
+            <em class="fa fa-pencil-square-o pointer pr2" @click="showEdit(gender)"></em>
+            <em v-if="genders.length > 1" class="fa fa-trash-o pointer" @click="showDelete(gender)"></em>
           </div>
         </div>
       </div>

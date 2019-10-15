@@ -39,8 +39,8 @@
             </span>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(pet)"></i>
-            <i class="fa fa-trash-o pointer" @click="trash(pet)"></i>
+            <em class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(pet)"></em>
+            <em class="fa fa-trash-o pointer" @click="trash(pet)"></em>
           </div>
         </div>
 
