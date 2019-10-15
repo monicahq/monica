@@ -8,21 +8,21 @@
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "0.6.2",
+            "version": "0.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "5c9b2a2cb8c4780cbdefa1ae9de68778094ecae4"
+                "reference": "2b7899a6258dccf0ab771ab9ee694f5978ba628a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/5c9b2a2cb8c4780cbdefa1ae9de68778094ecae4",
-                "reference": "5c9b2a2cb8c4780cbdefa1ae9de68778094ecae4",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/2b7899a6258dccf0ab771ab9ee694f5978ba628a",
+                "reference": "2b7899a6258dccf0ab771ab9ee694f5978ba628a",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^1.5",
-                "laravel/framework": "^5.8",
+                "laravel/framework": "^5.8 || ^6.0",
                 "php-http/discovery": "^1.6",
                 "php-http/httplug": "^1.0 || ^2.0",
                 "php-http/message": "^1.7",
@@ -76,7 +76,7 @@
                 "security",
                 "webauthn"
             ],
-            "time": "2019-10-08T19:05:19+00:00"
+            "time": "2019-10-12T13:55:42+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
@@ -209,21 +209,20 @@
         },
         {
             "name": "beberlei/assert",
-            "version": "v3.2.3",
+            "version": "v3.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/assert.git",
-                "reference": "65b8152224aef7d3c197d5db05211d4319711b66"
+                "reference": "99508be011753690fe108ded450f5caaae180cfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/65b8152224aef7d3c197d5db05211d4319711b66",
-                "reference": "65b8152224aef7d3c197d5db05211d4319711b66",
+                "url": "https://api.github.com/repos/beberlei/assert/zipball/99508be011753690fe108ded450f5caaae180cfa",
+                "reference": "99508be011753690fe108ded450f5caaae180cfa",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
-                "ext-intl": "*",
                 "ext-json": "*",
                 "ext-mbstring": "*",
                 "ext-simplexml": "*",
@@ -233,6 +232,9 @@
                 "friendsofphp/php-cs-fixer": "*",
                 "phpstan/phpstan-shim": "*",
                 "phpunit/phpunit": ">=6.0.0 <8"
+            },
+            "suggest": {
+                "ext-intl": "Needed to allow Assertion::count(), Assertion::isCountable(), Assertion::minCount(), and Assertion::maxCount() to operate on ResourceBundles"
             },
             "type": "library",
             "autoload": {
@@ -265,7 +267,7 @@
                 "assertion",
                 "validation"
             ],
-            "time": "2019-08-23T17:56:26+00:00"
+            "time": "2019-10-10T10:33:57+00:00"
         },
         {
             "name": "clue/stream-filter",
