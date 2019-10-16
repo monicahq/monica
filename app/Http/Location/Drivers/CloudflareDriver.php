@@ -13,7 +13,7 @@ class CloudflareDriver extends Driver
     /**
      * @return string
      */
-    public function url()
+    public function url($ip)
     {
         return '';
     }
