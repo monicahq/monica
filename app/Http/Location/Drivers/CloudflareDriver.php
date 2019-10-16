@@ -27,10 +27,6 @@ class CloudflareDriver extends Driver
 
     protected function process($ip = null)
     {
-        if (! is_null($ip)) {
-            return $this->fallback->get($ip);
-        }
-
         try {
             return $this->getCountry();
         } catch (\Exception $e) {
