@@ -55,7 +55,7 @@
         <h3 class="mb4 mt3">
           {{ $t('people.photo_list_blank_desc') }}
         </h3>
-        <img src="img/people/photos/photos_empty.svg" class="w-50 center" />
+        <img src="img/people/photos/photos_empty.svg" :alt="$t('people.photo_title')" class="w-50 center" />
       </div>
     </div>
 
@@ -150,7 +150,7 @@
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
-            <img :src="url" class="mw-90 h-auto mb3" />
+            <img :src="url" :alt="$t('people.photo_title')" class="mw-90 h-auto mb3" />
             <div class="tc">
               <button class="btn" @click="showModal = false">
                 {{ $t('app.close') }}

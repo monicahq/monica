@@ -29,8 +29,8 @@
       <li v-for="contactInformation in contactInformationData" :key="contactInformation.id" class="mb2">
         <div v-show="!contactInformation.edit" class="w-100 dt">
           <div class="dtc">
-            <i v-if="contactInformation.fontawesome_icon" :class="contactInformation.fontawesome_icon" class="pr2 f6 light-silver"></i>
-            <i v-else class="pr2 fa fa-address-card-o f6 gray"></i>
+            <em v-if="contactInformation.fontawesome_icon" :class="contactInformation.fontawesome_icon" class="pr2 f6 light-silver"></em>
+            <em v-else class="pr2 fa fa-address-card-o f6 gray"></em>
 
             <a v-if="contactInformation.protocol" :href="contactInformation.protocol + contactInformation.data">
               {{ contactInformation.shortenName }}
@@ -43,8 +43,8 @@
             </span>
           </div>
           <div v-if="editMode" class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactInformation)"></i>
-            <i class="fa fa-trash-o pointer" @click="trash(contactInformation)"></i>
+            <em class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactInformation)"></em>
+            <em class="fa fa-trash-o pointer" @click="trash(contactInformation)"></em>
           </div>
         </div>
 

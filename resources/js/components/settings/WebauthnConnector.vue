@@ -93,7 +93,7 @@
             </div>
           </div>
 
-          <div v-if="errorMessage == ''" align="center">
+          <div v-if="errorMessage == ''" class="tc">
             <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
                  :alt="$t('settings.webauthn_insertKey')"
             />
@@ -147,7 +147,7 @@
         </div>
       </div>
 
-      <div align="center">
+      <div class="tc">
         <img src="https://ssl.gstatic.com/accounts/strongauth/Challenge_2SV-Gnubby_graphic.png"
              :alt="$t('settings.webauthn_insertKey')"
         />
@@ -187,7 +187,7 @@
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
-import * as WebAuthn from '../../../../../vendor/asbiin/laravel-webauthn/resources/js/webauthn.js';
+import * as WebAuthn from '../../../../vendor/asbiin/laravel-webauthn/resources/js/webauthn.js';
 
 export default {
 
