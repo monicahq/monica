@@ -160,7 +160,7 @@ class ActivitiesController extends Controller
 
         // Update the journal entry (in case date has changed)
         $activity->journalEntry->update([
-            'date' => $activity->date_it_happened
+            'date' => $activity->date_it_happened,
         ]);
 
         return redirect()->route('people.show', $contact)
