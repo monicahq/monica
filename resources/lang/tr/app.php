@@ -447,10 +447,10 @@ return [
     'weather_current_title' => 'Şu anki hava durumu',
 
     // dav
-    'dav_contacts' => 'Contacts',
-    'dav_contacts_description' => ':name’s contacts',
+    'dav_contacts' => 'Kişiler',
+    'dav_contacts_description' => ':name kişisinin kişileri',
     'dav_birthdays' => 'Doğum Günleri',
-    'dav_birthdays_description' => ':name’s contact’s birthdays',
-    'dav_tasks' => 'Tasks',
-    'dav_tasks_description' => ':name’s tasks',
+    'dav_birthdays_description' => ':name kişisinin kişilerinin doğum günleri',
+    'dav_tasks' => 'Görevler',
+    'dav_tasks_description' => ':name kişisinin görevleri',
 ];
