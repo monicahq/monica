@@ -20,12 +20,14 @@ window.marked = require('marked');
 
 // i18n
 import messages from '../../public/js/langs/en.json';
+import pluralization from './pluralization.js';
 
 export default {
   i18n: new VueI18n({
     locale: 'en', // set locale
     fallbackLocale: 'en',
-    messages: {'en': messages}
+    messages: {'en': messages},
+    pluralizationRules: pluralization,
   }),
   
   loadedLanguages : ['en'], // our default language that is preloaded

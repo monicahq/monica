@@ -12,7 +12,7 @@
   ],
   "addons": [
     {
-      "plan": "cleardb:ignite"
+      "plan": "jawsdb:kitefin"
     },
     {
       "plan": "scheduler:standard"
