@@ -174,7 +174,7 @@ $db = [
  * This is done below, added to the $db variable and then returned.
  */
 if (env('HEROKU')) {
-    $url = parse_url(env('CLEARDB_DATABASE_URL'));
+    $url = parse_url(env('JAWSDB_URL', env('CLEARDB_DATABASE_URL')));
 
     $db['connections']['heroku'] = [
         'driver' => 'mysql',
