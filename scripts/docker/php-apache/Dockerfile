@@ -39,7 +39,8 @@ RUN apt-get update && \
                 pdo_mysql \
                 mysqli \
                 soap \
-                mbstring && \
+                mbstring \
+                opcache && \
     apt-get -y remove libicu-dev icu-devtools && \
     apt-get -y autoremove && \
     rm -rf /var/lib/apt/lists/*
@@ -82,6 +83,13 @@ RUN mkdir -p bootstrap/cache; \
     chgrp -R www-data bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
 COPY .env.example .env
+
+# Php
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+COPY scripts/docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Sentry
 RUN echo $VCS_REF > .sentry-release; \

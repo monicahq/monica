@@ -84,6 +84,13 @@ RUN mkdir -p bootstrap/cache; \
     chmod -R g+w bootstrap/cache storage
 COPY .env.example .env
 
+# Php
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+COPY scripts/docker/opcache.ini /usr/php7/conf.d/opcache.ini
+
 # Sentry
 RUN echo $VCS_REF > .sentry-release; \
     echo $COMMIT > .sentry-commit; \
@@ -129,6 +136,7 @@ RUN set -ex && \
 		echo '[www]'; \
 		echo 'access.log = /dev/stdout'; \
 		echo 'catch_workers_output = yes'; \
+        echo 'clear_env = no'; \
 	} | tee docker.conf && \
 	{ \
 		echo '[global]'; \
