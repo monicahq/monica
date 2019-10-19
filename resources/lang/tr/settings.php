@@ -52,7 +52,7 @@ return [
     'reset_success' => 'Your account has been reset successfully',
     'delete_notice' => 'Are you sure to delete your account? There is no turning back.',
     'delete_cta' => 'Hesabı sil',
-    'settings_success' => 'Preferences updated!',
+    'settings_success' => 'Tercihler güncellendi!',
     'locale' => 'Uygulamada kullanılacak dil',
     'locale_ar' => 'Arapça',
     'locale_cs' => 'Çekçe',
