@@ -211,4 +211,12 @@ And this, at the very end of the file (after the last `INSERT INTO...` statement
 SET FOREIGN_KEY_CHECKS = 0
 ```
 
-Please file an issue if this does not succeed. You should now be able to access your Monica instance with the same credentials used for the old instance.
+**Notes:**
+
+1. If you get an error of the following format:
+```
+ERROR 1064 (42000) at line 264: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near .....
+```
+It means that the database schema you're trying to import into does not match the schema of that database you've exported from. This is usually due to a change in the schema between Monica version. Should only happen if you're migrating from an old, unupdated version of Monica to a new version on a new machine. Please file an issue if you see this error and we will attempt to assist you.
+
+You should now be able to access your Monica instance with the same credentials used for the old instance.
