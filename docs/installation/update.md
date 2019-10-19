@@ -73,3 +73,129 @@ Pro might help you with that.
 https://monicahq.com and you are good to go.
 
 There is one caveat with the SQL exporter: you can't get the photos you've uploaded for now.
+
+### Importing SQL into Heroku
+
+If you're running your own Monica Heroku instance as mentioned in the [Heroku Installation Documentation](https://github.com/monicahq/monica/blob/master/docs/installation/heroku.md), you're not actually running your own SQL server, which means that the solutions above might not be of assitance.
+
+Heroku dynos use a [ClearDB MySQL add-on](https://devcenter.heroku.com/articles/cleardb) as their database. You can still use an SQL admin tool (like phpMyAdmin or Sequel Pro) to interact with the database, as well as use the `mysql-client` command line tool, you just need to know where to look for the credentials. 
+
+If you open your app on the Heroku web interface, and click the "Settings" tabk, you'll have an option to reveal your configuration vars. Do so, and look for the `CLEARDB_DATABASE_URL` variable. It's format should look like this:
+
+`mysql://<USERNAME>:<PASSWORD>@<HOST>/<DATABASE>?reconnect=true`
+
+Which are the database's `HOST` URL, its name (i.e. `DATABASE`)  and your `USERNAME` and `PASSWORD`.
+The `HOST` should be the region where the databse is located (i.e. `us-cdbr-iron-east-01.cleardb.net`), the `DATABASE` should be prepended with `heroku_` (i.e. `heroku_xxxx`) and the `USERNAME` and `PASSWORD` should be strings of alphanumeric characters.
+
+Now that you have the database's URL and access credentials, you can log into the database from your favorite database management tool. If you'd like to use a command-line tool, here are the step by step instructions for debian-based (e.g. Ubuntu) Linux:
+
+#### WARNING: This will delete your current database. Only use on fresh installations, or if you know what you're doing. 
+
+0. Download your export file as explained above. Make sure you remember the username and password of the instance you **exported from**, as those will be your new sign-in information for the instance you're **importing into**.
+1. Get `mysql-client` by `sudo apt-get install mysql-client`. Note you might need to first add the relevant repositry using the instructions [here](https://downloads.mariadb.org/mariadb/repositories/#mirror=kku) (although don't follow them all the way, or you'll get a full running server on your own machine). If you're going to follow the scripted truncatiobn listed on the steps below, you'll need access to the MySQL socket, which is only available if you also installed `mysql-server`. You can do so by `sudo apt-get install mysql-server`. 
+2. Connect to your database - `mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE>`. You should see something like this in your terminal:
+
+```
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+```
+
+We are indeed using the password on the CLI, so disregard the warning. The `Reading table....` part should only take 10-20 seconds or so, wait it out. After that you should be prompted by your instllation's MySQL database:
+
+```
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 195775195
+Server version: 5.5.62-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2019, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> 
+```
+3. Take a look around, if you'd like. If you'll enter `SHOW DATABASES` you'll see:
+
+```
+Connection id:    195779265
+Current database: heroku_xxxxxxxxx
+
++------------------------+
+| Database               |
++------------------------+
+| information_schema     |
+| heroku_xxxxxxxxx       |
++------------------------+
+2 rows in set (19.85 sec)
+
+```
+Where `heroku_xxxxxxxxx` is `DATABASE`, your database's name. Note that the `Current database` is your Monica database, `DATABASE`.
+
+We're now done looking around and you can disconnect from the database by entering `quit` and hitting the return key.
+
+**Note:** If at any point the server disconnects, you'll see something like this:
+```
+mysql> SHOW DATABASES;
+ERROR 2013 (HY000): Lost connection to MySQL server during query
+mysql> SHOW DATABASES;
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+```
+
+This is prefectly fine, and the reason behind the `--reconnect` flag you saw earlier.
+
+4. **DANGER: This will delete all the things.** Make sure you're not connected to the database anymore (i.e. you entered `quit` and got back to your own machine). 
+
+Empty out all tables by running the following few lines of code (slightly modified from [this SO question](https://stackoverflow.com/questions/1912813/truncate-all-tables-in-a-mysql-database-in-one-command)), where all the credentials are the samen as mentioned earlier. You can also copy and paste it into a `.sh` file, `chmod 777 <FILE_NAME>` and then run it by `./<FILE_NAME>`.
+
+```
+# Connect to the database silently (-N and -s) and execute the given command (-e)
+echo "Attempting to connect to database ..."
+mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -Nse 'SHOW TABLES' | 
+
+# Skip foreign key checks for the process of the truncation
+echo "Temporarily disabling foreign key checks..."
+mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -e "SET FOREIGN_KEY_CHECKS = 0; 
+
+# The command above lists all the tables in your database, and pipes it to this while loop
+while read table; do 
+
+  # Empty out (i.e. "TRUNCATE" each table)
+  echo "Emptying out $table..."
+  mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -e "TRUNCATE TABLE $table" <DATABASE>
+  
+done
+
+# Re-enable foreign key checks 
+echo "Re-enabling foreign key checks..."
+mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -e "SET FOREIGN_KEY_CHECKS = 1; 
+
+echo "Done!"
+```
+**Notes:**
+
+1. This script performs the table truncations independent of one another, and one by one - on different connections. This is done on purpose, to avoid any catastrophic finger-slips on the actual database's MySQL console. If something bad happens, this should allow you to kill the terminal in time, or at least `CTRL+C` out of there. If you know what you're doing, then you can just connect to the database and follow [this article](https://tableplus.com/blog/2018/08/mysql-how-to-truncate-all-tables.html) on how to truncate all the tables with one SQL query.
+2. If you get the following error:
+```
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+```
+This probably means you have not installed `mysql-server` as mentioned before. Please do so now, and repeat the process.
+3. The `SET_FOREIGN_KEYS` part above relieves you of facing these type of errors:
+```
+ERROR 1701 (42000) at line 1: Cannot truncate a table referenced in a foreign key constraint
+```
+Due to
+
+This should take a bit of time to run, but you should be able to see the process as the truncated table go by. Wait for the `Done!` message.
+
+**Notes:** 
+
+1. 
+
+4. On your own machine (i.e. not on the remote database) import the fresh database into your installation (blatantly copied from this [SO answer](https://stackoverflow.com/questions/11803496/dump-sql-file-to-cleardb-in-heroku)):
+
+
