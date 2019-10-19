@@ -2,8 +2,7 @@
 
 Monica uses the concept of releases and tries to follow
 [Semantic Versioning](http://semver.org/) as much as possible. If you run the project locally,
-or if you have installed Monica on your own server, you need to follow these
-steps below to update it, **every single time**, or you will run into problems.
+or if you have installed Monica on your own server, you need to follow the steps below to update it, **every single time**, or you will run into problems.
 
 1. Always make a backup of your data before upgrading.
 1. Check that your backup is valid.
@@ -37,7 +36,9 @@ Your instance should be updated.
 
 You can update your Monica instance to the latest version by cloning the repository and pushing it to Heroku git.
 
-Clone the Monica repository to your local environment by git clone https://github.com/monicahq/monica, and add heroku git repository by heroku git:remote -a (heroku app name). Then, push to heroku by git push heroku master. Heroku will build and update the repository, automatically.
+1. Clone the Monica repository to your local environment by `git clone https://github.com/monicahq/monica.git`.
+1. Add your app's heroku git repository by `heroku git:remote -a (heroku app name)` (this of course requires the [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+1. Push to heroku by `git push heroku master`. Heroku will build and update the repository, automatically.
 
 ## Importing vCards (CLI only)
 
