@@ -191,5 +191,24 @@ Due to the database's schema. If you do end up seeing those types of errors, ple
 
 5. On your own machine (i.e. not on the remote database) import the fresh database into your installation (blatantly copied from this [SO answer](https://stackoverflow.com/questions/11803496/dump-sql-file-to-cleardb-in-heroku)):
 ```
+mysql ---host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> < monica.sql
+```
 
+If you get an error of the following format:
+```
+ERROR 1452 (23000) at line 8: Cannot add or update a child row: a foreign key constraint fails
+```
 
+Than open up `monica.sql` and at the following at the start of the file, right before the first `INSERT INTO...` statement:
+
+```
+SET FOREIGN_KEY_CHECKS = 0;
+```
+
+And this, at the very end of the file (after the last `INSERT INTO...` statement:
+
+```
+SET FOREIGN_KEY_CHECKS = 0
+```
+
+Please file an issue if this does not succeed. You should now be able to access your Monica instance with the same credentials used for the old instance.
