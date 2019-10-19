@@ -14,7 +14,7 @@
     </a>
 
     <span v-tooltip.top="$t('people.contact_archive_help')">
-      <i class="fa fa-info-circle relative pointer"></i>
+      <em class="fa fa-info-circle relative pointer"></em>
     </span>
   </div>
 </template>

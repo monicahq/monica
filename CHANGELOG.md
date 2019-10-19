@@ -6,14 +6,22 @@
 
 ### Enhancements:
 
-*
+* Use JawsDB by default on heroku instances
+* Add pluralization forms for non-english-like-plural languages, for vue.js translations
 
 ### Fixes:
 
-*
+* Fix storage page not being displayed if a contact does not exist anymore
 
 
 # RELEASED VERSIONS:
+
+## v2.15.2 - 2019-09-26
+
+### Enhancements:
+
+* Revert depends on php7.2+
+
 
 ## v2.15.1 - 2019-09-24
 

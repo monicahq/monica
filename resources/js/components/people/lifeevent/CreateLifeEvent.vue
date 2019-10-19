@@ -34,7 +34,7 @@
           <!-- CATEGORIES -->
           <li v-for="category in categories" :key="category.id" class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" @click="getType(category)">
             <div class="dib mr2">
-              <img :src="'img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" style="min-width: 12px;" />
+              <img :src="'img/people/life-events/categories/' + category.default_life_event_category_key + '.svg'" :alt="category.default_life_event_category_key" style="min-width: 12px;" />
             </div>
             {{ category.name }}
 
@@ -50,7 +50,7 @@
           <!-- TYPES -->
           <li v-for="type in types" :key="type.id" class="relative pointer bb b--gray-monica b--gray-monica pa2 life-event-add-row" @click="displayAddScreen(type)">
             <div class="dib mr2">
-              <img :src="'img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" style="min-width: 12px;" />
+              <img :src="'img/people/life-events/types/' + type.default_life_event_type_key + '.svg'" :alt="type.default_life_event_type_key" style="min-width: 12px;" />
             </div>
             {{ type.name }}
 
@@ -66,7 +66,7 @@
       <!-- ADD SCREEN -->
       <div v-else class="ba b--gray-monica br2 pt4">
         <div class="life-event-add-icon tc center">
-          <img :src="'img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'" style="min-width: 17px;" />
+          <img :src="'img/people/life-events/types/' + activeType.default_life_event_type_key + '.svg'" :alt="activeType.default_life_event_type_key" style="min-width: 17px;" />
         </div>
 
         <h3 class="pt3 ph4 f3 fw5 tc">
