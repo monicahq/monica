@@ -91,9 +91,10 @@ Now that you have the database's URL and access credentials, you can log into th
 
 #### WARNING: This will delete your current database. Only use on fresh installations, or if you know what you're doing. 
 
-0. Download your export file as explained above. Make sure you remember the username and password of the instance you **exported from**, as those will be your new sign-in information for the instance you're **importing into**.
-1. Get `mysql-client` by `sudo apt-get install mysql-client`. Note you might need to first add the relevant repositry using the instructions [here](https://downloads.mariadb.org/mariadb/repositories/#mirror=kku) (although don't follow them all the way, or you'll get a full running server on your own machine). If you're going to follow the scripted truncatiobn listed on the steps below, you'll need access to the MySQL socket, which is only available if you also installed `mysql-server`. You can do so by `sudo apt-get install mysql-server`. 
-2. Connect to your database - `mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE>`. You should see something like this in your terminal:
+1. **Update your Monica instance to the same version as the one you're importing into.** This will prevent nasty SQL mismatches later on.
+2. Download your export file as explained above. Make sure you remember the username and password of the instance you **exported from**, as those will be your new sign-in information for the instance you're **importing into**.
+3. Get `mysql-client` by `sudo apt-get install mysql-client`. Note you might need to first add the relevant repositry using the instructions [here](https://downloads.mariadb.org/mariadb/repositories/#mirror=kku) (although don't follow them all the way, or you'll get a full running server on your own machine). If you're going to follow the scripted truncatiobn listed on the steps below, you'll need access to the MySQL socket, which is only available if you also installed `mysql-server`. You can do so by `sudo apt-get install mysql-server`. 
+4. Connect to your database - `mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE>`. You should see something like this in your terminal:
 
 ```
 mysql: [Warning] Using a password on the command line interface can be insecure.
@@ -118,7 +119,7 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql> 
 ```
-3. Take a look around, if you'd like. If you'll enter `SHOW DATABASES` you'll see:
+5. Take a look around, if you'd like. If you'll enter `SHOW DATABASES` you'll see:
 
 ```
 Connection id:    195779265
@@ -148,7 +149,7 @@ No connection. Trying to reconnect...
 
 This is prefectly fine, and the reason behind the `--reconnect` flag you saw earlier.
 
-4. **DANGER: This will delete all the things.** Make sure you're not connected to the database anymore (i.e. you entered `quit` and got back to your own machine). 
+6. **DANGER: This will delete all the things.** Make sure you're not connected to the database anymore (i.e. you entered `quit` and got back to your own machine). 
 
 Empty out all tables by running the following few lines of code (slightly modified from [this SO question](https://stackoverflow.com/questions/1912813/truncate-all-tables-in-a-mysql-database-in-one-command)), where all the credentials are the samen as mentioned earlier. You can also copy and paste it into a `.sh` file, `chmod 777 <FILE_NAME>` and then run it by `./<FILE_NAME>`.
 
@@ -189,7 +190,7 @@ ERROR 1701 (42000) at line 1: Cannot truncate a table referenced in a foreign ke
 ```
 Due to the database's schema. If you do end up seeing those types of errors, please open an issue.
 
-5. On your own machine (i.e. not on the remote database) import the fresh database into your installation (blatantly copied from this [SO answer](https://stackoverflow.com/questions/11803496/dump-sql-file-to-cleardb-in-heroku)):
+7. On your own machine (i.e. not on the remote database) import the fresh database into your installation (blatantly copied from this [SO answer](https://stackoverflow.com/questions/11803496/dump-sql-file-to-cleardb-in-heroku)):
 ```
 mysql ---host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> < monica.sql
 ```
@@ -213,10 +214,10 @@ SET FOREIGN_KEY_CHECKS = 0
 
 **Notes:**
 
-1. If you get an error of the following format:
+* If you get an error of the following format:
 ```
 ERROR 1064 (42000) at line 264: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near .....
 ```
-It means that the database schema you're trying to import into does not match the schema of that database you've exported from. This is usually due to a change in the schema between Monica version. Should only happen if you're migrating from an old, unupdated version of Monica to a new version on a new machine. Please file an issue if you see this error and we will attempt to assist you.
+It means that the database schema you're trying to import into does not match the schema of that database you've exported from. This is usually due to a change in the schema between Monica version, and should only happen if you're migrating from an old, unupdated version of Monica to a new version on a new machine. Please file an issue if you see this error and we will attempt to assist you.
 
 You should now be able to access your Monica instance with the same credentials used for the old instance.
