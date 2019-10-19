@@ -153,49 +153,43 @@ This is prefectly fine, and the reason behind the `--reconnect` flag you saw ear
 Empty out all tables by running the following few lines of code (slightly modified from [this SO question](https://stackoverflow.com/questions/1912813/truncate-all-tables-in-a-mysql-database-in-one-command)), where all the credentials are the samen as mentioned earlier. You can also copy and paste it into a `.sh` file, `chmod 777 <FILE_NAME>` and then run it by `./<FILE_NAME>`.
 
 ```
+# USAGE: mysql_run_query <QUERY>
+mysql_run_query() {
 # Connect to the database silently (-N and -s) and execute the given command (-e)
-echo "Attempting to connect to database ..."
-mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -Nse 'SHOW TABLES' | 
+  mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -Nse "$1"
+}
 
-# Skip foreign key checks for the process of the truncation
-echo "Temporarily disabling foreign key checks..."
-mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -e "SET FOREIGN_KEY_CHECKS = 0; 
 
-# The command above lists all the tables in your database, and pipes it to this while loop
-while read table; do 
+# The command below lists all the tables in your database, and pipes it to this while loop
+echo "Getting all of the database's table names..."
+mysql_run_query "SHOW TABLES;" |
+while read table; do
 
   # Empty out (i.e. "TRUNCATE" each table)
   echo "Emptying out $table..."
-  mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -e "TRUNCATE TABLE $table" <DATABASE>
-  
-done
+  mysql_run_query "SET FOREIGN_KEY_CHECKS = 0;TRUNCATE TABLE $table;SET FOREIGN_KEY_CHECKS = 1;"
 
-# Re-enable foreign key checks 
-echo "Re-enabling foreign key checks..."
-mysql --host=<HOST> --user=<USERNAME> --password=<PASSWORD> --reconnect <DATABASE> -e "SET FOREIGN_KEY_CHECKS = 1; 
+done
 
 echo "Done!"
 ```
-**Notes:**
 
-1. This script performs the table truncations independent of one another, and one by one - on different connections. This is done on purpose, to avoid any catastrophic finger-slips on the actual database's MySQL console. If something bad happens, this should allow you to kill the terminal in time, or at least `CTRL+C` out of there. If you know what you're doing, then you can just connect to the database and follow [this article](https://tableplus.com/blog/2018/08/mysql-how-to-truncate-all-tables.html) on how to truncate all the tables with one SQL query.
-2. If you get the following error:
+This should take a bit of time to run, but you should be able to see the process as the truncated table go by. Wait for the `Done!` message.
+
+**Notes:**
+* This script performs the table truncations independent of one another, and one by one - on different connections. This is done on purpose, to avoid any catastrophic finger-slips on the actual database's MySQL console. If something bad happens, this should allow you to kill the terminal in time, or at least `CTRL+C` out of there. If you know what you're doing, then you can just connect to the database and follow [this article](https://tableplus.com/blog/2018/08/mysql-how-to-truncate-all-tables.html) on how to truncate all the tables with one SQL query.
+* If you get the following error:
 ```
 ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
 ```
 This probably means you have not installed `mysql-server` as mentioned before. Please do so now, and repeat the process.
-3. The `SET_FOREIGN_KEYS` part above relieves you of facing these type of errors:
+* The `SET_FOREIGN_KEYS` part above relieves you of facing these type of errors:
 ```
 ERROR 1701 (42000) at line 1: Cannot truncate a table referenced in a foreign key constraint
 ```
-Due to
+Due to the database's schema. If you do end up seeing those types of errors, please open an issue.
 
-This should take a bit of time to run, but you should be able to see the process as the truncated table go by. Wait for the `Done!` message.
-
-**Notes:** 
-
-1. 
-
-4. On your own machine (i.e. not on the remote database) import the fresh database into your installation (blatantly copied from this [SO answer](https://stackoverflow.com/questions/11803496/dump-sql-file-to-cleardb-in-heroku)):
+5. On your own machine (i.e. not on the remote database) import the fresh database into your installation (blatantly copied from this [SO answer](https://stackoverflow.com/questions/11803496/dump-sql-file-to-cleardb-in-heroku)):
+```
 
 
