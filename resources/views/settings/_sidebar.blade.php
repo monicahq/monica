@@ -71,5 +71,13 @@
       'title' => 'settings.sidebar_settings_security'])
     @endcomponent
 
+    @if (auth()->user()->admin)
+    @component('components.sidebar', [
+      'route' => 'admin.index',
+      'icon' => 'fa fa-shield',
+      'title' => 'settings.sidebar_settings_admin'])
+    @endcomponent
+    @endif
+
   </ul>
 </div>

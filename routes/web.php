@@ -303,6 +303,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::put('/admin-api/user/{user}/adminToggle', 'AdminController@userAdminToggle');
         Route::put('/admin-api/account/{account}/premiumToggle', 'AdminController@accountPremiumToggle');
 
-        Route::get('/admin/{view?}', 'AdminController@index')->where('view', '(.*)');
+        Route::get('/admin/{view?}', 'AdminController@index')->where('view', '(.*)')->name('index');
     });
 });
