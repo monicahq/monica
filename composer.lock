@@ -6366,16 +6366,16 @@
         },
         {
             "name": "sabre/dav",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/dav.git",
-                "reference": "e06e6202768babaab053e7ab260d1e43139a7753"
+                "reference": "fd0234d46c045fc9b35ec06bd2e7b490240e6ade"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/dav/zipball/e06e6202768babaab053e7ab260d1e43139a7753",
-                "reference": "e06e6202768babaab053e7ab260d1e43139a7753",
+                "url": "https://api.github.com/repos/sabre-io/dav/zipball/fd0234d46c045fc9b35ec06bd2e7b490240e6ade",
+                "reference": "fd0234d46c045fc9b35ec06bd2e7b490240e6ade",
                 "shasum": ""
             },
             "require": {
@@ -6441,7 +6441,7 @@
                 "framework",
                 "iCalendar"
             ],
-            "time": "2019-08-20T08:21:08+00:00"
+            "time": "2019-10-19T07:17:49+00:00"
         },
         {
             "name": "sabre/event",
@@ -6505,28 +6505,28 @@
         },
         {
             "name": "sabre/http",
-            "version": "5.0.0",
+            "version": "5.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/http.git",
-                "reference": "f91c7d4437dcbc6f89c8b64e855e1544f4b60250"
+                "reference": "73e2fa1ef894eddff145b698b6b0e2e2c5bf1d72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/http/zipball/f91c7d4437dcbc6f89c8b64e855e1544f4b60250",
-                "reference": "f91c7d4437dcbc6f89c8b64e855e1544f4b60250",
+                "url": "https://api.github.com/repos/sabre-io/http/zipball/73e2fa1ef894eddff145b698b6b0e2e2c5bf1d72",
+                "reference": "73e2fa1ef894eddff145b698b6b0e2e2c5bf1d72",
                 "shasum": ""
             },
             "require": {
                 "ext-ctype": "*",
+                "ext-curl": "*",
                 "ext-mbstring": "*",
-                "php": ">=7.0",
+                "php": "^7.0",
                 "sabre/event": ">=4.0 <6.0",
                 "sabre/uri": "^2.0"
             },
             "require-dev": {
-                "phpunit/phpunit": ">=6.0.0",
-                "sabre/cs": "~1.0.0"
+                "phpunit/phpunit": "^6.0 || ^7.0"
             },
             "suggest": {
                 "ext-curl": " to make http requests with the Client class"
@@ -6557,20 +6557,20 @@
             "keywords": [
                 "http"
             ],
-            "time": "2018-06-04T21:27:19+00:00"
+            "time": "2019-10-09T20:27:43+00:00"
         },
         {
             "name": "sabre/uri",
-            "version": "2.1.2",
+            "version": "2.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sabre-io/uri.git",
-                "reference": "c260a55cbd2083c03484f56f72fe042fee0c17ed"
+                "reference": "18f454324f371cbcabdad3d0d3755b4b0182095d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sabre-io/uri/zipball/c260a55cbd2083c03484f56f72fe042fee0c17ed",
-                "reference": "c260a55cbd2083c03484f56f72fe042fee0c17ed",
+                "url": "https://api.github.com/repos/sabre-io/uri/zipball/18f454324f371cbcabdad3d0d3755b4b0182095d",
+                "reference": "18f454324f371cbcabdad3d0d3755b4b0182095d",
                 "shasum": ""
             },
             "require": {
@@ -6607,7 +6607,7 @@
                 "uri",
                 "url"
             ],
-            "time": "2019-06-25T05:34:33+00:00"
+            "time": "2019-09-09T23:00:25+00:00"
         },
         {
             "name": "sabre/vobject",
