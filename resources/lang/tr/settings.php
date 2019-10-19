@@ -10,7 +10,7 @@ return [
     'sidebar_settings_import' => 'Verileri içe aktar',
     'sidebar_settings_tags' => 'Etiket Yönetimi',
     'sidebar_settings_api' => 'API',
-    'sidebar_settings_dav' => 'DAV Resources',
+    'sidebar_settings_dav' => 'DAV Kaynakları',
     'sidebar_settings_security' => 'Güvenlik',
 
     'export_title' => 'Hesap bilgilerini dışarı aktar',
@@ -42,7 +42,7 @@ return [
     'layout' => 'Görünüm',
     'layout_small' => 'En fazla 1200 piksel genişliğinde',
     'layout_big' => 'Full width of the browser',
-    'save' => 'Update preferences',
+    'save' => 'Tercihleri güncelle',
     'delete_title' => 'Hesabınızı silin',
     'delete_desc' => 'Hesabını silmek istiyor musun? Uyarı: silinme kalıcıdır ve tüm verilerin sonsuza dek silinecekdir.',
     'reset_desc' => 'Do you wish to reset your account? This will remove all your contacts, and the data associated with them. Your account will not be deleted.',
