@@ -44,7 +44,7 @@
         "ralouphie/mimey": "^2.0",
         "sabre/dav": "^4.0",
         "sentry/sentry-laravel": "^1.0",
-        "stevebauman/location": "^3.0",
+        "stevebauman/location": "^5.0",
         "symfony/translation": "^4.0",
         "thecodingmachine/safe": "^0.1.15",
         "vectorface/whip": "^0.3.2",
