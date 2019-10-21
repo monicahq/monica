@@ -117,7 +117,7 @@ class ExportAccountAsSQL
 
             // Looping over the rows
             foreach ($tableData as $data) {
-                \Log::info('Row processed: '. $tableData->id);
+                \Log::info('Row processed: '.$tableData->id);
                 $newSQLLine = 'INSERT INTO '.$tableName.' (';
                 $tableValues = [];
                 $skipLine = false;
