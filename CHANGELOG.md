@@ -6,7 +6,8 @@
 
 ### Enhancements:
 
-*
+* Use JawsDB by default on heroku instances
+* Add pluralization forms for non-english-like-plural languages, for vue.js translations
 
 ### Fixes:
 

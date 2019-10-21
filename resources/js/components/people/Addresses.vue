@@ -31,7 +31,7 @@
       <li v-for="(contactAddress, i) in contactAddresses" :key="contactAddress.id" class="mb2">
         <div v-show="!contactAddress.edit" class="w-100 dt">
           <div class="dtc">
-            <i class="f6 light-silver fa fa-globe pr2"></i>
+            <em class="f6 light-silver fa fa-globe pr2"></em>
 
             <a v-if="!editMode" :href="contactAddress.googleMapAddress" target="_blank" rel="noopener noreferrer">
               {{ contactAddress.address }}
@@ -51,8 +51,8 @@
             </span>
 
             <div v-if="editMode" class="fr">
-              <i class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></i>
-              <i class="fa fa-trash-o pointer" @click="trash(contactAddress)"></i>
+              <em class="fa fa-pencil-square-o pointer pr2" @click="toggleEdit(contactAddress)"></em>
+              <em class="fa fa-trash-o pointer" @click="trash(contactAddress)"></em>
             </div>
           </div>
         </div>

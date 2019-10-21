@@ -67,7 +67,7 @@ git checkout tags/v2.2.1
 
 Log in with the root account to configure the database.
 ```sh
-mysql -uroot -p
+mysql -u root -p
 ```
 
 Create a database called 'monica'.
