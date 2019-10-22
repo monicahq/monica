@@ -117,7 +117,6 @@ class ExportAccountAsSQL
 
             // Looping over the rows
             foreach ($tableData as $data) {
-                \Log::info('Row processed: '. $tableData->id);
                 $newSQLLine = 'INSERT INTO '.$tableName.' (';
                 $tableValues = [];
                 $skipLine = false;
@@ -132,6 +131,10 @@ class ExportAccountAsSQL
 
                 // Looping over the values
                 foreach ($data as $columnName => $value) {
+                    if ($columnName == 'id') {
+                        \Log::info('Row processed: ' . $value);
+                    }
+
                     if ($columnName == 'account_id' && $value !== $account->id) {
                         $skipLine = true;
                         break;
