@@ -77,8 +77,7 @@ return [
             'level' => 'debug',
         ],
         'testing' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
+            'driver' => 'errorlog',
             'level' => 'emergency',
         ],
     ],

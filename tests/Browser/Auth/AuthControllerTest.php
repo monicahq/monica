@@ -96,6 +96,7 @@ class AuthControllerTest extends ApiTestCase
             'password' => $userPassword,
         ]);
 
+        $response->dump();
         $response->assertStatus(200);
 
         $response->assertSee('Two Factor Authentication');
