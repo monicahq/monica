@@ -48,15 +48,29 @@ class ExportAccount extends BaseService
 '.PHP_EOL;
 
         $this->exportAccount($data);
+        $this->exportActivity($data);
         $this->exportGender($data);
-        //$this->exportContact($data);
+        $this->exportContact($data);
+        $this->exportActivityContact($data);
+        $this->exportActivityStatistic($data);
+        $this->exportActivityTypeCategory($data);
+        $this->exportActivityType($data);
+        $this->exportAddress($data);
+        $this->exportCall($data);
+        $this->exportCompany($data);
+        $this->exportContactFieldType($data);
+        $this->exportContactField($data);
+        $this->exportContactTag($data);
+        $this->exportContact($data);
         //$this->exportReminder($data);
-        // $this->exportActivityTypeCategory($data);
-        // $this->exportActivityType($data);
-        // $this->exportActivity($data);
         // $this->exportActivity($data);
 
+
+
         dd($this->sql);
+
+        // a boucler sur les photos
+        $this->exportContactPhoto($data);
     }
 
     private function buildInsertSQLQuery(string $tableName, string $foreignKey, array $columns, array $data)
@@ -74,14 +88,15 @@ class ExportAccount extends BaseService
             return;
         }
 
+        $listOfColumns = implode(",", $columns);
+
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
 
-            $this->sql = $this->sql.'INSERT INTO '.$tableName.' ('.implode(",", $columns).') values (';
+            $this->sql = $this->sql.'INSERT INTO '.$tableName.' ('.$listOfColumns.') values (';
 
             // build an array of values
-            foreach ($columns as $columns => $value) {
-
+            foreach ($columns as $key => $value) {
                 $value = $singleSQLData->{$value};
 
                 if (is_null($value)) {
@@ -92,9 +107,9 @@ class ExportAccount extends BaseService
 
                 array_push($columnValues, $value);
             }
-        }
 
-        $this->sql .= implode(',', $columnValues).');'.PHP_EOL;
+            $this->sql .= implode(',', $columnValues) . ');' . PHP_EOL;
+        }
     }
 
     /**
@@ -117,50 +132,69 @@ class ExportAccount extends BaseService
     }
 
     /**
-     * Export the Gender table.
+     * Export the Activity table.
      *
      * @param array $data
      * @return string
      */
-    private function exportGender(array $data)
+    private function exportActivity(array $data)
     {
         $columns = [
             'id',
             'account_id',
-            'name',
-            'type',
+            'activity_type_id',
+            'summary',
+            'description',
+            'date_it_happened',
             'created_at',
             'updated_at',
         ];
 
         $foreignKey = 'account_id';
 
-        $this->buildInsertSQLQuery('genders', $foreignKey, $columns, $data);
+        $this->buildInsertSQLQuery('activities', $foreignKey, $columns, $data);
     }
 
     /**
-     * Export the Contact table.
+     * Export the Activity Contact table.
      *
      * @param array $data
      * @return string
      */
-    private function exportContact(array $data)
+    private function exportActivityContact(array $data)
     {
         $columns = [
-            'id',
+            'activity_id',
             'account_id',
-            'first_name',
-            'middle_name',
-            'last_name',
-            'nickname',
-            'gender_id',
-            'description',
-            'deceased_special_date_id',
+            'contact_id',
         ];
 
         $foreignKey = 'account_id';
 
-        $this->buildInsertSQLQuery('contacts', $foreignKey, $columns, $data);
+        $this->buildInsertSQLQuery('activity_contact', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Activity Statistic table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportActivityStatistic(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'year',
+            'count',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('activity_statistics', $foreignKey, $columns, $data);
     }
 
     /**
@@ -210,26 +244,246 @@ class ExportAccount extends BaseService
     }
 
     /**
-     * Export the Activity table.
+     * Export the Address table.
      *
      * @param array $data
      * @return string
      */
-    private function exportActivity(array $data)
+    private function exportAddress(array $data)
     {
         $columns = [
             'id',
             'account_id',
-            'activity_type_id',
-            'summary',
-            'description',
-            'date_it_happened',
+            'place_id',
+            'contact_id',
+            'name',
             'created_at',
             'updated_at',
         ];
 
         $foreignKey = 'account_id';
 
-        $this->buildInsertSQLQuery('activities', $foreignKey, $columns, $data);
+        $this->buildInsertSQLQuery('addresses', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Call table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportCall(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'called_at',
+            'content',
+            'contact_called',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('calls', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Company table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportCompany(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'website',
+            'number_of_employees',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('companies', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Contact Field Type table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportContactFieldType(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'fontawesome_icon',
+            'protocol',
+            'delible',
+            'type',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('contact_field_types', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Contact Field table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportContactField(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'contact_field_type_id',
+            'data',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('contact_fields', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Contact Tag table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportContactTag(array $data)
+    {
+        $columns = [
+            'contact_id',
+            'tag_id',
+            'account_id',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('contact_tag', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Contact table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportContact(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'first_name',
+            'middle_name',
+            'last_name',
+            'nickname',
+            'gender_id',
+            'description',
+            'uuid',
+            'is_starred',
+            'is_partial',
+            'is_active',
+            'is_dead',
+            'deceased_special_date_id',
+            'deceased_reminder_id',
+            'last_talked_to',
+            'stay_in_touch_frequency',
+            'stay_in_touch_trigger_date',
+            'birthday_special_date_id',
+            'birthday_reminder_id',
+            'first_met_through_contact_id',
+            'first_met_special_date_id',
+            'first_met_reminder_id',
+            'first_met_where',
+            'first_met_additional_info',
+            'job',
+            'company',
+            'food_preferences',
+            'avatar_source',
+            'avatar_gravatar_url',
+            'avatar_adorable_uuid',
+            'avatar_adorable_url',
+            'avatar_default_url',
+            'avatar_photo_id',
+            'has_avatar',
+            'avatar_external_url',
+            'avatar_file_name',
+            'avatar_location',
+            'gravatar_url',
+            'last_consulted_at',
+            'number_of_views',
+            'created_at',
+            'updated_at',
+            'default_avatar_color',
+            'has_avatar_bool'
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('contacts', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Gender table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportGender(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'type',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('genders', $foreignKey, $columns, $data);
+    }
+
+
+    // a part en bouclant sur les contacts
+    /**
+     * Export the Contact Photo table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportContactPhoto(array $data)
+    {
+        $columns = [
+            'contact_id',
+            'account_id',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('contact_photo', $foreignKey, $columns, $data);
     }
 }
