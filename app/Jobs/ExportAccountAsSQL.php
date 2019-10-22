@@ -137,7 +137,7 @@ class ExportAccountAsSQL
                     }
 
                     if ($columnName == 'id' && $tableName == 'contacts') {
-                        \Log::info('Row processed: ' . $value);
+                        \Log::info('Row processed: '.$value);
                     }
 
                     if (is_null($value)) {
