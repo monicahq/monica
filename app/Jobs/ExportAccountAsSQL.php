@@ -131,13 +131,13 @@ class ExportAccountAsSQL
 
                 // Looping over the values
                 foreach ($data as $columnName => $value) {
-                    if ($columnName == 'id') {
-                        \Log::info('Row processed: '.$value);
-                    }
-
                     if ($columnName == 'account_id' && $value !== $account->id) {
                         $skipLine = true;
                         break;
+                    }
+
+                    if ($columnName == 'id' && $tableName == 'contacts') {
+                        \Log::info('Row processed: '.$value);
                     }
 
                     if (is_null($value)) {
