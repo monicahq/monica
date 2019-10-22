@@ -44,7 +44,7 @@ services:
 
   mail:
     container_name: fake_mail
-    image: gessnerfl/fake-smtp-server
+    image: mailhog/mailhog
     ports:
-      - "5080:5080"
-      - "5025:5025"
+      - "8025:8025"
+      - "1025:1025"
