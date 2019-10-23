@@ -74,6 +74,11 @@ This is what is used to develop Monica and what will provide a common base for e
 Note: the official Monica installation uses mySQL as the database system. While Laravel technically supports PostgreSQL and SQLite, we can't guarantee that it will work fine with Monica as we've never tested it. Feel free to read [Laravel's documentation](https://laravel.com/docs/5.5/database#configuration) on that topic if you feel adventurous.
 
 <a id="markdown-valet-macos" name="valet-macos"></a>
+
+### Linux (Debian-Based / Ubuntu)
+
+Install VirtualBox, Vagrant, and then follow the instructions [here](https://github.com/monicahq/monica/blob/master/docs/installation/vagrant.md) to get set up.
+
 ### Valet (macOS)
 
 We've installed the development version with [Valet](https://laravel.com/docs/valet), which is a Laravel development environment for Mac minimalists. It works really well and is extremely fast, much faster than Homestead.
