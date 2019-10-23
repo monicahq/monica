@@ -12,54 +12,6 @@ class ExportAccountAsSQL
 {
     use Dispatchable, SerializesModels;
 
-    protected $ignoredTables = [
-        'accounts',
-        'activity_type_activities',
-        'activity_types',
-        'api_usage',
-        'cache',
-        'countries',
-        'crons',
-        'currencies',
-        'contact_photo',
-        'default_activity_types',
-        'default_activity_type_categories',
-        'default_contact_field_types',
-        'default_contact_modules',
-        'default_life_event_categories',
-        'default_life_event_types',
-        'default_relationship_type_groups',
-        'default_relationship_types',
-        'emotions',
-        'emotions_primary',
-        'emotions_secondary',
-        'failed_jobs',
-        'instances',
-        'jobs',
-        'migrations',
-        'oauth_access_tokens',
-        'oauth_auth_codes',
-        'oauth_clients',
-        'oauth_personal_access_clients',
-        'oauth_refresh_tokens',
-        'password_resets',
-        'pet_categories',
-        'sessions',
-        'statistics',
-        'subscriptions',
-        'terms',
-        'u2f_key',
-        'users',
-        'webauthn_keys',
-    ];
-
-    protected $ignoredColumns = [
-        'stripe_id',
-        'card_brand',
-        'card_last_four',
-        'trial_ends_at',
-    ];
-
     protected $file = '';
     protected $path = '';
 
