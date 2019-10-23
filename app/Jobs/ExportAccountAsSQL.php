@@ -2,13 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Helpers\DBHelper;
-use App\Services\Account\Settings\ExportAccount;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Support\Facades\Auth;
+use App\Services\Account\Settings\ExportAccount;
 
 class ExportAccountAsSQL
 {

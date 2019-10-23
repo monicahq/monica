@@ -32,7 +32,6 @@ use App\Services\Account\DestroyAllDocuments;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
-use App\Services\Account\Settings\ExportAccount;
 
 class SettingsController
 {

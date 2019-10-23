@@ -2,14 +2,12 @@
 
 namespace App\Services\Account\Settings;
 
-use App\Exceptions\NoAccountException;
-use App\Models\Account\Account;
-use App\Services\BaseService;
-use Illuminate\Support\Facades\DB;
-use App\Models\Contact\Document;
 use App\Models\User\User;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use App\Services\BaseService;
+use App\Models\Account\Account;
+use App\Models\Contact\Document;
+use Illuminate\Support\Facades\DB;
+use App\Exceptions\NoAccountException;
 
 class ExportAccount extends BaseService
 {
@@ -41,8 +39,8 @@ class ExportAccount extends BaseService
         $user = User::findOrFail($data['user_id']);
 
         $this->sql = '# ************************************************************
-# '.$user->first_name.' '.$user->last_name." dump of data
-# Export date: ".now(). '
+# '.$user->first_name.' '.$user->last_name.' dump of data
+# Export date: '.now().'
 # ************************************************************
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -101,6 +99,7 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportContactPhoto($data);
 
         $this->sql = $this->sql.'SET FOREIGN_KEY_CHECKS=1;';
+
         return $this->sql;
     }
 
@@ -111,7 +110,7 @@ SET FOREIGN_KEY_CHECKS=0;
             ->where($foreignKey, $data['account_id'])
             ->get();
 
-        if (!$accountData) {
+        if (! $accountData) {
             throw new NoAccountException();
         }
 
@@ -124,7 +123,7 @@ SET FOREIGN_KEY_CHECKS=0;
         foreach ($listOfColumns as $key => $value) {
             $listOfColumns[$key] = '`'.$value.'`';
         }
-        $listOfColumns = implode(",", $listOfColumns);
+        $listOfColumns = implode(',', $listOfColumns);
 
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
@@ -137,14 +136,14 @@ SET FOREIGN_KEY_CHECKS=0;
 
                 if (is_null($value)) {
                     $value = 'NULL';
-                } elseif (!is_numeric($value)) {
+                } elseif (! is_numeric($value)) {
                     $value = "'".addslashes($value)."'";
                 }
 
                 array_push($columnValues, $value);
             }
 
-            $this->sql .= implode(',', $columnValues) . ');' . PHP_EOL;
+            $this->sql .= implode(',', $columnValues).');'.PHP_EOL;
         }
     }
 
@@ -471,7 +470,7 @@ SET FOREIGN_KEY_CHECKS=0;
             'created_at',
             'updated_at',
             'default_avatar_color',
-            'has_avatar_bool'
+            'has_avatar_bool',
         ];
 
         $foreignKey = 'account_id';
@@ -1395,7 +1394,7 @@ SET FOREIGN_KEY_CHECKS=0;
             ->where('account_id', $data['account_id'])
             ->get();
 
-        if (!$contacts) {
+        if (! $contacts) {
             throw new NoAccountException();
         }
 
