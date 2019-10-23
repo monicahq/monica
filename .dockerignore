@@ -1,5 +1,6 @@
 .circleci/
 .azure/
+.vscode/
 .composer/
 .git/
 .gitattributes
