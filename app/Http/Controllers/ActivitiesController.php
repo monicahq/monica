@@ -158,6 +158,11 @@ class ActivitiesController extends Controller
             $newContact->activities()->attach($activity, ['account_id' => $account->id]);
         }
 
+        // Update the journal entry (in case date has changed)
+        $activity->journalEntry->update([
+            'date' => $activity->date_it_happened,
+        ]);
+
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));
     }
