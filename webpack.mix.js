@@ -15,16 +15,16 @@ let purgeCssOptions = {
     whitelistPatternsChildren: [/^vdp-datepicker/, /^vgt/, /^vue-tooltip/, /^pretty/]
 };
 
-mix.js('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app-ltr.scss', 'public/css')
-    .sass('resources/assets/sass/app-rtl.scss', 'public/css')
+mix.js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app-ltr.scss', 'public/css')
+    .sass('resources/sass/app-rtl.scss', 'public/css')
 
     // stripe
-    .js('resources/assets/js/stripe.js', 'public/js')
-    .sass('resources/assets/sass/stripe.scss', 'public/css')
+    .js('resources/js/stripe.js', 'public/js')
+    .sass('resources/sass/stripe.scss', 'public/css')
 
     // u2f
-    .scripts(['resources/assets/js/vendor/u2f/u2f-api.js'], 'public/js/u2f-api.js')
+    .scripts(['resources/js/vendor/u2f/u2f-api.js'], 'public/js/u2f-api.js')
 
     // global commands
     .purgeCss(purgeCssOptions)

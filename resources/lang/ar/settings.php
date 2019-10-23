@@ -252,7 +252,7 @@ return [
     'import_upload_rules_desc' => 'و لكن لدينا بعض الشروط:',
     'import_upload_rule_format' => 'نحن ندعم ملفات <code>.vcard</code> و <code>.vcf</code>.',
     'import_upload_rule_vcard' => 'نحن ندعم صيغة vCard 3.0، وهي الصيغة الافتراضية لـContacts.app (ماك) و Google Contacts.',
-    'import_upload_rule_instructions' => 'تصدير تعليمات <a href="http://osxdaily.com/2015/07/14/export-contacts-mac-os-x/" target="_blank">Contacts.app (macOS)</a> و <a href="http://www.akruto.com/backup-phone-contacts-calendar/how-to-export-google-contacts-to-csv-or-vcard/" target="_blank">Google Contacts</a>.',
+    'import_upload_rule_instructions' => 'تصدير تعليمات <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> و <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'حالياً، إذا كان لدى جهات اتصالك عدة عناوين بريد و أرقام هواتف، فقط الإدخال الأول سيؤخذ في عين الإعتبار.',
     'import_upload_rule_limit' => 'تقتصر الملفات إلى 10 ميغا بايت.',
     'import_upload_rule_time' => 'قد يستغرق الأمر إلى 1 دقيقة لتحميل جهات الاتصال و معالجتها. الرجاء التحلي بالصبر.',

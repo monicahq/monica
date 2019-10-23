@@ -252,7 +252,7 @@ return [
     'import_upload_rules_desc' => 'Er zijn restricties:',
     'import_upload_rule_format' => 'Wij ondersteunen <code>.vcard</code> en <code>.vcf</code> bestanden.',
     'import_upload_rule_vcard' => 'Wij ondersteunen het vCard 3.0 formaat, dat is het standaardformaat voor Contacts.app(macOS) en Google Contacten.',
-    'import_upload_rule_instructions' => 'Exportinstructies voor<a href="http://osxdaily.com/2015/07/14/export-contacts-mac-os-x/" target="_blank">Contacts.app (macOS)</a>(engels) en <a href="http://www.akruto.com/backup-phone-contacts-calendar/how-to-export-google-contacts-to-csv-or-vcard/" target="_blank">Google Contacts</a>(engels).',
+    'import_upload_rule_instructions' => 'Export instructions for <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> and <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>.',
     'import_upload_rule_multiple' => 'Momenteel worden bij meerdere e-mailadressen of telefoonnummers telkens alleen de eerste vermelding geïmporteerd.',
     'import_upload_rule_limit' => 'Bestanden mogen niet groter dan 10MB zijn.',
     'import_upload_rule_time' => 'Het kan een minuut duren om de contacten te uploaden en te verwerken. Heb alsjeblieft even geduld.',

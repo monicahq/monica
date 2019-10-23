@@ -47,8 +47,8 @@
       <div v-for="contactFieldType in contactFieldTypes" :key="contactFieldType.id" class="dt-row hover bb b--light-gray">
         <div class="dtc">
           <div class="pa2">
-            <i v-if="contactFieldType.fontawesome_icon" :class="contactFieldType.fontawesome_icon" class="pr2"></i>
-            <i v-else class="pr2 fa fa-address-card-o"></i>
+            <em v-if="contactFieldType.fontawesome_icon" :class="contactFieldType.fontawesome_icon" class="pr2"></em>
+            <em v-else class="pr2 fa fa-address-card-o"></em>
             {{ contactFieldType.name }}
           </div>
         </div>
@@ -59,8 +59,8 @@
         </div>
         <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
           <div class="pa2">
-            <i class="fa fa-pencil-square-o pointer pr2" @click="edit(contactFieldType)"></i>
-            <i v-if="contactFieldType.delible" class="fa fa-trash-o pointer" @click="showDelete(contactFieldType)"></i>
+            <em class="fa fa-pencil-square-o pointer pr2" @click="edit(contactFieldType)"></em>
+            <em v-if="contactFieldType.delible" class="fa fa-trash-o pointer" @click="showDelete(contactFieldType)"></em>
           </div>
         </div>
       </div>
