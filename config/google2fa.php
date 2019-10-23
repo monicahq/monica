@@ -63,6 +63,8 @@ return [
      */
     'error_messages' => [
         'wrong_otp' => 'The two factor authentication has failed.',
+        'cannot_be_empty' => 'One Time Password cannot be empty.',
+        'unknown' => 'An unknown error has occurred. Please try again.',
     ],
 
 ];

@@ -88,7 +88,7 @@ class AuthControllerTest extends ApiTestCase
         $userPassword = 'password';
         $user = factory(User::class)->create([
             'password' => bcrypt($userPassword),
-            'google2fa_secret' => encrypt('UFKZDTYO64WDEZPPQEO4HF3PC5UUTFLE'),
+            'google2fa_secret' => 'UFKZDTYO64WDEZPPQEO4HF3PC5UUTFLE',
         ]);
 
         $response = $this->postClient(self::OAUTH_LOGIN_URL, [
@@ -96,7 +96,6 @@ class AuthControllerTest extends ApiTestCase
             'password' => $userPassword,
         ]);
 
-        $response->dump();
         $response->assertStatus(200);
 
         $response->assertSee('Two Factor Authentication');
