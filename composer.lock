@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c4050912aead8b2224f32ee1fa3203d6",
+    "content-hash": "7d732a296153814413bbc20816396ce1",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -2205,9 +2205,9 @@
             "authors": [
                 {
                     "name": "LAHAXE Arnaud",
+                    "role": "Developer",
                     "email": "lahaxe.arnaud@gmail.com",
-                    "homepage": "http://lahaxe.fr",
-                    "role": "Developer"
+                    "homepage": "http://lahaxe.fr"
                 }
             ],
             "description": "U2F support for laravel 5",
@@ -5181,16 +5181,16 @@
         },
         {
             "name": "pragmarx/google2fa",
-            "version": "v5.0.0",
+            "version": "v7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa.git",
-                "reference": "17c969c82f427dd916afe4be50bafc6299aef1b4"
+                "reference": "0afb47f8a686bd203fe85a05bab85139f3c1971e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/17c969c82f427dd916afe4be50bafc6299aef1b4",
-                "reference": "17c969c82f427dd916afe4be50bafc6299aef1b4",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa/zipball/0afb47f8a686bd203fe85a05bab85139f3c1971e",
+                "reference": "0afb47f8a686bd203fe85a05bab85139f3c1971e",
                 "shasum": ""
             },
             "require": {
@@ -5200,7 +5200,7 @@
                 "symfony/polyfill-php56": "~1.2"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4|~5|~6"
+                "phpunit/phpunit": "~4|~5|~6|~7|~8"
             },
             "type": "library",
             "extra": {
@@ -5233,20 +5233,20 @@
                 "Two Factor Authentication",
                 "google2fa"
             ],
-            "time": "2019-03-19T22:44:16+00:00"
+            "time": "2019-10-21T17:49:22+00:00"
         },
         {
             "name": "pragmarx/google2fa-laravel",
-            "version": "v1.0.1",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/antonioribeiro/google2fa-laravel.git",
-                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882"
+                "reference": "4ccc17dbf5ab5f752113cb6088a5afce5191309e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/b5f5bc71dcc52c48720441bc01c701023bd82882",
-                "reference": "b5f5bc71dcc52c48720441bc01c701023bd82882",
+                "url": "https://api.github.com/repos/antonioribeiro/google2fa-laravel/zipball/4ccc17dbf5ab5f752113cb6088a5afce5191309e",
+                "reference": "4ccc17dbf5ab5f752113cb6088a5afce5191309e",
                 "shasum": ""
             },
             "require": {
@@ -5255,8 +5255,8 @@
                 "pragmarx/google2fa-qrcode": "^1.0"
             },
             "require-dev": {
-                "orchestra/testbench": "3.4.*|3.5.*|3.6.*|3.7.*",
-                "phpunit/phpunit": "~5|~6|~7"
+                "orchestra/testbench": "3.4.*|3.5.*|3.6.*|3.7.*|4.*",
+                "phpunit/phpunit": "~5|~6|~7|~8"
             },
             "suggest": {
                 "bacon/bacon-qr-code": "Required to generate inline QR Codes.",
@@ -5304,7 +5304,7 @@
                 "google2fa",
                 "laravel"
             ],
-            "time": "2019-03-22T19:54:51+00:00"
+            "time": "2019-10-21T18:34:37+00:00"
         },
         {
             "name": "pragmarx/google2fa-qrcode",
@@ -6482,9 +6482,9 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 }
             ],
             "description": "sabre/event is a library for lightweight event-based programming",
@@ -6747,14 +6747,14 @@
             "authors": [
                 {
                     "name": "Evert Pot",
+                    "role": "Developer",
                     "email": "me@evertpot.com",
-                    "homepage": "http://evertpot.com/",
-                    "role": "Developer"
+                    "homepage": "http://evertpot.com/"
                 },
                 {
                     "name": "Markus Staab",
-                    "email": "markus.staab@redaxo.de",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "email": "markus.staab@redaxo.de"
                 }
             ],
             "description": "sabre/xml is an XML library that you may not hate.",
@@ -8244,16 +8244,16 @@
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.11.0",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
-                "reference": "f4dddbc5c3471e1b700a147a20ae17cdb72dbe42"
+                "reference": "0e3b212e96a51338639d8ce175c046d7729c3403"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/f4dddbc5c3471e1b700a147a20ae17cdb72dbe42",
-                "reference": "f4dddbc5c3471e1b700a147a20ae17cdb72dbe42",
+                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/0e3b212e96a51338639d8ce175c046d7729c3403",
+                "reference": "0e3b212e96a51338639d8ce175c046d7729c3403",
                 "shasum": ""
             },
             "require": {
@@ -8263,7 +8263,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "autoload": {
@@ -8296,7 +8296,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-02-06T07:57:58+00:00"
+            "time": "2019-08-06T08:03:45+00:00"
         },
         {
             "name": "symfony/polyfill-php72",
@@ -8413,16 +8413,16 @@
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.11.0",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
-                "reference": "b46c6cae28a3106735323f00a0c38eccf2328897"
+                "reference": "4317de1386717b4c22caed7725350a8887ab205c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/b46c6cae28a3106735323f00a0c38eccf2328897",
-                "reference": "b46c6cae28a3106735323f00a0c38eccf2328897",
+                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/4317de1386717b4c22caed7725350a8887ab205c",
+                "reference": "4317de1386717b4c22caed7725350a8887ab205c",
                 "shasum": ""
             },
             "require": {
@@ -8431,7 +8431,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.11-dev"
+                    "dev-master": "1.12-dev"
                 }
             },
             "autoload": {
@@ -8461,7 +8461,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2019-02-08T14:16:39+00:00"
+            "time": "2019-08-06T08:03:45+00:00"
         },
         {
             "name": "symfony/process",
@@ -10655,8 +10655,8 @@
             "authors": [
                 {
                     "name": "Filipe Dobreira",
-                    "homepage": "https://github.com/filp",
-                    "role": "Developer"
+                    "role": "Developer",
+                    "homepage": "https://github.com/filp"
                 }
             ],
             "description": "php error handling for cool kids",
@@ -11257,9 +11257,9 @@
             "authors": [
                 {
                     "name": "Christian Weiske",
+                    "role": "Developer",
                     "email": "cweiske@cweiske.de",
-                    "homepage": "http://github.com/cweiske/jsonmapper/",
-                    "role": "Developer"
+                    "homepage": "http://github.com/cweiske/jsonmapper/"
                 }
             ],
             "description": "Map nested JSON structures onto PHP classes",
