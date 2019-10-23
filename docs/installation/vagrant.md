@@ -43,6 +43,12 @@ Once the process is complete you can either access the virtual machine by typing
 * Monica database user
    - Username: `monica`
    - Password: `changeme`
+   
+### SSH Configuration
+
+If you'd like to use your own SSH client (i.e. for Sublime SFTP, PuTtY or some other reason) then you can get the ssh configuration info by:
+1. After your machine is up, running `vagrant global-status`.
+2. Look for the `monica` machine. Take note of its id, and run `vagrant ssh-confing <ID>`.
 
 ### Apache configuration
 
