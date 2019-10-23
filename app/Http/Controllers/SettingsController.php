@@ -254,11 +254,6 @@ class SettingsController
 
         $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
 
-        return (new ExportAccount)->execute([
-            'account_id' => auth()->user()->account_id,
-            'user_id' => auth()->user()->id,
-        ]);
-
         return response()
             ->download($adapter->getPathPrefix().$path, 'monica.sql')
             ->deleteFileAfterSend(true);

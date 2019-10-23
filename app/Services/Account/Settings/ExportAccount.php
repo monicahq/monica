@@ -34,7 +34,7 @@ class ExportAccount extends BaseService
      * @param array $data
      * @return string
      */
-    public function execute(array $data)
+    public function execute(array $data) : string
     {
         $this->validate($data);
 
@@ -42,14 +42,14 @@ class ExportAccount extends BaseService
 
         $this->sql = '# ************************************************************
 # '.$user->first_name.' '.$user->last_name." dump of data
-# Export date: ".now().'
+# Export date: ".now(). '
 # ************************************************************
 
+SET FOREIGN_KEY_CHECKS=0;
 '.PHP_EOL;
 
         $this->exportAccount($data);
         $this->exportActivity($data);
-        $this->exportGender($data);
         $this->exportContact($data);
         $this->exportActivityContact($data);
         $this->exportActivityStatistic($data);
@@ -62,15 +62,46 @@ class ExportAccount extends BaseService
         $this->exportContactField($data);
         $this->exportContactTag($data);
         $this->exportContact($data);
-        //$this->exportReminder($data);
-        // $this->exportActivity($data);
-
-
-
-        dd($this->sql);
-
-        // a boucler sur les photos
+        $this->exportConversation($data);
+        $this->exportDays($data);
+        $this->exportDebt($data);
+        $this->exportDocument($data);
+        $this->exportEmotionCall($data);
+        $this->exportEntries($data);
+        $this->exportGender($data);
+        $this->exportGift($data);
+        $this->exportInvitation($data);
+        $this->exportJournalEntry($data);
+        $this->exportLifeEventCategory($data);
+        $this->exportLifeEventType($data);
+        $this->exportLifeEvent($data);
+        $this->exportMessage($data);
+        $this->exportMetaDataLoveRelationship($data);
+        $this->exportModule($data);
+        $this->exportNote($data);
+        $this->exportNotification($data);
+        $this->exportOccupation($data);
+        $this->exportPet($data);
+        $this->exportPhoto($data);
+        $this->exportPlace($data);
+        $this->exportRecoveryCode($data);
+        $this->exportRelationTypeGroup($data);
+        $this->exportRelationType($data);
+        $this->exportRelationship($data);
+        $this->exportReminderOutbox($data);
+        $this->exportReminderRule($data);
+        $this->exportReminderSent($data);
+        $this->exportReminder($data);
+        $this->exportSpecialDate($data);
+        $this->exportTag($data);
+        $this->exportTask($data);
+        $this->exportTermUser($data);
+        $this->exportUser($data);
+        $this->exportWeather($data);
         $this->exportContactPhoto($data);
+
+        $this->sql = $this->sql.'SET FOREIGN_KEY_CHECKS=1;';
+        return $this->sql;
     }
 
     private function buildInsertSQLQuery(string $tableName, string $foreignKey, array $columns, array $data)
@@ -88,12 +119,17 @@ class ExportAccount extends BaseService
             return;
         }
 
-        $listOfColumns = implode(",", $columns);
+        // adding a ` for each column
+        $listOfColumns = $columns;
+        foreach ($listOfColumns as $key => $value) {
+            $listOfColumns[$key] = '`'.$value.'`';
+        }
+        $listOfColumns = implode(",", $listOfColumns);
 
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
 
-            $this->sql = $this->sql.'INSERT INTO '.$tableName.' ('.$listOfColumns.') values (';
+            $this->sql = $this->sql.'INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') values (';
 
             // build an array of values
             foreach ($columns as $key => $value) {
@@ -444,6 +480,147 @@ class ExportAccount extends BaseService
     }
 
     /**
+     * Export the Conversation table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportConversation(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'contact_field_type_id',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('conversations', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Day table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportDays(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'date',
+            'rate',
+            'comment',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('days', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Debt table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportDebt(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'in_debt',
+            'status',
+            'amount',
+            'reason',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('debts', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Document table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportDocument(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'original_filename',
+            'new_filename',
+            'filesize',
+            'type',
+            'mime_type',
+            'number_of_downloads',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('documents', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Emotion Call table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportEmotionCall(array $data)
+    {
+        $columns = [
+            'account_id',
+            'call_id',
+            'emotion_id',
+            'contact_id',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('emotion_call', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Entries table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportEntries(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'title',
+            'post',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('entries', $foreignKey, $columns, $data);
+    }
+
+    /**
      * Export the Gender table.
      *
      * @param array $data
@@ -465,25 +642,776 @@ class ExportAccount extends BaseService
         $this->buildInsertSQLQuery('genders', $foreignKey, $columns, $data);
     }
 
-
-    // a part en bouclant sur les contacts
     /**
-     * Export the Contact Photo table.
+     * Export the Gift table.
      *
      * @param array $data
      * @return string
      */
-    private function exportContactPhoto(array $data)
+    private function exportGift(array $data)
     {
         $columns = [
-            'contact_id',
+            'id',
             'account_id',
+            'contact_id',
+            'is_for',
+            'name',
+            'comment',
+            'url',
+            'value',
+            'is_an_idea',
+            'has_been_offered',
+            'has_been_received',
+            'offered_at',
+            'received_at',
             'created_at',
             'updated_at',
         ];
 
         $foreignKey = 'account_id';
 
-        $this->buildInsertSQLQuery('contact_photo', $foreignKey, $columns, $data);
+        $this->buildInsertSQLQuery('gifts', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Invitation table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportInvitation(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'invited_by_user_id',
+            'email',
+            'invitation_key',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('invitations', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Journal Entry table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportJournalEntry(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'date',
+            'journalable_id',
+            'journalable_type',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('journal_entries', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Life Event Category table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportLifeEventCategory(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'default_life_event_category_key',
+            'core_monica_data',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('life_event_categories', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Life Event Type table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportLifeEventType(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'life_event_category_id',
+            'name',
+            'default_life_event_type_key',
+            'core_monica_data',
+            'specific_information_structure',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('life_event_types', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Life Event table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportLifeEvent(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'life_event_type_id',
+            'reminder_id',
+            'name',
+            'note',
+            'happened_at',
+            'happened_at_month_unknown',
+            'happened_at_day_unknown',
+            'specific_information',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('life_events', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Message table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportMessage(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'conversation_id',
+            'content',
+            'written_at',
+            'written_by_me',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('messages', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Metadata love relationship table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportMetaDataLoveRelationship(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'relationship_id',
+            'is_active',
+            'notes',
+            'meet_date',
+            'official_date',
+            'breakup_date',
+            'breakup_reason',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('metadata_love_relationships', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Module table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportModule(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'key',
+            'translation_key',
+            'active',
+            'delible',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('modules', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Note table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportNote(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'body',
+            'is_favorited',
+            'favorited_at',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('notes', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Notification table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportNotification(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'reminder_id',
+            'delete_after_number_of_emails_sent',
+            'number_of_emails_sent',
+            'trigger_date',
+            'scheduled_number_days_before',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('notifications', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Occupation table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportOccupation(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'company_id',
+            'title',
+            'description',
+            'salary',
+            'salary_unit',
+            'currently_works_here',
+            'start_date',
+            'end_date',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('occupations', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Pet table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportPet(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'pet_category_id',
+            'name',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('pets', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Photo table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportPhoto(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'original_filename',
+            'new_filename',
+            'filesize',
+            'mime_type',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('photos', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Place table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportPlace(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'street',
+            'city',
+            'province',
+            'postal_code',
+            'country',
+            'latitude',
+            'longitude',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('places', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Recovery Code table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportRecoveryCode(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'user_id',
+            'recovery',
+            'used',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('recovery_codes', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Relationship Type Group table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportRelationTypeGroup(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'delible',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('relationship_type_groups', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Relationship Type table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportRelationType(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'name_reverse_relationship',
+            'relationship_type_group_id',
+            'delible',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('relationship_types', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Relationship.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportRelationship(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'relationship_type_id',
+            'contact_is',
+            'of_contact',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('relationships', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Reminder Outbox table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportReminderOutbox(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'reminder_id',
+            'user_id',
+            'planned_date',
+            'nature',
+            'notification_number_days_before',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('reminder_outbox', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Reminder Rule table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportReminderRule(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'number_of_days_before',
+            'active',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('reminder_rules', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Reminder Sent table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportReminderSent(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'reminder_id',
+            'user_id',
+            'planned_date',
+            'sent_date',
+            'nature',
+            'frequency_type',
+            'frequency_number',
+            'html_content',
+            'text_content',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('reminder_sent', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Reminder table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportReminder(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'initial_date',
+            'title',
+            'description',
+            'frequency_type',
+            'frequency_number',
+            'delible',
+            'inactive',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('reminders', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Special Date table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportSpecialDate(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'uuid',
+            'is_age_based',
+            'is_year_unknown',
+            'date',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('special_dates', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Tag table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportTag(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'name',
+            'name_slug',
+            'description',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('tags', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Task table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportTask(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'contact_id',
+            'uuid',
+            'title',
+            'description',
+            'completed',
+            'completed_at',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('tasks', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Term User table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportTermUser(array $data)
+    {
+        $columns = [
+            'account_id',
+            'user_id',
+            'term_id',
+            'ip_address',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('term_user', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the User table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportUser(array $data)
+    {
+        $columns = [
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'me_contact_id',
+            'admin',
+            'email_verified_at',
+            'password',
+            'remember_token',
+            'google2fa_secret',
+            'account_id',
+            'timezone',
+            'currency_id',
+            'locale',
+            'metric',
+            'fluid_container',
+            'contacts_sort_order',
+            'name_order',
+            'invited_by_user_id',
+            'dashboard_active_tab',
+            'gifts_active_tab',
+            'profile_active_tab',
+            'profile_new_life_event_badge_seen',
+            'temperature_scale',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('users', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Weather table.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportWeather(array $data)
+    {
+        $columns = [
+            'id',
+            'account_id',
+            'place_id',
+            'weather_json',
+            'created_at',
+            'updated_at',
+        ];
+
+        $foreignKey = 'account_id';
+
+        $this->buildInsertSQLQuery('weather', $foreignKey, $columns, $data);
+    }
+
+    /**
+     * Export the Contact Photo table.
+     * This is custom as we need to loop on the contacts for this account.
+     *
+     * @param array $data
+     * @return string
+     */
+    private function exportContactPhoto(array $data)
+    {
+        $contacts = DB::table('contacts')
+            ->select('id')
+            ->where('account_id', $data['account_id'])
+            ->get();
+
+        if (!$contacts) {
+            throw new NoAccountException();
+        }
+
+        if ($contacts->count() == 0) {
+            return;
+        }
+
+        foreach ($contacts as $contact) {
+            $photos = DB::table('contact_photo')
+                ->where('contact_id', $contact->id)
+                ->get();
+
+            foreach ($photos as $photo) {
+                $this->sql = $this->sql.'INSERT INTO contact_photo (contact_id, photo_id, created_at, updated_at) values (';
+                $this->sql = $this->sql.$photo->contact_id.','.$photo->photo_id.",'".$photo->created_at."','".$photo->updated_at."');".PHP_EOL;
+            }
+        }
     }
 }
