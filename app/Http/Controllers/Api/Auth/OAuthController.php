@@ -64,6 +64,8 @@ class OAuthController extends Controller
             $request->session()->put('email', $email);
             $request->session()->put('password', encrypt($password));
 
+            $request->setMethod('GET');
+
             return Route::respondWithRoute('oauth.verify');
         }
     }

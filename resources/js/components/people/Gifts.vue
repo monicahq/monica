@@ -7,7 +7,7 @@
 
     <!-- Title -->
     <div>
-      <img src="img/people/gifts.svg" class="icon-section icon-tasks" />
+      <img src="img/people/gifts.svg" :alt="$t('people.gifts_title')" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.gifts_title') }}
         <a :href="'people/' + hash + '/gifts/create'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">

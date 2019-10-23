@@ -501,7 +501,7 @@
         <div v-for="lifeEvent in lifeEvents" :key="lifeEvent.id">
           <div :id="'lifeEvent' + lifeEvent.id" class="bl bb b--gray-monica bg-hover-monica relative pa3 life-event-list-content">
             <div class="absolute life-event-list-icon">
-              <img class="relative" :src="'img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'" />
+              <img class="relative" :src="'img/people/life-events/types/' + lifeEvent.default_life_event_type_key + '.svg'" :alt="lifeEvent.default_life_event_type_key" />
             </div>
             <div class="absolute life-event-list-actions f7">
               <span>{{ lifeEvent.happened_at }}</span>

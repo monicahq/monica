@@ -4,7 +4,7 @@ return [
     /*
      * Enable the u2f middleware, if false the middleware will not redirect to the u2f authentication page
      */
-    'enable' => env('MFA_ENABLED', env('2FA_ENABLED', false)),
+    'enable' => env('MFA_ENABLED', env('2FA_ENABLED', true)),
 
     /*
      * Do not redirect user without u2f key to the u2f authentication page after login

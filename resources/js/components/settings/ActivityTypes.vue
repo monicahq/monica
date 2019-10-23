@@ -54,8 +54,8 @@
           </div>
           <div class="dtc">
             <div class="pa2" :class="[ dirltr ? 'tr' : 'tl' ]">
-              <i v-if="!limited" class="fa fa-pencil-square-o pointer pr2" @click="showEditCategory(activityTypeCategory)"></i>
-              <i v-if="!limited" class="fa fa-trash-o pointer" @click="showDeleteCategory(activityTypeCategory)"></i>
+              <em v-if="!limited" class="fa fa-pencil-square-o pointer pr2" @click="showEditCategory(activityTypeCategory)"></em>
+              <em v-if="!limited" class="fa fa-trash-o pointer" @click="showDeleteCategory(activityTypeCategory)"></em>
             </div>
           </div>
         </div>
@@ -67,8 +67,8 @@
           </div>
           <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
             <div class="pa2">
-              <i v-if="!limited" class="fa fa-pencil-square-o pointer pr2" @click="showEditType(activityType)"></i>
-              <i v-if="!limited" class="fa fa-trash-o pointer" @click="showDeleteType(activityType)"></i>
+              <em v-if="!limited" class="fa fa-pencil-square-o pointer pr2" @click="showEditType(activityType)"></em>
+              <em v-if="!limited" class="fa fa-trash-o pointer" @click="showDeleteType(activityType)"></em>
             </div>
           </div>
         </div>

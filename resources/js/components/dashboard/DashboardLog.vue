@@ -208,7 +208,7 @@
                 {{ $t('dashboard.task_add_cta') }}
               </a>
             </p>
-            <img src="img/dashboard/blank_your_tasks.svg" />
+            <img src="img/dashboard/blank_your_tasks.svg" :alt="$t('dashboard.tasks_tab_your_tasks')" />
           </div>
 
           <!-- Add a task -->
@@ -412,7 +412,7 @@ export default {
     // All the contact related tasks
     contactRelated: function (tasks) {
       return tasks.filter(function (task) {
-        return task.contact != null;
+        return task.contact != null && !task.completed;
       });
     },
 
