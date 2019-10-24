@@ -117,6 +117,7 @@ RUN set -ex && \
 		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v'; \
 	} | tee monica && \
 	chmod a+x monica
+COPY scripts/docker/startcron-service.sh /usr/local/sbin/startcron
 
 COPY scripts/docker/entrypoint.sh /usr/local/bin/
 RUN sed -ri -e 's!monica:apache!monica:www-data!g' /usr/local/bin/entrypoint.sh

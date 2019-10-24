@@ -54,7 +54,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
         ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" -v || true
     fi
 
-    if [ ! -f "${STORAGE}/oauth-public.key" || ! -f "${STORAGE}/oauth-private.key" ]; then
+    if [ ! -f "${STORAGE}/oauth-public.key" ] || [ ! -f "${STORAGE}/oauth-private.key" ]; then
         echo "Passport keys creation ..."
         ${ARTISAN} passport:keys
         ${ARTISAN} passport:client --personal --no-interaction
@@ -62,10 +62,8 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     fi
 
     # Run cron
-    if [ -f "/usr/sbin/crond" ]; then
-        crond -b -l 0 -L /dev/stdout
-    elif [ -f "/etc/init.d/cron" ]; then
-        service cron start
+    if [ -x "/usr/local/sbin/startcron" ]; then
+        /usr/local/sbin/startcron
     fi
 
 fi

@@ -117,6 +117,7 @@ RUN set -ex && \
 		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v'; \
 	} | tee monica && \
 	chmod a+x monica
+COPY scripts/docker/startcron-crond.sh /usr/local/sbin/startcron
 
 # Cleanup
 RUN apk del .build-deps && \
