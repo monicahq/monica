@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM php:7.3-apache
 
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
@@ -15,47 +15,47 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
       org.label-schema.version=$VERSION \
       org.label-schema.schema-version="1.0"
 
-RUN apk update && apk upgrade
-RUN apk add --virtual .build-deps \
-        curl openssl bash
-RUN apk add netcat-openbsd \
-        #- base
-        php7 php7-intl php7-openssl php7-ctype \
-        php7-zip php7-zlib \
-        php7-redis \
-        #- Authentication Guards
-        php7-session php7-tokenizer \
-        #- laravel/cashier sabre/vobject sabre/xml
-        php7-dom \
-        #- intervention/image
-        php7-fileinfo \
-        #- laravel/cashier
-        php7-gd \
-        #- composer
-        php7-phar php7-json php7-iconv \
-        #- laravel/framework sabre/vobject
-        php7-mbstring \
-        #- league/flysystem-aws-s3-v3 
-        php7-simplexml \
-        #- sabre/vobject sabre/xml
-        php7-xml php7-xmlreader php7-xmlwriter \
-        #- mysql
-        php7-mysqli php7-pdo_mysql \
-        #- pgsql
-        php7-pgsql php7-pdo_pgsql \
-        #- vinkla/hashids
-        php7-bcmath \
-        #- sentry/sentry
-        php7-curl \
-        #- cbor-php (webauthn)
-        php7-gmp
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install \
+      git cron netcat apt apt-transport-https \
+      locales sudo openssh-client ca-certificates \
+      curl unzip zip tar bzip2 && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install common extensions
+RUN apt-get update && \
+    apt-get -y --no-install-recommends install libicu-dev zlib1g-dev libzip-dev libpng-dev libxml2-dev libfreetype6-dev libjpeg62-turbo-dev libgmp-dev && \
+    apt-get -y clean && \
+    docker-php-ext-configure intl && \
+    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+    docker-php-ext-install -j$(nproc) \
+                intl \
+                zip \
+                json \
+                iconv \
+                bcmath \
+                gd \
+                gmp \
+                pdo_mysql \
+                mysqli \
+                soap \
+                mbstring \
+                opcache && \
+    apt-get -y remove libicu-dev icu-devtools && \
+    apt-get -y autoremove && \
+    rm -rf /var/lib/apt/lists/*
 
 # Create a user to own all the code and assets and give them a working
 # directory
-RUN mkdir -p /var/www/monica; \
-    grep -q apache /etc/group || addgroup -S apache; \
-    adduser -D monica apache -h /var/www/monica
+RUN mkdir -p /var/www/monica && \
+    addgroup --gid 1001 monica && \
+    adduser --uid 1001 --ingroup monica --home /var/www/monica --shell /bin/bash --no-create-home monica && \
+    adduser monica www-data && \
+    chown -R monica:www-data /var/www/monica && \
+    echo 'monica ALL=NOPASSWD: ALL' >> /etc/sudoers.d/50-monica && \
+    echo 'Defaults    env_keep += "DEBIAN_FRONTEND"' >> /etc/sudoers.d/env_keep
 WORKDIR /var/www/monica
+
 
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
@@ -79,8 +79,8 @@ COPY routes ./routes
 
 RUN mkdir -p bootstrap/cache; \
     mkdir -p storage; \
-    chown -R monica:monica .; \
-    chgrp -R apache bootstrap/cache storage; \
+    chown -R monica:www-data .; \
+    chgrp -R www-data bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
 COPY .env.example .env
 
@@ -89,7 +89,7 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
     PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
     PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
     PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
-COPY scripts/docker/opcache.ini /usr/php7/conf.d/opcache.ini
+COPY scripts/docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Sentry
 RUN echo $VCS_REF > .sentry-release; \
@@ -111,45 +111,22 @@ USER root
 
 # Set crontab for schedules
 RUN set -ex && \
-	cd /etc/periodic/hourly/ && \
+	cd /etc/cron.hourly && \
 	{ \
 		echo '#!/bin/sh'; \
 		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v'; \
 	} | tee monica && \
 	chmod a+x monica
 
-# Cleanup
-RUN apk del .build-deps && \
-    rm -rf /var/cache/apk/*
-
 COPY scripts/docker/entrypoint.sh /usr/local/bin/
+RUN sed -ri -e 's!monica:apache!monica:www-data!g' /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
-# FPM
-RUN apk add php7-fpm
-RUN set -ex && \
-	cd /etc/php7/php-fpm.d && \
-	{ \
-		echo '[global]'; \
-		echo 'error_log = /dev/stderr'; \
-		echo; \
-		echo '[www]'; \
-		echo 'access.log = /dev/stdout'; \
-		echo 'catch_workers_output = yes'; \
-        echo 'clear_env = no'; \
-	} | tee docker.conf && \
-	{ \
-		echo '[global]'; \
-		echo 'daemonize = no'; \
-		echo; \
-		echo '[www]'; \
-		echo 'group = apache'; \
-		echo 'listen = 9000'; \
-	} | tee zz-docker.conf
+# Apache2
+COPY scripts/docker/000-default.conf /etc/apache2/sites-available/
+RUN echo 'ServerName "monica"' > /etc/apache2/conf-available/hostname.conf
+RUN a2enconf hostname
+RUN a2enmod rewrite cache headers
 
-# Override stop signal to stop process gracefully
-# https://github.com/php/php-src/blob/17baa87faddc2550def3ae7314236826bc1b1398/sapi/fpm/php-fpm.8.in#L163
-STOPSIGNAL SIGQUIT
-
-EXPOSE 9000
-CMD ["php-fpm7"]
+EXPOSE 80
+CMD ["apache2-foreground"]

@@ -48,9 +48,7 @@ RUN apk add netcat-openbsd \
         #- sentry/sentry
         php7-curl \
         #- cbor-php (webauthn)
-        php7-gmp \
-# apache variant
-        apache2 php7-apache2
+        php7-gmp
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -85,6 +83,13 @@ RUN mkdir -p bootstrap/cache; \
     chgrp -R apache bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
 COPY .env.example .env
+
+# Php
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+COPY scripts/docker/opcache.ini /usr/php7/conf.d/opcache.ini
 
 # Sentry
 RUN echo $VCS_REF > .sentry-release; \
@@ -121,8 +126,11 @@ COPY scripts/docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
 # Apache2
+RUN apk add apache2 php7-apache2
 COPY scripts/docker/apache2-foreground /usr/local/sbin/
 COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
+RUN echo 'LoadModule rewrite_module modules/mod_rewrite.so' > /etc/apache2/conf.d/rewrite.conf
+RUN echo 'ServerName "monica"' > /etc/apache2/conf.d/hostname.conf
 
 EXPOSE 80
 CMD ["apache2-foreground"]
