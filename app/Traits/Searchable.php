@@ -35,11 +35,11 @@ trait Searchable
 
         $builder->whereRaw("`$tablePrefix{$this->getTable()}`.`account_id` = $accountId AND ($queryString) $whereCondition");
         $builder->orderByRaw($orderBy);
-        /*
+
         if ($sortOrder) {
             $builder->sortedBy($sortOrder);
         }
-        */
+
         $builder->select(array_map(function ($column) {
             return "{$this->getTable()}.$column";
         }, $this->return_from_search));
