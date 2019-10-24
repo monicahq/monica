@@ -511,7 +511,7 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, '`contacts`.`created_at`');
+        $results = SearchHelper::searchContacts($needle, 20, '`'.DB::connection()->getTablePrefix().'contacts`.`created_at`');
 
         if (count($results) !== 0) {
             return ContactResource::collection($results);

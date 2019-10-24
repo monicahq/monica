@@ -11,6 +11,7 @@
 
 ### Fixes:
 
+* Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
 
 
