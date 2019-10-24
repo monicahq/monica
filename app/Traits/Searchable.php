@@ -40,7 +40,7 @@ trait Searchable
             $builder->sortedBy($sortOrder);
         }
         */
-        $builder->select(array_map(function ($column) use ($tablePrefix) {
+        $builder->select(array_map(function ($column) {
             return "{$this->getTable()}.$column";
         }, $this->return_from_search));
 
