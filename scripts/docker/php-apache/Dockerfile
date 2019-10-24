@@ -130,4 +130,6 @@ RUN a2enconf hostname
 RUN a2enmod rewrite cache headers
 
 EXPOSE 80
-CMD ["apache2-foreground"]
+
+COPY scripts/docker/php-apache/supervisord.conf /etc/supervisord.conf
+CMD ["supervisord", "-c /etc/supervisord.conf"]

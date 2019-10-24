@@ -1,10 +1,5 @@
 #!/bin/sh
 
-# Run fpm
-if [ -f /etc/apache2/conf-enabled/php7.3-fpm.conf ]; then
-    service php7.3-fpm start
-fi
-
 # Run apache2
 mkdir -p /run/apache2
 rm -f /run/apache2/httpd.pid

@@ -153,4 +153,6 @@ RUN set -ex && \
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["php-fpm7"]
+
+COPY scripts/docker/fpm/supervisord.conf /etc/supervisord.conf
+CMD ["supervisord", "-c /etc/supervisord.conf"]
