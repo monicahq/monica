@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Helpers\DBHelper;
 use App\Helpers\StringHelper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,14 +27,13 @@ trait Searchable
             return;
         }
 
-        $tablePrefix = DB::connection()->getTablePrefix();
-        $searchableColumns = array_map(function ($column) use ($tablePrefix) {
-            return "`$tablePrefix{$this->getTable()}`.`$column`";
+        $searchableColumns = array_map(function ($column) {
+            return DBHelper::getTable($this->getTable()).".`$column`";
         }, $this->searchable_columns);
 
         $queryString = StringHelper::buildQuery($searchableColumns, $needle);
 
-        $builder->whereRaw("`$tablePrefix{$this->getTable()}`.`account_id` = $accountId AND ($queryString) $whereCondition");
+        $builder->whereRaw(DBHelper::getTable($this->getTable()).".`account_id` = $accountId AND ($queryString) $whereCondition");
         $builder->orderByRaw($orderBy);
 
         if ($sortOrder) {
@@ -41,7 +41,7 @@ trait Searchable
         }
 
         $builder->select(array_map(function ($column) {
-            return "{$this->getTable()}.$column";
+            return $this->getTable().".`$column`";
         }, $this->return_from_search));
 
         return $builder->paginate($limitPerPage);

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Helpers\DBHelper;
 use function Safe\preg_match;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +41,7 @@ class SearchHelper
                 ]);
             })->paginate($limitPerPage);
         } else {
-            $results = Contact::search($needle, $accountId, $limitPerPage, $order, 'AND `'.DB::connection()->getTablePrefix().'contacts`.`is_partial` = FALSE');
+            $results = Contact::search($needle, $accountId, $limitPerPage, $order, 'AND '.DBHelper::getTable('contacts').'.`is_partial` = FALSE');
         }
 
         return $results;
