@@ -114,7 +114,7 @@ RUN set -ex && \
 	cd /etc/cron.hourly && \
 	{ \
 		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v'; \
+		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
 	} | tee monica && \
 	chmod a+x monica
 
@@ -129,4 +129,6 @@ RUN a2enconf hostname
 RUN a2enmod rewrite cache headers
 
 EXPOSE 80
-CMD ["apache2-foreground"]
+
+COPY scripts/docker/php-apache/supervisord.conf /etc/supervisord.conf
+CMD ["supervisord", "-c /etc/supervisord.conf"]

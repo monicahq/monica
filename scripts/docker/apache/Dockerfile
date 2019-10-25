@@ -18,7 +18,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 RUN apk update && apk upgrade
 RUN apk add --virtual .build-deps \
         curl openssl bash
-RUN apk add netcat-openbsd \
+RUN apk add supervisor netcat-openbsd \
         #- base
         php7 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib \
@@ -114,7 +114,7 @@ RUN set -ex && \
 	cd /etc/periodic/hourly/ && \
 	{ \
 		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v'; \
+		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
 	} | tee monica && \
 	chmod a+x monica
 
@@ -127,10 +127,12 @@ ENTRYPOINT ["entrypoint.sh"]
 
 # Apache2
 RUN apk add apache2 php7-apache2
-COPY scripts/docker/apache2-foreground /usr/local/sbin/
+COPY scripts/docker/apache2-foreground /usr/local/bin/
 COPY scripts/docker/000-default.conf /etc/apache2/conf.d/
 RUN echo 'LoadModule rewrite_module modules/mod_rewrite.so' > /etc/apache2/conf.d/rewrite.conf
 RUN echo 'ServerName "monica"' > /etc/apache2/conf.d/hostname.conf
 
 EXPOSE 80
-CMD ["apache2-foreground"]
+
+COPY scripts/docker/apache/supervisord.conf /etc/supervisord.conf
+CMD ["supervisord", "-c /etc/supervisord.conf"]

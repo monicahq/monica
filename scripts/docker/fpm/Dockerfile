@@ -114,7 +114,7 @@ RUN set -ex && \
 	cd /etc/periodic/hourly/ && \
 	{ \
 		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v'; \
+		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
 	} | tee monica && \
 	chmod a+x monica
 
@@ -152,4 +152,6 @@ RUN set -ex && \
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["php-fpm7"]
+
+COPY scripts/docker/fpm/supervisord.conf /etc/supervisord.conf
+CMD ["supervisord", "-c /etc/supervisord.conf"]

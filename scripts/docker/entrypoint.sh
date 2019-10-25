@@ -23,7 +23,7 @@ waitfordb() {
     sleep 3
 }
 
-if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
+if expr "$1" : "supervisord" 1>/dev/null; then
 
     MONICADIR=/var/www/monica
     ARTISAN="php ${MONICADIR}/artisan"
@@ -59,13 +59,6 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
         ${ARTISAN} passport:keys
         ${ARTISAN} passport:client --personal --no-interaction
         echo "! Please be careful to backup /var/www/monica/storage/oauth-public.key and /var/www/monica/storage/oauth-private.key files !"
-    fi
-
-    # Run cron
-    if [ -f "/usr/sbin/crond" ]; then
-        crond -b -l 0 -L /dev/stdout
-    elif [ -f "/etc/init.d/cron" ]; then
-        service cron start
     fi
 
 fi
