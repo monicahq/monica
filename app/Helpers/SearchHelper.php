@@ -2,10 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Helpers\DBHelper;
 use function Safe\preg_match;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Contact\ContactFieldType;
 

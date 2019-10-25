@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Helpers\DBHelper;
 use App\Helpers\StringHelper;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 
 trait Searchable
