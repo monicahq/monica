@@ -38,7 +38,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     chown -R monica:apache ${STORAGE}
     chmod -R g+rw ${STORAGE}
 
-    if [ -z "${APP_KEY:-}" || "$APP_KEY" = "ChangeMeBy32KeyLengthOrGenerated" ]; then
+    if [ -z "${APP_KEY:-}" -o "$APP_KEY" = "ChangeMeBy32KeyLengthOrGenerated" ]; then
         ${ARTISAN} key:generate --no-interaction
     else
         echo "APP_KEY already set"
@@ -48,13 +48,13 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     waitfordb
     ${ARTISAN} monica:update --force -vv
 
-    if [ -n "${SENTRY_SUPPORT:-}" && "$SENTRY_SUPPORT" = "true" && -z "${SENTRY_NORELEASE:-}" && -n "${SENTRY_ENV:-}" ]; then
+    if [ -n "${SENTRY_SUPPORT:-}" -a "$SENTRY_SUPPORT" = "true" -a -z "${SENTRY_NORELEASE:-}" -a -n "${SENTRY_ENV:-}" ]; then
         commit=$(cat .sentry-commit)
         release=$(cat .sentry-release)
         ${ARTISAN} sentry:release --release="$release" --commit="$commit" --environment="$SENTRY_ENV" -v || true
     fi
 
-    if [ ! -f "${STORAGE}/oauth-public.key" || ! -f "${STORAGE}/oauth-private.key" ]; then
+    if [ ! -f "${STORAGE}/oauth-public.key" -o ! -f "${STORAGE}/oauth-private.key" ]; then
         echo "Passport keys creation ..."
         ${ARTISAN} passport:keys
         ${ARTISAN} passport:client --personal --no-interaction
@@ -70,4 +70,4 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
 
 fi
 
-docker-php-entrypoint $@
+exec $@
