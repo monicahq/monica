@@ -11,7 +11,7 @@ return [
     |
     */
 
-    'enable' => env('MFA_ENABLED', false),
+    'enable' => env('MFA_ENABLED', true),
 
     /*
     |--------------------------------------------------------------------------

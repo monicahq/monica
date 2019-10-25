@@ -10,7 +10,7 @@ Monica depends on the following:
 
 * A Web server, like [Apache httpd webserver](https://httpd.apache.org/) 
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-* PHP 7.3+
+* PHP 7.2+
 * [Composer](https://getcomposer.org/)
 * MySQL / MariaDB
 
@@ -37,7 +37,7 @@ sudo apt update
 sudo apt install -y git
 ```
 
-**PHP 7.3+:** 
+**PHP:** 
 
 If it's not alread done, add php repository:
 ```sh

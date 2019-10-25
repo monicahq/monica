@@ -1,4 +1,4 @@
-This document is aimed at the people deploying Monica on https://monichaq.com, and does not apply to the people installing Monica for their own use.
+This document is aimed at the people deploying Monica on https://monicahq.com, and does not apply to the people installing Monica for their own use.
 
 ## Before deploying a new version
 
