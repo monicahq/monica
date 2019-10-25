@@ -41,7 +41,7 @@ trait Searchable
         }
 
         $builder->select(array_map(function ($column) {
-            return $this->getTable().".`$column`";
+            return "{$this->getTable()}.$column";
         }, $this->return_from_search));
 
         return $builder->paginate($limitPerPage);

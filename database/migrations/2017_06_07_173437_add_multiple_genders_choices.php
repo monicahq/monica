@@ -21,7 +21,7 @@ class AddMultipleGendersChoices extends Migration
                 DB::statement('ALTER TABLE '.DBHelper::getTable('kids')." CHANGE COLUMN gender gender ENUM('male', 'female', 'none')");
                 break;
             case 'pgsql':
-                $this->alterEnum(BHelper::getTable('contacts'), 'gender', ['male', 'female', 'none']);
+                $this->alterEnum(DBHelper::getTable('contacts'), 'gender', ['male', 'female', 'none']);
                 $this->alterEnum(DBHelper::getTable('significant_others'), 'gender', ['male', 'female', 'none']);
                 $this->alterEnum(DBHelper::getTable('kids'), 'gender', ['male', 'female', 'none']);
                 break;
