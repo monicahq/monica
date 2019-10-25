@@ -11,7 +11,6 @@ use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\DB;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
