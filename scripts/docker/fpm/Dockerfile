@@ -48,9 +48,7 @@ RUN apk add netcat-openbsd \
         #- sentry/sentry
         php7-curl \
         #- cbor-php (webauthn)
-        php7-gmp \
-# fpm variant
-        php7-fpm
+        php7-gmp
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -86,6 +84,13 @@ RUN mkdir -p bootstrap/cache; \
     chmod -R g+w bootstrap/cache storage
 COPY .env.example .env
 
+# Php
+ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
+    PHP_OPCACHE_MAX_ACCELERATED_FILES="20000" \
+    PHP_OPCACHE_MEMORY_CONSUMPTION="192" \
+    PHP_OPCACHE_MAX_WASTED_PERCENTAGE="10"
+COPY scripts/docker/opcache.ini /usr/php7/conf.d/opcache.ini
+
 # Sentry
 RUN echo $VCS_REF > .sentry-release; \
     echo $COMMIT > .sentry-commit; \
@@ -109,7 +114,7 @@ RUN set -ex && \
 	cd /etc/periodic/hourly/ && \
 	{ \
 		echo '#!/bin/sh'; \
-		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v'; \
+		echo '/usr/bin/php /var/www/monica/artisan schedule:run -v > /proc/1/fd/1 2> /proc/1/fd/2'; \
 	} | tee monica && \
 	chmod a+x monica
 
@@ -121,6 +126,7 @@ COPY scripts/docker/entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
 # FPM
+RUN apk add php7-fpm
 RUN set -ex && \
 	cd /etc/php7/php-fpm.d && \
 	{ \
@@ -130,6 +136,7 @@ RUN set -ex && \
 		echo '[www]'; \
 		echo 'access.log = /dev/stdout'; \
 		echo 'catch_workers_output = yes'; \
+        echo 'clear_env = no'; \
 	} | tee docker.conf && \
 	{ \
 		echo '[global]'; \
@@ -145,4 +152,6 @@ RUN set -ex && \
 STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
-CMD ["php-fpm7"]
+
+COPY scripts/docker/fpm/supervisord.conf /etc/supervisord.conf
+CMD ["supervisord", "-c /etc/supervisord.conf"]

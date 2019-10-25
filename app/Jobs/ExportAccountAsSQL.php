@@ -105,6 +105,8 @@ class ExportAccountAsSQL
 
         // Looping over the tables
         foreach ($tables as $table) {
+            \Log::info('Table processed: '.$table->table_name);
+
             $tableName = $table->table_name;
 
             if (in_array($tableName, $this->ignoredTables)) {
@@ -132,6 +134,10 @@ class ExportAccountAsSQL
                     if ($columnName == 'account_id' && $value !== $account->id) {
                         $skipLine = true;
                         break;
+                    }
+
+                    if ($columnName == 'id' && $tableName == 'contacts') {
+                        \Log::info('Row processed: '.$value);
                     }
 
                     if (is_null($value)) {

@@ -252,7 +252,7 @@ return [
     'import_upload_rules_desc' => '但是, 我们有一些规则:',
     'import_upload_rule_format' => '我们支持 <code>vcard</code> 和 <code>vcf</code> 文件。',
     'import_upload_rule_vcard' => '我们支持 vCard 3.0 格式, 这是Contacts.app (macOS) 和 Google Contacts的默认格式. 。',
-    'import_upload_rule_instructions' => '导出 <a href="http://osxdaily.com/2015/07/14/export-contacts-mac-os-x/" target="_blank">Contacts.app (macOS)</a> 和 <a href="http://www.akruto.com/backup-phone-contacts-calendar/how-to-export-google-contacts-to-csv-or-vcard/" target="_blank">Google Contacts</a>的说明。',
+    'import_upload_rule_instructions' => '导出 <a href=":url1" target="_blank" rel="noopener noreferrer">Contacts.app (macOS)</a> 和 <a href=":url2" target="_blank" rel="noopener noreferrer">Google Contacts</a>的说明。',
     'import_upload_rule_multiple' => '现在, 如果您的联系人有多个电子邮件地址或电话号码, 则只会获取第一个条目。',
     'import_upload_rule_limit' => '文件限制为10MB。',
     'import_upload_rule_time' => '上传联系人和处理它们可能需要1分钟的时间。请耐心等待。',

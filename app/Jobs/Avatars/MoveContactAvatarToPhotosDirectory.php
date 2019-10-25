@@ -44,9 +44,11 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
     /**
      * Create a new job instance.
      *
+     * @param  Contact $contact
+     * @param  bool $dryrun
      * @return void
      */
-    public function __construct($contact, $dryrun)
+    public function __construct(Contact $contact, $dryrun)
     {
         $this->contact = $contact;
         $this->dryrun = $dryrun;

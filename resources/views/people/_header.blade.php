@@ -12,7 +12,7 @@
         <div class="relative hide-child">
           <div class="image-header top-0 left-0">
             <img class="cover br3 bb b--gray-monica"
-                 alt={{ $contact->initials }}
+                 alt="{{ $contact->initials }}"
                  src="{{ $contact->getAvatarURL() }}"
                  style="height: 115px; width: 115px;"
                  v-on:error="fixAvatarDisplay"
@@ -46,14 +46,20 @@
         {{-- AGE --}}
         <li class="mb2 mb0-ns di-ns db tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
           @if ($contact->birthdate && !($contact->is_dead))
-            @if ($contact->birthdate->getAge())
+            @if ($contact->getBirthdayState() !== 'unknown')
               <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_birthday')</span>
-              <span>{{$contact->birthdate->toShortString()}} ({{ $contact->birthdate->getAge() }})</span>
+              @if($contact->getBirthdayState() === 'approximate')
+                <span>{{ trans('people.age_approximate_in_years', ['age' => $contact->birthdate->getAge()]) }}</span>
+              @elseif($contact->getBirthdayState() === 'almost')
+                <span>{{$contact->birthdate->toShortString()}}</span>
+              @else
+                <span>{{$contact->birthdate->toShortString()}} ({{ $contact->birthdate->getAge() }})</span>
+              @endif
             @endif
           @elseif ($contact->is_dead)
               @if (! is_null($contact->deceasedDate))
                 {{ trans('people.deceased_label_with_date', ['date' => $contact->deceasedDate->toShortString()]) }}
-                @if ($contact->deceasedDate->is_year_unknown == 0)
+                @if ($contact->deceasedDate->is_year_unknown == 0 && $contact->getBirthdayState() !== 'almost')
                   <span>({{ trans('people.deceased_age') }} {{ $contact->getAgeAtDeath() }})</span>
                 @endif
               @else
