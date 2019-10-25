@@ -94,7 +94,6 @@
             </span>
             <div v-for="attendees in activity.attendees" :key="attendees.id" class="dib pointer ml2" @click="redirect(attendees)">
               <img v-tooltip.bottom="attendees.complete_name" :src="attendees.information.avatar.url" class="br3 journal-avatar-small" :alt="attendees.complete_name" />
-
             </div>
           </div>
         </div>

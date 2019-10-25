@@ -68,6 +68,7 @@ endif
 DESTDIR := monica-$(BUILD)
 ASSETS := monica-assets-$(BUILD)
 DOCKER_IMAGE := monicahq/monicahq
+BUILD_DATE := $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 default: build
 
@@ -81,11 +82,11 @@ docker:
 	$(MAKE) docker_tag
 	$(MAKE) docker_push
 
-docker_build: docker_build_apache docker_build_fpm
+docker_build: docker_build_apache docker_build_fpm docker_build_php_apache
 
 docker_build_apache:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
@@ -93,9 +94,19 @@ docker_build_apache:
 		-t $(DOCKER_IMAGE) .
 	docker images
 
+docker_build_php_apache:
+	docker build \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
+		--build-arg VCS_REF=$(GIT_REF) \
+		--build-arg COMMIT=$(GIT_COMMIT) \
+		--build-arg VERSION=$(BUILD) \
+		-f scripts/docker/php-apache/Dockerfile \
+		-t $(DOCKER_IMAGE):php-apache .
+	docker images
+
 docker_build_fpm:
 	docker build \
-		--build-arg BUILD_DATE=$(shell date -u +"%Y-%m-%dT%H:%M:%SZ") \
+		--build-arg BUILD_DATE=$(BUILD_DATE) \
 		--build-arg VCS_REF=$(GIT_REF) \
 		--build-arg COMMIT=$(GIT_COMMIT) \
 		--build-arg VERSION=$(BUILD) \
@@ -116,24 +127,35 @@ docker_squash:
 docker_tag:
 	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)
 	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):alpine
 	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-apache
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine
+	docker tag $(DOCKER_IMAGE):latest $(DOCKER_IMAGE):$(BUILD)-alpine-apache
 	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker tag $(DOCKER_IMAGE):fpm $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
+	docker tag $(DOCKER_IMAGE):php-apache $(DOCKER_IMAGE):$(BUILD)-php-apache
 	docker images
 
 docker_push: docker_tag
-	docker push $(DOCKER_IMAGE):$(BUILD)
-	docker push $(DOCKER_IMAGE):$(BUILD)-apache
-	docker push $(DOCKER_IMAGE):apache
-	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
-	docker push $(DOCKER_IMAGE):fpm
 	docker push $(DOCKER_IMAGE):latest
+	docker push $(DOCKER_IMAGE):fpm
+	docker push $(DOCKER_IMAGE):php-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)
+	docker push $(DOCKER_IMAGE):apache
+	docker push $(DOCKER_IMAGE):alpine
+	docker push $(DOCKER_IMAGE):$(BUILD)-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-apache
+	docker push $(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
+	docker push $(DOCKER_IMAGE):$(BUILD)-php-apache
 
 docker_push_bintray: .deploy.json
 	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
 
-.PHONY: docker docker_build docker_build_apache docker_build_fpm docker_tag docker_push docker_push_bintray
+.PHONY: docker docker_build docker_build_apache docker_build_fpm docker_build_php_apache docker_tag docker_push docker_push_bintray
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
