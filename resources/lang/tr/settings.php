@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'İndir',
     'subscriptions_account_invoices_subscription' => 'Subscription from :startDate to :endDate',
     'subscriptions_account_payment' => 'Which payment option fits you best?',
-    'subscriptions_account_confirm_payment' => 'You payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Downgrade your account to the free plan',
     'subscriptions_downgrade_limitations' => 'Ücretsiz planın limitleri vardır. Paketi düşürebilmek için aşağıdaki kontrol listesini onaylanman gerekiyor:',
     'subscriptions_downgrade_rule_users' => 'Hesabında sadece 1 kişi bulundurmalısın',
