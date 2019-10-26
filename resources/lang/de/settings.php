@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'Herunterladen',
     'subscriptions_account_invoices_subscription' => 'Subscription from :startDate to :endDate',
     'subscriptions_account_payment' => 'Wie möchtest du bezahlen?',
-    'subscriptions_account_confirm_payment' => 'You payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Konto auf kostenlose Variante downgraden',
     'subscriptions_downgrade_limitations' => 'Die kostenlose Variante hat Einschränkungen. um downdgraden zu können müssen folgende Dinge zutreffen:',
     'subscriptions_downgrade_rule_users' => 'Du darfst nur einen Benutzer in deinem Konto haben',
