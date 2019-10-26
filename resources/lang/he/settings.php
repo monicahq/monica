@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'הורדה',
     'subscriptions_account_invoices_subscription' => 'מינוי מ־:startDate עד :endDate',
     'subscriptions_account_payment' => 'מה דרך התשלום המועדפת עליך?',
-    'subscriptions_account_confirm_payment' => 'התשלום שלך לא הושלם, נא <a href=":url">לאשר את התשלום שלך</a>.',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'ניתן לשנמך את החשבון שלך לתכנית החינמית',
     'subscriptions_downgrade_limitations' => 'לתכנית החופשית יש מגבלות. כדי לשנמך, עליך לעבור ולאמת את הפריטים ברשימה שלהלן:',
     'subscriptions_downgrade_rule_users' => 'חייב להיות לך רק משתמש אחד בחשבון',
