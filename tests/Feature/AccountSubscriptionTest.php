@@ -214,7 +214,7 @@ class AccountSubscriptionTest extends FeatureTestCase
             'plan' => 'annual',
         ]);
 
-        $response->assertSee('Confirm your $45.00 payment');
+        $response->assertSee('Your payment is currently incomplete, please');
     }
 
     public function test_it_subscribe_with_error()
