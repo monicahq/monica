@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'Stáhnout',
     'subscriptions_account_invoices_subscription' => 'Subscription from :startDate to :endDate',
     'subscriptions_account_payment' => 'Which payment option fits you best?',
-    'subscriptions_account_confirm_payment' => 'You payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Přejít na bezplatnou verzi',
     'subscriptions_downgrade_limitations' => 'Bezplatná verze má omezení. K přechodu na bezplatnou verzi musíte projít seznam níže:',
     'subscriptions_downgrade_rule_users' => 'Smíte mít pouze jednoho uživatele účtu',
