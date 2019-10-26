@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => '下载',
     'subscriptions_account_invoices_subscription' => '订阅周期：:startDate 至 :endDate',
     'subscriptions_account_payment' => '哪个付费周期最适合您？',
-    'subscriptions_account_confirm_payment' => '交易尚未完成，请您<a href=":url">确认您的付款</a>。',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => '将您的帐户降级为免费版',
     'subscriptions_downgrade_limitations' => '免费版的功能有限制。如果您需要降级，请您确保完成以下检查：',
     'subscriptions_downgrade_rule_users' => '您的帐户中必须只有1个用户',
