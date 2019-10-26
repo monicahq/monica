@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'Scarica',
     'subscriptions_account_invoices_subscription' => 'Abbonamento da :startDate a :endDate',
     'subscriptions_account_payment' => 'Quale opzione di pagamento preferisci?',
-    'subscriptions_account_confirm_payment' => 'Il pagamento è attualmente incompleto, <a href=":url">conferma il tuo pagamento</a>.',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Retrocedi il tuo piano a quello gratuito',
     'subscriptions_downgrade_limitations' => 'Il piano gratuito è limitato. Per poter retrocedere il tuo account al piano gratuito, devi soddisfare questi requisiti:',
     'subscriptions_downgrade_rule_users' => 'Devi avere un solo utente nel tuo account',
