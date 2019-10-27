@@ -13,6 +13,8 @@
 
 Monica is a great open source personal relationship management system.
 
+Fork by andreasjacobsen
+
 * [Introduction](#introduction)
   * [Purpose](#purpose)
   * [Features](#features)
