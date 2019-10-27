@@ -3504,20 +3504,20 @@
         },
         {
             "name": "monicahq/laravel-sabre",
-            "version": "1.1.2",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/monicahq/laravel-sabre.git",
-                "reference": "4e557b7bdfe3400cd37022202a44aa3fbabb25d9"
+                "reference": "355798384450a03086a16d284d1202dc40dc0bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/4e557b7bdfe3400cd37022202a44aa3fbabb25d9",
-                "reference": "4e557b7bdfe3400cd37022202a44aa3fbabb25d9",
+                "url": "https://api.github.com/repos/monicahq/laravel-sabre/zipball/355798384450a03086a16d284d1202dc40dc0bf1",
+                "reference": "355798384450a03086a16d284d1202dc40dc0bf1",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "^5.6",
+                "laravel/framework": "^5.6 || ^6.0",
                 "sabre/dav": "^4.0"
             },
             "require-dev": {
@@ -3556,7 +3556,7 @@
                 "php",
                 "sabre"
             ],
-            "time": "2019-08-07T22:11:56+00:00"
+            "time": "2019-10-26T12:16:00+00:00"
         },
         {
             "name": "monolog/monolog",
