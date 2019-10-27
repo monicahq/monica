@@ -35,7 +35,7 @@
             <div class="br3 ba b--gray-monica bg-white mb4">
               <div class="pa3 bb b--gray-monica">
                 <form method="POST" action="{{ route('settings.users.store') }}">
-                  {{ csrf_field() }}
+                  @csrf
 
                   <h2>{{ trans('settings.users_add_title') }}</h2>
 

@@ -1,3 +1,7 @@
 preset: laravel
 enabled:
     - fully_qualified_strict_types
+finder:
+  not-name:
+    - index.php
+    - server.php

@@ -16,7 +16,7 @@
                   @endif
 
                   <form class="form-horizontal" role="form" method="POST" action="{{ '/password/email' }}">
-                      {{ csrf_field() }}
+                      @csrf
 
                       <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                           <label for="email" class="col-md-4 col-form-label">{{ trans('auth.password_reset_email') }}</label>

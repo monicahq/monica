@@ -23,7 +23,7 @@
             @endif
 
             <form action="settings/emailchange1" method="post">
-              {{ csrf_field() }}
+              @csrf
 
               <div class="form-group">
                 <label>{{ trans('auth.email_change_current_email') }}</label>
