@@ -58,7 +58,7 @@
           </ul>
 
           <form method="POST" action="{{ route('settings.subscriptions.downgrade') }}">
-            {{ csrf_field() }}
+            @csrf
 
             @if (auth()->user()->account->canDowngrade())
             <p class="mb4"><button href="" class="btn btn-primary">{{ trans('settings.subscriptions_downgrade_cta') }}</button></p>

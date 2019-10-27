@@ -85,7 +85,7 @@ class PasswordChangeController extends Controller
             return 'passwords.invalid';
         }
 
-        if (! Password::broker()->validateNewPassword($credentials)) {
+        if (! Password::validateNewPassword($credentials)) {
             return 'passwords.password';
         }
 

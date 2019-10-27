@@ -27,7 +27,7 @@
           <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-sm-offset-3-right">
             <form method="POST" action="{{ route('journal.update', ['entryId' => $entry->id]) }}">
               @method('PUT')
-              {{ csrf_field() }}
+              @csrf
 
               @include('partials.errors')
 

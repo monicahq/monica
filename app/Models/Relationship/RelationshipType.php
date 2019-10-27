@@ -51,7 +51,7 @@ class RelationshipType extends Model
     /**
      * Get the reverser relationship type of this one.
      *
-     * @return self
+     * @return self|null
      */
     public function reverseRelationshipType()
     {

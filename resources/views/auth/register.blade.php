@@ -51,7 +51,7 @@
             @endif
 
             <form action="register" method="post">
-              {{ csrf_field() }}
+              @csrf
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.register_email') }}</label>
