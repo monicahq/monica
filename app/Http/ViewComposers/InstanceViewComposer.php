@@ -2,8 +2,8 @@
 
 namespace App\Http\ViewComposers;
 
-use Illuminate\View\View;
 use App\Models\Instance\Instance;
+use Illuminate\View\View;
 
 class InstanceViewComposer
 {

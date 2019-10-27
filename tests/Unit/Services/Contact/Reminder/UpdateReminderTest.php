@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Reminder;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use Illuminate\Validation\ValidationException;
+use App\Models\User\User;
 use App\Services\Contact\Reminder\UpdateReminder;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateReminderTest extends TestCase
 {

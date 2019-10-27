@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use App\Models\Contact\Contact;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\FeatureTestCase;
 
 class TaskTest extends FeatureTestCase
 {

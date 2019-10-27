@@ -2,13 +2,13 @@
 
 namespace App\Helpers;
 
-use Money\Money;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\App;
-use Money\Currencies\ISOCurrencies;
 use Illuminate\Support\Facades\Auth;
+use Money\Currencies\ISOCurrencies;
 use Money\Currency as MoneyCurrency;
 use Money\Formatter\IntlMoneyFormatter;
+use Money\Money;
 
 class MoneyHelper
 {

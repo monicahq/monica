@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\FeatureTestCase;
 use App\Helpers\GendersHelper;
+use Tests\FeatureTestCase;
 
 class GenderHelperTest extends FeatureTestCase
 {

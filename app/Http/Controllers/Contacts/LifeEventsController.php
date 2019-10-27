@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
+use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
 use App\Models\Contact\Contact;
 use App\Models\Contact\LifeEvent;
-use Illuminate\Support\Collection;
-use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
 use App\Models\Contact\LifeEventCategory;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
-use App\Http\Resources\LifeEvent\LifeEventType as LifeEventTypeResource;
-use App\Http\Resources\LifeEvent\LifeEventCategory as LifeEventCategoryResource;
+use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class LifeEventsController extends Controller
 {

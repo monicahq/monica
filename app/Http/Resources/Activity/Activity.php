@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Activity;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class Activity extends Resource
 {

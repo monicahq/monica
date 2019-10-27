@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Reminder;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class Reminder extends Resource
 {

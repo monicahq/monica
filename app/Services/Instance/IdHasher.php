@@ -2,9 +2,9 @@
 
 namespace App\Services\Instance;
 
+use App\Exceptions\WrongIdException;
 use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
-use App\Exceptions\WrongIdException;
 
 class IdHasher
 {

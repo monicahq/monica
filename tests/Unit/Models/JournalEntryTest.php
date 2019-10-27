@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\Journal\Entry;
 use App\Models\Account\Account;
 use App\Models\Account\Activity;
+use App\Models\Journal\Entry;
 use App\Models\Journal\JournalEntry;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class JournalEntryTest extends TestCase
 {

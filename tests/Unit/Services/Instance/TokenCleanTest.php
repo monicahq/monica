@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\VCard;
 
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\User\SyncToken;
 use App\Models\Account\Account;
-use Sabre\VObject\PHPUnitAssertions;
+use App\Models\User\SyncToken;
+use App\Models\User\User;
 use App\Services\Instance\TokenClean;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Sabre\VObject\PHPUnitAssertions;
+use Tests\TestCase;
 
 class TokenCleanTest extends TestCase
 {

@@ -2,12 +2,12 @@
 
 namespace App\Models\Account;
 
-use App\Models\Contact\Contact;
-use function Safe\preg_replace;
 use App\Helpers\CountriesHelper;
+use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use function Safe\preg_replace;
 
 /**
  * A Place is not the same as an address.

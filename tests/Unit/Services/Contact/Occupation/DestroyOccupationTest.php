@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Services\Contact\Call;
 
-use Tests\TestCase;
 use App\Models\Contact\Occupation;
 use App\Services\Contact\Occupation\DestroyOccupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class DestroyOccupationTest extends TestCase
 {

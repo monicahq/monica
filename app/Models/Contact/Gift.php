@@ -3,10 +3,10 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Builder;
 use App\Models\ModelBindingWithContact as Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * @property Account $account

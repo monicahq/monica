@@ -4,8 +4,8 @@ namespace App\Helpers;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
-use PragmaRX\CountriesLaravel\Package\Facade as Countries;
 use PragmaRX\Countries\Package\Support\Collection as Country;
+use PragmaRX\CountriesLaravel\Package\Facade as Countries;
 
 class CountriesHelper
 {

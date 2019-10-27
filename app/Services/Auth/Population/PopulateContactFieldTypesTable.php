@@ -2,12 +2,12 @@
 
 namespace App\Services\Auth\Population;
 
-use App\Services\BaseService;
 use App\Models\Account\Account;
+use App\Models\Contact\ContactFieldType;
+use App\Services\BaseService;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
-use App\Models\Contact\ContactFieldType;
 
 /**
  * Populate the contact field types table for a given account.

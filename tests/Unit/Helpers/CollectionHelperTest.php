@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\FeatureTestCase;
 use App\Helpers\CollectionHelper;
 use Illuminate\Support\Facades\App;
+use Tests\FeatureTestCase;
 
 class CollectionHelperTest extends FeatureTestCase
 {

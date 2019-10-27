@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Account\Company;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
-use Illuminate\Validation\ValidationException;
 use App\Services\Account\Company\DestroyCompany;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyCompanyTest extends TestCase
 {

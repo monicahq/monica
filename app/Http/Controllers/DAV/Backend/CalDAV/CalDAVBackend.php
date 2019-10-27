@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
-use Sabre\DAV;
 use App\Models\User\SyncToken;
-use Sabre\CalDAV\Backend\SyncSupport;
 use Sabre\CalDAV\Backend\AbstractBackend;
+use Sabre\CalDAV\Backend\SyncSupport;
+use Sabre\DAV;
 
 class CalDAVBackend extends AbstractBackend implements SyncSupport
 {

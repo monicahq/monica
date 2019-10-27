@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Services\Contact\Document;
 
-use Tests\TestCase;
-use App\Models\Account\Photo;
 use App\Models\Account\Account;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
+use App\Services\Account\Photo\DestroyPhoto;
+use App\Services\Account\Photo\UploadPhoto;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Services\Account\Photo\UploadPhoto;
-use App\Services\Account\Photo\DestroyPhoto;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Tests\TestCase;
 
 class DestroyPhotoTest extends TestCase
 {

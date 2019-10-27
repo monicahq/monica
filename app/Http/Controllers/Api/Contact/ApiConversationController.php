@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ApiController;
+use App\Http\Resources\Conversation\Conversation as ConversationResource;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Conversation;
-use Illuminate\Database\QueryException;
-use App\Http\Controllers\Api\ApiController;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\Conversation\UpdateConversation;
 use App\Services\Contact\Conversation\DestroyConversation;
-use App\Http\Resources\Conversation\Conversation as ConversationResource;
+use App\Services\Contact\Conversation\UpdateConversation;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiConversationController extends ApiController
 {

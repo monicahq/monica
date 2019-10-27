@@ -2,13 +2,13 @@
 
 namespace App\Models\Contact;
 
-use Carbon\Carbon;
-use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
+use App\Models\User\User;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * A reminder has two states: active and inactive.

@@ -2,11 +2,11 @@
 
 namespace Tests\Api\DAV;
 
-use Tests\ApiTestCase;
-use Illuminate\Support\Str;
 use App\Models\Contact\Contact;
-use Sabre\VObject\PHPUnitAssertions;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Str;
+use Sabre\VObject\PHPUnitAssertions;
+use Tests\ApiTestCase;
 
 class VEventBirthdayTest extends ApiTestCase
 {

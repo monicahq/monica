@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
-use Tests\TestCase;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\UpdateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateContactTest extends TestCase
 {

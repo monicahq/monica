@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
-use Illuminate\Http\Request;
-use App\Models\Contact\LifeEvent;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Validation\ValidationException;
-use App\Services\Contact\LifeEvent\CreateLifeEvent;
-use App\Services\Contact\LifeEvent\UpdateLifeEvent;
-use App\Services\Contact\LifeEvent\DestroyLifeEvent;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\LifeEvent\LifeEvent as LifeEventResource;
+use App\Models\Contact\LifeEvent;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
+use App\Services\Contact\LifeEvent\DestroyLifeEvent;
+use App\Services\Contact\LifeEvent\UpdateLifeEvent;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiLifeEventController extends ApiController
 {

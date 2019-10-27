@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\Schema;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class MoveLinkedinDataToContactFieldType extends Migration
 {

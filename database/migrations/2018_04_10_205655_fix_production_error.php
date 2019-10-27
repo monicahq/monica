@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User\User;
-use Illuminate\Support\Str;
 use App\Models\Account\Account;
+use App\Models\User\User;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Str;
 
 class FixProductionError extends Migration
 {

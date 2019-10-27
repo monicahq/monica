@@ -2,10 +2,10 @@
 
 namespace App\Helpers;
 
-use function Safe\json_decode;
 use App\Models\Account\Account;
 use App\Models\Settings\Currency;
 use function Safe\file_get_contents;
+use function Safe\json_decode;
 
 class InstanceHelper
 {

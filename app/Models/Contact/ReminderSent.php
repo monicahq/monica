@@ -2,10 +2,10 @@
 
 namespace App\Models\Contact;
 
-use App\Models\User\User;
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\ModelBindingHasherWithContact as Model;
+use App\Models\User\User;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property Account $account

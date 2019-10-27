@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\Contact;
 
-use Tests\TestCase;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\ValidationException;
+use App\Models\Contact\Gender;
 use App\Services\Contact\Contact\CreateContact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateContactTest extends TestCase
 {

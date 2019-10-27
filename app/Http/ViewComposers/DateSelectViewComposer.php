@@ -2,8 +2,8 @@
 
 namespace App\Http\ViewComposers;
 
-use Illuminate\View\View;
 use App\Helpers\DateHelper;
+use Illuminate\View\View;
 
 class DateSelectViewComposer
 {

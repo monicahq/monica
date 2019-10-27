@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Reminder;
 
+use App\Models\Contact\Reminder;
 use App\Services\BaseService;
 use Illuminate\Validation\Rule;
-use App\Models\Contact\Reminder;
 
 class UpdateReminder extends BaseService
 {

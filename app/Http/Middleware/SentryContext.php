@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\RequestHelper;
 use Closure;
 use Sentry\State\Scope;
-use App\Helpers\RequestHelper;
 
 class SentryContext
 {

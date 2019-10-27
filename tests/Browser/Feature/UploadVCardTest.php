@@ -2,9 +2,9 @@
 
 namespace Tests\BrowserFeature;
 
-use Tests\DuskTestCase;
 use App\Models\User\User;
 use Tests\Browser\Pages\ImportVCardUpload;
+use Tests\DuskTestCase;
 
 class UploadVCardTest extends DuskTestCase
 {

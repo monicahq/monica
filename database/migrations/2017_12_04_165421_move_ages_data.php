@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Migrations\Migration;
 
 class MoveAgesData extends Migration
 {

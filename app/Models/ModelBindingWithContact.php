@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Database\Eloquent\Model;
 
 abstract class ModelBindingWithContact extends Model
 {

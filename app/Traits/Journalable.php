@@ -3,8 +3,8 @@
 namespace App\Traits;
 
 use App\Models\Journal\JournalEntry;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 trait Journalable
 {

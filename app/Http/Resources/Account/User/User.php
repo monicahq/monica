@@ -3,9 +3,9 @@
 namespace App\Http\Resources\Account\User;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
+use Illuminate\Http\Resources\Json\Resource;
 
 class User extends Resource
 {

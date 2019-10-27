@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class InstanceTest extends TestCase
 {

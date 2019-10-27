@@ -2,10 +2,10 @@
 
 namespace App\Services\Contact\Reminder;
 
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
+use App\Services\BaseService;
+use Illuminate\Validation\Rule;
 
 class CreateReminder extends BaseService
 {

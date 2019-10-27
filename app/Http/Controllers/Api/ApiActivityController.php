@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
+use App\Http\Resources\Activity\Activity as ActivityResource;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
+use App\Models\Contact\Contact;
 use App\Models\Journal\JournalEntry;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Activity\Activity as ActivityResource;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ApiActivityController extends ApiController
 {
