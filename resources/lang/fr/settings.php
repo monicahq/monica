@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'Télécharger',
     'subscriptions_account_invoices_subscription' => 'Abonnement du :startDate au :endDate',
     'subscriptions_account_payment' => 'Quelle option de paiement vous convient le mieux ?',
-    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
+    'subscriptions_account_confirm_payment' => 'Votre paiement est actuellement incomplet, merci de <a href=":url">confirmer votre paiement</a>.',
     'subscriptions_downgrade_title' => 'Passez votre compte sur l’offre gratuite',
     'subscriptions_downgrade_limitations' => 'L’offre gratuite a des limitations. Afin de pouvoir passer à cette offre, vous devez passer les points suivants :',
     'subscriptions_downgrade_rule_users' => 'Vous devez avoir un seul utilisateur dans votre compte',
