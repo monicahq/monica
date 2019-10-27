@@ -6,7 +6,7 @@
 
 ### Enhancements:
 
-*
+* only show tasks not done on frontpage
 
 ### Fixes:
 
