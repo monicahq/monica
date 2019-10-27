@@ -1,8 +1,6 @@
 preset: laravel
 enabled:
   - fully_qualified_strict_types
-  - length_ordered_imports
-  - unused_use
 finder:
   not-name:
     - index.php
