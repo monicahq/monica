@@ -3,8 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use App\Models\Contact\Contact;
-use LaravelWebauthn\Models\WebauthnKey;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class PasswordChangeTest extends FeatureTestCase
