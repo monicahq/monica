@@ -794,7 +794,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeName
-     * @return RelationshipType
+     * @return RelationshipType|null
      */
     public function getRelationshipTypeByType(string $relationshipTypeName)
     {
