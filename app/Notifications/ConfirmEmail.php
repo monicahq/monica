@@ -36,8 +36,9 @@ class ConfirmEmail extends LaravelNotification implements ShouldQueue, MailNotif
     public function via()
     {
         if (! $this->force) {
-            $first = Account::count() == 1;
-            if (! config('monica.signup_double_optin') || $first) {
+            /** @var int $count */
+            $count = Account::count();
+            if (! config('monica.signup_double_optin') || $count == 1) {
                 return [];
             }
         }
