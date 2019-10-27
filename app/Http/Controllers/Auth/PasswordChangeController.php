@@ -86,24 +86,7 @@ class PasswordChangeController extends Controller
             return 'passwords.invalid';
         }
 
-        if (! $this->validateNewPassword($credentials)) {
-            return 'passwords.password';
-        }
-
         return $user;
-    }
-
-    /**
-     * Validate password data.
-     *
-     * @param array $credentials
-     * @return bool
-     */
-    private function validateNewPassword(array $credentials) : bool
-    {
-        return Validator::make($credentials, [
-            'password' => 'required|min:6|confirmed',
-        ])->passes();
     }
 
     /**
