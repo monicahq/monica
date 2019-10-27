@@ -86,7 +86,6 @@ class PasswordChangeController extends Controller
             return 'passwords.invalid';
         }
 
-
         if (! $this->validateNewPassword($credentials)) {
             return 'passwords.password';
         }
