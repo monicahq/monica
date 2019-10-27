@@ -246,8 +246,11 @@ class ContactTest extends FeatureTestCase
             ]);
         }
 
-        $response = $this->get('/people?sort=lastactivitydateNewtoOld');
-        $response->assertSee('10 contacts');
+        $response = $this->get('/people/list?sort=lastactivitydateNewtoOld');
+
+        $response->assertJsonFragment([
+            'totalRecords' => 10,
+        ]);
     }
 
     public function test_user_can_see_contacts_sorted_by_lastactivitydateOldtoNew()
@@ -264,8 +267,11 @@ class ContactTest extends FeatureTestCase
             ]);
         }
 
-        $response = $this->get('/people?sort=lastactivitydateOldtoNew');
-        $response->assertSee('10 contacts');
+        $response = $this->get('/people/list?sort=lastactivitydateOldtoNew');
+
+        $response->assertJsonFragment([
+            'totalRecords' => 10,
+        ]);
     }
 
     public function test_user_can_be_reminded_about_an_event_once()
