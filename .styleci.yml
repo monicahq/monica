@@ -1,8 +1,6 @@
 preset: laravel
 enabled:
-  - alpha_ordered_imports
   - fully_qualified_strict_types
-disabled:
   - length_ordered_imports
   - unused_use
 finder:
