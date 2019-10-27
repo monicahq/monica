@@ -10,7 +10,7 @@
 
 ### Fixes:
 
-*
+* fixed image alignment
 
 
 # RELEASED VERSIONS:
