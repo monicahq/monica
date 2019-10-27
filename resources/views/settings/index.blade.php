@@ -40,7 +40,7 @@
             @endif
 
             <form action="{{ route('settings.save') }}" method="POST">
-              {{ csrf_field() }}
+              @csrf
 
               {{-- id --}}
               <input type="hidden" name="id" value="{{ auth()->user()->id }}" />
@@ -123,7 +123,7 @@
         </div>
 
         <form method="POST" action="{{ route('settings.reset') }}" class="settings-reset bg-white" onsubmit="return confirm('{{ trans('settings.reset_notice') }}')">
-          {{ csrf_field() }}
+          @csrf
 
           <h2>{{ trans('settings.reset_title') }}</h2>
           <p>{{ trans('settings.reset_desc') }}</p>
@@ -131,7 +131,7 @@
         </form>
 
         <form method="POST" action="{{ route('settings.delete') }}" class="settings-delete bg-white" onsubmit="return confirm('{{ trans('settings.delete_notice') }}')">
-          {{ csrf_field() }}
+          @csrf
 
           <h2>{{ trans('settings.delete_title') }}</h2>
           <p>{{ trans('settings.delete_desc') }}</p>

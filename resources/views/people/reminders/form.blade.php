@@ -1,6 +1,6 @@
 <form method="POST" action="{{ $action }}">
-    {{ method_field($method) }}
-    {{ csrf_field() }}
+    @method($method)
+    @csrf
 
     <h2>{{ trans('people.reminders_add_title', ['name' => $contact->first_name]) }}</h2>
 
