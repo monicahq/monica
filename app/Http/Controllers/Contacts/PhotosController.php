@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Photo\Photo as PhotoResource;
+use Illuminate\Http\Request;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use App\Services\Account\Photo\DestroyPhoto;
-use App\Services\Account\Photo\UploadPhoto;
-use App\Services\Contact\Avatar\UpdateAvatar;
+use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
-use Illuminate\Http\Request;
+use App\Services\Account\Photo\UploadPhoto;
+use App\Services\Account\Photo\DestroyPhoto;
+use App\Services\Contact\Avatar\UpdateAvatar;
+use App\Http\Resources\Photo\Photo as PhotoResource;
 
 class PhotosController extends Controller
 {

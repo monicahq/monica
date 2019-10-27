@@ -2,13 +2,13 @@
 
 namespace App\Models\Journal;
 
+use Parsedown;
 use App\Helpers\DateHelper;
-use App\Interfaces\IsJournalableInterface;
+use App\Traits\Journalable;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
-use App\Traits\Journalable;
+use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Parsedown;
 
 class Entry extends Model implements IsJournalableInterface
 {

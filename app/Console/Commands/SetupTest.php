@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Application;
 use Illuminate\Console\Command;
+use Illuminate\Console\Application;
 
 class SetupTest extends Command
 {

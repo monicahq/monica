@@ -2,17 +2,17 @@
 
 namespace App\Services\Account\Photo;
 
+use function Safe\substr;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Services\BaseService;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
-use function Safe\base64_decode;
 use function Safe\finfo_open;
 use function Safe\preg_match;
-use function Safe\substr;
+use function Safe\base64_decode;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class UploadPhoto extends BaseService
 {

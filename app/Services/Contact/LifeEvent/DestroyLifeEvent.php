@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\LifeEvent;
 
-use App\Models\Contact\LifeEvent;
-use App\Models\Contact\Reminder;
 use App\Services\BaseService;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
 
 class DestroyLifeEvent extends BaseService
 {

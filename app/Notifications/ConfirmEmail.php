@@ -2,17 +2,17 @@
 
 namespace App\Notifications;
 
-use App\Interfaces\MailNotification;
-use App\Models\Account\Account;
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
+use App\Models\Account\Account;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\URL;
+use App\Interfaces\MailNotification;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as LaravelNotification;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\URL;
 
 class ConfirmEmail extends LaravelNotification implements ShouldQueue, MailNotification
 {

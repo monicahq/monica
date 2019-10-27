@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\User\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Mail;
 use Tests\FeatureTestCase;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class RegisterTest extends FeatureTestCase
 {

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
-use App\Models\Contact\ContactFieldType;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
 class ApiContactFieldController extends ApiController
 {

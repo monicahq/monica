@@ -2,36 +2,36 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Account\Account;
-use App\Models\Account\Activity;
-use App\Models\Account\ActivityType;
-use App\Models\Account\ActivityTypeCategory;
-use App\Models\Account\Company;
-use App\Models\Account\Invitation;
+use Carbon\Carbon;
+use App\Models\User\User;
+use Tests\FeatureTestCase;
+use App\Models\User\Module;
+use App\Models\Contact\Call;
 use App\Models\Account\Photo;
 use App\Models\Account\Place;
+use App\Models\Contact\Gender;
+use App\Models\Account\Account;
+use App\Models\Account\Company;
 use App\Models\Account\Weather;
 use App\Models\Contact\Address;
-use App\Models\Contact\Call;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Conversation;
-use App\Models\Contact\Document;
-use App\Models\Contact\Gender;
-use App\Models\Contact\LifeEvent;
-use App\Models\Contact\LifeEventCategory;
-use App\Models\Contact\LifeEventType;
 use App\Models\Contact\Message;
-use App\Models\Contact\Occupation;
+use App\Models\Account\Activity;
+use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
+use App\Models\Account\Invitation;
+use App\Models\Contact\Occupation;
+use Illuminate\Support\Facades\DB;
+use App\Models\Account\ActivityType;
+use App\Models\Contact\Conversation;
+use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
+use App\Models\Contact\LifeEventCategory;
+use App\Models\Account\ActivityTypeCategory;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
-use App\Models\User\Module;
-use App\Models\User\User;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\DB;
-use Tests\FeatureTestCase;
 
 class AccountTest extends FeatureTestCase
 {

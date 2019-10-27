@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
+use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\Conversation;
-use App\Services\Contact\Conversation\UpdateConversation;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\Conversation\UpdateConversation;
 
 class UpdateConversationTest extends TestCase
 {

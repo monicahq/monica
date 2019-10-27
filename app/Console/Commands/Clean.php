@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Events\TokenDeleteEvent;
 use App\Models\User\SyncToken;
-use App\Services\Instance\TokenClean;
 use Illuminate\Console\Command;
+use App\Events\TokenDeleteEvent;
+use App\Services\Instance\TokenClean;
 use Illuminate\Support\Facades\Event;
 
 class Clean extends Command

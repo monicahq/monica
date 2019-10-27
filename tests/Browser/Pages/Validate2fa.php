@@ -2,8 +2,8 @@
 
 namespace Tests\Browser\Pages;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Laravel\Dusk\Browser;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class Validate2fa extends Page
 {

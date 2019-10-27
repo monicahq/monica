@@ -2,10 +2,10 @@
 
 namespace App\Helpers;
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
-use Illuminate\Support\Facades\Auth;
 use function Safe\preg_match;
+use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Contact\ContactFieldType;
 
 class SearchHelper
 {

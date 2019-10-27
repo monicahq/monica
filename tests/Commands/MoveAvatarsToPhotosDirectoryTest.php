@@ -2,13 +2,13 @@
 
 namespace Tests\Jobs;
 
+use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use App\Models\User\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class MoveAvatarsToPhotosDirectoryTest extends TestCase
 {

@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Contact\Contact;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use LaravelWebauthn\Models\WebauthnKey;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Contact;
+use LaravelWebauthn\Models\WebauthnKey;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SettingsTest extends FeatureTestCase
 {

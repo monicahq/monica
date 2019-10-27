@@ -2,13 +2,13 @@
 
 namespace Tests\Browser\Settings;
 
-use App\Models\User\User;
-use Illuminate\Console\Application;
-use Laravel\Dusk\Browser;
-use Tests\Browser\Pages\DashboardValidate2fa;
-use Tests\Browser\Pages\SettingsSecurity;
-use Tests\DuskTestCase;
 use Zxing\QrReader;
+use Tests\DuskTestCase;
+use App\Models\User\User;
+use Laravel\Dusk\Browser;
+use Illuminate\Console\Application;
+use Tests\Browser\Pages\SettingsSecurity;
+use Tests\Browser\Pages\DashboardValidate2fa;
 
 class MultiFAControllerTest extends DuskTestCase
 {

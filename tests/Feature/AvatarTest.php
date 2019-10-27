@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
+use Tests\FeatureTestCase;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\FeatureTestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AvatarTest extends FeatureTestCase
 {

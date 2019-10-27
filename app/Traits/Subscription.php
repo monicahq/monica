@@ -2,11 +2,11 @@
 
 namespace App\Traits;
 
-use App\Exceptions\StripeException;
 use App\Helpers\DateHelper;
-use App\Helpers\InstanceHelper;
-use Illuminate\Support\Facades\Log;
 use Laravel\Cashier\Billable;
+use App\Helpers\InstanceHelper;
+use App\Exceptions\StripeException;
+use Illuminate\Support\Facades\Log;
 
 trait Subscription
 {

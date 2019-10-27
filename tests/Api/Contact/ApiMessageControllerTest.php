@@ -2,13 +2,13 @@
 
 namespace Tests\Api\Contact;
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\Conversation;
-use App\Models\Contact\Message;
-use App\Models\User\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\ApiTestCase;
+use App\Models\User\User;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Message;
+use App\Models\Contact\Conversation;
+use App\Models\Contact\ContactFieldType;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiMessageControllerTest extends ApiTestCase
 {

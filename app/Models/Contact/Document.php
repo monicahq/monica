@@ -4,8 +4,8 @@ namespace App\Models\Contact;
 
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Document extends Model
 {

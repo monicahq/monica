@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Contact\Reminder;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Reminder;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ReminderTest extends FeatureTestCase
 {

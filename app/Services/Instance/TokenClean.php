@@ -2,9 +2,9 @@
 
 namespace App\Services\Instance;
 
-use App\Events\TokenDeleteEvent;
-use App\Models\User\SyncToken;
 use Carbon\Carbon;
+use App\Models\User\SyncToken;
+use App\Events\TokenDeleteEvent;
 use Illuminate\Support\Facades\DB;
 
 class TokenClean

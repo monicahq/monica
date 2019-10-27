@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Account\Place;
 
+use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Occupation;
-use App\Services\Contact\Occupation\UpdateOccupation;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use App\Services\Contact\Occupation\UpdateOccupation;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UpdateOccupationTest extends TestCase
 {

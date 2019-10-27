@@ -2,8 +2,8 @@
 
 namespace App\Http\ViewComposers;
 
-use App\Helpers\CountriesHelper;
 use Illuminate\View\View;
+use App\Helpers\CountriesHelper;
 
 class CountrySelectViewComposer
 {

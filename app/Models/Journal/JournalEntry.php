@@ -2,12 +2,12 @@
 
 namespace App\Models\Journal;
 
-use App\Interfaces\IsJournalableInterface;
-use App\Models\Account\Account;
 use App\Models\Contact\Entry;
+use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Interfaces\IsJournalableInterface;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property Account $account

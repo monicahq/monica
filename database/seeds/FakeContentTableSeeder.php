@@ -1,28 +1,28 @@
 <?php
 
-use App\Helpers\CountriesHelper;
-use App\Models\Account\Account;
-use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\LifeEventType;
+use Carbon\Carbon;
+use GuzzleHttp\Client;
 use App\Models\User\User;
+use function Safe\json_decode;
+use App\Models\Account\Account;
+use Illuminate\Database\Seeder;
+use App\Helpers\CountriesHelper;
+use Illuminate\Support\Facades\DB;
+use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Tag\AssociateTag;
+use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contact\Address\CreateAddress;
 use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Reminder\CreateReminder;
+use Symfony\Component\Console\Helper\ProgressBar;
+use App\Services\Contact\LifeEvent\CreateLifeEvent;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
-use App\Services\Contact\Conversation\CreateConversation;
-use App\Services\Contact\LifeEvent\CreateLifeEvent;
-use App\Services\Contact\Relationship\CreateRelationship;
-use App\Services\Contact\Reminder\CreateReminder;
-use App\Services\Contact\Tag\AssociateTag;
-use Carbon\Carbon;
-use GuzzleHttp\Client;
-use Illuminate\Database\Seeder;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\DB;
-use function Safe\json_decode;
-use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 class FakeContentTableSeeder extends Seeder
 {
