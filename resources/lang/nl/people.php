@@ -70,7 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'Lijst van gearchiveerde contacten',
 
     // Header
-    'me' => 'This is you',
+    'me' => 'Dit ben jij',
     'edit_contact_information' => 'Bewerk contactinformatie',
     'contact_archive' => 'Archiveer contact',
     'contact_unarchive' => 'Dearchiveer contact',
@@ -120,7 +120,7 @@ return [
     'conversation_add_content' => 'Schrijf hier wat er is gezegd',
     'conversation_add_what_was_said' => 'Wat was de gespreksinhoud?',
     'conversation_add_another' => 'Nog een bericht toevoegen',
-    'conversation_add_error' => 'You must add at least one message.',
+    'conversation_add_error' => 'Je moet tenminste één bericht toevoegen.',
     'conversation_list_table_messages' => 'Berichten',
     'conversation_list_table_content' => 'Gedeeltelijke inhoud (laatste bericht)',
     'conversation_list_title' => 'Gesprekken',
@@ -142,7 +142,7 @@ return [
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
     'information_edit_max_size' => 'Maximaal :size Kb.',
-    'information_edit_max_size2' => 'Max {size} Kb.',
+    'information_edit_max_size2' => 'Maximaal {size} Kb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
     'information_edit_description' => 'Beschrijving (optioneel)',
@@ -221,7 +221,7 @@ return [
     'relationship_form_deletion_success' => 'De relatie is verwijdert.',
 
     // tasks
-    'tasks_title' => 'Tasks',
+    'tasks_title' => 'Taken',
     'tasks_blank_title' => 'Je hebt nog geen taken.',
     'tasks_form_title' => 'Titel',
     'tasks_form_description' => 'Beschrijving (optioneel)',
@@ -466,7 +466,7 @@ return [
     'document_upload_zone_error' => 'Er is een fout opgetreden tijdens uploaden van het document, probeer het a.u.b. opnieuw.',
 
     // Photos
-    'photo_title' => 'Photos',
+    'photo_title' => 'Foto\'s',
     'photo_list_title' => 'Gerelateerde foto\'s',
     'photo_list_cta' => 'Foto uploaden',
     'photo_list_blank_desc' => 'Je kan afbeeldingen van dit contact opslaan. Upload er nu eentje!',
