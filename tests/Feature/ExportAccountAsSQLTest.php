@@ -3,11 +3,8 @@
 namespace Tests\Feature;
 
 use Tests\FeatureTestCase;
-use App\Models\User\User;
 use App\Jobs\ExportAccountAsSQL;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
-use App\Services\Account\Settings\ExportAccount;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExportAccountAsSQLTest extends FeatureTestCase
@@ -19,7 +16,7 @@ class ExportAccountAsSQLTest extends FeatureTestCase
         Storage::fake();
         Storage::fake('local');
 
-        $user = $this->signIn();;
+        $user = $this->signIn();
 
         $path = dispatch_now(new ExportAccountAsSQL());
 
