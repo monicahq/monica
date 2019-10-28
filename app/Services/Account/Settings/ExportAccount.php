@@ -156,11 +156,11 @@ SET FOREIGN_KEY_CHECKS=0;
         }
         $listOfColumns = implode(',', $listOfColumns);
 
-        $sql = '';
+        $this->writeToTempFile('INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') VALUES ');
+
+        $first = true;
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
-
-            $sql .= 'INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') values (';
 
             // build an array of values
             foreach ($columns as $key => $value) {
@@ -175,9 +175,17 @@ SET FOREIGN_KEY_CHECKS=0;
                 array_push($columnValues, $value);
             }
 
-            $sql .= implode(',', $columnValues).');'.PHP_EOL;
+            $sql = '';
+            if ($first) {
+                $first = false;
+            } else {
+                $sql .= ',';
+            }
+
+            $sql .= '('.implode(',', $columnValues).')'.PHP_EOL;
+            $this->writeToTempFile($sql);
         }
-        $this->writeToTempFile($sql);
+        $this->writeToTempFile(';'.PHP_EOL);
     }
 
     /**
@@ -188,7 +196,7 @@ SET FOREIGN_KEY_CHECKS=0;
     private function writeToTempFile(string $sql)
     {
         Storage::disk('local')
-            ->append($this->tempFileName, $sql);
+            ->append($this->tempFileName, $sql, '');
     }
 
     /**
@@ -1402,8 +1410,8 @@ SET FOREIGN_KEY_CHECKS=0;
                 ->get();
 
             foreach ($photos as $photo) {
-                $this->sql = $this->sql.'INSERT INTO contact_photo (contact_id, photo_id, created_at, updated_at) values (';
-                $this->sql = $this->sql.$photo->contact_id.','.$photo->photo_id.",'".$photo->created_at."','".$photo->updated_at."');".PHP_EOL;
+                $sql = 'INSERT INTO contact_photo (contact_id, photo_id, created_at, updated_at) values (';
+                $sql .= $photo->contact_id.','.$photo->photo_id.",'".$photo->created_at."','".$photo->updated_at."');".PHP_EOL;
             }
         }
     }
