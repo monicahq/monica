@@ -46,7 +46,7 @@
             <p>{{ trans('settings.security_help') }}</p>
 
             <form method="POST" action="{{ route('settings.security.passwordChange') }}" class="settings-reset">
-              {{ csrf_field() }}
+              @csrf
 
               <h2>{{ trans('settings.password_change') }}</h2>
 

@@ -35,7 +35,7 @@
             @endif
 
             <form action="login" method="post">
-              {{ csrf_field() }}
+              @csrf
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.email') }}</label>

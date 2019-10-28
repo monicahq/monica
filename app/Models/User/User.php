@@ -330,11 +330,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getGoogle2faSecretAttribute($value)
     {
-        if (is_null($value)) {
-            return $value;
+        if (! is_null($value)) {
+            return decrypt($value);
         }
-
-        return decrypt($value);
     }
 
     /**

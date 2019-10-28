@@ -35,7 +35,7 @@
             <h2>{{ trans('people.introductions_title_edit', ['name' => $contact->first_name]) }}</h2>
 
               <form method="POST" action="{{ route('people.introductions.update', $contact) }}">
-                {{ csrf_field() }}
+                @csrf
 
                 @include('partials.errors')
 

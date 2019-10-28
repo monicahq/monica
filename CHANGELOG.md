@@ -6,11 +6,14 @@
 
 ### Enhancements:
 
+* Use supervisor in docker images
 * Use JawsDB by default on heroku instances
 * Add pluralization forms for non-english-like-plural languages, for vue.js translations
 
 ### Fixes:
 
+* Fix currencies seeder by accounting for defaults
+* Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
 
 

@@ -3,6 +3,7 @@ includes:
     - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 
 parameters:
+    inferPrivatePropertyTypeFromConstructor: true
     level: 5
     ignoreErrors:
         # Level 1

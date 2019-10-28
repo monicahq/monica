@@ -412,7 +412,7 @@ export default {
     // All the contact related tasks
     contactRelated: function (tasks) {
       return tasks.filter(function (task) {
-        return task.contact != null;
+        return task.contact != null && !task.completed;
       });
     },
 

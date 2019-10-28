@@ -11,7 +11,7 @@
 
     <div class="mw7 center br3 ba b--gray-monica bg-white mb5">
       <form method="POST" action="{{ route('people.avatar.update', $contact) }}" enctype="multipart/form-data">
-        {{ csrf_field() }}
+        @csrf
 
         @include('partials.errors')
 

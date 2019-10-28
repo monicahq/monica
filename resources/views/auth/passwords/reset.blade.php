@@ -12,7 +12,7 @@
 
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST" action="{{ '/password/reset' }}">
-                            {{ csrf_field() }}
+                            @csrf
 
                             <input type="hidden" name="token" value="{{ $token }}">
 
