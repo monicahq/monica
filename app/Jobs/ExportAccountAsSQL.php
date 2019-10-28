@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +13,6 @@ class ExportAccountAsSQL
 {
     use Dispatchable, SerializesModels;
 
-    protected $file = '';
     protected $path = '';
 
     /**
@@ -27,10 +27,9 @@ class ExportAccountAsSQL
      * @param string|null $file
      * @param string|null $path
      */
-    public function __construct($file = null, $path = null)
+    public function __construct($path = null)
     {
-        $this->path = $path ?? 'exports/';
-        $this->file = $file ?? rand().'.sql';
+        $this->path = $path ?? 'exports';
     }
 
     /**
@@ -40,23 +39,25 @@ class ExportAccountAsSQL
      */
     public function handle()
     {
-        $downloadPath = $this->path.$this->file;
+        try {
+            $tempFileName = app(ExportAccount::class)
+                    ->execute([
+                        'account_id' => Auth::user()->account_id,
+                        'user_id' => Auth::user()->id,
+                    ]);
 
-        $tempFileName = app(ExportAccount::class)
-                ->execute([
-                    'account_id' => Auth::user()->account_id,
-                    'user_id' => Auth::user()->id,
-                ]);
+            // get the temp file that we just created
+            $tempFilePath = disk_adapter('local')->getPathPrefix().$tempFileName;
 
-        // get the temp file that we just created
-        $contents = Storage::disk('local')->get($tempFileName);
-
-        // move the file to the public storage
-        Storage::disk(self::STORAGE)->put($downloadPath, $contents);
-
-        // delete old file from temp folder
-        Storage::disk('local')->delete($tempFileName);
-
-        return $downloadPath;
+            // move the file to the public storage
+            return Storage::disk(self::STORAGE)
+                ->putFileAs($this->path, new File($tempFilePath), basename($tempFileName));
+        } finally {
+            // delete old file from temp folder
+            $storage = Storage::disk('local');
+            if ($storage->exists($tempFileName)) {
+                $storage->delete($tempFileName);
+            }
+        }
     }
 }
