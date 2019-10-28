@@ -6,7 +6,7 @@ return [
     'journal_description' => 'Opmerking: het dagboek laat zowel handmatige invoeren en automatische invoeren, zoals Activiteiten gedaan met je contacten, zien. Je kunt dagboek invoeren handmatig wissen, maar Activiteiten kunnen alleen op de contact pagina verwijderd worden.',
     'journal_add' => 'Voeg een dagboek invoer toe',
     'journal_edit' => 'Bewerk dagboek-invoer',
-    'journal_empty' => 'Empty journal',
+    'journal_empty' => 'Leeg dagboek',
     'journal_created_automatically' => 'Automatisch aangemaakt',
     'journal_entry_type_journal' => 'Dagboek invoer',
     'journal_entry_type_activity' => 'Activiteit',
