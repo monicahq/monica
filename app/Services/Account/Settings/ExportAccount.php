@@ -157,11 +157,11 @@ SET FOREIGN_KEY_CHECKS=0;
         }
         $listOfColumns = implode(',', $listOfColumns);
 
-        $this->writeToTempFile('INSERT IGNORE INTO '.DBHelper::getTable($tableName).' ('.$listOfColumns.') VALUES ');
+        $sql = '';
 
-        $first = true;
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
+            $sql .= 'INSERT IGNORE INTO ' . $tableName . ' (' . $listOfColumns . ') values (';
 
             // build an array of values
             foreach ($columns as $key => $value) {
@@ -176,17 +176,9 @@ SET FOREIGN_KEY_CHECKS=0;
                 array_push($columnValues, $value);
             }
 
-            $sql = '';
-            if ($first) {
-                $first = false;
-            } else {
-                $sql .= ',';
-            }
-
-            $sql .= '('.implode(',', $columnValues).')'.PHP_EOL;
-            $this->writeToTempFile($sql);
+            $sql .= implode(',', $columnValues).');'.PHP_EOL;
         }
-        $this->writeToTempFile(';'.PHP_EOL);
+        $this->writeToTempFile($sql);
     }
 
     /**
@@ -197,7 +189,7 @@ SET FOREIGN_KEY_CHECKS=0;
     private function writeToTempFile(string $sql)
     {
         Storage::disk('local')
-            ->append($this->tempFileName, $sql, '');
+            ->append($this->tempFileName, $sql);
     }
 
     /**
