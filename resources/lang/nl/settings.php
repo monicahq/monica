@@ -8,7 +8,7 @@ return [
     'sidebar_settings_users' => 'Gebruikers',
     'sidebar_settings_subscriptions' => 'Abonnement',
     'sidebar_settings_import' => 'Importeer gegevens',
-    'sidebar_settings_tags' => 'Label beheer',
+    'sidebar_settings_tags' => 'Label-beheer',
     'sidebar_settings_api' => 'API',
     'sidebar_settings_dav' => 'DAV bronnen',
     'sidebar_settings_security' => 'Beveiliging',
@@ -165,8 +165,8 @@ return [
 
     'subscriptions_account_current_plan' => 'Je huidige abonnement',
     'subscriptions_account_current_paid_plan' => 'Jij gebruikt het :name abonnement. Bedankt voor het aanmelden.',
-    'subscriptions_account_next_billing' => 'Your subscription will auto-renew on <strong>:date</strong>.',
-    'subscriptions_account_cancel' => 'You can <a href=":url">cancel subscription</a> anytime.',
+    'subscriptions_account_next_billing' => 'Je abonnement wordt automatisch verlengd op <strong>:date</strong>.',
+    'subscriptions_account_cancel' => 'Je kunt je abonnement op elk moment <a href=":url">annuleren</a>.',
     'subscriptions_account_free_plan' => 'Je hebt het gratis abonnement.',
     'subscriptions_account_free_plan_upgrade' => 'Je kan je account upgraden naar het :name abonnement, dat $:price per maand kost. Hier zijn de voordelen:',
     'subscriptions_account_free_plan_benefits_users' => 'Onbeperkt aantal gebruikers',
@@ -178,7 +178,7 @@ return [
     'subscriptions_account_upgrade_choice' => 'Kies hieronder een abonnement en sluit je aan bij meer dan :customers personen die reeds de premium versie van Monica gebruiken.',
     'subscriptions_account_invoices' => 'Facturen',
     'subscriptions_account_invoices_download' => 'Download',
-    'subscriptions_account_invoices_subscription' => 'Subscription from :startDate to :endDate',
+    'subscriptions_account_invoices_subscription' => 'Abonnement van :startDate tot :endDate',
     'subscriptions_account_payment' => 'Welke betaalmethode past je het beste?',
     'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Account naar de gratis variant downgraden',
@@ -386,7 +386,7 @@ return [
     'personalisation_paid_upgrade' => 'Dit is een betaalde functionaliteit en vereist dat je een betaald abonnement hebt. Upgrade je account door naar Instellingen > Abonnement te gaan.',
 
     'reminder_time_to_send' => 'De tijd dat herinneringen verstuurd moeten worden',
-    'reminder_time_to_send_help' => 'Voor jouw informatie, de volgende herinnering wordt verzonden op <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
+    'reminder_time_to_send_help' => 'Ter informatie, de volgende herinnering wordt verzonden op <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => 'Activiteiten categorieën',
     'personalization_activity_type_category_add' => 'Voeg een nieuwe categorie activiteiten toe',
