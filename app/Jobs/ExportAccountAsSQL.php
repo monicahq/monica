@@ -24,7 +24,6 @@ class ExportAccountAsSQL
     /**
      * Create a new job instance.
      *
-     * @param string|null $file
      * @param string|null $path
      */
     public function __construct($path = null)
@@ -34,8 +33,6 @@ class ExportAccountAsSQL
 
     /**
      * Execute the job.
-     *
-     * @return string
      */
     public function handle()
     {
