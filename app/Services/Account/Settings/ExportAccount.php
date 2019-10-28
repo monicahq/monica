@@ -2,7 +2,6 @@
 
 namespace App\Services\Account\Settings;
 
-use App\Helpers\DBHelper;
 use App\Models\User\User;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
@@ -161,7 +160,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
-            $sql .= 'INSERT IGNORE INTO ' . $tableName . ' (' . $listOfColumns . ') values (';
+            $sql .= 'INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') values (';
 
             // build an array of values
             foreach ($columns as $key => $value) {
