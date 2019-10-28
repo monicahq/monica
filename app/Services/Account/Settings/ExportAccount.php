@@ -1403,8 +1403,9 @@ SET FOREIGN_KEY_CHECKS=0;
                 ->get();
 
             foreach ($photos as $photo) {
-                $sql = 'INSERT INTO contact_photo (contact_id, photo_id, created_at, updated_at) values (';
+                $sql = 'INSERT IGNORE INTO contact_photo (contact_id, photo_id, created_at, updated_at) values (';
                 $sql .= $photo->contact_id.','.$photo->photo_id.",'".$photo->created_at."','".$photo->updated_at."');".PHP_EOL;
+                $this->writeToTempFile($sql);
             }
         }
     }
