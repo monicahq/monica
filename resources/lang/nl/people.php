@@ -477,8 +477,8 @@ return [
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
-    'avatar_question' => 'Which avatar would you like to use?',
-    'avatar_default_avatar' => 'The default avatar',
+    'avatar_question' => 'Welke avatar wil je gebruiken?',
+    'avatar_default_avatar' => 'De standaard-avatar',
     'avatar_adorable_avatar' => 'The Adorable avatar',
     'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
     'avatar_current' => 'Keep the current avatar',
