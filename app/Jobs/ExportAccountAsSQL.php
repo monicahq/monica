@@ -42,13 +42,20 @@ class ExportAccountAsSQL
     {
         $downloadPath = $this->path.$this->file;
 
-        $sql = app(ExportAccount::class)
+        $tempFileName = app(ExportAccount::class)
                 ->execute([
                     'account_id' => Auth::user()->account_id,
                     'user_id' => Auth::user()->id,
                 ]);
 
-        Storage::disk(self::STORAGE)->put($downloadPath, $sql);
+        // get the temp file that we just created
+        $contents = Storage::disk('local')->get($tempFileName);
+
+        // move the file to the public storage
+        Storage::disk(self::STORAGE)->put($downloadPath, $contents);
+
+        // delete old file from temp folder
+        Storage::disk('local')->delete($tempFileName);
 
         return $downloadPath;
     }

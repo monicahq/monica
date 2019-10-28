@@ -8,10 +8,16 @@ use App\Models\Account\Account;
 use App\Models\Contact\Document;
 use Illuminate\Support\Facades\DB;
 use App\Exceptions\NoAccountException;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class ExportAccount extends BaseService
 {
     protected $sql;
+
+    protected $tempFile;
+
+    protected $tempFileName;
 
     /**
      * Get the validation rules that apply to the service.
@@ -38,13 +44,20 @@ class ExportAccount extends BaseService
 
         $user = User::findOrFail($data['user_id']);
 
-        $this->sql = '# ************************************************************
+        $sql = '# ************************************************************
 # '.$user->first_name.' '.$user->last_name.' dump of data
 # Export date: '.now().'
+# How to use:
+# * create a fresh database
+# * run migrations (`php artisan migrate`)
+# * import this sql file
 # ************************************************************
 
 SET FOREIGN_KEY_CHECKS=0;
 '.PHP_EOL;
+
+        $this->tempFileName = 'temp/'.Carbon::now().'.sql';
+        $this->writeToTempFile($sql);
 
         $this->exportAccount($data);
         $this->exportActivity($data);
@@ -98,11 +111,21 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportWeather($data);
         $this->exportContactPhoto($data);
 
-        $this->sql = $this->sql.'SET FOREIGN_KEY_CHECKS=1;';
+        $sql = 'SET FOREIGN_KEY_CHECKS=1;';
+        $this->writeToTempFile($sql);
 
-        return $this->sql;
+        return $this->tempFileName;
     }
 
+    /**
+     * Create the Insert query for the given table.
+     *
+     * @param string $tableName
+     * @param string $foreignKey
+     * @param array $columns
+     * @param array $data
+     * @return void
+     */
     private function buildInsertSQLQuery(string $tableName, string $foreignKey, array $columns, array $data)
     {
         $accountData = DB::table($tableName)
@@ -125,10 +148,11 @@ SET FOREIGN_KEY_CHECKS=0;
         }
         $listOfColumns = implode(',', $listOfColumns);
 
+        $sql = '';
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
 
-            $this->sql = $this->sql.'INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') values (';
+            $sql .= 'INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') values (';
 
             // build an array of values
             foreach ($columns as $key => $value) {
@@ -143,8 +167,20 @@ SET FOREIGN_KEY_CHECKS=0;
                 array_push($columnValues, $value);
             }
 
-            $this->sql .= implode(',', $columnValues).');'.PHP_EOL;
+            $sql .= implode(',', $columnValues).');'.PHP_EOL;
         }
+        $this->writeToTempFile($sql);
+    }
+
+    /**
+     * Write to a temp file.
+     *
+     * @return void
+     */
+    private function writeToTempFile(string $sql)
+    {
+        Storage::disk('local')
+            ->append($this->tempFileName, $sql);
     }
 
     /**
