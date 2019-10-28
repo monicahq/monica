@@ -471,7 +471,7 @@ return [
     'photo_list_cta' => 'Foto uploaden',
     'photo_list_blank_desc' => 'Je kan afbeeldingen van dit contact opslaan. Upload er nu eentje!',
     'photo_upload_zone_cta' => 'Upload een foto',
-    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_current_profile_pic' => 'Huidige profielfoto',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Foto verwijderen',
 
@@ -479,10 +479,10 @@ return [
     'avatar_change_title' => 'Change your avatar',
     'avatar_question' => 'Welke avatar wil je gebruiken?',
     'avatar_default_avatar' => 'De standaard-avatar',
-    'avatar_adorable_avatar' => 'The Adorable avatar',
-    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
-    'avatar_current' => 'Keep the current avatar',
-    'avatar_photo' => 'From a photo that you upload',
+    'avatar_adorable_avatar' => 'De Schattige avatar',
+    'avatar_gravatar' => 'The Gravatar dat geassocieerd is met dit contact. <a href="https://gravatar.com/">Gravatar</a> is een wereldwijd systeem dat gebruikers hun emailadres laat associëren met hun foto\'s.',
+    'avatar_current' => 'Huidige avatar houden',
+    'avatar_photo' => 'Van een foto die je upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',
