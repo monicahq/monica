@@ -2,6 +2,7 @@
 
 namespace App\Services\Account\Settings;
 
+use App\Helpers\DBHelper;
 use App\Models\User\User;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
@@ -156,7 +157,7 @@ SET FOREIGN_KEY_CHECKS=0;
         }
         $listOfColumns = implode(',', $listOfColumns);
 
-        $this->writeToTempFile('INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') VALUES ');
+        $this->writeToTempFile('INSERT IGNORE INTO '.DBHelper::getTable($tableName).' ('.$listOfColumns.') VALUES ');
 
         $first = true;
         foreach ($accountData as $singleSQLData) {
