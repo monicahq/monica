@@ -2,8 +2,8 @@
 
 namespace App\Services\Account\Settings;
 
-use Carbon\Carbon;
 use App\Models\User\User;
+use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Account\Account;
 use App\Models\Contact\Document;
@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class ExportAccount extends BaseService
 {
-    protected $sql;
-
-    protected $tempFile;
-
     protected $tempFileName;
 
     /**
@@ -44,6 +40,21 @@ class ExportAccount extends BaseService
 
         $user = User::findOrFail($data['user_id']);
 
+        $this->tempFileName = 'temp/'.Str::random(40).'.sql';
+
+        $this->writeExport($data, $user);
+
+        return $this->tempFileName;
+    }
+
+    /**
+     * Export data in temp file.
+     *
+     * @param array $data
+     * @param User $user
+     */
+    private function writeExport(array $data, User $user)
+    {
         $sql = '# ************************************************************
 # '.$user->first_name.' '.$user->last_name.' dump of data
 # Export date: '.now().'
@@ -56,7 +67,6 @@ class ExportAccount extends BaseService
 SET FOREIGN_KEY_CHECKS=0;
 '.PHP_EOL;
 
-        $this->tempFileName = 'temp/'.Carbon::now().'.sql';
         $this->writeToTempFile($sql);
 
         $this->exportAccount($data);
@@ -113,8 +123,6 @@ SET FOREIGN_KEY_CHECKS=0;
 
         $sql = 'SET FOREIGN_KEY_CHECKS=1;';
         $this->writeToTempFile($sql);
-
-        return $this->tempFileName;
     }
 
     /**
