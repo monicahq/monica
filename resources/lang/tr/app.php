@@ -419,7 +419,7 @@ return [
     'emotion_fright' => 'Fright',
     'emotion_horror' => 'Horror',
     'emotion_terror' => 'Terror',
-    'emotion_panic' => 'Panic',
+    'emotion_panic' => 'Panik',
     'emotion_hysteria' => 'Hysteria',
     'emotion_mortification' => 'Mortification',
     'emotion_anxiety' => 'Kaygı',
@@ -429,7 +429,7 @@ return [
     'emotion_apprehension' => 'Apprehension',
     'emotion_worry' => 'Endişe',
     'emotion_distress' => 'Distress',
-    'emotion_dread' => 'Dread',
+    'emotion_dread' => 'Korku',
 
     // weather
     'weather_clear-day' => 'Gündüz hava açık',
