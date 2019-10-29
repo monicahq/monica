@@ -2,6 +2,7 @@
 
 namespace App\Services\Account\Settings;
 
+use App\Helpers\DBHelper;
 use App\Models\User\User;
 use Illuminate\Support\Str;
 use App\Services\BaseService;
@@ -150,20 +151,19 @@ SET FOREIGN_KEY_CHECKS=0;
         }
 
         // adding a ` for each column
-        $listOfColumns = $columns;
-        foreach ($listOfColumns as $key => $value) {
-            $listOfColumns[$key] = '`'.$value.'`';
-        }
+        $listOfColumns = array_map(function ($column) {
+            return '`'.$column.'`';
+        }, $columns);
         $listOfColumns = implode(',', $listOfColumns);
 
-        $sql = '';
+        $sql = 'INSERT IGNORE INTO '.DBHelper::getTable($tableName).' ('.$listOfColumns.') VALUES'.PHP_EOL;
 
+        $insertValues = [];
         foreach ($accountData as $singleSQLData) {
             $columnValues = [];
-            $sql .= 'INSERT IGNORE INTO '.$tableName.' ('.$listOfColumns.') values (';
 
             // build an array of values
-            foreach ($columns as $key => $value) {
+            foreach ($columns as $value) {
                 $value = $singleSQLData->{$value};
 
                 if (is_null($value)) {
@@ -175,9 +175,10 @@ SET FOREIGN_KEY_CHECKS=0;
                 array_push($columnValues, $value);
             }
 
-            $sql .= implode(',', $columnValues).');'.PHP_EOL;
+            array_push($insertValues, ' ('.implode(',', $columnValues).')');
         }
-        $this->writeToTempFile($sql);
+        $sql .= implode(','.PHP_EOL, $insertValues);
+        $this->writeToTempFile($sql.';'.PHP_EOL);
     }
 
     /**
@@ -188,7 +189,7 @@ SET FOREIGN_KEY_CHECKS=0;
     private function writeToTempFile(string $sql)
     {
         Storage::disk('local')
-            ->append($this->tempFileName, $sql);
+            ->append($this->tempFileName, $sql, '');
     }
 
     /**
@@ -1396,16 +1397,18 @@ SET FOREIGN_KEY_CHECKS=0;
             return;
         }
 
+        $sql = 'INSERT IGNORE INTO '.DBHelper::getTable('contact_photo').' (`contact_id`, `photo_id`, `created_at`, `updated_at`) VALUES'.PHP_EOL;
+        $insertValues = [];
         foreach ($contacts as $contact) {
             $photos = DB::table('contact_photo')
                 ->where('contact_id', $contact->id)
                 ->get();
 
             foreach ($photos as $photo) {
-                $sql = 'INSERT IGNORE INTO contact_photo (contact_id, photo_id, created_at, updated_at) values (';
-                $sql .= $photo->contact_id.','.$photo->photo_id.",'".$photo->created_at."','".$photo->updated_at."');".PHP_EOL;
-                $this->writeToTempFile($sql);
+                array_push($insertValues, ' ('.$photo->contact_id.','.$photo->photo_id.",'".$photo->created_at."','".$photo->updated_at."')");
             }
         }
+        $sql .= implode(','.PHP_EOL, $insertValues);
+        $this->writeToTempFile($sql.';'.PHP_EOL);
     }
 }
