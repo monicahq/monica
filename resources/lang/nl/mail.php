@@ -3,7 +3,7 @@
 return [
 
     'subject_line' => 'Herinnering voor :contact',
-    'greetings' => 'Hi :username',
+    'greetings' => 'Hoi :username',
     'want_reminded_of' => 'Je wilde herinnerd worden aan :reason',
     'for' => 'Voor: :name',
     'comment' => 'Opmerking: :comment',
