@@ -2222,16 +2222,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.3.0",
+            "version": "v10.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "f9253296c0299d9474f1bf7ae62c0b6eaa1d4ce6"
+                "reference": "f56ff47a602028fb8988f90645c57ff9b097627e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/f9253296c0299d9474f1bf7ae62c0b6eaa1d4ce6",
-                "reference": "f9253296c0299d9474f1bf7ae62c0b6eaa1d4ce6",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/f56ff47a602028fb8988f90645c57ff9b097627e",
+                "reference": "f56ff47a602028fb8988f90645c57ff9b097627e",
                 "shasum": ""
             },
             "require": {
@@ -2292,7 +2292,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2019-10-01T17:08:54+00:00"
+            "time": "2019-10-29T15:47:44+00:00"
         },
         {
             "name": "laravel/framework",
