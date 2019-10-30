@@ -133,5 +133,6 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\VCalendar\ImportTask::class => \App\Services\VCalendar\ImportTask::class,
         \App\Services\VCard\ExportVCard::class => \App\Services\VCard\ExportVCard::class,
         \App\Services\VCard\ImportVCard::class => \App\Services\VCard\ImportVCard::class,
+        \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
     ];
 }

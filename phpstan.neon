@@ -39,3 +39,4 @@ parameters:
         - */app/Helpers/ComposerScripts.php
         - */app/Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
         - */app/Providers/BroadcastServiceProvider.php
+        - */app/Services/Account/Settings/ExportAccount.php
