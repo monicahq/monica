@@ -53,11 +53,12 @@ abstract class DuskTestCase extends BaseTestCase
             return $this;
         });
 
-        Browser::$userResolver = function() {
+        Browser::$userResolver = function () {
             $user = factory(User::class)->create();
             $user->account->populateDefaultFields();
             $user->acceptPolicy();
-            return $user;    
+
+            return $user;
         };
     }
 
