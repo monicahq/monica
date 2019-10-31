@@ -2639,6 +2639,14 @@ cyclist@^1.0.1:
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
 
+cypress-multi-reporters@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/cypress-multi-reporters/-/cypress-multi-reporters-1.2.3.tgz#4ba39373631c6521d21931d73f6b0bafa1ccbf83"
+  integrity sha512-W3ItWsbSgMfsQFTuB89OXY5gyqLuM0O2lNEn+mcQAYeMs36TxVLAg3q+Hk0Om+NcWj8OLhM06lBQpnu9+i4gug==
+  dependencies:
+    debug "^4.1.1"
+    lodash "^4.17.11"
+
 cypress@3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-3.6.0.tgz#b7c88c169970aeb74a00182a1e8dc43a355d9eea"
@@ -5982,7 +5990,7 @@ mkdirp@0.5.1, mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.1:
   dependencies:
     minimist "0.0.8"
 
-mocha-junit-reporter@^1.17.0:
+mocha-junit-reporter@^1.23.1:
   version "1.23.1"
   resolved "https://registry.yarnpkg.com/mocha-junit-reporter/-/mocha-junit-reporter-1.23.1.tgz#ba11519c0b967f404e4123dd69bc4ba022ab0f12"
   integrity sha512-qeDvKlZyAH2YJE1vhryvjUQ06t2hcnwwu4k5Ddwn0GQINhgEYFhlGM0DwYCVUHq5cuo32qAW6HDsTHt7zz99Ng==
@@ -6001,7 +6009,7 @@ mocha-multi-reporters@^1.1.7:
     debug "^3.1.0"
     lodash "^4.16.4"
 
-mocha@^6.0.2:
+mocha@^6.2.2:
   version "6.2.2"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-6.2.2.tgz#5d8987e28940caf8957a7d7664b910dc5b2fea20"
   integrity sha512-FgDS9Re79yU1xz5d+C4rv1G7QagNGHZ+iXF81hO8zY35YZZcLEsJVfFolfsqKFWunATEvNzMK0r/CwWd/szO9A==
