@@ -11,7 +11,7 @@ describe('Conversations', function () {
     cy.visit('/people')
 
     // this gets the first content of the list
-    cy.get('li.people-list-item.bg-white.pointer').click()
+    cy.get('tr.people-list-item.bg-white.pointer').click()
 
     cy.get('[cy-name=add-conversation-button]').should('be.visible')
     cy.get('[cy-name=add-conversation-button]').click()

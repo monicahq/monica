@@ -60,6 +60,7 @@ stages:
       displayName: 'Run phpstan'
 
   - template: .azure/test-browser-job.yml
+  - template: .azure/test-cypress-job.yml
 
   - job: reporting
     dependsOn:

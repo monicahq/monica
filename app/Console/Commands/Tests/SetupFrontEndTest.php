@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\Tests;
 
 use App\Models\Account\Account;
 use Illuminate\Console\Command;

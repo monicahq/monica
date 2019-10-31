@@ -60,7 +60,7 @@ describe('Settings: activity types', function () {
         cy.visit('/people')
 
         // this gets the first content of the list
-        cy.get('li.people-list-item.bg-white.pointer').click()
+        cy.get('tr.people-list-item.bg-white.pointer').click()
         cy.get('[cy-name=add-activity-button]').click();
         cy.get('#activity_type_id').should('contain', 'This is modified activity type 1')
 

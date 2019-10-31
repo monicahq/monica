@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://localhost:8000",
+  "baseUrl": "http://monicalocal.test",
   "videosFolder": "tests/cypress/videos",
   "screenshotsFolder": "tests/cypress/screenshots",
   "supportFile": "tests/cypress/support/index.js",
@@ -7,5 +7,5 @@
   "integrationFolder": "tests/cypress/integration",
   "pluginsFile": "tests/cypress/plugins/index.js",
   "video": false,
-  "projectId": "2i96ir"
+  "projectId": "q8h6k9"
 }

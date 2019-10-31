@@ -14,8 +14,8 @@ npm-debug.log*
 /results
 .deploy.json
 yarn-error.log
-/tests/Cypress/screenshots
-/tests/Cypress/videos
+/tests/cypress/screenshots
+/tests/cypress/videos
 php-extensions-*.tar.bz2
 monicadump.sql
 .scannerwork/

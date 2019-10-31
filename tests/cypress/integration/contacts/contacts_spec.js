@@ -57,7 +57,7 @@ describe('Contacts', function () {
     cy.get('.people-list-item').should('contain', 'John Doe')
 
     // this gets the first content of the list
-    cy.get('li.people-list-item.bg-white.pointer').click()
+    cy.get('tr.people-list-item.bg-white.pointer').click()
 
     cy.get('#link-delete-contact').click()
 
@@ -74,7 +74,7 @@ describe('Contacts', function () {
     cy.visit('/people')
 
     // this gets the first content of the list
-    cy.get('li.people-list-item.bg-white.pointer').click()
+    cy.get('tr.people-list-item.bg-white.pointer').click()
 
     // tests if the favorite button can be toggled
     cy.get('[cy-name=set-favorite]').should('be.visible')

@@ -1,6 +1,6 @@
 describe('Signup', function () {
   beforeEach(function () {
-    cy.exec('php artisan setup:frontendtesting')
+    //cy.exec('php artisan setup:frontendtesting')
   })
 
   // @TODO: get emails from Mailtrap with their API and click on the confirmation

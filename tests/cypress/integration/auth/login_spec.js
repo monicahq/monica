@@ -1,6 +1,6 @@
 describe('Login', function () {
   beforeEach(function () {
-    cy.exec('php artisan setup:frontendtesting')
+    //cy.exec('php artisan setup:frontendtesting')
   })
 
   it('should not let user sign in with a non-existing account', function () {

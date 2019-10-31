@@ -3,15 +3,18 @@
 namespace Tests;
 
 use Tests\Traits\SignIn;
+use App\Models\User\User;
 use Laravel\Dusk\Browser;
+use Tests\Traits\CreatesApplication;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 abstract class DuskTestCase extends BaseTestCase
 {
-    use CreatesApplication, SignIn;
+    use CreatesApplication, SignIn, DatabaseTransactions;
 
     /**
      * Prepare for Dusk test execution.
@@ -49,6 +52,13 @@ abstract class DuskTestCase extends BaseTestCase
 
             return $this;
         });
+
+        Browser::$userResolver = function() {
+            $user = factory(User::class)->create();
+            $user->account->populateDefaultFields();
+            $user->acceptPolicy();
+            return $user;    
+        };
     }
 
     /**
