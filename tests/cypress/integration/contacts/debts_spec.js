@@ -18,23 +18,28 @@ describe('Debts', function () {
 
     cy.url().should('include', '/people/h:')
     cy.get('[cy-name=debt-blank-state]').should('not.be.visible')
-    cy.get('[cy-name=debt-item-1]').should('exist')
-    cy.get('[cy-name=debt-item-1]').should('contain', '123')
 
-    // edit a debt
-    cy.get('[cy-name=edit-debt-button-1]').click()
-    cy.url().should('include', '/edit')
+    cy.get('[cy-name=debts-body]').should('be.visible')
+    .invoke('attr', 'cy-items').then(function (item) {
 
-    cy.get('[name=amount]').clear()
-    cy.get('[name=amount]').type('234')
-    cy.get('[cy-name=save-debt-button]').click()
-
-    cy.get('[cy-name=debt-item-1]').should('exist')
-    cy.get('[cy-name=debt-item-1]').should('contain', '234')
-
-    // delete a debt
-    cy.get('[cy-name=delete-debt-button-1]').click()
-    cy.get('[cy-name=debt-blank-state]').should('be.visible')
-    cy.get('[cy-name=debt-item-1]').should('not.exist')
+      cy.get('[cy-name=debt-item-'+item+']').should('exist')
+      cy.get('[cy-name=debt-item-'+item+']').should('contain', '123')
+  
+      // edit a debt
+      cy.get('[cy-name=edit-debt-button-'+item+']').click()
+      cy.url().should('include', '/edit')
+  
+      cy.get('[name=amount]').clear()
+      cy.get('[name=amount]').type('234')
+      cy.get('[cy-name=save-debt-button]').click()
+  
+      cy.get('[cy-name=debt-item-'+item+']').should('exist')
+      cy.get('[cy-name=debt-item-'+item+']').should('contain', '234')
+  
+      // delete a debt
+      cy.get('[cy-name=delete-debt-button-'+item+']').click()
+      cy.get('[cy-name=debt-blank-state]').should('be.visible')
+      cy.get('[cy-name=debt-item-'+item+']').should('not.exist')
+    })
   })
 })

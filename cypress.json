@@ -1,5 +1,5 @@
 {
-  "baseUrl": "http://monicalocal.test",
+  "baseUrl": "http://localhost:8000",
   "videosFolder": "tests/cypress/videos",
   "screenshotsFolder": "tests/cypress/screenshots",
   "supportFile": "tests/cypress/support/index.js",

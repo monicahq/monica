@@ -31,7 +31,7 @@
       </div>
 
       <!-- LIST OF IN PROGRESS TASKS -->
-      <ul>
+      <ul cy-name="tasks-body" :cy-items="inProgress(tasks).map(t => t.id)">
         <li v-for="(task, i) in inProgress(tasks)" :key="task.id" :cy-name="'task-item-' + task.id">
           <form-checkbox
             v-model.lazy="task.completed"

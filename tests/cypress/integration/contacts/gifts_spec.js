@@ -16,24 +16,29 @@ describe('Gifts', function () {
     cy.get('[cy-name=save-gift-button]').click()
 
     cy.url().should('include', '/people/h:')
-    cy.get('[cy-name=gift-idea-item-1]').should('exist')
-    cy.get('[cy-name=gift-idea-item-1]').should('contain', 'This is a gift')
 
-    // edit a gift
-    cy.get('[cy-name=edit-gift-button-1]').click()
-    cy.url().should('include', '/gifts/1/edit')
+    cy.get('[cy-name=gift-ideas-body]').should('be.visible')
+    .invoke('attr', 'cy-items').then(function (item) {
 
-    cy.get('[name=name]').clear()
-    cy.get('[name=name]').type('This is another gift')
-    cy.get('[cy-name=save-gift-button]').click()
+      cy.get('[cy-name=gift-idea-item-'+item+']').should('exist')
+      cy.get('[cy-name=gift-idea-item-'+item+']').should('contain', 'This is a gift')
 
-    cy.get('[cy-name=gift-idea-item-1]').should('exist')
-    cy.get('[cy-name=gift-idea-item-1]').should('contain', 'This is another gift')
+      // edit a gift
+      cy.get('[cy-name=edit-gift-button-'+item+']').click()
+      cy.url().should('include', '/gifts/'+item+'/edit')
 
-    // delete an gift
-    cy.get('[cy-name=delete-gift-button-1]').click()
-    cy.get('[cy-name=modal-delete-gift-button-1]').click()
-    cy.get('[cy-name=activities-blank-state]').should('be.visible')
-    cy.get('[cy-name=gift-idea-item-1]').should('not.exist')
+      cy.get('[name=name]').clear()
+      cy.get('[name=name]').type('This is another gift')
+      cy.get('[cy-name=save-gift-button]').click()
+
+      cy.get('[cy-name=gift-idea-item-'+item+']').should('exist')
+      cy.get('[cy-name=gift-idea-item-'+item+']').should('contain', 'This is another gift')
+
+      // delete an gift
+      cy.get('[cy-name=delete-gift-button-'+item+']').click()
+      cy.get('[cy-name=modal-delete-gift-button-'+item+']').click()
+      cy.get('[cy-name=activities-blank-state]').should('be.visible')
+      cy.get('[cy-name=gift-idea-item-'+item+']').should('not.exist')
+    })
   })
 })

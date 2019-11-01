@@ -13,12 +13,14 @@
       <journal-rate-day @hasRated="hasRated" />
 
       <!-- Logs -->
-      <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" class="cf" :cy-name="'entry-body-' + journalEntry.id">
-        <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+      <div v-if="journalEntries.data" cy-name="journal-entries-body" :cy-items="journalEntries.data.map(j => j.id)" :cy-object-items="journalEntries.data.map(j => j.object.id)">
+        <div v-for="journalEntry in journalEntries.data" :key="journalEntry.id" class="cf" :cy-name="'entry-body-' + journalEntry.id">
+          <journal-content-rate v-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Day'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
 
-        <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Account\\Activity'" :journal-entry="journalEntry" />
+          <journal-content-activity v-else-if="journalEntry.journalable_type == 'App\\Models\\Account\\Activity'" :journal-entry="journalEntry" />
 
-        <journal-content-entry v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+          <journal-content-entry v-else-if="journalEntry.journalable_type == 'App\\Models\\Journal\\Entry'" :journal-entry="journalEntry" @deleteJournalEntry="deleteJournalEntry" />
+        </div>
       </div>
 
       <div v-if="(journalEntries.per_page * journalEntries.current_page) <= journalEntries.total" class="br3 ba b--gray-monica bg-white pr3 pb3 pt3 mb3 tc">

@@ -15,27 +15,31 @@ describe('Notes', function () {
     cy.get('[cy-name=add-note-textarea]').type('This is a note')
     cy.get('[cy-name=add-note-button]').click()
 
-    cy.get('[cy-name=note-body-1]').should('contain', 'This is a note')
+    cy.get('[cy-name=notes-body]').should('be.visible')
+    .invoke('attr', 'cy-items').then(function (item) {
 
-    cy.get('[cy-name=edit-note-body-1]').should('not.be.visible')
+      cy.get('[cy-name=note-body-'+item+']').should('contain', 'This is a note')
 
-    // edit a note
-    cy.get('[cy-name=edit-note-button-1]').click()
-    cy.get('[cy-name=edit-note-body-1]').should('be.visible')
-
-    cy.get('[cy-name=edit-note-body-1]').clear()
-    cy.get('[cy-name=edit-note-body-1]').type('This is another note')
-    cy.get('[cy-name=edit-mode-note-button-1]').click()
-
-    cy.get('[cy-name=edit-note-body-1]').should('not.be.visible')
-    cy.get('[cy-name=note-body-1]').should('contain', 'This is another note')
-
-    // delete a note
-    cy.get('#modal-delete-note').should('not.be.visible')
-    cy.get('[cy-name=delete-note-button-1]').click()
-    cy.get('#modal-delete-note').should('be.visible')
-    cy.get('[cy-name=delete-mode-note-button-1]').click()
-
-    cy.get('[cy-name=note-body-1]').should('not.exist')
+      cy.get('[cy-name=edit-note-body-'+item+']').should('not.be.visible')
+  
+      // edit a note
+      cy.get('[cy-name=edit-note-button-'+item+']').click()
+      cy.get('[cy-name=edit-note-body-'+item+']').should('be.visible')
+  
+      cy.get('[cy-name=edit-note-body-'+item+']').clear()
+      cy.get('[cy-name=edit-note-body-'+item+']').type('This is another note')
+      cy.get('[cy-name=edit-mode-note-button-'+item+']').click()
+  
+      cy.get('[cy-name=edit-note-body-'+item+']').should('not.be.visible')
+      cy.get('[cy-name=note-body-'+item+']').should('contain', 'This is another note')
+  
+      // delete a note
+      cy.get('#modal-delete-note').should('not.be.visible')
+      cy.get('[cy-name=delete-note-button-'+item+']').click()
+      cy.get('#modal-delete-note').should('be.visible')
+      cy.get('[cy-name=delete-mode-note-button-'+item+']').click()
+  
+      cy.get('[cy-name=note-body-'+item+']').should('not.exist')
+    })
   })
 })

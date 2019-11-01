@@ -22,7 +22,7 @@
 
   <div class="col-12 activities-list">
 
-    <ul class="table">
+    <ul class="table" cy-name="activities-body" cy-items="{{ $contact->activities->implode('id', ',') }}">
       @foreach($contact->activities as $activity)
       <li class="table-row" cy-name="activity-body-{{ $activity->id }}">
         <div class="table-cell date">

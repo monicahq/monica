@@ -24,6 +24,11 @@ Cypress.Commands.add('createActivity', () => {
 
     cy.url().should('include', '/people/h:')
     cy.get('[cy-name=activities-blank-state]').should('not.be.visible')
-    cy.get('[cy-name=activity-body-1]').should('exist')
-    cy.get('[cy-name=activity-body-1]').should('contain', 'This is a summary')
+    
+    cy.get('[cy-name=activities-body]').should('be.visible').then((activities) => {
+        let item = activities[0].getAttribute('cy-items')
+
+        cy.get('[cy-name=activity-body-'+item+']').should('exist')
+        cy.get('[cy-name=activity-body-'+item+']').should('contain', 'This is a summary')
+    })
 })

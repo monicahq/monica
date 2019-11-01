@@ -24,7 +24,7 @@
       </div>
 
       <!-- LIST OF NORMAL NOTES -->
-      <ul>
+      <ul cy-name="notes-body" :cy-items="notes.map(n => n.id)">
         <li v-for="note in notes" :key="note.id" class="note">
           <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">

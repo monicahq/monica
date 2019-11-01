@@ -36,7 +36,7 @@
         </li>
       </ul>
 
-      <div v-if="activeTab == 'ideas'">
+      <div v-if="activeTab == 'ideas'" cy-name="gift-ideas-body" :cy-items="ideas.map(g => g.id)">
         <div v-for="gift in ideas" :key="gift.id" class="ba b--gray-monica mb3 br2" :cy-name="'gift-idea-item-' + gift.id">
           <p class="mb1 bb b--gray-monica pa2">
             <strong>{{ gift.name }}</strong>
