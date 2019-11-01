@@ -2,9 +2,9 @@
 
 namespace App\Services\Account\Activity;
 
-use Carbon\Carbon;
-use App\Models\Contact\Contact;
 use App\Models\Account\ActivityType;
+use App\Models\Contact\Contact;
+use Carbon\Carbon;
 
 class ActivityStatisticService
 {

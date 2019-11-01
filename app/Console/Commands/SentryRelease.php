@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands;
 
-use function Safe\mkdir;
-use Illuminate\Console\Command;
-use function Safe\file_put_contents;
-use Illuminate\Console\ConfirmableTrait;
 use App\Console\Commands\Helpers\CommandExecutor;
-use Symfony\Component\Console\Output\OutputInterface;
 use App\Console\Commands\Helpers\CommandExecutorInterface;
+use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
+use function Safe\file_put_contents;
+use function Safe\mkdir;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class SentryRelease extends Command
 {

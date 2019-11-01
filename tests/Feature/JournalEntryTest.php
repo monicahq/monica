@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use App\Models\Journal\Entry;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class JournalEntryTest extends FeatureTestCase
 {

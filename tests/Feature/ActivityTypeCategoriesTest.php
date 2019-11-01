@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use Tests\FeatureTestCase;
 use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class ActivityTypeCategoriesTest extends FeatureTestCase
 {

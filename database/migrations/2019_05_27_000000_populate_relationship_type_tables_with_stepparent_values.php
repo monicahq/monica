@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Account\Account;
-use Illuminate\Support\Facades\DB;
 use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class PopulateRelationshipTypeTablesWithStepparentValues extends Migration
 {

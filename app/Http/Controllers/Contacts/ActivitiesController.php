@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use App\Http\Controllers\Controller;
+use App\Models\Contact\Contact;
+use App\Services\Account\Activity\ActivityStatisticService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use App\Http\Controllers\Controller;
-use App\Services\Account\Activity\ActivityStatisticService;
 
 class ActivitiesController extends Controller
 {

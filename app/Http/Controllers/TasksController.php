@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact\Task;
-use Illuminate\Http\Request;
-use App\Services\Task\CreateTask;
-use App\Services\Task\UpdateTask;
-use App\Services\Task\DestroyTask;
-use App\Traits\JsonRespondController;
 use App\Http\Resources\Task\Task as TaskResource;
+use App\Models\Contact\Task;
+use App\Services\Task\CreateTask;
+use App\Services\Task\DestroyTask;
+use App\Services\Task\UpdateTask;
+use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {

@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Task;
 
-use Tests\TestCase;
-use App\Models\Contact\Task;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Task;
 use App\Services\Task\UpdateTask;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateTaskTest extends TestCase
 {

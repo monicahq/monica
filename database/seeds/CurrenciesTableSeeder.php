@@ -1,8 +1,8 @@
 <?php
 
-use function Safe\json_decode;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use function Safe\json_decode;
 
 /**
  * Seed world currencies to the database.

@@ -2,8 +2,8 @@
 
 namespace App\Services\Contact\Reminder;
 
-use App\Services\BaseService;
 use App\Models\Contact\Reminder;
+use App\Services\BaseService;
 
 class DestroyReminder extends BaseService
 {

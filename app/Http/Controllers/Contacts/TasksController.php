@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
+use App\Models\Contact\Contact;
 
 class TasksController extends Controller
 {

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\TestCase;
 use App\Helpers\StringHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class StringHelperTest extends TestCase
 {

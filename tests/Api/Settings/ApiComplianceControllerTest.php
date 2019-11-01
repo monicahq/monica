@@ -2,9 +2,9 @@
 
 namespace Tests\Api\Contact;
 
-use Tests\ApiTestCase;
 use App\Models\Settings\Term;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiComplianceControllerTest extends ApiTestCase
 {

@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use App\Helpers\DBHelper;
-use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
 
 class AppServiceProvider extends ServiceProvider
 {

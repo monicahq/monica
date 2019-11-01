@@ -3,12 +3,12 @@
 namespace App\Jobs;
 
 use App\Mail\InvitationSent;
-use Illuminate\Bus\Queueable;
 use App\Models\Account\Invitation;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
 
 class SendInvitationEmail implements ShouldQueue
 {

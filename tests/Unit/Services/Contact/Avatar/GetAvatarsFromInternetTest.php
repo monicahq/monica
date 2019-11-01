@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\Avatar;
 
-use Tests\TestCase;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
-use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Avatar\GetAvatarsFromInternet;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class GetAvatarsFromInternetTest extends TestCase
 {

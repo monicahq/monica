@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\Contact\Tag;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Tag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class TagTest extends TestCase
 {

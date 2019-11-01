@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User\User;
-use Illuminate\Http\Request;
-use App\Services\User\EmailChange;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\EmailChangeRequest;
+use App\Models\User\User;
+use App\Services\User\EmailChange;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class EmailChangeController extends Controller
 {

@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Services\Instance\Weather;
 
-use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use App\Models\Account\Place;
-use GuzzleHttp\Psr7\Response;
-use App\Models\Account\Weather;
-use GuzzleHttp\Handler\MockHandler;
-use Illuminate\Validation\ValidationException;
 use App\Exceptions\MissingEnvVariableException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Account\Place;
+use App\Models\Account\Weather;
 use App\Services\Instance\Weather\GetWeatherInformation;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class GetWeatherInformationTest extends TestCase
 {

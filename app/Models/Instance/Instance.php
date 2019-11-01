@@ -2,8 +2,8 @@
 
 namespace App\Models\Instance;
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Instance extends Model
 {

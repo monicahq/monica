@@ -3,14 +3,14 @@
 namespace App\Listeners;
 
 use App\Events\RecoveryLogin;
-use Illuminate\Auth\Events\Login;
-use Lahaxearnaud\U2f\Models\U2fKey;
-use Illuminate\Support\Facades\Auth;
-use LaravelWebauthn\Facades\Webauthn;
-use LaravelWebauthn\Events\WebauthnLogin;
 use App\Http\Controllers\Auth\Validate2faController;
-use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Contracts\Auth\Authenticatable as User;
+use Illuminate\Support\Facades\Auth;
+use Lahaxearnaud\U2f\Models\U2fKey;
+use LaravelWebauthn\Events\WebauthnLogin;
+use LaravelWebauthn\Facades\Webauthn;
+use PragmaRX\Google2FALaravel\Events\LoginSucceeded;
 
 class LoginListener
 {

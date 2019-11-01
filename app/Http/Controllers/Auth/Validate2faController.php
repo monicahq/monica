@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 

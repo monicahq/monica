@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Account\Activity\ActivityTypeCategory;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\ActivityTypeCategory;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateActivityTypeCategoryTest extends TestCase
 {

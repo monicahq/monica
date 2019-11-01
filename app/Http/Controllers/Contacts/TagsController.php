@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
-use App\Services\Contact\Tag\DetachTag;
-use App\Services\Contact\Tag\AssociateTag;
 use App\Http\Resources\Tag\Tag as TagResource;
+use App\Models\Contact\Contact;
+use App\Services\Contact\Tag\AssociateTag;
+use App\Services\Contact\Tag\DetachTag;
+use Illuminate\Http\Request;
 
 class TagsController extends Controller
 {

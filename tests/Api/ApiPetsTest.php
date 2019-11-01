@@ -2,12 +2,12 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
-use App\Models\Contact\Pet;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Pet;
 use App\Models\Contact\PetCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiPetsTest extends ApiTestCase
 {

@@ -2,15 +2,15 @@
 
 namespace App\Models\Account;
 
-use Parsedown;
 use App\Helpers\DateHelper;
-use App\Traits\Journalable;
-use App\Models\Contact\Contact;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Interfaces\IsJournalableInterface;
+use App\Models\Contact\Contact;
 use App\Models\ModelBindingHasher as Model;
+use App\Traits\Journalable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use Parsedown;
 
 /**
  * @property Account $account

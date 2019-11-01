@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
 use App\Models\Account\ActivityType;
 use App\Models\Account\ActivityTypeCategory;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ActivityTypeCategoryTest extends TestCase
 {

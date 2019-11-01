@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
-use Illuminate\Support\Arr;
 use App\Models\Contact\Task;
 use App\Services\Task\DestroyTask;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
 use App\Services\VCalendar\ExportTask;
 use App\Services\VCalendar\ImportTask;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Sabre\CalDAV\Plugin as CalDAVPlugin;
 use Sabre\CalDAV\Xml\Property\ScheduleCalendarTransp;
 use Sabre\CalDAV\Xml\Property\SupportedCalendarComponentSet;

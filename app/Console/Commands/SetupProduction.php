@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use function Safe\touch;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
+use function Safe\touch;
 
 class SetupProduction extends Command
 {

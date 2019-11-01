@@ -2,10 +2,10 @@
 
 namespace Tests\Api\Account;
 
-use Tests\ApiTestCase;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Contact\Gender;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiGenderControllerTest extends ApiTestCase
 {

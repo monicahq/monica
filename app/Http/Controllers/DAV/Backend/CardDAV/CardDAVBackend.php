@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\DAV\Backend\CardDAV;
 
-use Sabre\DAV;
-use Illuminate\Support\Arr;
-use App\Models\User\SyncToken;
-use App\Models\Contact\Contact;
-use Sabre\VObject\Component\VCard;
-use App\Services\VCard\ExportVCard;
-use App\Services\VCard\ImportVCard;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Sabre\DAV\Server as SabreServer;
-use Sabre\CardDAV\Backend\SyncSupport;
-use Sabre\CalDAV\Plugin as CalDAVPlugin;
-use Sabre\CardDAV\Backend\AbstractBackend;
-use Sabre\CardDAV\Plugin as CardDAVPlugin;
-use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
-use App\Services\Contact\Contact\SetMeContact;
 use App\Http\Controllers\DAV\Backend\IDAVBackend;
 use App\Http\Controllers\DAV\Backend\SyncDAVBackend;
 use App\Http\Controllers\DAV\DAVACL\PrincipalBackend;
+use App\Models\Contact\Contact;
+use App\Models\User\SyncToken;
+use App\Services\Contact\Contact\SetMeContact;
+use App\Services\VCard\ExportVCard;
+use App\Services\VCard\ImportVCard;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Sabre\CalDAV\Plugin as CalDAVPlugin;
+use Sabre\CardDAV\Backend\AbstractBackend;
+use Sabre\CardDAV\Backend\SyncSupport;
+use Sabre\CardDAV\Plugin as CardDAVPlugin;
+use Sabre\DAV;
+use Sabre\DAV\Server as SabreServer;
+use Sabre\DAV\Sync\Plugin as DAVSyncPlugin;
+use Sabre\VObject\Component\VCard;
 
 class CardDAVBackend extends AbstractBackend implements SyncSupport, IDAVBackend
 {

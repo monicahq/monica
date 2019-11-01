@@ -2,12 +2,12 @@
 
 namespace Tests\Api;
 
-use Carbon\Carbon;
-use Tests\ApiTestCase;
-use App\Models\Contact\Note;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Note;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiNotesTest extends ApiTestCase
 {

@@ -2,10 +2,10 @@
 
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddForeignKeyToContacts extends Migration
 {

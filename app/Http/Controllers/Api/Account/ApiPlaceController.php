@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api\Account;
 
-use Illuminate\Http\Request;
-use App\Models\Account\Place;
-use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
-use App\Services\Account\Place\CreatePlace;
-use App\Services\Account\Place\UpdatePlace;
-use App\Services\Account\Place\DestroyPlace;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Place\Place as PlaceResource;
+use App\Models\Account\Place;
+use App\Services\Account\Place\CreatePlace;
+use App\Services\Account\Place\DestroyPlace;
+use App\Services\Account\Place\UpdatePlace;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ApiPlaceController extends ApiController
 {

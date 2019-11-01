@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Helpers;
 
-use Tests\FeatureTestCase;
 use App\Helpers\CountriesHelper;
+use Tests\FeatureTestCase;
 
 class CountryHelperTest extends FeatureTestCase
 {
