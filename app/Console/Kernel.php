@@ -22,7 +22,6 @@ use App\Console\Commands\SetPremiumAccount;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Console\Commands\CalculateStatistics;
 use App\Console\Commands\OneTime\MoveAvatars;
-use App\Console\Commands\Tests\SetupFrontEndTest;
 use App\Console\Commands\MigrateDatabaseCollation;
 use App\Console\Commands\Tests\SetupFrontEndTestUser;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -52,13 +51,23 @@ class Kernel extends ConsoleKernel
         SendStayInTouch::class,
         SentryRelease::class,
         SetPremiumAccount::class,
-        SetupFrontEndTest::class,
-        SetupFrontEndTestUser::class,
         SetupProduction::class,
         SetupTest::class,
         SetUserAdmin::class,
         Update::class,
     ];
+
+    /**
+     * Register the Closure based commands for the application.
+     *
+     * @return void
+     */
+    protected function commands()
+    {
+        if ($this->app->environment() != 'production' ) {
+            $this->commands[] = SetupFrontEndTestUser::class;
+        }
+    }
 
     /**
      * Define the application's command schedule.
