@@ -26,8 +26,8 @@
                 <!-- sad smiley monochrome -->
                 <svg v-if="!showSadSmileyColor" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer"
-                     :class="{ selected: day.rate == 1 }" @click="showComment(1)"
-                     @mouseover="showSadSmileyColor = true" cy-name="sad-reaction-button"
+                     :class="{ selected: day.rate == 1 }" cy-name="sad-reaction-button"
+                     @click="showComment(1)" @mouseover="showSadSmileyColor = true"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -46,8 +46,8 @@
                 <!-- sad smiley color -->
                 <svg v-if="showSadSmileyColor" width="42px" height="41px" viewBox="0 0 42 41" version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer"
-                     :class="{ selected: day.rate == 1 }" @click="showComment(1)"
-                     @mouseleave="showSadSmileyColor = false" cy-name="sad-reaction-button"
+                     :class="{ selected: day.rate == 1 }" cy-name="sad-reaction-button"
+                     @click="showComment(1)" @mouseleave="showSadSmileyColor = false"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -66,7 +66,7 @@
                 <!-- mediocre day monochrome -->
                 <svg width="42px" height="41px" viewBox="0 0 42 41" version="1.1" xmlns="http://www.w3.org/2000/svg"
                      xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer"
-                     :class="{ selected: day.rate == 2 }" @click="showComment(2)" cy-name="medium-reaction-button"
+                     :class="{ selected: day.rate == 2 }" cy-name="medium-reaction-button" @click="showComment(2)"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -84,8 +84,8 @@
                 <!-- happy day monochrome -->
                 <svg v-if="!showHappySmileyColor" width="42px" height="42px" viewBox="0 0 42 42" version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer"
-                     :class="{ selected: day.rate == 3 }" @click="showComment(3)"
-                     @mouseover="showHappySmileyColor = true" cy-name="happy-reaction-button"
+                     :class="{ selected: day.rate == 3 }" cy-name="happy-reaction-button"
+                     @click="showComment(3)" @mouseover="showHappySmileyColor = true"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -105,8 +105,8 @@
                 <!-- happy day color -->
                 <svg v-if="showHappySmileyColor" width="42px" height="42px" viewBox="0 0 42 42" version="1.1"
                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="pointer"
-                     :class="{ selected: day.rate == 3 }" @click="showComment(3)"
-                     @mouseleave="showHappySmileyColor = false" cy-name="happy-reaction-button"
+                     :class="{ selected: day.rate == 3 }" cy-name="happy-reaction-button"
+                     @click="showComment(3)" @mouseleave="showHappySmileyColor = false"
                 >
                   <defs />
                   <g id="App" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -145,7 +145,7 @@
                 </a>
               </div>
               <div>
-                <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click="rate()" cy-name="save-entry-button">
+                <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" cy-name="save-entry-button" @click="rate()">
                   {{ $t('app.save') }}
                 </button>
               </div>

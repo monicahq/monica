@@ -8,7 +8,7 @@
         ☎️ {{ $t('people.call_title') }}
 
         <span class="fr relative" style="top: -7px;">
-          <a v-if="displayLogCall == false" class="btn edit-information" href="" @click.prevent="displayLogCall = true" cy-name="add-call-button">
+          <a v-if="displayLogCall == false" class="btn edit-information" href="" cy-name="add-call-button" @click.prevent="displayLogCall = true">
             {{ $t('people.call_button') }}
           </a>
           <a v-if="displayLogCall" class="btn edit-information" href="" @click.prevent="displayLogCall = false">
@@ -112,7 +112,7 @@
               </a>
             </div>
             <div class="">
-              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="store()" cy-name="add-call-button">
+              <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" cy-name="add-call-button" @click.prevent="store()">
                 {{ $t('app.add') }}
               </button>
             </div>
@@ -154,7 +154,7 @@
               </p>
               <div class="di mr3">
                 <input :id="'you' + call.id" v-model="editCall.contact_called" type="radio" class="mr1" :name="'contact_called' + call.id"
-                      :value="false"
+                       :value="false"
                 />
                 <label :for="'you' + call.id" class="pointer">
                   {{ $t('people.call_you_called') }}
@@ -162,7 +162,7 @@
               </div>
               <div class="di mr3">
                 <input :id="'contact' + call.id" v-model="editCall.contact_called" type="radio" class="mr1" :name="'contact_called' + call.id"
-                      :value="true"
+                       :value="true"
                 />
                 <label :for="'contact' + call.id" class="pointer">
                   {{ $t('people.call_he_called', { name : name }) }}
@@ -221,7 +221,7 @@
             <a :class="[ dirltr ? 'mr2' : 'ml2' ]" class="pointer " href="" @click.prevent="showEditBox(call)">
               {{ $t('app.update') }}
             </a>
-            <a v-show="destroyCallId != call.id" class="pointer" href="" @click.prevent="showDestroyCall(call)" :cy-name="'delete-call-button-'+call.id">
+            <a v-show="destroyCallId != call.id" class="pointer" href="" :cy-name="'delete-call-button-'+call.id" @click.prevent="showDestroyCall(call)">
               {{ $t('app.delete') }}
             </a>
             <ul v-show="destroyCallId == call.id" class="di">
@@ -231,7 +231,7 @@
                 </a>
               </li>
               <li class="di">
-                <a class="pointer red" href="" @click.prevent="destroyCall(call)" :cy-name="'delete-call-confirm-button-'+call.id">
+                <a class="pointer red" href="" :cy-name="'delete-call-confirm-button-'+call.id" @click.prevent="destroyCall(call)">
                   {{ $t('app.delete_confirm') }}
                 </a>
               </li>
