@@ -9,7 +9,7 @@
   "video": false,
   "reporter": "junit",
   "reporterOptions": {
-    "mochaFile": "results/cypress/result-[hash].xml",
+    "mochaFile": "results/junit/cypress/results-[hash].xml",
     "toConsole": true
   },
   "projectId": "q8h6k9"
