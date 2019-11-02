@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\User;
 
-use App\Models\Account\Account;
-use App\Models\User\User;
-use App\Notifications\ConfirmEmail;
-use App\Services\User\EmailChange;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Notification as NotificationFacade;
-use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
+use App\Models\User\User;
+use App\Models\Account\Account;
+use App\Services\User\EmailChange;
+use App\Notifications\ConfirmEmail;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class EmailChangeTest extends TestCase
 {

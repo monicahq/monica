@@ -2,11 +2,11 @@
 
 namespace Tests\Commands;
 
-use App\Models\Account\Account;
-use App\Models\User\SyncToken;
-use App\Models\User\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use App\Models\User\User;
+use App\Models\User\SyncToken;
+use App\Models\Account\Account;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CleanCommandTest extends TestCase
 {

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\Gift\Gift as GiftResource;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Gift;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Gift\Gift as GiftResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiGiftController extends ApiController
 {

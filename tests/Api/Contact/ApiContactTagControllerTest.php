@@ -2,10 +2,10 @@
 
 namespace Tests\Api\Contact;
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\Tag;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\ApiTestCase;
+use App\Models\Contact\Tag;
+use App\Models\Contact\Contact;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiContactTagControllerTest extends ApiTestCase
 {

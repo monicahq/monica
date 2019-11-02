@@ -2,12 +2,12 @@
 
 namespace Tests\Browser\Auth;
 
-use App\Models\User\User;
 use GuzzleHttp\Client;
-use Illuminate\Foundation\Testing\TestResponse;
-use Laravel\Passport\ClientRepository;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Tests\ApiTestCase;
+use App\Models\User\User;
+use Laravel\Passport\ClientRepository;
+use Illuminate\Foundation\Testing\TestResponse;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 class AuthControllerTest extends ApiTestCase
 {

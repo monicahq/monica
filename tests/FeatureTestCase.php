@@ -2,8 +2,8 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestResponse;
 use Tests\Traits\SignIn;
+use Illuminate\Foundation\Testing\TestResponse;
 
 class FeatureTestCase extends TestCase
 {

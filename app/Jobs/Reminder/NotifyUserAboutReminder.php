@@ -2,15 +2,15 @@
 
 namespace App\Jobs\Reminder;
 
-use App\Interfaces\MailNotification;
-use App\Models\Contact\ReminderOutbox;
+use Illuminate\Bus\Queueable;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
-use Illuminate\Bus\Queueable;
+use App\Interfaces\MailNotification;
+use App\Models\Contact\ReminderOutbox;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
 
 class NotifyUserAboutReminder implements ShouldQueue

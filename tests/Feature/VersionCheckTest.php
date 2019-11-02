@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\FeatureTestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VersionCheckTest extends FeatureTestCase
 {

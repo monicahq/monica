@@ -1,8 +1,8 @@
 <?php
 
 use App\Helpers\DBHelper;
-use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Migrations\Migration;
 
 class FixJsonColumn extends Migration
 {

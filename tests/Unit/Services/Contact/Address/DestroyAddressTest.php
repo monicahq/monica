@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\Address;
 
+use Tests\TestCase;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Address\DestroyAddress;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use App\Services\Contact\Address\DestroyAddress;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyAddressTest extends TestCase
 {

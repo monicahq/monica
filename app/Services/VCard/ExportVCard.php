@@ -2,12 +2,12 @@
 
 namespace App\Services\VCard;
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\Gender;
-use App\Services\BaseService;
 use Illuminate\Support\Str;
+use App\Services\BaseService;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Contact;
 use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactFieldType;
 
 class ExportVCard extends BaseService
 {

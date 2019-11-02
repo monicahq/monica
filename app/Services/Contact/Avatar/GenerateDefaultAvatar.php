@@ -2,12 +2,12 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Models\Contact\Contact;
-use App\Services\BaseService;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Services\BaseService;
+use App\Models\Contact\Contact;
 use Laravolt\Avatar\Facade as Avatar;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class GenerateDefaultAvatar extends BaseService
 {

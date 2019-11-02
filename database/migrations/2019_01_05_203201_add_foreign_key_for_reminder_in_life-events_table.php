@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Reminder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Contact\LifeEvent;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddForeignKeyForReminderInLifeEventsTable extends Migration
 {

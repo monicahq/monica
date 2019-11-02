@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\DateHelper;
-use App\Http\Requests\Journal\DaysRequest;
 use App\Models\Journal\Day;
+use Illuminate\Http\Request;
 use App\Models\Journal\Entry;
 use App\Models\Journal\JournalEntry;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\Journal\DaysRequest;
 
 class JournalController extends Controller
 {

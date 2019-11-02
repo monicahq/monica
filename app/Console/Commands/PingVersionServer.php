@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Contact\Contact;
-use App\Models\Instance\Instance;
 use GuzzleHttp\Client;
-use Illuminate\Console\Command;
-use Illuminate\Console\ConfirmableTrait;
 use function Safe\json_decode;
+use App\Models\Contact\Contact;
+use Illuminate\Console\Command;
+use App\Models\Instance\Instance;
+use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class PingVersionServer extends Command

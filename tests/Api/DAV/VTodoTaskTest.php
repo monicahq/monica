@@ -2,13 +2,13 @@
 
 namespace Tests\Api\DAV;
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\Task;
 use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Str;
-use Sabre\VObject\PHPUnitAssertions;
 use Tests\ApiTestCase;
+use Illuminate\Support\Str;
+use App\Models\Contact\Task;
+use App\Models\Contact\Contact;
+use Sabre\VObject\PHPUnitAssertions;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VTodoTaskTest extends ApiTestCase
 {

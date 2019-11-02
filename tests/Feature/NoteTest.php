@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\Note;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Note;
+use App\Models\Contact\Contact;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class NoteTest extends FeatureTestCase
 {

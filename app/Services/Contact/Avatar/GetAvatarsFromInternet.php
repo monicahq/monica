@@ -2,13 +2,13 @@
 
 namespace App\Services\Contact\Avatar;
 
-use App\Helpers\StringHelper;
-use App\Models\Contact\Contact;
-use App\Services\BaseService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Helpers\StringHelper;
+use App\Services\BaseService;
+use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetAvatarsFromInternet extends BaseService
 {

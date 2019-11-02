@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Services\Contact\Avatar;
 
+use Tests\TestCase;
 use App\Models\Contact\Contact;
-use App\Services\Contact\Avatar\GenerateDefaultAvatar;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use App\Services\Contact\Avatar\GenerateDefaultAvatar;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GenerateDefaultAvatarTest extends TestCase
 {

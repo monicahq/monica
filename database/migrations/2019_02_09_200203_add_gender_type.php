@@ -1,10 +1,10 @@
 <?php
 
-use App\Models\Account\Account;
 use App\Models\Contact\Gender;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class AddGenderType extends Migration
 {

@@ -2,16 +2,16 @@
 
 namespace Tests\Feature;
 
-use App\Helpers\StringHelper;
-use App\Models\Account\Activity;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Gift;
-use App\Models\Contact\Reminder;
-use App\Models\Contact\Tag;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Arr;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Tag;
+use Illuminate\Support\Arr;
+use App\Models\Contact\Gift;
+use App\Helpers\StringHelper;
+use App\Models\Contact\Contact;
+use App\Models\Account\Activity;
+use App\Models\Contact\Reminder;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ContactTest extends FeatureTestCase
 {

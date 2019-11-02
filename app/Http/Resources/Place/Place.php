@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Place;
 
 use App\Helpers\DateHelper;
-use App\Http\Resources\Country\Country as CountryResource;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Country\Country as CountryResource;
 
 class Place extends Resource
 {

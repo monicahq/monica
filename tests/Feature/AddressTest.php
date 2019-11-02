@@ -2,11 +2,11 @@
 
 namespace Tests\Feature;
 
-use App\Helpers\CountriesHelper;
+use Tests\FeatureTestCase;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
+use App\Helpers\CountriesHelper;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\FeatureTestCase;
 
 class AddressTest extends FeatureTestCase
 {

@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Auth;
 
-use App\Models\Account\Account;
+use Tests\TestCase;
 use App\Models\User\User;
-use App\Services\Auth\Population\PopulateContactFieldTypesTable;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Models\Account\Account;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class PopulateContactFieldTypesTableTest extends TestCase
 {

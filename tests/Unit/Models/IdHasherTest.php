@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Account\Activity;
+use Tests\TestCase;
 use App\Models\Contact\Contact;
+use App\Models\Account\Activity;
 use App\Services\Instance\IdHasher;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\TestCase;
 
 class IdHasherTest extends TestCase
 {

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\InstanceHelper;
 use Illuminate\Http\Request;
+use App\Helpers\InstanceHelper;
 
 class ChangelogController extends Controller
 {

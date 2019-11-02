@@ -3,10 +3,10 @@
 namespace App\Http\Resources\Conversation;
 
 use App\Helpers\DateHelper;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
-use App\Http\Resources\Conversation\Message as MessageResource;
-use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Conversation\Message as MessageResource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Http\Resources\Settings\ContactFieldType\ContactFieldType as ContactFieldTypeResource;
 
 class Conversation extends Resource
 {

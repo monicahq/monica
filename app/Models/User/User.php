@@ -2,30 +2,30 @@
 
 namespace App\Models\User;
 
-use App\Helpers\CountriesHelper;
+use Carbon\Carbon;
 use App\Helpers\DateHelper;
+use App\Models\Journal\Day;
+use App\Models\Settings\Term;
 use App\Helpers\RequestHelper;
-use App\Http\Resources\Account\User\User as UserResource;
-use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Journal\Day;
+use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
-use App\Models\Settings\Term;
-use App\Notifications\ConfirmEmail;
-use Carbon\Carbon;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\UnauthorizedException;
 use Laravel\Passport\HasApiTokens;
+use App\Notifications\ConfirmEmail;
+use Illuminate\Support\Facades\App;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Account\User\User as UserResource;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
 class User extends Authenticatable implements MustVerifyEmail
 {

@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
 use App\Helpers\MoneyHelper;
+use App\Models\Contact\Gift;
+use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\GiftsRequest;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Gift;
 
 class GiftsController extends Controller
 {

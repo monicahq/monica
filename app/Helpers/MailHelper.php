@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Interfaces\MailNotification;
 use App\Models\User\User;
+use App\Interfaces\MailNotification;
 
 class MailHelper
 {

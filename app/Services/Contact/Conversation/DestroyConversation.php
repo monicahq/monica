@@ -7,8 +7,8 @@
 
 namespace App\Services\Contact\Conversation;
 
-use App\Models\Contact\Conversation;
 use App\Services\BaseService;
+use App\Models\Contact\Conversation;
 
 class DestroyConversation extends BaseService
 {

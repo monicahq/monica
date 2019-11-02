@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\RelationshipTypeGroup\RelationshipTypeGroup as RelationshipTypeGroupResource;
+use Illuminate\Http\Request;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use App\Http\Resources\RelationshipTypeGroup\RelationshipTypeGroup as RelationshipTypeGroupResource;
 
 class ApiRelationshipTypeGroupController extends ApiController
 {

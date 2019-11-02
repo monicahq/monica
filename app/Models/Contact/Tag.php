@@ -3,8 +3,8 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {

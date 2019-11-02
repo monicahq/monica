@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Account\Account;
-use App\Models\Contact\LifeEventCategory;
-use App\Models\Contact\LifeEventType;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+use App\Models\Account\Account;
+use App\Models\Contact\LifeEventType;
+use App\Models\Contact\LifeEventCategory;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class LifeEventCategoryTest extends TestCase
 {
