@@ -4,7 +4,6 @@ namespace App\Notifications;
 
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use App\Models\Account\Account;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
 use App\Interfaces\MailNotification;
@@ -19,30 +18,12 @@ class ConfirmEmail extends LaravelNotification implements ShouldQueue, MailNotif
     use Dispatchable, InteractsWithQueue, Queueable;
 
     /**
-     * @var bool
-     */
-    public $force;
-
-    public function __construct($force = false)
-    {
-        $this->force = $force;
-    }
-
-    /**
      * Get the notification's delivery channels.
      *
      * @return array
      */
     public function via()
     {
-        if (! $this->force) {
-            /** @var int $count */
-            $count = Account::count();
-            if (! config('monica.signup_double_optin') || $count == 1) {
-                return [];
-            }
-        }
-
         return ['mail'];
     }
 

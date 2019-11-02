@@ -489,6 +489,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new ConfirmEmail(true));
+        /** @var int $count */
+        $count = Account::count();
+        if (config('monica.signup_double_optin') && $count > 1) {
+            $this->notify(new ConfirmEmail());
+        }
     }
 }
