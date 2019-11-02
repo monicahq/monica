@@ -7,5 +7,10 @@
   "integrationFolder": "tests/cypress/integration",
   "pluginsFile": "tests/cypress/plugins/index.js",
   "video": false,
+  "reporter": "junit",
+  "reporterOptions": {
+    "mochaFile": "results/cypress/result-[hash].xml",
+    "toConsole": true
+  },
   "projectId": "q8h6k9"
 }
