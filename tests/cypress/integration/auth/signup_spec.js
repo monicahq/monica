@@ -25,19 +25,19 @@ describe('Signup', function () {
 
   it('should block registration if policy is not accepted', function () {
     cy.register(faker.name.firstName(), faker.name.lastName(), faker.internet.password(), faker.internet.email(), false);
-    cy.get('.alert').should('exist')
-  })
+    cy.get('.alert').should('exist');
+  });
 
   it('should block registration if email is already used', function () {
     const email = faker.internet.email();
 
     // test email address
     cy.register(faker.name.firstName(), faker.name.lastName(), faker.internet.password(), email, true);
-    cy.get('.alert').should('not.exist')
+    cy.get('.alert').should('not.exist');
 
-    cy.get('[data-cy=header-link-logout]').click()
+    cy.get('[data-cy=header-link-logout]').click();
 
     cy.register(faker.name.firstName(), faker.name.lastName(), faker.internet.password(), email, true);
-    cy.get('.alert').should('exist')
-  })
-})
+    cy.get('.alert').should('exist');
+  });
+});
