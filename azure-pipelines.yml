@@ -66,6 +66,7 @@ stages:
     dependsOn:
     - tests
     - tests_browser
+    - tests_cypress
     pool:
       vmImage: 'ubuntu-latest'
     steps:
