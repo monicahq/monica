@@ -75,7 +75,7 @@ stages:
       inputs:
         path: $(System.DefaultWorkingDirectory)/results
     - bash: |
-        pushd ${SYSTEM_DEFAULTWORKINGDIRECTORTY}/results
+        pushd ${SYSTEM_DEFAULTWORKINGDIRECTORY}/results
         for f in $(ls); do cp -rf $f/* .; rm -rf $f; done
     - bash: |
         yarn global add junit-merge
