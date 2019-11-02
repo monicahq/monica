@@ -64,7 +64,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        if ($this->app->environment() != 'production' ) {
+        if ($this->app->environment() != 'production') {
             $this->commands[] = SetupFrontEndTestUser::class;
         }
     }
