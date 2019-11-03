@@ -39,10 +39,10 @@ class AppServiceProvider extends ServiceProvider
             Schema::defaultStringLength(191);
         }
 
-        VerifyEmail::toMailUsing(function($user, $verificationUrl) {
+        VerifyEmail::toMailUsing(function ($user, $verificationUrl) {
             return EmailMessaging::verifyEmailMail($user, $verificationUrl);
         });
-        ResetPassword::toMailUsing(function($user, $token) {
+        ResetPassword::toMailUsing(function ($user, $token) {
             return EmailMessaging::resetPasswordMail($user, $token);
         });
     }
