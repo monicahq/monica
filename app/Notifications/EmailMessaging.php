@@ -22,7 +22,7 @@ class EmailMessaging
             ->subject(trans('mail.confirmation_email_title'))
             ->line(trans('mail.confirmation_email_title'))
             ->line(trans('mail.confirmation_email_intro'))
-            ->action(trans('mail.confirmation_email_button'),$verificationUrl)
+            ->action(trans('mail.confirmation_email_button'), $verificationUrl)
             ->line(trans('mail.confirmation_email_bottom'));
     }
 
