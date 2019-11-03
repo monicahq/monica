@@ -32,6 +32,6 @@ return [
     'password_reset_intro' => 'הודעה זו נשלחה אליך כי התקבלה בקשה לאיפוס הססמה בחשבונך.',
     'password_reset_button' => 'איפוס ססמה',
     'password_reset_expiration' => 'קישור זה לאיפוס הססמה יפוג בעוד :count דקות.',
-    'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
+    'password_reset_bottom' => 'אם לא ביקשת לאפס את הססמה, לא נדרשות פעולות נוספות.',
 
 ];
