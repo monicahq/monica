@@ -103,4 +103,27 @@ class EmailChangeTest extends TestCase
             $user
         );
     }
+
+    public function test_it_send_confirmation_email()
+    {
+        NotificationFacade::fake();
+        config(['monica.signup_double_optin' => true]);
+
+        $user = factory(User::class)->create([]);
+
+        $request = [
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'email' => 'newmail@ok.com',
+        ];
+
+        $user = app(EmailChange::class)->execute($request);
+
+        NotificationFacade::assertSentTo($user, VerifyEmail::class);
+
+        $notifications = NotificationFacade::sent($user, VerifyEmail::class);
+        $message = $notifications[0]->toMail($user);
+
+        $this->assertStringContainsString('To validate your email click on the button below', implode('', $message->introLines));
+    }
 }
