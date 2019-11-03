@@ -21,8 +21,8 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
-use App\Services\Auth\UserCreate;
 use App\Models\Contact\LifeEvent;
+use App\Services\Auth\UserCreate;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ContactField;
@@ -758,9 +758,8 @@ class Account extends Model
                 'last_name' => $last_name,
                 'email' => $email,
                 'password' => $password,
-                'locale' => $lang
+                'locale' => $lang,
             ]);
-    
         } catch (\Exception $e) {
             $account->delete();
             throw $e;
