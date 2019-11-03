@@ -26,4 +26,12 @@ return [
     'confirmation_email_title' => 'Monica – Email 认证',
     'confirmation_email_intro'=> '请点击以下按钮来完成Email认证',
     'confirmation_email_button' => 'Email 认证',
+    'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
+
+    'password_reset_title' => 'Monica – Reset Password Notification',
+    'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
+    'password_reset_button' => 'Reset Password',
+    'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
+    'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
+
 ];
