@@ -107,10 +107,10 @@ class InvitationController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array $data
-     * @param  Invitation $invitation
+     * @param  mixed $invitation
      * @return \App\Models\User\User
      */
-    protected function create(array $data, Invitation $invitation)
+    protected function create(array $data, $invitation)
     {
         $user = app(UserCreate::class)->execute([
             'account_id' => $invitation->account_id,
