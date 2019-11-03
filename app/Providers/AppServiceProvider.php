@@ -6,6 +6,7 @@ use App\Helpers\DBHelper;
 use Laravel\Cashier\Cashier;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
+use App\Notifications\EmailMessaging;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
@@ -35,6 +36,9 @@ class AppServiceProvider extends ServiceProvider
             && ! DBHelper::testVersion('5.7.7')) {
             Schema::defaultStringLength(191);
         }
+
+        VerifyEmail::toMailUsing('\App\Notifications\EmailMessaging::verifyEmailMail');
+        ResetPassword::toMailUsing('\App\Notifications\EmailMessaging::resetPasswordMail');
     }
 
     /**
