@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Tests\TestCase;
-use App\Models\Contact\Note;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\Contact\Note;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class NoteTest extends TestCase
 {

@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Message;
 use App\Models\Contact\Conversation;
-use Illuminate\Validation\ValidationException;
+use App\Models\Contact\Message;
 use App\Services\Contact\Conversation\UpdateMessage;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class UpdateMessageTest extends TestCase
 {

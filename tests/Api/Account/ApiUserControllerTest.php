@@ -2,9 +2,9 @@
 
 namespace Tests\Api\Account;
 
-use Tests\ApiTestCase;
 use App\Models\Settings\Term;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiUserControllerTest extends ApiTestCase
 {

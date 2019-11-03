@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Request;
 use App\Helpers\GendersHelper;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
-use Illuminate\Support\Facades\Validator;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Relationship\CreateRelationship;
-use App\Services\Contact\Relationship\UpdateRelationship;
 use App\Services\Contact\Relationship\DestroyRelationship;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Services\Contact\Relationship\UpdateRelationship;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class RelationshipsController extends Controller
 {

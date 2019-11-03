@@ -2,12 +2,12 @@
 
 namespace App\Services\Auth\Population;
 
+use App\Models\Account\Account;
 use App\Models\User\Module;
 use App\Services\BaseService;
-use App\Models\Account\Account;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\QueryException;
 
 /**
  * Populate the modules table for a given account.

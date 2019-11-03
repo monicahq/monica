@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User\User;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Debt;
-use Illuminate\Http\Request;
-use function Safe\json_encode;
 use App\Helpers\InstanceHelper;
+use App\Http\Resources\Debt\Debt as DebtResource;
+use App\Models\Contact\Debt;
+use App\Models\User\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\Debt\Debt as DebtResource;
+use function Safe\json_encode;
 
 class DashboardController extends Controller
 {

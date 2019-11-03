@@ -7,10 +7,10 @@
 
 namespace App\Services\Contact\Conversation;
 
-use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Conversation;
 use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\Conversation;
+use App\Services\BaseService;
 
 class CreateConversation extends BaseService
 {

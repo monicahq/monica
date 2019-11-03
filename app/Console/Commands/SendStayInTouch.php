@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
 
 class SendStayInTouch extends Command
 {

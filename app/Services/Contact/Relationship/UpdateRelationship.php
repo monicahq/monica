@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Relationship;
 
-use App\Services\BaseService;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
+use App\Services\BaseService;
 
 class UpdateRelationship extends BaseService
 {

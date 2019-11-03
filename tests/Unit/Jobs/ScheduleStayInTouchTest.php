@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Jobs;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
+use App\Models\User\User;
 use App\Notifications\StayInTouchEmail;
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
+use Tests\TestCase;
 
 class ScheduleStayInTouchTest extends TestCase
 {

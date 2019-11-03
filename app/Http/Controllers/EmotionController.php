@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Models\Instance\Emotion\Emotion;
 use App\Models\Instance\Emotion\PrimaryEmotion;
 use App\Models\Instance\Emotion\SecondaryEmotion;
-use App\Http\Resources\Emotion\Emotion as EmotionResource;
+use Illuminate\Http\Request;
 
 class EmotionController extends Controller
 {

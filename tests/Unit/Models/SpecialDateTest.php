@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\FeatureTestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\FeatureTestCase;
 
 class SpecialDateTest extends FeatureTestCase
 {

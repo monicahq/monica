@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Account\Activity;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Traits\JsonRespondController;
-use App\Services\Account\Activity\ActivityType\CreateActivityType;
-use App\Services\Account\Activity\ActivityType\UpdateActivityType;
-use App\Services\Account\Activity\ActivityType\DestroyActivityType;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
+use App\Services\Account\Activity\ActivityType\CreateActivityType;
+use App\Services\Account\Activity\ActivityType\DestroyActivityType;
+use App\Services\Account\Activity\ActivityType\UpdateActivityType;
+use App\Traits\JsonRespondController;
+use Illuminate\Http\Request;
 
 class ActivityTypesController extends Controller
 {

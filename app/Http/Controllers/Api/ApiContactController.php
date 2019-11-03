@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
 use App\Helpers\SearchHelper;
-use App\Models\Contact\Contact;
-use Illuminate\Support\Collection;
-use Illuminate\Database\QueryException;
-use App\Services\Contact\Contact\SetMeContact;
-use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Contact\UpdateContact;
-use App\Services\Contact\Contact\DestroyContact;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
+use App\Models\Contact\Contact;
+use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\DestroyContact;
+use App\Services\Contact\Contact\SetMeContact;
+use App\Services\Contact\Contact\UpdateContact;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 
 class ApiContactController extends ApiController
 {

@@ -2,16 +2,16 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\TestCase;
-use App\Models\User\User;
-use App\Models\Journal\Day;
-use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
+use App\Models\Journal\Day;
 use App\Models\Settings\Currency;
-use Illuminate\Support\Facades\App;
+use App\Models\Settings\Term;
+use App\Models\User\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\App;
+use Tests\TestCase;
 
 class UserTest extends TestCase
 {

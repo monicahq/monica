@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Account\Place;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Occupation;
-use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Occupation\CreateOccupation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class CreateOccupationTest extends TestCase
 {

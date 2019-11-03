@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Helpers;
 
-use Illuminate\Console\Command;
 use Illuminate\Console\Application;
+use Illuminate\Console\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CommandExecutor implements CommandExecutorInterface

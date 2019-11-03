@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Console\ConfirmableTrait;
 use App\Console\Commands\Helpers\CommandExecutor;
 use App\Console\Commands\Helpers\CommandExecutorInterface;
+use Illuminate\Console\Command;
+use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class Update extends Command
 {

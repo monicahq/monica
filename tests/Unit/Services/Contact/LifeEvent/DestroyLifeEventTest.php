@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
-use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
-use Illuminate\Validation\ValidationException;
+use App\Models\Contact\Reminder;
 use App\Services\Contact\LifeEvent\DestroyLifeEvent;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class DestroyLifeEventTest extends TestCase
 {

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User\User;
-use Illuminate\Http\Request;
 use App\Events\RecoveryLogin;
 use App\Http\Controllers\Controller;
+use App\Models\User\User;
+use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RedirectsUsers;
 
 class RecoveryLoginController extends Controller
 {

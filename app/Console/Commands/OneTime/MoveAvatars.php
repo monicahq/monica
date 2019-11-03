@@ -4,10 +4,10 @@ namespace App\Console\Commands\OneTime;
 
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Console\ConfirmableTrait;
-use Symfony\Component\Console\Output\OutputInterface;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class MoveAvatars extends Command
 {

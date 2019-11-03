@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\Statistics;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ApiController;
 use App\Models\Instance\Instance;
 use App\Models\Instance\Statistic;
-use App\Http\Controllers\Api\ApiController;
+use Illuminate\Http\Request;
 
 class ApiStatisticsController extends ApiController
 {

@@ -2,36 +2,36 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelper;
-use App\Models\User\User;
+use App\Exceptions\StripeException;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Tag;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
+use App\Helpers\DBHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
-use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
-use App\Jobs\ExportAccountAsSQL;
-use App\Jobs\AddContactFromVCard;
-use App\Jobs\SendInvitationEmail;
-use App\Models\Account\ImportJob;
-use App\Models\Account\Invitation;
-use App\Services\User\EmailChange;
-use Illuminate\Support\Facades\DB;
-use App\Exceptions\StripeException;
-use Lahaxearnaud\U2f\Models\U2fKey;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
-use App\Http\Requests\SettingsRequest;
-use Illuminate\Support\Facades\Storage;
-use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
-use App\Services\Contact\Tag\DestroyTag;
-use App\Services\Account\DestroyAllDocuments;
-use PragmaRX\Google2FALaravel\Facade as Google2FA;
+use App\Http\Requests\SettingsRequest;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
+use App\Jobs\AddContactFromVCard;
+use App\Jobs\ExportAccountAsSQL;
+use App\Jobs\SendInvitationEmail;
+use App\Jobs\SendNewUserAlert;
+use App\Models\Account\ImportJob;
+use App\Models\Account\Invitation;
+use App\Models\Contact\Tag;
+use App\Models\User\User;
+use App\Services\Account\DestroyAllDocuments;
+use App\Services\Contact\Tag\DestroyTag;
+use App\Services\User\EmailChange;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Lahaxearnaud\U2f\Models\U2fKey;
+use LaravelWebauthn\Models\WebauthnKey;
+use PragmaRX\Google2FALaravel\Facade as Google2FA;
 
 class SettingsController
 {

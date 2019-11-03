@@ -2,8 +2,8 @@
 
 namespace App\Interfaces;
 
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 interface IsJournalableInterface
 {

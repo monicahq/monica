@@ -2,12 +2,12 @@
 
 namespace Tests\Api\ContactField;
 
-use Tests\ApiTestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Contact\ContactField;
 use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiContactFieldControllerTest extends ApiTestCase
 {

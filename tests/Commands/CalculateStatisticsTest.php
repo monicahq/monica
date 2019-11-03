@@ -2,9 +2,9 @@
 
 namespace Tests\Commands;
 
-use Tests\TestCase;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class CalculateStatisticsTest extends TestCase
 {

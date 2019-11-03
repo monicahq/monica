@@ -2,8 +2,8 @@
 
 namespace App\Services\Contact\Occupation;
 
-use App\Services\BaseService;
 use App\Models\Contact\Occupation;
+use App\Services\BaseService;
 
 class DestroyOccupation extends BaseService
 {

@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Models;
 
-use Carbon\Carbon;
-use Tests\TestCase;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
 
 class ActivityTest extends TestCase
 {

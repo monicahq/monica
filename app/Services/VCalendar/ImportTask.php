@@ -2,15 +2,15 @@
 
 namespace App\Services\VCalendar;
 
-use Ramsey\Uuid\Uuid;
-use App\Traits\DAVFormat;
-use Sabre\VObject\Reader;
 use App\Helpers\DateHelper;
-use Illuminate\Support\Arr;
 use App\Models\Contact\Task;
 use App\Services\BaseService;
-use Sabre\VObject\ParseException;
+use App\Traits\DAVFormat;
+use Illuminate\Support\Arr;
+use Ramsey\Uuid\Uuid;
 use Sabre\VObject\Component\VCalendar;
+use Sabre\VObject\ParseException;
+use Sabre\VObject\Reader;
 
 class ImportTask extends BaseService
 {

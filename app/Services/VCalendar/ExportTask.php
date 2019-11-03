@@ -2,12 +2,12 @@
 
 namespace App\Services\VCalendar;
 
-use Illuminate\Support\Str;
 use App\Models\Contact\Task;
 use App\Services\BaseService;
-use Sabre\VObject\Component\VTodo;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Sabre\VObject\Component\VCalendar;
+use Sabre\VObject\Component\VTodo;
 
 class ExportTask extends BaseService
 {

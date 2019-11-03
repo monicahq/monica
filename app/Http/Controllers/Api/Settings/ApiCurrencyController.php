@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\Settings;
 
-use Illuminate\Http\Request;
-use App\Models\Settings\Currency;
 use App\Http\Controllers\Api\ApiController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Settings\Currency\Currency as CurrencyResource;
+use App\Models\Settings\Currency;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class ApiCurrencyController extends ApiController
 {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact\Contact;
-use App\Models\Account\Activity;
-use App\Models\Journal\JournalEntry;
 use App\Http\Requests\People\ActivitiesRequest;
+use App\Models\Account\Activity;
+use App\Models\Contact\Contact;
+use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivitiesController extends Controller

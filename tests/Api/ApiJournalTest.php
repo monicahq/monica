@@ -2,9 +2,9 @@
 
 namespace Tests\Api;
 
-use Tests\ApiTestCase;
 use App\Models\Journal\Entry;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\ApiTestCase;
 
 class ApiJournalTest extends ApiTestCase
 {

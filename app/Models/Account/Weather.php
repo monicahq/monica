@@ -2,9 +2,9 @@
 
 namespace App\Models\Account;
 
-use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\App;
 
 class Weather extends Model
 {

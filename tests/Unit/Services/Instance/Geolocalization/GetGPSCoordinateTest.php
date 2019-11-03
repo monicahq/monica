@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Services\Instance\Geolocalization;
 
-use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
 use App\Models\Account\Place;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Handler\MockHandler;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Instance\Geolocalization\GetGPSCoordinate;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 class GetGPSCoordinateTest extends TestCase
 {
