@@ -23,8 +23,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Contracts\Translation\HasLocalePreference;
 use App\Http\Resources\Account\User\User as UserResource;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 

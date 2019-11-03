@@ -2,12 +2,9 @@
 
 namespace App\Notifications;
 
-use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Models\Account\Invitation;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
