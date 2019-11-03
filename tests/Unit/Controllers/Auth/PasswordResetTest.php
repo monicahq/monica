@@ -2,13 +2,8 @@
 
 namespace Tests\Unit\Controllers\Auth;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\User\User;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Notifications\StayInTouchEmail;
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
@@ -31,6 +26,5 @@ class PasswordResetTest extends TestCase
         $message = $notifications[0]->toMail($user);
 
         $this->assertStringContainsString('You are receiving this email because we received a password reset request for your account.', implode('', $message->introLines));
-
     }
 }
