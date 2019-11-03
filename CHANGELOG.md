@@ -13,6 +13,8 @@
 
 ### Fixes:
 
+* Fix password resetting page
+* Fix email verification sending on test environments 
 * Fix contact export
 * Fix currencies seeder by accounting for defaults
 * Fix search when prefix table is used
