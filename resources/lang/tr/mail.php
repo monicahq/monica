@@ -26,10 +26,10 @@ return [
     'confirmation_email_title' => 'Monica – E-posta Adresi Onayı',
     'confirmation_email_intro'=> 'E-postanızı doğrulamak için aşağıdaki butona tıklayın',
     'confirmation_email_button' => 'E-posta adresini doğrula',
-    'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
+    'confirmation_email_bottom' => 'Eğer bir hesap oluşturmadıysanız, başka bir işlem yapmanıza gerek yoktur.',
 
-    'password_reset_title' => 'Monica – Reset Password Notification',
-    'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
+    'password_reset_title' => 'Monica – Parola Sıfırlama Bildirimi',
+    'password_reset_intro' => 'Hesabınız için bir parola sıfırlama talebi aldığımız için bu e-postayı alıyorsunuz.',
     'password_reset_button' => 'Parola Sıfırla',
     'password_reset_expiration' => 'Bu parola sıfırlama linkinin geçerlilik süresi :count dakika içinde dolacaktır.',
     'password_reset_bottom' => 'Eğer parola sıfırlama talebinde bulunmadıysanız, başka bir işlem yapmanıza gerek yoktur.',
