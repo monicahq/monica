@@ -108,7 +108,7 @@ class InvitationController extends Controller
      *
      * @param  array $data
      * @param  Invitation $invitation
-     * @return User
+     * @return \App\Models\User\User
      */
     protected function create(array $data, Invitation $invitation)
     {
