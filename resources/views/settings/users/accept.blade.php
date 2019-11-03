@@ -21,7 +21,7 @@
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.register_email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="{{ trans('auth.register_email_example') }}" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                <input type="email" class="form-control" id="email" name="email" placeholder="{{ trans('auth.register_email_example') }}" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
               </div>
 
               <div class="row">

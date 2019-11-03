@@ -21,6 +21,7 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
+use App\Services\Auth\UserCreate;
 use App\Models\Contact\LifeEvent;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
@@ -751,7 +752,15 @@ class Account extends Model
 
         try {
             // create the first user for this account
-            User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+            $user = app(UserCreate::class)->execute([
+                'account_id' => $account->id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'password' => $password,
+                'locale' => $lang
+            ]);
+    
         } catch (\Exception $e) {
             $account->delete();
             throw $e;

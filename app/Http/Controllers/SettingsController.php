@@ -10,10 +10,10 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\RequestHelper;
-use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
+use App\Services\Auth\UserCreate;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Exceptions\StripeException;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\InvitationMail;
 use App\Http\Requests\ImportsRequest;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
@@ -381,7 +382,7 @@ class SettingsController
             ]
         );
 
-        $invitation->notify((new \App\Notifications\InvitationMail())->locale(auth()->user()->locale));
+        $invitation->notify((new InvitationMail())->locale(auth()->user()->locale));
 
         auth()->user()->account->update([
             'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
@@ -404,73 +405,6 @@ class SettingsController
 
         return redirect()->route('settings.users.index')
             ->with('success', trans('settings.users_invitation_deleted_confirmation_message'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param string $key
-     *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
-     */
-    public function acceptInvitation($key)
-    {
-        if (Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        Invitation::where('invitation_key', $key)
-            ->firstOrFail();
-
-        return view('settings.users.accept', compact('key'));
-    }
-
-    /**
-     * Store the specified resource.
-     *
-     * @param Request $request
-     * @param string $key
-     *
-     * @return null|\Illuminate\Http\RedirectResponse
-     */
-    public function storeAcceptedInvitation(Request $request, $key)
-    {
-        Validator::make($request->all(), [
-            'last_name' => 'required|max:255',
-            'first_name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'email_security' => 'required',
-            'password' => 'required|min:6|confirmed',
-            'policy' => 'required',
-        ])->validate();
-
-        $invitation = Invitation::where('invitation_key', $key)
-                                    ->firstOrFail();
-
-        // as a security measure, make sure that the new user provides the email
-        // of the person who has invited him/her.
-        if ($request->input('email_security') != $invitation->invitedBy->email) {
-            return redirect()->back()->withErrors(trans('settings.users_error_email_not_similar'))->withInput();
-        }
-
-        $user = User::createDefault($invitation->account_id,
-                    $request->input('first_name'),
-                    $request->input('last_name'),
-                    $request->input('email'),
-                    $request->input('password'),
-                    RequestHelper::ip()
-                );
-        $user->invited_by_user_id = $invitation->invited_by_user_id;
-        $user->save();
-
-        $invitation->delete();
-
-        // send me an alert
-        dispatch(new SendNewUserAlert($user));
-
-        if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password')])) {
-            return redirect()->route('dashboard.index');
-        }
     }
 
     /**
