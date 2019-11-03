@@ -14,7 +14,6 @@ use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
-use App\Jobs\SendInvitationEmail;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
@@ -28,6 +27,7 @@ use Illuminate\Support\Facades\Storage;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
+use Illuminate\Support\Facades\Validator;
 use App\Services\Account\DestroyAllDocuments;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
@@ -364,7 +364,7 @@ class SettingsController
             return redirect()->back()->withErrors(trans('settings.users_error_email_already_taken'))->withInput();
         }
 
-        // Has this user been invited already?
+        // Has this user already been invited?
         $invitations = Invitation::where('email', $request->only(['email']))->count();
         if ($invitations > 0) {
             return redirect()->back()->withErrors(trans('settings.users_error_already_invited'))->withInput();
@@ -381,7 +381,7 @@ class SettingsController
             ]
         );
 
-        dispatch(new SendInvitationEmail($invitation));
+        $invitation->notify((new \App\Notifications\InvitationMail())->locale(auth()->user()->locale));
 
         auth()->user()->account->update([
             'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
@@ -435,6 +435,15 @@ class SettingsController
      */
     public function storeAcceptedInvitation(Request $request, $key)
     {
+        Validator::make($request->all(), [
+            'last_name' => 'required|max:255',
+            'first_name' => 'required|max:255',
+            'email' => 'required|email|max:255|unique:users',
+            'email_security' => 'required',
+            'password' => 'required|min:6|confirmed',
+            'policy' => 'required',
+        ])->validate();
+
         $invitation = Invitation::where('invitation_key', $key)
                                     ->firstOrFail();
 

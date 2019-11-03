@@ -52,8 +52,6 @@ class UserReminded extends LaravelNotification implements ShouldQueue, MailNotif
      */
     public function toMail(User $user) : MailMessage
     {
-        App::setLocale($user->locale);
-
         $contact = Contact::where('account_id', $user->account_id)
             ->findOrFail($this->reminder->contact_id);
 

@@ -23,11 +23,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use App\Http\Resources\Account\User\User as UserResource;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use Notifiable, HasApiTokens;
 
@@ -494,5 +495,15 @@ class User extends Authenticatable implements MustVerifyEmail
         if (config('monica.signup_double_optin') && $count > 1) {
             $this->notify(new VerifyEmail());
         }
+    }
+
+    /**
+     * Get the preferred locale of the entity.
+     *
+     * @return string|null
+     */
+    public function preferredLocale()
+    {
+        return $this->locale;
     }
 }
