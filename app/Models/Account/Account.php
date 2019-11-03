@@ -759,6 +759,7 @@ class Account extends Model
                 'email' => $email,
                 'password' => $password,
                 'locale' => $lang,
+                'ip_address' => $ipAddress,
             ]);
         } catch (\Exception $e) {
             $account->delete();

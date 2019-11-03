@@ -47,7 +47,7 @@ class RequestHelper
     /**
      * Get client country and currency.
      *
-     * @param string $ip
+     * @param string|null $ip
      * @return array
      */
     public static function infos($ip)

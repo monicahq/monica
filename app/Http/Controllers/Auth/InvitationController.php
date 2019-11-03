@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
+use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
 use App\Services\Auth\UserCreate;
 use App\Models\Account\Invitation;
@@ -119,6 +120,7 @@ class InvitationController extends Controller
             'email' => $data['email'],
             'password' => $data['password'],
             'locale' => $invitation->invitedBy->locale,
+            'ip_address' => RequestHelper::ip(),
         ]);
         $user->invited_by_user_id = $invitation->invited_by_user_id;
         $user->save();

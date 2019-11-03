@@ -4,7 +4,6 @@ namespace App\Services\Auth;
 
 use App\Models\User\User;
 use App\Services\BaseService;
-use App\Helpers\RequestHelper;
 
 class UserCreate extends BaseService
 {
@@ -22,6 +21,7 @@ class UserCreate extends BaseService
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
             'locale' => 'nullable|string',
+            'ip_address' => 'nullable',
         ];
     }
 
@@ -41,7 +41,7 @@ class UserCreate extends BaseService
             $data['last_name'],
             $data['email'],
             $data['password'],
-            RequestHelper::ip(),
+            $data['ip_address'],
             $data['locale'],
         );
     }
