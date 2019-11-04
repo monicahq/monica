@@ -87,6 +87,10 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $first = ! Account::hasAny();
+        if (config('monica.disable_signup') == 'true' && ! $first) {
+            abort(403, trans('auth.signup_disabled'));
+        }
+
         $account = Account::createDefault(
             $data['first_name'],
             $data['last_name'],
