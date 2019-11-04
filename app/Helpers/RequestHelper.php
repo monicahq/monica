@@ -52,9 +52,11 @@ class RequestHelper
      */
     public static function infos($ip)
     {
+        $ip = $ip ?? static::ip();
+
         if (config('location.ipstack_apikey') != null) {
             $ipstack = new Ipstack(config('location.ipstack_apikey'));
-            $position = $ipstack->get($ip ?? static::ip(), true);
+            $position = $ipstack->get($ip, true);
 
             if (! is_null($position) && Arr::get($position, 'country_code', null)) {
                 return [

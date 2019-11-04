@@ -103,6 +103,8 @@ class User extends Authenticatable implements MustVerifyEmail, HasLocalePreferen
         $user->created_at = now();
         $user->locale = $lang ?: App::getLocale();
 
+        $ipAddress = $ipAddress ?? RequestHelper::ip();
+
         $user->setDefaultCurrencyAndTimezone($ipAddress, $user->locale);
 
         $user->save();
