@@ -9,8 +9,8 @@ use App\Models\Journal\Day;
 use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
-use App\Services\User\CreateUser;
 use App\Models\Settings\Currency;
+use App\Services\User\CreateUser;
 use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 

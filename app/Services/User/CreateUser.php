@@ -72,7 +72,7 @@ class CreateUser extends BaseService
 
     /**
      * Set the regional default parameters.
-     * 
+     *
      * @param User $user
      * @param string|null $ipAddress
      * @param string|null $locale
@@ -127,8 +127,8 @@ class CreateUser extends BaseService
     }
 
     /**
-     * Associate currency with the User
-     * 
+     * Associate currency with the User.
+     *
      * @param User $user
      * @param string $currency
      * @return bool
