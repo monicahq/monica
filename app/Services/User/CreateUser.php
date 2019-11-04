@@ -75,7 +75,6 @@ class CreateUser extends BaseService
      *
      * @param User $user
      * @param string|null $ipAddress
-     * @param string|null $locale
      * @return User
      */
     private function setRegionalParameters($user, $ipAddress) : User
