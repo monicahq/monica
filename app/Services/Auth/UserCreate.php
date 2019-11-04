@@ -16,11 +16,11 @@ class UserCreate extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'last_name' => 'required|max:255',
             'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6',
-            'locale' => 'nullable|string',
+            'locale' => 'nullable',
             'ip_address' => 'nullable',
         ];
     }
