@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Helpers\RequestHelper;
 use App\Jobs\SendNewUserAlert;
-use App\Services\Auth\UserCreate;
+use App\Services\User\CreateUser;
 use App\Models\Account\Invitation;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -113,7 +113,7 @@ class InvitationController extends Controller
      */
     protected function create(array $data, $invitation)
     {
-        $user = app(UserCreate::class)->execute([
+        $user = app(CreateUser::class)->execute([
             'account_id' => $invitation->account_id,
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],

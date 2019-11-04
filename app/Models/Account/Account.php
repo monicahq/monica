@@ -22,7 +22,7 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
-use App\Services\Auth\UserCreate;
+use App\Services\User\CreateUser;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ContactField;
@@ -752,7 +752,7 @@ class Account extends Model
 
         try {
             // create the first user for this account
-            $user = app(UserCreate::class)->execute([
+            $user = app(CreateUser::class)->execute([
                 'account_id' => $account->id,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
