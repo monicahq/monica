@@ -41,7 +41,7 @@ class CreateUser extends BaseService
 
         $ipAddress = $data['ip_address'] ?? RequestHelper::ip();
 
-        $user = $this->createUser();
+        $user = $this->createUser($data);
         $user = $this->setRegionalParameters($user, $ipAddress);
         $user->save();
 
