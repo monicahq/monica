@@ -34,4 +34,9 @@ return [
     'password_reset_expiration' => 'קישור זה לאיפוס הססמה יפוג בעוד :count דקות.',
     'password_reset_bottom' => 'אם לא ביקשת לאפס את הססמה, לא נדרשות פעולות נוספות.',
 
+    'invitation_title' => 'Monica – You are invited by :name',
+    'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
+    'invitation_link' => 'To accept the invitation, click on the link below:',
+    'invitation_button' => 'Accept invitation',
+    'invitation_expiration' => 'This link will expire in :count days.',
 ];
