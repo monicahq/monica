@@ -86,6 +86,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Account\Place\CreatePlace::class => \App\Services\Account\Place\CreatePlace::class,
         \App\Services\Account\Place\DestroyPlace::class => \App\Services\Account\Place\DestroyPlace::class,
         \App\Services\Account\Place\UpdatePlace::class => \App\Services\Account\Place\UpdatePlace::class,
+        \App\Services\User\CreateUser::class => \App\Services\User\CreateUser::class,
         \App\Services\Auth\Population\PopulateContactFieldTypesTable::class => \App\Services\Auth\Population\PopulateContactFieldTypesTable::class,
         \App\Services\Auth\Population\PopulateLifeEventsTable::class => \App\Services\Auth\Population\PopulateLifeEventsTable::class,
         \App\Services\Auth\Population\PopulateModulesTable::class => \App\Services\Auth\Population\PopulateModulesTable::class,

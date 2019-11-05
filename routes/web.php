@@ -19,8 +19,8 @@ Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
 Auth::routes(['verify' => true]);
 
-Route::get('/invitations/accept/{key}', 'SettingsController@acceptInvitation');
-Route::post('/invitations/accept/{key}', 'SettingsController@storeAcceptedInvitation')->name('invitations.accept');
+Route::get('/invitations/accept/{key}', 'Auth\InvitationController@show')->name('invitations.accept');
+Route::post('/invitations/accept/{key}', 'Auth\InvitationController@store')->name('invitations.send');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/logout', 'Auth\LoginController@logout');

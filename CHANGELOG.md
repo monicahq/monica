@@ -6,6 +6,7 @@
 
 ### Enhancements:
 
+* Enhance user invitation mail
 * Add job information next to the contact name on profile page
 * Use supervisor in docker images
 * Use JawsDB by default on heroku instances
