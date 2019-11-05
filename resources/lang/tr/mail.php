@@ -34,9 +34,9 @@ return [
     'password_reset_expiration' => 'Bu parola sıfırlama linkinin geçerlilik süresi :count dakika içinde dolacaktır.',
     'password_reset_bottom' => 'Eğer parola sıfırlama talebinde bulunmadıysanız, başka bir işlem yapmanıza gerek yoktur.',
 
-    'invitation_title' => 'Monica – You are invited by :name',
-    'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
-    'invitation_link' => 'To accept the invitation, click on the link below:',
-    'invitation_button' => 'Accept invitation',
-    'invitation_expiration' => 'This link will expire in :count days.',
+    'invitation_title' => 'Monica - :name tarafından davet edildiniz',
+    'invitation_intro' => ':name (:email) tarafından güzel bir Kişisel İlişki Yönetimi aracı olan Monica\'yı kullanmaya davet edildiniz.',
+    'invitation_link' => 'Daveti kabul etmek için aşağıdaki linke tıklayın:',
+    'invitation_button' => 'Daveti kabul et',
+    'invitation_expiration' => 'Bu linkin süresi :count gün içinde dolacaktır.',
 ];
