@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Http\Controllers\Controller;
 use App\Models\Account\Photo;
 use App\Models\Contact\Document;
+use App\Http\Controllers\Controller;
 
 class StorageController extends Controller
 {

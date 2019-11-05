@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Gift;
 
 use App\Helpers\DateHelper;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Gift extends Resource
 {

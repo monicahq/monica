@@ -1,10 +1,10 @@
 <?php
 
-use App\Helpers\CountriesHelper;
 use App\Models\User\User;
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class DefaultTemperatureScale extends Migration
 {

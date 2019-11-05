@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Events;
 
+use Tests\FeatureTestCase;
 use App\Events\RecoveryLogin;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Event;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
-use Tests\FeatureTestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class Google2faEventListenerTest extends FeatureTestCase
 {
@@ -24,7 +24,7 @@ class Google2faEventListenerTest extends FeatureTestCase
         $request->session = $this->app['session'];
 
         Google2FA::setRequest($request);
-        app('pragmarx.google2fa')->stateless = false;
+        app('pragmarx.google2fa')->setStateless(false);
     }
 
     public function test_it_listen_u2f_event()

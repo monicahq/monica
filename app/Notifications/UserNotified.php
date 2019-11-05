@@ -2,19 +2,18 @@
 
 namespace App\Notifications;
 
+use App\Models\User\User;
 use App\Helpers\DateHelper;
-use App\Interfaces\MailNotification;
+use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Models\User\User;
-use Illuminate\Bus\Queueable;
+use App\Interfaces\MailNotification;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification as LaravelNotification;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\App;
 
 class UserNotified extends LaravelNotification implements ShouldQueue, MailNotification
 {
@@ -55,8 +54,6 @@ class UserNotified extends LaravelNotification implements ShouldQueue, MailNotif
      */
     public function toMail(User $user) : MailMessage
     {
-        App::setLocale($user->locale);
-
         $contact = Contact::where('account_id', $user->account_id)
             ->findOrFail($this->reminder->contact_id);
 

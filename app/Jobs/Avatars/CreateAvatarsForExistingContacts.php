@@ -2,12 +2,12 @@
 
 namespace App\Jobs\Avatars;
 
-use App\Models\Contact\Contact;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact\Contact;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
 
 /**
  * This creates all the avatars (default, adorable and gravatars) for existing
@@ -27,7 +27,7 @@ class CreateAvatarsForExistingContacts implements ShouldQueue
     /**
      * Determine the time at which this job should timeout.
      *
-     * @return \Illuminate\Support\Carbon
+     * @return \Carbon\Carbon
      */
     public function retryUntil()
     {

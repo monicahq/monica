@@ -2,8 +2,8 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Facades\DB;
 use PDO;
+use Illuminate\Support\Facades\DB;
 
 class DBHelper
 {
@@ -46,5 +46,10 @@ class DBHelper
             'table_schema' => DB::connection()->getDatabaseName(),
             'table_prefix' => '%'.DB::connection()->getTablePrefix().'%',
         ]);
+    }
+
+    public static function getTable($name)
+    {
+        return '`'.DB::connection()->getTablePrefix().$name.'`';
     }
 }

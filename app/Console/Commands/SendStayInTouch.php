@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use App\Models\Contact\Contact;
 use Illuminate\Console\Command;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 
 class SendStayInTouch extends Command
 {
@@ -31,6 +31,7 @@ class SendStayInTouch extends Command
     {
         // we add two days to make sure we cover all timezones
         Contact::where('stay_in_touch_trigger_date', '<', now()->addDays(2))
+                ->whereNotNull('stay_in_touch_frequency')
                 ->orderBy('stay_in_touch_trigger_date', 'asc')
                 ->chunk(500, function ($contacts) {
                     $this->schedule($contacts);

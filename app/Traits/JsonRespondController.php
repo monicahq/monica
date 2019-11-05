@@ -2,9 +2,9 @@
 
 namespace App\Traits;
 
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Validation\Validator;
 
 trait JsonRespondController
 {

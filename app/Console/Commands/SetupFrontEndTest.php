@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Console\Commands\Helpers\CommandExecutor;
-use App\Console\Commands\Helpers\CommandExecutorInterface;
 use App\Models\Account\Account;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use App\Console\Commands\Helpers\CommandExecutor;
+use App\Console\Commands\Helpers\CommandExecutorInterface;
 
 class SetupFrontEndTest extends Command
 {
@@ -70,7 +70,7 @@ class SetupFrontEndTest extends Command
             $this->commandExecutor->artisan('perform fresh migration', 'migrate:fresh');
         }
         $this->info('Create account');
-        $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+        $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
 
         // get first user
         $this->info('Fix first user');

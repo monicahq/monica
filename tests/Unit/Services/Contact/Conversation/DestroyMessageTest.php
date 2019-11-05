@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use App\Models\Contact\Conversation;
-use App\Models\Contact\Message;
-use App\Services\Contact\Conversation\DestroyMessage;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
+use App\Models\Contact\Message;
+use App\Models\Contact\Conversation;
+use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Conversation\DestroyMessage;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyMessageTest extends TestCase
 {

@@ -2,46 +2,47 @@
 
 namespace App\Models\Account;
 
+use App\Models\User\User;
 use App\Helpers\DateHelper;
-use App\Models\Contact\Address;
-use App\Models\Contact\Call;
-use App\Models\Contact\Contact;
-use App\Models\Contact\ContactField;
-use App\Models\Contact\ContactFieldType;
-use App\Models\Contact\Conversation;
-use App\Models\Contact\Debt;
-use App\Models\Contact\Document;
-use App\Models\Contact\Gender;
-use App\Models\Contact\Gift;
-use App\Models\Contact\LifeEvent;
-use App\Models\Contact\LifeEventCategory;
-use App\Models\Contact\LifeEventType;
-use App\Models\Contact\Message;
-use App\Models\Contact\Note;
-use App\Models\Contact\Occupation;
-use App\Models\Contact\Reminder;
-use App\Models\Contact\ReminderOutbox;
-use App\Models\Contact\ReminderRule;
 use App\Models\Contact\Tag;
-use App\Models\Contact\Task;
-use App\Models\Instance\SpecialDate;
 use App\Models\Journal\Day;
+use App\Models\User\Module;
+use Illuminate\Support\Str;
+use App\Models\Contact\Call;
+use App\Models\Contact\Debt;
+use App\Models\Contact\Gift;
+use App\Models\Contact\Note;
+use App\Models\Contact\Task;
+use App\Traits\Subscription;
 use App\Models\Journal\Entry;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Address;
+use App\Models\Contact\Contact;
+use App\Models\Contact\Message;
+use App\Models\Contact\Document;
+use App\Models\Contact\Reminder;
+use App\Models\Contact\LifeEvent;
+use App\Services\User\CreateUser;
+use App\Models\Contact\Occupation;
+use Illuminate\Support\Facades\DB;
+use App\Models\Contact\ContactField;
+use App\Models\Contact\Conversation;
+use App\Models\Contact\ReminderRule;
+use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
+use App\Models\Contact\LifeEventType;
+use App\Models\Contact\ReminderOutbox;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Contact\ContactFieldType;
+use App\Models\Contact\LifeEventCategory;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
-use App\Models\User\Module;
-use App\Models\User\User;
-use App\Services\Auth\Population\PopulateContactFieldTypesTable;
-use App\Services\Auth\Population\PopulateLifeEventsTable;
-use App\Services\Auth\Population\PopulateModulesTable;
-use App\Traits\Subscription;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Services\Auth\Population\PopulateModulesTable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Auth\Population\PopulateLifeEventsTable;
+use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class Account extends Model
 {
@@ -751,7 +752,15 @@ class Account extends Model
 
         try {
             // create the first user for this account
-            User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+            $user = app(CreateUser::class)->execute([
+                'account_id' => $account->id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'password' => $password,
+                'locale' => $lang,
+                'ip_address' => $ipAddress,
+            ]);
         } catch (\Exception $e) {
             $account->delete();
             throw $e;
@@ -794,7 +803,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeName
-     * @return RelationshipType
+     * @return RelationshipType|null
      */
     public function getRelationshipTypeByType(string $relationshipTypeName)
     {

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\Document\Document as DocumentResource;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
-use App\Services\Contact\Document\DestroyDocument;
-use App\Services\Contact\Document\UploadDocument;
+use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
-use Illuminate\Http\Request;
+use App\Services\Contact\Document\UploadDocument;
+use App\Services\Contact\Document\DestroyDocument;
+use App\Http\Resources\Document\Document as DocumentResource;
 
 class DocumentsController extends Controller
 {

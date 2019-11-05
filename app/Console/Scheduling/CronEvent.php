@@ -2,8 +2,8 @@
 
 namespace App\Console\Scheduling;
 
-use App\Models\Instance\Cron;
 use Carbon\Carbon;
+use App\Models\Instance\Cron;
 
 class CronEvent
 {
@@ -41,6 +41,7 @@ class CronEvent
      */
     public static function command(string $command) : self
     {
+        /** @var \App\Models\Instance\Cron $cron */
         $cron = Cron::firstOrCreate(['command' => $command]);
 
         return new self($cron);

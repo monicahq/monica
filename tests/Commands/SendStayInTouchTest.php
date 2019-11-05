@@ -2,14 +2,14 @@
 
 namespace Tests\Jobs;
 
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use Carbon\Carbon;
+use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Carbon\Carbon;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Bus;
-use Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class SendStayInTouchTest extends TestCase
 {
@@ -25,6 +25,7 @@ class SendStayInTouchTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
+            'stay_in_touch_frequency' => 30,
         ]);
 
         $exitCode = Artisan::call('send:stay_in_touch', []);
@@ -42,6 +43,7 @@ class SendStayInTouchTest extends TestCase
         $contact = factory(Contact::class)->create([
             'account_id' => $account->id,
             'stay_in_touch_trigger_date' => '2017-03-01 07:00:00',
+            'stay_in_touch_frequency' => 30,
         ]);
 
         $exitCode = Artisan::call('send:stay_in_touch', []);

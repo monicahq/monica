@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Interfaces\Hashing;
 use App\Traits\Hasher;
+use App\Interfaces\Hashing;
 
 abstract class ModelBindingHasherWithContact extends ModelBindingWithContact implements Hashing
 {

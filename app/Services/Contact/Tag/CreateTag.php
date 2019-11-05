@@ -2,10 +2,10 @@
 
 namespace App\Services\Contact\Tag;
 
-use App\Helpers\LocaleHelper;
 use App\Models\Contact\Tag;
-use App\Services\BaseService;
 use Illuminate\Support\Str;
+use App\Helpers\LocaleHelper;
+use App\Services\BaseService;
 
 class CreateTag extends BaseService
 {

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\Debt\Debt as DebtResource;
-use App\Models\Contact\Contact;
 use App\Models\Contact\Debt;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Contact\Contact;
 use Illuminate\Validation\Rule;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\Debt\Debt as DebtResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiDebtController extends ApiController
 {

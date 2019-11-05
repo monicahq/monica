@@ -2,11 +2,11 @@
 
 namespace App\Helpers;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Request;
-use OK\Ipstack\Client as Ipstack;
-use Stevebauman\Location\Facades\Location;
 use Vectorface\Whip\Whip;
+use Illuminate\Support\Arr;
+use OK\Ipstack\Client as Ipstack;
+use Illuminate\Support\Facades\Request;
+use Stevebauman\Location\Facades\Location;
 
 class RequestHelper
 {
@@ -47,14 +47,16 @@ class RequestHelper
     /**
      * Get client country and currency.
      *
-     * @param string $ip
+     * @param string|null $ip
      * @return array
      */
     public static function infos($ip)
     {
+        $ip = $ip ?? static::ip();
+
         if (config('location.ipstack_apikey') != null) {
             $ipstack = new Ipstack(config('location.ipstack_apikey'));
-            $position = $ipstack->get($ip ?? static::ip(), true);
+            $position = $ipstack->get($ip, true);
 
             if (! is_null($position) && Arr::get($position, 'country_code', null)) {
                 return [

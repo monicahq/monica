@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Resources\Reminder\Reminder as ReminderResource;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use App\Services\Contact\Reminder\CreateReminder;
-use App\Services\Contact\Reminder\DestroyReminder;
-use App\Services\Contact\Reminder\UpdateReminder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Reminder\CreateReminder;
+use App\Services\Contact\Reminder\UpdateReminder;
+use App\Services\Contact\Reminder\DestroyReminder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Reminder\Reminder as ReminderResource;
 
 class ApiReminderController extends ApiController
 {

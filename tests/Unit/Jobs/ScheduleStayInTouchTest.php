@@ -2,15 +2,15 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use Carbon\Carbon;
+use Tests\TestCase;
+use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\User\User;
 use App\Notifications\StayInTouchEmail;
-use Carbon\Carbon;
+use App\Jobs\StayInTouch\ScheduleStayInTouch;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Notification as NotificationFacade;
-use Tests\TestCase;
 
 class ScheduleStayInTouchTest extends TestCase
 {
@@ -86,6 +86,37 @@ class ScheduleStayInTouchTest extends TestCase
 
         $this->assertDatabaseHas('contacts', [
             'stay_in_touch_trigger_date' => '2017-01-01 07:00:00',
+        ]);
+    }
+
+    public function test_it_reschedule_missed_stayintouch()
+    {
+        NotificationFacade::fake();
+
+        Carbon::setTestNow(Carbon::create(2019, 1, 1, 7, 0, 0, 'America/New_York'));
+
+        $account = factory(Account::class)->create([
+            'default_time_reminder_is_sent' => '07:00',
+            'has_access_to_paid_version_for_free' => 0,
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+            'stay_in_touch_trigger_date' => '2018-01-01 07:00:00',
+            'stay_in_touch_frequency' => 30,
+        ]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+            'email' => 'john@doe.com',
+            'timezone' => 'America/New_York',
+        ]);
+
+        dispatch(new ScheduleStayInTouch($contact));
+
+        NotificationFacade::assertNotSentTo($user, StayInTouchEmail::class);
+        NotificationFacade::assertNothingSent();
+
+        $this->assertDatabaseHas('contacts', [
+            'stay_in_touch_trigger_date' => '2019-01-26 07:00:00',
         ]);
     }
 }

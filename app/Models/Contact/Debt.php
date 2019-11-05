@@ -3,8 +3,8 @@
 namespace App\Models\Contact;
 
 use App\Models\Account\Account;
-use App\Models\ModelBindingHasherWithContact as Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\Models\ModelBindingHasherWithContact as Model;
 
 /**
  * @property Account $account

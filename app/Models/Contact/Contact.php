@@ -2,39 +2,41 @@
 
 namespace App\Models\Contact;
 
+use Carbon\Carbon;
 use App\Helpers\DBHelper;
-use App\Helpers\LocaleHelper;
-use App\Helpers\WeatherHelper;
-use App\Http\Resources\Address\Address as AddressResource;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
-use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
-use App\Http\Resources\Tag\Tag as TagResource;
-use App\Models\Account\Account;
-use App\Models\Account\Activity;
-use App\Models\Account\ActivityStatistic;
-use App\Models\Account\Photo;
-use App\Models\Account\Weather;
-use App\Models\Instance\SpecialDate;
-use App\Models\Journal\Entry;
-use App\Models\ModelBindingHasher as Model;
-use App\Models\Relationship\Relationship;
 use App\Models\User\User;
 use App\Traits\Searchable;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Illuminate\Contracts\Filesystem\Filesystem;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Helpers\LocaleHelper;
+use App\Models\Account\Photo;
+use App\Models\Journal\Entry;
+use function Safe\preg_split;
+use App\Helpers\WeatherHelper;
+use App\Models\Account\Account;
+use App\Models\Account\Weather;
+use App\Models\Account\Activity;
 use function Safe\preg_match_all;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use App\Models\Instance\SpecialDate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Account\ActivityStatistic;
+use App\Models\Relationship\Relationship;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\ModelBindingHasher as Model;
+use App\Http\Resources\Tag\Tag as TagResource;
+use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Http\Resources\Address\Address as AddressResource;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
+use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
 
 class Contact extends Model
 {
@@ -131,6 +133,7 @@ class Contact extends Model
         'has_avatar' => 'boolean',
         'is_starred' => 'boolean',
         'is_active' => 'boolean',
+        'stay_in_touch_frequency' => 'integer',
     ];
 
     /**
@@ -462,14 +465,14 @@ class Contact extends Model
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
                 $builder->orderBy('activities.date_it_happened', 'desc');
-                $builder->select('*', 'contacts.id as id');
+                $builder->select(['*', 'contacts.id as id']);
 
                 return $builder;
             case 'lastactivitydateOldtoNew':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
                 $builder->orderBy('activities.date_it_happened', 'asc');
-                $builder->select('*', 'contacts.id as id');
+                $builder->select(['*', 'contacts.id as id']);
 
                 return $builder;
             default:
@@ -967,8 +970,18 @@ class Contact extends Model
      */
     public function getAvatarDefaultURL()
     {
+        if (empty($this->avatar_default_url)) {
+            return '';
+        }
+
         try {
-            return asset(Storage::disk(config('filesystems.default'))->url($this->avatar_default_url));
+            $matches = preg_split('/\?/', $this->avatar_default_url);
+            $url = asset(Storage::disk(config('filesystems.default'))->url($matches[0]));
+            if (count($matches) > 1) {
+                $url .= '?'.$matches[1];
+            }
+
+            return $url;
         } catch (\Exception $e) {
             return '';
         }
@@ -1141,6 +1154,7 @@ class Contact extends Model
         }
 
         try {
+            /** @var Contact $contact */
             $contact = self::where('account_id', $this->account_id)
                 ->findOrFail($this->first_met_through_contact_id);
         } catch (ModelNotFoundException $e) {
@@ -1385,8 +1399,9 @@ class Contact extends Model
      * Update the date the notification about staying in touch should be sent.
      *
      * @param int $frequency
+     * @param Carbon|null $triggerDate
      */
-    public function setStayInTouchTriggerDate($frequency)
+    public function setStayInTouchTriggerDate($frequency, $triggerDate = null)
     {
         // prevent timestamp update
         $timestamps = $this->timestamps;
@@ -1395,8 +1410,8 @@ class Contact extends Model
         if ($frequency == 0) {
             $this->stay_in_touch_trigger_date = null;
         } else {
-            $now = now();
-            $newTriggerDate = $now->addDays($frequency);
+            $triggerDate = $triggerDate ?? now();
+            $newTriggerDate = $triggerDate->addDays($frequency);
             $this->stay_in_touch_trigger_date = $newTriggerDate;
         }
 

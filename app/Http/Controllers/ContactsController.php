@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DBHelper;
 use App\Helpers\DateHelper;
-use App\Helpers\GendersHelper;
+use App\Models\Contact\Tag;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
-use App\Http\Resources\Contact\ContactSearch as ContactResource;
+use App\Helpers\GendersHelper;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Tag;
-use App\Models\Relationship\Relationship;
-use App\Services\Contact\Contact\CreateContact;
-use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateContact;
 use App\Services\VCard\ExportVCard;
-use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Relationship\Relationship;
+use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Contact\CreateContact;
+use App\Services\Contact\Contact\UpdateContact;
+use App\Services\Contact\Contact\DestroyContact;
+use App\Http\Resources\Contact\ContactSearch as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -510,7 +511,7 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
+        $results = SearchHelper::searchContacts($needle, 20, DBHelper::getTable('contacts').'.`created_at`');
 
         if (count($results) !== 0) {
             return ContactResource::collection($results);
@@ -671,7 +672,7 @@ class ContactsController extends Controller
         $perPage = $request->has('perPage') ? $request->get('perPage') : config('monica.number_of_contacts_pagination');
 
         // search contacts
-        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, 'is_starred desc', null, $sort);
+        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, DBHelper::getTable('contacts').'.`is_starred` desc', null, $sort);
 
         return [
             'totalRecords' => $contacts->total(),

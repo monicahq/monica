@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Contacts;
 
-use App\Http\Controllers\Controller;
-use App\Models\Contact\Contact;
-use App\Services\Account\Photo\UploadPhoto;
-use App\Services\Contact\Avatar\UpdateAvatar;
 use Illuminate\Http\Request;
+use App\Models\Contact\Contact;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Account\Photo\UploadPhoto;
+use App\Services\Contact\Avatar\UpdateAvatar;
 
 class AvatarController extends Controller
 {

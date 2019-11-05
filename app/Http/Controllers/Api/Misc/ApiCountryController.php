@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\Misc;
 
-use App\Helpers\CountriesHelper;
-use App\Http\Controllers\Api\ApiController;
-use App\Http\Resources\Country\Country as CountryResource;
 use Illuminate\Http\Request;
+use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Api\ApiController;
+use App\Http\Resources\Country\Country as CountryResource;
 
 class ApiCountryController extends ApiController
 {

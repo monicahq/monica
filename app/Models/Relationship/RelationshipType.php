@@ -2,9 +2,9 @@
 
 namespace App\Models\Relationship;
 
+use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Gender;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -51,7 +51,7 @@ class RelationshipType extends Model
     /**
      * Get the reverser relationship type of this one.
      *
-     * @return self
+     * @return self|null
      */
     public function reverseRelationshipType()
     {

@@ -4,8 +4,8 @@ namespace App\Services\Account\Place;
 
 use App\Models\Account\Place;
 use App\Services\BaseService;
-use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 use GuzzleHttp\Client as GuzzleClient;
+use App\Services\Instance\Geolocalization\GetGPSCoordinate;
 
 class UpdatePlace extends BaseService
 {

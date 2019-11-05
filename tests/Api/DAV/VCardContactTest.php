@@ -2,14 +2,14 @@
 
 namespace Tests\Api\DAV;
 
+use Tests\ApiTestCase;
+use Illuminate\Support\Str;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 use Sabre\VObject\PHPUnitAssertions;
-use Tests\ApiTestCase;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VCardContactTest extends ApiTestCase
 {

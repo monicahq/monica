@@ -2,8 +2,8 @@
 
 namespace Tests\Api;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\ApiTestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiMiscTest extends ApiTestCase
 {

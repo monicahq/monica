@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Services\Account\Activity\ActivityTypeCategory;
 
+use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Account\ActivityTypeCategory;
-use App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Validation\ValidationException;
-use Tests\TestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory;
 
 class DestroyActivityTypeCategoryTest extends TestCase
 {

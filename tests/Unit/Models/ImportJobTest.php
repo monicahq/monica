@@ -2,17 +2,17 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Account\Account;
-use App\Models\Account\ImportJob;
-use App\Models\Account\ImportJobReport;
-use App\Models\Contact\Contact;
-use App\Models\Contact\ContactField;
-use App\Models\Contact\ContactFieldType;
-use App\Models\User\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Storage;
-use Sabre\VObject\Component\VCard;
 use Tests\TestCase;
+use App\Models\User\User;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
+use App\Models\Account\ImportJob;
+use Sabre\VObject\Component\VCard;
+use App\Models\Contact\ContactField;
+use App\Models\Account\ImportJobReport;
+use Illuminate\Support\Facades\Storage;
+use App\Models\Contact\ContactFieldType;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ImportJobTest extends TestCase
 {

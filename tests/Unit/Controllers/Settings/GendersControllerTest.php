@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit\Controllers\Contact;
+namespace Tests\Unit\Controllers\Settings;
 
-use App\Models\Contact\Contact;
-use App\Models\Contact\Gender;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\FeatureTestCase;
+use App\Models\Contact\Gender;
+use App\Models\Contact\Contact;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GendersControllerTest extends FeatureTestCase
 {

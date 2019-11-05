@@ -3,6 +3,7 @@ includes:
     - ./vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon
 
 parameters:
+    inferPrivatePropertyTypeFromConstructor: true
     level: 5
     ignoreErrors:
         # Level 1
@@ -38,3 +39,4 @@ parameters:
         - */app/Helpers/ComposerScripts.php
         - */app/Http/Controllers/DAV/Backend/CardDAV/AddressBookHome.php
         - */app/Providers/BroadcastServiceProvider.php
+        - */app/Services/Account/Settings/ExportAccount.php

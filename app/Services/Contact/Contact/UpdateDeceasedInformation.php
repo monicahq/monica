@@ -2,9 +2,9 @@
 
 namespace App\Services\Contact\Contact;
 
+use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Instance\SpecialDate;
-use App\Services\BaseService;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 

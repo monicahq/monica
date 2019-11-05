@@ -2,9 +2,9 @@
 
 namespace Tests\Api\Settings;
 
+use Tests\ApiTestCase;
 use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Tests\ApiTestCase;
 
 class ApiCurrencyControllerTest extends ApiTestCase
 {
@@ -31,7 +31,7 @@ class ApiCurrencyControllerTest extends ApiTestCase
         );
 
         $response->assertJsonFragment([
-            'total' => 157,
+            'total' => 153,
             'current_page' => 1,
         ]);
 

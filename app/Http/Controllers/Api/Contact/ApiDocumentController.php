@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Contact;
 
-use App\Http\Controllers\Api\ApiController;
-use App\Http\Resources\Document\Document as DocumentResource;
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Document;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ApiController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\Document\Document as DocumentResource;
 
 class ApiDocumentController extends ApiController
 {

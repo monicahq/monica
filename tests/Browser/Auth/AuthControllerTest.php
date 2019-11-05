@@ -2,12 +2,12 @@
 
 namespace Tests\Browser\Auth;
 
-use App\Models\User\User;
 use GuzzleHttp\Client;
-use Illuminate\Foundation\Testing\TestResponse;
-use Laravel\Passport\ClientRepository;
-use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 use Tests\ApiTestCase;
+use App\Models\User\User;
+use Laravel\Passport\ClientRepository;
+use Illuminate\Foundation\Testing\TestResponse;
+use Symfony\Bridge\PsrHttpMessage\Factory\HttpFoundationFactory;
 
 class AuthControllerTest extends ApiTestCase
 {
@@ -88,7 +88,7 @@ class AuthControllerTest extends ApiTestCase
         $userPassword = 'password';
         $user = factory(User::class)->create([
             'password' => bcrypt($userPassword),
-            'google2fa_secret' => 'x',
+            'google2fa_secret' => 'UFKZDTYO64WDEZPPQEO4HF3PC5UUTFLE',
         ]);
 
         $response = $this->postClient(self::OAUTH_LOGIN_URL, [

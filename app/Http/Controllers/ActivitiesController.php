@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\People\ActivitiesRequest;
-use App\Models\Account\Activity;
 use App\Models\Contact\Contact;
+use App\Models\Account\Activity;
 use App\Models\Journal\JournalEntry;
+use App\Http\Requests\People\ActivitiesRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ActivitiesController extends Controller
@@ -157,6 +157,11 @@ class ActivitiesController extends Controller
         foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->attach($activity, ['account_id' => $account->id]);
         }
+
+        // Update the journal entry (in case date has changed)
+        $activity->journalEntry->update([
+            'date' => $activity->date_it_happened,
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));

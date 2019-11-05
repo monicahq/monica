@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Jobs;
 
-use App\Jobs\Avatars\CreateAvatarsForExistingContacts;
+use Tests\TestCase;
+use App\Models\Contact\Contact;
+use Illuminate\Support\Facades\Queue;
 use App\Jobs\Avatars\GenerateDefaultAvatar;
 use App\Jobs\Avatars\GetAvatarsFromInternet;
-use App\Models\Contact\Contact;
+use App\Jobs\Avatars\CreateAvatarsForExistingContacts;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Queue;
-use Tests\TestCase;
 
 class CreateAvatarsForExistingContactsTest extends TestCase
 {

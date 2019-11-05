@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User\User;
-use App\Traits\JsonRespondController;
-use Barryvdh\Debugbar\Facade as Debugbar;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Validator;
 use function Safe\json_decode;
+use Illuminate\Support\Facades\App;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\JsonRespondController;
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\Route;
+use Barryvdh\Debugbar\Facade as Debugbar;
+use Illuminate\Support\Facades\Validator;
 
 class OAuthController extends Controller
 {
@@ -63,6 +63,8 @@ class OAuthController extends Controller
             $request->session()->put('oauth', true);
             $request->session()->put('email', $email);
             $request->session()->put('password', encrypt($password));
+
+            $request->setMethod('GET');
 
             return Route::respondWithRoute('oauth.verify');
         }

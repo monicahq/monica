@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use App\Helpers\DBHelper;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Migrations\Migration;
 
 class FixJsonColumn extends Migration
 {
@@ -25,10 +26,9 @@ class FixJsonColumn extends Migration
             ' and table_name in (?, ?, ?)',
             [$databasename, 'json', 'default_life_event_types', 'life_event_types', 'life_events']
         );
-        $tablePrefix = DB::connection()->getTablePrefix();
 
         foreach ($columns as $column) {
-            DB::statement('ALTER TABLE `'.$databasename.'`.`'.$tablePrefix.$column->table_name.'` MODIFY `'.$column->column_name.'` text;');
+            DB::statement('ALTER TABLE `'.$databasename.'`.'.DBHelper::getTable($column->table_name).' MODIFY `'.$column->column_name.'` text;');
         }
     }
 }

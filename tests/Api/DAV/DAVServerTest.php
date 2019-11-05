@@ -2,8 +2,8 @@
 
 namespace Tests\Api\DAV;
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\ApiTestCase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DAVServerTest extends ApiTestCase
 {

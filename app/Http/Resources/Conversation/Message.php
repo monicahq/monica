@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Conversation;
 
 use App\Helpers\DateHelper;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Message extends Resource
 {

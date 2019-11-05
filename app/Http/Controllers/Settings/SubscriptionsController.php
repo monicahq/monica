@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Settings;
 
-use App\Exceptions\StripeException;
 use App\Helpers\DateHelper;
-use App\Helpers\InstanceHelper;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
 use Laravel\Cashier\Cashier;
-use Laravel\Cashier\Exceptions\IncompletePayment;
 use Laravel\Cashier\Payment;
+use App\Helpers\InstanceHelper;
+use App\Exceptions\StripeException;
+use Illuminate\Support\Facades\App;
+use App\Http\Controllers\Controller;
 use Stripe\PaymentIntent as StripePaymentIntent;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionsController extends Controller
 {
