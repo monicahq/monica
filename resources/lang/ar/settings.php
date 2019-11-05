@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'تنزيل',
     'subscriptions_account_invoices_subscription' => 'Subscription from :startDate to :endDate',
     'subscriptions_account_payment' => 'أي خيار للدفع يناسبك أكثر؟',
-    'subscriptions_account_confirm_payment' => 'You payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'قم بخفض مرتبة حسابك للخطة المجانية',
     'subscriptions_downgrade_limitations' => 'خطتك المجانية فيها قيود. لتمكين خفض المرتبة، يجب أن تجتاز القائمة أدناه:',
     'subscriptions_downgrade_rule_users' => 'يجب أن يكون لديك مستخدم 1 فقط في حسابك',

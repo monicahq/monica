@@ -24,11 +24,11 @@ return [
     'people_list_hide_dead' => 'Verberg overleden personen (:count)',
     'people_search' => 'Zoek in je contacten...',
     'people_search_no_results' => 'Geen resultaten gevonden',
-    'people_search_next' => 'Next',
-    'people_search_prev' => 'Prev',
-    'people_search_rows_per_page' => 'Rows per page:',
-    'people_search_of' => 'of',
-    'people_search_page' => 'Page',
+    'people_search_next' => 'Volgende',
+    'people_search_prev' => 'Vorige',
+    'people_search_rows_per_page' => 'Rijen per pagina:',
+    'people_search_of' => 'van',
+    'people_search_page' => 'Pagina',
     'people_search_all' => 'All',
     'people_add_new' => 'Voeg nieuw persoon toe',
     'people_list_account_usage' => 'Je huidige gebruik: :current/:limit contacten',
@@ -70,7 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'Lijst van gearchiveerde contacten',
 
     // Header
-    'me' => 'This is you',
+    'me' => 'Dit ben jij',
     'edit_contact_information' => 'Bewerk contactinformatie',
     'contact_archive' => 'Archiveer contact',
     'contact_unarchive' => 'Dearchiveer contact',
@@ -120,9 +120,9 @@ return [
     'conversation_add_content' => 'Schrijf hier wat er is gezegd',
     'conversation_add_what_was_said' => 'Wat was de gespreksinhoud?',
     'conversation_add_another' => 'Nog een bericht toevoegen',
-    'conversation_add_error' => 'You must add at least one message.',
+    'conversation_add_error' => 'Je moet tenminste één bericht toevoegen.',
     'conversation_list_table_messages' => 'Berichten',
-    'conversation_list_table_content' => 'Gedeeltelijke inhoud(laatste bericht)',
+    'conversation_list_table_content' => 'Gedeeltelijke inhoud (laatste bericht)',
     'conversation_list_title' => 'Gesprekken',
     'conversation_list_cta' => 'Gesprek toevoegen',
 
@@ -142,7 +142,7 @@ return [
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
     'information_edit_max_size' => 'Maximaal :size Kb.',
-    'information_edit_max_size2' => 'Max {size} Kb.',
+    'information_edit_max_size2' => 'Maximaal {size} Kb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
     'information_edit_description' => 'Beschrijving (optioneel)',
@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'De relatie is verwijdert.',
 
     // tasks
+    'tasks_title' => 'Taken',
     'tasks_blank_title' => 'Je hebt nog geen taken.',
     'tasks_form_title' => 'Titel',
     'tasks_form_description' => 'Beschrijving (optioneel)',
@@ -465,22 +466,23 @@ return [
     'document_upload_zone_error' => 'Er is een fout opgetreden tijdens uploaden van het document, probeer het a.u.b. opnieuw.',
 
     // Photos
+    'photo_title' => 'Foto\'s',
     'photo_list_title' => 'Gerelateerde foto\'s',
     'photo_list_cta' => 'Foto uploaden',
     'photo_list_blank_desc' => 'Je kan afbeeldingen van dit contact opslaan. Upload er nu eentje!',
     'photo_upload_zone_cta' => 'Upload een foto',
-    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_current_profile_pic' => 'Huidige profielfoto',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Foto verwijderen',
 
     // Avatars
     'avatar_change_title' => 'Change your avatar',
-    'avatar_question' => 'Which avatar would you like to use?',
-    'avatar_default_avatar' => 'The default avatar',
-    'avatar_adorable_avatar' => 'The Adorable avatar',
-    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
-    'avatar_current' => 'Keep the current avatar',
-    'avatar_photo' => 'From a photo that you upload',
+    'avatar_question' => 'Welke avatar wil je gebruiken?',
+    'avatar_default_avatar' => 'De standaard-avatar',
+    'avatar_adorable_avatar' => 'De Schattige avatar',
+    'avatar_gravatar' => 'The Gravatar dat geassocieerd is met dit contact. <a href="https://gravatar.com/">Gravatar</a> is een wereldwijd systeem dat gebruikers hun emailadres laat associëren met hun foto\'s.',
+    'avatar_current' => 'Huidige avatar houden',
+    'avatar_photo' => 'Van een foto die je upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',

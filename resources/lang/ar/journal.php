@@ -6,6 +6,7 @@ return [
     'journal_description' => 'ملاحظة: الملاحظة تُسجل كِلا التدوينات اليدوية، و التدوينات الفورية مثل الأنشطة التي فعلتَها مع أصدقائك. بينما يمكنك حذف تدوينات المذكرة يدوياً، لا يمكنك حذف الأنشطة إلا بحذفها مباشرة من صفحة أصدقائك.',
     'journal_add' => 'أضف تدويناً للمذكرة',
     'journal_edit' => 'Edit a journal entry',
+    'journal_empty' => 'Empty journal',
     'journal_created_automatically' => 'تم إنشائه تلقائياً',
     'journal_entry_type_journal' => 'تدوين المذكرة',
     'journal_entry_type_activity' => 'نشاط',
