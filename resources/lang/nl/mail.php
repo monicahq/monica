@@ -34,9 +34,9 @@ return [
     'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
     'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
 
-    'invitation_title' => 'Monica – You are invited by :name',
-    'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
-    'invitation_link' => 'To accept the invitation, click on the link below:',
-    'invitation_button' => 'Accept invitation',
-    'invitation_expiration' => 'This link will expire in :count days.',
+    'invitation_title' => 'Monica – Je bent uitgenodigd door :name',
+    'invitation_intro' => 'Je bent door :name (:email) uitgenodigd voor Monica, een handige Personal Relationship Management webapp.',
+    'invitation_link' => 'Klik op de onderstaande link om de uitnodiging te accepteren:',
+    'invitation_button' => 'Uitnodiging accepteren',
+    'invitation_expiration' => 'Deze link verloopt over :count dagen.',
 ];
