@@ -25,7 +25,7 @@ variables:
 stages:
 - stage: build
   displayName: 'Build'
-  condition: ne(variables['Build.SourceBranchName'], '2019-11-05-update-i18n')
+  condition: ne(variables['System.PullRequest.SourceBranch'], '2019-11-05-update-i18n')
   jobs:
   - template: .azure/build-job.yml
 
