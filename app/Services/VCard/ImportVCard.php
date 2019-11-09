@@ -635,7 +635,7 @@ class ImportVCard extends BaseService
 
                 $photo = app(UploadPhoto::class)->execute($array);
 
-                if (!$photo) {
+                if (! $photo) {
                     return;
                 }
 

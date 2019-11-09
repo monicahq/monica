@@ -56,7 +56,7 @@ class UploadPhoto extends BaseService
             $array = $this->importFile($data);
         }
 
-        if (!$array) {
+        if (! $array) {
             return;
         }
 
