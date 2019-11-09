@@ -45,7 +45,7 @@ return [
     'people_add_lastname' => 'Achternaam (optioneel)',
     'people_add_nickname' => 'Bijnaam (optioneel)',
     'people_add_cta' => 'Toevoegen',
-    'people_save_and_add_another_cta' => 'Bewaar en voeg nog iemand toe',
+    'people_save_and_add_another_cta' => 'Opslaan en nog iemand toevoegen',
     'people_add_success' => ':name is succesvol toegevoegd',
     'people_add_gender' => 'Geslacht',
     'people_delete_success' => 'De contactpersoon is verwijderd',
@@ -165,7 +165,7 @@ return [
     'food_preferences_edit_description' => 'Misschien heeft :firstname of iemand in de :familiy\'s familie een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
     'food_preferences_edit_description_no_last_name' => 'Misschien heeft :firstname een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
     'food_preferences_edit_title' => 'Voedselvoorkeuren',
-    'food_preferences_edit_cta' => 'Bewaar voedselvoorkeuren',
+    'food_preferences_edit_cta' => 'Voedselvoorkeuren opslaan',
     'food_preferences_title' => 'Voedselvoorkeuren',
     'food_preferences_cta' => 'Voeg voedsel voorkeur toe',
 
@@ -472,7 +472,7 @@ return [
     'photo_list_blank_desc' => 'Je kan afbeeldingen van dit contact opslaan. Upload er nu eentje!',
     'photo_upload_zone_cta' => 'Upload een foto',
     'photo_current_profile_pic' => 'Huidige profielfoto',
-    'photo_make_profile_pic' => 'Make profile picture',
+    'photo_make_profile_pic' => 'Stel in als profielfoto',
     'photo_delete' => 'Foto verwijderen',
 
     // Avatars
