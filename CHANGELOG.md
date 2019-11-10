@@ -6,13 +6,19 @@
 
 ### Enhancements:
 
-* Upgrade to Laravel 6.4
+* Upgrade to Laravel 6.5
+* Enhance user invitation mail
+* Add job information next to the contact name on profile page
 * Use supervisor in docker images
 * Use JawsDB by default on heroku instances
 * Add pluralization forms for non-english-like-plural languages, for vue.js translations
 
 ### Fixes:
 
+* Ensure disable_signup is checked on form register validation
+* Fix password resetting page
+* Fix email verification sending on test environments 
+* Fix contact export
 * Fix currencies seeder by accounting for defaults
 * Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore

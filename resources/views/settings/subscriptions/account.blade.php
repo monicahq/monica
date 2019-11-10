@@ -48,7 +48,7 @@
                   Force payment success (test).
                 </a>
               </p>
-              @endif          
+              @endif
             @else
 
             <p>{!! trans('settings.subscriptions_account_next_billing', ['date' => $nextBillingDate]) !!}</p>

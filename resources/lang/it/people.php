@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relazione è stata eliminata.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Nulla da fare.',
     'tasks_form_title' => 'Titolo',
     'tasks_form_description' => 'Descrizione (facoltativa)',
@@ -398,7 +399,7 @@ return [
     'life_event_list_tab_life_events' => 'Eventi della vita',
     'life_event_list_tab_other' => 'Note, promemoria, ...',
     'life_event_list_title' => 'Eventi della vita',
-    'life_event_blank' => 'Memorizza gli eventi importanti della vita di {name} per riferimento futuro',
+    'life_event_blank' => 'Memorizza gli eventi importanti della vita di {name} per riferimento futuro.',
     'life_event_list_cta' => 'Aggiungi evento',
     'life_event_create_category' => 'Tutte le categorie',
     'life_event_create_life_event' => 'Aggiungi evento',
@@ -410,7 +411,7 @@ return [
     'life_event_create_success' => 'Evento aggiunto',
     'life_event_delete_title' => 'Elimina un evento',
     'life_event_delete_description' => 'Sei sicuro di eliminare questo evento? Non si può annullare.',
-    'life_event_delete_success' => 'Evento eliminato con successo.',
+    'life_event_delete_success' => 'Evento eliminato con successo',
     'life_event_date_it_happened' => 'Data di avvenimento',
     'life_event_sentence_new_job' => 'Inizio di un nuovo lavoro',
     'life_event_sentence_retirement' => 'Pensionamento',
@@ -443,7 +444,7 @@ return [
     'life_event_sentence_broken_bone' => 'Rotto un osso',
     'life_event_sentence_removed_braces' => 'Levato l\'apparecchio',
     'life_event_sentence_surgery' => 'Subito un intervento',
-    'life_event_sentence_dentist' => 'Andato dal denstista',
+    'life_event_sentence_dentist' => 'Andato dal dentista',
     'life_event_sentence_new_sport' => 'Iniziato uno sport',
     'life_event_sentence_new_hobby' => 'Iniziato un hobby',
     'life_event_sentence_new_instrument' => 'Imparato un nuovo strumento',
@@ -459,12 +460,13 @@ return [
     // documents
     'document_list_title' => 'Documenti',
     'document_list_cta' => 'Carica documento',
-    'document_list_blank_desc' => 'Qui puoi salvre documenti relativi a questa persona.',
+    'document_list_blank_desc' => 'Qui puoi archiviare documenti relativi a questa persona.',
     'document_upload_zone_cta' => 'Carica un file',
     'document_upload_zone_progress' => 'Caricamento in corso...',
     'document_upload_zone_error' => 'Si è verificato un errore. Per favore, riprova a caricare il documento.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Foto',
     'photo_list_cta' => 'Carica foto',
     'photo_list_blank_desc' => 'Qui puoi salvare foto relative a questa persona, caricane una adesso!',
@@ -483,5 +485,5 @@ return [
     'avatar_photo' => 'Da una foto che carichi',
 
     // emotions
-    'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire.',
+    'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire…',
 ];

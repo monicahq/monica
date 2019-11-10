@@ -6,6 +6,7 @@ return [
     'journal_description' => 'Hinweis: Das Journal zeigt sowohl manuelle Einträge, als auch Aktivitäten mit deinen Kontakten an. Manuelle Einträge kannst du hier löschen, Aktivitäten kannst du auf der jeweiligen Profilseite der beteiligten Person editieren oder löschen.',
     'journal_add' => 'Tagebucheintrag hinzufügen',
     'journal_edit' => 'Edit a journal entry',
+    'journal_empty' => 'Empty journal',
     'journal_created_automatically' => 'Autmatisch hinzugefügt',
     'journal_entry_type_journal' => 'Tagebucheintrag',
     'journal_entry_type_activity' => 'Aktivität',

@@ -25,6 +25,7 @@ variables:
 stages:
 - stage: build
   displayName: 'Build'
+  condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
   jobs:
   - template: .azure/build-job.yml
 

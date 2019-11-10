@@ -119,6 +119,19 @@ return [
     'password_timeout' => 10800,
 
     /*
+    | Invitation Email
+    |--------------------------------------------------------------------------
+    |
+    | Parameters for the invitation email send, requested by a user.
+    | Expire is in days.
+    |
+    */
+
+    'invitation' => [
+        'expire' => 2,
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | Recovery codes generation
     |--------------------------------------------------------------------------

@@ -6,6 +6,7 @@ return [
     'journal_description' => 'Nota: el diario lista las entradas del diario y las automáticas como Actividades con tus contactos. Aunque puedes borrar las entradas del diario manualmente, la actividad tendrás que borrarla directamente en la página del contacto.',
     'journal_add' => 'Agregar una entrada de diario',
     'journal_edit' => 'Edit a journal entry',
+    'journal_empty' => 'Empty journal',
     'journal_created_automatically' => 'Creada autmáticamente',
     'journal_entry_type_journal' => 'Entrada de diario',
     'journal_entry_type_activity' => 'Actividad',

@@ -6,7 +6,6 @@ use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
-use Illuminate\Support\Facades\App;
 use App\Interfaces\MailNotification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -52,8 +51,6 @@ class UserReminded extends LaravelNotification implements ShouldQueue, MailNotif
      */
     public function toMail(User $user) : MailMessage
     {
-        App::setLocale($user->locale);
-
         $contact = Contact::where('account_id', $user->account_id)
             ->findOrFail($this->reminder->contact_id);
 
