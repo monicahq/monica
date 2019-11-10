@@ -32,6 +32,7 @@ stages:
   - template: .azure/job-analyzers.yml
   - template: .azure/job-test-browser.yml
   - template: .azure/job-reporting.yml
+  - template: .azure/job-test-migrations.yml
 
 - stage: deploy
   displayName: 'Deploy'
@@ -42,8 +43,8 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - bash: make assets
-    - bash: make push_bintray_assets
+    - script: make assets
+    - script: make push_bintray_assets
       env:
         BINTRAY_USER: $(BINTRAY_USER)
         BINTRAY_APIKEY: $(BINTRAY_APIKEY)
@@ -56,8 +57,8 @@ stages:
     - template: .azure/step-composer-install.yml
       parameters:
         no_dev: 'true'
-    - bash: make dist
-    - bash: make push_bintray_dist
+    - script: make dist
+    - script: make push_bintray_dist
       env:
         BINTRAY_USER: $(BINTRAY_USER)
         BINTRAY_APIKEY: $(BINTRAY_APIKEY)
@@ -79,14 +80,4 @@ stages:
     - template: .azure/step-prepare-environment.yml
     - template: .azure/step-docker-build.yml
     - template: .azure/step-docker-push-bintray.yml
-    - bash: |
-        echo $DOCKER_LOGIN | docker login -u $DOCKER_USER --password-stdin
-        make docker_tag
-        make docker_push
-        # notify microbadger to update
-        # https://microbadger.com/images/monicahq/monicahq
-        curl -X POST $MICROBADGER_WEBHOOK
-      displayName: 'Publish docker image'
-      env:
-        MICROBADGER_WEBHOOK: $(MICROBADGER_WEBHOOK)
-        DOCKER_LOGIN: $(DOCKER_LOGIN)
+    - template: .azure/step-docker-push.yml
