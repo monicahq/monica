@@ -13,6 +13,7 @@ use function Safe\base64_decode;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Exception\NotReadableException;
 
 class UploadPhoto extends BaseService
 {
@@ -44,7 +45,7 @@ class UploadPhoto extends BaseService
      * @param array $data
      * @return Photo
      */
-    public function execute(array $data) : Photo
+    public function execute(array $data)
     {
         $this->validate($data);
 
@@ -53,6 +54,10 @@ class UploadPhoto extends BaseService
             $array = $this->importPhoto($data);
         } else {
             $array = $this->importFile($data);
+        }
+
+        if (! $array) {
+            return;
         }
 
         return Photo::create($array);
@@ -82,11 +87,16 @@ class UploadPhoto extends BaseService
      *
      * @return array
      */
-    private function importFile(array $data) : array
+    private function importFile(array $data)
     {
         $filename = Str::random(40);
 
-        $image = Image::make($data['data']);
+        try {
+            $image = Image::make($data['data']);
+        } catch (NotReadableException $e) {
+            return;
+        }
+
         $tempfile = $this->storeImage('local', $image, 'temp/'.$filename);
 
         try {

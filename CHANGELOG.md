@@ -14,9 +14,10 @@
 
 ### Fixes:
 
+* Fix CSV uploads with weird photo files
 * Ensure disable_signup is checked on form register validation
 * Fix password resetting page
-* Fix email verification sending on test environments 
+* Fix email verification sending on test environments
 * Fix contact export
 * Fix currencies seeder by accounting for defaults
 * Fix search when prefix table is used

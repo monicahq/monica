@@ -111,7 +111,7 @@ class FakeContentTableSeeder extends Seeder
 
         // create the second test, blank account
         if (! User::where('email', 'blank@blank.com')->exists()) {
-            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank0');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
         }
