@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "be7840f3e3aa8b0eb161b08ddccad822",
+    "content-hash": "7b480377f3744dfa0b7d738cdeeb0785",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -11608,30 +11608,30 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v0.3.21",
+            "version": "v0.3.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "4dca6af24373eb83aa7fcc1018495ef2680838c2"
+                "reference": "a123a601a7796aa6f7793e87feb91a8affc95a80"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/4dca6af24373eb83aa7fcc1018495ef2680838c2",
-                "reference": "4dca6af24373eb83aa7fcc1018495ef2680838c2",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/a123a601a7796aa6f7793e87feb91a8affc95a80",
+                "reference": "a123a601a7796aa6f7793e87feb91a8affc95a80",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "5.6.*|5.7.*|5.8.*|^6.0",
-                "illuminate/container": "5.6.*|5.7.*|5.8.*|^6.0",
-                "illuminate/contracts": "5.6.*|5.7.*|5.8.*|^6.0",
-                "illuminate/database": "5.6.*|5.7.*|5.8.*|^6.0",
-                "illuminate/http": "5.6.*|5.7.*|5.8.*|^6.0",
-                "illuminate/pipeline": "5.6.*|5.7.*|5.8.*|^6.0",
-                "illuminate/support": "5.6.*|5.7.*|5.8.*|^6.0",
+                "illuminate/console": "5.6.*|5.7.*|5.8.*",
+                "illuminate/container": "5.6.*|5.7.*|5.8.*",
+                "illuminate/contracts": "5.6.*|5.7.*|5.8.*",
+                "illuminate/database": "5.6.*|5.7.*|5.8.*",
+                "illuminate/http": "5.6.*|5.7.*|5.8.*",
+                "illuminate/pipeline": "5.6.*|5.7.*|5.8.*",
+                "illuminate/support": "5.6.*|5.7.*|5.8.*",
                 "mockery/mockery": "^1.0|0.9.*",
                 "orchestra/testbench": "^3.6",
                 "php": "^7.1.3",
-                "phpstan/phpstan": "^0.11.15",
+                "phpstan/phpstan": "^0.11.8",
                 "symfony/process": "^4.2"
             },
             "require-dev": {
@@ -11671,7 +11671,7 @@
                 "php",
                 "static analysis"
             ],
-            "time": "2019-08-18T21:52:50+00:00"
+            "time": "2019-05-29T12:53:31+00:00"
         },
         {
             "name": "openlss/lib-array2xml",
