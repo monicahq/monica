@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'הקשר נמחק.',
 
     // tasks
+    'tasks_title' => 'משימות',
     'tasks_blank_title' => 'אין לך משימות עדיין.',
     'tasks_form_title' => 'כותרת',
     'tasks_form_description' => 'תיאור (רשות)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
 
     // Photos
+    'photo_title' => 'תמונות',
     'photo_list_title' => 'תמונות קשורות',
     'photo_list_cta' => 'העלאת תמונה',
     'photo_list_blank_desc' => 'ניתן לאחסן תמונות של איש הקשר הזה. אפילו ממש ברגע זה!',

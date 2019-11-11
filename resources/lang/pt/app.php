@@ -129,8 +129,8 @@ return [
     'relationship_type_group_work' => 'Relações laborais',
     'relationship_type_group_other' => 'Other kind of relationships',
 
-    'relationship_type_partner' => 'companheiro(a)',
-    'relationship_type_partner_female' => 'companheiro(a)',
+    'relationship_type_partner' => 'companheiro',
+    'relationship_type_partner_female' => 'companheira',
     'relationship_type_partner_with_name' => ':name’s significant other',
     'relationship_type_partner_female_with_name' => ':name’s significant other',
 

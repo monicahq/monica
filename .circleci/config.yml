@@ -36,7 +36,7 @@ aliases:
       name: Prepare environment
       command: |
         mkdir -p results/coverage
-        cp scripts/tests/.env.mysql .env
+        cp scripts/ci/.env.mysql .env
         touch .sentry-release
   - &yarn-install
     run:

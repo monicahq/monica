@@ -47,7 +47,7 @@ class FakeContentTableSeeder extends Seeder
             $userId = User::where('email', 'admin@admin.com')->value('id');
             $this->account = Account::where('id', $userId)->first();
         } else {
-            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
 
             // set default admin account to confirmed
             $adminUser = $this->account->users()->first();
@@ -111,7 +111,7 @@ class FakeContentTableSeeder extends Seeder
 
         // create the second test, blank account
         if (! User::where('email', 'blank@blank.com')->exists()) {
-            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank0');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
         }

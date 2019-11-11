@@ -6,6 +6,7 @@ return [
     'journal_description' => 'לתשומת לבך: ביומן מופיעים רשומות ידניות לצד רשומות אוטומטיות כגון פעילויות שקיימת עם אנשי הקשר שלך. בעוד שניתן למחוק רשומות ביומן ידנית, יהיה עליך למחוק את הפעילות ישירות בעמוד של איש הקשר.',
     'journal_add' => 'הוספת רשומה ביומן',
     'journal_edit' => 'עריכת רשומה ביומן',
+    'journal_empty' => 'יומן ריק',
     'journal_created_automatically' => 'נוצרה אוטומטית',
     'journal_entry_type_journal' => 'רשומה ביומן',
     'journal_entry_type_activity' => 'פעילות',
