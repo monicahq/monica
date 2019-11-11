@@ -19,6 +19,6 @@ return [
     'user' => 'Eğer girdiğiniz e-posta adresi kayıtlarımızda varsa, şifre yenileme linki gönderilecektir.',
     'changed' => 'Parola başarıyla değiştirildi.',
     'invalid' => 'Girdiğiniz güncel şifreniz doğru değil.',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => 'Lütfen tekrar denemeden önce bekleyin.',
 
 ];
