@@ -63,7 +63,7 @@
         "ocramius/package-versions": "1.4.*",
         "phpunit/phpcov": "^6.0",
         "phpunit/phpunit": "^8.0",
-        "psalm/plugin-laravel": "^0.4",
+        "psalm/plugin-laravel": "^0.5",
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
         "symfony/dom-crawler": "~4.0",
