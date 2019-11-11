@@ -221,7 +221,7 @@ return [
     'relationship_form_deletion_success' => '此关系已删除',
 
     // tasks
-    'tasks_title' => 'Tasks',
+    'tasks_title' => '任务',
     'tasks_blank_title' => '您暂时还没任务。',
     'tasks_form_title' => '标题',
     'tasks_form_description' => '描述 (可选)',
@@ -466,7 +466,7 @@ return [
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 
     // Photos
-    'photo_title' => 'Photos',
+    'photo_title' => '照片',
     'photo_list_title' => '相关照片',
     'photo_list_cta' => '上传照片',
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
