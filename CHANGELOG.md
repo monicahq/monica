@@ -6,6 +6,7 @@
 
 ### Enhancements:
 
+* Upgrade to Laravel 6.5
 * Enhance user invitation mail
 * Add job information next to the contact name on profile page
 * Use supervisor in docker images
