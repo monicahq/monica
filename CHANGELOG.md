@@ -6,6 +6,7 @@
 
 ### Enhancements:
 
+* Improve trim string middleware to not trim password text
 * Upgrade to Laravel 6.5
 * Enhance user invitation mail
 * Add job information next to the contact name on profile page
