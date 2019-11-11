@@ -153,7 +153,7 @@ docker_push: docker_tag
 docker_push_bintray: .deploy.json
 	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
-	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
+	BUILD=$(BUILD) scripts/ci/fix-bintray.sh
 
 .PHONY: docker docker_build docker_build_apache docker_build_fpm docker_build_php_apache docker_tag docker_push docker_push_bintray
 
@@ -229,7 +229,7 @@ assets: results/$(ASSETS).tar.bz2
 DESCRIPTION := $(shell echo "$(COMMIT_MESSAGE)" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
 ifeq (,$(DEPLOY_TEMPLATE))
-DEPLOY_TEMPLATE := scripts/tests/.deploy.json.in
+DEPLOY_TEMPLATE := scripts/ci/.deploy.json.in
 endif
 
 .deploy.json: $(DEPLOY_TEMPLATE)
@@ -278,8 +278,8 @@ vagrant_build:
 	make -C scripts/vagrant/build package
 
 push_bintray_assets: results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh
 
 push_bintray_dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/tests/bintray-upload.sh
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/ci/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh
