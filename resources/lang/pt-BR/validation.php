@@ -67,6 +67,7 @@ return [
     'not_in'               => 'O campo :attribute contém um valor inválido.',
     'not_regex'            => 'O formato do valor :attribute é inválido.',
     'numeric'              => 'O campo :attribute deve conter um valor numérico.',
+    'password' => 'The password is incorrect.',
     'present'              => 'O campo :attribute deve estar presente.',
     'regex'                => 'O formato do valor informado no campo :attribute é inválido.',
     'required'             => 'O campo :attribute é obrigatório.',
