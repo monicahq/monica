@@ -19,6 +19,6 @@ return [
     'user' => '如果您输入的电子邮件存在于我们的记录中, 密码重置链接将被发送至该邮箱。',
     'changed' => '密码修改成功',
     'invalid' => '您输入的密码不正确。',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => '请稍候再试',
 
 ];
