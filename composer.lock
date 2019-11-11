@@ -6903,16 +6903,16 @@
         },
         {
             "name": "sentry/sentry-laravel",
-            "version": "1.4.1",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-laravel.git",
-                "reference": "c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d"
+                "reference": "724e86b3f96e2b87856b818a2bf53c80e796c279"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d",
-                "reference": "c06c2dfb04b2b0e2a16f996d5fbfe239f32b9f0d",
+                "url": "https://api.github.com/repos/getsentry/sentry-laravel/zipball/724e86b3f96e2b87856b818a2bf53c80e796c279",
+                "reference": "724e86b3f96e2b87856b818a2bf53c80e796c279",
                 "shasum": ""
             },
             "require": {
@@ -6968,7 +6968,7 @@
                 "logging",
                 "sentry"
             ],
-            "time": "2019-10-18T07:13:03+00:00"
+            "time": "2019-11-11T11:30:37+00:00"
         },
         {
             "name": "spomky-labs/base64url",
@@ -10908,20 +10908,21 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.5.2",
+            "version": "v5.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "aed755282a13a9b36d26854a0105d519aa22fec9"
+                "reference": "db4f8d75b7c9acf88ef1712e9ccf51c15540934d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/aed755282a13a9b36d26854a0105d519aa22fec9",
-                "reference": "aed755282a13a9b36d26854a0105d519aa22fec9",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/db4f8d75b7c9acf88ef1712e9ccf51c15540934d",
+                "reference": "db4f8d75b7c9acf88ef1712e9ccf51c15540934d",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
+                "ext-pcntl": "*",
                 "ext-zip": "*",
                 "facebook/webdriver": "^1.7",
                 "illuminate/console": "~5.7.0|~5.8.0|^6.0|^7.0",
@@ -10969,7 +10970,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-09-24T20:30:07+00:00"
+            "time": "2019-10-29T15:58:57+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
