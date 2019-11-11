@@ -45,7 +45,7 @@ class OAuthController extends Controller
      * Log in a user and returns an accessToken.
      *
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function login(Request $request)
     {
