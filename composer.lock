@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff4f15b0ccc8732a4c36f6fea7b1cf25",
+    "content-hash": "a3e8f033b3932c09798b4856f8934be2",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -12673,21 +12673,21 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "0.4",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/laravel-psalm-plugin.git",
-                "reference": "c48735631e1478dd4e6d27029bb1e1c7efdd2f91"
+                "reference": "a567db5a6157ee2bdc7a9ebd3bfb575c2baafa97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/c48735631e1478dd4e6d27029bb1e1c7efdd2f91",
-                "reference": "c48735631e1478dd4e6d27029bb1e1c7efdd2f91",
+                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/a567db5a6157ee2bdc7a9ebd3bfb575c2baafa97",
+                "reference": "a567db5a6157ee2bdc7a9ebd3bfb575c2baafa97",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/laravel-ide-helper": "^2.6",
-                "orchestra/testbench": "^3.5",
+                "orchestra/testbench": "^3.5 || ^4.0",
                 "vimeo/psalm": "^3.2"
             },
             "type": "psalm-plugin",
@@ -12712,7 +12712,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2019-04-12T17:57:40+00:00"
+            "time": "2019-11-09T12:11:16+00:00"
         },
         {
             "name": "roave/security-advisories",
