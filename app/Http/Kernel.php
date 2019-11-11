@@ -81,7 +81,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'limitations' => \App\Http\Middleware\CheckAccountLimitations::class,
         'locale' => \App\Http\Middleware\CheckLocale::class,
-        'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        //Laravel 6.x 'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'sentry.context' => \App\Http\Middleware\SentryContext::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \App\Http\Middleware\ThrottleRequestsMiddleware::class,
