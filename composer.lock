@@ -7584,7 +7584,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.3.6",
+            "version": "v4.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -8485,7 +8485,7 @@
         },
         {
             "name": "symfony/process",
-            "version": "v4.3.6",
+            "version": "v4.3.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
@@ -10908,21 +10908,20 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.6.0",
+            "version": "v5.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "db4f8d75b7c9acf88ef1712e9ccf51c15540934d"
+                "reference": "dd2156269898f6f58f029f0cb4d4b0d43437f29e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/db4f8d75b7c9acf88ef1712e9ccf51c15540934d",
-                "reference": "db4f8d75b7c9acf88ef1712e9ccf51c15540934d",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/dd2156269898f6f58f029f0cb4d4b0d43437f29e",
+                "reference": "dd2156269898f6f58f029f0cb4d4b0d43437f29e",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
-                "ext-pcntl": "*",
                 "ext-zip": "*",
                 "facebook/webdriver": "^1.7",
                 "illuminate/console": "~5.7.0|~5.8.0|^6.0|^7.0",
@@ -10937,6 +10936,9 @@
             "require-dev": {
                 "mockery/mockery": "^1.0",
                 "phpunit/phpunit": "^7.5|^8.0"
+            },
+            "suggest": {
+                "ext-pcntl": "Used to gracefully terminate Dusk when tests are running."
             },
             "type": "library",
             "extra": {
@@ -10970,7 +10972,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-10-29T15:58:57+00:00"
+            "time": "2019-11-12T16:55:51+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",
