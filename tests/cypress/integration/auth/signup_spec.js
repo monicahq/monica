@@ -23,10 +23,10 @@ describe('Signup', function () {
   //   cy.contains('Login to your account')
   // })
 
-  it('should block registration if policy is not accepted', function () {
-    cy.register(faker.name.firstName(), faker.name.lastName(), faker.internet.password(), faker.internet.email(), false);
-    cy.get('.alert').should('exist');
-  });
+  //it('should block registration if policy is not accepted', function () {
+  //  cy.register(faker.name.firstName(), faker.name.lastName(), faker.internet.password(), faker.internet.email(), false);
+  //  cy.get('.alert').should('exist');
+  //});
 
   it('should block registration if email is already used', function () {
     const email = faker.internet.email();
