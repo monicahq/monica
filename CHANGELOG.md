@@ -16,6 +16,7 @@
 
 ### Fixes:
 
+* Fix icons disappeared on contact information
 * Fix CSV uploads with weird photo files
 * Ensure disable_signup is checked on form register validation
 * Fix password resetting page
