@@ -134,7 +134,7 @@ return [
     'recovery_help_information' => 'Je kan elke herstelcode eenmalig gebruiken.',
     'recovery_clipboard' => 'Herstelcodes gekopieerd naar het klembord',
     'recovery_generate' => 'Genereer nieuwe codes...',
-    'recovery_generate_help' => 'Wees ervan bewust dat door het genereren van nieuwe codes de vorige codes vervallen',
+    'recovery_generate_help' => 'Wees je ervan bewust dat door het genereren van nieuwe codes de vorige codes vervallen',
     'recovery_already_used_help' => 'Deze code is reeds gebruikt',
 
     'users_list_title' => 'Gebruikers met toegang tot je account',
@@ -359,7 +359,7 @@ return [
     'personalization_genders_modal_delete' => 'Genderidentiteit verwijderen',
     'personalization_genders_modal_delete_desc' => 'Weet je zeker dat je {name} wil verwijderen?',
     'personalization_genders_modal_delete_question' => 'Op dit moment heeft {count} contact deze genderidentiteit. Als je deze verwijderd, welke genderidentiteit moet dit contact krijgen?|Op dit moment hebben {count} contacten deze genderidentiteit. Als je deze verwijderd, welke genderidentiteit moeten deze contacten krijgen?',
-    'personalization_genders_modal_delete_question_default' => 'Dit geslacht is de standaard. Als u dit geslacht verwijdert, welke wordt dan de nieuwe standaard?',
+    'personalization_genders_modal_delete_question_default' => 'Dit geslacht is de standaard. Als je dit geslacht verwijdert, welke wordt dan de nieuwe standaard?',
     'personalization_genders_modal_error' => 'Kies een geldige genderidentiteit uit de lijst.',
     'personalization_genders_list_contact_number' => '{count} contact|{count} contacten',
     'personalization_genders_table_name' => 'Titel',
@@ -459,7 +459,7 @@ return [
     'personalization_life_event_type_first_kiss' => 'Eerste kus',
 
     'storage_title' => 'Opslag',
-    'storage_account_info' => 'Jouw opslaglimiet van je account: :accountLimit Mb / Je huidige gebruik: :currentAccountSize Mb (:percentUsage%)',
+    'storage_account_info' => 'Opslaglimiet van jouw account: :accountLimit Mb / Je huidige gebruik: :currentAccountSize Mb (:percentUsage%)',
     'storage_upgrade_notice' => 'Upgrade je account om documenten en foto\'s te kunnen uploaden.',
     'storage_description' => 'Hier kun je alle documenten en foto\'s zien die bij als bijlage bij je contacten zijn geüpload.',
 
