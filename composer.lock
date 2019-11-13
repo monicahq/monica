@@ -7855,16 +7855,16 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v4.3.7",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "3c0e197529da6e59b217615ba8ee7604df88b551"
+                "reference": "22aecf6b11638ef378fab25d6c5a2da8a31a1448"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/3c0e197529da6e59b217615ba8ee7604df88b551",
-                "reference": "3c0e197529da6e59b217615ba8ee7604df88b551",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/22aecf6b11638ef378fab25d6c5a2da8a31a1448",
+                "reference": "22aecf6b11638ef378fab25d6c5a2da8a31a1448",
                 "shasum": ""
             },
             "require": {
@@ -7910,7 +7910,7 @@
                 "mime",
                 "mime-type"
             ],
-            "time": "2019-10-30T12:58:49+00:00"
+            "time": "2019-11-12T13:10:02+00:00"
         },
         {
             "name": "symfony/options-resolver",
