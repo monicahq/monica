@@ -24,7 +24,7 @@ class Reminder extends Resource
             'frequency_type' => $this->frequency_type,
             'frequency_number' => $this->frequency_number,
             'initial_date' => DateHelper::getTimestamp($this->initial_date),
-            'delible' => DateHelper::getTimestamp($this->delible),
+            'delible' => (bool) $this->delible,
             'account' => [
                 'id' => $this->account_id,
             ],
