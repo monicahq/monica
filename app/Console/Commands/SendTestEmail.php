@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
-
 class SendTestEmail extends Command
 {
     /**
@@ -42,8 +41,8 @@ class SendTestEmail extends Command
 
         // immediately deliver the test email (bypassing the queue)
         Mail::raw(
-            "Hi ".$email.", you requested a test email from Monica.",
-            function($message) use($email) {
+            'Hi '.$email.', you requested a test email from Monica.',
+            function ($message) use ($email) {
                 $message->to($email)
                     ->subject('Monica email delivery test');
             }
