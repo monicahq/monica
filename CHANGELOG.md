@@ -13,6 +13,7 @@
 * Use supervisor in docker images
 * Use JawsDB by default on heroku instances
 * Add pluralization forms for non-english-like-plural languages, for vue.js translations
+* Add console command to test email delivery
 
 ### Fixes:
 
