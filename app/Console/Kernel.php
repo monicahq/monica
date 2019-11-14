@@ -14,6 +14,7 @@ use App\Console\Commands\LangGenerate;
 use App\Console\Commands\SetUserAdmin;
 use App\Console\Commands\Deactivate2FA;
 use App\Console\Commands\SendReminders;
+use App\Console\Commands\SendTestEmail;
 use App\Console\Commands\SentryRelease;
 use App\Console\Commands\SendStayInTouch;
 use App\Console\Commands\SetupProduction;
@@ -49,6 +50,7 @@ class Kernel extends ConsoleKernel
         PingVersionServer::class,
         SendReminders::class,
         SendStayInTouch::class,
+        SendTestEmail::class,
         SentryRelease::class,
         SetPremiumAccount::class,
         SetupFrontEndTest::class,
