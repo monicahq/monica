@@ -49,7 +49,10 @@
         "thecodingmachine/safe": "^0.1.15",
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^7.0",
-        "vluzrmos/language-detector": "dev-master"
+        "vluzrmos/language-detector": "dev-master",
+        "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
+        "web-token/jwt-signature-algorithm-eddsa": "^2.1",
+        "web-token/jwt-signature-algorithm-rsa": "^2.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",
