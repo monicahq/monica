@@ -352,7 +352,7 @@ return [
     'emotion_irritation' => 'Rahatsızlık',
     'emotion_agitation' => 'Kışkırtma',
     'emotion_annoyance' => 'Rahatsızlık',
-    'emotion_grouchiness' => 'Grouchiness',
+    'emotion_grouchiness' => 'Huysuzluk',
     'emotion_grumpiness' => 'Grumpiness',
     'emotion_exasperation' => 'Exasperation',
     'emotion_frustration' => 'Frustration',
