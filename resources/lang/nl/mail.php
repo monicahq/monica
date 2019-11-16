@@ -20,11 +20,11 @@ return [
     'notifications_whoops' => 'Oeps!',
     'notifications_hello' => 'Hallo!',
     'notifications_regards' => 'Met vriendelijke groet',
-    'notifications_footer' => 'Als de ":actionText" knop niet werkt, kopieer en plak de onderstaande URL in uw webbrowser: [:actionURL](:actionURL)',
+    'notifications_footer' => 'Kopieer en plak de volgende URL in je browser als de ":actionText" knop niet werkt: [:actionURL](:actionURL)',
     'notifications_rights' => 'Alle rechten voorbehouden',
 
     'confirmation_email_title' => 'Monica – E-mailverificatie',
-    'confirmation_email_intro'=> 'Klik op de knop hieronder om uw e-mailadres te valideren',
+    'confirmation_email_intro'=> 'Klik op de knop hieronder om je e-mailadres te valideren',
     'confirmation_email_button' => 'Verifieer het e-mailadres',
     'confirmation_email_bottom' => 'Als je geen account hebt gemaakt, kun je deze email negeren.',
 
