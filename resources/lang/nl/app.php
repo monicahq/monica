@@ -40,10 +40,10 @@ return [
     'go_back' => 'Terug',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
-    'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
-    'application_og_title' => 'Bouw betere relaties met uw dierbaren. Gratis Online CRM voor vrienden en familie.',
+    'application_description' => 'Monica is een app voor het beheren van interacties met je geliefden, vrienden en familie.',
+    'application_og_title' => 'Bouw betere relaties met je dierbaren. Gratis Online CRM voor vrienden en familie.',
 
-    'markdown_description' => 'Wilt u uw tekst opmaken op een leuke manier? Wij ondersteunen Markdown om vet, cursief, lijsten en meer toe te voegen.',
+    'markdown_description' => 'Wil je je tekst opmaken? Monica ondersteunt Markdown om lijsten, dikgedrukte en cursieve tekst en meer toe te voegen.',
     'markdown_link' => 'Lees documentatie',
 
     'header_settings_link' => 'Instellingen',
@@ -107,13 +107,13 @@ return [
     'error_unavailable' => 'Service niet beschikbaar',
     'error_maintenance' => 'Onderhoud in uitvoering. Zo terug.',
     'error_help' => 'We zijn zo terug.',
-    'error_twitter' => 'Volg <a href="https://twitter.com/:twitter">ons Twitter account</a> als je gewaarschuwd wilt worden als we terug zijn.',
+    'error_twitter' => '<a href="https://twitter.com/:twitter">Volg ons op Twitter</a> als je gewaarschuwd wilt worden als we terug zijn.',
 
     'default_save_success' => 'De gegevens zijn opgeslagen.',
 
     'compliance_title' => 'Sorry voor de onderbreking.',
-    'compliance_desc' => 'We hebben onze <a href=":urlterm" hreflang=":hreflang">gebruiksvoorwaarden </a> en <a href=":url" hreflang=":hreflang">privacybeleid</a> aangepast. We zijn verplicht u te vragen deze opnieuw te lezen en goed te keuren om uw account te kunnen blijven gebruiken.',
-    'compliance_desc_end' => 'Wij doen niets vervelends met uw gegevens of account en zullen dit ook nooit doen.',
+    'compliance_desc' => 'We hebben onze <a href=":urlterm" hreflang=":hreflang">gebruiksvoorwaarden</a> en ons <a href=":url" hreflang=":hreflang">privacybeleid</a> aangepast. We zijn verplicht u te vragen deze opnieuw te lezen en goed te keuren, om je account te kunnen blijven gebruiken.',
+    'compliance_desc_end' => 'Wij doen niets vervelends met je gegevens of account en zullen dit ook nooit doen.',
     'compliance_terms' => 'Accepteer de nieuwe voorwaarden en privacybeleid',
 
     // Relationship types
