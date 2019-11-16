@@ -134,10 +134,10 @@ return [
     'recovery_help_information' => 'Her kurtarma kodunu bir kez kullanabilirsiniz.',
     'recovery_clipboard' => 'Kodlar panoya kopyalandı',
     'recovery_generate' => 'Yeni kodlar oluştur...',
-    'recovery_generate_help' => 'Be aware that generating new codes will invalidate previously generated codes',
+    'recovery_generate_help' => 'Yeni kod oluşturmanın daha önce oluşturulan kodları geçersiz kılacağını unutmayın',
     'recovery_already_used_help' => 'Bu kod zaten kullanılmış',
 
-    'users_list_title' => 'Users with access to your account',
+    'users_list_title' => 'Hesabınıza erişim hakkı olan kullanıcılar',
     'users_list_add_user' => 'Yeni kullanıcı davet et',
     'users_list_you' => 'Sizin Listeniz',
     'users_list_invitations_title' => 'Bekleyen davetler',
