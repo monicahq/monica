@@ -82,7 +82,7 @@ return [
     'stay_in_touch' => 'Blijf in contact',
     'stay_in_touch_frequency' => 'Blijf elke dag in contact | Blijf elke {count} dagen in contact',
     'stay_in_touch_invalid' => 'De frequentie moet groter zijn dan 0.',
-    'stay_in_touch_premium' => 'U moet uw account upgraden om gebruik te maken van deze functie',
+    'stay_in_touch_premium' => 'Je moet je account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
     'stay_in_touch_modal_desc' => 'We kunnen je herinneren via e-mail om regelmatig in contact te blijven met {firstname}.',
     'stay_in_touch_modal_label' => 'Stuur me een e-mail elke...',
@@ -200,7 +200,7 @@ return [
     'reminders_type_month' => 'maand',
     'reminders_type_year' => 'jaar',
     'reminders_birthday' => 'Verjaardag van :naam',
-    'reminders_free_plan_warning' => 'U heeft een gratis abonnement. Hiermee worden geen e-mails verzonden. Als u herinneringen per e-mail wilt ontvangen, upgrade dat uw account.',
+    'reminders_free_plan_warning' => 'Je hebt een gratis abonnement. Hiermee worden geen e-mails verzonden. Als je herinneringen per e-mail wilt ontvangen, upgrade dan je account.',
 
     // relationships
     'relationship_form_add' => 'Voeg een nieuwe relatie toe',
