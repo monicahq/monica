@@ -2232,16 +2232,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.4.0",
+            "version": "v10.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "f56ff47a602028fb8988f90645c57ff9b097627e"
+                "reference": "39916c390454ff21cf25e28fb517eac6f13bd4bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/f56ff47a602028fb8988f90645c57ff9b097627e",
-                "reference": "f56ff47a602028fb8988f90645c57ff9b097627e",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/39916c390454ff21cf25e28fb517eac6f13bd4bd",
+                "reference": "39916c390454ff21cf25e28fb517eac6f13bd4bd",
                 "shasum": ""
             },
             "require": {
@@ -2273,7 +2273,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "10.0-dev"
+                    "dev-master": "10.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -2302,7 +2302,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2019-10-29T15:47:44+00:00"
+            "time": "2019-11-12T16:44:53+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7780,7 +7780,7 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v4.3.6",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
@@ -12732,12 +12732,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "e3e6456e753326a096303e96b0f759fe789e63e8"
+                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/e3e6456e753326a096303e96b0f759fe789e63e8",
-                "reference": "e3e6456e753326a096303e96b0f759fe789e63e8",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/261562a9c048aa10932e5e1d596da6c761cf95bb",
+                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb",
                 "shasum": ""
             },
             "conflict": {
@@ -12874,7 +12874,7 @@
                 "symfony/security-guard": ">=2.8,<2.8.41|>=3,<3.3.17|>=3.4,<3.4.11|>=4,<4.0.11",
                 "symfony/security-http": ">=2.3,<2.3.41|>=2.4,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.2.12|>=4.3,<4.3.8",
                 "symfony/serializer": ">=2,<2.0.11",
-                "symfony/symfony": ">=2,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.1.12|>=4.2,<4.2.7",
+                "symfony/symfony": ">=2,<2.8.52|>=3,<3.4.35|>=4,<4.2.12|>=4.3,<4.3.8",
                 "symfony/translation": ">=2,<2.0.17",
                 "symfony/validator": ">=2,<2.0.24|>=2.1,<2.1.12|>=2.2,<2.2.5|>=2.3,<2.3.3",
                 "symfony/var-exporter": ">=4.2,<4.2.12|>=4.3,<4.3.8",
@@ -12942,7 +12942,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-11-13T10:25:51+00:00"
+            "time": "2019-11-15T09:15:43+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
