@@ -164,7 +164,7 @@ return [
     'users_invitation_need_subscription' => 'Daha fazla kullanıcı eklemek için abonelik gerekmektedir.',
 
     'subscriptions_account_current_plan' => 'Geçerli planınız',
-    'subscriptions_account_current_paid_plan' => 'You are on the :name plan. Thanks so much for being a subscriber.',
+    'subscriptions_account_current_paid_plan' => ':name planındasınız. Abone olduğunuz için çok teşekkürler.',
     'subscriptions_account_next_billing' => 'Your subscription will auto-renew on <strong>:date</strong>.',
     'subscriptions_account_cancel' => 'You can <a href=":url">cancel subscription</a> anytime.',
     'subscriptions_account_free_plan' => 'You are on the free plan.',
