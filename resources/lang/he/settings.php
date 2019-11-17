@@ -436,7 +436,7 @@ return [
     'personalization_life_event_type_home_improvement' => 'שיפוץ הבית',
     'personalization_life_event_type_holidays' => 'חגים',
     'personalization_life_event_type_new_vehicle' => 'כלי רכב חדש',
-    'personalization_life_event_type_new_roommate' => 'New roommate',
+    'personalization_life_event_type_new_roommate' => 'שותף/שותפה חדש/ה',
     'personalization_life_event_type_overcame_an_illness' => 'החלמה ממחלה',
     'personalization_life_event_type_quit_a_habit' => 'גמילה',
     'personalization_life_event_type_new_eating_habits' => 'הרגלי אכילה חדשים',
