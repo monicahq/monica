@@ -200,7 +200,7 @@ return [
     'subscriptions_upgrade_zip' => 'Posta Kodu',
     'subscriptions_upgrade_credit' => 'Kredi kartı veya banka kartı',
     'subscriptions_upgrade_submit' => '{amount} öde',
-    'subscriptions_upgrade_charge' => 'We’ll charge your card :price now. The next charge will be on :date. If you ever change your mind, you can cancel anytime, no questions asked.',
+    'subscriptions_upgrade_charge' => 'Kartınızdan şimdi :price çekim yapacağız. Bir sonraki çekim :date tarihinde olacak. Eğer fikrinizi değiştirirseniz, istediğiniz zaman iptal edebilirsiniz, hiçbir soru sorulmaz.',
     'subscriptions_upgrade_charge_handled' => 'The payment is handled by <a href=":url">Stripe</a>. No card information touches our server.',
     'subscriptions_upgrade_success' => 'Teşekkürler! Artık bir abonesin.',
     'subscriptions_upgrade_thanks' => 'Welcome to the community of people who try to make the world a better place.',
