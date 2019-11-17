@@ -364,6 +364,7 @@ class ContactsController extends Controller
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
             'first_name' => $request->get('firstname'),
+            'middle_name' => $request->input('middlename', null),
             'last_name' => $request->input('lastname', null),
             'nickname' => $request->input('nickname', null),
             'gender_id' => $request->get('gender'),
