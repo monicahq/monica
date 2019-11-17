@@ -179,6 +179,7 @@ class ContactsController extends Controller
             $contact = app(CreateContact::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'first_name' => $request->get('first_name'),
+                'middle_name' => $request->input('middle_name', null),
                 'last_name' => $request->input('last_name', null),
                 'nickname' => $request->input('nickname', null),
                 'gender_id' => $request->get('gender'),

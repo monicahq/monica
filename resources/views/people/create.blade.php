@@ -43,6 +43,15 @@
 
         <div class="mb3">
           <form-input
+            :id="'middle_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_middlename') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3">
+          <form-input
             :id="'last_name'"
             :input-type="'text'"
             :required="false"
@@ -76,6 +85,15 @@
             :input-type="'text'"
             :required="true"
             :title="'{{ trans('people.people_add_firstname') }}'">
+          </form-input>
+        </div>
+
+        <div class="mb3">
+          <form-input
+            :id="'middle_name'"
+            :input-type="'text'"
+            :required="false"
+            :title="'{{ trans('people.people_add_middlename') }}'">
           </form-input>
         </div>
 
