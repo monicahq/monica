@@ -2,7 +2,7 @@
 
 ### New features:
 
-*
+* Add middle name field to new contact and edit contact
 
 ### Enhancements:
 
