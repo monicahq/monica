@@ -23,7 +23,7 @@
         "lahaxearnaud/laravel-u2f": "^1.6",
         "laravel/cashier": "~10.0",
         "laravel/framework": "^6.4",
-        "laravel/passport": "^7.2",
+        "laravel/passport": "^8.0",
         "laravel/socialite": "^4.0",
         "laravel/tinker": "^1.0",
         "laravolt/avatar": "^3.0",
@@ -49,7 +49,10 @@
         "thecodingmachine/safe": "^0.1.15",
         "vectorface/whip": "^0.3.2",
         "vinkla/hashids": "^7.0",
-        "vluzrmos/language-detector": "dev-master"
+        "vluzrmos/language-detector": "dev-master",
+        "web-token/jwt-signature-algorithm-ecdsa": "^2.1",
+        "web-token/jwt-signature-algorithm-eddsa": "^2.1",
+        "web-token/jwt-signature-algorithm-rsa": "^2.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3",
