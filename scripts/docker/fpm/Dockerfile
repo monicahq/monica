@@ -18,7 +18,7 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 RUN apk update && apk upgrade
 RUN apk add --virtual .build-deps \
         curl openssl bash
-RUN apk add netcat-openbsd \
+RUN apk add supervisor netcat-openbsd \
         #- base
         php7 php7-intl php7-openssl php7-ctype \
         php7-zip php7-zlib \
@@ -48,7 +48,9 @@ RUN apk add netcat-openbsd \
         #- sentry/sentry
         php7-curl \
         #- cbor-php (webauthn)
-        php7-gmp
+        php7-gmp \
+        #- web-token/jwt-signature-algorithm-eddsa
+        php7-sodium
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -106,7 +108,8 @@ USER monica
 RUN composer global require hirak/prestissimo; \
     composer install --no-interaction --no-suggest --no-progress --no-dev; \
     composer global remove hirak/prestissimo; \
-    composer clear-cache
+    composer clear-cache; \
+    rm -rf .composer
 USER root
 
 # Set crontab for schedules
@@ -122,7 +125,10 @@ RUN set -ex && \
 RUN apk del .build-deps && \
     rm -rf /var/cache/apk/*
 
-COPY scripts/docker/entrypoint.sh /usr/local/bin/
+COPY scripts/docker/entrypoint.sh \
+    scripts/docker/cron.sh \
+    scripts/docker/queue.sh \
+    /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
 # FPM
@@ -153,5 +159,4 @@ STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
 
-COPY scripts/docker/fpm/supervisord.conf /etc/supervisord.conf
-CMD ["supervisord", "-c /etc/supervisord.conf"]
+CMD ["php-fpm7"]

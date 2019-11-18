@@ -19,13 +19,23 @@ RUN apt-get update && \
     apt-get -y --no-install-recommends install \
       git cron netcat apt apt-transport-https \
       locales sudo openssh-client ca-certificates \
-      curl unzip zip tar bzip2 && \
+      curl unzip zip tar bzip2 supervisor && \
+    mkdir /var/log/supervisord /var/run/supervisord && \
     rm -rf /var/lib/apt/lists/*
 
 # Install common extensions
 RUN apt-get update && \
-    apt-get -y --no-install-recommends install libicu-dev zlib1g-dev libzip-dev libpng-dev libxml2-dev libfreetype6-dev libjpeg62-turbo-dev libgmp-dev && \
-    apt-get -y clean && \
+    apt-get -y autoremove && \
+    apt-get -y --no-install-recommends install \
+                libicu-dev \
+                zlib1g-dev \
+                libzip-dev \
+                libpng-dev \
+                libxml2-dev \
+                libfreetype6-dev \
+                libjpeg62-turbo-dev \
+                libgmp-dev \
+                libsodium-dev && \
     docker-php-ext-configure intl && \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
     docker-php-ext-install -j$(nproc) \
@@ -39,10 +49,21 @@ RUN apt-get update && \
                 pdo_mysql \
                 mysqli \
                 soap \
+                sodium \
                 mbstring \
                 opcache && \
-    apt-get -y remove libicu-dev icu-devtools && \
-    apt-get -y autoremove && \
+    apt-get -y remove \
+                icu-devtools \
+                libicu-dev \
+                zlib1g-dev \
+                libzip-dev \
+                libpng-dev \
+                libxml2-dev \
+                libfreetype6-dev \
+                libjpeg62-turbo-dev \
+                libgmp-dev \
+                libsodium-dev && \
+    apt-get -y clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Create a user to own all the code and assets and give them a working
@@ -106,7 +127,8 @@ USER monica
 RUN composer global require hirak/prestissimo; \
     composer install --no-interaction --no-suggest --no-progress --no-dev; \
     composer global remove hirak/prestissimo; \
-    composer clear-cache
+    composer clear-cache; \
+    rm -rf .composer
 USER root
 
 # Set crontab for schedules
@@ -118,7 +140,10 @@ RUN set -ex && \
 	} | tee monica && \
 	chmod a+x monica
 
-COPY scripts/docker/entrypoint.sh /usr/local/bin/
+COPY scripts/docker/entrypoint.sh \
+    scripts/docker/php-apache/cron.sh \
+    scripts/docker/queue.sh \
+    /usr/local/bin/
 RUN sed -ri -e 's!monica:apache!monica:www-data!g' /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["entrypoint.sh"]
 
@@ -130,5 +155,4 @@ RUN a2enmod rewrite cache headers
 
 EXPOSE 80
 
-COPY scripts/docker/php-apache/supervisord.conf /etc/supervisord.conf
-CMD ["supervisord", "-c /etc/supervisord.conf"]
+CMD ["apache2-foreground"]

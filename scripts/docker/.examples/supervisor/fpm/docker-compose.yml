@@ -2,14 +2,13 @@ version: "3.4"
 
 services:
   app:
-    build: .
-    image: monicahq/monicahq:fpm
+    build: ./app
     depends_on:
-      - mysql
+      - db
     env_file: .env
     volumes:
-      - monica_data:/var/www/monica/storage
-      - monica_www:/var/www/monica
+      - data:/var/www/monica/storage
+      - www:/var/www/monica
     restart: always
 
   web:
@@ -18,11 +17,12 @@ services:
     ports:
       - 80:80
     volumes:
-      - monica_www:/var/www/monica:ro
+      - data:/var/www/monica/storage:ro
+      - www:/var/www/monica:ro
     depends_on:
       - app
 
-  mysql:
+  db:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=sekret_root_password
@@ -30,13 +30,13 @@ services:
       - MYSQL_USER=homestead
       - MYSQL_PASSWORD=secret
     volumes:
-      - monica_mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql
     restart: always
 
 volumes:
-  monica_data:
-    name: monica_data
-  monica_www:
-    name: monica_www
-  monica_mysql:
-    name: monica_mysql
+  data:
+    name: data
+  www:
+    name: www
+  mysql:
+    name: mysql
