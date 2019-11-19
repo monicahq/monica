@@ -11,7 +11,7 @@ Example|Description
 
 ## Run with docker-compose
 
-### [ALL] Configuration
+### Configuration (all versions)
 
 First, download a copy of Monica example configuration file:
 
@@ -26,7 +26,7 @@ Open the file in an editor and update it for your own needs:
   output of `pwgen -s 32 1`.
 - Edit the `MAIL_*` settings to point to your own [mailserver](/docs/installation/mail.md).
 - Set `DB_*` settings to point to your database configuration. If you don't want to set a db prefix, be careful to set `DB_PREFIX=` and not `DB_PREFIX=''` as docker will not expand this as an empty string.
-- Set `DB_HOST=db` or any name of the mysql container you will link to.
+- Set `DB_HOST=db` or any name of the database container you will link to.
 
 
 ### With supervisor

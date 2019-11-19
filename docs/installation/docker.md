@@ -35,7 +35,7 @@ docker run -d -p 8080:80 monicahq/monicahq
 This image serves a fastCGI server that exposes port 9000. You may need an additional web server that can proxy requests to the fpm port 9000 of the container.
 Run this container with:
 ```sh
-docker run -d monicahq/monicahq:fpm
+docker run -d -p 9000:9000 monicahq/monicahq:fpm
 ```
 
 ### Persistent data storage
@@ -51,18 +51,18 @@ monicahq/monicahq
 
 ### Run commands inside the container
 
-The `artisan` command is very usefull for Monica (Laravel) application.
+Like every Laravel application, the `php artisan` command is very usefull for Monica.
 To run a command inside the container, run
 
 ```sh
 docker exec CONTAINER_ID php artisan COMMAND
 ```
 
-of for docker-compose
+or for docker-compose
 ```sh
 docker-compose exec monicahq php artisan COMMAND
 ```
-where `monicahq` is the name of the application in your docker-compose.yml file
+where `monicahq` is the name of the service in your `docker-compose.yml` file.
 
 
 ## Running the image with docker-compose
@@ -86,7 +86,7 @@ output of `pwgen -s 32 1`.
 version: "3.4"
 
 services:
-  monicahq:
+  app:
     image: monicahq/monicahq
     depends_on:
       - mysql
@@ -123,16 +123,18 @@ Wait until all migrations are done and then access Monica at http://localhost:80
 
 Then run this command once:
 ```sh
-docker-compose exec monicahq php artisan setup:production
+docker-compose exec app php artisan setup:production
 ```
 
 ### FPM version
 
-When using FPM image, you will need another container with a webserver to proxy http requests. In this example we use nginx with a basic container to do this. The webserver will need an access to all static files from Monica container, the volumes `html` will deal with it.
+When using FPM image, you will need another container with a webserver to proxy http requests. In this example we use nginx with a basic container to do this.
+
+The webserver will need an access to all static files from Monica container, the volumes `html` will deal with it.
 
 An example of `nginx.conf` file can be found on the [`example section`](/scripts/docker/.examples/supervisor/fpm/web/nginx.conf).
 
-Make sure to pass in values for `APP_KEY` and `MYSQL_ROOT_PASSWORD` variables before you run this setup.
+Make sure to set values for `APP_KEY` and `MYSQL_ROOT_PASSWORD` variables before you run this setup.
 
 Set `APP_KEY` to a random 32-character string. For example, if you
 have the `pwgen` utility installed, you could copy and paste the
@@ -143,12 +145,10 @@ output of `pwgen -s 32 1`.
 version: "3.4"
 
 services:
-  monicahq:
+  app:
     image: monicahq/monicahq
     depends_on:
       - mysql
-    ports:
-      - 8080:80
     environment:
       - APP_KEY=
       - DB_HOST=mysql
@@ -195,7 +195,7 @@ Wait until all migrations are done and then access Monica at http://localhost:80
 
 Then run this command once:
 ```sh
-docker-compose exec monicahq php artisan setup:production
+docker-compose exec app php artisan setup:production
 ```
 
 
@@ -213,7 +213,7 @@ See some examples of docker-compose possibilities in the [example section](/scri
 
 
 
-## Other documents to read	
+# Other documents to read	
 
 - [Build your own docker image](/docs/contribute/docker.md)
 - [Connecting to MySQL inside of a Docker container](/docs/installation/docker-mysql.md)
