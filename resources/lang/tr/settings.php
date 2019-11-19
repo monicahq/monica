@@ -386,10 +386,10 @@ return [
     'personalisation_paid_upgrade' => 'Bu, etkin olmak için Ücretli bir abonelik gerektiren premium bir özelliktir. Ayarlar > Abonelik bölümünü ziyaret ederek hesabınızı yükseltin.',
 
     'reminder_time_to_send' => 'Gün içinde hatırlatmaların gönderilmesi gereken saat',
-    'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
+    'reminder_time_to_send_help' => 'Bilginize, bir sonraki hatırlatıcınız <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span> tarihinde gönderilecek.',
 
-    'personalization_activity_type_category_title' => 'Activity type categories',
-    'personalization_activity_type_category_add' => 'Add a new activity type category',
+    'personalization_activity_type_category_title' => 'Aktivite türü kategorileri',
+    'personalization_activity_type_category_add' => 'Yeni bir aktivite türü kategorisi ekle',
     'personalization_activity_type_category_table_name' => 'Ad',
     'personalization_activity_type_category_description' => 'An activity done with one of your contact can have a type and a category type. Your account comes by default with a set of predefined category types, but you can customize everything here.',
     'personalization_activity_type_category_table_actions' => 'Eylemler',
