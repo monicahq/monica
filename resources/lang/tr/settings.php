@@ -377,15 +377,15 @@ return [
     'personalization_reminder_rule_save' => 'Değişiklik kaydedildi',
     'personalization_reminder_rule_title' => 'Hatırlatma kuralları',
     'personalization_reminder_rule_line' => '{count} gün önce',
-    'personalization_reminder_rule_desc' => 'For every reminder that you set, we can send you an email some days before the event happens. You can toggle those notifications here. Note that those notifications only apply to monthly and yearly reminders.',
+    'personalization_reminder_rule_desc' => 'Ayarladığınız her hatırlatma için, olay gerçekleşmeden birkaç gün önce size bir e-posta gönderebiliriz. Bu bildirimleri buradan değiştirebilirsiniz. Bu bildirimlerin sadece aylık ve yıllık hatırlatmalar için geçerli olduğunu unutmayın.',
 
-    'personalization_module_save' => 'The change has been saved',
-    'personalization_module_title' => 'Features',
-    'personalization_module_desc' => 'Some people don’t need all the features. Below you can toggle specific features that are used on a contact sheet. This change will affect ALL your contacts. Note that if you turn off one of these features, data will not be lost - we will simply hide the feature.',
+    'personalization_module_save' => 'Değişiklik kaydedildi',
+    'personalization_module_title' => 'Özellikler',
+    'personalization_module_desc' => 'Bazı insanların tüm özelliklere ihtiyacı yoktur. Aşağıda, bir kişi sayfasında kullanılan belirli özellikleri değiştirebilirsiniz. Bu değişiklik TÜM kişilerinizi etkileyecektir. Bu özelliklerden birini kapatırsanız, verilerin kaybolmayacağını - sadece özelliği gizleyeceğimizi unutmayın.',
 
-    'personalisation_paid_upgrade' => 'This is a premium feature that requires a Paid subscription to be active. Upgrade your account by visiting Settings > Subscription.',
+    'personalisation_paid_upgrade' => 'Bu, etkin olmak için Ücretli bir abonelik gerektiren premium bir özelliktir. Ayarlar > Abonelik bölümünü ziyaret ederek hesabınızı yükseltin.',
 
-    'reminder_time_to_send' => 'Time of the day reminders should be sent',
+    'reminder_time_to_send' => 'Gün içinde hatırlatmaların gönderilmesi gereken saat',
     'reminder_time_to_send_help' => 'For your information, your next reminder will be sent on <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
     'personalization_activity_type_category_title' => 'Activity type categories',
