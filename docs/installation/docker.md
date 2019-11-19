@@ -1,5 +1,11 @@
 # Installing Monica on Docker
 
+<img alt="Logo" src="https://fr.wikipedia.org/wiki/Docker_(logiciel)#/media/Fichier:Docker_(container_engine)_logo.svg" width="290" height="69" />
+
+Monica can run with Docker images.
+
+## Prerequisites
+
 You can use [Docker](https://www.docker.com) and
 [docker-compose](https://docs.docker.com/compose/) to pull or build
 and run a Monica image, complete with a self-contained MySQL database.
@@ -7,20 +13,41 @@ This has the nice properties that you don't have to install lots of
 software directly onto your system, and you can be up and running
 quickly with a known working environment.
 
-Before you start, you need to get and edit a `.env` file. If you've already
-cloned the [Monica Git repo](https://github.com/monicahq/monica), run:
+For any help about how to install Docker, see https://docs.docker.com/install/
 
+## Use Monica docker image
+
+There are two versions of the image you may choose from.
+The `apache` tag contains a full Monica installation with an apache webserver. This points to the default `latest` tag too.
+The `fpm` tag contains a fastCGI-Process that serves the web pages. This images should be combined with a webserver used as a proxy, like apache or nginx.
+
+### Using the apache image
+
+This image contains a webserver that exposes port 80. Run the container with:
 ```sh
-cp .env.example .env
+docker run -d -p 8080:80 monicahq/monicahq
 ```
 
-to create it. If not, you can fetch it from GitHub like:
+### Using the fpm image
+
+This image serves a fastCGI server that exposes port 9000. You may need an additional web server that can proxy requests to the fpm port 9000 of the container.
+Run this container with:
+```sh
+docker run -d monicahq/monicahq:fpm
+```
+
+## Running the image with docker-compose
+
+
+### 1. Get your .env file
+
+Download a copy of MonicaHQ's example configuration file:
 
 ```sh
 curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example -o .env
 ```
 
-Then open `.env` in an editor and update it for your own needs:
+Open the file in an editor and update it for your own needs:
 
 - Set `APP_KEY` to a random 32-character string. For example, if you
   have the `pwgen` utility installed, you could copy and paste the
@@ -28,33 +55,13 @@ Then open `.env` in an editor and update it for your own needs:
 - Edit the `MAIL_*` settings to point to your own [mailserver](/docs/installation/mail.md).
 - Set `DB_*` settings to point to your database configuration. If you don't want to set a db prefix, be careful to set `DB_PREFIX=` and not `DB_PREFIX=''` as docker will not expand this as an empty string.
 
-Note for macOS: you will need to stop Apache if you wish to have Monica available on port 80.
 
-You can do this like so:
+### 2. Run with docker-compose
 
-```sh
-sudo /usr/sbin/apachectl stop
-```
-
-To start Apache up again use this command:
-
-```sh
-sudo /usr/sbin/apachectl start
-```
-
-Now select one of these methods to be up and running quickly:
-
-#### Use docker-compose to run a pre-built image
-
-This is the easiest and fastest way to try Monica! Use this process
-if you want to download the newest image from Docker Hub and run it
-with a pre-packaged MySQL database.
-
-Start by fetching the latest `docker-compose.yml` and `.env` if you haven't done that already.
+Start by fetching the latest `docker-compose.yml` file.
 
 ```sh
 curl -sS https://raw.githubusercontent.com/monicahq/monica/master/docker-compose.yml -o docker-compose.yml
-curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example -o .env
 ```
 
 Edit the `docker-compose.yml` and change both the volumes on the monicahq service and the mysql service. Change the part before the `:` and point it to an existing, empty directory on your system. It is also be a good idea to change the webserver port from `80:80` to `3000:80`.
@@ -68,7 +75,9 @@ docker-compose pull
 docker-compose up
 ```
 
-Wait until all migrations are done and check if you can open up the login page by going to http://localhost:3000. If this looks ok, add your first user account.
+### 3. Set the container
+
+Wait until all migrations are done and check if you can open up the login page by going to http://localhost. If this looks ok, add your first user account.
 
 ```sh
 docker-compose exec monicahq php artisan setup:production
@@ -76,40 +85,8 @@ docker-compose exec monicahq php artisan setup:production
 
 Now login.
 
-#### Use docker-compose to build and run your own image
+## Other documents to read	
 
-Use this process if you want to modify Monica source code and build
-your image to run.
-
-Edit `.env` again to set `DB_HOST=mysql` (as `mysql` is the creative name of the MySQL container).
-
-Then run:
-
-```sh
-docker-compose build
-docker-compose up
-```
-
-#### Use Docker directly to run with your own database
-
-Use this process if you're a developer and want complete control over
-your Monica container.
-
-Edit `.env` again to set the `DB_*` variables to match your database. Then run:
-
-```sh
-docker build -t monicahq/monicahq .
-docker run --env-file .env -p 80:80 monicahq/monicahq  # to run MonicaHQ
-# ...or...
-docker run --env-file .env -it monicahq/monicahq sh    # to get a prompt
-```
-
-Note that uploaded files, like avatars, will disappear when you
-restart the container. Map a volume to
-`/var/www/monica/storage/app/public` if you want that data to persist
-between runs. See `docker-compose.yml` for examples.
-
-#### Other documents to read	
-
+[Build your own docker image](/docs/contribute/docker.md)
 [Connecting to MySQL inside of a Docker container](/docs/installation/docker-mysql.md)
 [Use mobile app with standalone server](/docs/installation/mobile.md)
