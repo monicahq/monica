@@ -6,7 +6,7 @@
 #- APP_URL with your domain (https scheme)
 #
 #- DB_HOST=db
-# See `db` container for this values:
+# See `db` container for these values:
 #- DB_DATABASE=monica
 #- DB_USERNAME=homestead
 #- DB_PASSWORD=secret
@@ -28,10 +28,10 @@ services:
       - www:/var/www/monica
     restart: always
     depends_on:
-      - mysql
+      - db
       - redis
 
-  mysql:
+  db:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=sekret_root_password

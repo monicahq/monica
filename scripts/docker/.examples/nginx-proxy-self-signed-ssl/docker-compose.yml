@@ -6,7 +6,7 @@
 #- APP_URL with your domain (https scheme)
 #
 #- DB_HOST=db
-# See `db` container for this values:
+# See `db` container for these values:
 #- DB_DATABASE=monica
 #- DB_USERNAME=homestead
 #- DB_PASSWORD=secret
