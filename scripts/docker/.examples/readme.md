@@ -2,7 +2,34 @@
 
 In this section you will find some examples about how to use monica's docker images.
 
-## Supervisor
+Example|Description
+-------|-----------
+[`supervisor`](supervisor)| uses supervisor to run a cron and a queue inside your container.
+[`nginx-proxy-self-signed-ssl`](nginx-proxy-self-signed-ssl)| shows you how to run monica with a self signed ssl certificate.
+[`nginx-proxy`](nginx-proxy)| show you how to run monica and generate a [Let's Encrypt](https://letsencrypt.org/) certificate.
+
+
+## Run with docker-compose
+
+### [ALL] Configuration
+
+First, download a copy of Monica example configuration file:
+
+```sh
+curl -sS https://raw.githubusercontent.com/monicahq/monica/master/.env.example -o .env
+```
+
+Open the file in an editor and update it for your own needs:
+
+- Set `APP_KEY` to a random 32-character string. For example, if you
+  have the `pwgen` utility installed, you could copy and paste the
+  output of `pwgen -s 32 1`.
+- Edit the `MAIL_*` settings to point to your own [mailserver](/docs/installation/mail.md).
+- Set `DB_*` settings to point to your database configuration. If you don't want to set a db prefix, be careful to set `DB_PREFIX=` and not `DB_PREFIX=''` as docker will not expand this as an empty string.
+- Set `DB_HOST=db` or any name of the mysql container you will link to.
+
+
+### With supervisor
 
 The [`supervisor`](supervisor) examples shows you how to run monica with
 - a db container (mysql:5.7)
@@ -11,18 +38,23 @@ The [`supervisor`](supervisor) examples shows you how to run monica with
 This let you use `QUEUE_DRIVER=database` in your `.env` file.
 
 
-## Nginx proxy with a self-signed certificate
+### With nginx proxy and a self-signed certificate
 
-[`nginx-proxy-self-signed-ssl`](nginx-proxy-self-signed-ssl) shows you how to run monica with a self signed ssl certificate.
-  
-Set `VIRTUAL_HOST` and `SSL_SUBJECT` with the right domain, and update `SSL_KEY`, `SSL_CSR`, and `SSL_CERT` accordingly.
-As this generates a new self-signed certificate, it might not be usefull in production mode.
+[`nginx-proxy-self-signed-ssl`](nginx-proxy-self-signed-ssl) example shows you how to run monica with a self signed ssl certificate, to run the application in `https` mode.
+
+Set `VIRTUAL_HOST` and `SSL_SUBJECT` with the right domain name, and update `SSL_KEY`, `SSL_CSR`, and `SSL_CERT` accordingly.
+This example generates a new self-signed certificate.
+
+Your browser might warn you about security issue, as a self-signed certificate is not trusted in production mode. For a real domain certificate, see the next section.
 
 
-## Nginx proxy with Let's Encrypt certificate
+### With nginx proxy and a Let's Encrypt certificate
 
-[`nginx-proxy`](nginx-proxy) run monica and generates a Let's Encrypt certificate.
+[`nginx-proxy`](nginx-proxy) example shows you how to run monica and generate a [Let's Encrypt](https://letsencrypt.org/) certificate for your domain.
 
-- Set `VIRTUAL_HOST` and `LETSENCRYPT_HOST` with your domain
-- Set `LETSENCRYPT_EMAIL` with a valid email
-  
+Don't forget to set:
+- `VIRTUAL_HOST` and `LETSENCRYPT_HOST` with your domain
+- `LETSENCRYPT_EMAIL` with a valid email
+- `APP_URL` in your `.env` file with the right domain url
+
+You may want to set `APP_ENV=production` to force the use of `https` mode.
