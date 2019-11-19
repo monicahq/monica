@@ -21,7 +21,7 @@ RUN apk add --virtual .build-deps \
 RUN apk add supervisor netcat-openbsd \
         #- base
         php7 php7-intl php7-openssl php7-ctype \
-        php7-zip php7-zlib \
+        php7-zip php7-zlib php7-opcache \
         php7-redis \
         #- Authentication Guards
         php7-session php7-tokenizer \
