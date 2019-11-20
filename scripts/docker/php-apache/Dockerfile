@@ -81,7 +81,8 @@ WORKDIR /var/www/monica
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
 # correctly
-COPY readme.md \
+COPY --chown=monica:www-data \
+    readme.md \
     CONTRIBUTING.md \
     CHANGELOG.md \
     CONTRIBUTORS \
@@ -90,20 +91,19 @@ COPY readme.md \
     composer.json \
     composer.lock \
     ./
-COPY app ./app
-COPY bootstrap ./bootstrap
-COPY config ./config
-COPY database ./database
-COPY public ./public
-COPY resources ./resources
-COPY routes ./routes
+COPY --chown=monica:www-data app ./app
+COPY --chown=monica:www-data bootstrap ./bootstrap
+COPY --chown=monica:www-data config ./config
+COPY --chown=monica:www-data database ./database
+COPY --chown=monica:www-data public ./public
+COPY --chown=monica:www-data resources ./resources
+COPY --chown=monica:www-data routes ./routes
 
 RUN mkdir -p bootstrap/cache; \
     mkdir -p storage; \
-    chown -R monica:www-data .; \
-    chgrp -R www-data bootstrap/cache storage; \
+    chown -R monica:www-data bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
-COPY .env.example .env
+COPY --chown=monica:www-data .env.example .env
 
 # Php
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \

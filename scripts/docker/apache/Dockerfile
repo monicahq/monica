@@ -82,7 +82,7 @@ COPY --chown=monica:monica routes ./routes
 
 RUN mkdir -p bootstrap/cache; \
     mkdir -p storage; \
-    chgrp -R apache bootstrap/cache storage; \
+    chown -R monica:apache bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
 COPY --chown=monica:monica .env.example .env
 

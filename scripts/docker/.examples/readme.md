@@ -6,7 +6,7 @@ Example|Description
 -------|-----------
 [`supervisor`](supervisor)| uses supervisor to run a cron and a queue inside your container.
 [`nginx-proxy-self-signed-ssl`](nginx-proxy-self-signed-ssl)| shows you how to run monica with a self signed ssl certificate.
-[`nginx-proxy`](nginx-proxy)| show you how to run monica and generate a [Let's Encrypt](https://letsencrypt.org/) certificate.
+[`nginx-proxy`](nginx-proxy)| shows you how to run monica with https and generate a [Let's Encrypt](https://letsencrypt.org/) certificate.
 
 
 ## Run with docker-compose
@@ -58,3 +58,8 @@ Don't forget to set:
 - `APP_URL` in your `.env` file with the right domain url
 
 You may want to set `APP_ENV=production` to force the use of `https` mode.
+
+This example add a `redis` container, that can be used too, adding these variables to your `.env` file:
+- `REDIS_HOST=redis`: mandatory
+- `CACHE_DRIVER=redis`: to use redis as a cache table
+- `QUEUE_DRIVER=redis`: to use redis as a queue table

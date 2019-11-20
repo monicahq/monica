@@ -62,8 +62,12 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm7" ]; then
     fi
 
     # Run cron
-    if [ "$CRON_LEGACY" = "true" -a -f "/usr/sbin/crond" ]; then
-        crond -b -l 0
+    if [ -f "/usr/sbin/crond" ]; then
+        if [ "$CRON_LEGACY" = "true" ]; then
+            crond -b -l 0
+        else
+            echo "cron is not launched by default. Add CRON_LEGACY=true, use another container, or use supervisor."
+        fi
     fi
 
 fi
