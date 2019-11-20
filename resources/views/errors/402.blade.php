@@ -13,7 +13,7 @@
           @lang('settings.personalisation_paid_upgrade')
 
           @if(isset($exception) && $exception->getMessage())
-            <p>{{ $exception->getMessage() }}</p>
+            <p class="message">{{ $exception->getMessage() }}</p>
           @endif
 
           <p><a href="">{{ trans('auth.back_homepage') }}</a></p>
