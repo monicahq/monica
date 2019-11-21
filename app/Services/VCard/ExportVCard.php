@@ -236,7 +236,6 @@ class ExportVCard extends BaseService
         $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
     }
 
-
     /**
      * @param Contact $contact
      * @param VCard $vcard
@@ -244,5 +243,5 @@ class ExportVCard extends BaseService
     private function exportTags(Contact $contact, VCard $vcard)
     {
         $vcard->CATEGORIES = $contact->getTagsAsString();
-    }    
+    }
 }

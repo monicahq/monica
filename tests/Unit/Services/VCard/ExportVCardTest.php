@@ -436,7 +436,7 @@ class ExportVCardTest extends TestCase
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
-            'account_id' => $account->id
+            'account_id' => $account->id,
         ]);
 
         $tag = factory(Tag::class)->create([
