@@ -7276,16 +7276,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v4.3.7",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "d2e39dbddae68560fa6be0c576da6ad4e945b90d"
+                "reference": "831424efae0a1fe6642784bd52aae14ece6538e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/d2e39dbddae68560fa6be0c576da6ad4e945b90d",
-                "reference": "d2e39dbddae68560fa6be0c576da6ad4e945b90d",
+                "url": "https://api.github.com/repos/symfony/console/zipball/831424efae0a1fe6642784bd52aae14ece6538e6",
+                "reference": "831424efae0a1fe6642784bd52aae14ece6538e6",
                 "shasum": ""
             },
             "require": {
@@ -7347,7 +7347,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2019-11-05T15:00:49+00:00"
+            "time": "2019-11-13T07:29:07+00:00"
         },
         {
             "name": "symfony/css-selector",
@@ -7588,7 +7588,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.3.7",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
@@ -12525,16 +12525,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "7.0.8",
+            "version": "7.0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "aa0d179a13284c7420fc281fc32750e6cc7c9e2f"
+                "reference": "f1884187926fbb755a9aaf0b3836ad3165b478bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/aa0d179a13284c7420fc281fc32750e6cc7c9e2f",
-                "reference": "aa0d179a13284c7420fc281fc32750e6cc7c9e2f",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f1884187926fbb755a9aaf0b3836ad3165b478bf",
+                "reference": "f1884187926fbb755a9aaf0b3836ad3165b478bf",
                 "shasum": ""
             },
             "require": {
@@ -12584,7 +12584,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2019-09-17T06:24:36+00:00"
+            "time": "2019-11-20T13:55:58+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -12777,16 +12777,16 @@
         },
         {
             "name": "phpunit/phpcov",
-            "version": "6.0.0",
+            "version": "6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpcov.git",
-                "reference": "20c0628afab1e042892d371a7159f68bce4b411b"
+                "reference": "63c32ed2a7dd18e5bd07f58aed1982d2ec9f1960"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/20c0628afab1e042892d371a7159f68bce4b411b",
-                "reference": "20c0628afab1e042892d371a7159f68bce4b411b",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/63c32ed2a7dd18e5bd07f58aed1982d2ec9f1960",
+                "reference": "63c32ed2a7dd18e5bd07f58aed1982d2ec9f1960",
                 "shasum": ""
             },
             "require": {
@@ -12825,7 +12825,7 @@
             ],
             "description": "CLI frontend for php-code-coverage",
             "homepage": "https://github.com/sebastianbergmann/phpcov",
-            "time": "2019-02-20T07:20:38+00:00"
+            "time": "2019-11-18T13:38:50+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -12959,12 +12959,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb"
+                "reference": "40fb2c205dd261ab6bb42ec29545934f0db7026f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/261562a9c048aa10932e5e1d596da6c761cf95bb",
-                "reference": "261562a9c048aa10932e5e1d596da6c761cf95bb",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/40fb2c205dd261ab6bb42ec29545934f0db7026f",
+                "reference": "40fb2c205dd261ab6bb42ec29545934f0db7026f",
                 "shasum": ""
             },
             "conflict": {
@@ -13032,7 +13032,7 @@
                 "league/commonmark": "<0.18.3",
                 "magento/magento1ce": "<1.9.4.3",
                 "magento/magento1ee": ">=1,<1.14.4.3",
-                "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.3",
+                "magento/product-community-edition": ">=2,<2.2.10|>=2.3,<2.3.2",
                 "monolog/monolog": ">=1.8,<1.12",
                 "namshi/jose": "<2.2",
                 "onelogin/php-saml": "<2.10.4",
@@ -13169,7 +13169,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-11-15T09:15:43+00:00"
+            "time": "2019-11-19T14:18:57+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
@@ -13338,16 +13338,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "4.2.2",
+            "version": "4.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "f2a2c8e1c97c11ace607a7a667d73d47c19fe404"
+                "reference": "464c90d7bdf5ad4e8a6aea15c091fec0603d4368"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/f2a2c8e1c97c11ace607a7a667d73d47c19fe404",
-                "reference": "f2a2c8e1c97c11ace607a7a667d73d47c19fe404",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/464c90d7bdf5ad4e8a6aea15c091fec0603d4368",
+                "reference": "464c90d7bdf5ad4e8a6aea15c091fec0603d4368",
                 "shasum": ""
             },
             "require": {
@@ -13387,7 +13387,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2019-05-05T09:05:15+00:00"
+            "time": "2019-11-20T08:46:58+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -14164,16 +14164,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.6.5",
+            "version": "3.6.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "b1aae0d1a5a11908e0e5f9eb6795ab7bb3f43577"
+                "reference": "5e17a9af104de39321c47f73b253cece9df1cf2c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/b1aae0d1a5a11908e0e5f9eb6795ab7bb3f43577",
-                "reference": "b1aae0d1a5a11908e0e5f9eb6795ab7bb3f43577",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/5e17a9af104de39321c47f73b253cece9df1cf2c",
+                "reference": "5e17a9af104de39321c47f73b253cece9df1cf2c",
                 "shasum": ""
             },
             "require": {
@@ -14248,7 +14248,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-11-12T05:52:10+00:00"
+            "time": "2019-11-14T19:44:29+00:00"
         },
         {
             "name": "webmozart/assert",
