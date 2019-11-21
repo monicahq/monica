@@ -32,7 +32,7 @@ function pluralE (choice, choicesLength) {
 }
 function pluralF (choice, choicesLength) {
   let number = Math.abs(choice);
-  number = (number == 1) ? 0 : (((number == 2) ? 1 : ((number < 10 && number % 10 == 0)) ? 2 : 3);
+  number = (number == 1) ? 0 : ((number == 2) ? 1 : (number < 10 && number % 10 == 0) ? 2 : 3);
   return Math.min(number, choicesLength - 1);
 }
 
