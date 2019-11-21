@@ -18,10 +18,10 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 RUN apk update && apk upgrade
 RUN apk add --virtual .build-deps \
         curl openssl bash
-RUN apk add netcat-openbsd \
+RUN apk add supervisor netcat-openbsd \
         #- base
         php7 php7-intl php7-openssl php7-ctype \
-        php7-zip php7-zlib \
+        php7-zip php7-zlib php7-opcache \
         php7-redis \
         #- Authentication Guards
         php7-session php7-tokenizer \
@@ -48,7 +48,9 @@ RUN apk add netcat-openbsd \
         #- sentry/sentry
         php7-curl \
         #- cbor-php (webauthn)
-        php7-gmp
+        php7-gmp \
+        #- web-token/jwt-signature-algorithm-eddsa
+        php7-sodium
 
 # Create a user to own all the code and assets and give them a working
 # directory
@@ -60,7 +62,8 @@ WORKDIR /var/www/monica
 # Copy the local (outside Docker) source into the working directory,
 # copy system files into their proper homes, and set file ownership
 # correctly
-COPY readme.md \
+COPY --chown=monica:monica \
+    readme.md \
     CONTRIBUTING.md \
     CHANGELOG.md \
     CONTRIBUTORS \
@@ -69,20 +72,19 @@ COPY readme.md \
     composer.json \
     composer.lock \
     ./
-COPY app ./app
-COPY bootstrap ./bootstrap
-COPY config ./config
-COPY database ./database
-COPY public ./public
-COPY resources ./resources
-COPY routes ./routes
+COPY --chown=monica:monica app ./app
+COPY --chown=monica:monica bootstrap ./bootstrap
+COPY --chown=monica:monica config ./config
+COPY --chown=monica:monica database ./database
+COPY --chown=monica:monica public ./public
+COPY --chown=monica:monica resources ./resources
+COPY --chown=monica:monica routes ./routes
 
 RUN mkdir -p bootstrap/cache; \
     mkdir -p storage; \
-    chown -R monica:monica .; \
-    chgrp -R apache bootstrap/cache storage; \
+    chown -R monica:apache bootstrap/cache storage; \
     chmod -R g+w bootstrap/cache storage
-COPY .env.example .env
+COPY --chown=monica:monica .env.example .env
 
 # Php
 ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
@@ -106,7 +108,8 @@ USER monica
 RUN composer global require hirak/prestissimo; \
     composer install --no-interaction --no-suggest --no-progress --no-dev; \
     composer global remove hirak/prestissimo; \
-    composer clear-cache
+    composer clear-cache; \
+    rm -rf .composer
 USER root
 
 # Set crontab for schedules
@@ -122,7 +125,10 @@ RUN set -ex && \
 RUN apk del .build-deps && \
     rm -rf /var/cache/apk/*
 
-COPY scripts/docker/entrypoint.sh /usr/local/bin/
+COPY scripts/docker/entrypoint.sh \
+    scripts/docker/cron.sh \
+    scripts/docker/queue.sh \
+    /usr/local/bin/
 ENTRYPOINT ["entrypoint.sh"]
 
 # FPM
@@ -153,5 +159,4 @@ STOPSIGNAL SIGQUIT
 
 EXPOSE 9000
 
-COPY scripts/docker/fpm/supervisord.conf /etc/supervisord.conf
-CMD ["supervisord", "-c /etc/supervisord.conf"]
+CMD ["php-fpm7"]
