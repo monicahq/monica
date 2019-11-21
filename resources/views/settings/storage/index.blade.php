@@ -64,7 +64,7 @@
                         {{ $photo->original_filename }} ({{ round($photo->filesize / 1000) }} Kb)
                     </div>
                     <div class="table-cell">
-                        {{ $photo->contact()->name }}
+                        {{ $photo->contact->name }}
                     </div>
                   </li>
                 @endforeach

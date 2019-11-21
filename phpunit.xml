@@ -50,7 +50,7 @@
         <server name="DB_CONNECTION" value="testing"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="SESSION_DRIVER" value="array"/>
-        <server name="QUEUE_DRIVER" value="sync"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="APP_DEFAULT_LOCALE" value="en"/>
         <server name="LOG_CHANNEL" value="testing"/>
         <server name="DAV_ENABLED" value="true"/>
