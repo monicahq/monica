@@ -20,10 +20,14 @@ return [
         'endpoint' => env('MAILGUN_ENDPOINT', 'api.mailgun.net'),
     ],
 
+    'postmark' => [
+        'token' => env('POSTMARK_TOKEN'),
+    ],
+
     'ses' => [
-        'key' => env('SES_KEY'),
-        'secret' => env('SES_SECRET'),
-        'region' => 'us-east-1',
+        'key' => env('AWS_ACCESS_KEY_ID', env('SES_KEY')),
+        'secret' => env('AWS_SECRET_ACCESS_KEY', env('SES_SECRET')),
+        'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
     'stripe' => [
