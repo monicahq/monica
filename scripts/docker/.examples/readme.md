@@ -35,7 +35,7 @@ The [`supervisor`](supervisor) examples shows you how to run monica with
 - a db container (mysql:5.7)
 - an app container, which run `supervisord` to handle a web server/fpm, a cron, and a queue.
 
-This let you use `QUEUE_DRIVER=database` in your `.env` file.
+This let you use `QUEUE_CONNECTION=database` in your `.env` file.
 
 
 ### With nginx proxy and a self-signed certificate
@@ -62,4 +62,4 @@ You may want to set `APP_ENV=production` to force the use of `https` mode.
 This example add a `redis` container, that can be used too, adding these variables to your `.env` file:
 - `REDIS_HOST=redis`: mandatory
 - `CACHE_DRIVER=redis`: to use redis as a cache table
-- `QUEUE_DRIVER=redis`: to use redis as a queue table
+- `QUEUE_CONNECTION=redis`: to use redis as a queue table

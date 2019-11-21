@@ -14,7 +14,7 @@
 # To use redis:
 #- REDIS_HOST=redis
 #- CACHE_DRIVER=redis
-#- QUEUE_DRIVER=redis
+#- QUEUE_CONNECTION=redis
 #
 
 version: "3.4"
