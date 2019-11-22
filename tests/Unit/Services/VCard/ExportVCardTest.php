@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
+use App\Models\Contact\Tag;
 use Tests\Api\DAV\CardEtag;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
@@ -13,6 +14,7 @@ use App\Services\VCard\ExportVCard;
 use App\Models\Contact\ContactField;
 use Sabre\VObject\PHPUnitAssertions;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExportVCardTest extends TestCase
@@ -424,6 +426,37 @@ class ExportVCardTest extends TestCase
 
         $this->assertCount(
             self::defaultPropsCount + 9,
+            $vCard->children()
+        );
+
+        $this->assertVObjectEqualsVObject($this->getCard($contact), $vCard);
+    }
+
+    public function test_vcard_with_tags()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'name' => $tag->name,
+        ];
+
+        app(AssociateTag::class)->execute($request);
+
+        $exportVCard = app(ExportVCard::class);
+        $contact = $contact->refresh();
+        $vCard = $this->invokePrivateMethod($exportVCard, 'export', [$contact]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 7,
             $vCard->children()
         );
 
