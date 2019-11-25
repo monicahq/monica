@@ -105,7 +105,7 @@ return [
                 'oauth/scopes',
                 'oauth/personal-access-tokens',
                 'oauth/personal-access-tokens/{token_id}',
-                'oauth/validate2fa'
+                'oauth/validate2fa',
             ],
 
             /*
