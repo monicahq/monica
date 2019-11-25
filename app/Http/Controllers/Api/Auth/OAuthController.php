@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @group OAuth Authentication
+ */
 class OAuthController extends Controller
 {
     use JsonRespondController;

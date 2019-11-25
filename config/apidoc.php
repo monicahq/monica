@@ -61,15 +61,14 @@ return [
                  */
                 'domains' => [
                     '*',
-                    // 'domain1.*',
                 ],
 
                 /*
                  * Match only routes whose paths match this pattern (use * as a wildcard to match any characters).
                  */
                 'prefixes' => [
-                    '*',
-                    // 'users/*',
+                    'api/*',
+                    'oauth/*',
                 ],
 
                 /*
@@ -87,7 +86,6 @@ return [
              * Note that the route must be referenced by name here (wildcards are supported).
              */
             'include' => [
-                // 'users.index', 'healthcheck*'
             ],
 
             /*
@@ -96,7 +94,18 @@ return [
              * Note that the route must be referenced by name here (wildcards are supported).
              */
             'exclude' => [
-                // 'users.create', 'admin.*'
+                'oauth.verify',
+                'oauth/authorize',
+                'oauth/token',
+                'oauth/tokens',
+                'oauth/tokens/{token_id}',
+                'oauth/token/refresh',
+                'oauth/clients',
+                'oauth/clients/{client_id}',
+                'oauth/scopes',
+                'oauth/personal-access-tokens',
+                'oauth/personal-access-tokens/{token_id}',
+                'oauth/validate2fa'
             ],
 
             /*
@@ -109,7 +118,7 @@ return [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
-                    // 'Authorization' => 'Bearer {token}',
+                    'Authorization' => 'Bearer {token}',
                     // 'Api-Version' => 'v2',
                 ],
 
@@ -123,7 +132,7 @@ return [
                      * API calls will be made only for routes in this group matching these HTTP methods (GET, POST, etc).
                      * List the methods here or use '*' to mean all methods. Leave empty to disable API calls.
                      */
-                    'methods' => ['GET'],
+                    'methods' => ['*'],
 
                     /*
                      * Laravel config variables which should be set for the API call.
@@ -213,6 +222,7 @@ return [
      *
      */
     'example_languages' => [
+        'php',
         'bash',
         'javascript',
     ],

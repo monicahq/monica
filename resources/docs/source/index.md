@@ -2,6 +2,7 @@
 title: API Reference
 
 language_tabs:
+- php
 - bash
 - javascript
 
@@ -29,11 +30,33 @@ Welcome to the generated API reference.
 <br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/activities',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+        'query' => [
+            'limit' => '3',
+            'page' => '8',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
-    -G "https://monicalocal.test/api/activities?limit=11&page=18" \
+    -G "https://monicalocal.test/api/activities?limit=3&page=8" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -42,8 +65,8 @@ const url = new URL(
 );
 
 let params = {
-    "limit": "11",
-    "page": "18",
+    "limit": "3",
+    "page": "8",
 };
 Object.keys(params)
     .forEach(key => url.searchParams.append(key, params[key]));
@@ -51,6 +74,7 @@ Object.keys(params)
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -87,11 +111,29 @@ Parameter | Status | Description
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/activities',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/activities" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -102,6 +144,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -113,6 +156,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/activities`
@@ -125,11 +175,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/activities/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/activities/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -140,6 +208,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -170,11 +239,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/activities/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/activities/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -185,6 +272,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -196,6 +284,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/activities/{activity}`
@@ -210,11 +305,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/activities/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/activities/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -225,6 +338,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -236,6 +350,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/activities/{activity}`
@@ -248,11 +369,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/activities',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/activities" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -263,6 +402,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -296,11 +436,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/activitytypecategories',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/activitytypecategories" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -311,6 +469,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -341,11 +500,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/activitytypecategories',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/activitytypecategories" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -356,6 +533,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -367,6 +545,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/activitytypecategories`
@@ -379,11 +564,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/activitytypecategories/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/activitytypecategories/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -394,6 +597,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -424,11 +628,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/activitytypecategories/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/activitytypecategories/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -439,6 +661,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -450,6 +673,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/activitytypecategories/{activitytypecategory}`
@@ -464,11 +694,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/activitytypecategories/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/activitytypecategories/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -479,6 +727,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -490,6 +739,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/activitytypecategories/{activitytypecategory}`
@@ -505,11 +761,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/activitytypes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/activitytypes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -520,6 +794,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -550,11 +825,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/activitytypes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/activitytypes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -565,6 +858,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -576,6 +870,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/activitytypes`
@@ -588,11 +889,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/activitytypes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/activitytypes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -603,6 +922,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -633,11 +953,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/activitytypes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/activitytypes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -648,6 +986,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -659,6 +998,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/activitytypes/{activitytype}`
@@ -673,11 +1019,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/activitytypes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/activitytypes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -688,6 +1052,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -699,6 +1064,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/activitytypes/{activitytype}`
@@ -714,11 +1086,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/addresses',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/addresses" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -729,6 +1119,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -759,11 +1150,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/addresses',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/addresses" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -774,6 +1183,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -785,6 +1195,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/addresses`
@@ -797,11 +1214,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/addresses/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/addresses/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -812,6 +1247,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -842,11 +1278,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/addresses/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/addresses/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -857,6 +1311,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -868,6 +1323,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/addresses/{address}`
@@ -882,11 +1344,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/addresses/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/addresses/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -897,6 +1377,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -908,6 +1389,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/addresses/{address}`
@@ -920,11 +1408,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/addresses',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/addresses" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -935,6 +1441,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -968,11 +1475,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/calls',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/calls" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -983,6 +1508,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1013,11 +1539,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/calls',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/calls" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1028,6 +1572,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1039,6 +1584,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/calls`
@@ -1051,11 +1603,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/calls/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/calls/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1066,6 +1636,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1096,11 +1667,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/calls/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/calls/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1111,6 +1700,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1122,6 +1712,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/calls/{call}`
@@ -1136,11 +1733,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/calls/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/calls/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1151,6 +1766,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1162,6 +1778,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/calls/{call}`
@@ -1174,11 +1797,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/calls',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/calls" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1189,6 +1830,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1222,11 +1864,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/companies',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/companies" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1237,6 +1897,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1267,11 +1928,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/companies',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/companies" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1282,6 +1961,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1293,6 +1973,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/companies`
@@ -1305,11 +1992,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/companies/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/companies/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1320,6 +2025,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1350,11 +2056,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/companies/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/companies/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1365,6 +2089,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1376,6 +2101,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/companies/{company}`
@@ -1390,11 +2122,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/companies/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/companies/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1405,6 +2155,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1416,6 +2167,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/companies/{company}`
@@ -1431,11 +2189,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contactfieldtypes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contactfieldtypes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1446,6 +2222,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1476,11 +2253,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/contactfieldtypes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/contactfieldtypes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1491,6 +2286,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1502,6 +2298,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/contactfieldtypes`
@@ -1514,11 +2317,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contactfieldtypes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contactfieldtypes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1529,6 +2350,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1559,11 +2381,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/contactfieldtypes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/contactfieldtypes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1574,6 +2414,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1585,6 +2426,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/contactfieldtypes/{contactfieldtype}`
@@ -1599,11 +2447,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/contactfieldtypes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/contactfieldtypes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1614,6 +2480,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1625,6 +2492,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/contactfieldtypes/{contactfieldtype}`
@@ -1640,11 +2514,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/contactfields',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/contactfields" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1655,6 +2547,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1666,6 +2559,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/contactfields`
@@ -1678,11 +2578,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contactfields/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contactfields/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1693,6 +2611,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1723,11 +2642,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/contactfields/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/contactfields/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1738,6 +2675,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1749,6 +2687,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/contactfields/{contactfield}`
@@ -1763,11 +2708,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/contactfields/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/contactfields/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1778,6 +2741,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1789,6 +2753,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/contactfields/{contactfield}`
@@ -1801,11 +2772,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/contactfields',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/contactfields" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1816,6 +2805,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1852,11 +2842,29 @@ ones.
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1867,6 +2875,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1897,11 +2906,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/contacts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/contacts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1912,6 +2939,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1923,6 +2951,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/contacts`
@@ -1935,11 +2970,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1950,6 +3003,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -1980,11 +3034,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/contacts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/contacts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -1995,6 +3067,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2006,6 +3079,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/contacts/{contact}`
@@ -2020,11 +3100,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/contacts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/contacts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2035,6 +3133,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2046,6 +3145,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/contacts/{contact}`
@@ -2058,11 +3164,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/contacts/1/setMe',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/contacts/1/setMe" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2073,6 +3197,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2084,6 +3209,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/contacts/{contact}/setMe`
@@ -2099,11 +3231,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/conversations',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/conversations" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2114,6 +3264,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2144,11 +3295,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/conversations',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/conversations" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2159,6 +3328,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2170,6 +3340,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/conversations`
@@ -2182,11 +3359,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/conversations/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/conversations/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2197,6 +3392,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2227,11 +3423,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/conversations/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/conversations/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2242,6 +3456,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2253,6 +3468,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/conversations/{conversation}`
@@ -2267,11 +3489,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/conversations/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/conversations/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2282,6 +3522,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2293,6 +3534,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/conversations/{conversation}`
@@ -2305,11 +3553,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/conversations',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/conversations" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2320,6 +3586,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2353,11 +3620,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/debts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/debts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2368,6 +3653,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2398,11 +3684,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/debts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/debts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2413,6 +3717,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2424,6 +3729,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/debts`
@@ -2436,11 +3748,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/debts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/debts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2451,6 +3781,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2481,11 +3812,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/debts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/debts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2496,6 +3845,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2507,6 +3857,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/debts/{debt}`
@@ -2521,11 +3878,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/debts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/debts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2536,6 +3911,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2547,6 +3923,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/debts/{debt}`
@@ -2559,11 +3942,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/debts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/debts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2574,6 +3975,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2607,11 +4009,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/documents',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/documents" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2622,6 +4042,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2652,11 +4073,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/documents/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/documents/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2667,6 +4106,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2697,11 +4137,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/documents',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/documents" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2712,6 +4170,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2745,11 +4204,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/genders',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/genders" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2760,6 +4237,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2790,11 +4268,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/genders',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/genders" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2805,6 +4301,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2816,6 +4313,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/genders`
@@ -2828,11 +4332,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/genders/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/genders/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2843,6 +4365,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2873,11 +4396,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/genders/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/genders/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2888,6 +4429,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2899,6 +4441,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/genders/{gender}`
@@ -2913,11 +4462,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/genders/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/genders/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2928,6 +4495,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2939,6 +4507,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/genders/{gender}`
@@ -2954,11 +4529,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/gifts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/gifts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -2969,6 +4562,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -2999,11 +4593,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/gifts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/gifts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3014,6 +4626,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3025,6 +4638,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/gifts`
@@ -3037,11 +4657,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/gifts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/gifts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3052,6 +4690,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3082,11 +4721,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/gifts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/gifts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3097,6 +4754,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3108,6 +4766,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/gifts/{gift}`
@@ -3122,11 +4787,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/gifts/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/gifts/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3137,6 +4820,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3148,6 +4832,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/gifts/{gift}`
@@ -3160,11 +4851,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/gifts',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/gifts" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3175,6 +4884,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3208,11 +4918,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/journal',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/journal" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3223,6 +4951,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3253,11 +4982,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/journal',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/journal" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3268,6 +5015,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3279,6 +5027,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/journal`
@@ -3291,11 +5046,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/journal/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/journal/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3306,6 +5079,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3336,11 +5110,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/journal/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/journal/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3351,6 +5143,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3362,6 +5155,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/journal/{journal}`
@@ -3376,11 +5176,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/journal/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/journal/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3391,6 +5209,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3402,6 +5221,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/journal/{journal}`
@@ -3417,11 +5243,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/lifeevents',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/lifeevents" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3432,6 +5276,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3462,11 +5307,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/lifeevents',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/lifeevents" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3477,6 +5340,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3488,6 +5352,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/lifeevents`
@@ -3500,11 +5371,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/lifeevents/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/lifeevents/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3515,6 +5404,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3545,11 +5435,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/lifeevents/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/lifeevents/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3560,6 +5468,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3571,6 +5480,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/lifeevents/{lifeevent}`
@@ -3585,11 +5501,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/lifeevents/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/lifeevents/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3600,6 +5534,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3611,6 +5546,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/lifeevents/{lifeevent}`
@@ -3626,11 +5568,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/conversations/1/messages',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/conversations/1/messages" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3641,6 +5601,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3652,6 +5613,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/conversations/{conversation}/messages`
@@ -3664,11 +5632,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/conversations/1/messages/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/conversations/1/messages/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3679,6 +5665,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3690,6 +5677,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/conversations/{conversation}/messages/{message}`
@@ -3704,11 +5698,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/conversations/1/messages/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/conversations/1/messages/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3719,6 +5731,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3730,6 +5743,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/conversations/{conversation}/messages/{message}`
@@ -3745,11 +5765,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/statistics',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/statistics" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3760,6 +5798,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3797,11 +5836,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/compliance',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/compliance" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3812,6 +5869,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3868,11 +5926,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/compliance/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/compliance/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3883,6 +5959,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -3922,11 +5999,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/currencies',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/currencies" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -3937,6 +6032,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4088,11 +6184,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/currencies/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/currencies/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4103,6 +6217,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4139,11 +6254,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/countries',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/countries" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4154,6 +6287,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4187,11 +6321,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/notes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/notes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4202,6 +6354,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4232,11 +6385,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/notes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/notes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4247,6 +6418,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4258,6 +6430,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/notes`
@@ -4270,11 +6449,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/notes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/notes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4285,6 +6482,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4315,11 +6513,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/notes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/notes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4330,6 +6546,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4341,6 +6558,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/notes/{note}`
@@ -4355,11 +6579,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/notes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/notes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4370,6 +6612,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4381,6 +6624,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/notes/{note}`
@@ -4393,11 +6643,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/notes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/notes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4408,6 +6676,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4433,6 +6702,141 @@ fetch(url, {
 
 <!-- END_fdd8df9779f2ebe397ed5e6a2ff7473b -->
 
+#OAuth Authentication
+
+
+<!-- START_9bb93d7ddf3f622bc99d0f644c88f537 -->
+## Display a log in form for oauth accessToken.
+
+> Example request:
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/oauth/login',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```bash
+curl -X GET \
+    -G "https://monicalocal.test/oauth/login" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "https://monicalocal.test/oauth/login"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+null
+```
+
+### HTTP Request
+`GET oauth/login`
+
+
+<!-- END_9bb93d7ddf3f622bc99d0f644c88f537 -->
+
+<!-- START_c599020b8dabac913a5a326a94d61a23 -->
+## Log in a user and returns an accessToken.
+
+> Example request:
+
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/oauth/login',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
+```bash
+curl -X POST \
+    "https://monicalocal.test/oauth/login" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
+```
+
+```javascript
+const url = new URL(
+    "https://monicalocal.test/oauth/login"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer {token}",
+};
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (422):
+
+```json
+{
+    "error": {
+        "message": [
+            "The email field is required.",
+            "The password field is required."
+        ],
+        "error_code": 32
+    }
+}
+```
+
+### HTTP Request
+`POST oauth/login`
+
+
+<!-- END_c599020b8dabac913a5a326a94d61a23 -->
+
 #Occupations
 
 
@@ -4441,11 +6845,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/occupations',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/occupations" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4456,6 +6878,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4486,11 +6909,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/occupations',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/occupations" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4501,6 +6942,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4512,6 +6954,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/occupations`
@@ -4524,11 +6973,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/occupations/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/occupations/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4539,6 +7006,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4569,11 +7037,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/occupations/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/occupations/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4584,6 +7070,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4595,6 +7082,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/occupations/{occupation}`
@@ -4609,11 +7103,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/occupations/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/occupations/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4624,6 +7136,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4635,6 +7148,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/occupations/{occupation}`
@@ -4650,11 +7170,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/pets',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/pets" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4665,6 +7203,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4695,11 +7234,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/pets',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/pets" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4710,6 +7267,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4721,6 +7279,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/pets`
@@ -4733,11 +7298,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/pets/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/pets/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4748,6 +7331,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4778,11 +7362,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/pets/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/pets/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4793,6 +7395,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4804,6 +7407,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/pets/{pet}`
@@ -4818,11 +7428,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/pets/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/pets/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4833,6 +7461,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4844,6 +7473,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/pets/{pet}`
@@ -4856,11 +7492,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/pets',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/pets" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4871,6 +7525,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4904,11 +7559,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/places',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/places" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4919,6 +7592,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4949,11 +7623,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/places',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/places" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -4964,6 +7656,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -4975,6 +7668,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/places`
@@ -4987,11 +7687,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/places/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/places/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5002,6 +7720,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5032,11 +7751,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/places/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/places/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5047,6 +7784,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5058,6 +7796,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/places/{place}`
@@ -5072,11 +7817,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/places/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/places/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5087,6 +7850,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5098,6 +7862,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/places/{place}`
@@ -5113,11 +7884,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/relationshiptypegroups',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/relationshiptypegroups" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5128,6 +7917,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5158,11 +7948,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/relationshiptypegroups/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/relationshiptypegroups/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5173,6 +7981,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5206,11 +8015,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/relationshiptypes',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/relationshiptypes" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5221,6 +8048,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5251,11 +8079,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/relationshiptypes/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/relationshiptypes/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5266,6 +8112,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5299,11 +8146,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/relationships',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/relationships" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5314,6 +8179,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5325,6 +8191,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/relationships`
@@ -5337,11 +8210,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/relationships/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/relationships/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5352,6 +8243,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5382,11 +8274,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/relationships/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/relationships/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5397,6 +8307,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5408,6 +8319,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/relationships/{relationship}`
@@ -5422,11 +8340,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/relationships/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/relationships/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5437,6 +8373,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5448,6 +8385,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/relationships/{relationship}`
@@ -5460,11 +8404,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/relationships',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/relationships" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5475,6 +8437,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5508,11 +8471,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/reminders',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/reminders" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5523,6 +8504,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5553,11 +8535,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/reminders',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/reminders" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5568,6 +8568,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5579,6 +8580,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/reminders`
@@ -5591,11 +8599,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/reminders/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/reminders/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5606,6 +8632,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5636,11 +8663,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/reminders/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/reminders/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5651,6 +8696,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5662,6 +8708,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/reminders/{reminder}`
@@ -5676,11 +8729,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/reminders/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/reminders/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5691,6 +8762,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5702,6 +8774,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/reminders/{reminder}`
@@ -5714,11 +8793,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/reminders',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/reminders" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5729,6 +8826,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5762,11 +8860,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/contacts/1/setTags',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/contacts/1/setTags" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5777,6 +8893,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5788,6 +8905,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/contacts/{contact}/setTags`
@@ -5800,11 +8924,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/contacts/1/unsetTags',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/contacts/1/unsetTags" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5815,6 +8957,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5826,6 +8969,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/contacts/{contact}/unsetTags`
@@ -5838,11 +8988,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/contacts/1/unsetTag',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/contacts/1/unsetTag" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5853,6 +9021,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5864,6 +9033,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/contacts/{contact}/unsetTag`
@@ -5879,11 +9055,29 @@ ones.
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/tags',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/tags" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5894,6 +9088,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5924,11 +9119,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/tags',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/tags" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5939,6 +9152,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -5950,6 +9164,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/tags`
@@ -5962,11 +9183,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/tags/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/tags/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -5977,6 +9216,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6007,11 +9247,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/tags/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/tags/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6022,6 +9280,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6033,6 +9292,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/tags/{tag}`
@@ -6047,11 +9313,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/tags/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/tags/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6062,6 +9346,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6073,6 +9358,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/tags/{tag}`
@@ -6088,11 +9380,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/tasks',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/tasks" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6103,6 +9413,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6133,11 +9444,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/tasks',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/tasks" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6148,6 +9477,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6159,6 +9489,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/tasks`
@@ -6171,11 +9508,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/tasks/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/tasks/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6186,6 +9541,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6216,11 +9572,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->put(
+    'https://monicalocal.test/api/tasks/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X PUT \
     "https://monicalocal.test/api/tasks/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6231,6 +9605,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6242,6 +9617,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `PUT api/tasks/{task}`
@@ -6256,11 +9638,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->delete(
+    'https://monicalocal.test/api/tasks/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X DELETE \
     "https://monicalocal.test/api/tasks/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6271,6 +9671,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6282,6 +9683,13 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `DELETE api/tasks/{task}`
@@ -6294,11 +9702,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/contacts/1/tasks',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/contacts/1/tasks" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6309,6 +9735,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6342,11 +9769,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/me',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/me" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6357,6 +9802,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6387,11 +9833,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/me/compliance',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/me/compliance" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6402,6 +9866,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6432,11 +9897,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->get(
+    'https://monicalocal.test/api/me/compliance/1',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X GET \
     -G "https://monicalocal.test/api/me/compliance/1" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6447,6 +9930,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6477,11 +9961,29 @@ fetch(url, {
 
 > Example request:
 
+```php
+
+$client = new \GuzzleHttp\Client();
+$response = $client->post(
+    'https://monicalocal.test/api/me/compliance',
+    [
+        'headers' => [
+            'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer {token}',
+        ],
+    ]
+);
+$body = $response->getBody();
+print_r(json_decode((string) $body));
+```
+
 ```bash
 curl -X POST \
     "https://monicalocal.test/api/me/compliance" \
     -H "Content-Type: application/json" \
-    -H "Accept: application/json"
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer {token}"
 ```
 
 ```javascript
@@ -6492,6 +9994,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
+    "Authorization": "Bearer {token}",
 };
 
 fetch(url, {
@@ -6503,10650 +10006,18 @@ fetch(url, {
 ```
 
 
+> Example response (401):
+
+```json
+{
+    "message": "Unauthenticated."
+}
+```
 
 ### HTTP Request
 `POST api/me/compliance`
 
 
 <!-- END_93263693603c69f0172b2474dd65074c -->
-
-#general
-
-
-<!-- START_df601fa16fbaec26f87fb38967071b66 -->
-## File flag action.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/pragmarx/countries/flag/file/1.svg" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/pragmarx/countries/flag/file/1.svg"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (500):
-
-```json
-{
-    "message": "The file \"\/home\/asbin\/devel\/monica\/monica\/vendor\/pragmarx\/countries\/src\/data\/flags\/.svg\" does not exist"
-}
-```
-
-### HTTP Request
-`GET pragmarx/countries/flag/file/{cca3}.svg`
-
-
-<!-- END_df601fa16fbaec26f87fb38967071b66 -->
-
-<!-- START_b7319d5ae5a92a7f6348583003629b9b -->
-## Download flag action.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/pragmarx/countries/flag/download/1.svg" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/pragmarx/countries/flag/download/1.svg"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (500):
-
-```json
-{
-    "message": "The file \"\/home\/asbin\/devel\/monica\/monica\/vendor\/pragmarx\/countries\/src\/data\/flags\/.svg\" does not exist"
-}
-```
-
-### HTTP Request
-`GET pragmarx/countries/flag/download/{cca3}.svg`
-
-
-<!-- END_b7319d5ae5a92a7f6348583003629b9b -->
-
-<!-- START_22786cffefa26cc6382448935f6d1ea0 -->
-## Show the login Webauthn request after a login authentication.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/webauthn/auth" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/webauthn/auth"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET webauthn/auth`
-
-
-<!-- END_22786cffefa26cc6382448935f6d1ea0 -->
-
-<!-- START_0dcb6f8a59f11c87085506b46976cdaa -->
-## Authenticate a webauthn request.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/webauthn/auth" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/webauthn/auth"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST webauthn/auth`
-
-
-<!-- END_0dcb6f8a59f11c87085506b46976cdaa -->
-
-<!-- START_96e4b3ef127cb0831a67e08757bd00ec -->
-## Return the register data to attempt a Webauthn registration.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/webauthn/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/webauthn/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET webauthn/register`
-
-
-<!-- END_96e4b3ef127cb0831a67e08757bd00ec -->
-
-<!-- START_61aaf668241de257a881c5cc1ad54391 -->
-## Validate and create the Webauthn request.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/webauthn/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/webauthn/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST webauthn/register`
-
-
-<!-- END_61aaf668241de257a881c5cc1ad54391 -->
-
-<!-- START_0d9596ca730c1107eeb32baf83d96c09 -->
-## Remove an existing Webauthn key.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/webauthn/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/webauthn/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE webauthn/{id}`
-
-
-<!-- END_0d9596ca730c1107eeb32baf83d96c09 -->
-
-<!-- START_c6c5c00d6ac7f771f157dff4a2889b1a -->
-## _debugbar/open
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_debugbar/open" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_debugbar/open"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (404):
-
-```json
-{
-    "message": ""
-}
-```
-
-### HTTP Request
-`GET _debugbar/open`
-
-
-<!-- END_c6c5c00d6ac7f771f157dff4a2889b1a -->
-
-<!-- START_7b167949c615f4a7e7b673f8d5fdaf59 -->
-## Return Clockwork output
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_debugbar/clockwork/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_debugbar/clockwork/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (404):
-
-```json
-{
-    "message": ""
-}
-```
-
-### HTTP Request
-`GET _debugbar/clockwork/{id}`
-
-
-<!-- END_7b167949c615f4a7e7b673f8d5fdaf59 -->
-
-<!-- START_01a252c50bd17b20340dbc5a91cea4b7 -->
-## _debugbar/telescope/{id}
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_debugbar/telescope/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_debugbar/telescope/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (404):
-
-```json
-{
-    "message": ""
-}
-```
-
-### HTTP Request
-`GET _debugbar/telescope/{id}`
-
-
-<!-- END_01a252c50bd17b20340dbc5a91cea4b7 -->
-
-<!-- START_5f8a640000f5db43332951f0d77378c4 -->
-## Return the stylesheets for the Debugbar
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_debugbar/assets/stylesheets" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_debugbar/assets/stylesheets"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (404):
-
-```json
-{
-    "message": ""
-}
-```
-
-### HTTP Request
-`GET _debugbar/assets/stylesheets`
-
-
-<!-- END_5f8a640000f5db43332951f0d77378c4 -->
-
-<!-- START_db7a887cf930ce3c638a8708fd1a75ee -->
-## Return the javascript for the Debugbar
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_debugbar/assets/javascript" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_debugbar/assets/javascript"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (404):
-
-```json
-{
-    "message": ""
-}
-```
-
-### HTTP Request
-`GET _debugbar/assets/javascript`
-
-
-<!-- END_db7a887cf930ce3c638a8708fd1a75ee -->
-
-<!-- START_0973671c4f56e7409202dc85c868d442 -->
-## Forget a cache key
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/_debugbar/cache/1/" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_debugbar/cache/1/"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE _debugbar/cache/{key}/{tags?}`
-
-
-<!-- END_0973671c4f56e7409202dc85c868d442 -->
-
-<!-- START_5872faed3feb2d483747b62c0b3e6914 -->
-## u2f/register
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/u2f/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/u2f/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET u2f/register`
-
-
-<!-- END_5872faed3feb2d483747b62c0b3e6914 -->
-
-<!-- START_40ba359a51d1a713c1bd373803bdce7e -->
-## u2f/register
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/u2f/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/u2f/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST u2f/register`
-
-
-<!-- END_40ba359a51d1a713c1bd373803bdce7e -->
-
-<!-- START_bbda0da09702620ebf6007219afc8d6a -->
-## u2f/auth
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/u2f/auth" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/u2f/auth"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET u2f/auth`
-
-
-<!-- END_bbda0da09702620ebf6007219afc8d6a -->
-
-<!-- START_b99f3e3b6d4cffc9b62371757a5070bb -->
-## u2f/auth
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/u2f/auth" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/u2f/auth"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST u2f/auth`
-
-
-<!-- END_b99f3e3b6d4cffc9b62371757a5070bb -->
-
-<!-- START_e4c20ab9c4727524c3daa74a53e56200 -->
-## Display the form to gather additional payment verification for the given payment.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/stripe/payment/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/stripe/payment/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (500):
-
-```json
-{
-    "message": "No such payment_intent: 1"
-}
-```
-
-### HTTP Request
-`GET stripe/payment/{id}`
-
-
-<!-- END_e4c20ab9c4727524c3daa74a53e56200 -->
-
-<!-- START_15ae8ca17c014b55868e68dc48ee5047 -->
-## Handle a Stripe webhook call.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/stripe/webhook" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/stripe/webhook"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST stripe/webhook`
-
-
-<!-- END_15ae8ca17c014b55868e68dc48ee5047 -->
-
-<!-- START_41d2f7697c6118f36f8b676e5bd19ea0 -->
-## Login using the given user ID / email.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_dusk/login/1/" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_dusk/login/1/"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`GET _dusk/login/{userId}/{guard?}`
-
-
-<!-- END_41d2f7697c6118f36f8b676e5bd19ea0 -->
-
-<!-- START_6375e7300024aae0f6af283b4a72cb1b -->
-## Log the user out of the application.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_dusk/logout/" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_dusk/logout/"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`GET _dusk/logout/{guard?}`
-
-
-<!-- END_6375e7300024aae0f6af283b4a72cb1b -->
-
-<!-- START_09dcf3e9a9b6585fa40e4ead6c3c858a -->
-## Retrieve the authenticated user identifier and class name.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/_dusk/user/" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/_dusk/user/"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-[]
-```
-
-### HTTP Request
-`GET _dusk/user/{guard?}`
-
-
-<!-- END_09dcf3e9a9b6585fa40e4ead6c3c858a -->
-
-<!-- START_93ea5dc447bb42e673cefd0a4726fe21 -->
-## Display the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/dav/" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/dav/"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Invalid credentials."
-}
-```
-
-### HTTP Request
-`GET dav/{path?}`
-
-`POST dav/{path?}`
-
-`PUT dav/{path?}`
-
-`PATCH dav/{path?}`
-
-`DELETE dav/{path?}`
-
-`OPTIONS dav/{path?}`
-
-`GET dav/{path?}`
-
-`POST dav/{path?}`
-
-`PUT dav/{path?}`
-
-`PATCH dav/{path?}`
-
-`DELETE dav/{path?}`
-
-`PROPFIND dav/{path?}`
-
-`PROPPATCH dav/{path?}`
-
-`MKCOL dav/{path?}`
-
-`COPY dav/{path?}`
-
-`MOVE dav/{path?}`
-
-`LOCK dav/{path?}`
-
-`UNLOCK dav/{path?}`
-
-`OPTIONS dav/{path?}`
-
-`REPORT dav/{path?}`
-
-
-<!-- END_93ea5dc447bb42e673cefd0a4726fe21 -->
-
-<!-- START_0c068b4037fb2e47e71bd44bd36e3e2a -->
-## Authorize a client to access the user&#039;s account.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/oauth/authorize" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/authorize"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET oauth/authorize`
-
-
-<!-- END_0c068b4037fb2e47e71bd44bd36e3e2a -->
-
-<!-- START_e48cc6a0b45dd21b7076ab2c03908687 -->
-## Approve the authorization request.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/authorize" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/authorize"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/authorize`
-
-
-<!-- END_e48cc6a0b45dd21b7076ab2c03908687 -->
-
-<!-- START_de5d7581ef1275fce2a229b6b6eaad9c -->
-## Deny the authorization request.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/oauth/authorize" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/authorize"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE oauth/authorize`
-
-
-<!-- END_de5d7581ef1275fce2a229b6b6eaad9c -->
-
-<!-- START_a09d20357336aa979ecd8e3972ac9168 -->
-## Authorize a client to access the user&#039;s account.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/token" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/token"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/token`
-
-
-<!-- END_a09d20357336aa979ecd8e3972ac9168 -->
-
-<!-- START_d6a56149547e03307199e39e03e12d1c -->
-## Get all of the authorized tokens for the authenticated user.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/oauth/tokens" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/tokens"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET oauth/tokens`
-
-
-<!-- END_d6a56149547e03307199e39e03e12d1c -->
-
-<!-- START_a9a802c25737cca5324125e5f60b72a5 -->
-## Delete the given token.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/oauth/tokens/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/tokens/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE oauth/tokens/{token_id}`
-
-
-<!-- END_a9a802c25737cca5324125e5f60b72a5 -->
-
-<!-- START_abe905e69f5d002aa7d26f433676d623 -->
-## Get a fresh transient token cookie for the authenticated user.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/token/refresh" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/token/refresh"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/token/refresh`
-
-
-<!-- END_abe905e69f5d002aa7d26f433676d623 -->
-
-<!-- START_babcfe12d87b8708f5985e9d39ba8f2c -->
-## Get all of the clients for the authenticated user.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/oauth/clients" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/clients"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET oauth/clients`
-
-
-<!-- END_babcfe12d87b8708f5985e9d39ba8f2c -->
-
-<!-- START_9eabf8d6e4ab449c24c503fcb42fba82 -->
-## Store a new client.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/clients" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/clients"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/clients`
-
-
-<!-- END_9eabf8d6e4ab449c24c503fcb42fba82 -->
-
-<!-- START_784aec390a455073fc7464335c1defa1 -->
-## Update the given client.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/oauth/clients/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/clients/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT oauth/clients/{client_id}`
-
-
-<!-- END_784aec390a455073fc7464335c1defa1 -->
-
-<!-- START_1f65a511dd86ba0541d7ba13ca57e364 -->
-## Delete the given client.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/oauth/clients/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/clients/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE oauth/clients/{client_id}`
-
-
-<!-- END_1f65a511dd86ba0541d7ba13ca57e364 -->
-
-<!-- START_9e281bd3a1eb1d9eb63190c8effb607c -->
-## Get all of the available scopes for the application.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/oauth/scopes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/scopes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET oauth/scopes`
-
-
-<!-- END_9e281bd3a1eb1d9eb63190c8effb607c -->
-
-<!-- START_9b2a7699ce6214a79e0fd8107f8b1c9e -->
-## Get all of the personal access tokens for the authenticated user.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/oauth/personal-access-tokens" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/personal-access-tokens"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET oauth/personal-access-tokens`
-
-
-<!-- END_9b2a7699ce6214a79e0fd8107f8b1c9e -->
-
-<!-- START_a8dd9c0a5583742e671711f9bb3ee406 -->
-## Create a new personal access token for the user.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/personal-access-tokens" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/personal-access-tokens"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/personal-access-tokens`
-
-
-<!-- END_a8dd9c0a5583742e671711f9bb3ee406 -->
-
-<!-- START_bae65df80fd9d72a01439241a9ea20d0 -->
-## Delete the given token.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/oauth/personal-access-tokens/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/personal-access-tokens/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE oauth/personal-access-tokens/{token_id}`
-
-
-<!-- END_bae65df80fd9d72a01439241a9ea20d0 -->
-
-<!-- START_ae309226f6476a5c4acc7fb3419990bd -->
-## Default request to the API.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/api" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/api"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET api`
-
-
-<!-- END_ae309226f6476a5c4acc7fb3419990bd -->
-
-<!-- START_53be1e9e10a08458929a2e0ea70ddb86 -->
-## /
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-null
-```
-
-### HTTP Request
-`GET /`
-
-
-<!-- END_53be1e9e10a08458929a2e0ea70ddb86 -->
-
-<!-- START_66e08d3cc8222573018fed49e121e96d -->
-## Show the application&#039;s login form.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/login" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/login"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-null
-```
-
-### HTTP Request
-`GET login`
-
-
-<!-- END_66e08d3cc8222573018fed49e121e96d -->
-
-<!-- START_ba35aa39474cb98cfb31829e70eb8b74 -->
-## Handle a login request to the application.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/login" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/login"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST login`
-
-
-<!-- END_ba35aa39474cb98cfb31829e70eb8b74 -->
-
-<!-- START_e65925f23b9bc6b93d9356895f29f80c -->
-## Log the user out of the application.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/logout" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/logout"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST logout`
-
-
-<!-- END_e65925f23b9bc6b93d9356895f29f80c -->
-
-<!-- START_ff38dfb1bd1bb7e1aa24b4e1792a9768 -->
-## Show the application registration form.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-null
-```
-
-### HTTP Request
-`GET register`
-
-
-<!-- END_ff38dfb1bd1bb7e1aa24b4e1792a9768 -->
-
-<!-- START_d7aad7b5ac127700500280d511a3db01 -->
-## Handle a registration request for the application.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST register`
-
-
-<!-- END_d7aad7b5ac127700500280d511a3db01 -->
-
-<!-- START_d72797bae6d0b1f3a341ebb1f8900441 -->
-## Display the form to request a password reset link.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/password/reset" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/password/reset"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-null
-```
-
-### HTTP Request
-`GET password/reset`
-
-
-<!-- END_d72797bae6d0b1f3a341ebb1f8900441 -->
-
-<!-- START_feb40f06a93c80d742181b6ffb6b734e -->
-## Send a reset link to the given user.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/password/email" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/password/email"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST password/email`
-
-
-<!-- END_feb40f06a93c80d742181b6ffb6b734e -->
-
-<!-- START_e1605a6e5ceee9d1aeb7729216635fd7 -->
-## Display the password reset view for the given token.
-
-If no token is present, display the link request form.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/password/reset/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/password/reset/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-null
-```
-
-### HTTP Request
-`GET password/reset/{token}`
-
-
-<!-- END_e1605a6e5ceee9d1aeb7729216635fd7 -->
-
-<!-- START_cafb407b7a846b31491f97719bb15aef -->
-## Reset the given user&#039;s password.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/password/reset" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/password/reset"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST password/reset`
-
-
-<!-- END_cafb407b7a846b31491f97719bb15aef -->
-
-<!-- START_c88fc6aa6eb1bee7a494d3c0a02038b1 -->
-## Show the email verification notice.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/email/verify" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/email/verify"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET email/verify`
-
-
-<!-- END_c88fc6aa6eb1bee7a494d3c0a02038b1 -->
-
-<!-- START_6792598c74b34a271a2e3ab9365adf9e -->
-## Mark the authenticated user&#039;s email address as verified.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/email/verify/1/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/email/verify/1/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET email/verify/{id}/{hash}`
-
-
-<!-- END_6792598c74b34a271a2e3ab9365adf9e -->
-
-<!-- START_38334d357e7e155bf70b9ab94619ca3d -->
-## Resend the email verification notification.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/email/resend" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/email/resend"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST email/resend`
-
-
-<!-- END_38334d357e7e155bf70b9ab94619ca3d -->
-
-<!-- START_d0da0ccc9135ef2191e53419e0d27897 -->
-## Display the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/invitations/accept/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/invitations/accept/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (404):
-
-```json
-{
-    "message": "No query results for model [App\\Models\\Account\\Invitation]."
-}
-```
-
-### HTTP Request
-`GET invitations/accept/{key}`
-
-
-<!-- END_d0da0ccc9135ef2191e53419e0d27897 -->
-
-<!-- START_3afe36cd8aee12f9f9a70e0bfed54e02 -->
-## Store the specified resource.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/invitations/accept/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/invitations/accept/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST invitations/accept/{key}`
-
-
-<!-- END_3afe36cd8aee12f9f9a70e0bfed54e02 -->
-
-<!-- START_568bd749946744d2753eaad6cfad5db6 -->
-## Log the user out of the application.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/logout" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/logout"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET logout`
-
-
-<!-- END_568bd749946744d2753eaad6cfad5db6 -->
-
-<!-- START_ea35b4448f9f4cbfab667e1b8adb971d -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/auth/login-recovery" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/auth/login-recovery"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET auth/login-recovery`
-
-
-<!-- END_ea35b4448f9f4cbfab667e1b8adb971d -->
-
-<!-- START_1badf650a84de17f1c9d7a6de3e116a3 -->
-## Validate recovery login.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/auth/login-recovery" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/auth/login-recovery"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST auth/login-recovery`
-
-
-<!-- END_1badf650a84de17f1c9d7a6de3e116a3 -->
-
-<!-- START_bd22711830ebeb8d5a1b1ba72e319a03 -->
-## Redirect the user after 2fa form has been submitted.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/validate2fa" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/validate2fa"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST validate2fa`
-
-
-<!-- END_bd22711830ebeb8d5a1b1ba72e319a03 -->
-
-<!-- START_30059a09ef3f0284c40e4d06962ce08d -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/dashboard" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/dashboard"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET dashboard`
-
-
-<!-- END_30059a09ef3f0284c40e4d06962ce08d -->
-
-<!-- START_88d42416743ddaaa2aedd169a6a28302 -->
-## Get calls for the dashboard.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/dashboard/calls" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/dashboard/calls"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET dashboard/calls`
-
-
-<!-- END_88d42416743ddaaa2aedd169a6a28302 -->
-
-<!-- START_ba687fa01678eba22c8edc2255fcc8a5 -->
-## Get notes for the dashboard.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/dashboard/notes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/dashboard/notes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET dashboard/notes`
-
-
-<!-- END_ba687fa01678eba22c8edc2255fcc8a5 -->
-
-<!-- START_2098e830a1bff498674f0f2a1a624f3f -->
-## Get debts for the dashboard.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/dashboard/debts" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/dashboard/debts"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET dashboard/debts`
-
-
-<!-- END_2098e830a1bff498674f0f2a1a624f3f -->
-
-<!-- START_d011b8b25ae03c5994e56554385fab7d -->
-## Save the current active tab to the User table.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/dashboard/setTab" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/dashboard/setTab"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST dashboard/setTab`
-
-
-<!-- END_d011b8b25ae03c5994e56554385fab7d -->
-
-<!-- START_541ad2da8fb7d187e555ffaf9519d60f -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/compliance" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/compliance"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET compliance`
-
-
-<!-- END_541ad2da8fb7d187e555ffaf9519d60f -->
-
-<!-- START_6d5fce3b9f44f4ffd01da41d6222b018 -->
-## compliance/sign
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/compliance/sign" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/compliance/sign"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST compliance/sign`
-
-
-<!-- END_6d5fce3b9f44f4ffd01da41d6222b018 -->
-
-<!-- START_407aa6d67cef2267b4a9b6044ca9a433 -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/changelog" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/changelog"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET changelog`
-
-
-<!-- END_407aa6d67cef2267b4a9b6044ca9a433 -->
-
-<!-- START_7bbf86e85d935d026ccafc231e13baaa -->
-## Get the list of primary emotions.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/emotions" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/emotions"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET emotions`
-
-
-<!-- END_7bbf86e85d935d026ccafc231e13baaa -->
-
-<!-- START_24cf0e0ba8fc5ec8725db3e17d75e1e7 -->
-## Get the list of secondary emotions.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/emotions/primaries/1/secondaries" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/emotions/primaries/1/secondaries"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET emotions/primaries/{emotion}/secondaries`
-
-
-<!-- END_24cf0e0ba8fc5ec8725db3e17d75e1e7 -->
-
-<!-- START_ffd64c3511efc5b784df03a0c35a83af -->
-## Get the list of emotions.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/emotions/primaries/1/secondaries/1/emotions" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/emotions/primaries/1/secondaries/1/emotions"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET emotions/primaries/{emotion}/secondaries/{secondaryEmotion}/emotions`
-
-
-<!-- END_ffd64c3511efc5b784df03a0c35a83af -->
-
-<!-- START_0337f52565742162057a0d63027076cc -->
-## Show the form in case the contact is missing.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/notfound" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/notfound"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/notfound`
-
-
-<!-- END_0337f52565742162057a0d63027076cc -->
-
-<!-- START_dda3172492cbe3d8883b81ce3a6515e0 -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/archived" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/archived"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/archived`
-
-
-<!-- END_dda3172492cbe3d8883b81ce3a6515e0 -->
-
-<!-- START_0c9a6398dd41a9a88fd7002a73171c49 -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people`
-
-
-<!-- END_0c9a6398dd41a9a88fd7002a73171c49 -->
-
-<!-- START_4ff531aa5716d0026020e48de423432f -->
-## Show the form to add a new contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/add" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/add"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/add`
-
-
-<!-- END_4ff531aa5716d0026020e48de423432f -->
-
-<!-- START_8627f6a1f47a152cd990181227d151b0 -->
-## Display the list of contacts.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/list" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/list"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/list`
-
-
-<!-- END_8627f6a1f47a152cd990181227d151b0 -->
-
-<!-- START_7d6a5b283dd36aeed06d26c0a609db86 -->
-## Store the contact.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people`
-
-
-<!-- END_7d6a5b283dd36aeed06d26c0a609db86 -->
-
-<!-- START_5920ea31b3ac6a3a2486411f5822e08a -->
-## Display the contact profile.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}`
-
-
-<!-- END_5920ea31b3ac6a3a2486411f5822e08a -->
-
-<!-- START_9a60349fd68c73930ee68cdf0eb7b1a9 -->
-## Display the Edit people&#039;s view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/edit`
-
-
-<!-- END_9a60349fd68c73930ee68cdf0eb7b1a9 -->
-
-<!-- START_f5c610f05bc99f88e7ce921c00789cbf -->
-## Update the contact.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}`
-
-
-<!-- END_f5c610f05bc99f88e7ce921c00789cbf -->
-
-<!-- START_0db2335e2f44101e85f894fe784be023 -->
-## Delete the contact.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}`
-
-
-<!-- END_0db2335e2f44101e85f894fe784be023 -->
-
-<!-- START_e4c838391c6e4c8aee673bcc47070c42 -->
-## Display the Edit avatar screen.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/avatar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/avatar"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/avatar`
-
-
-<!-- END_e4c838391c6e4c8aee673bcc47070c42 -->
-
-<!-- START_c1d1534823882ce967ab83b197b7116b -->
-## Update the avatar of the contact.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/avatar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/avatar"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/avatar`
-
-
-<!-- END_c1d1534823882ce967ab83b197b7116b -->
-
-<!-- START_dc12b81ce74e7fd3a7edf8c45efbad4e -->
-## Set the given photo as avatar.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/makeProfilePicture/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/makeProfilePicture/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/makeProfilePicture/{photo}`
-
-
-<!-- END_dc12b81ce74e7fd3a7edf8c45efbad4e -->
-
-<!-- START_bf05f5a64e806c89cfa2f7c8ed92075a -->
-## Display the list of life events.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/lifeevents" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/lifeevents"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/lifeevents`
-
-
-<!-- END_bf05f5a64e806c89cfa2f7c8ed92075a -->
-
-<!-- START_05f8b2207eaa6b636eae7efd43763d90 -->
-## Get the list of life event categories.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/lifeevents/categories" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/lifeevents/categories"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET lifeevents/categories`
-
-
-<!-- END_05f8b2207eaa6b636eae7efd43763d90 -->
-
-<!-- START_45b28ffcdd4fb857c4488ef77f042ba6 -->
-## Get the list of life event types for a given life event category.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/lifeevents/categories/1/types" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/lifeevents/categories/1/types"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET lifeevents/categories/{lifeEventCategory}/types`
-
-
-<!-- END_45b28ffcdd4fb857c4488ef77f042ba6 -->
-
-<!-- START_08aa8f6a1522ac68306522a56f005a65 -->
-## Store the life event.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/lifeevents" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/lifeevents"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/lifeevents`
-
-
-<!-- END_08aa8f6a1522ac68306522a56f005a65 -->
-
-<!-- START_d6ddc14b14543545dfdcfa00b5133d96 -->
-## Destroy the life event.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/lifeevents/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/lifeevents/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE lifeevents/{lifeEvent}`
-
-
-<!-- END_d6ddc14b14543545dfdcfa00b5133d96 -->
-
-<!-- START_8b19916446551b46d2c88468e739d947 -->
-## Get all the contact information for this contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/contactfield" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/contactfield"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/contactfield`
-
-
-<!-- END_8b19916446551b46d2c88468e739d947 -->
-
-<!-- START_1b94f77d7e2238d145ede1861756c712 -->
-## Store the contact field.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/contactfield" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/contactfield"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/contactfield`
-
-
-<!-- END_1b94f77d7e2238d145ede1861756c712 -->
-
-<!-- START_95622e71c5d011eb3941b65e974ec2ef -->
-## Edit the contact field.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/contactfield/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/contactfield/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/contactfield/{contactField}`
-
-
-<!-- END_95622e71c5d011eb3941b65e974ec2ef -->
-
-<!-- START_961dfb30c3be94823468eeaa8a37a77a -->
-## people/{contact}/contactfield/{contactField}
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/contactfield/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/contactfield/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/contactfield/{contactField}`
-
-
-<!-- END_961dfb30c3be94823468eeaa8a37a77a -->
-
-<!-- START_26642937b9c37a5936339f74f9735fc0 -->
-## Get all the contact field types.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/contactfieldtypes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/contactfieldtypes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/contactfieldtypes`
-
-
-<!-- END_26642937b9c37a5936339f74f9735fc0 -->
-
-<!-- START_970cc4027e89729066dbd0d39be799bb -->
-## Download the contact as vCard.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/vcard" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/vcard"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/vcard`
-
-
-<!-- END_970cc4027e89729066dbd0d39be799bb -->
-
-<!-- START_c1c192be6869849e72ede138e91bd809 -->
-## Get all the countries.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/countries" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/countries"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET countries`
-
-
-<!-- END_c1c192be6869849e72ede138e91bd809 -->
-
-<!-- START_b932ba970cf7a2d31ff9a6eae1870243 -->
-## Get all the addresses for this contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/addresses" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/addresses"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/addresses`
-
-
-<!-- END_b932ba970cf7a2d31ff9a6eae1870243 -->
-
-<!-- START_926ab2a0f4d7d6edbd1a3e19f4bb81ee -->
-## Store the address.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/addresses" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/addresses"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/addresses`
-
-
-<!-- END_926ab2a0f4d7d6edbd1a3e19f4bb81ee -->
-
-<!-- START_e4d567bd2e104b05a1de917bc0e7ada8 -->
-## Edit the contact field.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/addresses/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/addresses/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/addresses/{address}`
-
-
-<!-- END_e4d567bd2e104b05a1de917bc0e7ada8 -->
-
-<!-- START_2a30e877cfe2409fff1281c827369aa9 -->
-## Destroy the address.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/addresses/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/addresses/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/addresses/{address}`
-
-
-<!-- END_2a30e877cfe2409fff1281c827369aa9 -->
-
-<!-- START_96b4c2ec62f38e747cb54fcd3d060b14 -->
-## Show the Edit work view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/work/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/work/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/work/edit`
-
-
-<!-- END_96b4c2ec62f38e747cb54fcd3d060b14 -->
-
-<!-- START_2e2a4c11c35a257af9c89131267af255 -->
-## Save the work information.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/work/update" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/work/update"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/work/update`
-
-
-<!-- END_2e2a4c11c35a257af9c89131267af255 -->
-
-<!-- START_c049dd79dedfc4904169b27a8e3b32c5 -->
-## Show the form for editing the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/introductions/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/introductions/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/introductions/edit`
-
-
-<!-- END_c049dd79dedfc4904169b27a8e3b32c5 -->
-
-<!-- START_8c858f665cfc58ece0ab107fd0727465 -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/introductions/update" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/introductions/update"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/introductions/update`
-
-
-<!-- END_8c858f665cfc58ece0ab107fd0727465 -->
-
-<!-- START_30d968676edf7307d991000be4f07042 -->
-## Get the list of all the tags in the account.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/tags" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/tags"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET tags`
-
-
-<!-- END_30d968676edf7307d991000be4f07042 -->
-
-<!-- START_02fafa1b97f2c6ea039658a0d7417d5e -->
-## Get the list of all the tags for this contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/tags" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/tags"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/tags`
-
-
-<!-- END_02fafa1b97f2c6ea039658a0d7417d5e -->
-
-<!-- START_20e2afdba51fa5adb0c59993ca9f0293 -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/tags/update" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/tags/update"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/tags/update`
-
-
-<!-- END_20e2afdba51fa5adb0c59993ca9f0293 -->
-
-<!-- START_2a4f9b5b7bd2885324f018d8116b131a -->
-## Get all the tasks of this contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/notes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/notes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/notes`
-
-
-<!-- END_2a4f9b5b7bd2885324f018d8116b131a -->
-
-<!-- START_afc3d26c8930fe08ddb5e62cdc308ed1 -->
-## Store the task.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/notes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/notes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/notes`
-
-
-<!-- END_afc3d26c8930fe08ddb5e62cdc308ed1 -->
-
-<!-- START_88f08ba1144b136fbe00c1a5119614c7 -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/notes/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/notes/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/notes/{note}`
-
-`PATCH people/{contact}/notes/{note}`
-
-
-<!-- END_88f08ba1144b136fbe00c1a5119614c7 -->
-
-<!-- START_b837e152d48b240893112ad14db054f9 -->
-## Remove the specified resource from storage.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/notes/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/notes/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/notes/{note}`
-
-
-<!-- END_b837e152d48b240893112ad14db054f9 -->
-
-<!-- START_78e487be23b2ffc90c451655d2b489ac -->
-## people/{contact}/notes/{note}/toggle
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/notes/1/toggle" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/notes/1/toggle"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/notes/{note}/toggle`
-
-
-<!-- END_78e487be23b2ffc90c451655d2b489ac -->
-
-<!-- START_9daea76e30258bbb81dadb90076921c3 -->
-## Show the Edit food preferences view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/food" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/food"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/food`
-
-
-<!-- END_9daea76e30258bbb81dadb90076921c3 -->
-
-<!-- START_efc879f656cc94701e1cf7d393cd26d8 -->
-## Save the food preferences.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/food/save" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/food/save"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/food/save`
-
-
-<!-- END_efc879f656cc94701e1cf7d393cd26d8 -->
-
-<!-- START_a940519cab162e9a90037bac2b9e9e49 -->
-## Display the Create relationship page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/relationships/create" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/relationships/create"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/relationships/create`
-
-
-<!-- END_a940519cab162e9a90037bac2b9e9e49 -->
-
-<!-- START_3c091600559a7eb3c4ac5d2dcf9f8a49 -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/relationships" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/relationships"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/relationships`
-
-
-<!-- END_3c091600559a7eb3c4ac5d2dcf9f8a49 -->
-
-<!-- START_68270cc6d6e3377a84dcdc81e5ec8f02 -->
-## Show the form for editing the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/relationships/1/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/relationships/1/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/relationships/{relationship}/edit`
-
-
-<!-- END_68270cc6d6e3377a84dcdc81e5ec8f02 -->
-
-<!-- START_7b3a315b06b156eaace6caf917768f9b -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/relationships/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/relationships/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/relationships/{relationship}`
-
-`PATCH people/{contact}/relationships/{relationship}`
-
-
-<!-- END_7b3a315b06b156eaace6caf917768f9b -->
-
-<!-- START_0eb3349e5ab21e4a574cb6d6473be5b6 -->
-## Remove the specified resource from storage.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/relationships/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/relationships/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/relationships/{relationship}`
-
-
-<!-- END_0eb3349e5ab21e4a574cb6d6473be5b6 -->
-
-<!-- START_ffe56d493095487e01ce53ef6f73c681 -->
-## Get all the pets for this contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/pets" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/pets"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/pets`
-
-
-<!-- END_ffe56d493095487e01ce53ef6f73c681 -->
-
-<!-- START_054e596db85fc578257e72cd106c8123 -->
-## Store the pet.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/pets" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/pets"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/pets`
-
-
-<!-- END_054e596db85fc578257e72cd106c8123 -->
-
-<!-- START_7b2bdf9d676b424165ea78d504b0daa2 -->
-## Update the pet.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/pets/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/pets/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/pets/{pet}`
-
-`PATCH people/{contact}/pets/{pet}`
-
-
-<!-- END_7b2bdf9d676b424165ea78d504b0daa2 -->
-
-<!-- START_a8245317c673deaacf36315035f1c0ff -->
-## people/{contact}/pets/{pet}
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/pets/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/pets/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/pets/{pet}`
-
-
-<!-- END_a8245317c673deaacf36315035f1c0ff -->
-
-<!-- START_5b41d6582eacbe702ce4fda016727a64 -->
-## Get all the pet categories.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/petcategories" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/petcategories"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET petcategories`
-
-
-<!-- END_5b41d6582eacbe702ce4fda016727a64 -->
-
-<!-- START_23927b66e1225058c572ab709dcfdf84 -->
-## Show the form for creating a new reminder.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/reminders/create" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/reminders/create"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/reminders/create`
-
-
-<!-- END_23927b66e1225058c572ab709dcfdf84 -->
-
-<!-- START_d64505e30ce890e55cfbdb62cf2aa0ed -->
-## Store a reminder.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/reminders" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/reminders"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/reminders`
-
-
-<!-- END_d64505e30ce890e55cfbdb62cf2aa0ed -->
-
-<!-- START_9c86759ef57a0c4896c4bcf28c6198de -->
-## Show the form for editing the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/reminders/1/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/reminders/1/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/reminders/{reminder}/edit`
-
-
-<!-- END_9c86759ef57a0c4896c4bcf28c6198de -->
-
-<!-- START_9ab3fde0faf0c57548a965907cff71be -->
-## Update the reminder.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/reminders/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/reminders/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/reminders/{reminder}`
-
-`PATCH people/{contact}/reminders/{reminder}`
-
-
-<!-- END_9ab3fde0faf0c57548a965907cff71be -->
-
-<!-- START_b15f63c4ada9078bb7a496b6e76ee7a6 -->
-## Destroy the reminder.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/reminders/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/reminders/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/reminders/{reminder}`
-
-
-<!-- END_b15f63c4ada9078bb7a496b6e76ee7a6 -->
-
-<!-- START_dee9722ebb20ef73fee4c8ca627d935b -->
-## Get all the tasks of this contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/tasks" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/tasks"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/tasks`
-
-
-<!-- END_dee9722ebb20ef73fee4c8ca627d935b -->
-
-<!-- START_5922bacedc050788ba01b21cbaff923a -->
-## Get the list of tasks for the account.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/tasks" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/tasks"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET tasks`
-
-
-<!-- END_5922bacedc050788ba01b21cbaff923a -->
-
-<!-- START_71b4e9c93724a8c5c650c51c953e43da -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/tasks" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/tasks"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST tasks`
-
-
-<!-- END_71b4e9c93724a8c5c650c51c953e43da -->
-
-<!-- START_a639983fd71cf3e3bdbd24fd814319d2 -->
-## Update a task.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/tasks/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/tasks/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT tasks/{task}`
-
-`PATCH tasks/{task}`
-
-
-<!-- END_a639983fd71cf3e3bdbd24fd814319d2 -->
-
-<!-- START_4cd7e210481a702d15c7807e146d62c9 -->
-## Destroy the task.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/tasks/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/tasks/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE tasks/{task}`
-
-
-<!-- END_4cd7e210481a702d15c7807e146d62c9 -->
-
-<!-- START_f927654f0dc360e3075e83861cbefb76 -->
-## List all the gifts for the given contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/gifts" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/gifts"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/gifts`
-
-
-<!-- END_f927654f0dc360e3075e83861cbefb76 -->
-
-<!-- START_bdf09243fc43c646d93f7e6fe754a778 -->
-## Show the form for creating a new resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/gifts/create" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/gifts/create"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/gifts/create`
-
-
-<!-- END_bdf09243fc43c646d93f7e6fe754a778 -->
-
-<!-- START_6f7be985188944be5d8723440a4d59de -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/gifts" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/gifts"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/gifts`
-
-
-<!-- END_6f7be985188944be5d8723440a4d59de -->
-
-<!-- START_fc16a16d2ef31425c2a489683f87ed22 -->
-## Show the form for editing the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/gifts/1/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/gifts/1/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/gifts/{gift}/edit`
-
-
-<!-- END_fc16a16d2ef31425c2a489683f87ed22 -->
-
-<!-- START_f5848847119eb7733d180bbf4eb166b2 -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/gifts/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/gifts/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/gifts/{gift}`
-
-`PATCH people/{contact}/gifts/{gift}`
-
-
-<!-- END_f5848847119eb7733d180bbf4eb166b2 -->
-
-<!-- START_a4cee4d01757a006dedf5f338afa9584 -->
-## Remove the specified resource from storage.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/gifts/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/gifts/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/gifts/{gift}`
-
-
-<!-- END_a4cee4d01757a006dedf5f338afa9584 -->
-
-<!-- START_f16b439a15e5923f76873da64b02d5db -->
-## Mark a gift as being offered.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/gifts/1/toggle" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/gifts/1/toggle"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/gifts/{gift}/toggle`
-
-
-<!-- END_f16b439a15e5923f76873da64b02d5db -->
-
-<!-- START_fe50de4a99781206f8fc5239210a5ec5 -->
-## Show the form for creating a new resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/debts/create" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/debts/create"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/debts/create`
-
-
-<!-- END_fe50de4a99781206f8fc5239210a5ec5 -->
-
-<!-- START_444a90255b3fd92106d9e356e2346b36 -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/debts" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/debts"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/debts`
-
-
-<!-- END_444a90255b3fd92106d9e356e2346b36 -->
-
-<!-- START_c3d64e7762048312f0c668cdcd728af2 -->
-## Show the form for editing the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/debts/1/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/debts/1/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/debts/{debt}/edit`
-
-
-<!-- END_c3d64e7762048312f0c668cdcd728af2 -->
-
-<!-- START_b51ea2cde01c24cb48f9728e6fcec7cf -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/debts/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/debts/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/debts/{debt}`
-
-`PATCH people/{contact}/debts/{debt}`
-
-
-<!-- END_b51ea2cde01c24cb48f9728e6fcec7cf -->
-
-<!-- START_0b7e3931941abe44f9f031b0dbdd6ac3 -->
-## Remove the specified resource from storage.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/debts/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/debts/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/debts/{debt}`
-
-
-<!-- END_0b7e3931941abe44f9f031b0dbdd6ac3 -->
-
-<!-- START_af6b4f14219c75926e2fe81b575bb706 -->
-## Display the list of calls.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/calls" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/calls"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/calls`
-
-
-<!-- END_af6b4f14219c75926e2fe81b575bb706 -->
-
-<!-- START_9df40f0070b7dfb354b727aad2063887 -->
-## Store a call.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/calls" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/calls"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/calls`
-
-
-<!-- END_9df40f0070b7dfb354b727aad2063887 -->
-
-<!-- START_e577cc1c64817e30cb20410c293c09cc -->
-## Update a call.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/calls/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/calls/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/calls/{call}`
-
-`PATCH people/{contact}/calls/{call}`
-
-
-<!-- END_e577cc1c64817e30cb20410c293c09cc -->
-
-<!-- START_40b8ee50a53972968d62fd23c187295b -->
-## Delete the call.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/calls/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/calls/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/calls/{call}`
-
-
-<!-- END_40b8ee50a53972968d62fd23c187295b -->
-
-<!-- START_738d1d4fd27ed494971a2aa8cb941559 -->
-## Display the list of conversations.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/conversations" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/conversations"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/conversations`
-
-
-<!-- END_738d1d4fd27ed494971a2aa8cb941559 -->
-
-<!-- START_f9fac7096f0de647a107841ef6eabd91 -->
-## Display the Create conversation page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/conversations/create" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/conversations/create"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/conversations/create`
-
-
-<!-- END_f9fac7096f0de647a107841ef6eabd91 -->
-
-<!-- START_fac84525f83e6e6289aed71488077af3 -->
-## Store the conversation.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/conversations" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/conversations"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/conversations`
-
-
-<!-- END_fac84525f83e6e6289aed71488077af3 -->
-
-<!-- START_4706b108dc808e303f8f31b3bf80f077 -->
-## Display a specific conversation.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/conversations/1/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/conversations/1/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/conversations/{conversation}/edit`
-
-
-<!-- END_4706b108dc808e303f8f31b3bf80f077 -->
-
-<!-- START_dc3dd48293cd34388b0051d97296a2dc -->
-## Update the conversation.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/conversations/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/conversations/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/conversations/{conversation}`
-
-`PATCH people/{contact}/conversations/{conversation}`
-
-
-<!-- END_dc3dd48293cd34388b0051d97296a2dc -->
-
-<!-- START_482243b5fba934ebba5d69a25189cd27 -->
-## Delete the conversation.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/conversations/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/conversations/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/conversations/{conversation}`
-
-
-<!-- END_482243b5fba934ebba5d69a25189cd27 -->
-
-<!-- START_c19ed74ec1c0209724c48dddef08be80 -->
-## Display the list of documents.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/documents" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/documents"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/documents`
-
-
-<!-- END_c19ed74ec1c0209724c48dddef08be80 -->
-
-<!-- START_4695300f7a1054374e27863833d34232 -->
-## Store the document.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/documents" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/documents"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/documents`
-
-
-<!-- END_4695300f7a1054374e27863833d34232 -->
-
-<!-- START_991c449ecc71909c0dadbf1e1b33ea0d -->
-## Delete the document.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/documents/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/documents/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/documents/{document}`
-
-
-<!-- END_991c449ecc71909c0dadbf1e1b33ea0d -->
-
-<!-- START_b2c55f212140ba3becfd9f99c91ecffe -->
-## Display the list of photos.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/photos" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/photos"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/photos`
-
-
-<!-- END_b2c55f212140ba3becfd9f99c91ecffe -->
-
-<!-- START_6cd9497c972ca94710333fe87e2047fd -->
-## Store the Photo.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/photos" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/photos"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/photos`
-
-
-<!-- END_6cd9497c972ca94710333fe87e2047fd -->
-
-<!-- START_70112ed3dc4cddb5b34d8534345a8ec5 -->
-## Delete the Photo.
-
-Also, if this photo was the current avatar of the contact, change the
-avatar to the default one.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/people/1/photos/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/photos/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE people/{contact}/photos/{photo}`
-
-
-<!-- END_70112ed3dc4cddb5b34d8534345a8ec5 -->
-
-<!-- START_5752aebaa2f12dd9a4369018643c3517 -->
-## Search used in the header.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/search" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/search"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/search`
-
-
-<!-- END_5752aebaa2f12dd9a4369018643c3517 -->
-
-<!-- START_cc74edc8b9308985b50728f913130e37 -->
-## Set or change the frequency of which the user wants to stay in touch with
-the given contact.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/stayintouch" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/stayintouch"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/stayintouch`
-
-
-<!-- END_cc74edc8b9308985b50728f913130e37 -->
-
-<!-- START_8895d5074cac780690a81325088977b5 -->
-## Toggle favorites of a contact.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/people/1/favorite" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/favorite"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST people/{contact}/favorite`
-
-
-<!-- END_8895d5074cac780690a81325088977b5 -->
-
-<!-- START_e2d885dc3679e9a586f0e69333e8121a -->
-## Toggle archive state of a contact.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/people/1/archive" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/archive"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT people/{contact}/archive`
-
-
-<!-- END_e2d885dc3679e9a586f0e69333e8121a -->
-
-<!-- START_ca30f4eba50049d1c5ec181b24b46b12 -->
-## Get all the activities for this contact.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/activities" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/activities"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/activities`
-
-
-<!-- END_ca30f4eba50049d1c5ec181b24b46b12 -->
-
-<!-- START_3b4ffe0181b7695718c4a9e26d2843ae -->
-## Get all the activities for this contact for a specific year.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/people/1/activities/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/people/1/activities/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET people/{contact}/activities/{year}`
-
-
-<!-- END_3b4ffe0181b7695718c4a9e26d2843ae -->
-
-<!-- START_1ddf8e36deaf7ed7c8b0901dc319f17f -->
-## Show the form for creating a new resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/activities/add/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/activities/add/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET activities/add/{contact}`
-
-
-<!-- END_1ddf8e36deaf7ed7c8b0901dc319f17f -->
-
-<!-- START_b9e78b5b093a9095653b562af8a3d44a -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/activities/store/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/activities/store/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST activities/store/{contact}`
-
-
-<!-- END_b9e78b5b093a9095653b562af8a3d44a -->
-
-<!-- START_62e677156126770ca4e1e68b2f103c9e -->
-## Show the form for editing the specified resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/activities/1/edit/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/activities/1/edit/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET activities/{activity}/edit/{contact}`
-
-
-<!-- END_62e677156126770ca4e1e68b2f103c9e -->
-
-<!-- START_7309105df1ff18d5bd3f1c8be0ce0715 -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/activities/1/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/activities/1/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT activities/{activity}/{contact}`
-
-
-<!-- END_7309105df1ff18d5bd3f1c8be0ce0715 -->
-
-<!-- START_49c3d85bc13c21dce3e75af60f9df3ad -->
-## Remove the specified resource from storage.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/activities/1/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/activities/1/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE activities/{activity}/{contact}`
-
-
-<!-- END_49c3d85bc13c21dce3e75af60f9df3ad -->
-
-<!-- START_3afefc916e36258a6b06889f1fa78624 -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/journal" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET journal`
-
-
-<!-- END_3afefc916e36258a6b06889f1fa78624 -->
-
-<!-- START_881143b28ef59b581135df52703fa9e8 -->
-## Get all the journal entries.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/journal/entries" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/entries"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET journal/entries`
-
-
-<!-- END_881143b28ef59b581135df52703fa9e8 -->
-
-<!-- START_9af7f62fa5d160fdab6b1b01b9f7dd0c -->
-## Gets the details of a single Journal Entry.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/journal/entries/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/entries/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET journal/entries/{journalEntry}`
-
-
-<!-- END_9af7f62fa5d160fdab6b1b01b9f7dd0c -->
-
-<!-- START_abac6d2296d9391f8ef9329b7d9aa48f -->
-## Indicates whether the user has already rated the current day.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/journal/hasRated" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/hasRated"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET journal/hasRated`
-
-
-<!-- END_abac6d2296d9391f8ef9329b7d9aa48f -->
-
-<!-- START_1ba4a99de60bdb4f99ebefae47e22dc4 -->
-## Store the day entry.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/journal/day" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/day"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST journal/day`
-
-
-<!-- END_1ba4a99de60bdb4f99ebefae47e22dc4 -->
-
-<!-- START_3caeccabbf16f5097491b8e9304d0941 -->
-## Delete the Day entry.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/journal/day/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/day/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE journal/day/{day}`
-
-
-<!-- END_3caeccabbf16f5097491b8e9304d0941 -->
-
-<!-- START_f237f14ad60e7bae99bbe06435bb78b3 -->
-## Display the Create journal entry screen.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/journal/add" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/add"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET journal/add`
-
-
-<!-- END_f237f14ad60e7bae99bbe06435bb78b3 -->
-
-<!-- START_3714e6b381e39e25ed9ed2ead252c153 -->
-## Saves the journal entry.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/journal/create" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/create"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST journal/create`
-
-
-<!-- END_3714e6b381e39e25ed9ed2ead252c153 -->
-
-<!-- START_2aa06a2568db043b6807d46ca370011c -->
-## Display the Edit journal entry screen.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/journal/entries/1/edit" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/entries/1/edit"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET journal/entries/{entry}/edit`
-
-
-<!-- END_2aa06a2568db043b6807d46ca370011c -->
-
-<!-- START_6284bd09cda5bb788913be974d7a100f -->
-## Update a journal entry.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/journal/entries/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/entries/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT journal/entries/{entry}`
-
-
-<!-- END_6284bd09cda5bb788913be974d7a100f -->
-
-<!-- START_edd2ddfb19debc67e508988be2fa4c4a -->
-## Delete the reminder.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/journal/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/journal/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE journal/{entry}`
-
-
-<!-- END_edd2ddfb19debc67e508988be2fa4c4a -->
-
-<!-- START_62c09084921155416dc5e292b293a549 -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings`
-
-
-<!-- END_62c09084921155416dc5e292b293a549 -->
-
-<!-- START_1335c1c695c887e3cf909d8cda630245 -->
-## Delete user account.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/delete" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/delete"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/delete`
-
-
-<!-- END_1335c1c695c887e3cf909d8cda630245 -->
-
-<!-- START_cc6cf1a615d02427b9007028b9a959c7 -->
-## Reset user account.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/reset" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/reset"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/reset`
-
-
-<!-- END_cc6cf1a615d02427b9007028b9a959c7 -->
-
-<!-- START_4ff3d101f373ad421f269e29bb3b92b0 -->
-## Save user settings.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/save" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/save"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/save`
-
-
-<!-- END_4ff3d101f373ad421f269e29bb3b92b0 -->
-
-<!-- START_53ec3415c5f9d84861054e1438909384 -->
-## Display the personalization page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/personalization" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/personalization`
-
-
-<!-- END_53ec3415c5f9d84861054e1438909384 -->
-
-<!-- START_39ccc5c35a23a28f98bc5d06a3a704c0 -->
-## Get all the contact field types.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/personalization/contactfieldtypes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/contactfieldtypes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/personalization/contactfieldtypes`
-
-
-<!-- END_39ccc5c35a23a28f98bc5d06a3a704c0 -->
-
-<!-- START_84411ec62ce215bbb467bb2768a8dec7 -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/personalization/contactfieldtypes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/contactfieldtypes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/personalization/contactfieldtypes`
-
-
-<!-- END_84411ec62ce215bbb467bb2768a8dec7 -->
-
-<!-- START_d11b79ece591cf771f6ae434f47b02a0 -->
-## Edit a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/settings/personalization/contactfieldtypes/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/contactfieldtypes/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT settings/personalization/contactfieldtypes/{contactFieldType}`
-
-
-<!-- END_d11b79ece591cf771f6ae434f47b02a0 -->
-
-<!-- START_aa0fa44e3a7ac9d5999132ef6ed7939b -->
-## Destroy the contact field type.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/personalization/contactfieldtypes/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/contactfieldtypes/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/personalization/contactfieldtypes/{contactFieldType}`
-
-
-<!-- END_aa0fa44e3a7ac9d5999132ef6ed7939b -->
-
-<!-- START_824b27667f41b99e169e08eb611e12ec -->
-## Get all the gender types.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/personalization/genders" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/genders"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/personalization/genders`
-
-
-<!-- END_824b27667f41b99e169e08eb611e12ec -->
-
-<!-- START_6f7318fa89107c3edd311687cf0c35bc -->
-## Store the gender.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/personalization/genders" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/genders"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/personalization/genders`
-
-
-<!-- END_6f7318fa89107c3edd311687cf0c35bc -->
-
-<!-- START_3df447424cfef2c9e9ac9a6121db7254 -->
-## Update the given gender.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/settings/personalization/genders/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/genders/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT settings/personalization/genders/{gender}`
-
-`PATCH settings/personalization/genders/{gender}`
-
-
-<!-- END_3df447424cfef2c9e9ac9a6121db7254 -->
-
-<!-- START_a5e8baf97a71ea44a7a15f07b7d41d80 -->
-## Destroy a gender type.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/personalization/genders/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/genders/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/personalization/genders/{gender}`
-
-
-<!-- END_a5e8baf97a71ea44a7a15f07b7d41d80 -->
-
-<!-- START_418ba8a7dbae4ce865e8f375fd5502db -->
-## Destroy a gender type.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/personalization/genders/1/replaceby/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/genders/1/replaceby/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/personalization/genders/{gender}/replaceby/{genderToReplaceWith}`
-
-
-<!-- END_418ba8a7dbae4ce865e8f375fd5502db -->
-
-<!-- START_58eff5dca5d7f63bdee95529c49f2698 -->
-## Get all the gender sex types.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/personalization/genderTypes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/genderTypes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/personalization/genderTypes`
-
-
-<!-- END_58eff5dca5d7f63bdee95529c49f2698 -->
-
-<!-- START_ce9bed79fb67e1bd713b5e8afa2c667a -->
-## Update the given gender to the default gender.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/settings/personalization/genders/default/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/genders/default/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT settings/personalization/genders/default/{gender}`
-
-
-<!-- END_ce9bed79fb67e1bd713b5e8afa2c667a -->
-
-<!-- START_395423dcd11f33f95980305d8877d029 -->
-## Get all the reminder rules.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/personalization/reminderrules" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/reminderrules"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/personalization/reminderrules`
-
-
-<!-- END_395423dcd11f33f95980305d8877d029 -->
-
-<!-- START_2e70d1370c11d0d3233d8f1bf356e517 -->
-## settings/personalization/reminderrules/{reminderRule}
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/personalization/reminderrules/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/reminderrules/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/personalization/reminderrules/{reminderRule}`
-
-
-<!-- END_2e70d1370c11d0d3233d8f1bf356e517 -->
-
-<!-- START_750d5b7139e38589a161dd3462117555 -->
-## Get all the reminder rules.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/personalization/modules" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/modules"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/personalization/modules`
-
-
-<!-- END_750d5b7139e38589a161dd3462117555 -->
-
-<!-- START_9eb4d206293611468c993225fb5d770b -->
-## settings/personalization/modules/{module}
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/personalization/modules/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/modules/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/personalization/modules/{module}`
-
-
-<!-- END_9eb4d206293611468c993225fb5d770b -->
-
-<!-- START_0b0f57d10a4ec11b52f357a7b505b44c -->
-## Get all the activity type categories.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/personalization/activitytypecategories" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/activitytypecategories"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/personalization/activitytypecategories`
-
-
-<!-- END_0b0f57d10a4ec11b52f357a7b505b44c -->
-
-<!-- START_ffe29e0c6f48a7875f78174ee9430f41 -->
-## Store an activity type category.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/personalization/activitytypecategories" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/activitytypecategories"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/personalization/activitytypecategories`
-
-
-<!-- END_ffe29e0c6f48a7875f78174ee9430f41 -->
-
-<!-- START_94fe5e874e818aa6223fe79f3d37a331 -->
-## Update an activity type category.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/settings/personalization/activitytypecategories/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/activitytypecategories/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT settings/personalization/activitytypecategories/{activitytypecategory}`
-
-`PATCH settings/personalization/activitytypecategories/{activitytypecategory}`
-
-
-<!-- END_94fe5e874e818aa6223fe79f3d37a331 -->
-
-<!-- START_65a6f57944515b70648149e66cfe3980 -->
-## Delete the activity type category.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/personalization/activitytypecategories/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/activitytypecategories/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/personalization/activitytypecategories/{activitytypecategory}`
-
-
-<!-- END_65a6f57944515b70648149e66cfe3980 -->
-
-<!-- START_395f01b1f826a6044a77962ad494acf5 -->
-## Store an activity type category.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/personalization/activitytypes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/activitytypes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/personalization/activitytypes`
-
-
-<!-- END_395f01b1f826a6044a77962ad494acf5 -->
-
-<!-- START_07f87e720dbc7ff98de1beb0c30d716b -->
-## Update an activity type.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://monicalocal.test/settings/personalization/activitytypes/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/activitytypes/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`PUT settings/personalization/activitytypes/{activitytype}`
-
-`PATCH settings/personalization/activitytypes/{activitytype}`
-
-
-<!-- END_07f87e720dbc7ff98de1beb0c30d716b -->
-
-<!-- START_0d578648edf48740f3c3f881acb984d5 -->
-## Delete the activity type.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/personalization/activitytypes/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/personalization/activitytypes/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/personalization/activitytypes/{activitytype}`
-
-
-<!-- END_0d578648edf48740f3c3f881acb984d5 -->
-
-<!-- START_b3dac5d33c823c83a9108591d6696c4b -->
-## Display the export view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/export" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/export"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/export`
-
-
-<!-- END_b3dac5d33c823c83a9108591d6696c4b -->
-
-<!-- START_ea8a4d606d5606c20e61ca275a3d3077 -->
-## Exports the data of the account in SQL format.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/exportToSql" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/exportToSql"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/exportToSql`
-
-
-<!-- END_ea8a4d606d5606c20e61ca275a3d3077 -->
-
-<!-- START_39f9e8b99a9fe02129e1cadcd72d8877 -->
-## Display the import view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/import" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/import"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/import`
-
-
-<!-- END_39f9e8b99a9fe02129e1cadcd72d8877 -->
-
-<!-- START_dab4569a3eaf1b3c6f4db0ac8d9bf7fb -->
-## Display the import report view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/import/report/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/import/report/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/import/report/{importjobid}`
-
-
-<!-- END_dab4569a3eaf1b3c6f4db0ac8d9bf7fb -->
-
-<!-- START_f924721e88c835388b532c6a5fc419ba -->
-## Display the Import people&#039;s view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/import/upload" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/import/upload"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/import/upload`
-
-
-<!-- END_f924721e88c835388b532c6a5fc419ba -->
-
-<!-- START_79f43a045708f78ccdfa20001eb34c47 -->
-## settings/import/storeImport
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/import/storeImport" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/import/storeImport"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/import/storeImport`
-
-
-<!-- END_79f43a045708f78ccdfa20001eb34c47 -->
-
-<!-- START_8693024cfbcddcd0628395709dd78e79 -->
-## Display the users view.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/users" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/users"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/users`
-
-
-<!-- END_8693024cfbcddcd0628395709dd78e79 -->
-
-<!-- START_65f88e9acd67d1ea6d5d76d5a68194f9 -->
-## Show the form for creating a new resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/users/create" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/users/create"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/users/create`
-
-
-<!-- END_65f88e9acd67d1ea6d5d76d5a68194f9 -->
-
-<!-- START_285b2d9e9e98079a58ac078bfad693fd -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/users" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/users"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/users`
-
-
-<!-- END_285b2d9e9e98079a58ac078bfad693fd -->
-
-<!-- START_b05b5cbedd3f9110ae4787fa3e72b6e5 -->
-## Delete additional user account.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/users/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/users/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/users/{user}`
-
-
-<!-- END_b05b5cbedd3f9110ae4787fa3e72b6e5 -->
-
-<!-- START_de4c81673ee645681b8c9ca7771ed135 -->
-## Remove the specified resource from storage.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/users/invitations/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/users/invitations/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/users/invitations/{invitation}`
-
-
-<!-- END_de4c81673ee645681b8c9ca7771ed135 -->
-
-<!-- START_fa2eb1e423c7cfcc621bbfc9c51c233b -->
-## Get all the information about the account in terms of storage.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/storage" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/storage"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/storage`
-
-
-<!-- END_fa2eb1e423c7cfcc621bbfc9c51c233b -->
-
-<!-- START_bd215f8a188678689fcaf321763bcd19 -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions`
-
-
-<!-- END_bd215f8a188678689fcaf321763bcd19 -->
-
-<!-- START_d688c9bedcd9619793aa05fbaabd33bc -->
-## Display the upgrade view page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions/upgrade" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/upgrade"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions/upgrade`
-
-
-<!-- END_d688c9bedcd9619793aa05fbaabd33bc -->
-
-<!-- START_9d27fb59dbaa6cfecd0c834cbbe68a89 -->
-## Display the upgrade success page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions/upgrade/success" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/upgrade/success"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions/upgrade/success`
-
-
-<!-- END_9d27fb59dbaa6cfecd0c834cbbe68a89 -->
-
-<!-- START_6dffc7ce081e8a1f45fb83ed0d94340e -->
-## Display the confirm view page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions/confirmPayment/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/confirmPayment/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions/confirmPayment/{id}`
-
-
-<!-- END_6dffc7ce081e8a1f45fb83ed0d94340e -->
-
-<!-- START_410fa356736f406500e4d482f4413a24 -->
-## Process the upgrade payment.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/subscriptions/processPayment" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/processPayment"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/subscriptions/processPayment`
-
-
-<!-- END_410fa356736f406500e4d482f4413a24 -->
-
-<!-- START_027e641672803739de78c040fd3a753f -->
-## Download the invoice as PDF.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions/invoice/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/invoice/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions/invoice/{invoice}`
-
-
-<!-- END_027e641672803739de78c040fd3a753f -->
-
-<!-- START_cc89761a5db27f666d1e5454d12192c1 -->
-## Display the downgrade view page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions/downgrade" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/downgrade"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions/downgrade`
-
-
-<!-- END_cc89761a5db27f666d1e5454d12192c1 -->
-
-<!-- START_7d50227c53ffbb38dae11eaef0130311 -->
-## Process the downgrade process.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/subscriptions/downgrade" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/downgrade"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/subscriptions/downgrade`
-
-
-<!-- END_7d50227c53ffbb38dae11eaef0130311 -->
-
-<!-- START_cb8e563612eb7e30fa739c3913d85815 -->
-## Display the downgrade success page.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions/downgrade/success" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/downgrade/success"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions/downgrade/success`
-
-
-<!-- END_cb8e563612eb7e30fa739c3913d85815 -->
-
-<!-- START_22d3aa7dacb5b79db2e2503195ff5010 -->
-## Download the invoice as PDF.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/subscriptions/forceCompletePaymentOnTesting" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/subscriptions/forceCompletePaymentOnTesting"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/subscriptions/forceCompletePaymentOnTesting`
-
-
-<!-- END_22d3aa7dacb5b79db2e2503195ff5010 -->
-
-<!-- START_f6affe8037ec1f1ad09ae48d10780353 -->
-## Display the list of tags for this account.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/tags" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/tags"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/tags`
-
-
-<!-- END_f6affe8037ec1f1ad09ae48d10780353 -->
-
-<!-- START_f021f3f51b714cb4a12007b19f5d9d32 -->
-## Show the form for creating a new resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/tags/add" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/tags/add"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/tags/add`
-
-
-<!-- END_f021f3f51b714cb4a12007b19f5d9d32 -->
-
-<!-- START_33a73c79315250f0e66854401446e523 -->
-## Destroy the tag.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/tags/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/tags/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/tags/{tag}`
-
-
-<!-- END_33a73c79315250f0e66854401446e523 -->
-
-<!-- START_0d73817186b07536b174c1e8a016bbb0 -->
-## settings/api
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/api" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/api"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/api`
-
-
-<!-- END_0d73817186b07536b174c1e8a016bbb0 -->
-
-<!-- START_8f974e16578e545d3fe3ac078aaab892 -->
-## settings/dav
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/dav" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/dav"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/dav`
-
-
-<!-- END_8f974e16578e545d3fe3ac078aaab892 -->
-
-<!-- START_44058229ad1aece4eab0aacabccd6198 -->
-## Update the default view when viewing a contact.
-
-The default view can be either the life events feed or the general data
-about the contact (notes, reminders, ...).
-Possible values: life-events | notes.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/updateDefaultProfileView" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/updateDefaultProfileView"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/updateDefaultProfileView`
-
-
-<!-- END_44058229ad1aece4eab0aacabccd6198 -->
-
-<!-- START_e75c452f2c2e7ca4e130b1f65fa39152 -->
-## settings/security
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/security" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/security`
-
-
-<!-- END_e75c452f2c2e7ca4e130b1f65fa39152 -->
-
-<!-- START_61f17398dfdb40fd6b2d675298511b31 -->
-## Change user password.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/security/passwordChange" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/passwordChange"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/security/passwordChange`
-
-
-<!-- END_61f17398dfdb40fd6b2d675298511b31 -->
-
-<!-- START_da7f32469da83ecee75469b9fc2b8617 -->
-## settings/security/2fa-enable
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/security/2fa-enable" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/2fa-enable"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/security/2fa-enable`
-
-
-<!-- END_da7f32469da83ecee75469b9fc2b8617 -->
-
-<!-- START_0ae7c6f2dc5a757e28ba922add0963e7 -->
-## settings/security/2fa-enable
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/security/2fa-enable" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/2fa-enable"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/security/2fa-enable`
-
-
-<!-- END_0ae7c6f2dc5a757e28ba922add0963e7 -->
-
-<!-- START_244ea495a6498f78590d0d94e10aed9a -->
-## settings/security/2fa-disable
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/security/2fa-disable" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/2fa-disable"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/security/2fa-disable`
-
-
-<!-- END_244ea495a6498f78590d0d94e10aed9a -->
-
-<!-- START_8907d09bf023d7a7d933803dc8d4f153 -->
-## settings/security/2fa-disable
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/security/2fa-disable" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/2fa-disable"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/security/2fa-disable`
-
-
-<!-- END_8907d09bf023d7a7d933803dc8d4f153 -->
-
-<!-- START_0fbe96e876b7d617ae88c989fff5d0b6 -->
-## settings/security/u2f/register
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/security/u2f/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/u2f/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/security/u2f/register`
-
-
-<!-- END_0fbe96e876b7d617ae88c989fff5d0b6 -->
-
-<!-- START_51396e3acc9fb6621adbbebc4b1114c1 -->
-## settings/security/u2f/register
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/security/u2f/register" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/u2f/register"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/security/u2f/register`
-
-
-<!-- END_51396e3acc9fb6621adbbebc4b1114c1 -->
-
-<!-- START_4f4fad8adb91eb0da2017309475f71aa -->
-## Remove an existing security key.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://monicalocal.test/settings/security/u2f/remove/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/u2f/remove/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`DELETE settings/security/u2f/remove/{u2fKeyId}`
-
-
-<!-- END_4f4fad8adb91eb0da2017309475f71aa -->
-
-<!-- START_75361e0c5b0b7aeb48ff2853330e3329 -->
-## Generate recovery codes.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/security/generate-recovery-codes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/generate-recovery-codes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/security/generate-recovery-codes`
-
-
-<!-- END_75361e0c5b0b7aeb48ff2853330e3329 -->
-
-<!-- START_9c6a0ea92ed81a1519f235b88d2f26ff -->
-## Get list of recovery codes.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/security/recovery-codes" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/security/recovery-codes"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/security/recovery-codes`
-
-
-<!-- END_9c6a0ea92ed81a1519f235b88d2f26ff -->
-
-<!-- START_9bb93d7ddf3f622bc99d0f644c88f537 -->
-## Display a log in form for oauth accessToken.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/oauth/login" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/login"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-null
-```
-
-### HTTP Request
-`GET oauth/login`
-
-
-<!-- END_9bb93d7ddf3f622bc99d0f644c88f537 -->
-
-<!-- START_c599020b8dabac913a5a326a94d61a23 -->
-## Log in a user and returns an accessToken.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/login" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/login"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/login`
-
-
-<!-- END_c599020b8dabac913a5a326a94d61a23 -->
-
-<!-- START_0cfcdcf544073bff7de7ad271cdaa95f -->
-## Log in a user and returns an accessToken.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/verified" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/verified"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/verified`
-
-
-<!-- END_0cfcdcf544073bff7de7ad271cdaa95f -->
-
-<!-- START_42be8725f24757777bc1804a0042a2f1 -->
-## Redirect the user after 2fa form has been submitted.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/oauth/validate2fa" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/oauth/validate2fa"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST oauth/validate2fa`
-
-
-<!-- END_42be8725f24757777bc1804a0042a2f1 -->
-
-<!-- START_4edc224cb85f440d26aaa10abed5d129 -->
-## Show the application&#039;s login form.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/emailchange1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/emailchange1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (302):
-
-```json
-null
-```
-
-### HTTP Request
-`GET settings/emailchange1`
-
-
-<!-- END_4edc224cb85f440d26aaa10abed5d129 -->
-
-<!-- START_0fc310329c7516a08b878f0e7c4eaf97 -->
-## Handle a login request to the application.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/emailchange1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/emailchange1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/emailchange1`
-
-
-<!-- END_0fc310329c7516a08b878f0e7c4eaf97 -->
-
-<!-- START_28843a7662edd80d4a5f2f2ccffcb7ee -->
-## Display a listing of the resource.
-
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://monicalocal.test/settings/emailchange2" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/emailchange2"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (401):
-
-```json
-{
-    "message": "Unauthenticated."
-}
-```
-
-### HTTP Request
-`GET settings/emailchange2`
-
-
-<!-- END_28843a7662edd80d4a5f2f2ccffcb7ee -->
-
-<!-- START_999fc5bc12255f13f9b30a040e174fe9 -->
-## Change user email.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://monicalocal.test/settings/emailchange2" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json"
-```
-
-```javascript
-const url = new URL(
-    "https://monicalocal.test/settings/emailchange2"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-
-### HTTP Request
-`POST settings/emailchange2`
-
-
-<!-- END_999fc5bc12255f13f9b30a040e174fe9 -->
 
 
