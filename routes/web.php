@@ -19,6 +19,8 @@ Route::get('/', 'Auth\LoginController@showLoginOrRegister')->name('login');
 
 Auth::routes(['verify' => true]);
 
+\Mpociot\ApiDoc\ApiDoc::routes('/apidoc');
+
 Route::get('/invitations/accept/{key}', 'Auth\InvitationController@show')->name('invitations.accept');
 Route::post('/invitations/accept/{key}', 'Auth\InvitationController@store')->name('invitations.send');
 
