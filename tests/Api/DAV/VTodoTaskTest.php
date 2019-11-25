@@ -44,11 +44,11 @@ class VTodoTaskTest extends ApiTestCase
 
         $uuid = Str::uuid();
 
-        $response = $this->call('PUT', "/dav/calendars/{$user->email}/tasks/{$uuid}.ics", [], [], [],
+        $response = $this->call('PUT', "/dav/calendars/{$user->email}/tasks/{$uuid->toString()}.ics", [], [], [],
             ['content-type' => 'application/xml; charset=utf-8'],
             "BEGIN:VCALENDAR
 BEGIN:VTODO
-UID:{$uuid}
+UID:{$uuid->toString()}
 SUMMARY:title
 DESCRIPTION:description
 END:VTODO

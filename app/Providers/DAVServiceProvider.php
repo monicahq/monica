@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Arr;
 use LaravelSabre\LaravelSabre;
 use Sabre\CalDAV\CalendarRoot;
 use Sabre\CalDAV\ICSExportPlugin;
@@ -36,6 +37,19 @@ class DAVServiceProvider extends ServiceProvider
         });
         LaravelSabre::plugins(function () {
             return $this->plugins();
+        });
+        LaravelSabre::auth(function (\Illuminate\Http\Request $request) : bool {
+            if ($request->user()->admin ||
+                config('laravelsabre.users') == null) {
+                return true;
+            }
+
+            $users = explode(',', config('laravelsabre.users'));
+            $filtered = Arr::where($users, function ($value, $key) use ($request) {
+                return $value === $request->user()->email;
+            });
+
+            return count($filtered) > 0;
         });
     }
 

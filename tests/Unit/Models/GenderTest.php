@@ -44,4 +44,21 @@ class GenderTest extends TestCase
             $gender->name
         );
     }
+
+    public function test_it_gets_the_default_gender()
+    {
+        $account = factory(Account::class)->create();
+        $gender = Gender::create([
+            'account_id' => $account->id,
+            'name' => 'Woman',
+        ]);
+
+        $this->assertFalse($gender->isDefault());
+
+        $account->default_gender_id = $gender->id;
+        $account->save();
+        $gender->refresh();
+
+        $this->assertTrue($gender->isDefault());
+    }
 }

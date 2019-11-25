@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use App\Services\Account\Photo\UploadPhoto;
 use App\Services\Account\Photo\DestroyPhoto;
+use App\Services\Contact\Avatar\UpdateAvatar;
 use App\Http\Resources\Photo\Photo as PhotoResource;
 
 class PhotosController extends Controller
@@ -71,6 +72,15 @@ class PhotosController extends Controller
             app(DestroyPhoto::class)->execute($data);
         } catch (\Exception $e) {
             return $this->respondNotFound();
+        }
+
+        if ($contact->avatar_source == 'photo'
+            && $contact->avatar_photo_id == $photo->id) {
+            app(UpdateAvatar::class)->execute([
+                'account_id' => auth()->user()->account->id,
+                'contact_id' => $contact->id,
+                'source' => 'adorable',
+            ]);
         }
     }
 }

@@ -5,6 +5,8 @@ namespace App\Models\Journal;
 use App\Models\Contact\Entry;
 use App\Models\Account\Account;
 use App\Models\ModelBinding as Model;
+use App\Interfaces\IsJournalableInterface;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -27,7 +29,16 @@ class JournalEntry extends Model
     ];
 
     /**
+     * Eager load with every entry.
+     */
+    protected $with = [
+        'journalable',
+    ];
+
+    /**
      * Get all of the owning "journal-able" models.
+     *
+     * @return MorphTo
      */
     public function journalable()
     {
@@ -35,7 +46,7 @@ class JournalEntry extends Model
     }
 
     /**
-     * Get the account record associated with the invitation.
+     * Get the account record associated with the journal entry.
      *
      * @return BelongsTo
      */
@@ -46,20 +57,37 @@ class JournalEntry extends Model
 
     /**
      * Adds a new entry in the journal.
-     * @param mixed $resourceToLog
+     *
+     * @param \App\Interfaces\IsJournalableInterface $resourceToLog
+     * @return self
      */
-    public function add($resourceToLog)
+    public static function add(IsJournalableInterface $resourceToLog) : self
     {
-        $this->account_id = $resourceToLog->account_id;
-        $this->date = now();
+        $journal = new self;
+        $journal->account_id = $resourceToLog->account_id;
+        $journal->date = now();
         if ($resourceToLog instanceof \App\Models\Account\Activity) {
-            $this->date = $resourceToLog->date_it_happened;
+            $journal->date = $resourceToLog->date_it_happened;
+        } elseif ($resourceToLog instanceof \App\Models\Journal\Entry) {
+            $journal->date = $resourceToLog->attributes['date'];
         }
+        $journal->save();
+        $resourceToLog->journalEntries()->save($journal);
+
+        return $journal;
+    }
+
+    /**
+     * Update an entry in the journal.
+     *
+     * @param \App\Interfaces\IsJournalableInterface $resourceToLog
+     * @return self
+     */
+    public function edit(IsJournalableInterface $resourceToLog) : self
+    {
         if ($resourceToLog instanceof \App\Models\Journal\Entry) {
-            $this->date = $resourceToLog->date;
+            $this->date = $resourceToLog->attributes['date'];
         }
-        $this->journalable_id = $resourceToLog->id;
-        $this->journalable_type = get_class($resourceToLog);
         $this->save();
 
         return $this;
@@ -67,14 +95,14 @@ class JournalEntry extends Model
 
     /**
      * Get the information about the object represented by the Journal Entry.
+     *
      * @return array
      */
     public function getObjectData()
     {
-        $type = $this->journalable_type;
-
         // Instantiating the object
-        $correspondingObject = (new $type)->findOrFail($this->journalable_id);
+        /** @var IsJournalableInterface */
+        $correspondingObject = $this->journalable;
 
         return $correspondingObject->getInfoForJournalEntry();
     }

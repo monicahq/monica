@@ -26,7 +26,7 @@
     @include('partials.errors')
 
     <form action="{{ route('people.store') }}" method="POST">
-      {{ csrf_field() }}
+      @csrf
 
       <div class="pa4-ns ph3 pv2 bb b--gray-monica">
         {{-- This check is for the cultures that are used to say the last name first --}}
@@ -94,9 +94,10 @@
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
         <form-select
           :options="{{ $genders }}"
-          :required="true"
+          :required="false"
           :title="'{{ trans('people.people_add_gender') }}'"
-          :id="'gender'">
+          :id="'gender'"
+          :value="'{{ $defaultGender }}'">
         </form-select>
       </div>
 

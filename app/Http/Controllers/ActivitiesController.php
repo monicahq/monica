@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Journal\JournalEntry;
@@ -35,7 +34,6 @@ class ActivitiesController extends Controller
     {
         return view('activities.add')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withActivity(new Activity);
     }
 
@@ -81,7 +79,7 @@ class ActivitiesController extends Controller
         }
 
         // Log a journal entry
-        (new JournalEntry)->add($activity);
+        JournalEntry::add($activity);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_add_success'));
@@ -99,7 +97,6 @@ class ActivitiesController extends Controller
     {
         return view('activities.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withActivity($activity);
     }
 
@@ -160,6 +157,11 @@ class ActivitiesController extends Controller
         foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->attach($activity, ['account_id' => $account->id]);
         }
+
+        // Update the journal entry (in case date has changed)
+        $activity->journalEntry->update([
+            'date' => $activity->date_it_happened,
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));

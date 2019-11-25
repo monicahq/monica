@@ -3,6 +3,8 @@
 namespace App\Helpers;
 
 use DateTimeZone;
+use function Safe\substr;
+use Illuminate\Support\Arr;
 
 class TimezoneHelper
 {
@@ -17,7 +19,7 @@ class TimezoneHelper
         $timezones = DateTimeZone::listIdentifiers();
 
         foreach ($timezones as $timezone) {
-            list($tz, $name) = self::formatTimezone($timezone);
+            [$tz, $name] = self::formatTimezone($timezone);
             array_push($list, [
                 'id' => $tz,
                 'timezone' => $timezone,
@@ -31,7 +33,7 @@ class TimezoneHelper
 
         $result = [];
         foreach ($collect as $item) {
-            $values = array_values(array_sort($item, function ($value) {
+            $values = array_values(Arr::sort($item, function ($value) {
                 return $value['name'];
             }));
             foreach ($values as $val) {

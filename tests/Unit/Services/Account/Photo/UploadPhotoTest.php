@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\Account\Photo;
 use Tests\TestCase;
 use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use App\Services\Account\Photo\UploadPhoto;

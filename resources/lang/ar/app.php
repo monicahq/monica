@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => 'Yes',
+    'no' => 'No',
     'update' => 'تحديث',
     'save' => 'حفظ',
     'add' => 'إضافة',
@@ -35,6 +37,7 @@ return [
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
     'retry' => 'Retry',
+    'go_back' => 'Go back',
 
     'application_title' => 'Monica (مونيكا) – مدير العلاقات الشخصية',
     'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
@@ -84,7 +87,7 @@ return [
     'breadcrumb_add_note' => 'أضف ملاحظة',
     'breadcrumb_edit_note' => 'حرر ملاحظة',
     'breadcrumb_api' => 'API (واجهة برمجة التطبيق)',
-    'breadcrumb_api' => 'DAV Resources',
+    'breadcrumb_dav' => 'DAV Resources',
     'breadcrumb_edit_introductions' => 'كيف تقابلتما',
     'breadcrumb_settings_personalization' => 'التخصيص',
     'breadcrumb_settings_security' => 'الأمن',
@@ -94,6 +97,7 @@ return [
     'gender_male' => 'رجل',
     'gender_female' => 'إمرأة',
     'gender_none' => 'أُفَضل ألا أقول',
+    'gender_no_gender' => 'No gender',
 
     'error_title' => 'عفواً! حصل خطأ ما.',
     'error_unauthorized' => 'ليس لديك الصلاحية لتحرير هذا المصدر.',
@@ -169,6 +173,16 @@ return [
     'relationship_type_child_female' => 'ابنة',
     'relationship_type_child_with_name' => 'ابن :name',
     'relationship_type_child_female_with_name' => 'ابنة :name',
+
+    'relationship_type_stepparent' => 'stepfather',
+    'relationship_type_stepparent_female' => 'stepmother',
+    'relationship_type_stepparent_with_name' => ':name’s stepfather',
+    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+
+    'relationship_type_stepchild' => 'stepson',
+    'relationship_type_stepchild_female' => 'stepdaughter',
+    'relationship_type_stepchild_with_name' => ':name’s stepson',
+    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
 
     'relationship_type_sibling' => 'أخ',
     'relationship_type_sibling_female' => 'أخت',

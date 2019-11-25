@@ -92,13 +92,13 @@ class NoteTest extends TestCase
         $note = new Note;
         $note->created_at = '2017-01-22 17:56:03';
 
-        $this->assertInternalType('string', $note->getCreatedAt());
+        $this->assertIsString($note->getCreatedAt());
     }
 
     public function testGetContentReturnsAString()
     {
         $note = factory(Note::class)->make();
 
-        $this->assertInternalType('string', $note->getContent());
+        $this->assertIsString($note->getContent());
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Instance;
 
+use Illuminate\Support\Str;
 use Vinkla\Hashids\Facades\Hashids;
 use App\Exceptions\WrongIdException;
 
@@ -31,10 +32,10 @@ class IdHasher
 
     public function decodeId($hash)
     {
-        if (starts_with($hash, $this->prefix)) {
-            $result = Hashids::decode(str_after($hash, $this->prefix));
+        if (Str::startsWith($hash, $this->prefix)) {
+            $result = Hashids::decode(Str::after($hash, $this->prefix));
 
-            if (! is_null($result) && count($result) > 0) {
+            if (count($result) > 0) {
                 return $result[0]; // result is always an array due to quirk in Hashids libary
             }
         }

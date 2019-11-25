@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Auth\Middleware\EnsureEmailIsVerified as EnsureEmailIsVerifiedBase;
+use Illuminate\Auth\Middleware\EnsureEmailIsVerified as Middleware;
 
-class EnsureEmailIsVerified extends EnsureEmailIsVerifiedBase
+class EnsureEmailIsVerified extends Middleware
 {
     /**
      * Handle an incoming request.
@@ -14,10 +14,10 @@ class EnsureEmailIsVerified extends EnsureEmailIsVerifiedBase
      * @param  \Closure  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $redirectToRoute = null)
     {
         if (config('monica.signup_double_optin')) {
-            return parent::handle($request, $next);
+            return parent::handle($request, $next, $redirectToRoute);
         }
 
         return $next($request);

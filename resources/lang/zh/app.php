@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'yes' => '是',
+    'no' => '否',
     'update' => '更新',
     'save' => '保存',
     'add' => '添加',
@@ -25,7 +27,7 @@ return [
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
-    'days' => '天|天',
+    'days' => '天',
     'today' => '今天',
     'yesterday' => '昨天',
     'another_day' => '某一天',
@@ -35,6 +37,7 @@ return [
     'upgrade' => '升级解锁',
     'percent_uploaded' => '已上传 {percent}%',
     'retry' => '重试',
+    'go_back' => '后退',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica是用来收集并管理您与亲朋好友之间的关系的得力助手。',
@@ -84,7 +87,7 @@ return [
     'breadcrumb_add_note' => '添加注释',
     'breadcrumb_edit_note' => '编辑注释',
     'breadcrumb_api' => 'API',
-    'breadcrumb_api' => 'Dav 资源',
+    'breadcrumb_dav' => 'DAV 资源',
     'breadcrumb_edit_introductions' => '你是怎么知道的',
     'breadcrumb_settings_personalization' => '个性化',
     'breadcrumb_settings_security' => '安全',
@@ -94,6 +97,7 @@ return [
     'gender_male' => '男',
     'gender_female' => '女',
     'gender_none' => '保密',
+    'gender_no_gender' => '无性别',
 
     'error_title' => '糟糕! 出错了。',
     'error_unauthorized' => '你没有权限编辑此页',
@@ -169,6 +173,16 @@ return [
     'relationship_type_child_female' => '女儿',
     'relationship_type_child_with_name' => ':name的儿子',
     'relationship_type_child_female_with_name' => ':name的女人',
+
+    'relationship_type_stepparent' => '继父',
+    'relationship_type_stepparent_female' => '继母',
+    'relationship_type_stepparent_with_name' => ':name的继父',
+    'relationship_type_stepparent_female_with_name' => ':name的继母',
+
+    'relationship_type_stepchild' => '继子',
+    'relationship_type_stepchild_female' => '继女',
+    'relationship_type_stepchild_with_name' => ':name的继子',
+    'relationship_type_stepchild_female_with_name' => ':name的继女',
 
     'relationship_type_sibling' => '兄弟',
     'relationship_type_sibling_female' => '姐妹',

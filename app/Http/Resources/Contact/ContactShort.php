@@ -3,9 +3,8 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 
-class ContactShort extends Resource
+class ContactShort extends Contact
 {
     /**
      * Transform the resource into an array.
@@ -18,15 +17,17 @@ class ContactShort extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->is_partial ? $this->getRelatedRealContact()->hashID() : $this->hashID(),
+            'hash_id' => $this->getHashId(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
             'complete_name' => $this->name,
             'initials' => $this->getInitials(),
-            'gender' => $this->gender->name,
+            'gender' => is_null($this->gender) ? null : $this->gender->name,
+            'gender_type' => is_null($this->gender) ? null : $this->gender->type,
             'is_partial' => (bool) $this->is_partial,
             'is_dead' => (bool) $this->is_dead,
+            'is_me' => $this->isMe(),
             'information' => [
                 'birthdate' => [
                     'is_age_based' => (is_null($this->birthdate) ? null : (bool) $this->birthdate->is_age_based),
@@ -39,8 +40,8 @@ class ContactShort extends Resource
                     'date' => DateHelper::getTimestamp($this->deceasedDate),
                 ],
                 'avatar' => [
-                    'has_avatar' => $this->has_avatar,
-                    'avatar_url' => $this->getAvatarURL(110),
+                    'url' => $this->getAvatarUrl(),
+                    'source' => $this->avatar_source,
                     'default_avatar_color' => $this->default_avatar_color,
                 ],
             ],

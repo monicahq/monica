@@ -50,14 +50,4 @@ class LifeEventType extends Model
     {
         return $this->hasMany(LifeEvent::class);
     }
-
-    /**
-     * Get the life event type's attribute.
-     *
-     * @return string
-     */
-    public function getNameAttribute($value)
-    {
-        return $value;
-    }
 }

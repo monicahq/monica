@@ -8,11 +8,8 @@
           </a>
         </div>
         <div class="dib w-60-l w-100 header-search">
-          <form role="search" method="POST" action="{{ route('people.search') }}">
-            {{ csrf_field() }}
-            <input type="search" placeholder="{{ trans('people.people_search') }}" class="form-control header-search-input">
-          </form>
-          <ul class="header-search-results"></ul>
+          <contact-search placeholder="{{ trans('people.people_search') }}">
+          </contact-search>
         </div>
       </div>
       <div class="w-50-l w-100 dtc-l v-mid tl tr-l">

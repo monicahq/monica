@@ -18,7 +18,10 @@ class Update extends Command
      *
      * @var string
      */
-    protected $signature = 'monica:update {--force} {--composer-install} {--dev}';
+    protected $signature = 'monica:update
+                            {--force : Force the operation to run when in production.}
+                            {--composer-install : Updating composer dependencies.}
+                            {--dev : Install dev dependencies too.}';
 
     /**
      * The console command description.

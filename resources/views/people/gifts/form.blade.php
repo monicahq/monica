@@ -1,6 +1,6 @@
 <form method="POST" action="{{ $action }}">
-    {{ method_field($method) }}
-    {{ csrf_field() }}
+    @method($method)
+    @csrf
 
     <h2>{{ trans('people.gifts_add_title', ['name' => $contact->first_name]) }}</h2>
 
@@ -50,12 +50,15 @@
 
     @if ($familyRelationships->count() !== 0)
         <div class="form-group">
-            <div class="form-check">
-                <label class="form-check-label" id="has_recipient">
-                    <input class="form-check-input" type="checkbox" name="has_recipient" id="has_recipient" value="1" {{ $gift->hasParticularRecipient() ? 'checked' : '' }}>
-                    {{ trans('people.gifts_add_someone', ['name' => $contact->first_name]) }}
-                </label>
-            </div>
+            <form-checkbox
+              :name="'has_recipient'"
+              :value="'1'"
+              :modelValue="{{ \Safe\json_encode($gift->hasParticularRecipient()) }}"
+              :dclass="'form-check form-check-label'"
+              :iclass="'form-check-input'"
+            >
+                {{ trans('people.gifts_add_someone', ['name' => $contact->first_name]) }}
+            </form-checkbox>
             <select id="recipient" name="recipient" class="form-control">
                 @foreach($familyRelationships as $familyRelationship)
                     <option value="{{ $familyRelationship->ofContact->id }}"

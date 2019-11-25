@@ -12,8 +12,7 @@
     <link rel="stylesheet" href="{{ asset(mix('css/app-'.htmldir().'.css')) }}">
     <link rel="shortcut icon" href="img/favicon.png">
     <script>
-      window.Laravel = {!! json_encode([
-          'csrfToken' => csrf_token(),
+      window.Laravel = {!! \Safe\json_encode([
           'locale' => \App::getLocale(),
           'htmldir' => htmldir(),
       ]); !!}

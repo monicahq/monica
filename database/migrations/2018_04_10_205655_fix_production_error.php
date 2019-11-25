@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User\User;
+use Illuminate\Support\Str;
 use App\Models\Account\Account;
 use Illuminate\Database\Migrations\Migration;
 
@@ -28,7 +29,7 @@ class FixProductionError extends Migration
         foreach ($usersWithoutAccount as $user) {
             // creation of a new account
             $account = new Account;
-            $account->api_key = str_random(30);
+            $account->api_key = Str::random(30);
             $account->created_at = now();
             $account->save();
 

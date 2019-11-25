@@ -187,4 +187,32 @@ class DAVServerTest extends ApiTestCase
         $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/birthdays/</d:href>");
         $response->assertSee("<d:response><d:href>/dav/calendars/{$user->email}/tasks/</d:href>");
     }
+
+    /**
+     * @group dav
+     */
+    public function test_dav_limit_users_unauthorized()
+    {
+        $user = $this->signin();
+
+        config(['laravelsabre.users' => 'unauthorized']);
+
+        $response = $this->call('PROPFIND', '/dav');
+
+        $response->assertStatus(403);
+    }
+
+    /**
+     * @group dav
+     */
+    public function test_dav_limit_users_authorized()
+    {
+        $user = $this->signin();
+
+        config(['laravelsabre.users' => $user->email]);
+
+        $response = $this->call('PROPFIND', '/dav');
+
+        $response->assertStatus(207);
+    }
 }

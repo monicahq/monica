@@ -69,9 +69,7 @@ class MoveAvatars extends Command
 
         if (! $this->option('dryrun')) {
             $contact->deleteAvatars();
-            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  Files deleted from old location.');
-            }
+            $this->line('  Files deleted from old location.', null, OutputInterface::VERBOSITY_VERBOSE);
 
             // Update location. The filename has not changed.
             $contact->avatar_location = $this->newStorage();
@@ -93,9 +91,7 @@ class MoveAvatars extends Command
 
         foreach ($avatarFileNames as $avatarFileName) {
             if ($newStorage->exists($avatarFileName)) {
-                if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                    $this->line('  File already pushed: '.$avatarFileName);
-                }
+                $this->line('  File already pushed: '.$avatarFileName, null, OutputInterface::VERBOSITY_VERBOSE);
                 continue;
             }
             if (! $this->option('dryrun')) {
@@ -103,9 +99,7 @@ class MoveAvatars extends Command
                 $newStorage->put($avatarFileName, $avatarFile, 'public');
             }
 
-            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  File pushed: '.$avatarFileName);
-            }
+            $this->line('  File pushed: '.$avatarFileName, null, OutputInterface::VERBOSITY_VERBOSE);
         }
     }
 
@@ -129,9 +123,7 @@ class MoveAvatars extends Command
         $storage = Storage::disk($storage);
 
         if (! $storage->exists($avatarFileName)) {
-            if ($this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-                $this->line('  ! File not found: '.$avatarFileName);
-            }
+            $this->line('  ! File not found: '.$avatarFileName, null, OutputInterface::VERBOSITY_VERBOSE);
             throw new FileNotFoundException();
         }
 

@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ auth()->user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -30,7 +30,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-md-9">
+      <div class="col-12 col-md-9">
 
         <h3 class="with-actions">{{ trans('settings.api_title') }}</h3>
         <p>{{ trans('settings.api_description') }}</p>

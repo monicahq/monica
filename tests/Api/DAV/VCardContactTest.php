@@ -3,8 +3,12 @@
 namespace Tests\Api\DAV;
 
 use Tests\ApiTestCase;
+use Illuminate\Support\Str;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use Sabre\VObject\PHPUnitAssertions;
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VCardContactTest extends ApiTestCase
@@ -52,6 +56,109 @@ class VCardContactTest extends ApiTestCase
             'first_name' => 'John',
             'last_name' => 'Doe',
         ]);
+    }
+
+    /**
+     * @group dav
+     */
+    public function test_carddav_put_one_contact_with_photo()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+
+        $image = Image::canvas(1, 1, '#fff')->encode('data-url');
+
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doe\nN:Doe;John;;;\nPHOTO:$image\nEND:VCARD"
+        );
+
+        $response->assertStatus(201);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+        $this->assertDatabaseHas('photos', [
+            'account_id' => $user->account->id,
+        ]);
+
+        $photo = Photo::where(['account_id' => $user->account->id])->first();
+
+        Storage::disk('public')->assertExists($photo->new_filename);
+    }
+
+    /**
+     * @group dav
+     */
+    public function test_carddav_put_one_contact_with_photo_already_set()
+    {
+        $user = $this->signin();
+        $photo = factory(Photo::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'avatar_source' => 'photo',
+            'avatar_photo_id' => $photo->id,
+            'uuid' => Str::uuid()->toString(),
+        ]);
+
+        $image = Image::canvas(1, 1, '#fff')->encode('data-url');
+
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/{$contact->uuid}.vcf", [], [], [],
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:4.0\nFN:John Doe\nN:Doe;John;;;\nPHOTO:$image\nEND:VCARD"
+        );
+
+        $response->assertStatus(204);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'avatar_photo_id' => $photo->id,
+        ]);
+    }
+
+    /**
+     * @group dav
+     */
+    public function test_carddav_put_one_contact_with_photo_and_attributes()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+
+        $image = base64_encode(Image::canvas(1, 1, '#fff')->encode('jpg'));
+
+        $response = $this->call('PUT', "/dav/addressbooks/{$user->email}/contacts/single_vcard_stub.vcf", [], [], [],
+            ['content-type' => 'application/xml; charset=utf-8'],
+            "BEGIN:VCARD\nVERSION:3.0\nFN:John Doe\nN:Doe;John;;;\nPHOTO;ENCODING=B;TYPE=JPEG:$image\nEND:VCARD"
+        );
+
+        $response->assertStatus(201);
+        $response->assertHeader('X-Sabre-Version');
+        $response->assertHeaderMissing('ETag');
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+        ]);
+        $this->assertDatabaseHas('photos', [
+            'account_id' => $user->account->id,
+        ]);
+
+        $photo = Photo::where(['account_id' => $user->account->id])->first();
+
+        Storage::disk('public')->assertExists($photo->new_filename);
     }
 
     /**

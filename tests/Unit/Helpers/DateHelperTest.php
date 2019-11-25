@@ -45,6 +45,39 @@ class DateHelperTest extends FeatureTestCase
         );
     }
 
+    public function testGetFullDateWithEnglishLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        DateHelper::setLocale('en');
+
+        $this->assertEquals(
+            'January 22, 2017',
+            DateHelper::getFullDate($date)
+        );
+    }
+
+    public function testGetFullDateWithFrenchLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        DateHelper::setLocale('fr');
+
+        $this->assertEquals(
+            '22 janvier 2017',
+            DateHelper::getFullDate($date)
+        );
+    }
+
+    public function testGetFullDateWithUnknownLocale()
+    {
+        $date = '2017-01-22 17:56:03';
+        DateHelper::setLocale('jp');
+
+        $this->assertEquals(
+            'January 22, 2017',
+            DateHelper::getFullDate($date)
+        );
+    }
+
     public function testGetShortDateWithTimeWithEnglishLocale()
     {
         $date = '2017-01-22 17:56:03';

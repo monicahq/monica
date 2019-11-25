@@ -4,7 +4,7 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+        <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
 
           <div class="signup-box">
             <div class="dt w-100">
@@ -23,7 +23,7 @@
             @endif
 
             <form action="settings/emailchange1" method="post">
-              {{ csrf_field() }}
+              @csrf
 
               <div class="form-group">
                 <label>{{ trans('auth.email_change_current_email') }}</label>

@@ -4,7 +4,7 @@
   <body class="marketing register">
     <div class="container">
       <div class="row">
-        <div class="col-xs-12 col-md-6 col-md-offset-3 col-md-offset-3-right">
+        <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
 
           <div class="signup-box">
             <div class="dt w-100">
@@ -28,7 +28,7 @@
 
             <!-- Authorize Button -->
             <form method="post" action="oauth/authorize">
-              {{ csrf_field() }}
+              @csrf
 
               <input type="hidden" name="state" value="{{ $request->state }}">
               <input type="hidden" name="client_id" value="{{ $client->id }}">
@@ -37,8 +37,8 @@
 
             <!-- Cancel Button -->
             <form method="post" action="oauth/authorize">
-              {{ csrf_field() }}
-              {{ method_field('DELETE') }}
+              @csrf
+              @method('DELETE')
 
               <input type="hidden" name="state" value="{{ $request->state }}">
               <input type="hidden" name="client_id" value="{{ $client->id }}">

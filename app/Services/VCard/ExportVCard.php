@@ -73,6 +73,7 @@ class ExportVCard extends BaseService
         $this->exportAddress($contact, $vcard);
         $this->exportContactFields($contact, $vcard);
         $this->exportTimestamp($contact, $vcard);
+        $this->exportTags($contact, $vcard);
 
         return $vcard;
     }
@@ -102,18 +103,25 @@ class ExportVCard extends BaseService
      */
     private function exportGender(Contact $contact, VCard $vcard)
     {
-        switch ($contact->gender->name) {
-            case 'Man':
-                $gender = 'M';
-                break;
-            case 'Woman':
-                $gender = 'F';
-                break;
-            default:
-                $gender = 'O';
-                break;
+        if (is_null($contact->gender)) {
+            return;
         }
-        $vcard->add('GENDER', [$gender, $contact->gender->name]);
+
+        $gender = $contact->gender->type;
+        if (empty($gender)) {
+            switch ($contact->gender->name) {
+                case trans('app.gender_male'):
+                    $gender = Gender::MALE;
+                    break;
+                case trans('app.gender_female'):
+                    $gender = Gender::FEMALE;
+                    break;
+                default:
+                    $gender = Gender::OTHER;
+                    break;
+            }
+        }
+        $vcard->add('GENDER', $gender);
     }
 
     /**
@@ -123,7 +131,8 @@ class ExportVCard extends BaseService
     private function exportPhoto(Contact $contact, VCard $vcard)
     {
         $picture = $contact->getAvatarURL();
-        if (! is_null($picture)) {
+
+        if (! empty($picture)) {
             $vcard->add('PHOTO', $picture);
         }
     }
@@ -225,5 +234,17 @@ class ExportVCard extends BaseService
     private function exportTimestamp(Contact $contact, VCard $vcard)
     {
         $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
+    }
+
+    /**
+     * @param Contact $contact
+     * @param VCard $vcard
+     */
+    private function exportTags(Contact $contact, VCard $vcard)
+    {
+        $tags = $contact->getTagsAsString();
+        if (! empty($tags)) {
+            $vcard->CATEGORIES = $tags;
+        }
     }
 }

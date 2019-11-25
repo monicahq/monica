@@ -48,6 +48,7 @@ class ApiReminderControllerTest extends ApiTestCase
         $reminder2 = factory(Reminder::class)->create([
             'account_id' => $user->account->id,
             'contact_id' => $contact2->id,
+            'delible' => false,
         ]);
 
         $response = $this->json('GET', '/api/reminders');
@@ -59,10 +60,12 @@ class ApiReminderControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'object' => 'reminder',
             'id' => $reminder1->id,
+            'delible' => true,
         ]);
         $response->assertJsonFragment([
             'object' => 'reminder',
             'id' => $reminder2->id,
+            'delible' => false,
         ]);
     }
 

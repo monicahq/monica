@@ -137,7 +137,7 @@ class UpdateDeceasedInformationTest extends TestCase
             'add_reminder' => true,
         ];
 
-        app(UpdateDeceasedInformation::class)->execute($request);
+        $contact = app(UpdateDeceasedInformation::class)->execute($request);
 
         $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
         $reminder = Reminder::where('contact_id', $contact->id)->first();

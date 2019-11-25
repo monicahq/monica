@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 class CollectionHelper
@@ -57,7 +58,7 @@ class CollectionHelper
         if (! $locale) {
             $locale = app()->getLocale();
         }
-        if (! array_has($collators, $locale)) {
+        if (! Arr::has($collators, $locale)) {
             $collator = new \Collator($locale);
 
             if (LocaleHelper::getLang($locale) == 'fr') {

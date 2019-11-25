@@ -4,8 +4,14 @@ namespace App\Http\Controllers\Settings;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Request;
+use Laravel\Cashier\Cashier;
+use Laravel\Cashier\Payment;
 use App\Helpers\InstanceHelper;
+use App\Exceptions\StripeException;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Stripe\PaymentIntent as StripePaymentIntent;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 
 class SubscriptionsController extends Controller
 {
@@ -20,17 +26,32 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        if (! auth()->user()->account->isSubscribed()) {
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        if (! auth()->user()->account->isSubscribed() && (! $subscription || $subscription->ended())) {
             return view('settings.subscriptions.blank', [
                 'numberOfCustomers' => InstanceHelper::getNumberOfPaidSubscribers(),
             ]);
         }
 
         $planId = auth()->user()->account->getSubscribedPlanId();
+        try {
+            $nextBillingDate = auth()->user()->account->getNextBillingDate();
+        } catch (StripeException $e) {
+            $nextBillingDate = trans('app.unknown');
+        }
+
+        $hasInvoices = auth()->user()->account->hasStripeId() && auth()->user()->account->hasInvoices();
+        $invoices = null;
+        if ($hasInvoices) {
+            $invoices = auth()->user()->account->invoices();
+        }
 
         return view('settings.subscriptions.account', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($planId),
-            'nextBillingDate' => auth()->user()->account->getNextBillingDate(),
+            'nextBillingDate' => $nextBillingDate,
+            'subscription' => $subscription,
+            'hasInvoices' => $hasInvoices,
+            'invoices' => $invoices,
         ]);
     }
 
@@ -53,7 +74,23 @@ class SubscriptionsController extends Controller
 
         return view('settings.subscriptions.upgrade', [
             'planInformation' => InstanceHelper::getPlanInformationFromConfig($plan),
-            'nextTheoriticalBillingDate' => DateHelper::getShortDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+            'nextTheoriticalBillingDate' => DateHelper::getFullDate(DateHelper::getNextTheoriticalBillingDate($plan)),
+            'intent' => auth()->user()->account->createSetupIntent(),
+        ]);
+    }
+
+    /**
+     * Display the confirm view page.
+     *
+     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
+     */
+    public function confirmPayment($id)
+    {
+        return view('settings.subscriptions.confirm', [
+            'payment' => new Payment(
+                StripePaymentIntent::retrieve($id, Cashier::stripeOptions())
+            ),
+            'redirect' => request('redirect'),
         ]);
     }
 
@@ -96,7 +133,8 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        if (! auth()->user()->account->isSubscribed()) {
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
@@ -114,11 +152,18 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.subscriptions.downgrade');
         }
 
-        if (! auth()->user()->account->isSubscribed()) {
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        if (! auth()->user()->account->isSubscribed() && ! $subscription) {
             return redirect()->route('settings.index');
         }
 
-        auth()->user()->account->subscription(auth()->user()->account->getSubscribedPlanName())->cancelNow();
+        try {
+            auth()->user()->account->subscriptionCancel();
+        } catch (StripeException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
+        }
 
         return redirect()->route('settings.subscriptions.downgrade.success');
     }
@@ -134,40 +179,21 @@ class SubscriptionsController extends Controller
             return redirect()->route('settings.index');
         }
 
-        $stripeToken = $request->input('stripeToken');
-
-        $plan = InstanceHelper::getPlanInformationFromConfig($request->input('plan'));
-        $errorMessage = '';
-
         try {
-            auth()->user()->account->newSubscription($plan['name'], $plan['id'])
-                        ->create($stripeToken, [
-                            'email' => auth()->user()->email,
-                        ]);
-
-            return redirect()->route('settings.subscriptions.upgrade.success');
-        } catch (\Stripe\Error\Card $e) {
-            // Since it's a decline, \Stripe\Error\Card will be caught
-            $body = $e->getJsonBody();
-            $err = $body['error'];
-            $errorMessage = trans('settings.stripe_error_card', ['message' => $err['message']]);
-        } catch (\Stripe\Error\RateLimit $e) {
-            // Too many requests made to the API too quickly
-            $errorMessage = trans('settings.stripe_error_rate_limit');
-        } catch (\Stripe\Error\Authentication $e) {
-            // Authentication with Stripe's API failed
-            // (maybe you changed API keys recently)
-            $errorMessage = trans('settings.stripe_error_authentication');
-        } catch (\Stripe\Error\ApiConnection $e) {
-            // Network communication with Stripe failed
-            $errorMessage = trans('settings.stripe_error_api_connection_error');
-        } catch (\Stripe\Error\Base $e) {
-            $errorMessage = $e->getMessage();
+            auth()->user()->account
+                ->subscribe($request->input('payment_method'), $request->input('plan'));
+        } catch (IncompletePayment $e) {
+            return redirect()->route(
+                'settings.subscriptions.confirm',
+                [$e->payment->asStripePaymentIntent()->id, 'redirect' => route('settings.subscriptions.upgrade.success')]
+            );
+        } catch (StripeException $e) {
+            return back()
+                ->withInput()
+                ->withErrors($e->getMessage());
         }
 
-        return back()
-            ->withInput()
-            ->withErrors($errorMessage);
+        return redirect()->route('settings.subscriptions.upgrade.success');
     }
 
     /**
@@ -181,5 +207,23 @@ class SubscriptionsController extends Controller
             'vendor'  => 'Monica',
             'product' => trans('settings.subscriptions_pdf_title', ['name' => config('monica.paid_plan_monthly_friendly_name')]),
         ]);
+    }
+
+    /**
+     * Download the invoice as PDF.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function forceCompletePaymentOnTesting(Request $request)
+    {
+        if (App::environment('production')) {
+            return;
+        }
+        $subscription = auth()->user()->account->getSubscribedPlan();
+        $subscription->stripe_status = 'active';
+        $subscription->save();
+
+        return redirect()->route('settings.subscriptions.index');
     }
 }

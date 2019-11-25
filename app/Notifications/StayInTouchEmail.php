@@ -5,7 +5,6 @@ namespace App\Notifications;
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Models\Contact\Contact;
-use Illuminate\Support\Facades\App;
 use App\Interfaces\MailNotification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -51,8 +50,6 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailN
      */
     public function toMail(User $user) : MailMessage
     {
-        App::setLocale($user->locale);
-
         return (new MailMessage)
             ->subject(trans('mail.stay_in_touch_subject_line', ['name' => $this->contact->name]))
             ->greeting(trans('mail.greetings', ['username' => $user->first_name]))

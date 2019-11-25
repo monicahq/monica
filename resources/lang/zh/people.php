@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => '联系人未找到',
     'people_list_number_kids' => ':count 个孩子',
     'people_list_last_updated' => '最近更新:',
     'people_list_number_reminders' => ':count 个提醒',
@@ -22,7 +23,14 @@ return [
     'people_list_show_dead' => '显示已故人员 (:count)',
     'people_list_hide_dead' => '隐藏已故人员 (:count)',
     'people_search' => '搜索联系人...',
-    'people_search_no_results' => '未找到相关联系人:(',
+    'people_search_no_results' => '未找到任何结果',
+    'people_search_next' => '下一页',
+    'people_search_prev' => '上一页',
+    'people_search_rows_per_page' => '每页行数:',
+    'people_search_of' => '/',
+    'people_search_page' => '页',
+    'people_search_all' => '所有',
+    'people_add_new' => '添加新的联系人',
     'people_list_account_usage' => '您的账户已联系人使用情况是：:current/:limit ',
     'people_list_account_upgrade_title' => '升级您的帐户, 以打开全部功能。',
     'people_list_account_upgrade_cta' => '立即升级',
@@ -62,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => '已存档联系人列表',
 
     // Header
+    'me' => '这是你',
     'edit_contact_information' => '编辑联系人信息',
     'contact_archive' => '存档联系人',
     'contact_unarchive' => '取消存档',
@@ -111,6 +120,7 @@ return [
     'conversation_add_content' => '写下你们说的话',
     'conversation_add_what_was_said' => '您说了什么？',
     'conversation_add_another' => '添加另一条消息',
+    'conversation_add_error' => '您必须至少添加一条信息',
     'conversation_list_table_messages' => '消息',
     'conversation_list_table_content' => '部分内容(最新消息)',
     'conversation_list_title' => '对话',
@@ -131,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => '记录更新成功',
     'information_edit_title' => '编辑 :name的个人信息',
-    'information_edit_avatar' => '联系人照片/头像',
     'information_edit_max_size' => '最大值 :size Kb',
+    'information_edit_max_size2' => '最大 {size} Kb',
     'information_edit_firstname' => '名字',
     'information_edit_lastname' => '姓氏（可选）',
     'information_edit_description' => '说明 (可选)',
@@ -151,13 +161,13 @@ return [
     'work_information' => '工作信息',
 
     // food preferences
-    'food_preferencies_add_success' => '食品偏好已被保存',
-    'food_preferencies_edit_description' => '也许:firstname或:family的家庭有过敏，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
-    'food_preferencies_edit_description_no_last_name' => '也许:firstname有过敏情况，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
-    'food_preferencies_edit_title' => '注明食物偏好',
-    'food_preferencies_edit_cta' => '保存食物偏好',
-    'food_preferencies_title' => '食物偏好',
-    'food_preferencies_cta' => '添加食物偏好',
+    'food_preferences_add_success' => '食品偏好已被保存',
+    'food_preferences_edit_description' => '也许:firstname或:family的家庭有过敏，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
+    'food_preferences_edit_description_no_last_name' => '也许:firstname有过敏情况，或者不喜欢一瓶特定的酒等。把这些信息列在这里，在下次和邀请他们吃饭时可以在这里看到这些信息。',
+    'food_preferences_edit_title' => '注明食物偏好',
+    'food_preferences_edit_cta' => '保存食物偏好',
+    'food_preferences_title' => '食物偏好',
+    'food_preferences_cta' => '添加食物偏好',
 
     // reminders
     'reminders_blank_title' => '您有什么关于:name的提醒吗？',
@@ -175,10 +185,10 @@ return [
     'reminders_delete_success' => '已成功删除提醒',
     'reminders_update_success' => '已成功更新提醒',
 
-    'reminder_frequency_day' => '每天 | 每:number天',
-    'reminder_frequency_week' => '每周 | 每:number星期',
-    'reminder_frequency_month' => '每月 | 每:number月',
-    'reminder_frequency_year' => '每年 | 每:number年',
+    'reminder_frequency_day' => '每:number天',
+    'reminder_frequency_week' => ' 每:number星期',
+    'reminder_frequency_month' => ' 每:number月',
+    'reminder_frequency_year' => '每:number年',
     'reminder_frequency_one_time' => '在:date',
     'reminders_delete_confirmation' => '确实要删除此提醒吗？',
     'reminders_delete_cta' => '删除',
@@ -196,6 +206,7 @@ return [
     'relationship_form_add' => '添加一个新的关系',
     'relationship_form_edit' => '修改一个已有关系',
     'relationship_form_is_with' => '这个人是...',
+    'relationship_form_is_with_name' => ':name 是...',
     'relationship_form_add_choice' => '这是与谁的关系？',
     'relationship_form_create_contact' => '添加一个新的人',
     'relationship_form_associate_contact' => '导入一位已存在的联系人',
@@ -210,6 +221,7 @@ return [
     'relationship_form_deletion_success' => '此关系已删除',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => '您暂时还没任务。',
     'tasks_form_title' => '标题',
     'tasks_form_description' => '描述 (可选)',
@@ -257,10 +269,10 @@ return [
     'activities_activity' => '活动类别',
     'activities_view_activities_report' => '查看活动报告',
     'activities_profile_title' => ':name 与您之间的活动报告',
-    'activities_profile_subtitle' => '截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次|截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次',
+    'activities_profile_subtitle' => '截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次',
     'activities_profile_year_summary_activity_types' => ':year年活动类型汇总',
     'activities_profile_year_summary' => ':year年你们一起进行的活动',
-    'activities_profile_number_occurences' => ':value 次活动|:value 次活动',
+    'activities_profile_number_occurences' => ':value 次活动',
 
     // notes
     'notes_create_success' => '便签已成功创建',
@@ -454,11 +466,23 @@ return [
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => '相关照片',
     'photo_list_cta' => '上传照片',
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
     'photo_upload_zone_cta' => '上传照片',
+    'photo_current_profile_pic' => '目前头像',
+    'photo_make_profile_pic' => '制作头像',
     'photo_delete' => '删除照片',
+
+    // Avatars
+    'avatar_change_title' => '更换头像',
+    'avatar_question' => '您想使用哪个头像？',
+    'avatar_default_avatar' => '默认头像',
+    'avatar_adorable_avatar' => '喜爱头像',
+    'avatar_gravatar' => '此用户的电子邮件地址 与Gravatar关联 。 <a href="https://gravatar.com/">Gravatar</a> 是全球通用的头像服务。',
+    'avatar_current' => '保持当前头像',
+    'avatar_photo' => '从您上传的照片',
 
     // emotions
     'emotion_this_made_me_feel' => '这让你觉得...',

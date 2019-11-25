@@ -55,7 +55,7 @@ class UpdateBirthdayInformationTest extends TestCase
             'is_date_known' => false,
         ];
 
-        app(UpdateBirthdayInformation::class)->execute($request);
+        $contact = app(UpdateBirthdayInformation::class)->execute($request);
 
         $this->assertDatabaseHas('contacts', [
             'id' => $contact->id,
@@ -142,6 +142,8 @@ class UpdateBirthdayInformationTest extends TestCase
         ];
 
         $contact = app(UpdateBirthdayInformation::class)->execute($request);
+
+        $specialDate = SpecialDate::where('contact_id', $contact->id)->first();
 
         $this->assertNotNull($contact->birthday_reminder_id);
     }

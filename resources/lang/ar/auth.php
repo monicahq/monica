@@ -20,6 +20,7 @@ return [
     'back_homepage' => 'العودة إلى الصفحة الرئيسية',
     'mfa_auth_otp' => 'المصادقة مع جهاز العامل الثنائي الخاص بك',
     'mfa_auth_u2f' => 'المصادقة باستخدام جهاز U2F',
+    'mfa_auth_webauthn' => 'Authenticate with a security key (WebAuthn)',
     '2fa_title' => 'المصادقة الثنائية',
     '2fa_wrong_validation' => 'فشلت المصادقة الثنائية.',
     '2fa_one_time_password' => 'رمز المصادقة الثنائية',

@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 $db = [
 
     /*
@@ -70,6 +72,7 @@ $db = [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => env('DB_PREFIX', ''),
+            'foreign_key_constraints' => true,
         ],
 
         'mysql' => [
@@ -152,13 +155,27 @@ $db = [
 
     'redis' => [
 
-        'cluster' => false,
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'options' => [
+            'cluster' => env('REDIS_CLUSTER', 'redis'),
+            'prefix' => env('REDIS_PREFIX', Str::slug(env('APP_NAME', 'laravel'), '_').'_database_'),
+        ],
 
         'default' => [
-            'host' => env('REDIS_HOST', 'localhost'),
+            'url' => env('REDIS_URL'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
             'password' => env('REDIS_PASSWORD', null),
             'port' => env('REDIS_PORT', 6379),
-            'database' => env('REDIS_DATABASE', 0),
+            'database' => env('REDIS_DB', env('REDIS_DATABASE', 0)),
+        ],
+
+        'cache' => [
+            'url' => env('REDIS_URL'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'password' => env('REDIS_PASSWORD', null),
+            'port' => env('REDIS_PORT', 6379),
+            'database' => env('REDIS_CACHE_DB', 1),
         ],
 
     ],
@@ -171,12 +188,12 @@ $db = [
  * This is done below, added to the $db variable and then returned.
  */
 if (env('HEROKU')) {
-    $url = parse_url(env('CLEARDB_DATABASE_URL'));
+    $url = parse_url(env('JAWSDB_URL', env('CLEARDB_DATABASE_URL')));
 
     $db['connections']['heroku'] = [
         'driver' => 'mysql',
         'host' => $url['host'],
-        'database' => starts_with($url['path'], '/') ? str_after($url['path'], '/') : $url['path'],
+        'database' => Str::startsWith($url['path'], '/') ? Str::after($url['path'], '/') : $url['path'],
         'username' => $url['user'],
         'password' => $url['pass'],
         'charset' => env('DB_USE_UTF8MB4', true) ? 'utf8mb4' : 'utf8',

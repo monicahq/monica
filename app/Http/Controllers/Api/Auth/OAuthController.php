@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
-use GuzzleHttp\Client;
 use App\Models\User\User;
 use Illuminate\Http\Request;
+use function Safe\json_decode;
+use Illuminate\Support\Facades\App;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\JsonRespondController;
+use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\Route;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,41 +19,61 @@ class OAuthController extends Controller
     use JsonRespondController;
 
     /**
-     * Log in a user and returns an accessToken.
+     * Create a new controller instance.
      *
-     * @param Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @return void
      */
-    public function login(Request $request)
+    public function __construct()
     {
-        // Disable debugger for caldav output
         if (config('app.debug')) {
             Debugbar::disable();
         }
+    }
 
+    /**
+     * Display a log in form for oauth accessToken.
+     *
+     * @param Request $request
+     * @return \Illuminate\View\View
+     */
+    public function index(Request $request)
+    {
+        return view('auth.oauthlogin');
+    }
+
+    /**
+     * Log in a user and returns an accessToken.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function login(Request $request)
+    {
         $isvalid = $this->validateRequest($request);
         if ($isvalid !== true) {
             return $isvalid;
         }
 
-        try {
-            $token = $this->proxy([
-                'username' => $request->get('email'),
-                'password' => $request->get('password'),
-                'grantType' => 'password',
-            ]);
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-            return $this->respond($token);
-        } catch (\Exception $e) {
-            return $this->respondUnauthorized();
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            // The user is active, not suspended, and exists.
+
+            $request->session()->put('oauth', true);
+            $request->session()->put('email', $email);
+            $request->session()->put('password', encrypt($password));
+
+            $request->setMethod('GET');
+
+            return Route::respondWithRoute('oauth.verify');
         }
     }
 
     /**
      * Validate the request.
      *
-     * @param  Request $request
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse|true
      */
     private function validateRequest(Request $request)
@@ -64,9 +88,8 @@ class OAuthController extends Controller
         }
 
         // Check if email exists. If not respond with an Unauthorized, this way a hacker
-        // doesn't know if the login email exist or not, or if the password os wrong
-        $count = User::where('email', $request->get('email'))
-                    ->count();
+        // doesn't know if the login email exist or not, or if the password is wrong
+        $count = User::where('email', $request->input('email'))->count();
         if ($count === 0) {
             return $this->respondUnauthorized();
         }
@@ -75,26 +98,55 @@ class OAuthController extends Controller
     }
 
     /**
+     * Log in a user and returns an accessToken.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verify(Request $request)
+    {
+        $request->query->set('email', $request->session()->pull('email'));
+        $request->query->set('password', decrypt($request->session()->pull('password')));
+
+        $isvalid = $this->validateRequest($request);
+        if ($isvalid !== true) {
+            return $isvalid;
+        }
+
+        try {
+            $token = $this->proxy([
+                'username' => $request->input('email'),
+                'password' => $request->input('password'),
+                'grantType' => 'password',
+            ]);
+
+            return $this->respond($token);
+        } catch (\Exception $e) {
+            return $this->respondUnauthorized();
+        }
+    }
+
+    /**
      * Proxy a request to the OAuth server.
      *
      * @param array $data the data to send to the server
+     *
      * @return array
+     * @throws \Safe\Exceptions\JsonException
      */
     private function proxy(array $data = [])
     {
-        $http = new Client();
-        $response = $http->post(route('passport.token'), [
-            'form_params' => [
-                'grant_type' => $data['grantType'],
-                'client_id' => config('monica.mobile_client_id'),
-                'client_secret' => config('monica.mobile_client_secret'),
-                'username' => $data['username'],
-                'password' => $data['password'],
-                'scope' => '',
-            ],
-        ]);
+        $url = App::runningUnitTests() ? config('app.url').'/oauth/token' : route('passport.token');
+        $response = app(Kernel::class)->handle(Request::create($url, 'POST', [
+            'grant_type' => $data['grantType'],
+            'client_id' => config('monica.mobile_client_id'),
+            'client_secret' => config('monica.mobile_client_secret'),
+            'username' => $data['username'],
+            'password' => $data['password'],
+            'scope' => '',
+        ]));
 
-        $data = json_decode($response->getBody());
+        $data = json_decode($response->content());
 
         return [
             'access_token' => $data->access_token,

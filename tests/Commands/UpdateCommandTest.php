@@ -45,7 +45,7 @@ class UpdateCommandTest extends TestCase
 
     private function assertCommandContains($array, $message, $command)
     {
-        $this->assertContains($message, $array['message']);
-        $this->assertContains($command, $array['command']);
+        $this->assertStringContainsString($message, $array['message']);
+        $this->assertStringContainsString($command, $array['command']);
     }
 }

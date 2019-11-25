@@ -8,7 +8,7 @@
   <div class="breadcrumb">
     <div class="{{ auth()->user()->getFluidLayout() }}">
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
           <ul class="horizontal">
             <li>
               <a href="{{ route('dashboard.index') }}">{{ trans('app.breadcrumb_dashboard') }}</a>
@@ -27,7 +27,7 @@
 
       @include('settings._sidebar')
 
-      <div class="col-xs-12 col-md-9">
+      <div class="col-12 col-md-9">
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
 
@@ -40,7 +40,7 @@
             @endif
 
             <form action="{{ route('settings.save') }}" method="POST">
-              {{ csrf_field() }}
+              @csrf
 
               {{-- id --}}
               <input type="hidden" name="id" value="{{ auth()->user()->id }}" />
@@ -112,8 +112,8 @@
                 <reminder-time
                 :reminder="'{{ auth()->user()->account->default_time_reminder_is_sent }}'"
                 :timezone="'{{ $selectedTimezone }}'"
-                :timezones="{{ json_encode($timezones) }}"
-                :hours="{{ json_encode($hours) }}">
+                :timezones="{{ \Safe\json_encode($timezones) }}"
+                :hours="{{ \Safe\json_encode($hours) }}">
                 </reminder-time>
               </div>
 
@@ -123,7 +123,7 @@
         </div>
 
         <form method="POST" action="{{ route('settings.reset') }}" class="settings-reset bg-white" onsubmit="return confirm('{{ trans('settings.reset_notice') }}')">
-          {{ csrf_field() }}
+          @csrf
 
           <h2>{{ trans('settings.reset_title') }}</h2>
           <p>{{ trans('settings.reset_desc') }}</p>
@@ -131,7 +131,7 @@
         </form>
 
         <form method="POST" action="{{ route('settings.delete') }}" class="settings-delete bg-white" onsubmit="return confirm('{{ trans('settings.delete_notice') }}')">
-          {{ csrf_field() }}
+          @csrf
 
           <h2>{{ trans('settings.delete_title') }}</h2>
           <p>{{ trans('settings.delete_desc') }}</p>

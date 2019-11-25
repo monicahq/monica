@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'איש הקשר לא נמצא',
     'people_list_number_kids' => 'ילד אחד|:count ילדים',
     'people_list_last_updated' => 'יעוץ אחרון:',
     'people_list_number_reminders' => 'תזכורת אחת|:count תזכורות',
@@ -22,7 +23,14 @@ return [
     'people_list_show_dead' => 'הצגת מנוחים (:count)',
     'people_list_hide_dead' => 'הסתרת מנוחים (:count)',
     'people_search' => 'חיפוש באנשי הקשר שלך…',
-    'people_search_no_results' => 'לא נמצאי אנשי קשר מתאימים :(',
+    'people_search_no_results' => 'לא נמצאו תוצאות',
+    'people_search_next' => 'הבא',
+    'people_search_prev' => 'הקודם',
+    'people_search_rows_per_page' => 'שורות בכל עמוד:',
+    'people_search_of' => 'מתוך',
+    'people_search_page' => 'עמוד',
+    'people_search_all' => 'הכול',
+    'people_add_new' => 'הוספת אדם חדש',
     'people_list_account_usage' => 'ניצולת החשבון שלך: :current/:limit אנשי קשר',
     'people_list_account_upgrade_title' => 'ניתן לשדרג את החשבון שלך כדי ליהנות משפע התכונות שיש לנו להציע.',
     'people_list_account_upgrade_cta' => 'לשדרג כעת',
@@ -62,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'הצגת אנשי קשר בארכיון',
 
     // Header
+    'me' => 'מדובר בך',
     'edit_contact_information' => 'עריכת פרטים ליצירת קשר',
     'contact_archive' => 'העברת איש קשר לארכיון',
     'contact_unarchive' => 'הוצאת איש קשר מהארכיון',
@@ -111,6 +120,7 @@ return [
     'conversation_add_content' => 'נא לכתוב את מה שאמרת',
     'conversation_add_what_was_said' => 'מה אמרת?',
     'conversation_add_another' => 'הוספת הודעה נוספת',
+    'conversation_add_error' => 'עליך להוסיף הודעה אחת לפחות.',
     'conversation_list_table_messages' => 'הודעות',
     'conversation_list_table_content' => 'תוכן חלקי (הודעה אחרונה)',
     'conversation_list_title' => 'דיונים',
@@ -131,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => 'הפרופיל עודכן בהצלחה',
     'information_edit_title' => 'עריכת הפרטים האישיים של :name',
-    'information_edit_avatar' => 'תמונה/ציור של איש הקשר',
     'information_edit_max_size' => ':size ק״ב לכל היותר.',
+    'information_edit_max_size2' => '{size} קילוסיביות לכל היותר.',
     'information_edit_firstname' => 'שם פרטי',
     'information_edit_lastname' => 'שם משפחה (רשות)',
     'information_edit_description' => 'תיאור (רשות)',
@@ -151,13 +161,13 @@ return [
     'work_information' => 'פרטי תעסוקה',
 
     // food preferences
-    'food_preferencies_add_success' => 'העדפות המזון נשמרו',
-    'food_preferencies_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
-    'food_preferencies_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
-    'food_preferencies_edit_title' => 'ציון העדפות מזון',
-    'food_preferencies_edit_cta' => 'שמירת העדפות מזון',
-    'food_preferencies_title' => 'העדפות מזון',
-    'food_preferencies_cta' => 'הוספת העדפות מזון',
+    'food_preferences_add_success' => 'העדפות המזון נשמרו',
+    'food_preferences_edit_description' => 'אולי ל:firstname או למישהו ממשפחת :family יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
+    'food_preferences_edit_description_no_last_name' => 'אולי ל־:firstname יש אלרגיה. או איזה סוג יין לא אהוב במיוחד. ניתן לציין את אלה כאן כדי להיזכר בהם בהזמנה הבאה לארוחת ערב',
+    'food_preferences_edit_title' => 'ציון העדפות מזון',
+    'food_preferences_edit_cta' => 'שמירת העדפות מזון',
+    'food_preferences_title' => 'העדפות מזון',
+    'food_preferences_cta' => 'הוספת העדפות מזון',
 
     // reminders
     'reminders_blank_title' => 'יש משהו שברצונך לקבל עליו תזכורת בנוגע ל־:name?',
@@ -196,6 +206,7 @@ return [
     'relationship_form_add' => 'הוספת קשר חדש',
     'relationship_form_edit' => 'עריכת קשר קיים',
     'relationship_form_is_with' => 'איש הקשר הוא…',
+    'relationship_form_is_with_name' => ':name…',
     'relationship_form_add_choice' => 'עם מי הקשר הזה מתקיים?',
     'relationship_form_create_contact' => 'הוספת אדם חדש',
     'relationship_form_associate_contact' => 'איש קשר קיים',
@@ -210,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'הקשר נמחק.',
 
     // tasks
+    'tasks_title' => 'משימות',
     'tasks_blank_title' => 'אין לך משימות עדיין.',
     'tasks_form_title' => 'כותרת',
     'tasks_form_description' => 'תיאור (רשות)',
@@ -293,7 +305,7 @@ return [
     'gifts_offered' => 'מתנות שהוצעו',
     'gifts_offered_as_an_idea' => 'סימון כרעיון',
     'gifts_received' => 'מתנות שהתקבלו',
-    'gifts_view_comment' => 'צפייה בתגובה',
+    'gifts_view_comment' => 'צפייה בהערה',
     'gifts_mark_offered' => 'סימון כהוצעה',
     'gifts_update_success' => 'המתנה עודכנה בהצלחה',
 
@@ -423,7 +435,7 @@ return [
     'life_event_sentence_home_improvement' => 'עריכת שיפוץ',
     'life_event_sentence_holidays' => 'יציאה לחופש',
     'life_event_sentence_new_vehicle' => 'קבלת כלי רכב חדש',
-    'life_event_sentence_new_roommate' => 'Got a roommate',
+    'life_event_sentence_new_roommate' => 'התווספות שותפות',
     'life_event_sentence_overcame_an_illness' => 'החלמה ממחלה',
     'life_event_sentence_quit_a_habit' => 'גמילה',
     'life_event_sentence_new_eating_habits' => 'אימוץ הרגלי אכילה חדשים',
@@ -454,11 +466,23 @@ return [
     'document_upload_zone_error' => 'אירעה שגיאה בעת העלאת המסמך. נא לנסות שוב להלן.',
 
     // Photos
+    'photo_title' => 'תמונות',
     'photo_list_title' => 'תמונות קשורות',
     'photo_list_cta' => 'העלאת תמונה',
     'photo_list_blank_desc' => 'ניתן לאחסן תמונות של איש הקשר הזה. אפילו ממש ברגע זה!',
     'photo_upload_zone_cta' => 'העלאת תמונה',
+    'photo_current_profile_pic' => 'תמונת פרופיל נוכחית',
+    'photo_make_profile_pic' => 'הכנת תמונת פרופיל',
     'photo_delete' => 'מחיקת תמונה',
+
+    // Avatars
+    'avatar_change_title' => 'החלפת התמונה הייצוגית שלך',
+    'avatar_question' => 'באיזו תמונה ייצוגית להשתמש?',
+    'avatar_default_avatar' => 'התמונה הייצוגית כבררת מחדל',
+    'avatar_adorable_avatar' => 'התמונה הייצוגית המקסימה',
+    'avatar_gravatar' => 'ה־Gravatar שמשויך לכתובת הדוא״ל של משתמש זה. <a href="https://gravatar.com/">Gravatar</a> היא מערכת גלובלית שמאפשרת למשתמשים לשייך כתובות דוא״ל לתמונות.',
+    'avatar_current' => 'להשאיר את התמונה הייצוגית הנוכחית',
+    'avatar_photo' => 'מתמונה שהעלית',
 
     // emotions
     'emotion_this_made_me_feel' => 'התחושה שקיבלת היא…',

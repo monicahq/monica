@@ -8,7 +8,7 @@
         "issue_tracker_url": "https://github.com/monicahq/monica/issues",
         "vcs_url": "https://github.com/monicahq/monica.git",
         "github_use_tag_release_notes": true,
-        "github_release_notes_file": "CHANGELOG",
+        "github_release_notes_file": "CHANGELOG.md",
         "licenses": ["AGPL-V3"],
         "labels": [],
         "public_download_numbers": false,

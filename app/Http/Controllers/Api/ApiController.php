@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
+use function Safe\substr;
 use Illuminate\Http\Request;
+use function Safe\json_decode;
 use App\Models\Account\ApiUsage;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
@@ -65,11 +67,15 @@ class ApiController extends Controller
             // if the call contains a JSON, the call must not be a GET or
             // a DELETE
             // TODO: there is probably a much better way to do that
-            if ($request->method() != 'GET' && $request->method() != 'DELETE'
-                && is_null(json_decode($request->getContent()))) {
-                return $this->setHTTPStatusCode(400)
-                            ->setErrorCode(37)
-                            ->respondWithError();
+            try {
+                if ($request->method() != 'GET' && $request->method() != 'DELETE'
+                    && is_null(json_decode($request->getContent()))) {
+                    return $this->setHTTPStatusCode(400)
+                                ->setErrorCode(37)
+                                ->respondWithError();
+                }
+            } catch (\Safe\Exceptions\JsonException $e) {
+                // no error
             }
 
             return $next($request);

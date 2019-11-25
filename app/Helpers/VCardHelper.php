@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Arr;
 use Sabre\VObject\Component\VCard;
 
 class VCardHelper
@@ -20,7 +21,7 @@ class VCardHelper
             return;
         }
 
-        $country = array_get($vCardAddress->getParts(), '6');
+        $country = Arr::get($vCardAddress->getParts(), '6');
         if (! empty($country)) {
             return CountriesHelper::find($country);
         }

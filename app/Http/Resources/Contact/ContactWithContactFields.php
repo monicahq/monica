@@ -3,10 +3,9 @@
 namespace App\Http\Resources\Contact;
 
 use App\Helpers\DateHelper;
-use Illuminate\Http\Resources\Json\Resource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class ContactWithContactFields extends Resource
+class ContactWithContactFields extends Contact
 {
     /**
      * Transform the resource into an array.
@@ -19,15 +18,17 @@ class ContactWithContactFields extends Resource
         return [
             'id' => $this->id,
             'object' => 'contact',
-            'hash_id' => $this->is_partial ? $this->getRelatedRealContact()->hashID() : $this->hashID(),
+            'hash_id' => $this->getHashId(),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
-            'gender' => $this->gender->name,
+            'gender' => is_null($this->gender) ? null : $this->gender->name,
+            'gender_type' => is_null($this->gender) ? null : $this->gender->type,
             'is_starred' => (bool) $this->is_starred,
             'is_partial' => (bool) $this->is_partial,
             'is_active' => (bool) $this->is_active,
             'is_dead' => (bool) $this->is_dead,
+            'is_me' => $this->isMe(),
             'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'stay_in_touch_frequency' => $this->when(! $this->is_partial, $this->stay_in_touch_frequency),
@@ -68,11 +69,11 @@ class ContactWithContactFields extends Resource
                     'company' => $this->company,
                 ]),
                 'avatar' => $this->when(! $this->is_partial, [
-                    'url' => $this->getAvatarUrl(110),
-                    'source' => $this->getAvatarSource(),
+                    'url' => $this->getAvatarUrl(),
+                    'source' => $this->avatar_source,
                     'default_avatar_color' => $this->default_avatar_color,
                 ]),
-                'food_preferencies' => $this->when(! $this->is_partial, $this->food_preferencies),
+                'food_preferences' => $this->when(! $this->is_partial, $this->food_preferences),
                 'how_you_met' => $this->when(! $this->is_partial, [
                     'general_information' => $this->first_met_additional_info,
                     'first_met_date' => [

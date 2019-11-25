@@ -2,8 +2,10 @@
 
 namespace App\Services\Contact\Contact;
 
+use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use Illuminate\Validation\Rule;
 use App\Models\Contact\Reminder;
 use App\Models\Instance\SpecialDate;
 use App\Services\Contact\Reminder\CreateReminder;
@@ -11,6 +13,11 @@ use App\Services\Contact\Reminder\DestroyReminder;
 
 class UpdateBirthdayInformation extends BaseService
 {
+    /**
+     * @var array
+     */
+    public $data;
+
     /**
      * Get the validation rules that apply to the service.
      *
@@ -22,11 +29,29 @@ class UpdateBirthdayInformation extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'is_date_known' => 'required|boolean',
-            'day' => 'nullable|integer',
-            'month' => 'nullable|integer',
-            'year' => 'nullable|integer',
             'is_age_based' => 'nullable|boolean',
-            'age' => 'nullable|integer',
+            'day' => [
+                'integer',
+                'nullable',
+                Rule::requiredIf(function () {
+                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
+                }),
+            ],
+            'month' => [
+                'integer',
+                'nullable',
+                Rule::requiredIf(function () {
+                    return Arr::get($this->data, 'is_date_known', false) && ! Arr::get($this->data, 'is_age_based', false);
+                }),
+            ],
+            'year' => 'nullable|integer',
+            'age' => [
+                'integer',
+                'nullable',
+                Rule::requiredIf(function () {
+                    return Arr::get($this->data, 'is_date_known', false) && Arr::get($this->data, 'is_age_based', false);
+                }),
+            ],
             'add_reminder' => 'nullable|boolean',
         ];
     }
@@ -39,6 +64,7 @@ class UpdateBirthdayInformation extends BaseService
      */
     public function execute(array $data)
     {
+        $this->data = $data;
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])

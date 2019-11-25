@@ -3,6 +3,7 @@
 return [
 
     //index
+    'people_not_found' => 'Contact non trouvé',
     'people_list_number_kids' => ':count enfant|:count enfants',
     'people_list_last_updated' => 'Dernière consultation :',
     'people_list_number_reminders' => ':count rappel|:count rappels',
@@ -22,7 +23,14 @@ return [
     'people_list_show_dead' => 'Afficher les contacts décédés (:count)',
     'people_list_hide_dead' => 'Masquer les contacts décédés (:count)',
     'people_search' => 'Recherchez dans vos contacts...',
-    'people_search_no_results' => 'Aucun contact ne correspond à ce critère',
+    'people_search_no_results' => 'Aucun résultat',
+    'people_search_next' => 'Suivant',
+    'people_search_prev' => 'Précédent',
+    'people_search_rows_per_page' => 'Résultats par page:',
+    'people_search_of' => 'de',
+    'people_search_page' => 'Page',
+    'people_search_all' => 'Tous',
+    'people_add_new' => 'Ajouter une nouvelle personne',
     'people_list_account_usage' => 'Votre utilisation de compte : :current/:limit contacts',
     'people_list_account_upgrade_title' => 'Passez au plan supérieur pour débloquer votre compte et l’amener à son plein potentiel.',
     'people_list_account_upgrade_cta' => 'Passez au plan supérieur',
@@ -62,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'Liste de contacts archivés',
 
     // Header
+    'me' => 'C’est vous',
     'edit_contact_information' => 'Mettre à jour les informations',
     'contact_archive' => 'Archiver le contact',
     'contact_unarchive' => 'Désarchiver le contact',
@@ -83,7 +92,7 @@ return [
     'modal_call_comment' => 'De quoi avez-vous parlé ? (optionnel)',
     'modal_call_exact_date' => 'L’appel s’est passé le',
     'modal_call_who_called' => 'Qui a appelé ?',
-    'modal_call_emotion' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cet appel ? (facultatif)',
+    'modal_call_emotion' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cet appel ? (optionnel)',
     'calls_add_success' => 'L’appel téléphonique a été enregistré.',
     'call_delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cet appel ?',
     'call_delete_success' => 'L’appel a été supprimé avec succès',
@@ -111,6 +120,7 @@ return [
     'conversation_add_content' => 'Écrivez ce que vous avez dit',
     'conversation_add_what_was_said' => 'Qu’avez-vous dit ?',
     'conversation_add_another' => 'Ajoutez un nouveau message',
+    'conversation_add_error' => 'Vous devez ajouter au moins un message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Contenu partiel (dernier message)',
     'conversation_list_title' => 'Discussions',
@@ -131,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => 'Le profil a été mis à jour avec succès',
     'information_edit_title' => 'Mettre à jour les informations personnelles de :name',
-    'information_edit_avatar' => 'Photo/avatar du contact',
     'information_edit_max_size' => 'Maximum :size Ko.',
+    'information_edit_max_size2' => 'Maximum {size} Ko.',
     'information_edit_firstname' => 'Prénom',
     'information_edit_lastname' => 'Nom de famille (optionnel)',
     'information_edit_description' => 'Description (facultatif)',
@@ -151,13 +161,13 @@ return [
     'work_information' => 'Information sur le travail',
 
     // food preferences
-    'food_preferencies_add_success' => 'Les préférences alimentaires ont été mises à jour.',
-    'food_preferencies_edit_description' => 'Peut-être que :firstname ou quelqu’un dans la famille :family a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
-    'food_preferencies_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
-    'food_preferencies_edit_title' => 'Modification des préférences alimentaires',
-    'food_preferencies_edit_cta' => 'Enregistrer les préférences alimentaires',
-    'food_preferencies_title' => 'Préférences alimentaires',
-    'food_preferencies_cta' => 'Ajouter',
+    'food_preferences_add_success' => 'Les préférences alimentaires ont été mises à jour.',
+    'food_preferences_edit_description' => 'Peut-être que :firstname ou quelqu’un dans la famille :family a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
+    'food_preferences_edit_description_no_last_name' => 'Peut-être que :firstname a une allergie. Ou peut-être qu’il n’aime pas un vin spécifique. Indiquez ici ses préférences alimentaires afin que vous vous en rappeliez la prochaine fois que vous l’inviterez à dîner',
+    'food_preferences_edit_title' => 'Modification des préférences alimentaires',
+    'food_preferences_edit_cta' => 'Enregistrer les préférences alimentaires',
+    'food_preferences_title' => 'Préférences alimentaires',
+    'food_preferences_cta' => 'Ajouter des préférences alimentaires',
 
     // reminders
     'reminders_blank_title' => 'De quoi souhaitez-vous être rappelé à propos de :name ?',
@@ -196,6 +206,7 @@ return [
     'relationship_form_add' => 'Ajouter une relation',
     'relationship_form_edit' => 'Modifier une relation existante',
     'relationship_form_is_with' => 'Cette personne est...',
+    'relationship_form_is_with_name' => ':name est ...',
     'relationship_form_add_choice' => 'Quelle est cette relation ?',
     'relationship_form_create_contact' => 'Ajouter une nouvelle personne',
     'relationship_form_associate_contact' => 'Un contact existant',
@@ -210,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relation a été supprimée.',
 
     // tasks
+    'tasks_title' => 'Tâches',
     'tasks_blank_title' => 'Vous n’avez aucune tâche pour le moment.',
     'tasks_form_title' => 'Titre',
     'tasks_form_description' => 'Description (optionnel)',
@@ -339,7 +351,7 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Anniversaire de la mort de :name',
-    'deceased_mark_person_deceased' => 'Indiquez cette personne comme décédée',
+    'deceased_mark_person_deceased' => 'Indiquer cette personne comme décédée',
     'deceased_know_date' => 'Je connais la date de décès de cette personne',
     'deceased_add_reminder' => 'Ajouter un rappel pour cette date',
     'deceased_label' => 'Décédé',
@@ -361,8 +373,8 @@ return [
     'contact_address_form_province' => 'Province (optionnel)',
     'contact_address_form_postal_code' => 'Code postal (optionnel)',
     'contact_address_form_country' => 'Pays (optionnel)',
-    'contact_address_form_latitude' => 'Latitude (chiffres uniquement) (facultatif)',
-    'contact_address_form_longitude' => 'Longitude (chiffres uniquement) (facultatif)',
+    'contact_address_form_latitude' => 'Latitude (chiffres uniquement) (optionnel)',
+    'contact_address_form_longitude' => 'Longitude (chiffres uniquement) (optionnel)',
 
     // Pets
     'pets_kind' => 'Sorte d’animal',
@@ -454,11 +466,23 @@ return [
     'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Photos associées',
     'photo_list_cta' => 'Télécharger une photo',
     'photo_list_blank_desc' => 'Vous pouvez enregistrer des images sur ce contact. Téléchargez-en une maintenant !',
     'photo_upload_zone_cta' => 'Télécharger une photo',
+    'photo_current_profile_pic' => 'Photo de profil actuelle',
+    'photo_make_profile_pic' => 'Utiliser comme photo de profil',
     'photo_delete' => 'Supprimer la photo',
+
+    // Avatars
+    'avatar_change_title' => 'Changer de photo de profil',
+    'avatar_question' => 'Quelle photo de profil souhaitez-vous utiliser ?',
+    'avatar_default_avatar' => 'La photo de profil par défaut',
+    'avatar_adorable_avatar' => 'La photo de profil Adorable',
+    'avatar_gravatar' => 'Le Gravatar associé à l\'adresse courriel de cette personne. <a href="https://gravatar.com/">Gravatar</a> est un système global qui permet aux utilisateurs d\'associer des adresses courriel avec des photos.',
+    'avatar_current' => 'Conserver la photo de profil actuelle',
+    'avatar_photo' => 'À partir d’une photo que vous téléchargez',
 
     // emotions
     'emotion_this_made_me_feel' => 'Cela vous fait sentir …',

@@ -13,7 +13,7 @@ class SetupTest extends Command
      * @var string
      */
     protected $signature = 'setup:test
-                            {--skipSeed : Whether we should populate the database with fake data}';
+                            {--skipSeed : Skip the populate database with fake data.}';
 
     /**
      * The console command description.

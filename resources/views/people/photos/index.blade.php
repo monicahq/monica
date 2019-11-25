@@ -4,7 +4,7 @@
             hash="{{ $contact->hashID() }}"
             contact-name="{{ $contact->first_name }}"
             current-photo-id-as-avatar="{{ $contact->avatar_photo_id }}"
-            reach-limit="{{ json_encode($contact->account->hasReachedAccountStorageLimit()) }}">
+            reach-limit="{{ \Safe\json_encode($contact->account->hasReachedAccountStorageLimit()) }}">
         </photo-list>
     </div>
 </div>

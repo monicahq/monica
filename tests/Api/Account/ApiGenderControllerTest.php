@@ -15,6 +15,7 @@ class ApiGenderControllerTest extends ApiTestCase
         'id',
         'object',
         'name',
+        'type',
         'account' => [
             'id',
         ],
@@ -100,6 +101,7 @@ class ApiGenderControllerTest extends ApiTestCase
 
         $response = $this->json('post', '/api/genders', [
             'name' => 'man',
+            'type' => 'M',
         ]);
 
         $response->assertstatus(201);
@@ -118,6 +120,7 @@ class ApiGenderControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
             'id' => $genderId,
             'name' => 'man',
+            'type' => 'M',
         ]);
     }
 
@@ -131,6 +134,7 @@ class ApiGenderControllerTest extends ApiTestCase
 
         $response = $this->json('put', '/api/genders/'.$gender->id, [
             'name' => 'man',
+            'type' => 'M',
         ]);
 
         $response->assertstatus(200);
@@ -152,6 +156,7 @@ class ApiGenderControllerTest extends ApiTestCase
             'account_id' => $user->account->id,
             'id' => $genderId,
             'name' => 'man',
+            'type' => 'M',
         ]);
     }
 
@@ -166,6 +171,7 @@ class ApiGenderControllerTest extends ApiTestCase
 
         $response = $this->json('put', '/api/genders/'.$gender->id, [
             'name' => 'man',
+            'type' => 'M',
         ]);
 
         $this->expectnotfound($response);

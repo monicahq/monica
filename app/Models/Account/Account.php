@@ -7,13 +7,14 @@ use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
 use App\Models\User\Module;
+use Illuminate\Support\Str;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
+use App\Traits\Subscription;
 use App\Models\Journal\Entry;
-use Laravel\Cashier\Billable;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
 use App\Models\Contact\Contact;
@@ -21,6 +22,7 @@ use App\Models\Contact\Message;
 use App\Models\Contact\Document;
 use App\Models\Contact\Reminder;
 use App\Models\Contact\LifeEvent;
+use App\Services\User\CreateUser;
 use App\Models\Contact\Occupation;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\ContactField;
@@ -44,7 +46,7 @@ use App\Services\Auth\Population\PopulateContactFieldTypesTable;
 
 class Account extends Model
 {
-    use Billable;
+    use Subscription;
 
     /**
      * The attributes that are mass assignable.
@@ -55,6 +57,7 @@ class Account extends Model
         'number_of_invitations_sent',
         'api_key',
         'default_time_reminder_is_sent',
+        'default_gender_id',
     ];
 
     /**
@@ -477,28 +480,6 @@ class Account extends Model
     }
 
     /**
-     * Get the default time reminder is sent.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getDefaultTimeReminderIsSentAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Set the default time a reminder is sent.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDefaultTimeReminderIsSentAttribute($value)
-    {
-        $this->attributes['default_time_reminder_is_sent'] = $value;
-    }
-
-    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return bool
@@ -526,62 +507,6 @@ class Account extends Model
         }
 
         return $canDowngrade;
-    }
-
-    /**
-     * Check if the account is currently subscribed to a plan.
-     *
-     * @return bool $isSubscribed
-     */
-    public function isSubscribed()
-    {
-        if ($this->has_access_to_paid_version_for_free) {
-            return true;
-        }
-
-        $isSubscribed = false;
-
-        if ($this->subscribed(config('monica.paid_plan_monthly_friendly_name'))) {
-            $isSubscribed = true;
-        }
-
-        if ($this->subscribed(config('monica.paid_plan_annual_friendly_name'))) {
-            $isSubscribed = true;
-        }
-
-        return $isSubscribed;
-    }
-
-    /**
-     * Check if the account has invoices linked to this account.
-     * This was created because Laravel Cashier doesn't know how to properly
-     * handled the case when a user doesn't have invoices yet. This sucks balls.
-     *
-     * @return bool
-     */
-    public function hasInvoices()
-    {
-        $query = DB::table('subscriptions')->where('account_id', $this->id)->count();
-
-        return $query > 0;
-    }
-
-    /**
-     * Get the next billing date for the account.
-     *
-     * @return string $timestamp
-     */
-    public function getNextBillingDate()
-    {
-        // Weird method to get the next billing date from Laravel Cashier
-        // see https://stackoverflow.com/questions/41576568/get-next-billing-date-from-laravel-cashier
-        $subscriptions = $this->asStripeCustomer()['subscriptions'];
-        if (count($subscriptions->data) <= 0) {
-            return;
-        }
-        $timestamp = $subscriptions->data[0]['current_period_end'];
-
-        return DateHelper::getShortDate($timestamp);
     }
 
     /**
@@ -625,14 +550,13 @@ class Account extends Model
      */
     public function timezone()
     {
-        $timezone = '';
-
-        foreach ($this->users as $user) {
-            $timezone = $user->timezone;
-            break;
+        try {
+            $user = $this->users()->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return '';
         }
 
-        return $timezone;
+        return $user->timezone;
     }
 
     /**
@@ -670,9 +594,9 @@ class Account extends Model
      */
     public function populateDefaultGendersTable()
     {
-        Gender::create(['name' => trans('app.gender_male'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_female'), 'account_id' => $this->id]);
-        Gender::create(['name' => trans('app.gender_none'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::MALE, 'name' => trans('app.gender_male'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::FEMALE, 'name' => trans('app.gender_female'), 'account_id' => $this->id]);
+        Gender::create(['type' => Gender::OTHER, 'name' => trans('app.gender_none'), 'account_id' => $this->id]);
     }
 
     /**
@@ -762,48 +686,6 @@ class Account extends Model
     }
 
     /**
-     * Get the id of the plan the account is subscribed to.
-     *
-     * @return string
-     */
-    public function getSubscribedPlanId()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->stripe_plan;
-        }
-
-        return '';
-    }
-
-    /**
-     * Get the friendly name of the plan the account is subscribed to.
-     *
-     * @return string
-     */
-    public function getSubscribedPlanName()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->name;
-        }
-    }
-
-    /**
-     * Cancel the plan the account is subscribed to.
-     */
-    public function subscriptionCancel()
-    {
-        $plan = $this->subscriptions()->first();
-
-        if (! is_null($plan)) {
-            return $plan->cancelNow();
-        }
-    }
-
-    /**
      * Replaces a specific gender of all the contacts in the account with another
      * gender.
      *
@@ -818,6 +700,26 @@ class Account extends Model
             ->update(['gender_id' => $genderToReplaceWith->id]);
 
         return true;
+    }
+
+    /**
+     * Get the default gender for this account.
+     *
+     * @return string
+     */
+    public function defaultGender()
+    {
+        $defaultGenderType = Gender::MALE;
+        if ($this->default_gender_id) {
+            $defaultGender = Gender::where([
+                'account_id' => $this->id,
+            ])->find($this->default_gender_id);
+            if ($defaultGender) {
+                $defaultGenderType = $defaultGender->type;
+            }
+        }
+
+        return $defaultGenderType;
     }
 
     /**
@@ -844,12 +746,25 @@ class Account extends Model
     {
         // create new account
         $account = new self;
-        $account->api_key = str_random(30);
+        $account->api_key = Str::random(30);
         $account->created_at = now();
         $account->save();
 
-        // create the first user for this account
-        User::createDefault($account->id, $first_name, $last_name, $email, $password, $ipAddress, $lang);
+        try {
+            // create the first user for this account
+            $user = app(CreateUser::class)->execute([
+                'account_id' => $account->id,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'password' => $password,
+                'locale' => $lang,
+                'ip_address' => $ipAddress,
+            ]);
+        } catch (\Exception $e) {
+            $account->delete();
+            throw $e;
+        }
 
         $account->populateDefaultFields();
 
@@ -888,7 +803,7 @@ class Account extends Model
      * Gets the RelationshipType object matching the given type.
      *
      * @param  string $relationshipTypeName
-     * @return RelationshipType
+     * @return RelationshipType|null
      */
     public function getRelationshipTypeByType(string $relationshipTypeName)
     {

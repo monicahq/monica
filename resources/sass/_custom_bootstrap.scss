@@ -1,0 +1,48 @@
+// Bootstrap
+
+html {
+  font-size: 14px;
+}
+
+// Includes all the imports from the standard Bootstrap project
+
+@import "~bootstrap/scss/bootstrap-reboot";
+@import "~bootstrap/scss/bootstrap-grid";
+
+// @import "~bootstrap/scss/_functions";
+// @import "~bootstrap/scss/_variables";
+// @import "~bootstrap/scss/_mixins";
+// @import "~bootstrap/scss/_root";
+// @import "~bootstrap/scss/_reboot";
+// @import "~bootstrap/scss/_type";
+// @import "~bootstrap/scss/_images";
+// @import "~bootstrap/scss/_code";
+// @import "~bootstrap/scss/_grid";
+@import "~bootstrap/scss/_tables";
+@import "~bootstrap/scss/_forms";
+// @import "~bootstrap/scss/_buttons";
+// @import "~bootstrap/scss/_transitions";
+@import "~bootstrap/scss/_dropdown";
+// @import "~bootstrap/scss/_button-group";
+// @import "~bootstrap/scss/_input-group";
+// @import "~bootstrap/scss/_custom-forms";
+@import "~bootstrap/scss/_nav";
+// @import "~bootstrap/scss/_navbar";
+@import "~bootstrap/scss/_card";
+// @import "~bootstrap/scss/_breadcrumb";
+@import "~bootstrap/scss/_pagination";
+// @import "~bootstrap/scss/_badge";
+// @import "~bootstrap/scss/_jumbotron";
+@import "~bootstrap/scss/_alert";
+// @import "~bootstrap/scss/_progress";
+// @import "~bootstrap/scss/_media";
+// @import "~bootstrap/scss/_list-group";
+@import "~bootstrap/scss/_close";
+// @import "~bootstrap/scss/_toasts";
+@import "~bootstrap/scss/_modal";
+// @import "~bootstrap/scss/_tooltip";
+// @import "~bootstrap/scss/_popover";
+// @import "~bootstrap/scss/_carousel";
+// @import "~bootstrap/scss/_spinners";
+// @import "~bootstrap/scss/_utilities";
+@import "~bootstrap/scss/_print";

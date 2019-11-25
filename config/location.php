@@ -78,7 +78,7 @@ return [
     |
     */
     'testing' => [
-        'enabled' => true,
+        'enabled' => false,
         'ip' => '66.102.0.0',
     ],
 

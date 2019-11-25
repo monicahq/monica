@@ -30,7 +30,7 @@ Please read the list below. Feel free to delete this text after but we need you 
 - [ ] Make sure account reset and deletion still work.
 
 #### Other tasks
-- [ ] [CHANGELOG](https://github.com/monicahq/monica/blob/master/CHANGELOG) entry added, if necessary, under `UNRELEASED`.
+- [ ] [CHANGELOG](https://github.com/monicahq/monica/blob/master/CHANGELOG.md) entry added, if necessary, under `UNRELEASED`.
 - [ ] [CONTRIBUTORS](https://github.com/monicahq/monica/blob/master/CONTRIBUTORS) entry added, if necessary.
 - [ ] If it's relevant and worth mentioning, create a changelog entry for this change. The changelog entry will appear inside the UI for all users to see. To know if your change is worth the creation of a changelog entry, [read the documentation](https://github.com/monicahq/monica/blob/master/docs/administrators/tips.md#when-is-it-relevant-to-create-a-changelog-entry).
 - [ ] Don't forget to [ask for a free account](mailto:regis@monicahq.com) on https://monicahq.com as anyone who contributes can request a free account.

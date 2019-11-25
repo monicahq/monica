@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Str;
+use function Safe\json_decode;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +21,8 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
         'last_name' => $faker->lastName,
         'email' => $faker->safeEmail,
         'email_verified_at' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
-        'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
+        'password' => bcrypt(Str::random(10)),
+        'remember_token' => Str::random(10),
         'timezone' => config('app.timezone'),
         'name_order' => 'firstname_lastname',
         'locale' => 'en',
@@ -30,7 +31,7 @@ $factory->define(App\Models\User\User::class, function (Faker\Generator $faker) 
 
 $factory->define(App\Models\Account\Account::class, function (Faker\Generator $faker) {
     return [
-        'api_key' => str_random(30),
+        'api_key' => Str::random(30),
     ];
 });
 
@@ -126,8 +127,11 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
             ])->id;
         },
         'uuid' => Str::uuid(),
+        'default_avatar_color' => '#ffffff',
+        'avatar_default_url' => 'avatars/img.png',
     ];
 });
+
 $factory->state(App\Models\Contact\Contact::class, 'partial', [
     'is_partial' => 1,
 ]);
@@ -135,6 +139,11 @@ $factory->state(App\Models\Contact\Contact::class, 'named', function (Faker\Gene
     return [
         'first_name' => $faker->firstName,
         'last_name' => $faker->lastName,
+    ];
+});
+$factory->state(App\Models\Contact\Contact::class, 'no_gender', function (Faker\Generator $faker) {
+    return [
+        'gender_id' => null,
     ];
 });
 
@@ -206,8 +215,20 @@ $factory->define(App\Models\Contact\Note::class, function (Faker\Generator $fake
 $factory->define(App\Models\Relationship\Relationship::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'relationship_type_id' => function () {
-            return factory(App\Models\Relationship\RelationshipType::class)->create()->id;
+        'relationship_type_id' => function (array $data) {
+            return factory(App\Models\Relationship\RelationshipType::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'contact_is' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'of_contact' => function (array $data) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
         },
     ];
 });
@@ -215,8 +236,10 @@ $factory->define(App\Models\Relationship\Relationship::class, function (Faker\Ge
 $factory->define(App\Models\Relationship\RelationshipType::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'relationship_type_group_id' => function () {
-            return factory(App\Models\Relationship\RelationshipTypeGroup::class)->create()->id;
+        'relationship_type_group_id' => function (array $data) {
+            return factory(App\Models\Relationship\RelationshipTypeGroup::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
         },
     ];
 });
@@ -242,6 +265,12 @@ $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $fake
 $factory->define(App\Models\Account\Invitation::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'invited_by_user_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'invitation_key' => Str::random(100),
     ];
 });
 
@@ -264,6 +293,8 @@ $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $f
 $factory->define(App\Models\Contact\Gender::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'type' => 'M',
+        'name' => 'Man',
     ];
 });
 
@@ -294,7 +325,7 @@ $factory->define(App\Models\Contact\Tag::class, function (Faker\Generator $faker
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
         'name' => $faker->word,
-        'name_slug' => str_slug($faker->word),
+        'name_slug' => Str::slug($faker->word),
     ];
 });
 
@@ -618,7 +649,11 @@ $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $f
 $factory->define(App\Models\User\SyncToken::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'user_id' => factory(App\Models\User\User::class)->create()->id,
+        'user_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'timestamp' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });

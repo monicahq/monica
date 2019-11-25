@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Settings;
 
 use Illuminate\Http\Request;
 use App\Models\Contact\Gender;
+use App\Helpers\CollectionHelper;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
 use Illuminate\Support\Facades\Validator;
@@ -23,15 +24,35 @@ class GendersController extends Controller
         $genders = auth()->user()->account->genders;
 
         foreach ($genders as $gender) {
-            $data = [
-                'id' => $gender->id,
-                'name' => $gender->name,
-                'numberOfContacts' => $gender->contacts->count(),
-            ];
-            $gendersData->push($data);
+            $gendersData->push($this->formatData($gender));
         }
 
-        return $gendersData;
+        return CollectionHelper::sortByCollator($gendersData, 'name');
+    }
+
+    /**
+     * Get all the gender sex types.
+     */
+    public function types()
+    {
+        $gendersData = collect([]);
+
+        $types = [
+            Gender::MALE,
+            Gender::FEMALE,
+            Gender::OTHER,
+            Gender::UNKNOWN,
+            Gender::NONE,
+        ];
+
+        foreach ($types as $type) {
+            $gendersData->push([
+                'id' => $type,
+                'name' => trans('settings.personalization_genders_'.strtolower($type)),
+            ]);
+        }
+
+        return CollectionHelper::sortByCollator($gendersData, 'name');
     }
 
     /**
@@ -46,17 +67,14 @@ class GendersController extends Controller
         $gender = auth()->user()->account->genders()->create(
             $request->only([
                 'name',
+                'type',
             ])
             + [
                 'account_id' => auth()->user()->account_id,
             ]
         );
 
-        return [
-            'id' => $gender->id,
-            'name' => $gender->name,
-            'numberOfContacts' => $gender->contacts->count(),
-        ];
+        return $this->formatData($gender);
     }
 
     /**
@@ -67,10 +85,21 @@ class GendersController extends Controller
         $gender->update(
             $request->only([
                 'name',
+                'type',
             ])
         );
+        if ($request->get('isDefault')) {
+            $this->updateDefault($request, $gender);
+            $gender->refresh();
+        } elseif ($gender->isDefault()) {
+            // Case of this gender was the default one previously
+            $account = auth()->user()->account;
+            $account->default_gender_id = null;
+            $account->save();
+            $gender->refresh();
+        }
 
-        return $gender;
+        return $this->formatData($gender);
     }
 
     /**
@@ -78,8 +107,9 @@ class GendersController extends Controller
      */
     public function destroyAndReplaceGender(GendersRequest $request, Gender $gender, $genderId)
     {
+        $account = auth()->user()->account;
         try {
-            $genderToReplaceWith = Gender::where('account_id', auth()->user()->account_id)
+            $genderToReplaceWith = Gender::where('account_id', $account->id)
                 ->findOrFail($genderId);
         } catch (ModelNotFoundException $e) {
             return response()->json([
@@ -88,7 +118,12 @@ class GendersController extends Controller
         }
 
         // We get the new gender to associate the contacts with.
-        auth()->user()->account->replaceGender($gender, $genderToReplaceWith);
+        $account->replaceGender($gender, $genderToReplaceWith);
+
+        if ($gender->isDefault()) {
+            $account->default_gender_id = $genderToReplaceWith->id;
+            $account->save();
+        }
 
         $gender->delete();
 
@@ -103,5 +138,34 @@ class GendersController extends Controller
         $gender->delete();
 
         return $this->respondObjectDeleted($gender->id);
+    }
+
+    /**
+     * Update the given gender to the default gender.
+     */
+    public function updateDefault(GendersRequest $request, Gender $gender)
+    {
+        $account = auth()->user()->account;
+        $account->default_gender_id = $gender->id;
+        $account->save();
+
+        return $this->formatData($gender);
+    }
+
+    /**
+     * Format data for output.
+     *
+     * @param Gender  $gender
+     * @return array
+     */
+    private function formatData($gender)
+    {
+        return [
+            'id' => $gender->id,
+            'name' => $gender->name,
+            'type' => $gender->type,
+            'isDefault' => $gender->isDefault(),
+            'numberOfContacts' => $gender->contacts->count(),
+        ];
     }
 }

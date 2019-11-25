@@ -3,6 +3,7 @@
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Models\User\User;
+use function Safe\json_decode;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
@@ -18,6 +19,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
+use App\Services\Contact\Relationship\CreateRelationship;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
@@ -45,7 +47,7 @@ class FakeContentTableSeeder extends Seeder
             $userId = User::where('email', 'admin@admin.com')->value('id');
             $this->account = Account::where('id', $userId)->first();
         } else {
-            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
 
             // set default admin account to confirmed
             $adminUser = $this->account->users()->first();
@@ -80,17 +82,6 @@ class FakeContentTableSeeder extends Seeder
                 'is_deceased_date_known' => false,
             ]);
 
-            $this->contact->setAvatarColor();
-            $this->contact->save();
-
-            // set an external avatar
-            if (rand(1, 2) == 1) {
-                $this->contact->has_avatar = true;
-                $this->contact->avatar_location = 'external';
-                $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
-                $this->contact->save();
-            }
-
             $this->populateTags();
             $this->populateFoodPreferences();
             $this->populateDeceasedDate();
@@ -120,7 +111,7 @@ class FakeContentTableSeeder extends Seeder
 
         // create the second test, blank account
         if (! User::where('email', 'blank@blank.com')->exists()) {
-            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank0');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
         }
@@ -143,9 +134,9 @@ class FakeContentTableSeeder extends Seeder
 
     public function populateFoodPreferences()
     {
-        // add food preferencies
+        // add food preferences
         if (rand(1, 2) == 1) {
-            $this->contact->food_preferencies = $this->faker->realText();
+            $this->contact->food_preferences = $this->faker->realText();
             $this->contact->save();
         }
     }
@@ -241,16 +232,12 @@ class FakeContentTableSeeder extends Seeder
                     'last_name' => (rand(1, 2) == 1) ? $this->faker->lastName : null,
                     'nickname' => (rand(1, 2) == 1) ? $this->faker->name : null,
                     'gender_id' => $this->getRandomGender()->id,
-                    'is_partial' => (rand(1, 2) == 1) ? false : true,
+                    'is_partial' => rand(1, 2) == 1,
                     'is_birthdate_known' => false,
                     'is_deceased' => false,
                     'is_deceased_date_known' => false,
                 ]);
 
-                $relatedContact->setAvatarColor();
-                $relatedContact->save();
-
-                // birthdate
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $this->contact->account_id,
@@ -266,7 +253,12 @@ class FakeContentTableSeeder extends Seeder
 
                 // set relationship
                 $relationshipId = $this->contact->account->relationshipTypes->random()->id;
-                $this->contact->setRelationship($relatedContact, $relationshipId);
+                $relationship = app(CreateRelationship::class)->execute([
+                    'account_id' => $this->contact->account_id,
+                    'contact_is' => $this->contact->id,
+                    'of_contact' => $relatedContact->id,
+                    'relationship_type_id' => $relationshipId,
+                ]);
             }
         }
     }

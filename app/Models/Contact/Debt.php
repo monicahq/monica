@@ -23,6 +23,14 @@ class Debt extends Model
     protected $guarded = ['id'];
 
     /**
+     * Eager load with every debt.
+     */
+    protected $with = [
+        'account',
+        'contact',
+    ];
+
+    /**
      * Get the account record associated with the debt.
      */
     public function account()

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -v
+
 SETUP=composer-setup.php
 cd /tmp
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit\Jobs\Reminder;
 
 use Carbon\Carbon;
 use Tests\TestCase;
@@ -10,7 +10,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
-use Illuminate\Support\Facades\Event;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Support\Facades\Notification;
 use App\Jobs\Reminder\NotifyUserAboutReminder;
@@ -58,7 +57,7 @@ class NotifyUserAboutReminderTest extends TestCase
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
-                $this->assertContains("You wanted to be reminded of {$reminderOutbox->reminder->title}", $mailData['introLines']);
+                $this->assertStringContainsString("You wanted to be reminded of {$reminderOutbox->reminder->title}", $mailData['introLines'][0]);
 
                 return $notification->reminder->id === $reminder->id;
             }
@@ -103,7 +102,7 @@ class NotifyUserAboutReminderTest extends TestCase
                 $mailData = $notification->toMail($user)->toArray();
                 $this->assertEquals("Reminder for {$contact->name}", $mailData['subject']);
                 $this->assertEquals("Hi {$user->first_name}", $mailData['greeting']);
-                $this->assertContains('In  days (on Jan 01, 2018), the following event will happen:', $mailData['introLines']);
+                $this->assertStringContainsString('In  days (on Jan 01, 2018), the following event will happen:', $mailData['introLines'][0]);
 
                 return $notification->reminder->id === $reminder->id;
             }

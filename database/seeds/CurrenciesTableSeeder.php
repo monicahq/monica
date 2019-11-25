@@ -1,6 +1,6 @@
 <?php
 
-
+use function Safe\json_decode;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +20,7 @@ class CurrenciesTableSeeder extends Seeder
      *
      * @var string[]
      */
-    private $ignore = ['CAD', 'USD', 'GBP', 'EUR', 'RUB', 'ZAR'];
+    private $ignore = ['CAD', 'USD', 'GBP', 'EUR', 'RUB', 'ZAR', 'DKK', 'INR', 'BRL', 'CHF'];
 
     /**
      * Runs the seeder.
