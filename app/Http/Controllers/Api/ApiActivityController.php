@@ -21,7 +21,7 @@ class ApiActivityController extends ApiController
      * Get the list of activities.
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection|\Illuminate\Http\JsonResponse
-     * 
+     *
      * @queryParam limit int Indicates the page size
      * @queryParam page int Indicates the page to return
      * @authenticated
