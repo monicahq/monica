@@ -2,7 +2,7 @@
 
 ### New features:
 
-*
+* Save contact tags in vCard 'CATEGORIES' field
 
 ### Enhancements:
 
