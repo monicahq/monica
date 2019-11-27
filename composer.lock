@@ -2236,16 +2236,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v10.5.0",
+            "version": "v10.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "39916c390454ff21cf25e28fb517eac6f13bd4bd"
+                "reference": "3daaa4ea38ba8e256e6df97e40937dada073ff45"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/39916c390454ff21cf25e28fb517eac6f13bd4bd",
-                "reference": "39916c390454ff21cf25e28fb517eac6f13bd4bd",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/3daaa4ea38ba8e256e6df97e40937dada073ff45",
+                "reference": "3daaa4ea38ba8e256e6df97e40937dada073ff45",
                 "shasum": ""
             },
             "require": {
@@ -2263,8 +2263,8 @@
                 "nesbot/carbon": "^2.0",
                 "php": "^7.1.3",
                 "stripe/stripe-php": "^7.0",
-                "symfony/http-kernel": "^4.3",
-                "symfony/intl": "^4.3"
+                "symfony/http-kernel": "^4.3|^5.0",
+                "symfony/intl": "^4.3|^5.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
@@ -2306,7 +2306,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2019-11-12T16:44:53+00:00"
+            "time": "2019-11-26T16:57:09+00:00"
         },
         {
             "name": "laravel/framework",
@@ -7160,16 +7160,16 @@
         },
         {
             "name": "stripe/stripe-php",
-            "version": "v7.12.0",
+            "version": "v7.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stripe/stripe-php.git",
-                "reference": "0e24d89888e4bf051003c45c447b32e5298df55c"
+                "reference": "3234cce6f9600399a4e8bb07b71d5670a9333f4a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/0e24d89888e4bf051003c45c447b32e5298df55c",
-                "reference": "0e24d89888e4bf051003c45c447b32e5298df55c",
+                "url": "https://api.github.com/repos/stripe/stripe-php/zipball/3234cce6f9600399a4e8bb07b71d5670a9333f4a",
+                "reference": "3234cce6f9600399a4e8bb07b71d5670a9333f4a",
                 "shasum": ""
             },
             "require": {
@@ -7213,7 +7213,7 @@
                 "payment processing",
                 "stripe"
             ],
-            "time": "2019-11-09T00:23:22+00:00"
+            "time": "2019-11-27T05:11:33+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -7842,16 +7842,16 @@
         },
         {
             "name": "symfony/intl",
-            "version": "v4.3.8",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/intl.git",
-                "reference": "818771ff6acef04cdce05023ddfc39b7078014bf"
+                "reference": "299cbfd6be791438e8d93ffb25765b5b93021bf9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/818771ff6acef04cdce05023ddfc39b7078014bf",
-                "reference": "818771ff6acef04cdce05023ddfc39b7078014bf",
+                "url": "https://api.github.com/repos/symfony/intl/zipball/299cbfd6be791438e8d93ffb25765b5b93021bf9",
+                "reference": "299cbfd6be791438e8d93ffb25765b5b93021bf9",
                 "shasum": ""
             },
             "require": {
@@ -7859,7 +7859,7 @@
                 "symfony/polyfill-intl-icu": "~1.0"
             },
             "require-dev": {
-                "symfony/filesystem": "~3.4|~4.0"
+                "symfony/filesystem": "^3.4|^4.0|^5.0"
             },
             "suggest": {
                 "ext-intl": "to use the component with locales other than \"en\""
@@ -7867,7 +7867,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.3-dev"
+                    "dev-master": "4.4-dev"
                 }
             },
             "autoload": {
@@ -7913,7 +7913,7 @@
                 "l10n",
                 "localization"
             ],
-            "time": "2019-10-04T21:18:34+00:00"
+            "time": "2019-10-12T00:35:04+00:00"
         },
         {
             "name": "symfony/mime",
@@ -8150,16 +8150,16 @@
         },
         {
             "name": "symfony/polyfill-intl-icu",
-            "version": "v1.12.0",
+            "version": "v1.13.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "66810b9d6eb4af54d543867909d65ab9af654d7e"
+                "reference": "b3dffd68afa61ca70f2327f2dd9bbeb6aa53d70b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/66810b9d6eb4af54d543867909d65ab9af654d7e",
-                "reference": "66810b9d6eb4af54d543867909d65ab9af654d7e",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/b3dffd68afa61ca70f2327f2dd9bbeb6aa53d70b",
+                "reference": "b3dffd68afa61ca70f2327f2dd9bbeb6aa53d70b",
                 "shasum": ""
             },
             "require": {
@@ -8172,7 +8172,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.12-dev"
+                    "dev-master": "1.13-dev"
                 }
             },
             "autoload": {
@@ -8204,7 +8204,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2019-08-06T08:03:45+00:00"
+            "time": "2019-11-27T13:56:44+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
