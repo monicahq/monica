@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "af8a3af25e03e192734ae0285aace277",
+    "content-hash": "a4944e10805e06a0cfd75aafe944d68f",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -12035,22 +12035,22 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v4.3.0",
+            "version": "v4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "5174b6f7855855fda78b4a2f7d030d56f0ae5a1e"
+                "reference": "39799813d491c1abbf97e3f909801efb3e6f3a4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/5174b6f7855855fda78b4a2f7d030d56f0ae5a1e",
-                "reference": "5174b6f7855855fda78b4a2f7d030d56f0ae5a1e",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/39799813d491c1abbf97e3f909801efb3e6f3a4b",
+                "reference": "39799813d491c1abbf97e3f909801efb3e6f3a4b",
                 "shasum": ""
             },
             "require": {
                 "laravel/framework": "^6.4",
                 "mockery/mockery": "^1.2.3",
-                "orchestra/testbench-core": "^4.3",
+                "orchestra/testbench-core": "^4.4.1",
                 "php": ">=7.2",
                 "phpunit/phpunit": "^8.3"
             },
@@ -12081,20 +12081,20 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2019-10-23T22:51:50+00:00"
+            "time": "2019-11-22T22:36:07+00:00"
         },
         {
             "name": "orchestra/testbench-core",
-            "version": "v4.3.0",
+            "version": "v4.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench-core.git",
-                "reference": "dbc623c46cb839c64f5425daee795ac14214f9bc"
+                "reference": "a72fcc8b9b36cbc5a224f8b18bd0ad65fbe7093b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/dbc623c46cb839c64f5425daee795ac14214f9bc",
-                "reference": "dbc623c46cb839c64f5425daee795ac14214f9bc",
+                "url": "https://api.github.com/repos/orchestral/testbench-core/zipball/a72fcc8b9b36cbc5a224f8b18bd0ad65fbe7093b",
+                "reference": "a72fcc8b9b36cbc5a224f8b18bd0ad65fbe7093b",
                 "shasum": ""
             },
             "require": {
@@ -12146,7 +12146,7 @@
                 "orchestral",
                 "testing"
             ],
-            "time": "2019-10-23T22:30:08+00:00"
+            "time": "2019-11-22T22:33:16+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -12974,22 +12974,22 @@
         },
         {
             "name": "psalm/plugin-laravel",
-            "version": "0.5",
+            "version": "0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/psalm/laravel-psalm-plugin.git",
-                "reference": "a567db5a6157ee2bdc7a9ebd3bfb575c2baafa97"
+                "reference": "bc0dbd0e2157caadbb9be81b4a67d5631c1e6ac8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/a567db5a6157ee2bdc7a9ebd3bfb575c2baafa97",
-                "reference": "a567db5a6157ee2bdc7a9ebd3bfb575c2baafa97",
+                "url": "https://api.github.com/repos/psalm/laravel-psalm-plugin/zipball/bc0dbd0e2157caadbb9be81b4a67d5631c1e6ac8",
+                "reference": "bc0dbd0e2157caadbb9be81b4a67d5631c1e6ac8",
                 "shasum": ""
             },
             "require": {
                 "barryvdh/laravel-ide-helper": "^2.6",
                 "orchestra/testbench": "^3.5 || ^4.0",
-                "vimeo/psalm": "^3.2"
+                "vimeo/psalm": "3.2.*|3.3.*|3.4.*|3.5.*|3.6.*"
             },
             "type": "psalm-plugin",
             "extra": {
@@ -13013,7 +13013,7 @@
                 }
             ],
             "description": "A Laravel plugin for Psalm",
-            "time": "2019-11-09T12:11:16+00:00"
+            "time": "2019-11-27T14:11:35+00:00"
         },
         {
             "name": "roave/security-advisories",
@@ -14043,16 +14043,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v4.3.6",
+            "version": "v4.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "9abbb7ef96a51f4d7e69627bc6f63307994e4263"
+                "reference": "d12b01cba60be77b583c9af660007211e3909854"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/9abbb7ef96a51f4d7e69627bc6f63307994e4263",
-                "reference": "9abbb7ef96a51f4d7e69627bc6f63307994e4263",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/d12b01cba60be77b583c9af660007211e3909854",
+                "reference": "d12b01cba60be77b583c9af660007211e3909854",
                 "shasum": ""
             },
             "require": {
@@ -14062,7 +14062,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.3-dev"
+                    "dev-master": "4.4-dev"
                 }
             },
             "autoload": {
@@ -14089,7 +14089,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2019-08-20T14:07:54+00:00"
+            "time": "2019-11-12T14:51:11+00:00"
         },
         {
             "name": "thecodingmachine/phpstan-safe-rule",
