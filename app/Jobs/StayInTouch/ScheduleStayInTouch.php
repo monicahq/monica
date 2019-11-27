@@ -36,19 +36,20 @@ class ScheduleStayInTouch implements ShouldQueue
     {
         $account = $this->contact->account;
 
-        $users = [];
-        foreach ($account->users as $user) {
-            if ($user->isTheRightTimeToBeReminded($this->contact->stay_in_touch_trigger_date)
-                && ! $account->hasLimitations()) {
-                array_push($users, $user);
+        if (! $account->hasLimitations()) {
+            $users = [];
+            foreach ($account->users as $user) {
+                if ($user->isTheRightTimeToBeReminded($this->contact->stay_in_touch_trigger_date)) {
+                    array_push($users, $user);
+                }
             }
-        }
 
-        if (count($users) > 0) {
-            NotificationFacade::send($users, new StayInTouchEmail($this->contact));
-            $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency);
+            if (count($users) > 0) {
+                NotificationFacade::send($users, new StayInTouchEmail($this->contact));
+                $this->contact->setStayInTouchTriggerDate($this->contact->stay_in_touch_frequency);
 
-            return;
+                return;
+            }
         }
 
         $now = now();
