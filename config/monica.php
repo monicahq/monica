@@ -97,7 +97,7 @@ return [
     |
     */
     'default_relationship_type_group' => [
-        'love',
+        'church',
         'family',
         'friend',
         'work',

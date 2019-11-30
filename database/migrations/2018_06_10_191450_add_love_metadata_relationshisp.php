@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddLoveMetadataRelationshisp extends Migration
+class AddchurchMetadataRelationshisp extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddLoveMetadataRelationshisp extends Migration
      */
     public function up()
     {
-        Schema::create('metadata_love_relationships', function (Blueprint $table) {
+        Schema::create('metadata_church_relationships', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->unsignedInteger('relationship_id');

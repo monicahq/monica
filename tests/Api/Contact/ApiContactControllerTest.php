@@ -34,7 +34,7 @@ class ApiContactControllerTest extends ApiTestCase
         'stay_in_touch_trigger_date',
         'information' => [
             'relationships' => [
-                'love' => [
+                'church' => [
                     'total',
                     'contacts',
                 ],
@@ -95,7 +95,7 @@ class ApiContactControllerTest extends ApiTestCase
         'stay_in_touch_trigger_date',
         'information' => [
             'relationships' => [
-                'love' => [
+                'church' => [
                     'total',
                     'contacts',
                 ],

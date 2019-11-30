@@ -14,9 +14,9 @@ class PopulateDefaultRelationshipTypeTables extends Migration
     {
         // Create all default relationship type groups and relationship types
 
-        // Love type
+        // church type
         $id = DB::table('default_relationship_type_groups')->insertGetId([
-            'name' => 'love',
+            'name' => 'church',
         ]);
 
         DB::table('default_relationship_types')->insert([

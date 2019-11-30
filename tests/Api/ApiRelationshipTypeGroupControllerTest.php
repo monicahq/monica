@@ -35,7 +35,7 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
 
         $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $user->account_id,
-            'name' => 'love',
+            'name' => 'church',
             'delible' => 0,
         ]);
         $relationshipTypeGroup2 = factory(RelationshipTypeGroup::class)->create([
@@ -62,7 +62,7 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
 
         $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $user->account_id,
-            'name' => 'love',
+            'name' => 'church',
             'delible' => 0,
         ]);
 
@@ -73,7 +73,7 @@ class ApiRelationshipTypeGroupControllerTest extends ApiTestCase
         $response->assertJsonFragment([
             'id' => $relationshipTypeGroup->id,
             'object' => 'relationshiptypegroup',
-            'name' => 'love',
+            'name' => 'church',
             'delible' => false,
         ]);
     }

@@ -98,7 +98,7 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportLifeEventType($data);
         $this->exportLifeEvent($data);
         $this->exportMessage($data);
-        $this->exportMetaDataLoveRelationship($data);
+        $this->exportMetaDatachurchRelationship($data);
         $this->exportModule($data);
         $this->exportNote($data);
         $this->exportNotification($data);
@@ -839,11 +839,11 @@ SET FOREIGN_KEY_CHECKS=0;
     }
 
     /**
-     * Export the Metadata love relationship table.
+     * Export the Metadata church relationship table.
      *
      * @param array $data
      */
-    private function exportMetaDataLoveRelationship(array $data)
+    private function exportMetaDatachurchRelationship(array $data)
     {
         $columns = [
             'id',
@@ -861,7 +861,7 @@ SET FOREIGN_KEY_CHECKS=0;
 
         $foreignKey = 'account_id';
 
-        $this->buildInsertSQLQuery('metadata_love_relationships', $foreignKey, $columns, $data);
+        $this->buildInsertSQLQuery('metadata_church_relationships', $foreignKey, $columns, $data);
     }
 
     /**

@@ -639,17 +639,17 @@ class AccountTest extends FeatureTestCase
         $account = factory(Account::class)->create();
         $relationshipTypeGroup = factory(RelationshipTypeGroup::class)->create([
             'account_id' => $account->id,
-            'name' => 'love',
+            'name' => 'church',
         ]);
 
-        $this->assertInstanceOf(RelationshipTypeGroup::class, $account->getRelationshipTypeGroupByType('love'));
+        $this->assertInstanceOf(RelationshipTypeGroup::class, $account->getRelationshipTypeGroupByType('church'));
     }
 
     public function test_it_populates_default_relationship_type_groups_table_if_tables_havent_been_migrated_yet()
     {
         $account = factory(Account::class)->create();
 
-        // Love type
+        // church type
         $id = DB::table('default_relationship_type_groups')->insertGetId([
             'name' => 'friend_and_family',
         ]);

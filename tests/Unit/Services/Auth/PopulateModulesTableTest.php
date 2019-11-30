@@ -76,7 +76,7 @@ class PopulateModulesTableTest extends TestCase
             ->update(['migrated' => 0]);
 
         DB::table('default_contact_modules')
-            ->where('key', 'love_relationships')
+            ->where('key', 'church_relationships')
             ->update(['migrated' => 1]);
 
         // we will only migrate the ones that haven't been populated yet

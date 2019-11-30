@@ -787,7 +787,7 @@ class ContactTest extends FeatureTestCase
             $contact->getRelationshipsByRelationshipTypeGroup('friend')->count()
         );
 
-        $this->assertNull($contact->getRelationshipsByRelationshipTypeGroup('love'));
+        $this->assertNull($contact->getRelationshipsByRelationshipTypeGroup('church'));
     }
 
     public function test_it_gets_the_right_number_of_birthdays_about_related_contacts()

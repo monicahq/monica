@@ -227,9 +227,9 @@ class ContactsController extends Controller
         $contact->updateConsulted();
 
         $relationships = $contact->relationships;
-        // get love relationship type
-        $loveRelationships = $relationships->filter(function ($item) {
-            return $item->relationshipType->relationshipTypeGroup->name == 'love';
+        // get church relationship type
+        $churchRelationships = $relationships->filter(function ($item) {
+            return $item->relationshipType->relationshipTypeGroup->name == 'church';
         });
         // get family relationship type
         $familyRelationships = $relationships->filter(function ($item) {
@@ -272,7 +272,7 @@ class ContactsController extends Controller
         ]);
 
         return view('people.profile')
-            ->withLoveRelationships($loveRelationships)
+            ->withchurchRelationships($churchRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)
             ->withWorkRelationships($workRelationships)

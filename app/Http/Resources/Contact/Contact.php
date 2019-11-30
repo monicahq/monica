@@ -37,9 +37,9 @@ class Contact extends Resource
             'stay_in_touch_trigger_date' => $this->when(! $this->is_partial, DateHelper::getTimestamp($this->stay_in_touch_trigger_date)),
             'information' => [
                 'relationships' => $this->when(! $this->is_partial, [
-                    'love' => [
-                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('love')->count()),
-                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('love')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('love'))),
+                    'church' => [
+                        'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('church')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('church')->count()),
+                        'contacts' => (is_null($this->getRelationshipsByRelationshipTypeGroup('church')) ? null : \App\Models\Contact\Contact::translateForAPI($this->getRelationshipsByRelationshipTypeGroup('church'))),
                     ],
                     'family' => [
                         'total' => (is_null($this->getRelationshipsByRelationshipTypeGroup('family')) ? 0 : $this->getRelationshipsByRelationshipTypeGroup('family')->count()),

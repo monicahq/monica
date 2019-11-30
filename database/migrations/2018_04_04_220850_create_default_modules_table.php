@@ -26,8 +26,8 @@ class CreateDefaultModulesTable extends Migration
 
         DB::table('default_contact_modules')->insert([
         [
-            'key' => 'love_relationships',
-            'translation_key' => 'app.relationship_type_group_love',
+            'key' => 'church_relationships',
+            'translation_key' => 'app.relationship_type_group_church',
         ],
         [
             'key' => 'family_relationships',
