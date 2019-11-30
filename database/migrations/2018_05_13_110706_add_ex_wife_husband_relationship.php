@@ -15,7 +15,7 @@ class AddExWifeHusbandRelationship extends Migration
     {
         $id = DB::table('default_relationship_type_groups')
             ->where([
-                'name' => 'love',
+                'name' => 'church',
             ])
             ->value('id');
 
