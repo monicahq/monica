@@ -2,10 +2,12 @@
 
 ### New features:
 
-*
+* Save contact tags in vCard 'CATEGORIES' field
 
 ### Enhancements:
 
+* Improve trim string middleware to not trim password text
+* Upgrade to Laravel 6.5
 * Enhance user invitation mail
 * Add job information next to the contact name on profile page
 * Use supervisor in docker images
@@ -14,6 +16,8 @@
 
 ### Fixes:
 
+* Fix tooltip on favorite icon
+* Fix icons disappeared on contact information
 * Fix CSV uploads with weird photo files
 * Ensure disable_signup is checked on form register validation
 * Fix password resetting page
@@ -22,6 +26,7 @@
 * Fix currencies seeder by accounting for defaults
 * Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
+* Fix API requests for Reminders failing with internal server error
 
 
 # RELEASED VERSIONS:

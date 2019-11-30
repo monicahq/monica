@@ -10,7 +10,7 @@ services:
       - 80:80
     env_file: .env
     volumes:
-      - monica_data:/var/www/monica/storage
+      - data:/var/www/monica/storage
     restart: always
 
   mysql:
@@ -21,11 +21,11 @@ services:
       - MYSQL_USER=homestead
       - MYSQL_PASSWORD=secret
     volumes:
-      - monica_mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql
     restart: always
 
 volumes:
-  monica_data:
-    name: monica_data
-  monica_mysql:
-    name: monica_mysql
+  data:
+    name: data
+  mysql:
+    name: mysql
