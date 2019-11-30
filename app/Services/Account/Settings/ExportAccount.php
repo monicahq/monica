@@ -98,7 +98,7 @@ SET FOREIGN_KEY_CHECKS=0;
         $this->exportLifeEventType($data);
         $this->exportLifeEvent($data);
         $this->exportMessage($data);
-        $this->exportMetaDatachurchRelationship($data);
+        $this->exportMetaDataChurchRelationship($data);
         $this->exportModule($data);
         $this->exportNote($data);
         $this->exportNotification($data);
@@ -843,7 +843,7 @@ SET FOREIGN_KEY_CHECKS=0;
      *
      * @param array $data
      */
-    private function exportMetaDatachurchRelationship(array $data)
+    private function exportMetaDataChurchRelationship(array $data)
     {
         $columns = [
             'id',
