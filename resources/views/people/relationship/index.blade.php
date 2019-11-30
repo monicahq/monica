@@ -1,12 +1,12 @@
-@if ($modules->contains('key', 'love_relationships'))
+@if ($modules->contains('key', 'church_relationships'))
 <div class="ba b--near-white br2 bg-gray-monica pa3 mb3 f6">
   <div class="w-100 dt">
     <div class="dtc">
-      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_love') }}</h3>
+      <h3 class="f6 ttu normal">{{ trans('app.relationship_type_group_church') }}</h3>
     </div>
   </div>
 
-   @include('people.relationship._relationship', ['relationships' => $loveRelationships])
+   @include('people.relationship._relationship', ['relationships' => $churchRelationships])
 
 
   <p class="mb0">
