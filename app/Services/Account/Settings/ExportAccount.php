@@ -843,7 +843,7 @@ SET FOREIGN_KEY_CHECKS=0;
      *
      * @param array $data
      */
-    private function exportMetaDataChurchRelationship(array $data)
+    private function exportMetaDataLoveRelationship(array $data)
     {
         $columns = [
             'id',
