@@ -272,7 +272,7 @@ class ContactsController extends Controller
         ]);
 
         return view('people.profile')
-            ->withchurchRelationships($churchRelationships)
+            ->withChurchRelationships($churchRelationships)
             ->withFamilyRelationships($familyRelationships)
             ->withFriendRelationships($friendRelationships)
             ->withWorkRelationships($workRelationships)
