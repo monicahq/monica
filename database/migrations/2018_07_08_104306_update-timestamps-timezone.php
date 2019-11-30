@@ -76,7 +76,7 @@ class UpdateTimestampsTimezone extends Migration
             }
         });
         $this->update('journal_entries', $timezone);
-        $this->update('metadata_love_relationships', $timezone);
+        $this->update('metadata_church_relationships', $timezone);
         $this->update('notes', $timezone);
         $this->update('notifications', $timezone);
         $this->update('oauth_access_tokens', $timezone);
