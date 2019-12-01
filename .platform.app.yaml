@@ -2,7 +2,7 @@
 # in the same project.
 
 # The name of this app. Must be unique within a project.
-name: monica
+name: app
 
 # The type of the application to build.
 type: php:7.3
@@ -81,5 +81,5 @@ workers:
 
 crons:
   scheduler:
-    spec: '* * * * *'
+    spec: '*/5 * * * *'
     cmd: 'php artisan schedule:run -v'
