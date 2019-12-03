@@ -6,6 +6,7 @@
 
 ### Enhancements:
 
+* Enhance UI of API's Settings to add comprehension and documentation
 * Improve trim string middleware to not trim password text
 * Upgrade to Laravel 6.5
 * Enhance user invitation mail
