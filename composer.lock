@@ -14230,16 +14230,16 @@
         },
         {
             "name": "vimeo/psalm",
-            "version": "3.7.0",
+            "version": "3.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vimeo/psalm.git",
-                "reference": "a154191922d14dcdde8ef348520a88d735d82304"
+                "reference": "d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vimeo/psalm/zipball/a154191922d14dcdde8ef348520a88d735d82304",
-                "reference": "a154191922d14dcdde8ef348520a88d735d82304",
+                "url": "https://api.github.com/repos/vimeo/psalm/zipball/d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0",
+                "reference": "d9cae720c1af31db9ba27c2bc1fcf9b0dd092fb0",
                 "shasum": ""
             },
             "require": {
@@ -14269,7 +14269,7 @@
                 "phpunit/phpunit": "^7.5 || ^8.0",
                 "psalm/plugin-phpunit": "^0.6",
                 "slevomat/coding-standard": "^5.0",
-                "squizlabs/php_codesniffer": "3.4.0",
+                "squizlabs/php_codesniffer": "^3.5",
                 "symfony/process": "^4.3"
             },
             "suggest": {
@@ -14314,7 +14314,7 @@
                 "inspection",
                 "php"
             ],
-            "time": "2019-11-27T14:18:47+00:00"
+            "time": "2019-12-03T13:33:31+00:00"
         },
         {
             "name": "webmozart/assert",
