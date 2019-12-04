@@ -44,9 +44,7 @@
 
         <div class="br3 ba b--gray-monica bg-white mb4">
           <div class="pa3 bb b--gray-monica">
-            <passport-personal-access-tokens
-              :endpoint="'{{ route('api') }}'"
-            ></passport-personal-access-tokens>
+            <passport-personal-access-tokens></passport-personal-access-tokens>
           </div>
         </div>
 
