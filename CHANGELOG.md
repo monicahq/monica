@@ -16,6 +16,7 @@
 
 ### Fixes:
 
+* Fix register in case country is not detected from ip address
 * Fix 2fa route on webauthn page 
 * Fix tooltip on favorite icon
 * Fix icons disappeared on contact information
