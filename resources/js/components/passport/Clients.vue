@@ -64,8 +64,8 @@
           <div class="pa2 flex flex-auto">
             <code dir="ltr">{{ client.secret }}</code>
             <em class="fa fa-clipboard pointer" :class="[ dirltr ? 'ml2' : 'mr2' ]"
-              :title="$t('settings.dav_copy_help')"
-              @click="copyIntoClipboard(client.secret)"
+                :title="$t('settings.dav_copy_help')"
+                @click="copyIntoClipboard(client.secret)"
             ></em>
           </div>
         </div>
@@ -81,7 +81,7 @@
 
     <!-- Create Client Modal -->
     <sweet-modal ref="modalCreateClient" overlay-theme="dark" tabindex="-1" role="dialog"
-      :title="$t('settings.api_oauth_create')" @open="_focusCreateInput"
+                 :title="$t('settings.api_oauth_create')" @open="_focusCreateInput"
     >
       <!-- Form Errors -->
       <error :errors="createForm.errors" />
@@ -99,7 +99,7 @@
               :required="true"
               :title="$t('settings.api_oauth_name')"
               @submit="store"
-            ></form-input>
+            />
 
             <span class="help-block">
               {{ $t('settings.api_oauth_name_help') }}
@@ -117,7 +117,7 @@
               :required="true"
               :title="$t('settings.api_oauth_redirecturl')"
               @submit="store"
-            ></form-input>
+            />
 
             <span class="help-block">
               {{ $t('settings.api_oauth_redirecturl_help') }}
@@ -141,7 +141,7 @@
 
     <!-- Edit Client Modal -->
     <sweet-modal ref="modalEditClient" overlay-theme="dark" tabindex="-1" role="dialog"
-      :title="$t('settings.api_oauth_edit')" @open="_focusEditInput"
+                 :title="$t('settings.api_oauth_edit')" @open="_focusEditInput"
     >
       <!-- Form Errors -->
       <error :errors="editForm.errors" />
@@ -159,7 +159,7 @@
               :required="true"
               :title="$t('settings.api_oauth_name')"
               @submit="update"
-            ></form-input>
+            />
 
             <span class="help-block">
               {{ $t('settings.api_oauth_name_help') }}
@@ -177,7 +177,7 @@
               :required="true"
               :title="$t('settings.api_oauth_redirecturl')"
               @submit="update"
-            ></form-input>
+            />
 
             <span class="help-block">
               {{ $t('settings.api_oauth_redirecturl_help') }}

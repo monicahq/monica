@@ -44,9 +44,9 @@
         <!-- Scopes -->
         <div class="dtc">
           <div class="pa2">
-                  <span v-if="token.scopes.length > 0">
-                    {{ token.scopes.join(', ') }}
-                  </span>
+            <span v-if="token.scopes.length > 0">
+              {{ token.scopes.join(', ') }}
+            </span>
           </div>
         </div>
 

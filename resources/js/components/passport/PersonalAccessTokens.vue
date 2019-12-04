@@ -48,7 +48,7 @@
       <div v-for="token in tokens" :key="token.id" class="dt-row bb b--light-gray">
         <!-- Client Name -->
         <div class="dtc">
-          <div class="pa2" v-tooltip="$t('settings.api_token_expire', { date: token.expires_at })">
+          <div v-tooltip="$t('settings.api_token_expire', { date: token.expires_at })" class="pa2">
             {{ token.name }}
           </div>
         </div>
@@ -63,7 +63,7 @@
 
     <!-- Create Token Modal -->
     <sweet-modal ref="modalCreateToken" overlay-theme="dark" tabindex="-1" role="dialog"
-      :title="$t('settings.api_token_create')" @open="_focusInput"
+                 :title="$t('settings.api_token_create')" @open="_focusInput"
     >
       <!-- Form Errors -->
       <error :errors="form.errors" />
@@ -71,16 +71,16 @@
       <!-- Create Token Form -->
       <form class="form-horizontal" role="form" @submit.prevent="store">
         <!-- Name -->
-          <div class="col-md-auto">
-            <form-input
-              :id="'create-token-name'"
-              :name="'name'"
-              ref="createTokenName"
-              v-model="form.name"
-              :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
-              :required="true"
-              :title="$t('settings.api_token_name')"
-            ></form-input>
+        <div class="col-md-auto">
+          <form-input
+            :id="'create-token-name'"
+            ref="createTokenName"
+            v-model="form.name"
+            :name="'name'"
+            :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
+            :required="true"
+            :title="$t('settings.api_token_name')"
+          />
         </div>
 
         <!-- Scopes -->
