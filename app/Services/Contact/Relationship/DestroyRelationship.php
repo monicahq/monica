@@ -69,7 +69,6 @@ class DestroyRelationship extends BaseService
         // the contact is partial - if the relationship is deleted, the partial
         // contact has no reason to exist anymore
         if ($contact->is_partial) {
-
             $otherRelations = Relationship::where('account_id', $contact->account_id)
                 ->where(function (Builder $query) use ($contact) {
                     return $query->where('of_contact', $contact->id)
