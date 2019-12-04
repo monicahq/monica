@@ -5,6 +5,7 @@ namespace App\Services\Contact\Relationship;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
+use Illuminate\Database\Eloquent\Builder;
 
 class DestroyRelationship extends BaseService
 {
@@ -68,7 +69,17 @@ class DestroyRelationship extends BaseService
         // the contact is partial - if the relationship is deleted, the partial
         // contact has no reason to exist anymore
         if ($contact->is_partial) {
-            $contact->deleteEverything();
+
+            $otherRelations = Relationship::where('account_id', $contact->account_id)
+                ->where(function (Builder $query) use ($contact) {
+                    return $query->where('of_contact', $contact->id)
+                        ->orWhere('contact_is', $contact->id);
+                })
+                ->count();
+
+            if ($otherRelations == 0) {
+                $contact->deleteEverything();
+            }
         }
     }
 }
