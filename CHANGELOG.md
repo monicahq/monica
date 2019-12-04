@@ -16,7 +16,8 @@
 
 ### Fixes:
 
-* Fix 2fa route on webauthn page 
+* Fix Photo->contact relation
+* Fix 2fa route on webauthn page
 * Fix tooltip on favorite icon
 * Fix icons disappeared on contact information
 * Fix CSV uploads with weird photo files
