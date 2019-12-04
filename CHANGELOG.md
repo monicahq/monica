@@ -16,6 +16,7 @@
 
 ### Fixes:
 
+* Fix register in case country is not detected from ip address
 * Fix Photo->contact relation
 * Fix subscription page
 * Fix relationship create and destroy with partial contact
