@@ -16,6 +16,7 @@
 
 ### Fixes:
 
+* Fix journal entry edit
 * Fix 2fa route on webauthn page 
 * Fix tooltip on favorite icon
 * Fix icons disappeared on contact information
