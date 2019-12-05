@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redirect;
 use Barryvdh\Debugbar\Facade as Debugbar;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
 
 class OAuthController extends Controller
@@ -84,6 +83,7 @@ class OAuthController extends Controller
 
             // add intendedUrl for WebAuthn
             Redirect::setIntendedUrl(route('oauth.verify'));
+
             return Route::respondWithRoute('oauth.verify');
         }
     }
