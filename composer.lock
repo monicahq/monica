@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f22571eda60073f52bb6e9765e682814",
+    "content-hash": "2b8ed8a23c52c049ebad6728968fbb2f",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
-            "version": "0.6.4",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asbiin/laravel-webauthn.git",
-                "reference": "508d72b32ae127e4494a25903458d11a25328477"
+                "reference": "f4ce201d4571e01fa949fcd17cc78409b8bca817"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/508d72b32ae127e4494a25903458d11a25328477",
-                "reference": "508d72b32ae127e4494a25903458d11a25328477",
+                "url": "https://api.github.com/repos/asbiin/laravel-webauthn/zipball/f4ce201d4571e01fa949fcd17cc78409b8bca817",
+                "reference": "f4ce201d4571e01fa949fcd17cc78409b8bca817",
                 "shasum": ""
             },
             "require": {
@@ -80,7 +80,7 @@
                 "security",
                 "webauthn"
             ],
-            "time": "2019-11-16T20:05:03+00:00"
+            "time": "2019-12-05T16:03:49+00:00"
         },
         {
             "name": "aws/aws-sdk-php",
