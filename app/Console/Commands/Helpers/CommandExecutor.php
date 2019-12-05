@@ -24,7 +24,7 @@ class CommandExecutor implements CommandExecutorInterface
     }
 
     /**
-     * @codeCoverageIgnore 
+     * @codeCoverageIgnore
      */
     public function exec($message, string $commandline)
     {
