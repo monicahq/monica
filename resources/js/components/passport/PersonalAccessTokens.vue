@@ -123,7 +123,7 @@
       <notifications group="passport-personal-access-token" position="middle" :duration="5000" width="400" />
       <p>{{ $t('settings.api_token_help') }}</p>
 
-      <div class="flex-auto access-key" @click.prevent="copyIntoClipboard(accessToken)">
+      <div class="flex-auto access-key overflow-y-scroll" style="max-height: 400px;" @click.prevent="copyIntoClipboard(accessToken)">
         <pre><code>{{ accessToken }}</code></pre>
       </div>
 
