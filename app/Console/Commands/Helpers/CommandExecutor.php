@@ -24,9 +24,9 @@ class CommandExecutor implements CommandExecutorInterface
     }
 
     /**
-     * @codeCoverageIgnore
+     * @codeCoverageIgnore 
      */
-    public function exec($message, $commandline)
+    public function exec($message, string $commandline)
     {
         $this->command->info($message);
         $this->command->line($commandline, null, OutputInterface::VERBOSITY_VERBOSE);
@@ -40,7 +40,7 @@ class CommandExecutor implements CommandExecutorInterface
     /**
      * @codeCoverageIgnore
      */
-    public function artisan($message, $commandline, array $arguments = [])
+    public function artisan($message, string $commandline, array $arguments = [])
     {
         $info = '';
         foreach ($arguments as $key => $value) {

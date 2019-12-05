@@ -135,7 +135,10 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         return $photo;
     }
 
-    private function associatePhotoAsAvatar($photo)
+    /**
+     * @param Photo|null $photo
+     */
+    private function associatePhotoAsAvatar(?Photo $photo)
     {
         if (is_null($photo)) {
             return;
@@ -167,12 +170,18 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         }
     }
 
-    private function deleteOriginalAvatar($avatarFileName)
+    /**
+     * @param null|string $avatarFileName
+     */
+    private function deleteOriginalAvatar(?string $avatarFileName)
     {
         $this->storage->delete($avatarFileName);
     }
 
-    private function getAvatarFileName($size = null)
+    /**
+     * @param int|null $size
+     */
+    private function getAvatarFileName(?int $size = null)
     {
         $filename = pathinfo($this->contact->avatar_file_name, PATHINFO_FILENAME);
         $extension = pathinfo($this->contact->avatar_file_name, PATHINFO_EXTENSION);
@@ -189,7 +198,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         return $avatarFileName;
     }
 
-    private function fileExists($avatarFileName) : bool
+    private function fileExists(string $avatarFileName) : bool
     {
         return $this->storage->exists($avatarFileName);
     }

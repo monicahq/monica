@@ -45,7 +45,7 @@ class UploadDocument extends BaseService
      *
      * @return array
      */
-    private function populateData($data)
+    private function populateData(array $data)
     {
         $document = $data['document'];
 

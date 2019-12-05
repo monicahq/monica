@@ -1207,12 +1207,8 @@ class Contact extends Model
      * decease date,...) of which we know only the age (meaning it's going to
      * be approximate).
      */
-    public function setSpecialDateFromAge($occasion, int $age)
+    public function setSpecialDateFromAge(string $occasion, int $age)
     {
-        if (is_null($occasion)) {
-            return;
-        }
-
         $specialDate = new SpecialDate;
         $specialDate->setToContact($this)->createFromAge($age);
 

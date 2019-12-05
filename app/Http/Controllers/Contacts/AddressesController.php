@@ -122,7 +122,7 @@ class AddressesController extends Controller
                     ->respondWithError();
     }
 
-    private function addressObject($address)
+    private function addressObject(Address $address)
     {
         $place = $address->place;
 

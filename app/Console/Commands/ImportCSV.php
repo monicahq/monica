@@ -117,8 +117,10 @@ class ImportCSV extends Command
 
     /**
      * Create contact.
+     *
+     * @param array|null $data
      */
-    private function csvToContact($data, $account_id, $gender_id)
+    private function csvToContact(?array $data, $account_id, $gender_id)
     {
         $contact = new Contact();
         $contact->account_id = $account_id;

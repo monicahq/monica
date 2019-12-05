@@ -64,7 +64,7 @@ class MoveAvatarsToPhotosDirectory extends Command
             });
     }
 
-    private function handleContact($contact, $delay)
+    private function handleContact($contact, \Illuminate\Support\Carbon $delay)
     {
         try {
             if ($this->option('dryrun')) {

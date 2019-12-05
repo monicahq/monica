@@ -65,7 +65,7 @@ class SetupTest extends Command
         $this->line('');
     }
 
-    public function artisan($message, $command, array $arguments = [])
+    public function artisan(string $message, string $command, array $arguments = [])
     {
         $this->info($message);
         $this->line(Application::formatCommandString($command));

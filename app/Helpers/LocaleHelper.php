@@ -71,8 +71,10 @@ class LocaleHelper
      * If no country is present in the locale, it will return null.
      *
      * @return string|null  country, uppercase form.
+     *
+     * @param null|string $locale
      */
-    public static function extractCountry($locale = null)
+    public static function extractCountry(?string $locale = null)
     {
         if (is_null($locale)) {
             $locale = App::getLocale();

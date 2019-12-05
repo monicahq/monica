@@ -145,7 +145,7 @@ class SentryRelease extends Command
         return $this->install_dir.'/'.self::SENTRY_CLI;
     }
 
-    private function execSentryCli($message, $command)
+    private function execSentryCli(string $message, string $command)
     {
         $this->commandExecutor->exec($message, $this->getSentryCli().' '.$command);
     }

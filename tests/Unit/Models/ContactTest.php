@@ -646,8 +646,6 @@ class ContactTest extends FeatureTestCase
     {
         $contact = factory(Contact::class)->create();
 
-        $this->assertNull($contact->setSpecialDateFromAge(null, 33));
-
         $this->assertNull($contact->birthday_special_date_id);
 
         $specialDate = $contact->setSpecialDateFromAge('birthdate', 33);

@@ -79,7 +79,7 @@ class Kernel extends ConsoleKernel
     /**
      * Define a new schedule command with a frequency.
      */
-    private function scheduleCommand(Schedule $schedule, string $command, $frequency)
+    private function scheduleCommand(Schedule $schedule, string $command, string $frequency)
     {
         $schedule->command($command)->when(function () use ($command, $frequency) {
             $event = CronEvent::command($command); // @codeCoverageIgnore

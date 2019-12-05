@@ -40,7 +40,7 @@ class ExportVCard extends BaseService
         return $this->export($contact);
     }
 
-    private function escape($value) : string
+    private function escape(string $value) : string
     {
         return ! empty((string) $value) ? trim((string) $value) : (string) null;
     }

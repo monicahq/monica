@@ -208,9 +208,10 @@ class DateHelper
      * Return a date in a given format.
      *
      * @param string $date
+     *
      * @return string
      */
-    private static function formatDate($date, $format) : string
+    private static function formatDate($date, string $format) : string
     {
         $date = new Date($date, static::getTimezone());
         $format = trans($format, [], Date::getLocale());

@@ -4,7 +4,7 @@ namespace App\Console\Commands\Helpers;
 
 interface CommandExecutorInterface
 {
-    public function exec($message, $command);
+    public function exec($message, string $command);
 
-    public function artisan($message, $command, array $arguments = []);
+    public function artisan($message, string $command, array $arguments = []);
 }

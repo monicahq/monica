@@ -68,7 +68,7 @@ class UploadPhoto extends BaseService
      *
      * @return array
      */
-    private function importPhoto($data)
+    private function importPhoto(array $data)
     {
         $photo = $data['photo'];
         $array = [

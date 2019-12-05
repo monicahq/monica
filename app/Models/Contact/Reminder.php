@@ -89,8 +89,10 @@ class Reminder extends Model
      * Calculate the next expected date for this reminder.
      *
      * @return Carbon
+     *
+     * @param Carbon|null $date
      */
-    public function calculateNextExpectedDate($date = null)
+    public function calculateNextExpectedDate(?Carbon $date = null)
     {
         if (is_null($date)) {
             $date = $this->initial_date;

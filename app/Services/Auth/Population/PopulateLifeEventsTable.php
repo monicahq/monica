@@ -81,7 +81,7 @@ class PopulateLifeEventsTable extends BaseService
      *
      * @return void
      */
-    private function createEntries($locale)
+    private function createEntries(string $locale)
     {
         App::setLocale($locale);
 
@@ -142,9 +142,10 @@ class PopulateLifeEventsTable extends BaseService
      * Create an entry in the life event type table.
      *
      * @param object $defaultLifeEventType
+     *
      * @return void
      */
-    private function feedLifeEventType($defaultLifeEventType, $lifeEventCategory)
+    private function feedLifeEventType($defaultLifeEventType, LifeEventCategory $lifeEventCategory)
     {
         LifeEventType::create([
             'account_id' => $this->data['account_id'],

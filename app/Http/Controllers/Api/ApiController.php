@@ -183,7 +183,7 @@ class ApiController extends Controller
     /**
      * Set both the column and order necessary to perform an orderBy.
      */
-    public function setSQLOrderByQuery($criteria)
+    public function setSQLOrderByQuery(string $criteria)
     {
         $this->sortDirection = 'asc';
         $this->sort = $criteria;

@@ -34,7 +34,10 @@ class CloudflareDriver extends Driver
         }
     }
 
-    private function getCountry($ip = null)
+    /**
+     * @param null|string $ip
+     */
+    private function getCountry(?string $ip = null)
     {
         $country = Request::header('Cf-Ipcountry');
 

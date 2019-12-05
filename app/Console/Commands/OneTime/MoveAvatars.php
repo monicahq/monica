@@ -103,7 +103,10 @@ class MoveAvatars extends Command
         }
     }
 
-    private function getFileName($contact, $size = null)
+    /**
+     * @param int|null $size
+     */
+    private function getFileName($contact, ?int $size = null)
     {
         $filename = pathinfo($contact->avatar_file_name, PATHINFO_FILENAME);
         $extension = pathinfo($contact->avatar_file_name, PATHINFO_EXTENSION);
@@ -118,7 +121,7 @@ class MoveAvatars extends Command
         }
     }
 
-    private function fileExists($storage, $avatarFileName) : bool
+    private function fileExists($storage, string $avatarFileName) : bool
     {
         $storage = Storage::disk($storage);
 

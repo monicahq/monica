@@ -104,7 +104,7 @@ class PingVersionServer extends Command
         }
     }
 
-    public function log($string)
+    public function log(string $string)
     {
         $this->info($string, OutputInterface::VERBOSITY_VERBOSE);
     }

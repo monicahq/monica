@@ -48,7 +48,7 @@ class DBHelper
         ]);
     }
 
-    public static function getTable($name)
+    public static function getTable(string $name)
     {
         return '`'.DB::connection()->getTablePrefix().$name.'`';
     }

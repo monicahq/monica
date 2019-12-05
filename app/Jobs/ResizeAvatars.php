@@ -56,7 +56,7 @@ class ResizeAvatars implements ShouldQueue
         $this->resize($avatarFile, $filename, $extension, $storage, 174);
     }
 
-    private function resize($avatarFile, $filename, $extension, $storage, $size)
+    private function resize(string $avatarFile, string $filename, string $extension, \Illuminate\Contracts\Filesystem\Filesystem $storage, int $size)
     {
         $avatarFileName = 'avatars/'.$filename.'_'.$size.'.'.$extension;
 

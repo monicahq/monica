@@ -27,7 +27,7 @@ class CalDAVBackend extends AbstractBackend implements SyncSupport
      *
      * @return AbstractCalDAVBackend|null
      */
-    private function getBackend($id)
+    private function getBackend(string $id)
     {
         return collect($this->getBackends())->first(function ($backend) use ($id) {
             return $backend->backendUri() === $id;

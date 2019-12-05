@@ -12,11 +12,12 @@ class SearchHelper
     /**
      * Search contacts by the given query.
      *
-     * @param  string $query
-     * @param  int $limitPerPage
+     * @param string $query
+     * @param int $limitPerPage
+     *
      * @return mixed
      */
-    public static function searchContacts($query, $limitPerPage, $order)
+    public static function searchContacts($query, $limitPerPage, string $order)
     {
         $needle = $query;
         $accountId = Auth::user()->account_id;
