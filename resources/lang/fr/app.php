@@ -28,7 +28,7 @@ return [
     'loading' => 'Chargement...',
     'with' => 'avec',
     'days' => 'jour|jour|jours',
-    'today' => 'aujourd\'hui',
+    'today' => 'aujourd’hui',
     'yesterday' => 'hier',
     'another_day' => 'un autre jour',
     'date' => 'Date',
