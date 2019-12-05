@@ -132,7 +132,7 @@ return [
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partner',
     'relationship_type_partner_with_name' => ':name\'s van partner',
-    'relationship_type_partner_female_with_name' => ':name’s van partner',
+    'relationship_type_partner_female_with_name' => ':name’s partner',
 
     'relationship_type_spouse' => 'echtgenoot',
     'relationship_type_spouse_female' => 'echtgenoot',
