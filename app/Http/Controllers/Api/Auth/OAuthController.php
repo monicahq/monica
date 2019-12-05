@@ -173,7 +173,7 @@ class OAuthController extends Controller
 
             return $this->respond($token);
         } catch (\Exception $e) {
-            // ignore
+            return null;
         }
     }
 
