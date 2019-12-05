@@ -220,15 +220,16 @@ Instead of keeping the encryption keys as files, you can add them as environment
 * Output the private key:
 
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-private.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-private.key
 ```
-   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file
+   Copy the output to an environment variable called `PASSPORT_PRIVATE_KEY` in your `.env` file.
 
 * Do the same thing with the contents of the public key:
+
 ```sh
-sed ':a;N;$!ba;s/\n/\\n/g' storage/oauth-public.key
+sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g' storage/oauth-public.key
 ```
-   Copy ths output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file
+   Copy the output to an environment variable called `PASSPORT_PUBLIC_KEY` in your `.env` file.
 
 
 #### Optional: Generate a Password grant client
