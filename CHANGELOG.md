@@ -17,6 +17,12 @@
 
 ### Fixes:
 
+* Fix journal entry edit
+* Fix register in case country is not detected from ip address
+* Fix Photo->contact relation
+* Fix subscription page
+* Fix relationship create and destroy with partial contact
+* Fix 2fa route on webauthn page
 * Fix tooltip on favorite icon
 * Fix icons disappeared on contact information
 * Fix CSV uploads with weird photo files

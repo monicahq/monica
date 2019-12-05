@@ -49,7 +49,7 @@ class SetupTest extends Command
         $this->line('-----------------------------');
         $this->info('| You can now sign in to your account:');
         $this->line('| username: admin@admin.com');
-        $this->line('| password: admin');
+        $this->line('| password: admin0');
         $this->line('| URL:      '.config('app.url'));
         $this->line('-----------------------------');
 

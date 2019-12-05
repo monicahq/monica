@@ -111,15 +111,19 @@ class CreateUser extends BaseService
         }
 
         // Temperature scale
-        switch ($country->cca2) {
-            case 'US':
-            case 'BZ':
-            case 'KY':
-                $user->temperature_scale = 'fahrenheit';
-                break;
-            default:
-                $user->temperature_scale = 'celsius';
-                break;
+        if (! is_null($country)) {
+            switch ($country->cca2) {
+                case 'US':
+                case 'BZ':
+                case 'KY':
+                    $user->temperature_scale = 'fahrenheit';
+                    break;
+                default:
+                    $user->temperature_scale = 'celsius';
+                    break;
+            }
+        } else {
+            $user->temperature_scale = 'celsius';
         }
 
         return $user;
