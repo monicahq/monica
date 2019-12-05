@@ -2310,16 +2310,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v6.6.1",
+            "version": "v6.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "0a8e3e6e96e5ec3af6b9f30026cb8e5551554875"
+                "reference": "27efba7e13aaf91a87ae9a63db158e943eb71410"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/0a8e3e6e96e5ec3af6b9f30026cb8e5551554875",
-                "reference": "0a8e3e6e96e5ec3af6b9f30026cb8e5551554875",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/27efba7e13aaf91a87ae9a63db158e943eb71410",
+                "reference": "27efba7e13aaf91a87ae9a63db158e943eb71410",
                 "shasum": ""
             },
             "require": {
@@ -2415,7 +2415,7 @@
                 "league/flysystem-sftp": "Required to use the Flysystem SFTP driver (^1.0).",
                 "moontoast/math": "Required to use ordered UUIDs (^1.1).",
                 "pda/pheanstalk": "Required to use the beanstalk queue driver (^4.0).",
-                "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0)",
+                "psr/http-message": "Required to allow Storage::put to accept a StreamInterface (^1.0).",
                 "pusher/pusher-php-server": "Required to use the Pusher broadcast driver (^4.0).",
                 "symfony/cache": "Required to PSR-6 cache bridge (^4.3.4).",
                 "symfony/psr-http-message-bridge": "Required to use PSR-7 bridging features (^1.2).",
@@ -2452,7 +2452,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-12-03T15:23:55+00:00"
+            "time": "2019-12-05T13:49:53+00:00"
         },
         {
             "name": "laravel/passport",
