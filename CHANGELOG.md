@@ -16,6 +16,7 @@
 
 ### Fixes:
 
+* Fix OAuth login process with WebAuthn activated
 * Fix journal entry edit
 * Fix register in case country is not detected from ip address
 * Fix Photo->contact relation
