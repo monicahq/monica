@@ -30,7 +30,7 @@
 
 @task('sentry-file', ['on' => 'local'])
     echo {{ $release }} > .sentry-release
-    git add .sentry-release
+    git add -f .sentry-release
     git commit -m 'add sentry file'
 @endtask
 
