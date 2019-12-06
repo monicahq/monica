@@ -292,7 +292,7 @@ return [
 
     'api_title' => 'גישת API',
     'api_description' => 'ניתן להשתמש ב־API כדי לשנות את הנתונים של מוניקה דרך יישום חיצוני, כגון יישומון לנייד למשל.',
-    'api_help' => 'To use the API, a token is mandatory. You can either create a personal access token (Bearer authentication), or authorize an OAuth client to create it for you. See <a href=":url">API documentation</a>.',
+    'api_help' => 'כדי להשתמש ב־API, חובה להשתמש באסימון. ניתן ליצור אסימון גישה אישי (אימות חשוף יותר) או לאמת לקוח OAuth כדי שייצור אותו עבורך. כדאי לעיין <a href=":url">בתיעוד של ה־API</a>.',
     'api_endpoint' => 'נקודת הגישה ל־API של העותק הזה של מוניקה היא:',
 
     'api_personal_access_tokens' => 'אסימון לגישה אישית',
@@ -325,7 +325,7 @@ return [
     'api_authorized_clients' => 'רשימת לקוחות מורשים',
     'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application datas. You can revoke this authorization at anytime.',
     'api_authorized_clients_title' => 'יישומים מאושרים',
-    'api_authorized_clients_none' => 'There is no authorized client yet.',
+    'api_authorized_clients_none' => 'עדיין אין לקוחות מאומתים.',
     'api_authorized_clients_name' => 'שם',
     'api_authorized_clients_scopes' => 'תחומים',
 
