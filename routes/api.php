@@ -8,7 +8,7 @@ Route::resource('compliance', 'Settings\\ApiComplianceController', ['only' => ['
 
 Route::resource('currencies', 'Settings\\ApiCurrencyController', ['only' => ['index', 'show']]);
 
-Route::group(['middleware' => ['auth:api']], function () {
+Route::group(['middleware' => ['auth:api,web']], function () {
     Route::get('/', 'ApiController@success')->name('api');
 
     // Me
@@ -18,7 +18,7 @@ Route::group(['middleware' => ['auth:api']], function () {
     Route::post('/me/compliance', 'Account\\ApiUserController@set');
 
     // Contacts
-    Route::apiResource('contacts', 'ApiContactController');
+    Route::apiResource('contacts', 'ApiContactController')->name('show', 'api.contacts');
     Route::put('/contacts/{contact}/setMe', 'ApiContactController@setMe');
 
     // Genders
