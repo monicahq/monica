@@ -30,6 +30,7 @@ input:focus {
       :style="inputStyle"
       :value="value"
       @input="event => { $emit('input', event.target.value) }"
+      @keyup.enter="event => { $emit('submit', event.target.value) }"
     />
   </div>
 </template>

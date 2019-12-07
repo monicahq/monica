@@ -62,8 +62,8 @@
                   @foreach ($invoices as $invoice)
                   <li class="table-row" title="{{
                     trans('settings.subscriptions_account_invoices_subscription', [
-                      'startDate' => \App\Helpers\DateHelper::getFullDate(array_first($invoice->subscriptions())->startDateAsCarbon()),
-                      'endDate' => \App\Helpers\DateHelper::getFullDate(array_first($invoice->subscriptions())->endDateAsCarbon())
+                      'startDate' => \App\Helpers\DateHelper::getFullDate(Arr::first($invoice->subscriptions())->startDateAsCarbon()),
+                      'endDate' => \App\Helpers\DateHelper::getFullDate(Arr::first($invoice->subscriptions())->endDateAsCarbon())
                     ])
                     }}">
                     <div class="table-cell date">

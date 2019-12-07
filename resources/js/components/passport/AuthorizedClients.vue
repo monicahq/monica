@@ -1,59 +1,60 @@
 <style scoped>
-    .action-link {
-        cursor: pointer;
-    }
-
-    .m-b-none {
-        margin-bottom: 0;
-    }
 </style>
 
 <template>
   <div>
-    <div v-if="tokens.length > 0">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          {{ $t('settings.api_authorized_clients_title') }}
+    <h3 class="mb3">
+      {{ $t('settings.api_authorized_clients') }}
+    </h3>
+    <p>{{ $t('settings.api_authorized_clients_desc') }}</p>
+
+    <!-- Authorized Clients -->
+    <p v-if="tokens.length === 0" class="mb0">
+      {{ $t('settings.api_authorized_clients_none') }}
+    </p>
+
+    <div v-else class="dt dt--fixed w-100 collapse br--top br--bottom">
+      <em>{{ $t('settings.api_authorized_clients_title') }}</em>
+      <div class="dt-row">
+        <div class="dtc w-20">
+          <div class="pa2 b">
+            {{ $t('settings.api_authorized_clients_name') }}
+          </div>
+        </div>
+        <div class="dtc w-20">
+          <div class="pa2 b">
+            {{ $t('settings.api_authorized_clients_scopes') }}
+          </div>
+        </div>
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
+          <div class="pa2 b">
+            {{ $t('settings.personalization_contact_field_type_table_actions') }}
+          </div>
+        </div>
+      </div>
+
+      <div v-for="token in tokens" :key="token.id" class="dt-row bb b--light-gray">
+        <!-- Client Name -->
+        <div class="dtc">
+          <div class="pa2">
+            {{ token.client.name }}
+          </div>
         </div>
 
-        <div class="panel-body">
-          <!-- Authorized Tokens -->
-          <table class="table table-borderless m-b-none">
-            <thead>
-              <tr>
-                <th scope="col">
-                  {{ $t('settings.api_authorized_clients_name') }}
-                </th>
-                <th scope="col">
-                  {{ $t('settings.api_authorized_clients_scopes') }}
-                </th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
+        <!-- Scopes -->
+        <div class="dtc">
+          <div class="pa2">
+            <span v-if="token.scopes.length > 0">
+              {{ token.scopes.join(', ') }}
+            </span>
+          </div>
+        </div>
 
-            <tbody>
-              <tr v-for="token in tokens" :key="token.id">
-                <!-- Client Name -->
-                <td style="vertical-align: middle;">
-                  {{ token.client.name }}
-                </td>
-
-                <!-- Scopes -->
-                <td style="vertical-align: middle;">
-                  <span v-if="token.scopes.length > 0">
-                    {{ token.scopes.join(', ') }}
-                  </span>
-                </td>
-
-                <!-- Revoke Button -->
-                <td style="vertical-align: middle;">
-                  <a class="action-link text-danger" href="" @click.prevent="revoke(token)">
-                    {{ $t('app.revoke') }}
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Revoke Button -->
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
+          <div class="pa2">
+            <span class="pointer" @click="revoke(token)">{{ $t('app.revoke') }}</span>
+          </div>
         </div>
       </div>
     </div>
