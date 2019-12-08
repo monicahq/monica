@@ -45,6 +45,11 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
+
+        'apiw' => [
+            'driver' => 'passportext',
+            'provider' => 'users',
+        ],
     ],
 
     /*

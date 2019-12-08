@@ -38,12 +38,11 @@ class Kernel extends HttpKernel
             'locale',
             \App\Http\Middleware\CheckVersion::class,
             \App\Http\Middleware\CheckCompliance::class,
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
         'api' => [
             'throttle:60,1',
-            \App\Http\Middleware\EncryptCookies::class,
-            \Illuminate\Session\Middleware\StartSession::class,
             'sentry.context',
             'locale',
         ],
