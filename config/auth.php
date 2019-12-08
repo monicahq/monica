@@ -46,7 +46,7 @@ return [
             'provider' => 'users',
         ],
 
-        'apiw' => [
+        'apiext' => [
             'driver' => 'passportext',
             'provider' => 'users',
         ],

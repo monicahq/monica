@@ -8,7 +8,7 @@ Route::resource('compliance', 'Settings\\ApiComplianceController', ['only' => ['
 
 Route::resource('currencies', 'Settings\\ApiCurrencyController', ['only' => ['index', 'show']]);
 
-Route::group(['middleware' => ['auth:apiw']], function () {
+Route::group(['middleware' => ['auth:apiext']], function () {
     Route::get('/', 'ApiController@success')->name('api');
 
     // Me
