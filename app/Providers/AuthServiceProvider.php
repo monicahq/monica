@@ -30,6 +30,7 @@ class AuthServiceProvider extends ServiceProvider
 
         Auth::viaRequest('passportext', function ($request, $provider) {
             Passport::ignoreCsrfToken(in_array($request->method(), ['HEAD', 'GET', 'OPTIONS']));
+
             return Auth::guard('api')->user();
         });
     }
