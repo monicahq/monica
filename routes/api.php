@@ -2,15 +2,15 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::apiResource('statistics', 'Statistics\\ApiStatisticsController', ['only' => ['index']]);
+Route::apiResource('statistics', 'Statistics\\ApiStatisticsController', ['only' => ['index']])->name('index', 'api.statistics');
 
 Route::resource('compliance', 'Settings\\ApiComplianceController', ['only' => ['index', 'show']]);
 
-Route::resource('currencies', 'Settings\\ApiCurrencyController', ['only' => ['index', 'show']]);
+Route::resource('currencies', 'Settings\\ApiCurrencyController', ['only' => ['index', 'show']])->name('index', 'api.currencies');
 
 Route::group(['middleware' => ['auth:apiext']], function () {
-    Route::get('/', 'ApiController@success')->name('api');
-
+  Route::get('/', 'ApiController@success')->name('api');
+  Route::name('api.')->group(function () {
     // Me
     Route::get('/me', 'Account\\ApiUserController@show');
     Route::get('/me/compliance', 'Account\\ApiUserController@compliance');
@@ -18,15 +18,18 @@ Route::group(['middleware' => ['auth:apiext']], function () {
     Route::post('/me/compliance', 'Account\\ApiUserController@set');
 
     // Contacts
-    Route::apiResource('contacts', 'ApiContactController')->name('show', 'api.contacts');
+    Route::apiResource('contacts', 'ApiContactController')
+      ->names(['index' => 'contacts', 'show' => 'contact']);
     Route::put('/contacts/{contact}/setMe', 'ApiContactController@setMe');
 
     // Genders
     Route::apiResource('genders', 'Account\\ApiGenderController');
 
     // Relationships
-    Route::apiResource('relationships', 'ApiRelationshipController', ['except' => ['index']]);
-    Route::get('/contacts/{contact}/relationships', 'ApiRelationshipController@index');
+    Route::apiResource('relationships', 'ApiRelationshipController', ['except' => ['index']])
+      ->name('show', 'relationship');
+    Route::get('/contacts/{contact}/relationships', 'ApiRelationshipController@index')
+      ->name('relationships');
 
     // Sets tags
     Route::post('/contacts/{contact}/setTags', 'ApiContactTagController@setTags');
@@ -37,7 +40,8 @@ Route::group(['middleware' => ['auth:apiext']], function () {
     Route::apiResource('places', 'Account\\ApiPlaceController');
 
     // Addresses
-    Route::apiResource('addresses', 'Contact\\ApiAddressController');
+    Route::apiResource('addresses', 'Contact\\ApiAddressController')
+      ->names(['index' => 'addresses', 'show' => 'address']);
     Route::get('/contacts/{contact}/addresses', 'Contact\\ApiAddressController@addresses');
 
     // Contact Fields
@@ -54,24 +58,28 @@ Route::group(['middleware' => ['auth:apiext']], function () {
     // Companies
     Route::apiResource('companies', 'Account\\ApiCompanyController');
 
-    // Companies
+    // Occupations
     Route::apiResource('occupations', 'Contact\\ApiOccupationController');
 
     // Notes
-    Route::apiResource('notes', 'ApiNoteController');
+    Route::apiResource('notes', 'ApiNoteController')
+      ->names(['index' => 'notes', 'show' => 'note']);
     Route::get('/contacts/{contact}/notes', 'ApiNoteController@notes');
 
     // Calls
-    Route::apiResource('calls', 'Contact\\ApiCallController');
+    Route::apiResource('calls', 'Contact\\ApiCallController')
+      ->names(['index' => 'calls', 'show' => 'call']);
     Route::get('/contacts/{contact}/calls', 'Contact\\ApiCallController@calls');
 
     // Conversations & messages
-    Route::apiResource('conversations', 'Contact\\ApiConversationController');
+    Route::apiResource('conversations', 'Contact\\ApiConversationController')
+      ->names(['index' => 'conversations', 'show' => 'conversation']);
     Route::apiResource('conversations/{conversation}/messages', 'Contact\\ApiMessageController', ['except' => ['index', 'show']]);
     Route::get('/contacts/{contact}/conversations', 'Contact\\ApiConversationController@conversations');
 
     // Activities
-    Route::apiResource('activities', 'ApiActivityController');
+    Route::apiResource('activities', 'ApiActivityController')
+      ->names(['index' => 'activities', 'show' => 'activity']);
     Route::get('/contacts/{contact}/activities', 'ApiActivityController@activities');
 
     // Reminders
@@ -91,7 +99,8 @@ Route::group(['middleware' => ['auth:apiext']], function () {
     Route::get('/contacts/{contact}/debts', 'ApiDebtController@debts');
 
     // Journal
-    Route::apiResource('journal', 'ApiJournalController');
+    Route::apiResource('journal', 'ApiJournalController')
+      ->names(['index' => 'journal', 'show' => 'entry']);
 
     // Activity Types
     Route::apiResource('activitytypes', 'Account\\Activity\\ApiActivityTypeController');
@@ -100,22 +109,17 @@ Route::group(['middleware' => ['auth:apiext']], function () {
     Route::apiResource('activitytypecategories', 'Account\\Activity\\ApiActivityTypeCategoryController');
 
     // Relationship Type Groups
-    Route::apiResource('relationshiptypegroups', 'ApiRelationshipTypeGroupController', ['only' => [
-      'index', 'show',
-    ]]);
+    Route::apiResource('relationshiptypegroups', 'ApiRelationshipTypeGroupController', ['only' => ['index', 'show']]);
 
     // Relationship Types
-    Route::apiResource('relationshiptypes', 'ApiRelationshipTypeController', ['only' => [
-      'index', 'show',
-    ]]);
+    Route::apiResource('relationshiptypes', 'ApiRelationshipTypeController', ['only' => ['index', 'show']]);
 
     // Life events
     Route::apiResource('lifeevents', 'Contact\\ApiLifeEventController');
 
     // Documents
-    Route::apiResource('documents', 'Contact\\ApiDocumentController', ['only' => [
-      'index', 'show',
-    ]]);
+    Route::apiResource('documents', 'Contact\\ApiDocumentController', ['only' => ['index', 'show']])
+      ->names(['index' => 'documents', 'show' => 'document']);
     Route::get('/contacts/{contact}/documents', 'Contact\\ApiDocumentController@documents');
 
     /*
@@ -126,5 +130,6 @@ Route::group(['middleware' => ['auth:apiext']], function () {
     /*
      * MISC
      */
-    Route::get('/countries', 'Misc\\ApiCountryController@index');
+    Route::get('/countries', 'Misc\\ApiCountryController@index')->name('countries');
+  });
 });

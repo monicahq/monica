@@ -24,6 +24,7 @@ class Call extends Resource
             'content' => $this->content,
             'contact_called' => $this->contact_called,
             'emotions' => EmotionResource::collection($this->emotions),
+            'url' => route('api.call', $this->id),
             'account' => [
                 'id' => $this->account->id,
             ],

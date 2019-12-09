@@ -97,7 +97,7 @@ class Contact extends Resource
                 'number_of_gifts' => $this->gifts->count(),
                 'number_of_debts' => $this->debts->count(),
             ]),
-            'url' => route('api.contacts', $this->id),
+            'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
                 'id' => $this->account->id,
             ],

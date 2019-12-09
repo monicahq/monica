@@ -23,6 +23,7 @@ class Relationship extends Resource
             'contact_is' => new ContactShortResource($this->contactIs),
             'relationship_type' => new RelationshipTypeResource($this->relationshipType),
             'of_contact' => new ContactShortResource($this->ofContact),
+            'url' => route('api.relationship', $this->id),
             'account' => [
                 'id' => $this->account->id,
             ],
