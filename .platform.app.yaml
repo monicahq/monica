@@ -19,12 +19,14 @@ runtime:
 # The hooks that will be performed when the package is deployed.
 hooks:
   build: |
-    set -e
+    set -evx
     composer install --no-interaction --no-suggest --no-dev
     composer require --update-no-dev platformsh/laravel-bridge
+    mkdir -p ${SENTRY_ROOT:-/app/vendor/bin}
+    curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=${SENTRY_ROOT:-/app/vendor/bin} bash
   deploy: |
-    set -e
-    php artisan monica:update --force -vvv
+    set -evx
+    php artisan monica:update --force --skip-storage-link -vvv
 
 # The relationships of the application with services or other applications.
 # The left-hand side is the name of the relationship as it will be exposed
@@ -77,7 +79,7 @@ workers:
     size: S
     commands:
       start: |
-        php artisan queue:work --sleep=3 --tries=3
+        php artisan queue:work --sleep=3 --tries=3 --queue=default,migration
 
 crons:
   scheduler:
