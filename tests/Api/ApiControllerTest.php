@@ -179,14 +179,14 @@ class ApiControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->json('GET', "/api");
+        $response = $this->json('GET', '/api');
 
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
             'success' => [
                 'message' => 'Welcome to Monica',
-            ]
+            ],
         ]);
         $response->assertJsonFragment([
             'contacts_url' => route('api.contacts'),
