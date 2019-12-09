@@ -14,7 +14,6 @@
 @story('deploy')
     pull
     sentry-file
-    sentry-release
     push
 @endstory
 
@@ -29,13 +28,14 @@
 @endtask
 
 @task('sentry-file', ['on' => 'local'])
+    echo {{ $commit }} > .sentry-commit
     echo {{ $release }} > .sentry-release
-    git add -f .sentry-release
-    git commit -m 'add sentry file'
+    git add -f .sentry-commit .sentry-release
+    git commit -m 'add sentry files'
 @endtask
 
-@task('sentry-release', ['on' => 'local'])
-    php artisan sentry:release --force -vvv --release={{ $release }} --environment={{ $environment ?? 'production' }} --commit={{ $commit }}
+@task('sentry-release', ['on' => 'web'])
+    php artisan sentry:release --force -vvv --release=$(cat .sentry-release) --environment=$SENTRY_ENV --commit=$(cat .sentry-commit)
 @endtask
 
 @task('sentry-local', ['on' => 'local'])
