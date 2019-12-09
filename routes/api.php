@@ -9,7 +9,7 @@ Route::resource('compliance', 'Settings\\ApiComplianceController', ['only' => ['
 Route::resource('currencies', 'Settings\\ApiCurrencyController', ['only' => ['index', 'show']]);
 
 Route::group(['middleware' => ['auth:api']], function () {
-    Route::get('/', 'ApiController@success');
+    Route::get('/', 'ApiController@success')->name('api');
 
     // Me
     Route::get('/me', 'Account\\ApiUserController@show');

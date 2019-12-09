@@ -1306,7 +1306,8 @@ class Contact extends Model
                         ->where([
                             'account_id' => $contact->account_id,
                             'contact_is' => $contact->id,
-                        ]);
+                        ])
+                        ->first();
             })
             ->first();
     }
