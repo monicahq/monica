@@ -22,8 +22,8 @@ hooks:
     set -evx
     composer install --no-interaction --no-suggest --no-dev
     composer require --update-no-dev platformsh/laravel-bridge
-    mkdir -p $PLATFORM_APP_DIR/storage/bin
-    curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=$PLATFORM_APP_DIR/storage/bin bash
+    mkdir -p ${SENTRY_ROOT:-/app/vendor/bin}
+    curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=${SENTRY_ROOT:-/app/vendor/bin} bash
   deploy: |
     set -evx
     php artisan monica:update --force --skip-storage-link -vvv
