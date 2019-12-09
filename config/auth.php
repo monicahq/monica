@@ -45,11 +45,6 @@ return [
             'driver' => 'passport',
             'provider' => 'users',
         ],
-
-        'apiext' => [
-            'driver' => 'passportext',
-            'provider' => 'users',
-        ],
     ],
 
     /*
