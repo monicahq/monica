@@ -19,7 +19,7 @@ Route::group(['middleware' => ['auth:apiext']], function () {
 
         // Contacts
         Route::apiResource('contacts', 'ApiContactController')
-      ->names(['index' => 'contacts', 'show' => 'contact']);
+            ->names(['index' => 'contacts', 'show' => 'contact']);
         Route::put('/contacts/{contact}/setMe', 'ApiContactController@setMe');
 
         // Genders
@@ -27,9 +27,9 @@ Route::group(['middleware' => ['auth:apiext']], function () {
 
         // Relationships
         Route::apiResource('relationships', 'ApiRelationshipController', ['except' => ['index']])
-      ->name('show', 'relationship');
+            ->name('show', 'relationship');
         Route::get('/contacts/{contact}/relationships', 'ApiRelationshipController@index')
-      ->name('relationships');
+            ->name('relationships');
 
         // Sets tags
         Route::post('/contacts/{contact}/setTags', 'ApiContactTagController@setTags');
@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth:apiext']], function () {
 
         // Addresses
         Route::apiResource('addresses', 'Contact\\ApiAddressController')
-      ->names(['index' => 'addresses', 'show' => 'address']);
+            ->names(['index' => 'addresses', 'show' => 'address']);
         Route::get('/contacts/{contact}/addresses', 'Contact\\ApiAddressController@addresses');
 
         // Contact Fields
@@ -63,23 +63,23 @@ Route::group(['middleware' => ['auth:apiext']], function () {
 
         // Notes
         Route::apiResource('notes', 'ApiNoteController')
-      ->names(['index' => 'notes', 'show' => 'note']);
+            ->names(['index' => 'notes', 'show' => 'note']);
         Route::get('/contacts/{contact}/notes', 'ApiNoteController@notes');
 
         // Calls
         Route::apiResource('calls', 'Contact\\ApiCallController')
-      ->names(['index' => 'calls', 'show' => 'call']);
+            ->names(['index' => 'calls', 'show' => 'call']);
         Route::get('/contacts/{contact}/calls', 'Contact\\ApiCallController@calls');
 
         // Conversations & messages
         Route::apiResource('conversations', 'Contact\\ApiConversationController')
-      ->names(['index' => 'conversations', 'show' => 'conversation']);
+            ->names(['index' => 'conversations', 'show' => 'conversation']);
         Route::apiResource('conversations/{conversation}/messages', 'Contact\\ApiMessageController', ['except' => ['index', 'show']]);
         Route::get('/contacts/{contact}/conversations', 'Contact\\ApiConversationController@conversations');
 
         // Activities
         Route::apiResource('activities', 'ApiActivityController')
-      ->names(['index' => 'activities', 'show' => 'activity']);
+            ->names(['index' => 'activities', 'show' => 'activity']);
         Route::get('/contacts/{contact}/activities', 'ApiActivityController@activities');
 
         // Reminders
@@ -100,7 +100,7 @@ Route::group(['middleware' => ['auth:apiext']], function () {
 
         // Journal
         Route::apiResource('journal', 'ApiJournalController')
-      ->names(['index' => 'journal', 'show' => 'entry']);
+            ->names(['index' => 'journal', 'show' => 'entry']);
 
         // Activity Types
         Route::apiResource('activitytypes', 'Account\\Activity\\ApiActivityTypeController');
@@ -119,7 +119,7 @@ Route::group(['middleware' => ['auth:apiext']], function () {
 
         // Documents
         Route::apiResource('documents', 'Contact\\ApiDocumentController', ['only' => ['index', 'show']])
-      ->names(['index' => 'documents', 'show' => 'document']);
+            ->names(['index' => 'documents', 'show' => 'document']);
         Route::get('/contacts/{contact}/documents', 'Contact\\ApiDocumentController@documents');
 
         /*
