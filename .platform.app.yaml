@@ -22,6 +22,7 @@ hooks:
     set -evx
     composer install --no-interaction --no-suggest --no-dev
     composer require --update-no-dev platformsh/laravel-bridge
+    mkdir -p $PLATFORM_APP_DIR/storage/bin
     curl -sL https://sentry.io/get-cli/ | INSTALL_DIR=$PLATFORM_APP_DIR/storage/bin bash
   deploy: |
     set -evx
@@ -56,9 +57,6 @@ mounts:
   "storage/logs":
       source: local
       source_path: "logs"
-  "storage/bin":
-      source: local
-      source_path: "bin"
   "bootstrap/cache":
       source: local
       source_path: "cache"
