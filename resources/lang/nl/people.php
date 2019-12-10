@@ -269,7 +269,7 @@ return [
     'activities_activity' => 'Activiteit categorie',
     'activities_view_activities_report' => 'Bekijk activiteiten rapport',
     'activities_profile_title' => 'Activiteiten rapport voor :name',
-    'activities_profile_subtitle' => 'Je hebt, tot nu toe, in totaal :total_activities activiteit met :name vastgelegd, waarvan er tot nu toe :activities_last_twelve_months in de afgelopen twaalf maanden.|Je hebt, tot nu toe, in totaal :total_activities activiteiten met :name vastgelegd, waarvan er :activities_last_twelve_months in de afgelopen twaalf maanden.',
+    'activities_profile_subtitle' => 'Je hebt, tot nu toe, in totaal :total_activities activiteit met :name vastgelegd, waarvan :activities_last_twelve_months in de afgelopen twaalf maanden.|Je hebt, tot nu toe, in totaal :total_activities activiteiten met :name vastgelegd, waarvan :activities_last_twelve_months in de afgelopen twaalf maanden.',
     'activities_profile_year_summary_activity_types' => 'Hier is een overzicht van de soort activiteiten die jullie samen hebben gedaan in :year',
     'activities_profile_year_summary' => 'Dit is wat jullie samen hebben gedaan in :year',
     'activities_profile_number_occurences' => ':value activiteit|:value activiteiten',
