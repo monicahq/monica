@@ -3,9 +3,12 @@
 ### New features:
 
 * Add middle name field to new contact and edit contact
+* Save contact tags in vCard 'CATEGORIES' field
 
 ### Enhancements:
 
+* Enable API web navigation
+* Enhance UI of API's Settings to add comprehension and documentation
 * Improve trim string middleware to not trim password text
 * Upgrade to Laravel 6.5
 * Enhance user invitation mail
@@ -16,6 +19,13 @@
 
 ### Fixes:
 
+* Fix OAuth login process with WebAuthn activated
+* Fix journal entry edit
+* Fix register in case country is not detected from ip address
+* Fix Photo->contact relation
+* Fix subscription page
+* Fix relationship create and destroy with partial contact
+* Fix 2fa route on webauthn page
 * Fix tooltip on favorite icon
 * Fix icons disappeared on contact information
 * Fix CSV uploads with weird photo files

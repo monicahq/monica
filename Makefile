@@ -83,6 +83,7 @@ docker:
 	$(MAKE) docker_push
 
 docker_build: docker_build_apache docker_build_fpm docker_build_php_apache
+docker_build_master: docker_build_apache docker_build_fpm
 
 docker_build_apache:
 	docker build \
@@ -150,12 +151,19 @@ docker_push: docker_tag
 	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
 	docker push $(DOCKER_IMAGE):$(BUILD)-php-apache
 
-docker_push_bintray: .deploy.json
+docker_push_bintray: docker_push_bintray_apache docker_push_bintray_fpm
+
+docker_push_bintray_apache: .deploy.json
 	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	BUILD=$(BUILD) scripts/ci/fix-bintray.sh
 
-.PHONY: docker docker_build docker_build_apache docker_build_fpm docker_build_php_apache docker_tag docker_push docker_push_bintray
+docker_push_bintray_fpm: .deploy.json
+	docker tag $(DOCKER_IMAGE):fpm monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	BUILD=$(BUILD)-fpm scripts/ci/fix-bintray.sh
+
+.PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag docker_push docker_push_bintray docker_push_bintray_apache docker_push_bintray_fpm
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs

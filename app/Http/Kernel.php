@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             'locale',
             \App\Http\Middleware\CheckVersion::class,
             \App\Http\Middleware\CheckCompliance::class,
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
         'api' => [
@@ -48,14 +49,14 @@ class Kernel extends HttpKernel
 
         'oauth' => [
             'throttle:5,1',
-            \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
             'sentry.context',
             'locale',
         ],
 
         'mfa' => [
-            \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             'webauthn',
             'u2f',

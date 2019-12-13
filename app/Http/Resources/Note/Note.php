@@ -22,6 +22,7 @@ class Note extends Resource
             'body' => $this->body,
             'is_favorited' => (bool) $this->is_favorited,
             'favorited_at' => DateHelper::getTimestamp($this->favorited_at),
+            'url' => route('api.note', $this->id),
             'account' => [
                 'id' => $this->account_id,
             ],

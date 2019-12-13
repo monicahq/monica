@@ -45,7 +45,7 @@
         <env name="DB_CONNECTION" value="pgsqltesting"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>
-        <env name="QUEUE_DRIVER" value="sync"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="APP_DEFAULT_LOCALE" value="en"/>
     </php>
     <logging>
