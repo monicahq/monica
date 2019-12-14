@@ -70,7 +70,7 @@
             @contentChange="updateDescription($event)"
           />
           <p class="f6">
-            {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" target="_blank">
+            {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" rel="noopener noreferrer" target="_blank">
               {{ $t('app.markdown_link') }}
             </a>
           </p>
@@ -174,17 +174,15 @@ export default {
   computed: {
     locale() {
       return this.$root.locale;
+    },
+
+    dirltr() {
+      return this.$root.htmldir == 'ltr';
     }
   },
 
   mounted() {
     this.prepareComponent();
-  },
-
-  computed: {
-    dirltr() {
-      return this.$root.htmldir == 'ltr';
-    }
   },
 
   methods: {
