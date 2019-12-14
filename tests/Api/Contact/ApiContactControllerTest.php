@@ -1411,7 +1411,7 @@ class ApiContactControllerTest extends ApiTestCase
             'career' => [
                 'job' => 'Astronaut',
                 'company' => 'NASA',
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1431,7 +1431,7 @@ class ApiContactControllerTest extends ApiTestCase
             'career' => [
                 'job' => 'Mom',
                 'company' => null,
-            ]
+            ],
         ]);
 
         $this->assertDatabaseHas('contacts', [
@@ -1514,7 +1514,6 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-
     public function test_it_sets_first_met_age()
     {
         Carbon::setTestNow(Carbon::create(2019, 12, 1, 7, 0, 0));
@@ -1561,7 +1560,7 @@ class ApiContactControllerTest extends ApiTestCase
             'year' => 2006,
             'month' => 1,
             'day' => 2,
-            'add_reminder' => true
+            'add_reminder' => true,
         ]);
 
         $response->assertStatus(200);
