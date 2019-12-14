@@ -37,27 +37,6 @@ class ReminderRule extends Model
     }
 
     /**
-     * Get the number_of_days_before field.
-     *
-     * @param int $value
-     * @return int
-     */
-    public function getNumberOfDaysBeforeAttribute($value)
-    {
-        return $value;
-    }
-
-    /**
-     * Set the number_of_days_before field.
-     *
-     * @param int $value
-     */
-    public function setNumberOfDaysBeforeAttribute($value)
-    {
-        $this->attributes['number_of_days_before'] = $value;
-    }
-
-    /**
      * Toggle the active status.
      *
      * @return void

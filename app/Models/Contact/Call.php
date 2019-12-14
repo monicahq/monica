@@ -35,6 +35,14 @@ class Call extends Model
     ];
 
     /**
+     * Eager load with every call.
+     */
+    protected $with = [
+        'account',
+        'contact',
+    ];
+
+    /**
      * Get the account record associated with the call.
      *
      * @return BelongsTo

@@ -7,6 +7,7 @@ use App\Helpers\SearchHelper;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Collection;
 use Illuminate\Database\QueryException;
+use App\Services\Contact\Contact\SetMeContact;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
@@ -17,6 +18,17 @@ use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFie
 
 class ApiContactController extends ApiController
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('limitations')->only('setMe');
+        parent::__construct();
+    }
+
     /**
      * Get the list of the contacts.
      * We will only retrieve the contacts that are "real", not the partials
@@ -174,5 +186,26 @@ class ApiContactController extends ApiController
         }
 
         return ContactResource::collection($contacts);
+    }
+
+    /**
+     * Set a contact as 'me'.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return string
+     */
+    public function setMe(Request $request, $contactId)
+    {
+        $data = [
+            'contact_id' => $contactId,
+            'account_id' => auth()->user()->account->id,
+            'user_id' => auth()->user()->id,
+        ];
+
+        app(SetMeContact::class)->execute($data);
+
+        return $this->respond(['true']);
     }
 }

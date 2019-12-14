@@ -4,7 +4,7 @@
 
 @section('content')
   <div class="people-show" >
-    {{ csrf_field() }}
+    @csrf
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -70,8 +70,8 @@
               <li>
                 <a id="link-delete-contact" class="pointer" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;" href="">{{ trans('people.people_delete_message') }}</a>
                 <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
-                  {{ method_field('DELETE') }}
-                  {{ csrf_field() }}
+                  @method('DELETE')
+                  @csrf
                 </form>
               </li>
             </ul>
@@ -81,22 +81,26 @@
 
             <div class="flex items-center justify-center flex-column">
               <div class='cf dib'>
+                @if (! $contact->isMe())
                 <span @click="updateDefaultProfileView('life-events')" :class="[global_profile_default_view == 'life-events' ? 'f6 fl bb bt br bl ph3 pv2 dib b br2 br--left bl mb4 b--gray-monica' : 'f6 fl bb bt br ph3 pv2 dib bg-gray-monica br2 br--left bl pointer mb4 b--gray-monica']">
                   @if (auth()->user()->profile_new_life_event_badge_seen == false)
                   <span class="bg-light-green f7 mr2 ph2 pv1 br2">{{ trans('app.new') }}</span>
                   @endif
                   {{ trans('people.life_event_list_tab_life_events') }} ({{ $contact->lifeEvents()->count() }})
                 </span>
+                @endif
                 <span @click="updateDefaultProfileView('notes')" :class="[global_profile_default_view == 'notes' ? 'f6 fl bb bt ph3 pv2 dib b br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br--right br pointer mb4 b--gray-monica']">{{ trans('people.life_event_list_tab_other') }}</span>
                 <span @click="updateDefaultProfileView('photos')" :class="[global_profile_default_view == 'photos' ? 'f6 fl bb bt ph3 pv2 dib b br2 br--right br mb4 b--gray-monica' : 'f6 fl bb bt ph3 pv2 dib bg-gray-monica br2 br--right br pointer mb4 b--gray-monica']">Photos</span>
               </div>
             </div>
 
+            @if (! $contact->isMe())
             <div v-if="global_profile_default_view == 'life-events'">
               <div class="row section">
                 @include('people.life-events.index')
               </div>
             </div>
+            @endif
 
             <div v-if="global_profile_default_view == 'notes'">
               @if ($modules->contains('key', 'notes'))
@@ -107,19 +111,19 @@
               </div>
               @endif
 
-              @if ($modules->contains('key', 'conversations'))
+              @if ($modules->contains('key', 'conversations') && ! $contact->isMe())
               <div class="row section">
                 @include('people.conversations.index')
               </div>
               @endif
 
-              @if ($modules->contains('key', 'phone_calls'))
+              @if ($modules->contains('key', 'phone_calls') && ! $contact->isMe())
               <div class="row section calls">
                 @include('people.calls.index')
               </div>
               @endif
 
-              @if ($modules->contains('key', 'activities'))
+              @if ($modules->contains('key', 'activities') && ! $contact->isMe())
               <div class="row section activities">
                 @include('people.activities.index')
               </div>
@@ -137,13 +141,13 @@
               </div>
               @endif
 
-              @if ($modules->contains('key', 'gifts'))
+              @if ($modules->contains('key', 'gifts') && ! $contact->isMe())
               <div class="row section">
                 @include('people.gifts.index')
               </div>
               @endif
 
-              @if ($modules->contains('key', 'debts'))
+              @if ($modules->contains('key', 'debts') && ! $contact->isMe())
               <div class="row section debts">
                 @include('people.debt.index')
               </div>

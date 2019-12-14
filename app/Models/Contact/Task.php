@@ -40,6 +40,14 @@ class Task extends Model
     ];
 
     /**
+     * Eager load with every task.
+     */
+    protected $with = [
+        'account',
+        'contact',
+    ];
+
+    /**
      * Get the account record associated with the task.
      *
      * @return BelongsTo

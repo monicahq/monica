@@ -1,0 +1,83 @@
+# PHP
+# Test and package your PHP project.
+# Add steps that run tests, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/php
+
+trigger:
+  batch: 'true'
+  branches:
+    include:
+    - master
+  tags:
+    include:
+    - '*'
+pr:
+  autoCancel: 'true'
+  branches:
+    include:
+    - '*'
+
+variables:
+  phpVersion: 7.3
+  COMPOSER_HOME: $(Pipeline.Workspace)/.composer
+  YARN_CACHE_FOLDER: $(Pipeline.Workspace)/.yarn
+
+stages:
+- stage: build
+  displayName: 'Build'
+  condition: not(startsWith(variables['System.PullRequest.SourceBranch'], 'l10n_master'))
+  jobs:
+  - template: .azure/job-build.yml
+  - template: .azure/job-tests.yml
+  - template: .azure/job-analyzers.yml
+  - template: .azure/job-test-browser.yml
+  - template: .azure/job-reporting.yml
+  - template: .azure/job-test-migrations.yml
+
+- stage: deploy
+  displayName: 'Deploy'
+  dependsOn: build
+  condition: in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI')
+  jobs:
+  - job: deployAssets
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - script: make assets
+    - script: make push_bintray_assets
+      env:
+        BINTRAY_USER: $(BINTRAY_USER)
+        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+
+  - job: deploy_dist
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/step-composer-install.yml
+      parameters:
+        no_dev: 'true'
+    - script: make dist
+    - script: make push_bintray_dist
+      env:
+        BINTRAY_USER: $(BINTRAY_USER)
+        BINTRAY_APIKEY: $(BINTRAY_APIKEY)
+
+  - job: deploy_docker_master
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/step-prepare-environment.yml
+    - template: .azure/step-docker-build.yml
+    - template: .azure/step-docker-push-bintray.yml
+
+  - job: deploy_docker
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - template: .azure/step-prepare-environment.yml
+    - template: .azure/step-docker-build.yml
+    - template: .azure/step-docker-push-bintray.yml
+    - template: .azure/step-docker-push.yml

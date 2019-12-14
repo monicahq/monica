@@ -24,7 +24,7 @@ class Google2faEventListenerTest extends FeatureTestCase
         $request->session = $this->app['session'];
 
         Google2FA::setRequest($request);
-        app('pragmarx.google2fa')->stateless = false;
+        app('pragmarx.google2fa')->setStateless(false);
     }
 
     public function test_it_listen_u2f_event()

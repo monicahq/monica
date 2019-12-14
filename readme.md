@@ -2,7 +2,7 @@
 <h1 align="center">Personal Relationship Manager</h1>
 
 <p align="center">
-<a href="https://circleci.com/gh/monicahq/monica"><img src="https://img.shields.io/circleci/project/github/monicahq/monica/master.svg" alt="Build Status"></a>
+<a href="https://dev.azure.com/monicahq/monica"><img src="https://dev.azure.com/monicahq/monica/_apis/build/status/monicahq.monica?branchName=master" alt="Build Status"></a>
 <a href="https://styleci.io/repos/82238168"><img src="https://styleci.io/repos/82238168/shield?branch=master" alt="StyleCI"></a>
 <a href="https://greenkeeper.io/"><img src="https://badges.greenkeeper.io/monicahq/monica.svg" /></a>
 <a href="https://sonarcloud.io/project/activity?custom_metrics=coverage&amp;graph=custom&amp;id=monica"><img src="https://sonarcloud.io/api/project_badges/measure?project=monica&amp;metric=coverage" alt="Code coverage"/></a>
@@ -112,7 +112,7 @@ Note: while the .com version has a paid plan, there is no limitations on Monica 
 
 If you want to host it yourself, you need
 
-* PHP 7.1+ or newer
+* PHP 7.2+ or newer
 * HTTP server with PHP support (eg: Apache, Nginx, Caddy)
 * Composer
 * MySQL
@@ -246,6 +246,6 @@ Monica use a lot of open source projects and we thank them with all our hearts. 
 
 ## License
 
-Copyright (c) 2016-2018
+Copyright (c) 2016-2019
 
 Licensed under the AGPL License. [View license](/LICENSE).

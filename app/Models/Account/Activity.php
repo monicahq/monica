@@ -44,7 +44,11 @@ class Activity extends Model implements IsJournalableInterface
      *
      * @var array
      */
-    protected $with = ['type'];
+    protected $with = [
+        'account',
+        'type',
+        'contacts',
+    ];
 
     /**
      * Get the account record associated with the activity.

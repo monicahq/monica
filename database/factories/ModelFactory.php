@@ -127,8 +127,11 @@ $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $f
             ])->id;
         },
         'uuid' => Str::uuid(),
+        'default_avatar_color' => '#ffffff',
+        'avatar_default_url' => 'avatars/img.png',
     ];
 });
+
 $factory->state(App\Models\Contact\Contact::class, 'partial', [
     'is_partial' => 1,
 ]);
@@ -262,6 +265,12 @@ $factory->define(App\Models\Contact\Call::class, function (Faker\Generator $fake
 $factory->define(App\Models\Account\Invitation::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'invited_by_user_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+        'invitation_key' => Str::random(100),
     ];
 });
 
@@ -640,7 +649,11 @@ $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $f
 $factory->define(App\Models\User\SyncToken::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-        'user_id' => factory(App\Models\User\User::class)->create()->id,
+        'user_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
         'timestamp' => \App\Helpers\DateHelper::parseDateTime($faker->dateTimeThisCentury()),
     ];
 });

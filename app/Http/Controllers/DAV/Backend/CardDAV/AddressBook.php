@@ -41,6 +41,11 @@ class AddressBook extends BaseAddressBook
                 'principal' => '{DAV:}owner',
                 'protected' => true,
             ],
+            [
+                'privilege' => '{DAV:}write-properties',
+                'principal' => '{DAV:}owner',
+                'protected' => true,
+            ],
         ];
     }
 

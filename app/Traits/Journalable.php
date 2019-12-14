@@ -3,12 +3,15 @@
 namespace App\Traits;
 
 use App\Models\Journal\JournalEntry;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait Journalable
 {
     /**
      * Get all journal entries.
+     *
+     * @return MorphMany
      */
     public function journalEntries()
     {
@@ -17,6 +20,8 @@ trait Journalable
 
     /**
      * Get the journal record associated.
+     *
+     * @return MorphOne
      */
     public function journalEntry()
     {
@@ -25,20 +30,17 @@ trait Journalable
 
     /**
      * Delete the Journal Entry associated with the given object.
+     *
+     * @return bool
      */
     public function deleteJournalEntry()
     {
-        try {
-            $journalEntry = JournalEntry::where('account_id', $this->account_id)
-                ->where('journalable_id', $this->id)
-                ->where('journalable_type', get_class($this))
-                ->firstOrFail();
-        } catch (ModelNotFoundException $e) {
-            return;
+        if ($this->journalEntry) {
+            $this->journalEntry->delete();
+
+            return true;
         }
 
-        $journalEntry->delete();
-
-        return true;
+        return false;
     }
 }

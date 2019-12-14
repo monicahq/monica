@@ -73,6 +73,7 @@ class ExportVCard extends BaseService
         $this->exportAddress($contact, $vcard);
         $this->exportContactFields($contact, $vcard);
         $this->exportTimestamp($contact, $vcard);
+        $this->exportTags($contact, $vcard);
 
         return $vcard;
     }
@@ -102,6 +103,10 @@ class ExportVCard extends BaseService
      */
     private function exportGender(Contact $contact, VCard $vcard)
     {
+        if (is_null($contact->gender)) {
+            return;
+        }
+
         $gender = $contact->gender->type;
         if (empty($gender)) {
             switch ($contact->gender->name) {
@@ -126,7 +131,8 @@ class ExportVCard extends BaseService
     private function exportPhoto(Contact $contact, VCard $vcard)
     {
         $picture = $contact->getAvatarURL();
-        if (! is_null($picture)) {
+
+        if (! empty($picture)) {
             $vcard->add('PHOTO', $picture);
         }
     }
@@ -228,5 +234,17 @@ class ExportVCard extends BaseService
     private function exportTimestamp(Contact $contact, VCard $vcard)
     {
         $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
+    }
+
+    /**
+     * @param Contact $contact
+     * @param VCard $vcard
+     */
+    private function exportTags(Contact $contact, VCard $vcard)
+    {
+        $tags = $contact->getTagsAsString();
+        if (! empty($tags)) {
+            $vcard->CATEGORIES = $tags;
+        }
     }
 }

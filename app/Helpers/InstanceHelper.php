@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use function Safe\json_decode;
 use App\Models\Account\Account;
+use App\Models\Settings\Currency;
 use function Safe\file_get_contents;
 
 class InstanceHelper
@@ -30,12 +31,15 @@ class InstanceHelper
             return;
         }
 
+        $currency = Currency::where('iso', strtoupper(config('cashier.currency')))->first();
+        $amount = MoneyHelper::format(config('monica.paid_plan_'.$timePeriod.'_price') / 100, $currency);
+
         return [
             'type' => $timePeriod,
             'name' => config('monica.paid_plan_'.$timePeriod.'_friendly_name'),
             'id' => config('monica.paid_plan_'.$timePeriod.'_id'),
             'price' => config('monica.paid_plan_'.$timePeriod.'_price'),
-            'friendlyPrice' => config('monica.paid_plan_'.$timePeriod.'_price') / 100,
+            'friendlyPrice' => $amount,
         ];
     }
 

@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DBHelper;
 use App\Helpers\DateHelper;
-use App\Jobs\ResizeAvatars;
 use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Helpers\AvatarHelper;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
-use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +20,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
-use App\Http\Resources\Contact\ContactShort as ContactResource;
+use App\Http\Resources\Contact\ContactSearch as ContactResource;
 
 class ContactsController extends Controller
 {
@@ -81,10 +79,7 @@ class ContactsController extends Controller
         $url = '';
         $count = 1;
 
-        if ($request->get('no_tag')) {
-            // get tag less contacts
-            $contacts = $contacts->tags('NONE');
-        } elseif ($request->get('tag1')) {
+        if ($request->get('tag1')) {
 
             // get contacts with selected tags
             $tags = collect();
@@ -103,46 +98,29 @@ class ContactsController extends Controller
                 }
                 $count++;
             }
-            if ($tags->count() == 0) {
+            if ($tags->count() === 0) {
                 return redirect()->route('people.index');
+            } else {
+                $contacts = $contacts->tags($tags);
             }
-
-            $contacts = $contacts->tags($tags);
-        }
-        $contacts = $contacts->sortedBy($sort)->get();
-
-        // count the deceased
-        $deceasedCount = $contacts->filter(function ($item) {
-            return $item->is_dead === true;
-        })->count();
-
-        // filter out deceased if necessary
-        if ($showDeceased != 'true') {
-            $contacts = $contacts->filter(function ($item) {
-                return $item->is_dead === false;
-            });
         }
 
-        // starred contacts
-        $starredContacts = $contacts->filter(function ($item) {
-            return $item->is_starred === true;
-        });
+        $contactsCount = (clone $contacts)->alive()->count();
+        $deceasedCount = (clone $contacts)->dead()->count();
 
-        $unstarredContacts = $contacts->filter(function ($item) {
-            return $item->is_starred === false;
-        });
+        if ($showDeceased === 'true') {
+            $contactsCount += $deceasedCount;
+        }
 
         return view('people.index')
             ->with('hidingDeceased', $showDeceased != 'true')
             ->with('deceasedCount', $deceasedCount)
-            ->withContacts($contacts->unique('id'))
-            ->withUnstarredContacts($unstarredContacts)
-            ->withStarredContacts($starredContacts)
             ->withActive($active)
+            ->withContactsCount($contactsCount)
             ->withHasArchived($nbArchived > 0)
-            ->withArchivedCOntacts($nbArchived)
+            ->withArchivedContacts($nbArchived)
             ->withTags($tags)
-            ->withUserTags(auth()->user()->account->tags)
+            ->withTagsCount(Tag::contactsCount())
             ->withUrl($url)
             ->withTagCount($count)
             ->withTagLess($request->get('no_tag') ?? false);
@@ -300,7 +278,6 @@ class ContactsController extends Controller
             ->withWorkRelationships($workRelationships)
             ->withReminders($reminders)
             ->withModules($modules)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withContact($contact)
             ->withWeather($contact->getWeather())
             ->withDays($days)
@@ -320,10 +297,12 @@ class ContactsController extends Controller
         $now = now();
         $age = (string) (! is_null($contact->birthdate) ? $contact->birthdate->getAge() : 0);
         $birthdate = ! is_null($contact->birthdate) ? $contact->birthdate->date->toDateString() : $now->toDateString();
+        $deceaseddate = ! is_null($contact->deceasedDate) ? $contact->deceasedDate->date->toDateString() : '';
         $day = ! is_null($contact->birthdate) ? $contact->birthdate->date->day : $now->day;
         $month = ! is_null($contact->birthdate) ? $contact->birthdate->date->month : $now->month;
 
         $hasBirthdayReminder = ! is_null($contact->birthday_reminder_id);
+        $hasDeceasedReminder = ! is_null($contact->deceased_reminder_id);
 
         return view('people.edit')
             ->withContact($contact)
@@ -331,10 +310,12 @@ class ContactsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdayState($contact->getBirthdayState())
             ->withBirthdate($birthdate)
+            ->withDeceaseddate($deceaseddate)
             ->withDay($day)
             ->withMonth($month)
             ->withAge($age)
             ->withHasBirthdayReminder($hasBirthdayReminder)
+            ->withHasDeceasedReminder($hasDeceasedReminder)
             ->withGenders(GendersHelper::getGendersInput());
     }
 
@@ -362,6 +343,22 @@ class ContactsController extends Controller
             $month = $request->get('month');
             $year = $request->get('year');
         }
+        $is_deceased_date_known = false;
+        if ($request->get('is_deceased_date_known') === 'true' && $request->input('deceased_date')) {
+            $is_deceased_date_known = true;
+            $deceased_date = $request->input('deceased_date');
+            $deceased_date = DateHelper::parseDate($deceased_date);
+            $deceased_date_day = $deceased_date->day;
+            $deceased_date_month = $deceased_date->month;
+            $deceased_date_year = $deceased_date->year;
+        } else {
+            $deceased_date_day = $deceased_date_month = $deceased_date_year = null;
+        }
+        if (! empty($request->get('is_deceased'))) {
+            //if the contact has died, disable StayInTouch
+            $contact->updateStayInTouchFrequency(0);
+            $contact->setStayInTouchTriggerDate(0);
+        }
 
         $data = [
             'account_id' => auth()->user()->account->id,
@@ -379,10 +376,10 @@ class ContactsController extends Controller
             'birthdate_age' => $request->get('age'),
             'birthdate_add_reminder' => ! empty($request->get('addReminder')),
             'is_deceased' => ! empty($request->get('is_deceased')),
-            'is_deceased_date_known' => ! empty($request->get('is_deceased_date_known')),
-            'deceased_date_day' => $request->get('deceased_date_day'),
-            'deceased_date_month' => $request->get('deceased_date_month'),
-            'deceased_date_year' => $request->get('deceased_date_year'),
+            'is_deceased_date_known' => $is_deceased_date_known,
+            'deceased_date_day' => $deceased_date_day,
+            'deceased_date_month' => $deceased_date_month,
+            'deceased_date_year' => $deceased_date_year,
             'deceased_date_add_reminder' => ! empty($request->get('add_reminder_deceased')),
         ];
 
@@ -404,8 +401,6 @@ class ContactsController extends Controller
             $contact->avatar_file_name = $request->avatar->storePublicly('avatars', $contact->avatar_location);
             $contact->save();
         }
-
-        dispatch(new ResizeAvatars($contact));
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.information_edit_success'));
@@ -473,36 +468,35 @@ class ContactsController extends Controller
     }
 
     /**
-     * Show the Edit food preferencies view.
+     * Show the Edit food preferences view.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\View\View
      */
-    public function editFoodPreferencies(Request $request, Contact $contact)
+    public function editFoodPreferences(Request $request, Contact $contact)
     {
-        return view('people.food-preferencies.edit')
-            ->withAvatar(AvatarHelper::get($contact, 87))
+        return view('people.food-preferences.edit')
             ->withContact($contact);
     }
 
     /**
-     * Save the food preferencies.
+     * Save the food preferences.
      *
      * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateFoodPreferencies(Request $request, Contact $contact)
+    public function updateFoodPreferences(Request $request, Contact $contact)
     {
         $food = ! empty($request->get('food')) ? $request->get('food') : null;
 
-        $contact->updateFoodPreferencies($food);
+        $contact->updateFoodPreferences($food);
 
         return redirect()->route('people.show', $contact)
-            ->with('success', trans('people.food_preferencies_add_success'));
+            ->with('success', trans('people.food_preferences_add_success'));
     }
 
     /**
@@ -517,7 +511,7 @@ class ContactsController extends Controller
             return;
         }
 
-        $results = SearchHelper::searchContacts($needle, 20, 'created_at');
+        $results = SearchHelper::searchContacts($needle, 20, DBHelper::getTable('contacts').'.`created_at`');
 
         if (count($results) !== 0) {
             return ContactResource::collection($results);
@@ -611,6 +605,78 @@ class ContactsController extends Controller
 
         return [
             'is_active' => $contact->is_active,
+        ];
+    }
+
+    /**
+     * Display the list of contacts.
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function list(Request $request)
+    {
+        $accountId = auth()->user()->account_id;
+
+        $user = $request->user();
+        $sort = $request->get('sort') ?? $user->contacts_sort_order;
+
+        if ($user->contacts_sort_order !== $sort) {
+            $user->updateContactViewPreference($sort);
+        }
+
+        $tags = null;
+        $url = '';
+        $count = 1;
+
+        $contacts = $user->account->contacts()->real();
+
+        // filter out archived contacts if necessary
+        if ($request->get('show_archived') != 'true') {
+            $contacts = $contacts->active();
+        } else {
+            $contacts = $contacts->notActive();
+        }
+
+        // filter out deceased if necessary
+        if ($request->get('show_dead') != 'true') {
+            $contacts = $contacts->alive();
+        }
+
+        if ($request->get('no_tag')) {
+            // get tag less contacts
+            $contacts = $contacts->tags('NONE');
+        } elseif ($request->get('tag1')) {
+            // get contacts with selected tags
+            $tags = collect();
+
+            while ($request->get('tag'.$count)) {
+                $tag = Tag::where('account_id', $accountId)
+                    ->where('name_slug', $request->get('tag'.$count))
+                    ->get();
+
+                if (! ($tags->contains($tag[0]))) {
+                    $tags = $tags->concat($tag);
+                }
+
+                $url = $url.'tag'.$count.'='.$tag[0]->name_slug.'&';
+
+                $count++;
+            }
+            if ($tags->count() > 0) {
+                $contacts = $contacts->tags($tags);
+            }
+        }
+
+        // get the number of contacts per page
+        $perPage = $request->has('perPage') ? $request->get('perPage') : config('monica.number_of_contacts_pagination');
+
+        // search contacts
+        $contacts = $contacts->search($request->get('search') ? $request->get('search') : '', $accountId, $perPage, DBHelper::getTable('contacts').'.`is_starred` desc', null, $sort);
+
+        return [
+            'totalRecords' => $contacts->total(),
+            'contacts' => ContactResource::collection($contacts),
         ];
     }
 }

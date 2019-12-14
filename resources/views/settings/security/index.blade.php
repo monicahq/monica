@@ -46,7 +46,7 @@
             <p>{{ trans('settings.security_help') }}</p>
 
             <form method="POST" action="{{ route('settings.security.passwordChange') }}" class="settings-reset">
-              {{ csrf_field() }}
+              @csrf
 
               <h2>{{ trans('settings.password_change') }}</h2>
 
@@ -82,15 +82,15 @@
               @if (config('webauthn.enable')===true)
                 <webauthn-connector
                   :method="'register-modal'"
-                  :keys="{{ json_encode($webauthnKeys) }}"
-                  :timezone="{{ json_encode(auth()->user()->timezone) }}"
+                  :keys="{{ \Safe\json_encode($webauthnKeys) }}"
+                  :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
                 >
                 @if (config('u2f.enable')===true)
                   <u2f-connector
                     :method="'register-modal'"
-                    :currentkeys="{{ json_encode($currentkeys) }}"
-                    :timezone="{{ json_encode(auth()->user()->timezone) }}"
-                    :enable-register="{{ json_encode(false) }}"
+                    :currentkeys="{{ \Safe\json_encode($currentkeys) }}"
+                    :timezone="{{ \Safe\json_encode(auth()->user()->timezone) }}"
+                    :enable-register="{{ \Safe\json_encode(false) }}"
                   >
                   </u2f-connector>
                 @endif

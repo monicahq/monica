@@ -4,7 +4,6 @@ namespace Tests\Commands;
 
 use Mockery as m;
 use Tests\TestCase;
-use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use Illuminate\Support\Facades\Storage;

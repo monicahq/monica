@@ -70,7 +70,7 @@ class SetupFrontEndTest extends Command
             $this->commandExecutor->artisan('perform fresh migration', 'migrate:fresh');
         }
         $this->info('Create account');
-        $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+        $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
 
         // get first user
         $this->info('Fix first user');

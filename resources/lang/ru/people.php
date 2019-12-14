@@ -15,15 +15,21 @@ return [
     'people_list_firstnameZA' => 'Сортировать по имени Я → А',
     'people_list_lastnameAZ' => 'Сортировать по фамилии А → Я',
     'people_list_lastnameZA' => 'Сортировать по фамилии Я → А',
-    'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
-    'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
-    'people_list_filter_tag' => 'Showing all the contacts tagged with',
+    'people_list_lastactivitydateNewtoOld' => 'Сортировать по дате последней активности (новые сверху)',
+    'people_list_lastactivitydateOldtoNew' => 'Сортировать по дате последней активности (новые снизу)',
+    'people_list_filter_tag' => 'Показываются все контакты помеченные тэгом',
     'people_list_clear_filter' => 'Очистить фильтр',
     'people_list_contacts_per_tags' => ':count контакт|:count контакта|:count контактов',
-    'people_list_show_dead' => 'Show deceased people (:count)',
-    'people_list_hide_dead' => 'Hide deceased people (:count)',
+    'people_list_show_dead' => 'Показать умерших людей (:count)',
+    'people_list_hide_dead' => 'Скрыть умерших людей (:count)',
     'people_search' => 'Поиск по контактам...',
     'people_search_no_results' => 'No results found',
+    'people_search_next' => 'Next',
+    'people_search_prev' => 'Prev',
+    'people_search_rows_per_page' => 'Rows per page:',
+    'people_search_of' => 'of',
+    'people_search_page' => 'Page',
+    'people_search_all' => 'All',
     'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Лимиты контактов: :current/:limit',
     'people_list_account_upgrade_title' => 'Перейдите на другой план чтобы получить больше возможностей.',
@@ -64,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Редактировать контакты',
     'contact_archive' => 'Архивировать контакт',
     'contact_unarchive' => 'Разархивировать контакт',
@@ -113,6 +120,7 @@ return [
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Add another message',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Сообщения',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Conversations',
@@ -133,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => 'Профиль был успешно обновлён',
     'information_edit_title' => 'Редактировать данные :name',
-    'information_edit_avatar' => 'Фото/Аватар контакта',
     'information_edit_max_size' => 'До :size Кб.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Имя',
     'information_edit_lastname' => 'Фамилия (не обяз.)',
     'information_edit_description' => 'Описание (необязательно)',
@@ -153,13 +161,13 @@ return [
     'work_information' => 'Work information',
 
     // food preferences
-    'food_preferencies_add_success' => 'Предпочтения в еде были сохранены',
-    'food_preferencies_edit_description' => 'Возможно у :firstname или кого-то из его(её) семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
-    'food_preferencies_edit_description_no_last_name' => 'Возможно у :firstname или кого-то из её семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
-    'food_preferencies_edit_title' => 'Укажите предпочтения в еде',
-    'food_preferencies_edit_cta' => 'Сохранить предпочтения в еде',
-    'food_preferencies_title' => 'Предпочтения в еде',
-    'food_preferencies_cta' => 'Добавить предпочтения в еде',
+    'food_preferences_add_success' => 'Предпочтения в еде были сохранены',
+    'food_preferences_edit_description' => 'Возможно у :firstname или кого-то из его(её) семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
+    'food_preferences_edit_description_no_last_name' => 'Возможно у :firstname или кого-то из её семьи есть аллергия. Или не любит какой-то определённый продукт. Запишите это и в следующий раз когда вы будете кушать вместе вы вспомните об этом',
+    'food_preferences_edit_title' => 'Укажите предпочтения в еде',
+    'food_preferences_edit_cta' => 'Сохранить предпочтения в еде',
+    'food_preferences_title' => 'Предпочтения в еде',
+    'food_preferences_cta' => 'Добавить предпочтения в еде',
 
     // reminders
     'reminders_blank_title' => 'Есть ли что-то связанное с :name, о чём вы хотите получить напоминание?',
@@ -213,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'У вас пока нет задач.',
     'tasks_form_title' => 'Title',
     'tasks_form_description' => 'Описание (необязательно)',
@@ -457,11 +466,23 @@ return [
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Related photos',
     'photo_list_cta' => 'Upload photo',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
     'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',

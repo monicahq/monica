@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ \App::getLocale() }}" dir="{{ htmldir() }}">
     <head>
         <base href="{{ url('/') }}/" />
         <title>@yield('title')</title>
@@ -35,6 +35,11 @@
             .title {
                 font-size: 72px;
                 margin-bottom: 40px;
+                font-weight: bold;
+            }
+
+            .message {
+                font-weight: bold;
             }
         </style>
     </head>

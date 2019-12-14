@@ -35,7 +35,7 @@
             <h2>{{ trans('people.introductions_title_edit', ['name' => $contact->first_name]) }}</h2>
 
               <form method="POST" action="{{ route('people.introductions.update', $contact) }}">
-                {{ csrf_field() }}
+                @csrf
 
                 @include('partials.errors')
 
@@ -92,10 +92,13 @@
                 </fieldset>
 
                 <fieldset class="form-group" v-if="date_met_the_contact == 'known'">
-                  <label class="form-check-inline real-contact-checkbox" for="addReminder">
-                    <input type="checkbox" class="form-check-input" name="addReminder" id="addReminder">
+                  <form-checkbox
+                    :name="'addReminder'"
+                    :dclass="'form-check form-check-label'"
+                    :iclass="'form-check-input'"
+                  >
                     {{ trans('people.introductions_add_reminder') }}
-                  </label>
+                  </form-checkbox>
                 </fieldset>
 
                 <div class="form-group actions">

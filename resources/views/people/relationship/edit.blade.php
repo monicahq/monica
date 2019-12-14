@@ -86,8 +86,8 @@
         <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">
           <form-select
             :options="{{ $genders }}"
-            :required="true"
-            value="{{ $partner->gender->id }}"
+            :required="false"
+            value="{{ $partner->gender_id }}"
             :title="'{{ trans('people.people_add_gender') }}'"
             :id="'gender_id'">
           </form-select>
@@ -99,18 +99,28 @@
           :days="{{ $days }}"
           :month="{{ $month }}"
           :day="{{ $day }}"
-          :age="'{{ $age }}'"
-          :default-date="'{{ $birthdate }}'"
+          :age="{{ $age ?: 0 }}"
+          :birthdate="'{{ $birthdate }}'"
           :reminder="{{ \Safe\json_encode($hasBirthdayReminder) }}"
           :value="'{{ $birthdayState }}'"
         ></form-specialdate>
 
         <div class="pa4-ns ph3 pv2 bb b--gray-monica">
-          <div class="mb3 mb0-ns">
-            <label class="pa0 ma0 lh-copy pointer" for="realContact">
-              <input type="checkbox" id="realContact" name="realContact"> {{ trans('people.relationship_form_also_create_contact') }} <span class="silver">{{ trans('people.relationship_form_add_description') }}</span>
-            </label>
-          </div>
+          {{-- Real or partial contact (false in this case) --}}
+          <form-checkbox
+            :name="'realContact'"
+            :iclass="'pa0 ma0 lh-copy'"
+            :dclass="'mb3 mb0-ns flex'"
+            value="1"
+            :model-value="false"
+          >
+            <template slot="label">
+              {{ trans('people.relationship_form_also_create_contact') }}
+            </template>
+            <span slot="extra" class="silver">
+              {{ trans('people.relationship_form_add_description') }}
+            </span>
+          </form-checkbox>
         </div>
       @endif
 

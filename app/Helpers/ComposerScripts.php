@@ -2,8 +2,6 @@
 
 namespace App\Helpers;
 
-use function Safe\unlink;
-
 class ComposerScripts
 {
     const CONFIG = 'bootstrap/cache/config.php';
@@ -18,10 +16,14 @@ class ComposerScripts
      */
     public static function preInstall($event)
     {
-        if (file_exists('vendor')) {
-            \Illuminate\Foundation\ComposerScripts::postInstall($event);
+        try {
+            if (file_exists('vendor')) {
+                \Illuminate\Foundation\ComposerScripts::postInstall($event);
+            }
+            static::clear();
+        } catch (\Exception $e) {
+            // catch all
         }
-        static::clear();
     }
 
     /**
@@ -34,10 +36,14 @@ class ComposerScripts
      */
     public static function preUpdate($event)
     {
-        if (file_exists('vendor')) {
-            \Illuminate\Foundation\ComposerScripts::postUpdate($event);
+        try {
+            if (file_exists('vendor')) {
+                \Illuminate\Foundation\ComposerScripts::postUpdate($event);
+            }
+            static::clear();
+        } catch (\Exception $e) {
+            // catch all
         }
-        static::clear();
     }
 
     /**
@@ -46,7 +52,7 @@ class ComposerScripts
     protected static function clear()
     {
         if (file_exists(self::CONFIG)) {
-            unlink(self::CONFIG);
+            \unlink(self::CONFIG);
         }
     }
 }

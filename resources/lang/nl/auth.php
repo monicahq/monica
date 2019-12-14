@@ -26,7 +26,7 @@ return [
     '2fa_one_time_password' => 'Tweestapsverificatiecode',
     '2fa_recuperation_code' => 'Voer een tweestapsverificatiecode in',
     '2fa_otp_help' => 'Open je tweestapsverificatiecode-app en kopieer de code',
-    'u2f_otp_extension' => 'U2F wordt alleen ondersteund door Chrome, <a href="{urlquantum}" lang="en">Firefox Quantum</a> en Opera. Voor oudere Firefox installaties, installeer de <a href="{urlext}">U2F Support Extensie</a>.',
+    'u2f_otp_extension' => 'U2F wordt alleen ondersteund door Chrome, <a href="{urlquantum}" lang="en">Firefox</a> en Opera. Voor oudere Firefox installaties, installeer de <a href="{urlext}">U2F Support Extensie</a>.',
 
     'login_to_account' => 'Aanmelden op uw account',
     'login_with_recovery' => 'Inloggen met een herstelcode',

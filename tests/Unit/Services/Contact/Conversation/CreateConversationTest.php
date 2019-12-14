@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -27,7 +26,7 @@ class CreateConversationTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
             'contact_field_type_id' => $contactFieldType->id,
         ];
 
@@ -52,7 +51,7 @@ class CreateConversationTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);
@@ -71,7 +70,7 @@ class CreateConversationTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $account->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
             'contact_field_type_id' => $contactFieldType->id,
         ];
 
@@ -88,7 +87,7 @@ class CreateConversationTest extends TestCase
         $request = [
             'contact_id' => $contact->id,
             'account_id' => $contact->account->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
             'contact_field_type_id' => $contactFieldType->id,
         ];
 

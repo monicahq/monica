@@ -51,7 +51,7 @@
                         {{ $document->original_filename }} ({{ round($document->filesize / 1000) }} Kb)
                     </div>
                     <div class="table-cell">
-                        <a href="people/{{ $document->contact->hashID() }}">{{ $document->contact->name }}</a>
+                        {{ $document->contact->name }}
                     </div>
                   </li>
                 @endforeach
@@ -64,7 +64,7 @@
                         {{ $photo->original_filename }} ({{ round($photo->filesize / 1000) }} Kb)
                     </div>
                     <div class="table-cell">
-                        <a href="people/{{ $photo->contact()->hashID() }}">{{ $photo->contact()->name }}</a>
+                        {{ $photo->contact() ? $photo->contact()->name : '' }}
                     </div>
                   </li>
                 @endforeach

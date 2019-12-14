@@ -16,37 +16,37 @@
 
             @include ('partials.errors')
 
-            <form action="{{ route('invitations.accept', $key) }}" method="post">
-              {{ csrf_field() }}
+            <form action="{{ route('invitations.send', $key) }}" method="post">
+              @csrf
 
               <div class="form-group">
                 <label for="email">{{ trans('auth.register_email') }}</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="{{ trans('auth.register_email_example') }}" value="{{ old('email') }}" required>
+                <input type="email" class="form-control" id="email" name="email" placeholder="{{ trans('auth.register_email_example') }}" value="{{ $email ?? old('email') }}" required autocomplete="email" autofocus>
               </div>
 
               <div class="row">
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="first_name">{{ trans('auth.register_firstname') }}</label>
-                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ trans('auth.register_firstname_example') }}" value="{{ old('first_name') }}"  required>
+                    <input type="text" class="form-control" id="first_name" name="first_name" placeholder="{{ trans('auth.register_firstname_example') }}" value="{{ old('first_name') }}" required autocomplete="first_name">
                   </div>
                 </div>
                 <div class="col-12 col-sm-6">
                   <div class="form-group">
                     <label for="last_name">{{ trans('auth.register_lastname') }}</label>
-                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ trans('auth.register_lastname_example') }}" value="{{ old('last_name') }}" required>
+                    <input type="text" class="form-control" id="last_name" name="last_name" placeholder="{{ trans('auth.register_lastname_example') }}" value="{{ old('last_name') }}" required autocomplete="last_name">
                   </div>
                 </div>
               </div>
 
               <div class="form-group">
                 <label for="password">{{ trans('auth.register_password') }}</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="{{ trans('auth.register_password_example') }}" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="{{ trans('auth.register_password_example') }}" required autocomplete="password">
               </div>
 
               <div class="form-group">
                 <label for="password_confirmation">{{ trans('auth.register_password_confirmation') }}</label>
-                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required>
+                <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required autocomplete="password">
               </div>
 
               <div class="form-group">
@@ -54,14 +54,18 @@
                 <input type="email" class="form-control" id="email_security" name="email_security" required>
               </div>
 
+              <!-- Policy acceptance check -->
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" id="policy" name="policy" type="checkbox" value="policy" required>
+                  {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'urlterm' => 'https://monicahq.com/terms', 'hreflang' => 'en', ]) !!}
+                </label>
+              </div>
+
               <div class="form-group actions">
                 <button type="submit" class="btn btn-primary">{{ trans('auth.register_action') }}</button>
               </div>
-
-              <div class="help">
-                  {!! trans('auth.register_policy', ['url' => 'https://monicahq.com/privacy', 'hreflang' => 'en']) !!}
-              </div>
-
+  
             </form>
           </div>
         </div>

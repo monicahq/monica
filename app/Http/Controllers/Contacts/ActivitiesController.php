@@ -198,7 +198,7 @@ class ActivitiesController extends Controller
         $endDate = Carbon::create($year, 12, 31);
 
         $activitiesLastTwelveMonths = $this->activityStatisticService
-                        ->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(12), Carbon::now())
+                        ->activitiesWithContactInTimeRange($contact, now()->subMonths(12), now())
                         ->count();
 
         $uniqueActivityTypes = $this->activityStatisticService

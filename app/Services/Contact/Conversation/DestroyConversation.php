@@ -21,7 +21,7 @@ class DestroyConversation extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'conversation_id' => 'required|integer',
+            'conversation_id' => 'required|integer|exists:conversations,id',
         ];
     }
 

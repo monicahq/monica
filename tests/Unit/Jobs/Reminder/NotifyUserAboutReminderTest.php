@@ -10,7 +10,6 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Reminder;
 use App\Notifications\UserNotified;
 use App\Notifications\UserReminded;
-use Illuminate\Support\Facades\Event;
 use App\Models\Contact\ReminderOutbox;
 use Illuminate\Support\Facades\Notification;
 use App\Jobs\Reminder\NotifyUserAboutReminder;

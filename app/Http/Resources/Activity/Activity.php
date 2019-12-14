@@ -29,6 +29,7 @@ class Activity extends Resource
                 'contacts' => $this->getContactsForAPI(),
             ],
             'emotions' => EmotionResource::collection($this->emotions),
+            'url' => route('api.activity', $this->id),
             'account' => [
                 'id' => $this->account->id,
             ],

@@ -24,6 +24,12 @@ return [
     'people_list_hide_dead' => 'Hide deceased people (:count)',
     'people_search' => 'Procurar nos seus contactos...',
     'people_search_no_results' => 'No results found',
+    'people_search_next' => 'Next',
+    'people_search_prev' => 'Prev',
+    'people_search_rows_per_page' => 'Rows per page:',
+    'people_search_of' => 'of',
+    'people_search_page' => 'Page',
+    'people_search_all' => 'All',
     'people_add_new' => 'Add new person',
     'people_list_account_usage' => 'Consumo da sua conta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Upgrade your account to unlock it to its full potential.',
@@ -64,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'List of archived contacts',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Editar informação do contato',
     'contact_archive' => 'Archive contact',
     'contact_unarchive' => 'Unarchive contact',
@@ -113,6 +120,7 @@ return [
     'conversation_add_content' => 'Write down what was said',
     'conversation_add_what_was_said' => 'What did you say?',
     'conversation_add_another' => 'Add another message',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Messages',
     'conversation_list_table_content' => 'Partial content (last message)',
     'conversation_list_title' => 'Conversations',
@@ -133,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => 'O perfil foi atualizado com sucesso',
     'information_edit_title' => 'Editar informações pessoais para :name',
-    'information_edit_avatar' => 'Foto/avatar do contacto',
     'information_edit_max_size' => 'Max :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Primeiro nome',
     'information_edit_lastname' => 'Sobrenome (Opcional)',
     'information_edit_description' => 'Description (Optional)',
@@ -153,13 +161,13 @@ return [
     'work_information' => 'Work information',
 
     // food preferences
-    'food_preferencies_add_success' => 'As preferências de alimentos foram salvas',
-    'food_preferencies_edit_description' => 'Talvez :firstname ou alguém na família de :family tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
-    'food_preferencies_edit_description_no_last_name' => 'Talvez :firstname tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
-    'food_preferencies_edit_title' => 'Indique preferências de alimentos',
-    'food_preferencies_edit_cta' => 'Guardar preferências de alimentos',
-    'food_preferencies_title' => 'Preferências alimentares',
-    'food_preferencies_cta' => 'Adicione preferências de alimentos',
+    'food_preferences_add_success' => 'As preferências de alimentos foram salvas',
+    'food_preferences_edit_description' => 'Talvez :firstname ou alguém na família de :family tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
+    'food_preferences_edit_description_no_last_name' => 'Talvez :firstname tenha uma alergia. Ou não gosta de uma garrafa específica de vinho. Indique-os aqui para que você lembre-se da próxima vez que você os convide para o jantar',
+    'food_preferences_edit_title' => 'Indique preferências de alimentos',
+    'food_preferences_edit_cta' => 'Guardar preferências de alimentos',
+    'food_preferences_title' => 'Preferências alimentares',
+    'food_preferences_cta' => 'Adicione preferências de alimentos',
 
     // reminders
     'reminders_blank_title' => 'Há algo sobre o qual você quer se lembrar :name?',
@@ -213,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'You don’t have any tasks yet.',
     'tasks_form_title' => 'Título',
     'tasks_form_description' => 'Description (optional)',
@@ -457,11 +466,23 @@ return [
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Related photos',
     'photo_list_cta' => 'Upload photo',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',
     'photo_upload_zone_cta' => 'Upload a photo',
+    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Delete photo',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'This made you feel…',

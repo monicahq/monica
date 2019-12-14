@@ -31,12 +31,12 @@ class ActivityStatisticServiceTest extends TestCase
 
         $this->assertCount(
             3,
-            $service->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now())
+            $service->activitiesWithContactInTimeRange($contact, now()->subMonths(2), now())
         );
 
         $this->assertInstanceOf(
             Activity::class,
-            $service->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now())[1]
+            $service->activitiesWithContactInTimeRange($contact, now()->subMonths(2), now())[1]
         );
     }
 
@@ -55,7 +55,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         $this->assertCount(
             0,
-            $service->activitiesWithContactInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now())
+            $service->activitiesWithContactInTimeRange($contact, now()->subMonths(2), now())
         );
     }
 
@@ -94,7 +94,7 @@ class ActivityStatisticServiceTest extends TestCase
         $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
 
         // here we should have 2 uniques activity types, one with 3 and the other with 1 occurence
-        $response = $service->uniqueActivityTypesInTimeRange($contact, Carbon::now()->subMonths(2), Carbon::now());
+        $response = $service->uniqueActivityTypesInTimeRange($contact, now()->subMonths(2), now());
 
         $this->assertCount(
             2,
@@ -149,14 +149,14 @@ class ActivityStatisticServiceTest extends TestCase
         $activityStatistic = $contact->activityStatistics()->make();
         $activityStatistic->account_id = $contact->account_id;
         $activityStatistic->contact_id = $contact->id;
-        $activityStatistic->year = Carbon::now()->year;
+        $activityStatistic->year = now()->year;
         $activityStatistic->count = 6;
         $activityStatistic->save();
 
         $activityStatistic = $contact->activityStatistics()->make();
         $activityStatistic->account_id = $contact->account_id;
         $activityStatistic->contact_id = $contact->id;
-        $activityStatistic->year = Carbon::now()->subYears(2)->year;
+        $activityStatistic->year = now()->subYears(2)->year;
         $activityStatistic->count = 3;
         $activityStatistic->save();
 

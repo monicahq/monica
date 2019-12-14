@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-      <form action="validate2fa" method="post">
+      <form action="{{ session('oauth') ? route('oauth.validate2fa') : route('validate2fa') }}" method="post">
       
         <div class="row">
           <div class="col-12 col-md-6 offset-md-3 offset-md-3-right">
@@ -22,7 +22,7 @@
               <h3>{{ trans('auth.mfa_auth_webauthn') }}</h3>
               <webauthn-connector
                 :method="'login'"
-                :public-key="{{ json_encode($publicKey) }}"
+                :public-key="{{ \Safe\json_encode($publicKey) }}"
               >
               </webauthn-connector>
 

@@ -5,6 +5,7 @@ namespace App\Services\Contact\Contact;
 use Illuminate\Support\Arr;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
+use App\Jobs\Avatars\GenerateDefaultAvatar;
 
 class UpdateContact extends BaseService
 {
@@ -60,8 +61,6 @@ class UpdateContact extends BaseService
 
         $this->updateDeceasedInformation($data, $contact);
 
-        $contact->updateGravatar();
-
         // we query the DB again to fill the object with all the new properties
         $contact->refresh();
 
@@ -97,7 +96,14 @@ class UpdateContact extends BaseService
             ]
         );
 
+        $oldName = $contact->name;
+
         $contact->update($dataOnly);
+
+        // only update the avatar if the name has changed
+        if ($oldName != $contact->name) {
+            GenerateDefaultAvatar::dispatch($contact);
+        }
     }
 
     /**

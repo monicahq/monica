@@ -2,7 +2,7 @@
 
 <img alt="Logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Debian-OpenLogo.svg/109px-Debian-OpenLogo.svg.png" width="96" height="127" />
 
-Monica can run on Debian Stretch.
+Monica can run on Debian Buster.
 
 ## Prerequisites
 
@@ -14,13 +14,6 @@ Monica depends on the following:
 * [Composer](https://getcomposer.org/)
 * MySQL / MariaDB
 
-
-**Utils:** Intall these required utilities software:
-
-```sh
-sudo apt update
-sudo apt install -y curl unzip
-```
 An editor like vim or nano should be useful too.
 
 **Apache:** Install Apache with:
@@ -33,42 +26,27 @@ sudo apt install -y apache2
 **Git:** Install Git with:
 
 ```sh
-sudo apt update
 sudo apt install -y git
 ```
 
-**PHP 7.2+:** 
+**PHP:** 
 
-If it's not alread done, add php repository:
-```sh
-sudo apt install -y gnupg2 apt-transport-https apt-transport-https lsb-release ca-certificates
-sudo curl -s https://packages.sury.org/php/apt.gpg -o /etc/apt/trusted.gpg.d/php.gpg 
-echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
-```
-
-Install php 7.2 with these extensions:
+Install PHP 7.3 with these extensions:
 
 ```sh
-sudo apt update
-sudo apt install -y php7.2 php7.2-cli php7.2-common php7.2-fpm \
-    php7.2-json php7.2-opcache php7.2-mysql php7.2-mbstring php7.2-zip \
-    php7.2-bcmath php7.2-intl php7.2-xml php7.2-curl php7.2-gd php7.2-gmp
+sudo apt install -y php php-bcmath php-gd php-gmp php-curl php-intl \
+    php-mbstring php-mysql php-xml php-zip
 ```
 
-**Composer:** After you're done installing PHP, you'll need the [Composer](https://getcomposer.org/download/) dependency manager.
+**Composer:** After you're done installing PHP, you'll need the Composer dependency manager.
 
 ```sh
-cd /tmp
-curl -s https://getcomposer.org/installer -o composer-setup.php
-sudo php composer-setup.php --install-dir=/usr/local/bin/ --filename=composer
-rm -f composer-setup.php
+sudo apt install -y composer
 ```
-(or you can follow instruction on [getcomposer.org](https://getcomposer.org/download/) page)
 
 **MariaDB:** Install MariaDB. Note that this only installs the package, but does not setup Mysql. This is done later in the instructions:
 
 ```sh
-sudo apt update
 sudo apt install -y mariadb-server
 ```
 
@@ -130,7 +108,7 @@ exit
 `cd /var/www/monica` then run these steps with `sudo`:
 
 1. `cp .env.example .env` to create your own version of all the environment variables needed for the project to work.
-1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind.
+1. Update `.env` to your specific needs. Don't forget to set `DB_USERNAME` and `DB_PASSWORD` with the settings used behind. You'll need to configure a [mailserver](/docs/installation/mail.md) for registration & reminders to work correctly.
 1. Run `composer install --no-interaction --no-suggest --no-dev` to install all packages.
 1. Run `php artisan key:generate` to generate an application key. This will set `APP_KEY` with the right value automatically.
 1. Run `php artisan setup:production -v` to run the migrations, seed the database and symlink folders.
@@ -143,9 +121,14 @@ Monica requires some background processes to continuously run. The list of thing
 Basically those crons are needed to send reminder emails and check if a new version is available.
 To do this, setup a cron that runs every minute that triggers the following command `php artisan schedule:run`.
 
-Create a new `/etc/cron.d/monica` file with:
+Run the crontab command:
 ```sh
-echo "* * * * * sudo -u www-data php /var/www/monica/artisan schedule:run" | sudo tee /etc/cron.d/monica
+crontab -u www-data -e
+```
+
+Then, in the `crontab` editor window you just opened, paste the following at the end of the document:
+```sh
+* * * * * php /var/www/monica/artisan schedule:run
 ```
 
 ### 5. Configure Apache webserver
@@ -188,17 +171,12 @@ Then, in the `nano` text editor window you just opened, copy the following - swa
 </VirtualHost>
 ```
 
-4. Apply the new `.conf` file and restart Apache. You can do that by running:
+4. Apply the new `.conf` file and reload Apache. You can do that by running:
 
 ```sh
 sudo a2dissite 000-default.conf
 sudo a2ensite monica.conf
-
-# Enable php7.2 fpm, and restart apache
-sudo a2enmod proxy_fcgi setenvif
-sudo a2enconf php7.2-fpm
-sudo service php7.2-fpm restart
-sudo service apache2 restart
+sudo systemctl reload apache2
 ```
 
 

@@ -24,6 +24,12 @@ return [
     'people_list_hide_dead' => 'Nascondi persone decedute (:count)',
     'people_search' => 'Cerca nei tuoi contatti...',
     'people_search_no_results' => 'Nessun risultato trovato',
+    'people_search_next' => 'Successivo',
+    'people_search_prev' => 'Precedente',
+    'people_search_rows_per_page' => 'Righe per pagina:',
+    'people_search_of' => 'di',
+    'people_search_page' => 'Pagina',
+    'people_search_all' => 'Tutto',
     'people_add_new' => 'Aggiungi una persona',
     'people_list_account_usage' => 'Utilizzo account: :current/:limit contatti',
     'people_list_account_upgrade_title' => 'Effettua l\'upgrade del tuo account per poter usufruire delle sue piene funzionalitá.',
@@ -64,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'Lista di contatti archiviati',
 
     // Header
+    'me' => 'Questo sei tu',
     'edit_contact_information' => 'Modifica informazioni del contatto',
     'contact_archive' => 'Archivia contatto',
     'contact_unarchive' => 'Ripristina contatto',
@@ -113,6 +120,7 @@ return [
     'conversation_add_content' => 'Scrivi cos\'è stato detto',
     'conversation_add_what_was_said' => 'Che cosa hai detto?',
     'conversation_add_another' => 'Aggiungi un altro messaggio',
+    'conversation_add_error' => 'Devi aggiungere almeno un messaggio.',
     'conversation_list_table_messages' => 'Messaggi',
     'conversation_list_table_content' => 'Contenuto parziale (ultimo messaggio)',
     'conversation_list_title' => 'Conversazioni',
@@ -133,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => 'Il profilo è stato aggiornato',
     'information_edit_title' => 'Modifica le informazioni personali di :name',
-    'information_edit_avatar' => 'Foto/avatar del contatto',
     'information_edit_max_size' => 'Massimo :size Kb.',
+    'information_edit_max_size2' => 'Massimo {size} Kb.',
     'information_edit_firstname' => 'Nome',
     'information_edit_lastname' => 'Cognome (facoltativo)',
     'information_edit_description' => 'Descrizione (facoltativo)',
@@ -153,13 +161,13 @@ return [
     'work_information' => 'Informazioni professionali',
 
     // food preferences
-    'food_preferencies_add_success' => 'Le preferenze alimentari sono state salvate',
-    'food_preferencies_edit_description' => 'Magari :firstname o qualcuno nella famiglia :family ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
-    'food_preferencies_edit_description_no_last_name' => 'Magari :firstname ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
-    'food_preferencies_edit_title' => 'Indica le preferenze alimentari',
-    'food_preferencies_edit_cta' => 'Salva preferenze alimentari',
-    'food_preferencies_title' => 'Preferenze alimentari',
-    'food_preferencies_cta' => 'Aggiunti preferenze alimentari',
+    'food_preferences_add_success' => 'Le preferenze alimentari sono state salvate',
+    'food_preferences_edit_description' => 'Magari :firstname o qualcuno nella famiglia :family ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
+    'food_preferences_edit_description_no_last_name' => 'Magari :firstname ha un\'allergia. O non gli piace un certo vino. Indica queste cose qui così da ricordarle la prossima volta che li inviti a cena',
+    'food_preferences_edit_title' => 'Indica le preferenze alimentari',
+    'food_preferences_edit_cta' => 'Salva preferenze alimentari',
+    'food_preferences_title' => 'Preferenze alimentari',
+    'food_preferences_cta' => 'Aggiunti preferenze alimentari',
 
     // reminders
     'reminders_blank_title' => 'C\'è qualcosa di cui ti vuoi ricordare riguardo a :name?',
@@ -213,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relazione è stata eliminata.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Nulla da fare.',
     'tasks_form_title' => 'Titolo',
     'tasks_form_description' => 'Descrizione (facoltativa)',
@@ -390,7 +399,7 @@ return [
     'life_event_list_tab_life_events' => 'Eventi della vita',
     'life_event_list_tab_other' => 'Note, promemoria, ...',
     'life_event_list_title' => 'Eventi della vita',
-    'life_event_blank' => 'Memorizza gli eventi importanti della vita di {name} per riferimento futuro',
+    'life_event_blank' => 'Memorizza gli eventi importanti della vita di {name} per riferimento futuro.',
     'life_event_list_cta' => 'Aggiungi evento',
     'life_event_create_category' => 'Tutte le categorie',
     'life_event_create_life_event' => 'Aggiungi evento',
@@ -402,7 +411,7 @@ return [
     'life_event_create_success' => 'Evento aggiunto',
     'life_event_delete_title' => 'Elimina un evento',
     'life_event_delete_description' => 'Sei sicuro di eliminare questo evento? Non si può annullare.',
-    'life_event_delete_success' => 'Evento eliminato con successo.',
+    'life_event_delete_success' => 'Evento eliminato con successo',
     'life_event_date_it_happened' => 'Data di avvenimento',
     'life_event_sentence_new_job' => 'Inizio di un nuovo lavoro',
     'life_event_sentence_retirement' => 'Pensionamento',
@@ -435,7 +444,7 @@ return [
     'life_event_sentence_broken_bone' => 'Rotto un osso',
     'life_event_sentence_removed_braces' => 'Levato l\'apparecchio',
     'life_event_sentence_surgery' => 'Subito un intervento',
-    'life_event_sentence_dentist' => 'Andato dal denstista',
+    'life_event_sentence_dentist' => 'Andato dal dentista',
     'life_event_sentence_new_sport' => 'Iniziato uno sport',
     'life_event_sentence_new_hobby' => 'Iniziato un hobby',
     'life_event_sentence_new_instrument' => 'Imparato un nuovo strumento',
@@ -451,18 +460,30 @@ return [
     // documents
     'document_list_title' => 'Documenti',
     'document_list_cta' => 'Carica documento',
-    'document_list_blank_desc' => 'Qui puoi salvre documenti relativi a questa persona.',
+    'document_list_blank_desc' => 'Qui puoi archiviare documenti relativi a questa persona.',
     'document_upload_zone_cta' => 'Carica un file',
     'document_upload_zone_progress' => 'Caricamento in corso...',
     'document_upload_zone_error' => 'Si è verificato un errore. Per favore, riprova a caricare il documento.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Foto',
     'photo_list_cta' => 'Carica foto',
     'photo_list_blank_desc' => 'Qui puoi salvare foto relative a questa persona, caricane una adesso!',
     'photo_upload_zone_cta' => 'Carica una foto',
+    'photo_current_profile_pic' => 'Attuale immagine del profilo',
+    'photo_make_profile_pic' => 'Rendi questa foto immagine del profilo',
     'photo_delete' => 'Elimina foto',
 
+    // Avatars
+    'avatar_change_title' => 'Cambia il tuo avatar',
+    'avatar_question' => 'Quale account preferisci usare?',
+    'avatar_default_avatar' => 'Avatar predefinito',
+    'avatar_adorable_avatar' => 'L\'avatar adorabile',
+    'avatar_gravatar' => 'Il Gravatar associato all\'indirizzo email di questa persona. <a href="https://gravatar.com/">Gravatar</a> è un sistema globale che permette agli utenti di associare indirizzi email con foto.',
+    'avatar_current' => 'Mantieni l\'avatar attuale',
+    'avatar_photo' => 'Da una foto che carichi',
+
     // emotions
-    'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire.',
+    'emotion_this_made_me_feel' => 'Questo mi ha fatto sentire…',
 ];

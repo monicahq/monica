@@ -49,7 +49,7 @@ class FakeContentTableSeeder extends Seeder
             $userId = User::where('email', 'admin@admin.com')->value('id');
             $this->account = Account::where('id', $userId)->first();
         } else {
-            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin');
+            $this->account = Account::createDefault('John', 'Doe', 'admin@admin.com', 'admin0');
 
             // set default admin account to confirmed
             $adminUser = $this->account->users()->first();
@@ -84,17 +84,6 @@ class FakeContentTableSeeder extends Seeder
                 'is_deceased_date_known' => false,
             ]);
 
-            $this->contact->setAvatarColor();
-            $this->contact->save();
-
-            // set an external avatar
-            if (rand(1, 2) == 1) {
-                $this->contact->has_avatar = true;
-                $this->contact->avatar_location = 'external';
-                $this->contact->avatar_external_url = $arrayPictures->results[$i]->picture->large;
-                $this->contact->save();
-            }
-
             $this->populateTags();
             $this->populateFoodPreferences();
             $this->populateDeceasedDate();
@@ -124,7 +113,7 @@ class FakeContentTableSeeder extends Seeder
 
         // create the second test, blank account
         if (! User::where('email', 'blank@blank.com')->exists()) {
-            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank0');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
         }
@@ -147,9 +136,9 @@ class FakeContentTableSeeder extends Seeder
 
     public function populateFoodPreferences()
     {
-        // add food preferencies
+        // add food preferences
         if (rand(1, 2) == 1) {
-            $this->contact->food_preferencies = $this->faker->realText();
+            $this->contact->food_preferences = $this->faker->realText();
             $this->contact->save();
         }
     }
@@ -251,10 +240,6 @@ class FakeContentTableSeeder extends Seeder
                     'is_deceased_date_known' => false,
                 ]);
 
-                $relatedContact->setAvatarColor();
-                $relatedContact->save();
-
-                // birthdate
                 $relatedContactBirthDate = $this->faker->dateTimeThisCentury();
                 app(UpdateBirthdayInformation::class)->execute([
                     'account_id' => $this->contact->account_id,

@@ -1,9 +1,9 @@
-This document is aimed at the people deploying Monica on https://monichaq.com, and does not apply to the people installing Monica for their own use.
+This document is aimed at the people deploying Monica on https://monicahq.com, and does not apply to the people installing Monica for their own use.
 
 ## Before deploying a new version
 
 * Make sure `config/monica.php` contains the number of the new release you are about to create.
-* Update `CHANGELOG` accordingly.
+* Update `CHANGELOG.md` accordingly.
 * Create a new release on https://version.monicahq.com with the release notes.
 * Create a new release on https://github.com/monicahq/monica/releases, which will also automatically create a new tag.
 * Write the release note with the tool hosted on https://monicahq.com/login

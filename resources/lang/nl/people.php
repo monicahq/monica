@@ -24,6 +24,12 @@ return [
     'people_list_hide_dead' => 'Verberg overleden personen (:count)',
     'people_search' => 'Zoek in je contacten...',
     'people_search_no_results' => 'Geen resultaten gevonden',
+    'people_search_next' => 'Volgende',
+    'people_search_prev' => 'Vorige',
+    'people_search_rows_per_page' => 'Rijen per pagina:',
+    'people_search_of' => 'van',
+    'people_search_page' => 'Pagina',
+    'people_search_all' => 'All',
     'people_add_new' => 'Voeg nieuw persoon toe',
     'people_list_account_usage' => 'Je huidige gebruik: :current/:limit contacten',
     'people_list_account_upgrade_title' => 'Upgrade je account om alle functies te kunnen gebruiken.',
@@ -64,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'Lijst van gearchiveerde contacten',
 
     // Header
+    'me' => 'Dit ben jij',
     'edit_contact_information' => 'Bewerk contactinformatie',
     'contact_archive' => 'Archiveer contact',
     'contact_unarchive' => 'Dearchiveer contact',
@@ -113,8 +120,9 @@ return [
     'conversation_add_content' => 'Schrijf hier wat er is gezegd',
     'conversation_add_what_was_said' => 'Wat was de gespreksinhoud?',
     'conversation_add_another' => 'Nog een bericht toevoegen',
+    'conversation_add_error' => 'Je moet tenminste één bericht toevoegen.',
     'conversation_list_table_messages' => 'Berichten',
-    'conversation_list_table_content' => 'Gedeeltelijke inhoud(laatste bericht)',
+    'conversation_list_table_content' => 'Gedeeltelijke inhoud (laatste bericht)',
     'conversation_list_title' => 'Gesprekken',
     'conversation_list_cta' => 'Gesprek toevoegen',
 
@@ -133,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => 'Het profiel is succesvol bijgewerkt',
     'information_edit_title' => 'Bewerk :name\'s persoonlijke informatie',
-    'information_edit_avatar' => 'Foto/avatar van het contact',
     'information_edit_max_size' => 'Maximaal :size Kb.',
+    'information_edit_max_size2' => 'Maximaal {size} Kb.',
     'information_edit_firstname' => 'Voornaam',
     'information_edit_lastname' => 'Achternaam (optioneel)',
     'information_edit_description' => 'Beschrijving (optioneel)',
@@ -153,13 +161,13 @@ return [
     'work_information' => 'Werk informatie',
 
     // food preferences
-    'food_preferencies_add_success' => 'Voedsel voorkeuren zijn opgeslagen',
-    'food_preferencies_edit_description' => 'Misschien heeft :firstname of iemand in de :familiy\'s familie een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
-    'food_preferencies_edit_description_no_last_name' => 'Misschien heeft :firstname een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
-    'food_preferencies_edit_title' => 'Voedselvoorkeuren',
-    'food_preferencies_edit_cta' => 'Bewaar voedselvoorkeuren',
-    'food_preferencies_title' => 'Voedselvoorkeuren',
-    'food_preferencies_cta' => 'Voeg voedsel voorkeur toe',
+    'food_preferences_add_success' => 'Voedsel voorkeuren zijn opgeslagen',
+    'food_preferences_edit_description' => 'Misschien heeft :firstname of iemand in de :familiy\'s familie een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
+    'food_preferences_edit_description_no_last_name' => 'Misschien heeft :firstname een allergie. Of houdt niet van een specifieke fles wijn. Vul dat hier in zodat je er bij een volgend diner aan denkt',
+    'food_preferences_edit_title' => 'Voedselvoorkeuren',
+    'food_preferences_edit_cta' => 'Bewaar voedselvoorkeuren',
+    'food_preferences_title' => 'Voedselvoorkeuren',
+    'food_preferences_cta' => 'Voeg voedsel voorkeur toe',
 
     // reminders
     'reminders_blank_title' => 'Is er iets over :name waar je aan herinnert wilt worden?',
@@ -213,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'De relatie is verwijdert.',
 
     // tasks
+    'tasks_title' => 'Taken',
     'tasks_blank_title' => 'Je hebt nog geen taken.',
     'tasks_form_title' => 'Titel',
     'tasks_form_description' => 'Beschrijving (optioneel)',
@@ -457,11 +466,23 @@ return [
     'document_upload_zone_error' => 'Er is een fout opgetreden tijdens uploaden van het document, probeer het a.u.b. opnieuw.',
 
     // Photos
+    'photo_title' => 'Foto\'s',
     'photo_list_title' => 'Gerelateerde foto\'s',
     'photo_list_cta' => 'Foto uploaden',
     'photo_list_blank_desc' => 'Je kan afbeeldingen van dit contact opslaan. Upload er nu eentje!',
     'photo_upload_zone_cta' => 'Upload een foto',
+    'photo_current_profile_pic' => 'Huidige profielfoto',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Foto verwijderen',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Welke avatar wil je gebruiken?',
+    'avatar_default_avatar' => 'De standaard-avatar',
+    'avatar_adorable_avatar' => 'De Schattige avatar',
+    'avatar_gravatar' => 'The Gravatar dat geassocieerd is met dit contact. <a href="https://gravatar.com/">Gravatar</a> is een wereldwijd systeem dat gebruikers hun emailadres laat associëren met hun foto\'s.',
+    'avatar_current' => 'Huidige avatar houden',
+    'avatar_photo' => 'Van een foto die je upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'Je voelde je…',

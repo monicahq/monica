@@ -12,7 +12,7 @@ class ImportsRequest extends AuthorizedRequest
     public function rules()
     {
         return [
-            'vcard' => 'required|max:'.config('monica.max_upload_size').'|mimes:vcf,vcard',
+            'vcard' => 'required|file|max:'.config('monica.max_upload_size').'|mimes:vcf,vcard',
         ];
     }
 }

@@ -10,12 +10,24 @@ use App\Models\Settings\Term;
 use App\Models\Account\Account;
 use App\Models\Contact\Reminder;
 use App\Models\Settings\Currency;
+use App\Services\User\CreateUser;
 use Illuminate\Support\Facades\App;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class UserTest extends TestCase
 {
     use DatabaseTransactions;
+
+    private function createUser($account_id, $first_name, $last_name, $email, $password)
+    {
+        return app(CreateUser::class)->execute([
+            'account_id' => $account_id,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'password' => $password,
+        ]);
+    }
 
     public function test_it_belongs_to_account()
     {
@@ -319,7 +331,7 @@ class UserTest extends TestCase
         App::setLocale('en');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'USD')->first();
 
         $this->assertDatabaseHas('users', [
@@ -340,7 +352,7 @@ class UserTest extends TestCase
         App::setLocale('fr');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
@@ -361,7 +373,7 @@ class UserTest extends TestCase
         App::setLocale('cs');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'CZK')->first();
 
         $this->assertDatabaseHas('users', [
@@ -382,7 +394,7 @@ class UserTest extends TestCase
         App::setLocale('de');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
@@ -403,7 +415,7 @@ class UserTest extends TestCase
         App::setLocale('es');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
@@ -424,7 +436,7 @@ class UserTest extends TestCase
         App::setLocale('he');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'ILS')->first();
 
         $this->assertDatabaseHas('users', [
@@ -445,7 +457,7 @@ class UserTest extends TestCase
         App::setLocale('it');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
@@ -466,7 +478,7 @@ class UserTest extends TestCase
         App::setLocale('nl');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
@@ -487,7 +499,7 @@ class UserTest extends TestCase
         App::setLocale('pt');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'EUR')->first();
 
         $this->assertDatabaseHas('users', [
@@ -508,7 +520,7 @@ class UserTest extends TestCase
         App::setLocale('ru');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'RUB')->first();
 
         $this->assertDatabaseHas('users', [
@@ -529,7 +541,7 @@ class UserTest extends TestCase
         App::setLocale('zh');
 
         $account = factory(Account::class)->create([]);
-        $user = User::createDefault($account->id, 'John', 'Doe', 'john@doe.com', 'password');
+        $user = $this->createUser($account->id, 'John', 'Doe', 'john@doe.com', 'password');
         $currency = Currency::where('iso', 'CNY')->first();
 
         $this->assertDatabaseHas('users', [

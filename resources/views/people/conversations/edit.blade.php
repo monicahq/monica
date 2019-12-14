@@ -11,8 +11,8 @@
       <h3 class="f3 fw5">{{ trans('people.conversation_edit_title') }}</h3>
       <p><a href="#" onclick="if (confirm('{{ trans('people.conversation_edit_delete') }}')) { $('#conversation-delete-form').submit(); } return false;" class="w-auto-ns w-100 mb2 pb0-ns">{{ trans('people.conversation_delete_link') }}</a></p>
       <form method="POST" action="{{ route('people.conversations.destroy', [$contact, $conversation]) }}" id="conversation-delete-form" class="hidden">
-        {{ method_field('DELETE') }}
-        {{ csrf_field() }}
+        @method('DELETE')
+        @csrf
       </form>
     </div>
   </div>
@@ -29,7 +29,7 @@
 
     <form action="{{ route('people.conversations.update', [$contact, $conversation]) }}" method="POST" enctype="multipart/form-data">
       @method('PUT')
-      {{ csrf_field() }}
+      @csrf
 
       {{-- When did it take place --}}
       <div class="pa4-ns ph3 pv2 mb3 mb0-ns bb b--gray-monica">

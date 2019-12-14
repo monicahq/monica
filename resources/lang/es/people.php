@@ -24,7 +24,13 @@ return [
     'people_list_hide_dead' => 'Ocultar fallecidos (:count)',
     'people_search' => 'Buscar en tus contactos...',
     'people_search_no_results' => 'No results found',
-    'people_add_new' => 'Add new person',
+    'people_search_next' => 'Next',
+    'people_search_prev' => 'Prev',
+    'people_search_rows_per_page' => 'Rows per page:',
+    'people_search_of' => 'of',
+    'people_search_page' => 'Page',
+    'people_search_all' => 'All',
+    'people_add_new' => 'Añadir a una nueva persona',
     'people_list_account_usage' => 'Es uso de tu cuenta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Actualiza tu cuenta para desbloquear todo su potencial.',
     'people_list_account_upgrade_cta' => 'Actualizar ahora',
@@ -64,6 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'Lista de contactos archivados',
 
     // Header
+    'me' => 'This is you',
     'edit_contact_information' => 'Editar información de contacto',
     'contact_archive' => 'Archivar contacto',
     'contact_unarchive' => 'Des-archivar contacto',
@@ -113,6 +120,7 @@ return [
     'conversation_add_content' => 'Escribe lo que se dijo',
     'conversation_add_what_was_said' => '¿Qué fue lo que dijiste?',
     'conversation_add_another' => 'Añade otro mensaje',
+    'conversation_add_error' => 'You must add at least one message.',
     'conversation_list_table_messages' => 'Mensajes',
     'conversation_list_table_content' => 'Contenido parcial (último mensaje)',
     'conversation_list_title' => 'Conversaciones',
@@ -133,8 +141,8 @@ return [
     // additional information
     'information_edit_success' => 'El perfil ha sido actualizado exitosamente',
     'information_edit_title' => 'Editar la información personal de :name',
-    'information_edit_avatar' => 'Foto/avatar del contacto',
     'information_edit_max_size' => 'Máximo :size Kb.',
+    'information_edit_max_size2' => 'Max {size} Kb.',
     'information_edit_firstname' => 'Nombre',
     'information_edit_lastname' => 'Apellido (Opcional)',
     'information_edit_description' => 'Descripción (opcional)',
@@ -153,13 +161,13 @@ return [
     'work_information' => 'Información de trabajo',
 
     // food preferences
-    'food_preferencies_add_success' => 'Las preferencias de comida han sido guardadas',
-    'food_preferencies_edit_description' => 'Tal vez :firstname o alguien en la familia :family tiene una alergia. O no le gusta una botella específica de vino. Indica eso aquí, así lo recordaras la próxima vez que los invites a cenar',
-    'food_preferencies_edit_description_no_last_name' => 'Tal vez :firstname tiene una alergia. O no le gusta una botella específica de vino. Indica eso aquí, así lo recordaras la próxima vez que lo invites a cenar',
-    'food_preferencies_edit_title' => 'Indica preferencias en comida',
-    'food_preferencies_edit_cta' => 'Guardar preferencias en comida',
-    'food_preferencies_title' => 'Preferencias de comida',
-    'food_preferencies_cta' => 'Añadir preferencias en comida',
+    'food_preferences_add_success' => 'Las preferencias de comida han sido guardadas',
+    'food_preferences_edit_description' => 'Tal vez :firstname o alguien en la familia :family tiene una alergia. O no le gusta una botella específica de vino. Indica eso aquí, así lo recordaras la próxima vez que los invites a cenar',
+    'food_preferences_edit_description_no_last_name' => 'Tal vez :firstname tiene una alergia. O no le gusta una botella específica de vino. Indica eso aquí, así lo recordaras la próxima vez que lo invites a cenar',
+    'food_preferences_edit_title' => 'Indica preferencias en comida',
+    'food_preferences_edit_cta' => 'Guardar preferencias en comida',
+    'food_preferences_title' => 'Preferencias de comida',
+    'food_preferences_cta' => 'Añadir preferencias en comida',
 
     // reminders
     'reminders_blank_title' => '¿Hay algo en lo que quisieras ser recordado sobre :name?',
@@ -213,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relación ha sido eliminada.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Aún no tienes tareas.',
     'tasks_form_title' => 'Título',
     'tasks_form_description' => 'Descripción (opcional)',
@@ -247,7 +256,7 @@ return [
     'activities_add_title' => '¿Qué hiciste con :name?',
     'activities_summary' => 'Describe lo que hiciste',
     'activities_add_pick_activity' => '(Opcional) ¿Te gustaría categorizar esta actividad? No tienes que hacerlo, pero esto te dará estadísticas en el futuro',
-    'activities_add_date_occured' => 'Date this activity occurred',
+    'activities_add_date_occured' => 'Fecha en la que esta actividad ocurrió',
     'activities_add_optional_comment' => 'Comentario opcional',
     'activities_add_cta' => 'Registra actividad',
     'activities_blank_title' => 'Dale seguimiento a lo que has hecho con :name en el pasado, y de que han hablado',
@@ -457,11 +466,23 @@ return [
     'document_upload_zone_error' => 'Se produjo un error al subir el archivo. Por favor inténtelo de nuevo.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Fotos relacionadas',
     'photo_list_cta' => 'Subir foto',
     'photo_list_blank_desc' => 'Puede almacenar imágenes acerca de este contacto. ¡Suba una ahora!',
     'photo_upload_zone_cta' => 'Carga una foto',
+    'photo_current_profile_pic' => 'Foto de perfil actual',
+    'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Eliminar foto',
+
+    // Avatars
+    'avatar_change_title' => 'Change your avatar',
+    'avatar_question' => 'Which avatar would you like to use?',
+    'avatar_default_avatar' => 'The default avatar',
+    'avatar_adorable_avatar' => 'The Adorable avatar',
+    'avatar_gravatar' => 'The Gravatar associated with the email address of this person. <a href="https://gravatar.com/">Gravatar</a> is a global system that lets users associate email addresses with photos.',
+    'avatar_current' => 'Keep the current avatar',
+    'avatar_photo' => 'From a photo that you upload',
 
     // emotions
     'emotion_this_made_me_feel' => 'Esto te hizo sentir…',

@@ -73,7 +73,9 @@ class AuthenticateWithTokenOnBasicAuth
             $this->auth->guard()->setUser($user);
         } else {
             // Basic authentication
-            $this->auth->guard()->onceBasic();
+            /** @var \Illuminate\Contracts\Auth\SupportsBasicAuth */
+            $guard = $this->auth->guard();
+            $guard->onceBasic();
         }
     }
 }

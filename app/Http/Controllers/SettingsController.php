@@ -9,19 +9,18 @@ use App\Models\Contact\Tag;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
-use App\Helpers\RequestHelper;
-use App\Jobs\SendNewUserAlert;
 use App\Helpers\TimezoneHelper;
 use App\Jobs\ExportAccountAsSQL;
 use App\Jobs\AddContactFromVCard;
-use App\Jobs\SendInvitationEmail;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\StripeException;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ImportsRequest;
+use App\Notifications\InvitationMail;
 use App\Http\Requests\SettingsRequest;
 use Illuminate\Support\Facades\Storage;
 use LaravelWebauthn\Models\WebauthnKey;
@@ -41,6 +40,7 @@ class SettingsController
         'api_usage',
         'cache',
         'countries',
+        'contact_photo',
         'crons',
         'currencies',
         'contact_photo',
@@ -178,7 +178,12 @@ class SettingsController
         $account = auth()->user()->account;
 
         if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            $account->subscriptionCancel();
+            try {
+                $account->subscriptionCancel();
+            } catch (StripeException $e) {
+                return redirect()->route('settings.index')
+                    ->withErrors($e->getMessage());
+            }
         }
 
         DB::table('accounts')->where('id', $account->id)->delete();
@@ -244,15 +249,11 @@ class SettingsController
     {
         $path = dispatch_now(new ExportAccountAsSQL());
 
-        $driver = Storage::disk(ExportAccountAsSQL::STORAGE)->getDriver();
-        if ($driver instanceof \League\Flysystem\Filesystem) {
-            $adapter = $driver->getAdapter();
-            if ($adapter instanceof \League\Flysystem\Adapter\AbstractAdapter) {
-                return response()
-                    ->download($adapter->getPathPrefix().$path, 'monica.sql')
-                    ->deleteFileAfterSend(true);
-            }
-        }
+        $adapter = disk_adapter(ExportAccountAsSQL::STORAGE);
+
+        return response()
+            ->download($adapter->getPathPrefix().$path, 'monica.sql')
+            ->deleteFileAfterSend(true);
     }
 
     /**
@@ -361,7 +362,7 @@ class SettingsController
             return redirect()->back()->withErrors(trans('settings.users_error_email_already_taken'))->withInput();
         }
 
-        // Has this user been invited already?
+        // Has this user already been invited?
         $invitations = Invitation::where('email', $request->only(['email']))->count();
         if ($invitations > 0) {
             return redirect()->back()->withErrors(trans('settings.users_error_already_invited'))->withInput();
@@ -378,7 +379,7 @@ class SettingsController
             ]
         );
 
-        dispatch(new SendInvitationEmail($invitation));
+        $invitation->notify((new InvitationMail())->locale(auth()->user()->locale));
 
         auth()->user()->account->update([
             'number_of_invitations_sent' => auth()->user()->account->number_of_invitations_sent + 1,
@@ -401,64 +402,6 @@ class SettingsController
 
         return redirect()->route('settings.users.index')
             ->with('success', trans('settings.users_invitation_deleted_confirmation_message'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param string $key
-     *
-     * @return \Illuminate\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
-     */
-    public function acceptInvitation($key)
-    {
-        if (Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        Invitation::where('invitation_key', $key)
-            ->firstOrFail();
-
-        return view('settings.users.accept', compact('key'));
-    }
-
-    /**
-     * Store the specified resource.
-     *
-     * @param Request $request
-     * @param string $key
-     *
-     * @return null|\Illuminate\Http\RedirectResponse
-     */
-    public function storeAcceptedInvitation(Request $request, $key)
-    {
-        $invitation = Invitation::where('invitation_key', $key)
-                                    ->firstOrFail();
-
-        // as a security measure, make sure that the new user provides the email
-        // of the person who has invited him/her.
-        if ($request->input('email_security') != $invitation->invitedBy->email) {
-            return redirect()->back()->withErrors(trans('settings.users_error_email_not_similar'))->withInput();
-        }
-
-        $user = User::createDefault($invitation->account_id,
-                    $request->input('first_name'),
-                    $request->input('last_name'),
-                    $request->input('email'),
-                    $request->input('password'),
-                    RequestHelper::ip()
-                );
-        $user->invited_by_user_id = $invitation->invited_by_user_id;
-        $user->save();
-
-        $invitation->delete();
-
-        // send me an alert
-        dispatch(new SendNewUserAlert($user));
-
-        if (Auth::attempt(['email' => $user->email, 'password' => $request->input('password')])) {
-            return redirect()->route('dashboard.index');
-        }
     }
 
     /**

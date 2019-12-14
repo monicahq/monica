@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Services\Contact\LifeEvent;
 
-use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -59,7 +58,7 @@ class UpdateLifeEventTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'happened_at' => Carbon::now(),
+            'happened_at' => now(),
         ];
 
         $this->expectException(ValidationException::class);

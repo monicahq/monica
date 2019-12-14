@@ -6,6 +6,7 @@ use App\Models\Contact\Contact;
 use App\Models\ModelBinding as Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Photo extends Model
 {
@@ -35,6 +36,8 @@ class Photo extends Model
 
     /**
      * Get the contacts record associated with the photo.
+     *
+     * @return BelongsToMany
      */
     public function contacts()
     {
@@ -42,7 +45,7 @@ class Photo extends Model
     }
 
     /**
-     * Get the contact record associated with the photo.
+     * Get the first contact record associated with the photo.
      *
      * @return Contact
      */

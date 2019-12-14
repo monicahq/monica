@@ -14,7 +14,7 @@ class Validate2faController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -30,12 +30,7 @@ class Validate2faController extends Controller
 
     public static function loginCallback()
     {
-        try {
-            app('pragmarx.google2fa')->stateless = false;
-        } catch (\Exception $e) {
-            // catch exception until pragmarx/google2fa-laravel package is fixed
-            // See https://github.com/antonioribeiro/google2fa-laravel/pull/55
-        }
+        app('pragmarx.google2fa')->setStateless(false);
         Google2FA::login();
     }
 }

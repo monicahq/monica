@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\DAV\Backend\CalDAV;
 
-use Sabre\DAV;
 use Illuminate\Support\Arr;
 use App\Models\Contact\Task;
 use App\Services\Task\DestroyTask;

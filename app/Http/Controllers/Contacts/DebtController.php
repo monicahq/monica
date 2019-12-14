@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Contacts;
 
 use App\Models\Contact\Debt;
-use App\Helpers\AvatarHelper;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\People\DebtRequest;
@@ -34,7 +33,6 @@ class DebtController extends Controller
     {
         return view('people.debt.add')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withDebt(new Debt);
     }
 
@@ -89,7 +87,6 @@ class DebtController extends Controller
     {
         return view('people.debt.edit')
             ->withContact($contact)
-            ->withAvatar(AvatarHelper::get($contact, 87))
             ->withDebt($debt);
     }
 

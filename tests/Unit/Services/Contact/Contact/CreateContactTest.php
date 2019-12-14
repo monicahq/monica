@@ -42,6 +42,13 @@ class CreateContactTest extends TestCase
             'first_name' => 'john',
         ]);
 
+        // check that a default color has been set
+        $this->assertNotNull($contact->default_avatar_color);
+
+        // check that the default avatar has been generated
+        $this->assertNotNull($contact->avatar_adorable_uuid);
+        $this->assertNotNull($contact->avatar_adorable_url);
+        $this->assertNotNull($contact->avatar_default_url);
         $this->assertInstanceOf(
             Contact::class,
             $contact
