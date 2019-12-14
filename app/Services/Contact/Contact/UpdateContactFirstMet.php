@@ -117,6 +117,7 @@ class UpdateContactFirstMet extends BaseService
                 'reminder_id' => $contact->first_met_reminder_id,
             ]);
         } catch (\Exception $e) {
+            // Ignore this error
         }
     }
 
