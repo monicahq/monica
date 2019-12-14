@@ -59,7 +59,7 @@ class CreateActivity extends BaseService
         // Log a journal entry
         (new JournalEntry)->add($activity);
 
-        return $activity->refresh();
+        return $activity;
     }
 
     /**
