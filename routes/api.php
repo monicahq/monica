@@ -22,6 +22,11 @@ Route::group(['middleware' => ['auth:api']], function () {
             ->names(['index' => 'contacts', 'show' => 'contact']);
         Route::put('/contacts/{contact}/setMe', 'ApiContactController@setMe');
 
+        // Contacts properties
+        Route::put('/contacts/{contact}/career', 'ApiContactController@career');
+        Route::put('/contacts/{contact}/foodPreferences', 'ApiContactController@foodPreferences');
+        Route::put('/contacts/{contact}/firstMet', 'ApiContactController@firstMet');
+
         // Genders
         Route::apiResource('genders', 'Account\\ApiGenderController');
 

@@ -12,8 +12,11 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
+use App\Services\Contact\Contact\UpdateContactCareer;
+use App\Services\Contact\Contact\UpdateContactFirstMet;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
+use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactWithContactFields as ContactWithContactFieldsResource;
 
 class ApiContactController extends ApiController
@@ -207,5 +210,92 @@ class ApiContactController extends ApiController
         app(SetMeContact::class)->execute($data);
 
         return $this->respond(['true']);
+    }
+
+    /**
+     * Set the contact career.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return string
+     */
+    public function career(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactCareer::class)->execute(
+                $request->all()
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+     * Set the contact food preferences.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return string
+     */
+    public function foodPreferences(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactFoodPreferences::class)->execute(
+                $request->all()
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
+    }
+
+    /**
+     * Set how you met the contact.
+     *
+     * @param Request $request
+     * @param int $contactId
+     *
+     * @return string
+     */
+    public function firstMet(Request $request, $contactId)
+    {
+        try {
+            $contact = app(UpdateContactFirstMet::class)->execute(
+                $request->all()
+                + [
+                    'contact_id' => $contactId,
+                    'account_id' => auth()->user()->account->id,
+                ]
+            );
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new ContactResource($contact);
     }
 }
