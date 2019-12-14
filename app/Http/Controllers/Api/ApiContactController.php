@@ -218,7 +218,7 @@ class ApiContactController extends ApiController
      * @param Request $request
      * @param int $contactId
      *
-     * @return string
+     * @return ContactResource|\Illuminate\Http\JsonResponse
      */
     public function career(Request $request, $contactId)
     {
@@ -247,7 +247,7 @@ class ApiContactController extends ApiController
      * @param Request $request
      * @param int $contactId
      *
-     * @return string
+     * @return ContactResource|\Illuminate\Http\JsonResponse
      */
     public function foodPreferences(Request $request, $contactId)
     {
@@ -276,7 +276,7 @@ class ApiContactController extends ApiController
      * @param Request $request
      * @param int $contactId
      *
-     * @return string
+     * @return ContactResource|\Illuminate\Http\JsonResponse
      */
     public function firstMet(Request $request, $contactId)
     {

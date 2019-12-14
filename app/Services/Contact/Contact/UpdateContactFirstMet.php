@@ -15,6 +15,11 @@ use App\Services\Contact\Reminder\DestroyReminder;
 class UpdateContactFirstMet extends BaseService
 {
     /**
+     * @var array
+     */
+    public $data;
+
+    /**
      * Get the validation rules that apply to the service.
      *
      * @return array
@@ -63,6 +68,7 @@ class UpdateContactFirstMet extends BaseService
      */
     public function execute(array $data) : Contact
     {
+        $this->data = $data;
         $this->validate($data);
 
         $contact = Contact::where('account_id', $data['account_id'])
