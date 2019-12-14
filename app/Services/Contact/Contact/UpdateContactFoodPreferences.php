@@ -18,7 +18,7 @@ class UpdateContactFoodPreferences extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'food_preferences' => 'required|nullable|string',
+            'food_preferences' => 'nullable|string',
         ];
     }
 

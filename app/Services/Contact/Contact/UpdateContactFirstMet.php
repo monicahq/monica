@@ -31,7 +31,7 @@ class UpdateContactFirstMet extends BaseService
             'contact_id' => 'required|integer|exists:contacts,id',
             'met_through_contact_id' => 'nullable|integer|exists:contacts,id',
             'general_information' => 'nullable|string|max:255',
-            //'first_met_where' ???
+            'where' => 'nullable|string|max:255',
             'is_date_known' => 'required|boolean',
             'is_age_based' => 'nullable|boolean',
             'day' => [
@@ -105,6 +105,7 @@ class UpdateContactFirstMet extends BaseService
     private function setInformation(array $data, Contact $contact): void
     {
         $contact->first_met_additional_info = Arr::get($data, 'general_information');
+        $contact->first_met_where = Arr::get($data, 'where');
         $contact->save();
     }
 
@@ -133,7 +134,7 @@ class UpdateContactFirstMet extends BaseService
             return;
         }
 
-        if ($data['is_age_based']) {
+        if (Arr::get($data, 'is_age_based')) {
             $this->approximate($data, $contact);
         } else {
             $this->exact($data, $contact);

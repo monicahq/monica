@@ -18,8 +18,8 @@ class UpdateContactCareer extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
-            'job' => 'required|nullable|string|max:255',
-            'company' => 'required|nullable|string|max:255',
+            'job' => 'nullable|string|max:255',
+            'company' => 'nullable|string|max:255',
         ];
     }
 
