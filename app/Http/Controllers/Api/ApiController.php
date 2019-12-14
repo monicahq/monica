@@ -92,6 +92,20 @@ class ApiController extends Controller
             'success' => [
                 'message' => 'Welcome to Monica',
             ],
+            'links' => [
+                'activities_url' => route('api.activities'),
+                'addresses_url' => route('api.addresses'),
+                'calls_url' => route('api.calls'),
+                'contacts_url' => route('api.contacts'),
+                'conversations_url' => route('api.conversations'),
+                'countries_url' => route('api.countries'),
+                'currencies_url' => route('api.currencies'),
+                'documents_url' => route('api.documents'),
+                'journal_url' => route('api.journal'),
+                'notes_url' => route('api.notes'),
+                'relationships_url' => route('api.relationships', ['contact' => ':contactId']),
+                'statistics_url' => route('api.statistics'),
+            ],
         ]);
     }
 
