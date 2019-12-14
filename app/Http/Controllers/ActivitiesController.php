@@ -47,6 +47,7 @@ class ActivitiesController extends Controller
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
+        /** @var array */
         $specifiedContacts = $request->input('contacts');
         $specifiedContactsObj = [];
 
@@ -113,6 +114,7 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
+        /** @var array */
         $specifiedContacts = $request->input('contacts');
         $specifiedContactsObj = [];
 

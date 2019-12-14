@@ -85,6 +85,7 @@ class ApiActivityController extends ApiController
         JournalEntry::add($activity);
 
         // Now we associate the activity with each one of the attendees
+        /** @var array */
         $attendeesID = $request->input('contacts');
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
@@ -140,6 +141,7 @@ class ApiActivityController extends ApiController
         JournalEntry::add($activity);
 
         // Get the attendees
+        /** @var array */
         $attendeesID = $request->input('contacts');
 
         // Find existing contacts
@@ -194,6 +196,7 @@ class ApiActivityController extends ApiController
 
         // Make sure each contact exists and has the right to be associated with
         // this account
+        /** @var array */
         $attendeesID = $request->input('contacts');
         foreach ($attendeesID as $attendeeID) {
             try {

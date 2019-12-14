@@ -495,6 +495,7 @@ class SettingsController
     public function updateDefaultProfileView(Request $request)
     {
         $allowedValues = ['life-events', 'notes', 'photos'];
+        /** @var string */
         $view = $request->input('name');
 
         if (! in_array($view, $allowedValues)) {
