@@ -23,9 +23,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::put('/contacts/{contact}/setMe', 'ApiContactController@setMe');
 
         // Contacts properties
-        Route::put('/contacts/{contact}/career', 'ApiContactController@career');
-        Route::put('/contacts/{contact}/foodPreferences', 'ApiContactController@foodPreferences');
-        Route::put('/contacts/{contact}/firstMet', 'ApiContactController@firstMet');
+        Route::put('/contacts/{contact}/work', 'ApiContactController@updateWork');
+        Route::put('/contacts/{contact}/food', 'ApiContactController@updateFoodPreferences');
+        Route::put('/contacts/{contact}/introduction', 'ApiContactController@updateIntroduction');
 
         // Genders
         Route::apiResource('genders', 'Account\\ApiGenderController');

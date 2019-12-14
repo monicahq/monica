@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Reminder\CreateReminder;
 use App\Services\Contact\Reminder\DestroyReminder;
 
-class UpdateContactFirstMet extends BaseService
+class UpdateContactIntroductions extends BaseService
 {
     /**
      * @var array

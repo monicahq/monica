@@ -6,7 +6,7 @@ use App\Services\BaseService;
 use App\Models\Contact\Contact;
 use Illuminate\Validation\ValidationException;
 
-class UpdateContactCareer extends BaseService
+class UpdateContactWork extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.

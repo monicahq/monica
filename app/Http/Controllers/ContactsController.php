@@ -20,7 +20,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateContactCareer;
+use App\Services\Contact\Contact\UpdateContactWork;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
 
@@ -457,7 +457,7 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
-        $contact = app(UpdateContactCareer::class)->execute([
+        $contact = app(UpdateContactWork::class)->execute([
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
             'job' => $request->input('job'),

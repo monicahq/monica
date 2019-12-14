@@ -1401,7 +1401,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/career', [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
             'job' => 'Astronaut',
             'company' => 'NASA',
         ]);
@@ -1421,7 +1421,7 @@ class ApiContactControllerTest extends ApiTestCase
             'company' => 'NASA',
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/career', [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
             'job' => 'Mom',
             'company' => null,
         ]);
@@ -1449,7 +1449,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/foodPreferences', [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
             'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
         ]);
 
@@ -1464,7 +1464,7 @@ class ApiContactControllerTest extends ApiTestCase
             'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/foodPreferences', [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
             'food_preferences' => null,
         ]);
 
@@ -1487,7 +1487,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/firstMet', [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
             'is_date_known' => true,
             'year' => 2006,
             'month' => 1,
@@ -1522,7 +1522,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/firstMet', [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
             'is_date_known' => true,
             'is_age_based' => true,
             'age' => 13,
@@ -1555,7 +1555,7 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/firstMet', [
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
             'is_date_known' => true,
             'year' => 2006,
             'month' => 1,

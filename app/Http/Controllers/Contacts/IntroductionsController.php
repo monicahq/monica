@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
-use App\Services\Contact\Contact\UpdateContactFirstMet;
+use App\Services\Contact\Contact\UpdateContactIntroductions;
 
 class IntroductionsController extends Controller
 {
@@ -37,7 +37,7 @@ class IntroductionsController extends Controller
     {
         // Store the contact that allowed this encounter to happen in the first
         // place
-        $contact = app(UpdateContactFirstMet::class)->execute([
+        $contact = app(UpdateContactIntroductions::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
             'met_through_contact_id' => $request->get('metThroughId'),

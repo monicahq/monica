@@ -12,8 +12,8 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
-use App\Services\Contact\Contact\UpdateContactCareer;
-use App\Services\Contact\Contact\UpdateContactFirstMet;
+use App\Services\Contact\Contact\UpdateContactWork;
+use App\Services\Contact\Contact\UpdateContactIntroductions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Contact\Contact as ContactResource;
 use App\Services\Contact\Contact\UpdateContactFoodPreferences;
@@ -220,10 +220,10 @@ class ApiContactController extends ApiController
      *
      * @return ContactResource|\Illuminate\Http\JsonResponse
      */
-    public function career(Request $request, $contactId)
+    public function updateWork(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactCareer::class)->execute(
+            $contact = app(UpdateContactWork::class)->execute(
                 $request->all()
                 + [
                     'contact_id' => $contactId,
@@ -249,7 +249,7 @@ class ApiContactController extends ApiController
      *
      * @return ContactResource|\Illuminate\Http\JsonResponse
      */
-    public function foodPreferences(Request $request, $contactId)
+    public function updateFoodPreferences(Request $request, $contactId)
     {
         try {
             $contact = app(UpdateContactFoodPreferences::class)->execute(
@@ -278,10 +278,10 @@ class ApiContactController extends ApiController
      *
      * @return ContactResource|\Illuminate\Http\JsonResponse
      */
-    public function firstMet(Request $request, $contactId)
+    public function updateIntroduction(Request $request, $contactId)
     {
         try {
-            $contact = app(UpdateContactFirstMet::class)->execute(
+            $contact = app(UpdateContactIntroductions::class)->execute(
                 $request->all()
                 + [
                     'contact_id' => $contactId,
