@@ -464,26 +464,27 @@ class ContactTest extends FeatureTestCase
             strlen($contact->default_avatar_color)
         );
     }
-/*
-    public function testUpdateFoodPreferencesSetsNullIfEmptyValueGiven()
-    {
-        $contact = factory(Contact::class)->create();
-        $contact->updateFoodPreferences('');
 
-        $this->assertNull($contact->food_preferences);
-    }
-
-    public function testUpdateFoodPreferencesEncryptsTheValue()
-    {
-        $contact = factory(Contact::class)->make();
-        $contact->updateFoodPreferences('Some value');
-
-        $this->assertEquals(
-            'Some value',
-            $contact->food_preferences
-        );
-    }
-    */
+    /*
+        public function testUpdateFoodPreferencesSetsNullIfEmptyValueGiven()
+        {
+            $contact = factory(Contact::class)->create();
+            $contact->updateFoodPreferences('');
+    
+            $this->assertNull($contact->food_preferences);
+        }
+    
+        public function testUpdateFoodPreferencesEncryptsTheValue()
+        {
+            $contact = factory(Contact::class)->make();
+            $contact->updateFoodPreferences('Some value');
+    
+            $this->assertEquals(
+                'Some value',
+                $contact->food_preferences
+            );
+        }
+        */
 
     public function testGetGiftsOfferedReturns0WhenNoRemindersDefined()
     {
