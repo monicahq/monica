@@ -167,9 +167,9 @@ class GiftsController extends Controller
             ])
             + [
                 'account_id' => $contact->account_id,
-                'is_an_idea' => ($request->get('offered') == 'idea' ? 1 : 0),
-                'has_been_offered' => ($request->get('offered') == 'offered' ? 1 : 0),
-                'has_been_received' => ($request->get('offered') == 'received' ? 1 : 0),
+                'is_an_idea' => ($request->input('offered') == 'idea' ? 1 : 0),
+                'has_been_offered' => ($request->input('offered') == 'offered' ? 1 : 0),
+                'has_been_received' => ($request->input('offered') == 'received' ? 1 : 0),
             ];
 
         if (is_null($gift)) {
@@ -178,10 +178,10 @@ class GiftsController extends Controller
             $gift->update($array);
         }
 
-        if ($request->get('has_recipient')
+        if ($request->input('has_recipient')
             && Contact::where('account_id', auth()->user()->account_id)
-                ->find($request->get('recipient')) != null) {
-            $gift->recipient = $request->get('recipient');
+                ->find($request->input('recipient')) != null) {
+            $gift->recipient = $request->input('recipient');
             $gift->save();
         }
 

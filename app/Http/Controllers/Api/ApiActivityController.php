@@ -85,7 +85,7 @@ class ApiActivityController extends ApiController
         JournalEntry::add($activity);
 
         // Now we associate the activity with each one of the attendees
-        $attendeesID = $request->get('contacts');
+        $attendeesID = $request->input('contacts');
         foreach ($attendeesID as $attendeeID) {
             $contact = Contact::where('account_id', auth()->user()->account_id)
                 ->findOrFail($attendeeID);
@@ -140,7 +140,7 @@ class ApiActivityController extends ApiController
         JournalEntry::add($activity);
 
         // Get the attendees
-        $attendeesID = $request->get('contacts');
+        $attendeesID = $request->input('contacts');
 
         // Find existing contacts
         $existing = $activity->contacts()->get();
@@ -194,7 +194,7 @@ class ApiActivityController extends ApiController
 
         // Make sure each contact exists and has the right to be associated with
         // this account
-        $attendeesID = $request->get('contacts');
+        $attendeesID = $request->input('contacts');
         foreach ($attendeesID as $attendeeID) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
@@ -206,10 +206,10 @@ class ApiActivityController extends ApiController
 
         // Make sure the activity type has the right to be associated with
         // this account
-        if ($request->get('activity_type_id')) {
+        if ($request->input('activity_type_id')) {
             try {
                 ActivityType::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->get('activity_type_id'));
+                    ->findOrFail($request->input('activity_type_id'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }

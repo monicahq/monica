@@ -126,20 +126,20 @@ class SettingsController
                 'currency_id',
                 'name_order',
             ]) + [
-                'fluid_container' => $request->get('layout'),
-                'temperature_scale' => $request->get('temperature_scale'),
+                'fluid_container' => $request->input('layout'),
+                'temperature_scale' => $request->input('temperature_scale'),
             ]
         );
 
-        if ($user->email != $request->get('email')) {
+        if ($user->email != $request->input('email')) {
             app(EmailChange::class)->execute([
                 'account_id' => $user->account_id,
-                'email' => $request->get('email'),
+                'email' => $request->input('email'),
                 'user_id' => $user->id,
             ]);
         }
 
-        $user->account->default_time_reminder_is_sent = $request->get('reminder_time');
+        $user->account->default_time_reminder_is_sent = $request->input('reminder_time');
         $user->account->save();
 
         return redirect()->route('settings.index')
@@ -294,7 +294,7 @@ class SettingsController
             'filename' => $filename,
         ]);
 
-        dispatch(new AddContactFromVCard($importJob, $request->get('behaviour')));
+        dispatch(new AddContactFromVCard($importJob, $request->input('behaviour')));
 
         return redirect()->route('settings.import');
     }
@@ -352,7 +352,7 @@ class SettingsController
     public function inviteUser(InvitationRequest $request)
     {
         // Make sure the confirmation to invite has not been bypassed
-        if (! $request->get('confirmation')) {
+        if (! $request->input('confirmation')) {
             return redirect()->back()->withErrors(trans('settings.users_error_please_confirm'))->withInput();
         }
 
@@ -495,7 +495,7 @@ class SettingsController
     public function updateDefaultProfileView(Request $request)
     {
         $allowedValues = ['life-events', 'notes', 'photos'];
-        $view = $request->get('name');
+        $view = $request->input('name');
 
         if (! in_array($view, $allowedValues)) {
             return 'not allowed';

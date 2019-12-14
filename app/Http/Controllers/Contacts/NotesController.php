@@ -44,7 +44,7 @@ class NotesController extends Controller
     {
         return $contact->notes()->create([
             'account_id' => auth()->user()->account_id,
-            'body' => $request->get('body'),
+            'body' => $request->input('body'),
         ]);
     }
 

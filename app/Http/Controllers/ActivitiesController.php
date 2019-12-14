@@ -47,7 +47,7 @@ class ActivitiesController extends Controller
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
-        $specifiedContacts = $request->get('contacts');
+        $specifiedContacts = $request->input('contacts');
         $specifiedContactsObj = [];
 
         try {
@@ -113,7 +113,7 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
-        $specifiedContacts = $request->get('contacts');
+        $specifiedContacts = $request->input('contacts');
         $specifiedContactsObj = [];
 
         try {

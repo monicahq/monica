@@ -39,7 +39,7 @@ class ApiController extends Controller
             (new ApiUsage)->log($request);
 
             if ($request->has('sort')) {
-                $this->setSortCriteria($request->get('sort'));
+                $this->setSortCriteria($request->input('sort'));
 
                 // It has a sort criteria, but is it a valid one?
                 if (empty($this->getSortCriteria())) {
@@ -50,17 +50,17 @@ class ApiController extends Controller
             }
 
             if ($request->has('limit')) {
-                if ($request->get('limit') > config('api.max_limit_per_page')) {
+                if ($request->input('limit') > config('api.max_limit_per_page')) {
                     return $this->setHTTPStatusCode(400)
                               ->setErrorCode(30)
                               ->respondWithError();
                 }
 
-                $this->setLimitPerPage($request->get('limit'));
+                $this->setLimitPerPage($request->input('limit'));
             }
 
             if ($request->has('with')) {
-                $this->setWithParameter($request->get('with'));
+                $this->setWithParameter($request->input('with'));
             }
 
             // make sure the JSON is well formatted if the call sends a JSON
