@@ -4,25 +4,23 @@ namespace Tests\Api\Contact;
 
 use Tests\ApiTestCase;
 use App\Models\User\User;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Document;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class ApiDocumentControllerTest extends ApiTestCase
+class ApiPhotoControllerTest extends ApiTestCase
 {
     use DatabaseTransactions;
 
-    protected $jsonDocuments = [
+    protected $jsonDatas = [
         'id',
         'object',
         'original_filename',
         'new_filename',
         'filesize',
-        'type',
         'mime_type',
-        'number_of_downloads',
         'link',
         'account' => [
             'id',
@@ -34,29 +32,30 @@ class ApiDocumentControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    private function createDocument(User $user) : Document
+    private function createPhoto(User $user) : Photo
     {
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
         ]);
 
-        $document = factory(Document::class)->create([
+        $photo = factory(Photo::class)->create([
             'account_id' => $user->account_id,
-            'contact_id' => $contact->id,
         ]);
 
-        return $document;
+        $contact->photos()->syncWithoutDetaching([$photo->id]);
+
+        return $photo;
     }
 
-    public function test_it_gets_a_list_of_documents()
+    public function test_it_gets_a_list_of_photos()
     {
         $user = $this->signin();
 
         for ($i = 0; $i < 10; $i++) {
-            $this->createDocument($user);
+            $this->createPhoto($user);
         }
 
-        $response = $this->json('GET', '/api/documents');
+        $response = $this->json('GET', '/api/photos');
 
         $response->assertStatus(200);
 
@@ -72,7 +71,7 @@ class ApiDocumentControllerTest extends ApiTestCase
 
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->jsonDocuments,
+                '*' => $this->jsonDatas,
             ],
         ]);
     }
@@ -82,10 +81,10 @@ class ApiDocumentControllerTest extends ApiTestCase
         $user = $this->signin();
 
         for ($i = 0; $i < 10; $i++) {
-            $this->createDocument($user);
+            $this->createPhoto($user);
         }
 
-        $response = $this->json('GET', '/api/documents?limit=1');
+        $response = $this->json('GET', '/api/photos?limit=1');
 
         $response->assertJsonFragment([
             'total' => 10,
@@ -94,7 +93,7 @@ class ApiDocumentControllerTest extends ApiTestCase
             'last_page' => 10,
         ]);
 
-        $response = $this->json('GET', '/api/documents?limit=2');
+        $response = $this->json('GET', '/api/photos?limit=2');
 
         $response->assertJsonFragment([
             'total' => 10,
@@ -104,34 +103,34 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_document()
+    public function test_it_gets_a_photo()
     {
         $user = $this->signin();
 
-        $document = $this->createDocument($user);
+        $photo = $this->createPhoto($user);
 
-        $response = $this->json('GET', '/api/documents/'.$document->id);
+        $response = $this->json('GET', '/api/photos/'.$photo->id);
 
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
-            '*' => $this->jsonDocuments,
+            '*' => $this->jsonDatas,
         ]);
     }
 
-    public function test_it_gets_a_document_for_a_specific_contact()
+    public function test_it_gets_a_photo_for_a_specific_contact()
     {
         $user = $this->signin();
 
-        $document = $this->createDocument($user);
+        $photo = $this->createPhoto($user);
 
-        $response = $this->json('GET', '/api/contacts/'.$document['contact_id'].'/documents');
+        $response = $this->json('GET', '/api/contacts/'.$photo->contact()->id.'/photos');
 
         $response->assertStatus(200);
 
         $response->assertJsonStructure([
             'data' => [
-                '*' => $this->jsonDocuments,
+                '*' => $this->jsonDatas,
             ],
         ]);
 
@@ -143,7 +142,7 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_store_a_document_for_a_specific_contact()
+    public function test_it_store_a_photo_for_a_specific_contact()
     {
         Storage::fake();
 
@@ -152,38 +151,71 @@ class ApiDocumentControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('POST', '/api/contacts/'.$contact->id.'/documents', [
-            'document' => UploadedFile::fake()->image('test.pdf'),
+        $response = $this->json('POST', '/api/contacts/'.$contact->id.'/photos', [
+            'photo' => UploadedFile::fake()->image('test.jpg'),
         ]);
 
         $response->assertStatus(201);
 
         $response->assertJsonStructure([
-            'data' => $this->jsonDocuments,
+            'data' => $this->jsonDatas,
         ]);
 
-        $this->assertDatabaseHas('documents', [
+        $this->assertDatabaseHas('photos', [
             'account_id' => $user->account_id,
-            'contact_id' => $contact->id,
-            'original_filename' => 'test.pdf',
+            'original_filename' => 'test.jpg',
         ]);
 
         Storage::disk('public')->assertExists($response->json('data.new_filename'));
     }
 
-    public function test_it_destroy_a_document()
+    public function test_it_destroy_a_photo()
     {
         $user = $this->signin();
 
-        $document = $this->createDocument($user);
+        $photo = $this->createPhoto($user);
 
-        $response = $this->json('DELETE', '/api/documents/'.$document->id);
+        $response = $this->json('DELETE', '/api/photos/'.$photo->id);
 
         $response->assertStatus(200);
 
         $response->assertJsonFragment([
             'deleted' => true,
-            'id' => $document->id,
+            'id' => $photo->id,
         ]);
+
+        $this->assertDatabaseMissing('photos', [
+            'id' => $photo->id,
+            'account_id' => $user->account_id,
+        ]);
+    }
+
+    public function test_it_store_and_destroy_a_photo()
+    {
+        Storage::fake();
+
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/contacts/'.$contact->id.'/photos', [
+            'photo' => UploadedFile::fake()->image('test.jpg'),
+        ]);
+
+        $photo = $contact->photos->first();
+
+        Storage::disk('public')->assertExists($photo->new_filename);
+
+        $response = $this->json('DELETE', '/api/photos/'.$photo->id);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'deleted' => true,
+            'id' => $photo->id,
+        ]);
+
+        Storage::disk('public')->assertMissing($photo->new_filename);
     }
 }

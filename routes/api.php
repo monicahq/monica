@@ -123,9 +123,19 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::apiResource('lifeevents', 'Contact\\ApiLifeEventController');
 
         // Documents
-        Route::apiResource('documents', 'Contact\\ApiDocumentController', ['only' => ['index', 'show']])
+        Route::apiResource('documents', 'Contact\\ApiDocumentController', ['only' => ['index', 'show', 'destroy']])
             ->names(['index' => 'documents', 'show' => 'document']);
-        Route::get('/contacts/{contact}/documents', 'Contact\\ApiDocumentController@documents');
+        Route::post('/contacts/{contact}/documents', 'Contact\\ApiDocumentController@store');
+        Route::get('/contacts/{contact}/documents', 'Contact\\ApiDocumentController@contact');
+
+        // Photos
+        Route::apiResource('photos', 'Contact\\ApiPhotoController', ['only' => ['index', 'show', 'destroy']])
+            ->names(['index' => 'photos', 'show' => 'photo']);
+        Route::post('/contacts/{contact}/photos', 'Contact\\ApiPhotoController@store');
+        Route::get('/contacts/{contact}/photos', 'Contact\\ApiPhotoController@contact');
+
+        // Avatars
+        Route::put('/contacts/{contact}/avatar', 'Contact\\ApiAvatarController@update');
 
         /*
          * SETTINGS

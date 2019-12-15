@@ -3,20 +3,20 @@
 namespace App\Http\Controllers\Api\Contact;
 
 use Illuminate\Http\Request;
+use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
-use App\Models\Contact\Document;
 use Illuminate\Database\QueryException;
 use App\Http\Controllers\Api\ApiController;
+use App\Services\Account\Photo\UploadPhoto;
+use App\Services\Account\Photo\DestroyPhoto;
 use Illuminate\Validation\ValidationException;
-use App\Services\Contact\Document\UploadDocument;
-use App\Services\Contact\Document\DestroyDocument;
+use App\Http\Resources\Photo\Photo as PhotoResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Http\Resources\Document\Document as DocumentResource;
 
-class ApiDocumentController extends ApiController
+class ApiPhotoController extends ApiController
 {
     /**
-     * Get the list of documents.
+     * Get the list of photos.
      *
      * @param Request $request
      *
@@ -25,18 +25,18 @@ class ApiDocumentController extends ApiController
     public function index(Request $request)
     {
         try {
-            $documents = auth()->user()->account->documents()
+            $photos = auth()->user()->account->photos()
                 ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        return DocumentResource::collection($documents);
+        return PhotoResource::collection($photos);
     }
 
     /**
-     * Get the list of documents for a specific contact.
+     * Get the list of photos for a specific contact.
      *
      * @param Request $request
      * @param int $contactId
@@ -46,56 +46,54 @@ class ApiDocumentController extends ApiController
     public function contact(Request $request, $contactId)
     {
         try {
-            Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactId)
-                ->firstOrFail();
+            $contact = Contact::where('account_id', auth()->user()->account_id)
+                ->findOrFail($contactId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
         try {
-            $documents = auth()->user()->account->documents()
-                ->where('contact_id', $contactId)
+            $photos = $contact->photos()
                 ->orderBy($this->sort, $this->sortDirection)
                 ->paginate($this->getLimitPerPage());
         } catch (QueryException $e) {
             return $this->respondInvalidQuery();
         }
 
-        return DocumentResource::collection($documents);
+        return PhotoResource::collection($photos);
     }
 
     /**
-     * Get the detail of a given document.
+     * Get the detail of a given photo.
      *
      * @param Request $request
-     * @param int $documentId
+     * @param int $photoId
      *
-     * @return DocumentResource|\Illuminate\Http\JsonResponse
+     * @return PhotoResource|\Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, $documentId)
+    public function show(Request $request, $photoId)
     {
         try {
-            $document = Document::where('account_id', auth()->user()->account_id)
-                ->findOrFail($documentId);
+            $photo = Photo::where('account_id', auth()->user()->account_id)
+                ->findOrFail($photoId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
 
-        return new DocumentResource($document);
+        return new PhotoResource($photo);
     }
 
     /**
-     * Store a document.
+     * Store a photo.
      *
      * @param Request $request
      *
-     * @return DocumentResource|\Illuminate\Http\JsonResponse
+     * @return PhotoResource|\Illuminate\Http\JsonResponse
      */
     public function store(Request $request, $contactId)
     {
         try {
-            $document = app(UploadDocument::class)->execute(
+            $photo = app(UploadPhoto::class)->execute(
                 $request->all()
                 +
                 [
@@ -111,23 +109,23 @@ class ApiDocumentController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return new DocumentResource($document);
+        return new PhotoResource($photo);
     }
 
     /**
-     * Destroy a document.
+     * Destroy a photo.
      *
      * @param Request $request
-     * @param int $documentId
+     * @param int $photoId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $documentId)
+    public function destroy(Request $request, $photoId)
     {
         try {
-            app(DestroyDocument::class)->execute([
+            app(DestroyPhoto::class)->execute([
                 'account_id' => auth()->user()->account->id,
-                'document_id' => $documentId,
+                'photo_id' => $photoId,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -137,6 +135,6 @@ class ApiDocumentController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        return $this->respondObjectDeleted((int) $documentId);
+        return $this->respondObjectDeleted((int) $photoId);
     }
 }
