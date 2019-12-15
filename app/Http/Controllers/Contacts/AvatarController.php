@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Contacts;
 
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;

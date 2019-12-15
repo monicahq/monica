@@ -3,8 +3,6 @@
 namespace Tests\Api\Contact;
 
 use Tests\ApiTestCase;
-use App\Models\User\User;
-use App\Models\Account\Photo;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -24,7 +22,7 @@ class ApiAvatarControllerTest extends ApiTestCase
             'avatar' => [
                 'url',
                 'source',
-                'default_avatar_color'
+                'default_avatar_color',
             ],
         ],
         'created_at',
