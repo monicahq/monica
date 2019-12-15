@@ -47,8 +47,7 @@ class ApiDocumentController extends ApiController
     {
         try {
             Contact::where('account_id', auth()->user()->account_id)
-                ->where('id', $contactId)
-                ->firstOrFail();
+                ->findOrFail($contactId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
         }
@@ -96,7 +95,7 @@ class ApiDocumentController extends ApiController
     {
         try {
             $document = app(UploadDocument::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                 +
                 [
                     'account_id' => auth()->user()->account->id,

@@ -94,7 +94,7 @@ class ApiPhotoController extends ApiController
     {
         try {
             $photo = app(UploadPhoto::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                 +
                 [
                     'account_id' => auth()->user()->account->id,
