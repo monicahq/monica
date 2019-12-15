@@ -88,7 +88,7 @@ class GendersController extends Controller
                 'type',
             ])
         );
-        if ($request->get('isDefault')) {
+        if ($request->input('isDefault')) {
             $this->updateDefault($request, $gender);
             $gender->refresh();
         } elseif ($gender->isDefault()) {

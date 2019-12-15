@@ -73,7 +73,7 @@ class ApiNoteController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        if ($request->get('is_favorited')) {
+        if ($request->input('is_favorited')) {
             $note->favorited_at = now();
             $note->save();
         }
@@ -110,7 +110,7 @@ class ApiNoteController extends ApiController
             return $this->respondNotTheRightParameters();
         }
 
-        if ($request->get('is_favorited')) {
+        if ($request->input('is_favorited')) {
             $note->favorited_at = now();
         } else {
             $note->favorited_at = null;

@@ -87,13 +87,13 @@ class LifeEventsController extends Controller
         $data = [
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
-            'life_event_type_id' => $request->get('life_event_type_id'),
-            'happened_at' => $request->get('happened_at'),
-            'name' => $request->get('name'),
-            'note' => $request->get('note'),
-            'has_reminder' => $request->get('has_reminder'),
-            'happened_at_month_unknown' => $request->get('happened_at_month_unknown'),
-            'happened_at_day_unknown' => $request->get('happened_at_day_unknown'),
+            'life_event_type_id' => $request->input('life_event_type_id'),
+            'happened_at' => $request->input('happened_at'),
+            'name' => $request->input('name'),
+            'note' => $request->input('note'),
+            'has_reminder' => $request->input('has_reminder'),
+            'happened_at_month_unknown' => $request->input('happened_at_month_unknown'),
+            'happened_at_day_unknown' => $request->input('happened_at_day_unknown'),
         ];
 
         // create the conversation
