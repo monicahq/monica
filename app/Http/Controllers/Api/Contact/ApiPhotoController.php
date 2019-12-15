@@ -90,7 +90,7 @@ class ApiPhotoController extends ApiController
      *
      * @return PhotoResource|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, $contactId)
+    public function store(Request $request)
     {
         try {
             $photo = app(UploadPhoto::class)->execute(
@@ -98,7 +98,6 @@ class ApiPhotoController extends ApiController
                 +
                 [
                     'account_id' => auth()->user()->account->id,
-                    'contact_id' => $contactId,
                 ]
             );
         } catch (ModelNotFoundException $e) {

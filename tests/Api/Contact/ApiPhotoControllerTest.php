@@ -151,7 +151,8 @@ class ApiPhotoControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('POST', '/api/contacts/'.$contact->id.'/photos', [
+        $response = $this->json('POST', '/api/photos', [
+            'contact_id' => $contact->id,
             'photo' => UploadedFile::fake()->image('test.jpg'),
         ]);
 
@@ -199,7 +200,8 @@ class ApiPhotoControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('POST', '/api/contacts/'.$contact->id.'/photos', [
+        $response = $this->json('POST', '/api/photos/', [
+            'contact_id' => $contact->id,
             'photo' => UploadedFile::fake()->image('test.jpg'),
         ]);
 

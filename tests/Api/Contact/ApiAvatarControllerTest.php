@@ -5,7 +5,9 @@ namespace Tests\Api\Contact;
 use Tests\ApiTestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
+use App\Models\Contact\ContactField;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiAvatarControllerTest extends ApiTestCase
@@ -38,7 +40,8 @@ class ApiAvatarControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('POST', '/api/contacts/'.$contact->id.'/photos', [
+        $response = $this->json('POST', '/api/photos', [
+            'contact_id' => $contact->id,
             'photo' => UploadedFile::fake()->image('test.jpg'),
         ]);
 
@@ -64,6 +67,12 @@ class ApiAvatarControllerTest extends ApiTestCase
         $response->assertJsonStructure([
             '*' => $this->jsonDatas,
         ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'avatar_source' => 'photo',
+            'avatar_photo_id' => $photo->id,
+        ]);
     }
 
     public function test_it_update_avatar_as_gravatar()
@@ -71,6 +80,7 @@ class ApiAvatarControllerTest extends ApiTestCase
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,
+            'avatar_gravatar_url' => 'a gravatar url',
         ]);
 
         $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/avatar', [
@@ -81,6 +91,11 @@ class ApiAvatarControllerTest extends ApiTestCase
 
         $response->assertJsonStructure([
             '*' => $this->jsonDatas,
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'avatar_source' => 'gravatar',
         ]);
     }
 
@@ -100,6 +115,11 @@ class ApiAvatarControllerTest extends ApiTestCase
         $response->assertJsonStructure([
             '*' => $this->jsonDatas,
         ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'avatar_source' => 'adorable',
+        ]);
     }
 
     public function test_it_update_avatar_as_default()
@@ -117,6 +137,11 @@ class ApiAvatarControllerTest extends ApiTestCase
 
         $response->assertJsonStructure([
             '*' => $this->jsonDatas,
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'avatar_source' => 'default',
         ]);
     }
 }

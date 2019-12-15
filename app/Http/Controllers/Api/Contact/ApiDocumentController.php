@@ -92,7 +92,7 @@ class ApiDocumentController extends ApiController
      *
      * @return DocumentResource|\Illuminate\Http\JsonResponse
      */
-    public function store(Request $request, $contactId)
+    public function store(Request $request)
     {
         try {
             $document = app(UploadDocument::class)->execute(
@@ -100,7 +100,6 @@ class ApiDocumentController extends ApiController
                 +
                 [
                     'account_id' => auth()->user()->account->id,
-                    'contact_id' => $contactId,
                 ]
             );
         } catch (ModelNotFoundException $e) {

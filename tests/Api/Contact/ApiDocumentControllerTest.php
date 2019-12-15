@@ -152,7 +152,8 @@ class ApiDocumentControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
         ]);
 
-        $response = $this->json('POST', '/api/contacts/'.$contact->id.'/documents', [
+        $response = $this->json('POST', '/api/documents', [
+            'contact_id' => $contact->id,
             'document' => UploadedFile::fake()->image('test.pdf'),
         ]);
 
