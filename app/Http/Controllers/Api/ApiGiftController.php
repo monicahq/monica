@@ -109,7 +109,7 @@ class ApiGiftController extends ApiController
                 'is_an_idea',
                 'has_been_offered',
                 'date_offered',
-                'contact_id'
+                'contact_id',
             ]));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
