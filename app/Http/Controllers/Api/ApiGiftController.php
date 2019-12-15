@@ -66,7 +66,7 @@ class ApiGiftController extends ApiController
 
         try {
             $gift = Gift::create(
-                $request->all()
+                $request->except(['account_id'])
                 + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
@@ -100,7 +100,17 @@ class ApiGiftController extends ApiController
         }
 
         try {
-            $gift->update($request->all());
+            $gift->update($request->only([
+                'is_for',
+                'name',
+                'comment',
+                'url',
+                'value',
+                'is_an_idea',
+                'has_been_offered',
+                'date_offered',
+                'contact_id'
+            ]));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }
