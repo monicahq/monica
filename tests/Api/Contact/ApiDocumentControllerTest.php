@@ -119,6 +119,21 @@ class ApiDocumentControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_document_show_gets_an_error_if_document_is_not_linked_to_account()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create();
+        $document = factory(Document::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('GET', '/api/documents/'.$document->id);
+
+        $this->expectNotFound($response);
+    }
+
     public function test_it_gets_a_document_for_a_specific_contact()
     {
         $user = $this->signin();
@@ -172,6 +187,32 @@ class ApiDocumentControllerTest extends ApiTestCase
         Storage::disk('public')->assertExists($response->json('data.new_filename'));
     }
 
+    public function test_document_store_gets_an_error_if_fields_are_missing()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('POST', '/api/documents', [
+        ]);
+
+        $this->expectDataError($response, [
+            'The contact id field is required.',
+        ]);
+    }
+
+    public function test_document_store_gets_an_error_if_contact_is_not_linked_to_user()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('POST', '/api/documents', [
+            'contact_id' => $contact->id,
+            'document' => UploadedFile::fake()->image('test.pdf'),
+        ]);
+
+        $this->expectNotFound($response);
+    }
+
     public function test_it_destroy_a_document()
     {
         $user = $this->signin();
@@ -186,5 +227,20 @@ class ApiDocumentControllerTest extends ApiTestCase
             'deleted' => true,
             'id' => $document->id,
         ]);
+    }
+
+    public function test_document_destroy_gets_an_error_if_document_is_not_linked_to_user()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create();
+        $document = factory(Document::class)->create([
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+        ]);
+
+        $response = $this->json('DELETE', '/api/documents/'.$document->id);
+
+        $this->expectNotFound($response);
     }
 }

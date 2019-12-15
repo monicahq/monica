@@ -142,4 +142,33 @@ class ApiAvatarControllerTest extends ApiTestCase
             'avatar_source' => 'default',
         ]);
     }
+
+    public function test_avatar_update_gets_an_error_if_fields_are_missing()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/avatar', [
+            'source' => 'blabla',
+        ]);
+
+        $this->expectDataError($response, [
+            'The selected source is invalid.',
+        ]);
+    }
+
+    public function test_avatar_update_gets_an_error_if_contact_is_not_linked_to_user()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/avatar', [
+            'source' => 'default',
+        ]);
+
+        $this->expectNotFound($response);
+    }
 }

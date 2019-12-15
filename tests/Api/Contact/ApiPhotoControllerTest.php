@@ -118,6 +118,22 @@ class ApiPhotoControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_photo_show_gets_an_error_if_photo_is_not_linked_to_account()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create();
+        $photo = factory(Photo::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
+
+        $contact->photos()->syncWithoutDetaching([$photo->id]);
+
+        $response = $this->json('GET', '/api/photos/'.$photo->id);
+
+        $this->expectNotFound($response);
+    }
+
     public function test_it_gets_a_photo_for_a_specific_contact()
     {
         $user = $this->signin();
@@ -168,6 +184,33 @@ class ApiPhotoControllerTest extends ApiTestCase
         ]);
 
         Storage::disk('public')->assertExists($response->json('data.new_filename'));
+    }
+
+    public function test_photo_store_gets_an_error_if_fields_are_missing()
+    {
+        $user = $this->signin();
+
+        $response = $this->json('POST', '/api/photos', [
+        ]);
+
+        $this->expectDataError($response, [
+            'The contact id field is required.',
+        ]);
+    }
+
+    public function test_photo_store_gets_an_error_if_contact_is_not_linked_to_user()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('POST', '/api/photos', [
+            'account_id' => $contact->account_id,
+            'contact_id' => $contact->id,
+            'photo' => UploadedFile::fake()->image('test.jpg'),
+        ]);
+
+        $this->expectNotFound($response);
     }
 
     public function test_it_destroy_a_photo()
