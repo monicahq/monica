@@ -64,7 +64,7 @@ class ApiPlaceController extends ApiController
     {
         try {
             $place = app(CreatePlace::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -93,7 +93,7 @@ class ApiPlaceController extends ApiController
     {
         try {
             $place = app(UpdatePlace::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'place_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,

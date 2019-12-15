@@ -41,10 +41,10 @@ class CallsController extends Controller
         return app(CreateCall::class)->execute([
             'account_id' => auth()->user()->account->id,
             'contact_id' => $contact->id,
-            'content' => $request->get('content'),
-            'called_at' => $request->get('called_at'),
-            'contact_called' => $request->get('contact_called'),
-            'emotions' => $request->get('emotions'),
+            'content' => $request->input('content'),
+            'called_at' => $request->input('called_at'),
+            'contact_called' => $request->input('contact_called'),
+            'emotions' => $request->input('emotions'),
         ]);
     }
 
@@ -60,10 +60,10 @@ class CallsController extends Controller
         return app(UpdateCall::class)->execute([
             'account_id' => auth()->user()->account->id,
             'call_id' => $call->id,
-            'content' => $request->get('content'),
-            'called_at' => $request->get('called_at'),
-            'contact_called' => $request->get('contact_called'),
-            'emotions' => $request->get('emotions'),
+            'content' => $request->input('content'),
+            'called_at' => $request->input('called_at'),
+            'contact_called' => $request->input('contact_called'),
+            'emotions' => $request->input('emotions'),
         ]);
     }
 

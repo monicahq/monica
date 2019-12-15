@@ -214,19 +214,19 @@ class ConversationsController extends Controller
         }
 
         // find out what the date is
-        $chosenDate = $request->get('conversationDateRadio');
+        $chosenDate = $request->input('conversationDateRadio');
         if ($chosenDate == 'today') {
             $date = now()->format('Y-m-d');
         } elseif ($chosenDate == 'yesterday') {
             $date = now()->subDay()->format('Y-m-d');
         } else {
-            $date = $request->get('conversationDate');
+            $date = $request->input('conversationDate');
         }
 
         return [
             'account_id' => auth()->user()->account_id,
             'happened_at' => $date,
-            'contact_field_type_id' => $request->get('contactFieldTypeId'),
+            'contact_field_type_id' => $request->input('contactFieldTypeId'),
         ];
     }
 
@@ -240,15 +240,15 @@ class ConversationsController extends Controller
      */
     private function updateMessages(Request $request, Conversation $conversation, string $date)
     {
-        $messages = explode(',', $request->get('messages'));
+        $messages = explode(',', $request->input('messages'));
         foreach ($messages as $messageId) {
             $data = [
                 'account_id' => auth()->user()->account->id,
                 'conversation_id' => $conversation->id,
                 'contact_id' => $conversation->contact->id,
                 'written_at' => $date,
-                'written_by_me' => ($request->get('who_wrote_'.$messageId) === 'me'),
-                'content' => $request->get('content_'.$messageId),
+                'written_by_me' => ($request->input('who_wrote_'.$messageId) === 'me'),
+                'content' => $request->input('content_'.$messageId),
             ];
 
             try {

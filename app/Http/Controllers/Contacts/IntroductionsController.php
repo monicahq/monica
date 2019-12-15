@@ -40,8 +40,8 @@ class IntroductionsController extends Controller
         $contact = app(UpdateContactIntroductions::class)->execute([
             'account_id' => auth()->user()->account_id,
             'contact_id' => $contact->id,
-            'met_through_contact_id' => $request->get('metThroughId'),
-            'general_information' => $request->get('first_met_additional_info'),
+            'met_through_contact_id' => $request->input('metThroughId'),
+            'general_information' => $request->input('first_met_additional_info'),
             'is_date_known' => $request->is_first_met_date_known == 'known',
             'day' => $request->input('first_met_day'),
             'month' => $request->input('first_met_month'),
