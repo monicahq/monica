@@ -110,7 +110,7 @@ class ApiContactController extends ApiController
     {
         try {
             $contact = app(CreateContact::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -138,7 +138,7 @@ class ApiContactController extends ApiController
     {
         try {
             $contact = app(UpdateContact::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'contact_id'])
                     +
                     [
                     'contact_id' => $contactId,

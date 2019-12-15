@@ -90,7 +90,7 @@ class ApiTaskController extends ApiController
     {
         try {
             $task = app(UpdateTask::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'task_id'])
                     +
                     [
                     'task_id' => $taskId,
