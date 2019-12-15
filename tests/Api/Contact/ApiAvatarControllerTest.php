@@ -5,9 +5,7 @@ namespace Tests\Api\Contact;
 use Tests\ApiTestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
-use App\Models\Contact\ContactField;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Contact\ContactFieldType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiAvatarControllerTest extends ApiTestCase
