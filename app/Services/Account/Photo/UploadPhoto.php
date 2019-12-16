@@ -65,11 +65,9 @@ class UploadPhoto extends BaseService
             return;
         }
 
-        $photo = Photo::create($array);
-
-        $contact->photos()->syncWithoutDetaching([$photo->id]);
-
-        return $photo;
+        return tap(Photo::create($array), function ($photo) use ($contact) {
+            $contact->photos()->syncWithoutDetaching([$photo->id]);
+        });
     }
 
     /**
