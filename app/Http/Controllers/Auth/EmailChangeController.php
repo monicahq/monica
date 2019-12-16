@@ -83,7 +83,7 @@ class EmailChangeController extends Controller
 
         app(EmailChange::class)->execute([
             'account_id' => $user->account_id,
-            'email' => $request->get('newmail'),
+            'email' => $request->input('newmail'),
             'user_id' => $user->id,
         ]);
 

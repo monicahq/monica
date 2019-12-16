@@ -39,15 +39,15 @@ class IntroductionsController extends Controller
     {
         // Store the contact that allowed this encounter to happen in the first
         // place
-        if ($request->get('metThroughId') !== null) {
+        if ($request->input('metThroughId') !== null) {
             try {
                 Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->get('metThroughId'));
+                    ->findOrFail($request->input('metThroughId'));
             } catch (ModelNotFoundException $e) {
                 return $this->respondNotFound();
             }
 
-            $contact->first_met_through_contact_id = $request->get('metThroughId');
+            $contact->first_met_through_contact_id = $request->input('metThroughId');
         } else {
             $contact->first_met_through_contact_id = null;
         }
@@ -81,7 +81,7 @@ class IntroductionsController extends Controller
         }
 
         if ($request->first_met_additional_info != '') {
-            $contact->first_met_additional_info = $request->get('first_met_additional_info');
+            $contact->first_met_additional_info = $request->input('first_met_additional_info');
         } else {
             $contact->first_met_additional_info = null;
         }

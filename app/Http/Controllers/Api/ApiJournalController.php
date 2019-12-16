@@ -65,7 +65,7 @@ class ApiJournalController extends ApiController
 
         try {
             $entry = Entry::create(
-                $request->all()
+                $request->except(['account_id'])
                 + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
@@ -99,7 +99,7 @@ class ApiJournalController extends ApiController
         }
 
         try {
-            $entry->update($request->all());
+            $entry->update($request->only(['title', 'post']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }

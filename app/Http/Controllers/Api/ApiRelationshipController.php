@@ -65,9 +65,9 @@ class ApiRelationshipController extends ApiController
         try {
             $relationship = app(CreateRelationship::class)->execute([
                 'account_id' => auth()->user()->account_id,
-                'contact_is' => $request->get('contact_is'),
-                'of_contact' => $request->get('of_contact'),
-                'relationship_type_id' => $request->get('relationship_type_id'),
+                'contact_is' => $request->input('contact_is'),
+                'of_contact' => $request->input('of_contact'),
+                'relationship_type_id' => $request->input('relationship_type_id'),
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -90,7 +90,7 @@ class ApiRelationshipController extends ApiController
             $relationship = app(UpdateRelationship::class)->execute([
                 'account_id' => auth()->user()->account_id,
                 'relationship_id' => $relationshipId,
-                'relationship_type_id' => $request->get('relationship_type_id'),
+                'relationship_type_id' => $request->input('relationship_type_id'),
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
