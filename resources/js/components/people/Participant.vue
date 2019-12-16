@@ -3,6 +3,9 @@
   background: #E5F3F9;
   border-radius: 7px;
 }
+.participant-list {
+  height: 150px;
+}
 input[type=text] {
   background-color: #f5f5f5;
 }
@@ -34,7 +37,7 @@ input[type=text]:focus {
         <span class="db bb b--gray-monica pa2">
           <input v-model="search" type="text" :placeholder="$t('app.filter')" class="br2 f5 w-100 ba b--black-20 pa2 outline-0" />
         </span>
-        <ul class="overflow-auto" style="height: 150px;">
+        <ul class="overflow-auto participant-list">
           <li v-for="participant in filteredList"
               :key="participant.id"
               class="bb b--gray-monica pa2 pointer potential-participant"

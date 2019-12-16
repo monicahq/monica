@@ -13,7 +13,7 @@
               {{ $t('people.activities_add_title', { name: name }) }}
             </p>
             <form-input
-              :id="'last_name'"
+              :id="'summary'"
               v-model="newActivity.summary"
               :input-type="'text'"
               :required="false"
@@ -39,7 +39,7 @@
         </div>
 
         <!-- ADDITIONAL FIELDS -->
-        <div v-show="!displayDescription || !displayEmotions || !displayCategory" class="bb b--gray-monica pv3 mb3">
+        <div v-show="!displayDescription || !displayEmotions || !displayCategory || !displayParticipants" class="bb b--gray-monica pv3 mb3">
           <ul class="list">
             <li v-show="!displayDescription" class="di pointer mr3">
               <a @click.prevent="displayDescription = true" href="">{{ $t('people.activities_add_more_details') }}</a>
@@ -57,7 +57,7 @@
         </div>
 
         <!-- DESCRIPTION -->
-        <div v-show="displayDescription" class="bb b--gray-monica pv3 mb3">
+        <div v-if="displayDescription" class="bb b--gray-monica pv3 mb3">
           <label>
             {{ $t('people.activities_summary') }}
           </label>
@@ -77,15 +77,15 @@
         </div>
 
         <!-- EMOTIONS -->
-        <div v-show="displayEmotions" class="bb b--gray-monica pb3 mb3">
+        <div v-if="displayEmotions" class="bb b--gray-monica pb3 mb3">
           <label>
-            {{ $t('people.activities_add_emotions') }}
+            {{ $t('people.activities_add_emotions_title') }}
           </label>
           <emotion class="pv2" @updateEmotionsList="updateEmotionsList" />
         </div>
 
         <!-- ACTIVITY CATEGORIES -->
-        <div v-show="displayCategory" class="bb b--gray-monica pb3 mb3">
+        <div v-if="displayCategory" class="bb b--gray-monica pb3 mb3">
           <label>
             {{ $t('people.activities_add_pick_activity') }}
           </label>
@@ -93,7 +93,7 @@
         </div>
 
         <!-- PARTICPANTS -->
-        <div v-show="displayParticipants" class="bb b--gray-monica pb3 mb3">
+        <div v-if="displayParticipants" class="bb b--gray-monica pb3 mb3">
           <label>
             {{ $t('people.activities_add_participants', {name: name}) }}
           </label>

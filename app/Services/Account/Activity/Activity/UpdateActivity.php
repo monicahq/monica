@@ -21,7 +21,7 @@ class UpdateActivity extends BaseService
             'activity_id' => 'required|integer|exists:activities,id',
             'summary' => 'required|string:255',
             'description' => 'nullable|string:400000000',
-            'date' => 'required|date_format:Y-m-d',
+            'date' => 'required|date|date_format:Y-m-d',
         ];
     }
 

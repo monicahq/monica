@@ -90,15 +90,15 @@ class ActivitiesController extends Controller
     {
         $activity = app(CreateActivity::class)->execute([
             'account_id' => auth()->user()->account->id,
-            'activity_type_id' => $request->get('activity_type_id'),
-            'summary' => $request->get('summary'),
-            'description' => $request->get('description'),
-            'date' => $request->get('happened_at'),
-            'emotions' => $request->get('emotions'),
+            'activity_type_id' => $request->input('activity_type_id'),
+            'summary' => $request->input('summary'),
+            'description' => $request->input('description'),
+            'date' => $request->input('happened_at'),
+            'emotions' => $request->input('emotions'),
         ]);
 
         $arrayParticipants = [];
-        foreach ($request->get('participants') as $participant) {
+        foreach ($request->input('participants') as $participant) {
             array_push($arrayParticipants, $participant['id']);
         }
         // also push the current contact

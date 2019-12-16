@@ -259,7 +259,7 @@ return [
     'activities_add_pick_activity' => '(Optional) Would you like to categorize this activity? You don’t have to, but it will give you statistics later on',
     'activities_add_date_occured' => 'The activity happened on...',
     'activities_add_participants' => 'Who, apart from {name}, participated in this activity? (optional)',
-    'activities_add_emotions' => 'Do you want to log how you felt during this activity? (optional)',
+    'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
     'activities_blank_title' => 'Keep track of what you’ve done with {name} in the past, and what you’ve talked about',
     'activities_blank_add_activity' => 'Add an activity',
     'activities_add_success' => 'The activity has been added successfully',

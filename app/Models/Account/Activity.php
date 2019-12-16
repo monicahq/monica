@@ -165,9 +165,9 @@ class Activity extends Model implements IsJournalableInterface
             'summary' => $this->summary,
             'description' => $this->description,
             'day' => $this->happened_at->day,
-            'day_name' => ucfirst(DateHelper::getShortDay($this->happened_at)),
+            'day_name' => mb_convert_case(DateHelper::getShortDay($this->happened_at), MB_CASE_TITLE, 'UTF-8'),
             'month' => $this->happened_at->month,
-            'month_name' => strtoupper(DateHelper::getShortMonth($this->happened_at)),
+            'month_name' => mb_convert_case(DateHelper::getShortMonth($this->happened_at), MB_CASE_UPPER, 'UTF-8'),
             'year' => $this->happened_at->year,
             'attendees' => $this->getContactsForAPI(),
         ];
