@@ -29,7 +29,7 @@ return [
     'people_search_rows_per_page' => 'Rijen per pagina:',
     'people_search_of' => 'van',
     'people_search_page' => 'Pagina',
-    'people_search_all' => 'All',
+    'people_search_all' => 'Iedereen',
     'people_add_new' => 'Voeg nieuw persoon toe',
     'people_list_account_usage' => 'Je huidige gebruik: :current/:limit contacten',
     'people_list_account_upgrade_title' => 'Upgrade je account om alle functies te kunnen gebruiken.',
