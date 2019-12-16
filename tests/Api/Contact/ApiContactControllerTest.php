@@ -1442,6 +1442,33 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_it_get_an_error_when_set_career_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+            'job' => 'xx',
+            'company' => 'xx',
+        ]);
+        $this->expectNotFound($response);
+    }
+
+    public function test_it_get_an_error_when_set_career_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
+        ]);
+    }
+
     public function test_it_sets_food_preferences()
     {
         $user = $this->signin();
@@ -1477,6 +1504,30 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
             'id' => $contact->id,
             'food_preferences' => null,
+        ]);
+    }
+
+    public function test_it_get_an_error_when_set_food_preferences_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food');
+        $this->expectNotFound($response);
+    }
+
+    public function test_it_get_an_error_when_set_food_preferences_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
         ]);
     }
 
@@ -1577,6 +1628,41 @@ class ApiContactControllerTest extends ApiTestCase
             'account_id' => $user->account_id,
             'contact_id' => $contact->id,
             'id' => Contact::find($contact->id)->first_met_reminder_id,
+        ]);
+    }
+
+    public function test_it_get_an_error_when_set_first_met_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => false,
+        ]);
+        $this->expectNotFound($response);
+    }
+
+    public function test_it_get_an_error_when_set_first_met_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => false,
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
         ]);
     }
 }

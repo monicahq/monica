@@ -234,6 +234,22 @@ class ApiPhotoControllerTest extends ApiTestCase
         ]);
     }
 
+    public function test_photo_destroy_gets_an_error_if_photo_is_not_linked_to_account()
+    {
+        $user = $this->signin();
+
+        $contact = factory(Contact::class)->create();
+        $photo = factory(Photo::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
+
+        $contact->photos()->syncWithoutDetaching([$photo->id]);
+
+        $response = $this->json('DELETE', '/api/photos/'.$photo->id);
+
+        $this->expectNotFound($response);
+    }
+
     public function test_it_store_and_destroy_a_photo()
     {
         Storage::fake();
