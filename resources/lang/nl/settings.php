@@ -292,7 +292,7 @@ return [
 
     'api_title' => 'API-toegang',
     'api_description' => 'De API kan worden gebruikt om de gegevens van Monica te gebruiken in een externe applicatie. Bijvoorbeeld een app op je mobiele telefoon.',
-    'api_help' => 'To use the API, a token is mandatory. You can either create a personal access token (Bearer authentication), or authorize an OAuth client to create it for you. See <a href=":url">API documentation</a>.',
+    'api_help' => 'Om de API te gebruiken, is een token noodzakelijk. Je kunt een persoonlijke token aanmaken (zgn. \'Bearer authentication\'), of een OAuth client toestaan om dit voor je te doen. Zie ook de <a href=":url">API documentatie</a>.',
     'api_endpoint' => 'The API endpoint for this Monica instance is:',
 
     'api_personal_access_tokens' => 'Persoonlijke toegangscodes',
