@@ -67,7 +67,7 @@ return [
     'not_in'               => 'Het formaat van :attribute is ongeldig.',
     'not_regex'            => 'De :attribute formaat is ongeldig.',
     'numeric'              => ':attribute moet een nummer zijn.',
-    'password' => 'The password is incorrect.',
+    'password' => 'Het wachtwoord is incorrect.',
     'present'              => ':attribute moet bestaan.',
     'regex'                => ':attribute formaat is ongeldig.',
     'required'             => ':attribute is verplicht.',
