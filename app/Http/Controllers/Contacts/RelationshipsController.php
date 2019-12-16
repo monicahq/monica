@@ -41,7 +41,7 @@ class RelationshipsController extends Controller
             ->withMonths(DateHelper::getListOfMonths())
             ->withBirthdate(now(DateHelper::getTimezone())->toDateString())
             ->withExistingContacts(ContactResource::collection($existingContacts))
-            ->withType($request->get('type'));
+            ->withType($request->input('type'));
     }
 
     /**
@@ -55,8 +55,8 @@ class RelationshipsController extends Controller
     public function store(Request $request, Contact $contact)
     {
         // case of linking to an existing contact
-        if ($request->get('relationship_type') == 'existing') {
-            $partnerId = $request->get('existing_contact_id');
+        if ($request->input('relationship_type') == 'existing') {
+            $partnerId = $request->input('existing_contact_id');
         } else {
 
             // case of creating a new contact
@@ -76,7 +76,7 @@ class RelationshipsController extends Controller
             'account_id' => auth()->user()->account_id,
             'contact_is' => $contact->id,
             'of_contact' => $partnerId,
-            'relationship_type_id' => $request->get('relationship_type_id'),
+            'relationship_type_id' => $request->input('relationship_type_id'),
         ]);
 
         return redirect()->route('people.show', $contact)
@@ -152,7 +152,7 @@ class RelationshipsController extends Controller
         app(UpdateRelationship::class)->execute([
             'account_id' => auth()->user()->account_id,
             'relationship_id' => $relationship->id,
-            'relationship_type_id' => $request->get('relationship_type_id'),
+            'relationship_type_id' => $request->input('relationship_type_id'),
         ]);
 
         return redirect()->route('people.show', $contact)
@@ -179,16 +179,16 @@ class RelationshipsController extends Controller
         }
 
         // this is really ugly. it should be changed
-        if ($request->get('birthdate') == 'exact') {
+        if ($request->input('birthdate') == 'exact') {
             $birthdate = $request->input('birthdayDate');
             $birthdate = DateHelper::parseDate($birthdate);
             $day = $birthdate->day;
             $month = $birthdate->month;
             $year = $birthdate->year;
         } else {
-            $day = $request->get('day');
-            $month = $request->get('month');
-            $year = $request->get('year');
+            $day = $request->input('day');
+            $month = $request->input('month');
+            $year = $request->input('year');
         }
 
         return [
@@ -196,14 +196,14 @@ class RelationshipsController extends Controller
             'first_name' => $request->input('first_name'),
             'last_name' => $request->input('last_name'),
             'gender_id' => $request->input('gender_id'),
-            'is_birthdate_known' => ! empty($request->get('birthdate')) && $request->get('birthdate') !== 'unknown',
+            'is_birthdate_known' => ! empty($request->input('birthdate')) && $request->input('birthdate') !== 'unknown',
             'birthdate_day' => $day,
             'birthdate_month' => $month,
             'birthdate_year' => $year,
-            'birthdate_is_age_based' => $request->get('birthdate') === 'approximate',
-            'birthdate_age' => $request->get('age'),
-            'birthdate_add_reminder' => ! empty($request->get('addReminder')),
-            'is_partial' => ! $request->get('realContact'),
+            'birthdate_is_age_based' => $request->input('birthdate') === 'approximate',
+            'birthdate_age' => $request->input('age'),
+            'birthdate_add_reminder' => ! empty($request->input('addReminder')),
+            'is_partial' => ! $request->input('realContact'),
             'is_deceased' => false,
             'is_deceased_date_known' => false,
         ];

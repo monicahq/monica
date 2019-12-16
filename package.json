@@ -13,7 +13,7 @@
     "inst": "yarn install --ignore-engines --frozen-lockfile",
     "lint": "eslint --ext .js,.vue resources/js/",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "yarn run snyk-protect"
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
@@ -45,13 +45,13 @@
     "laravel-mix-purgecss": "^4.2.0",
     "list.js": "^1.5.0",
     "lodash": "^4.17.14",
-    "marked": "^0.7.0",
+    "marked": "^0.8.0",
     "moment": "^2.22.1",
     "moment-timezone": "^0.5.21",
     "popper.js": "^1.15.0",
     "pretty-checkbox-vue": "^1.1.8",
     "sass": "^1.15.2",
-    "snyk": "^1.245.0",
+    "snyk": "^1.258.2",
     "sweet-modal-vue": "^2.0.0",
     "tachyons": "^4.9.1",
     "v-selectmenu": "^2.0.1",

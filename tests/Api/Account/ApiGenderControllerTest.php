@@ -99,7 +99,7 @@ class ApiGenderControllerTest extends ApiTestCase
     {
         $user = $this->signin();
 
-        $response = $this->json('post', '/api/genders', [
+        $response = $this->json('POST', '/api/genders', [
             'name' => 'man',
             'type' => 'M',
         ]);
@@ -170,6 +170,24 @@ class ApiGenderControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('put', '/api/genders/'.$gender->id, [
+            'name' => 'man',
+            'type' => 'M',
+        ]);
+
+        $this->expectnotfound($response);
+    }
+
+    public function test_it_cant_update_a_gender_if_account_is_not_linked_to_gender2()
+    {
+        $user = $this->signin();
+
+        $account = factory(Account::class)->create([]);
+        $gender = factory(Gender::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $response = $this->json('put', '/api/genders/'.$gender->id, [
+            'account_id' => $account->id,
             'name' => 'man',
             'type' => 'M',
         ]);
