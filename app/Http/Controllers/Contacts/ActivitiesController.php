@@ -97,10 +97,9 @@ class ActivitiesController extends Controller
             'emotions' => $request->input('emotions'),
         ]);
 
-        $arrayParticipants = [];
-        foreach ($request->input('participants') as $participant) {
-            array_push($arrayParticipants, $participant['id']);
-        }
+        $arrayParticipants = array_map(function($participant) {
+            return $participant['id'];
+        }, $request->input('participants'));
         // also push the current contact
         array_push($arrayParticipants, $contact->id);
 
