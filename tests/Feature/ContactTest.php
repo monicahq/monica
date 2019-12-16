@@ -7,6 +7,7 @@ use App\Models\Contact\Tag;
 use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
+use App\Models\Contact\Gender;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Contact\Reminder;
@@ -778,6 +779,33 @@ class ContactTest extends FeatureTestCase
             'id' => $contact->deceased_reminder_id,
             'contact_id' => $contact->id,
             'initial_date' => '2012-06-22',
+        ]);
+    }
+
+    public function test_it_create_a_contact()
+    {
+        $user = $this->signIn();
+
+        $gender = factory(Gender::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $data = [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'middle_name' => 'Mike',
+            'gender' => $gender->id,
+        ];
+
+        $response = $this->post('/people', $data);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('contacts', [
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'middle_name' => 'Mike',
+            'gender_id' => $gender->id,
         ]);
     }
 }
