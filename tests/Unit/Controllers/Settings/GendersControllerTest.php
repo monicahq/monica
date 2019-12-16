@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Controllers\Contact;
+namespace Tests\Unit\Controllers\Settings;
 
 use Tests\FeatureTestCase;
 use App\Models\Contact\Gender;

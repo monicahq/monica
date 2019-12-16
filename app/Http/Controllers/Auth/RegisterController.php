@@ -87,6 +87,10 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $first = ! Account::hasAny();
+        if (config('monica.disable_signup') == 'true' && ! $first) {
+            abort(403, trans('auth.signup_disabled'));
+        }
+
         $account = Account::createDefault(
             $data['first_name'],
             $data['last_name'],
@@ -113,8 +117,9 @@ class RegisterController extends Controller
      */
     protected function registered(Request $request, $user)
     {
-        $first = Account::count() == 1;
-        if (! config('monica.signup_double_optin') || $first) {
+        /** @var int $count */
+        $count = Account::count();
+        if (! config('monica.signup_double_optin') || $count == 1) {
             // if signup_double_optin is disabled, skip the confirm email part
             $user->markEmailAsVerified();
         }

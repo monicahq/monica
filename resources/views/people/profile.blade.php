@@ -4,7 +4,7 @@
 
 @section('content')
   <div class="people-show" >
-    {{ csrf_field() }}
+    @csrf
 
     {{-- Breadcrumb --}}
     <div class="breadcrumb">
@@ -70,8 +70,8 @@
               <li>
                 <a id="link-delete-contact" class="pointer" onclick="if (confirm('{{ trans('people.people_delete_confirmation') }}')) { $('#contact-delete-form').submit(); } return false;" href="">{{ trans('people.people_delete_message') }}</a>
                 <form method="POST" action="{{ route('people.destroy', $contact) }}" id="contact-delete-form" class="hidden">
-                  {{ method_field('DELETE') }}
-                  {{ csrf_field() }}
+                  @method('DELETE')
+                  @csrf
                 </form>
               </li>
             </ul>

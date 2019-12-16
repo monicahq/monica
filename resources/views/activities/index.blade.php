@@ -44,8 +44,8 @@
         </div>
 
         <form method="POST" action="{{ route('activities.delete', [$activity, $contact]) }}" class="entry-delete-form hidden">
-          {{ method_field('DELETE') }}
-          {{ csrf_field() }}
+          @method('DELETE')
+          @csrf
         </form>
       </li>
 

@@ -635,6 +635,10 @@ class ImportVCard extends BaseService
 
                 $photo = app(UploadPhoto::class)->execute($array);
 
+                if (! $photo) {
+                    return;
+                }
+
                 app(UpdateAvatar::class)->execute([
                     'account_id' => $contact->account_id,
                     'contact_id' => $contact->id,

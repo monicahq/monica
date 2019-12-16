@@ -6,28 +6,25 @@ use Carbon\Carbon;
 use App\Helpers\DateHelper;
 use App\Models\Journal\Day;
 use App\Models\Settings\Term;
-use App\Helpers\RequestHelper;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use App\Helpers\CountriesHelper;
 use App\Models\Settings\Currency;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
-use App\Notifications\ConfirmEmail;
-use Illuminate\Support\Facades\App;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Http\Resources\Account\User\User as UserResource;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Settings\Compliance\Compliance as ComplianceResource;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, HasLocalePreference
 {
     use Notifiable, HasApiTokens;
 
@@ -73,101 +70,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_new_life_event_badge_seen' => 'boolean',
         'admin' => 'boolean',
     ];
-
-    /**
-     * Create a new User.
-     *
-     * @param int $account_id
-     * @param string $first_name
-     * @param string $last_name
-     * @param string $email
-     * @param string $password
-     * @param string $ipAddress
-     * @param string $lang
-     * @return self
-     */
-    public static function createDefault($account_id, $first_name, $last_name, $email, $password, $ipAddress = null, $lang = null)
-    {
-        if (self::where('email', $email)->count() > 0) {
-            throw new UnauthorizedException();
-        }
-
-        // create the user
-        $user = new self;
-        $user->account_id = $account_id;
-        $user->first_name = $first_name;
-        $user->last_name = $last_name;
-        $user->email = $email;
-        $user->password = bcrypt($password);
-        $user->created_at = now();
-        $user->locale = $lang ?: App::getLocale();
-
-        $user->setDefaultCurrencyAndTimezone($ipAddress, $user->locale);
-
-        $user->save();
-
-        $user->acceptPolicy($ipAddress);
-
-        return $user;
-    }
-
-    private function setDefaultCurrencyAndTimezone($ipAddress, $locale)
-    {
-        $infos = RequestHelper::infos($ipAddress);
-
-        // Associate timezone and currency
-        $currencyCode = $infos['currency'];
-        $timezone = $infos['timezone'];
-        if ($infos['country']) {
-            $country = CountriesHelper::getCountry($infos['country']);
-        } else {
-            $country = CountriesHelper::getCountryFromLocale($locale);
-        }
-
-        // Timezone
-        if (! is_null($timezone)) {
-            $this->timezone = $timezone;
-        } elseif (! is_null($country)) {
-            $this->timezone = CountriesHelper::getDefaultTimezone($country);
-        } else {
-            $this->timezone = config('app.timezone');
-        }
-
-        // Currency
-        if (! is_null($currencyCode)) {
-            $this->associateCurrency($currencyCode);
-        } elseif (! is_null($country)) {
-            foreach ($country->currencies as $currency) {
-                if ($this->associateCurrency($currency)) {
-                    break;
-                }
-            }
-        }
-
-        // Temperature scale
-        switch ($country->cca2) {
-            case 'US':
-            case 'BZ':
-            case 'KY':
-                $this->temperature_scale = 'fahrenheit';
-                break;
-            default:
-                $this->temperature_scale = 'celsius';
-                break;
-        }
-    }
-
-    private function associateCurrency($currency) : bool
-    {
-        $currencyObj = Currency::where('iso', $currency)->first();
-        if (! is_null($currencyObj)) {
-            $this->currency()->associate($currencyObj);
-
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * Get the account record associated with the user.
@@ -330,11 +232,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getGoogle2faSecretAttribute($value)
     {
-        if (is_null($value)) {
-            return $value;
+        if (! is_null($value)) {
+            return decrypt($value);
         }
-
-        return decrypt($value);
     }
 
     /**
@@ -491,6 +391,20 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function sendEmailVerificationNotification()
     {
-        $this->notify(new ConfirmEmail(true));
+        /** @var int $count */
+        $count = Account::count();
+        if (config('monica.signup_double_optin') && $count > 1) {
+            $this->notify(new VerifyEmail());
+        }
+    }
+
+    /**
+     * Get the preferred locale of the entity.
+     *
+     * @return string|null
+     */
+    public function preferredLocale()
+    {
+        return $this->locale;
     }
 }

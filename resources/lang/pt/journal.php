@@ -6,6 +6,7 @@ return [
     'journal_description' => 'Nota: o diário agrega entradas manuais e entradas automáticas tais como Atividades feitas com seus contactos. Embora possa apagar manualmente as entradas de diário, no caso das Atividades terá que apagá-las na página de contacto.',
     'journal_add' => 'Adicionar um registro no diário',
     'journal_edit' => 'Edit a journal entry',
+    'journal_empty' => 'Empty journal',
     'journal_created_automatically' => 'Criado automaticamente',
     'journal_entry_type_journal' => 'Entrada de diário',
     'journal_entry_type_activity' => 'Atividade',

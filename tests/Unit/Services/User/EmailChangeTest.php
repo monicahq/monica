@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\User\User;
 use App\Models\Account\Account;
 use App\Services\User\EmailChange;
-use App\Notifications\ConfirmEmail;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -31,7 +31,7 @@ class EmailChangeTest extends TestCase
 
         $user = app(EmailChange::class)->execute($request);
 
-        NotificationFacade::assertNotSentTo($user, ConfirmEmail::class);
+        NotificationFacade::assertNotSentTo($user, VerifyEmail::class);
         NotificationFacade::assertNothingSent();
 
         $this->assertDatabaseHas('users', [
@@ -90,7 +90,7 @@ class EmailChangeTest extends TestCase
 
         $user = app(EmailChange::class)->execute($request);
 
-        NotificationFacade::assertSentTo($user, ConfirmEmail::class);
+        NotificationFacade::assertSentTo($user, VerifyEmail::class);
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
@@ -102,5 +102,28 @@ class EmailChangeTest extends TestCase
             User::class,
             $user
         );
+    }
+
+    public function test_it_send_confirmation_email()
+    {
+        NotificationFacade::fake();
+        config(['monica.signup_double_optin' => true]);
+
+        $user = factory(User::class)->create([]);
+
+        $request = [
+            'account_id' => $user->account->id,
+            'user_id' => $user->id,
+            'email' => 'newmail@ok.com',
+        ];
+
+        $user = app(EmailChange::class)->execute($request);
+
+        NotificationFacade::assertSentTo($user, VerifyEmail::class);
+
+        $notifications = NotificationFacade::sent($user, VerifyEmail::class);
+        $message = $notifications[0]->toMail($user);
+
+        $this->assertStringContainsString('To validate your email click on the button below', implode('', $message->introLines));
     }
 }

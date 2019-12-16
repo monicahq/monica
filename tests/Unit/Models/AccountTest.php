@@ -790,7 +790,7 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
 
-        $this->expectException(\Illuminate\Validation\UnauthorizedException::class);
+        $this->expectException(\Illuminate\Validation\ValidationException::class);
         $account = Account::createDefault('John', 'Doe', 'john@doe.com', 'password');
     }
 

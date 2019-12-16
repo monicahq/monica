@@ -27,6 +27,7 @@ class Activity extends Resource
                 'total' => $this->contacts()->count(),
                 'contacts' => $this->getContactsForAPI(),
             ],
+            'url' => route('api.activity', $this->id),
             'account' => [
                 'id' => $this->account->id,
             ],

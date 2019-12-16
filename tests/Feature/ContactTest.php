@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use App\Models\Contact\Gift;
 use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
+use App\Models\Account\Activity;
 use App\Models\Contact\Reminder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -229,6 +230,48 @@ class ContactTest extends FeatureTestCase
         [$user, $contact] = $this->fetchUser();
         $response = $this->get('/people');
         $response->assertSee('1 contact');
+    }
+
+    public function test_user_can_see_contacts_sorted_by_lastactivitydateNewtoOld()
+    {
+        $user = $this->signIn();
+
+        $contacts = factory(Contact::class, 10)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        foreach ($contacts as $contact) {
+            factory(Activity::class)->create([
+                'account_id' => $contact->account_id,
+            ]);
+        }
+
+        $response = $this->get('/people/list?sort=lastactivitydateNewtoOld');
+
+        $response->assertJsonFragment([
+            'totalRecords' => 10,
+        ]);
+    }
+
+    public function test_user_can_see_contacts_sorted_by_lastactivitydateOldtoNew()
+    {
+        $user = $this->signIn();
+
+        $contacts = factory(Contact::class, 10)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        foreach ($contacts as $contact) {
+            factory(Activity::class)->create([
+                'account_id' => $contact->account_id,
+            ]);
+        }
+
+        $response = $this->get('/people/list?sort=lastactivitydateOldtoNew');
+
+        $response->assertJsonFragment([
+            'totalRecords' => 10,
+        ]);
     }
 
     public function test_user_can_be_reminded_about_an_event_once()

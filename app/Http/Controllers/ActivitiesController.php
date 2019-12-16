@@ -47,7 +47,8 @@ class ActivitiesController extends Controller
      */
     public function store(ActivitiesRequest $request, Contact $contact)
     {
-        $specifiedContacts = $request->get('contacts');
+        /** @var array */
+        $specifiedContacts = $request->input('contacts');
         $specifiedContactsObj = [];
 
         try {
@@ -113,7 +114,8 @@ class ActivitiesController extends Controller
     {
         $user = $request->user();
         $account = $user->account;
-        $specifiedContacts = $request->get('contacts');
+        /** @var array */
+        $specifiedContacts = $request->input('contacts');
         $specifiedContactsObj = [];
 
         try {
@@ -157,6 +159,11 @@ class ActivitiesController extends Controller
         foreach ($specifiedContactsObj as $newContact) {
             $newContact->activities()->attach($activity, ['account_id' => $account->id]);
         }
+
+        // Update the journal entry (in case date has changed)
+        $activity->journalEntry->update([
+            'date' => $activity->date_it_happened,
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.activities_update_success'));

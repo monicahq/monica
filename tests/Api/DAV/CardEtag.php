@@ -70,9 +70,12 @@ N:{$contact->last_name};{$contact->first_name};{$contact->middle_name};;
                     break;
             }
         }
-        $data .= "REV:{$timestamp}
-END:VCARD
-";
+        $data .= "REV:{$timestamp}\n";
+        $tags = $contact->getTagsAsString();
+        if (! empty($tags)) {
+            $data .= "CATEGORIES:{$tags}\n";
+        }
+        $data .= "END:VCARD\n";
 
         if ($realFormat) {
             $data = mb_ereg_replace("\n", "\r\n", $data);

@@ -27,7 +27,7 @@ return [
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
-    'days' => '天|天',
+    'days' => '天',
     'today' => '今天',
     'yesterday' => '昨天',
     'another_day' => '某一天',

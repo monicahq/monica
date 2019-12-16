@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <form method="POST" action="{{ route('people.calls.store', $contact) }}">
-          {{ csrf_field() }}
+          @csrf
 
           <div class="form-group">
             <label for="content" class="col-form-label b">{{ trans('people.modal_call_comment') }}</label>

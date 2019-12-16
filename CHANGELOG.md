@@ -2,16 +2,40 @@
 
 ### New features:
 
-*
+* Save contact tags in vCard 'CATEGORIES' field
 
 ### Enhancements:
 
+* Enable API web navigation
+* Enhance UI of API's Settings to add comprehension and documentation
+* Improve trim string middleware to not trim password text
+* Upgrade to Laravel 6.5
+* Enhance user invitation mail
+* Add job information next to the contact name on profile page
+* Use supervisor in docker images
 * Use JawsDB by default on heroku instances
 * Add pluralization forms for non-english-like-plural languages, for vue.js translations
 
 ### Fixes:
 
+* Fix OAuth login process with WebAuthn activated
+* Fix journal entry edit
+* Fix register in case country is not detected from ip address
+* Fix Photo->contact relation
+* Fix subscription page
+* Fix relationship create and destroy with partial contact
+* Fix 2fa route on webauthn page
+* Fix tooltip on favorite icon
+* Fix icons disappeared on contact information
+* Fix CSV uploads with weird photo files
+* Ensure disable_signup is checked on form register validation
+* Fix password resetting page
+* Fix email verification sending on test environments
+* Fix contact export
+* Fix currencies seeder by accounting for defaults
+* Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
+* Fix API requests for Reminders failing with internal server error
 
 
 # RELEASED VERSIONS:

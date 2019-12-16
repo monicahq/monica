@@ -465,14 +465,14 @@ class Contact extends Model
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
                 $builder->orderBy('activities.date_it_happened', 'desc');
-                $builder->select('*', 'contacts.id as id');
+                $builder->select(['*', 'contacts.id as id']);
 
                 return $builder;
             case 'lastactivitydateOldtoNew':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
                 $builder->orderBy('activities.date_it_happened', 'asc');
-                $builder->select('*', 'contacts.id as id');
+                $builder->select(['*', 'contacts.id as id']);
 
                 return $builder;
             default:
@@ -1154,6 +1154,7 @@ class Contact extends Model
         }
 
         try {
+            /** @var Contact $contact */
             $contact = self::where('account_id', $this->account_id)
                 ->findOrFail($this->first_met_through_contact_id);
         } catch (ModelNotFoundException $e) {
@@ -1305,7 +1306,8 @@ class Contact extends Model
                         ->where([
                             'account_id' => $contact->account_id,
                             'contact_is' => $contact->id,
-                        ]);
+                        ])
+                        ->first();
             })
             ->first();
     }

@@ -70,7 +70,7 @@ return [
     'list_link_to_archived_contacts' => 'Liste de contacts archivés',
 
     // Header
-    'me' => 'C\'est vous',
+    'me' => 'C’est vous',
     'edit_contact_information' => 'Mettre à jour les informations',
     'contact_archive' => 'Archiver le contact',
     'contact_unarchive' => 'Désarchiver le contact',
@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relation a été supprimée.',
 
     // tasks
+    'tasks_title' => 'Tâches',
     'tasks_blank_title' => 'Vous n’avez aucune tâche pour le moment.',
     'tasks_form_title' => 'Titre',
     'tasks_form_description' => 'Description (optionnel)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'Une erreur est survenue durant le téléchargement du document. Veuillez réessayer plus tard.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Photos associées',
     'photo_list_cta' => 'Télécharger une photo',
     'photo_list_blank_desc' => 'Vous pouvez enregistrer des images sur ce contact. Téléchargez-en une maintenant !',
@@ -480,7 +482,7 @@ return [
     'avatar_adorable_avatar' => 'La photo de profil Adorable',
     'avatar_gravatar' => 'Le Gravatar associé à l\'adresse courriel de cette personne. <a href="https://gravatar.com/">Gravatar</a> est un système global qui permet aux utilisateurs d\'associer des adresses courriel avec des photos.',
     'avatar_current' => 'Conserver la photo de profil actuelle',
-    'avatar_photo' => 'À partir d\'une photo que vous téléchargez',
+    'avatar_photo' => 'À partir d’une photo que vous téléchargez',
 
     // emotions
     'emotion_this_made_me_feel' => 'Cela vous fait sentir …',

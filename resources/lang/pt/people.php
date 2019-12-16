@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'You don’t have any tasks yet.',
     'tasks_form_title' => 'Título',
     'tasks_form_description' => 'Description (optional)',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => 'There was an error uploading the document. Please try again below.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Related photos',
     'photo_list_cta' => 'Upload photo',
     'photo_list_blank_desc' => 'You can store images about this contact. Upload one now!',

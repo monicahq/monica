@@ -154,32 +154,35 @@ trait Subscription
     {
         try {
             return $callback();
-        } catch (\Stripe\Error\Card $e) {
+        } catch (\Stripe\Exception\CardException $e) {
             // Since it's a decline, \Stripe\Error\Card will be caught
             $body = $e->getJsonBody();
             $err = $body['error'];
             $errorMessage = trans('settings.stripe_error_card', ['message' => $err['message']]);
             Log::error('Stripe card decline error: '.(string) $e, $e->getJsonBody() ?: []);
-        } catch (\Stripe\Error\RateLimit $e) {
+        } catch (\Stripe\Exception\RateLimitException $e) {
             // Too many requests made to the API too quickly
             $errorMessage = trans('settings.stripe_error_rate_limit');
             Log::error('Stripe RateLimit error: '.(string) $e, $e->getJsonBody() ?: []);
-        } catch (\Stripe\Error\InvalidRequest $e) {
+        } catch (\Stripe\Exception\InvalidRequestException $e) {
             // Invalid parameters were supplied to Stripe's API
             $errorMessage = trans('settings.stripe_error_invalid_request');
             Log::error('Stripe InvalidRequest error: '.(string) $e, $e->getJsonBody() ?: []);
-        } catch (\Stripe\Error\Authentication $e) {
+        } catch (\Stripe\Exception\AuthenticationException $e) {
             // Authentication with Stripe's API failed
             // (maybe you changed API keys recently)
             $errorMessage = trans('settings.stripe_error_authentication');
             Log::error('Stripe Authentication error: '.(string) $e, $e->getJsonBody() ?: []);
-        } catch (\Stripe\Error\ApiConnection $e) {
+        } catch (\Stripe\Exception\ApiConnectionException $e) {
             // Network communication with Stripe failed
             $errorMessage = trans('settings.stripe_error_api_connection_error');
             Log::error('Stripe ApiConnection error: '.(string) $e, $e->getJsonBody() ?: []);
-        } catch (\Stripe\Error\Base $e) {
+        } catch (\Stripe\Exception\ApiErrorException $e) {
             $errorMessage = $e->getMessage();
             Log::error('Stripe error: '.(string) $e, $e->getJsonBody() ?: []);
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+            Log::error('Stripe error: '.(string) $e);
         }
 
         throw new StripeException($errorMessage);

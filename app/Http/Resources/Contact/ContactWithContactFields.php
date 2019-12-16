@@ -96,6 +96,7 @@ class ContactWithContactFields extends Contact
                 'number_of_debts' => $this->debts->count(),
             ]),
             'contactFields' => $this->when(! $this->is_partial, $this->getContactFieldsForAPI()),
+            'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
                 'id' => $this->account->id,
             ],

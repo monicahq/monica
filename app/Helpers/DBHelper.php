@@ -47,4 +47,9 @@ class DBHelper
             'table_prefix' => '%'.DB::connection()->getTablePrefix().'%',
         ]);
     }
+
+    public static function getTable($name)
+    {
+        return '`'.DB::connection()->getTablePrefix().$name.'`';
+    }
 }

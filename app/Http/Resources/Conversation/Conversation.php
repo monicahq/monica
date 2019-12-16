@@ -24,6 +24,7 @@ class Conversation extends Resource
             'happened_at' => DateHelper::getTimestamp($this->happened_at),
             'messages' => MessageResource::collection($this->messages),
             'contact_field_type' => new ContactFieldTypeResource($this->contactFieldType),
+            'url' => route('api.conversation', $this->id),
             'account' => [
                 'id' => $this->account->id,
             ],

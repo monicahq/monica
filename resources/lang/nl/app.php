@@ -37,7 +37,7 @@ return [
     'upgrade' => 'Upgrade om te ontgrendelen',
     'percent_uploaded' => '{percent}% geüpload',
     'retry' => 'Opnieuw Proberen',
-    'go_back' => 'Go back',
+    'go_back' => 'Terug',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
     'application_description' => 'Monica is een app voor het beheren van interacties met uw geliefden, vrienden en familie.',
@@ -59,7 +59,7 @@ return [
 
     'footer_remarks' => 'Eventuele opmerkingen?',
     'footer_send_email' => 'Stuur me een e-mail',
-    'footer_privacy' => 'Privacy beleid',
+    'footer_privacy' => 'Privacybeleid',
     'footer_release' => 'Releaseopmerkingen',
     'footer_newsletter' => 'Nieuwsbrief',
     'footer_source_code' => 'Bijdragen',
@@ -174,15 +174,15 @@ return [
     'relationship_type_child_with_name' => ':name’s zoon',
     'relationship_type_child_female_with_name' => ':name’s dochter',
 
-    'relationship_type_stepparent' => 'stepfather',
-    'relationship_type_stepparent_female' => 'stepmother',
-    'relationship_type_stepparent_with_name' => ':name’s stepfather',
-    'relationship_type_stepparent_female_with_name' => ':name’s stepmother',
+    'relationship_type_stepparent' => 'stiefvader',
+    'relationship_type_stepparent_female' => 'stiefmoeder',
+    'relationship_type_stepparent_with_name' => ':name’s stiefvader',
+    'relationship_type_stepparent_female_with_name' => ':name’s stiefmoeder',
 
-    'relationship_type_stepchild' => 'stepson',
-    'relationship_type_stepchild_female' => 'stepdaughter',
-    'relationship_type_stepchild_with_name' => ':name’s stepson',
-    'relationship_type_stepchild_female_with_name' => ':name’s stepdaughter',
+    'relationship_type_stepchild' => 'stiefzoon',
+    'relationship_type_stepchild_female' => 'stiefdochter',
+    'relationship_type_stepchild_with_name' => ':name’s stiefzoon',
+    'relationship_type_stepchild_female_with_name' => ':name’s stiefdochter',
 
     'relationship_type_sibling' => 'broer',
     'relationship_type_sibling_female' => 'zus',

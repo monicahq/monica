@@ -41,6 +41,7 @@ class CronEvent
      */
     public static function command(string $command) : self
     {
+        /** @var \App\Models\Instance\Cron $cron */
         $cron = Cron::firstOrCreate(['command' => $command]);
 
         return new self($cron);

@@ -30,7 +30,7 @@ return [
     'people_search_of' => 'of',
     'people_search_page' => 'Page',
     'people_search_all' => 'All',
-    'people_add_new' => 'Add new person',
+    'people_add_new' => 'Añadir a una nueva persona',
     'people_list_account_usage' => 'Es uso de tu cuenta: :current/:limit contactos',
     'people_list_account_upgrade_title' => 'Actualiza tu cuenta para desbloquear todo su potencial.',
     'people_list_account_upgrade_cta' => 'Actualizar ahora',
@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => 'La relación ha sido eliminada.',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => 'Aún no tienes tareas.',
     'tasks_form_title' => 'Título',
     'tasks_form_description' => 'Descripción (opcional)',
@@ -255,7 +256,7 @@ return [
     'activities_add_title' => '¿Qué hiciste con :name?',
     'activities_summary' => 'Describe lo que hiciste',
     'activities_add_pick_activity' => '(Opcional) ¿Te gustaría categorizar esta actividad? No tienes que hacerlo, pero esto te dará estadísticas en el futuro',
-    'activities_add_date_occured' => 'Date this activity occurred',
+    'activities_add_date_occured' => 'Fecha en la que esta actividad ocurrió',
     'activities_add_optional_comment' => 'Comentario opcional',
     'activities_add_cta' => 'Registra actividad',
     'activities_blank_title' => 'Dale seguimiento a lo que has hecho con :name en el pasado, y de que han hablado',
@@ -465,11 +466,12 @@ return [
     'document_upload_zone_error' => 'Se produjo un error al subir el archivo. Por favor inténtelo de nuevo.',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => 'Fotos relacionadas',
     'photo_list_cta' => 'Subir foto',
     'photo_list_blank_desc' => 'Puede almacenar imágenes acerca de este contacto. ¡Suba una ahora!',
     'photo_upload_zone_cta' => 'Carga una foto',
-    'photo_current_profile_pic' => 'Current profile picture',
+    'photo_current_profile_pic' => 'Foto de perfil actual',
     'photo_make_profile_pic' => 'Make profile picture',
     'photo_delete' => 'Eliminar foto',
 

@@ -9,7 +9,7 @@
       <p>{{ trans('app.compliance_desc_end') }}</p>
 
       <form action="compliance/sign" method="POST" class="tc mt4">
-        {{ csrf_field() }}
+        @csrf
         <button class="btn btn-primary" name="save" type="submit">{{ trans('app.compliance_terms') }}</button>
       </form>
     </div>

@@ -15,7 +15,7 @@ return [
     'notification_description' => '在:count天后(:date),将有以下事件发生：',
 
     'stay_in_touch_subject_line' => '您的『常联系』提醒 :name',
-    'stay_in_touch_subject_description' => '您的常联系提醒： 每 :frequency 天 与 :name 联系.|您的常联系提醒： 每 :frequency 天 与 :name 联系.',
+    'stay_in_touch_subject_description' => '您的常联系提醒： 每 :frequency 天 与 :name 联系.',
 
     'notifications_whoops' => '糟了!',
     'notifications_hello' => '您好！',
@@ -26,4 +26,17 @@ return [
     'confirmation_email_title' => 'Monica – Email 认证',
     'confirmation_email_intro'=> '请点击以下按钮来完成Email认证',
     'confirmation_email_button' => 'Email 认证',
+    'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
+
+    'password_reset_title' => 'Monica – Reset Password Notification',
+    'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
+    'password_reset_button' => 'Reset Password',
+    'password_reset_expiration' => 'This password reset link will expire in :count minutes.',
+    'password_reset_bottom' => 'If you did not request a password reset, no further action is required.',
+
+    'invitation_title' => 'Monica – You are invited by :name',
+    'invitation_intro' => 'You’ve been invited by :name (:email) to use Monica, a nice Personal Relationship Management tool.',
+    'invitation_link' => 'To accept the invitation, click on the link below:',
+    'invitation_button' => 'Accept invitation',
+    'invitation_expiration' => 'This link will expire in :count days.',
 ];

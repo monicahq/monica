@@ -180,7 +180,7 @@ return [
     'subscriptions_account_invoices_download' => 'Download',
     'subscriptions_account_invoices_subscription' => 'Subscription from :startDate to :endDate',
     'subscriptions_account_payment' => 'Which payment option fits you best?',
-    'subscriptions_account_confirm_payment' => 'You payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
+    'subscriptions_account_confirm_payment' => 'Your payment is currently incomplete, please <a href=":url">confirm your payment</a>.',
     'subscriptions_downgrade_title' => 'Downgrade your account to the free plan',
     'subscriptions_downgrade_limitations' => 'The free plan has limitations. In order to be able to downgrade, you need to pass the checklist below:',
     'subscriptions_downgrade_rule_users' => 'You must have only 1 user in your account',

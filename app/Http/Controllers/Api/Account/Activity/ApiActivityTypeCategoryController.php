@@ -65,7 +65,7 @@ class ApiActivityTypeCategoryController extends ApiController
     {
         try {
             $activityTypeCategory = app(CreateActivityTypeCategory::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -94,7 +94,7 @@ class ApiActivityTypeCategoryController extends ApiController
     {
         try {
             $activityTypeCategory = app(UpdateActivityTypeCategory::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'activity_type_category_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,

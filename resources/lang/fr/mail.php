@@ -26,4 +26,17 @@ return [
     'confirmation_email_title' => 'Monica – vérification d’adresse courriel',
     'confirmation_email_intro'=> 'Pour valider votre adresse courriel, cliquez sur le bouton ci-dessous',
     'confirmation_email_button' => 'Vérifiez l’adresse courriel',
+    'confirmation_email_bottom' => 'Si vous n’avez pas créé de compte, aucune autre action n’est requise.',
+
+    'password_reset_title' => 'Monica – Réinitialisation du mot de passe',
+    'password_reset_intro' => 'Vous recevez ce courriel car nous avons reçu une demande de réinitialisation de mot de passe pour votre compte.',
+    'password_reset_button' => 'Réinitialiser le mot de passe',
+    'password_reset_expiration' => 'Ce lien de réinitialisation du mot de passe expirera dans :count minutes.',
+    'password_reset_bottom' => 'Si vous n’avez pas demandé de réinitialisation du mot de passe, aucune autre action n’est requise.',
+
+    'invitation_title' => 'Monica – Vous êtes invité par :name',
+    'invitation_intro' => 'Vous avez été invité par :name (:email) à utiliser Monica, un outil de gestion de relations personnelles.',
+    'invitation_link' => 'Pour accepter l’invitation, cliquez sur le lien ci-dessous :',
+    'invitation_button' => 'Accepter l’invitation',
+    'invitation_expiration' => 'Ce lien expirera dans :count jours.',
 ];

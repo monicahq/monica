@@ -185,10 +185,10 @@ return [
     'reminders_delete_success' => '已成功删除提醒',
     'reminders_update_success' => '已成功更新提醒',
 
-    'reminder_frequency_day' => '每天 | 每:number天',
-    'reminder_frequency_week' => '每周 | 每:number星期',
-    'reminder_frequency_month' => '每月 | 每:number月',
-    'reminder_frequency_year' => '每年 | 每:number年',
+    'reminder_frequency_day' => '每:number天',
+    'reminder_frequency_week' => ' 每:number星期',
+    'reminder_frequency_month' => ' 每:number月',
+    'reminder_frequency_year' => '每:number年',
     'reminder_frequency_one_time' => '在:date',
     'reminders_delete_confirmation' => '确实要删除此提醒吗？',
     'reminders_delete_cta' => '删除',
@@ -221,6 +221,7 @@ return [
     'relationship_form_deletion_success' => '此关系已删除',
 
     // tasks
+    'tasks_title' => 'Tasks',
     'tasks_blank_title' => '您暂时还没任务。',
     'tasks_form_title' => '标题',
     'tasks_form_description' => '描述 (可选)',
@@ -268,10 +269,10 @@ return [
     'activities_activity' => '活动类别',
     'activities_view_activities_report' => '查看活动报告',
     'activities_profile_title' => ':name 与您之间的活动报告',
-    'activities_profile_subtitle' => '截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次|截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次',
+    'activities_profile_subtitle' => '截至目前为止您与:name的活动记录如下：近一年共 :activities_last_twelve_months次，总共 :total_activities次',
     'activities_profile_year_summary_activity_types' => ':year年活动类型汇总',
     'activities_profile_year_summary' => ':year年你们一起进行的活动',
-    'activities_profile_number_occurences' => ':value 次活动|:value 次活动',
+    'activities_profile_number_occurences' => ':value 次活动',
 
     // notes
     'notes_create_success' => '便签已成功创建',
@@ -465,6 +466,7 @@ return [
     'document_upload_zone_error' => '上传文件时出错，请再试一次 ！',
 
     // Photos
+    'photo_title' => 'Photos',
     'photo_list_title' => '相关照片',
     'photo_list_cta' => '上传照片',
     'photo_list_blank_desc' => '您可以存储有关此联系人的图像。立即上传一个!',
