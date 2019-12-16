@@ -41,7 +41,7 @@ return [
     'people_add_title' => 'Ajouter une nouvelle personne',
     'people_add_missing' => 'Nous n’avons trouvé personne. Ajoutez quelqu’un maintenant',
     'people_add_firstname' => 'Prénom',
-    'people_add_middlename' => 'Surnom (optionnel)',
+    'people_add_middlename' => 'Deuxième prénom (optionnel)',
     'people_add_lastname' => 'Nom de famille (optionnel)',
     'people_add_nickname' => 'Surnom (optionnel)',
     'people_add_cta' => 'Ajouter',
