@@ -19,6 +19,6 @@ return [
     'user' => 'Geen gebruiker bekend met het e-mailadres.',
     'changed' => 'Wachtwoord succesvol gewijzigd.',
     'invalid' => 'Het ingevoerde wachtwoord is niet correct.',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => 'Wacht alsjeblieft even voor je het opnieuw probeert.',
 
 ];
