@@ -134,7 +134,7 @@ return [
     'recovery_help_information' => 'Je kan elke herstelcode eenmalig gebruiken.',
     'recovery_clipboard' => 'Herstelcodes gekopieerd naar het klembord',
     'recovery_generate' => 'Genereer nieuwe codes...',
-    'recovery_generate_help' => 'Wees je ervan bewust dat door het genereren van nieuwe codes de vorige codes vervallen',
+    'recovery_generate_help' => 'Let op: met het genereren van nieuwe codes vervallen de bestaande codes',
     'recovery_already_used_help' => 'Deze code is reeds gebruikt',
 
     'users_list_title' => 'Gebruikers met toegang tot je account',
