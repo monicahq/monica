@@ -37,7 +37,7 @@ return [
     'upgrade' => 'Upgrade om te ontgrendelen',
     'percent_uploaded' => '{percent}% geüpload',
     'retry' => 'Opnieuw Proberen',
-    'filter' => 'Filter the list',
+    'filter' => 'Filter de lijst',
     'go_back' => 'Terug',
 
     'application_title' => 'Monica – persoonlijke relatie manager',
