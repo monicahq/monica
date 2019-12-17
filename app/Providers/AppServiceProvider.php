@@ -68,6 +68,11 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     public $singletons = [
+        \App\Services\Account\Activity\Activity\AttachContactToActivity::class => \App\Services\Account\Activity\Activity\AttachContactToActivity::class,
+        \App\Services\Account\Activity\Activity\CreateActivity::class => \App\Services\Account\Activity\Activity\CreateActivity::class,
+        \App\Services\Account\Activity\Activity\DestroyActivity::class => \App\Services\Account\Activity\Activity\DestroyActivity::class,
+        \App\Services\Account\Activity\Activity\UpdateActivity::class => \App\Services\Account\Activity\Activity\UpdateActivity::class,
+        \App\Services\Account\Activity\ActivityStatisticService::class => \App\Services\Account\Activity\ActivityStatisticService::class,
         \App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory::class,
         \App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory::class,
         \App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory::class,

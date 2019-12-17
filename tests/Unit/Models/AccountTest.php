@@ -748,12 +748,12 @@ class AccountTest extends FeatureTestCase
         $account = factory(Account::class)->create();
         $contact = factory(Activity::class, 4)->create([
             'account_id' => $account->id,
-            'date_it_happened' => '2018-03-02',
+            'happened_at' => '2018-03-02',
         ]);
 
         $contact = factory(Activity::class, 2)->create([
             'account_id' => $account->id,
-            'date_it_happened' => '1992-03-02',
+            'happened_at' => '1992-03-02',
         ]);
 
         $statistics = $account->getYearlyActivitiesStatistics();

@@ -21,7 +21,7 @@ class CreateTaskTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'title' => 'This is a title',
             'description' => 'This is a description',
         ];
@@ -46,7 +46,7 @@ class CreateTaskTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'title' => 'This is a title',
             'description' => 'This is a description',
         ];
@@ -71,7 +71,7 @@ class CreateTaskTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $request = [
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'title' => 'This is a title',
             'description' => null,
@@ -97,7 +97,7 @@ class CreateTaskTest extends TestCase
 
         $request = [
             'contact_id' => $contact->id,
-            'account_id' => $contact->account->id,
+            'account_id' => $contact->account_id,
         ];
 
         $this->expectException(ValidationException::class);

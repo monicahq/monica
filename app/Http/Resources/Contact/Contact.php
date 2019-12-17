@@ -23,6 +23,7 @@ class Contact extends Resource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'nickname' => $this->nickname,
+            'complete_name' => $this->name,
             'description' => $this->description,
             'gender' => is_null($this->gender) ? null : $this->gender->name,
             'gender_type' => is_null($this->gender) ? null : $this->gender->type,
