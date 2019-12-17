@@ -7,7 +7,7 @@
 ### Enhancements:
 
 * Add API methods to destroy and store documents
-* Add API to manage photos and avatars
+* Add API methods to manage photos and avatars
 * Add emotions and participants to activities
 * Activities are now added inline
 * Enable API web navigation
