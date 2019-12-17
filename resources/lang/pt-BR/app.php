@@ -51,7 +51,7 @@ return [
     'header_logout_link' => 'Sair',
     'header_changelog_link' => 'Atualizações de produtos',
 
-    'main_nav_cta' => 'Adicionar pessoas',
+    'main_nav_cta' => 'Adicionar contatos',
     'main_nav_dashboard' => 'Dashboard',
     'main_nav_family' => 'Contatos',
     'main_nav_journal' => 'Diário',
@@ -59,7 +59,7 @@ return [
     'main_nav_tasks' => 'Tarefas',
 
     'footer_remarks' => 'Alguma sugestão?',
-    'footer_send_email' => 'Me envia um e-mail',
+    'footer_send_email' => 'Me envie um e-mail',
     'footer_privacy' => 'Política de Privacidade',
     'footer_release' => 'Notas da versão',
     'footer_newsletter' => 'Newsletter',
@@ -100,19 +100,19 @@ return [
     'gender_none' => 'Prefiro não dizer',
     'gender_no_gender' => 'Sem gênero',
 
-    'error_title' => 'Poxa! Algo deu errado.',
+    'error_title' => 'Ops! Algo deu errado.',
     'error_unauthorized' => 'Você não tem permissão para editar este recurso.',
     'error_save' => 'Ocorreu um erro ao tentar salvar os dados.',
     'error_try_again' => 'Algo deu errado. Por favor, tente novamente.',
     'error_id' => 'Error ID: :id',
     'error_unavailable' => 'Serviço Indisponível',
-    'error_maintenance' => 'Manutenção em andamento. Voltamos em breve.',
+    'error_maintenance' => 'Manutenção em andamento. Voltaremos em breve.',
     'error_help' => 'Voltaremos em breve.',
-    'error_twitter' => 'Siga-nos <a href="https://twitter.com/:twitter">no Twitter </a> para saber quando estivermos on-line novamente.',
+    'error_twitter' => 'Siga-nos <a href="https://twitter.com/:twitter">no Twitter </a> para saber quando voltamos.',
 
     'default_save_success' => 'Dados salvos com sucesso!',
 
-    'compliance_title' => 'Pedimos desculpa pelo incômodo.',
+    'compliance_title' => 'Desculpa pelo incômodo.',
     'compliance_desc' => 'Alteramos nossos <a href=":urlterm" hreflang=":hreflang">Termos de Uso</a> e <a href=":url" hreflang=":hreflang">Política de Privacidade</a>. Por lei, solicitamos que você os revise e aceite ambos para que possa continuar usando sua conta.',
     'compliance_desc_end' => 'Não utilizamos os seus dados ou conta para outros fins e nunca o faremos.',
     'compliance_terms' => 'Aceitar os novos Termos e Política de Privacidade',
@@ -126,7 +126,7 @@ return [
     // to.
     'relationship_type_group_love' => 'Relacionamentos amorosos',
     'relationship_type_group_family' => 'Relacionamentos familiares',
-    'relationship_type_group_friend' => 'Amizades',
+    'relationship_type_group_friend' => 'Relacionamentos de amizade',
     'relationship_type_group_work' => 'Relacionamentos profissionais',
     'relationship_type_group_other' => 'Outros relacionamentos',
 
@@ -155,17 +155,17 @@ return [
     'relationship_type_inlovewith_with_name' => 'alguém que :name está apaixonado',
     'relationship_type_inlovewith_female_with_name' => 'alguém que :name está apaixonada',
 
-    'relationship_type_lovedby' => 'loved by',
-    'relationship_type_lovedby_female' => 'loved by',
-    'relationship_type_lovedby_with_name' => ':name’s secret lover',
-    'relationship_type_lovedby_female_with_name' => ':name’s secret lover',
+    'relationship_type_lovedby' => 'amado por',
+    'relationship_type_lovedby_female' => 'amada por',
+    'relationship_type_lovedby_with_name' => 'amor secreto de :name',
+    'relationship_type_lovedby_female_with_name' => 'amor secreto de :name',
 
-    'relationship_type_ex' => 'ex-boyfriend',
-    'relationship_type_ex_female' => 'ex-girlfriend',
-    'relationship_type_ex_with_name' => ':name’s ex-boyfriend',
-    'relationship_type_ex_female_with_name' => ':name’s ex-girlfriend',
+    'relationship_type_ex' => 'ex-namorado',
+    'relationship_type_ex_female' => 'ex-namorada',
+    'relationship_type_ex_with_name' => 'ex-namorado de :name',
+    'relationship_type_ex_female_with_name' => 'ex-namorada de :name',
 
-    'relationship_type_parent' => 'father',
+    'relationship_type_parent' => 'pai',
     'relationship_type_parent_female' => 'mother',
     'relationship_type_parent_with_name' => ':name’s father',
     'relationship_type_parent_female_with_name' => ':name’s mother',
