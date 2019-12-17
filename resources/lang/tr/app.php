@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Kilidi açmak için yükselt',
     'percent_uploaded' => '%{percent} yüklendi',
     'retry' => 'Tekrar dene',
+    'filter' => 'Filter the list',
     'go_back' => 'Geri dön',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
