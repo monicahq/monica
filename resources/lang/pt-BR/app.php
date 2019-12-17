@@ -10,7 +10,7 @@ return [
     'delete_confirm' => 'Tem certeza?',
     'delete' => 'Excluir',
     'edit' => 'Editar',
-    'upload' => 'Enviar',
+    'upload' => 'Upload',
     'download' => 'Baixar',
     'save_close' => 'Salvar e fechar',
     'close' => 'Fechar',
