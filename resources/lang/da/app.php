@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Opgradér for at låse op',
     'percent_uploaded' => '{percent}% uploaded',
     'retry' => 'Prøv igen',
+    'filter' => 'Filter the list',
     'go_back' => 'Gå tilbage',
 
     'application_title' => 'Monica – personal relationship manager',
