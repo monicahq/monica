@@ -37,7 +37,7 @@ return [
     'upgrade' => 'יש לשדרג כדי לשחרר',
     'percent_uploaded' => '{percent}% נשלחו',
     'retry' => 'לנסות שוב',
-    'filter' => 'Filter the list',
+    'filter' => 'סינון הרשימה',
     'go_back' => 'חזרה',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
