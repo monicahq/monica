@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Upgrade to unlock',
     'percent_uploaded' => '{percent}% uploaded',
     'retry' => 'Retry',
+    'filter' => 'Filter the list',
     'go_back' => 'Go back',
 
     'application_title' => 'Monica – personal relationship manager',
