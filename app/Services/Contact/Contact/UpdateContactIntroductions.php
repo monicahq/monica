@@ -61,7 +61,7 @@ class UpdateContactIntroductions extends BaseService
     }
 
     /**
-     * Update a contact.
+     * Update the information about how a contact was introduced.
      *
      * @param array $data
      * @return Contact
