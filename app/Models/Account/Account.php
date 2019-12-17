@@ -480,6 +480,16 @@ class Account extends Model
     }
 
     /**
+     * Get the custom field records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function fields()
+    {
+        return $this->hasMany(CustomField::class);
+    }
+
+    /**
      * Check if the account can be downgraded, based on a set of rules.
      *
      * @return bool

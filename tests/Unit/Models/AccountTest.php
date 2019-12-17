@@ -234,6 +234,15 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->occupations()->exists());
     }
 
+    public function test_it_has_many_custom_fields()
+    {
+        $account = factory(Account::class)->create([]);
+        $occupations = factory(Occupation::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->occupations()->exists());
+    }
+
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
     {
         config(['monica.number_of_allowed_contacts_free_account' => 1]);
