@@ -30,7 +30,7 @@ class UpdateContactIntroductions extends BaseService
             'account_id' => 'required|integer|exists:accounts,id',
             'contact_id' => 'required|integer|exists:contacts,id',
             'met_through_contact_id' => 'nullable|integer|exists:contacts,id',
-            'general_information' => 'nullable|string|max:255',
+            'general_information' => 'nullable|string|max:65535',
             'where' => 'nullable|string|max:255',
             'is_date_known' => 'required|boolean',
             'is_age_based' => 'nullable|boolean',

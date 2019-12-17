@@ -59,10 +59,10 @@ class UpdateAvatar extends BaseService
             // in case of a photo, set the photo as the avatar
                 $contact->avatar_photo_id = $data['photo_id'];
                 $contact->photos()->syncWithoutDetaching([$data['photo_id']]);
-            break;
+                break;
             default:
                 $contact->avatar_photo_id = null;
-            break;
+                break;
         }
 
         $contact->save();
