@@ -100,22 +100,22 @@ return [
     'gender_none' => 'Prefiro não dizer',
     'gender_no_gender' => 'Sem gênero',
 
-    'error_title' => 'Whoops! Something went wrong.',
-    'error_unauthorized' => 'You don’t have the right to edit this resource.',
-    'error_save' => 'We had an error trying to save the data.',
-    'error_try_again' => 'Something went wrong. Please try again.',
+    'error_title' => 'Poxa! Algo deu errado.',
+    'error_unauthorized' => 'Você não tem permissão para editar este recurso.',
+    'error_save' => 'Ocorreu um erro ao tentar salvar os dados.',
+    'error_try_again' => 'Algo deu errado. Por favor, tente novamente.',
     'error_id' => 'Error ID: :id',
-    'error_unavailable' => 'Service Unavailable',
-    'error_maintenance' => 'Maintenance in progress. Be right back.',
-    'error_help' => 'We’ll be right back.',
-    'error_twitter' => 'Follow <a href="https://twitter.com/:twitter">our Twitter account</a> to be alerted when it’s up again.',
+    'error_unavailable' => 'Serviço Indisponível',
+    'error_maintenance' => 'Manutenção em andamento. Voltamos em breve.',
+    'error_help' => 'Voltaremos em breve.',
+    'error_twitter' => 'Siga-nos <a href="https://twitter.com/:twitter">no Twitter </a> para saber quando estivermos on-line novamente.',
 
-    'default_save_success' => 'The data has been saved.',
+    'default_save_success' => 'Dados salvos com sucesso!',
 
-    'compliance_title' => 'Sorry for the interruption.',
-    'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
-    'compliance_terms' => 'Accept new terms and privacy policy',
+    'compliance_title' => 'Pedimos desculpa pelo incômodo.',
+    'compliance_desc' => 'Alteramos nossos <a href=":urlterm" hreflang=":hreflang">Termos de Uso</a> e <a href=":url" hreflang=":hreflang">Política de Privacidade</a>. Por lei, solicitamos que você os revise e aceite ambos para que possa continuar usando sua conta.',
+    'compliance_desc_end' => 'Não utilizamos os seus dados ou conta para outros fins e nunca o faremos.',
+    'compliance_terms' => 'Aceitar os novos Termos e Política de Privacidade',
 
     // Relationship types
     // Yes, each relationship type has 8 strings associated with it.
@@ -124,19 +124,19 @@ return [
     // and then, the feminine version of the string. Finally, in some sentences
     // in the UI, we need to include the name of the person we add the relationship
     // to.
-    'relationship_type_group_love' => 'Love relationships',
-    'relationship_type_group_family' => 'Family relationships',
-    'relationship_type_group_friend' => 'Friend relationships',
-    'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_love' => 'Relacionamentos amorosos',
+    'relationship_type_group_family' => 'Relacionamentos familiares',
+    'relationship_type_group_friend' => 'Amizades',
+    'relationship_type_group_work' => 'Relacionamentos profissionais',
+    'relationship_type_group_other' => 'Outros relacionamentos',
 
-    'relationship_type_partner' => 'significant other',
-    'relationship_type_partner_female' => 'significant other',
-    'relationship_type_partner_with_name' => ':name’s significant other',
-    'relationship_type_partner_female_with_name' => ':name’s significant other',
+    'relationship_type_partner' => 'companheiro',
+    'relationship_type_partner_female' => 'companheira',
+    'relationship_type_partner_with_name' => 'companheiro de :name',
+    'relationship_type_partner_female_with_name' => 'companheira de :name',
 
-    'relationship_type_spouse' => 'spouse',
-    'relationship_type_spouse_female' => 'spouse',
+    'relationship_type_spouse' => 'esposo',
+    'relationship_type_spouse_female' => 'esposa',
     'relationship_type_spouse_with_name' => ':name’s spouse',
     'relationship_type_spouse_female_with_name' => ':name’s spouse',
 
