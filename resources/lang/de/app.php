@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Zum Freischalten aktualisieren',
     'percent_uploaded' => '{percent}% hochgeladen',
     'retry' => 'Wiederholen',
+    'filter' => 'Filter the list',
     'go_back' => 'Zurück',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
