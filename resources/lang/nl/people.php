@@ -250,7 +250,7 @@ return [
     'activity_type_went_museum' => 'naar het museum gegaan',
     'activities_add_activity' => 'Voeg activiteit toe',
     'activities_add_more_details' => 'Voeg meer details toe',
-    'activities_add_emotions' => 'Add emotions',
+    'activities_add_emotions' => 'Voeg emoties toe',
     'activities_add_category' => 'Indicate a category',
     'activities_add_participants_cta' => 'Add participants',
     'activities_item_information' => 'Deze :activity was op :date',
@@ -277,7 +277,7 @@ return [
     'activities_list_participants' => 'Participants:',
     'activities_list_emotions' => 'Emotions felt:',
     'activities_list_date' => 'Vond plaats op',
-    'activities_list_category' => 'Category:',
+    'activities_list_category' => 'Categorie:',
 
     // notes
     'notes_create_success' => 'Nieuwe notitie succesvol toegevoegd',
