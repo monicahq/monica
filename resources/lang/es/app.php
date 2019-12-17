@@ -37,6 +37,7 @@ return [
     'upgrade' => 'Actualiza para desbloquear',
     'percent_uploaded' => '{percent}% cargado',
     'retry' => 'Reintentar',
+    'filter' => 'Filter the list',
     'go_back' => 'Volver atrás',
 
     'application_title' => 'Monica – gestor de relaciones personales',
