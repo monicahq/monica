@@ -41,8 +41,8 @@ return [
     'go_back' => 'Voltar',
 
     'application_title' => 'Monica – Gerenciador de relacionamento pessoal',
-    'application_description' => 'Monica é uma ferramenta para gerenciar suas interações com seus amigos, familiares e pessoas queridas.',
-    'application_og_title' => 'Fortaleça seus vínculos com amigos e familiares. CRM Gratuito para amigos e familiares.',
+    'application_description' => 'Monica é uma ferramenta para gerenciar suas interações com amigos, familiares e pessoas queridas.',
+    'application_og_title' => 'Fortaleça seus vínculos com pessoas importantes para você. CRM Gratuito para amigos e familiares.',
 
     'markdown_description' => 'Quer deixar o seu texto mais bonito? Você pode usar o Markdown para adicionar listas, negrito, itálico e muito mais.',
     'markdown_link' => 'Ler documentação',
