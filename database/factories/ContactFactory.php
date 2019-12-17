@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Str;
-use function Safe\json_decode;
 
 $factory->define(App\Models\Contact\Contact::class, function (Faker\Generator $faker) {
     return [

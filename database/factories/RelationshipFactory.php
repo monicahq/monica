@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Support\Str;
-use function Safe\json_decode;
-
 $factory->define(App\Models\Relationship\Relationship::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,
