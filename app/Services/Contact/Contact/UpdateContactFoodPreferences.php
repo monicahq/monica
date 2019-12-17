@@ -23,7 +23,7 @@ class UpdateContactFoodPreferences extends BaseService
     }
 
     /**
-     * Update a contact.
+     * Update the food preferences of the given contact.
      *
      * @param array $data
      * @return Contact
