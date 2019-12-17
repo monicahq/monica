@@ -52,7 +52,7 @@ class JournalEntryTest extends TestCase
     public function test_get_add_adds_data_of_the_right_type()
     {
         $activity = factory(Activity::class)->create();
-        $date = $activity->date_it_happened;
+        $date = $activity->happened_at;
 
         $journalEntry = JournalEntry::add($activity);
 
@@ -76,11 +76,11 @@ class JournalEntryTest extends TestCase
             'activity_type' => (! is_null($activity->type) ? $activity->type->name : null),
             'summary' => $activity->summary,
             'description' => $activity->description,
-            'day' => $activity->date_it_happened->day,
-            'day_name' => $activity->date_it_happened->format('D'),
-            'month' => $activity->date_it_happened->month,
-            'month_name' => strtoupper($activity->date_it_happened->format('M')),
-            'year' => $activity->date_it_happened->year,
+            'day' => $activity->happened_at->day,
+            'day_name' => $activity->happened_at->format('D'),
+            'month' => $activity->happened_at->month,
+            'month_name' => strtoupper($activity->happened_at->format('M')),
+            'year' => $activity->happened_at->year,
             'attendees' => $activity->getContactsForAPI(),
         ];
 

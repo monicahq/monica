@@ -8,6 +8,8 @@
 
 * Add API to destroy and store documents
 * Add API to manage photos and avatars
+* Add emotions and participants to activities
+* Activities are now added inline
 * Enable API web navigation
 * Enhance UI of API's Settings to add comprehension and documentation
 * Improve trim string middleware to not trim password text

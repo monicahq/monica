@@ -204,6 +204,8 @@
           <span :class="[ dirltr ? 'mr3' : 'ml3' ]">
             {{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}
           </span>
+
+          <!-- EMOTION LIST -->
           <span v-if="call.emotions.length != 0">
             <span :class="[ dirltr ? 'mr2' : 'ml2' ]">
               {{ $t('people.call_emotions') }}
