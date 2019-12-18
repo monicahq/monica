@@ -38,12 +38,12 @@ input[type=text]:focus {
           <input v-model="search" type="text" :placeholder="$t('app.filter')" class="br2 f5 w-100 ba b--black-20 pa2 outline-0" />
         </span>
         <ul class="overflow-auto participant-list">
-          <li v-for="participant in filteredList"
-              :key="participant.id"
+          <li v-for="fparticipant in filteredList"
+              :key="fparticipant.id"
               class="bb b--gray-monica pa2 pointer potential-participant"
-              @click.prevent="select(participant)"
+              @click.prevent="select(fparticipant)"
           >
-            {{ participant.name }}
+            {{ fparticipant.name }}
           </li>
         </ul>
       </div>
