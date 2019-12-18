@@ -46,8 +46,7 @@ END:VCARD
 
     public function test_it_belongs_to_a_user()
     {
-        $user = factory(User::class)->create([]);
-        $importJob = factory(ImportJob::class)->create(['user_id' => $user->id]);
+        $importJob = factory(ImportJob::class)->create();
 
         $this->assertTrue($importJob->user()->exists());
     }
@@ -55,7 +54,13 @@ END:VCARD
     public function test_it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
-        $importJob = factory(ImportJob::class)->create(['account_id' => $account->id]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $importJob = factory(ImportJob::class)->create([
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
 
         $this->assertTrue($importJob->account()->exists());
     }
@@ -63,7 +68,7 @@ END:VCARD
     public function test_it_belongs_to_many_reports()
     {
         $importJob = factory(ImportJob::class)->create([]);
-        $importJobReport = factory(ImportJobReport::class, 100)->create(['import_job_id' => $importJob->id]);
+        factory(ImportJobReport::class, 100)->create(['import_job_id' => $importJob->id]);
 
         $this->assertTrue($importJob->importJobReports()->exists());
     }

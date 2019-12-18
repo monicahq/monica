@@ -252,8 +252,12 @@ class ApiCallControllerTest extends ApiTestCase
     public function test_updating_call_generates_an_error()
     {
         $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account->id,
+        ]);
         $call = factory(Call::class)->create([
             'account_id' => $user->account->id,
+            'contact_id' => $contact->id,
         ]);
 
         $response = $this->json('PUT', '/api/calls/'.$call->id, [
