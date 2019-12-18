@@ -10,26 +10,53 @@ use App\Models\Contact\Contact;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Gift;
+use App\Models\Contact\Note;
+use App\Models\Contact\Pet;
+use App\Models\Contact\PetCategory;
+use App\Models\Contact\Reminder;
 use App\Models\Contact\Tag;
+use App\Models\Contact\Task;
+use App\Models\Instance\SpecialDate;
 use App\Models\Journal\Day;
 use App\Models\Journal\Entry;
 use App\Models\Journal\JournalEntry;
+use App\Models\Relationship\Relationship;
+use App\Models\Relationship\RelationshipType;
+use App\Models\Relationship\RelationshipTypeGroup;
+use App\Models\Settings\Term;
+use App\Models\User\Module;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 class AddForeignKeys extends Migration
 {
+    private $existingAccounts;
+    private $existingUsers;
+    private $existingContacts;
+
     /**
-     * Run the migrations.
+     * Add foreign keys to all the tables that don't have ones.
+     * Before adding foreign keys, in all the tables, we check whether the
+     * foreign keys actually have data from the table they point to. This will
+     * ensure data integrity from now on.
+     * In order to do this, we need to parse a lot of contacts, accounts and
+     * users, as most data point to them somehow. For those 3 models, when we
+     * launch the script, we put all those ids in arrays. Then, for each
+     * foreign key, we check in the arrays if the key exists, instead of querying
+     * the database again and again. This is much faster.
      *
      * @return void
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
+
+        $this->initialize();
         $this->cleanActivityStatisticTable();
         $this->cleanCallsTable();
         $this->cleanContactTagTable();
@@ -42,14 +69,74 @@ class AddForeignKeys extends Migration
         $this->cleanImportJobTable();
         $this->cleanInvitationTable();
         $this->cleanJournalEntryTable();
+        $this->cleanModuleTable();
+        $this->cleanNoteTable();
+        $this->cleanNotificationTable();
+        $this->cleanPetTable();
+        $this->cleanRelationshipTypeGroupTable();
+        $this->cleanRelationshipTypeTable();
+        $this->cleanRelationshipTable();
+        $this->cleanSpecialDateTable();
+        $this->cleanTagTable();
+        $this->cleanTaskTable();
+        $this->cleanTermUserTable();
+        $this->cleanUserTable();
+    }
+
+    private function initialize()
+    {
+        $rows = DB::table('contacts')->select('id')->get();
+        $this->existingContacts = [];
+        foreach ($rows as $row) {
+            $this->existingContacts[$row->id] = 1;
+        }
+
+        $rows = DB::table('users')->select('id')->get();
+        $this->existingUsers = [];
+        foreach ($rows as $row) {
+            $this->existingUsers[$row->id] = 1;
+        }
+
+        $rows = DB::table('accounts')->select('id')->get();
+        $this->existingAccounts = [];
+        foreach ($rows as $row) {
+            $this->existingAccounts[$row->id] = 1;
+        }
+    }
+
+    private function contactExistOrFail(int $id)
+    {
+        if (isset($this->existingContacts[$id])) {
+            return true;
+        } else {
+            throw new ModelNotFoundException();
+        }
+    }
+
+    private function userExistOrFail(int $id)
+    {
+        if (isset($this->existingUsers[$id])) {
+            return true;
+        } else {
+            throw new ModelNotFoundException();
+        }
+    }
+
+    private function accountExistOrFail(int $id)
+    {
+        if (isset($this->existingAccounts[$id])) {
+            return true;
+        } else {
+            throw new ModelNotFoundException();
+        }
     }
 
     private function cleanActivityStatisticTable()
     {
         foreach (ActivityStatistic::cursor() as $activityStat) {
             try {
-                Account::findOrFail($activityStat->account_id);
-                Contact::findOrFail($activityStat->contact_id);
+                $this->accountExistOrFail($activityStat->account_id);
+                $this->contactExistOrFail($activityStat->contact_id);
             } catch (ModelNotFoundException $e) {
                 $activityStat->delete();
                 continue;
@@ -68,8 +155,8 @@ class AddForeignKeys extends Migration
     {
         foreach (Call::cursor() as $call) {
             try {
-                Account::findOrFail($call->account_id);
-                Contact::findOrFail($call->contact_id);
+                $this->accountExistOrFail($call->account_id);
+                $this->contactExistOrFail($call->contact_id);
             } catch (ModelNotFoundException $e) {
                 $call->delete();
                 continue;
@@ -86,17 +173,23 @@ class AddForeignKeys extends Migration
 
     private function cleanContactTagTable()
     {
-        $contactTags = DB::table('contact_tag')->get();
-        foreach ($contactTags->cursor() as $contactTag) {
-            try {
-                Account::findOrFail($contactTag->account_id);
-                Contact::findOrFail($contactTag->contact_id);
-                Tag::findOrFail($contactTag->tag_id);
-            } catch (ModelNotFoundException $e) {
-                $contactTag->delete();
-                continue;
-            }
-        }
+        DB::table('contact_tag')
+            ->orderBy('contact_id')
+            ->chunk(200, function ($contactTags) {
+                foreach ($contactTags as $contactTag) {
+                    try {
+                        $this->accountExistOrFail($contactTag->account_id);
+                        $this->accountExistOrFail($contactTag->contact_id);
+                        Tag::findOrFail($contactTag->tag_id);
+                    } catch (ModelNotFoundException $e) {
+                        DB::table('contact_tag')
+                            ->where('account_id', $contactTag->account_id)
+                            ->where('contact_id', $contactTag->contact_id)
+                            ->where('tag_id', $contactTag->tag_id)
+                            ->delete();
+                    }
+                }
+            });
 
         Schema::table('contact_tag', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
@@ -112,7 +205,7 @@ class AddForeignKeys extends Migration
     {
         foreach (Day::cursor() as $day) {
             try {
-                Account::findOrFail($day->account_id);
+                $this->accountExistOrFail($day->account_id);
             } catch (ModelNotFoundException $e) {
                 $day->delete();
                 continue;
@@ -129,8 +222,8 @@ class AddForeignKeys extends Migration
     {
         foreach (Debt::cursor() as $debt) {
             try {
-                Account::findOrFail($debt->account_id);
-                Contact::findOrFail($debt->contact_id);
+                $this->accountExistOrFail($debt->account_id);
+                $this->contactExistOrFail($debt->contact_id);
             } catch (ModelNotFoundException $e) {
                 $debt->delete();
                 continue;
@@ -149,7 +242,7 @@ class AddForeignKeys extends Migration
     {
         foreach (Entry::cursor() as $entry) {
             try {
-                Account::findOrFail($entry->account_id);
+                $this->accountExistOrFail($entry->account_id);
             } catch (ModelNotFoundException $e) {
                 $entry->delete();
                 continue;
@@ -166,7 +259,7 @@ class AddForeignKeys extends Migration
     {
         foreach (Gender::cursor() as $gender) {
             try {
-                Account::findOrFail($gender->account_id);
+                $this->accountExistOrFail($gender->account_id);
             } catch (ModelNotFoundException $e) {
                 $gender->delete();
                 continue;
@@ -183,8 +276,8 @@ class AddForeignKeys extends Migration
     {
         foreach (Gift::cursor() as $gift) {
             try {
-                Account::findOrFail($gift->account_id);
-                Contact::findOrFail($gift->contact_id);
+                $this->accountExistOrFail($gift->account_id);
+                $this->contactExistOrFail($gift->contact_id);
             } catch (ModelNotFoundException $e) {
                 $gift->delete();
                 continue;
@@ -203,8 +296,8 @@ class AddForeignKeys extends Migration
     {
         foreach (ImportJobReport::cursor() as $importJobReport) {
             try {
-                Account::findOrFail($importJobReport->account_id);
-                User::findOrFail($importJobReport->user_id);
+                $this->accountExistOrFail($importJobReport->account_id);
+                $this->userExistOrFail($importJobReport->user_id);
                 ImportJob::findOrFail($importJobReport->import_job_id);
             } catch (ModelNotFoundException $e) {
                 $importJobReport->delete();
@@ -226,8 +319,8 @@ class AddForeignKeys extends Migration
     {
         foreach (ImportJob::cursor() as $importJob) {
             try {
-                Account::findOrFail($importJob->account_id);
-                User::findOrFail($importJob->user_id);
+                $this->accountExistOrFail($importJob->account_id);
+                $this->userExistOrFail($importJob->user_id);
             } catch (ModelNotFoundException $e) {
                 $importJob->delete();
                 continue;
@@ -246,8 +339,8 @@ class AddForeignKeys extends Migration
     {
         foreach (Invitation::cursor() as $invitation) {
             try {
-                Account::findOrFail($invitation->account_id);
-                User::findOrFail($invitation->invited_by_user_id);
+                $this->accountExistOrFail($invitation->account_id);
+                $this->userExistOrFail($invitation->invited_by_user_id);
             } catch (ModelNotFoundException $e) {
                 $invitation->delete();
                 continue;
@@ -266,7 +359,7 @@ class AddForeignKeys extends Migration
     {
         foreach (JournalEntry::cursor() as $journalEntry) {
             try {
-                Account::findOrFail($journalEntry->account_id);
+                $this->accountExistOrFail($journalEntry->account_id);
             } catch (ModelNotFoundException $e) {
                 $journalEntry->delete();
                 continue;
@@ -277,5 +370,258 @@ class AddForeignKeys extends Migration
             $table->unsignedInteger('account_id')->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });
+    }
+
+    private function cleanModuleTable()
+    {
+        foreach (Module::cursor() as $module) {
+            try {
+                $this->accountExistOrFail($module->account_id);
+            } catch (ModelNotFoundException $e) {
+                $module->delete();
+                continue;
+            }
+        }
+
+        Schema::table('modules', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+        });
+    }
+
+    private function cleanNoteTable()
+    {
+        foreach (Note::cursor() as $note) {
+            try {
+                $this->accountExistOrFail($note->account_id);
+                $this->contactExistOrFail($note->contact_id);
+            } catch (ModelNotFoundException $e) {
+                $note->delete();
+                continue;
+            }
+        }
+
+        Schema::table('notes', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('contact_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+        });
+    }
+
+    private function cleanNotificationTable()
+    {
+        // this table is not used anymore, we can safely remove it from the
+        // database
+        Schema::drop('notifications');
+    }
+
+    private function cleanPetTable()
+    {
+        foreach (Pet::cursor() as $pet) {
+            try {
+                $this->accountExistOrFail($pet->account_id);
+                $this->contactExistOrFail($pet->contact_id);
+                PetCategory::findOrFail($pet->pet_category_id);
+            } catch (ModelNotFoundException $e) {
+                $pet->delete();
+                continue;
+            }
+        }
+
+        Schema::table('pets', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('contact_id')->change();
+            $table->unsignedInteger('pet_category_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('pet_category_id')->references('id')->on('pet_categories')->onDelete('cascade');
+        });
+    }
+
+    private function cleanRelationshipTypeGroupTable()
+    {
+        foreach (RelationshipTypeGroup::cursor() as $type) {
+            try {
+                $this->accountExistOrFail($type->account_id);
+            } catch (ModelNotFoundException $e) {
+                $type->delete();
+                continue;
+            }
+        }
+
+        Schema::table('relationship_type_groups', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+        });
+    }
+
+    private function cleanRelationshipTypeTable()
+    {
+        foreach (RelationshipType::cursor() as $type) {
+            try {
+                $this->accountExistOrFail($type->account_id);
+                RelationshipTypeGroup::findOrFail($type->relationship_type_group_id);
+            } catch (ModelNotFoundException $e) {
+                $type->delete();
+                continue;
+            }
+        }
+
+        Schema::table('relationship_types', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('relationship_type_group_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('relationship_type_group_id')->references('id')->on('relationship_type_groups')->onDelete('cascade');
+        });
+    }
+
+    private function cleanRelationshipTable()
+    {
+        foreach (Relationship::cursor() as $relationship) {
+            try {
+                $this->accountExistOrFail($relationship->account_id);
+                RelationshipType::findOrFail($relationship->relationship_type_id);
+                $this->contactExistOrFail($relationship->contact_is);
+                $this->contactExistOrFail($relationship->of_contact);
+            } catch (ModelNotFoundException $e) {
+                $relationship->delete();
+                continue;
+            }
+        }
+
+        Schema::table('relationships', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('relationship_type_id')->change();
+            $table->unsignedInteger('contact_is')->change();
+            $table->unsignedInteger('of_contact')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('relationship_type_id')->references('id')->on('relationship_types')->onDelete('cascade');
+            $table->foreign('contact_is')->references('id')->on('contacts')->onDelete('cascade');
+            $table->foreign('of_contact')->references('id')->on('contacts')->onDelete('cascade');
+        });
+    }
+
+    private function cleanSpecialDateTable()
+    {
+        foreach (SpecialDate::cursor() as $date) {
+            try {
+                $this->accountExistOrFail($date->account_id);
+                $this->contactExistOrFail($date->contact_id);
+            } catch (ModelNotFoundException $e) {
+                $date->delete();
+                continue;
+            }
+        }
+
+        Schema::table('special_dates', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('contact_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+        });
+    }
+
+    private function cleanTagTable()
+    {
+        foreach (Tag::cursor() as $tag) {
+            try {
+                $this->accountExistOrFail($tag->account_id);
+            } catch (ModelNotFoundException $e) {
+                $tag->delete();
+                continue;
+            }
+        }
+
+        Schema::table('tags', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+        });
+    }
+
+    private function cleanTaskTable()
+    {
+        foreach (Task::cursor() as $task) {
+            try {
+                $this->accountExistOrFail($task->account_id);
+
+                if (! is_null($task->contact_id)) {
+                    $this->contactExistOrFail($task->contact_id);
+                }
+            } catch (ModelNotFoundException $e) {
+                $task->delete();
+                continue;
+            }
+        }
+
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('contact_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
+        });
+    }
+
+    private function cleanTermUserTable()
+    {
+        DB::table('term_user')
+            ->orderBy('user_id')
+            ->chunk(200, function ($termUsers) {
+                foreach ($termUsers as $termUser) {
+                    try {
+                        $this->accountExistOrFail($termUser->account_id);
+                        $this->userExistOrFail($termUser->user_id);
+                        Term::findOrFail($termUser->term_id);
+                    } catch (ModelNotFoundException $e) {
+                        DB::table('term_user')
+                            ->where('account_id', $termUser->account_id)
+                            ->where('user_id', $termUser->user_id)
+                            ->where('term_id', $termUser->term_id)
+                            ->delete();
+                    }
+                }
+            });
+
+        Schema::table('term_user', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('user_id')->change();
+            $table->unsignedInteger('term_id')->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('term_id')->references('id')->on('terms')->onDelete('cascade');
+        });
+    }
+
+    private function cleanUserTable()
+    {
+        foreach (User::cursor() as $user) {
+            try {
+                $this->accountExistOrFail($user->account_id);
+            } catch (ModelNotFoundException $e) {
+                $user->delete();
+                continue;
+            }
+        }
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('currency_id')->nullable()->change();
+            $table->unsignedInteger('invited_by_user_id')->nullable()->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
+            $table->foreign('invited_by_user_id')->references('id')->on('users')->onDelete('set null');
+        });
+
+        foreach (User::cursor() as $user) {
+            try {
+                if (! is_null($user->invited_by_user_id)) {
+                    $this->userExistOrFail($user->invited_by_user_id);
+                }
+            } catch (ModelNotFoundException $e) {
+                $user->invited_by_user_id = null;
+                $user->save();
+                continue;
+            }
+        }
     }
 }
