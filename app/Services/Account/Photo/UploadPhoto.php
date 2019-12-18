@@ -9,6 +9,7 @@ use App\Models\Account\Photo;
 use App\Services\BaseService;
 use function Safe\finfo_open;
 use function Safe\preg_match;
+use App\Models\Contact\Contact;
 use function Safe\base64_decode;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
@@ -33,6 +34,7 @@ class UploadPhoto extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer|exists:contacts,id',
             'photo' => 'required_without:data|file|image',
             'data' => 'required_without:photo|string|photo',
             'extension' => 'nullable|string',
@@ -49,6 +51,9 @@ class UploadPhoto extends BaseService
     {
         $this->validate($data);
 
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
+
         $array = null;
         if (Arr::has($data, 'photo')) {
             $array = $this->importPhoto($data);
@@ -60,7 +65,9 @@ class UploadPhoto extends BaseService
             return;
         }
 
-        return Photo::create($array);
+        return tap(Photo::create($array), function ($photo) use ($contact) {
+            $contact->photos()->syncWithoutDetaching([$photo->id]);
+        });
     }
 
     /**

@@ -54,5 +54,6 @@
         <server name="APP_DEFAULT_LOCALE" value="en"/>
         <server name="LOG_CHANNEL" value="testing"/>
         <server name="DAV_ENABLED" value="true"/>
+        <server name="REQUIRES_SUBSCRIPTION" value="false"/>
     </php>
 </phpunit>
