@@ -15,8 +15,6 @@ use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class CustomField extends Model
 {
-    use Journalable;
-
     /**
      * The table associated with the model.
      *

@@ -44,8 +44,8 @@ class AddCustomFieldsTable extends Migration
 
         Schema::create('contact_field_values', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('contact_id');
-            $table->integer('field_id');
+            $table->unsignedInteger('contact_id');
+            $table->unsignedInteger('field_id');
             $table->mediumText('value');
             $table->timestamps();
             $table->foreign('field_id')->references('id')->on('fields')->onDelete('cascade');
