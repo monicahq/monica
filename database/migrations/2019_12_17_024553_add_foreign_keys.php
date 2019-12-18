@@ -1,35 +1,32 @@
 <?php
 
 use App\Models\User\User;
+use App\Models\Contact\Pet;
 use App\Models\Contact\Tag;
 use App\Models\Journal\Day;
+use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Contact\Debt;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
-use App\Models\Contact\Pet;
-use App\Models\Contact\PetCategory;
-use App\Models\Contact\Reminder;
 use App\Models\Contact\Task;
-use App\Models\Instance\SpecialDate;
-use App\Models\Relationship\Relationship;
-use App\Models\Relationship\RelationshipType;
-use App\Models\Relationship\RelationshipTypeGroup;
-use App\Models\Settings\Term;
-use App\Models\User\Module;
 use App\Models\Journal\Entry;
+use App\Models\Settings\Term;
 use App\Models\Contact\Gender;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
+use App\Models\Contact\PetCategory;
+use App\Models\Instance\SpecialDate;
 use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Account\ImportJobReport;
 use App\Models\Account\ActivityStatistic;
+use App\Models\Relationship\Relationship;
 use Illuminate\Database\Schema\Blueprint;
+use App\Models\Relationship\RelationshipType;
 use Illuminate\Database\Migrations\Migration;
+use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddForeignKeys extends Migration
