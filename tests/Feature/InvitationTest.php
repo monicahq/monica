@@ -6,6 +6,7 @@ use Tests\FeatureTestCase;
 use App\Models\Account\Account;
 use App\Models\Account\Invitation;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Notification as NotificationFacade;
 
 class InvitationTest extends FeatureTestCase
 {
@@ -28,6 +29,8 @@ class InvitationTest extends FeatureTestCase
 
     public function test_it_can_respond_to_invitation()
     {
+        NotificationFacade::fake();
+
         $account = factory(Account::class)->create();
 
         $invitation = factory(Invitation::class)->create([

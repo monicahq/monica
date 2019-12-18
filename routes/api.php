@@ -22,12 +22,17 @@ Route::group(['middleware' => ['auth:api']], function () {
             ->names(['index' => 'contacts', 'show' => 'contact']);
         Route::put('/contacts/{contact}/setMe', 'ApiContactController@setMe');
 
+        // Contacts properties
+        Route::put('/contacts/{contact}/work', 'ApiContactController@updateWork');
+        Route::put('/contacts/{contact}/food', 'ApiContactController@updateFoodPreferences');
+        Route::put('/contacts/{contact}/introduction', 'ApiContactController@updateIntroduction');
+
         // Genders
         Route::apiResource('genders', 'Account\\ApiGenderController');
 
         // Relationships
         Route::apiResource('relationships', 'ApiRelationshipController', ['except' => ['index']])
-            ->name('show', 'relationship');
+            ->names(['show' => 'relationship']);
         Route::get('/contacts/{contact}/relationships', 'ApiRelationshipController@index')
             ->name('relationships');
 
@@ -118,9 +123,17 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::apiResource('lifeevents', 'Contact\\ApiLifeEventController');
 
         // Documents
-        Route::apiResource('documents', 'Contact\\ApiDocumentController', ['only' => ['index', 'show']])
+        Route::apiResource('documents', 'Contact\\ApiDocumentController', ['except' => ['update']])
             ->names(['index' => 'documents', 'show' => 'document']);
-        Route::get('/contacts/{contact}/documents', 'Contact\\ApiDocumentController@documents');
+        Route::get('/contacts/{contact}/documents', 'Contact\\ApiDocumentController@contact');
+
+        // Photos
+        Route::apiResource('photos', 'Contact\\ApiPhotoController', ['except' => ['update']])
+            ->names(['index' => 'photos', 'show' => 'photo']);
+        Route::get('/contacts/{contact}/photos', 'Contact\\ApiPhotoController@contact');
+
+        // Avatars
+        Route::put('/contacts/{contact}/avatar', 'Contact\\ApiAvatarController@update');
 
         /*
          * SETTINGS
