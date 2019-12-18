@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "26bfd8dcccd68f85ffc7b06b5da7e880",
+    "content-hash": "509e5038980586b74454456747d71865",
     "packages": [
         {
             "name": "asbiin/laravel-webauthn",
@@ -13996,20 +13996,20 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v4.4.1",
+            "version": "v5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
-                "reference": "36bbcab9369fc2f583220890efd43bf262d563fd"
+                "reference": "0a0a73a0836926898b6fcd6817fe697487a73d97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/36bbcab9369fc2f583220890efd43bf262d563fd",
-                "reference": "36bbcab9369fc2f583220890efd43bf262d563fd",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/0a0a73a0836926898b6fcd6817fe697487a73d97",
+                "reference": "0a0a73a0836926898b6fcd6817fe697487a73d97",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1.3",
+                "php": "^7.2.5",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-mbstring": "~1.0"
             },
@@ -14018,7 +14018,7 @@
             },
             "require-dev": {
                 "masterminds/html5": "^2.6",
-                "symfony/css-selector": "^3.4|^4.0|^5.0"
+                "symfony/css-selector": "^4.4|^5.0"
             },
             "suggest": {
                 "symfony/css-selector": ""
@@ -14026,7 +14026,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.4-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -14053,7 +14053,7 @@
             ],
             "description": "Symfony DomCrawler Component",
             "homepage": "https://symfony.com",
-            "time": "2019-10-29T11:38:30+00:00"
+            "time": "2019-11-18T17:27:11+00:00"
         },
         {
             "name": "symfony/filesystem",
