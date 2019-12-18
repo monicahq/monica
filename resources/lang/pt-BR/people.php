@@ -98,10 +98,10 @@ return [
     'call_delete_success' => 'A chamada telefônica foi excluída com sucesso',
     'call_title' => 'Ligações',
     'call_empty_comment' => 'Sem detalhes',
-    'call_blank_title' => 'Keep track of the phone calls you’ve done with {name}',
-    'call_blank_desc' => 'You called {name}',
-    'call_you_called' => 'You called',
-    'call_he_called' => '{name} called',
+    'call_blank_title' => 'Registre todas as ligações realizadas com {name}',
+    'call_blank_desc' => 'Você ligou para {name}',
+    'call_you_called' => 'Você ligou',
+    'call_he_called' => '{name} ligou',
     'call_emotions' => 'Emotions:',
 
     // Conversation
