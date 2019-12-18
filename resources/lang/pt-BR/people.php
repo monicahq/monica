@@ -4,10 +4,10 @@ return [
 
     //index
     'people_not_found' => 'Contato não encontrado',
-    'people_list_number_kids' => '1 kid|:count kids',
-    'people_list_last_updated' => 'Última consulta:',
-    'people_list_number_reminders' => '1 reminder|:count reminders',
-    'people_list_blank_title' => 'Você ainda não tem ninguém na sua conta',
+    'people_list_number_kids' => '1 criança|:count crianças',
+    'people_list_last_updated' => 'Últimas consultas:',
+    'people_list_number_reminders' => '1 lembrete|:count lembretes',
+    'people_list_blank_title' => 'Você ainda não adicionou ninguém',
     'people_list_blank_cta' => 'Adicionar alguém',
     'people_list_sort' => 'Ordenar',
     'people_list_stats' => '1 contact|:count contacts',
