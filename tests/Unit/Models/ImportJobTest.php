@@ -67,8 +67,19 @@ END:VCARD
 
     public function test_it_belongs_to_many_reports()
     {
-        $importJob = factory(ImportJob::class)->create([]);
-        factory(ImportJobReport::class, 100)->create(['import_job_id' => $importJob->id]);
+        $account = factory(Account::class)->create([]);
+        $user = factory(User::class)->create([
+            'account_id' => $account->id,
+        ]);
+        $importJob = factory(ImportJob::class)->create([
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
+        factory(ImportJobReport::class, 100)->create([
+            'import_job_id' => $importJob->id,
+            'account_id' => $account->id,
+            'user_id' => $user->id,
+        ]);
 
         $this->assertTrue($importJob->importJobReports()->exists());
     }

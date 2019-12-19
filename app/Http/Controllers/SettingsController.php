@@ -162,19 +162,6 @@ class SettingsController
             'account_id' => $account->id,
         ]);
 
-        $tables = DBHelper::getTables();
-
-        // Looping over the tables
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            if (in_array($tableName, $this->ignoredTables)) {
-                continue;
-            }
-
-            DB::table($tableName)->where('account_id', $account->id)->delete();
-        }
-
         $account = auth()->user()->account;
 
         if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
@@ -186,7 +173,7 @@ class SettingsController
             }
         }
 
-        DB::table('accounts')->where('id', $account->id)->delete();
+        $account->delete();
         auth()->logout();
         $user->delete();
 
