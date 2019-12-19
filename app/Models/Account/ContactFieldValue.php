@@ -13,14 +13,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
-class CustomField extends Model
+class ContactFieldValue extends Model
 {
     /**
      * The table associated with the model.
      *
      * @var string
      */
-    protected $table = 'custom_fields';
+    protected $table = 'contact_field_values';
 
     /**
      * The attributes that aren't mass assignable.
@@ -30,22 +30,22 @@ class CustomField extends Model
     protected $guarded = ['id'];
 
     /**
-     * Get the account record associated with the custom field.
+     * Get the contact record associated with the field value.
      *
      * @return BelongsTo
      */
-    public function account()
+    public function contact()
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Contact::class);
     }
 
     /**
-     * Get the field records associated with the custom field.
+     * Get the field record associated with the field value.
      *
-     * @return HasMany
+     * @return BelongsTo
      */
-    public function fields()
+    public function field()
     {
-        return $this->hasMany(Field::class);
+        return $this->belongsTo(Field::class);
     }
 }

@@ -133,3 +133,34 @@ $factory->define(App\Models\Account\Weather::class, function (Faker\Generator $f
         'created_at' => now(),
     ];
 });
+
+$factory->define(App\Models\Account\CustomField::class, function (Faker\Generator $faker) {
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'name' => 'work history',
+    ];
+});
+
+$factory->define(App\Models\Account\Field::class, function (Faker\Generator $faker) {
+    return [
+        'custom_field_id' => factory(App\Models\Account\CustomField::class)->create()->id,
+        'custom_field_type' => 'string',
+        'name' => 'work history',
+        'description' => 'nothing',
+    ];
+});
+
+$factory->define(App\Models\Account\ContactFieldValue::class, function (Faker\Generator $faker) {
+    $field = factory(App\Models\Account\Field::class)->create();
+
+    return [
+        'contact_id' => factory(App\Models\Contact\Contact::class)->create()->id,
+        'field_id' => $field->id,
+        'contact_id' => function () use ($field) {
+            return factory(App\Models\Contact\Contact::class)->create([
+                'account_id' => $field->customField->account_id,
+            ])->id;
+        },
+        'value' => 'work history',
+    ];
+});
