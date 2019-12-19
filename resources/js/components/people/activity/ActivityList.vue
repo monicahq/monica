@@ -25,7 +25,7 @@
     <div v-if="!displayLogActivity && activities.length == 0" class="w-100">
       <div class="bg-near-white tc pa3 br2 ba b--light-gray">
         <p>{{ $t('people.activities_blank_title', { name: name }) }}</p>
-        <a class="pointer" @click.prevent="displayLogActivity = true" href="">
+        <a class="pointer" href="" @click.prevent="displayLogActivity = true">
           {{ $t('people.activities_blank_add_activity') }}
         </a>
       </div>
@@ -156,14 +156,14 @@ export default {
     };
   },
 
-  mounted() {
-    this.prepareComponent();
-  },
-
   computed: {
     dirltr() {
       return this.$root.htmldir == 'ltr';
     }
+  },
+
+  mounted() {
+    this.prepareComponent();
   },
 
   methods: {

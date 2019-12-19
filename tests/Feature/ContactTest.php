@@ -549,6 +549,16 @@ class ContactTest extends FeatureTestCase
             ]);
     }
 
+    public function test_a_contact_edit_food_preferences()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID().'/food');
+
+        $response->assertStatus(200);
+        $response->assertSee('Indicate food preferences');
+    }
+
     public function test_a_contact_can_have_food_preferences()
     {
         [$user, $contact] = $this->fetchUser();
@@ -557,10 +567,39 @@ class ContactTest extends FeatureTestCase
 
         $this->post('/people/'.$contact->hashID().'/food/save', $food);
 
-        $food['id'] = $contact->id;
-        $this->changeArrayKey('food', 'food_preferences', $food);
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'food_preferences' => $food['food'],
+        ]);
+    }
 
-        $this->assertDatabaseHas('contacts', $food);
+    public function test_a_contact_edit_work()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $response = $this->get('/people/'.$contact->hashID().'/work/edit');
+
+        $response->assertStatus(200);
+        $response->assertSee("Update {$contact->first_name}’s job information");
+    }
+
+    public function test_a_contact_can_update_work()
+    {
+        [$user, $contact] = $this->fetchUser();
+
+        $input = [
+            'job' => $this->faker->sentence(),
+            'company' => $this->faker->sentence(),
+        ];
+
+        $response = $this->post('/people/'.$contact->hashID().'/work/update', $input);
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('contacts', [
+            'id' => $contact->id,
+            'job' => $input['job'],
+            'company' =>  $input['company'],
+        ]);
     }
 
     public function test_a_contact_can_have_its_last_name_removed()
@@ -629,14 +668,6 @@ class ContactTest extends FeatureTestCase
         $this->assertDatabaseHas('contacts', [
             'number_of_views' => 2,
         ]);
-    }
-
-    private function changeArrayKey($from, $to, &$array = [])
-    {
-        $array[$to] = $array[$from];
-        unset($array[$from]);
-
-        return $array;
     }
 
     public function test_vcard_download()

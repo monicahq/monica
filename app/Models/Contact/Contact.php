@@ -893,23 +893,6 @@ class Contact extends Model
     }
 
     /**
-     * Update the name of the contact.
-     *
-     * @param  string $foodPreferences
-     * @return void
-     */
-    public function updateFoodPreferences($foodPreferences)
-    {
-        if ($foodPreferences == '') {
-            $this->food_preferences = null;
-        } else {
-            $this->food_preferences = $foodPreferences;
-        }
-
-        $this->save();
-    }
-
-    /**
      * Refresh statistics about activities.
      *
      * @return void
@@ -1009,7 +992,7 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->avatarPhoto->url();
+                $avatarURL = $this->avatarPhoto()->get()->first()->url();
                 break;
             case 'default':
             default:

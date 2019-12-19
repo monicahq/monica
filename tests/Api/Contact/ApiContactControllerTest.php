@@ -1393,4 +1393,276 @@ class ApiContactControllerTest extends ApiTestCase
             'is_me' => true,
         ]);
     }
+
+    public function test_it_sets_career()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+            'job' => 'Astronaut',
+            'company' => 'NASA',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'career' => [
+                'job' => 'Astronaut',
+                'company' => 'NASA',
+            ],
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'job' => 'Astronaut',
+            'company' => 'NASA',
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+            'job' => 'Mom',
+            'company' => null,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'career' => [
+                'job' => 'Mom',
+                'company' => null,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'job' => 'Mom',
+            'company' => null,
+        ]);
+    }
+
+    public function test_it_get_an_error_when_set_career_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+            'job' => 'xx',
+            'company' => 'xx',
+        ]);
+        $this->expectNotFound($response);
+    }
+
+    public function test_it_get_an_error_when_set_career_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/work', [
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
+        ]);
+    }
+
+    public function test_it_sets_food_preferences()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
+            'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'food_preferences' => 'Pas de laitages, le lait c\'est le mal',
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
+            'food_preferences' => null,
+        ]);
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment([
+            'food_preferences' => null,
+        ]);
+
+        $this->assertDatabaseHas('contacts', [
+            'account_id' => $user->account_id,
+            'id' => $contact->id,
+            'food_preferences' => null,
+        ]);
+    }
+
+    public function test_it_get_an_error_when_set_food_preferences_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food');
+        $this->expectNotFound($response);
+    }
+
+    public function test_it_get_an_error_when_set_food_preferences_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/food', [
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
+        ]);
+    }
+
+    public function test_it_sets_first_met()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'first_met_date' => [
+                'date' => '2006-01-02T00:00:00Z',
+                'is_age_based' => false,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('special_dates', [
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+            'id' => Contact::find($contact->id)->first_met_special_date_id,
+            'is_age_based' => false,
+            'is_year_unknown' => false,
+            'date' => '2006-01-02',
+        ]);
+    }
+
+    public function test_it_sets_first_met_age()
+    {
+        Carbon::setTestNow(Carbon::create(2019, 12, 1, 7, 0, 0));
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'is_age_based' => true,
+            'age' => 13,
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'first_met_date' => [
+                'date' => '2006-01-01T00:00:00Z',
+                'is_age_based' => true,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('special_dates', [
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+            'id' => Contact::find($contact->id)->first_met_special_date_id,
+            'is_age_based' => true,
+            'is_year_unknown' => false,
+            'date' => '2006-01-01',
+        ]);
+    }
+
+    public function test_it_sets_first_met_reminder()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => true,
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonFragment([
+            'first_met_date' => [
+                'date' => '2006-01-02T00:00:00Z',
+                'is_age_based' => false,
+                'is_year_unknown' => false,
+            ],
+        ]);
+
+        $this->assertDatabaseHas('reminders', [
+            'account_id' => $user->account_id,
+            'contact_id' => $contact->id,
+            'id' => Contact::find($contact->id)->first_met_reminder_id,
+        ]);
+    }
+
+    public function test_it_get_an_error_when_set_first_met_with_wrong_params()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create();
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => false,
+        ]);
+        $this->expectNotFound($response);
+    }
+
+    public function test_it_get_an_error_when_set_first_met_on_partial_contact()
+    {
+        $user = $this->signin();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $user->account_id,
+            'is_partial' => true,
+        ]);
+
+        $response = $this->json('PUT', '/api/contacts/'.$contact->id.'/introduction', [
+            'is_date_known' => true,
+            'year' => 2006,
+            'month' => 1,
+            'day' => 2,
+            'add_reminder' => false,
+        ]);
+        $this->expectDataError($response, [
+            'The contact can\'t be a partial contact',
+        ]);
+    }
 }
