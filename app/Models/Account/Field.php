@@ -2,16 +2,9 @@
 
 namespace App\Models\Account;
 
-use Parsedown;
-use App\Helpers\DateHelper;
-use App\Traits\Journalable;
 use App\Models\Contact\Contact;
-use App\Models\Journal\JournalEntry;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Instance\Emotion\Emotion;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Field extends Model
 {
@@ -38,7 +31,6 @@ class Field extends Model
     {
         return $this->belongsTo(CustomField::class, 'custom_field_id');
     }
-
 
     /**
      * Get the value of the field for the given contact.
