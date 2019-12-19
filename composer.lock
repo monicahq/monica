@@ -7109,16 +7109,16 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v5.0.0",
+            "version": "v5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "ed45ac014e8ea81e6dbc7024ac613883772a6b91"
+                "reference": "e4229750cc86a391aa5a29050e4ba7c8076a365a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/ed45ac014e8ea81e6dbc7024ac613883772a6b91",
-                "reference": "ed45ac014e8ea81e6dbc7024ac613883772a6b91",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/e4229750cc86a391aa5a29050e4ba7c8076a365a",
+                "reference": "e4229750cc86a391aa5a29050e4ba7c8076a365a",
                 "shasum": ""
             },
             "require": {
@@ -7168,7 +7168,7 @@
                 "location",
                 "php"
             ],
-            "time": "2019-09-13T14:30:03+00:00"
+            "time": "2019-12-19T15:11:58+00:00"
         },
         {
             "name": "stripe/stripe-php",
