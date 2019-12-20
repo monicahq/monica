@@ -2,16 +2,8 @@
 
 namespace App\Services\Account\Settings;
 
-use App\Helpers\DBHelper;
-use App\Models\User\User;
-use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Account\Account;
-use App\Models\Contact\Document;
-use Illuminate\Support\Facades\DB;
-use App\Exceptions\NoAccountException;
-use App\Services\Account\Settings\DestroyAllDocuments;
-use Illuminate\Support\Facades\Storage;
 
 class ResetAccount extends BaseService
 {

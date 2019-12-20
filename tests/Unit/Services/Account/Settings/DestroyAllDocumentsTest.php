@@ -6,9 +6,9 @@ use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Services\Account\Settings\DestroyAllDocuments;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Document\UploadDocument;
+use App\Services\Account\Settings\DestroyAllDocuments;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class DestroyAllDocumentsTest extends TestCase
