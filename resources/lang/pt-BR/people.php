@@ -122,13 +122,13 @@ return [
     'conversation_add_another' => 'Adicionar outra mensagem',
     'conversation_add_error' => 'Você precisa adicionar pelo menos uma mensagem.',
     'conversation_list_table_messages' => 'Mensagens',
-    'conversation_list_table_content' => 'Partial content (last message)',
+    'conversation_list_table_content' => 'Conteúdo parcial (última mensagem)',
     'conversation_list_title' => 'Conversas',
     'conversation_list_cta' => 'Registrar conversa',
 
     // age - birthday
-    'birthdate_not_set' => 'Birthdate is not set',
-    'age_approximate_in_years' => 'around :age years old',
+    'birthdate_not_set' => 'Sem aniversário',
+    'age_approximate_in_years' => 'cerca de :age anos',
     'age_exact_in_years' => ':age anos',
     'age_exact_birthdate' => 'nasceu em :date',
 
@@ -140,7 +140,7 @@ return [
 
     // additional information
     'information_edit_success' => 'O perfil foi atualizado com sucesso',
-    'information_edit_title' => 'Edit :name’s personal information',
+    'information_edit_title' => 'Editar informações pessoais de :name',
     'information_edit_max_size' => 'Máx :size Kb.',
     'information_edit_max_size2' => 'Máx {size} Kb.',
     'information_edit_firstname' => 'Nome',
@@ -155,7 +155,7 @@ return [
     'information_work_at' => 'na :company',
     'work_add_cta' => 'Atualizar informação profissional',
     'work_edit_success' => 'Informação profissional atualizado com sucesso',
-    'work_edit_title' => 'Update :name’s job information',
+    'work_edit_title' => 'Atualizar trabalho de :name',
     'work_edit_job' => 'Job title (optional)',
     'work_edit_company' => 'Company (optional)',
     'work_information' => 'Work information',
