@@ -9671,16 +9671,16 @@
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
-                "reference": "8c21beab49db69f0a62a50840e6b97cf5bfa8dee"
+                "reference": "7e710be4a6eea125b92cb4cc4e6a0fc36c14d720"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/8c21beab49db69f0a62a50840e6b97cf5bfa8dee",
-                "reference": "8c21beab49db69f0a62a50840e6b97cf5bfa8dee",
+                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/7e710be4a6eea125b92cb4cc4e6a0fc36c14d720",
+                "reference": "7e710be4a6eea125b92cb4cc4e6a0fc36c14d720",
                 "shasum": ""
             },
             "require": {
@@ -9746,20 +9746,20 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-10-31T22:59:58+00:00"
+            "time": "2019-12-09T20:14:55+00:00"
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
-                "reference": "35d5874162c952195124b2ae5b92678c32be6777"
+                "reference": "7a986383f1406a1790130e2a0151b82536a03a96"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/35d5874162c952195124b2ae5b92678c32be6777",
-                "reference": "35d5874162c952195124b2ae5b92678c32be6777",
+                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/7a986383f1406a1790130e2a0151b82536a03a96",
+                "reference": "7a986383f1406a1790130e2a0151b82536a03a96",
                 "shasum": ""
             },
             "require": {
@@ -9826,7 +9826,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-10-31T22:59:58+00:00"
+            "time": "2019-12-09T20:14:55+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
@@ -9976,16 +9976,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
-            "version": "v2.1.1",
+            "version": "v2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-rsa.git",
-                "reference": "986324c0b9bd933adca40cca459bba9ccb7b32cf"
+                "reference": "871f78893fa7e56117161c7e53cc0f6f736bbf26"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/986324c0b9bd933adca40cca459bba9ccb7b32cf",
-                "reference": "986324c0b9bd933adca40cca459bba9ccb7b32cf",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/871f78893fa7e56117161c7e53cc0f6f736bbf26",
+                "reference": "871f78893fa7e56117161c7e53cc0f6f736bbf26",
                 "shasum": ""
             },
             "require": {
@@ -10049,7 +10049,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-10-31T22:59:58+00:00"
+            "time": "2019-12-09T20:14:55+00:00"
         },
         {
             "name": "yubico/u2flib-server",
