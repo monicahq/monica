@@ -162,8 +162,8 @@ return [
 
     // food preferences
     'food_preferences_add_success' => 'Preferências alimentares salvas com sucesso',
-    'food_preferences_edit_description' => 'Perhaps :firstname or someone in the :family’s family has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
-    'food_preferences_edit_description_no_last_name' => 'Perhaps :firstname has an allergy. Or doesn’t like a specific bottle of wine. Indicate them here so you will remember it next time you invite them for dinner',
+    'food_preferences_edit_description' => 'Talvez :firstname ou alguém na família :family tenha algum tipo de alergia ou não goste de algo específico. Coloque tudo aqui para que possa lembrar na próxima vez que os convidar para jantar',
+    'food_preferences_edit_description_no_last_name' => 'Talvez :firstname tenha algum tipo de alergia ou não goste de algo específico. Coloque tudo aqui para que possa lembrar na próxima vez que estiverem juntos',
     'food_preferences_edit_title' => 'Indicate food preferences',
     'food_preferences_edit_cta' => 'Save food preferences',
     'food_preferences_title' => 'Food preferences',
