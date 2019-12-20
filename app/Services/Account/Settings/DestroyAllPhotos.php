@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Services\Account;
+namespace App\Services\Account\Settings;
 
+use App\Models\Account\Photo;
 use App\Services\BaseService;
 use App\Models\Contact\Document;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
-class DestroyAllDocuments extends BaseService
+class DestroyAllPhotos extends BaseService
 {
     /**
      * Get the validation rules that apply to the service.
@@ -22,26 +23,26 @@ class DestroyAllDocuments extends BaseService
     }
 
     /**
-     * Destroy all documents in an account.
+     * Destroy all photos in an account.
      *
      * @param array $data
      * @return bool
      */
-    public function execute(array $data) : bool
+    public function execute(array $data): bool
     {
         $this->validate($data);
 
-        $documents = Document::where('account_id', $data['account_id'])
-                                ->get();
+        $photos = Photo::where('account_id', $data['account_id'])
+            ->get();
 
-        foreach ($documents as $document) {
+        foreach ($photos as $photo) {
             try {
-                Storage::delete($document->new_filename);
+                Storage::delete($photo->new_filename);
             } catch (FileNotFoundException $e) {
                 continue;
             }
 
-            $document->delete();
+            $photo->delete();
         }
 
         return true;

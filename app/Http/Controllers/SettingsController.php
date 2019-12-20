@@ -26,10 +26,11 @@ use Illuminate\Support\Facades\Storage;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Services\Account\DestroyAllDocuments;
+use App\Services\Account\Settings\DestroyAllDocuments;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
+use App\Services\Account\Settings\ResetAccount;
 
 class SettingsController
 {
@@ -192,26 +193,9 @@ class SettingsController
         $user = $request->user();
         $account = $user->account;
 
-        app(DestroyAllDocuments::class)->execute([
+        app(ResetAccount::class)->execute([
             'account_id' => $account->id,
         ]);
-
-        $tables = DBHelper::getTables();
-
-        // TODO(tom@tomrochette.com): We cannot simply iterate over tables to reset an account
-        // as this will not work with foreign key constraints
-        // Looping over the tables
-        foreach ($tables as $table) {
-            $tableName = $table->table_name;
-
-            if (in_array($tableName, $this->ignoredTables)) {
-                continue;
-            }
-
-            DB::table($tableName)->where('account_id', $account->id)->delete();
-        }
-
-        $account->populateDefaultFields();
 
         return redirect()->route('settings.index')
                     ->with('status', trans('settings.reset_success'));

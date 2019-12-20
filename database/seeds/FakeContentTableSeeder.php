@@ -64,11 +64,6 @@ class FakeContentTableSeeder extends Seeder
         $progress = new ProgressBar($output, $this->numberOfContacts);
         $progress->start();
 
-        // fetching avatars
-        $client = new Client();
-        $res = $client->request('GET', 'https://randomuser.me/api/?results='.$this->numberOfContacts.'&inc=picture');
-        $arrayPictures = json_decode($res->getBody());
-
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
 

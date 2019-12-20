@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Unit\Services\Account;
+namespace Tests\Unit\Services\Account\Settings;
 
 use Tests\TestCase;
 use App\Models\Contact\Contact;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use App\Services\Account\DestroyAllDocuments;
+use App\Services\Account\Settings\DestroyAllDocuments;
 use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Document\UploadDocument;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -22,7 +22,7 @@ class DestroyAllDocumentsTest extends TestCase
         $contact = factory(Contact::class)->create([]);
 
         $documents = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $documents[] = $this->uploadDocument($contact);
         }
 

@@ -77,6 +77,8 @@ class AddForeignKeys extends Migration
         $this->cleanTaskTable();
         $this->cleanTermUserTable();
         $this->cleanUserTable();
+
+        Schema::enableForeignKeyConstraints();
     }
 
     private function initialize()
