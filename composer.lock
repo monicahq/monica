@@ -2655,16 +2655,16 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "3.0.1",
+            "version": "3.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "a3e94f78dc92ec414dc8ff8abdfc51a2a048361b"
+                "reference": "3eaede59d07ea8eeb500ab4054ee0597f686c84d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/a3e94f78dc92ec414dc8ff8abdfc51a2a048361b",
-                "reference": "a3e94f78dc92ec414dc8ff8abdfc51a2a048361b",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/3eaede59d07ea8eeb500ab4054ee0597f686c84d",
+                "reference": "3eaede59d07ea8eeb500ab4054ee0597f686c84d",
                 "shasum": ""
             },
             "require": {
@@ -2717,7 +2717,7 @@
                 "laravel",
                 "laravolt"
             ],
-            "time": "2019-12-04T15:12:14+00:00"
+            "time": "2019-12-19T03:54:54+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -7109,16 +7109,16 @@
         },
         {
             "name": "stevebauman/location",
-            "version": "v5.0.0",
+            "version": "v5.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevebauman/location.git",
-                "reference": "ed45ac014e8ea81e6dbc7024ac613883772a6b91"
+                "reference": "e4229750cc86a391aa5a29050e4ba7c8076a365a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevebauman/location/zipball/ed45ac014e8ea81e6dbc7024ac613883772a6b91",
-                "reference": "ed45ac014e8ea81e6dbc7024ac613883772a6b91",
+                "url": "https://api.github.com/repos/stevebauman/location/zipball/e4229750cc86a391aa5a29050e4ba7c8076a365a",
+                "reference": "e4229750cc86a391aa5a29050e4ba7c8076a365a",
                 "shasum": ""
             },
             "require": {
@@ -7168,7 +7168,7 @@
                 "location",
                 "php"
             ],
-            "time": "2019-09-13T14:30:03+00:00"
+            "time": "2019-12-19T15:11:58+00:00"
         },
         {
             "name": "stripe/stripe-php",
@@ -13996,7 +13996,7 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "v5.0.1",
+            "version": "v5.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dom-crawler.git",
