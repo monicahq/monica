@@ -4,9 +4,6 @@ namespace App\Notifications;
 
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-use App\Models\Account\Invitation;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -48,6 +45,7 @@ class NewUserAlert extends Notification implements ShouldQueue
     public function toMail() : MailMessage
     {
         $user = $this->user;
+
         return (new MailMessage)
             ->subject("New registration: {$user->first_name} {$user->last_name}")
             ->greeting('New registration')

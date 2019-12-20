@@ -5,7 +5,6 @@ namespace App\Jobs;
 use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use App\Notifications\NewUserAlert;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
