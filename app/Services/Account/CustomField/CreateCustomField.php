@@ -2,10 +2,8 @@
 
 namespace App\Services\Account\CustomField;
 
-use App\Models\Account\CustomField;
 use App\Services\BaseService;
-use App\Models\Contact\Gender;
-use Illuminate\Validation\Rule;
+use App\Models\Account\CustomField;
 
 class CreateCustomField extends BaseService
 {

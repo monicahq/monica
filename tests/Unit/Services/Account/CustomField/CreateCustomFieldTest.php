@@ -3,12 +3,10 @@
 namespace Tests\Unit\Services\Account\CustomField;
 
 use Tests\TestCase;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Account\CustomField;
-use App\Services\Account\CustomField\CreateCustomField;
-use App\Services\Account\Gender\CreateGender;
 use Illuminate\Validation\ValidationException;
+use App\Services\Account\CustomField\CreateCustomField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateCustomFieldTest extends TestCase

@@ -2,9 +2,8 @@
 
 namespace App\Services\Account\CustomField;
 
-use App\Models\Account\CustomField;
 use App\Services\BaseService;
-use App\Models\Contact\Gender;
+use App\Models\Account\CustomField;
 
 class DestroyCustomField extends BaseService
 {

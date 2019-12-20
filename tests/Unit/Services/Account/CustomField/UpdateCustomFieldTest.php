@@ -3,12 +3,10 @@
 namespace Tests\Unit\Services\Account\Gender;
 
 use Tests\TestCase;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Account\CustomField;
-use App\Services\Account\CustomField\UpdateCustomField;
-use App\Services\Account\Gender\UpdateGender;
 use Illuminate\Validation\ValidationException;
+use App\Services\Account\CustomField\UpdateCustomField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

@@ -3,13 +3,11 @@
 namespace Tests\Unit\Services\Account\gender;
 
 use Tests\TestCase;
-use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Account\CustomField;
-use App\Services\Account\CustomField\DestroyCustomField;
-use App\Services\Account\Gender\DestroyGender;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use App\Services\Account\CustomField\DestroyCustomField;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DestroyCustomFieldTest extends TestCase
