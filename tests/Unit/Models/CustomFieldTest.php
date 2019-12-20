@@ -3,11 +3,8 @@
 namespace Tests\Unit\Models;
 
 use Tests\TestCase;
-use App\Models\Account\Photo;
-use App\Models\Account\Account;
-use App\Models\Account\CustomField;
 use App\Models\Account\Field;
-use App\Models\Contact\Contact;
+use App\Models\Account\CustomField;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CustomFieldTest extends TestCase
