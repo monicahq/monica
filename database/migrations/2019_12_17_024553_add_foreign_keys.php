@@ -638,23 +638,7 @@ class AddForeignKeys extends Migration
 
         Schema::table('contacts', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
-            $table->unsignedInteger('currency_id')->nullable()->change();
-            $table->unsignedInteger('invited_by_user_id')->nullable()->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
-            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
-            $table->foreign('invited_by_user_id')->references('id')->on('users')->onDelete('set null');
         });
-
-        foreach (User::cursor() as $user) {
-            try {
-                if (! is_null($user->invited_by_user_id)) {
-                    $this->userExistOrFail($user->invited_by_user_id);
-                }
-            } catch (ModelNotFoundException $e) {
-                $user->invited_by_user_id = null;
-                $user->save();
-                continue;
-            }
-        }
     }
 }
