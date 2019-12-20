@@ -22,6 +22,7 @@ use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Account\ImportJobReport;
 use App\Models\Account\ActivityStatistic;
+use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Relationship\RelationshipType;
@@ -77,6 +78,7 @@ class AddForeignKeys extends Migration
         $this->cleanTaskTable();
         $this->cleanTermUserTable();
         $this->cleanUserTable();
+        $this->cleanContactTable();
 
         Schema::enableForeignKeyConstraints();
     }
@@ -613,6 +615,39 @@ class AddForeignKeys extends Migration
         foreach (User::cursor() as $user) {
             try {
                 if (! is_null($user->invited_by_user_id)) {
+                    $this->userExistOrFail($user->invited_by_user_id);
+                }
+            } catch (ModelNotFoundException $e) {
+                $user->invited_by_user_id = null;
+                $user->save();
+                continue;
+            }
+        }
+    }
+
+    private function cleanContactTable()
+    {
+        foreach (Contact::cursor() as $contact) {
+            try {
+                $this->accountExistOrFail($contact->account_id);
+            } catch (ModelNotFoundException $e) {
+                $contact->delete();
+                continue;
+            }
+        }
+
+        Schema::table('contacts', function (Blueprint $table) {
+            $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('currency_id')->nullable()->change();
+            $table->unsignedInteger('invited_by_user_id')->nullable()->change();
+            $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('currency_id')->references('id')->on('currencies')->onDelete('set null');
+            $table->foreign('invited_by_user_id')->references('id')->on('users')->onDelete('set null');
+        });
+
+        foreach (User::cursor() as $user) {
+            try {
+                if (!is_null($user->invited_by_user_id)) {
                     $this->userExistOrFail($user->invited_by_user_id);
                 }
             } catch (ModelNotFoundException $e) {

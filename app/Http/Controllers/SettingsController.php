@@ -30,55 +30,11 @@ use App\Services\Account\Settings\DestroyAllDocuments;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
+use App\Services\Account\Settings\DestroyAccount;
 use App\Services\Account\Settings\ResetAccount;
 
 class SettingsController
 {
-    protected $ignoredTables = [
-        'accounts',
-        'activity_type_activities',
-        'activity_types',
-        'api_usage',
-        'cache',
-        'countries',
-        'contact_photo',
-        'crons',
-        'currencies',
-        'contact_photo',
-        'default_activity_types',
-        'default_activity_type_categories',
-        'default_contact_field_types',
-        'default_contact_modules',
-        'default_life_event_categories',
-        'default_life_event_types',
-        'default_relationship_type_groups',
-        'default_relationship_types',
-        'emotions',
-        'emotions_primary',
-        'emotions_secondary',
-        'failed_jobs',
-        'instances',
-        'jobs',
-        'migrations',
-        'oauth_access_tokens',
-        'oauth_auth_codes',
-        'oauth_clients',
-        'oauth_personal_access_clients',
-        'oauth_refresh_tokens',
-        'password_resets',
-        'pet_categories',
-        'sessions',
-        'statistics',
-        'subscriptions',
-        'telescope_entries',
-        'telescope_entries_tags',
-        'telescope_monitoring',
-        'terms',
-        'u2f_key',
-        'users',
-        'webauthn_keys',
-    ];
-
     /**
      * Display a listing of the resource.
      *
@@ -156,27 +112,18 @@ class SettingsController
      */
     public function delete(Request $request)
     {
-        $user = $request->user();
-        $account = $user->account;
-
-        app(DestroyAllDocuments::class)->execute([
-            'account_id' => $account->id,
-        ]);
-
         $account = auth()->user()->account;
 
-        if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
-            try {
-                $account->subscriptionCancel();
-            } catch (StripeException $e) {
-                return redirect()->route('settings.index')
-                    ->withErrors($e->getMessage());
-            }
+        try {
+            app(DestroyAccount::class)->execute([
+                'account_id' => $account->id,
+            ]);
+        } catch (StripeException $e) {
+            return redirect()->route('settings.index')
+                ->withErrors($e->getMessage());
         }
 
-        $account->delete();
         auth()->logout();
-        $user->delete();
 
         return redirect()->route('login');
     }
