@@ -1,9 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use App\Models\User\User;
-use function Safe\json_decode;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;

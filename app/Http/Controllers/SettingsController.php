@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\DBHelper;
 use App\Models\User\User;
 use App\Helpers\DateHelper;
 use App\Models\Contact\Tag;
@@ -15,7 +14,6 @@ use App\Jobs\AddContactFromVCard;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use App\Services\User\EmailChange;
-use Illuminate\Support\Facades\DB;
 use App\Exceptions\StripeException;
 use Lahaxearnaud\U2f\Models\U2fKey;
 use Illuminate\Support\Facades\Auth;
@@ -26,8 +24,9 @@ use Illuminate\Support\Facades\Storage;
 use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
-use App\Services\Account\Settings\DestroyAllDocuments;
+use App\Services\Account\Settings\ResetAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
+use App\Services\Account\Settings\DestroyAllDocuments;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
 use App\Services\Account\Settings\DestroyAccount;
