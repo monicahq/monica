@@ -17,7 +17,6 @@ class AddCustomFieldsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('account_id');
             $table->string('name');
-            $table->boolean('accept_multiple_values')->default(0);
             $table->timestamps();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
         });

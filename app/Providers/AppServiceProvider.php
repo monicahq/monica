@@ -153,5 +153,8 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\VCard\ExportVCard::class => \App\Services\VCard\ExportVCard::class,
         \App\Services\VCard\ImportVCard::class => \App\Services\VCard\ImportVCard::class,
         \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
+        \App\Services\Account\CustomField\CreateCustomField::class => \App\Services\Account\CustomField\CreateCustomField::class,
+        \App\Services\Account\CustomField\UpdateCustomField::class => \App\Services\Account\CustomField\UpdateCustomField::class,
+        \App\Services\Account\CustomField\DestroyCustomField::class => \App\Services\Account\CustomField\DestroyCustomField::class,
     ];
 }

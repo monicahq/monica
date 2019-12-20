@@ -5,44 +5,44 @@ namespace Tests\Unit\Services\Account\Gender;
 use Tests\TestCase;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
+use App\Models\Account\CustomField;
+use App\Services\Account\CustomField\UpdateCustomField;
 use App\Services\Account\Gender\UpdateGender;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class UpdateGenderTest extends TestCase
+class UpdateCustomFieldTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_gender()
+    public function test_it_updates_a_custom_field()
     {
-        $gender = factory(Gender::class)->create([]);
+        $customField = factory(CustomField::class)->create([]);
 
         $request = [
-            'account_id' => $gender->account->id,
-            'gender_id' => $gender->id,
+            'account_id' => $customField->account_id,
+            'custom_field_id' => $customField->id,
             'name' => 'man',
-            'type' => 'M',
         ];
 
-        $gender = app(UpdateGender::class)->execute($request);
+        $customField = app(UpdateCustomField::class)->execute($request);
 
-        $this->assertDatabaseHas('genders', [
-            'id' => $gender->id,
-            'account_id' => $gender->account_id,
+        $this->assertDatabaseHas('custom_fields', [
+            'id' => $customField->id,
+            'account_id' => $customField->account_id,
             'name' => 'man',
-            'type' => 'M',
         ]);
 
         $this->assertInstanceOf(
-            Gender::class,
-            $gender
+            CustomField::class,
+            $customField
         );
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
     {
-        $gender = factory(Gender::class)->create([]);
+        factory(CustomField::class)->create([]);
 
         $request = [
             'name' => 'man',
@@ -50,22 +50,21 @@ class UpdateGenderTest extends TestCase
         ];
 
         $this->expectException(ValidationException::class);
-        app(UpdateGender::class)->execute($request);
+        app(UpdateCustomField::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_gender_is_not_linked_to_account()
+    public function test_it_throws_an_exception_if_custom_field_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);
-        $gender = factory(Gender::class)->create([]);
+        $customField = factory(CustomField::class)->create([]);
 
         $request = [
             'account_id' => $account->id,
-            'gender_id' => $gender->id,
+            'custom_field_id' => $customField->id,
             'name' => 'man',
-            'type' => 'M',
         ];
 
         $this->expectException(ModelNotFoundException::class);
-        app(UpdateGender::class)->execute($request);
+        app(UpdateCustomField::class)->execute($request);
     }
 }
