@@ -13,7 +13,7 @@
         "asbiin/laravel-webauthn": "~0.7",
         "bacon/bacon-qr-code": "^1.0",
         "creativeorange/gravatar": "~1.0",
-        "doctrine/dbal": "2.9.2",
+        "doctrine/dbal": "2.9.3",
         "erusev/parsedown": "~1.7",
         "fideloper/proxy": "^4.0",
         "giggsey/libphonenumber-for-php": "^8.9",
@@ -69,7 +69,7 @@
         "psalm/plugin-laravel": "^1.0",
         "roave/security-advisories": "dev-master",
         "symfony/css-selector": "~4.0",
-        "symfony/dom-crawler": "~4.0",
+        "symfony/dom-crawler": "~5.0",
         "thecodingmachine/phpstan-safe-rule": "^0.1",
         "vimeo/psalm": "^3.0"
     },

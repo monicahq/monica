@@ -17,10 +17,13 @@ class DestroyAllDocumentsTest extends TestCase
 
     public function test_it_destroys_all_documents()
     {
+        Storage::fake();
+
         $contact = factory(Contact::class)->create([]);
 
+        $documents = [];
         for ($i = 0; $i < 10; $i++) {
-            $this->uploadDocument($contact);
+            $documents[] = $this->uploadDocument($contact);
         }
 
         $request = [
@@ -33,7 +36,9 @@ class DestroyAllDocumentsTest extends TestCase
             'account_id' => $contact->account->id,
         ]);
 
-        Storage::disk('documents')->assertMissing('document.pdf');
+        foreach ($documents as $document) {
+            Storage::disk('public')->assertMissing($document->new_filename);
+        }
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -48,16 +53,16 @@ class DestroyAllDocumentsTest extends TestCase
 
     private function uploadDocument($contact)
     {
-        Storage::fake('documents');
-
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
             'document' => UploadedFile::fake()->image('document.pdf'),
         ];
 
-        $uploadService = new UploadDocument;
+        $document = app(UploadDocument::class)->execute($request);
 
-        return $uploadService->execute($request);
+        Storage::disk('public')->assertExists($document->new_filename);
+
+        return $document;
     }
 }

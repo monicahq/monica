@@ -68,6 +68,11 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     public $singletons = [
+        \App\Services\Account\Activity\Activity\AttachContactToActivity::class => \App\Services\Account\Activity\Activity\AttachContactToActivity::class,
+        \App\Services\Account\Activity\Activity\CreateActivity::class => \App\Services\Account\Activity\Activity\CreateActivity::class,
+        \App\Services\Account\Activity\Activity\DestroyActivity::class => \App\Services\Account\Activity\Activity\DestroyActivity::class,
+        \App\Services\Account\Activity\Activity\UpdateActivity::class => \App\Services\Account\Activity\Activity\UpdateActivity::class,
+        \App\Services\Account\Activity\ActivityStatisticService::class => \App\Services\Account\Activity\ActivityStatisticService::class,
         \App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\CreateActivityTypeCategory::class,
         \App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\DestroyActivityTypeCategory::class,
         \App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory::class => \App\Services\Account\Activity\ActivityTypeCategory\UpdateActivityTypeCategory::class,
@@ -106,6 +111,9 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Contact\Contact\SetMeContact::class => \App\Services\Contact\Contact\SetMeContact::class,
         \App\Services\Contact\Contact\UpdateBirthdayInformation::class => \App\Services\Contact\Contact\UpdateBirthdayInformation::class,
         \App\Services\Contact\Contact\UpdateContact::class => \App\Services\Contact\Contact\UpdateContact::class,
+        \App\Services\Contact\Contact\UpdateContactFoodPreferences::class => \App\Services\Contact\Contact\UpdateContactFoodPreferences::class,
+        \App\Services\Contact\Contact\UpdateContactIntroductions::class => \App\Services\Contact\Contact\UpdateContactIntroductions::class,
+        \App\Services\Contact\Contact\UpdateContactWork::class => \App\Services\Contact\Contact\UpdateContactWork::class,
         \App\Services\Contact\Contact\UpdateDeceasedInformation::class => \App\Services\Contact\Contact\UpdateDeceasedInformation::class,
         \App\Services\Contact\Conversation\AddMessageToConversation::class => \App\Services\Contact\Conversation\AddMessageToConversation::class,
         \App\Services\Contact\Conversation\CreateConversation::class => \App\Services\Contact\Conversation\CreateConversation::class,

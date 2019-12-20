@@ -64,7 +64,7 @@ class ApiOccupationController extends ApiController
     {
         try {
             $occupation = app(CreateOccupation::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -93,7 +93,7 @@ class ApiOccupationController extends ApiController
     {
         try {
             $occupation = app(UpdateOccupation::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'occupation_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,

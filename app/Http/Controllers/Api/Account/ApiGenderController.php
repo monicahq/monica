@@ -64,7 +64,7 @@ class ApiGenderController extends ApiController
     {
         try {
             $gender = app(CreateGender::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -93,7 +93,7 @@ class ApiGenderController extends ApiController
     {
         try {
             $gender = app(UpdateGender::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'gender_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,

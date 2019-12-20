@@ -223,7 +223,7 @@ SET FOREIGN_KEY_CHECKS=0;
             'activity_type_id',
             'summary',
             'description',
-            'date_it_happened',
+            'happened_at',
             'created_at',
             'updated_at',
         ];
