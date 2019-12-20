@@ -13,6 +13,7 @@ use App\Models\Contact\Task;
 use App\Models\Journal\Entry;
 use App\Models\Settings\Term;
 use App\Models\Contact\Gender;
+use App\Models\Contact\Contact;
 use App\Models\Account\ImportJob;
 use App\Models\Account\Invitation;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,6 @@ use App\Models\Journal\JournalEntry;
 use Illuminate\Support\Facades\Schema;
 use App\Models\Account\ImportJobReport;
 use App\Models\Account\ActivityStatistic;
-use App\Models\Contact\Contact;
 use App\Models\Relationship\Relationship;
 use Illuminate\Database\Schema\Blueprint;
 use App\Models\Relationship\RelationshipType;
@@ -647,7 +647,7 @@ class AddForeignKeys extends Migration
 
         foreach (User::cursor() as $user) {
             try {
-                if (!is_null($user->invited_by_user_id)) {
+                if (! is_null($user->invited_by_user_id)) {
                     $this->userExistOrFail($user->invited_by_user_id);
                 }
             } catch (ModelNotFoundException $e) {

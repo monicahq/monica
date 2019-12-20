@@ -25,12 +25,11 @@ use LaravelWebauthn\Models\WebauthnKey;
 use App\Http\Requests\InvitationRequest;
 use App\Services\Contact\Tag\DestroyTag;
 use App\Services\Account\Settings\ResetAccount;
+use App\Services\Account\Settings\ResetAccount;
+use App\Services\Account\Settings\DestroyAccount;
 use PragmaRX\Google2FALaravel\Facade as Google2FA;
-use App\Services\Account\Settings\DestroyAllDocuments;
 use App\Http\Resources\Settings\U2fKey\U2fKey as U2fKeyResource;
 use App\Http\Resources\Settings\WebauthnKey\WebauthnKey as WebauthnKeyResource;
-use App\Services\Account\Settings\DestroyAccount;
-use App\Services\Account\Settings\ResetAccount;
 
 class SettingsController
 {

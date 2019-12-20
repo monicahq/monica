@@ -2,17 +2,9 @@
 
 namespace App\Services\Account\Settings;
 
-use App\Helpers\DBHelper;
-use App\Models\User\User;
-use Illuminate\Support\Str;
 use App\Services\BaseService;
 use App\Models\Account\Account;
-use App\Models\Contact\Document;
-use Illuminate\Support\Facades\DB;
-use App\Exceptions\NoAccountException;
 use App\Exceptions\StripeException;
-use App\Services\Account\Settings\DestroyAllDocuments;
-use Illuminate\Support\Facades\Storage;
 
 class DestroyAccount extends BaseService
 {
@@ -77,7 +69,7 @@ class DestroyAccount extends BaseService
     }
 
     /**
-     * Cancel Stripe subscription
+     * Cancel Stripe subscription.
      *
      * @param Account $account
      * @throws StripeException
@@ -85,7 +77,7 @@ class DestroyAccount extends BaseService
      */
     private function cancelStripe(Account $account)
     {
-        if ($account->isSubscribed() && !$account->has_access_to_paid_version_for_free) {
+        if ($account->isSubscribed() && ! $account->has_access_to_paid_version_for_free) {
             try {
                 $account->subscriptionCancel();
             } catch (StripeException $e) {
