@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Hatırlatıcı başarıyla eklendi',
     'reminders_delete_success' => 'Hatırlatıcı başarıyla silindi',
     'reminders_update_success' => 'Hatırlatıcı başarıyla güncellendi',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'her gün|[2,*]:number günde bir',
     'reminder_frequency_week' => 'her hafta|[2,*]:number haftada bir',
