@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Il promemoria è stato creato',
     'reminders_delete_success' => 'Il promemoria è stato rimosso',
     'reminders_update_success' => 'Il promemoria è stato aggiornato',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'ogni giorno|ogni :number giorni',
     'reminder_frequency_week' => 'ogni settimana|ogni :number settimane',
