@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Напоминание было добавлено',
     'reminders_delete_success' => 'Напоминание было удалено',
     'reminders_update_success' => 'Напоминание успешно обновлено',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'каждый день|[2,4]раз в :number дня|[5,*]раз в :number дней',
     'reminder_frequency_week' => 'каждую :number неделю|каждые :number недели|каждые :number недель',
