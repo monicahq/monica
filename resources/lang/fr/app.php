@@ -37,7 +37,7 @@ return [
     'upgrade' => 'Mettre à jour pour débloquer',
     'percent_uploaded' => '{percent}% téléchargés',
     'retry' => 'Réessayer',
-    'filter' => 'Filter the list',
+    'filter' => 'Filtrer la liste',
     'go_back' => 'Revenir en arrière',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
