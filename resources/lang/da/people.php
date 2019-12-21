@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Påmindelsen er blevet tilføjet',
     'reminders_delete_success' => 'Påmindelsen er blevet slettet',
     'reminders_update_success' => 'Påmindelsen er blevet opdateret',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'hver dag|hver :number. dag',
     'reminder_frequency_week' => 'hver uge|hver :number. uge',
