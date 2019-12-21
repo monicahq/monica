@@ -20,5 +20,8 @@ indent_size = 2
 [*.md]
 trim_trailing_whitespace = false
 
+[*.vue]
+indent_size = 2
+
 [*.yml]
 indent_size = 2

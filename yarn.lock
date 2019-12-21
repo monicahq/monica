@@ -9490,18 +9490,6 @@ uuid@^3.0.1, uuid@^3.3.2:
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.3.tgz#4568f0216e78760ee1dbf3a4d2cf53e224112866"
   integrity sha512-pW0No1RGHgzlpHJO1nsVrHKpOEIxkGg1xB+v0ZmdNH5OAeAwzAVrCnI2/6Mtx+Uys6iaylxa+D3g4j63IKKjSQ==
 
-v-dropdown@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/v-dropdown/-/v-dropdown-2.1.1.tgz#5e1a49d61c2913a6abdda3ccb462e2647f9d69ed"
-  integrity sha512-Rc+LairgIJENvLQCBpl4QAcen8h0EIffKaLeb+W5G2dPrW8HbPLDqQhxKOdXPQB4dcCIePie/Os6TN4K5i0a0Q==
-
-v-selectmenu@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/v-selectmenu/-/v-selectmenu-2.0.2.tgz#447b5d4c8f6e319e4589c6d3394f7027477f977f"
-  integrity sha512-8MoJ6O3ZVx+yYvhYCeAIrDjaRi+loU25xI4GhCtLkjhyXoRm6EFsKcjQOT0FuuQH7DEIRO4cQWIveS99ygNufw==
-  dependencies:
-    v-dropdown "2.1.1"
-
 v8-compile-cache@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/v8-compile-cache/-/v8-compile-cache-2.0.3.tgz#00f7494d2ae2b688cfe2899df6ed2c54bef91dbe"

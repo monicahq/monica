@@ -67,176 +67,170 @@
     </div>
 
     <!-- Create Contact field type -->
-    <div id="modal-create-contact-field-type" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ $t('settings.personalization_contact_field_type_modal_title') }}
-            </h5>
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
-              <span aria-hidden="true">
-                &times;
-              </span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!-- Form Errors -->
-            <error :errors="createForm.errors" />
+    <sweet-modal ref="modalCreateContactFieldType" overlay-theme="dark"
+                 :title="$t('settings.personalization_contact_field_type_modal_title')"
+                 @open="_focusCreateInput"
+    >
+      <!-- Form Errors -->
+      <error :errors="createForm.errors" />
 
-            <form class="form-horizontal" role="form" @submit.prevent="store">
-              <div class="form-group">
-                <div class="form-group">
-                  <label for="add-name">
-                    {{ $t('settings.personalization_contact_field_type_modal_name') }}
-                  </label>
-                  <input id="add-name" v-model="createForm.name" type="text" class="form-control" name="name"
-                         required @keyup.enter="store"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label for="add-protocol">
-                    {{ $t('settings.personalization_contact_field_type_modal_protocol') }}
-                  </label>
-                  <input id="add-protocol" v-model="createForm.protocol" type="text" class="form-control" name="protocol"
-                         placeholder="mailto:" @keyup.enter="store"
-                  />
-                  <small class="form-text text-muted">
-                    {{ $t('settings.personalization_contact_field_type_modal_protocol_help') }}
-                  </small>
-                </div>
-
-                <div class="form-group">
-                  <label for="add-icon">
-                    {{ $t('settings.personalization_contact_field_type_modal_icon') }}
-                  </label>
-                  <input id="add-icon" v-model="createForm.icon" type="text" class="form-control" name="icon"
-                         placeholder="fa fa-address-book-o" @keyup.enter="store"
-                  />
-                  <small class="form-text text-muted">
-                    {{ $t('settings.personalization_contact_field_type_modal_icon_help') }}
-                  </small>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              {{ $t('app.cancel') }}
-            </button>
-            <button type="button" class="btn btn-primary" @click.prevent="store">
-              {{ $t('app.save') }}
-            </button>
+      <form class="form-horizontal" role="form" @submit.prevent="store">
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'name'"
+              ref="createName"
+              v-model="createForm.name"
+              :required="true"
+              :title="$t('settings.personalization_contact_field_type_modal_name')"
+              @submit="store"
+            />
           </div>
         </div>
+
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'protocol'"
+              v-model="createForm.protocol"
+              :placeholder="'mailto:'"
+              :required="true"
+              :title="$t('settings.personalization_contact_field_type_modal_protocol')"
+              @submit="store"
+            />
+
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_contact_field_type_modal_protocol_help') }}
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'icon'"
+              v-model="createForm.icon"
+              :placeholder="'fa fa-address-book-o'"
+              :required="true"
+              :title="$t('settings.personalization_contact_field_type_modal_icon')"
+              @submit="store"
+            />
+
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_contact_field_type_modal_icon_help') }}
+            </small>
+          </div>
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+          <a class="btn" href="" @click.prevent="closeModal">
+            {{ $t('app.cancel') }}
+          </a>
+          <a class="btn btn-primary" href="" @click.prevent="store">
+            {{ $t('app.save') }}
+          </a>
+        </span>
       </div>
-    </div>
+    </sweet-modal>
 
     <!-- Edit Contact field type -->
-    <div id="modal-edit-contact-field-type" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ $t('settings.personalization_contact_field_type_modal_edit_title') }}
-            </h5>
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
-              <span aria-hidden="true">
-                &times;
-              </span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <!-- Form Errors -->
-            <error :errors="editForm.errors" />
+    <sweet-modal ref="modalEditContactFieldType" overlay-theme="dark"
+                 :title="$t('settings.personalization_contact_field_type_modal_edit_title')"
+                 @open="_focusEditInput"
+    >
+      <!-- Form Errors -->
+      <error :errors="editForm.errors" />
 
-            <form class="form-horizontal" role="form" @submit.prevent="update">
-              <div class="form-group">
-                <div class="form-group">
-                  <label for="edit-name">
-                    {{ $t('settings.personalization_contact_field_type_modal_name') }}
-                  </label>
-                  <input id="edit-name" v-model="editForm.name" type="text" class="form-control" name="name"
-                         required @keyup.enter="update"
-                  />
-                </div>
-
-                <div class="form-group">
-                  <label for="edit-protocol">
-                    {{ $t('settings.personalization_contact_field_type_modal_protocol') }}
-                  </label>
-                  <input id="edit-protocol" v-model="editForm.protocol" type="text" class="form-control" name="protocol"
-                         placeholder="mailto:" @keyup.enter="update"
-                  />
-                  <small class="form-text text-muted">
-                    {{ $t('settings.personalization_contact_field_type_modal_protocol_help') }}
-                  </small>
-                </div>
-
-                <div class="form-group">
-                  <label for="edit-icon">
-                    {{ $t('settings.personalization_contact_field_type_modal_icon') }}
-                  </label>
-                  <input id="edit-icon" v-model="editForm.icon" type="text" class="form-control" name="icon"
-                         placeholder="fa fa-address-book-o" @keyup.enter="update"
-                  />
-                  <small class="form-text text-muted">
-                    {{ $t('settings.personalization_contact_field_type_modal_icon_help') }}
-                  </small>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              {{ $t('app.cancel') }}
-            </button>
-            <button type="button" class="btn btn-primary" @click.prevent="update">
-              {{ $t('app.edit') }}
-            </button>
+      <form class="form-horizontal" role="form" @submit.prevent="update">
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'name'"
+              ref="editName"
+              v-model="editForm.name"
+              :required="true"
+              :title="$t('settings.personalization_contact_field_type_modal_name')"
+              @submit="update"
+            />
           </div>
         </div>
+
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'protocol'"
+              v-model="editForm.protocol"
+              :placeholder="'mailto:'"
+              :required="true"
+              :title="$t('settings.personalization_contact_field_type_modal_protocol')"
+              @submit="update"
+            />
+
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_contact_field_type_modal_protocol_help') }}
+            </small>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-auto">
+            <form-input
+              :id="'icon'"
+              v-model="editForm.icon"
+              :placeholder="'fa fa-address-book-o'"
+              :required="true"
+              :title="$t('settings.personalization_contact_field_type_modal_icon')"
+              @submit="update"
+            />
+
+            <small class="form-text text-muted">
+              {{ $t('settings.personalization_contact_field_type_modal_icon_help') }}
+            </small>
+          </div>
+        </div>
+      </form>
+      <div class="relative">
+        <span class="fr">
+          <a class="btn" href="" @click.prevent="closeModal">
+            {{ $t('app.cancel') }}
+          </a>
+          <a class="btn btn-primary" href="" @click.prevent="update">
+            {{ $t('app.edit') }}
+          </a>
+        </span>
       </div>
-    </div>
+    </sweet-modal>
 
     <!-- Delete Contact field type -->
-    <div id="modal-delete-contact-field-type" class="modal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ $t('settings.personalization_contact_field_type_modal_delete_title') }}
-            </h5>
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal">
-              <span aria-hidden="true">
-                &times;
-              </span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>{{ $t('settings.personalization_contact_field_type_modal_delete_description') }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">
-              {{ $t('app.cancel') }}
-            </button>
-            <button type="button" class="btn btn-danger" @click.prevent="trash">
-              {{ $t('app.delete') }}
-            </button>
-          </div>
-        </div>
+    <sweet-modal ref="modalDeleteContactFieldType" overlay-theme="dark"
+                 :title="$t('settings.personalization_contact_field_type_modal_delete_title')"
+    >
+      <p>
+        {{ $t('settings.personalization_contact_field_type_modal_delete_description') }}
+      </p>
+      <div class="relative">
+        <span class="fr">
+          <a class="btn" href="" @click.prevent="closeModal">
+            {{ $t('app.cancel') }}
+          </a>
+          <a class="btn btn-primary" href="" @click.prevent="trash">
+            {{ $t('app.delete') }}
+          </a>
+        </span>
       </div>
-    </div>
+    </sweet-modal>
   </div>
 </template>
 
 <script>
+import { SweetModal } from 'sweet-modal-vue';
 import Error from '../partials/Error.vue';
 
 export default {
 
   components: {
+    SweetModal,
     Error
   },
 
@@ -278,14 +272,6 @@ export default {
   methods: {
     prepareComponent() {
       this.getContactFieldTypes();
-
-      $('#modal-create-contact-field-type').on('shown.bs.modal', () => {
-        $('#name').focus();
-      });
-
-      $('#modal-edit-contact-field-type').on('shown.bs.modal', () => {
-        $('#name').focus();
-      });
     },
 
     getContactFieldTypes() {
@@ -296,13 +282,19 @@ export default {
     },
 
     add() {
-      $('#modal-create-contact-field-type').modal('show');
+      this.$refs.modalCreateContactFieldType.open();
+    },
+
+    closeModal() {
+      this.$refs.modalCreateContactFieldType.close();
+      this.$refs.modalEditContactFieldType.close();
+      this.$refs.modalDeleteContactFieldType.close();
     },
 
     store() {
       this.persistClient(
         'post', 'settings/personalization/contactfieldtypes',
-        this.createForm, '#modal-create-contact-field-type', this.submitted
+        this.createForm, this.submitted
       );
 
       this.$notify({
@@ -320,13 +312,13 @@ export default {
       this.editForm.protocol = contactFieldType.protocol;
       this.editForm.icon = contactFieldType.fontawesome_icon;
 
-      $('#modal-edit-contact-field-type').modal('show');
+      this.$refs.modalEditContactFieldType.open();
     },
 
     update() {
       this.persistClient(
         'put', 'settings/personalization/contactfieldtypes/' + this.editForm.id,
-        this.editForm, '#modal-edit-contact-field-type', this.edited
+        this.editForm, this.edited
       );
 
       this.$notify({
@@ -341,13 +333,13 @@ export default {
     showDelete(contactFieldType) {
       this.editForm.id = contactFieldType.id;
 
-      $('#modal-delete-contact-field-type').modal('show');
+      this.$refs.modalDeleteContactFieldType.open();
     },
 
     trash() {
       this.persistClient(
         'delete', 'settings/personalization/contactfieldtypes/' + this.editForm.id,
-        this.editForm, '#modal-delete-contact-field-type', this.deleted
+        this.editForm, this.deleted
       );
 
       this.$notify({
@@ -359,7 +351,7 @@ export default {
       });
     },
 
-    persistClient(method, uri, form, modal, success) {
+    persistClient(method, uri, form, success) {
       form.errors = {};
 
       axios[method](uri, form)
@@ -372,7 +364,7 @@ export default {
           form.icon = '';
           form.errors = [];
 
-          $(modal).modal('hide');
+          this.closeModal();
 
           success = true;
         })
@@ -383,6 +375,26 @@ export default {
             form.errors = [this.$t('app.error_try_again')];
           }
         });
+    },
+
+    /**
+     * Focus on modal open.
+     */
+    _focusCreateInput() {
+      let vm = this;
+      setTimeout(function() {
+        vm.$refs.createName.focus();
+      }, 10);
+    },
+
+    /**
+     * Focus on modal open.
+     */
+    _focusEditInput() {
+      let vm = this;
+      setTimeout(function() {
+        vm.$refs.editName.focus();
+      }, 10);
     },
   }
 };

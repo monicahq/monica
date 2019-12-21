@@ -21,6 +21,7 @@
         :payment-succeeded="{{ \Safe\json_encode($payment->isSucceeded()) }}"
         :payment-cancelled="{{ \Safe\json_encode($payment->isCancelled()) }}"
         :callback="'{{ $redirect }}'"
+        :token="'{{ csrf_token() }}'"
       ></stripe-subscription>
 
     </div>

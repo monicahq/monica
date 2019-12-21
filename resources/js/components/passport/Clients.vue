@@ -161,9 +161,9 @@
               @submit="update"
             />
 
-            <span class="help-block">
+            <small class="form-text text-muted">
               {{ $t('settings.api_oauth_name_help') }}
-            </span>
+            </small>
           </div>
         </div>
 
@@ -179,9 +179,9 @@
               @submit="update"
             />
 
-            <span class="help-block">
+            <small class="form-text text-muted">
               {{ $t('settings.api_oauth_redirecturl_help') }}
-            </span>
+            </small>
           </div>
         </div>
       </form>

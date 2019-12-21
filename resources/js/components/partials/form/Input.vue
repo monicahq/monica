@@ -29,6 +29,7 @@ input:focus {
       :class="inputClass"
       :style="inputStyle"
       :value="value"
+      :placeholder="placeholder"
       @input="event => { $emit('input', event.target.value) }"
       @keyup.enter="event => { $emit('submit', event.target.value) }"
     />
@@ -56,6 +57,10 @@ export default {
       default: true,
     },
     inputType: {
+      type: String,
+      default: '',
+    },
+    placeholder: {
       type: String,
       default: '',
     },
