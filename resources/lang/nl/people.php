@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'De herinnering is met succes toegevoegd',
     'reminders_delete_success' => 'De herinnering is verwijderd',
     'reminders_update_success' => 'De herinnering is succesvol bijgewerkt',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'dagelijks | elke :number dagen',
     'reminder_frequency_week' => 'wekelijks | elke :number weken',
