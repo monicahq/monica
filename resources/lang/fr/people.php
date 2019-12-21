@@ -260,7 +260,7 @@ return [
     'activities_add_date_occured' => 'Date de l’activité',
     'activities_add_participants' => 'Qui, à part {name}, a participé à l’activité ? (optionnel)',
     'activities_add_emotions_title' => 'Voulez vous enregistrer ce que vous avez ressenti au cours de cette activité ? (optionnel)',
-    'activities_blank_title' => 'Keep track of what you’ve done with {name} in the past, and what you’ve talked about',
+    'activities_blank_title' => 'Gardez une trace de ce que vous avez fait avec {name} dans le passé, et de ce dont vous avez parlé',
     'activities_blank_add_activity' => 'Ajouter une activité',
     'activities_add_success' => 'L’activité a été ajoutée avec succès',
     'activities_add_error' => 'Erreur lors de l’ajout de l’activité',
@@ -274,10 +274,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'Voici une ventilation du type d’activités que vous avez faites ensemble en :year',
     'activities_profile_year_summary' => 'Voici ce que vous avez fait ensemble en :year',
     'activities_profile_number_occurences' => ':value activité|:value activités',
-    'activities_list_participants' => 'Participants:',
-    'activities_list_emotions' => 'Emotions felt:',
-    'activities_list_date' => 'Happened on',
-    'activities_list_category' => 'Category:',
+    'activities_list_participants' => 'Participants :',
+    'activities_list_emotions' => 'Émotions ressenties :',
+    'activities_list_date' => 'Arrivé le',
+    'activities_list_category' => 'Catégorie :',
 
     // notes
     'notes_create_success' => 'La note a été ajoutée avec succès',
@@ -383,7 +383,7 @@ return [
 
     // Pets
     'pets_kind' => 'Sorte d’animal',
-    'pets_name' => 'Nom (optionel)',
+    'pets_name' => 'Nom (optionnel)',
     'pets_create_success' => 'L’animal a été ajouté avec succès',
     'pets_update_success' => 'L’animal a été mis à jour',
     'pets_delete_success' => 'L’animal a été supprimé',
