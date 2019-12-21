@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'El recordatorio ha sido añadido exitosamente',
     'reminders_delete_success' => 'El recordatorio ha sido eliminado exitosamente',
     'reminders_update_success' => 'El recordatorio ha sido actualizado exitosamente',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'cada día|cada :number días',
     'reminder_frequency_week' => 'cada semana|cada :number semanas',
