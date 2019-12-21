@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Die Erinnerung wurde erfolgreich hinzugefügt',
     'reminders_delete_success' => 'Die Erinnerung wurde erfolgreich gelöscht',
     'reminders_update_success' => 'Die Erinnerung wurde erfolgreich geändert',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'jeden Tag | alle :number Tage',
     'reminder_frequency_week' => 'jede Woche|alle :number Wochen',
