@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Upozornění bylo úspěšně přidáno',
     'reminders_delete_success' => 'Upozornění bylo úspěšně smazáno',
     'reminders_update_success' => 'The reminder has been updated successfully',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'every day|every :number days',
     'reminder_frequency_week' => 'každý týden|každé :number týdny',
