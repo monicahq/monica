@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'O lembrete foi adicionado com sucesso',
     'reminders_delete_success' => 'O lembrete foi excluído com sucesso',
     'reminders_update_success' => 'O lembrete foi atualizado com sucesso',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'todos os dias|a cada :number dias',
     'reminder_frequency_week' => 'toda semana|cada :number semanas',
