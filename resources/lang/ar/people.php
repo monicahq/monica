@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'تم بنجاح إضافة تذكير',
     'reminders_delete_success' => 'تم حذف التذكير بنجاح',
     'reminders_update_success' => 'تم تحديث التذكير بنجاح',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'يوميا|كل :number أيام',
     'reminder_frequency_week' => 'أسبوعيا|كل :number أسابيع',
