@@ -39,18 +39,17 @@ class NewUserAlert extends Notification implements ShouldQueue
     /**
      * Get the mail representation of the notification.
      *
-     * @param  string $mail
      * @return MailMessage
      */
     public function toMail() : MailMessage
     {
-        $user = $this->user;
+        $tuser = $this->user;
 
         return (new MailMessage)
-            ->subject("New registration: {$user->first_name} {$user->last_name}")
+            ->subject("New registration: {$tuser->first_name} {$tuser->last_name}")
             ->greeting('New registration')
-            ->line("User: {$user->first_name} {$user->last_name}")
-            ->line("ID: {$user->id}")
-            ->line("Email: {$user->email}");
+            ->line("User: {$tuser->first_name} {$tuser->last_name}")
+            ->line("ID: {$tuser->id}")
+            ->line("Email: {$tuser->email}");
     }
 }
