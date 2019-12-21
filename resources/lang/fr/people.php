@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Le rappel a été ajouté avec succès.',
     'reminders_delete_success' => 'Le rappel a été supprimé avec succès.',
     'reminders_update_success' => 'Le rappel a été mis à jour avec succès',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => 'chaque jour|chaque :number jours',
     'reminder_frequency_week' => 'chaque semaine|chaque :number semaines',
