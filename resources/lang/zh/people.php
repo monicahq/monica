@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => '已成功添加提醒',
     'reminders_delete_success' => '已成功删除提醒',
     'reminders_update_success' => '已成功更新提醒',
+    'reminders_add_optional_comment' => 'Optional comment',
 
     'reminder_frequency_day' => '每:number天',
     'reminder_frequency_week' => ' 每:number星期',
