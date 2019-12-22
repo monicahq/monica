@@ -213,12 +213,12 @@ return [
     'relationship_form_associate_contact' => 'Um contato existente',
     'relationship_form_associate_dropdown' => 'Pesquise e selecione um contato existente no menu abaixo',
     'relationship_form_associate_dropdown_placeholder' => 'Pesquise e selecione um contato existente',
-    'relationship_form_also_create_contact' => 'Create a Contact entry for this person.',
-    'relationship_form_add_description' => 'This will let you treat this person like any other contact.',
-    'relationship_form_add_no_existing_contact' => 'You don’t have any contacts who can be related to :name at the moment.',
-    'relationship_delete_confirmation' => 'Are you sure you want to delete this relationship? Deletion is permanent.',
-    'relationship_unlink_confirmation' => 'Are you sure you want to delete this relationship? This person will not be deleted – only the relationship between the two.',
-    'relationship_form_add_success' => 'The relationship has been successfully set.',
+    'relationship_form_also_create_contact' => 'Criar um perfil de contato para esta pessoa.',
+    'relationship_form_add_description' => 'Isto permitirá que você gerencie esta pessoa como qualquer outro contato.',
+    'relationship_form_add_no_existing_contact' => 'Você não tem nenhum contato que possa ser relacionado a :name no momento.',
+    'relationship_delete_confirmation' => 'Quer mesmo excluir este relacionamento? Você não pode voltar atrás.',
+    'relationship_unlink_confirmation' => 'Quer mesmo excluir este relacionamento? Esta pessoa não será excluída, somente o relacionamento entre as duas.',
+    'relationship_form_add_success' => 'O relacionamento foi estabelecido com sucesso.',
     'relationship_form_deletion_success' => 'The relationship has been deleted.',
 
     // tasks
