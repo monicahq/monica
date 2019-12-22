@@ -146,7 +146,7 @@ version: "3.4"
 
 services:
   app:
-    image: monicahq/monicahq
+    image: monicahq/monicahq:fpm
     depends_on:
       - mysql
     environment:
