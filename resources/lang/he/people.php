@@ -184,7 +184,7 @@ return [
     'reminders_create_success' => 'התזכורת נוספה בהצלחה',
     'reminders_delete_success' => 'התזכורת נמחקה בהצלחה',
     'reminders_update_success' => 'התזכורת עודכנה בהצלחה',
-    'reminders_add_optional_comment' => 'Optional comment',
+    'reminders_add_optional_comment' => 'הערת רשות',
 
     'reminder_frequency_day' => '{1} כל יום|{2} כל יומיים|[3,*] כל :number ימים',
     'reminder_frequency_week' => '{1} כל שבוע| {2} כל שבועיים|[3,*] כל :number שבועות',
