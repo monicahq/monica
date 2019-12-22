@@ -22,7 +22,7 @@ class ChangeGiftStatus extends Migration
             $table->foreign('is_for')->references('id')->on('contacts')->onDelete('set null');
         });
 
-        Gift::chunk(500, function($gifts) {
+        Gift::chunk(500, function ($gifts) {
             foreach ($gifts as $gift) {
                 $gift->status = $gift->has_been_offered === 1 ? 'offered' :
                         ($gift->has_been_received === 1 ? 'received' : 'idea');

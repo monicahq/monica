@@ -6,13 +6,12 @@ use App\Models\Contact\Gift;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\Gift\Gift as GiftResource;
 use App\Services\Contact\Gift\CreateGift;
-use App\Services\Contact\Gift\DestroyGift;
 use App\Services\Contact\Gift\UpdateGift;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\Gift\DestroyGift;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\Gift\Gift as GiftResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiGiftController extends ApiController
 {
@@ -91,7 +90,7 @@ class ApiGiftController extends ApiController
                 $request->except(['account_id', 'gift_id'])
                 + [
                     'account_id' => auth()->user()->account_id,
-                    'gift_id' => $giftId
+                    'gift_id' => $giftId,
                 ]
             );
 
@@ -115,7 +114,7 @@ class ApiGiftController extends ApiController
         try {
             app(DestroyGift::class)->execute([
                 'account_id' => auth()->user()->account_id,
-                'gift_id' => $giftId
+                'gift_id' => $giftId,
             ]);
 
             return $this->respondObjectDeleted($giftId);
