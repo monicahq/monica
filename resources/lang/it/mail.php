@@ -26,7 +26,7 @@ return [
     'confirmation_email_title' => 'Monica – Verifica Email',
     'confirmation_email_intro'=> 'Per verificare il tuo indirizzo email clicca il bottone qui sotto',
     'confirmation_email_button' => 'Verifica indirizzo email',
-    'confirmation_email_bottom' => 'If you did not create an account, no further action is required.',
+    'confirmation_email_bottom' => 'Se non hai creato un account, non è richiesta alcuna azione ulteriore.',
 
     'password_reset_title' => 'Monica – Reset Password Notification',
     'password_reset_intro' => 'You are receiving this email because we received a password reset request for your account.',
