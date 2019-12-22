@@ -184,7 +184,7 @@ return [
     'reminders_create_success' => 'Il promemoria è stato creato',
     'reminders_delete_success' => 'Il promemoria è stato rimosso',
     'reminders_update_success' => 'Il promemoria è stato aggiornato',
-    'reminders_add_optional_comment' => 'Optional comment',
+    'reminders_add_optional_comment' => 'Informazioni aggiuntive',
 
     'reminder_frequency_day' => 'ogni giorno|ogni :number giorni',
     'reminder_frequency_week' => 'ogni settimana|ogni :number settimane',
@@ -222,7 +222,7 @@ return [
     'relationship_form_deletion_success' => 'La relazione è stata eliminata.',
 
     // tasks
-    'tasks_title' => 'Tasks',
+    'tasks_title' => 'Cose da fare',
     'tasks_blank_title' => 'Nulla da fare.',
     'tasks_form_title' => 'Titolo',
     'tasks_form_description' => 'Descrizione (facoltativa)',
@@ -250,7 +250,7 @@ return [
     'activity_type_went_play' => 'andati a una rappresentazione teatrale',
     'activity_type_went_museum' => 'andati al museo',
     'activities_add_activity' => 'Aggiungi attività',
-    'activities_add_more_details' => 'Add more details',
+    'activities_add_more_details' => 'Aggiungi ulteriori dettagli',
     'activities_add_emotions' => 'Add emotions',
     'activities_add_category' => 'Indicate a category',
     'activities_add_participants_cta' => 'Add participants',
