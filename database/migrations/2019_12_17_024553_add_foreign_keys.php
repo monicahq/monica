@@ -638,7 +638,9 @@ class AddForeignKeys extends Migration
 
         Schema::table('contacts', function (Blueprint $table) {
             $table->unsignedInteger('account_id')->change();
+            $table->unsignedInteger('avatar_photo_id')->change();
             $table->foreign('account_id')->references('id')->on('accounts')->onDelete('cascade');
+            $table->foreign('avatar_photo_id')->references('id')->on('photos')->onDelete('set null');
         });
     }
 }

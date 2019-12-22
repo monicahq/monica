@@ -30,7 +30,7 @@ class DestroyAccountTest extends TestCase
             'account_id' => $user->account_id,
         ]);
         $this->assertDatabaseMissing('accounts', [
-            'account_id' => $user->account_id,
+            'id' => $user->account_id,
         ]);
     }
 
