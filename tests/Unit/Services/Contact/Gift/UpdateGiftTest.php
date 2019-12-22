@@ -23,13 +23,13 @@ class UpdateGiftTest extends TestCase
             'gift_id' => $gift->id,
             'contact_id' => $gift->contact_id,
             'name' => 'Book',
-            'status' => 'offered'
+            'status' => 'offered',
         ]);
 
         $this->assertDatabaseHas('gifts', [
             'id' => $gift->id,
             'name' => 'Book',
-            'status' => 'offered'
+            'status' => 'offered',
         ]);
 
         $this->assertInstanceOf(
@@ -60,7 +60,7 @@ class UpdateGiftTest extends TestCase
             'gift_id' => $gift->id,
             'contact_id' => $gift->contact_id,
             'name' => 'Book',
-            'status' => 'offered'
+            'status' => 'offered',
         ]);
     }
 }

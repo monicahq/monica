@@ -4,16 +4,13 @@ namespace Tests\Unit\Services\Contact\Conversation;
 
 use Tests\TestCase;
 use App\Models\Contact\Gift;
-use App\Models\Account\Account;
 use App\Models\Account\Photo;
-use App\Models\Contact\Contact;
-use App\Services\Contact\Gift\AssociateGift;
-use App\Services\Contact\Gift\AssociatePhotoToGift;
 use Illuminate\Validation\ValidationException;
+use App\Services\Contact\Gift\AssociatePhotoToGift;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AssociateGiftTest extends TestCase
+class AssociateGiftToPhotoTest extends TestCase
 {
     use DatabaseTransactions;
 

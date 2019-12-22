@@ -5,7 +5,6 @@ namespace Tests\Unit\Services\Contact\Conversation;
 use Tests\TestCase;
 use App\Models\Contact\Gift;
 use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Services\Contact\Gift\DestroyGift;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

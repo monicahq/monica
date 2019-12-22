@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Services\Contact\Conversation;
 
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use Tests\TestCase;
 use App\Models\Contact\Gift;
+use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Services\Contact\Gift\CreateGift;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CreateGiftTest extends TestCase
 {
@@ -23,7 +23,7 @@ class CreateGiftTest extends TestCase
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'Book',
-            'status' => 'idea'
+            'status' => 'idea',
         ]);
 
         $this->assertDatabaseHas('gifts', [
@@ -31,7 +31,7 @@ class CreateGiftTest extends TestCase
             'account_id' => $contact->account_id,
             'contact_id' => $contact->id,
             'name' => 'Book',
-            'status' => 'idea'
+            'status' => 'idea',
         ]);
 
         $this->assertInstanceOf(
@@ -48,7 +48,7 @@ class CreateGiftTest extends TestCase
             'account_id' => -1,
             'contact_id' => -1,
             'name' => 'Book',
-            'status' => 'idea'
+            'status' => 'idea',
         ]);
     }
 
@@ -63,7 +63,7 @@ class CreateGiftTest extends TestCase
             'account_id' => $account->id,
             'contact_id' => $contact->id,
             'name' => 'Book',
-            'status' => 'idea'
+            'status' => 'idea',
         ]);
     }
 }
