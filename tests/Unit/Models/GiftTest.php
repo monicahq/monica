@@ -5,7 +5,6 @@ namespace Tests\Unit\Models;
 use Tests\TestCase;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
-use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GiftTest extends TestCase
