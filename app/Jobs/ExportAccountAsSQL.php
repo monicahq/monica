@@ -36,6 +36,7 @@ class ExportAccountAsSQL
      */
     public function handle()
     {
+        $tempFileName = null;
         try {
             $tempFileName = app(ExportAccount::class)
                     ->execute([

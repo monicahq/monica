@@ -13,7 +13,7 @@ class AddPhotoGift extends Migration
      */
     public function up()
     {
-        Schema::create('photo_gift', function (Blueprint $table) {
+        Schema::create('gift_photo', function (Blueprint $table) {
             $table->unsignedInteger('photo_id');
             $table->unsignedInteger('gift_id');
             $table->timestamps();
@@ -32,6 +32,6 @@ class AddPhotoGift extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photo_gift');
+        Schema::dropIfExists('gift_photo');
     }
 }

@@ -62,11 +62,11 @@ class UpdateGift extends BaseService
             'contact_id' => $data['contact_id'],
             'name' => $data['name'],
             'status' => $data['status'],
-            'comment' => $data['comment'],
-            'url' => $data['url'],
-            'value' => $data['amount'],
-            'date' => $data['date'],
-            'recipient' => $data['recipient_id'],
+            'comment' => $this->nullOrvalue($data, 'comment'),
+            'url' => $this->nullOrvalue($data, 'url'),
+            'value' => $this->nullOrvalue($data, 'amount'),
+            'date' => $this->nullOrvalue($data, 'date'),
+            'recipient' => $this->nullOrvalue($data, 'recipient_id'),
         ];
 
         return tap($gift)

@@ -233,10 +233,10 @@ export default {
         this.newGift.recipient_id = null;
         this.newGift.date = null;
       }
-      this.displayComment = false;
-      this.displayUrl = false;
-      this.displayAmount = false;
-      this.displayRecipient = false;
+      this.displayComment = this.gift ? this.gift.comment : false;
+      this.displayUrl = this.gift ? this.gift.url : false;
+      this.displayAmount = this.gift ? this.gift.amount : false;
+      this.displayRecipient = this.gift ? this.gift.recipient_id : false;
 
       this.errors = [];
     },

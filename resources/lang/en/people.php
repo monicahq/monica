@@ -308,6 +308,7 @@ return [
     'gifts_add_comment' => 'Comment (optional)',
     'gifts_add_recipient' => 'Recipient (optional)',
     'gifts_add_someone' => 'This gift is for someone in {name}’s family in particular',
+    'gifts_delete_title' => 'Delete a gift',
     'gifts_ideas' => 'Gift ideas',
     'gifts_offered' => 'Gifts offered',
     'gifts_offered_as_an_idea' => 'Mark as an idea',

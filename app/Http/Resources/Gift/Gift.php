@@ -23,7 +23,7 @@ class Gift extends Resource
             'comment' => $this->comment,
             'url' => $this->url,
             'amount' => $this->value,
-            'amount_with_currency' => $this->value ? \App\Helpers\MoneyHelper::format($this->value) : '',
+            'amount_with_currency' => $this->amount,
             'status' => $this->status,
             'date' => $this->date ? DateHelper::getShortDate($this->date) : '',
             'recipient' => new ContactShortResource($this->recipient),

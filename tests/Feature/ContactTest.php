@@ -10,6 +10,7 @@ use App\Helpers\StringHelper;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Contact\Reminder;
+use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
@@ -325,186 +326,6 @@ class ContactTest extends FeatureTestCase
         );
     }
 
-    public function test_user_can_add_a_gift_idea_to_a_contact()
-    {
-        [$user, $contact] = $this->fetchUser();
-
-        $gift = [
-            'offered' => 'idea',
-            'name' => $this->faker->word,
-            'url' => $this->faker->url,
-            'value' => $this->faker->numberBetween(1, 2000),
-            'comment' => $this->faker->sentence(),
-        ];
-
-        $this->post(
-            '/people/'.$contact->hashID().'/gifts',
-            $gift
-        );
-
-        array_shift($gift);
-
-        $this->assertDatabaseHas(
-            'gifts',
-            $gift + [
-                'is_an_idea' => true,
-                'has_been_offered' => false,
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
-            ]
-        );
-    }
-
-    public function test_user_can_add_a_gift_idea_with_recipient()
-    {
-        [$user, $contact] = $this->fetchUser();
-
-        $otherContact = factory(Contact::class)->create([
-            'account_id' => $user->account_id,
-        ]);
-
-        $gift = [
-            'offered' => 'idea',
-            'name' => $this->faker->word,
-            'url' => $this->faker->url,
-            'value' => $this->faker->numberBetween(1, 2000),
-            'comment' => $this->faker->sentence(),
-            'has_recipient' => true,
-            'recipient' => $otherContact->id,
-        ];
-
-        $this->post(
-            '/people/'.$contact->hashID().'/gifts',
-            $gift
-        );
-
-        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
-
-        $this->assertDatabaseHas(
-            'gifts',
-            $gift + [
-                'is_an_idea' => true,
-                'has_been_offered' => false,
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
-                'is_for' => $otherContact->id,
-            ]
-        );
-    }
-
-    public function test_user_can_add_a_gift_idea_with_bad_recipient()
-    {
-        [$user, $contact] = $this->fetchUser();
-
-        $gift = [
-            'offered' => 'idea',
-            'name' => $this->faker->word,
-            'url' => $this->faker->url,
-            'value' => $this->faker->numberBetween(1, 2000),
-            'comment' => $this->faker->sentence(),
-            'has_recipient' => true,
-            'recipient' => 0,
-        ];
-
-        $this->post(
-            '/people/'.$contact->hashID().'/gifts',
-            $gift
-        );
-
-        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
-
-        $this->assertDatabaseHas(
-            'gifts',
-            $gift + [
-                'is_an_idea' => true,
-                'has_been_offered' => false,
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
-                'is_for' => null,
-            ]
-        );
-    }
-
-    public function test_user_can_edit_a_gift_()
-    {
-        [$user, $contact] = $this->fetchUser();
-
-        $oldGift = factory(Gift::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
-        ]);
-
-        $gift = [
-            'offered' => 'idea',
-            'name' => $this->faker->word,
-            'url' => $this->faker->url,
-            'value' => $this->faker->numberBetween(1, 2000),
-            'comment' => $this->faker->sentence(),
-        ];
-
-        $this->put(
-            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id,
-            $gift
-        );
-
-        array_shift($gift);
-
-        $this->assertDatabaseHas(
-            'gifts',
-            $gift + [
-                'is_an_idea' => true,
-                'has_been_offered' => false,
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
-            ]
-        );
-    }
-
-    public function test_user_can_add_recipient_to_a_gift()
-    {
-        [$user, $contact] = $this->fetchUser();
-
-        $oldGift = factory(Gift::class)->create([
-            'contact_id' => $contact->id,
-            'account_id' => $user->account_id,
-        ]);
-
-        $otherContact = factory(Contact::class)->create([
-            'account_id' => $user->account_id,
-        ]);
-
-        $gift = [
-            'offered' => 'idea',
-            'name' => $this->faker->word,
-            'url' => $this->faker->url,
-            'value' => $this->faker->numberBetween(1, 2000),
-            'comment' => $this->faker->sentence(),
-            'has_recipient' => true,
-            'recipient' => $otherContact->id,
-        ];
-
-        $this->put(
-            '/people/'.$contact->hashID().'/gifts/'.$oldGift->id,
-            $gift
-        );
-
-        $gift = Arr::except($gift, ['offered', 'has_recipient', 'recipient']);
-
-        $this->assertDatabaseHas(
-            'gifts',
-            $gift + [
-                'is_an_idea' => true,
-                'has_been_offered' => false,
-                'contact_id' => $contact->id,
-                'account_id' => $user->account_id,
-                'is_for' => $otherContact->id,
-            ]
-        );
-
-        $newGift = Gift::find($oldGift->id);
-        $this->assertEquals($otherContact->first_name, $newGift->recipient_name);
-    }
-
     public function test_user_can_be_in_debt_to_a_contact()
     {
         [$user, $contact] = $this->fetchUser();
@@ -810,5 +631,24 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
             'initial_date' => '2012-06-22',
         ]);
+    }
+
+    public function test_it_gets_the_value()
+    {
+        $user = $this->signin();
+        $currency = factory(Currency::class)->create([
+            'iso' => 'USD',
+            'symbol' => '$',
+        ]);
+        $user->currency()->associate($currency);
+        $user->save();
+
+        $gift = factory(Gift::class)->make();
+        $gift->value = '100';
+
+        $this->assertEquals(
+            '$100.00',
+            $gift->amount
+        );
     }
 }

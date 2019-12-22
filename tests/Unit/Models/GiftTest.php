@@ -5,55 +5,12 @@ namespace Tests\Unit\Models;
 use Tests\TestCase;
 use App\Models\Contact\Gift;
 use App\Models\Contact\Contact;
+use App\Models\Settings\Currency;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class GiftTest extends TestCase
 {
     use DatabaseTransactions;
-
-    public function test_toggle_a_gift_idea()
-    {
-        $gift = factory(Gift::class)->make();
-        $gift->is_an_idea = true;
-        $gift->toggle();
-
-        $this->assertEquals(
-            false,
-            $gift->is_an_idea
-        );
-
-        $this->assertEquals(
-            true,
-            $gift->has_been_offered
-        );
-
-        $this->assertEquals(
-            false,
-            $gift->has_been_received
-        );
-    }
-
-    public function test_toggle_a_gift_offered()
-    {
-        $gift = factory(Gift::class)->make();
-        $gift->has_been_offered = true;
-        $gift->toggle();
-
-        $this->assertEquals(
-            true,
-            $gift->is_an_idea
-        );
-
-        $this->assertEquals(
-            false,
-            $gift->has_been_offered
-        );
-
-        $this->assertEquals(
-            false,
-            $gift->has_been_received
-        );
-    }
 
     public function test_has_particular_recipient_returns_false_if_it_s_for_no_specific_recipient()
     {
@@ -137,11 +94,11 @@ class GiftTest extends TestCase
     public function test_it_gets_the_value()
     {
         $gift = factory(Gift::class)->make();
-        $gift->value = '100$';
+        $gift->value = '100';
 
         $this->assertEquals(
-            '100$',
-            $gift->value
+            '100',
+            $gift->amount
         );
     }
 }

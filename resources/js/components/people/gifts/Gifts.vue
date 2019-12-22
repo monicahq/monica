@@ -31,17 +31,23 @@
     <div>
       <ul class="mb3">
         <li class="di">
-          <p :class="[activeTab == 'ideas' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('ideas')">
+          <p class="di pointer" :class="[activeTab == 'ideas' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
+             @click.prevent="setActiveTab('ideas')"
+          >
             {{ $t('people.gifts_ideas') }} ({{ ideas.length }})
           </p>
         </li>
         <li class="di">
-          <p :class="[activeTab == 'offered' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('offered')">
+          <p class="di pointer" :class="[activeTab == 'offered' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
+             @click.prevent="setActiveTab('offered')"
+          >
             {{ $t('people.gifts_offered') }} ({{ offered.length }})
           </p>
         </li>
         <li class="di">
-          <p :class="[activeTab == 'received' ? 'di pointer mr3 b' : 'di pointer mr3 black-50']" @click.prevent="setActiveTab('received')">
+          <p class="di pointer" :class="[activeTab == 'received' ? 'b' : 'black-50', dirltr ? 'mr3' : 'ml3']"
+             @click.prevent="setActiveTab('received')"
+          >
             {{ $t('people.gifts_received') }} ({{ received.length }})
           </p>
         </li>
@@ -58,7 +64,9 @@
             >
               {{ $t('app.edit') }}
             </a>
-            <a :class="dirltr ? 'mr1' : 'ml1'" :cy-name="'delete-gift-button-' + gift.id" href="" @click.prevent="showDeleteModal(gift)">
+            <a :class="dirltr ? 'mr1' : 'ml1'" :cy-name="'delete-gift-button-' + gift.id" href=""
+               @click.prevent="showDeleteModal(gift)"
+            >
               {{ $t('app.delete') }}
             </a>
           </gift>
@@ -68,7 +76,7 @@
       <template v-else-if="activeTab == 'offered'">
         <div v-for="gift in offered" :key="gift.id" class="ba b--gray-monica mb3 br2">
           <gift :gift="gift" @update="($event) => { updateList($event) }">
-            <a class="pointer mr1" href="" @click.prevent="toggle(gift)">
+            <a :class="dirltr ? 'mr1' : 'ml1'" href="" @click.prevent="toggle(gift)">
               {{ $t('people.gifts_offered_as_an_idea') }}
             </a>
             <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
@@ -76,7 +84,9 @@
             >
               {{ $t('app.edit') }}
             </a>
-            <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" href="" @click.prevent="showDeleteModal(gift)">
+            <a :class="dirltr ? 'mr1' : 'ml1'" :cy-name="'delete-gift-button-' + gift.id" href=""
+               @click.prevent="showDeleteModal(gift)"
+            >
               {{ $t('app.delete') }}
             </a>
           </gift>
@@ -91,7 +101,9 @@
             >
               {{ $t('app.edit') }}
             </a>
-            <a class="mr1 pointer" href="" @click.prevent="showDeleteModal(gift)">
+            <a :class="dirltr ? 'mr1' : 'ml1'" href=""
+               @click.prevent="showDeleteModal(gift)"
+            >
               {{ $t('app.delete') }}
             </a>
           </gift>
@@ -99,7 +111,7 @@
       </template>
     </div>
 
-    <sweet-modal ref="modal" overlay-theme="dark" title="Delete gift">
+    <sweet-modal ref="modal" overlay-theme="dark" :title="$t('people.gifts_delete_title')">
       <form>
         <div class="mb4">
           {{ $t('people.gifts_delete_confirmation') }}
@@ -196,10 +208,6 @@ export default {
       this.setActiveTab(this.giftsActiveTab);
     },
 
-    toggleComment(gift) {
-      Vue.set(gift, 'show_comment', !gift.show_comment);
-    },
-
     setActiveTab(view) {
       this.activeTab = view;
     },
@@ -213,11 +221,11 @@ export default {
 
     toggle(gift) {
       if (gift.status == 'idea') {
-          gift.status = 'offered';
-          gift.date = now
+        gift.status = 'offered';
+        gift.date = now;
       } else {
-          gift.status = 'idea';
-          gift.date = null;
+        gift.status = 'idea';
+        gift.date = null;
       }
       axios.put('api/gift/' + gift.id, gift)
         .then(response => {
