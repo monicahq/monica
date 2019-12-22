@@ -19,6 +19,6 @@ return [
     'user' => 'Se l\'email inserita esiste nei nostri archivi vi é stato inviato il link per reimpostare la tua password.',
     'changed' => 'Password modificata con successo.',
     'invalid' => 'La password inserita non è corretta.',
-    'throttled' => 'Please wait before retrying.',
+    'throttled' => 'Per favore attendere prima di riprovare.',
 
 ];
