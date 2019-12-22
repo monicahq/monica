@@ -251,7 +251,7 @@ return [
     'activity_type_went_museum' => 'andati al museo',
     'activities_add_activity' => 'Aggiungi attività',
     'activities_add_more_details' => 'Aggiungi ulteriori dettagli',
-    'activities_add_emotions' => 'Add emotions',
+    'activities_add_emotions' => 'Aggiungi Umori/emozioni',
     'activities_add_category' => 'Indica una categoria',
     'activities_add_participants_cta' => 'Aggiungi partecipanti',
     'activities_item_information' => ':Activity il :date',
@@ -260,8 +260,8 @@ return [
     'activities_add_pick_activity' => '(Facoltativo) Vorresti assegnare una categoria a questa attività? Non è obbligatorio, ma più avanti ti permetterà di vedere delle statistiche',
     'activities_add_date_occured' => 'Data dell\'attività...',
     'activities_add_participants' => 'Chi, a parte {name}, ha partecipato a questa attività? (opzionale)',
-    'activities_add_emotions_title' => 'Do you want to log how you felt during this activity? (optional)',
-    'activities_blank_title' => 'Keep track of what you’ve done with {name} in the past, and what you’ve talked about',
+    'activities_add_emotions_title' => 'Vuoi registrare come ti sei sentito durante questa attivitá? (facoltativo)',
+    'activities_blank_title' => 'Tieni traccia di quello che tu e {name} avete fatto, e ciò di cui avete parlato',
     'activities_blank_add_activity' => 'Agginugi attività',
     'activities_add_success' => 'Attività aggiunta',
     'activities_add_error' => 'Errore durante l\'aggiunta dell\'attività',
@@ -275,10 +275,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'Ecco un resoconto dei tipi di attività svolte nel :year',
     'activities_profile_year_summary' => 'Ecco cosa avete fatto insieme nel :year',
     'activities_profile_number_occurences' => ':value attività|:value attività',
-    'activities_list_participants' => 'Participants:',
-    'activities_list_emotions' => 'Emotions felt:',
-    'activities_list_date' => 'Happened on',
-    'activities_list_category' => 'Category:',
+    'activities_list_participants' => 'Partecipanti:',
+    'activities_list_emotions' => 'Emozioni provate:',
+    'activities_list_date' => 'Accaduto il',
+    'activities_list_category' => 'Categoria:',
 
     // notes
     'notes_create_success' => 'Nota creata',
@@ -472,7 +472,7 @@ return [
     'document_upload_zone_error' => 'Si è verificato un errore. Per favore, riprova a caricare il documento.',
 
     // Photos
-    'photo_title' => 'Photos',
+    'photo_title' => 'Foto',
     'photo_list_title' => 'Foto',
     'photo_list_cta' => 'Carica foto',
     'photo_list_blank_desc' => 'Qui puoi salvare foto relative a questa persona, caricane una adesso!',
