@@ -29,6 +29,7 @@ input:focus {
       :class="inputClass"
       :style="inputStyle"
       :value="value"
+      :maxlength="maxlength"
       @input="event => { $emit('input', event.target.value) }"
       @keyup.enter="event => { $emit('submit', event.target.value) }"
     />
@@ -66,6 +67,10 @@ export default {
     iclass: {
       type: String,
       default: ''
+    },
+    maxlength: {
+      type: Number,
+      default: -1,
     },
   },
 

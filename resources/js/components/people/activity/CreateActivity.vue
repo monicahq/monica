@@ -125,9 +125,11 @@
 <script>
 import moment from 'moment';
 import Error from '../../partials/Error.vue';
+import ActivityTypeList from './ActivityTypeList.vue';
 
 export default {
   components: {
+    ActivityTypeList,
     Error
   },
 

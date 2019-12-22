@@ -2,10 +2,12 @@
 
 ### New features:
 
+* Associate a photo to a gift
 * Save contact tags in vCard 'CATEGORIES' field
 
 ### Enhancements:
 
+* Gift are now added and updated inline
 * Add API methods to destroy and store documents
 * Add API methods to manage photos and avatars
 * Add emotions and participants to activities

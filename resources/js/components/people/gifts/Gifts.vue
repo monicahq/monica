@@ -10,11 +10,22 @@
       <img src="img/people/gifts.svg" :alt="$t('people.gifts_title')" class="icon-section icon-tasks" />
       <h3>
         {{ $t('people.gifts_title') }}
-        <a :href="'people/' + hash + '/gifts/create'" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]">
+        <a href="" cy-name="add-gift-button" class="btn f6 pt2" :class="[ dirltr ? 'fr' : 'fl' ]"
+           @click.prevent="displayCreateGift = true"
+        >
           {{ $t('people.gifts_add_gift') }}
         </a>
       </h3>
     </div>
+
+    <template v-if="displayCreateGift">
+      <create-gift
+        :contact-id="contactId"
+        :family-contacts="familyContacts"
+        @update="($event) => { updateList($event) }"
+        @cancel="displayCreateGift = false"
+      />
+    </template>
 
     <!-- Listing -->
     <div>
@@ -36,141 +47,54 @@
         </li>
       </ul>
 
-      <div v-if="activeTab == 'ideas'">
+      <template v-if="activeTab == 'ideas'">
         <div v-for="gift in ideas" :key="gift.id" class="ba b--gray-monica mb3 br2" :cy-name="'gift-idea-item-' + gift.id">
-          <p class="mb1 bb b--gray-monica pa2">
-            <strong>{{ gift.name }}</strong>
-
-            <span v-if="gift.recipient_name">
-              <span class="mr1 black-50">
-                •
-              </span>
-              {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
-            </span>
-
-            <span v-if="gift.url">
-              <span class="mr1 black-50">
-                •
-              </span>
-              <a :href="gift.url" target="_blank">
-                {{ $t('people.gifts_link') }}
-              </a>
-            </span>
-          </p>
-          <div class="f6 ph2 pv1 mb1">
-            <span v-if="gift.does_value_exist">
-              {{ gift.value }}
-              <span class="ml1 mr1 black-50">
-                •
-              </span>
-            </span>
-            <a v-if="gift.comment" class="ml1 mr1 pointer" href="" @click.prevent="toggleComment(gift)">
-              {{ $t('people.gifts_view_comment') }}
-            </a>
-            <a class="pointer mr1" href="" @click.prevent="toggle(gift)">
+          <gift :gift="gift" @update="($event) => { updateList($event) }">
+            <a :class="dirltr ? 'mr1' : 'ml1'" href="" @click.prevent="toggle(gift)">
               {{ $t('people.gifts_mark_offered') }}
             </a>
-            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
+            <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
+               @click.prevent="$set(gift, 'edit', true)"
+            >
               {{ $t('app.edit') }}
             </a>
-            <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" href="" @click.prevent="showDeleteModal(gift)">
+            <a :class="dirltr ? 'mr1' : 'ml1'" :cy-name="'delete-gift-button-' + gift.id" href="" @click.prevent="showDeleteModal(gift)">
               {{ $t('app.delete') }}
             </a>
-            <div v-if="gift.show_comment" class="mb1 mt1">
-              {{ gift.comment }}
-            </div>
-          </div>
+          </gift>
         </div>
-      </div>
+      </template>
 
       <template v-else-if="activeTab == 'offered'">
         <div v-for="gift in offered" :key="gift.id" class="ba b--gray-monica mb3 br2">
-          <p class="mb1 bb b--gray-monica pa2">
-            <strong>{{ gift.name }}</strong>
-
-            <span v-if="gift.recipient_name">
-              <span class="mr1 black-50">
-                •
-              </span>
-              {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
-            </span>
-
-            <span v-if="gift.url">
-              <span class="mr1 black-50">
-                •
-              </span>
-              <a :href="gift.url" target="_blank">
-                {{ $t('people.gifts_link') }}
-              </a>
-            </span>
-          </p>
-          <div class="f6 ph2 pv1 mb1">
-            <span v-if="gift.does_value_exist">
-              {{ gift.value }}
-              <span class="ml1 mr1 black-50">
-                •
-              </span>
-            </span>
-            <a v-if="gift.comment" class="ml1 mr1 pointer" href="" @click.prevent="toggleComment(gift)">
-              {{ $t('people.gifts_view_comment') }}
-            </a>
+          <gift :gift="gift" @update="($event) => { updateList($event) }">
             <a class="pointer mr1" href="" @click.prevent="toggle(gift)">
               {{ $t('people.gifts_offered_as_an_idea') }}
             </a>
-            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'" :cy-name="'edit-gift-button-' + gift.id">
+            <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
+               @click.prevent="$set(gift, 'edit', true)"
+            >
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" :cy-name="'delete-gift-button-' + gift.id" href="" @click.prevent="showDeleteModal(gift)">
               {{ $t('app.delete') }}
             </a>
-            <div v-if="gift.show_comment" class="mb1 mt1">
-              {{ gift.comment }}
-            </div>
-          </div>
+          </gift>
         </div>
       </template>
 
       <template v-else-if="activeTab == 'received'">
         <div v-for="gift in received" :key="gift.id" class="ba b--gray-monica mb3 br2">
-          <p class="mb1 bb b--gray-monica pa2">
-            <strong>{{ gift.name }}</strong>
-
-            <span v-if="gift.recipient_name">
-              <span class="mr1 black-50">
-                •
-              </span>
-              {{ $t('people.gifts_for') }} {{ gift.recipient_name }}
-            </span>
-
-            <span v-if="gift.url">
-              <span class="mr1 black-50">
-                •
-              </span>
-              <a :href="gift.url" target="_blank">
-                {{ $t('people.gifts_link') }}
-              </a>
-            </span>
-          </p>
-          <div class="f6 ph2 pv1 mb1">
-            <span v-if="gift.does_value_exist">
-              {{ gift.value }}
-              <span class="ml1 mr1 black-50">
-                •
-              </span>
-            </span>
-            <a v-if="gift.comment" class="ml1 mr1 pointer" href="" @click.prevent="toggleComment(gift)">
-              {{ $t('people.gifts_view_comment') }}
-            </a>
-            <a :href="'people/' + hash + '/gifts/' + gift.id + '/edit'">
+          <gift :gift="gift" @update="($event) => { updateList($event) }">
+            <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
+               @click.prevent="$set(gift, 'edit', true)"
+            >
               {{ $t('app.edit') }}
             </a>
             <a class="mr1 pointer" href="" @click.prevent="showDeleteModal(gift)">
               {{ $t('app.delete') }}
             </a>
-            <div v-if="gift.show_comment" class="mb1 mt1">
-              {{ gift.comment }}
-            </div>
-          </div>
+          </gift>
         </div>
       </template>
     </div>
@@ -198,10 +122,15 @@
 <script>
 
 import { SweetModal } from 'sweet-modal-vue';
+import Gift from './Gift.vue';
+import CreateGift from './CreateGift.vue';
+import { now } from 'moment';
 
 export default {
 
   components: {
+    Gift,
+    CreateGift,
     SweetModal
   },
 
@@ -210,9 +139,17 @@ export default {
       type: String,
       default: '',
     },
+    contactId: {
+      type: Number,
+      default: 0,
+    },
     giftsActiveTab: {
       type: String,
       default: 'ideas',
+    },
+    familyContacts: {
+      type: Array,
+      default: () => [],
     },
   },
 
@@ -221,6 +158,7 @@ export default {
       gifts: [],
       activeTab: '',
       giftToTrash: '',
+      displayCreateGift: false,
     };
   },
 
@@ -231,19 +169,19 @@ export default {
 
     ideas: function () {
       return this.gifts.filter(function (gift) {
-        return gift.is_an_idea === true;
+        return gift.status == 'idea';
       });
     },
 
     offered: function () {
       return this.gifts.filter(function (gift) {
-        return gift.has_been_offered === true;
+        return gift.status == 'offered';
       });
     },
 
     received: function () {
       return this.gifts.filter(function (gift) {
-        return gift.has_been_received === true;
+        return gift.status == 'received';
       });
     },
   },
@@ -267,17 +205,24 @@ export default {
     },
 
     getGifts() {
-      axios.get('people/' + this.hash + '/gifts')
+      axios.get('api/contacts/' + this.contactId + '/gifts')
         .then(response => {
-          this.gifts = response.data;
+          this.gifts = response.data.data;
         });
     },
 
     toggle(gift) {
-      axios.post('people/' + this.hash + '/gifts/' + gift.id + '/toggle')
+      if (gift.status == 'idea') {
+          gift.status = 'offered';
+          gift.date = now
+      } else {
+          gift.status = 'idea';
+          gift.date = null;
+      }
+      axios.put('api/gift/' + gift.id, gift)
         .then(response => {
-          Vue.set(gift, 'is_an_idea', response.data.is_an_idea);
-          Vue.set(gift, 'has_been_offered', response.data.has_been_offered);
+          Vue.set(gift, 'status', response.data.data.status);
+          Vue.set(gift, 'date', response.data.data.date);
         });
     },
 
@@ -287,11 +232,16 @@ export default {
     },
 
     trash(gift) {
-      axios.delete('people/' + this.hash + '/gifts/' + gift.id)
+      axios.delete('api/gifts/' + gift.id)
         .then(response => {
           this.gifts.splice(this.gifts.indexOf(gift), 1);
           this.closeDeleteModal();
         });
+    },
+
+    updateList: function (activity) {
+      this.displayLogActivity = false;
+      this.getGifts();
     },
 
     closeDeleteModal() {
