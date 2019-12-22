@@ -6,6 +6,7 @@
 
 ### Enhancements:
 
+* Add foreign keys to all tables
 * Add API methods to destroy and store documents
 * Add API methods to manage photos and avatars
 * Add emotions and participants to activities
