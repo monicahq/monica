@@ -3,7 +3,7 @@
 return [
 
     //index
-    'people_not_found' => 'Contact not found',
+    'people_not_found' => 'Contacto no encontrado',
     'people_list_number_kids' => '1 niño|:count niños',
     'people_list_last_updated' => 'Última consulta:',
     'people_list_number_reminders' => '1 recordatorio|:count recordatorios',
