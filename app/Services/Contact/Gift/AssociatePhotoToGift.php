@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Account\Gift;
+namespace App\Services\Contact\Gift;
 
 use App\Models\Contact\Gift;
 use App\Models\Account\Photo;
