@@ -37,7 +37,7 @@ return [
     'upgrade' => 'Effettua l\'upgrade per sbloccare',
     'percent_uploaded' => '{percent}% caricato',
     'retry' => 'Riprova',
-    'filter' => 'Filtra lista',
+    'filter' => 'Filtra la lista',
     'go_back' => 'Torna indietro',
 
     'application_title' => 'Monica – personal relationship manager',
