@@ -292,8 +292,8 @@ return [
 
     'api_title' => 'Accesso all\'API',
     'api_description' => 'L\'API puó essere usata per manipolare le informazioni in Monica da un\'applicazione esterna, ad esempio da un\'applicazione per smartphone.',
-    'api_help' => 'To use the API, a token is mandatory. You can either create a personal access token (Bearer authentication), or authorize an OAuth client to create it for you. See <a href=":url">API documentation</a>.',
-    'api_endpoint' => 'The API endpoint for this Monica instance is:',
+    'api_help' => 'Per utilizzare le API, é obbligatorio l\'uso di un token. È possibile creare un token di accesso personale (autenticazione Bearer), o autorizzare un client OAuth per farlo creare al posto vostro. Vedi <a href=":url">documentazione riguardo le API</a> per maggiori informazioni.',
+    'api_endpoint' => 'L\'endpoint API per questa istanza Monica è:',
 
     'api_personal_access_tokens' => 'Personal access token',
     'api_pao_description' => 'Assicurati di dare questo token a fonti fidate, giá che danno accesso a tutti i tuoi dati.',
