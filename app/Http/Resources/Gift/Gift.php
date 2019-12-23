@@ -3,8 +3,8 @@
 namespace App\Http\Resources\Gift;
 
 use App\Helpers\DateHelper;
-use App\Http\Resources\Photo\Photo as PhotoResource;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Photo\Photo as PhotoResource;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 
 class Gift extends Resource
@@ -28,7 +28,7 @@ class Gift extends Resource
             'status' => $this->status,
             'date' => $this->date ? DateHelper::getShortDate($this->date) : '',
             'recipient' => new ContactShortResource($this->recipient),
-            'photos' => $this->when($this->photos->count() > 0, PhotoResource::collection($this->photos) ),
+            'photos' => $this->when($this->photos->count() > 0, PhotoResource::collection($this->photos)),
             'contact' => new ContactShortResource($this->contact),
             'account' => [
                 'id' => $this->account_id,
