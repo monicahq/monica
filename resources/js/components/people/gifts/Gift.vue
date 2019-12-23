@@ -1,63 +1,77 @@
 <style scoped>
+    .photo {
+        height: 200px;
+    }
 </style>
 
 <template>
   <div>
-    <div v-if="!gift.edit">
-      <p class="mb1 bb b--gray-monica pa2">
-        <strong>{{ gift.name }}</strong>
+    <p class="mb1 bb b--gray-monica pa2">
+      <strong>{{ gift.name }}</strong>
 
-        <span v-if="gift.recipient && gift.recipient.complete_name">
-          <span class="black-50" :class="dirltr ? 'mr1' : 'ml1'">
-            •
-          </span>
-          {{ $t('people.gifts_for') }} {{ gift.recipient.complete_name }}
+      <span v-if="gift.recipient && gift.recipient.complete_name">
+        <span class="black-50" :class="dirltr ? 'mr1' : 'ml1'">
+          •
         </span>
+        {{ $t('people.gifts_for') }} {{ gift.recipient.complete_name }}
+      </span>
 
-        <span v-if="gift.url">
-          <span class="black-50" :class="dirltr ? 'mr1' : 'ml1'">
-            •
-          </span>
-          <a :href="gift.url" target="_blank">
-            {{ $t('people.gifts_link') }}
-          </a>
+      <span v-if="gift.url">
+        <span class="black-50" :class="dirltr ? 'mr1' : 'ml1'">
+          •
         </span>
-      </p>
-      <div class="f6 ph2 pv1 mb1">
-        <span v-if="gift.amount">
-          {{ gift.amount_with_currency }}
-          <span class="black-50" :class="dirltr ? 'mr1' : 'ml1'">
-            •
-          </span>
-        </span>
-        <a v-if="gift.comment" class="ml1 mr1 pointer" href="" @click.prevent="comment = !comment">
-          {{ $t('people.gifts_view_comment') }}
+        <a :href="gift.url" target="_blank">
+          {{ $t('people.gifts_link') }}
         </a>
-        <slot></slot>
-        <div v-if="comment" class="mb1 mt1">
-          {{ gift.comment }}
+      </span>
+    </p>
+
+    <!-- LIST OF PHOTO -->
+    <div v-if="gift.photos !== undefined && gift.photos.length > 0" class="bb b--gray-monica pa1">
+      <div class="flex flex-wrap">
+        <div v-for="photo in gift.photos" :key="photo.id" class="w-third-ns w-100">
+          <div class="pa2 mb3 br2 ba b--gray-monica" :class="dirltr ? 'mr3' : 'ml3'">
+            <div class="cover bg-center photo w-100 h-auto br2 bb b--gray-monica pb2"
+                 :style="'background-image: url(' + photo.link + ');'"
+                 @click.prevent="modalPhoto(photo)"
+            >
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <create-gift
-      v-if="gift.edit"
-      :gift="gift"
-      :contact-id="contactId"
-      :family-contacts="familyContacts"
-      @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
-      @cancel="$set(gift, 'edit', false)"
-    />
+
+    <div class="f6 ph2 pv1 mb1">
+      <span v-if="gift.amount">
+        {{ gift.amount_with_currency }}
+        <span class="black-50" :class="dirltr ? 'mr1' : 'ml1'">
+          •
+        </span>
+      </span>
+      <a v-if="gift.comment" class="ml1 mr1 pointer" href="" @click.prevent="comment = !comment">
+        {{ $t('people.gifts_view_comment') }}
+      </a>
+      <slot></slot>
+      <div v-if="comment" class="mb1 mt1">
+        {{ gift.comment }}
+      </div>
+    </div>
+
+    <!-- MODAL ZOOM PHOTO -->
+    <sweet-modal ref="modalPhoto" tabindex="-1" role="dialog" :enable-mobile-fullscreen="true" width="33%">
+      <img :src="url" :alt="$t('people.photo_title')" class="mw-90 h-auto mb3" />
+    </sweet-modal>
   </div>
 </template>
 
 <script>
 
-import CreateGift from './CreateGift.vue';
+import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
   components: {
-    CreateGift,
+    SweetModal,
   },
 
   props: {
@@ -70,6 +84,8 @@ export default {
   data() {
     return {
       comment: false,
+      showModal: false,
+      url: '',
     };
   },
 
@@ -78,5 +94,14 @@ export default {
       return this.$root.htmldir == 'ltr';
     },
   },
+
+  methods: {
+
+    modalPhoto(photo) {
+      this.url = photo.link;
+      this.$refs.modalPhoto.open();
+    },
+
+  }
 };
 </script>

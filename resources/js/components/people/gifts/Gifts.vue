@@ -22,6 +22,7 @@
       <create-gift
         :contact-id="contactId"
         :family-contacts="familyContacts"
+        :reach-limit="reachLimit"
         @update="($event) => { updateList($event) }"
         @cancel="displayCreateGift = false"
       />
@@ -55,7 +56,10 @@
 
       <template v-if="activeTab == 'ideas'">
         <div v-for="gift in ideas" :key="gift.id" class="ba b--gray-monica mb3 br2" :cy-name="'gift-idea-item-' + gift.id">
-          <gift :gift="gift" @update="($event) => { updateList($event) }">
+          <gift v-if="!gift.edit"
+                :gift="gift"
+                @update="($event) => { updateList($event) }"
+          >
             <a :class="dirltr ? 'mr1' : 'ml1'" href="" @click.prevent="toggle(gift)">
               {{ $t('people.gifts_mark_offered') }}
             </a>
@@ -70,12 +74,23 @@
               {{ $t('app.delete') }}
             </a>
           </gift>
+          <create-gift
+            v-else
+            :gift="gift"
+            :contact-id="contactId"
+            :family-contacts="familyContacts"
+            @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
+            @cancel="$set(gift, 'edit', false)"
+          />
         </div>
       </template>
 
       <template v-else-if="activeTab == 'offered'">
         <div v-for="gift in offered" :key="gift.id" class="ba b--gray-monica mb3 br2">
-          <gift :gift="gift" @update="($event) => { updateList($event) }">
+          <gift v-if="!gift.edit"
+                :gift="gift"
+                @update="($event) => { updateList($event) }"
+          >
             <a :class="dirltr ? 'mr1' : 'ml1'" href="" @click.prevent="toggle(gift)">
               {{ $t('people.gifts_offered_as_an_idea') }}
             </a>
@@ -90,12 +105,23 @@
               {{ $t('app.delete') }}
             </a>
           </gift>
+          <create-gift
+            v-else
+            :gift="gift"
+            :contact-id="contactId"
+            :family-contacts="familyContacts"
+            @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
+            @cancel="$set(gift, 'edit', false)"
+          />
         </div>
       </template>
 
       <template v-else-if="activeTab == 'received'">
         <div v-for="gift in received" :key="gift.id" class="ba b--gray-monica mb3 br2">
-          <gift :gift="gift" @update="($event) => { updateList($event) }">
+          <gift v-if="!gift.edit"
+                :gift="gift"
+                @update="($event) => { updateList($event) }"
+          >
             <a :class="dirltr ? 'mr1' : 'ml1'" href="" :cy-name="'edit-gift-button-' + gift.id"
                @click.prevent="$set(gift, 'edit', true)"
             >
@@ -107,6 +133,14 @@
               {{ $t('app.delete') }}
             </a>
           </gift>
+          <create-gift
+            v-else
+            :gift="gift"
+            :contact-id="contactId"
+            :family-contacts="familyContacts"
+            @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
+            @cancel="$set(gift, 'edit', false)"
+          />
         </div>
       </template>
     </div>
@@ -162,6 +196,10 @@ export default {
     familyContacts: {
       type: Array,
       default: () => [],
+    },
+    reachLimit: {
+      type: Boolean,
+      default: true,
     },
   },
 

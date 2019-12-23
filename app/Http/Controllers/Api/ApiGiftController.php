@@ -11,6 +11,7 @@ use App\Services\Contact\Gift\UpdateGift;
 use App\Services\Contact\Gift\DestroyGift;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Gift\Gift as GiftResource;
+use App\Services\Contact\Gift\AssociatePhotoToGift;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiGiftController extends ApiController
@@ -93,6 +94,32 @@ class ApiGiftController extends ApiController
                     'gift_id' => $giftId,
                 ]
             );
+
+            return new GiftResource($gift);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        }
+    }
+
+    /**
+     * Associate a photo to the gift.
+     *
+     * @param Request $request
+     * @param int $giftId
+     * @param int $photoId
+     *
+     * @return GiftResource|\Illuminate\Http\JsonResponse
+     */
+    public function associate(Request $request, $giftId, $photoId)
+    {
+        try {
+            $gift = app(AssociatePhotoToGift::class)->execute([
+                'account_id' => auth()->user()->account_id,
+                'gift_id' => $giftId,
+                'photo_id' => $photoId,
+            ]);
 
             return new GiftResource($gift);
         } catch (ModelNotFoundException $e) {
