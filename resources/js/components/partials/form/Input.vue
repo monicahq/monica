@@ -70,7 +70,7 @@ export default {
     },
     maxlength: {
       type: Number,
-      default: -1,
+      default: null,
     },
   },
 
