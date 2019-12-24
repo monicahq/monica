@@ -69,6 +69,7 @@ return [
     'locale_ru' => 'الروسية',
     'locale_zh' => 'الصينية المبسطة',
     'locale_tr' => 'التركية',
+    'locale_en-GB' => 'English (UK)',
 
     'security_title' => 'الأمن',
     'security_help' => 'قم بتغيير المسائل الأمنية للحساب الخاص بك.',
