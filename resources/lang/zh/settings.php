@@ -69,6 +69,7 @@ return [
     'locale_ru' => '俄文',
     'locale_zh' => '简体中文',
     'locale_tr' => '土耳其文',
+    'locale_en-GB' => 'English (UK)',
 
     'security_title' => '安全',
     'security_help' => '更改您的帐户的安全选项。',
