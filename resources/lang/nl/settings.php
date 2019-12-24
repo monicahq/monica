@@ -393,7 +393,7 @@ return [
     'reminder_time_to_send' => 'De tijd dat herinneringen verstuurd moeten worden',
     'reminder_time_to_send_help' => 'Ter informatie, de volgende herinnering wordt verzonden op <span title="{dateTimeUtc}" class="reminder-info">{dateTime}</span>.',
 
-    'personalization_activity_type_category_title' => 'Activiteiten categorieën',
+    'personalization_activity_type_category_title' => 'Activiteit-categorieën',
     'personalization_activity_type_category_add' => 'Voeg een nieuwe categorie activiteiten toe',
     'personalization_activity_type_category_table_name' => 'Naam',
     'personalization_activity_type_category_description' => 'Een activiteit die je doet met een van je contacten heeft een type en een categorie. Jouw account komt standaard met een reeks vooraf gedefinieerde categorieën, maar je kan hier alles aanpassen.',
