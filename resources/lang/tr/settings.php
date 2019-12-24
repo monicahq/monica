@@ -69,6 +69,7 @@ return [
     'locale_ru' => 'Rusça',
     'locale_zh' => 'Çince (Basitleştirilmiş)',
     'locale_tr' => 'Türkçe',
+    'locale_en-GB' => 'English (UK)',
 
     'security_title' => 'Güvenlik',
     'security_help' => 'Hesabınız için güvenlik unsurlarını değiştirin.',
