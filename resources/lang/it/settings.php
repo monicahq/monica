@@ -69,6 +69,7 @@ return [
     'locale_ru' => 'Russo',
     'locale_zh' => 'Cinese semplificato',
     'locale_tr' => 'Turco',
+    'locale_en-GB' => 'English (UK)',
 
     'security_title' => 'Sicurezza',
     'security_help' => 'Modifica le impostazioni di sicurezza relative al tuo account',
