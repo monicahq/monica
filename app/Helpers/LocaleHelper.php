@@ -93,18 +93,24 @@ class LocaleHelper
     {
         $locales = collect([]);
         foreach (config('lang-detector.languages') as $lang) {
-            $name = trans('settings.locale_'.$lang);
-            if ($name == 'settings.locale_'.$lang) {
-                // The name of the new language is not already set, even in english
-                $name = $lang;
-            }
             $locales->push([
                 'lang' => $lang,
-                'name' => $name,
+                'name' => self::getLocaleName($lang),
+                'name-orig' => self::getLocaleName($lang, $lang),
             ]);
         }
 
         return $locales->sortByCollator('name');
+    }
+
+    private static function getLocaleName($lang, $locale = null) : string
+    {
+        $name = trans('settings.locale_'.$lang, [], $locale);
+        if ($name == 'settings.locale_'.$lang) {
+            // The name of the new language is not already set, even in english
+            $name = $lang;
+        }
+        return $name;
     }
 
     /**

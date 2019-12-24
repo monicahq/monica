@@ -68,7 +68,12 @@
                 <label for="locale">{{ trans('settings.locale') }}</label>
                 <select class="form-control" name="locale" id="locale">
                   @foreach($locales as $locale)
-                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale == $locale['lang'])?'selected':'' }}>{{ $locale['name'] }}</option>
+                    <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale === $locale['lang'])?'selected':'' }}>
+                      {{ $locale['name'] }}
+                      @if (auth()->user()->locale !== $locale['lang'])
+                        ({{ $locale['name-orig'] }})
+                      @endif
+                    </option>
                   @endforeach
                 </select>
               </div>
