@@ -29,6 +29,7 @@ use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ReminderOutbox;
 use App\Models\Contact\LifeEventCategory;
 use App\Models\Account\ActivityTypeCategory;
+use App\Models\Family\Family;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -232,6 +233,15 @@ class AccountTest extends FeatureTestCase
             'account_id' => $account->id,
         ]);
         $this->assertTrue($account->occupations()->exists());
+    }
+
+    public function test_it_has_many_families()
+    {
+        $account = factory(Account::class)->create([]);
+        factory(Family::class, 2)->create([
+            'account_id' => $account->id,
+        ]);
+        $this->assertTrue($account->families()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()

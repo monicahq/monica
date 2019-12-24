@@ -35,6 +35,7 @@ use App\Models\Contact\ReminderOutbox;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Contact\ContactFieldType;
 use App\Models\Contact\LifeEventCategory;
+use App\Models\Family\Family;
 use App\Models\Relationship\Relationship;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
@@ -477,6 +478,16 @@ class Account extends Model
     public function occupations()
     {
         return $this->hasMany(Occupation::class);
+    }
+
+    /**
+     * Get the Family records associated with the account.
+     *
+     * @return HasMany
+     */
+    public function families()
+    {
+        return $this->hasMany(Family::class);
     }
 
     /**

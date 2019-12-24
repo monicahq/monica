@@ -153,5 +153,6 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\VCard\ExportVCard::class => \App\Services\VCard\ExportVCard::class,
         \App\Services\VCard\ImportVCard::class => \App\Services\VCard\ImportVCard::class,
         \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
+        \App\Services\Family\Family\CreateFamily::class => \App\Services\Family\Family\CreateFamily::class,
     ];
 }
