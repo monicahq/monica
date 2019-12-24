@@ -54,7 +54,14 @@ $factory->define(App\Models\Account\Company::class, function (Faker\Generator $f
 });
 
 $factory->define(App\Models\Account\ImportJob::class, function (Faker\Generator $faker) {
-    return [];
+    return [
+        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
+        'user_id' => function (array $data) {
+            return factory(App\Models\User\User::class)->create([
+                'account_id' => $data['account_id'],
+            ])->id;
+        },
+    ];
 });
 
 $factory->define(App\Models\Account\ImportJobReport::class, function (Faker\Generator $faker) {
