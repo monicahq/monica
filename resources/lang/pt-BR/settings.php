@@ -68,7 +68,7 @@ return [
     'locale_pt-BR' => 'Português (Brasil)',
     'locale_ru' => 'Русский',
     'locale_zh' => '中文',
-    'locale_tr' => 'Türk',
+    'locale_tr' => 'Türkçe',
     'locale_en-GB' => 'English (UK)',
 
     'security_title' => 'Security',
