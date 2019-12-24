@@ -27,7 +27,7 @@ class UpdateFamily extends BaseService
      * @param array $data
      * @return Family
      */
-    public function execute(array $data): Family
+    public function execute(array $data) : Family
     {
         $this->validate($data);
 
