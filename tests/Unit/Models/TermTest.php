@@ -17,11 +17,11 @@ class TermTest extends TestCase
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $term = factory(Term::class)->create([]);
-        $term->users()->sync($user->id);
+        $term->users()->sync([$user->id => ['account_id' => $account->id]]);
 
         $user = factory(User::class)->create(['account_id' => $account->id]);
         $term = factory(Term::class)->create([]);
-        $term->users()->sync($user->id);
+        $term->users()->sync([$user->id => ['account_id' => $account->id]]);
 
         $this->assertTrue($term->users()->exists());
     }
