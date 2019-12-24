@@ -6,8 +6,8 @@ use Tests\TestCase;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
-use Illuminate\Validation\ValidationException;
 use App\Services\Family\Family\CreateFamily;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class CreateFamilyTest extends TestCase
