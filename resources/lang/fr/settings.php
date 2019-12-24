@@ -69,7 +69,7 @@ return [
     'locale_ru' => 'Russe',
     'locale_zh' => 'Chinois Simplifié',
     'locale_tr' => 'Turc',
-    'locale_en-GB' => 'English (UK)',
+    'locale_en-GB' => 'Anglais (Royaume-Uni)',
 
     'security_title' => 'Sécurité',
     'security_help' => 'Changer les questions de sécurité pour votre compte.',
