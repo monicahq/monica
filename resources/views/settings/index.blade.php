@@ -71,7 +71,7 @@
                     <option value="{{ $locale['lang'] }}" {{ (auth()->user()->locale === $locale['lang'])?'selected':'' }}>
                       {{ $locale['name'] }}
                       @if (auth()->user()->locale !== $locale['lang'])
-                        ({{ $locale['name-orig'] }})
+                        — {{ $locale['name-orig'] }}
                       @endif
                     </option>
                   @endforeach

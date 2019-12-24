@@ -65,11 +65,11 @@ return [
     'locale_it' => 'Italian',
     'locale_nl' => 'Dutch',
     'locale_pt' => 'Portuguese',
-    'locale_pt-BR' => 'Brazilian',
+    'locale_pt-BR' => 'Portuguese (Brazil)',
     'locale_ru' => 'Russian',
     'locale_zh' => 'Chinese Simplified',
     'locale_tr' => 'Turkish',
-    'locale_en-GB' => 'English (UK)',
+    'locale_en-GB' => 'English (United Kingdom)',
 
     'security_title' => 'Security',
     'security_help' => 'Change security matters for your account.',
