@@ -1,13 +1,14 @@
 # External translators
 
 <!-- vscode-markdown-toc -->
-* [Crowdin](#Crowdin)
-* [Support a new language](#Supportanewlanguage)
-* [Rules](#Rules)
-	* [With Laravel](#WithLaravel)
-	* [With Vue.js](#WithVue.js)
-* [Rules for translation](#Rulesfortranslation)
-	* [Punctuation](#Punctuation)
+- [External translators](#external-translators)
+  - [Crowdin](#crowdin)
+  - [Support a new language](#support-a-new-language)
+  - [Rules](#rules)
+    - [With Laravel](#with-laravel)
+    - [With Vue.js](#with-vuejs)
+  - [Rules for translation](#rules-for-translation)
+    - [Punctuation](#punctuation)
 
 <!-- vscode-markdown-toc-config
 	numbering=false
@@ -24,7 +25,15 @@ All translations are done with [crowdin](https://crowdin.com/project/monicahq) -
 
 You can [open an issue](https://github.com/monicahq/monica/issues/new) to request a new language.
 
-To add a new language, we have to configure it in Crowdin first. We also need to add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/master/resources/lang/en/settings.php).
+To enable a new language in Monica:
+* we have to configure it in Crowdin first. This is something we must do ourselves (we: members of the project). To do it, we need to go to Settings > Translations > Target Languages and add the new locale here.
+* add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/master/resources/lang/en/settings.php).
+* update the [lang-detector.php file](https://github.com/monicahq/monica/blob/master/config/lang-detector.php) by adding the new locale abbreviation.
+* add the locale in the [webpack.mix.js file](https://github.com/monicahq/monica/blob/master/webpack.mix.js).
+* (optional) when adding a country-specific language (like 'en-GB'), you may need to update the [crowdin.yml config file](https://github.com/monicahq/monica/blob/master/crowdin.yml).
+* run `php artisan lang:generate` to generate the new JSON file, and run `yarn run production` to compile the JS with those new strings.
+
+Then, submit your PR for review. A good example of adding a new locale can [be found here](https://github.com/monicahq/monica/pull/3356).
 
 ## <a name='Rules'></a>Rules
 
