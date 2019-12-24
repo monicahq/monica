@@ -65,7 +65,7 @@ class ApiAddressController extends ApiController
     {
         try {
             $address = app(CreateAddress::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -94,7 +94,7 @@ class ApiAddressController extends ApiController
     {
         try {
             $address = app(UpdateAddress::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'address_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,

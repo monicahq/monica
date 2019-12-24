@@ -149,16 +149,14 @@ class UpdateAvatarTest extends TestCase
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,
             'source' => 'photo',
-            'photo_id' => 1234,
+            'photo_id' => 0,
         ];
 
-        $this->expectException(ModelNotFoundException::class);
+        $this->expectException(ValidationException::class);
         $contact = app(UpdateAvatar::class)->execute($request);
 
         // Case: photo exists but belongs to another account
-        $photo = factory(Photo::class)->create([
-            'account_id' => 1234,
-        ]);
+        $photo = factory(Photo::class)->create();
         $request = [
             'account_id' => $contact->account->id,
             'contact_id' => $contact->id,

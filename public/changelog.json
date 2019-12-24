@@ -1,6 +1,11 @@
 {
     "entries": [
         {
+            "date": "Dec 22, 2019",
+            "title": "Enhancement: add emotions to activities",
+            "description": "Adding activities is now done inline, and you can add emotions and participants to an activity. ![image](img/changelogs/2019-03-22-new-activity.png)"
+        },
+        {
             "date": "Aug 17, 2019",
             "title": "New feature: you can now change avatars",
             "description": "You can now change the avatar of your contacts. Mouse over the profile picture and have fun. ![image](/img/changelogs/2019-08-17-avatars.png)"

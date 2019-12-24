@@ -19,7 +19,7 @@ class UploadDocumentTest extends TestCase
 
     public function test_it_uploads_a_document()
     {
-        Storage::fake('documents');
+        Storage::fake();
 
         $contact = factory(Contact::class)->create([]);
 
@@ -44,6 +44,8 @@ class UploadDocumentTest extends TestCase
             Document::class,
             $document
         );
+
+        Storage::disk('public')->assertExists($document->new_filename);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
@@ -60,7 +62,7 @@ class UploadDocumentTest extends TestCase
 
     public function test_it_throws_an_exception_if_contact_does_not_exist()
     {
-        Storage::fake('documents');
+        Storage::fake();
 
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([]);
