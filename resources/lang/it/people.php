@@ -38,7 +38,7 @@ return [
     'people_list_filter_untag' => 'Tutti i contatti senza etichette',
 
     // people add
-    'people_add_title' => 'Aggiungi una persona',
+    'people_add_title' => 'Aggiungi una nuova persona',
     'people_add_missing' => 'Nessuna persona trovata, aggiungine una',
     'people_add_firstname' => 'Nome',
     'people_add_middlename' => 'Secondo nome (facoltativo)',
