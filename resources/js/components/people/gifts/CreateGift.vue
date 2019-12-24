@@ -141,16 +141,19 @@
           <span class="mb2 b">
             {{ $t('people.gifts_add_photo_title') }}
           </span>
+
           <photo-upload
             ref="upload"
+            v-show="photos.length == 0"
             :contact-id="contactId"
+            @upload.stop="handlePhoto($event)"
           />
 
           <!-- LIST OF PHOTO -->
           <div v-if="photos.length > 0" class="bb b--gray-monica pa1">
             <div class="flex flex-wrap">
               <div v-for="photo in photos" :key="photo.id" class="w-third-ns w-100">
-                <div class="pa2 mb3 br2 ba b--gray-monica" :class="dirltr ? 'mr3' : 'ml3'">
+                <div v-if="photo.id > 0" class="pa2 mb3 br2 ba b--gray-monica" :class="dirltr ? 'mr3' : 'ml3'">
                   <div class="cover bg-center photo w-100 h-100 br2 bb b--gray-monica pb2"
                        :style="'background-image: url(' + photo.link + ');'"
                   >
@@ -163,6 +166,11 @@
                         </a>
                       </li>
                     </ul>
+                  </div>
+                </div>
+                <div v-else class="ba br3 photo-upload-zone mb3 pa3">
+                  <div class="tc dib w-100 relative">
+                    {{ $tc('app.file_selected', photos.length, {count: photos.length}) }}
                   </div>
                 </div>
               </div>
@@ -269,7 +277,7 @@ export default {
         this.newGift.url = this.gift.url;
         this.newGift.amount = this.gift.amount;
         this.newGift.status = this.gift.status;
-        this.newGift.recipient_id = this.gift.recipient !== undefined ? this.gift.recipient.id : null;
+        this.newGift.recipient_id = this.gift.recipient ? this.gift.recipient.id : null;
         this.hasRecipient = this.newGift.recipient_id != null;
         this.newGift.date = this.gift.date;
         this.photos = this.gift.photos !== undefined ? this.gift.photos : [];
@@ -286,8 +294,8 @@ export default {
       this.displayComment = this.gift ? this.gift.comment : false;
       this.displayUrl = this.gift ? this.gift.url : false;
       this.displayAmount = this.gift ? this.gift.amount : false;
-      this.displayRecipient = this.gift ? (this.gift.recipient !== undefined ? this.gift.recipient.id !== 0 : false) : false;
-      this.displayUpload= this.gift ? this.gift.photos !== undefined : false;
+      this.displayRecipient = this.gift ? (this.gift.recipient ? this.gift.recipient.id !== 0 : false) : false;
+      this.displayUpload= this.gift ? _.isArray(this.gift.photos) : false;
 
       this.errors = [];
     },
@@ -306,19 +314,31 @@ export default {
       let url = this.gift ? 'api/gifts/'+this.gift.id : 'api/gifts';
 
       let vm = this;
+      let upload = this.$refs.upload;
       axios[method](url, this.newGift)
+        .then(response => {
+          return upload.forceFileUpload()
+            .then(response2 => {
+              if (response2 !== undefined) {
+                axios.put('api/gifts/'+response.data.data.id+'/photo/'+response2.id);
+              }
+              return response;
+            })
+            .catch(error => {
+              if (typeof error.response.data === 'object') {
+                this.errors = _.flatten(_.toArray(error.response.data));
+              } else {
+                this.errors = [this.$t('app.error_try_again'), error.message];
+              }
+              return response;
+            });
+        })
         .then(response => {
           this.close();
           this.$emit('update', response.data.data);
           return response;
         })
-        .then(response => {
-          if (vm.photos.length > 0) {
-            axios.put('api/gifts/'+response.data.data.id+'/photo/'+vm.photos[0].id);
-          }
-          return response;
-        })
-        .then(response => {
+        .then(() => {
           this.$notify({
             group: 'main',
             title: this.$t('people.gift_add_success'),
@@ -327,7 +347,12 @@ export default {
           });
         })
         .catch(error => {
-          this.errors = _.flatten(_.toArray(error.response.data));
+          if (typeof error.response.data === 'object') {
+            this.errors = _.flatten(_.toArray(error.response.data));
+          } else {
+            this.errors = [this.$t('app.error_try_again'), error.message];
+          }
+
         });
     },
 
@@ -336,6 +361,10 @@ export default {
         .then(response => {
           this.photos.splice(this.photos.indexOf(photo), 1);
         });
+    },
+
+    handlePhoto(event) {
+      this.photos.push({id:-1,link:''});
     },
   }
 };

@@ -41,6 +41,7 @@
     <photo-upload
       ref="upload"
       :contact-id="contactId"
+      @newphoto="handleNewPhoto($event)"
     />
 
     <!-- LIST OF PHOTO -->
@@ -156,6 +157,10 @@ export default {
         .then(response => {
           this.photos = response.data.data;
         });
+    },
+
+    handleNewPhoto(photo) {
+      this.photos.push(photo);
     },
 
     deletePhoto(photo) {

@@ -79,6 +79,7 @@
             :gift="gift"
             :contact-id="contactId"
             :family-contacts="familyContacts"
+            :reach-limit="reachLimit"
             @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
             @cancel="$set(gift, 'edit', false)"
           />
@@ -110,6 +111,7 @@
             :gift="gift"
             :contact-id="contactId"
             :family-contacts="familyContacts"
+            :reach-limit="reachLimit"
             @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
             @cancel="$set(gift, 'edit', false)"
           />
@@ -138,6 +140,7 @@
             :gift="gift"
             :contact-id="contactId"
             :family-contacts="familyContacts"
+            :reach-limit="reachLimit"
             @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
             @cancel="$set(gift, 'edit', false)"
           />

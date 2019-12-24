@@ -1,7 +1,7 @@
 <style scoped>
-    .photo {
-        height: 200px;
-    }
+  .photo {
+    height: 200px;
+  }
 </style>
 
 <template>

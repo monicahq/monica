@@ -1,28 +1,28 @@
-<style scoped>
-    .photo-upload-zone {
-        background: #fff;
-        border: 1px solid #d6d6d6;
-        border-style: dashed;
-    }
+<style scoped lang="scss">
+  .photo-upload-zone {
+    background: #fff;
+    border: 1px solid #d6d6d6;
+    border-style: dashed;
+  }
 
-    progress {
-        -webkit-appearance: none;
-        border: none;
-        height: 8px;
-        margin-bottom: 3px;
-        width: 60%;
-    }
+  progress {
+    -webkit-appearance: none;
+    border: none;
+    height: 8px;
+    margin-bottom: 3px;
+    width: 60%;
+  }
 
-    progress::-webkit-progress-bar {
-        background: #e2e7ee;
-        border-radius: 3px;
-    }
+  progress::-webkit-progress-bar {
+    background: #e2e7ee;
+    border-radius: 3px;
+  }
 
-    progress::-webkit-progress-value {
-        border-radius: 3px;
-        box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
-        background-color: #329FF1;
-    }
+  progress::-webkit-progress-value {
+    border-radius: 3px;
+    box-shadow: inset 0 1px 1px 0 rgba(255, 255, 255, 0.4);
+    background-color: #329FF1;
+  }
 </style>
 
 <template>
@@ -37,7 +37,7 @@
             {{ $t('people.photo_upload_zone_cta') }}
           </button>
           <input id="file" ref="file" type="file" class="absolute o-0 w-100 h-100 pointer" style="left:0;"
-                 @change="handleFileUpload()"
+                 @change="handleFileUpload($event)"
           />
         </div>
       </div>
@@ -72,7 +72,7 @@
           {{ $t('people.document_upload_zone_error') }}
         </p>
         <p class="tc">
-          <input id="file" ref="file" type="file" @change="handleFileUpload()" />
+          <input id="file" ref="file" type="file" @change="handleFileUpload($event)" />
         </p>
       </div>
     </transition>
@@ -128,9 +128,19 @@ export default {
       this.displayUploadProgress = false;
     },
 
-    handleFileUpload(){
-      this.file = this.$refs.file.files[0];
-      this.submitFile();
+    handleFileUpload(event){
+      this.$emit('upload', event);
+      if (!event.cancelBubble) {
+        this.forceFileUpload();
+      }
+    },
+
+    forceFileUpload(){
+      this.file = this.$refs.file !== undefined ? this.$refs.file.files[0] : undefined;
+      if (this.file === undefined) {
+        return new Promise();
+      }
+      return this.submitFile();
     },
 
     submitFile(){
@@ -141,7 +151,7 @@ export default {
       formData.append('contact_id', this.contactId);
       formData.append('photo', this.file);
 
-      axios.post( 'api/photos',
+      return axios.post( 'api/photos',
         formData,
         {
           headers: {
@@ -153,13 +163,17 @@ export default {
         }
       ).then(response => {
         this.displayUploadProgress = false;
-        this.$parent.photos.push(response.data.data);
+        //this.$parent.photos.push(response.data.data);
         this.$notify({
           group: 'main',
           title: this.$t('app.default_save_success'),
           text: '',
           type: 'success'
         });
+
+        this.$emit('newphoto', response.data.data);
+
+        return response.data.data;
       })
         .catch(error => {
           this.displayUploadProgress = false;
