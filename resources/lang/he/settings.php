@@ -69,6 +69,7 @@ return [
     'locale_ru' => 'רוסית',
     'locale_zh' => 'סינית מפושטת',
     'locale_tr' => 'טורקית',
+    'locale_en-GB' => 'English (UK)',
 
     'security_title' => 'אבטחה',
     'security_help' => 'שינוי נדבכי האבטחה של החשבון שלך.',
