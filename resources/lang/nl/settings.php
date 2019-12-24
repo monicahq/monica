@@ -69,6 +69,7 @@ return [
     'locale_ru' => 'Russisch',
     'locale_zh' => 'Chinees (vereenvoudigd)',
     'locale_tr' => 'Turks',
+    'locale_en-GB' => 'English (UK)',
 
     'security_title' => 'Beveiliging',
     'security_help' => 'Verander de beveiligingsinstellingen voor je account.',
