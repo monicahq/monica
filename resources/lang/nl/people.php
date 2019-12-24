@@ -357,7 +357,7 @@ return [
 
     // Deceased
     'deceased_reminder_title' => 'Sterfdag van :name',
-    'deceased_mark_person_deceased' => 'Dit persoon is overleden',
+    'deceased_mark_person_deceased' => 'Deze persoon als overleden markeren',
     'deceased_know_date' => 'Ik weet de datum waarop dit persoon is overleden',
     'deceased_add_reminder' => 'Stel een herinnering in voor de sterfdag',
     'deceased_label' => 'Overleden',
