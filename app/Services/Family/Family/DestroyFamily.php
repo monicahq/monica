@@ -2,7 +2,6 @@
 
 namespace App\Services\Family\Family;
 
-use App\Models\Contact\Tag;
 use App\Models\Family\Family;
 use App\Services\BaseService;
 
