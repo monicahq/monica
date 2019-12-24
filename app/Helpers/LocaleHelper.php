@@ -118,6 +118,7 @@ class LocaleHelper
             // The name of the new language is not already set, even in english
             $name = $lang;
         }
+
         return $name;
     }
 
