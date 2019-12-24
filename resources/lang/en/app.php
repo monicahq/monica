@@ -245,25 +245,25 @@ return [
     'relationship_type_boss_with_name' => ':name’s boss',
     'relationship_type_boss_female_with_name' => ':name’s manager',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'employee',
+    'relationship_type_subordinate_female' => 'employee',
+    'relationship_type_subordinate_with_name' => ':name’s employee',
+    'relationship_type_subordinate_female_with_name' => ':name’s employee',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentor',
     'relationship_type_mentor_with_name' => ':name’s mentor',
     'relationship_type_mentor_female_with_name' => ':name’s mentor',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'protégé',
+    'relationship_type_protege_female' => 'protégée',
+    'relationship_type_protege_with_name' => ':name’s protégé',
+    'relationship_type_protege_female_with_name' => ':name’s protégée',
 
-    'relationship_type_ex_husband' => 'ex husband',
-    'relationship_type_ex_husband_female' => 'ex wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
+    'relationship_type_ex_husband' => 'ex-husband',
+    'relationship_type_ex_husband_female' => 'ex-wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
 
     // emotions
     'emotion_primary_love' => 'Love',
