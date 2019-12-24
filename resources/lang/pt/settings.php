@@ -63,7 +63,7 @@ return [
     'locale_he' => 'Hebraico',
     'locale_hr' => 'Croata',
     'locale_it' => 'Italiano',
-    'locale_nl' => 'Dutch',
+    'locale_nl' => 'Holandês',
     'locale_pt' => 'Português',
     'locale_pt-BR' => 'Português do Brasil',
     'locale_ru' => 'Russo',
