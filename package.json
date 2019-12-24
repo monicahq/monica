@@ -18,7 +18,7 @@
   "devDependencies": {
     "cross-env": "^6.0.3",
     "cypress": "3.5.0",
-    "eslint": "^6.0.1",
+    "eslint": "^6.8.0",
     "eslint-config-standard": "^14.0.0",
     "eslint-plugin-import": ">=2.13.0",
     "eslint-plugin-node": ">=7.0.0",
