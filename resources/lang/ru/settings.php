@@ -69,6 +69,7 @@ return [
     'locale_ru' => 'Русский',
     'locale_zh' => 'Chinese Simplified',
     'locale_tr' => 'Turkish',
+    'locale_en-GB' => 'English (UK)',
 
     'security_title' => 'Security',
     'security_help' => 'Change security matters for your account.',
