@@ -27,13 +27,13 @@ You can [open an issue](https://github.com/monicahq/monica/issues/new) to reques
 
 To enable a new language in Monica:
 * we have to configure it in Crowdin first. This is something we must do ourselves (we: members of the project). To do it, we need to go to Settings > Translations > Target Languages and add the new locale here.
-* you need to add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/master/resources/lang/en/settings.php).
-* you also need to update the [lang-detector.php file](https://github.com/monicahq/monica/blob/master/config/lang-detector.php).
-* and you also need to update the [webpack.mix.js file](https://github.com/monicahq/monica/blob/master/webpack.mix.js).
+* add the name of the language in [the main English settings file](https://github.com/monicahq/monica/blob/master/resources/lang/en/settings.php).
+* update the [lang-detector.php file](https://github.com/monicahq/monica/blob/master/config/lang-detector.php) by adding the new locale abbreviation.
+* add the locale in the [webpack.mix.js file](https://github.com/monicahq/monica/blob/master/webpack.mix.js).
 * (optional) when adding a country-specific language (like 'en-GB'), you may need to update the [crowdin.yml config file](https://github.com/monicahq/monica/blob/master/crowdin.yml).
 * run `php artisan lang:generate` to generate the new JSON file, and run `yarn run production` to compile the JS with those new strings.
 
-Then, submit your PR for review. A good example of adding a new locale can [be found here](https://github.com/monicahq/monica/pull/1684).
+Then, submit your PR for review. A good example of adding a new locale can [be found here](https://github.com/monicahq/monica/pull/3356).
 
 ## <a name='Rules'></a>Rules
 
