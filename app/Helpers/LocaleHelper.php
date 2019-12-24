@@ -103,6 +103,14 @@ class LocaleHelper
         return $locales->sortByCollator('name');
     }
 
+    /**
+     * Get the name of one language.
+     *
+     * @param string $lang
+     * @param string $locale
+     *
+     * @return string
+     */
     private static function getLocaleName($lang, $locale = null) : string
     {
         $name = trans('settings.locale_'.$lang, [], $locale);
