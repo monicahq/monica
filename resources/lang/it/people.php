@@ -5,7 +5,7 @@ return [
     //index
     'people_not_found' => 'Contatto non trovato',
     'people_list_number_kids' => '1 bambino|:count bambini',
-    'people_list_last_updated' => 'Consultati per ultimi:',
+    'people_list_last_updated' => 'Ultimo contatto:',
     'people_list_number_reminders' => ':count promemoria',
     'people_list_blank_title' => 'Non ci sono contatti nel tuo account',
     'people_list_blank_cta' => 'Aggiungi qualcuno',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateNewtoOld' => 'Ordina per data dell\'ultima attività, più recente → meno recente',
     'people_list_lastactivitydateOldtoNew' => 'Ordina per data dell\'ultima attività, meno recente → più recente',
     'people_list_filter_tag' => 'Tutti i contatti etichettati con',
-    'people_list_clear_filter' => 'Reimposta filtro',
+    'people_list_clear_filter' => 'Rimuovi filtro',
     'people_list_contacts_per_tags' => '1 contatto|:count contatti',
     'people_list_show_dead' => 'Mostra persone decedute (:count)',
     'people_list_hide_dead' => 'Nascondi persone decedute (:count)',
