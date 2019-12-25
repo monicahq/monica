@@ -27,7 +27,6 @@ return [
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
-    'days' => 'day|days',
     'today' => 'today',
     'yesterday' => 'yesterday',
     'another_day' => 'another day',

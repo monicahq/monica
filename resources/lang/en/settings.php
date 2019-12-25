@@ -54,6 +54,7 @@ return [
     'delete_cta' => 'Delete account',
     'settings_success' => 'Preferences updated!',
     'locale' => 'Language used in the app',
+    'locale_help' => 'Do you want to help translating Monica or add a new language? Please follow <a href=":url" target="_blank" lang="en">this link for more information</a>.',
     'locale_ar' => 'Arabic',
     'locale_cs' => 'Czech',
     'locale_de' => 'German',

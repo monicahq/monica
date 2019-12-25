@@ -91,16 +91,13 @@ class LocaleHelper
      */
     public static function getLocaleList()
     {
-        $locales = collect([]);
-        foreach (config('lang-detector.languages') as $lang) {
-            $locales->push([
+        return collect(config('lang-detector.languages'))->map(function ($lang) {
+            return [
                 'lang' => $lang,
                 'name' => self::getLocaleName($lang),
                 'name-orig' => self::getLocaleName($lang, $lang),
-            ]);
-        }
-
-        return $locales->sortByCollator('name');
+            ];
+        });
     }
 
     /**
