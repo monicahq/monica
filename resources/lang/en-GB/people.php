@@ -4,7 +4,7 @@ return [
 
     //index
     'people_not_found' => 'Contact not found',
-    'people_list_number_kids' => '1 kid|:count kids',
+    'people_list_number_kids' => '1 child|:count children',
     'people_list_last_updated' => 'Last consulted:',
     'people_list_number_reminders' => '1 reminder|:count reminders',
     'people_list_blank_title' => 'You don’t have anyone in your account yet',
@@ -13,8 +13,8 @@ return [
     'people_list_stats' => '1 contact|:count contacts',
     'people_list_firstnameAZ' => 'Sort by first name A → Z',
     'people_list_firstnameZA' => 'Sort by first name Z → A',
-    'people_list_lastnameAZ' => 'Sort by last name A → Z',
-    'people_list_lastnameZA' => 'Sort by last name Z → A',
+    'people_list_lastnameAZ' => 'Sort by surname A → Z',
+    'people_list_lastnameZA' => 'Sort by surname Z → A',
     'people_list_lastactivitydateNewtoOld' => 'Sort by last activity date newest to oldest',
     'people_list_lastactivitydateOldtoNew' => 'Sort by last activity date oldest to newest',
     'people_list_filter_tag' => 'Showing all the contacts tagged with',
