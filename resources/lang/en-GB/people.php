@@ -42,7 +42,7 @@ return [
     'people_add_missing' => 'No Person Found Add New One Now',
     'people_add_firstname' => 'First name',
     'people_add_middlename' => 'Middle name (Optional)',
-    'people_add_lastname' => 'Last name (Optional)',
+    'people_add_lastname' => 'Surname (Optional)',
     'people_add_nickname' => 'Nickname (Optional)',
     'people_add_cta' => 'Add',
     'people_save_and_add_another_cta' => 'Submit and add someone else',
