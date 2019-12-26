@@ -21,7 +21,6 @@ return [
     'done' => 'Done',
     'back' => 'Back',
     'verify' => 'Verify',
-    'for' => 'for',
     'new' => 'new',
     'unknown' => 'I don’t know',
     'load_more' => 'Load more',

@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'went to a bar',
     'activity_type_ate_at_home' => 'ate at home',
-    'activity_type_picknicked' => 'picknicked',
+    'activity_type_picknicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'ate at a restaurant',
     'activity_type_went_theater' => 'went to the theater',
     'activity_type_went_concert' => 'went to a concert',
