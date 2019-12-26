@@ -157,6 +157,13 @@ import { SweetModal } from 'sweet-modal-vue';
 import { ToggleButton } from 'vue-js-toggle-button';
 
 let StayInTouchLabel = Vue.component('stay-in-touch-label', {
+
+  props: {
+    value: {
+      type: Number,
+      default: 0,
+    },
+  },
   render(createElement) {
     let text = this.$tc('people.stay_in_touch_modal_label', this.value, {count: '[slot]'});
     let texts = _.split(text, '[slot]');
@@ -165,13 +172,6 @@ let StayInTouchLabel = Vue.component('stay-in-touch-label', {
       this.$slots.default,
       createElement('span', texts[1]),
     ]);
-  },
-
-  props: {
-    value: {
-      type: Number,
-      default: 0,
-    },
   },
 });
 
