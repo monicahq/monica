@@ -2655,16 +2655,16 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "3.0.2",
+            "version": "3.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "3eaede59d07ea8eeb500ab4054ee0597f686c84d"
+                "reference": "e29718866393dd224e4dabf8a6b8b4c463d70314"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/3eaede59d07ea8eeb500ab4054ee0597f686c84d",
-                "reference": "3eaede59d07ea8eeb500ab4054ee0597f686c84d",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/e29718866393dd224e4dabf8a6b8b4c463d70314",
+                "reference": "e29718866393dd224e4dabf8a6b8b4c463d70314",
                 "shasum": ""
             },
             "require": {
@@ -2717,7 +2717,7 @@
                 "laravel",
                 "laravolt"
             ],
-            "time": "2019-12-19T03:54:54+00:00"
+            "time": "2019-12-25T11:01:45+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -13035,12 +13035,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "181dd66fd666ed397991ded7b725fe90a8a00413"
+                "reference": "44a677c8e06241a66409ae6e4820dc166fc09ab2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/181dd66fd666ed397991ded7b725fe90a8a00413",
-                "reference": "181dd66fd666ed397991ded7b725fe90a8a00413",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/44a677c8e06241a66409ae6e4820dc166fc09ab2",
+                "reference": "44a677c8e06241a66409ae6e4820dc166fc09ab2",
                 "shasum": ""
             },
             "conflict": {
@@ -13131,7 +13131,7 @@
                 "pusher/pusher-php-server": "<2.2.1",
                 "robrichards/xmlseclibs": ">=1,<3.0.4",
                 "sabre/dav": ">=1.6,<1.6.99|>=1.7,<1.7.11|>=1.8,<1.8.9",
-                "scheb/two-factor-bundle": "<3.26|>=4,<4.11",
+                "scheb/two-factor-bundle": ">=0,<3.26|>=4,<4.11",
                 "sensiolabs/connect": "<4.2.3",
                 "serluck/phpwhois": "<=4.2.6",
                 "shopware/shopware": "<5.3.7",
@@ -13246,7 +13246,7 @@
                 }
             ],
             "description": "Prevents installation of composer packages with known security vulnerabilities: no API, simply require it",
-            "time": "2019-12-21T14:43:42+00:00"
+            "time": "2019-12-26T14:16:40+00:00"
         },
         {
             "name": "sebastian/code-unit-reverse-lookup",
