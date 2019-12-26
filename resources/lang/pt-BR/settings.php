@@ -87,7 +87,7 @@ return [
     '2fa_enable_description' => 'Ative a autenticação de dois fatores para proteger sua conta.',
     '2fa_enable_otp' => 'Abra o seu aplicativo de autenticação de dois fatores e aponte o celular para essa tela para capturar o código QR.',
     '2fa_enable_otp_help' => 'Caso o seu aplicativo não realize a leitura de códigos QR, por favor insira este código:',
-    '2fa_enable_otp_validate' => 'Please validate the new device you’ve just set:',
+    '2fa_enable_otp_validate' => 'Por favor, confirme o novo dispositivo que acaba de configurar:',
     '2fa_enable_success' => 'Two Factor Authentication activated',
     '2fa_enable_error' => 'Error when trying to activate Two Factor Authentication',
     '2fa_enable_error_already_set' => 'Two Factor Authentication is already activated',
