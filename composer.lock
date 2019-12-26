@@ -2655,16 +2655,16 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "e29718866393dd224e4dabf8a6b8b4c463d70314"
+                "reference": "aa985a46e4a161588695dd3b336422e73feced9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/e29718866393dd224e4dabf8a6b8b4c463d70314",
-                "reference": "e29718866393dd224e4dabf8a6b8b4c463d70314",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/aa985a46e4a161588695dd3b336422e73feced9b",
+                "reference": "aa985a46e4a161588695dd3b336422e73feced9b",
                 "shasum": ""
             },
             "require": {
@@ -2717,7 +2717,7 @@
                 "laravel",
                 "laravolt"
             ],
-            "time": "2019-12-25T11:01:45+00:00"
+            "time": "2019-12-26T22:43:37+00:00"
         },
         {
             "name": "lcobucci/jwt",
