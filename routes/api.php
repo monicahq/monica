@@ -27,6 +27,9 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::put('/contacts/{contact}/food', 'ApiContactController@updateFoodPreferences');
         Route::put('/contacts/{contact}/introduction', 'ApiContactController@updateIntroduction');
 
+        // Families
+        Route::apiResource('families', 'Family\\ApiFamilyController');
+
         // Genders
         Route::apiResource('genders', 'Account\\ApiGenderController');
 
