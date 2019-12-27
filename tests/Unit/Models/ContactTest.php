@@ -21,6 +21,7 @@ use App\Models\Instance\SpecialDate;
 use App\Notifications\StayInTouchEmail;
 use App\Models\Relationship\Relationship;
 use App\Jobs\StayInTouch\ScheduleStayInTouch;
+use App\Models\Family\Family;
 use App\Models\Relationship\RelationshipType;
 use App\Models\Relationship\RelationshipTypeGroup;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -123,6 +124,24 @@ class ContactTest extends FeatureTestCase
             'contact_id' => $contact->id,
         ]);
         $this->assertTrue($contact->occupations()->exists());
+    }
+
+    public function test_it_has_many_families()
+    {
+        $family = factory(Family::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $family->account_id,
+        ]);
+
+        $contact->families()->sync([$family->id]);
+
+        $contact = factory(Contact::class)->create([
+            'account_id' => $family->account_id,
+        ]);
+
+        $contact->families()->sync([$family->id]);
+
+        $this->assertTrue($contact->families()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()

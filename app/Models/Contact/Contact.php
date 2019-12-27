@@ -37,6 +37,7 @@ use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
+use App\Models\Family\Family;
 
 class Contact extends Model
 {
@@ -432,6 +433,16 @@ class Contact extends Model
     public function avatarPhoto()
     {
         return $this->hasOne(Photo::class, 'id', 'avatar_photo_id');
+    }
+
+    /**
+     * Get the Family records associated with the contact.
+     *
+     * @return BelongsToMany
+     */
+    public function families()
+    {
+        return $this->belongsToMany(Family::class)->withTimestamps();
     }
 
     /**

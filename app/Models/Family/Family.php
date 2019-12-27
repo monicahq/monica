@@ -3,8 +3,10 @@
 namespace App\Models\Family;
 
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\ModelBindingHasher as Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Family extends Model
 {
@@ -45,5 +47,15 @@ class Family extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    /**
+     * Get the contacts record associated with the family.
+     *
+     * @return belongsToMany
+     */
+    public function contacts()
+    {
+        return $this->belongsToMany(Contact::class)->withTimestamps();
     }
 }

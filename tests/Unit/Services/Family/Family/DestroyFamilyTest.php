@@ -12,7 +12,7 @@ class DestroyFamilyTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_tag()
+    public function test_it_destroys_a_family()
     {
         $family = factory(Family::class)->create([]);
 

@@ -155,6 +155,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
         \App\Services\Family\Family\CreateFamily::class => \App\Services\Family\Family\CreateFamily::class,
         \App\Services\Family\Family\UpdateFamily::class => \App\Services\Family\Family\UpdateFamily::class,
+        \App\Services\Family\Family\DestroyFamily::class => \App\Services\Family\Family\DestroyFamily::class,
         \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
         \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
     ];
