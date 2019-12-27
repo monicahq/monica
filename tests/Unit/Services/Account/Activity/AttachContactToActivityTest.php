@@ -17,6 +17,7 @@ class AttachContactToActivityTest extends TestCase
 
     public function test_it_attaches_contacts()
     {
+        // first it attaches 3 contacts
         $activity = factory(Activity::class)->create([]);
         $contactA = factory(Contact::class)->create([
             'account_id' => $activity->account_id,
@@ -58,6 +59,33 @@ class AttachContactToActivityTest extends TestCase
             Activity::class,
             $activity
         );
+
+        // then it removes one
+        $request = [
+            'account_id' => $activity->account_id,
+            'activity_id' => $activity->id,
+            'contacts' => [$contactA->id, $contactB->id],
+        ];
+
+        $activity = app(AttachContactToActivity::class)->execute($request);
+
+        $this->assertDatabaseHas('activity_contact', [
+            'activity_id' => $activity->id,
+            'contact_id' => $contactA->id,
+            'account_id' => $activity->account_id,
+        ]);
+
+        $this->assertDatabaseHas('activity_contact', [
+            'activity_id' => $activity->id,
+            'contact_id' => $contactB->id,
+            'account_id' => $activity->account_id,
+        ]);
+
+        $this->assertDatabaseMissing('activity_contact', [
+            'activity_id' => $activity->id,
+            'contact_id' => $contactC->id,
+            'account_id' => $activity->account_id,
+        ]);
     }
 
     public function test_it_fails_if_wrong_parameters_are_given()
