@@ -12,6 +12,7 @@
           :value="'unknown'"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
+          @change="event => { _saveOption(); }"
         >
           <template slot="label">
             {{ $t('people.information_edit_unknown') }}
@@ -23,7 +24,7 @@
           :value="'approximate'"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { _focusAge() }"
+          @change="event => { if (this.selectedOptionSave !== 'approximate') {_focusAge();} _saveOption(); }"
         >
           <template slot="label">
             {{ $t('people.information_edit_probably') }}
@@ -45,7 +46,7 @@
           :value="'almost'"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { _focusMonth() }"
+          @change="event => { if (this.selectedOptionSave !== 'almost') {_focusMonth();} _saveOption(); }"
         >
           <template slot="label">
             {{ $t('people.information_edit_not_year') }}
@@ -76,7 +77,7 @@
           :value="'exact'"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { _focusBirthday() }"
+          @change="event => { if (this.selectedOptionSave !== 'exact') {_focusBirthday();} _saveOption(); }"
         >
           <template slot="label">
             {{ $t('people.information_edit_exact') }}
@@ -156,6 +157,7 @@ export default {
     return {
       selectedDate: null,
       selectedOption: null,
+      selectedOptionSave: null,
       selectedMonth: 0,
       selectedDay: 0,
       hasBirthdayReminder: false
@@ -173,6 +175,7 @@ export default {
 
   mounted() {
     this.selectedOption = this.value != '' ? this.value : 'unknown';
+    this.selectedOptionSave = this.selectedOption;
     this.selectedMonth = this.month;
     this.selectedDay = this.day;
     this.hasBirthdayReminder = this.reminder;
@@ -193,6 +196,9 @@ export default {
       setTimeout(() => {
         this.$refs.birthday.focus();
       }, 100);
+    },
+    _saveOption() {
+      this.selectedOptionSave = this.selectedOption;
     },
   }
 };

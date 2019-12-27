@@ -176,12 +176,6 @@ $factory->define(App\Models\Contact\Note::class, function (Faker\Generator $fake
     ];
 });
 
-$factory->define(App\Models\Contact\Call::class, function (Faker\Generator $faker) {
-    return [
-        'account_id' => factory(App\Models\Account\Account::class)->create()->id,
-    ];
-});
-
 $factory->define(App\Models\Contact\Address::class, function (Faker\Generator $faker) {
     return [
         'account_id' => factory(App\Models\Account\Account::class)->create()->id,

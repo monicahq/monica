@@ -21,7 +21,7 @@ There are two versions of the image you may choose from.
 
 The `apache` tag contains a full Monica installation with an apache webserver. This points to the default `latest` tag too.
 
-The `fpm` tag contains a fastCGI-Process that serves the web pages. This images should be combined with a webserver used as a proxy, like apache or nginx.
+The `fpm` tag contains a fastCGI-Process that serves the web pages. This image should be combined with a webserver used as a proxy, like apache or nginx.
 
 ### Using the apache image
 
@@ -146,7 +146,7 @@ version: "3.4"
 
 services:
   app:
-    image: monicahq/monicahq
+    image: monicahq/monicahq:fpm
     depends_on:
       - mysql
     environment:

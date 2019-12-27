@@ -1,9 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use App\Models\User\User;
-use function Safe\json_decode;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
@@ -63,11 +61,6 @@ class FakeContentTableSeeder extends Seeder
         $output = new ConsoleOutput();
         $progress = new ProgressBar($output, $this->numberOfContacts);
         $progress->start();
-
-        // fetching avatars
-        $client = new Client();
-        $res = $client->request('GET', 'https://randomuser.me/api/?results='.$this->numberOfContacts.'&inc=picture');
-        $arrayPictures = json_decode($res->getBody());
 
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
