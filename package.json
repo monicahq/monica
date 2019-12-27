@@ -24,7 +24,7 @@
     "eslint-plugin-node": ">=7.0.0",
     "eslint-plugin-promise": ">=4.0.0",
     "eslint-plugin-standard": ">=4.0.0",
-    "eslint-plugin-vue": "^6.0.2",
+    "eslint-plugin-vue": "^6.1.0",
     "mocha": "^6.0.2",
     "mocha-junit-reporter": "^1.17.0",
     "mocha-multi-reporters": "^1.1.7",
