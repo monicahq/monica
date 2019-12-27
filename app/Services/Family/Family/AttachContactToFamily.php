@@ -2,10 +2,9 @@
 
 namespace App\Services\Family\Family;
 
+use App\Models\Family\Family;
 use App\Services\BaseService;
 use App\Models\Contact\Contact;
-use App\Models\Account\Activity;
-use App\Models\Family\Family;
 
 class AttachContactToFamily extends BaseService
 {

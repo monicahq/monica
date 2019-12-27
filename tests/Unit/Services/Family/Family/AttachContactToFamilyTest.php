@@ -3,15 +3,11 @@
 namespace Tests\Unit\Services\Family\Family;
 
 use Tests\TestCase;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
-use App\Models\Account\Activity;
 use App\Models\Family\Family;
+use App\Models\Contact\Contact;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Account\Activity\Activity\AttachContactToActivity;
 use App\Services\Family\Family\AttachContactToFamily;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class AttachContactToFamilyTest extends TestCase
 {
