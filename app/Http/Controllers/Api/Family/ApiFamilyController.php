@@ -11,6 +11,7 @@ use App\Services\Family\Family\UpdateFamily;
 use App\Services\Family\Family\DestroyFamily;
 use Illuminate\Validation\ValidationException;
 use App\Http\Resources\Family\Family as FamilyResource;
+use App\Services\Family\Family\AttachContactToFamily;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiFamilyController extends ApiController
@@ -37,10 +38,11 @@ class ApiFamilyController extends ApiController
      * Get the detail of a given family.
      *
      * @param Request $request
+     * @param int $familyId
      *
      * @return FamilyResource|\Illuminate\Http\JsonResponse
      */
-    public function show(Request $request, $familyId)
+    public function show(Request $request, int $familyId)
     {
         try {
             $family = Family::where('account_id', auth()->user()->account_id)
@@ -89,7 +91,7 @@ class ApiFamilyController extends ApiController
      *
      * @return FamilyResource|\Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $familyId)
+    public function update(Request $request, int $familyId)
     {
         try {
             $family = app(UpdateFamily::class)->execute(
@@ -115,10 +117,11 @@ class ApiFamilyController extends ApiController
      * Delete a family.
      *
      * @param Request $request
+     * @param int $familyId
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Request $request, $familyId)
+    public function destroy(Request $request, int $familyId)
     {
         try {
             app(DestroyFamily::class)->execute([
@@ -134,5 +137,32 @@ class ApiFamilyController extends ApiController
         }
 
         return $this->respondObjectDeleted((int) $familyId);
+    }
+
+    /**
+     * Attach or detach a set of contacts to a family.
+     *
+     * @param Request $request
+     * @param int $familyId
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function attachContacts(Request $request, int $familyId)
+    {
+        try {
+            $family = app(AttachContactToFamily::class)->execute([
+                'account_id' => auth()->user()->account->id,
+                'family_id' => $familyId,
+                'contacts' => $request->input('contacts')
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
+        } catch (QueryException $e) {
+            return $this->respondInvalidQuery();
+        }
+
+        return new FamilyResource($family);
     }
 }

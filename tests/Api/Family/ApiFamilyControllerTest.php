@@ -161,4 +161,48 @@ class ApiFamilyControllerTest extends ApiTestCase
             'id' => $family->id,
         ]);
     }
+
+    /** @test */
+    public function it_attaches_contacts_to_a_family()
+    {
+        $user = $this->signin();
+
+        $family = $this->createFamily($user);
+        $contactA = factory(Contact::class)->create([
+            'account_id' => $family->account_id,
+        ]);
+        $contactB = factory(Contact::class)->create([
+            'account_id' => $family->account_id,
+        ]);
+        $contactC = factory(Contact::class)->create([
+            'account_id' => $family->account_id,
+        ]);
+
+        $response = $this->json('POST', '/api/families/'.$family->id.'/attach', [
+            'contacts' => [
+                $contactA->id, $contactB->id, $contactC->id
+            ],
+        ]);
+
+        $response->assertStatus(200);
+
+        $response->assertJsonStructure([
+            'data' => $this->jsonFamilies,
+        ]);
+
+        $this->assertDatabaseHas('contact_family', [
+            'family_id' => $family->id,
+            'contact_id' => $contactA->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_family', [
+            'family_id' => $family->id,
+            'contact_id' => $contactB->id,
+        ]);
+
+        $this->assertDatabaseHas('contact_family', [
+            'family_id' => $family->id,
+            'contact_id' => $contactC->id,
+        ]);
+    }
 }

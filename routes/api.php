@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth:api']], function () {
 
         // Families
         Route::apiResource('families', 'Family\\ApiFamilyController');
+        Route::post('/families/{family}/attach', 'Family\\ApiFamilyController@attachContacts');
 
         // Genders
         Route::apiResource('genders', 'Account\\ApiGenderController');
