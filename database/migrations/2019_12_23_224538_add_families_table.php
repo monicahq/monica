@@ -27,7 +27,7 @@ class AddFamiliesTable extends Migration
             $table->timestamps();
         });
 
-        Schema::table('contact_family', function($table) {
+        Schema::table('contact_family', function ($table) {
             $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
             $table->foreign('family_id')->references('id')->on('families')->onDelete('cascade');
         });

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Models;
 
-use App\Models\Contact\Contact;
 use Tests\TestCase;
 use App\Models\Family\Family;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class FamilyTest extends TestCase

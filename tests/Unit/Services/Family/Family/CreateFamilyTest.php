@@ -3,10 +3,8 @@
 namespace Tests\Unit\Services\Family\Family;
 
 use Tests\TestCase;
-use App\Models\Contact\Gender;
-use App\Models\Account\Account;
-use App\Models\Contact\Contact;
 use App\Models\Family\Family;
+use App\Models\Account\Account;
 use App\Services\Family\Family\CreateFamily;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;

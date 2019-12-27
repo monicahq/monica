@@ -9,6 +9,7 @@ use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
+use App\Models\Family\Family;
 use App\Models\Journal\Entry;
 use function Safe\preg_split;
 use App\Helpers\WeatherHelper;
@@ -37,7 +38,6 @@ use App\Http\Resources\Address\Address as AddressResource;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use App\Http\Resources\Contact\ContactShort as ContactShortResource;
 use App\Http\Resources\ContactField\ContactField as ContactFieldResource;
-use App\Models\Family\Family;
 
 class Contact extends Model
 {
