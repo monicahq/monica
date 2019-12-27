@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers\Api\Family;
 
-use App\Http\Controllers\Api\ApiController;
-use App\Models\Contact\Debt;
 use Illuminate\Http\Request;
-use App\Models\Contact\Contact;
-use Illuminate\Validation\Rule;
-use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Resources\Family\Family as FamilyResource;
 use App\Models\Family\Family;
+use Illuminate\Database\QueryException;
+use App\Http\Controllers\Api\ApiController;
 use App\Services\Family\Family\CreateFamily;
-use App\Services\Family\Family\DestroyFamily;
 use App\Services\Family\Family\UpdateFamily;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Family\Family\DestroyFamily;
 use Illuminate\Validation\ValidationException;
+use App\Http\Resources\Family\Family as FamilyResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiFamilyController extends ApiController
 {

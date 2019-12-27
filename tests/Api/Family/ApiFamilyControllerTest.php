@@ -4,10 +4,8 @@ namespace Tests\Api\Family;
 
 use Tests\ApiTestCase;
 use App\Models\User\User;
-use App\Models\Contact\Contact;
-use App\Models\Contact\Conversation;
-use App\Models\Contact\ContactFieldType;
 use App\Models\Family\Family;
+use App\Models\Contact\Contact;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ApiFamilyControllerTest extends ApiTestCase
@@ -103,7 +101,7 @@ class ApiFamilyControllerTest extends ApiTestCase
 
         $family = $this->createFamily($user);
 
-        $response = $this->json('GET', '/api/families/' . $family->id);
+        $response = $this->json('GET', '/api/families/'.$family->id);
 
         $response->assertStatus(200);
 
@@ -136,7 +134,7 @@ class ApiFamilyControllerTest extends ApiTestCase
 
         $family = $this->createFamily($user);
 
-        $response = $this->json('PUT', '/api/families/' . $family->id, [
+        $response = $this->json('PUT', '/api/families/'.$family->id, [
             'name' => 'Brave family',
         ]);
 
@@ -154,7 +152,7 @@ class ApiFamilyControllerTest extends ApiTestCase
 
         $family = $this->createFamily($user);
 
-        $response = $this->delete('/api/families/' . $family->id);
+        $response = $this->delete('/api/families/'.$family->id);
 
         $response->assertStatus(200);
 
