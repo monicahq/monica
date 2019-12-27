@@ -180,7 +180,7 @@ class ApiFamilyControllerTest extends ApiTestCase
 
         $response = $this->json('POST', '/api/families/'.$family->id.'/attach', [
             'contacts' => [
-                $contactA->id, $contactB->id, $contactC->id
+                $contactA->id, $contactB->id, $contactC->id,
             ],
         ]);
 

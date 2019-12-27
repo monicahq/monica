@@ -10,8 +10,8 @@ use App\Services\Family\Family\CreateFamily;
 use App\Services\Family\Family\UpdateFamily;
 use App\Services\Family\Family\DestroyFamily;
 use Illuminate\Validation\ValidationException;
-use App\Http\Resources\Family\Family as FamilyResource;
 use App\Services\Family\Family\AttachContactToFamily;
+use App\Http\Resources\Family\Family as FamilyResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ApiFamilyController extends ApiController
@@ -153,7 +153,7 @@ class ApiFamilyController extends ApiController
             $family = app(AttachContactToFamily::class)->execute([
                 'account_id' => auth()->user()->account->id,
                 'family_id' => $familyId,
-                'contacts' => $request->input('contacts')
+                'contacts' => $request->input('contacts'),
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
