@@ -9976,16 +9976,16 @@
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
-            "version": "v2.1.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-rsa.git",
-                "reference": "871f78893fa7e56117161c7e53cc0f6f736bbf26"
+                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/871f78893fa7e56117161c7e53cc0f6f736bbf26",
-                "reference": "871f78893fa7e56117161c7e53cc0f6f736bbf26",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/871f3cbcaa5cd8c7856cf1269056f6039586521f",
+                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f",
                 "shasum": ""
             },
             "require": {
@@ -10049,7 +10049,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-09T20:14:55+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "yubico/u2flib-server",
