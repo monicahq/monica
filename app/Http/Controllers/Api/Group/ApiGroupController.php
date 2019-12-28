@@ -145,7 +145,7 @@ class ApiGroupController extends ApiController
      * @param Request $request
      * @param int $groupId
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return GroupResource|\Illuminate\Http\JsonResponse
      */
     public function attachContacts(Request $request, int $groupId)
     {
