@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Du musst dein Konto upgraden, um diese Funktion nutzen zu können',
     'stay_in_touch_modal_title' => 'In Kontakt bleiben',
     'stay_in_touch_modal_desc' => 'Wir können dich per E-Mail daran erinnern, in regelmäßigen Abständen mit {firstname} in Kontakt zu bleiben.',
-    'stay_in_touch_modal_label' => 'Schicke mir eine E-Mail jede...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Telefonat vermerken',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'bei Ihnen gegessen',
     'activity_type_went_bar' => 'in eine Bar gegangen',
     'activity_type_ate_at_home' => 'zu Hause gegessen',
-    'activity_type_picknicked' => 'Picknick gemacht',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'im Restaurant gegessen',
     'activity_type_went_theater' => 'ins Theater gegangen',
     'activity_type_went_concert' => 'zu einem Konzert gegangen',
