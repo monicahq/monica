@@ -53,7 +53,6 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people/notfound', 'ContactsController@missing')->name('missing');
         Route::get('/people/archived', 'ContactsController@archived')->name('archived');
 
-        // Dashboard
         Route::get('/people', 'ContactsController@index')->name('index');
         Route::get('/people/add', 'ContactsController@create')->name('create');
         Route::get('/people/list', 'ContactsController@list')->name('list');
@@ -184,6 +183,12 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people/{contact}/activities/contacts', 'Contacts\\ActivitiesController@contacts')->name('activities.contacts');
         Route::get('/people/{contact}/activities/summary', 'Contacts\\ActivitiesController@summary')->name('activities.summary');
         Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
+    });
+
+    Route::name('families.')->group(function () {
+        Route::get('/families', 'Family\\FamilyController@index')->name('index');
+        Route::get('/families/add', 'Family\\FamilyController@create')->name('create');
+        Route::post('/families', 'Family\\FamilyController@store')->name('store');
     });
 
     Route::name('journal.')->group(function () {

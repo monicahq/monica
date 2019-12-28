@@ -28,8 +28,8 @@ Route::group(['middleware' => ['auth:api']], function () {
         Route::put('/contacts/{contact}/introduction', 'ApiContactController@updateIntroduction');
 
         // Families
-        Route::apiResource('families', 'Family\\ApiFamilyController');
-        Route::post('/families/{family}/attach', 'Family\\ApiFamilyController@attachContacts');
+        Route::apiResource('groups', 'Group\\ApiGroupController');
+        Route::post('/groups/{group}/attach', 'Group\\ApiGroupController@attachContacts');
 
         // Genders
         Route::apiResource('genders', 'Account\\ApiGenderController');

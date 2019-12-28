@@ -7,7 +7,7 @@ use App\Models\User\User;
 use Tests\FeatureTestCase;
 use App\Models\Contact\Debt;
 use App\Models\Account\Photo;
-use App\Models\Family\Family;
+use App\Models\Group\Group;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Contact\Contact;
@@ -126,22 +126,22 @@ class ContactTest extends FeatureTestCase
         $this->assertTrue($contact->occupations()->exists());
     }
 
-    public function test_it_has_many_families()
+    public function test_it_has_many_groups()
     {
-        $family = factory(Family::class)->create([]);
+        $group = factory(Group::class)->create([]);
         $contact = factory(Contact::class)->create([
-            'account_id' => $family->account_id,
+            'account_id' => $group->account_id,
         ]);
 
-        $contact->families()->sync([$family->id]);
+        $contact->groups()->sync([$group->id]);
 
         $contact = factory(Contact::class)->create([
-            'account_id' => $family->account_id,
+            'account_id' => $group->account_id,
         ]);
 
-        $contact->families()->sync([$family->id]);
+        $contact->groups()->sync([$group->id]);
 
-        $this->assertTrue($contact->families()->exists());
+        $this->assertTrue($contact->groups()->exists());
     }
 
     public function testGetFirstnameReturnsNullWhenUndefined()

@@ -14,7 +14,7 @@ use App\Models\Contact\Gift;
 use App\Models\Contact\Note;
 use App\Models\Contact\Task;
 use App\Traits\Subscription;
-use App\Models\Family\Family;
+use App\Models\Group\Group;
 use App\Models\Journal\Entry;
 use App\Models\Contact\Gender;
 use App\Models\Contact\Address;
@@ -481,13 +481,13 @@ class Account extends Model
     }
 
     /**
-     * Get the Family records associated with the account.
+     * Get the Group records associated with the account.
      *
      * @return HasMany
      */
-    public function families()
+    public function groups()
     {
-        return $this->hasMany(Family::class);
+        return $this->hasMany(Group::class);
     }
 
     /**

@@ -9,7 +9,7 @@ use App\Traits\Searchable;
 use Illuminate\Support\Str;
 use App\Helpers\LocaleHelper;
 use App\Models\Account\Photo;
-use App\Models\Family\Family;
+use App\Models\Group\Group;
 use App\Models\Journal\Entry;
 use function Safe\preg_split;
 use App\Helpers\WeatherHelper;
@@ -436,13 +436,13 @@ class Contact extends Model
     }
 
     /**
-     * Get the Family records associated with the contact.
+     * Get the Group records associated with the contact.
      *
      * @return BelongsToMany
      */
-    public function families()
+    public function groups()
     {
-        return $this->belongsToMany(Family::class)->withTimestamps();
+        return $this->belongsToMany(Group::class)->withTimestamps();
     }
 
     /**

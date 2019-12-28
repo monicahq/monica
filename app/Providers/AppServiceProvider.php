@@ -153,9 +153,9 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\VCard\ExportVCard::class => \App\Services\VCard\ExportVCard::class,
         \App\Services\VCard\ImportVCard::class => \App\Services\VCard\ImportVCard::class,
         \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
-        \App\Services\Family\Family\CreateFamily::class => \App\Services\Family\Family\CreateFamily::class,
-        \App\Services\Family\Family\UpdateFamily::class => \App\Services\Family\Family\UpdateFamily::class,
-        \App\Services\Family\Family\DestroyFamily::class => \App\Services\Family\Family\DestroyFamily::class,
+        \App\Services\Group\Group\CreateGroup::class => \App\Services\Group\Group\CreateGroup::class,
+        \App\Services\Group\Group\UpdateGroup::class => \App\Services\Group\Group\UpdateGroup::class,
+        \App\Services\Group\Group\DestroyGroup::class => \App\Services\Group\Group\DestroyGroup::class,
         \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
         \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
     ];

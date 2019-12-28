@@ -9,7 +9,7 @@ use App\Models\User\Module;
 use App\Models\Contact\Call;
 use App\Models\Account\Photo;
 use App\Models\Account\Place;
-use App\Models\Family\Family;
+use App\Models\Group\Group;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
 use App\Models\Account\Company;
@@ -235,13 +235,13 @@ class AccountTest extends FeatureTestCase
         $this->assertTrue($account->occupations()->exists());
     }
 
-    public function test_it_has_many_families()
+    public function test_it_has_many_groups()
     {
         $account = factory(Account::class)->create([]);
-        factory(Family::class, 2)->create([
+        factory(Group::class, 2)->create([
             'account_id' => $account->id,
         ]);
-        $this->assertTrue($account->families()->exists());
+        $this->assertTrue($account->groups()->exists());
     }
 
     public function test_user_can_downgrade_with_only_one_user_and_no_pending_invitations_and_under_contact_limit()
