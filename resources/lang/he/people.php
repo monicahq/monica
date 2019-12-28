@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'עליך לשדרג את החשבון שלך כדי להשתמש בתכונה זו',
     'stay_in_touch_modal_title' => 'לשמור על קשר',
     'stay_in_touch_modal_desc' => 'נוכל להזכיר לך בהודעה בדוא״ל לשמור על קשר עם {firstname} במרווחי זמן קבועים.',
-    'stay_in_touch_modal_label' => 'לשלוח לי הודעה בדוא״ל בכל…',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'תיעוד שיחה',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'אכלתם אצלם',
     'activity_type_went_bar' => 'הלכת לבר',
     'activity_type_ate_at_home' => 'אכלתם בבית',
-    'activity_type_picknicked' => 'יצאתם לפיקניק',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'אכלתם במסעדה',
     'activity_type_went_theater' => 'הלכתם לתיאטרון',
     'activity_type_went_concert' => 'הלכתם להופעה',
