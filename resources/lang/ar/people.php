@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'تحتاج إلى ترقية الحساب الخاص بك لاستخدام هذه الميزة',
     'stay_in_touch_modal_title' => 'ابقى على اتصال',
     'stay_in_touch_modal_desc' => 'يمكن أن نذكرك عن طريق البريد الإلكتروني للبقاء على اتصال مع {firstname} على فترات منتظمة.',
-    'stay_in_touch_modal_label' => 'أرسل لي رسالة بالبريد إلكتروني كل...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'تسجيل مكالمة',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'تناولنا الطعام بمنزلهم',
     'activity_type_went_bar' => 'ذهبنا إلى حانة',
     'activity_type_ate_at_home' => 'تناولنا الطعام في المنزل',
-    'activity_type_picknicked' => 'ذهبنا في نزهة',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'تناولنا الطعام في المطعم',
     'activity_type_went_theater' => 'ذهبنا إلى دار العرض',
     'activity_type_went_concert' => 'ذهبنا إلى حفلة موسيقية',
