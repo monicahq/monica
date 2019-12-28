@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Necesitas actualizar tu cuenta para hacer uso de esta característica',
     'stay_in_touch_modal_title' => 'Mantenerse en contacto',
     'stay_in_touch_modal_desc' => 'Podemos recordarte que te mantengas en contacto con {firstname} regularmente por correo electrónico.',
-    'stay_in_touch_modal_label' => 'Envíame un correo electrónico cada...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Registrar una llamada',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'comimos en su casa',
     'activity_type_went_bar' => 'fuimos al bar',
     'activity_type_ate_at_home' => 'comimos en casa',
-    'activity_type_picknicked' => 'fuimos de picknick',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'comimos en un restaurante',
     'activity_type_went_theater' => 'fuimos al teatro',
     'activity_type_went_concert' => 'fuimos a un concierto',
