@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Potrebno je nadograditi račun za korištenje ove opcije',
     'stay_in_touch_modal_title' => 'Ostani u kontaktu',
     'stay_in_touch_modal_desc' => 'Možemo vas mailom podsjetiti da radovito ostenete u kontaktu sa {firstname}.',
-    'stay_in_touch_modal_label' => 'Pošalji mi mail svakih...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Zabilježi poziv',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'jeli u gostima',
     'activity_type_went_bar' => 'bili u kafiću',
     'activity_type_ate_at_home' => 'jeli doma',
-    'activity_type_picknicked' => 'picknicked',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'ate at a restaurant',
     'activity_type_went_theater' => 'went to the theater',
     'activity_type_went_concert' => 'went to a concert',
