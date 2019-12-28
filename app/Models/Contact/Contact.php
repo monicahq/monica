@@ -181,7 +181,7 @@ class Contact extends Model
      */
     public function activities()
     {
-        return $this->belongsToMany(Activity::class)->orderBy('date_it_happened', 'desc');
+        return $this->belongsToMany(Activity::class)->orderBy('happened_at', 'desc');
     }
 
     /**
@@ -464,14 +464,14 @@ class Contact extends Model
             case 'lastactivitydateNewtoOld':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
-                $builder->orderBy('activities.date_it_happened', 'desc');
+                $builder->orderBy('activities.happened_at', 'desc');
                 $builder->select(['*', 'contacts.id as id']);
 
                 return $builder;
             case 'lastactivitydateOldtoNew':
                 $builder->leftJoin('activity_contact', 'contacts.id', '=', 'activity_contact.contact_id');
                 $builder->leftJoin('activities', 'activity_contact.activity_id', '=', 'activities.id');
-                $builder->orderBy('activities.date_it_happened', 'asc');
+                $builder->orderBy('activities.happened_at', 'asc');
                 $builder->select(['*', 'contacts.id as id']);
 
                 return $builder;
@@ -759,9 +759,9 @@ class Contact extends Model
             return;
         }
 
-        $lastActivity = $this->activities->sortByDesc('date_it_happened')->first();
+        $lastActivity = $this->activities->sortByDesc('happened_at')->first();
 
-        return $lastActivity->date_it_happened;
+        return $lastActivity->happened_at;
     }
 
     /**
@@ -893,23 +893,6 @@ class Contact extends Model
     }
 
     /**
-     * Update the name of the contact.
-     *
-     * @param  string $foodPreferences
-     * @return void
-     */
-    public function updateFoodPreferences($foodPreferences)
-    {
-        if ($foodPreferences == '') {
-            $this->food_preferences = null;
-        } else {
-            $this->food_preferences = $foodPreferences;
-        }
-
-        $this->save();
-    }
-
-    /**
      * Refresh statistics about activities.
      *
      * @return void
@@ -920,7 +903,7 @@ class Contact extends Model
         $this->activityStatistics->each->delete();
 
         // Create the statistics again
-        $this->activities->groupBy('date_it_happened.year')
+        $this->activities->groupBy('happened_at.year')
             ->map(function (Collection $activities, $year) {
                 $activityStatistic = $this->activityStatistics()->make();
                 $activityStatistic->account_id = $this->account_id;
@@ -1009,7 +992,7 @@ class Contact extends Model
                 $avatarURL = $this->avatar_gravatar_url;
                 break;
             case 'photo':
-                $avatarURL = $this->avatarPhoto->url();
+                $avatarURL = $this->avatarPhoto()->get()->first()->url();
                 break;
             case 'default':
             default:

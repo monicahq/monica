@@ -25,7 +25,7 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = collect($request->get('tags'))
+        $tags = collect($request->input('tags'))
             ->filter(function ($tag) {
                 return ! empty($tag);
             });
@@ -83,7 +83,7 @@ class ApiContactTagController extends ApiController
             return $contact;
         }
 
-        $tags = collect($request->get('tags'))
+        $tags = collect($request->input('tags'))
             ->filter(function ($tag) {
                 return ! empty($tag);
             });

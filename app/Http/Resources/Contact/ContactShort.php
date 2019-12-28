@@ -45,6 +45,7 @@ class ContactShort extends Contact
                     'default_avatar_color' => $this->default_avatar_color,
                 ],
             ],
+            'url' => $this->when(! $this->is_partial, route('api.contact', $this->id)),
             'account' => [
                 'id' => $this->account->id,
             ],

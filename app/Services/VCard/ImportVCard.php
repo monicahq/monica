@@ -625,6 +625,7 @@ class ImportVCard extends BaseService
 
                 $array = [
                     'account_id' => $contact->account_id,
+                    'contact_id' => $contact->id,
                     'data' => (string) $entry->PHOTO,
                 ];
                 if (! is_null($entry->PHOTO['TYPE'])) {
