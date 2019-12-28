@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => '您需要升级到高级账户来使用这个功能！',
     'stay_in_touch_modal_title' => '常联系*',
     'stay_in_touch_modal_desc' => '我们将会用邮件提醒您与{firstname}保持联系。',
-    'stay_in_touch_modal_label' => '每几天发送一封提醒邮件...？',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => '记录通话',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => '在对方家里做客',
     'activity_type_went_bar' => '泡吧',
     'activity_type_ate_at_home' => '在家吃饭',
-    'activity_type_picknicked' => '野餐',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => '在饭店吃',
     'activity_type_went_theater' => '看戏',
     'activity_type_went_concert' => '去音乐会',
