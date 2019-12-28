@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Je moet je account upgraden om gebruik te maken van deze functie',
     'stay_in_touch_modal_title' => 'Blijf in contact',
     'stay_in_touch_modal_desc' => 'We kunnen je herinneren via e-mail om regelmatig in contact te blijven met {firstname}.',
-    'stay_in_touch_modal_label' => 'Stuur me een e-mail elke...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Telefoongesprek registreren',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'bij hun gegeten',
     'activity_type_went_bar' => 'naar een bar gegaan',
     'activity_type_ate_at_home' => 'thuis gegeten',
-    'activity_type_picknicked' => 'ge-picknicked',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'naar een restaurant gegaan',
     'activity_type_went_theater' => 'naar het theater gegaan',
     'activity_type_went_concert' => 'naar een concert gegaan',
