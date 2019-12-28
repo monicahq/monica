@@ -185,10 +185,10 @@ Route::middleware(['auth', 'verified', 'mfa'])->group(function () {
         Route::get('/people/{contact}/activities/{year}', 'Contacts\\ActivitiesController@year')->name('activities.year');
     });
 
-    Route::name('families.')->group(function () {
-        Route::get('/families', 'Family\\FamilyController@index')->name('index');
-        Route::get('/families/add', 'Family\\FamilyController@create')->name('create');
-        Route::post('/families', 'Family\\FamilyController@store')->name('store');
+    Route::name('groups.')->group(function () {
+        Route::get('/groups', 'Group\\GroupController@index')->name('index');
+        Route::get('/groups/add', 'Group\\GroupController@create')->name('create');
+        Route::post('/groups', 'Group\\GroupController@store')->name('store');
     });
 
     Route::name('journal.')->group(function () {
