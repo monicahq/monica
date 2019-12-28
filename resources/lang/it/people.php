@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Devi fare l\'upgrade al tuo account per usare questa funzione',
     'stay_in_touch_modal_title' => 'Rimani in contatto',
     'stay_in_touch_modal_desc' => 'Possiamo ricordarti di rimanere in contatto con {firstname} tramite email a intervalli regolari.',
-    'stay_in_touch_modal_label' => 'Inviami una mail ogni...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Aggiungi chiamata',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'mangiato a casa sua/loro',
     'activity_type_went_bar' => 'andati al bar',
     'activity_type_ate_at_home' => 'mangiato a casa',
-    'activity_type_picknicked' => 'fatto un picnic',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'mangiato al ristorante',
     'activity_type_went_theater' => 'andati a teatro',
     'activity_type_went_concert' => 'andati a un concerto',
