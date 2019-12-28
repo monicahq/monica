@@ -8,6 +8,7 @@ use App\Helpers\CountriesHelper;
 use Illuminate\Support\Facades\DB;
 use App\Models\Contact\LifeEventType;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Gift\CreateGift;
 use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\WithFaker;
 use App\Services\Contact\Address\CreateAddress;
@@ -23,7 +24,6 @@ use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
 use App\Services\Account\Activity\Activity\AttachContactToActivity;
-use App\Services\Contact\Gift\CreateGift;
 
 class FakeContentTableSeeder extends Seeder
 {
