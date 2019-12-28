@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api\Group;
 
-use Illuminate\Http\Request;
 use App\Models\Group\Group;
+use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-use App\Http\Controllers\Api\ApiController;
 use App\Services\Group\Group\CreateGroup;
 use App\Services\Group\Group\UpdateGroup;
 use App\Services\Group\Group\DestroyGroup;
+use App\Http\Controllers\Api\ApiController;
 use Illuminate\Validation\ValidationException;
 use App\Services\Group\Group\AttachContactToGroup;
 use App\Http\Resources\Group\Group as GroupResource;
