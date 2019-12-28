@@ -1,11 +1,13 @@
-<style lang="scss" scoped>
+<style>
   table.vgt-table img.avatar-search {
     border-radius: 3px;
     display: inline-block;
     height: 43px;
     width: 43px;
   }
+</style>
 
+<style lang="scss" scoped>
   a {
     color: inherit;
     text-decoration: none;
