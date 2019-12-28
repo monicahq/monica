@@ -3,6 +3,7 @@
 ### New features:
 
 * Save contact tags in vCard 'CATEGORIES' field
+* Upload master docker image to GitHub packages
 
 ### Enhancements:
 

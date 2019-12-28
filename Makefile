@@ -163,7 +163,19 @@ docker_push_bintray_fpm: .deploy.json
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
 	BUILD=$(BUILD)-fpm scripts/ci/fix-bintray.sh
 
-.PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag docker_push docker_push_bintray docker_push_bintray_apache docker_push_bintray_fpm
+docker_push_github: docker_push_github_apache docker_push_github_fpm
+
+docker_push_githuby_apache:
+	docker tag $(DOCKER_IMAGE) docker.pkg.github.com/monicahq/monica/$(DOCKER_IMAGE):$(BUILD)
+	docker push docker.pkg.github.com/monicahq/monica/$(DOCKER_IMAGE):$(BUILD)
+
+docker_push_github_fpm:
+	docker tag $(DOCKER_IMAGE) docker.pkg.github.com/monicahq/monica/$(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push docker.pkg.github.com/monicahq/monica/$(DOCKER_IMAGE):$(BUILD)-fpm
+
+.PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag
+.PHONY: docker_push docker_push_bintray docker_push_bintray_apache docker_push_bintray_fpm
+.PHONY: docker_push_github docker_push_githuby_apache docker_push_github_fpm
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
