@@ -46,7 +46,7 @@
         {{ activity.summary }}
       </h2>
 
-      <div v-if="activity.description" class="pl2 pr2 pb3" v-html="activity.description">
+      <div v-if="activity.description" dir="auto" class="pl2 pr2 pb3" v-html="activity.description">
       </div>
 
       <!-- DETAILS -->
