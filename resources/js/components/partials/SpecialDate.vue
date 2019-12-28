@@ -24,7 +24,7 @@
           :value="'approximate'"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { if (this.selectedOptionSave !== 'approximate') {_focusAge();} _saveOption(); }"
+          @change="event => { if (selectedOptionSave !== 'approximate') {_focusAge();} _saveOption(); }"
         >
           <template slot="label">
             {{ $t('people.information_edit_probably') }}
@@ -46,7 +46,7 @@
           :value="'almost'"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { if (this.selectedOptionSave !== 'almost') {_focusMonth();} _saveOption(); }"
+          @change="event => { if (selectedOptionSave !== 'almost') {_focusMonth();} _saveOption(); }"
         >
           <template slot="label">
             {{ $t('people.information_edit_not_year') }}
@@ -77,7 +77,7 @@
           :value="'exact'"
           :dclass="'flex mb3'"
           :iclass="[ dirltr ? 'mr2' : 'ml2' ]"
-          @change="event => { if (this.selectedOptionSave !== 'exact') {_focusBirthday();} _saveOption(); }"
+          @change="event => { if (selectedOptionSave !== 'exact') {_focusBirthday();} _saveOption(); }"
         >
           <template slot="label">
             {{ $t('people.information_edit_exact') }}
