@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'You need to upgrade your account to make use of this feature',
     'stay_in_touch_modal_title' => 'Stay in touch',
     'stay_in_touch_modal_desc' => 'We can remind you by email to keep in touch with {firstname} at a regular interval.',
-    'stay_in_touch_modal_label' => 'Send me an email every...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Log a call',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'ate at their place',
     'activity_type_went_bar' => 'went to a bar',
     'activity_type_ate_at_home' => 'ate at home',
-    'activity_type_picknicked' => 'picknicked',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'ate at a restaurant',
     'activity_type_went_theater' => 'went to the theater',
     'activity_type_went_concert' => 'went to a concert',
