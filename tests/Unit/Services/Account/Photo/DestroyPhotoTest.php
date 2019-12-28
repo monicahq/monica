@@ -73,11 +73,10 @@ class DestroyPhotoTest extends TestCase
 
         $request = [
             'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
             'photo' => UploadedFile::fake()->image('photo.png'),
         ];
 
-        $uploadService = new UploadPhoto;
-
-        return $uploadService->execute($request);
+        return app(UploadPhoto::class)->execute($request);
     }
 }

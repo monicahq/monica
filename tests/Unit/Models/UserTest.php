@@ -41,12 +41,12 @@ class UserTest extends TestCase
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $term = factory(Term::class)->create([]);
-        $user->terms()->sync($term->id);
+        $term = factory(Term::class)->create();
+        $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
 
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $term = factory(Term::class)->create([]);
-        $user->terms()->sync($term->id);
+        $term = factory(Term::class)->create();
+        $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
 
         $this->assertTrue($user->terms()->exists());
     }

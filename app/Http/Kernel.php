@@ -38,6 +38,7 @@ class Kernel extends HttpKernel
             'locale',
             \App\Http\Middleware\CheckVersion::class,
             \App\Http\Middleware\CheckCompliance::class,
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
 
         'api' => [
