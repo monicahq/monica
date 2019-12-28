@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Bu özelliği kullanabilmek için hesabınızı yükseltmeniz gerekir',
     'stay_in_touch_modal_title' => 'İrtibatta kal',
     'stay_in_touch_modal_desc' => 'Size {firstname} ile bağlantıda kalmanızı düzenli aralıklarla e-posta ile hatırlatabiliriz.',
-    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
+    'stay_in_touch_modal_label' => 'Her... {count} günde bir bana e-posta gönder',
 
     // Calls
     'modal_call_title' => 'Çağrıyı logla',
@@ -243,7 +243,7 @@ return [
     'activity_type_ate_at_his_place' => 'onların yerinde yemek yedik',
     'activity_type_went_bar' => 'bara gittik',
     'activity_type_ate_at_home' => 'evde yemek yedik',
-    'activity_type_picnicked' => 'picnicked',
+    'activity_type_picnicked' => 'piknik yaptık',
     'activity_type_ate_restaurant' => 'restoranda yemek yedik',
     'activity_type_went_theater' => 'tiyatroya gittik',
     'activity_type_went_concert' => 'konsere gittik',
