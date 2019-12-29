@@ -35,7 +35,7 @@ return [
     'upgrade' => '升级解锁',
     'percent_uploaded' => '已上传 {percent}%',
     'retry' => '重试',
-    'filter' => 'Filter the list',
+    'filter' => '过滤列表',
     'go_back' => '后退',
 
     'application_title' => 'Monica – 您的私人社交关系管家',
