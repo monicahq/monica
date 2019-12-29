@@ -11,7 +11,8 @@ class DestroyOccupationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_occupation()
+    /** @test */
+    public function it_destroys_a_occupation()
     {
         $occupation = factory(Occupation::class)->create([]);
 

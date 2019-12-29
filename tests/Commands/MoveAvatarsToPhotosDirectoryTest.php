@@ -30,7 +30,8 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
         return [$user, $contact];
     }
 
-    public function test_it_move_avatars_to_photo_directory()
+    /** @test */
+    public function it_move_avatars_to_photo_directory()
     {
         [$user, $contact] = $this->fetchUser();
 
@@ -65,7 +66,8 @@ class MoveAvatarsToPhotosDirectoryTest extends TestCase
         Storage::disk('public')->assertExists($photo->new_filename);
     }
 
-    public function test_it_handles_missing_avatar()
+    /** @test */
+    public function it_handles_missing_avatar()
     {
         [$user, $contact] = $this->fetchUser();
 

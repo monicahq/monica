@@ -86,11 +86,11 @@ class ApiOccupationControllerTest extends ApiTestCase
 
         $response = $this->json('get', '/api/occupations/'.$occupation->id);
 
-        $response->assertstatus(200);
-        $response->assertjsonstructure([
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
             'data' => $this->jsonOccupation,
         ]);
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'occupation',
             'id' => $occupation->id,
         ]);
@@ -102,7 +102,7 @@ class ApiOccupationControllerTest extends ApiTestCase
 
         $response = $this->json('get', '/api/occupations/0');
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
     public function test_it_creates_a_occupation()
@@ -122,19 +122,19 @@ class ApiOccupationControllerTest extends ApiTestCase
             'title' => 'Waiter',
         ]);
 
-        $response->assertstatus(201);
-        $response->assertjsonstructure([
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
             'data' => $this->jsonOccupation,
         ]);
 
         $occupationId = $response->json('data.id');
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'occupation',
             'id' => $occupationId,
         ]);
 
-        $this->assertdatabasehas('occupations', [
+        $this->assertDatabaseHas('occupations', [
             'account_id' => $user->account->id,
             'id' => $occupationId,
             'title' => 'Waiter',
@@ -155,17 +155,17 @@ class ApiOccupationControllerTest extends ApiTestCase
             'salary' => null,
         ]);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
-        $response->assertjsonstructure([
+        $response->assertJsonStructure([
             'data' => $this->jsonOccupation,
         ]);
 
         $occupationId = $response->json('data.id');
 
-        $this->assertequals($occupation->id, $occupationId);
+        $this->assertEquals($occupation->id, $occupationId);
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'occupation',
             'id' => $occupationId,
         ]);
@@ -194,7 +194,7 @@ class ApiOccupationControllerTest extends ApiTestCase
             'salary' => null,
         ]);
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
     public function test_it_deletes_a_occupation()
@@ -207,7 +207,7 @@ class ApiOccupationControllerTest extends ApiTestCase
 
         $response = $this->json('delete', '/api/occupations/'.$occupation->id);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
         $this->assertdatabasemissing('occupations', [
             'account_id' => $user->account->id,

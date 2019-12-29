@@ -15,7 +15,8 @@ class ResetAccountTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_resets_an_account()
+    /** @test */
+    public function it_resets_an_account()
     {
         // populate the account with fake contacts and activities
         $user = factory(User::class)->create([]);
@@ -54,7 +55,8 @@ class ResetAccountTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [];
 

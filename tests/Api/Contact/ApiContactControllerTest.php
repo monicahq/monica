@@ -221,7 +221,8 @@ class ApiContactControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_contacts()
+    /** @test */
+    public function it_gets_a_list_of_contacts()
     {
         $user = $this->signin();
 
@@ -242,7 +243,8 @@ class ApiContactControllerTest extends ApiTestCase
         );
     }
 
-    public function test_it_gets_a_list_of_contacts_without_gender()
+    /** @test */
+    public function it_gets_a_list_of_contacts_without_gender()
     {
         $user = $this->signin();
 
@@ -263,7 +265,8 @@ class ApiContactControllerTest extends ApiTestCase
         );
     }
 
-    public function test_it_contains_pagination_when_fetching_contacts()
+    /** @test */
+    public function it_contains_pagination_when_fetching_contacts()
     {
         $user = $this->signin();
 
@@ -284,7 +287,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_the_limit_parameter_in_search()
+    /** @test */
+    public function it_applies_the_limit_parameter_in_search()
     {
         $user = $this->signin();
 
@@ -319,7 +323,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_is_possible_to_search_contacts_with_query()
+    /** @test */
+    public function it_is_possible_to_search_contacts_with_query()
     {
         $user = $this->signin();
 
@@ -348,7 +353,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_is_possible_to_search_contacts_and_limit_query()
+    /** @test */
+    public function it_is_possible_to_search_contacts_and_limit_query()
     {
         $user = $this->signin();
 
@@ -379,7 +385,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_is_possible_to_search_contacts_and_limit_query_and_paginate()
+    /** @test */
+    public function it_is_possible_to_search_contacts_and_limit_query_and_paginate()
     {
         $user = $this->signin();
 
@@ -410,7 +417,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_contact()
+    /** @test */
+    public function it_gets_a_contact()
     {
         $user = $this->signin();
 
@@ -432,7 +440,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_getting_a_contact_matches_a_specific_json_structure()
+    /** @test */
+    public function getting_a_contact_matches_a_specific_json_structure()
     {
         $user = $this->signin();
 
@@ -450,7 +459,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_getting_a_partial_contact_matches_a_specific_json_structure()
+    /** @test */
+    public function getting_a_partial_contact_matches_a_specific_json_structure()
     {
         $user = $this->signin();
 
@@ -469,7 +479,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_getting_a_contact_with_the_parameter_with_matches_a_specific_json_structure()
+    /** @test */
+    public function getting_a_contact_with_the_parameter_with_matches_a_specific_json_structure()
     {
         $user = $this->signin();
 
@@ -504,7 +515,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_list_of_contacts_with_parameter_and_limit_and_page()
+    /** @test */
+    public function it_gets_list_of_contacts_with_parameter_and_limit_and_page()
     {
         $user = $this->signin();
 
@@ -560,7 +572,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_query_injection()
+    /** @test */
+    public function it_prevents_a_contact_query_injection()
     {
         $firstuser = $this->signin();
         $firstcontact = factory(Contact::class)->create([
@@ -575,7 +588,7 @@ class ApiContactControllerTest extends ApiTestCase
         $response = $this->json('GET', "/api/contacts?with=contactfields&page=1&limit=100&query=1')%20or%20('%'='");
 
         $response->assertStatus(200);
-        // Assure that firstcontact from other account is not get (SQL injection)
+        // Ensure that firstcontact from other account is not get (SQL injection)
         $response->assertJsonMissing([
             'id' => $firstcontact->id,
             'first_name' => 'Bad',
@@ -585,7 +598,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_get_withcontactfields()
+    /** @test */
+    public function it_gets_a_contact_with_the_contact_fields()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -628,7 +642,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_field_query_all_account()
+    /** @test */
+    public function contact_field_query_all_account()
     {
         $firstuser = $this->signin();
         $firstcontact = factory(Contact::class)->create([
@@ -670,7 +685,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_query_internationalphone()
+    /** @test */
+    public function contact_query_internationalphone()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -702,7 +718,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_creates_a_contact()
+    /** @test */
+    public function it_creates_a_contact()
     {
         $user = $this->signin();
         $gender = factory(Gender::class)->create([
@@ -747,7 +764,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_creating_contact_is_not_possible_if_parameters_are_missing()
+    /** @test */
+    public function creating_contact_is_not_possible_if_parameters_are_missing()
     {
         $user = $this->signin();
 
@@ -763,7 +781,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_creates_a_birthdate()
+    /** @test */
+    public function it_creates_a_birthdate()
     {
         $user = $this->signin();
         $gender = factory(Gender::class)->create([
@@ -817,7 +836,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_birthdate_year_unknown()
+    /** @test */
+    public function contact_create_birthdate_year_unknown()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -872,7 +892,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_birthdate_age_based()
+    /** @test */
+    public function contact_create_birthdate_age_based()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -928,7 +949,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_deceased_date()
+    /** @test */
+    public function contact_create_deceased_date()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -982,7 +1004,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_create_deceased_date_year_unknown()
+    /** @test */
+    public function contact_create_deceased_date_year_unknown()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1036,7 +1059,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_contact()
+    /** @test */
+    public function it_updates_a_contact()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1093,7 +1117,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_bad_account()
+    /** @test */
+    public function contact_update_bad_account()
     {
         $user = $this->signin();
         $gender = factory(Gender::class)->create([
@@ -1124,7 +1149,8 @@ class ApiContactControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_cant_update_the_contact_if_parameters_are_missing()
+    /** @test */
+    public function it_cant_update_the_contact_if_parameters_are_missing()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1142,7 +1168,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_birthdate()
+    /** @test */
+    public function contact_update_birthdate()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1191,7 +1218,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_birthdate_year_unknown()
+    /** @test */
+    public function contact_update_birthdate_year_unknown()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1240,7 +1268,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_birthdate_age_based()
+    /** @test */
+    public function contact_update_birthdate_age_based()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1290,7 +1319,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_contact_update_deceased_date()
+    /** @test */
+    public function contact_update_deceased_date()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1338,7 +1368,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_deletes_a_contact()
+    /** @test */
+    public function it_deletes_a_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1354,7 +1385,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_sets_me_contact()
+    /** @test */
+    public function it_sets_me_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1371,7 +1403,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_me_contact()
+    /** @test */
+    public function it_gets_me_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1394,7 +1427,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_sets_career()
+    /** @test */
+    public function it_sets_career()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1442,7 +1476,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_get_an_error_when_set_career_with_wrong_params()
+    /** @test */
+    public function it_get_an_error_when_set_career_with_wrong_params()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create();
@@ -1454,7 +1489,8 @@ class ApiContactControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_get_an_error_when_set_career_on_partial_contact()
+    /** @test */
+    public function it_get_an_error_when_set_career_on_partial_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1469,7 +1505,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_sets_food_preferences()
+    /** @test */
+    public function it_sets_food_preferences()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1507,7 +1544,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_get_an_error_when_set_food_preferences_with_wrong_params()
+    /** @test */
+    public function it_get_an_error_when_set_food_preferences_with_wrong_params()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create();
@@ -1516,7 +1554,8 @@ class ApiContactControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_get_an_error_when_set_food_preferences_on_partial_contact()
+    /** @test */
+    public function it_get_an_error_when_set_food_preferences_on_partial_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1531,7 +1570,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_sets_first_met()
+    /** @test */
+    public function it_sets_first_met()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1565,7 +1605,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_sets_first_met_age()
+    /** @test */
+    public function it_sets_first_met_age()
     {
         Carbon::setTestNow(Carbon::create(2019, 12, 1, 7, 0, 0));
         $user = $this->signin();
@@ -1599,7 +1640,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_sets_first_met_reminder()
+    /** @test */
+    public function it_sets_first_met_reminder()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -1631,7 +1673,8 @@ class ApiContactControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_get_an_error_when_set_first_met_with_wrong_params()
+    /** @test */
+    public function it_get_an_error_when_set_first_met_with_wrong_params()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create();
@@ -1646,7 +1689,8 @@ class ApiContactControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_get_an_error_when_set_first_met_on_partial_contact()
+    /** @test */
+    public function it_get_an_error_when_set_first_met_on_partial_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([

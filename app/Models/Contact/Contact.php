@@ -765,20 +765,6 @@ class Contact extends Model
     }
 
     /**
-     * Get the last talked to date.
-     *
-     * @return string
-     */
-    public function getLastCalled()
-    {
-        if (is_null($this->last_talked_to)) {
-            return;
-        }
-
-        return $this->last_talked_to;
-    }
-
-    /**
      * Get all the contacts related to the current contact by a specific
      * relationship type group.
      *
@@ -1103,6 +1089,7 @@ class Contact extends Model
 
     /**
      * How much is the debt.
+     *
      * @return int
      */
     public function totalOutstandingDebtAmount()

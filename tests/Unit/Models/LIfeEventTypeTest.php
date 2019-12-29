@@ -13,21 +13,24 @@ class LIfeEventTypeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $lifeEventType = factory(LifeEventType::class)->create([]);
 
         $this->assertTrue($lifeEventType->account()->exists());
     }
 
-    public function test_it_belongs_to_a_category()
+    /** @test */
+    public function it_belongs_to_a_category()
     {
         $lifeEventType = factory(LifeEventType::class)->create([]);
 
         $this->assertTrue($lifeEventType->lifeEventCategory()->exists());
     }
 
-    public function test_it_has_many_life_events()
+    /** @test */
+    public function it_has_many_life_events()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -41,7 +44,8 @@ class LIfeEventTypeTest extends TestCase
         $this->assertTrue($lifeEventType->lifeEvents()->exists());
     }
 
-    public function test_it_gets_the_name_attribute()
+    /** @test */
+    public function it_gets_the_name_attribute()
     {
         $lifeEventType = factory(LifeEventType::class)->create([
             'name' => 'Fake name',

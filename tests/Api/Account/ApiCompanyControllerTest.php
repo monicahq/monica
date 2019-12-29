@@ -24,7 +24,8 @@ class ApiCompanyControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_companys()
+    /** @test */
+    public function it_gets_a_list_of_companies()
     {
         $user = $this->signin();
 
@@ -40,7 +41,8 @@ class ApiCompanyControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_the_limit_parameter_in_search()
+    /** @test */
+    public function it_applies_the_limit_parameter_in_search()
     {
         $user = $this->signin();
 
@@ -67,7 +69,8 @@ class ApiCompanyControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_one_company()
+    /** @test */
+    public function it_gets_one_company()
     {
         $user = $this->signin();
 
@@ -77,26 +80,28 @@ class ApiCompanyControllerTest extends ApiTestCase
 
         $response = $this->json('get', '/api/companies/'.$company->id);
 
-        $response->assertstatus(200);
-        $response->assertjsonstructure([
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
             'data' => $this->jsonCompany,
         ]);
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'company',
             'id' => $company->id,
         ]);
     }
 
-    public function test_it_cant_get_a_call_with_unexistent_id()
+    /** @test */
+    public function it_cant_get_a_call_with_unexistent_id()
     {
         $user = $this->signin();
 
         $response = $this->json('get', '/api/companies/0');
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
-    public function test_it_creates_a_company()
+    /** @test */
+    public function it_creates_a_company()
     {
         $user = $this->signin();
 
@@ -104,19 +109,19 @@ class ApiCompanyControllerTest extends ApiTestCase
             'name' => 'Central Perk',
         ]);
 
-        $response->assertstatus(201);
-        $response->assertjsonstructure([
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
             'data' => $this->jsonCompany,
         ]);
 
         $companyId = $response->json('data.id');
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'company',
             'id' => $companyId,
         ]);
 
-        $this->assertdatabasehas('companies', [
+        $this->assertDatabaseHas('companies', [
             'account_id' => $user->account->id,
             'id' => $companyId,
             'name' => 'Central Perk',
@@ -124,7 +129,8 @@ class ApiCompanyControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_company()
+    /** @test */
+    public function it_updates_a_company()
     {
         $user = $this->signin();
 
@@ -137,17 +143,17 @@ class ApiCompanyControllerTest extends ApiTestCase
             'number_of_employees' => 30,
         ]);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
-        $response->assertjsonstructure([
+        $response->assertJsonStructure([
             'data' => $this->jsonCompany,
         ]);
 
         $companyId = $response->json('data.id');
 
-        $this->assertequals($company->id, $companyId);
+        $this->assertEquals($company->id, $companyId);
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'company',
             'id' => $companyId,
         ]);
@@ -160,7 +166,8 @@ class ApiCompanyControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_cant_update_a_company_if_account_is_not_linked_to_company()
+    /** @test */
+    public function it_cant_update_a_company_if_account_is_not_linked_to_company()
     {
         $user = $this->signin();
 
@@ -173,10 +180,11 @@ class ApiCompanyControllerTest extends ApiTestCase
             'name' => 'Central Perk',
         ]);
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
-    public function test_it_deletes_a_company()
+    /** @test */
+    public function it_deletes_a_company()
     {
         $user = $this->signin();
 
@@ -186,7 +194,7 @@ class ApiCompanyControllerTest extends ApiTestCase
 
         $response = $this->json('delete', '/api/companies/'.$company->id);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
         $this->assertdatabasemissing('companies', [
             'account_id' => $user->account->id,
@@ -194,7 +202,8 @@ class ApiCompanyControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_cant_delete_a_company_if_company_doesnt_exist()
+    /** @test */
+    public function it_cant_delete_a_company_if_company_doesnt_exist()
     {
         $user = $this->signin();
 
