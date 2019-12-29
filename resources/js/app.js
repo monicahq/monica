@@ -63,6 +63,10 @@ Vue.component(
   'avatar',
   require('./components/partials/Avatar.vue').default
 );
+Vue.component(
+  'confirm',
+  require('./components/partials/Confirm.vue').default
+);
 
 // Form elements
 Vue.component(
