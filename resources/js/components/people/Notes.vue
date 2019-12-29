@@ -73,7 +73,7 @@
             {{ $t('app.cancel') }}
           </a>
           <a class="btn btn-primary" href="" :cy-name="'delete-mode-note-button-' + deleteNote.id"
-            @click.prevent="trash(deleteNote)"
+             @click.prevent="trash(deleteNote)"
           >
             {{ $t('app.delete') }}
           </a>

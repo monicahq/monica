@@ -9,7 +9,7 @@ export default {
       .then(response => {
         this.global_profile_default_view = view;
       }
-    );
+      );
   },
 
   /**
@@ -21,4 +21,4 @@ export default {
     event.srcElement.classList = ['hidden'];
     event.srcElement.nextElementSibling.classList.remove('hidden');
   }
-}
+};
