@@ -20,6 +20,11 @@ class ContactSearch extends Contact
             'initials' => $this->getInitials(),
             'is_me' => $this->isMe(),
             'is_starred' => $this->is_starred,
+            'description' => $this->description,
+            'career' => $this->when(!$this->is_partial, [
+                'job' => $this->job,
+                'company' => $this->company,
+            ]),
             'information' => [
                 'avatar' => [
                     'url' => $this->getAvatarUrl(),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Contacts;
 
 use App\Helpers\DBHelper;
 use App\Helpers\DateHelper;
@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Helpers\LocaleHelper;
 use App\Helpers\SearchHelper;
 use App\Helpers\GendersHelper;
+use App\Http\Controllers\Controller;
 use App\Models\Contact\Contact;
 use App\Services\VCard\ExportVCard;
 use Illuminate\Support\Facades\Log;
