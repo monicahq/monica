@@ -8,7 +8,25 @@ For this, you will require an SMTP server. If you don't have one of these, your 
 * [Postmark](https://postmarkapp.com/)
 * [Mailgun](https://signup.mailgun.com/new/signup) (the [free plan](https://www.mailgun.com/pricing) should be sufficient)
 * [Amazon Simple Email Service](https://aws.amazon.com/ses/)
+* [Sendgrid](https://sendgrid.com)
 
+## Use SMTP with Monica
+
+The generic way to send emails with Monica is to provide a SMTP server, each one of the services mentionned above can provide you SMTP settings. While Amazon SES is a little bit custom, see bellow, here the configuration for a standard SMTP configuration.
+
+You need to add few environment variables in your configuration (working in generic installation and Docker):
+```
+MAIL_DRIVER: smtp
+MAIL_HOST: smtp.service.com # ex: smtp.sendgrid.net
+MAIL_PORT: 587 # is using tls, as you should
+MAIL_USERNAME: my_service_username # ex: apikey
+MAIL_PASSWORD: my_service_password # ex: SG.Psuoc6NZTrGHAF9fdsgsdgsbvjQ.JuxNWVYmJ8LE0
+MAIL_ENCRYPTION: tls
+MAIL_FROM_ADDRESS: no-reply@xxx.com # ex: email you want the email to be FROM
+MAIL_FROM_NAME: Monica # ex: name of the sender
+```
+
+Restart Monica to take in effect the new settings, quickest option to confirm is to add someone to your account (add one of your own email) and you will receive the invitation!
 
 
 ## Use Amazon SES with Monica
