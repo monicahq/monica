@@ -14,7 +14,7 @@ For this, you will require an SMTP server. If you don't have one of these, your 
 
 The generic way to send emails with Monica is to provide a SMTP server, each one of the services mentionned above can provide you SMTP settings. While Amazon SES is a little bit custom, see bellow, here the configuration for a standard SMTP configuration.
 
-You need to add few EVAR in your configuration (working in generic installation and Docker):
+You need to add few environment variables in your configuration (working in generic installation and Docker):
 ```
 MAIL_DRIVER: smtp
 MAIL_HOST: smtp.service.com # ex: smtp.sendgrid.net
