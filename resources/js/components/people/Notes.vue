@@ -28,7 +28,7 @@
         <li v-for="note in notes" :key="note.id" class="note">
           <div v-show="!note.edit" class="ba br2 b--black-10 br--top w-100 mb2" :cy-name="'note-body-' + note.id">
             <div class="pa2 markdown">
-              <span v-html="note.parsed_body"></span>
+              <span dir="auto" v-html="note.parsed_body"></span>
             </div>
             <div class="pa2 cf bt b--black-10 br--bottom f7 lh-copy">
               <div class="fl w-50">

@@ -3,9 +3,12 @@
 ### New features:
 
 * Save contact tags in vCard 'CATEGORIES' field
+* Upload master docker image to GitHub packages
 
 ### Enhancements:
 
+* Add foreign keys to all tables
+* Add English (UK) locale
 * Add API methods to destroy and store documents
 * Add API methods to manage photos and avatars
 * Add emotions and participants to activities
@@ -22,6 +25,7 @@
 
 ### Fixes:
 
+* Fix birthdate selection UX
 * Fix OAuth login process with WebAuthn activated
 * Fix journal entry edit
 * Fix register in case country is not detected from ip address
