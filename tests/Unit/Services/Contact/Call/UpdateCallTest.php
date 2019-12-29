@@ -105,6 +105,7 @@ class UpdateCallTest extends TestCase
     /**
      * Checks that it adds new emotions.
      */
+
     /** @test */
     public function it_updates_emotions()
     {
@@ -155,6 +156,7 @@ class UpdateCallTest extends TestCase
     /**
      * Checks that it removes old emotion and add new emotions.
      */
+
     /** @test */
     public function it_deletes_and_updates_emotions()
     {
