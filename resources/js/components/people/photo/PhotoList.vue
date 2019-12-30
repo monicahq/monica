@@ -160,6 +160,13 @@ export default {
     },
 
     handleNewPhoto(photo) {
+      this.$notify({
+        group: 'main',
+        title: this.$t('app.default_save_success'),
+        text: '',
+        type: 'success'
+      });
+
       this.photos.push(photo);
     },
 

@@ -23,7 +23,7 @@
         :contact-id="contactId"
         :family-contacts="familyContacts"
         :reach-limit="reachLimit"
-        @update="($event) => { updateList($event) }"
+        @update="updateList($event)"
         @cancel="displayCreateGift = false"
       />
     </template>
@@ -80,7 +80,7 @@
             :contact-id="contactId"
             :family-contacts="familyContacts"
             :reach-limit="reachLimit"
-            @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
+            @update="updateGift(gift, $event)"
             @cancel="$set(gift, 'edit', false)"
           />
         </div>
@@ -112,7 +112,7 @@
             :contact-id="contactId"
             :family-contacts="familyContacts"
             :reach-limit="reachLimit"
-            @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
+            @update="updateGift(gift, $event)"
             @cancel="$set(gift, 'edit', false)"
           />
         </div>
@@ -141,7 +141,7 @@
             :contact-id="contactId"
             :family-contacts="familyContacts"
             :reach-limit="reachLimit"
-            @update="($event) => { $set(gift, 'edit', false); $emit('update', $event); }"
+            @update="updateGift(gift, $event)"
             @cancel="$set(gift, 'edit', false)"
           />
         </div>
@@ -154,15 +154,13 @@
           {{ $t('people.gifts_delete_confirmation') }}
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeDeleteModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn" :cy-name="'modal-delete-gift-button-' + giftToTrash.id" href="" @click.prevent="trash(giftToTrash)">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeDeleteModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" :cy-name="'modal-delete-gift-button-' + giftToTrash.id" href="" @click.prevent="trash(giftToTrash)">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
@@ -288,9 +286,22 @@ export default {
         });
     },
 
-    updateList: function (activity) {
-      this.displayLogActivity = false;
+    updateList(activity) {
+      this.displayCreateGift = false;
       this.getGifts();
+    },
+
+    updateGift(gift, response) {
+      this.$set(gift, 'edit', false);
+      this.$set(gift, 'name', response.name);
+      this.$set(gift, 'comment', response.comment);
+      this.$set(gift, 'url', response.url);
+      this.$set(gift, 'amount', response.amount);
+      this.$set(gift, 'status', response.status);
+      this.$set(gift, 'recipient', response.recipient);
+      this.$set(gift, 'date', response.date);
+      this.$set(gift, 'photos', response.photos);
+      this.$emit('update', response);
     },
 
     closeDeleteModal() {

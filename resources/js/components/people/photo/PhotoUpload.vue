@@ -136,10 +136,11 @@ export default {
     },
 
     forceFileUpload(){
-      this.file = this.$refs.file !== undefined ? this.$refs.file.files[0] : undefined;
-      if (this.file === undefined) {
-        return new Promise();
+      let f = this.$refs.file !== undefined ? this.$refs.file.files[0] : undefined;
+      if (f === undefined) {
+        return Promise.resolve();
       }
+      this.file = f;
       return this.submitFile();
     },
 
@@ -151,7 +152,7 @@ export default {
       formData.append('contact_id', this.contactId);
       formData.append('photo', this.file);
 
-      return axios.post( 'api/photos',
+      return axios.post('api/photos',
         formData,
         {
           headers: {
@@ -163,13 +164,6 @@ export default {
         }
       ).then(response => {
         this.displayUploadProgress = false;
-        //this.$parent.photos.push(response.data.data);
-        this.$notify({
-          group: 'main',
-          title: this.$t('app.default_save_success'),
-          text: '',
-          type: 'success'
-        });
 
         this.$emit('newphoto', response.data.data);
 

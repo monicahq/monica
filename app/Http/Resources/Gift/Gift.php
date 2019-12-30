@@ -28,7 +28,7 @@ class Gift extends Resource
             'status' => $this->status,
             'date' => $this->date ? DateHelper::getShortDate($this->date) : '',
             'recipient' => new ContactShortResource($this->recipient),
-            'photos' => $this->when($this->photos->count() > 0, PhotoResource::collection($this->photos)),
+            'photos' => PhotoResource::collection($this->photos),
             'contact' => new ContactShortResource($this->contact),
             'account' => [
                 'id' => $this->account_id,
