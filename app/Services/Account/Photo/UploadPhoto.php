@@ -5,6 +5,7 @@ namespace App\Services\Account\Photo;
 use function Safe\substr;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use function Safe\parse_url;
 use App\Models\Account\Photo;
 use App\Services\BaseService;
 use function Safe\finfo_open;
@@ -15,7 +16,6 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Exception\NotReadableException;
-use function Safe\parse_url;
 
 class UploadPhoto extends BaseService
 {
