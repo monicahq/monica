@@ -70,7 +70,7 @@ stages:
     steps:
     - template: .azure/step-prepare-environment.yml
     - template: .azure/step-docker-build.yml
-    - template: .azure/step-docker-push-bintray.yml
+    - template: .azure/step-docker-push-github.yml
 
   - job: deploy_docker
     condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
@@ -79,5 +79,5 @@ stages:
     steps:
     - template: .azure/step-prepare-environment.yml
     - template: .azure/step-docker-build.yml
-    - template: .azure/step-docker-push-bintray.yml
+    - template: .azure/step-docker-push-github.yml
     - template: .azure/step-docker-push.yml
