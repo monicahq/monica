@@ -170,7 +170,7 @@ docker_push_github_apache:
 	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
 
 docker_push_github_fpm:
-	docker tag $(DOCKER_IMAGE) docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
+	docker tag $(DOCKER_IMAGE):fpm docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
 	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
 
 .PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag
