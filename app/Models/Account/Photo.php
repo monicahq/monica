@@ -63,7 +63,7 @@ class Photo extends Model
     {
         $url = $this->new_filename;
 
-        if (!env('HEROKU')) {            
+        if (!env('CLOUDINARY_URL')) {            
             $url = asset(Storage::disk(config('filesystems.default'))->url($url));
         }
 

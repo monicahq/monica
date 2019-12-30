@@ -35,9 +35,13 @@ class DestroyPhoto extends BaseService
             ->findOrFail($data['photo_id']);
 
         // Delete the physical photo
-        // Throws FileNotFoundException
-        Storage::delete($photo->new_filename);
-
+        if (env('CLOUDINARY_URL')) {
+            \Cloudinary\Uploader::destroy($photo['original_filename']);
+        } else {
+            // Throws FileNotFoundException
+            Storage::delete($photo->new_filename);
+        }
+        
         // Delete the object in the DB
         $photo->delete();
 

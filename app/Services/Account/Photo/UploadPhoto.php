@@ -90,7 +90,7 @@ class UploadPhoto extends BaseService
          * needs to be parsed from the environment variable provided by Heroku.
          * This is done below, added to the $url variable.
          */
-        if (env('HEROKU') && env('CLOUDINARY_URL')) {
+        if (env('CLOUDINARY_URL')) {
             $url = parse_url(env('CLOUDINARY_URL'));
 
             \Cloudinary::config(array(
@@ -100,6 +100,7 @@ class UploadPhoto extends BaseService
             ));
 
             $uploaded = \Cloudinary\Uploader::upload($_FILES['photo']['tmp_name']);
+            $array['original_filename'] = $uploaded['public_id'];
             $array['new_filename'] = $uploaded['url'];
         } else {
             $array['new_filename'] = $photo->storePublicly('photos', config('filesystems.default'));
