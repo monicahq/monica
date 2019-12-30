@@ -25,6 +25,7 @@
 
 ### Fixes:
 
+* Fix contact list cells link
 * Fix birthdate selection UX
 * Fix OAuth login process with WebAuthn activated
 * Fix journal entry edit
