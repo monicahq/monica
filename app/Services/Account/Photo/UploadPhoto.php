@@ -85,22 +85,20 @@ class UploadPhoto extends BaseService
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
         ];
 
-// ? Meter aquí IF HEROKU?        
         /*
-         * If the instance is hosted on Heroku, then the database information
+         * If the instance is hosted on Heroku then the Cloudinary information
          * needs to be parsed from the environment variable provided by Heroku.
-         * This is done below, added to the $db variable and then returned.
+         * This is done below, added to the $url variable.
          */
-        if (true) {
-        //if (env('HEROKU')) {            
-            $url = parse_url('cloudinary://146791379171222:oKilRmV04JQilE5eWAvftf09nbs@hzdghrfs6');
-            //$url = parse_url(env('CLOUDINARY_URL'));
+        if (env('HEROKU') && env('CLOUDINARY_URL')) {
+            $url = parse_url(env('CLOUDINARY_URL'));
 
             \Cloudinary::config(array(
                 'cloud_name' => $url['host'],
                 'api_key' => $url['user'],
                 'api_secret' => $url['pass']
             ));
+
             $uploaded = \Cloudinary\Uploader::upload($_FILES['photo']['tmp_name']);
             $array['new_filename'] = $uploaded['url'];
         } else {
