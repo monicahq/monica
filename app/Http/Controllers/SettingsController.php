@@ -52,7 +52,7 @@ class SettingsController
 
         return view('settings.index')
                 ->withNamesOrder($namesOrder)
-                ->withLocales(LocaleHelper::getLocaleList())
+                ->withLocales(LocaleHelper::getLocaleList()->sortByCollator('name-orig'))
                 ->withHours(DateHelper::getListOfHours())
                 ->withSelectedTimezone(TimezoneHelper::adjustEquivalentTimezone(DateHelper::getTimezone()))
                 ->withTimezones(collect(TimezoneHelper::getListOfTimezones())->map(function ($timezone) {
