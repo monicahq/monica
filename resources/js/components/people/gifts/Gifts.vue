@@ -266,7 +266,8 @@ export default {
         gift.status = 'idea';
         gift.date = null;
       }
-      axios.put('api/gift/' + gift.id, gift)
+      gift.contact_id = this.contactId;
+      axios.put('api/gifts/' + gift.id, gift)
         .then(response => {
           Vue.set(gift, 'status', response.data.data.status);
           Vue.set(gift, 'date', response.data.data.date);
