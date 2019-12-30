@@ -86,8 +86,8 @@ class UploadPhoto extends BaseService
         ];
 
         /*
-         * If the instance is hosted on Heroku then the Cloudinary information
-         * needs to be parsed from the environment variable provided by Heroku.
+         * If the instance uses Cloudinary like Heroku hosting, then the Cloudinary 
+         * information needs to be parsed from the environment variable provided by Heroku.
          * This is done below, added to the $url variable.
          */
         if (env('CLOUDINARY_URL')) {
