@@ -15,6 +15,7 @@ use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Exception\NotReadableException;
+use function Safe\parse_url;
 
 class UploadPhoto extends BaseService
 {
