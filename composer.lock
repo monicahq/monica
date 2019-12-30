@@ -2707,16 +2707,16 @@
         },
         {
             "name": "laravolt/avatar",
-            "version": "3.0.4",
+            "version": "3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravolt/avatar.git",
-                "reference": "aa985a46e4a161588695dd3b336422e73feced9b"
+                "reference": "c49e6502957a5b31019c69bc751785d5be283ca0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravolt/avatar/zipball/aa985a46e4a161588695dd3b336422e73feced9b",
-                "reference": "aa985a46e4a161588695dd3b336422e73feced9b",
+                "url": "https://api.github.com/repos/laravolt/avatar/zipball/c49e6502957a5b31019c69bc751785d5be283ca0",
+                "reference": "c49e6502957a5b31019c69bc751785d5be283ca0",
                 "shasum": ""
             },
             "require": {
@@ -2769,7 +2769,7 @@
                 "laravel",
                 "laravolt"
             ],
-            "time": "2019-12-26T22:43:37+00:00"
+            "time": "2019-12-26T23:36:55+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -3427,16 +3427,16 @@
         },
         {
             "name": "moneyphp/money",
-            "version": "v3.2.1",
+            "version": "v3.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/moneyphp/money.git",
-                "reference": "f6085de6c565e98d2f9a7311a605987b54e06d5e"
+                "reference": "2a9b09bb5435aa54a404f626b9284ae64cb88af2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/moneyphp/money/zipball/f6085de6c565e98d2f9a7311a605987b54e06d5e",
-                "reference": "f6085de6c565e98d2f9a7311a605987b54e06d5e",
+                "url": "https://api.github.com/repos/moneyphp/money/zipball/2a9b09bb5435aa54a404f626b9284ae64cb88af2",
+                "reference": "2a9b09bb5435aa54a404f626b9284ae64cb88af2",
                 "shasum": ""
             },
             "require": {
@@ -3451,12 +3451,12 @@
                 "ext-intl": "*",
                 "florianv/exchanger": "^1.0",
                 "florianv/swap": "^3.0",
-                "leanphp/phpspec-code-coverage": "^3.0 || ^4.0",
-                "moneyphp/iso-currencies": "^3.0",
+                "friends-of-phpspec/phpspec-code-coverage": "^3.1.1 || ^4.3",
+                "moneyphp/iso-currencies": "^3.2.1",
                 "php-http/message": "^1.4",
                 "php-http/mock-client": "^1.0.0",
-                "phpspec/phpspec": "^3.0",
-                "phpunit/phpunit": "^5.7 || ^6.4 || ^7.0",
+                "phpspec/phpspec": "^3.4.3",
+                "phpunit/phpunit": "^5.7.27 || ^6.5.14 || ^7.5.18 || ^8.5",
                 "psr/cache": "^1.0",
                 "symfony/phpunit-bridge": "^4"
             },
@@ -3471,7 +3471,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-master": "3.x-dev"
                 }
             },
             "autoload": {
@@ -3485,13 +3485,13 @@
             ],
             "authors": [
                 {
-                    "name": "Márk Sági-Kazár",
-                    "email": "mark.sagikazar@gmail.com"
-                },
-                {
                     "name": "Mathias Verraes",
                     "email": "mathias@verraes.net",
                     "homepage": "http://verraes.net"
+                },
+                {
+                    "name": "Márk Sági-Kazár",
+                    "email": "mark.sagikazar@gmail.com"
                 },
                 {
                     "name": "Frederik Bosch",
@@ -3505,7 +3505,7 @@
                 "money",
                 "vo"
             ],
-            "time": "2019-02-07T18:01:35+00:00"
+            "time": "2019-12-27T21:58:31+00:00"
         },
         {
             "name": "monicahq/laravel-cloudflare",
@@ -9723,16 +9723,16 @@
         },
         {
             "name": "web-token/jwt-core",
-            "version": "v2.1.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-core.git",
-                "reference": "7e710be4a6eea125b92cb4cc4e6a0fc36c14d720"
+                "reference": "3e794092db3d85737dcc5ce2a21beeeaf801cd85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/7e710be4a6eea125b92cb4cc4e6a0fc36c14d720",
-                "reference": "7e710be4a6eea125b92cb4cc4e6a0fc36c14d720",
+                "url": "https://api.github.com/repos/web-token/jwt-core/zipball/3e794092db3d85737dcc5ce2a21beeeaf801cd85",
+                "reference": "3e794092db3d85737dcc5ce2a21beeeaf801cd85",
                 "shasum": ""
             },
             "require": {
@@ -9798,20 +9798,20 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-09T20:14:55+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-signature",
-            "version": "v2.1.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature.git",
-                "reference": "7a986383f1406a1790130e2a0151b82536a03a96"
+                "reference": "4c4d43e4fb266578b54c8407f3aeb4f060e4630e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/7a986383f1406a1790130e2a0151b82536a03a96",
-                "reference": "7a986383f1406a1790130e2a0151b82536a03a96",
+                "url": "https://api.github.com/repos/web-token/jwt-signature/zipball/4c4d43e4fb266578b54c8407f3aeb4f060e4630e",
+                "reference": "4c4d43e4fb266578b54c8407f3aeb4f060e4630e",
                 "shasum": ""
             },
             "require": {
@@ -9878,20 +9878,20 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-09T20:14:55+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-ecdsa",
-            "version": "v2.1.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-ecdsa.git",
-                "reference": "e380b4ebac21160ca8357cf2aedb97d5c33c7a26"
+                "reference": "2415c5ac44f4aad66ef90ad0904aa8a46526b3c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/e380b4ebac21160ca8357cf2aedb97d5c33c7a26",
-                "reference": "e380b4ebac21160ca8357cf2aedb97d5c33c7a26",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-ecdsa/zipball/2415c5ac44f4aad66ef90ad0904aa8a46526b3c2",
+                "reference": "2415c5ac44f4aad66ef90ad0904aa8a46526b3c2",
                 "shasum": ""
             },
             "require": {
@@ -9951,20 +9951,20 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-09T20:14:55+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-eddsa",
-            "version": "v2.1.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-eddsa.git",
-                "reference": "e369899c47262b0459c3fd50ac5a65cafbbedc23"
+                "reference": "8421039c8f4729a98385a7074d960c6ecb1d0bbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-eddsa/zipball/e369899c47262b0459c3fd50ac5a65cafbbedc23",
-                "reference": "e369899c47262b0459c3fd50ac5a65cafbbedc23",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-eddsa/zipball/8421039c8f4729a98385a7074d960c6ecb1d0bbb",
+                "reference": "8421039c8f4729a98385a7074d960c6ecb1d0bbb",
                 "shasum": ""
             },
             "require": {
@@ -10024,20 +10024,20 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-09T20:14:55+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "web-token/jwt-signature-algorithm-rsa",
-            "version": "v2.1.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/web-token/jwt-signature-algorithm-rsa.git",
-                "reference": "871f78893fa7e56117161c7e53cc0f6f736bbf26"
+                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/871f78893fa7e56117161c7e53cc0f6f736bbf26",
-                "reference": "871f78893fa7e56117161c7e53cc0f6f736bbf26",
+                "url": "https://api.github.com/repos/web-token/jwt-signature-algorithm-rsa/zipball/871f3cbcaa5cd8c7856cf1269056f6039586521f",
+                "reference": "871f3cbcaa5cd8c7856cf1269056f6039586521f",
                 "shasum": ""
             },
             "require": {
@@ -10101,7 +10101,7 @@
                 "jwt",
                 "symfony"
             ],
-            "time": "2019-12-09T20:14:55+00:00"
+            "time": "2019-12-27T22:22:20+00:00"
         },
         {
             "name": "yubico/u2flib-server",
@@ -10985,16 +10985,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508"
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
                 "shasum": ""
             },
             "require": {
@@ -11013,7 +11013,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -11042,7 +11042,7 @@
                 "throwable",
                 "whoops"
             ],
-            "time": "2019-12-25T10:00:00+00:00"
+            "time": "2019-12-29T10:00:00+00:00"
         },
         {
             "name": "fzaninotto/faker",

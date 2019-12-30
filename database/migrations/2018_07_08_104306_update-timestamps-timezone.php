@@ -49,8 +49,6 @@ class UpdateTimestampsTimezone extends Migration
         $this->update('currencies', $timezone);
         $this->update('days', $timezone);
         $this->update('debts', $timezone);
-        $this->update('default_activity_type_categories', $timezone);
-        $this->update('default_activity_types', $timezone);
         $this->update('default_contact_field_types', $timezone);
         $this->update('default_contact_modules', $timezone);
         $this->update('default_activity_types', $timezone);
