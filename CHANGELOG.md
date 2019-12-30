@@ -7,6 +7,7 @@
 
 ### Enhancements:
 
+* Improve modals bottom buttons display
 * Add foreign keys to all tables
 * Add English (UK) locale
 * Add API methods to destroy and store documents

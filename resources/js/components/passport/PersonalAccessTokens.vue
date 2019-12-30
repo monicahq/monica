@@ -106,15 +106,13 @@
         </div>
       </form>
       <!-- Modal Actions -->
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.close') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="store">
-            {{ $t('app.create') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="store">
+          {{ $t('app.create') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -128,15 +126,13 @@
       </div>
 
       <!-- Modal Actions -->
-      <div class="relative">
-        <span class="fr">
-          <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(accessToken)">
-            {{ $t('app.copy') }}
-          </a>
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.close') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(accessToken)">
+          {{ $t('app.copy') }}
+        </a>
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
