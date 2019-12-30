@@ -41,7 +41,7 @@ class DestroyPhoto extends BaseService
             // Throws FileNotFoundException
             Storage::delete($photo->new_filename);
         }
-        
+
         // Delete the object in the DB
         $photo->delete();
 
