@@ -84,7 +84,27 @@ class UploadPhoto extends BaseService
             'filesize' => $photo->getClientSize(),
             'mime_type' => (new \Mimey\MimeTypes)->getMimeType($photo->guessClientExtension()),
         ];
-        $array['new_filename'] = $photo->storePublicly('photos', config('filesystems.default'));
+
+        /*
+         * If the instance uses Cloudinary like Heroku hosting, then the Cloudinary 
+         * information needs to be parsed from the environment variable provided by Heroku.
+         * This is done below, added to the $url variable.
+         */
+        if (env('CLOUDINARY_URL')) {
+            $url = parse_url(env('CLOUDINARY_URL'));
+
+            \Cloudinary::config(array(
+                'cloud_name' => $url['host'],
+                'api_key' => $url['user'],
+                'api_secret' => $url['pass']
+            ));
+
+            $uploaded = \Cloudinary\Uploader::upload($_FILES['photo']['tmp_name']);
+            $array['original_filename'] = $uploaded['public_id'];
+            $array['new_filename'] = $uploaded['url'];
+        } else {
+            $array['new_filename'] = $photo->storePublicly('photos', config('filesystems.default'));
+        }
 
         return $array;
     }

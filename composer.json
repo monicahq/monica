@@ -12,6 +12,7 @@
         "ext-intl": "*",
         "asbiin/laravel-webauthn": "~0.7",
         "bacon/bacon-qr-code": "^1.0",
+        "cloudinary/cloudinary_php": "^1.16",
         "creativeorange/gravatar": "~1.0",
         "doctrine/dbal": "2.9.3",
         "erusev/parsedown": "~1.7",

@@ -47,6 +47,12 @@
 
 # RELEASED VERSIONS:
 
+## v2.15.3 - 2019-12-30
+
+### Enhancements:
+
+* Allow to upload files for Heroku instances with Cloudinary add-on
+
 ## v2.15.2 - 2019-09-26
 
 ### Enhancements:

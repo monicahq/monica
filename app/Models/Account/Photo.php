@@ -63,6 +63,10 @@ class Photo extends Model
     {
         $url = $this->new_filename;
 
-        return asset(Storage::disk(config('filesystems.default'))->url($url));
+        if (!env('CLOUDINARY_URL')) {            
+            $url = asset(Storage::disk(config('filesystems.default'))->url($url));
+        }
+
+        return $url;
     }
 }
