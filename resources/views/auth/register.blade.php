@@ -22,7 +22,10 @@
                 @if (App::isLocale($locale['lang']))
                   {{ $locale['lang'] }}
                 @else
-                <a href="{{ route('register') }}?lang={{ $locale['lang'] }}" title="{{ trans('auth.change_language', ['lang' => $locale['name']]) }}">{{ $locale['lang'] }}</a>
+                <a href="{{ route('register') }}?lang={{ $locale['lang'] }}"
+                  title="{{ trans('auth.change_language', ['lang' => $locale['name-orig']], $locale['lang']) }}">
+                  {{ $locale['lang'] }}
+                </a>
                 @endif
               </li>
             @endforeach

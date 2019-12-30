@@ -3356,10 +3356,10 @@ eslint-plugin-standard@>=4.0.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-standard/-/eslint-plugin-standard-4.0.1.tgz#ff0519f7ffaff114f76d1bd7c3996eef0f6e20b4"
   integrity sha512-v/KBnfyaOMPmZc/dmc6ozOdWqekGp7bBGq4jLAecEfPGmfKiWS4sA8sC0LqiV9w5qmXAtXVn4M3p1jSyhY85SQ==
 
-eslint-plugin-vue@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-6.1.0.tgz#b8dffb75dcaa62dec813ef9e7c10059f15ef7e99"
-  integrity sha512-3EQ51TnZBG8MpjYqcss1HNEZvEWCPmE5XMlNgEbM9ipL7aUQNBq1BZXBZDHOEJ1cW9zY4XTVDp373S9BgwJ3Pg==
+eslint-plugin-vue@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-6.1.1.tgz#183c4c8b54880e81b585d2f3dd5c183598e73664"
+  integrity sha512-WsJcndi3iOtKF+Wkrw7mWiKT3GdGYUM8onbWYX7sBgggiFKoxHyx8VciA5letkx6iKzoW4B7XrBeVdTukmrtpg==
   dependencies:
     vue-eslint-parser "^7.0.0"
 
@@ -8472,10 +8472,10 @@ snyk-resolve@1.0.1, snyk-resolve@^1.0.0, snyk-resolve@^1.0.1:
     debug "^3.1.0"
     then-fs "^2.0.0"
 
-snyk-sbt-plugin@2.9.2:
-  version "2.9.2"
-  resolved "https://registry.yarnpkg.com/snyk-sbt-plugin/-/snyk-sbt-plugin-2.9.2.tgz#2c79b9aa49056367bf78a6bf693a282c8648366e"
-  integrity sha512-Mikl/ga3kJkvDs9KURmEa9YydmRguMW1CdJ4f7kA3iULSIsP7xqi8C4jYkJ/v3xfNrkfr8jACu2q9IDQRYJ+rg==
+snyk-sbt-plugin@2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/snyk-sbt-plugin/-/snyk-sbt-plugin-2.11.0.tgz#f5469dcf5589e34575fc901e2064475582cc3e48"
+  integrity sha512-wUqHLAa3MzV6sVO+05MnV+lwc+T6o87FZZaY+43tQPytBI2Wq23O3j4POREM4fa2iFfiQJoEYD6c7xmhiEUsSA==
   dependencies:
     debug "^4.1.1"
     semver "^6.1.2"
@@ -8500,10 +8500,10 @@ snyk-try-require@1.3.1, snyk-try-require@^1.1.1, snyk-try-require@^1.3.1:
     lru-cache "^4.0.0"
     then-fs "^2.0.0"
 
-snyk@^1.266.0:
-  version "1.266.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.266.0.tgz#6e2d97753ab515e225929af22c57507db388d582"
-  integrity sha512-JWrbaeC1/omAfE1/kYXKGb5Xzc7hOiKAt7wla+PlTDMs+nAMPvqNd8Bx2GVcCUl2KfoimzCmf2MsoChvvHXV3g==
+snyk@^1.269.0:
+  version "1.269.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.269.0.tgz#a354d609e426873846cc7f9af5bce8576ff352b6"
+  integrity sha512-VIJc2/S2WKFNvB6Ii9cblJDK1u/NAs26OC/xmOafX29Bg5qN4ugg7oVl6VfiYfg2dTy/ssv3cF0XUdW5sQxdZw==
   dependencies:
     "@snyk/cli-interface" "2.3.0"
     "@snyk/dep-graph" "1.13.1"
@@ -8541,7 +8541,7 @@ snyk@^1.266.0:
     snyk-python-plugin "1.16.0"
     snyk-resolve "1.0.1"
     snyk-resolve-deps "4.4.0"
-    snyk-sbt-plugin "2.9.2"
+    snyk-sbt-plugin "2.11.0"
     snyk-tree "^1.0.0"
     snyk-try-require "1.3.1"
     source-map-support "^0.5.11"

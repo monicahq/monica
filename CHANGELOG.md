@@ -4,6 +4,7 @@
 
 * Associate a photo to a gift
 * Save contact tags in vCard 'CATEGORIES' field
+* Upload master docker image to GitHub packages
 
 ### Enhancements:
 
@@ -26,6 +27,7 @@
 
 ### Fixes:
 
+* Fix contact list cells link
 * Fix birthdate selection UX
 * Fix OAuth login process with WebAuthn activated
 * Fix journal entry edit
