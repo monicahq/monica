@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Wachtwoorden moeten minstens zes tekens bevatten en overeenkomen.',
     'reset' => 'Je wachtwoord is gereset!',
     'sent' => 'We hebben een e-mail verstuurd met instructies om een nieuw wachtwoord in te stellen.',
     'token' => 'Deze wachtwoord reset token is ongeldig.',
     'user' => 'Geen gebruiker bekend met het e-mailadres.',
     'changed' => 'Wachtwoord succesvol gewijzigd.',
     'invalid' => 'Het ingevoerde wachtwoord is niet correct.',
+    'throttled' => 'Wacht alsjeblieft even voor je het opnieuw probeert.',
 
 ];
