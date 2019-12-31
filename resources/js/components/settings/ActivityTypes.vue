@@ -98,15 +98,13 @@
           />
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeCategoryModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="storeCategory()">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeCategoryModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="storeCategory()">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -124,15 +122,13 @@
           />
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeUpdateCategoryModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="updateCategory()">
-            {{ $t('app.update') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeUpdateCategoryModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="updateCategory()">
+          {{ $t('app.update') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -150,15 +146,13 @@
           />
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeCreateTypeModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="storeType()">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeCreateTypeModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="storeType()">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -176,15 +170,13 @@
           />
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeUpdateTypeModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="updateType()">
-            {{ $t('app.update') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeUpdateTypeModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="updateType()">
+          {{ $t('app.update') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -204,15 +196,13 @@
           </p>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeDeleteCategoryModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="destroyCategory()">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeDeleteCategoryModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="destroyCategory()">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -232,15 +222,13 @@
           </p>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeDeleteTypeModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="destroyType()">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeDeleteTypeModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="destroyType()">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
   </div>

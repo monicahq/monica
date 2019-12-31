@@ -14,7 +14,8 @@ class DestroyMessageTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_message()
+    /** @test */
+    public function it_destroys_a_message()
     {
         $conversation = factory(Conversation::class)->create([]);
 
@@ -44,7 +45,8 @@ class DestroyMessageTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [
             'conversation_id' => 2,
@@ -56,7 +58,8 @@ class DestroyMessageTest extends TestCase
         app(DestroyMessage::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_message_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_message_doesnt_exist()
     {
         $conversation = factory(Conversation::class)->create([]);
         $message = factory(Message::class)->create([]);

@@ -13,7 +13,8 @@ class GenerateDefaultAvatarTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_generates_a_default_avatar()
+    /** @test */
+    public function it_generates_a_default_avatar()
     {
         $contact = factory(Contact::class)->create([
             'default_avatar_color' => '#000',
@@ -31,7 +32,8 @@ class GenerateDefaultAvatarTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [];
 
@@ -39,7 +41,8 @@ class GenerateDefaultAvatarTest extends TestCase
         app(GenerateDefaultAvatar::class)->execute($request);
     }
 
-    public function test_it_replaces_existing_default_avatar()
+    /** @test */
+    public function it_replaces_existing_default_avatar()
     {
         $file = UploadedFile::fake()->image('image.png');
 

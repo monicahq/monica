@@ -16,7 +16,8 @@ class UpdateRelationshipTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_relationship()
+    /** @test */
+    public function it_updates_a_relationship()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -72,7 +73,8 @@ class UpdateRelationshipTest extends TestCase
         ]);
     }
 
-    public function test_it_updates_a_partial_relationship()
+    /** @test */
+    public function it_updates_a_partial_relationship()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -113,7 +115,8 @@ class UpdateRelationshipTest extends TestCase
         ]);
     }
 
-    public function test_it_throws_an_exception_if_relationship_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_relationship_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $relationship = factory(Relationship::class)->create();
@@ -132,7 +135,8 @@ class UpdateRelationshipTest extends TestCase
         app(UpdateRelationship::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_relationship_type_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_relationship_type_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $relationship = factory(Relationship::class)->create([

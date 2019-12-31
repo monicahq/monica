@@ -14,7 +14,8 @@ class UpdateActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_an_activity()
+    /** @test */
+    public function it_updates_an_activity()
     {
         $activity = factory(Activity::class)->create([]);
 
@@ -42,7 +43,8 @@ class UpdateActivityTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $activity = factory(Activity::class)->create([]);
 
@@ -58,7 +60,8 @@ class UpdateActivityTest extends TestCase
         app(UpdateActivity::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
         $activity = factory(Activity::class)->create([]);
         $account = factory(Account::class)->create([]);
