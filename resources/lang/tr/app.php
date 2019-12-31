@@ -7,7 +7,7 @@ return [
     'save' => 'Kaydet',
     'add' => 'Ekle',
     'cancel' => 'Vazgeç',
-    'delete_confirm' => 'Delete',
+    'delete_confirm' => 'Sil',
     'delete' => 'Sil',
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
@@ -22,7 +22,7 @@ return [
     'back' => 'Geri',
     'verify' => 'Doğrula',
     'new' => 'yeni',
-    'unknown' => 'I don\'t know',
+    'unknown' => 'Bilmiyorum',
     'load_more' => 'Daha fazla',
     'loading' => 'Yükleniyor...',
     'with' => 'ile',
@@ -39,8 +39,8 @@ return [
     'go_back' => 'Geri dön',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relationships with your loved ones. Free Online CRM for friends and family.',
+    'application_description' => 'Monica sevdiklerinizle, arkadaşlarınızla ve ailenizle etkileşimlerinizi yönetebileceğiniz bir araçtır.',
+    'application_og_title' => 'Sevdiklerinizle daha iyi ilişkilere sahip olun. Arkadaşlarınız ve aileniz için ücretsiz Online CRM.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Dokümantasyonu oku',
