@@ -210,7 +210,7 @@ export default {
         .then(response => {
           this.getNotes();
 
-          this.$closeModal();
+          this.closeModal();
 
           this.$notify({
             group: 'main',

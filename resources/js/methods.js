@@ -8,8 +8,7 @@ export default {
     axios.post('settings/updateDefaultProfileView', { name: view })
       .then(response => {
         this.global_profile_default_view = view;
-      }
-      );
+      });
   },
 
   /**
