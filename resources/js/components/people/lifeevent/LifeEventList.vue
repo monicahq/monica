@@ -532,15 +532,13 @@
           </p>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn center" href="" @click.prevent="closeDeleteModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a :cy-name="'delete-life-event-button'" class="btn btn-primary" href="" @click.prevent="destroy(lifeEventToDelete)">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn center" href="" @click.prevent="closeDeleteModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a :cy-name="'delete-life-event-button'" class="btn btn-primary" href="" @click.prevent="destroy(lifeEventToDelete)">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
