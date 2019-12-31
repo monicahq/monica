@@ -26,7 +26,7 @@
         </span>
       </p>
       <p>{{ $t('settings.recovery_help_information') }}</p>
-      <div class="relative">
+      <div slot="button">
         <span :class="[ dirltr ? 'fl' : 'fr' ]">
           <a class="btn" href="" @click.prevent="generateNewCodes">
             {{ $t('settings.recovery_generate') }}

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Account;
+namespace App\Services\Account\Settings;
 
 use App\Services\BaseService;
 use App\Models\Contact\Document;

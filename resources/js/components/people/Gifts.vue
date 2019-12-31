@@ -181,15 +181,13 @@
           {{ $t('people.gifts_delete_confirmation') }}
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeDeleteModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn" :cy-name="'modal-delete-gift-button-' + giftToTrash.id" href="" @click.prevent="trash(giftToTrash)">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeDeleteModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn" :cy-name="'modal-delete-gift-button-' + giftToTrash.id" href="" @click.prevent="trash(giftToTrash)">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
   </div>

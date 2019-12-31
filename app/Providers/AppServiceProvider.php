@@ -82,7 +82,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\Account\Company\CreateCompany::class => \App\Services\Account\Company\CreateCompany::class,
         \App\Services\Account\Company\DestroyCompany::class => \App\Services\Account\Company\DestroyCompany::class,
         \App\Services\Account\Company\UpdateCompany::class => \App\Services\Account\Company\UpdateCompany::class,
-        \App\Services\Account\DestroyAllDocuments::class => \App\Services\Account\DestroyAllDocuments::class,
+        \App\Services\Account\Settings\DestroyAllDocuments::class => \App\Services\Account\Settings\DestroyAllDocuments::class,
         \App\Services\Account\Gender\CreateGender::class => \App\Services\Account\Gender\CreateGender::class,
         \App\Services\Account\Gender\DestroyGender::class => \App\Services\Account\Gender\DestroyGender::class,
         \App\Services\Account\Gender\UpdateGender::class => \App\Services\Account\Gender\UpdateGender::class,
@@ -153,5 +153,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Services\VCard\ExportVCard::class => \App\Services\VCard\ExportVCard::class,
         \App\Services\VCard\ImportVCard::class => \App\Services\VCard\ImportVCard::class,
         \App\Services\Account\Settings\ExportAccount::class => \App\Services\Account\Settings\ExportAccount::class,
+        \App\Services\Account\Settings\ResetAccount::class => \App\Services\Account\Settings\ResetAccount::class,
+        \App\Services\Account\Settings\DestroyAccount::class => \App\Services\Account\Settings\DestroyAccount::class,
     ];
 }
