@@ -311,7 +311,7 @@ return [
 
     'api_oauth_clients' => 'Jouw OAuth clients',
     'api_oauth_clients_desc' => 'Hier kun je jouw eigen OAuth clients registreren.',
-    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more information.',
+    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more explanations.',
     'api_oauth_title' => 'OAuth Clients',
     'api_oauth_create_new' => 'Nieuwe client aanmaken',
     'api_oauth_edit' => 'Client bewerken',
@@ -325,7 +325,7 @@ return [
     'api_oauth_redirecturl_help' => 'De authorisatie-callback-url van jouw applicatie.',
 
     'api_authorized_clients' => 'Lijst van geautoriseerde clients',
-    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application data. You can revoke this authorization at anytime.',
+    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application datas. You can revoke this authorization at anytime.',
     'api_authorized_clients_title' => 'Geautoriseerde applicaties',
     'api_authorized_clients_none' => 'Er is nog geen geautoriseerde client.',
     'api_authorized_clients_name' => 'Naam',
