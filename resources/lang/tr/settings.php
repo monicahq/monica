@@ -311,7 +311,7 @@ return [
 
     'api_oauth_clients' => 'OAuth istemcileriniz',
     'api_oauth_clients_desc' => 'Bu bölüm kendi OAuth istemcilerinizi kaydetmenize izin verir.',
-    'api_oauth_clients_desc2' => 'Yeni bir belirteç istemek için bu istemci kimliğini kullanın ve yetkilendirme kodlarını erişim belirteçlerine çevirin. Daha fazla bilgi için <a href="{url}">Laravel Passport dokümantasyonuna</a> bakın.',
+    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more explanations.',
     'api_oauth_title' => 'OAuth İstemcileri',
     'api_oauth_create_new' => 'Yeni İstemci Oluştur',
     'api_oauth_edit' => 'İstemci Düzenle',
@@ -325,7 +325,7 @@ return [
     'api_oauth_redirecturl_help' => 'Uygulamanızın yetkilendirme geri çağırma URL\'si.',
 
     'api_authorized_clients' => 'Yetkilendirilmiş istemcilerin listesi',
-    'api_authorized_clients_desc' => 'Bu bölüm, uygulama verilerinize erişmek için yetkilendirdiğiniz tüm istemcileri listeler. Bu yetkilendirmeyi istediğiniz zaman iptal edebilirsiniz.',
+    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application datas. You can revoke this authorization at anytime.',
     'api_authorized_clients_title' => 'Yetkilendirilmiş Uygulamalar',
     'api_authorized_clients_none' => 'Henüz yetkilendirilmiş bir istemci yok.',
     'api_authorized_clients_name' => 'Ad',
