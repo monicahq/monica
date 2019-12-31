@@ -13,12 +13,12 @@ return [
     |
     */
 
-    'password' => 'Passwörter müssen aus mindestens 6 Zeichen bestehen und übereinstimmen.',
     'reset' => 'Dein Passwort wurde zurückgesetzt!',
     'sent' => 'Wenn die E-Mail-Adresse, die du eingegeben hast mit der in unserem System übereinstimmt, hast du eine E-Mail mit Reset-Link bekommen.',
     'token' => 'Der Passwort-Reset-Token ist ungültig.',
     'user' => 'Wenn die E-Mail-Adresse, die du eingegeben hast mit der in unserem System übereinstimmt, hast du eine E-Mail mit Reset-Link bekommen.',
     'changed' => 'Das Kennwort wurde erfolgreich geändert.',
     'invalid' => 'Das eingegebene Passwort stimmt nicht.',
+    'throttled' => 'Please wait before retrying.',
 
 ];
