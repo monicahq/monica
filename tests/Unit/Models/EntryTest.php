@@ -10,7 +10,8 @@ class EntryTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_get_info_for_journal_entry()
+    /** @test */
+    public function get_info_for_journal_entry()
     {
         $entry = factory(Entry::class)->make([
             'id' => 1,

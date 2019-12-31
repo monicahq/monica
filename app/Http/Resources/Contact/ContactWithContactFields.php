@@ -29,7 +29,7 @@ class ContactWithContactFields extends Contact
             'is_active' => (bool) $this->is_active,
             'is_dead' => (bool) $this->is_dead,
             'is_me' => $this->isMe(),
-            'last_called' => $this->when(! $this->is_partial, $this->getLastCalled()),
+            'last_called' => $this->when(! $this->is_partial, $this->last_talked_to),
             'last_activity_together' => $this->when(! $this->is_partial, $this->getLastActivityDate()),
             'stay_in_touch_frequency' => $this->when(! $this->is_partial, $this->stay_in_touch_frequency),
             'stay_in_touch_trigger_date' => $this->when(! $this->is_partial, DateHelper::getTimestamp($this->stay_in_touch_trigger_date)),

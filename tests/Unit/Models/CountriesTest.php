@@ -12,7 +12,8 @@ class CountriesTest extends FeatureTestCase
 {
     use DatabaseTransactions;
 
-    public function test_all_countries_exist()
+    /** @test */
+    public function all_countries_exist()
     {
         try {
             Schema::create('countries', function ($table) {

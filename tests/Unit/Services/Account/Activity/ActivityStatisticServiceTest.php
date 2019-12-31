@@ -16,7 +16,8 @@ class ActivityStatisticServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_gets_a_list_of_activities_since_a_given_number_of_months()
+    /** @test */
+    public function it_gets_a_list_of_activities_since_a_given_number_of_months()
     {
         $service = new ActivityStatisticService;
         $contact = factory(Contact::class)->create();
@@ -40,7 +41,8 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_an_empty_list_of_activities()
+    /** @test */
+    public function it_gets_an_empty_list_of_activities()
     {
         $service = new ActivityStatisticService;
         $contact = factory(Contact::class)->create();
@@ -59,7 +61,8 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_a_list_of_unique_activity_types()
+    /** @test */
+    public function it_gets_a_list_of_unique_activity_types()
     {
         $service = new ActivityStatisticService;
         $account = factory(Account::class)->create();
@@ -122,7 +125,8 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_breakdown_of_activities_per_year()
+    /** @test */
+    public function it_gets_the_breakdown_of_activities_per_year()
     {
         $service = new ActivityStatisticService;
         $account = factory(Account::class)->create();
@@ -183,7 +187,8 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_a_list_of_activities_per_month_for_given_year()
+    /** @test */
+    public function it_gets_a_list_of_activities_per_month_for_given_year()
     {
         $service = new ActivityStatisticService;
         $account = factory(Account::class)->create();

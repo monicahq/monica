@@ -19,7 +19,8 @@ class NotifyUserAboutReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_sends_a_reminder_to_a_user()
+    /** @test */
+    public function it_sends_a_reminder_to_a_user()
     {
         Notification::fake();
 
@@ -64,7 +65,8 @@ class NotifyUserAboutReminderTest extends TestCase
         );
     }
 
-    public function test_it_sends_a_notification_to_a_user()
+    /** @test */
+    public function it_sends_a_notification_to_a_user()
     {
         Notification::fake();
 
@@ -109,7 +111,8 @@ class NotifyUserAboutReminderTest extends TestCase
         );
     }
 
-    public function test_it_doesnt_notify_a_user_if_he_is_on_the_free_plan()
+    /** @test */
+    public function it_doesnt_notify_a_user_if_he_is_on_the_free_plan()
     {
         Notification::fake();
 
@@ -145,7 +148,8 @@ class NotifyUserAboutReminderTest extends TestCase
         );
     }
 
-    public function test_it_marks_the_one_time_reminder_has_inactive_once_it_is_sent()
+    /** @test */
+    public function it_marks_the_one_time_reminder_has_inactive_once_it_is_sent()
     {
         Notification::fake();
 
@@ -184,7 +188,8 @@ class NotifyUserAboutReminderTest extends TestCase
         ]);
     }
 
-    public function test_it_reschedule_a_recurring_reminder_once_it_is_sent()
+    /** @test */
+    public function it_reschedule_a_recurring_reminder_once_it_is_sent()
     {
         Notification::fake();
 
@@ -229,7 +234,8 @@ class NotifyUserAboutReminderTest extends TestCase
         ]);
     }
 
-    public function test_it_creates_a_reminder_sent_object()
+    /** @test */
+    public function it_creates_a_reminder_sent_object()
     {
         Notification::fake();
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));

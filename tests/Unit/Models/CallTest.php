@@ -10,14 +10,16 @@ class CallTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_call_note_returns_null_if_undefined()
+    /** @test */
+    public function call_note_returns_null_if_undefined()
     {
         $call = new Call;
 
         $this->assertNull($call->getParsedContentAttribute());
     }
 
-    public function test_call_note_returns_html_if_defined()
+    /** @test */
+    public function call_note_returns_html_if_defined()
     {
         $call = new Call;
         $call->content = '### test';

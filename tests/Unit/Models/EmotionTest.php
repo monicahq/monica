@@ -12,7 +12,8 @@ class EmotionTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_emotion_belongs_to_a_primary_emotion()
+    /** @test */
+    public function emotion_belongs_to_a_primary_emotion()
     {
         $emotion = factory(Emotion::class)->create([]);
 
@@ -21,14 +22,16 @@ class EmotionTest extends TestCase
         $this->assertTrue($emotion->secondary->exists());
     }
 
-    public function test_secondary_emotion_belongs_to_a_primary_emotion()
+    /** @test */
+    public function secondary_emotion_belongs_to_a_primary_emotion()
     {
         $secondaryEmotion = factory(SecondaryEmotion::class)->create([]);
 
         $this->assertTrue($secondaryEmotion->primary->exists());
     }
 
-    public function test_a_primary_emotion_has_multiple_emotions()
+    /** @test */
+    public function a_primary_emotion_has_multiple_emotions()
     {
         $primaryEmotion = factory(PrimaryEmotion::class)->create([]);
         $secondaryEmotion = factory(SecondaryEmotion::class)->create([

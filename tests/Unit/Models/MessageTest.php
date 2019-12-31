@@ -13,7 +13,8 @@ class MessageTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $message = factory(Message::class)->create([
@@ -23,7 +24,8 @@ class MessageTest extends TestCase
         $this->assertTrue($message->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $contact = factory(Contact::class)->create();
         $message = factory(Message::class)->create([
@@ -33,7 +35,8 @@ class MessageTest extends TestCase
         $this->assertTrue($message->contact()->exists());
     }
 
-    public function test_it_belongs_to_a_conversation()
+    /** @test */
+    public function it_belongs_to_a_conversation()
     {
         $conversation = factory(Conversation::class)->create();
         $message = factory(Message::class)->create([
@@ -43,7 +46,8 @@ class MessageTest extends TestCase
         $this->assertTrue($message->conversation()->exists());
     }
 
-    public function test_it_gets_the_content_attribute()
+    /** @test */
+    public function it_gets_the_content_attribute()
     {
         $message = factory(Message::class)->create([
             'content' => 'This is a text',

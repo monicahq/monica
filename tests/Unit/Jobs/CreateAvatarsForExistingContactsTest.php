@@ -14,7 +14,8 @@ class CreateAvatarsForExistingContactsTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_create_jobs_for_avatars_migration()
+    /** @test */
+    public function it_creates_jobs_for_avatars_migration()
     {
         Queue::fake();
 
