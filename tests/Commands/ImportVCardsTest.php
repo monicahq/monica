@@ -13,7 +13,8 @@ class ImportVCardsTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function testItValidatesUser()
+    /** @test */
+    public function it_validates_user()
     {
         $this->withoutMockingConsoleOutput();
 
@@ -30,7 +31,8 @@ class ImportVCardsTest extends TestCase
         $this->assertEquals(0, $exitCode);
     }
 
-    public function testItValidatesFile()
+    /** @test */
+    public function it_validates_file()
     {
         $this->withoutMockingConsoleOutput();
 
@@ -47,7 +49,8 @@ class ImportVCardsTest extends TestCase
         $this->assertEquals(0, $exitCode);
     }
 
-    public function testItImportsContacts()
+    /** @test */
+    public function it_imports_contacts()
     {
         $this->withoutMockingConsoleOutput();
         Storage::fake('public');

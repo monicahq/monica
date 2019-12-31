@@ -33,7 +33,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_gets_a_list_of_addresses()
+    /** @test */
+    public function it_gets_a_list_of_addresses()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -61,7 +62,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_applies_the_limit_parameter_in_search()
+    /** @test */
+    public function it_applies_the_limit_parameter_in_search()
     {
         $user = $this->signin();
 
@@ -94,7 +96,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_addresses_for_a_specific_contact()
+    /** @test */
+    public function it_gets_addresses_for_a_specific_contact()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -114,7 +117,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_calling_addresses_gets_an_error_if_contact_doesnt_exist()
+    /** @test */
+    public function calling_addresses_gets_an_error_if_contact_doesnt_exist()
     {
         $user = $this->signin();
 
@@ -123,7 +127,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_gets_a_specific_address()
+    /** @test */
+    public function it_gets_a_specific_address()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -148,7 +153,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_creates_an_address()
+    /** @test */
+    public function it_creates_an_address()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -186,7 +192,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         $this->assertGreaterThan(0, $addressId);
     }
 
-    public function test_create_addresses_gets_an_error_if_fields_are_missing()
+    /** @test */
+    public function create_addresses_gets_an_error_if_fields_are_missing()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -199,7 +206,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_create_addresses_gets_an_error_if_contact_is_not_linked_to_user()
+    /** @test */
+    public function create_addresses_gets_an_error_if_contact_is_not_linked_to_user()
     {
         $user = $this->signin();
 
@@ -219,7 +227,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_updates_an_address()
+    /** @test */
+    public function it_updates_an_address()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -259,7 +268,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_updating_address_generates_an_error()
+    /** @test */
+    public function updating_address_generates_an_error()
     {
         $user = $this->signin();
         $address = factory(Address::class)->create([
@@ -273,7 +283,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_cant_update_an_address_if_account_is_not_linked_to_address()
+    /** @test */
+    public function it_cant_update_an_address_if_account_is_not_linked_to_address()
     {
         $user = $this->signin();
 
@@ -289,7 +300,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_deletes_an_address()
+    /** @test */
+    public function it_deletes_an_address()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create(['account_id' => $user->account->id]);
@@ -314,7 +326,8 @@ class ApiAdressesControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_address_delete_error()
+    /** @test */
+    public function address_delete_error()
     {
         $user = $this->signin();
 

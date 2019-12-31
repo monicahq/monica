@@ -10,7 +10,8 @@ class CalculateStatisticsTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_the_command_runs_well()
+    /** @test */
+    public function the_command_runs_well()
     {
         $runsWell = true;
 

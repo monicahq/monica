@@ -17,7 +17,8 @@ class CreateActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_activity_and_creates_an_entry_in_the_journal()
+    /** @test */
+    public function it_stores_a_activity_and_creates_an_entry_in_the_journal()
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([
@@ -54,7 +55,8 @@ class CreateActivityTest extends TestCase
         ]);
     }
 
-    public function test_it_adds_emotions()
+    /** @test */
+    public function it_adds_emotions()
     {
         $contact = factory(Contact::class)->create([]);
         $emotion = factory(Emotion::class)->create([]);
@@ -92,7 +94,8 @@ class CreateActivityTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $account = factory(Account::class)->create([]);
 
@@ -104,7 +107,8 @@ class CreateActivityTest extends TestCase
         app(CreateActivity::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_activity_type_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_activity_type_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([]);

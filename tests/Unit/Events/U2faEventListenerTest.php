@@ -22,7 +22,8 @@ class U2faEventListenerTest extends FeatureTestCase
         $this->startSession();
     }
 
-    public function test_it_listen_recovery_event()
+    /** @test */
+    public function it_listens_recovery_event()
     {
         $user = $this->signIn();
         factory(U2fKey::class)->create([
@@ -34,7 +35,8 @@ class U2faEventListenerTest extends FeatureTestCase
         $this->assertTrue($this->app['session']->get('u2f_auth'));
     }
 
-    public function test_it_listen_google2fa_event()
+    /** @test */
+    public function it_listens_google2fa_event()
     {
         $user = $this->signIn();
         factory(U2fKey::class)->create([
@@ -46,7 +48,8 @@ class U2faEventListenerTest extends FeatureTestCase
         $this->assertTrue($this->app['session']->get('u2f_auth'));
     }
 
-    public function test_it_listen_login_remember_event()
+    /** @test */
+    public function it_listens_login_remember_event()
     {
         $user = $this->signIn();
         factory(U2fKey::class)->create([

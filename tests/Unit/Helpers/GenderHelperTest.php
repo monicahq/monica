@@ -7,7 +7,8 @@ use App\Helpers\GendersHelper;
 
 class GenderHelperTest extends FeatureTestCase
 {
-    public function test_getting_gender_input()
+    /** @test */
+    public function it_gets_all_the_gender_inputs()
     {
         $this->signIn();
 

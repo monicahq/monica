@@ -12,7 +12,8 @@ class TaskTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -24,7 +25,8 @@ class TaskTest extends TestCase
         $this->assertTrue($task->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -36,7 +38,8 @@ class TaskTest extends TestCase
         $this->assertTrue($task->contact()->exists());
     }
 
-    public function test_it_filters_by_completed_items()
+    /** @test */
+    public function it_filters_by_completed_items()
     {
         $task = factory(Task::class)->create(['completed' => true]);
         $task = factory(Task::class)->create(['completed' => true]);
@@ -49,7 +52,8 @@ class TaskTest extends TestCase
         );
     }
 
-    public function test_it_filters_by_incomplete_items()
+    /** @test */
+    public function it_filters_by_incomplete_items()
     {
         $task = factory(Task::class)->create(['completed' => false]);
         $task = factory(Task::class)->create(['completed' => true]);
