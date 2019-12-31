@@ -127,15 +127,13 @@
       </form>
 
       <!-- Modal Actions -->
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.close') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="store">
-            {{ $t('app.create') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="store">
+          {{ $t('app.create') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -187,15 +185,13 @@
       </form>
 
       <!-- Modal Actions -->
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.close') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="update">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="update">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
