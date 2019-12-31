@@ -7,7 +7,7 @@ return [
     'save' => 'Kaydet',
     'add' => 'Ekle',
     'cancel' => 'Vazgeç',
-    'delete_confirm' => 'Emin misiniz?',
+    'delete_confirm' => 'Delete',
     'delete' => 'Sil',
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
@@ -22,7 +22,7 @@ return [
     'back' => 'Geri',
     'verify' => 'Doğrula',
     'new' => 'yeni',
-    'unknown' => 'Bilmiyorum',
+    'unknown' => 'I don\'t know',
     'load_more' => 'Daha fazla',
     'loading' => 'Yükleniyor...',
     'with' => 'ile',
@@ -39,14 +39,14 @@ return [
     'go_back' => 'Geri dön',
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
-    'application_description' => 'Monica sevdiklerinizle, arkadaşlarınızla ve ailenizle etkileşimlerinizi yönetebileceğiniz bir araçtır.',
-    'application_og_title' => 'Sevdiklerinizle daha iyi ilişkilere sahip olun. Arkadaşlarınız ve aileniz için ücretsiz Online CRM.',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
+    'application_og_title' => 'Have better relationships with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Metninizi güzel bir şekilde biçimlendirmek mi istiyorsunuz? Kalın, italik, listeler ve daha fazlasını eklemek için Markdown desteğimiz bulunmaktadır.',
+    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Dokümantasyonu oku',
 
     'header_settings_link' => 'Ayarlar',
-    'header_logout_link' => 'Çıkış yap',
+    'header_logout_link' => 'Log out',
     'header_changelog_link' => 'Ürün değişiklikleri',
 
     'main_nav_cta' => 'Kişi ekle',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'Rahatsız ettiğimiz için üzgünüz.',
     'compliance_desc' => '<a href=":urlterm" hreflang=":hreflang">Kullanım Koşullarımızı</a> ve <a href=":url" hreflang=":hreflang">Gizlilik Politikamızı</a> değiştirdik. Yasalara göre, sizden hesabınızı kullanmaya devam edebilmeniz için onları gözden geçirmenizi ve kabul etmenizi istemek zorundayız.',
-    'compliance_desc_end' => 'Verileriniz veya hesabınızla ilgili kötü bir şey yapmıyoruz ve asla yapmayacağız.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and never will do.',
     'compliance_terms' => 'Yeni şartları ve gizlilik politikasını kabul et',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'Aile İlişkileri',
     'relationship_type_group_friend' => 'Arkadaşlık İlişkileri',
     'relationship_type_group_work' => 'İş İlişkileri',
-    'relationship_type_group_other' => 'Diğer tür ilişkiler',
+    'relationship_type_group_other' => 'Other kinds of relationships',
 
     'relationship_type_partner' => 'sevgili',
     'relationship_type_partner_female' => 'sevgili',
@@ -241,27 +241,27 @@ return [
     'relationship_type_boss' => 'patron',
     'relationship_type_boss_female' => 'patron',
     'relationship_type_boss_with_name' => ':name kişisinin patronu',
-    'relationship_type_boss_female_with_name' => ':name kişisinin patronu',
+    'relationship_type_boss_female_with_name' => ':name’s manager',
 
-    'relationship_type_subordinate' => 'altında çalışan',
-    'relationship_type_subordinate_female' => 'altında çalışan',
-    'relationship_type_subordinate_with_name' => ':name kişisinin altında çalışan',
-    'relationship_type_subordinate_female_with_name' => ':name kişisinin altında çalışan',
+    'relationship_type_subordinate' => 'employee',
+    'relationship_type_subordinate_female' => 'employee',
+    'relationship_type_subordinate_with_name' => ':name’s employee',
+    'relationship_type_subordinate_female_with_name' => ':name’s employee',
 
     'relationship_type_mentor' => 'danışman',
     'relationship_type_mentor_female' => 'danışman',
     'relationship_type_mentor_with_name' => ':name kişisinin danışmanı',
     'relationship_type_mentor_female_with_name' => ':name kişisinin danışmanı',
 
-    'relationship_type_protege' => 'koruduğu kişi',
-    'relationship_type_protege_female' => 'koruduğu kişi',
-    'relationship_type_protege_with_name' => ':name kişisinin koruduğu kişi',
-    'relationship_type_protege_female_with_name' => ':name kişisinin koruduğu kişi',
+    'relationship_type_protege' => 'protégé',
+    'relationship_type_protege_female' => 'protégée',
+    'relationship_type_protege_with_name' => ':name’s protégé',
+    'relationship_type_protege_female_with_name' => ':name’s protégée',
 
-    'relationship_type_ex_husband' => 'eski koca',
-    'relationship_type_ex_husband_female' => 'eski karı',
-    'relationship_type_ex_husband_with_name' => ':name kişisinin eski kocası',
-    'relationship_type_ex_husband_female_with_name' => ':name kişisinin eski karısı',
+    'relationship_type_ex_husband' => 'ex-husband',
+    'relationship_type_ex_husband_female' => 'ex-wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
 
     // emotions
     'emotion_primary_love' => 'Aşk',
