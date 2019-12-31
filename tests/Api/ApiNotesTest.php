@@ -29,7 +29,8 @@ class ApiNotesTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_notes_get_all()
+    /** @test */
+    public function it_gets_all_the_notes()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -63,7 +64,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_contact_all()
+    /** @test */
+    public function it_gets_all_the_notes_of_a_given_contact()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -97,7 +99,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_contact_all_error()
+    /** @test */
+    public function it_cant_get_notes_from_a_contact_with_invalid_id()
     {
         $user = $this->signin();
 
@@ -106,7 +109,8 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_get_one()
+    /** @test */
+    public function it_gets_one_note()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -137,7 +141,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_get_one_error()
+    /** @test */
+    public function it_gets_a_note_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -146,7 +151,8 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_create()
+    /** @test */
+    public function it_creates_a_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -181,7 +187,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_favorite()
+    /** @test */
+    public function it_creates_a_note_and_marks_as_favorite()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
@@ -220,7 +227,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_error()
+    /** @test */
+    public function it_cant_create_a_note_with_missing_parameters()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -236,7 +244,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_create_error_bad_account()
+    /** @test */
+    public function it_cant_create_a_note_with_an_invalid_account()
     {
         $user = $this->signin();
 
@@ -254,7 +263,8 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_update()
+    /** @test */
+    public function it_updates_a_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -294,7 +304,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_update_favorite()
+    /** @test */
+    public function it_updates_a_note_and_marks_it_as_favorite()
     {
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 7, 0, 0));
 
@@ -338,7 +349,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_update_error()
+    /** @test */
+    public function it_cant_update_a_note_with_missing_parameters()
     {
         $user = $this->signin();
         $note = factory(Note::class)->create([
@@ -354,7 +366,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_update_error_bad_account()
+    /** @test */
+    public function it_cant_update_a_note_with_an_invalid_account()
     {
         $user = $this->signin();
 
@@ -376,7 +389,8 @@ class ApiNotesTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_notes_delete()
+    /** @test */
+    public function it_deletes_a_note()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -402,7 +416,8 @@ class ApiNotesTest extends ApiTestCase
         ]);
     }
 
-    public function test_notes_delete_error()
+    /** @test */
+    public function it_cant_delete_a_note_with_an_invalid_id()
     {
         $user = $this->signin();
 

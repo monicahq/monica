@@ -81,11 +81,11 @@ class ApiPlaceControllerTest extends ApiTestCase
 
         $response = $this->json('get', '/api/places/'.$place->id);
 
-        $response->assertstatus(200);
-        $response->assertjsonstructure([
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
             'data' => $this->jsonPlace,
         ]);
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'place',
             'id' => $place->id,
         ]);
@@ -97,7 +97,7 @@ class ApiPlaceControllerTest extends ApiTestCase
 
         $response = $this->json('get', '/api/places/0');
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
     public function test_it_create_a_place()
@@ -108,19 +108,19 @@ class ApiPlaceControllerTest extends ApiTestCase
             'city' => 'New York',
         ]);
 
-        $response->assertstatus(201);
-        $response->assertjsonstructure([
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
             'data' => $this->jsonPlace,
         ]);
 
         $placeId = $response->json('data.id');
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'place',
             'id' => $placeId,
         ]);
 
-        $this->assertdatabasehas('places', [
+        $this->assertDatabaseHas('places', [
             'account_id' => $user->account->id,
             'id' => $placeId,
             'city' => 'New York',
@@ -140,17 +140,17 @@ class ApiPlaceControllerTest extends ApiTestCase
             'city' => 'New York',
         ]);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
-        $response->assertjsonstructure([
+        $response->assertJsonStructure([
             'data' => $this->jsonPlace,
         ]);
 
         $placeId = $response->json('data.id');
 
-        $this->assertequals($place->id, $placeId);
+        $this->assertEquals($place->id, $placeId);
 
-        $response->assertjsonfragment([
+        $response->assertJsonFragment([
             'object' => 'place',
             'id' => $placeId,
         ]);
@@ -176,7 +176,7 @@ class ApiPlaceControllerTest extends ApiTestCase
             'city' => 'New York',
         ]);
 
-        $this->expectnotfound($response);
+        $this->expectNotFound($response);
     }
 
     public function test_it_deletes_a_place()
@@ -189,7 +189,7 @@ class ApiPlaceControllerTest extends ApiTestCase
 
         $response = $this->json('delete', '/api/places/'.$place->id);
 
-        $response->assertstatus(200);
+        $response->assertStatus(200);
 
         $this->assertdatabasemissing('places', [
             'account_id' => $user->account->id,

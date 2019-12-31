@@ -15,7 +15,8 @@ class AttachContactToActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_attaches_contacts()
+    /** @test */
+    public function it_attaches_contacts()
     {
         // first it attaches 3 contacts
         $activity = factory(Activity::class)->create([]);
@@ -88,7 +89,8 @@ class AttachContactToActivityTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $activity = factory(Activity::class)->create([]);
         $contactA = factory(Contact::class)->create([
@@ -104,7 +106,8 @@ class AttachContactToActivityTest extends TestCase
         app(AttachContactToActivity::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_contact_is_not_linked_to_account()
     {
         $activity = factory(Activity::class)->create([]);
         $account = factory(Account::class)->create([]);

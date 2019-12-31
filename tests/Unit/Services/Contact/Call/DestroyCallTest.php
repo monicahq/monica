@@ -14,7 +14,8 @@ class DestroyCallTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_call()
+    /** @test */
+    public function it_destroys_a_call()
     {
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
@@ -38,7 +39,8 @@ class DestroyCallTest extends TestCase
         ]);
     }
 
-    public function test_it_removes_emotions()
+    /** @test */
+    public function it_removes_emotions()
     {
         $contact = factory(Contact::class)->create([]);
         $call = factory(Call::class)->create([
@@ -69,7 +71,8 @@ class DestroyCallTest extends TestCase
         ]);
     }
 
-    public function test_it_updates_the_last_talked_to_information()
+    /** @test */
+    public function it_updates_the_last_talked_to_information()
     {
         $contact = factory(Contact::class)->create([
             'last_talked_to' => '2008-01-01',
@@ -100,7 +103,8 @@ class DestroyCallTest extends TestCase
         ]);
     }
 
-    public function test_it_doesnt_update_the_last_talked_to_information()
+    /** @test */
+    public function it_doesnt_update_the_last_talked_to_information()
     {
         $contact = factory(Contact::class)->create([
             'last_talked_to' => '2008-01-01',

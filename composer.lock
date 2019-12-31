@@ -10933,16 +10933,16 @@
         },
         {
             "name": "filp/whoops",
-            "version": "2.6.0",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filp/whoops.git",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508"
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filp/whoops/zipball/ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
-                "reference": "ecbc8f3ed2cafca3cfca3d5febaae5a9d2899508",
+                "url": "https://api.github.com/repos/filp/whoops/zipball/4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
+                "reference": "4c97f814aa2f0dd4d5bedc89181c10ef12c004c5",
                 "shasum": ""
             },
             "require": {
@@ -10961,7 +10961,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.5-dev"
+                    "dev-master": "2.6-dev"
                 }
             },
             "autoload": {
@@ -10990,7 +10990,7 @@
                 "throwable",
                 "whoops"
             ],
-            "time": "2019-12-25T10:00:00+00:00"
+            "time": "2019-12-29T10:00:00+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -11208,16 +11208,16 @@
         },
         {
             "name": "laravel/dusk",
-            "version": "v5.7.0",
+            "version": "v5.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/dusk.git",
-                "reference": "9881d5c9aa7435602899b8e51843c6ec9f3d6cc5"
+                "reference": "5a160ed9ca39dcde910d971733fa750a5eb1d329"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/dusk/zipball/9881d5c9aa7435602899b8e51843c6ec9f3d6cc5",
-                "reference": "9881d5c9aa7435602899b8e51843c6ec9f3d6cc5",
+                "url": "https://api.github.com/repos/laravel/dusk/zipball/5a160ed9ca39dcde910d971733fa750a5eb1d329",
+                "reference": "5a160ed9ca39dcde910d971733fa750a5eb1d329",
                 "shasum": ""
             },
             "require": {
@@ -11272,7 +11272,7 @@
                 "testing",
                 "webdriver"
             ],
-            "time": "2019-12-17T17:19:21+00:00"
+            "time": "2019-12-30T21:45:39+00:00"
         },
         {
             "name": "matthiasnoback/live-code-coverage",

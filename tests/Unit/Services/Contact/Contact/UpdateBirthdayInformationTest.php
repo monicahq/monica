@@ -13,7 +13,8 @@ class UpdateBirthdayInformationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_deletes_all_birthday_information()
+    /** @test */
+    public function it_deletes_all_birthday_information()
     {
         // to delete birthday information, we need first to update the contact
         // with its birthday info, then update it again by indicating that
@@ -64,7 +65,8 @@ class UpdateBirthdayInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_sets_a_date_if_age_is_provided()
+    /** @test */
+    public function it_sets_a_date_if_age_is_provided()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -93,7 +95,8 @@ class UpdateBirthdayInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_sets_a_complete_date()
+    /** @test */
+    public function it_sets_a_complete_date()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -126,7 +129,8 @@ class UpdateBirthdayInformationTest extends TestCase
         ]);
     }
 
-    public function test_it_sets_a_complete_date_and_sets_a_reminder()
+    /** @test */
+    public function it_sets_a_complete_date_and_sets_a_reminder()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -148,7 +152,8 @@ class UpdateBirthdayInformationTest extends TestCase
         $this->assertNotNull($contact->birthday_reminder_id);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -167,7 +172,8 @@ class UpdateBirthdayInformationTest extends TestCase
         app(UpdateBirthdayInformation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_contact_and_account_are_not_linked()
+    /** @test */
+    public function it_throws_an_exception_if_contact_and_account_are_not_linked()
     {
         $contact = factory(Contact::class)->create([]);
 

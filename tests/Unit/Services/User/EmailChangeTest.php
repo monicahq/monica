@@ -16,7 +16,8 @@ class EmailChangeTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_update_user_email()
+    /** @test */
+    public function it_updates_user_email()
     {
         NotificationFacade::fake();
         config(['monica.signup_double_optin' => false]);
@@ -46,7 +47,8 @@ class EmailChangeTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $user = factory(User::class)->create([]);
 
@@ -59,7 +61,8 @@ class EmailChangeTest extends TestCase
         app(EmailChange::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_user_is_not_linked_to_account()
+    /** @test */
+    public function it_throws_an_exception_if_user_is_not_linked_to_account()
     {
         $account = factory(Account::class)->create();
         $user = factory(User::class)->create();
@@ -75,7 +78,8 @@ class EmailChangeTest extends TestCase
         app(EmailChange::class)->execute($request);
     }
 
-    public function test_it_update_user_email_and_send_confirmation()
+    /** @test */
+    public function it_updates_user_email_and_send_confirmation()
     {
         NotificationFacade::fake();
         config(['monica.signup_double_optin' => true]);
@@ -104,7 +108,8 @@ class EmailChangeTest extends TestCase
         );
     }
 
-    public function test_it_send_confirmation_email()
+    /** @test */
+    public function it_sends_confirmation_email()
     {
         NotificationFacade::fake();
         config(['monica.signup_double_optin' => true]);

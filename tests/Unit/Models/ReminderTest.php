@@ -16,7 +16,8 @@ class ReminderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $reminder = factory(Reminder::class)->create([
@@ -26,7 +27,8 @@ class ReminderTest extends TestCase
         $this->assertTrue($reminder->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $contact = factory(Contact::class)->create([]);
         $reminder = factory(Reminder::class)->create([
@@ -36,7 +38,8 @@ class ReminderTest extends TestCase
         $this->assertTrue($reminder->contact()->exists());
     }
 
-    public function test_it_has_many_reminder_outbox()
+    /** @test */
+    public function it_has_many_reminder_outbox()
     {
         $user = factory(User::class)->create([]);
         $reminder = factory(Reminder::class)->create(['account_id' => $user->account_id]);
@@ -49,7 +52,8 @@ class ReminderTest extends TestCase
         $this->assertTrue($reminder->reminderOutboxes()->exists());
     }
 
-    public function test_it_gets_the_title_attribute()
+    /** @test */
+    public function it_gets_the_title_attribute()
     {
         $reminder = factory(Reminder::class)->create([
             'title' => 'Fake name',
@@ -61,7 +65,8 @@ class ReminderTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_description_attribute()
+    /** @test */
+    public function it_gets_the_description_attribute()
     {
         $reminder = factory(Reminder::class)->create([
             'description' => 'Fake name',
@@ -73,7 +78,8 @@ class ReminderTest extends TestCase
         );
     }
 
-    public function test_it_calculates_next_expected_date()
+    /** @test */
+    public function it_calculates_next_expected_date()
     {
         $timezone = 'UTC';
         $reminder = new Reminder;
@@ -126,7 +132,8 @@ class ReminderTest extends TestCase
         );
     }
 
-    public function test_it_schedules_a_reminder_for_one_user()
+    /** @test */
+    public function it_schedules_a_reminder_for_one_user()
     {
         Carbon::setTestNow(Carbon::create(2017, 2, 1));
         $user = factory(User::class)->create([]);
@@ -147,7 +154,8 @@ class ReminderTest extends TestCase
         ]);
     }
 
-    public function test_scheduling_a_reminder_also_schedules_notifications_for_one_user()
+    /** @test */
+    public function scheduling_a_reminder_also_schedules_notifications_for_one_user()
     {
         Carbon::setTestNow(Carbon::create(2017, 2, 1));
         $user = factory(User::class)->create([]);
@@ -191,7 +199,8 @@ class ReminderTest extends TestCase
         );
     }
 
-    public function test_it_doesnt_schedule_a_notification_if_date_is_too_close_to_present_date()
+    /** @test */
+    public function it_doesnt_schedule_a_notification_if_date_is_too_close_to_present_date()
     {
         Carbon::setTestNow(Carbon::create(2017, 2, 1));
         $user = factory(User::class)->create([]);

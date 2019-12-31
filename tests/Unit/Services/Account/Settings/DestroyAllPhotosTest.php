@@ -15,7 +15,8 @@ class DestroyAllPhotosTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_all_photos()
+    /** @test */
+    public function it_destroys_all_photos()
     {
         Storage::fake();
 
@@ -41,7 +42,8 @@ class DestroyAllPhotosTest extends TestCase
         }
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [];
 

@@ -12,7 +12,8 @@ class CronEventTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_get_command()
+    /** @test */
+    public function it_get_the_right_command()
     {
         $cron = factory(Cron::class)->create();
 
@@ -21,7 +22,8 @@ class CronEventTest extends TestCase
         $this->assertEquals($event->cron()->id, $cron->id);
     }
 
-    public function test_now_not_due()
+    /** @test */
+    public function now_not_due()
     {
         $cron = factory(Cron::class)->create();
         $event = new CronEvent($cron);
@@ -29,7 +31,8 @@ class CronEventTest extends TestCase
         $this->assertFalse($event->isDue());
     }
 
-    public function test_next_minute_is_due()
+    /** @test */
+    public function next_minute_is_due()
     {
         Carbon::setTestNow(Carbon::create(2019, 5, 1, 7, 0, 0));
 
@@ -48,7 +51,8 @@ class CronEventTest extends TestCase
         ]);
     }
 
-    public function test_hourly_cron()
+    /** @test */
+    public function hourly_cron()
     {
         Carbon::setTestNow(Carbon::create(2019, 5, 1, 7, 0, 0));
 
@@ -81,7 +85,8 @@ class CronEventTest extends TestCase
         ]);
     }
 
-    public function test_daily_cron()
+    /** @test */
+    public function daily_cron()
     {
         Carbon::setTestNow(Carbon::create(2019, 5, 1, 7, 0, 0));
 

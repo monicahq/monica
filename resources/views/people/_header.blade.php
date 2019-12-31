@@ -52,6 +52,18 @@
         @endif
       </span>
       @endif
+
+      {{-- LAST CALLED --}}
+      @if (! $contact->isMe())
+      <li class="mb2 mb0-ns dn di-ns tc {{ htmldir() == 'ltr' ? 'mr3-ns' : 'ml3-ns' }}">
+        <span class="{{ htmldir() == 'ltr' ? 'mr1' : 'ml1' }}">@include('partials.icons.header_call')</span>
+        @if (is_null($contact->last_talked_to))
+          {{ trans('people.last_called_empty') }}
+        @else
+          {{ trans('people.last_called', ['date' => \App\Helpers\DateHelper::getShortDate($contact->last_talked_to)]) }}
+        @endif
+      </li>
+      @endif
     </h1>
 
     <ul class="tc-ns mb3 {{ htmldir() == 'ltr' ? 'tl' : 'tr' }}">

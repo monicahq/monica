@@ -138,15 +138,13 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr-ns tc">
-          <a class="btn" href="" @click.prevent="closeModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="update()">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button" class="tc">
+        <a class="btn" href="" @click.prevent="closeModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="update()">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
