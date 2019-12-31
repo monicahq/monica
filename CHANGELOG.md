@@ -7,6 +7,7 @@
 
 ### Enhancements:
 
+* Improve modals bottom buttons display
 * Add foreign keys to all tables
 * Add English (UK) locale
 * Add API methods to destroy and store documents
@@ -25,6 +26,7 @@
 
 ### Fixes:
 
+* Fix contact list cells link
 * Fix birthdate selection UX
 * Fix OAuth login process with WebAuthn activated
 * Fix journal entry edit
