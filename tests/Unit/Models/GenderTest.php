@@ -12,7 +12,8 @@ class GenderTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $gender = factory(Gender::class)->create([
@@ -22,7 +23,8 @@ class GenderTest extends TestCase
         $this->assertTrue($gender->account()->exists());
     }
 
-    public function test_it_belongs_to_many_contacts()
+    /** @test */
+    public function it_belongs_to_many_contacts()
     {
         $account = factory(Account::class)->create([]);
         $gender = factory(Gender::class)->create([
@@ -34,7 +36,8 @@ class GenderTest extends TestCase
         $this->assertTrue($gender->contacts()->exists());
     }
 
-    public function test_it_gets_the_gender_name()
+    /** @test */
+    public function it_gets_the_gender_name()
     {
         $gender = new Gender;
         $gender->name = 'Woman';
@@ -45,7 +48,8 @@ class GenderTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_default_gender()
+    /** @test */
+    public function it_gets_the_default_gender()
     {
         $account = factory(Account::class)->create();
         $gender = Gender::create([

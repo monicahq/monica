@@ -29,7 +29,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_belongs_to_account()
+    /** @test */
+    public function it_belongs_to_account()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
@@ -37,21 +38,23 @@ class UserTest extends TestCase
         $this->assertTrue($user->account()->exists());
     }
 
-    public function test_it_belongs_to_many_terms()
+    /** @test */
+    public function it_belongs_to_many_terms()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $term = factory(Term::class)->create([]);
-        $user->terms()->sync($term->id);
+        $term = factory(Term::class)->create();
+        $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
 
         $user = factory(User::class)->create(['account_id' => $account->id]);
-        $term = factory(Term::class)->create([]);
-        $user->terms()->sync($term->id);
+        $term = factory(Term::class)->create();
+        $user->terms()->sync([$term->id => ['account_id' => $account->id]]);
 
         $this->assertTrue($user->terms()->exists());
     }
 
-    public function testUpdateContactViewPreference()
+    /** @test */
+    public function it_updates_the_view_preferences()
     {
         $user = factory(User::class)->create();
         $user->contacts_sort_order = 'firstnameAZ';
@@ -62,7 +65,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_name_accessor_returns_name_in_the_user_preferred_way()
+    /** @test */
+    public function name_accessor_returns_name_in_the_user_preferred_way()
     {
         $user = new User;
         $user->first_name = 'John';
@@ -82,7 +86,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_right_metric_symbol()
+    /** @test */
+    public function it_gets_the_right_metric_symbol()
     {
         $user = new User;
         $user->metric = 'fahrenheit';
@@ -99,7 +104,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_you_can_vote_if_you_havent_voted_yet_today()
+    /** @test */
+    public function you_can_vote_if_you_havent_voted_yet_today()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
@@ -107,7 +113,8 @@ class UserTest extends TestCase
         $this->assertFalse($user->hasAlreadyRatedToday());
     }
 
-    public function test_you_cant_vote_if_you_have_already_voted_today()
+    /** @test */
+    public function you_cant_vote_if_you_have_already_voted_today()
     {
         $account = factory(Account::class)->create([]);
         $user = factory(User::class)->create(['account_id' => $account->id]);
@@ -119,7 +126,8 @@ class UserTest extends TestCase
         $this->assertTrue($user->hasAlreadyRatedToday());
     }
 
-    public function test_it_gets_2fa_secret_attribute()
+    /** @test */
+    public function it_gets_2fa_secret_attribute()
     {
         $user = new User;
 
@@ -133,7 +141,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_it_gets_fluid_layout()
+    /** @test */
+    public function it_gets_fluid_layout()
     {
         $user = new User;
         $user->fluid_container = true;
@@ -151,7 +160,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_locale()
+    /** @test */
+    public function it_gets_the_locale()
     {
         $user = new User;
         $user->locale = 'en';
@@ -162,7 +172,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_user_should_not_be_reminded_because_dates_are_different()
+    /** @test */
+    public function user_should_not_be_reminded_because_dates_are_different()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1));
         $account = factory(Account::class)->create();
@@ -175,7 +186,8 @@ class UserTest extends TestCase
         $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
-    public function test_user_should_not_be_reminded_because_hours_are_different()
+    /** @test */
+    public function user_should_not_be_reminded_because_hours_are_different()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '08:00']);
@@ -188,7 +200,8 @@ class UserTest extends TestCase
         $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
-    public function test_user_should_not_be_reminded_because_timezone_is_different()
+    /** @test */
+    public function user_should_not_be_reminded_because_timezone_is_different()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 0, 0, 'Europe/Berlin'));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
@@ -201,7 +214,8 @@ class UserTest extends TestCase
         $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
-    public function test_user_should_be_reminded()
+    /** @test */
+    public function user_should_be_reminded()
     {
         Carbon::setTestNow(Carbon::create(2017, 1, 1, 7, 32, 12));
         $account = factory(Account::class)->create(['default_time_reminder_is_sent' => '07:00']);
@@ -214,7 +228,8 @@ class UserTest extends TestCase
         $this->assertTrue($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }
 
-    public function test_it_indicates_user_is_compliant()
+    /** @test */
+    public function it_indicates_user_is_compliant()
     {
         $term = factory(Term::class)->create([]);
         $account = factory(Account::class)->create([]);
@@ -225,7 +240,8 @@ class UserTest extends TestCase
         $this->assertTrue($user->isPolicyCompliant());
     }
 
-    public function test_it_indicates_user_is_not_compliant()
+    /** @test */
+    public function it_indicates_user_is_not_compliant()
     {
         $term = factory(Term::class)->create([]);
         $account = factory(Account::class)->create([]);
@@ -241,7 +257,8 @@ class UserTest extends TestCase
         $this->assertFalse($user->isPolicyCompliant());
     }
 
-    public function test_it_accepts_the_latest_terms_and_privacy()
+    /** @test */
+    public function it_accepts_the_laterms_and_privacy()
     {
         $term = factory(Term::class)->create([]);
         $account = factory(Account::class)->create([]);
@@ -258,7 +275,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_gets_status_for_a_specific_compliance()
+    /** @test */
+    public function it_gets_status_for_a_specific_compliance()
     {
         $user = factory(User::class)->create([]);
         $this->assertFalse($user->getStatusForCompliance(123));
@@ -270,7 +288,8 @@ class UserTest extends TestCase
         $this->assertArrayHasKey('signed', $array);
     }
 
-    public function test_it_gets_all_the_signed_compliances_of_the_user()
+    /** @test */
+    public function it_gets_all_the_signed_compliances_of_the_user()
     {
         $user = factory(User::class)->create([]);
         $term = factory(Term::class)->create([]);
@@ -286,7 +305,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_it_gets_name_order_for_a_form()
+    /** @test */
+    public function it_gets_name_order_for_a_form()
     {
         $user = factory(User::class)->create([]);
         $user->name_order = 'firstname_lastname';
@@ -326,7 +346,8 @@ class UserTest extends TestCase
         );
     }
 
-    public function test_it_create_default_user_en()
+    /** @test */
+    public function it_creates_default_user_en()
     {
         App::setLocale('en');
 
@@ -347,7 +368,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_fr()
+    /** @test */
+    public function it_creates_default_user_fr()
     {
         App::setLocale('fr');
 
@@ -368,7 +390,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_cs()
+    /** @test */
+    public function it_creates_default_user_cs()
     {
         App::setLocale('cs');
 
@@ -389,7 +412,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_de()
+    /** @test */
+    public function it_creates_default_user_de()
     {
         App::setLocale('de');
 
@@ -410,7 +434,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_es()
+    /** @test */
+    public function it_creates_default_user_es()
     {
         App::setLocale('es');
 
@@ -431,7 +456,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_he()
+    /** @test */
+    public function it_creates_default_user_he()
     {
         App::setLocale('he');
 
@@ -452,7 +478,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_it()
+    /** @test */
+    public function it_creates_default_user_it()
     {
         App::setLocale('it');
 
@@ -473,7 +500,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_nl()
+    /** @test */
+    public function it_creates_default_user_nl()
     {
         App::setLocale('nl');
 
@@ -494,7 +522,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_pt()
+    /** @test */
+    public function it_creates_default_user_pt()
     {
         App::setLocale('pt');
 
@@ -515,7 +544,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_ru()
+    /** @test */
+    public function it_creates_default_user_ru()
     {
         App::setLocale('ru');
 
@@ -536,7 +566,8 @@ class UserTest extends TestCase
         ]);
     }
 
-    public function test_it_create_default_user_zh()
+    /** @test */
+    public function it_creates_default_user_zh()
     {
         App::setLocale('zh');
 

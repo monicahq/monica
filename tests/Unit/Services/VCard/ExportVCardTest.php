@@ -3,6 +3,7 @@
 namespace Tests\Unit\Services\VCard;
 
 use Tests\TestCase;
+use App\Models\Contact\Tag;
 use Tests\Api\DAV\CardEtag;
 use App\Models\Contact\Gender;
 use App\Models\Account\Account;
@@ -13,6 +14,7 @@ use App\Services\VCard\ExportVCard;
 use App\Models\Contact\ContactField;
 use Sabre\VObject\PHPUnitAssertions;
 use App\Models\Contact\ContactFieldType;
+use App\Services\Contact\Tag\AssociateTag;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class ExportVCardTest extends TestCase
@@ -24,7 +26,8 @@ class ExportVCardTest extends TestCase
     /** @var int */
     const defaultPropsCount = 3;
 
-    public function test_vcard_add_names()
+    /** @test */
+    public function vcard_add_names()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -43,7 +46,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('N:Doe;John;;;', $vCard->serialize());
     }
 
-    public function test_vcard_add_nickname()
+    /** @test */
+    public function vcard_add_nickname()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -64,7 +68,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('NICKNAME:the nickname', $vCard->serialize());
     }
 
-    public function test_vcard_add_gender()
+    /** @test */
+    public function vcard_add_gender()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -82,7 +87,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('GENDER:M', $vCard->serialize());
     }
 
-    public function test_vcard_add_gender_female()
+    /** @test */
+    public function vcard_add_gender_female()
     {
         $account = factory(Account::class)->create();
         $gender = factory(Gender::class)->create([
@@ -106,7 +112,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('GENDER:F', $vCard->serialize());
     }
 
-    public function test_vcard_add_gender_unknown()
+    /** @test */
+    public function vcard_add_gender_unknown()
     {
         $account = factory(Account::class)->create();
         $gender = factory(Gender::class)->create([
@@ -129,7 +136,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('GENDER:U', $vCard->serialize());
     }
 
-    public function test_vcard_add_gender_type_null()
+    /** @test */
+    public function vcard_add_gender_type_null()
     {
         $account = factory(Account::class)->create();
         $gender = factory(Gender::class)->create([
@@ -153,7 +161,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('GENDER:O', $vCard->serialize());
     }
 
-    public function test_vcard_add_gender_type_null_male()
+    /** @test */
+    public function vcard_add_gender_type_null_male()
     {
         $account = factory(Account::class)->create();
         $gender = factory(Gender::class)->create([
@@ -177,7 +186,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('GENDER:O', $vCard->serialize());
     }
 
-    public function test_vcard_add_gender_type_null_female()
+    /** @test */
+    public function vcard_add_gender_type_null_female()
     {
         $account = factory(Account::class)->create();
         $gender = factory(Gender::class)->create([
@@ -201,7 +211,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('GENDER:F', $vCard->serialize());
     }
 
-    public function test_vcard_add_photo()
+    /** @test */
+    public function vcard_add_photo()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -220,7 +231,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('PHOTO;VALUE=URI:gravatar', $vCard->serialize());
     }
 
-    public function test_vcard_add_work_org()
+    /** @test */
+    public function vcard_add_work_org()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -239,7 +251,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('ORG:the company', $vCard->serialize());
     }
 
-    public function test_vcard_add_work_title()
+    /** @test */
+    public function vcard_add_work_title()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -258,7 +271,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('TITLE:job position', $vCard->serialize());
     }
 
-    public function test_vcard_add_work_information()
+    /** @test */
+    public function vcard_add_work_information()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create([
@@ -279,7 +293,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('TITLE:job position', $vCard->serialize());
     }
 
-    public function test_vcard_add_birthday()
+    /** @test */
+    public function vcard_add_birthday()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -296,7 +311,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('BDAY:20001005', $vCard->serialize());
     }
 
-    public function test_vcard_add_contact_fields_empty()
+    /** @test */
+    public function vcard_add_contact_fields_empty()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -311,7 +327,8 @@ class ExportVCardTest extends TestCase
         );
     }
 
-    public function test_vcard_add_contact_fields()
+    /** @test */
+    public function vcard_add_contact_fields()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -334,7 +351,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('EMAIL:john@doe.com', $vCard->serialize());
     }
 
-    public function test_vcard_add_addresses_empty()
+    /** @test */
+    public function vcard_add_addresses_empty()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -349,7 +367,8 @@ class ExportVCardTest extends TestCase
         );
     }
 
-    public function test_vcard_add_addresses()
+    /** @test */
+    public function vcard_add_addresses()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -378,7 +397,8 @@ class ExportVCardTest extends TestCase
         $this->assertStringContainsString('ADR:;;12;beverly hills;;90210;US', $vCard->serialize());
     }
 
-    public function test_vcard_prepares_an_almost_empty_vcard()
+    /** @test */
+    public function vcard_prepares_an_almost_empty_vcard()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id])->refresh();
@@ -394,7 +414,8 @@ class ExportVCardTest extends TestCase
         $this->assertVObjectEqualsVObject($this->getCard($contact), $vCard);
     }
 
-    public function test_vcard_prepares_a_complete_vcard()
+    /** @test */
+    public function vcard_prepares_a_complete_vcard()
     {
         $account = factory(Account::class)->create();
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -424,6 +445,38 @@ class ExportVCardTest extends TestCase
 
         $this->assertCount(
             self::defaultPropsCount + 9,
+            $vCard->children()
+        );
+
+        $this->assertVObjectEqualsVObject($this->getCard($contact), $vCard);
+    }
+
+    /** @test */
+    public function vcard_with_tags()
+    {
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
+
+        $tag = factory(Tag::class)->create([
+            'account_id' => $contact->account_id,
+        ]);
+
+        $request = [
+            'account_id' => $contact->account->id,
+            'contact_id' => $contact->id,
+            'name' => $tag->name,
+        ];
+
+        app(AssociateTag::class)->execute($request);
+
+        $exportVCard = app(ExportVCard::class);
+        $contact = $contact->refresh();
+        $vCard = $this->invokePrivateMethod($exportVCard, 'export', [$contact]);
+
+        $this->assertCount(
+            self::defaultPropsCount + 7,
             $vCard->children()
         );
 

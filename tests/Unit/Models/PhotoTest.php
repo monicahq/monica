@@ -12,7 +12,8 @@ class PhotoTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $photo = factory(Photo::class)->create([
@@ -21,7 +22,8 @@ class PhotoTest extends TestCase
         $this->assertTrue($photo->account()->exists());
     }
 
-    public function test_it_belongs_to_many_contacts()
+    /** @test */
+    public function it_belongs_to_many_contacts()
     {
         $contact = factory(Contact::class)->create();
         $photo = factory(Photo::class)->create();
@@ -33,7 +35,8 @@ class PhotoTest extends TestCase
         $this->assertTrue($photo->contacts()->exists());
     }
 
-    public function test_it_gets_the_url()
+    /** @test */
+    public function it_gets_the_url()
     {
         $photo = factory(Photo::class)->create();
         $this->assertEquals(

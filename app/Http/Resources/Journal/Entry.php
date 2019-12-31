@@ -20,6 +20,7 @@ class Entry extends Resource
             'object' => 'entry',
             'title' => $this->title,
             'post' => $this->post,
+            'url' => route('api.entry', $this->id),
             'account' => [
                 'id' => $this->account_id,
             ],

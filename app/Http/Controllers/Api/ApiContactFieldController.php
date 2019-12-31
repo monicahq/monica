@@ -49,7 +49,7 @@ class ApiContactFieldController extends ApiController
 
         try {
             $contactField = ContactField::create(
-                $request->all()
+                $request->except(['account_id'])
                 + ['account_id' => auth()->user()->account_id]
             );
         } catch (QueryException $e) {
@@ -82,7 +82,7 @@ class ApiContactFieldController extends ApiController
         }
 
         try {
-            $contactField->update($request->all());
+            $contactField->update($request->only(['data', 'contact_field_type_id', 'contact_id']));
         } catch (QueryException $e) {
             return $this->respondNotTheRightParameters();
         }

@@ -67,7 +67,7 @@ class ApiCallController extends ApiController
     {
         try {
             $call = app(CreateCall::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -96,7 +96,7 @@ class ApiCallController extends ApiController
     {
         try {
             $call = app(UpdateCall::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'call_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,

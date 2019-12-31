@@ -864,12 +864,12 @@ class Account extends Model
     public function getYearlyActivitiesStatistics()
     {
         $activitiesStatistics = collect([]);
-        $activities = $this->activities()->latest('date_it_happened')->get();
+        $activities = $this->activities()->latest('happened_at')->get();
         $years = [];
 
         // Create a table that contains the combo year/number of
         foreach ($activities as $call) {
-            $yearStatistic = $call->date_it_happened->format('Y');
+            $yearStatistic = $call->happened_at->format('Y');
             $foundInYear = false;
 
             foreach ($years as $year => $number) {

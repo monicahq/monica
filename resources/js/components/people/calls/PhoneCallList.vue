@@ -127,7 +127,7 @@
         <span v-if="!call.content">
           {{ $t('people.call_blank_desc', { name: call.contact.first_name }) }}
         </span>
-        <span v-if="call.content" v-html="compiledMarkdown(call.content)"></span>
+        <span v-if="call.content" dir="auto" v-html="compiledMarkdown(call.content)"></span>
       </div>
 
       <!-- INLINE UPDATE DIV -->
@@ -204,6 +204,8 @@
           <span :class="[ dirltr ? 'mr3' : 'ml3' ]">
             {{ call.contact_called ? $t('people.call_he_called', { name : name }) : $t('people.call_you_called') }}
           </span>
+
+          <!-- EMOTION LIST -->
           <span v-if="call.emotions.length != 0">
             <span :class="[ dirltr ? 'mr2' : 'ml2' ]">
               {{ $t('people.call_emotions') }}

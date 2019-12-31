@@ -64,7 +64,7 @@ class ApiReminderController extends ApiController
     {
         try {
             $reminder = app(CreateReminder::class)->execute(
-                $request->all()
+                $request->except(['account_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,
@@ -93,7 +93,7 @@ class ApiReminderController extends ApiController
     {
         try {
             $reminder = app(UpdateReminder::class)->execute(
-                $request->all()
+                $request->except(['account_id', 'reminder_id'])
                     +
                     [
                     'account_id' => auth()->user()->account->id,

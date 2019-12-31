@@ -83,6 +83,7 @@ docker:
 	$(MAKE) docker_push
 
 docker_build: docker_build_apache docker_build_fpm docker_build_php_apache
+docker_build_master: docker_build_apache docker_build_fpm
 
 docker_build_apache:
 	docker build \
@@ -150,12 +151,31 @@ docker_push: docker_tag
 	docker push $(DOCKER_IMAGE):$(BUILD)-alpine-fpm
 	docker push $(DOCKER_IMAGE):$(BUILD)-php-apache
 
-docker_push_bintray: .deploy.json
+docker_push_bintray: docker_push_bintray_apache docker_push_bintray_fpm
+
+docker_push_bintray_apache: .deploy.json
 	docker tag $(DOCKER_IMAGE) monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
 	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)
-	BUILD=$(BUILD) scripts/tests/fix-bintray.sh
+	BUILD=$(BUILD) scripts/ci/fix-bintray.sh
 
-.PHONY: docker docker_build docker_build_apache docker_build_fpm docker_build_php_apache docker_tag docker_push docker_push_bintray
+docker_push_bintray_fpm: .deploy.json
+	docker tag $(DOCKER_IMAGE):fpm monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	docker push monicahq-docker-docker.bintray.io/$(DOCKER_IMAGE):$(BUILD)-fpm
+	BUILD=$(BUILD)-fpm scripts/ci/fix-bintray.sh
+
+docker_push_github: docker_push_github_apache docker_push_github_fpm
+
+docker_push_github_apache:
+	docker tag $(DOCKER_IMAGE) docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
+	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)
+
+docker_push_github_fpm:
+	docker tag $(DOCKER_IMAGE):fpm docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
+	docker push docker.pkg.github.com/monicahq/monica/monica:$(BUILD)-fpm
+
+.PHONY: docker docker_build docker_build_master docker_build_apache docker_build_fpm docker_build_php_apache docker_tag
+.PHONY: docker_push docker_push_bintray docker_push_bintray_apache docker_push_bintray_fpm
+.PHONY: docker_push_github docker_push_github_apache docker_push_github_fpm
 
 build:
 	composer install --no-interaction --no-suggest --ignore-platform-reqs
@@ -229,7 +249,7 @@ assets: results/$(ASSETS).tar.bz2
 DESCRIPTION := $(shell echo "$(COMMIT_MESSAGE)" | sed -s 's/"/\\\\\\\\\\"/g' | sed -s 's/(/\\(/g' | sed -s 's/)/\\)/g' | sed -s 's%/%\\/%g')
 
 ifeq (,$(DEPLOY_TEMPLATE))
-DEPLOY_TEMPLATE := scripts/tests/.deploy.json.in
+DEPLOY_TEMPLATE := scripts/ci/.deploy.json.in
 endif
 
 .deploy.json: $(DEPLOY_TEMPLATE)
@@ -278,8 +298,8 @@ vagrant_build:
 	make -C scripts/vagrant/build package
 
 push_bintray_assets: results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh
 
 push_bintray_dist: results/$(DESTDIR).tar.bz2 results/$(ASSETS).tar.bz2 .deploy.json
-	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/tests/bintray-upload.sh
-	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/tests/bintray-upload.sh
+	INPUT=results/$(DESTDIR).tar.bz2 FILE=$(DESTDIR).tar.bz2 scripts/ci/bintray-upload.sh
+	INPUT=results/$(ASSETS).tar.bz2 FILE=$(ASSETS).tar.bz2 scripts/ci/bintray-upload.sh

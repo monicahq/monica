@@ -125,7 +125,7 @@
 
               @if ($modules->contains('key', 'activities') && ! $contact->isMe())
               <div class="row section activities">
-                @include('activities.index')
+                @include('people.activities.index')
               </div>
               @endif
 

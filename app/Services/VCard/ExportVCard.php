@@ -73,6 +73,7 @@ class ExportVCard extends BaseService
         $this->exportAddress($contact, $vcard);
         $this->exportContactFields($contact, $vcard);
         $this->exportTimestamp($contact, $vcard);
+        $this->exportTags($contact, $vcard);
 
         return $vcard;
     }
@@ -233,5 +234,17 @@ class ExportVCard extends BaseService
     private function exportTimestamp(Contact $contact, VCard $vcard)
     {
         $vcard->REV = $contact->updated_at->format('Ymd\\THis\\Z');
+    }
+
+    /**
+     * @param Contact $contact
+     * @param VCard $vcard
+     */
+    private function exportTags(Contact $contact, VCard $vcard)
+    {
+        $tags = $contact->getTagsAsString();
+        if (! empty($tags)) {
+            $vcard->CATEGORIES = $tags;
+        }
     }
 }

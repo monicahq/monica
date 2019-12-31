@@ -5,13 +5,13 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 mix.webpackConfig({
     plugins: [
         new MomentLocalesPlugin({
-            localesToKeep: ['en', 'ar', 'cs', 'de', 'es', 'fr', 'he', 'hr', 'it', 'nl', 'pt', 'pt-BR', 'ru', 'tr', 'zh-cn'],
+            localesToKeep: ['en', 'ar', 'cs', 'de', 'en-GB', 'es', 'fr', 'he', 'hr', 'it', 'nl', 'pt', 'pt-BR', 'ru', 'tr', 'zh-cn'],
         }),
     ],
 });
 
 let purgeCssOptions = {
-    whitelistPatterns: [/^vdp-datepicker/, /^StripeElement/, /^vgt/, /^vue-tooltip/, /^pretty/],
+    whitelistPatterns: [/^fa-/, /^vdp-datepicker/, /^StripeElement/, /^vgt/, /^vue-tooltip/, /^pretty/],
     whitelistPatternsChildren: [/^vdp-datepicker/, /^vgt/, /^vue-tooltip/, /^pretty/]
 };
 

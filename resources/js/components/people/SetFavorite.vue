@@ -2,7 +2,7 @@
 </style>
 
 <template>
-  <div class="di relative" style="top: 2px">
+  <div class="di f5 normal">
     <notifications group="favorite" position="top middle" width="400" />
 
     <svg v-if="!isFavorite" v-tooltip.top="$t('people.set_favorite')" :cy-name="'set-favorite'" class="pointer" width="23"

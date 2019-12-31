@@ -1,9 +1,5 @@
 <style scoped>
 
-    .m-b-none {
-        margin-bottom: 0;
-    }
-
     .access-key {
         border: 1px solid #cacaca;
         border-radius: 3px;
@@ -20,171 +16,142 @@
 
 <template>
   <div>
-    <div>
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>
-              {{ $t('settings.api_personal_access_tokens') }}
-            </span>
+    <h3 class="mb3">
+      {{ $t('settings.api_personal_access_tokens') }}
+      <a class="btn nt2" :class="[ dirltr ? 'fr' : 'fl' ]" href="" @click.prevent="showCreateTokenForm">
+        {{ $t('settings.api_token_create_new') }}
+      </a>
+    </h3>
 
-            <a class="btn" href="" @click.prevent="showCreateTokenForm">
-              {{ $t('settings.api_token_create_new') }}
-            </a>
+    <p>{{ $t('settings.api_pao_description') }}</p>
+
+    <!-- No Tokens Notice -->
+    <p v-if="tokens.length === 0" class="mb0">
+      {{ $t('settings.api_token_not_created') }}
+    </p>
+
+    <div v-else class="dt w-75 collapse br--top br--bottom">
+      <em>{{ $t('settings.api_token_title') }}</em>
+      <div class="dt-row">
+        <div class="dtc">
+          <div class="pa2 b">
+            {{ $t('settings.api_token_name') }}
+          </div>
+        </div>
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
+          <div class="pa2 b">
+            {{ $t('settings.personalization_contact_field_type_table_actions') }}
+          </div>
+        </div>
+      </div>
+
+      <div v-for="token in tokens" :key="token.id" class="dt-row bb b--light-gray">
+        <!-- Client Name -->
+        <div class="dtc">
+          <div v-tooltip="$t('settings.api_token_expire', { date: token.expires_at })" class="pa2">
+            {{ token.name }}
           </div>
         </div>
 
-        <div class="panel-body">
-          <!-- No Tokens Notice -->
-          <p v-if="tokens.length === 0" class="m-b-none">
-            {{ $t('settings.api_token_not_created') }}
-          </p>
-
-          <!-- Personal Access Tokens -->
-          <table v-else class="table table-borderless m-b-none">
-            <thead>
-              <tr>
-                <th scope="col">
-                  {{ $t('settings.api_token_name') }}
-                </th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr v-for="token in tokens" :key="token.id">
-                <!-- Client Name -->
-                <td style="vertical-align: middle;">
-                  {{ token.name }}
-                </td>
-
-                <!-- Delete Button -->
-                <td style="vertical-align: middle;">
-                  <a class="action-link text-danger" href="" @click.prevent="revoke(token)">
-                    {{ $t('settings.api_token_delete') }}
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="dtc" :class="[ dirltr ? 'tr' : 'tl' ]">
+          <div class="pa2">
+            <span class="pointer" @click="revoke(token)">{{ $t('app.delete') }}</span>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Create Token Modal -->
-    <div id="modal-create-token" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">
-              &times;
-            </button>
+    <sweet-modal ref="modalCreateToken" overlay-theme="dark" tabindex="-1" role="dialog"
+                 :title="$t('settings.api_token_create')" @open="_focusInput"
+    >
+      <!-- Form Errors -->
+      <error :errors="form.errors" />
 
-            <h4 class="modal-title">
-              {{ $t('settings.api_token_create') }}
-            </h4>
-          </div>
-
-          <div class="modal-body">
-            <!-- Form Errors -->
-            <error :errors="form.errors" />
-
-            <!-- Create Token Form -->
-            <form class="form-horizontal" role="form" @submit.prevent="store">
-              <!-- Name -->
-              <div class="form-group">
-                <label for="create-token-name" class="col-md-4 col-form-label">
-                  {{ $t('settings.api_token_name') }}
-                </label>
-
-                <div class="col-md-auto">
-                  <input id="create-token-name" v-model="form.name" type="text" class="form-control" name="name" />
-                </div>
-              </div>
-
-              <!-- Scopes -->
-              <div v-if="scopes.length > 0" class="form-group">
-                <label class="col-md-4 col-form-label">
-                  {{ $t('settings.api_token_scopes') }}
-                </label>
-
-                <div class="col-md-auto">
-                  <div v-for="scope in scopes" :key="scope.id">
-                    <div class="checkbox">
-                      <label>
-                        <input type="checkbox"
-                               :checked="scopeIsAssigned(scope.id)"
-                               @click="toggleScope(scope.id)"
-                        />
-
-                        {{ scope.id }}
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          <!-- Modal Actions -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              {{ $t('app.close') }}
-            </button>
-
-            <button type="button" class="btn btn-primary" @click="store">
-              {{ $t('app.create') }}
-            </button>
-          </div>
+      <!-- Create Token Form -->
+      <form class="form-horizontal" role="form" @submit.prevent="store">
+        <!-- Name -->
+        <div class="col-md-auto">
+          <form-input
+            :id="'create-token-name'"
+            ref="createTokenName"
+            v-model="form.name"
+            :name="'name'"
+            :iclass="'br2 f5 w-50 ba b--black-40 pa2 outline-0'"
+            :required="true"
+            :title="$t('settings.api_token_name')"
+          />
         </div>
-      </div>
-    </div>
 
-    <!-- Access Token Modal -->
-    <div id="modal-access-token" class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" :class="[dirltr ? '' : 'rtl']" data-dismiss="modal" aria-hidden="true">
-              &times;
-            </button>
+        <!-- Scopes -->
+        <div v-if="scopes.length > 0" class="form-group">
+          <label class="col-md-4 col-form-label">
+            {{ $t('settings.api_token_scopes') }}
+          </label>
 
-            <h4 class="modal-title">
-              {{ $t('settings.api_token_title') }}
-            </h4>
-          </div>
+          <div class="col-md-auto">
+            <div v-for="scope in scopes" :key="scope.id">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"
+                         :checked="scopeIsAssigned(scope.id)"
+                         @click="toggleScope(scope.id)"
+                  />
 
-          <div class="modal-body">
-            <p>{{ $t('settings.api_token_help') }}</p>
-
-            <div class="access-key">
-              <pre><code>{{ accessToken }}</code></pre>
+                  {{ scope.id }}
+                </label>
+              </div>
             </div>
           </div>
-
-          <!-- Modal Actions -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              {{ $t('app.close') }}
-            </button>
-          </div>
         </div>
+      </form>
+      <!-- Modal Actions -->
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="store">
+          {{ $t('app.create') }}
+        </a>
       </div>
-    </div>
+    </sweet-modal>
+
+    <!-- Access Token Modal -->
+    <sweet-modal ref="modalAccessToken" overlay-theme="dark" tabindex="-1" role="dialog" :title="$t('settings.api_token_title')">
+      <notifications group="passport-personal-access-token" position="middle" :duration="5000" width="400" />
+      <p>{{ $t('settings.api_token_help') }}</p>
+
+      <div class="flex-auto access-key overflow-y-scroll" style="max-height: 400px;" @click.prevent="copyIntoClipboard(accessToken)">
+        <pre><code>{{ accessToken }}</code></pre>
+      </div>
+
+      <!-- Modal Actions -->
+      <div slot="button">
+        <a class="btn btn-primary" :title="$t('settings.dav_copy_help')" href="" @click.prevent="copyIntoClipboard(accessToken)">
+          {{ $t('app.copy') }}
+        </a>
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.close') }}
+        </a>
+      </div>
+    </sweet-modal>
   </div>
 </template>
 
 <script>
 import Error from '../partials/Error.vue';
+import { SweetModal } from 'sweet-modal-vue';
 
 export default {
 
   components: {
+    SweetModal,
     Error
   },
 
   data() {
     return {
+      endpoint: '',
       accessToken: null,
 
       tokens: [],
@@ -210,17 +177,15 @@ export default {
 
   methods: {
     prepareComponent() {
+      //this.$refs.modalAccessToken.$refs.content.className = 'flex-auto';
+      this.$refs.modalAccessToken.$refs.content.getElementsByClassName('sweet-content-content')[0].className = 'flex-auto';
       this.getTokens();
       this.getScopes();
-
-      $('#modal-create-token').on('shown.bs.modal', () => {
-        $('#create-token-name').focus();
-      });
     },
 
     /**
-      * Get all of the personal access tokens for the user.
-      */
+     * Get all of the personal access tokens for the user.
+     */
     getTokens() {
       axios.get('oauth/personal-access-tokens')
         .then(response => {
@@ -229,8 +194,8 @@ export default {
     },
 
     /**
-      * Get all of the available scopes.
-      */
+     * Get all of the available scopes.
+     */
     getScopes() {
       axios.get('oauth/scopes')
         .then(response => {
@@ -239,15 +204,33 @@ export default {
     },
 
     /**
-      * Show the form for creating new tokens.
-      */
-    showCreateTokenForm() {
-      $('#modal-create-token').modal('show');
+     * Close all modals.
+     */
+    closeModal() {
+      this.$refs.modalCreateToken.close();
+      this.$refs.modalAccessToken.close();
     },
 
     /**
-      * Create a new personal access token.
-      */
+     * Focus on modal open.
+     */
+    _focusInput() {
+      let vm = this;
+      setTimeout(function() {
+        vm.$refs.createTokenName.focus();
+      }, 10);
+    },
+
+    /**
+     * Show the form for creating new tokens.
+     */
+    showCreateTokenForm() {
+      this.$refs.modalCreateToken.open();
+    },
+
+    /**
+     * Create a new personal access token.
+     */
     store() {
       this.accessToken = null;
 
@@ -273,8 +256,8 @@ export default {
     },
 
     /**
-      * Toggle the given scope in the list of assigned scopes.
-      */
+     * Toggle the given scope in the list of assigned scopes.
+     */
     toggleScope(scope) {
       if (this.scopeIsAssigned(scope)) {
         this.form.scopes = _.reject(this.form.scopes, s => s == scope);
@@ -284,31 +267,50 @@ export default {
     },
 
     /**
-      * Determine if the given scope has been assigned to the token.
-      */
+     * Determine if the given scope has been assigned to the token.
+     */
     scopeIsAssigned(scope) {
       return _.indexOf(this.form.scopes, scope) >= 0;
     },
 
     /**
-      * Show the given access token to the user.
-      */
+     * Show the given access token to the user.
+     */
     showAccessToken(accessToken) {
-      $('#modal-create-token').modal('hide');
+      this.$refs.modalCreateToken.close();
 
       this.accessToken = accessToken;
 
-      $('#modal-access-token').modal('show');
+      this.$refs.modalAccessToken.open();
     },
 
     /**
-      * Revoke the given token.
-      */
+     * Revoke the given token.
+     */
     revoke(token) {
       axios.delete('oauth/personal-access-tokens/' + token.id)
         .then(response => {
           this.getTokens();
         });
+    },
+
+    /**
+     * Copy text into clipboard
+     */
+    copyIntoClipboard(text) {
+      this.$copyText(text)
+        .then(response => {
+          this.notify(this.$t('settings.dav_clipboard_copied'), true);
+        });
+    },
+
+    notify(text, success) {
+      this.$notify({
+        group: 'passport-personal-access-token',
+        title: text,
+        text: '',
+        type: success ? 'success' : 'error'
+      });
     }
   }
 };

@@ -9,10 +9,12 @@ use App\Models\Account\Photo;
 use App\Services\BaseService;
 use function Safe\finfo_open;
 use function Safe\preg_match;
+use App\Models\Contact\Contact;
 use function Safe\base64_decode;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Exception\NotReadableException;
 
 class UploadPhoto extends BaseService
 {
@@ -32,6 +34,7 @@ class UploadPhoto extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
+            'contact_id' => 'required|integer|exists:contacts,id',
             'photo' => 'required_without:data|file|image',
             'data' => 'required_without:photo|string|photo',
             'extension' => 'nullable|string',
@@ -44,9 +47,12 @@ class UploadPhoto extends BaseService
      * @param array $data
      * @return Photo
      */
-    public function execute(array $data) : Photo
+    public function execute(array $data)
     {
         $this->validate($data);
+
+        $contact = Contact::where('account_id', $data['account_id'])
+            ->findOrFail($data['contact_id']);
 
         $array = null;
         if (Arr::has($data, 'photo')) {
@@ -55,7 +61,13 @@ class UploadPhoto extends BaseService
             $array = $this->importFile($data);
         }
 
-        return Photo::create($array);
+        if (! $array) {
+            return;
+        }
+
+        return tap(Photo::create($array), function ($photo) use ($contact) {
+            $contact->photos()->syncWithoutDetaching([$photo->id]);
+        });
     }
 
     /**
@@ -82,11 +94,16 @@ class UploadPhoto extends BaseService
      *
      * @return array
      */
-    private function importFile(array $data) : array
+    private function importFile(array $data)
     {
         $filename = Str::random(40);
 
-        $image = Image::make($data['data']);
+        try {
+            $image = Image::make($data['data']);
+        } catch (NotReadableException $e) {
+            return;
+        }
+
         $tempfile = $this->storeImage('local', $image, 'temp/'.$filename);
 
         try {

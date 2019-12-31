@@ -12,7 +12,8 @@ class NoteTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_belongs_to_an_account()
+    /** @test */
+    public function it_belongs_to_an_account()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create(['account_id' => $account->id]);
@@ -24,7 +25,8 @@ class NoteTest extends TestCase
         $this->assertTrue($note->account()->exists());
     }
 
-    public function test_it_belongs_to_a_contact()
+    /** @test */
+    public function it_belongs_to_a_contact()
     {
         $contact = factory(Contact::class)->create([]);
         $note = factory(Note::class)->create([
@@ -34,7 +36,8 @@ class NoteTest extends TestCase
         $this->assertTrue($note->contact()->exists());
     }
 
-    public function test_it_filters_by_favorited_notes()
+    /** @test */
+    public function it_filters_by_favorited_notes()
     {
         $note = factory(Note::class)->create(['is_favorited' => true]);
         $note = factory(Note::class)->create(['is_favorited' => true]);
@@ -47,7 +50,8 @@ class NoteTest extends TestCase
         );
     }
 
-    public function test_it_returns_body_in_markdown()
+    /** @test */
+    public function it_returns_body_in_markdown()
     {
         $note = new Note;
         $note->body = '# Test';

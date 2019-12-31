@@ -1,9 +1,7 @@
 <?php
 
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use App\Models\User\User;
-use function Safe\json_decode;
 use App\Models\Account\Account;
 use Illuminate\Database\Seeder;
 use App\Helpers\CountriesHelper;
@@ -20,9 +18,11 @@ use App\Services\Contact\LifeEvent\CreateLifeEvent;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use App\Services\Contact\Conversation\CreateConversation;
 use App\Services\Contact\Relationship\CreateRelationship;
+use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Contact\Contact\UpdateBirthdayInformation;
 use App\Services\Contact\Contact\UpdateDeceasedInformation;
 use App\Services\Contact\Conversation\AddMessageToConversation;
+use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
 class FakeContentTableSeeder extends Seeder
 {
@@ -61,11 +61,6 @@ class FakeContentTableSeeder extends Seeder
         $output = new ConsoleOutput();
         $progress = new ProgressBar($output, $this->numberOfContacts);
         $progress->start();
-
-        // fetching avatars
-        $client = new Client();
-        $res = $client->request('GET', 'https://randomuser.me/api/?results='.$this->numberOfContacts.'&inc=picture');
-        $arrayPictures = json_decode($res->getBody());
 
         for ($i = 0; $i < $this->numberOfContacts; $i++) {
             $gender = (rand(1, 2) == 1) ? 'male' : 'female';
@@ -111,7 +106,7 @@ class FakeContentTableSeeder extends Seeder
 
         // create the second test, blank account
         if (! User::where('email', 'blank@blank.com')->exists()) {
-            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank');
+            $blankAccount = Account::createDefault('Blank', 'State', 'blank@blank.com', 'blank0');
             $blankUser = $blankAccount->users()->first();
             $this->confirmUser($blankUser);
         }
@@ -281,15 +276,25 @@ class FakeContentTableSeeder extends Seeder
     {
         if (rand(1, 2) == 1) {
             for ($j = 0; $j < rand(1, 13); $j++) {
-                $date = Carbon::instance($this->faker->dateTimeThisYear($max = 'now'))->toDateString();
+                $date = Carbon::instance($this->faker->dateTimeThisYear($max = 'now'))->format('Y-m-d');
 
-                $activity = $this->contact->activities()->create([
-                    'summary' => $this->faker->realText(rand(40, 100)),
-                    'date_it_happened' => $date,
-                    'activity_type_id' => rand(1, 13),
-                    'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
+                $request = [
                     'account_id' => $this->contact->account_id,
-                ], ['account_id' => $this->contact->account_id]);
+                    'activity_type_id' => rand(1, 13),
+                    'summary' => $this->faker->realText(rand(40, 100)),
+                    'description' => (rand(1, 2) == 1 ? $this->faker->realText(rand(100, 1000)) : null),
+                    'date' => $date,
+                ];
+
+                $activity = app(CreateActivity::class)->execute($request);
+
+                $request = [
+                    'account_id' => $this->contact->account_id,
+                    'activity_id' => $activity->id,
+                    'contacts' => [$this->contact->id],
+                ];
+
+                app(AttachContactToActivity::class)->execute($request);
 
                 DB::table('journal_entries')->insertGetId([
                     'account_id' => $this->account->id,

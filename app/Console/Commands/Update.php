@@ -21,6 +21,7 @@ class Update extends Command
     protected $signature = 'monica:update
                             {--force : Force the operation to run when in production.}
                             {--composer-install : Updating composer dependencies.}
+                            {--skip-storage-link : Skip storage link create.}
                             {--dev : Install dev dependencies too.}';
 
     /**
@@ -83,7 +84,7 @@ class Update extends Command
                     $this->commandExecutor->exec('✓ Updating composer dependencies', 'composer install --no-interaction --no-suggest --ignore-platform-reqs'.($this->option('dev') === false ? ' --no-dev' : ''));
                 }
 
-                if ($this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
+                if ($this->option('skip-storage-link') !== true && $this->getLaravel()->environment() != 'testing' && ! file_exists(public_path('storage'))) {
                     $this->commandExecutor->artisan('✓ Symlink the storage folder', 'storage:link');
                 }
 
