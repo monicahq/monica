@@ -67,17 +67,15 @@
       <p>
         {{ $t('people.notes_delete_confirmation') }}
       </p>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" :cy-name="'delete-mode-note-button-' + deleteNote.id"
-             @click.prevent="trash(deleteNote)"
-          >
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" :cy-name="'delete-mode-note-button-' + deleteNote.id"
+           @click.prevent="trash(deleteNote)"
+        >
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
   </div>

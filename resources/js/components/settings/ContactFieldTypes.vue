@@ -122,15 +122,13 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="store">
-            {{ $t('app.save') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="store">
+          {{ $t('app.save') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -190,15 +188,13 @@
           </div>
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="update">
-            {{ $t('app.edit') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="update">
+          {{ $t('app.edit') }}
+        </a>
       </div>
     </sweet-modal>
 
@@ -209,15 +205,13 @@
       <p>
         {{ $t('settings.personalization_contact_field_type_modal_delete_description') }}
       </p>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeModal">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn btn-primary" href="" @click.prevent="trash">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeModal">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn btn-primary" href="" @click.prevent="trash">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
   </div>
