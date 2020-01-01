@@ -10,12 +10,8 @@ use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use App\Models\Account\ActivityType;
 use App\Traits\JsonRespondController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use App\Services\Account\Activity\Activity\CreateActivity;
-use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Services\Account\Activity\ActivityStatisticService;
 use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
 class ActivitiesController extends Controller
 {
@@ -66,7 +62,7 @@ class ActivitiesController extends Controller
     public function contacts(Request $request, Contact $contact)
     {
         return auth()->user()->account->contacts
-            ->filter(function($c) use ($contact) {
+            ->filter(function ($c) use ($contact) {
                 return $contact->id !== $c->id;
             })
             ->map(function ($c) {

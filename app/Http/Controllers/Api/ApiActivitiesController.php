@@ -5,17 +5,14 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
-use App\Models\Account\ActivityType;
-use App\Models\Journal\JournalEntry;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Account\Activity\Activity\CreateActivity;
+use App\Services\Account\Activity\Activity\UpdateActivity;
+use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Http\Resources\Activity\Activity as ActivityResource;
 use App\Services\Account\Activity\Activity\AttachContactToActivity;
-use App\Services\Account\Activity\Activity\CreateActivity;
-use App\Services\Account\Activity\Activity\DestroyActivity;
-use App\Services\Account\Activity\Activity\UpdateActivity;
-use Illuminate\Validation\ValidationException;
 
 class ApiActivitiesController extends ApiController
 {
@@ -150,7 +147,7 @@ class ApiActivitiesController extends ApiController
         try {
             app(DestroyActivity::class)->execute([
                 'account_id' => auth()->user()->account_id,
-                'activity_id' => $activityId
+                'activity_id' => $activityId,
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
