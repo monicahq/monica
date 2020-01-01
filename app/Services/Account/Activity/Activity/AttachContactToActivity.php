@@ -35,9 +35,44 @@ class AttachContactToActivity extends BaseService
         $activity = Activity::where('account_id', $data['account_id'])
             ->findOrFail($data['activity_id']);
 
-        $this->attach($data, $activity);
+        $attendeesID = $this->detach($data, $activity);
+
+        $this->attach($data, $activity, $attendeesID);
 
         return $activity;
+    }
+
+    /**
+     * Detach the previous contacts.
+     *
+     * @param array $data
+     * @param Activity $activity
+     * @return array
+     */
+    private function detach(array $data, Activity $activity) : array
+    {
+        // Get the attendees
+        /** @var array */
+        $attendeesID = $data['contacts'];
+
+        // Find existing contacts
+        $existing = $activity->contacts()->get();
+
+        foreach ($existing as $contact) {
+            // Has an existing attendee been removed?
+            if (! in_array($contact->id, $attendeesID)) {
+                $contact->activities()->detach($activity);
+            }
+
+            // Remove this ID from our list of contacts as we don't
+            // want to add them to the activity again
+            $idx = array_search($contact->id, $attendeesID);
+            unset($attendeesID[$idx]);
+
+            $contact->calculateActivitiesStatistics();
+        }
+
+        return $attendeesID;
     }
 
     /**
@@ -45,14 +80,12 @@ class AttachContactToActivity extends BaseService
      *
      * @param array $data
      * @param Activity $activity
+     * @param array $attendeesID
      * @return void
      */
-    private function attach(array $data, Activity $activity)
+    private function attach(array $data, Activity $activity, array $attendeesID)
     {
-        // reset current associations
-        $activity->contacts()->sync([]);
-
-        foreach ($data['contacts'] as $contactId) {
+        foreach ($attendeesID as $contactId) {
             $contact = Contact::where('account_id', $data['account_id'])
                 ->findOrFail($contactId);
 

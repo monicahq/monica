@@ -65,77 +65,16 @@ class ActivitiesController extends Controller
      */
     public function contacts(Request $request, Contact $contact)
     {
-        $contactsCollection = collect([]);
-        $contacts = auth()->user()->account->contacts;
-
-        foreach ($contacts as $singleContact) {
-            if ($contact->id != $singleContact->id) {
-                $contactsCollection->push([
-                    'id' => $singleContact->id,
-                    'name' => $singleContact->name,
-                ]);
-            }
-        }
-
-        return $contactsCollection;
-    }
-
-    /**
-     * Store an activity.
-     *
-     * @param  Contact $contact
-     * @return ActivityResource|\Illuminate\Http\JsonResponse
-     */
-    public function store(Request $request, Contact $contact)
-    {
-        $activity = app(CreateActivity::class)->execute([
-            'account_id' => auth()->user()->account->id,
-            'activity_type_id' => $request->input('activity_type_id'),
-            'summary' => $request->input('summary'),
-            'description' => $request->input('description'),
-            'date' => $request->input('happened_at'),
-            'emotions' => $request->input('emotions'),
-        ]);
-
-        $arrayParticipants = array_map(function ($participant) {
-            return $participant['id'];
-        }, $request->input('participants'));
-        // also push the current contact
-        array_push($arrayParticipants, $contact->id);
-
-        try {
-            $activity = app(AttachContactToActivity::class)->execute([
-                'account_id' => auth()->user()->account->id,
-                'activity_id' => $activity->id,
-                'contacts' => $arrayParticipants,
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
-        return new ActivityResource($activity);
-    }
-
-    /**
-     * Delete the activity.
-     *
-     * @param Request $request
-     * @param Contact $contact
-     * @param int $activityId
-     * @return bool|null|\Illuminate\Http\JsonResponse
-     */
-    public function destroy(Request $request, Contact $contact, $activityId)
-    {
-        $data = [
-            'account_id' => auth()->user()->account->id,
-            'activity_id' => $activityId,
-        ];
-
-        try {
-            app(DestroyActivity::class)->execute($data);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
+        return auth()->user()->account->contacts
+            ->filter(function($c) use ($contact) {
+                return $contact->id !== $c->id;
+            })
+            ->map(function ($c) {
+                return [
+                    'id' => $c->id,
+                    'name' => $c->name,
+                ];
+            });
     }
 
     /**

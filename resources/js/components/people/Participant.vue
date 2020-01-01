@@ -18,35 +18,35 @@ input[type=text]:focus {
 </style>
 
 <template>
-    <div class="relative">
-      <ul v-show="chosenParticipants.length != 0" class="mr2 mb3">
-        <li v-for="chosenParticipant in chosenParticipants"
-            :key="chosenParticipant.id"
-            class="dib participant br5 mr2"
+  <div class="relative">
+    <ul v-show="chosenParticipants.length != 0" class="mr2 mb3">
+      <li v-for="chosenParticipant in chosenParticipants"
+          :key="chosenParticipant.id"
+          class="dib participant br5 mr2"
+      >
+        <span class="ph2 pv1 dib">
+          {{ chosenParticipant.name }}
+        </span>
+        <span class="bl ph2 pv1 f6 pointer" @click.prevent="remove(chosenParticipant)">
+          ❌
+        </span>
+      </li>
+    </ul>
+    <div v-show="participants.length != 0" class="ba b--gray-monica">
+      <span class="db bb b--gray-monica pa2">
+        <input v-model="search" type="text" :placeholder="$t('app.filter')" class="br2 f5 w-100 ba b--black-20 pa2 outline-0" />
+      </span>
+      <ul class="overflow-auto participant-list">
+        <li v-for="fparticipant in filteredList"
+            :key="fparticipant.id"
+            class="bb b--gray-monica pa2 pointer potential-participant"
+            @click.prevent="select(fparticipant)"
         >
-          <span class="ph2 pv1 dib">
-            {{ chosenParticipant.name }}
-          </span>
-          <span class="bl ph2 pv1 f6 pointer" @click.prevent="remove(chosenParticipant)">
-            ❌
-          </span>
+          {{ fparticipant.name }}
         </li>
       </ul>
-      <div v-show="participants.length != 0" class="ba b--gray-monica">
-        <span class="db bb b--gray-monica pa2">
-          <input v-model="search" type="text" :placeholder="$t('app.filter')" class="br2 f5 w-100 ba b--black-20 pa2 outline-0" />
-        </span>
-        <ul class="overflow-auto participant-list">
-          <li v-for="fparticipant in filteredList"
-              :key="fparticipant.id"
-              class="bb b--gray-monica pa2 pointer potential-participant"
-              @click.prevent="select(fparticipant)"
-          >
-            {{ fparticipant.name }}
-          </li>
-        </ul>
-      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -56,9 +56,7 @@ export default {
   props: {
     initialParticipants: {
       type: Array,
-      default: function () {
-        return [];
-      }
+      default: () => [],
     },
     hash: {
       type: String,
@@ -71,7 +69,6 @@ export default {
       search: '',
       participants: [],
       chosenParticipants: [],
-      participant: null,
     };
   },
 
@@ -81,7 +78,8 @@ export default {
       // also, sort the list by name
       var list;
       list = this.participants.filter(participant => {
-        return participant.name.toLowerCase().includes(this.search.toLowerCase());
+        return participant.name.toLowerCase().includes(this.search.toLowerCase())
+               && this.chosenParticipants.find(p => p.id === participant.id) === undefined;
       });
 
       function compare(a, b) {
@@ -109,7 +107,7 @@ export default {
     getParticipants: function () {
       axios.get('people/' + this.hash + '/activities/contacts')
         .then(response => {
-          this.participants = response.data;
+          this.participants = _.toArray(response.data);
         });
     },
 
@@ -122,7 +120,7 @@ export default {
     remove(participant) {
       this.participants.push(participant);
       this.chosenParticipants.splice(this.chosenParticipants.indexOf(participant), 1);
-    }
+    },
   }
 };
 </script>

@@ -35,10 +35,11 @@
     <template v-if="displayLogActivity">
       <create-activity
         :hash="hash"
+        :contact-id="contactId"
         :name="name"
         @update="updateList($event)"
         @cancel="displayLogActivity = false"
-      ></create-activity>
+      />
     </template>
 
     <!-- LIST OF ACTIVITIES -->
@@ -66,8 +67,8 @@
                   <li class="di">
                     {{ $t('people.activities_list_participants') }}
                   </li>
-                  <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di mr2">
-                    <span v-show="attendee.id != contactId">{{ attendee.complete_name }}</span>
+                  <li v-for="attendee in activity.attendees.contacts.filter(c => c.id !== contactId)" :key="attendee.id" class="di mr2">
+                    <span>{{ attendee.complete_name }}</span>
                   </li>
                 </ul>
               </li>
@@ -94,7 +95,8 @@
             <!-- ACTIONS -->
             <ul class="list">
               <li class="di">
-                <a v-show="destroyActivityId != activity.id" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
+                <a href="" class="pointer" @click.prevent="$set(activity, 'edit', true)">{{ $t('app.edit') }}</a>
+                <a v-show="destroyActivityId != activity.id" href="" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
                 <ul v-show="destroyActivityId == activity.id" class="di">
                   <li class="di">
                     <a class="pointer red" @click.prevent="destroyActivity(activity)">
@@ -113,12 +115,13 @@
         </div>
       </template>
       <create-activity v-else
-        :hash="hash"
-        :name="name"
-        :activity="activity"
-        @update="updateList($event)"
-        @cancel="displayLogActivity = false"
-      ></create-activity>
+                       :hash="hash"
+                       :name="name"
+                       :activity="activity"
+                       :contact-id="contactId"
+                       @update="updateList($event)"
+                       @cancel="$set(activity, 'edit', false); displayLogActivity = false"
+      />
     </div>
 
     <p v-if="activities.length > 0" class="tc">
@@ -192,7 +195,7 @@ export default {
     },
 
     getActivities() {
-      axios.get('/people/' + this.hash + '/activities')
+      axios.get('api/contacts/' + this.contactId + '/activities')
         .then(response => {
           this.activities = response.data.data;
         });
@@ -208,7 +211,7 @@ export default {
     },
 
     destroyActivity(activity) {
-      axios.delete('/people/' + this.hash + '/activities/' + activity.id)
+      axios.delete('api/activities/' + activity.id)
         .then(response => {
           this.activities.splice(this.activities.indexOf(activity), 1);
         });

@@ -19,10 +19,10 @@ class CreateActivity extends BaseService
     {
         return [
             'account_id' => 'required|integer|exists:accounts,id',
-            'activity_type_id' => 'nullable|integer',
-            'summary' => 'required|string:255',
+            'activity_type_id' => 'nullable|integer|exists:activity_types,id',
+            'summary' => 'required|string:100000',
             'description' => 'nullable|string:400000000',
-            'date' => 'required|date|date_format:Y-m-d',
+            'happened_at' => 'required|date|date_format:Y-m-d',
             'emotions' => 'nullable|array',
         ];
     }
@@ -47,17 +47,15 @@ class CreateActivity extends BaseService
             'activity_type_id' => $this->nullOrValue($data, 'activity_type_id'),
             'summary' => $data['summary'],
             'description' => $this->nullOrValue($data, 'description'),
-            'happened_at' => $data['date'],
+            'happened_at' => $data['happened_at'],
         ]);
 
-        if (! empty($data['emotions'])) {
-            if ($data['emotions'] != '') {
-                $this->addEmotions($data['emotions'], $activity);
-            }
+        if (! empty($data['emotions']) && $data['emotions'] != '') {
+            $this->addEmotions($data['emotions'], $activity);
         }
 
         // Log a journal entry
-        (new JournalEntry)->add($activity);
+        JournalEntry::add($activity);
 
         return $activity;
     }

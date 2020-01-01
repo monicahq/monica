@@ -26,10 +26,11 @@
             <div class="di">
               <div class="dib">
                 <form-date
+                  ref="date"
                   v-model="newActivity.happened_at"
+                  :show-calendar-on-focus="true"
                   :default-date="todayDate"
                   :locale="locale"
-                  :required="true"
                 />
               </div>
             </div>
@@ -98,6 +99,7 @@
           </label>
           <participant
             :hash="hash"
+            :initial-participants="participants"
             @update="updateParticipant($event)"
           />
         </div>
@@ -114,7 +116,7 @@
             </div>
             <div class="">
               <button class="btn btn-primary w-auto-ns w-100 mb2 pb0-ns" @click.prevent="store()">
-                {{ $t('app.add') }}
+                {{ activity ? $t('app.save') : $t('app.add') }}
               </button>
             </div>
           </div>
@@ -150,6 +152,10 @@ export default {
       type: String,
       default: '',
     },
+    contactId: {
+      type: Number,
+      default: 0,
+    },
     name: {
       type: String,
       default: '',
@@ -162,7 +168,6 @@ export default {
 
   data() {
     return {
-      emotions: [],
       displayDescription: false,
       displayEmotions: false,
       displayCategory: false,
@@ -173,8 +178,10 @@ export default {
         happened_at: '',
         emotions: [],
         activity_type_id: null,
-        participants: [],
+        contacts: [],
       },
+      todayDate: '',
+      participants: [],
       errors: [],
     };
   },
@@ -189,6 +196,12 @@ export default {
     }
   },
 
+  watch: {
+    participants(value) {
+      this.newActivity.contacts = _.map(value, p => p.id);
+    }
+  },
+
   mounted() {
     this.prepareComponent();
   },
@@ -196,7 +209,7 @@ export default {
   methods: {
     prepareComponent() {
       this.todayDate = moment().format('YYYY-MM-DD');
-      this.newActivity.happened_at = this.todayDate;
+      this.resetFields();
     },
 
     resetFields() {
@@ -205,20 +218,25 @@ export default {
         this.newActivity.description = this.activity.description;
         this.newActivity.happened_at = this.activity.happened_at;
         this.newActivity.emotions = this.activity.emotions;
-        this.newActivity.activity_type_id = this.activity.activity_type_id;
-        this.newActivity.participants = this.activity.participants;
+        this.newActivity.activity_type_id = this.activity.activity_type ? this.activity.activity_type.id : null;
+        this.participants = this.activity.attendees.contacts.map(attendee => {
+          return {
+            id: attendee.id,
+            name: attendee.complete_name,
+          };
+        });
       } else {
         this.newActivity.summary = '';
         this.newActivity.description = '';
-        this.newActivity.happened_at = '';
+        this.newActivity.happened_at = this.todayDate;
         this.newActivity.emotions = [];
-        this.newActivity.activity_type_id = 0;
-        this.newActivity.participants = [];
+        this.newActivity.activity_type_id = null;
+        this.participants = [];
       }
-      this.displayDescription = false;
-      this.displayEmotions = false;
-      this.displayCategory = false;
-      this.displayParticipants = false;
+      this.displayDescription = this.newActivity.description ? this.newActivity.description != '' : false;
+      this.displayEmotions = this.newActivity.emotions && this.newActivity.emotions.length > 0;
+      this.displayCategory = this.newActivity.activity_type_id !== null;
+      this.displayParticipants = this.participants.length > 0;
       this.errors = [];
     },
 
@@ -234,6 +252,10 @@ export default {
     store() {
       let method = this.activity ? 'put' : 'post';
       let url = this.activity ? 'api/activities/'+this.activity.id : 'api/activities';
+
+      if (! this.newActivity.contacts.includes(this.contactId)) {
+        this.newActivity.contacts.push(this.contactId);
+      }
 
       axios[method](url, this.newActivity)
         .then(response => {
@@ -253,7 +275,7 @@ export default {
     },
 
     updateParticipant: function (participants) {
-      this.newActivity.participants = participants;
+      this.participants = participants;
     },
 
     updateEmotionsList: function(emotions) {
