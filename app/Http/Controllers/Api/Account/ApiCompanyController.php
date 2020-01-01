@@ -67,8 +67,8 @@ class ApiCompanyController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -96,9 +96,9 @@ class ApiCompanyController extends ApiController
                 $request->except(['account_id', 'company_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'company_id' => $companyId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'company_id' => $companyId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

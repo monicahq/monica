@@ -258,7 +258,7 @@ class CardDAVTest extends ApiTestCase
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account->id,
-          ]);
+        ]);
 
         $response = $this->call('PROPFIND', "/dav/addressbooks/{$user->email}/contacts/", [], [], [],
             [
@@ -305,7 +305,7 @@ class CardDAVTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-          'account_id' => $user->account->id,
+            'account_id' => $user->account->id,
         ]);
 
         Carbon::setTestNow(Carbon::create(2018, 1, 1, 8, 0, 0));
