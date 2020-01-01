@@ -22,7 +22,7 @@ return [
     'back' => 'Back',
     'verify' => 'تحقق',
     'new' => 'جديد',
-    'unknown' => 'I don’t know',
+    'unknown' => 'لا أعرف',
     'load_more' => 'تحميل المزيد',
     'loading' => 'جاري التحميل...',
     'with' => 'مع',
@@ -39,14 +39,14 @@ return [
     'go_back' => 'Go back',
 
     'application_title' => 'Monica (مونيكا) – مدير العلاقات الشخصية',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_description' => 'Monica هو أداة لإدارة تفاعلاتك مع أحبائك، أصدقائك و عائلتك.',
+    'application_og_title' => 'امتلك علاقات أفضل مع أحبائك. مدير علاقات مجاني على الويب للعائلة و الأصدقاء.',
 
-    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
+    'markdown_description' => 'هل تريد تنسيق النص الخاص بك بطريقة لطيفة؟ نحن ندعم التحديد و إضافة السماكة، و الإمالة و القوائم و المزيد.',
     'markdown_link' => 'اقرأ الوثائق',
 
     'header_settings_link' => 'الإعدادات',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'تسجيل الخروج',
     'header_changelog_link' => 'تغيرات المنتج',
 
     'main_nav_cta' => 'إضافة أشخاص',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'نعتذر للإزعاج.',
     'compliance_desc' => 'لقد قمنا بتغيير <a href=":urlterm" hreflang=":hreflang">شروط الإستخدام</a>و<a href=":url" hreflang=":hreflang">سياسة الخصوصية</a> الخاصة بنا. بموجب القانون، نطلب منك مراجعتها و قبولها لكي يمكنك الإستمرار في استخدام حسابك.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => 'نحن لن نسيء إلى بياناتك أو حسابك و لن نفعل ذلك أبداً.',
     'compliance_terms' => 'القبول بالشروط و سياسة الخصوصية الجديدية',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'علاقات عائلية',
     'relationship_type_group_friend' => 'علاقات صداقة',
     'relationship_type_group_work' => 'علاقات عمل',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'نوع آخر من العلاقات',
 
     'relationship_type_partner' => 'significant other',
     'relationship_type_partner_female' => 'significant other',
@@ -241,27 +241,27 @@ return [
     'relationship_type_boss' => 'مدير',
     'relationship_type_boss_female' => 'مديرة',
     'relationship_type_boss_with_name' => 'مدير :name',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => 'مديرة :name',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'مرؤوس',
+    'relationship_type_subordinate_female' => 'مرؤوسة',
+    'relationship_type_subordinate_with_name' => 'مرؤوس :name',
+    'relationship_type_subordinate_female_with_name' => 'مرؤوسة :name',
 
     'relationship_type_mentor' => 'مرشد',
     'relationship_type_mentor_female' => 'مرشدة',
     'relationship_type_mentor_with_name' => 'مرشد :name',
     'relationship_type_mentor_female_with_name' => 'مرشدة :name',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'متدرب',
+    'relationship_type_protege_female' => 'متدربة',
+    'relationship_type_protege_with_name' => 'متدرب :name',
+    'relationship_type_protege_female_with_name' => 'متدربة :name',
 
-    'relationship_type_ex_husband' => 'ex-husband',
-    'relationship_type_ex_husband_female' => 'ex-wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
+    'relationship_type_ex_husband' => 'طليق',
+    'relationship_type_ex_husband_female' => 'طليقة',
+    'relationship_type_ex_husband_with_name' => 'زوج :name السابق',
+    'relationship_type_ex_husband_female_with_name' => 'زوجة :name السابقة',
 
     // emotions
     'emotion_primary_love' => 'Love',
