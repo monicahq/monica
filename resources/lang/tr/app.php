@@ -7,7 +7,7 @@ return [
     'save' => 'Kaydet',
     'add' => 'Ekle',
     'cancel' => 'Vazgeç',
-    'delete_confirm' => 'Sil',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Sil',
     'edit' => 'Düzenle',
     'upload' => 'Yükle',
@@ -22,7 +22,7 @@ return [
     'back' => 'Geri',
     'verify' => 'Doğrula',
     'new' => 'yeni',
-    'unknown' => 'Bilmiyorum',
+    'unknown' => 'I don’t know',
     'load_more' => 'Daha fazla',
     'loading' => 'Yükleniyor...',
     'with' => 'ile',
@@ -40,13 +40,13 @@ return [
 
     'application_title' => 'Monica - kişisel ilişki yöneticisi',
     'application_description' => 'Monica sevdiklerinizle, arkadaşlarınızla ve ailenizle etkileşimlerinizi yönetebileceğiniz bir araçtır.',
-    'application_og_title' => 'Sevdiklerinizle daha iyi ilişkilere sahip olun. Arkadaşlarınız ve aileniz için ücretsiz Online CRM.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Metninizi güzelce biçimlendirmek mi istiyorsunuz? Kalın, italik, listeler ve daha fazlasını eklemek için Markdown desteğimiz bulunmaktadır.',
     'markdown_link' => 'Dokümantasyonu oku',
 
     'header_settings_link' => 'Ayarlar',
-    'header_logout_link' => 'Çıkış yap',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => 'Ürün değişiklikleri',
 
     'main_nav_cta' => 'Kişi ekle',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'Rahatsız ettiğimiz için üzgünüz.',
     'compliance_desc' => '<a href=":urlterm" hreflang=":hreflang">Kullanım Koşullarımızı</a> ve <a href=":url" hreflang=":hreflang">Gizlilik Politikamızı</a> değiştirdik. Yasalara göre, sizden hesabınızı kullanmaya devam edebilmeniz için onları gözden geçirmenizi ve kabul etmenizi istemek zorundayız.',
-    'compliance_desc_end' => 'Verileriniz veya hesabınızla ilgili kötü bir şey yapmıyoruz ve asla yapmayacağız.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => 'Yeni şartları ve gizlilik politikasını kabul et',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'Aile İlişkileri',
     'relationship_type_group_friend' => 'Arkadaşlık İlişkileri',
     'relationship_type_group_work' => 'İş İlişkileri',
-    'relationship_type_group_other' => 'Diğer tür ilişkiler',
+    'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'sevgili',
     'relationship_type_partner_female' => 'sevgili',
@@ -241,22 +241,22 @@ return [
     'relationship_type_boss' => 'patron',
     'relationship_type_boss_female' => 'patron',
     'relationship_type_boss_with_name' => ':name kişisinin patronu',
-    'relationship_type_boss_female_with_name' => ':name kişisinin yöneticisi',
+    'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => 'çalışan',
-    'relationship_type_subordinate_female' => 'çalışan',
-    'relationship_type_subordinate_with_name' => ':name kişisinin çalışanı',
-    'relationship_type_subordinate_female_with_name' => ':name kişisinin çalışanı',
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => 'danışman',
     'relationship_type_mentor_female' => 'danışman',
     'relationship_type_mentor_with_name' => ':name kişisinin danışmanı',
     'relationship_type_mentor_female_with_name' => ':name kişisinin danışmanı',
 
-    'relationship_type_protege' => 'himayesindeki kişi',
-    'relationship_type_protege_female' => 'himayesindeki kişi',
-    'relationship_type_protege_with_name' => ':name kişisinin himayesindeki kişi',
-    'relationship_type_protege_female_with_name' => ':name kişisinin himayesindeki kişi',
+    'relationship_type_protege' => 'protege',
+    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
     'relationship_type_ex_husband' => 'eski koca',
     'relationship_type_ex_husband_female' => 'eski karı',
