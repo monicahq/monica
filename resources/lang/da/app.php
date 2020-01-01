@@ -7,7 +7,7 @@ return [
     'save' => 'Gem',
     'add' => 'Tilføj',
     'cancel' => 'Annullér',
-    'delete_confirm' => 'Delete',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Slet',
     'edit' => 'Redigér',
     'upload' => 'Upload',
@@ -22,7 +22,7 @@ return [
     'back' => 'Tilbage',
     'verify' => 'Bekræft',
     'new' => 'ny',
-    'unknown' => 'I don\'t know',
+    'unknown' => 'I don’t know',
     'load_more' => 'Indlæs flere',
     'loading' => 'Indlæser...',
     'with' => 'with',
@@ -40,13 +40,13 @@ return [
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relationships with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Læs dokumentation',
 
     'header_settings_link' => 'Indstillinger',
-    'header_logout_link' => 'Log out',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => 'Produktændringer',
 
     'main_nav_cta' => 'Tilføj personer',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'Sorry for the interruption.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and never will do.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'Family relationships',
     'relationship_type_group_friend' => 'Friend relationships',
     'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kinds of relationships',
+    'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partner',
@@ -241,22 +241,22 @@ return [
     'relationship_type_boss' => 'boss',
     'relationship_type_boss_female' => 'boss',
     'relationship_type_boss_with_name' => ':name’s boss',
-    'relationship_type_boss_female_with_name' => ':name’s manager',
+    'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => 'employee',
-    'relationship_type_subordinate_female' => 'employee',
-    'relationship_type_subordinate_with_name' => ':name’s employee',
-    'relationship_type_subordinate_female_with_name' => ':name’s employee',
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentor',
     'relationship_type_mentor_with_name' => ':name’s mentor',
     'relationship_type_mentor_female_with_name' => ':name’s mentor',
 
-    'relationship_type_protege' => 'protégé',
-    'relationship_type_protege_female' => 'protégée',
-    'relationship_type_protege_with_name' => ':name’s protégé',
-    'relationship_type_protege_female_with_name' => ':name’s protégée',
+    'relationship_type_protege' => 'protege',
+    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
     'relationship_type_ex_husband' => 'ex-husband',
     'relationship_type_ex_husband_female' => 'ex-wife',
