@@ -39,7 +39,7 @@ return [
     'go_back' => 'חזרה',
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
+    'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
