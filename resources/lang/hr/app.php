@@ -22,7 +22,7 @@ return [
     'back' => 'Back',
     'verify' => 'Potvrdi',
     'new' => 'novo',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Nepoznato',
     'load_more' => 'Učitaj više',
     'loading' => 'Učitavanje...',
     'with' => 's',
@@ -39,14 +39,14 @@ return [
     'go_back' => 'Go back',
 
     'application_title' => 'Monica – upravljanje osobnim odnosima',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
+    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends and family.',
     'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
-    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
+    'markdown_description' => 'Want to format your text in a nice way? We support Markdown to add bold, italic, lists and more.',
     'markdown_link' => 'Pročitajte dokumentaciju',
 
     'header_settings_link' => 'Postavke',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Odjava',
     'header_changelog_link' => 'Product changes',
 
     'main_nav_cta' => 'Dodajte osobu',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'Sorry for the interruption.',
     'compliance_desc' => 'We have changed our <a href=":urlterm" hreflang=":hreflang">Terms of Use</a> and <a href=":url" hreflang=":hreflang">Privacy Policy</a>. By law we have to ask you to review them and accept them so you can continue to use your account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and will never do.',
     'compliance_terms' => 'Accept new terms and privacy policy',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'Family relationships',
     'relationship_type_group_friend' => 'Friend relationships',
     'relationship_type_group_work' => 'Work relationships',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'druga vrsta odnosa',
 
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partnerica',
@@ -258,10 +258,10 @@ return [
     'relationship_type_protege_with_name' => ':name’s protege',
     'relationship_type_protege_female_with_name' => ':name’s protege',
 
-    'relationship_type_ex_husband' => 'ex-husband',
-    'relationship_type_ex_husband_female' => 'ex-wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
+    'relationship_type_ex_husband' => 'ex husband',
+    'relationship_type_ex_husband_female' => 'ex wife',
+    'relationship_type_ex_husband_with_name' => ':name’s ex husband',
+    'relationship_type_ex_husband_female_with_name' => ':name’s ex wife',
 
     // emotions
     'emotion_primary_love' => 'Love',
