@@ -697,7 +697,7 @@ class ApiContactControllerTest extends ApiTestCase
             'name' => 'Phone',
             'protocol' => 'tel:',
             'type' => 'phone',
-            ]);
+        ]);
         $contactField = factory(ContactField::class)->create([
             'contact_id' => $contact->id,
             'account_id' => $user->account_id,
@@ -709,12 +709,12 @@ class ApiContactControllerTest extends ApiTestCase
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
-                'id' => $contact->id,
-                'first_name' => 'John',
-                'last_name' => 'Doe',
-                'account' => [
-                    'id' => $user->account_id,
-                ],
+            'id' => $contact->id,
+            'first_name' => 'John',
+            'last_name' => 'Doe',
+            'account' => [
+                'id' => $user->account_id,
+            ],
         ]);
     }
 
