@@ -195,7 +195,7 @@ class UserTest extends TestCase
         $reminder = factory(Reminder::class)->create([
             'account_id' => $account->id,
             'initial_date' => '2017-01-01',
-            ]);
+        ]);
 
         $this->assertFalse($user->isTheRightTimeToBeReminded($reminder->initial_date));
     }

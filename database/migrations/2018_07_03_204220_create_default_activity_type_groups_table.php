@@ -227,10 +227,10 @@ class CreateDefaultActivityTypeGroupsTable extends Migration
 
                     foreach ($defaultActivityTypes as $defaultActivityType) {
                         DB::table('activity_types')->insert([
-                          'account_id' => $account->id,
-                          'activity_type_category_id' => $activityTypeCategoryId,
-                          'translation_key' => $defaultActivityType->translation_key,
-                      ]);
+                            'account_id' => $account->id,
+                            'activity_type_category_id' => $activityTypeCategoryId,
+                            'translation_key' => $defaultActivityType->translation_key,
+                        ]);
                     }
                 }
             }

@@ -68,7 +68,7 @@ class ApiAddressController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
+                        'account_id' => auth()->user()->account->id,
                     ]
             );
         } catch (ModelNotFoundException $e) {
@@ -97,9 +97,9 @@ class ApiAddressController extends ApiController
                 $request->except(['account_id', 'address_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'address_id' => $addressId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'address_id' => $addressId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

@@ -68,8 +68,8 @@ class ApiTagController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -94,9 +94,9 @@ class ApiTagController extends ApiController
                 $request->except(['account_id', 'tag_id'])
                     +
                     [
-                    'tag_id' => $id,
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'tag_id' => $id,
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

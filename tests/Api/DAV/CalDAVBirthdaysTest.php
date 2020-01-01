@@ -194,7 +194,7 @@ class CalDAVBirthdaysTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-          'account_id' => $user->account->id,
+            'account_id' => $user->account->id,
         ]);
         $specialDate = $contact->setSpecialDate('birthdate', 1983, 03, 04);
         $specialDate->uuid = Str::uuid();
