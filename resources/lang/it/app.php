@@ -7,7 +7,7 @@ return [
     'save' => 'Salva',
     'add' => 'Aggiungi',
     'cancel' => 'Annulla',
-    'delete_confirm' => 'Delete',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Elimina',
     'edit' => 'Modifica',
     'upload' => 'Carica',
@@ -22,7 +22,7 @@ return [
     'back' => 'Indietro',
     'verify' => 'Verifica',
     'new' => 'nuovo',
-    'unknown' => 'I don\'t know',
+    'unknown' => 'I don’t know',
     'load_more' => 'Carica altro',
     'loading' => 'Caricamento in corso...',
     'with' => 'con',
@@ -40,13 +40,13 @@ return [
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relationships with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Leggi documentazione',
 
     'header_settings_link' => 'Impostazioni',
-    'header_logout_link' => 'Log out',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => 'Modifiche di prodotto',
 
     'main_nav_cta' => 'Aggiungi contatti',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'Ci scusiamo per l\'interruzione.',
     'compliance_desc' => 'Abbiamo cambiato i nostri <a href=":urlterm" hreflang=":hreflang">Termini di Utilizzo</a> e <a href=":url" hreflang=":hreflang">Privacy Policy</a>. Per legge dobbiamo chiederti di controllarli e accettarli prima di poter continuare a utilizzare il tuo account.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and never will do.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => 'Accetta i nuovi termini e privacy policy',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'Relazioni familiari',
     'relationship_type_group_friend' => 'Rapporti di amicizia',
     'relationship_type_group_work' => 'Rapporti di lavoro',
-    'relationship_type_group_other' => 'Other kinds of relationships',
+    'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => 'partner',
     'relationship_type_partner_female' => 'partner',
@@ -241,22 +241,22 @@ return [
     'relationship_type_boss' => 'capo',
     'relationship_type_boss_female' => 'capo',
     'relationship_type_boss_with_name' => 'capo di :name',
-    'relationship_type_boss_female_with_name' => ':name’s manager',
+    'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => 'employee',
-    'relationship_type_subordinate_female' => 'employee',
-    'relationship_type_subordinate_with_name' => ':name’s employee',
-    'relationship_type_subordinate_female_with_name' => ':name’s employee',
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => 'mentore',
     'relationship_type_mentor_female' => 'mentrice',
     'relationship_type_mentor_with_name' => 'mentore di :name',
     'relationship_type_mentor_female_with_name' => 'mentrice di :name',
 
-    'relationship_type_protege' => 'protégé',
-    'relationship_type_protege_female' => 'protégée',
-    'relationship_type_protege_with_name' => ':name’s protégé',
-    'relationship_type_protege_female_with_name' => ':name’s protégée',
+    'relationship_type_protege' => 'protege',
+    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
     'relationship_type_ex_husband' => 'ex-husband',
     'relationship_type_ex_husband_female' => 'ex-wife',
