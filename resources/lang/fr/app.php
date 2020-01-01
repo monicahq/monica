@@ -7,7 +7,7 @@ return [
     'save' => 'Sauver',
     'add' => 'Ajouter',
     'cancel' => 'Annuler',
-    'delete_confirm' => 'Sure?',
+    'delete_confirm' => 'Êtes-vous sûr ?',
     'delete' => 'Supprimer',
     'edit' => 'Éditer',
     'upload' => 'Envoyer',
@@ -22,7 +22,7 @@ return [
     'back' => 'Précédent',
     'verify' => 'Vérifier',
     'new' => 'nouveau',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Je ne sais pas',
     'load_more' => 'Charger plus',
     'loading' => 'Chargement...',
     'with' => 'avec',
@@ -39,14 +39,14 @@ return [
     'go_back' => 'Revenir en arrière',
 
     'application_title' => 'Monica – gestionnaire de relations personnelles',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_description' => 'Monica est un outil pour gérer vos interactions avec vos proches, vos amis et votre famille.',
+    'application_og_title' => 'Ayez de meilleures relations avec vos proches. GRC gratuit en ligne pour les amis et la famille.',
 
-    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
+    'markdown_description' => 'Souhaitez-vous formatter votre texte d’une belle manière ? Nous supportons le format Markdown pour ajouter du gras, italique, des listes et plus encore.',
     'markdown_link' => 'Lire la documentation',
 
     'header_settings_link' => 'Paramètres',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Déconnexion',
     'header_changelog_link' => 'Évolutions du produit',
 
     'main_nav_cta' => 'Ajouter des gens',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'Désolé pour l’interruption.',
     'compliance_desc' => 'Nous avons changé nos <a href=":urlterm" hreflang=":hreflang">Conditions d’Utilisation</a> et notre <a href=":url" hreflang=":hreflang">Politique de Confidentialité</a>. Nous devons vous demander de les consulter et les accepter si vous voulez continuer à utiliser votre compte.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => 'Nous ne faisons rien de méchant avec vos données ou votre compte et nous ne le ferons jamais.',
     'compliance_terms' => 'Accepter les nouvelles conditions et politique de confidentialité',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'Relations familiales',
     'relationship_type_group_friend' => 'Relations amicales',
     'relationship_type_group_work' => 'Relations de travail',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Autre type de relations',
 
     'relationship_type_partner' => 'conjoint',
     'relationship_type_partner_female' => 'conjointe',
@@ -241,27 +241,27 @@ return [
     'relationship_type_boss' => 'patron',
     'relationship_type_boss_female' => 'patronne',
     'relationship_type_boss_with_name' => 'patron de :name',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => 'patronne de :name',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'employé',
+    'relationship_type_subordinate_female' => 'employée',
+    'relationship_type_subordinate_with_name' => 'employé de :name',
+    'relationship_type_subordinate_female_with_name' => 'employée de :name',
 
     'relationship_type_mentor' => 'mentor',
     'relationship_type_mentor_female' => 'mentore',
     'relationship_type_mentor_with_name' => 'mentor de :name',
     'relationship_type_mentor_female_with_name' => 'mentore de :name',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'protégé',
+    'relationship_type_protege_female' => 'protégée',
+    'relationship_type_protege_with_name' => 'protégé de :name',
+    'relationship_type_protege_female_with_name' => 'protégée de :name',
 
-    'relationship_type_ex_husband' => 'ex-husband',
-    'relationship_type_ex_husband_female' => 'ex-wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
+    'relationship_type_ex_husband' => 'ex-mari',
+    'relationship_type_ex_husband_female' => 'ex-femme',
+    'relationship_type_ex_husband_with_name' => 'ex-mari de :name',
+    'relationship_type_ex_husband_female_with_name' => 'ex-femme de :name',
 
     // emotions
     'emotion_primary_love' => 'Amour',
