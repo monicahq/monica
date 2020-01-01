@@ -42,7 +42,7 @@ return [
     'application_description' => 'Monica sevdiklerinizle, arkadaşlarınızla ve ailenizle etkileşimlerinizi yönetebileceğiniz bir araçtır.',
     'application_og_title' => 'Sevdiklerinizle daha iyi ilişkilere sahip olun. Arkadaşlarınız ve aileniz için ücretsiz Online CRM.',
 
-    'markdown_description' => 'Metninizi güzelce biçimlendirmek mi istiyorsunuz? Kalın, italik, listeler ve daha fazlasını eklemek için Markdown desteğimiz bulunmaktadır.',
+    'markdown_description' => 'Metninizi güzel bir şekilde biçimlendirmek mi istiyorsunuz? Kalın, italik, listeler ve daha fazlasını eklemek için Markdown desteğimiz bulunmaktadır.',
     'markdown_link' => 'Dokümantasyonu oku',
 
     'header_settings_link' => 'Ayarlar',
@@ -253,10 +253,10 @@ return [
     'relationship_type_mentor_with_name' => ':name kişisinin danışmanı',
     'relationship_type_mentor_female_with_name' => ':name kişisinin danışmanı',
 
-    'relationship_type_protege' => 'himayesindeki kişi',
-    'relationship_type_protege_female' => 'himayesindeki kişi',
-    'relationship_type_protege_with_name' => ':name kişisinin himayesindeki kişi',
-    'relationship_type_protege_female_with_name' => ':name kişisinin himayesindeki kişi',
+    'relationship_type_protege' => 'koruduğu kişi',
+    'relationship_type_protege_female' => 'koruduğu kişi',
+    'relationship_type_protege_with_name' => ':name kişisinin koruduğu kişi',
+    'relationship_type_protege_female_with_name' => ':name kişisinin koruduğu kişi',
 
     'relationship_type_ex_husband' => 'eski koca',
     'relationship_type_ex_husband_female' => 'eski karı',
