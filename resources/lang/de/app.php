@@ -7,7 +7,7 @@ return [
     'save' => 'Speichern',
     'add' => 'Hinzufügen',
     'cancel' => 'Abbrechen',
-    'delete_confirm' => 'Sure?',
+    'delete_confirm' => 'Sicher?',
     'delete' => 'Löschen',
     'edit' => 'Bearbeiten',
     'upload' => 'Hochladen',
@@ -22,7 +22,7 @@ return [
     'back' => 'Zurück',
     'verify' => 'Überprüfe',
     'new' => 'Neu',
-    'unknown' => 'I don’t know',
+    'unknown' => 'Ich weiß es nicht',
     'load_more' => 'Lade mehr',
     'loading' => 'Lade mehr...',
     'with' => 'mit',
@@ -39,14 +39,14 @@ return [
     'go_back' => 'Zurück',
 
     'application_title' => 'Monica – persönlicher Beziehungsmanager',
-    'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_description' => 'Monica ist ein Werkzeug, um Ihre Interaktionen mit Ihren Lieben, Freunden und Familie zu verwalten.',
+    'application_og_title' => 'Haben Sie bessere Beziehungen zu Ihren Lieben. Kostenloses Online CRM für Freunde und Familie.',
 
-    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
+    'markdown_description' => 'Du möchtest deinen Text schöner formatieren? Monica unterstützt Markdown.',
     'markdown_link' => 'Öffne die Dokumentation',
 
     'header_settings_link' => 'Einstellungen',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'Ausloggen',
     'header_changelog_link' => 'Produktänderungen',
 
     'main_nav_cta' => 'Person hinzufügen',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'Entschuldige die Unterbrechung.',
     'compliance_desc' => 'Wir haben unsere <a href=":urlterm" hreflang=":hreflang">AGBs</a> und <a href=":url" hreflang=":hreflang">Datenschutzerklärung</a> geändert. Wir sind gesetzlich dazu verpflichtet zu verlangen, dass du beides durchliest und akzeptierst, damit du deinen Account weiter nutzen kannst.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => 'Wir machen nichts Böses mit deinen Daten oder deinem Account und werden das auch nie tun.',
     'compliance_terms' => 'Neue AGB und Datenschutzerklärung akzeptieren',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'Familienverhältnisse',
     'relationship_type_group_friend' => 'Freundschaftsbeziehungen',
     'relationship_type_group_work' => 'Arbeitsverhältnisse',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'Andere Art von Beziehungen',
 
     'relationship_type_partner' => 'Lebensgefährte',
     'relationship_type_partner_female' => 'Lebensgefährtin',
@@ -241,27 +241,27 @@ return [
     'relationship_type_boss' => 'Chef',
     'relationship_type_boss_female' => 'Chefin',
     'relationship_type_boss_with_name' => ':name\'s Chef',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => ':name\'s Chefin',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => ':name\'s Untergebener',
+    'relationship_type_subordinate_female' => ':name\'s Untergebene',
+    'relationship_type_subordinate_with_name' => ':name\'s Mitarbeiter',
+    'relationship_type_subordinate_female_with_name' => ':name\'s Mitarbeiterin',
 
     'relationship_type_mentor' => 'Mentor',
     'relationship_type_mentor_female' => 'Mentorin',
     'relationship_type_mentor_with_name' => ':name\'s Mentor',
     'relationship_type_mentor_female_with_name' => ':name\'s Mentorin',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'Schützling',
+    'relationship_type_protege_female' => 'Schützling',
+    'relationship_type_protege_with_name' => ':name\'s Schützling',
+    'relationship_type_protege_female_with_name' => ':name\'s Schützling',
 
-    'relationship_type_ex_husband' => 'ex-husband',
-    'relationship_type_ex_husband_female' => 'ex-wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
+    'relationship_type_ex_husband' => 'Ex-Mann',
+    'relationship_type_ex_husband_female' => 'Ex-Frau',
+    'relationship_type_ex_husband_with_name' => ':name’s Ex-Mann',
+    'relationship_type_ex_husband_female_with_name' => ':name’s Ex-Frau',
 
     // emotions
     'emotion_primary_love' => 'Liebe',
