@@ -7,7 +7,7 @@ return [
     'save' => '保存',
     'add' => '添加',
     'cancel' => '取消',
-    'delete_confirm' => 'Delete',
+    'delete_confirm' => 'Sure?',
     'delete' => '删除',
     'edit' => '编辑',
     'upload' => '上传',
@@ -22,7 +22,7 @@ return [
     'back' => '返回',
     'verify' => '验证',
     'new' => '新',
-    'unknown' => 'I don\'t know',
+    'unknown' => 'I don’t know',
     'load_more' => '载入更多',
     'loading' => '正在加载...',
     'with' => '与',
@@ -40,13 +40,13 @@ return [
 
     'application_title' => 'Monica – 您的私人社交关系管家',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relationships with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => '阅读文档',
 
     'header_settings_link' => '设置',
-    'header_logout_link' => 'Log out',
+    'header_logout_link' => 'Logout',
     'header_changelog_link' => '更新日志',
 
     'main_nav_cta' => '联系人',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => '抱歉，打扰您一下',
     'compliance_desc' => '我们更新了<a href=":urlterm" hreflang=":hreflang">用户协议</a> 以及 <a href=":url" hreflang=":hreflang">隐私政策</a>，您需要阅读并同意才能继续使用您的账号。',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or account and never will do.',
+    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
     'compliance_terms' => '我已阅读并同意',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => '家庭关系',
     'relationship_type_group_friend' => '朋友关系',
     'relationship_type_group_work' => '工作关系',
-    'relationship_type_group_other' => 'Other kinds of relationships',
+    'relationship_type_group_other' => 'Other kind of relationships',
 
     'relationship_type_partner' => '搭档',
     'relationship_type_partner_female' => '搭档',
@@ -241,22 +241,22 @@ return [
     'relationship_type_boss' => '上司',
     'relationship_type_boss_female' => '上司',
     'relationship_type_boss_with_name' => ':name的上司',
-    'relationship_type_boss_female_with_name' => ':name’s manager',
+    'relationship_type_boss_female_with_name' => ':name’s boss',
 
-    'relationship_type_subordinate' => 'employee',
-    'relationship_type_subordinate_female' => 'employee',
-    'relationship_type_subordinate_with_name' => ':name’s employee',
-    'relationship_type_subordinate_female_with_name' => ':name’s employee',
+    'relationship_type_subordinate' => 'subordinate',
+    'relationship_type_subordinate_female' => 'subordinate',
+    'relationship_type_subordinate_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
 
     'relationship_type_mentor' => '老师',
     'relationship_type_mentor_female' => '老师',
     'relationship_type_mentor_with_name' => ':name的老师',
     'relationship_type_mentor_female_with_name' => ':name的老师',
 
-    'relationship_type_protege' => 'protégé',
-    'relationship_type_protege_female' => 'protégée',
-    'relationship_type_protege_with_name' => ':name’s protégé',
-    'relationship_type_protege_female_with_name' => ':name’s protégée',
+    'relationship_type_protege' => 'protege',
+    'relationship_type_protege_female' => 'protege',
+    'relationship_type_protege_with_name' => ':name’s protege',
+    'relationship_type_protege_female_with_name' => ':name’s protege',
 
     'relationship_type_ex_husband' => 'ex-husband',
     'relationship_type_ex_husband_female' => 'ex-wife',
