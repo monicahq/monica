@@ -7,7 +7,7 @@ return [
     'save' => 'Save',
     'add' => 'Add',
     'cancel' => 'Cancel',
-    'delete_confirm' => 'Delete',
+    'delete_confirm' => 'Sure?',
     'delete' => 'Delete',
     'edit' => 'Edit',
     'upload' => 'Upload',
@@ -22,7 +22,7 @@ return [
     'back' => 'Back',
     'verify' => 'Verify',
     'new' => 'new',
-    'unknown' => 'I don\'t know',
+    'unknown' => 'I don’t know',
     'load_more' => 'Load more',
     'loading' => 'Loading...',
     'with' => 'with',
@@ -40,7 +40,7 @@ return [
 
     'application_title' => 'Monica – personal relationship manager',
     'application_description' => 'Monica is a tool to manage your interactions with your loved ones, friends, and family.',
-    'application_og_title' => 'Have better relationships with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
 
     'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
     'markdown_link' => 'Read documentation',
