@@ -311,7 +311,7 @@ return [
 
     'api_oauth_clients' => 'לקוחות ה־OAuth שלך',
     'api_oauth_clients_desc' => 'אגף זה מסייע לך לרשום לקוחות OAuth משלך.',
-    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more explanations.',
+    'api_oauth_clients_desc2' => 'Use this client id to request a new token, and convert authorization codes to access tokens. See <a href="{url}">Laravel Passport documentation</a> for more information.',
     'api_oauth_title' => 'לקוחות OAuth',
     'api_oauth_create_new' => 'יצירת לקוח חדש',
     'api_oauth_edit' => 'עריכת לקוח',
@@ -325,7 +325,7 @@ return [
     'api_oauth_redirecturl_help' => 'כתובת הקריאה החוזרת לאימות היישום שלך.',
 
     'api_authorized_clients' => 'רשימת לקוחות מורשים',
-    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application datas. You can revoke this authorization at anytime.',
+    'api_authorized_clients_desc' => 'This section lists all the clients you’ve authorized to access your application data. You can revoke this authorization at anytime.',
     'api_authorized_clients_title' => 'יישומים מאושרים',
     'api_authorized_clients_none' => 'עדיין אין לקוחות מאומתים.',
     'api_authorized_clients_name' => 'שם',
