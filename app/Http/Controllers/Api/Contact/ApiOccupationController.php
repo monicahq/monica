@@ -67,8 +67,8 @@ class ApiOccupationController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -96,9 +96,9 @@ class ApiOccupationController extends ApiController
                 $request->except(['account_id', 'occupation_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'occupation_id' => $occupationId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'occupation_id' => $occupationId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

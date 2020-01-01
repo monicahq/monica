@@ -762,7 +762,7 @@ class ImportVCard extends BaseService
             app(DestroyAddress::class)->execute([
                 'account_id' => $contact->account_id,
                 'address_id' => $address->id,
-                ]);
+            ]);
         }
     }
 

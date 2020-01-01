@@ -35,8 +35,8 @@ class ApiContactTagControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/setTags", [
-                            'tags' => ['very-specific-tag-name', 'very-specific-tag-name-2'],
-                        ]);
+            'tags' => ['very-specific-tag-name', 'very-specific-tag-name-2'],
+        ]);
 
         $response->assertStatus(200);
         $tagId1 = $response->json('data.tags.0.id');
@@ -77,12 +77,12 @@ class ApiContactTagControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/setTags", [
-                            'tags' => [
-                                'very-specific-tag-name',
-                                null,
-                                'very-specific-tag-name-2',
-                            ],
-                        ]);
+            'tags' => [
+                'very-specific-tag-name',
+                null,
+                'very-specific-tag-name-2',
+            ],
+        ]);
 
         $response->assertStatus(200);
         $tagId1 = $response->json('data.tags.0.id');
@@ -155,8 +155,8 @@ class ApiContactTagControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTag", [
-                            'tags' => [$tag->id],
-                        ]);
+            'tags' => [$tag->id],
+        ]);
 
         $response->assertStatus(200);
 
@@ -216,8 +216,8 @@ class ApiContactTagControllerTest extends ApiTestCase
         ]);
 
         $response = $this->json('POST', "/api/contacts/{$contact->id}/unsetTag", [
-                            'tags' => [$tag->id, $tag2->id],
-                        ]);
+            'tags' => [$tag->id, $tag2->id],
+        ]);
 
         $response->assertStatus(200);
 
