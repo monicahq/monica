@@ -22,7 +22,7 @@ return [
     'back' => 'Back',
     'verify' => 'تحقق',
     'new' => 'جديد',
-    'unknown' => 'I don\'t know',
+    'unknown' => 'لا أعرف',
     'load_more' => 'تحميل المزيد',
     'loading' => 'جاري التحميل...',
     'with' => 'مع',
