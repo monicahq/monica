@@ -7,7 +7,7 @@ return [
     'save' => 'שמירה',
     'add' => 'הוספה',
     'cancel' => 'ביטול',
-    'delete_confirm' => 'Sure?',
+    'delete_confirm' => 'להמשיך?',
     'delete' => 'מחיקה',
     'edit' => 'עריכה',
     'upload' => 'העלאה',
@@ -22,7 +22,7 @@ return [
     'back' => 'חזרה',
     'verify' => 'אימות',
     'new' => 'new',
-    'unknown' => 'I don’t know',
+    'unknown' => 'לא ידוע לי',
     'load_more' => 'לטעון עוד',
     'loading' => 'בטעינה…',
     'with' => 'עם',
@@ -40,13 +40,13 @@ return [
 
     'application_title' => 'מוניקה - ניהול יחסים בינאישיים',
     'application_description' => 'מוניקה היא כלי לניהול הקשרים החברתיים שלך עם אהוביך, חבריך ומשפחתך.',
-    'application_og_title' => 'Have better relations with your loved ones. Free Online CRM for friends and family.',
+    'application_og_title' => 'חיזוק הקשר עם אהוביך. מערכת ניהול מקוונת בחינם לקשרים עם חברים ומשפחה.',
 
-    'markdown_description' => 'Want to format your text nicely? We support Markdown to add bold, italic, lists, and more.',
+    'markdown_description' => 'רוצה להוסיף קצת עניין לטקסט שלך? במערכת זו קיימת תמיכה ב־Markdown כדי להוסיף הדגשה, הטיה, רשימות ועוד.',
     'markdown_link' => 'קריאת התיעוד',
 
     'header_settings_link' => 'הגדרות',
-    'header_logout_link' => 'Logout',
+    'header_logout_link' => 'יציאה',
     'header_changelog_link' => 'שינויים במוצר',
 
     'main_nav_cta' => 'הוספת אנשים',
@@ -112,7 +112,7 @@ return [
 
     'compliance_title' => 'סליחה על ההפרעה.',
     'compliance_desc' => 'ערכנו את <a href=":urlterm" hreflang=":hreflang">תנאי השימוש</a> ואת <a href=":url" hreflang=":hreflang">מדיניות הפרטיות</a> שלנו. מכוח החוק עלינו לבקש ממך לעיין בשינויים ולאשר את הסכמתך להם כדי להמשיך לאפשר לך להשתמש בחשבונך.',
-    'compliance_desc_end' => 'We don’t do anything nasty with your data or your account and we never will.',
+    'compliance_desc_end' => 'אנו לא משתמשים בנתונים או בחשבון שלך לאף מטרה זדונית וגם לא נעשה זאת בעתיד.',
     'compliance_terms' => 'קבלת התנאים ומדיניות הפרטיות החדשים',
 
     // Relationship types
@@ -126,7 +126,7 @@ return [
     'relationship_type_group_family' => 'קשרים משפחתיים',
     'relationship_type_group_friend' => 'קשרים חברתיים',
     'relationship_type_group_work' => 'קשרי עבודה',
-    'relationship_type_group_other' => 'Other kind of relationships',
+    'relationship_type_group_other' => 'סוגי קשר אחרים',
 
     'relationship_type_partner' => 'בן זוג',
     'relationship_type_partner_female' => 'בת זוג',
@@ -241,27 +241,27 @@ return [
     'relationship_type_boss' => 'מנהל',
     'relationship_type_boss_female' => 'מנהלת',
     'relationship_type_boss_with_name' => 'מנהל של :name',
-    'relationship_type_boss_female_with_name' => ':name’s boss',
+    'relationship_type_boss_female_with_name' => 'מנהלת של :name',
 
-    'relationship_type_subordinate' => 'subordinate',
-    'relationship_type_subordinate_female' => 'subordinate',
-    'relationship_type_subordinate_with_name' => ':name’s subordinate',
-    'relationship_type_subordinate_female_with_name' => ':name’s subordinate',
+    'relationship_type_subordinate' => 'כפוף',
+    'relationship_type_subordinate_female' => 'כפופה',
+    'relationship_type_subordinate_with_name' => 'כפוף ל:name',
+    'relationship_type_subordinate_female_with_name' => 'כפופה ל:name',
 
     'relationship_type_mentor' => 'חונך',
     'relationship_type_mentor_female' => 'חונכת',
     'relationship_type_mentor_with_name' => 'חונך של :name',
     'relationship_type_mentor_female_with_name' => 'חונך של :name',
 
-    'relationship_type_protege' => 'protege',
-    'relationship_type_protege_female' => 'protege',
-    'relationship_type_protege_with_name' => ':name’s protege',
-    'relationship_type_protege_female_with_name' => ':name’s protege',
+    'relationship_type_protege' => 'חניך',
+    'relationship_type_protege_female' => 'חניכה',
+    'relationship_type_protege_with_name' => 'חניך של :name',
+    'relationship_type_protege_female_with_name' => 'חניכה של :name',
 
-    'relationship_type_ex_husband' => 'ex-husband',
-    'relationship_type_ex_husband_female' => 'ex-wife',
-    'relationship_type_ex_husband_with_name' => ':name’s ex-husband',
-    'relationship_type_ex_husband_female_with_name' => ':name’s ex-wife',
+    'relationship_type_ex_husband' => 'גרוש',
+    'relationship_type_ex_husband_female' => 'גרושה',
+    'relationship_type_ex_husband_with_name' => 'הגרוש של :name',
+    'relationship_type_ex_husband_female_with_name' => 'הגרושה של :name',
 
     // emotions
     'emotion_primary_love' => 'אהבה',
