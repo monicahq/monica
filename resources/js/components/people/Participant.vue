@@ -18,7 +18,6 @@ input[type=text]:focus {
 </style>
 
 <template>
-  <div>
     <div class="relative">
       <ul v-show="chosenParticipants.length != 0" class="mr2 mb3">
         <li v-for="chosenParticipant in chosenParticipants"
@@ -48,7 +47,6 @@ input[type=text]:focus {
         </ul>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -109,7 +107,7 @@ export default {
     },
 
     getParticipants: function () {
-      axios.get('/people/' + this.hash + '/activities/contacts')
+      axios.get('people/' + this.hash + '/activities/contacts')
         .then(response => {
           this.participants = response.data;
         });

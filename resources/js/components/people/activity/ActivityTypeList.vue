@@ -2,33 +2,27 @@
 </style>
 
 <template>
-  <div>
-    <select class="br2 f5 w-100 ba b--black-40 pa2 outline-0" @change="$emit('change', $event.target.value)">
-      <option value="" selected>
-        -
-      </option>
-
-      <optgroup v-for="activityTypeCategory in activityCategories" :key="activityTypeCategory.id" :label="activityTypeCategory.name">
-        <option v-for="type in activityTypeCategory.types" :key="type.id" :value="type.id">
-          {{ type.name }}
-        </option>
-      </optgroup>
-    </select>
-  </div>
+  <form-select
+    :title="title"
+    :options="activityCategories"
+    :iclass="'br2 f5 w-100 ba b--black-40 pa2 outline-0'"
+    @input="$emit('input', $event)"
+  ></form-select>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      activityCategories: [],
-    };
+  props: {
+    title: {
+      type: String,
+      default: '',
+    },
   },
 
-  computed: {
-    dirltr() {
-      return this.$root.htmldir == 'ltr';
-    }
+  data() {
+    return {
+      activityCategories: null,
+    };
   },
 
   mounted() {
@@ -41,9 +35,12 @@ export default {
     },
 
     getActivities() {
-      axios.get('/activityCategories')
+      axios.get('activityCategories')
         .then(response => {
-          this.activityCategories = response.data;
+          this.activityCategories = _.map(response.data, a => {
+            name: a.name
+            options: a.types
+          });
         });
     },
   }

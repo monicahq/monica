@@ -32,83 +32,93 @@
     </div>
 
     <!-- LOG AN ACTIVITY -->
-    <create-activity
-      :hash="hash"
-      :name="name"
-      :display-log-activity="displayLogActivity"
-      @update="updateList($event)"
-      @cancel="displayLogActivity = false"
-    />
+    <template v-if="displayLogActivity">
+      <create-activity
+        :hash="hash"
+        :name="name"
+        @update="updateList($event)"
+        @cancel="displayLogActivity = false"
+      ></create-activity>
+    </template>
 
     <!-- LIST OF ACTIVITIES -->
     <div v-for="activity in activities" :key="activity.id" class="ba br2 b--black-10 br--top w-100 mb2">
-      <h2 class="pl2 pr2 pt3 f5">
-        {{ activity.summary }}
-      </h2>
+      <template v-if="!activity.edit">
+        <h2 class="pl2 pr2 pt3 f5">
+          {{ activity.summary }}
+        </h2>
 
-      <div v-if="activity.description" dir="auto" class="pl2 pr2 pb3" v-html="activity.description">
-      </div>
-
-      <!-- DETAILS -->
-      <div class="pa2 cf bt b--black-10 br--bottom f7">
-        <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
-          <ul class="list">
-            <!-- HAPPENED AT -->
-            <li class="di" :class="[ dirltr ? 'mr3' : 'ml3' ]">
-              {{ activity.happened_at | moment }}
-            </li>
-
-            <!-- PARTICIPANT LIST -->
-            <li v-if="activity.attendees.total > 1" class="di">
-              <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
-                <li class="di">
-                  {{ $t('people.activities_list_participants') }}
-                </li>
-                <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di mr2">
-                  <span v-show="attendee.id != contactId">{{ attendee.complete_name }}</span>
-                </li>
-              </ul>
-            </li>
-
-            <!-- EMOTIONS LIST -->
-            <li v-if="activity.emotions.length != 0" class="di">
-              <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
-                <li class="di">
-                  {{ $t('people.activities_list_emotions') }}
-                </li>
-                <li v-for="emotion in activity.emotions" :key="emotion.id" class="di">
-                  {{ $t('app.emotion_' + emotion.name) }}
-                </li>
-              </ul>
-            </li>
-
-            <!-- ACTIVITY TYPE -->
-            <li v-if="activity.activity_type" class="di" :class="[ dirltr ? 'mr3' : 'ml3' ]">
-              {{ activity.activity_type.name }}
-            </li>
-          </ul>
+        <div v-if="activity.description" dir="auto" class="pl2 pr2 pb3" v-html="activity.description">
         </div>
-        <div class="w-30" :class="[ dirltr ? 'fl tr' : 'fr tl' ]">
-          <!-- ACTIONS -->
-          <ul class="list">
-            <li class="di">
-              <a v-show="destroyActivityId != activity.id" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
-              <ul v-show="destroyActivityId == activity.id" class="di">
-                <li class="di">
-                  <a class="pointer red" @click.prevent="destroyActivity(activity)">
-                    {{ $t('app.delete_confirm') }}
-                  </a>
-                </li>
-                <li class="di">
-                  <a class="pointer mr1" @click.prevent="destroyActivityId = 0">
-                    {{ $t('app.cancel') }}
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
+
+        <!-- DETAILS -->
+        <div class="pa2 cf bt b--black-10 br--bottom f7">
+          <div class="w-70" :class="[ dirltr ? 'fl' : 'fr' ]">
+            <ul class="list">
+              <!-- HAPPENED AT -->
+              <li class="di" :class="[ dirltr ? 'mr3' : 'ml3' ]">
+                {{ activity.happened_at | moment }}
+              </li>
+
+              <!-- PARTICIPANT LIST -->
+              <li v-if="activity.attendees.total > 1" class="di">
+                <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
+                  <li class="di">
+                    {{ $t('people.activities_list_participants') }}
+                  </li>
+                  <li v-for="attendee in activity.attendees.contacts" :key="attendee.id" class="di mr2">
+                    <span v-show="attendee.id != contactId">{{ attendee.complete_name }}</span>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- EMOTIONS LIST -->
+              <li v-if="activity.emotions.length != 0" class="di">
+                <ul class="di list" :class="[ dirltr ? 'mr3' : 'ml3' ]">
+                  <li class="di">
+                    {{ $t('people.activities_list_emotions') }}
+                  </li>
+                  <li v-for="emotion in activity.emotions" :key="emotion.id" class="di">
+                    {{ $t('app.emotion_' + emotion.name) }}
+                  </li>
+                </ul>
+              </li>
+
+              <!-- ACTIVITY TYPE -->
+              <li v-if="activity.activity_type" class="di" :class="[ dirltr ? 'mr3' : 'ml3' ]">
+                {{ activity.activity_type.name }}
+              </li>
+            </ul>
+          </div>
+          <div class="w-30" :class="[ dirltr ? 'fl tr' : 'fr tl' ]">
+            <!-- ACTIONS -->
+            <ul class="list">
+              <li class="di">
+                <a v-show="destroyActivityId != activity.id" class="pointer" @click.prevent="showDestroyActivity(activity)">{{ $t('app.delete') }}</a>
+                <ul v-show="destroyActivityId == activity.id" class="di">
+                  <li class="di">
+                    <a class="pointer red" @click.prevent="destroyActivity(activity)">
+                      {{ $t('app.delete_confirm') }}
+                    </a>
+                  </li>
+                  <li class="di">
+                    <a class="pointer mr1" @click.prevent="destroyActivityId = 0">
+                      {{ $t('app.cancel') }}
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
+      </template>
+      <create-activity v-else
+        :hash="hash"
+        :name="name"
+        :activity="activity"
+        @update="updateList($event)"
+        @cancel="displayLogActivity = false"
+      ></create-activity>
     </div>
 
     <p v-if="activities.length > 0" class="tc">
@@ -119,8 +129,13 @@
 
 <script>
 import moment from 'moment';
+import CreateActivity from './CreateActivity.vue';
 
 export default {
+  components: {
+    CreateActivity
+  },
+
   filters: {
     moment: function (date) {
       return moment.utc(date).format('LL');

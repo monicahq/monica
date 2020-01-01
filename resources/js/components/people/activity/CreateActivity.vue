@@ -5,18 +5,16 @@
   <div>
     <!-- LOG AN ACTIVITY -->
     <transition name="fade">
-      <div v-if="displayLogActivity" class="ba br3 mb3 pa3 b--black-40">
+      <div class="ba br3 mb3 pa3 b--black-40">
         <div class="dt dt--fixed pb3 mb3 mb0-ns bb b--gray-monica">
           <!-- SUMMARY -->
           <div class="dtc pr2">
-            <p class="mb2 b">
-              {{ $t('people.activities_add_title', { name: name }) }}
-            </p>
             <form-input
               :id="'summary'"
               v-model="newActivity.summary"
               :input-type="'text'"
-              :required="false"
+              :title="$t('people.activities_add_title', { name: name })"
+              :required="true"
             />
           </div>
 
@@ -31,7 +29,7 @@
                   v-model="newActivity.happened_at"
                   :default-date="todayDate"
                   :locale="locale"
-                  @selected="updateDate($event)"
+                  :required="true"
                 />
               </div>
             </div>
@@ -58,16 +56,13 @@
 
         <!-- DESCRIPTION -->
         <div v-if="displayDescription" class="bb b--gray-monica pv3 mb3">
-          <label>
-            {{ $t('people.activities_summary') }}
-          </label>
           <form-textarea
             v-model="newActivity.description"
             :required="true"
             :no-label="true"
             :rows="4"
+            :title="$t('people.activities_summary')"
             :placeholder="$t('people.conversation_add_content')"
-            @contentChange="updateDescription($event)"
           />
           <p class="f6">
             {{ $t('app.markdown_description') }} <a href="https://guides.github.com/features/mastering-markdown/" rel="noopener noreferrer" target="_blank">
@@ -81,15 +76,19 @@
           <label>
             {{ $t('people.activities_add_emotions_title') }}
           </label>
-          <emotion class="pv2" @updateEmotionsList="updateEmotionsList" />
+          <emotion
+            class="pv2"
+            :initial-emotions="newActivity.emotions"
+            @update="updateEmotionsList"
+          />
         </div>
 
         <!-- ACTIVITY CATEGORIES -->
         <div v-if="displayCategory" class="bb b--gray-monica pb3 mb3">
-          <label>
-            {{ $t('people.activities_add_pick_activity') }}
-          </label>
-          <activity-type-list @change="updateCategory($event)" />
+          <activity-type-list
+            :title="$t('people.activities_add_pick_activity')"
+            @input="updateCategory($event)"
+          />
         </div>
 
         <!-- PARTICPANTS -->
@@ -97,7 +96,10 @@
           <label>
             {{ $t('people.activities_add_participants', {name: name}) }}
           </label>
-          <participant-list :hash="hash" @update="updateParticipant($event)" />
+          <participant
+            :hash="hash"
+            @update="updateParticipant($event)"
+          />
         </div>
 
         <error :errors="errors" />
@@ -106,7 +108,7 @@
         <div class="pt3">
           <div class="flex-ns justify-between">
             <div class="">
-              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="resetFields()">
+              <a class="btn btn-secondary tc w-auto-ns w-100 mb2 pb0-ns" @click.prevent="close()">
                 {{ $t('app.cancel') }}
               </a>
             </div>
@@ -124,11 +126,17 @@
 
 <script>
 import moment from 'moment';
+import ActivityTypeList from './ActivityTypeList.vue';
+import Emotion from '../Emotion.vue';
 import Error from '../../partials/Error.vue';
+import Participant from '../Participant.vue';
 
 export default {
   components: {
-    Error
+    ActivityTypeList,
+    Emotion,
+    Error,
+    Participant,
   },
 
   filters: {
@@ -146,9 +154,9 @@ export default {
       type: String,
       default: '',
     },
-    displayLogActivity: {
-      type: Boolean,
-      default: false,
+    activity: {
+      type: Object,
+      default: null,
     },
   },
 
@@ -192,26 +200,31 @@ export default {
     },
 
     resetFields() {
+      if (this.activity) {
+        this.newActivity.summary = this.activity.summary;
+        this.newActivity.description = this.activity.description;
+        this.newActivity.happened_at = this.activity.happened_at;
+        this.newActivity.emotions = this.activity.emotions;
+        this.newActivity.activity_type_id = this.activity.activity_type_id;
+        this.newActivity.participants = this.activity.participants;
+      } else {
+        this.newActivity.summary = '';
+        this.newActivity.description = '';
+        this.newActivity.happened_at = '';
+        this.newActivity.emotions = [];
+        this.newActivity.activity_type_id = 0;
+        this.newActivity.participants = [];
+      }
       this.displayDescription = false;
       this.displayEmotions = false;
       this.displayCategory = false;
       this.displayParticipants = false;
-      this.newActivity.summary = '';
-      this.newActivity.participants = [];
-      this.description = '';
-      this.happened_at = '';
-      this.emotions = [];
-      this.activity_type_id = 0;
       this.errors = [];
+    },
+
+    close() {
+      this.resetFields();
       this.$emit('cancel');
-    },
-
-    updateDescription(description) {
-      this.newActivity.description = description;
-    },
-
-    updateDate(date) {
-      this.newActivity.happened_at = date;
     },
 
     updateCategory(id) {
@@ -219,7 +232,10 @@ export default {
     },
 
     store() {
-      axios.post('/people/' + this.hash + '/activities', this.newActivity)
+      let method = this.activity ? 'put' : 'post';
+      let url = this.activity ? 'api/activities/'+this.activity.id : 'api/activities';
+
+      axios[method](url, this.newActivity)
         .then(response => {
           this.resetFields();
           this.$emit('update', response.data.data);
@@ -232,7 +248,7 @@ export default {
           });
         })
         .catch(error => {
-          this.errors = _.flatten(_.toArray(error.response.data));
+          this._errorHandle(error);
         });
     },
 
@@ -241,15 +257,18 @@ export default {
     },
 
     updateEmotionsList: function(emotions) {
-      this.emotions = emotions;
-      this.newActivity.emotions = [];
-
       // filter the list of emotions to populate a new array
       // containing only the emotion ids and not the entire objetcs
-      for (let i = 0; i < this.emotions.length; i++) {
-        this.newActivity.emotions.push(this.emotions[i].id);
+      this.newActivity.emotions = _.map(emotions, emotion => emotion.id);
+    },
+
+    _errorHandle(error) {
+      if (error.response && typeof error.response.data === 'object') {
+        this.errors = _.flatten(_.toArray(error.response.data));
+      } else {
+        this.errors = [this.$t('app.error_try_again'), error.message];
       }
-    }
+    },
   }
 };
 </script>
