@@ -34,7 +34,9 @@ class CreateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
-            'contacts' => $contacts->map(function ($contact) { return $contact->id; })->toArray(),
+            'contacts' => $contacts->map(function ($contact) {
+                return $contact->id;
+            })->toArray(),
         ];
 
         $activity = app(CreateActivity::class)->execute($request);
