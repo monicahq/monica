@@ -4,8 +4,8 @@ namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
-use App\Models\Account\Activity;
 use App\Models\Contact\Contact;
+use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Services\Account\Activity\Activity\CreateActivity;

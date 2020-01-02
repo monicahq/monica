@@ -3,7 +3,6 @@
 namespace Tests\Api;
 
 use Tests\ApiTestCase;
-use App\Models\Account\Account;
 use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
@@ -57,7 +56,7 @@ class ApiActivitiesTest extends ApiTestCase
                 'id',
                 'object',
                 'name',
-            ]
+            ],
         ],
         'account' => [
             'id',
