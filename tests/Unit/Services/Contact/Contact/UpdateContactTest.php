@@ -12,7 +12,8 @@ class UpdateContactTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_updates_a_contact()
+    /** @test */
+    public function it_updates_a_contact()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -54,7 +55,8 @@ class UpdateContactTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $contact = factory(Contact::class)->create([]);
 
@@ -85,7 +87,8 @@ class UpdateContactTest extends TestCase
         app(UpdateContact::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_account_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_account_doesnt_exist()
     {
         $contact = factory(Contact::class)->create([]);
 

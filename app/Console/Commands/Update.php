@@ -59,7 +59,7 @@ class Update extends Command
                 $this->commandExecutor->artisan('✓ Maintenance mode: on', 'down', [
                     '--message' => 'Upgrading Monica v'.config('monica.app_version'),
                     '--retry' => '10',
-                    ]);
+                ]);
 
                 // Clear or rebuild all cache
                 if (config('cache.default') != 'database' || Schema::hasTable(config('cache.stores.database.table'))) {

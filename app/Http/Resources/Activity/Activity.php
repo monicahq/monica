@@ -4,6 +4,7 @@ namespace App\Http\Resources\Activity;
 
 use App\Helpers\DateHelper;
 use Illuminate\Http\Resources\Json\Resource;
+use App\Http\Resources\Emotion\Emotion as EmotionResource;
 use App\Http\Resources\Activity\ActivityType as ActivityTypeResource;
 
 class Activity extends Resource
@@ -21,12 +22,13 @@ class Activity extends Resource
             'object' => 'activity',
             'summary' => $this->summary,
             'description' => $this->description,
-            'date_it_happened' => DateHelper::getTimestamp($this->date_it_happened),
+            'happened_at' => DateHelper::getTimestamp($this->happened_at),
             'activity_type' => new ActivityTypeResource($this->type),
             'attendees' => [
                 'total' => $this->contacts()->count(),
                 'contacts' => $this->getContactsForAPI(),
             ],
+            'emotions' => EmotionResource::collection($this->emotions),
             'url' => route('api.activity', $this->id),
             'account' => [
                 'id' => $this->account->id,

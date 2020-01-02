@@ -67,6 +67,7 @@ return [
     'not_in'               => ':attribute הנבחר שגוי.',
     'not_regex'            => 'התבנית :attribute שגויה.',
     'numeric'              => ':attribute חייב להיות מספר.',
+    'password' => 'הססמה שגויה.',
     'present'              => 'השדה :attribute חייב להיות נוכח.',
     'regex'                => 'המבנה :attribute שגוי.',
     'required'             => 'השדה :attribute נחוץ.',

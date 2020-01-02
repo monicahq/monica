@@ -7,18 +7,28 @@
 
 ### Enhancements:
 
+* Activities are now added inline
+* Improve modals bottom buttons display
+* Add foreign keys to all tables
+* Add English (UK) locale
+* Add API methods to destroy and store documents
+* Add API methods to manage photos and avatars
+* Add emotions and participants to activities
 * Enable API web navigation
 * Enhance UI of API's Settings to add comprehension and documentation
 * Improve trim string middleware to not trim password text
-* Upgrade to Laravel 6.5
+* Upgrade to Laravel 6.x
 * Enhance user invitation mail
 * Add job information next to the contact name on profile page
 * Use supervisor in docker images
 * Use JawsDB by default on heroku instances
 * Add pluralization forms for non-english-like-plural languages, for vue.js translations
+* Upload master docker image to GitHub packages
 
 ### Fixes:
 
+* Fix contact list cells link
+* Fix birthdate selection UX
 * Fix OAuth login process with WebAuthn activated
 * Fix journal entry edit
 * Fix register in case country is not detected from ip address
@@ -37,9 +47,6 @@
 * Fix search when prefix table is used
 * Fix storage page not being displayed if a contact does not exist anymore
 * Fix API requests for Reminders failing with internal server error
-
-
-# RELEASED VERSIONS:
 
 ## v2.15.2 - 2019-09-26
 

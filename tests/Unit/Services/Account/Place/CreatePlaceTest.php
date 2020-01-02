@@ -17,7 +17,8 @@ class CreatePlaceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_a_place_without_fetching_geolocation_information()
+    /** @test */
+    public function it_stores_a_place_without_fetching_geolocation_information()
     {
         $account = factory(Account::class)->create([]);
 
@@ -47,7 +48,8 @@ class CreatePlaceTest extends TestCase
         );
     }
 
-    public function test_it_stores_a_place_and_fetch_geolocation_information()
+    /** @test */
+    public function it_stores_a_place_and_fetch_geolocation_information()
     {
         config(['monica.enable_geolocation' => true]);
         config(['monica.location_iq_api_key' => 'test']);
@@ -81,7 +83,8 @@ class CreatePlaceTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $account = factory(Account::class)->create([]);
 

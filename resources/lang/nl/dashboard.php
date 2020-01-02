@@ -28,7 +28,7 @@ return [
     'statistics_activities' => 'Activiteiten',
     'statistics_gifts' => 'Cadeaus',
 
-    'reminders_next_months' => 'Gebeurtenissen in de komende 3 maanden',
+    'reminders_next_months' => 'Gebeurtenissen de komende 3 maanden',
     'reminders_none' => 'Geen herinnering voor deze maand',
 
     'product_changes' => 'Productwijzigingen',

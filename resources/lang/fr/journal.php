@@ -19,6 +19,6 @@ return [
     'journal_add_post' => 'Entrée',
     'journal_add_cta' => 'Sauvegarder',
     'journal_blank_cta' => 'Ajouter votre première entrée dans le journal',
-    'journal_blank_description' => 'Le journal vous permet de vous rappeler d’événements passés, ou à venir.',
+    'journal_blank_description' => 'Le journal vous permet de vous rappeler d’évènements passés, ou à venir.',
     'delete_confirmation' => 'Êtes-vous sûr de vouloir supprimer cette entrée ?',
 ];

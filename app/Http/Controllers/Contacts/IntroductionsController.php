@@ -2,13 +2,11 @@
 
 namespace App\Http\Controllers\Contacts;
 
+use Illuminate\Http\Request;
 use App\Models\Contact\Contact;
 use App\Http\Controllers\Controller;
 use App\Traits\JsonRespondController;
-use App\Services\Contact\Reminder\CreateReminder;
-use App\Http\Requests\People\IntroductionsRequest;
-use App\Services\Contact\Reminder\DestroyReminder;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Services\Contact\Contact\UpdateContactIntroductions;
 
 class IntroductionsController extends Controller
 {
@@ -30,63 +28,26 @@ class IntroductionsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param IntroductionsRequest $request
+     * @param Request $request
      * @param Contact $contact
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
-    public function update(IntroductionsRequest $request, Contact $contact)
+    public function update(Request $request, Contact $contact)
     {
         // Store the contact that allowed this encounter to happen in the first
         // place
-        if ($request->input('metThroughId') !== null) {
-            try {
-                Contact::where('account_id', auth()->user()->account_id)
-                    ->findOrFail($request->input('metThroughId'));
-            } catch (ModelNotFoundException $e) {
-                return $this->respondNotFound();
-            }
-
-            $contact->first_met_through_contact_id = $request->input('metThroughId');
-        } else {
-            $contact->first_met_through_contact_id = null;
-        }
-
-        try {
-            app(DestroyReminder::class)->execute([
-                'account_id' => $contact->account_id,
-                'reminder_id' => $contact->first_met_reminder_id,
-            ]);
-        } catch (\Exception $e) {
-        }
-
-        if ($request->is_first_met_date_known == 'known') {
-            $specialDate = $contact->setSpecialDate('first_met', $request->input('first_met_year'), $request->input('first_met_month'), $request->input('first_met_day'));
-
-            if ($request->addReminder == 'on') {
-                app(CreateReminder::class)->execute([
-                    'account_id' => $contact->account_id,
-                    'contact_id' => $contact->id,
-                    'initial_date' => $specialDate->date->toDateString(),
-                    'frequency_type' => 'year',
-                    'frequency_number' => 1,
-                    'title' => trans(
-                        'people.introductions_reminder_title',
-                        ['name' => $contact->first_name]
-                    ),
-                ]);
-            }
-        } else {
-            $contact->first_met_special_date_id = null;
-        }
-
-        if ($request->first_met_additional_info != '') {
-            $contact->first_met_additional_info = $request->input('first_met_additional_info');
-        } else {
-            $contact->first_met_additional_info = null;
-        }
-
-        $contact->save();
+        $contact = app(UpdateContactIntroductions::class)->execute([
+            'account_id' => auth()->user()->account_id,
+            'contact_id' => $contact->id,
+            'met_through_contact_id' => $request->input('metThroughId'),
+            'general_information' => $request->input('first_met_additional_info'),
+            'is_date_known' => $request->is_first_met_date_known == 'known',
+            'day' => $request->input('first_met_day'),
+            'month' => $request->input('first_met_month'),
+            'year' => $request->input('first_met_year'),
+            'add_reminder' => $request->addReminder == 'on',
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.introductions_update_success'));

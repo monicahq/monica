@@ -66,7 +66,8 @@ class ApiMessageControllerTest extends ApiTestCase
         return $message;
     }
 
-    public function test_it_adds_a_message_to_a_conversation()
+    /** @test */
+    public function it_adds_a_message_to_a_conversation()
     {
         $user = $this->signin();
 
@@ -85,7 +86,8 @@ class ApiMessageControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_message()
+    /** @test */
+    public function it_updates_a_message()
     {
         $user = $this->signin();
 
@@ -105,7 +107,8 @@ class ApiMessageControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_destroys_a_message()
+    /** @test */
+    public function it_destroys_a_message()
     {
         $user = $this->signin();
 

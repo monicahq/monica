@@ -16,14 +16,15 @@ class ActivityStatisticServiceTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_gets_a_list_of_activities_since_a_given_number_of_months()
+    /** @test */
+    public function it_gets_a_list_of_activities_since_a_given_number_of_months()
     {
         $service = new ActivityStatisticService;
         $contact = factory(Contact::class)->create();
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => now()->subMonth(),
+                'happened_at' => now()->subMonth(),
                 'account_id' => $contact->account_id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -40,14 +41,15 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_an_empty_list_of_activities()
+    /** @test */
+    public function it_gets_an_empty_list_of_activities()
     {
         $service = new ActivityStatisticService;
         $contact = factory(Contact::class)->create();
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => now()->subYears(2),
+                'happened_at' => now()->subYears(2),
                 'account_id' => $contact->account_id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -59,7 +61,8 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_a_list_of_unique_activity_types()
+    /** @test */
+    public function it_gets_a_list_of_unique_activity_types()
     {
         $service = new ActivityStatisticService;
         $account = factory(Account::class)->create();
@@ -74,7 +77,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => now(),
+                'happened_at' => now(),
                 'account_id' => $account->id,
                 'activity_type_id' => $activityType->id,
             ]);
@@ -87,7 +90,7 @@ class ActivityStatisticServiceTest extends TestCase
         ]);
 
         $activity = factory(Activity::class)->create([
-            'date_it_happened' => now(),
+            'happened_at' => now(),
             'account_id' => $account->id,
             'activity_type_id' => $activityType->id,
         ]);
@@ -122,7 +125,8 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_breakdown_of_activities_per_year()
+    /** @test */
+    public function it_gets_the_breakdown_of_activities_per_year()
     {
         $service = new ActivityStatisticService;
         $account = factory(Account::class)->create();
@@ -132,7 +136,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => now()->subYears(2),
+                'happened_at' => now()->subYears(2),
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -140,7 +144,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => now(),
+                'happened_at' => now(),
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -183,7 +187,8 @@ class ActivityStatisticServiceTest extends TestCase
         );
     }
 
-    public function test_it_gets_a_list_of_activities_per_month_for_given_year()
+    /** @test */
+    public function it_gets_a_list_of_activities_per_month_for_given_year()
     {
         $service = new ActivityStatisticService;
         $account = factory(Account::class)->create();
@@ -195,7 +200,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 2; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => '2017-01-02',
+                'happened_at' => '2017-01-02',
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);
@@ -203,7 +208,7 @@ class ActivityStatisticServiceTest extends TestCase
 
         for ($i = 0; $i <= 5; $i++) {
             $activity = factory(Activity::class)->create([
-                'date_it_happened' => '2017-02-01',
+                'happened_at' => '2017-02-01',
                 'account_id' => $account->id,
             ]);
             $contact->activities()->attach($activity, ['account_id' => $contact->account_id]);

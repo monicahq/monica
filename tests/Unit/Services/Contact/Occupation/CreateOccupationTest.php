@@ -15,7 +15,8 @@ class CreateOccupationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_stores_an_occupation()
+    /** @test */
+    public function it_stores_an_occupation()
     {
         $account = factory(Account::class)->create([]);
         $contact = factory(Contact::class)->create([
@@ -47,7 +48,8 @@ class CreateOccupationTest extends TestCase
         );
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $account = factory(Account::class)->create([]);
 

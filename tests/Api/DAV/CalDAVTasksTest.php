@@ -198,7 +198,7 @@ class CalDAVTasksTest extends ApiTestCase
 
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
-          'account_id' => $user->account->id,
+            'account_id' => $user->account->id,
         ]);
         $task = factory(Task::class)->create([
             'account_id' => $user->account->id,

@@ -20,6 +20,8 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Contact\Contact\CreateContact;
 use App\Services\Contact\Contact\UpdateContact;
 use App\Services\Contact\Contact\DestroyContact;
+use App\Services\Contact\Contact\UpdateContactWork;
+use App\Services\Contact\Contact\UpdateContactFoodPreferences;
 use App\Http\Resources\Contact\ContactSearch as ContactResource;
 
 class ContactsController extends Controller
@@ -457,13 +459,12 @@ class ContactsController extends Controller
      */
     public function updateWork(Request $request, Contact $contact)
     {
-        $job = $request->input('job');
-        $company = $request->input('company');
-
-        $contact->job = ! empty($job) ? $job : null;
-        $contact->company = ! empty($company) ? $company : null;
-
-        $contact->save();
+        $contact = app(UpdateContactWork::class)->execute([
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'job' => $request->input('job'),
+            'company' => $request->input('company'),
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.work_edit_success'));
@@ -493,9 +494,11 @@ class ContactsController extends Controller
      */
     public function updateFoodPreferences(Request $request, Contact $contact)
     {
-        $food = ! empty($request->input('food')) ? $request->input('food') : null;
-
-        $contact->updateFoodPreferences($food);
+        $contact = app(UpdateContactFoodPreferences::class)->execute([
+            'account_id' => auth()->user()->account->id,
+            'contact_id' => $contact->id,
+            'food_preferences' => $request->input('food'),
+        ]);
 
         return redirect()->route('people.show', $contact)
             ->with('success', trans('people.food_preferences_add_success'));

@@ -31,7 +31,8 @@ class ApiDebtsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_debts_get_all()
+    /** @test */
+    public function it_gets_all_the_debts()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -65,7 +66,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_get_contact_all()
+    /** @test */
+    public function it_gets_all_the_debts_for_a_given_contact()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -99,7 +101,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_get_contact_all_error()
+    /** @test */
+    public function it_cant_get_debts_from_an_invalid_contact()
     {
         $user = $this->signin();
 
@@ -108,7 +111,8 @@ class ApiDebtsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_debts_get_one()
+    /** @test */
+    public function it_gets_one_debt()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -139,7 +143,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_get_one_error()
+    /** @test */
+    public function it_cant_get_a_debt_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -148,7 +153,8 @@ class ApiDebtsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_debts_create()
+    /** @test */
+    public function it_creates_a_debt()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -196,7 +202,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_create_error()
+    /** @test */
+    public function it_cant_create_a_debt_if_fields_are_missing()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -214,7 +221,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_create_error_bad_account()
+    /** @test */
+    public function it_cant_create_a_debt_with_a_bad_account()
     {
         $user = $this->signin();
 
@@ -234,7 +242,8 @@ class ApiDebtsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_debts_update()
+    /** @test */
+    public function it_updates_a_debt()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -280,7 +289,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_update_error()
+    /** @test */
+    public function it_cant_update_a_debt_with_missing_parameters()
     {
         $user = $this->signin();
         $debt = factory(Debt::class)->create([
@@ -298,7 +308,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_dets_update_error_bad_account()
+    /** @test */
+    public function it_cant_update_a_debt_with_a_wrong_account()
     {
         $user = $this->signin();
 
@@ -322,7 +333,8 @@ class ApiDebtsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_debts_delete()
+    /** @test */
+    public function it_deletes_a_debt()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -348,7 +360,8 @@ class ApiDebtsTest extends ApiTestCase
         ]);
     }
 
-    public function test_debts_delete_error()
+    /** @test */
+    public function it_cant_delete_a_debt_with_an_invalid_id()
     {
         $user = $this->signin();
 
