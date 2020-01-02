@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Du musst dein Konto upgraden, um diese Funktion nutzen zu können',
     'stay_in_touch_modal_title' => 'In Kontakt bleiben',
     'stay_in_touch_modal_desc' => 'Wir können dich per E-Mail daran erinnern, in regelmäßigen Abständen mit {firstname} in Kontakt zu bleiben.',
-    'stay_in_touch_modal_label' => 'Sende mir eine E-Mail jeden {count} Tag|Sende mir eine E-Mail alle... {count} Tage',
+    'stay_in_touch_modal_label' => 'Sende mir eine E-Mail jeden... {count} Tag|Sende mir eine E-Mail alle... {count} Tage',
 
     // Calls
     'modal_call_title' => 'Telefonat vermerken',
