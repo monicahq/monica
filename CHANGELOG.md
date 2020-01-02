@@ -2,7 +2,7 @@
 
 ### New features:
 
-* Enable activities update
+* Add ability to edit activities
 
 ### Enhancements:
 
