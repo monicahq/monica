@@ -48,7 +48,7 @@ class DestroyActivityTest extends TestCase
             'activity_type_id' => $activityType->id,
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
-            'date' => '2009-09-09',
+            'happened_at' => '2009-09-09',
         ];
 
         $activity = app(CreateActivity::class)->execute($request);

@@ -25,7 +25,7 @@ class UpdateActivityTest extends TestCase
             'activity_type_id' => $activity->activity_type_id,
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
-            'date' => '2009-09-09',
+            'happened_at' => '2009-09-09',
         ];
 
         app(UpdateActivity::class)->execute($request);
@@ -53,7 +53,7 @@ class UpdateActivityTest extends TestCase
             'activity_type_id' => $activity->activity_type_id,
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
-            'date' => '2009-09-09',
+            'happened_at' => '2009-09-09',
         ];
 
         $this->expectException(ValidationException::class);
@@ -72,7 +72,7 @@ class UpdateActivityTest extends TestCase
             'activity_type_id' => $activity->activity_type_id,
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
-            'date' => '2009-09-09',
+            'happened_at' => '2009-09-09',
         ];
 
         $this->expectException(ModelNotFoundException::class);
