@@ -31,6 +31,38 @@ class UpdateActivity extends BaseService
     }
 
     /**
+     * Validate all datas to execute the service.
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function validate(array $data) : bool
+    {
+        parent::validate($data);
+
+        Activity::where('account_id', $data['account_id'])
+            ->findOrFail($data['activity_id']);
+
+        foreach ($data['contacts'] as $contactId) {
+            Contact::where('account_id', $data['account_id'])
+                ->findOrFail($contactId);
+        }
+
+        if (! empty($data['activity_type_id']) && $data['activity_type_id'] != '') {
+            ActivityType::where('account_id', $data['account_id'])
+                ->findOrFail($data['activity_type_id']);
+        }
+
+        if (! empty($data['emotions']) && $data['emotions'] != '') {
+            foreach ($data['emotions'] as $emotionId) {
+                Emotion::findOrFail($emotionId);
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Update an activity.
      *
      * @param array $data
@@ -40,24 +72,7 @@ class UpdateActivity extends BaseService
     {
         $this->validate($data);
 
-        $activity = Activity::where('account_id', $data['account_id'])
-            ->findOrFail($data['activity_id']);
-
-        foreach ($data['contacts'] as $contactId) {
-            Contact::where('account_id', $data['account_id'])
-                ->findOrFail($contactId);
-        }
-
-        if (isset($data['activity_type_id']) && $data['activity_type_id']) {
-            ActivityType::where('account_id', $data['account_id'])
-                ->findOrFail($data['activity_type_id']);
-        }
-
-        if (isset($data['emotions']) && $data['emotions']) {
-            foreach ($data['emotions'] as $emotionId) {
-                Emotion::findOrFail($emotionId);
-            }
-        }
+        $activity = Activity::find($data['activity_id']);
 
         $this->updateActivity($data, $activity);
 
@@ -105,26 +120,11 @@ class UpdateActivity extends BaseService
      */
     private function updateEmotions(array $emotions, Activity $activity)
     {
-        // Find existing emotions
-        $existing = $activity->emotions()->get();
-
-        foreach ($existing as $emotion) {
-            // Has an existing attendee been removed?
-            if (! in_array($emotion->id, $emotions)) {
-                $emotion->activities()->detach($activity);
-            }
-
-            // Remove this ID from our list of contacts as we don't
-            // want to add them to the activity again
-            $idx = array_search($emotion->id, $emotions);
-            unset($emotions[$idx]);
+        $emotionsSync = [];
+        foreach ($emotions as $emotion) {
+            $emotionsSync[$emotion] = ['account_id' => $activity->account_id];
         }
 
-        foreach ($emotions as $emotionId) {
-            $emotion = Emotion::findOrFail($emotionId);
-            $activity->emotions()->syncWithoutDetaching([$emotion->id => [
-                'account_id' => $activity->account_id,
-            ]]);
-        }
+        $activity->emotions()->sync($emotionsSync);
     }
 }

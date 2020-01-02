@@ -30,14 +30,14 @@ class CreateActivity extends BaseService
     }
 
     /**
-     * Create an activity.
+     * Validate all datas to execute the service.
      *
      * @param array $data
-     * @return Activity
+     * @return bool
      */
-    public function execute(array $data) : Activity
+    public function validate(array $data) : bool
     {
-        $this->validate($data);
+        parent::validate($data);
 
         if (count($data['contacts']) > 0) {
             foreach ($data['contacts'] as $contactId) {
@@ -51,11 +51,24 @@ class CreateActivity extends BaseService
                 ->findOrFail($data['activity_type_id']);
         }
 
-        if (isset($data['emotions']) && count($data['emotions']) > 0) {
+        if (! empty($data['emotions']) && $data['emotions'] != '') {
             foreach ($data['emotions'] as $emotionId) {
                 Emotion::findOrFail($emotionId);
             }
         }
+
+        return true;
+    }
+
+    /**
+     * Create an activity.
+     *
+     * @param array $data
+     * @return Activity
+     */
+    public function execute(array $data) : Activity
+    {
+        $this->validate($data);
 
         $activity = $this->createActivity($data);
 
@@ -104,11 +117,11 @@ class CreateActivity extends BaseService
      */
     private function addEmotions(array $emotions, Activity $activity)
     {
-        foreach ($emotions as $emotionId) {
-            $emotion = Emotion::findOrFail($emotionId);
-            $activity->emotions()->syncWithoutDetaching([$emotion->id => [
-                'account_id' => $activity->account_id,
-            ]]);
+        $emotionsSync = [];
+        foreach ($emotions as $emotion) {
+            $emotionsSync[$emotion] = ['account_id' => $activity->account_id];
         }
+
+        $activity->emotions()->sync($emotionsSync);
     }
 }

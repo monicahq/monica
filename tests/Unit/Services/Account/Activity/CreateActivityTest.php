@@ -18,13 +18,13 @@ class CreateActivityTest extends TestCase
     use DatabaseTransactions;
 
     /** @test */
-    public function it_stores_a_activity_and_creates_an_entry_in_the_journal()
+    public function it_stores_an_activity_and_creates_an_entry_in_the_journal()
     {
-        $account = factory(Account::class)->create([]);
-        $activityType = factory(ActivityType::class)->create([
+        $account = factory(Account::class)->create();
+        $contacts = factory(Contact::class, 3)->create([
             'account_id' => $account->id,
         ]);
-        $contact = factory(Contact::class)->create([
+        $activityType = factory(ActivityType::class)->create([
             'account_id' => $account->id,
         ]);
 
@@ -34,7 +34,7 @@ class CreateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
-            'contacts' => [$contact->id],
+            'contacts' => $contacts->map(function ($contact) { return $contact->id; })->toArray(),
         ];
 
         $activity = app(CreateActivity::class)->execute($request);
@@ -46,10 +46,14 @@ class CreateActivityTest extends TestCase
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
         ]);
-        $this->assertDatabaseHas('activity_contact', [
-            'activity_id' => $activity->id,
-            'contact_id' => $contact->id,
-        ]);
+
+        foreach ($contacts as $contact) {
+            $this->assertDatabaseHas('activity_contact', [
+                'account_id' => $account->id,
+                'activity_id' => $activity->id,
+                'contact_id' => $contact->id,
+            ]);
+        }
 
         $this->assertInstanceOf(
             Activity::class,
@@ -66,7 +70,10 @@ class CreateActivityTest extends TestCase
     /** @test */
     public function it_adds_emotions()
     {
-        $contact = factory(Contact::class)->create([]);
+        $account = factory(Account::class)->create();
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
         $emotion = factory(Emotion::class)->create([]);
         $emotion2 = factory(Emotion::class)->create([]);
 
@@ -75,11 +82,11 @@ class CreateActivityTest extends TestCase
         array_push($emotionArray, $emotion2->id);
 
         $activityType = factory(ActivityType::class)->create([
-            'account_id' => $contact->account_id,
+            'account_id' => $account->id,
         ]);
 
         $request = [
-            'account_id' => $contact->account_id,
+            'account_id' => $account->id,
             'activity_type_id' => $activityType->id,
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
@@ -91,13 +98,13 @@ class CreateActivityTest extends TestCase
         $activity = app(CreateActivity::class)->execute($request);
 
         $this->assertDatabaseHas('emotion_activity', [
-            'account_id' => $contact->account_id,
+            'account_id' => $account->id,
             'activity_id' => $activity->id,
             'emotion_id' => $emotion->id,
         ]);
 
         $this->assertDatabaseHas('emotion_activity', [
-            'account_id' => $contact->account_id,
+            'account_id' => $account->id,
             'activity_id' => $activity->id,
             'emotion_id' => $emotion2->id,
         ]);

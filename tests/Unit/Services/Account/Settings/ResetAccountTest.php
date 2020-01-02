@@ -19,11 +19,8 @@ class ResetAccountTest extends TestCase
     public function it_resets_an_account()
     {
         // populate the account with fake contacts and activities
-        $user = factory(User::class)->create([]);
-        factory(Contact::class, 3)->create([
-            'account_id' => $user->account_id,
-        ]);
-        factory(Contact::class, 3)->create([
+        $user = factory(User::class)->create();
+        $contacts = factory(Contact::class, 3)->create([
             'account_id' => $user->account_id,
         ]);
 
@@ -37,6 +34,7 @@ class ResetAccountTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
+            'contacts' => $contacts->map(function ($contact) { return $contact->id; })->toArray(),
         ];
 
         app(CreateActivity::class)->execute($request);
