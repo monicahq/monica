@@ -12,7 +12,6 @@ use App\Services\Account\Activity\Activity\CreateActivity;
 use App\Services\Account\Activity\Activity\UpdateActivity;
 use App\Services\Account\Activity\Activity\DestroyActivity;
 use App\Http\Resources\Activity\Activity as ActivityResource;
-use App\Services\Account\Activity\Activity\AttachContactToActivity;
 
 class ApiActivitiesController extends ApiController
 {
@@ -80,17 +79,6 @@ class ApiActivitiesController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        // Now we associate the activity with each one of the attendees
-        try {
-            $activity = app(AttachContactToActivity::class)->execute([
-                'account_id' => auth()->user()->account->id,
-                'activity_id' => $activity->id,
-                'contacts' => $request->input('contacts'),
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
         return new ActivityResource($activity);
     }
 
@@ -121,17 +109,6 @@ class ApiActivitiesController extends ApiController
             return $this->respondInvalidQuery();
         }
 
-        // Now we associate the activity with each one of the attendees
-        try {
-            $activity = app(AttachContactToActivity::class)->execute([
-                'account_id' => auth()->user()->account->id,
-                'activity_id' => $activity->id,
-                'contacts' => $request->input('contacts'),
-            ]);
-        } catch (ModelNotFoundException $e) {
-            return $this->respondNotFound();
-        }
-
         return new ActivityResource($activity);
     }
 
@@ -151,6 +128,8 @@ class ApiActivitiesController extends ApiController
             ]);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         return $this->respondObjectDeleted($activityId);
@@ -168,6 +147,8 @@ class ApiActivitiesController extends ApiController
                 ->findOrFail($contactId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
+        } catch (ValidationException $e) {
+            return $this->respondValidatorFailed($e->validator);
         }
 
         try {

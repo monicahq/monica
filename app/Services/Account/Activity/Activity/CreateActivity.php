@@ -3,6 +3,7 @@
 namespace App\Services\Account\Activity\Activity;
 
 use App\Services\BaseService;
+use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use App\Models\Account\ActivityType;
 use App\Models\Journal\JournalEntry;
@@ -24,6 +25,7 @@ class CreateActivity extends BaseService
             'description' => 'nullable|string:400000000',
             'happened_at' => 'required|date|date_format:Y-m-d',
             'emotions' => 'nullable|array',
+            'contacts' => 'required|array',
         ];
     }
 
@@ -37,11 +39,47 @@ class CreateActivity extends BaseService
     {
         $this->validate($data);
 
-        if ($data['activity_type_id']) {
+        if (count($data['contacts']) > 0) {
+            foreach ($data['contacts'] as $contactId) {
+                Contact::where('account_id', $data['account_id'])
+                    ->findOrFail($contactId);
+            }
+        }
+
+        if (! empty($data['activity_type_id']) && $data['activity_type_id'] != '') {
             ActivityType::where('account_id', $data['account_id'])
                 ->findOrFail($data['activity_type_id']);
         }
 
+        if (isset($data['emotions']) && count($data['emotions']) > 0) {
+            foreach ($data['emotions'] as $emotionId) {
+                Emotion::findOrFail($emotionId);
+            }
+        }
+
+        $activity = $this->createActivity($data);
+
+        // Log a journal entry
+        JournalEntry::add($activity);
+
+        // Now we associate the activity with each one of the attendees
+        app(AttachContactToActivity::class)->execute([
+            'account_id' => $data['account_id'],
+            'activity_id' => $activity->id,
+            'contacts' => $data['contacts'],
+        ]);
+
+        return $activity;
+    }
+
+    /**
+     * Create the activity.
+     *
+     * @param array $data
+     * @return Activity
+     */
+    private function createActivity(array $data) : Activity
+    {
         $activity = Activity::create([
             'account_id' => $data['account_id'],
             'activity_type_id' => $this->nullOrValue($data, 'activity_type_id'),
@@ -53,9 +91,6 @@ class CreateActivity extends BaseService
         if (! empty($data['emotions']) && $data['emotions'] != '') {
             $this->addEmotions($data['emotions'], $activity);
         }
-
-        // Log a journal entry
-        JournalEntry::add($activity);
 
         return $activity;
     }

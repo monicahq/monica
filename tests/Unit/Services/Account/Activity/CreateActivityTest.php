@@ -24,6 +24,9 @@ class CreateActivityTest extends TestCase
         $activityType = factory(ActivityType::class)->create([
             'account_id' => $account->id,
         ]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
 
         $request = [
             'account_id' => $account->id,
@@ -31,6 +34,7 @@ class CreateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
+            'contacts' => [$contact->id],
         ];
 
         $activity = app(CreateActivity::class)->execute($request);
@@ -41,6 +45,10 @@ class CreateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
+        ]);
+        $this->assertDatabaseHas('activity_contact', [
+            'activity_id' => $activity->id,
+            'contact_id' => $contact->id,
         ]);
 
         $this->assertInstanceOf(
@@ -77,6 +85,7 @@ class CreateActivityTest extends TestCase
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
             'emotions' => $emotionArray,
+            'contacts' => [$contact->id],
         ];
 
         $activity = app(CreateActivity::class)->execute($request);
@@ -112,6 +121,9 @@ class CreateActivityTest extends TestCase
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $account->id,
+        ]);
 
         $request = [
             'account_id' => $account->id,
@@ -119,6 +131,7 @@ class CreateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
+            'contacts' => [$contact->id],
         ];
 
         $this->expectException(ModelNotFoundException::class);

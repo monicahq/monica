@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\Account\Activity;
 
 use Tests\TestCase;
 use App\Models\Account\Account;
+use App\Models\Contact\Contact;
 use App\Models\Account\Activity;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -18,6 +19,9 @@ class UpdateActivityTest extends TestCase
     public function it_updates_an_activity()
     {
         $activity = factory(Activity::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $activity->account_id,
+        ]);
 
         $request = [
             'account_id' => $activity->account_id,
@@ -26,6 +30,7 @@ class UpdateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
+            'contacts' => [$contact->id],
         ];
 
         app(UpdateActivity::class)->execute($request);
@@ -65,6 +70,9 @@ class UpdateActivityTest extends TestCase
     {
         $activity = factory(Activity::class)->create([]);
         $account = factory(Account::class)->create([]);
+        $contact = factory(Contact::class)->create([
+            'account_id' => $activity->account_id,
+        ]);
 
         $request = [
             'account_id' => $account->id,
@@ -73,6 +81,7 @@ class UpdateActivityTest extends TestCase
             'summary' => 'we went to central perk',
             'description' => 'it was awesome',
             'happened_at' => '2009-09-09',
+            'contacts' => [$contact->id],
         ];
 
         $this->expectException(ModelNotFoundException::class);

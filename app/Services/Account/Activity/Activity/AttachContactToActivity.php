@@ -35,6 +35,11 @@ class AttachContactToActivity extends BaseService
         $activity = Activity::where('account_id', $data['account_id'])
             ->findOrFail($data['activity_id']);
 
+        foreach ($data['contacts'] as $contactId) {
+            Contact::where('account_id', $data['account_id'])
+                ->findOrFail($contactId);
+        }
+
         $attendeesID = $this->detach($data, $activity);
 
         $this->attach($data, $activity, $attendeesID);
@@ -52,7 +57,6 @@ class AttachContactToActivity extends BaseService
     private function detach(array $data, Activity $activity) : array
     {
         // Get the attendees
-        /** @var array */
         $attendeesID = $data['contacts'];
 
         // Find existing contacts

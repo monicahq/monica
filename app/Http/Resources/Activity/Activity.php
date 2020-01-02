@@ -22,7 +22,7 @@ class Activity extends Resource
             'object' => 'activity',
             'summary' => $this->summary,
             'description' => $this->description,
-            'happened_at' => is_null($this->happened_at) ? null : $this->happened_at->format('Y-m-d'),
+            'happened_at' => ! is_null($this->happened_at) ? $this->happened_at->format('Y-m-d') : null,
             'activity_type' => new ActivityTypeResource($this->type),
             'attendees' => [
                 'total' => $this->contacts()->count(),
