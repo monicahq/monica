@@ -147,8 +147,6 @@ class ApiActivitiesController extends ApiController
                 ->findOrFail($contactId);
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
-        } catch (ValidationException $e) {
-            return $this->respondValidatorFailed($e->validator);
         }
 
         try {

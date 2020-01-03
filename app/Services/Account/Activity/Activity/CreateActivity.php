@@ -21,8 +21,8 @@ class CreateActivity extends BaseService
         return [
             'account_id' => 'required|integer|exists:accounts,id',
             'activity_type_id' => 'nullable|integer|exists:activity_types,id',
-            'summary' => 'required|string:100000',
-            'description' => 'nullable|string:400000000',
+            'summary' => 'required|string:255',
+            'description' => 'nullable|string:65535',
             'happened_at' => 'required|date|date_format:Y-m-d',
             'emotions' => 'nullable|array',
             'contacts' => 'required|array',
@@ -70,7 +70,7 @@ class CreateActivity extends BaseService
     {
         $this->validate($data);
 
-        $activity = $this->createActivity($data);
+        $activity = $this->create($data);
 
         // Log a journal entry
         JournalEntry::add($activity);
@@ -91,7 +91,7 @@ class CreateActivity extends BaseService
      * @param array $data
      * @return Activity
      */
-    private function createActivity(array $data) : Activity
+    private function create(array $data) : Activity
     {
         $activity = Activity::create([
             'account_id' => $data['account_id'],

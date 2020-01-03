@@ -74,7 +74,7 @@ class UpdateActivity extends BaseService
 
         $activity = Activity::find($data['activity_id']);
 
-        $this->updateActivity($data, $activity);
+        $this->update($data, $activity);
 
         // Log a journal entry but need to delete the previous one first
         $activity->deleteJournalEntry();
@@ -97,7 +97,7 @@ class UpdateActivity extends BaseService
      * @param Activity $activity
      * @return void
      */
-    private function updateActivity(array $data, Activity $activity)
+    private function update(array $data, Activity $activity)
     {
         $activity->update([
             'activity_type_id' => $this->nullOrValue($data, 'activity_type_id'),
