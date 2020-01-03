@@ -67,8 +67,8 @@ class ApiGenderController extends ApiController
                 $request->except(['account_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();
@@ -96,9 +96,9 @@ class ApiGenderController extends ApiController
                 $request->except(['account_id', 'gender_id'])
                     +
                     [
-                    'account_id' => auth()->user()->account->id,
-                    'gender_id' => $genderId,
-                ]
+                        'account_id' => auth()->user()->account->id,
+                        'gender_id' => $genderId,
+                    ]
             );
         } catch (ModelNotFoundException $e) {
             return $this->respondNotFound();

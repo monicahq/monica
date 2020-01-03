@@ -37,7 +37,7 @@ class UpdateAddress extends BaseService
      * @param array $data
      * @return Address
      */
-    public function execute(array $data) : Address
+    public function execute(array $data): Address
     {
         $this->validate($data);
 

@@ -13,7 +13,8 @@ class DestroyAccountTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_an_account()
+    /** @test */
+    public function it_destroys_an_account()
     {
         $user = factory(User::class)->create([]);
         factory(Contact::class, 3)->create([
@@ -34,7 +35,8 @@ class DestroyAccountTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $request = [];
 

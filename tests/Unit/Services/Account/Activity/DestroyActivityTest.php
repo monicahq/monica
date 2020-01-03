@@ -14,7 +14,8 @@ class DestroyActivityTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_activity()
+    /** @test */
+    public function it_destroys_a_activity()
     {
         $activity = factory(Activity::class)->create([]);
 
@@ -34,7 +35,8 @@ class DestroyActivityTest extends TestCase
         ]);
     }
 
-    public function test_it_removes_the_journal_entry_when_destroying_the_activity()
+    /** @test */
+    public function it_removes_the_journal_entry_when_destroying_the_activity()
     {
         $account = factory(Account::class)->create([]);
         $activityType = factory(ActivityType::class)->create([

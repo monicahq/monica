@@ -14,7 +14,7 @@ class EmailMessaging
      * @param  User $user
      * @return MailMessage
      */
-    public static function verifyEmailMail(User $user, $verificationUrl) : MailMessage
+    public static function verifyEmailMail(User $user, $verificationUrl): MailMessage
     {
         App::setLocale($user->locale);
 
@@ -32,7 +32,7 @@ class EmailMessaging
      * @param  User $user
      * @return MailMessage
      */
-    public static function resetPasswordMail(User $user, $token) : MailMessage
+    public static function resetPasswordMail(User $user, $token): MailMessage
     {
         App::setLocale($user->locale);
 

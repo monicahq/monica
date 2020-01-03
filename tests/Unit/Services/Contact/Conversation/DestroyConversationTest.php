@@ -15,7 +15,8 @@ class DestroyConversationTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_it_destroys_a_conversation()
+    /** @test */
+    public function it_destroys_a_conversation()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
@@ -37,7 +38,8 @@ class DestroyConversationTest extends TestCase
         ]);
     }
 
-    public function test_destroying_a_conversation_destroys_corresponding_messages()
+    /** @test */
+    public function destroying_a_conversation_destroys_corresponding_messages()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
@@ -68,7 +70,8 @@ class DestroyConversationTest extends TestCase
         ]);
     }
 
-    public function test_it_fails_if_wrong_parameters_are_given()
+    /** @test */
+    public function it_fails_if_wrong_parameters_are_given()
     {
         $conversation = factory(Conversation::class)->create([
             'happened_at' => '2008-01-01',
@@ -83,7 +86,8 @@ class DestroyConversationTest extends TestCase
         app(DestroyConversation::class)->execute($request);
     }
 
-    public function test_it_throws_an_exception_if_conversation_doesnt_exist()
+    /** @test */
+    public function it_throws_an_exception_if_conversation_doesnt_exist()
     {
         $account = factory(Account::class)->create();
         $conversation = factory(Conversation::class)->create([]);

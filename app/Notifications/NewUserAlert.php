@@ -41,7 +41,7 @@ class NewUserAlert extends Notification implements ShouldQueue
      *
      * @return MailMessage
      */
-    public function toMail() : MailMessage
+    public function toMail(): MailMessage
     {
         $tuser = $this->user;
 

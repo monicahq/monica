@@ -23,7 +23,8 @@ class ApiTagControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_it_get_all_tags()
+    /** @test */
+    public function it_get_all_tags()
     {
         $user = $this->signin();
         $tag1 = factory(Tag::class)->create([
@@ -53,7 +54,8 @@ class ApiTagControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_gets_a_specific_tag()
+    /** @test */
+    public function it_gets_a_specific_tag()
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
@@ -74,7 +76,8 @@ class ApiTagControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_triggers_error_if_tag_unknown()
+    /** @test */
+    public function it_triggers_error_if_tag_unknown()
     {
         $user = $this->signin();
 
@@ -83,7 +86,8 @@ class ApiTagControllerTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_it_creates_a_tag()
+    /** @test */
+    public function it_creates_a_tag()
     {
         $user = $this->signin();
 
@@ -110,7 +114,8 @@ class ApiTagControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_updates_a_tag()
+    /** @test */
+    public function it_updates_a_tag()
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
@@ -143,7 +148,8 @@ class ApiTagControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_deletes_a_tag()
+    /** @test */
+    public function it_deletes_a_tag()
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([
@@ -164,7 +170,8 @@ class ApiTagControllerTest extends ApiTestCase
         ]);
     }
 
-    public function test_it_deletes_a_tag_associated()
+    /** @test */
+    public function it_deletes_a_tag_associated()
     {
         $user = $this->signin();
         $tag = factory(Tag::class)->create([

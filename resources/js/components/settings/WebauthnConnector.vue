@@ -64,13 +64,6 @@
             :required="true"
             @keyup.enter="showRegisterModalTab('2');startRegister();"
           />
-          <div class="relative">
-            <span class="fr">
-              <a class="btn" href="" @click.prevent="showRegisterModalTab('2');startRegister();">
-                {{ $t('pagination.next') }}
-              </a>
-            </span>
-          </div>
         </div>
         <div v-if="registerTab == '2'">
           <div v-if="errorMessage != ''" class="form-error-message mb3">
@@ -109,20 +102,17 @@
               {{ $t('settings.webauthn_noButtonAdvise') }}
             </p>
           </div>
-          <div class="relative">
-            <span class="fr">
-              <a class="btn" href="" @click.prevent="showRegisterModalTab('1')">
-                {{ $t('pagination.previous') }}
-              </a>
-            </span>
-          </div>
         </div>
-        <div class="relative">
-          <span class="fr">
-            <a class="btn" href="" @click.prevent="closeRegisterModal()">
-              {{ $t('app.cancel') }}
-            </a>
-          </span>
+        <div slot="button">
+          <a v-if="registerTab == '1'" class="btn" href="" @click.prevent="showRegisterModalTab('2');startRegister();">
+            {{ $t('pagination.next') }}
+          </a>
+          <a v-else class="btn" href="" @click.prevent="showRegisterModalTab('1')">
+            {{ $t('pagination.previous') }}
+          </a>
+          <a class="btn" href="" @click.prevent="closeRegisterModal()">
+            {{ $t('app.cancel') }}
+          </a>
         </div>
       </sweet-modal>
     </div>
@@ -171,15 +161,13 @@
           {{ $t('settings.webauthn_delete_confirmation') }}
         </div>
       </form>
-      <div class="relative">
-        <span class="fr">
-          <a class="btn" href="" @click.prevent="closeDeleteModal()">
-            {{ $t('app.cancel') }}
-          </a>
-          <a class="btn" href="" @click.prevent="webauthnRemove(keyToTrash)">
-            {{ $t('app.delete') }}
-          </a>
-        </span>
+      <div slot="button">
+        <a class="btn" href="" @click.prevent="closeDeleteModal()">
+          {{ $t('app.cancel') }}
+        </a>
+        <a class="btn" href="" @click.prevent="webauthnRemove(keyToTrash)">
+          {{ $t('app.delete') }}
+        </a>
       </div>
     </sweet-modal>
   </div>

@@ -5,7 +5,7 @@ return [
     //index
     'people_not_found' => 'Contatto non trovato',
     'people_list_number_kids' => '1 bambino|:count bambini',
-    'people_list_last_updated' => 'Consultati per ultimi:',
+    'people_list_last_updated' => 'Ultimo contatto:',
     'people_list_number_reminders' => ':count promemoria',
     'people_list_blank_title' => 'Non ci sono contatti nel tuo account',
     'people_list_blank_cta' => 'Aggiungi qualcuno',
@@ -18,7 +18,7 @@ return [
     'people_list_lastactivitydateNewtoOld' => 'Ordina per data dell\'ultima attività, più recente → meno recente',
     'people_list_lastactivitydateOldtoNew' => 'Ordina per data dell\'ultima attività, meno recente → più recente',
     'people_list_filter_tag' => 'Tutti i contatti etichettati con',
-    'people_list_clear_filter' => 'Reimposta filtro',
+    'people_list_clear_filter' => 'Rimuovi filtro',
     'people_list_contacts_per_tags' => '1 contatto|:count contatti',
     'people_list_show_dead' => 'Mostra persone decedute (:count)',
     'people_list_hide_dead' => 'Nascondi persone decedute (:count)',
@@ -38,7 +38,7 @@ return [
     'people_list_filter_untag' => 'Tutti i contatti senza etichette',
 
     // people add
-    'people_add_title' => 'Aggiungi una persona',
+    'people_add_title' => 'Aggiungi una nuova persona',
     'people_add_missing' => 'Nessuna persona trovata, aggiungine una',
     'people_add_firstname' => 'Nome',
     'people_add_middlename' => 'Secondo nome (facoltativo)',
@@ -85,7 +85,7 @@ return [
     'stay_in_touch_premium' => 'Devi fare l\'upgrade al tuo account per usare questa funzione',
     'stay_in_touch_modal_title' => 'Rimani in contatto',
     'stay_in_touch_modal_desc' => 'Possiamo ricordarti di rimanere in contatto con {firstname} tramite email a intervalli regolari.',
-    'stay_in_touch_modal_label' => 'Inviami una mail ogni...',
+    'stay_in_touch_modal_label' => 'Send me an email every... {count} day|Send me an email every... {count} days',
 
     // Calls
     'modal_call_title' => 'Aggiungi chiamata',
@@ -184,6 +184,7 @@ return [
     'reminders_create_success' => 'Il promemoria è stato creato',
     'reminders_delete_success' => 'Il promemoria è stato rimosso',
     'reminders_update_success' => 'Il promemoria è stato aggiornato',
+    'reminders_add_optional_comment' => 'Informazioni aggiuntive',
 
     'reminder_frequency_day' => 'ogni giorno|ogni :number giorni',
     'reminder_frequency_week' => 'ogni settimana|ogni :number settimane',
@@ -221,7 +222,7 @@ return [
     'relationship_form_deletion_success' => 'La relazione è stata eliminata.',
 
     // tasks
-    'tasks_title' => 'Tasks',
+    'tasks_title' => 'Cose da fare',
     'tasks_blank_title' => 'Nulla da fare.',
     'tasks_form_title' => 'Titolo',
     'tasks_form_description' => 'Descrizione (facoltativa)',
@@ -242,24 +243,25 @@ return [
     'activity_type_ate_at_his_place' => 'mangiato a casa sua/loro',
     'activity_type_went_bar' => 'andati al bar',
     'activity_type_ate_at_home' => 'mangiato a casa',
-    'activity_type_picknicked' => 'fatto un picnic',
+    'activity_type_picnicked' => 'picnicked',
     'activity_type_ate_restaurant' => 'mangiato al ristorante',
     'activity_type_went_theater' => 'andati a teatro',
     'activity_type_went_concert' => 'andati a un concerto',
     'activity_type_went_play' => 'andati a una rappresentazione teatrale',
     'activity_type_went_museum' => 'andati al museo',
     'activities_add_activity' => 'Aggiungi attività',
-    'activities_more_details' => 'Mostra dettagli',
-    'activities_hide_details' => 'Nascondi dettagli',
-    'activities_delete_confirmation' => 'Rimuovere questa attività?',
+    'activities_add_more_details' => 'Aggiungi ulteriori dettagli',
+    'activities_add_emotions' => 'Aggiungi Umori/emozioni',
+    'activities_add_category' => 'Indica una categoria',
+    'activities_add_participants_cta' => 'Aggiungi partecipanti',
     'activities_item_information' => ':Activity il :date',
-    'activities_add_title' => 'Cosa hai fatto con :name?',
+    'activities_add_title' => 'Cosa hai fatto con {name}?',
     'activities_summary' => 'Descrivi cosa avete fatto',
     'activities_add_pick_activity' => '(Facoltativo) Vorresti assegnare una categoria a questa attività? Non è obbligatorio, ma più avanti ti permetterà di vedere delle statistiche',
-    'activities_add_date_occured' => 'Data dell\'attività',
-    'activities_add_optional_comment' => 'Commenti aggiuntivi',
-    'activities_add_cta' => 'Salva attività',
-    'activities_blank_title' => 'Tieni traccia di quello che tu e :name avete fatto, e ciò di cui avete parlato',
+    'activities_add_date_occured' => 'Data dell\'attività...',
+    'activities_add_participants' => 'Chi, a parte {name}, ha partecipato a questa attività? (opzionale)',
+    'activities_add_emotions_title' => 'Vuoi registrare come ti sei sentito durante questa attivitá? (facoltativo)',
+    'activities_blank_title' => 'Tieni traccia di quello che tu e {name} avete fatto, e ciò di cui avete parlato',
     'activities_blank_add_activity' => 'Agginugi attività',
     'activities_add_success' => 'Attività aggiunta',
     'activities_add_error' => 'Errore durante l\'aggiunta dell\'attività',
@@ -273,6 +275,10 @@ return [
     'activities_profile_year_summary_activity_types' => 'Ecco un resoconto dei tipi di attività svolte nel :year',
     'activities_profile_year_summary' => 'Ecco cosa avete fatto insieme nel :year',
     'activities_profile_number_occurences' => ':value attività|:value attività',
+    'activities_list_participants' => 'Partecipanti:',
+    'activities_list_emotions' => 'Emozioni provate:',
+    'activities_list_date' => 'Accaduto il',
+    'activities_list_category' => 'Categoria:',
 
     // notes
     'notes_create_success' => 'Nota creata',
@@ -466,7 +472,7 @@ return [
     'document_upload_zone_error' => 'Si è verificato un errore. Per favore, riprova a caricare il documento.',
 
     // Photos
-    'photo_title' => 'Photos',
+    'photo_title' => 'Foto',
     'photo_list_title' => 'Foto',
     'photo_list_cta' => 'Carica foto',
     'photo_list_blank_desc' => 'Qui puoi salvare foto relative a questa persona, caricane una adesso!',

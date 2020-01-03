@@ -32,7 +32,8 @@ class ApiGiftsTest extends ApiTestCase
         'updated_at',
     ];
 
-    public function test_gifts_get_all()
+    /** @test */
+    public function it_gets_all_the_gifts()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -66,7 +67,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_contact_all()
+    /** @test */
+    public function it_gets_all_the_gifts_of_a_contact()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -100,7 +102,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_contact_all_error()
+    /** @test */
+    public function it_cant_get_all_the_gifts_of_an_invalid_contact()
     {
         $user = $this->signin();
 
@@ -109,7 +112,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_get_one()
+    /** @test */
+    public function it_gets_one_gift()
     {
         $user = $this->signin();
         $contact1 = factory(Contact::class)->create([
@@ -140,7 +144,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_get_one_error()
+    /** @test */
+    public function it_cant_get_a_gift_with_an_invalid_id()
     {
         $user = $this->signin();
 
@@ -149,7 +154,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_create()
+    /** @test */
+    public function it_create_a_gift()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -181,7 +187,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_is_for()
+    /** @test */
+    public function gifts_create_is_for()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -218,7 +225,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_is_for_bad_account()
+    /** @test */
+    public function gifts_create_is_for_bad_account()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -240,7 +248,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_create_error()
+    /** @test */
+    public function gifts_create_error()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -257,7 +266,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_create_error_bad_account()
+    /** @test */
+    public function gifts_create_error_bad_account()
     {
         $user = $this->signin();
 
@@ -275,7 +285,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_update()
+    /** @test */
+    public function gifts_update()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -314,7 +325,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_is_for()
+    /** @test */
+    public function gifts_update_is_for()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -358,7 +370,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_error()
+    /** @test */
+    public function gifts_update_error()
     {
         $user = $this->signin();
         $gift = factory(Gift::class)->create([
@@ -375,7 +388,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_update_error_bad_account()
+    /** @test */
+    public function gifts_update_error_bad_account()
     {
         $user = $this->signin();
 
@@ -398,7 +412,8 @@ class ApiGiftsTest extends ApiTestCase
         $this->expectNotFound($response);
     }
 
-    public function test_gifts_delete()
+    /** @test */
+    public function gifts_delete()
     {
         $user = $this->signin();
         $contact = factory(Contact::class)->create([
@@ -429,7 +444,8 @@ class ApiGiftsTest extends ApiTestCase
         ]);
     }
 
-    public function test_gifts_delete_error()
+    /** @test */
+    public function gifts_delete_error()
     {
         $user = $this->signin();
 

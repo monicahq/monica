@@ -11,7 +11,8 @@ class GiftTest extends TestCase
 {
     use DatabaseTransactions;
 
-    public function test_has_particular_recipient_returns_false_if_it_s_for_no_specific_recipient()
+    /** @test */
+    public function has_particular_recipient_returns_false_if_it_s_for_no_specific_recipient()
     {
         $gift = factory(Gift::class)->make();
 
@@ -21,7 +22,8 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_has_particular_recipient_returns_true_if_it_s_for_a_specific_recipient()
+    /** @test */
+    public function has_particular_recipient_returns_true_if_it_s_for_a_specific_recipient()
     {
         $gift = factory(Gift::class)->make();
         $gift->is_for = 1;
@@ -32,7 +34,8 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_sets_is_for_attribute()
+    /** @test */
+    public function it_sets_is_for_attribute()
     {
         $gift = factory(Gift::class)->make();
         $gift->is_for = 1;
@@ -43,7 +46,8 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_recipient_name()
+    /** @test */
+    public function it_gets_the_recipient_name()
     {
         $gift = factory(Gift::class)->make();
         $gift->is_for = 1;
@@ -57,7 +61,8 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_gift_name()
+    /** @test */
+    public function it_gets_the_gift_name()
     {
         $gift = factory(Gift::class)->make();
         $gift->name = 'Maison de folie';
@@ -68,7 +73,8 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_gift_url()
+    /** @test */
+    public function it_gets_the_gift_url()
     {
         $gift = factory(Gift::class)->make();
         $gift->url = 'https://facebook.com';
@@ -79,7 +85,8 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_comment()
+    /** @test */
+    public function it_gets_the_comment()
     {
         $gift = factory(Gift::class)->make();
         $gift->comment = 'This is just a comment';
@@ -90,7 +97,8 @@ class GiftTest extends TestCase
         );
     }
 
-    public function test_it_gets_the_value()
+    /** @test */
+    public function it_gets_the_value()
     {
         $gift = factory(Gift::class)->make();
         $gift->value = '100';

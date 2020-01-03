@@ -32,7 +32,7 @@ class InvitationMail extends LaravelNotification implements ShouldQueue
      * @param  Invitation $invitation
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
-    public function toMail(Invitation $invitation) : MailMessage
+    public function toMail(Invitation $invitation): MailMessage
     {
         $user = $invitation->invitedBy;
         $acceptInvitationUrl = $this->acceptInvitationUrl($invitation);
