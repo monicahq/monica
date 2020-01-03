@@ -189,7 +189,7 @@ class MoveContactAvatarToPhotosDirectory implements ShouldQueue
         return $avatarFileName;
     }
 
-    private function fileExists($avatarFileName) : bool
+    private function fileExists($avatarFileName): bool
     {
         return $this->storage->exists($avatarFileName);
     }

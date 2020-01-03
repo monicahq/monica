@@ -104,7 +104,7 @@ class SentryRelease extends Command
         }
     }
 
-    private function check() : bool
+    private function check(): bool
     {
         $check = true;
         if (empty(config('sentry-release.auth_token'))) {
