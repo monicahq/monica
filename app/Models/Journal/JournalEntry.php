@@ -61,7 +61,7 @@ class JournalEntry extends Model
      * @param \App\Interfaces\IsJournalableInterface $resourceToLog
      * @return self
      */
-    public static function add(IsJournalableInterface $resourceToLog) : self
+    public static function add(IsJournalableInterface $resourceToLog): self
     {
         $journal = new self;
         $journal->account_id = $resourceToLog->account_id;
@@ -83,7 +83,7 @@ class JournalEntry extends Model
      * @param \App\Interfaces\IsJournalableInterface $resourceToLog
      * @return self
      */
-    public function edit(IsJournalableInterface $resourceToLog) : self
+    public function edit(IsJournalableInterface $resourceToLog): self
     {
         if ($resourceToLog instanceof \App\Models\Journal\Entry) {
             $this->date = $resourceToLog->attributes['date'];

@@ -48,7 +48,7 @@ class Document extends Model
      *
      * @return string
      */
-    public function getDownloadLink() : string
+    public function getDownloadLink(): string
     {
         $url = $this->new_filename;
 

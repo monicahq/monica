@@ -31,7 +31,7 @@ class UpdateLifeEvent extends BaseService
      * @param array $data
      * @return LifeEvent
      */
-    public function execute(array $data) : LifeEvent
+    public function execute(array $data): LifeEvent
     {
         $this->validate($data);
 

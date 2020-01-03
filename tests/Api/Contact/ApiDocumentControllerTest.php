@@ -34,7 +34,7 @@ class ApiDocumentControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    private function createDocument(User $user) : Document
+    private function createDocument(User $user): Document
     {
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,

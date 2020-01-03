@@ -49,7 +49,7 @@ class CreateContact extends BaseService
      * @param array $data
      * @return Contact
      */
-    public function execute(array $data) : Contact
+    public function execute(array $data): Contact
     {
         $this->validate($data);
         // filter out the data that shall not be updated here

@@ -30,7 +30,7 @@ class ExportVCard extends BaseService
      * @param array $data
      * @return VCard
      */
-    public function execute(array $data) : VCard
+    public function execute(array $data): VCard
     {
         $this->validate($data);
 
@@ -40,7 +40,7 @@ class ExportVCard extends BaseService
         return $this->export($contact);
     }
 
-    private function escape($value) : string
+    private function escape($value): string
     {
         return ! empty((string) $value) ? trim((string) $value) : (string) null;
     }
@@ -49,7 +49,7 @@ class ExportVCard extends BaseService
      * @param Contact $contact
      * @return VCard
      */
-    private function export(Contact $contact) : VCard
+    private function export(Contact $contact): VCard
     {
         // The standard for most of these fields can be found on https://tools.ietf.org/html/rfc6350
         if (! $contact->uuid) {
