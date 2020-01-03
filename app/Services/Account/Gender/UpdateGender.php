@@ -32,7 +32,7 @@ class UpdateGender extends BaseService
      * @param array $data
      * @return Gender
      */
-    public function execute(array $data) : Gender
+    public function execute(array $data): Gender
     {
         $this->validate($data);
 

@@ -48,7 +48,7 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailN
      * @param  User $user
      * @return MailMessage
      */
-    public function toMail(User $user) : MailMessage
+    public function toMail(User $user): MailMessage
     {
         return (new MailMessage)
             ->subject(trans('mail.stay_in_touch_subject_line', ['name' => $this->contact->name]))
@@ -66,7 +66,7 @@ class StayInTouchEmail extends LaravelNotification implements ShouldQueue, MailN
      * @param Contact $contact
      * @return bool
      */
-    public function assertSentFor(Contact $contact) : bool
+    public function assertSentFor(Contact $contact): bool
     {
         return $contact->id == $this->contact->id;
     }
