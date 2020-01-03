@@ -149,7 +149,7 @@ class Gift extends Model
      *
      * @return string
      */
-    public function getAmountAttribute() : string
+    public function getAmountAttribute(): string
     {
         return $this->value ? MoneyHelper::format($this->value) : '';
     }

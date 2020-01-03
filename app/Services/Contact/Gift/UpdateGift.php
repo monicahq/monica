@@ -43,7 +43,7 @@ class UpdateGift extends BaseService
      * @param array $data
      * @return Gift
      */
-    public function execute(array $data) : Gift
+    public function execute(array $data): Gift
     {
         $this->validate($data);
 
