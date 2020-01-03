@@ -85,7 +85,7 @@ class RegisterController extends Controller
      * @param  array $data
      * @return User|null
      */
-    protected function create(array $data) : ?User
+    protected function create(array $data): ?User
     {
         $first = ! Account::hasAny();
         if (config('monica.disable_signup') == 'true' && ! $first) {

@@ -32,7 +32,7 @@ class ApiPhotoControllerTest extends ApiTestCase
         'updated_at',
     ];
 
-    private function createPhoto(User $user) : Photo
+    private function createPhoto(User $user): Photo
     {
         $contact = factory(Contact::class)->create([
             'account_id' => $user->account_id,

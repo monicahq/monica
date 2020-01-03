@@ -28,7 +28,7 @@ class UpdateRelationship extends BaseService
      * @param array $data
      * @return Relationship
      */
-    public function execute(array $data) : Relationship
+    public function execute(array $data): Relationship
     {
         $this->validate($data);
 
@@ -56,7 +56,7 @@ class UpdateRelationship extends BaseService
      * @param RelationshipType $relationshipType
      * @return Relationship
      */
-    private function updateRelationship(Relationship $relationship, RelationshipType $relationshipType) : Relationship
+    private function updateRelationship(Relationship $relationship, RelationshipType $relationshipType): Relationship
     {
         $relationship->update([
             'relationship_type_id' => $relationshipType->id,
